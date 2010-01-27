@@ -410,7 +410,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 Action action = (Action) actions.next();
                 action.execute();
             }
-            
+
             // If the current state has no refinement and there are
             // outputs that remain unknown, make them absent.
             if (_currentState.getRefinement() == null) {
@@ -523,7 +523,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     defaultTransitions.add(transition);
                 }
             } else {
-                _foundUnknown = _foundUnknown || !_referencedInputPortsByGuardKnown(transition);
+                _foundUnknown = _foundUnknown
+                        || !_referencedInputPortsByGuardKnown(transition);
                 // Try to evaluate the guard whether the inputs are known
                 // or not. An unknown input might be in a part of the
                 // guard expression that is not evaluated, e.g. if the
@@ -543,7 +544,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         // Check whether some are absent.
                         if (_referencedInputPortValuesByGuardPresent(transition)) {
                             // All referenced input values are to ports with present status.
-                            throw ex;                            
+                            throw ex;
                         }
                     }
                 } catch (IllegalActionException ex) {
@@ -572,7 +573,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (!_foundUnknown) {
                 if (_debugging) {
                     if (defaultTransitions.size() > 0) {
-                        _debug("Enabled default transitions: " + defaultTransitions);
+                        _debug("Enabled default transitions: "
+                                + defaultTransitions);
                     } else {
                         _debug("No enabled transitions.");
                     }
@@ -647,11 +649,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         readInputs();
         List transitionList = _currentState.outgoingPort.linkedRelationList();
         Transition chosenTransition = chooseTransition(transitionList);
-        
+
         // If no transition was chosen, all relevant inputs are
         // known, and the current state has no refinement, then make
         // all outputs absent.
-        if (chosenTransition == null && !foundUnknown() && _currentState.getRefinement() == null) {
+        if (chosenTransition == null && !foundUnknown()
+                && _currentState.getRefinement() == null) {
             List<IOPort> outputs = outputPortList();
             for (IOPort port : outputs) {
                 for (int channel = 0; channel < port.getWidth(); channel++) {
@@ -662,7 +665,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         }
     }
-    
+
     /** Return true if the most recent call to enabledTransition()
      *  or chooseTransition() found guard expressions or output value
      *  expressions that could not be evaluated due to unknown inputs.
@@ -951,7 +954,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 initializable.initialize();
             }
         }
-        
+
         _reachedFinalState = false;
         _newIteration = true;
 
@@ -1729,37 +1732,38 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                         } finally {
                             ((FSMDirector) executiveDirector)._indexOffset = 0;
                         }
-                        ((FSMDirector) executiveDirector)._enableActor(actors[i]);
+                        ((FSMDirector) executiveDirector)
+                                ._enableActor(actors[i]);
                     } else {
                         actors[i].initialize();
                     }
-                /* NOTE: The following is no longer correct because
-                 * the destination state director will have as its current
-                 * local time whatever it was when it was last suspended,
-                 * or the initial value if hasn't run before. This is
-                 * the correct value upon creation of version 3 of the
-                 * modal model time semantics.  EAL 9/17/09.
-                } else {
-                    // Set current time of the director of the destination
-                    // refinement before executing actions because there may
-                    // be attributeChanged() methods that are invoked that depend
-                    // on current time.
-                    actors[i].getDirector().setModelTime(
-                            executiveDirector.getModelTime());
+                    /* NOTE: The following is no longer correct because
+                     * the destination state director will have as its current
+                     * local time whatever it was when it was last suspended,
+                     * or the initial value if hasn't run before. This is
+                     * the correct value upon creation of version 3 of the
+                     * modal model time semantics.  EAL 9/17/09.
+                    } else {
+                        // Set current time of the director of the destination
+                        // refinement before executing actions because there may
+                        // be attributeChanged() methods that are invoked that depend
+                        // on current time.
+                        actors[i].getDirector().setModelTime(
+                                executiveDirector.getModelTime());
 
-                    // Need also to set the superdense time index of the destination director
-                    // one greater than the one of the enclosing director.
-                    Director destinationDirector = actors[i].getDirector();
-                    int index = 1;
-                    if (executiveDirector instanceof SuperdenseTimeDirector) {
-                        index = ((SuperdenseTimeDirector) executiveDirector)
-                                .getIndex() + 1;
-                    }
-                    if (destinationDirector instanceof SuperdenseTimeDirector) {
-                        ((SuperdenseTimeDirector) destinationDirector)
-                                .setIndex(index);
-                    }
-                    */
+                        // Need also to set the superdense time index of the destination director
+                        // one greater than the one of the enclosing director.
+                        Director destinationDirector = actors[i].getDirector();
+                        int index = 1;
+                        if (executiveDirector instanceof SuperdenseTimeDirector) {
+                            index = ((SuperdenseTimeDirector) executiveDirector)
+                                    .getIndex() + 1;
+                        }
+                        if (destinationDirector instanceof SuperdenseTimeDirector) {
+                            ((SuperdenseTimeDirector) destinationDirector)
+                                    .setIndex(index);
+                        }
+                        */
                 }
             }
         }
@@ -2233,8 +2237,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If the guard expression cannot
      *   be parsed.
      */
-    private boolean _referencedInputPortValuesByGuardPresent(Transition transition)
-            throws IllegalActionException {
+    private boolean _referencedInputPortValuesByGuardPresent(
+            Transition transition) throws IllegalActionException {
 
         // If the port identifier does
         // not end with "_isPresent", then return false if port
@@ -2555,7 +2559,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // channel is connected to an output port of the refinement of the
     // current state.
     private Map _currentConnectionMap = null;
-    
+
     /** A flag indicating that unknown inputs were referenced in guards
      *  and/or output value expressions (when guards evaluate to true)
      *  in the most recently called enabledTransition() or

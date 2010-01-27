@@ -170,17 +170,16 @@ public class CCodeGenerator extends CodeGenerator {
             // "function declaration isn't a prototype
             if (!_hasPlaceable()) {
                 return _eol + _eol + "void initialize(void) {" + _eol;
-            } else if (_hasPlaceable() && target.getExpression().equals("posix")) {
+            } else if (_hasPlaceable()
+                    && target.getExpression().equals("posix")) {
                 return _eol + _eol + "#ifdef __MAC_OS_X_VERSION_10_0" + _eol
-                + "void initialize(void * options) {" + _eol
-                + "#else" + _eol
-                + "void initialize(void) {" + _eol
-                + "#endif" + _eol;
-                
+                        + "void initialize(void * options) {" + _eol + "#else"
+                        + _eol + "void initialize(void) {" + _eol + "#endif"
+                        + _eol;
+
             } else {
-                return _eol + _eol +
-                     "void initialize(void) {" + _eol;
-                   
+                return _eol + _eol + "void initialize(void) {" + _eol;
+
             }
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
@@ -206,12 +205,10 @@ public class CCodeGenerator extends CodeGenerator {
     public String generateInitializeProcedureName()
             throws IllegalActionException {
         if (_hasPlaceable() && target.getExpression().equals("posix")) {
-            return "    initialize(options);" + _eol
-                + "#else" + _eol
-                + "     initialize();" + _eol
-                + "#endif";
+            return "    initialize(options);" + _eol + "#else" + _eol
+                    + "     initialize();" + _eol + "#endif";
         } else {
-            return "    initialize();" + _eol; 
+            return "    initialize();" + _eol;
         }
     }
 
@@ -244,81 +241,153 @@ public class CCodeGenerator extends CodeGenerator {
         if (isTopLevel()) {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
-          
-            if (_hasPlaceable()&& target.getExpression().equals("posix")) {
-                mainEntryCode.append(_eol + _eol
-                    + "#ifdef __MAC_OS_X_VERSION_10_0" + _eol
-                    + "    CFRunLoopSourceContext sourceContext;" + _eol
-                    + "" + _eol
-                    + "    /* Start the thread that runs the VM. */" + _eol
-                    + "    pthread_t vmthread;" + _eol
-                    + "    " + _eol
-                    + "    const char * vmArgv[2];" + _eol
-                    + "    vmArgv[0] = argv[0];" + _eol
-                    + "    /* Parse the args */" + _eol
-                    + "    if (access(\"/Users/cxh/ptII/ptolemy/plot/Plot.class\", R_OK) == 0) {" + _eol
-                    + "        vmArgv[1] = strdup(\"-Djava.class.path=/Users/cxh/ptII\");" + _eol
-                    + "    } else {" + _eol
-                    + "        // Use ptsupport here in case we use SliderSource or some other actor" + _eol
-                    + "        vmArgv[1] = strdup(\"-Djava.class.path=/Users/cxh/ptII/ptolemy/ptsupport.jar\");" + _eol
-                    + "        //options[0].optionString = \"-Djava.class.path=/Users/cxh/ptII/ptolemy/plot/plotapplication.jar\";" + _eol
-                    + "    }" + _eol
-                    + "    VMLaunchOptions * launchOptions = NewVMLaunchOptions(2, vmArgv);" + _eol
-                    + "" + _eol
-                    + "    /* Set our name for the Application Menu to our Main class */" + _eol
-                    + "    //setAppName(launchOptions->mainClass);" + _eol
-                    + "    setAppName(\""
-                    + _sanitizedModelName
-                    + "\");" + _eol
-                    + "    " + _eol
-                    + "    /* create a new pthread copying the stack size of the primordial pthread */ " + _eol
-                    + "    struct rlimit limit;" + _eol
-                    + "    size_t stack_size = 0;" + _eol
-                    + "    int rc = getrlimit(RLIMIT_STACK, &limit);" + _eol
-                    + "    if (rc == 0) {" + _eol
-                    + "        if (limit.rlim_cur != 0LL) {" + _eol
-                    + "            stack_size = (size_t)limit.rlim_cur;" + _eol
-                    + "        }" + _eol
-                    + "    }" + _eol
-                    + "    " + _eol
-                    + "    pthread_attr_t thread_attr;" + _eol
-                    + "    pthread_attr_init(&thread_attr);" + _eol
-                    + "    pthread_attr_setscope(&thread_attr, PTHREAD_SCOPE_SYSTEM);" + _eol
-                    + "    pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);" + _eol
-                    + "    if (stack_size > 0) {" + _eol
-                    + "        pthread_attr_setstacksize(&thread_attr, stack_size);" + _eol
-                    + "    }" + _eol
-                    + "" + _eol
-                    + "    /* Start the thread that we will start the JVM on. */" + _eol
-                    + "    pthread_create(&vmthread, &thread_attr, startupJava, launchOptions);" + _eol
-                    + "    pthread_attr_destroy(&thread_attr);" + _eol
-                    + "" + _eol
-                    + "    /* Create a a sourceContext to be used by our source that makes */" + _eol
-                    + "    /* sure the CFRunLoop doesn't exit right away */" + _eol
-                    + "    sourceContext.version = 0;" + _eol
-                    + "    sourceContext.info = NULL;" + _eol
-                    + "    sourceContext.retain = NULL;" + _eol
-                    + "    sourceContext.release = NULL;" + _eol
-                    + "    sourceContext.copyDescription = NULL;" + _eol
-                    + "    sourceContext.equal = NULL;" + _eol
-                    + "    sourceContext.hash = NULL;" + _eol
-                    + "    sourceContext.schedule = NULL;" + _eol
-                    + "    sourceContext.cancel = NULL;" + _eol
-                    + "    sourceContext.perform = &sourceCallBack;" + _eol
-                    + "    " + _eol
-                    + "    /* Create the Source from the sourceContext */" + _eol
-                    + "    CFRunLoopSourceRef sourceRef = CFRunLoopSourceCreate (NULL, 0, &sourceContext);" + _eol
-                    + "    " + _eol
-                    + "    /* Use the constant kCFRunLoopCommonModes to add the source to the set of objects */ " + _eol
-                    + "     /* monitored by all the common modes */" + _eol
-                    + "    CFRunLoopAddSource (CFRunLoopGetCurrent(),sourceRef,kCFRunLoopCommonModes); " + _eol
-                    + "" + _eol
-                    + "    /* Park this thread in the runloop */" + _eol
-                    + "    CFRunLoopRun();" + _eol
-                    + "    " + _eol
-                    + "    return 0;" + _eol
-                    + "} " + _eol
-                    + "static void* startupJava(void *options) {    " + _eol);
+
+            if (_hasPlaceable() && target.getExpression().equals("posix")) {
+                mainEntryCode
+                        .append(_eol
+                                + _eol
+                                + "#ifdef __MAC_OS_X_VERSION_10_0"
+                                + _eol
+                                + "    CFRunLoopSourceContext sourceContext;"
+                                + _eol
+                                + ""
+                                + _eol
+                                + "    /* Start the thread that runs the VM. */"
+                                + _eol
+                                + "    pthread_t vmthread;"
+                                + _eol
+                                + "    "
+                                + _eol
+                                + "    const char * vmArgv[2];"
+                                + _eol
+                                + "    vmArgv[0] = argv[0];"
+                                + _eol
+                                + "    /* Parse the args */"
+                                + _eol
+                                + "    if (access(\"/Users/cxh/ptII/ptolemy/plot/Plot.class\", R_OK) == 0) {"
+                                + _eol
+                                + "        vmArgv[1] = strdup(\"-Djava.class.path=/Users/cxh/ptII\");"
+                                + _eol
+                                + "    } else {"
+                                + _eol
+                                + "        // Use ptsupport here in case we use SliderSource or some other actor"
+                                + _eol
+                                + "        vmArgv[1] = strdup(\"-Djava.class.path=/Users/cxh/ptII/ptolemy/ptsupport.jar\");"
+                                + _eol
+                                + "        //options[0].optionString = \"-Djava.class.path=/Users/cxh/ptII/ptolemy/plot/plotapplication.jar\";"
+                                + _eol
+                                + "    }"
+                                + _eol
+                                + "    VMLaunchOptions * launchOptions = NewVMLaunchOptions(2, vmArgv);"
+                                + _eol
+                                + ""
+                                + _eol
+                                + "    /* Set our name for the Application Menu to our Main class */"
+                                + _eol
+                                + "    //setAppName(launchOptions->mainClass);"
+                                + _eol
+                                + "    setAppName(\""
+                                + _sanitizedModelName
+                                + "\");"
+                                + _eol
+                                + "    "
+                                + _eol
+                                + "    /* create a new pthread copying the stack size of the primordial pthread */ "
+                                + _eol
+                                + "    struct rlimit limit;"
+                                + _eol
+                                + "    size_t stack_size = 0;"
+                                + _eol
+                                + "    int rc = getrlimit(RLIMIT_STACK, &limit);"
+                                + _eol
+                                + "    if (rc == 0) {"
+                                + _eol
+                                + "        if (limit.rlim_cur != 0LL) {"
+                                + _eol
+                                + "            stack_size = (size_t)limit.rlim_cur;"
+                                + _eol
+                                + "        }"
+                                + _eol
+                                + "    }"
+                                + _eol
+                                + "    "
+                                + _eol
+                                + "    pthread_attr_t thread_attr;"
+                                + _eol
+                                + "    pthread_attr_init(&thread_attr);"
+                                + _eol
+                                + "    pthread_attr_setscope(&thread_attr, PTHREAD_SCOPE_SYSTEM);"
+                                + _eol
+                                + "    pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);"
+                                + _eol
+                                + "    if (stack_size > 0) {"
+                                + _eol
+                                + "        pthread_attr_setstacksize(&thread_attr, stack_size);"
+                                + _eol
+                                + "    }"
+                                + _eol
+                                + ""
+                                + _eol
+                                + "    /* Start the thread that we will start the JVM on. */"
+                                + _eol
+                                + "    pthread_create(&vmthread, &thread_attr, startupJava, launchOptions);"
+                                + _eol
+                                + "    pthread_attr_destroy(&thread_attr);"
+                                + _eol
+                                + ""
+                                + _eol
+                                + "    /* Create a a sourceContext to be used by our source that makes */"
+                                + _eol
+                                + "    /* sure the CFRunLoop doesn't exit right away */"
+                                + _eol
+                                + "    sourceContext.version = 0;"
+                                + _eol
+                                + "    sourceContext.info = NULL;"
+                                + _eol
+                                + "    sourceContext.retain = NULL;"
+                                + _eol
+                                + "    sourceContext.release = NULL;"
+                                + _eol
+                                + "    sourceContext.copyDescription = NULL;"
+                                + _eol
+                                + "    sourceContext.equal = NULL;"
+                                + _eol
+                                + "    sourceContext.hash = NULL;"
+                                + _eol
+                                + "    sourceContext.schedule = NULL;"
+                                + _eol
+                                + "    sourceContext.cancel = NULL;"
+                                + _eol
+                                + "    sourceContext.perform = &sourceCallBack;"
+                                + _eol
+                                + "    "
+                                + _eol
+                                + "    /* Create the Source from the sourceContext */"
+                                + _eol
+                                + "    CFRunLoopSourceRef sourceRef = CFRunLoopSourceCreate (NULL, 0, &sourceContext);"
+                                + _eol
+                                + "    "
+                                + _eol
+                                + "    /* Use the constant kCFRunLoopCommonModes to add the source to the set of objects */ "
+                                + _eol
+                                + "     /* monitored by all the common modes */"
+                                + _eol
+                                + "    CFRunLoopAddSource (CFRunLoopGetCurrent(),sourceRef,kCFRunLoopCommonModes); "
+                                + _eol
+                                + ""
+                                + _eol
+                                + "    /* Park this thread in the runloop */"
+                                + _eol
+                                + "    CFRunLoopRun();"
+                                + _eol
+                                + "    "
+                                + _eol
+                                + "    return 0;"
+                                + _eol
+                                + "} "
+                                + _eol
+                                + "static void* startupJava(void *options) {    "
+                                + _eol);
             }
         } else {
             // If the container is not in the top level, we are generating code
@@ -758,15 +827,15 @@ public class CCodeGenerator extends CodeGenerator {
 
                 NamedObj container = variable.getContainer();
                 CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
-                code.append(comment(1, "Variable: " + variable
-                                + " simpleName: " 
-                                + CodeGeneratorHelper.generateSimpleName(variable)
-                                + " value: "
-                                + containerHelper.getParameterValue(CodeGeneratorHelper
+                code.append(comment(1, "Variable: "
+                        + variable
+                        + " simpleName: "
+                        + CodeGeneratorHelper.generateSimpleName(variable)
+                        + " value: "
+                        + containerHelper.getParameterValue(CodeGeneratorHelper
                                 .generateSimpleName(variable), variable
-                                        .getContainer())
-                                + " variable Type: " + containerHelper.targetType(variable.getType())
-                                    ));
+                                .getContainer()) + " variable Type: "
+                        + containerHelper.targetType(variable.getType())));
 
                 code.append(_INDENT1
                         + generateVariableName(variable)
@@ -1002,9 +1071,9 @@ public class CCodeGenerator extends CodeGenerator {
                     commands.add("make -f " + _sanitizedModelName + ".mk run");
                 } else {
                     String command = codeDirectory.stringValue()
-                        + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                                        .stringValue().endsWith("\\")) ? "/" : "")
-                        + _sanitizedModelName;
+                            + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
+                                    .stringValue().endsWith("\\")) ? "/" : "")
+                            + _sanitizedModelName;
 
                     commands.add("\"" + command.replace('\\', '/') + "\"");
                 }
@@ -1278,7 +1347,6 @@ public class CCodeGenerator extends CodeGenerator {
                 substituteMap.put("@PTCGCompiler@", "gcc");
             }
 
-
             if (osName != null) {
                 // Keep these alphabetical
                 if (osName.startsWith("Linux")) {
@@ -1431,7 +1499,7 @@ public class CCodeGenerator extends CodeGenerator {
             Object object = atomicEntities.next();
 
             if (object instanceof Placeable
-                    && ! (object instanceof ptolemy.actor.lib.gui.Display) ) {
+                    && !(object instanceof ptolemy.actor.lib.gui.Display)) {
                 hasPlaceable = true;
                 break;
             }

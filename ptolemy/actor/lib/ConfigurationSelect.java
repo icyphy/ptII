@@ -99,7 +99,7 @@ public class ConfigurationSelect extends TypedAtomicActor {
         trueInput.setMultiport(true);
         falseInput = new TypedIOPort(this, "falseInput", true, false);
         falseInput.setMultiport(true);
-        
+
         // Default selector value to false
         selector = new Parameter(this, "selector", new BooleanToken(false));
         selector.setTypeEquals(BaseType.BOOLEAN);
@@ -180,8 +180,9 @@ public class ConfigurationSelect extends TypedAtomicActor {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ConfigurationSelect newObject = (ConfigurationSelect) super.clone(workspace);
-        
+        ConfigurationSelect newObject = (ConfigurationSelect) super
+                .clone(workspace);
+
         // Set the selector parameter for the cloned actor to the parameter value
         // of the original actor.
         try {
@@ -193,10 +194,11 @@ public class ConfigurationSelect extends TypedAtomicActor {
                 }
             }
         } catch (IllegalActionException ex) {
-            throw new CloneNotSupportedException("Problem with selector parameter "
-                    + "in clone method of ConfigurationSelect");
+            throw new CloneNotSupportedException(
+                    "Problem with selector parameter "
+                            + "in clone method of ConfigurationSelect");
         }
-        
+
         newObject.output.setTypeAtLeast(newObject.trueInput);
         newObject.output.setTypeAtLeast(newObject.falseInput);
         newObject.output.setWidthEquals(newObject.trueInput, true);
@@ -214,13 +216,16 @@ public class ConfigurationSelect extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         // Throw an exception if the selector parameter is null or not
         // a boolean value. This should never happen.
-        if (selector == null || selector.getToken() == null ||
-                !(selector.getToken() instanceof BooleanToken)) {
-            throw new IllegalActionException(this, "In ConfigurationSelect actor " + getName()
-                    + "the selector parameter must be set to a boolean value.");
+        if (selector == null || selector.getToken() == null
+                || !(selector.getToken() instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    this,
+                    "In ConfigurationSelect actor "
+                            + getName()
+                            + "the selector parameter must be set to a boolean value.");
         } else {
             if (((BooleanToken) selector.getToken()).booleanValue()) {
                 for (int i = 0; i < trueInput.getWidth(); i++) {
@@ -254,13 +259,16 @@ public class ConfigurationSelect extends TypedAtomicActor {
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        
+
         // Throw an exception if the selector parameter is null or not
         // a boolean value. This should never happen.
-        if (selector == null || selector.getToken() == null ||
-                !(selector.getToken() instanceof BooleanToken)) {
-            throw new IllegalActionException(this, "In ConfigurationSelect actor " + getName()
-                    + "the selector parameter must be set to a boolean value.");
+        if (selector == null || selector.getToken() == null
+                || !(selector.getToken() instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    this,
+                    "In ConfigurationSelect actor "
+                            + getName()
+                            + "the selector parameter must be set to a boolean value.");
         } else {
             if (((BooleanToken) selector.getToken()).booleanValue()) {
                 trueInput_tokenConsumptionRate.setToken(_one);
@@ -282,13 +290,16 @@ public class ConfigurationSelect extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
-        
+
         // Throw an exception if the selector parameter is null or not
         // a boolean value. This should never happen.
-        if (selector == null || selector.getToken() == null ||
-                !(selector.getToken() instanceof BooleanToken)) {
-            throw new IllegalActionException(this, "In ConfigurationSelect actor " + getName()
-                    + "the selector parameter must be set to a boolean value.");
+        if (selector == null || selector.getToken() == null
+                || !(selector.getToken() instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    this,
+                    "In ConfigurationSelect actor "
+                            + getName()
+                            + "the selector parameter must be set to a boolean value.");
         } else {
             if (((BooleanToken) selector.getToken()).booleanValue()) {
                 for (int i = 0; i < trueInput.getWidth(); i++) {

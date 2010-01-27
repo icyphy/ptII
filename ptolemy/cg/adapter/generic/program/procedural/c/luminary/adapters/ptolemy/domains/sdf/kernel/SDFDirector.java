@@ -51,7 +51,7 @@ import ptolemy.kernel.util.InternalErrorException;
 public class SDFDirector
         extends
         ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector {
-    
+
     /** Construct the code generator adapter associated with the given
      *  SDFDirector.
      *  @param sdfDirector The associated
@@ -78,10 +78,9 @@ public class SDFDirector
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
                 .getAdapter(container);
 
-        if ((container instanceof CompiledCompositeActor
-                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-                        .getToken()).booleanValue()) ||
-                        (container instanceof CompositeActor)) {
+        if ((container instanceof CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
+                .getToken()).booleanValue())
+                || (container instanceof CompositeActor)) {
 
             // FindBugs wants this instanceof check.
             if (!(inputPort instanceof TypedIOPort)) {
@@ -89,47 +88,50 @@ public class SDFDirector
                         " is not an instance of TypedIOPort.");
             }
 
-            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter 
-                = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) 
-                    getAdapter(inputPort);
-            
+            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(inputPort);
+
             // FIXME: not sure what to do with this offset here.
             String offset = "";
-            
+
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 // the following code is of the form:
                 // if ($hasToken(i)) {
                 //     input = Event_Head->data;
                 // }
                 code.append("if (");
-                code.append(portAdapter.generateHasTokenCode(Integer.toString(i), offset));
+                code.append(portAdapter.generateHasTokenCode(Integer
+                        .toString(i), offset));
                 code.append(") {" + _eol);
-                
+
                 // the input port to transfer the data to was declared earlier, and is of this name:
                 StringBuffer inputCode = new StringBuffer();
                 boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
-                inputCode.append(NamedProgramCodeGeneratorAdapter.generateName(inputPort));
+                inputCode.append(NamedProgramCodeGeneratorAdapter
+                        .generateName(inputPort));
                 int bufferSize = _ports.getBufferSize(inputPort);
                 if (inputPort.isMultiport()) {
                     inputCode.append("[" + Integer.toString(i) + "]");
                     if (bufferSize > 1 || dynamicReferencesAllowed) {
-                        throw new InternalErrorException("Generation of input transfer code" +
-                                        "requires the knowledge of offset in the buffer, this" +
-                                        "is not yet supported.");
-//                        inputCode.append("[" + bufferSize + "]");
+                        throw new InternalErrorException(
+                                "Generation of input transfer code"
+                                        + "requires the knowledge of offset in the buffer, this"
+                                        + "is not yet supported.");
+                        //                        inputCode.append("[" + bufferSize + "]");
                     }
                 } else {
                     if (bufferSize > 1) {
-                        throw new InternalErrorException("Generation of input transfer code" +
-                                "requires the knowledge of offset in the buffer, this" +
-                                "is not yet supported.");
-//                        inputCode.append("[" + bufferSize + "]");
+                        throw new InternalErrorException(
+                                "Generation of input transfer code"
+                                        + "requires the knowledge of offset in the buffer, this"
+                                        + "is not yet supported.");
+                        //                        inputCode.append("[" + bufferSize + "]");
                     }
                 }
 
                 code.append(inputCode);
                 code.append(" = ");
-                code.append(portAdapter.generateGetCode(Integer.toString(i), offset));
+                code.append(portAdapter.generateGetCode(Integer.toString(i),
+                        offset));
                 code.append(";" + _eol);
                 code.append("}" + _eol);
             }
@@ -179,23 +181,20 @@ public class SDFDirector
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
                 .getAdapter(container);
 
-        if ((container instanceof CompiledCompositeActor
-                && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
-                        .getToken()).booleanValue()) ||
-                        (container instanceof CompositeActor)) {
+        if ((container instanceof CompiledCompositeActor && ((BooleanToken) getCodeGenerator().generateEmbeddedCode
+                .getToken()).booleanValue())
+                || (container instanceof CompositeActor)) {
 
-            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter 
-            = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) 
-                getAdapter(outputPort);
-            
+            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter = (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(outputPort);
+
             // FIXME: not sure what to do with this offset here.
             String offset = "";
 
             for (int i = 0; i < outputPort.getWidth(); i++) {
-                
-                
+
                 StringBuffer outputCode = new StringBuffer();
-                outputCode.append(NamedProgramCodeGeneratorAdapter.generateName(outputPort));
+                outputCode.append(NamedProgramCodeGeneratorAdapter
+                        .generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
                     outputCode.append("[" + Integer.toString(i) + "]");
@@ -204,16 +203,17 @@ public class SDFDirector
                 int bufferSize = _ports.getBufferSize(outputPort);
 
                 if (bufferSize > 1) {
-                    throw new InternalErrorException("Generation of input transfer code" +
-                            "requires the knowledge of offset in the buffer, this" +
-                            "is not yet supported.");
-//                    outputCode.append("[" + bufferSize + "]");
+                    throw new InternalErrorException(
+                            "Generation of input transfer code"
+                                    + "requires the knowledge of offset in the buffer, this"
+                                    + "is not yet supported.");
+                    //                    outputCode.append("[" + bufferSize + "]");
                 }
 
-                code.append(portAdapter.
-                        generatePutCode(Integer.toString(i), offset, outputCode.toString()));
+                code.append(portAdapter.generatePutCode(Integer.toString(i),
+                        offset, outputCode.toString()));
             }
-            
+
         } else {
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {

@@ -121,7 +121,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /* (non-Javadoc)
      * @see ptolemy.data.expr.AbstractParseTreeVisitor#visitLeafNode(ptolemy.data.expr.ASTPtLeafNode)
      */
@@ -461,7 +461,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     /** Used to accumulate generated strings. */
     protected PrintWriter _writer;
-    
+
     private Map<String, Set<String>> idTable;
     private String result = null;
 }

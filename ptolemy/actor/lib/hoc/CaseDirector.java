@@ -226,7 +226,7 @@ public class CaseDirector extends Director {
                                 for (int j = 0; j < insideReceivers[i].length; j++) {
                                     if (insideReceivers[i][j].getContainer()
                                             .getContainer() == refinement) {
- 
+
                                         if (_debugging) {
                                             _debug(new IOPortEvent(port,
                                                     insideReceivers[i][j]
@@ -292,14 +292,14 @@ public class CaseDirector extends Director {
             _debug(new FiringEvent(this, container._current,
                     FiringEvent.BEFORE_POSTFIRE));
         }
-        
+
         boolean result = container._current.postfire();
-        
+
         if (_debugging) {
             _debug(new FiringEvent(this, container._current,
                     FiringEvent.AFTER_POSTFIRE));
         }
-        
+
         return result && !_finishRequested;
     }
 }

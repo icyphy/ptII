@@ -215,7 +215,7 @@ public class DatabaseManager extends TypedAtomicActor {
                     ResultSetMetaData metaData = resultSet.getMetaData();
                     int columnCount = metaData.getColumnCount();
                     List<String[]> rows = new LinkedList<String[]>();
-                    
+
                     // First, put in the result table the column names
                     String[] columnNames = new String[columnCount];
                     int[] columnWidths = new int[columnCount];
@@ -246,7 +246,7 @@ public class DatabaseManager extends TypedAtomicActor {
                         for (int c = 0; c < columnCount; c++) {
                             resultString.append(row[c]);
                             for (int i = 0; i <= columnWidths[c]
-                                     - row[c].length(); i++) {
+                                    - row[c].length(); i++) {
                                 resultString.append(" ");
                             }
                         }

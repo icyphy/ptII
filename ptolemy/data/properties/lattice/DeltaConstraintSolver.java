@@ -70,7 +70,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
         super(container, name);
         // TODO Auto-generated constructor stub
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -103,7 +103,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
 
         // Collect and solve type constraints.
         List<Inequality> constraintList = toplevelHelper.constraintList();
-        
+
         if (_resolvePropertiesHasErrors(toplevel, toplevelHelper,
                 constraintList)) {
             //Only do delta iteration when an error is found.
@@ -161,7 +161,7 @@ public class DeltaConstraintSolver extends PropertyConstraintSolver {
                     if (_resolvePropertiesHasErrors(toplevel, toplevelHelper,
                             testList)) {
                         errorList = testList;
-                        blockSize = Math.min(errorList.size()/2, blockSize);
+                        blockSize = Math.min(errorList.size() / 2, blockSize);
                         continue WHILE_LOOP;
                     }
                 }

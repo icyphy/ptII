@@ -391,8 +391,8 @@ public class FastLinkedList<E> implements Collection<E> {
      */
     public <T> T[] toArray(T[] array) {
         if (array.length < size()) {
-            array = (T[]) Array.newInstance(array.getClass().getComponentType(),
-                    size());
+            array = (T[]) Array.newInstance(
+                    array.getClass().getComponentType(), size());
         }
         int i = 0;
         Entry entry = _head;

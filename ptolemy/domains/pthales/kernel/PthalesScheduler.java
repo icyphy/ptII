@@ -190,8 +190,10 @@ public class PthalesScheduler extends SDFScheduler {
                             for (IOPort outputPort : outputPorts) {
                                 if (outputPort.connectedPortList().contains(
                                         externalPort)) {
-                                    size = PthalesIOPort.getArraySize(outputPort)
-                                            * PthalesIOPort.getNbTokenPerData(outputPort);
+                                    size = PthalesIOPort
+                                            .getArraySize(outputPort)
+                                            * PthalesIOPort
+                                                    .getNbTokenPerData(outputPort);
                                 }
                             }
                         }

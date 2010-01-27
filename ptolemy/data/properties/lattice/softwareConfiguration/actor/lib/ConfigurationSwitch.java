@@ -59,12 +59,12 @@ public class ConfigurationSwitch extends AtomicActor {
      * @param actor The associated actor.
      * @exception IllegalActionException If thrown by the super class.
      */
-    public ConfigurationSwitch(PropertyConstraintSolver solver, 
+    public ConfigurationSwitch(PropertyConstraintSolver solver,
             ptolemy.actor.lib.ConfigurationSwitch actor)
             throws IllegalActionException {
         super(solver, actor, false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -79,29 +79,32 @@ public class ConfigurationSwitch extends AtomicActor {
         ptolemy.actor.lib.ConfigurationSwitch actor = (ptolemy.actor.lib.ConfigurationSwitch) getComponent();
 
         // Rules for backward solver are determined by monotonic function
-        setAtLeast(actor.input, new FunctionTerm(actor.trueOutput, actor.falseOutput, actor.selector));
-        
+        setAtLeast(actor.input, new FunctionTerm(actor.trueOutput,
+                actor.falseOutput, actor.selector));
+
         // Rules for forward solver are implemented here
         // Whichever output is selected is set to at least the input
         // The other output is set to NotConfigured
-        
+
         if (actor.selector != null) {
             if (((BooleanToken) actor.selector.getToken()).booleanValue()) {
                 setAtLeast(actor.trueOutput, actor.input);
-                setAtLeast(actor.falseOutput, _lattice.getElement("NotConfigured"));
+                setAtLeast(actor.falseOutput, _lattice
+                        .getElement("NotConfigured"));
             } else {
                 setAtLeast(actor.falseOutput, actor.input);
-                setAtLeast(actor.trueOutput, _lattice.getElement("NotConfigured"));
-            }        
+                setAtLeast(actor.trueOutput, _lattice
+                        .getElement("NotConfigured"));
+            }
         }
-        
+
         // Input is determined by function below ("backward solver" rules)
         // Hopefully the forward solver + backward solver rules form a 
         // monotonic function when combined - I think they do.
 
         return super.constraintList();
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -116,7 +119,8 @@ public class ConfigurationSwitch extends AtomicActor {
         TypedIOPort _falseOutput;
         Parameter _control;
 
-        public FunctionTerm(TypedIOPort trueOutput, TypedIOPort falseOutput, Parameter control) {
+        public FunctionTerm(TypedIOPort trueOutput, TypedIOPort falseOutput,
+                Parameter control) {
             _trueOutput = trueOutput;
             _falseOutput = falseOutput;
             _control = control;
@@ -132,8 +136,9 @@ public class ConfigurationSwitch extends AtomicActor {
         public Object getValue() throws IllegalActionException {
 
             Property trueOutputProperty = getSolver().getProperty(_trueOutput);
-            Property falseOutputProperty = getSolver().getProperty(_falseOutput);
-            
+            Property falseOutputProperty = getSolver()
+                    .getProperty(_falseOutput);
+
             // Rules for backward solver are implemented here
             // If control parameter is null, return NotSpecified
             // If the control parameter is set to a value, then set the input to the property
@@ -146,12 +151,13 @@ public class ConfigurationSwitch extends AtomicActor {
                     return falseOutputProperty;
                 }
             }
-            
+
             return _lattice.getElement("NotSpecified");
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] { getPropertyTerm(_trueOutput), getPropertyTerm(_falseOutput) };
+            return new InequalityTerm[] { getPropertyTerm(_trueOutput),
+                    getPropertyTerm(_falseOutput) };
         }
 
         // Return true

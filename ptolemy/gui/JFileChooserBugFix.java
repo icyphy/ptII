@@ -84,7 +84,7 @@ public class JFileChooserBugFix {
                 // Restore the background color.
                 String rgb = Integer.toHexString(background.getRGB());
                 String rule = "body {background: #"
-                    + rgb.substring(2, rgb.length()) + ";}";
+                        + rgb.substring(2, rgb.length()) + ";}";
                 StyleSheet styleSheet = _HTMLEditorKit.getStyleSheet();
                 styleSheet.addRule(rule);
                 _HTMLEditorKit.setStyleSheet(styleSheet);
@@ -126,7 +126,7 @@ public class JFileChooserBugFix {
             Color shadow = UIManager.getColor("ToolBar.shadow");
             String rgb = Integer.toHexString(shadow.getRGB());
             String rule = "body {background: #"
-                + rgb.substring(2, rgb.length()) + ";}";
+                    + rgb.substring(2, rgb.length()) + ";}";
             styleSheet.addRule(rule);
             _HTMLEditorKit.setStyleSheet(styleSheet);
         } catch (Exception ex) {

@@ -54,22 +54,22 @@ import diva.graph.GraphPane;
  @Pt.AcceptedRating Red (eal)
  */
 public class BasicGraphPane extends GraphPane {
-    
+
     /** Create a pane that updates the background color on each repaint
      *  if there is a preference attribute.
      *  @param controller The controller.
      *  @param model The graph model.
      *  @param entity The Ptolemy II model being displayed.
      */
-    public BasicGraphPane(GraphController controller,
-            GraphModel model, NamedObj entity) {
+    public BasicGraphPane(GraphController controller, GraphModel model,
+            NamedObj entity) {
         super(controller, model);
         _entity = entity;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Override the base class to set the background. */
     public void repaint() {
         _setBackground();
@@ -97,8 +97,8 @@ public class BasicGraphPane extends GraphPane {
                 // Use the last of the preferences if there is more than one.
                 PtolemyPreferences preferences = (PtolemyPreferences) list
                         .get(list.size() - 1);
-                getCanvas().setBackground(
-                        preferences.backgroundColor.asColor());
+                getCanvas()
+                        .setBackground(preferences.backgroundColor.asColor());
                 return;
             }
             // There is no local preferences. If we have previously
@@ -124,7 +124,8 @@ public class BasicGraphPane extends GraphPane {
                     return;
                 }
             } catch (IllegalActionException ex) {
-                System.err.println("Warning, failed to find Ptolemy Preferences "
+                System.err
+                        .println("Warning, failed to find Ptolemy Preferences "
                                 + "or set the background, using default.");
                 ex.printStackTrace();
             }
@@ -132,8 +133,9 @@ public class BasicGraphPane extends GraphPane {
                 _backgroundWarningCount++;
                 // If there is no actor library, do not issue a warning.
                 if (configuration.getEntity("actor library") != null) {
-                    System.out.println("Configuration does not contain a PtolemyPreferences object. " +
-                                    "Using default background color.");
+                    System.out
+                            .println("Configuration does not contain a PtolemyPreferences object. "
+                                    + "Using default background color.");
                 }
             }
         }
@@ -146,10 +148,10 @@ public class BasicGraphPane extends GraphPane {
      *  when we fail to find the default preferences in the configuration.
      */
     private static int _backgroundWarningCount = 0;
-    
+
     /** The default color from the configuration. */
     private Color _defaultColor = null;
-    
+
     /** The Ptolemy object being displayed. */
     private NamedObj _entity;
 }

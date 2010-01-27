@@ -58,54 +58,56 @@ public class TypedCompositeActor extends Entity {
     public TypedCompositeActor(ptolemy.actor.TypedCompositeActor component) {
         super(component);
     }
-    
+
     /* (non-Javadoc)
      * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#getBlockCodeList(java.lang.String, java.lang.String[])
      */
-    public List<String> getBlockCodeList(String blockName, String ... args) 
+    public List<String> getBlockCodeList(String blockName, String... args)
             throws IllegalActionException {
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor
-                .CompositeActor) getComponent()).getDirector());
-        
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+
         List self = super.getBlockCodeList(blockName, args);
         self.addAll(directorHelper.getBlockCodeList(blockName, args));
-  
+
         return self;
     }
-    
+
     /* (non-Javadoc)
      * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#generateFireFunctionCode()
      */
     public String generateFireFunctionCode() throws IllegalActionException {
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor
-                .CompositeActor) getComponent()).getDirector());
-                
-        return super.generateFireFunctionCode() + 
-            _eol + directorHelper.generateFireFunctionCode();
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+
+        return super.generateFireFunctionCode() + _eol
+                + directorHelper.generateFireFunctionCode();
     }
-    
+
     /* (non-Javadoc)
      * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#getModuleCode(java.lang.String)
      */
     public List<String> getModuleCode(String header)
             throws IllegalActionException {
-        
+
         List<String> modNames = super.getModuleCode(header);
-        
+
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             Entity helperObject = (Entity) _getHelper(actor);
-            
+
             List<String> childModNames = helperObject.getModuleCode(header);
-            
-            for (String s : childModNames)
-                if (!getRTMmodule().keySet().contains(s))
+
+            for (String s : childModNames) {
+                if (!getRTMmodule().keySet().contains(s)) {
                     modNames.add(s);
-            
-            getRTMmodule().putAll(helperObject.getRTMmodule()); 
+                }
+            }
+
+            getRTMmodule().putAll(helperObject.getRTMmodule());
         }
         return modNames;
     }
@@ -116,23 +118,27 @@ public class TypedCompositeActor extends Entity {
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
         ptolemy.actor.TypedCompositeActor c_actor = (ptolemy.actor.TypedCompositeActor) getComponent();
-        
+
         // code for the actor, which is Maude term for the actor.                
         // "entityList" method is used instead of "deepEntityList", because
         // the hierarchy of actor structure do *not* need to be flattened in the Real-time Maude 
-        if (name.equals("actors"))
-            return new ListTerm<Actor>("none", _eol, c_actor.entityList(Actor.class)) {
-                    public String item(Actor v) throws IllegalActionException {
-                        return ((RTMaudeAdaptor) _getHelper(v)).generateFireCode();
-                    }
-                }.generateCode();
-                
-        if (name.equals("connections"))
-            return new ListTerm<IORelation>("none", _eol, c_actor.relationList()) {
-                    public String item(IORelation v) throws IllegalActionException {
-                        return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
-                    }
-                }.generateCode();
+        if (name.equals("actors")) {
+            return new ListTerm<Actor>("none", _eol, c_actor
+                    .entityList(Actor.class)) {
+                public String item(Actor v) throws IllegalActionException {
+                    return ((RTMaudeAdaptor) _getHelper(v)).generateFireCode();
+                }
+            }.generateCode();
+        }
+
+        if (name.equals("connections")) {
+            return new ListTerm<IORelation>("none", _eol, c_actor
+                    .relationList()) {
+                public String item(IORelation v) throws IllegalActionException {
+                    return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
+                }
+            }.generateCode();
+        }
         return super.getInfo(name, parameters);
     }
 }

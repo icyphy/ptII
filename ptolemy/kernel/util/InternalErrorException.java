@@ -84,7 +84,7 @@ public class InternalErrorException extends KernelRuntimeException {
             String detail) {
         super(object, null, cause, detail);
     }
-    
+
     /** Construct an exception with a detail message that includes the
      *  names of the first argument, the name of the second argument
      *  and the value of the third argument.  If the cause argument is

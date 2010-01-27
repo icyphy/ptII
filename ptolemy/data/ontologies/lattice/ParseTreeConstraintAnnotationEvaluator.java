@@ -50,7 +50,7 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         ParseTreeAnnotationEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      *  visitLeafNode method is called when parsing an Annotation for a manual constraint.
      *  12/16/09 Charles Shelton
@@ -66,18 +66,20 @@ public class ParseTreeConstraintAnnotationEvaluator extends
      *  @param node The leaf node to be visited
      *  @exception IllegalActionException If the node label cannot be resolved to a
      *  component in the model
-     */    
+     */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         try {
             super.visitLeafNode(node);
 
         } catch (IllegalActionException ex) {
-            _evaluatedObject = _adapter.getSolver().getOntology().getEntity(_getNodeLabel(node));
-            
+            _evaluatedObject = _adapter.getSolver().getOntology().getEntity(
+                    _getNodeLabel(node));
+
             if (_evaluatedObject == null) {
-                throw new IllegalActionException(_adapter.getSolver().getOntology(),
-                        "Cannot resolve label: "
-                        + _getNodeLabel(node) + ". There is no matching component in the model, "
+                throw new IllegalActionException(_adapter.getSolver()
+                        .getOntology(), "Cannot resolve label: "
+                        + _getNodeLabel(node)
+                        + ". There is no matching component in the model, "
                         + "and there is no matching Concept in the Ontology.");
             }
         }
@@ -85,7 +87,6 @@ public class ParseTreeConstraintAnnotationEvaluator extends
         // FIXME: Not handling AST constraint yet.
     }
 
-    
     /**
      * Visit the relational node when parsing a user-defined manual constraint
      * doe the LatticeOntologySolver.  It should be an operator that is either

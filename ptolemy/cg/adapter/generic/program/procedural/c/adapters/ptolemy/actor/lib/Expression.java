@@ -76,7 +76,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      *  error in processing the specified code block(s).
      */
     protected String _generateFireCode() throws IllegalActionException {
-        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) _cParseTreeCodeGenerator;
+        CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
@@ -96,7 +96,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) _cParseTreeCodeGenerator;
+        CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
@@ -118,10 +118,11 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
 
         if (_cParseTreeCodeGenerator == null) {
             // FIXME: why does this need to be done here?
-            _cParseTreeCodeGenerator = new CParseTreeCodeGenerator(getCodeGenerator());
+            _cParseTreeCodeGenerator = new CParseTreeCodeGenerator(
+                    getCodeGenerator());
         }
 
-        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) _cParseTreeCodeGenerator;
+        CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
@@ -155,7 +156,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      */
     public Set getSharedCode() throws IllegalActionException {
 
-        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) _cParseTreeCodeGenerator;
+        CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
         Set codeBlocks = super.getSharedCode();
         codeBlocks.add(processCode(parseTreeCG.generateSharedCode()));
@@ -173,7 +174,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
      *  error in processing the specified code block(s).
      */
     public String generateWrapupCode() throws IllegalActionException {
-        CParseTreeCodeGenerator parseTreeCG = (CParseTreeCodeGenerator) _cParseTreeCodeGenerator;
+        CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
         StringBuffer code = new StringBuffer();
         code.append(super.generateWrapupCode());
@@ -198,7 +199,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
         files.add("<string.h>");
         return files;
     }
-    
+
     /** The parse tree code generator. */
     protected CParseTreeCodeGenerator _cParseTreeCodeGenerator;
 

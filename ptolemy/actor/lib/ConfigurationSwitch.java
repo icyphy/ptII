@@ -151,8 +151,9 @@ public class ConfigurationSwitch extends TypedAtomicActor {
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ConfigurationSwitch newObject = (ConfigurationSwitch) super.clone(workspace);
-        
+        ConfigurationSwitch newObject = (ConfigurationSwitch) super
+                .clone(workspace);
+
         // Set the selector parameter for the cloned actor to the parameter value
         // of the original actor.
         try {
@@ -164,10 +165,11 @@ public class ConfigurationSwitch extends TypedAtomicActor {
                 }
             }
         } catch (IllegalActionException ex) {
-            throw new CloneNotSupportedException("Problem with selector parameter "
-                    + "in clone method of ConfigurationSelect");
+            throw new CloneNotSupportedException(
+                    "Problem with selector parameter "
+                            + "in clone method of ConfigurationSelect");
         }
-        
+
         newObject.trueOutput.setTypeAtLeast(newObject.input);
         newObject.falseOutput.setTypeAtLeast(newObject.input);
         newObject.trueOutput.setWidthEquals(newObject.input, true);
@@ -185,13 +187,16 @@ public class ConfigurationSwitch extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         // Throw an exception if the selector parameter is null or not
         // a boolean value. This should never happen.
-        if (selector == null || selector.getToken() == null ||
-                !(selector.getToken() instanceof BooleanToken)) {
-            throw new IllegalActionException(this, "In ConfigurationSelect actor " + getName()
-                    + "the selector parameter must be set to a boolean value.");
+        if (selector == null || selector.getToken() == null
+                || !(selector.getToken() instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    this,
+                    "In ConfigurationSelect actor "
+                            + getName()
+                            + "the selector parameter must be set to a boolean value.");
         } else {
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {

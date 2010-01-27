@@ -159,7 +159,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         for (int i = 0; i < actor.populations.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
 
-             if (i < actor.output.getWidth()) {
+            if (i < actor.output.getWidth()) {
                 _codeStream.appendCodeBlock("fireBlock", args);
             }
         }

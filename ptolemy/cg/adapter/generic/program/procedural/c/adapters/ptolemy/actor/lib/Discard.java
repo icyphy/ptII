@@ -37,7 +37,9 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
 @version $Id$
 @since Ptolemy II 8.0
  */
-public class Discard extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Discard {
+public class Discard
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Discard {
     /**
      *  Construct a Discard adapter.
      *  @param actor The given ptolemy.actor.lib.Discard actor.

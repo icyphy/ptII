@@ -154,7 +154,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Green (neuendor)
  */
-public class SDFDirector extends StaticSchedulingDirector implements PeriodicDirector {
+public class SDFDirector extends StaticSchedulingDirector implements
+        PeriodicDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -357,7 +358,7 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         // Declare the dependencies of rate parameters of external
         // ports.  Note that this must occur after scheduling, since
         // rate parameters are assumed to exist.
-        scheduler.declareRateDependency();    
+        scheduler.declareRateDependency();
     }
 
     /** Return the time value of the next iteration.
@@ -408,7 +409,7 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         }
         return super.fireAt(actor, time);
     }
-    
+
     /** Initialize the actors associated with this director and then
      *  set the iteration count to zero.  The order in which the
      *  actors are initialized is arbitrary.  In addition, if actors
@@ -560,7 +561,8 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
 
         // Refuse to fire if the period is greater than zero and the current
         // time is not a multiple of the period.
-        if (_periodicDirectorHelper != null && !_periodicDirectorHelper.prefire()) {
+        if (_periodicDirectorHelper != null
+                && !_periodicDirectorHelper.prefire()) {
             return false;
         }
 
@@ -599,7 +601,7 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         if (_debugging) {
             _debug("Director prefire returns true.");
         }
-        
+
         return true;
     }
 
@@ -618,7 +620,7 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         super.preinitialize();
         createSchedule();
     }
-    
+
     /** Return false if the system has finished executing, either by
      *  reaching the iteration limit, or having an actor in the system return
      *  false in postfire.  Increment the number of iterations.
@@ -859,7 +861,7 @@ public class SDFDirector extends StaticSchedulingDirector implements PeriodicDir
         SDFScheduler scheduler = new SDFScheduler(this, uniqueName("Scheduler"));
         scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
         setScheduler(scheduler);
-        
+
         // Subclasses may set this to null and handle this themselves.
         _periodicDirectorHelper = new PeriodicDirectorHelper(this);
     }

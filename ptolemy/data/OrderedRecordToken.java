@@ -131,7 +131,7 @@ public class OrderedRecordToken extends RecordToken {
 
         return stringRepresentation.toString() + "]";
     }
-    
+
     /** Return true if the class of the argument is RecordToken, and
      *  the argument has the same set of labels as this token and the
      *  corresponding fields are equal, as determined by the equals
@@ -160,19 +160,19 @@ public class OrderedRecordToken extends RecordToken {
 
         Iterator iterator = myLabelSet.iterator();
         Iterator argIterator = argLabelSet.iterator();
-        
+
         while (iterator.hasNext()) {
             String label = (String) iterator.next();
             String argLabel = (String) argIterator.next();
-            
+
             // labels match
             if (!label.equals(argLabel)) {
-                    return false;
+                return false;
             }
-            
+
             Token token1 = get(label);
             Token token2 = recordToken.get(argLabel);
-            
+
             // tokens match
             if (!token1.equals(token2)) {
                 return false;
@@ -181,17 +181,18 @@ public class OrderedRecordToken extends RecordToken {
 
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /**
      * @see RecordToken
      */
-    protected RecordToken _createRecordToken(String[] labels, Token[] values) throws IllegalActionException {
+    protected RecordToken _createRecordToken(String[] labels, Token[] values)
+            throws IllegalActionException {
         return new OrderedRecordToken(labels, values);
     }
-    
+
     /**  Intialize the storage used by this token.  OrderedRecordToken
      *   uses a LinkedHashMap so that the original order of the record
      *   is maintained.
@@ -199,7 +200,7 @@ public class OrderedRecordToken extends RecordToken {
     protected void _initializeStorage() {
         _fields = new LinkedHashMap();
     }
-    
+
     /**
      * Create a Set implementation appropriate for operations on this RecordToken.
      * Here we are using an ordered set.
@@ -208,7 +209,7 @@ public class OrderedRecordToken extends RecordToken {
     protected Set _createSet() {
         return new LinkedHashSet();
     }
-    
+
     /** Return true if the specified token is equal to this one.
      *  Equal means that both tokens have the same labels with the
      *  same values.  This method is different from equals() in that
@@ -240,12 +241,12 @@ public class OrderedRecordToken extends RecordToken {
 
             // labels match
             if (!label.equals(argLabel)) {
-                    return BooleanToken.FALSE;
+                return BooleanToken.FALSE;
             }
-            
+
             Token token1 = get(label);
             Token token2 = recordToken.get(argLabel);
-            
+
             // tokens match
             BooleanToken result = token1.isEqualTo(token2);
             if (result.booleanValue() == false) {

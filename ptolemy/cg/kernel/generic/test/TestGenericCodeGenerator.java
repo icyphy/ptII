@@ -54,8 +54,8 @@ public class TestGenericCodeGenerator extends GenericCodeGenerator {
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public TestGenericCodeGenerator(NamedObj container, String name) throws IllegalActionException,
-            NameDuplicationException {
+    public TestGenericCodeGenerator(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

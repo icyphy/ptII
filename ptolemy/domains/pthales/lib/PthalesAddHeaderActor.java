@@ -121,8 +121,9 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
         int[] sizes = new int[dims.length];
         Object[] sizesString = PthalesIOPort.getArraySizes(port).values()
                 .toArray();
-        for (int i = 0; i < sizes.length; i++)
+        for (int i = 0; i < sizes.length; i++) {
             sizes[i] = (Integer) sizesString[i];
+        }
 
         // Ports modifications
         PthalesIOPort._modifyPattern(portIn, dims, sizes);
@@ -131,7 +132,8 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
                 + PthalesIOPort.getArraySize(port));
 
         PthalesIOPort.propagateHeader(portOut, dims, sizes, 1 + PthalesIOPort
-                .getDimensions(port).length, PthalesIOPort.getArraySizes(portIn));
+                .getDimensions(port).length, PthalesIOPort
+                .getArraySizes(portIn));
     }
 
     /** Read the contents of the array, add a header containing 

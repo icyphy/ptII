@@ -31,9 +31,9 @@ import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystemAdapter;
+import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -62,13 +62,11 @@ public class Integrator extends DimensionSystemAdapter {
             throws IllegalActionException {
 
         super(solver, actor, false);
-        
-        
+
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.domains.continuous.lib.Integrator actor =
-          (ptolemy.domains.continuous.lib.Integrator) getComponent();
+        ptolemy.domains.continuous.lib.Integrator actor = (ptolemy.domains.continuous.lib.Integrator) getComponent();
 
         setAtLeast(actor.state, new StateOfDerivative(actor.derivative));
         setSameAs(actor.state, actor.initialState);
@@ -76,8 +74,6 @@ public class Integrator extends DimensionSystemAdapter {
 
         return super.constraintList();
     }
-    
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -102,7 +98,7 @@ public class Integrator extends DimensionSystemAdapter {
         public Object getValue() throws IllegalActionException {
 
             Concept inputProperty = getSolver().getProperty(_derivative);
-            
+
             if (inputProperty == _velocityConcept) {
                 return _positionConcept;
             }
@@ -116,8 +112,7 @@ public class Integrator extends DimensionSystemAdapter {
                 return _timeConcept;
             }
 
-            if (inputProperty == null
-                    || inputProperty == _unknownConcept) {
+            if (inputProperty == null || inputProperty == _unknownConcept) {
                 return _unknownConcept;
             } else {
                 return _conflictConcept;
@@ -135,7 +130,7 @@ public class Integrator extends DimensionSystemAdapter {
             return new InequalityTerm[] { getPropertyTerm(_derivative) };
         }
     }
-    
+
     // This class implements a monotonic function that takes in the
     // input property of the integrator (the derivative) and returns
     // the output property (the state).
@@ -171,8 +166,7 @@ public class Integrator extends DimensionSystemAdapter {
                 return _dimensionlessConcept;
             }
 
-            if (inputProperty == null
-                    || inputProperty == _unknownConcept) {
+            if (inputProperty == null || inputProperty == _unknownConcept) {
                 return _unknownConcept;
             } else {
                 return _conflictConcept;
@@ -190,5 +184,5 @@ public class Integrator extends DimensionSystemAdapter {
             return new InequalityTerm[] { getPropertyTerm(_state) };
         }
     }
-    
+
 }

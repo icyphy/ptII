@@ -71,7 +71,7 @@ public class TrueGate extends Transformer {
         input.setMultiport(true);
         output.setTypeEquals(BaseType.BOOLEAN);
         output.setMultiport(true);
-        
+
         input.setWidthEquals(output, true);
 
         _attachText("_iconDescription", "<svg>\n"
@@ -95,7 +95,8 @@ public class TrueGate extends Transformer {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 // Consume the token.
-                boolean inputValue = ((BooleanToken)input.get(i)).booleanValue()     ;
+                boolean inputValue = ((BooleanToken) input.get(i))
+                        .booleanValue();
 
                 if (i < outputWidth && inputValue) {
                     output.send(i, BooleanToken.TRUE);

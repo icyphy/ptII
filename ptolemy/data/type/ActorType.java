@@ -54,7 +54,7 @@ public class ActorType implements Type, Cloneable, Serializable {
         super();
         BaseType._addType(this, "actor", ActorToken.class);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

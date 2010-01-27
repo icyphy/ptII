@@ -543,7 +543,8 @@ public class PtolemyModelUtil {
         // and not the
         // top level element
         // so we need multiple requests here
-        MoMLChangeRequest request = new MoMLChangeRequest(vertex, relation, moml);
+        MoMLChangeRequest request = new MoMLChangeRequest(vertex, relation,
+                moml);
         request.setUndoable(true);
         relation.requestChange(request);
     }

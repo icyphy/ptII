@@ -32,8 +32,6 @@ import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.domains.properties.kernel.ModelAttribute;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLModelAttribute;
@@ -73,7 +71,8 @@ public class MoMLModelAttributeController extends AttributeController {
      * @param controller The associated graph controller.
      * @param access The access level.
      */
-    public MoMLModelAttributeController(GraphController controller, Access access) {
+    public MoMLModelAttributeController(GraphController controller,
+            Access access) {
         super(controller, access);
 
         _menuFactory
@@ -94,7 +93,6 @@ public class MoMLModelAttributeController extends AttributeController {
         GUIUtilities.addHotKey(jgraph, _lookInsideAction);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -106,7 +104,6 @@ public class MoMLModelAttributeController extends AttributeController {
      */
     protected LookInsideAction _lookInsideAction = new LookInsideAction();
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -116,7 +113,7 @@ public class MoMLModelAttributeController extends AttributeController {
      * An action to open a composite. This private class must remain named
      * LookInsideAction for backward compatibility.
      */
-   protected class LookInsideAction extends FigureAction {
+    protected class LookInsideAction extends FigureAction {
 
         public LookInsideAction() {
             super("Open Model");
@@ -126,9 +123,10 @@ public class MoMLModelAttributeController extends AttributeController {
             // supply Control-L or Command-L as a shortcut under applets.
             if (!StringUtilities.inApplet()) {
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                                KeyEvent.VK_J, Toolkit.getDefaultToolkit()
+                        KeyEvent.VK_J, Toolkit.getDefaultToolkit()
                                 .getMenuShortcutKeyMask()));
-                putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_J));
+                putValue(GUIUtilities.MNEMONIC_KEY, Integer
+                        .valueOf(KeyEvent.VK_J));
             }
         }
 

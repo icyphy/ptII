@@ -802,7 +802,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             throws IllegalActionException {
         fireAt(actor, time.add(getModelTime()));
     }
-    
+
     /** Get the current microstep.
      *  @return microstep of the current time.
      *  @see #getIndex()
@@ -1176,7 +1176,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         while (modelTime.compareTo(nextEventTime) > 0) {
             DEEvent skippedEvent = _eventQueue.take();
             if (_debugging) {
-                _debug("Skipping event at time (" + nextEventTime 
+                _debug("Skipping event at time (" + nextEventTime
                         + ") destined for actor "
                         + skippedEvent.actor().getFullName());
             }

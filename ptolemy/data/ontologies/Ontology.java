@@ -67,17 +67,16 @@ public class Ontology extends CompositeEntity {
         super(container, name);
         _attachText("_iconDescription", _ICON);
     }
-    
+
     /** Create a new Ontology with no container or name.
      *  @param workspace The workspace into which to put it.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public Ontology(Workspace workspace)
-            throws IllegalActionException {
+    public Ontology(Workspace workspace) throws IllegalActionException {
         super(workspace);
         _attachText("_iconDescription", _ICON);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -95,28 +94,32 @@ public class Ontology extends CompositeEntity {
                 _graph.addNodeWeight(concept);
             }
             for (Concept concept : concepts) {
-                List<ConceptRelation> relationLinks = concept.abovePort.linkedRelationList();
+                List<ConceptRelation> relationLinks = concept.abovePort
+                        .linkedRelationList();
                 for (ConceptRelation link : relationLinks) {
-                    List<ComponentPort> remotePorts = link.linkedPortList(concept.abovePort);
+                    List<ComponentPort> remotePorts = link
+                            .linkedPortList(concept.abovePort);
                     assert (remotePorts.size() == 1) : "ConceptRelations can only connect two concepts";
                     for (ComponentPort remotePort : remotePorts) {
-                        _graph.addEdge(concept, remotePort.getContainer(), link);
+                        _graph
+                                .addEdge(concept, remotePort.getContainer(),
+                                        link);
                     }
                 }
             }
-            
+
             // Set the graph version after creating the new graph
             _graphVersion = workspace().getVersion();
         }
         return _graph;
     }
-    
+
     /** Return true if the ontology graph is a lattice.
      *  @return True if the graph is a lattice.
      */
     public boolean isLattice() {
         _graph = getGraph();
-        
+
         // 01/04/2010 Charles Shelton - Debug information for isLattice() function:
         // - Catch the exception from the directed acyclic graph _validate() method
         //      that checks for a cycle in the graph.
@@ -149,19 +152,18 @@ public class Ontology extends CompositeEntity {
         // This is the same check done in ptolemy.graph.DirectedAcyclicGraph.
         for (int i = 0; i < ontologyConcepts.size() - 1; i++) {
             for (int j = i + 1; j < ontologyConcepts.size(); j++) {
-                Concept lub = (Concept) _graph
-                        .leastUpperBound(ontologyConcepts.get(i),
-                                ontologyConcepts.get(j));
+                Concept lub = (Concept) _graph.leastUpperBound(ontologyConcepts
+                        .get(i), ontologyConcepts.get(j));
 
                 if (lub == null) {
                     // FIXME: add highlight color?
                     // The offending nodes.
                     _debug("This is not a lattice. \""
-                                + ontologyConcepts.get(i).getName()
-                                + "\" and \""
-                                + ontologyConcepts.get(j).getName()
-                                + "\""
-                                + " does not have a unique least upper bound (LUB).");
+                            + ontologyConcepts.get(i).getName()
+                            + "\" and \""
+                            + ontologyConcepts.get(j).getName()
+                            + "\""
+                            + " does not have a unique least upper bound (LUB).");
                     return false;
                 } else {
                     _debug("LUB(" + ontologyConcepts.get(i).getName() + ", "
@@ -174,7 +176,7 @@ public class Ontology extends CompositeEntity {
         _debug("This is a correctly formed lattice.");
         return true;
     }
-    
+
     /** Create a new relation with the specified name, add it to the
      *  relation list, and return it.
      *  This method is write-synchronized on the workspace and increments
@@ -196,16 +198,16 @@ public class Ontology extends CompositeEntity {
             _workspace.doneWriting();
         }
     }
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The cached graph. */
     private ConceptGraph _graph;
-    
+
     /** The workspace version at which the cached graph was valid. */
     private long _graphVersion = -1L;
-    
+
     /** The icon description used for rendering. */
     private static final String _ICON = "<svg>"
             + "<line x1=\"0\" y1=\"-30\" x2=\"18\" y2=\"0\""

@@ -90,7 +90,7 @@ public class Const extends Source {
      * @see ptolemy.data.properties.Propertyable
      * @return The list of property-able Attributes.
      */
-    
+
     /* 12/17/09 Charles Shelton
      * I don't think this method is necessary.
      * value is a Parameter in the Const actor

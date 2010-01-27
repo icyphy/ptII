@@ -70,26 +70,26 @@ import ptolemy.kernel.util.NamedObj;
 */
 
 public class CausalityMarker extends Attribute {
-    
+
     /** Construct a CausalityMarker. This creates a list of sets of ports.
      *  @param container The container for this marker
      *  @param name The name of this marker.
      *  @exception IllegalActionException
      *  @exception NameDuplicationException
      */
-    public CausalityMarker(NamedObj container, String name) 
+    public CausalityMarker(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         causalityMarker = new ArrayList<Set<Port>>();
     }
-    
+
     /** Add a set of ports into the list.
      *  @param dependentPorts set of ports to be added.
      */
     public void addDependentPortSet(Set<Port> dependentPorts) {
         causalityMarker.add(dependentPorts);
     }
-    
+
     /** Check if this port is contained in the list of sets of ports.
      *  @param port to be checked.
      *  @return true if this port is contained in causality marker. Else
@@ -104,7 +104,7 @@ public class CausalityMarker extends Attribute {
         }
         return false;
     }
-    
+
     /** The list of sets of ports in the causality marker.
      */
     public List<Set<Port>> causalityMarker;

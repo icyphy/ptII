@@ -133,12 +133,12 @@ public abstract class MultipageDocument extends AbstractDocument {
         String filename = getFile().getName();
         System.out.println("Parsing " + filename);
         FileReader fileReader = null;
-        try { 
+        try {
             fileReader = new FileReader(filename);
             _parser.parse(fileReader, getMultipageModel());
         } finally {
             if (fileReader != null) {
-                    fileReader.close();
+                fileReader.close();
             }
         }
     }
@@ -166,7 +166,7 @@ public abstract class MultipageDocument extends AbstractDocument {
         _title = filename;
 
         FileWriter out = null;
-        try { 
+        try {
             out = new FileWriter(file);
             _writer.write(getMultipageModel(), out);
             out.flush();

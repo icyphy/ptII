@@ -28,7 +28,6 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -85,7 +84,7 @@ public class Sampler extends Transformer {
                 + "style=\"fill:white\"/>\n"
                 + "<polyline points=\"-30,0 -20,0 -10,0 10,-7\"/>\n"
                 + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
-        
+
         trigger = new TypedIOPort(this, "trigger", true, false);
 
         // Width constraint. Not bidirectional to not break any existing models.
@@ -141,7 +140,7 @@ public class Sampler extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (trigger.hasToken(0)) {
             // Read and record the input.
             int width = Math.min(input.getWidth(), output.getWidth());
@@ -149,9 +148,7 @@ public class Sampler extends Transformer {
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
                     if (_debugging) {
-                        _debug("Sampled input value " 
-                                + token 
-                                + " at time "
+                        _debug("Sampled input value " + token + " at time "
                                 + getDirector().getModelTime());
                     }
                     output.send(i, token);

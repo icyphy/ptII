@@ -68,12 +68,11 @@ public class JopReadPort extends Source {
         super(container, name);
         output.setTypeEquals(BaseType.INT);
         output.setMultiport(false);
-        
+
         portAddress = new Parameter(this, "portAddress");
         // use the us counter as default
         portAddress.setExpression("-127");
         portAddress.setTypeEquals(BaseType.INT);
-
 
     }
 
@@ -84,7 +83,6 @@ public class JopReadPort extends Source {
      */
     public Parameter portAddress;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -93,8 +91,7 @@ public class JopReadPort extends Source {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == portAddress) {
-            int addr = ((IntToken) portAddress.getToken())
-                    .intValue();
+            int addr = ((IntToken) portAddress.getToken()).intValue();
 
             if (addr > 0) {
                 throw new IllegalActionException(this, "Illegal port address");
@@ -126,14 +123,14 @@ public class JopReadPort extends Source {
         if (_firstFire) {
             // read the value - simulate the us counter on JOP
             // at address -127
-            int v = ((int) System.currentTimeMillis())*1000; 
+            int v = ((int) System.currentTimeMillis()) * 1000;
             // I would like a _val.set() to avoid garbage
             _val = new IntToken(v);
             _firstFire = false;
         }
         output.send(0, _val);
     }
-    
+
     /** Enable read on the next invokation of fire().
      *  @exception IllegalActionException If the base class throws it.
      */

@@ -100,9 +100,10 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *   cloning the attribute or the contained model.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        MoMLModelAttribute newObject = (MoMLModelAttribute) super.clone(workspace);
+        MoMLModelAttribute newObject = (MoMLModelAttribute) super
+                .clone(workspace);
         if (_model != null) {
-            newObject._model = (NamedObj)_model.clone(workspace());
+            newObject._model = (NamedObj) _model.clone(workspace());
         }
         return newObject;
     }

@@ -97,16 +97,17 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      */
     protected void _generateAssemblyFile() throws IllegalActionException {
         PtidesBasicDirector directorAdapter = null;
-        for (Actor actor : (List<Actor>)((TypedCompositeActor)getContainer()).deepEntityList()) {
+        for (Actor actor : (List<Actor>) ((TypedCompositeActor) getContainer())
+                .deepEntityList()) {
             Director director = actor.getDirector();
             if (director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
-                directorAdapter = (PtidesBasicDirector)getAdapter(director);
+                directorAdapter = (PtidesBasicDirector) getAdapter(director);
             }
         }
-        
+
         _writeCode(directorAdapter.generateAsseblyFile());
     }
-    
+
     /**
      * Return the name of the output file.
      * @return The output file name.
@@ -131,12 +132,14 @@ public class PtidyOSCodeGenerator extends CCodeGenerator {
      *  @exception IllegalActionException 
      */
     protected boolean _isTopLevel() throws IllegalActionException {
-        Director director = ((Actor)getContainer()).getDirector();
+        Director director = ((Actor) getContainer()).getDirector();
         if (!(director instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector)) {
-            throw new IllegalActionException(director, "PtidyOSCodeGenerator can only" +
-                            "work with Ptides directors.");
+            throw new IllegalActionException(director,
+                    "PtidyOSCodeGenerator can only"
+                            + "work with Ptides directors.");
         }
-        return ((ptolemy.domains.ptides.kernel.PtidesBasicDirector)director).isTopLevel();
+        return ((ptolemy.domains.ptides.kernel.PtidesBasicDirector) director)
+                .isTopLevel();
     }
 
     ///////////////////////////////////////////////////////////////////

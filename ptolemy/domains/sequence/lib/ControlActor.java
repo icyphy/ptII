@@ -68,7 +68,7 @@ public class ControlActor extends TypedAtomicActor {
         super();
         _enabledOutports = new ArrayList<TypedIOPort>();
     }
-    
+
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -80,7 +80,7 @@ public class ControlActor extends TypedAtomicActor {
         super(workspace);
         _enabledOutports = new ArrayList<TypedIOPort>();
     }
-    
+
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -98,43 +98,37 @@ public class ControlActor extends TypedAtomicActor {
         super(container, name);
         _enabledOutports = new ArrayList<TypedIOPort>();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the (possibly empty) list of enabled output ports.
      * 
      *  @return The (possible empty) list of enabled output ports 
      *  @see #setEnabledOutports(List) 
      **/
-    public ArrayList<TypedIOPort> getEnabledOutports()
-    {
+    public ArrayList<TypedIOPort> getEnabledOutports() {
         return _enabledOutports;
     }
-    
+
     /** Return true if there is at least one enabled output port, 
      *  false otherwise.
      *
      *  @return True if at least one output port is enabled.
      */
-    
-    public boolean hasEnabledOutports()
-    {
+
+    public boolean hasEnabledOutports() {
         // Should never be null, but check just in case
-        if ((_enabledOutports != null) && !_enabledOutports.isEmpty())
-        { 
+        if ((_enabledOutports != null) && !_enabledOutports.isEmpty()) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Set the list of enabled output ports.  Used by subclasses.
      *  Returns true if successful, and false if there was a problem
      *  (for example, if a port is not an output port).
@@ -148,23 +142,19 @@ public class ControlActor extends TypedAtomicActor {
     protected boolean setEnabledOutports(List<TypedIOPort> ports) {
         // Clear the enabledOutports list
         _enabledOutports.clear();
-        
-        if (ports != null)
-        {
+
+        if (ports != null) {
             // Iterate through ports passed in
             // An empty list is OK
             Iterator portIterator = ports.iterator();
-        
-            while (portIterator.hasNext())
-            {
+
+            while (portIterator.hasNext()) {
                 TypedIOPort p = (TypedIOPort) portIterator.next();
-                if (p.isOutput())
-                {
+                if (p.isOutput()) {
                     _enabledOutports.add(p);
                 }
-                
-                else
-                {
+
+                else {
                     // Not allowed.  Clear the enabledOutports list
                     // and return false
                     _enabledOutports.clear();
@@ -173,15 +163,14 @@ public class ControlActor extends TypedAtomicActor {
             }
             return true;
         }
-        
+
         // Return false if a null list is passed in
-        else
-        {
+        else {
             return false;
         }
-        
+
     }
-    
+
     /** Add a port to the list of enabled output ports.  
      *  Used by subclasses.
      *  Returns true if successful, and false if there was a problem
@@ -193,33 +182,30 @@ public class ControlActor extends TypedAtomicActor {
      *  @return True if operation was successful; false otherwise 
      */
     protected boolean addEnabledOutport(TypedIOPort port) {
-        if (port != null && port.isOutput())
-        {
+        if (port != null && port.isOutput()) {
             _enabledOutports.add(port);
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
+
     /** Clear the list of enabled output ports.
      *  Used by subclasses.
      */
-    
+
     protected void clearEnabledOutports() {
         _enabledOutports.clear();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** Returns a list of 0 or more output ports that are currently 
      *  enabled.  An 'enabled' output port means that actors connected
      *  to this port should be executed.
      */
-    
+
     protected ArrayList<TypedIOPort> _enabledOutports;
-    
+
 }

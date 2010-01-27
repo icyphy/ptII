@@ -54,7 +54,7 @@ public class ConstraintManager {
      * @param constraints
      */
     public void setConstraints(List<Inequality> constraints) {
-        
+
         for (Inequality constraint : constraints) {
             if (constraint.isBase()) {
                 InequalityTerm greaterTerm = constraint.getGreaterTerm();

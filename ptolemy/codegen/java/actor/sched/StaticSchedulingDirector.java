@@ -185,8 +185,8 @@ public class StaticSchedulingDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
 
         // Need a leading _eol here or else the execute decl. gets stripped out.
-        StringBuffer code = new StringBuffer(
-                _eol + "public void execute() throws Exception {" + _eol);
+        StringBuffer code = new StringBuffer(_eol
+                + "public void execute() throws Exception {" + _eol);
 
         Attribute iterations = _director.getAttribute("iterations");
         if (iterations == null) {
@@ -204,11 +204,8 @@ public class StaticSchedulingDirector extends Director {
                         + "; iteration ++) {" + _eol);
             }
         }
-        code.append("run();" + _eol 
-                + "}" + _eol
-                + "}" + _eol
-                + _eol + "public void run() throws Exception {" + _eol);
-
+        code.append("run();" + _eol + "}" + _eol + "}" + _eol + _eol
+                + "public void run() throws Exception {" + _eol);
 
         code.append(generateFireCode());
 
@@ -271,24 +268,23 @@ public class StaticSchedulingDirector extends Director {
         // Print period and iteration counter only if it is the containing actor
         // is the top level.
         // FIXME: should this test also be applied to the other code?
-        if (director.getContainer().getContainer()==null) {
+        if (director.getContainer().getContainer() == null) {
             Double periodValue = 0.0;
             if (period != null) {
                 periodValue = ((DoubleToken) ((Variable) period).getToken())
-                    .doubleValue();
+                        .doubleValue();
             }
-            variableDeclarations.append(_eol
-                    + _codeGenerator
-                            .comment("Provide the period attribute as constant."));
+            variableDeclarations
+                    .append(_eol
+                            + _codeGenerator
+                                    .comment("Provide the period attribute as constant."));
             variableDeclarations.append("public final static double PERIOD = "
                     + periodValue + ";" + _eol);
             variableDeclarations.append(_eol
-                    + _codeGenerator
-                            .comment("Provide the iteration count."));
-            variableDeclarations.append("public static int _iteration = 0;" + _eol);
+                    + _codeGenerator.comment("Provide the iteration count."));
+            variableDeclarations.append("public static int _iteration = 0;"
+                    + _eol);
         }
-
-
 
         return variableDeclarations.toString();
     }

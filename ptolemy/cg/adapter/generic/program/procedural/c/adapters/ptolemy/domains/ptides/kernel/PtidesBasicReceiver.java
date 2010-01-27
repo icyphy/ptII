@@ -41,7 +41,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 ////PtidesBasicReceiver
@@ -53,15 +52,18 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating Red (jiazou)
  *  @Pt.AcceptedRating Red (jiazou)
  */
-public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Receiver {
+public class PtidesBasicReceiver
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Receiver {
 
     /** Construct a ptides basic receiver.
      *  @param receiver The ptolemy.domains.ptides.kernel.PtidesBasicReceiver
      *  that corresponds with this adapter.
      *  @exception IllegalActionException If throw by the superclass.
      */
-    public PtidesBasicReceiver (
-            ptolemy.domains.ptides.kernel.PtidesBasicReceiver receiver) throws IllegalActionException {
+    public PtidesBasicReceiver(
+            ptolemy.domains.ptides.kernel.PtidesBasicReceiver receiver)
+            throws IllegalActionException {
         super(receiver);
     }
 
@@ -79,8 +81,8 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
     public String generateGetCode(String offset) throws IllegalActionException {
         TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-        return "Event_Head_" + getAdapter(port).getName() + "[" + channel + "]->Val."
-                + port.getType().toString() + "_Value";
+        return "Event_Head_" + getAdapter(port).getName() + "[" + channel
+                + "]->Val." + port.getType().toString() + "_Value";
     }
 
     /** Generate code to check if the receiver has a token.
@@ -94,7 +96,8 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
             throws IllegalActionException {
         IOPort port = getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-        return "Event_Head_" + getAdapter(port).getName() + "[" + channel + "] != NULL";
+        return "Event_Head_" + getAdapter(port).getName() + "[" + channel
+                + "] != NULL";
     }
 
     /** 
@@ -114,18 +117,19 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
 
         Channel source = new Channel(sourcePort, 0);
         Channel sink = new Channel(sinkPort, sinkChannel);
-        
-        token = ((NamedProgramCodeGeneratorAdapter)getAdapter(
-                getComponent().getContainer().getContainer())).getTemplateParser()
+
+        token = ((NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
+                .getContainer().getContainer())).getTemplateParser()
                 .generateTypeConvertStatement(source, sink, 0, token);
 
         token = _removeSink(token);
-        
+
         Actor actor = (Actor) sinkPort.getContainer();
         Director director = actor.getDirector();
         // Getting depth.
-        String depth = Integer.toString(((CausalityInterfaceForComposites) director
-                .getCausalityInterface()).getDepthOfActor(actor));
+        String depth = Integer
+                .toString(((CausalityInterfaceForComposites) director
+                        .getCausalityInterface()).getDepthOfActor(actor));
         // Getting deadline.
         Parameter relativeDeadline = (Parameter) sinkPort
                 .getAttribute("relativeDeadline");
@@ -148,21 +152,22 @@ public class PtidesBasicReceiver extends ptolemy.cg.adapter.generic.program.proc
         String offsetSecsString = null;
         String offsetNsecsString = null;
         if (offsetTime != null) {
-            double value = ((DoubleToken) ((ArrayToken) offsetTime
-                    .getToken()).arrayValue()[sinkChannel]).doubleValue();
+            double value = ((DoubleToken) ((ArrayToken) offsetTime.getToken())
+                    .arrayValue()[sinkChannel]).doubleValue();
             int intPart = (int) value;
             int fracPart = (int) ((value - intPart) * 1000000000.0);
             offsetSecsString = Integer.toString(intPart);
             offsetNsecsString = Integer.toString(fracPart);
         } else {
-            throw new IllegalActionException(sinkPort, "Cannot get the minDelay Parameter.");
+            throw new IllegalActionException(sinkPort,
+                    "Cannot get the minDelay Parameter.");
         }
 
         // FIXME: not sure whether we should check if we are putting into an input port or
         // output port.
         // Generate a new event.
         String sinkName = NamedProgramCodeGeneratorAdapter
-        .generateName((NamedObj)sinkPort.getContainer());
+                .generateName(sinkPort.getContainer());
         List args = new ArrayList();
         args.add(sinkPort.getType().toString());
         args.add(token);

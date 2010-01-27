@@ -58,7 +58,7 @@ where t is the current model time.
 */
 
 public class AbsoluteDelay extends TimeDelay {
-    
+
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
@@ -70,10 +70,10 @@ public class AbsoluteDelay extends TimeDelay {
     public AbsoluteDelay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         outputTime = new TypedIOPort(this, "outputTime", true, false);
         _zero = new Time(getDirector());
-        
+
         Set<Port> dependentPorts = _causalityMarker.causalityMarker.get(0);
         dependentPorts.add(input);
         dependentPorts.add(outputTime);
@@ -89,7 +89,7 @@ public class AbsoluteDelay extends TimeDelay {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Update the delay parameter from the delay port and ensure the delay
      *  is not negative. Call the fire method of super class to consume
      *  inputs and generate outputs.
@@ -100,9 +100,9 @@ public class AbsoluteDelay extends TimeDelay {
         // FIXME: there's gotta be a better way to set a time in a Time object.
         for (int channelIndex = 0; channelIndex < outputTime.getWidth(); channelIndex++) {
             while (outputTime.hasToken(channelIndex)) {
-                Time difference = _outputTime.subtract((
-                        (DoubleToken) outputTime.get(channelIndex))
-                        .doubleValue());
+                Time difference = _outputTime
+                        .subtract(((DoubleToken) outputTime.get(channelIndex))
+                                .doubleValue());
                 _outputTime = _outputTime.subtract(difference);
             }
         }
@@ -121,7 +121,8 @@ public class AbsoluteDelay extends TimeDelay {
                 if (comparison >= 0) {
                     output.send(0, _currentOutput);
                 } else {
-                    _delayedOutputTokens.put(new TimedEvent(_outputTime, earliestEvent.contents));
+                    _delayedOutputTokens.put(new TimedEvent(_outputTime,
+                            earliestEvent.contents));
                     _fireAt(_outputTime);
                 }
                 break;
@@ -135,7 +136,7 @@ public class AbsoluteDelay extends TimeDelay {
         }
 
     }
-    
+
     /** Process the current input if it has not been processed. Schedule
      *  a firing to produce the earliest output token.
      *  @exception IllegalActionException If scheduling to refire cannot
@@ -151,7 +152,7 @@ public class AbsoluteDelay extends TimeDelay {
         }
         return super.postfire();
     }
-    
+
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>delay</i> port in a firing.
      *  @exception IllegalActionException If the superclass throws it.
@@ -183,10 +184,9 @@ public class AbsoluteDelay extends TimeDelay {
 
     /** The amount of delay. */
     protected Time _outputTime;
-    
+
     /** Zero time.
      */
     protected Time _zero;
-
 
 }

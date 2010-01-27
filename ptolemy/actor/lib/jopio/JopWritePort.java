@@ -82,7 +82,6 @@ public class JopWritePort extends Sink {
      */
     public Parameter portAddress;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -91,8 +90,7 @@ public class JopWritePort extends Sink {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == portAddress) {
-            int addr = ((IntToken) portAddress.getToken())
-                    .intValue();
+            int addr = ((IntToken) portAddress.getToken()).intValue();
 
             if (addr > 0) {
                 throw new IllegalActionException(this, "Illegal port address");
@@ -126,7 +124,7 @@ public class JopWritePort extends Sink {
             _last_val = ((IntToken) input.get(0)).intValue();
         }
     }
-    
+
     /** Record the most recent token for the output value.
      *  @exception IllegalActionException If the base class throws it.
      */

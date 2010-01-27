@@ -335,7 +335,8 @@ public class BrowserLauncher {
             break;
 
         case MRJ_3_1:
-            if (!url.startsWith("file:") && !url.startsWith("http:") && !url.startsWith("https:")) {
+            if (!url.startsWith("file:") && !url.startsWith("http:")
+                    && !url.startsWith("https:")) {
                 // Needed by Web Start file:
                 // ptII/ptolemy/domains/ct/demo/CartPendulum/CartPendulum.jnlp
                 url = new File(url).toURL().toString();

@@ -44,7 +44,6 @@ public class StaticResult implements PartialResult {
         _result = result;
     }
 
-
     /** Return the result.
      *  @return the result.
      */

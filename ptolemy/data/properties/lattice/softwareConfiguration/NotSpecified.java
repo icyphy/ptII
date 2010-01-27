@@ -31,7 +31,6 @@ package ptolemy.data.properties.lattice.softwareConfiguration;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// NotSpecified
 
@@ -45,7 +44,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (cxh)
  */
 public class NotSpecified extends LatticeProperty {
-        
+
     /**
      * Create a new lattice property with the name "NotSpecified" and the specified
      * lattice.
@@ -59,7 +58,7 @@ public class NotSpecified extends LatticeProperty {
      * Return false, indicating that this property is not an acceptable solution.
      * @return False, indicating that this property is not an acceptable solution.
      */
-//    public boolean isAcceptableSolution() {
-//        return false;
-//    }
+    //    public boolean isAcceptableSolution() {
+    //        return false;
+    //    }
 }

@@ -33,7 +33,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import ptolemy.actor.TypeConflictException;
 import ptolemy.data.BooleanToken;
@@ -43,21 +42,14 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.lattice.ConstraintManager;
-import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
-import ptolemy.data.ontologies.lattice.LatticeOntologyCompositeAdapter;
-import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.data.ontologies.OntologySolver;
-import ptolemy.data.ontologies.lattice.ConceptTermFactory;
-import ptolemy.data.ontologies.lattice.ConceptTermManager;
-import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter.Inequality;
 import ptolemy.data.ontologies.gui.OntologySolverGUIFactory;
+import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter.Inequality;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.tester.lib.Testable;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
@@ -68,7 +60,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
-
 
 ///////////////////////////////////////////////////////////////////
 //// LatticeOntologySolver
@@ -106,7 +97,7 @@ public class LatticeOntologySolver extends OntologySolver {
     public LatticeOntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Provide a default model so that this is never empty.
         _model = new CompositeEntity(workspace());
 
@@ -152,7 +143,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nResolve Properties</text></svg>");
-        
+
         /* Removed to make compile
          * --Ben on 12/04/2009
          * 
@@ -160,13 +151,12 @@ public class LatticeOntologySolver extends OntologySolver {
          * GUI operation for OntologySolver.
          * 12/21/09 Charles Shelton
          */
-        new OntologySolverGUIFactory(this,
-                "_LatticeOntologySolverGUIFactory");
+        new OntologySolverGUIFactory(this, "_LatticeOntologySolverGUIFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** 
      * String that represents the setting for default actor constraints.
      * <ul>
@@ -248,7 +238,7 @@ public class LatticeOntologySolver extends OntologySolver {
      * OntologySolver and "false" to disable logging.
      */
     public Parameter logMode;
-    
+
     /**
      * Indicate whether to compute the least or greatest fixed point solution.
      * <ul>
@@ -263,10 +253,10 @@ public class LatticeOntologySolver extends OntologySolver {
      * for regression tests for the OntologySolver resolution.
      */
     public FileParameter trainedConstraintDirectory;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Add the specified object to the hash table of manually annotated
      * objects in the model.
@@ -302,7 +292,8 @@ public class LatticeOntologySolver extends OntologySolver {
      * @return The list of inequality terms that are affected by the OntologySolver
      * @exception IllegalActionException If an exception is thrown
      */
-    public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
+    public List<ptolemy.graph.InequalityTerm> getAffectedTerms(
+            ptolemy.graph.InequalityTerm updateTerm)
             throws IllegalActionException {
         return _conceptTermManager.getAffectedTerms(updateTerm);
     }
@@ -316,8 +307,7 @@ public class LatticeOntologySolver extends OntologySolver {
     public ConstraintManager getConstraintManager() {
         return _constraintManager;
     }
-    
-    
+
     /** Initialize the solver and get the initial statistics for the Lattice OntologySolver.
      *  This will return information about the number of constraints and concept terms generated
      *  before the solver executes its algorithm.
@@ -326,7 +316,8 @@ public class LatticeOntologySolver extends OntologySolver {
      *   constraints information, separated by tabs.
      *  @exception IllegalActionException If an exception occurs when collecting the constraints.
      */
-    public Hashtable getInitialSolverInformation() throws IllegalActionException {
+    public Hashtable getInitialSolverInformation()
+            throws IllegalActionException {
         NamedObj toplevel = _toplevel();
         LatticeOntologyAdapter toplevelHelper = (LatticeOntologyAdapter) getAdapter(toplevel);
 
@@ -347,25 +338,25 @@ public class LatticeOntologySolver extends OntologySolver {
                 _getConstraintType(expressionASTNodeConstraintType
                         .stringValue()));
         // Collect the constraints in a list
-        
+
         List<Inequality> constraintList = toplevelHelper.constraintList();
-        
-        getStats().put("# of generated constraints",
-                constraintList.size());
-        getStats().put("# of concept terms",
-                _conceptTermManager.terms().size());
-        
+
+        getStats().put("# of generated constraints", constraintList.size());
+        getStats()
+                .put("# of concept terms", _conceptTermManager.terms().size());
+
         String initialSolverStats = _getStatsAsString("\t");
-        String initialSolverConstraints = _getConstraintsAsLogFileString(constraintList, "I");
-        
+        String initialSolverConstraints = _getConstraintsAsLogFileString(
+                constraintList, "I");
+
         Hashtable initialSolverInfo = new Hashtable();
         initialSolverInfo.put("initialSolverStats", initialSolverStats);
-        initialSolverInfo.put("initialSolverConstraints", initialSolverConstraints);
-        
+        initialSolverInfo.put("initialSolverConstraints",
+                initialSolverConstraints);
+
         return initialSolverInfo;
     }
-    
-    
+
     /** Get the statistics for the Lattice OntologySolver after the model has been resolved.
      *  This will return information about the number of constraints and concept terms generated
      *  after the solver executes its algorithm.
@@ -374,29 +365,33 @@ public class LatticeOntologySolver extends OntologySolver {
      *   constraints information, separated by tabs.
      *  @exception IllegalActionException If an exception occurs when collecting the constraints.
      */
-    public Hashtable getResolvedSolverInformation() throws IllegalActionException {
+    public Hashtable getResolvedSolverInformation()
+            throws IllegalActionException {
         if (_resolvedConstraintList == null) {
             try {
                 resolveProperties(null, true);
             } catch (KernelException kernelEx) {
-                throw new IllegalActionException(this, kernelEx, "Error while trying to execute LatticeOntologySolver " +
-                        getName() + " resolution algorithm: " + kernelEx);
+                throw new IllegalActionException(this, kernelEx,
+                        "Error while trying to execute LatticeOntologySolver "
+                                + getName() + " resolution algorithm: "
+                                + kernelEx);
             }
         }
-        
+
         String resolvedSolverStats = _getStatsAsString("\t");
-        String resolvedSolverConstraints = _getConstraintsAsLogFileString(_resolvedConstraintList, "R");
-        
+        String resolvedSolverConstraints = _getConstraintsAsLogFileString(
+                _resolvedConstraintList, "R");
+
         Hashtable resolvedSolverInfo = new Hashtable();
         resolvedSolverInfo.put("resolvedSolverStats", resolvedSolverStats);
-        resolvedSolverInfo.put("resolvedSolverConstraints", resolvedSolverConstraints);
-        
+        resolvedSolverInfo.put("resolvedSolverConstraints",
+                resolvedSolverConstraints);
+
         // Reset the resolved constraint list for the next time it is tested.
         _resolvedConstraintList = null;
-        
+
         return resolvedSolverInfo;
     }
-    
 
     /**
      * Returns the adapter that contains property information for the given AST
@@ -523,7 +518,7 @@ public class LatticeOntologySolver extends OntologySolver {
         invokeSolver();
         resetAll();
     }
-  
+
     /** Train a test. This invokes the solver in TRAINING mode.
      */
     public void train() {
@@ -549,9 +544,8 @@ public class LatticeOntologySolver extends OntologySolver {
         adapter = getAdapter(_toplevel());
 
         if (isLogMode()) {
-            String constraintFilename = _getTrainedConstraintFilename() 
+            String constraintFilename = _getTrainedConstraintFilename()
                     + "_resolved.txt";
-
 
             // Populate the _trainedConstraints list.
             _readConstraintFile(constraintFilename);
@@ -591,7 +585,7 @@ public class LatticeOntologySolver extends OntologySolver {
                  * --Ben on 12/04/2009
                 adapter = new PropertyConstraintFSMHelper(this,
                         (FSMActor) component);
-            } else if (component instanceof ptolemy.domains.modal.kernel.FSMActor) {
+                } else if (component instanceof ptolemy.domains.modal.kernel.FSMActor) {
                 adapter = new PropertyConstraintModalFSMHelper(this,
                         (ptolemy.domains.modal.kernel.FSMActor) component);
                  */
@@ -648,7 +642,7 @@ public class LatticeOntologySolver extends OntologySolver {
 
         // Reset the list of resolved constraints before executing the ontology solver resolution. 
         _resolvedConstraintList = null;
-        
+
         NamedObj toplevel = _toplevel();
         LatticeOntologyAdapter toplevelHelper = (LatticeOntologyAdapter) getAdapter(toplevel);
 
@@ -668,10 +662,10 @@ public class LatticeOntologySolver extends OntologySolver {
                         .stringValue()),
                 _getConstraintType(expressionASTNodeConstraintType
                         .stringValue()));
-        
+
         // Collect and solve type constraints.
         List<Inequality> constraintList = toplevelHelper.constraintList();
-         
+
         _resolveProperties(toplevel, toplevelHelper, constraintList);
     }
 
@@ -692,13 +686,12 @@ public class LatticeOntologySolver extends OntologySolver {
 
         List<Inequality> conflicts = new LinkedList<Inequality>();
         List<Inequality> unacceptable = new LinkedList<Inequality>();
-        
+
         try {
             // Check declared properties across all connections.
             //List propertyConflicts = topLevel._checkDeclaredProperties();
             //conflicts.addAll(propertyConflicts);
 
-          
             /*
              * // FIXME: this is the iterative approach. List constraintList =
              * new ArrayList(); Iterator adapters =
@@ -718,19 +711,22 @@ public class LatticeOntologySolver extends OntologySolver {
 
             if (constraintList.size() > 0) {
                 CPO lattice = null;
-                
+
                 // Added by Charles Shelton 12/17/09
                 // Check to see if the ontology is a lattice
                 // and throw an exception if it isn't.                
-                if (getOntology().isLattice()) {                
+                if (getOntology().isLattice()) {
                     lattice = getOntology().getGraph();
                 } else {
-                    throw new IllegalActionException(this, "This Ontology is not a lattice, "
-                            + "and therefore we cannot resolve the model using the least fixed point algorithm.");
+                    throw new IllegalActionException(
+                            this,
+                            "This Ontology is not a lattice, "
+                                    + "and therefore we cannot resolve the model using the least fixed point algorithm.");
                 }
 
                 // Instantiate our own customized version of InequalitySolver.
-                ptolemy.graph.InequalitySolver solver = new ptolemy.graph.InequalitySolver(lattice);
+                ptolemy.graph.InequalitySolver solver = new ptolemy.graph.InequalitySolver(
+                        lattice);
                 //InequalitySolver solver = new InequalitySolver(cpo, this);
 
                 solver.addInequalities(constraintList.iterator());
@@ -751,18 +747,16 @@ public class LatticeOntologySolver extends OntologySolver {
                         + getName() + "__" + timestamp.replace(" ", "_")
                         + ".txt";
 
-
                 if (!logDirectory.asFile().exists()) {
                     if (!logDirectory.asFile().mkdirs()) {
                         throw new IllegalActionException(this,
                                 "Failed to create \""
-                                + logDirectory.asFile()
-                                .getAbsolutePath()
-                                + "\" directory.");
+                                        + logDirectory.asFile()
+                                                .getAbsolutePath()
+                                        + "\" directory.");
                     }
-                file = FileUtilities.nameToFile(logFilename,
-                        logDirectory.asFile().toURI());
-
+                    file = FileUtilities.nameToFile(logFilename, logDirectory
+                            .asFile().toURI());
 
                     try {
                         if (!file.exists()) {
@@ -803,9 +797,8 @@ public class LatticeOntologySolver extends OntologySolver {
                 } else {
                     solver.solveLeast();
                 }
-                
-                _resolvedConstraintList = constraintList;
 
+                _resolvedConstraintList = constraintList;
 
                 // If some inequalities are not satisfied, or type variables
                 // are resolved to unacceptable types, such as
@@ -851,17 +844,17 @@ public class LatticeOntologySolver extends OntologySolver {
             if (conflicts.size() > 0) {
                 throw new OntologyResolutionException(this, toplevel(),
                         "Properties conflicts occurred in "
-                        + toplevel().getFullName()
-                        + " on the following inequalities:\n"
-                        + conflicts);
+                                + toplevel().getFullName()
+                                + " on the following inequalities:\n"
+                                + conflicts);
             }
             if (unacceptable.size() > 0) {
                 throw new TypeConflictException(unacceptable,
                         "Properties resolved to unacceptable types in "
-                        + toplevel.getFullName()
-                        + " due to the following inequalities:");
+                                + toplevel.getFullName()
+                                + " due to the following inequalities:");
             }
-            
+
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
             // _checkDeclaredProperty or constraintList is called on a
@@ -879,8 +872,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 }
             }
         }
-        
-        
+
     }
 
     /**
@@ -948,14 +940,14 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     private void _checkMissingConstraints() {
-        StringBuffer errorMessage = new StringBuffer(_eol + "Concept \"" + getName()
-                + "\" resolution failed." + _eol);
+        StringBuffer errorMessage = new StringBuffer(_eol + "Concept \""
+                + getName() + "\" resolution failed." + _eol);
 
         boolean hasError = false;
 
         for (String trainedValue : _trainedConstraints) {
-            errorMessage.append("    Missing constraint: \"" + trainedValue + "\"."
-                    + _eol);
+            errorMessage.append("    Missing constraint: \"" + trainedValue
+                    + "\"." + _eol);
 
             hasError = true;
         }
@@ -990,8 +982,10 @@ public class LatticeOntologySolver extends OntologySolver {
         List<String> logConstraints = new LinkedList<String>();
 
         String output = "";
-        ptolemy.graph.InequalityTerm lesserTerm = (ptolemy.graph.InequalityTerm) inequality.getLesserTerm();
-        ptolemy.graph.InequalityTerm greaterTerm = (ptolemy.graph.InequalityTerm) inequality.getGreaterTerm();
+        ptolemy.graph.InequalityTerm lesserTerm = (ptolemy.graph.InequalityTerm) inequality
+                .getLesserTerm();
+        ptolemy.graph.InequalityTerm greaterTerm = (ptolemy.graph.InequalityTerm) inequality
+                .getGreaterTerm();
 
         output = inequality.getHelper().getClass().getPackage().toString()
                 .replace("package ", "")
@@ -1022,7 +1016,8 @@ public class LatticeOntologySolver extends OntologySolver {
                         + "\t"
                         + (inequality.isBase() ? "base" : "not base")
                         + "\t"
-                        + _getConstraintLogString((ptolemy.graph.InequalityTerm) variable, "")
+                        + _getConstraintLogString(
+                                (ptolemy.graph.InequalityTerm) variable, "")
                         + "\t"
                         + "MFV"
                         + "\t"
@@ -1059,8 +1054,9 @@ public class LatticeOntologySolver extends OntologySolver {
         return logConstraints;
     }
 
-    private String _getConstraintLogString(ptolemy.graph.InequalityTerm propertyTerm,
-            String actorName) throws IllegalActionException {
+    private String _getConstraintLogString(
+            ptolemy.graph.InequalityTerm propertyTerm, String actorName)
+            throws IllegalActionException {
         if (propertyTerm instanceof Concept) {
             // FIXME: This is bogus unreadable syntax. "eff" means "effective"
             // (whatever that means).
@@ -1101,8 +1097,7 @@ public class LatticeOntologySolver extends OntologySolver {
                     }
                 }
                 // FIXME: effective is not implemented.
-                return "eff" + "\t"
-                        + containerName + "\t"
+                return "eff" + "\t" + containerName + "\t"
                         + object.getClass().getSimpleName() + "\t"
                         + _getReducedFullName(object) + "\t"
                         + propertyTerm.getValue();
@@ -1187,8 +1182,7 @@ public class LatticeOntologySolver extends OntologySolver {
             throws IllegalActionException {
         // Make an unique file name from the toplevel container.
         // FIXME: don't use __, they make the filenames too long.
-        String constraintFilename = _toplevel().getName() + "__"
-                + getName();
+        String constraintFilename = _toplevel().getName() + "__" + getName();
 
         String directoryPath = trainedConstraintDirectory.getExpression();
         directoryPath = directoryPath.replace("\\", "/");
@@ -1262,11 +1256,10 @@ public class LatticeOntologySolver extends OntologySolver {
         if (!(object instanceof NamedObj)) {
             return;
         }
-        NamedObj namedObj = (NamedObj) object;
+        //NamedObj namedObj = (NamedObj) object;
 
     }
- 
-    
+
     /**
      * An enumeration type to represent the types of constraints for
      * default constraint settings for actor inputs and outputs, connections
@@ -1275,35 +1268,34 @@ public class LatticeOntologySolver extends OntologySolver {
     public static enum ConstraintType {
         /** Represents that the two sides must be equal. */
         EQUALS,
-        
+
         /** Represents that there is no constraint between the two sides. */
         NONE,
-        
+
         /** Represents that the two sides must be unequal. */
         NOT_EQUALS,
-        
+
         /** Represents that the sink must be >= the source. */
         SINK_EQUALS_GREATER,
-        
+
         /** Represents that the sink must == the least upper bound of all sources. */
         SINK_EQUALS_MEET,
-        
+
         /** Represents that the sink must be > the source. */
         SINK_GREATER,
-        
+
         /** Represents that the source must be >= the sink. */
         SRC_EQUALS_GREATER,
-        
+
         /** Represents that the source must == the least upper bound of all sinks. */
         SRC_EQUALS_MEET,
-        
+
         /** Represents that the source must be > the sink. */
         SRC_GREATER
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -1315,11 +1307,11 @@ public class LatticeOntologySolver extends OntologySolver {
 
     private final ConstraintManager _constraintManager = new ConstraintManager(
             this);
-    
+
     private boolean _logMode;
 
     private ConceptTermManager _conceptTermManager;
-    
+
     /** The list of constraints after the ontology resolution algorithm has executed. */
     private List<Inequality> _resolvedConstraintList;
 

@@ -126,7 +126,8 @@ public class OntologyAnnotationAttribute extends StringAttribute {
             return tokens[0] + "::" + tokens[1];
         }
 
-        throw new IllegalActionException("Invalid ontology annotation attribute name: "
-                + getName() + ". (should have form ONTOLOGY_NAME::LABEL)");
+        throw new IllegalActionException(
+                "Invalid ontology annotation attribute name: " + getName()
+                        + ". (should have form ONTOLOGY_NAME::LABEL)");
     }
 }

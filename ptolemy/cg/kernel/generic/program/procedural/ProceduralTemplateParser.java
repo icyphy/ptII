@@ -70,7 +70,6 @@ public class ProceduralTemplateParser extends TemplateParser {
         files.addAll(_includeFiles);
         return files;
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                    ////

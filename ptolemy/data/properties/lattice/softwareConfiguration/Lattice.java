@@ -45,28 +45,28 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @see ptolemy.graph.CPO
  */
 public class Lattice extends PropertyLattice {
-    
+
     // The infinite property lattice
     public Lattice() {
         super();
-        
+
         addNodeWeight(CONFLICT);
         addNodeWeight(CONFIGURED);
-        addNodeWeight(NOTCONFIGURED);        
+        addNodeWeight(NOTCONFIGURED);
         addNodeWeight(NOTSPECIFIED);
-        
+
         addEdge(NOTSPECIFIED, CONFIGURED);
         addEdge(NOTSPECIFIED, NOTCONFIGURED);
         addEdge(CONFIGURED, CONFLICT);
         addEdge(NOTCONFIGURED, CONFLICT);
-        
+
         // FIXME: Replace this with an assert when we move to 1.5
         if (!isLattice()) {
             throw new AssertionError("ThePropertyLattice: The "
                     + "property hierarchy is not a lattice.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

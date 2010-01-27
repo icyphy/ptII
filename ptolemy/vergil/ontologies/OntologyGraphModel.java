@@ -45,10 +45,10 @@ import ptolemy.vergil.modal.FSMGraphModel;
  @Pt.AcceptedRating Red (johnr)
  */
 public class OntologyGraphModel extends FSMGraphModel {
-    
+
     // FIXME: Placeholder class. If we don't need to override
     // anything, then this should be deleted.
-    
+
     /** Construct a new graph model whose root is the given composite entity.
      *  @param composite The top-level composite entity for the model.
      */

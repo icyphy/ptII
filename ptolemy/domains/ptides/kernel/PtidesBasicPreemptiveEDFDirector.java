@@ -74,7 +74,7 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
      *  @exception IllegalActionException
      */
     protected boolean _preemptExecutingActor() throws IllegalActionException {
-        PtidesEvent event = (PtidesEvent)_eventQueue.get();
+        PtidesEvent event = (PtidesEvent) _eventQueue.get();
         if (event.isPureEvent()) {
             if (_debugging) {
                 _debug("We decided to preempt the current "
@@ -100,8 +100,7 @@ public class PtidesBasicPreemptiveEDFDirector extends PtidesBasicDirector {
             _debug("We decided to preempt the current "
                     + "executing event at actor: "
                     + ((PtidesEvent) eventList.get(0)).actor()
-                    + " with another event at actor: "
-                    + event.actor()
+                    + " with another event at actor: " + event.actor()
                     + ". This preemption happened at physical time "
                     + getPhysicalTime());
         }

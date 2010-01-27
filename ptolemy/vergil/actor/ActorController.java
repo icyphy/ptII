@@ -772,7 +772,7 @@ public abstract class ActorController extends AttributeController {
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {
             super("Open Actor");
-            
+
             // If we are in an applet, so Control-L or Command-L will
             // be caught by the browser as "Open Location", so we don't
             // supply Control-L or Command-L as a shortcut under applets.
@@ -781,7 +781,7 @@ public abstract class ActorController extends AttributeController {
                 // Use L, which used to be used for layout.
                 // Avoid Control_O, which is open file.
                 putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                                KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                        KeyEvent.VK_L, Toolkit.getDefaultToolkit()
                                 .getMenuShortcutKeyMask()));
             }
         }

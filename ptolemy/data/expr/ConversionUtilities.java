@@ -273,7 +273,8 @@ public class ConversionUtilities {
 
                 if (type == null) {
                     throw new IllegalActionException(
-                            "Could not find return type for class " + tokenClass);
+                            "Could not find return type for class "
+                                    + tokenClass);
                 }
 
                 return type;

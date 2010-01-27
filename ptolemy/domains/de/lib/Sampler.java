@@ -136,14 +136,15 @@ public class Sampler extends DETransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If the <i>initialValue</i> parameter is the argument, then
      *  reset the current output to match the new value.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == initialValue) {
             if (initialValue.getToken() != null) {
                 _lastInputs = new Token[input.getWidth()];

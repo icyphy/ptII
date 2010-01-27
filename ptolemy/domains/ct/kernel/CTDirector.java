@@ -593,7 +593,8 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
             _fireContainerAt(time);
         }
 
-        boolean postfireReturns = _postfireReturns && !_stopRequested && !_finishRequested;
+        boolean postfireReturns = _postfireReturns && !_stopRequested
+                && !_finishRequested;
 
         if (_debugging && _verbose) {
             _debug("Postfire returns " + postfireReturns + " at: "

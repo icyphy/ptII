@@ -36,7 +36,6 @@ import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -80,7 +79,7 @@ public class PlotApplet extends JApplet {
      *  it should clean up.
      */
     public void destroy() {
-        _plot.destroy(); 
+        _plot.destroy();
         // Needed to get rid of the Mouse, MouseMotion and Key listeners
         //getRootPane().getContentPane().removeAll();
         getContentPane().remove(_plot);

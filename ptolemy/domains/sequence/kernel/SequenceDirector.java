@@ -68,7 +68,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Red (beth)
  * @Pt.AcceptedRating Red (beth)
  */
-public class SequenceDirector extends SequencedModelDirector{
+public class SequenceDirector extends SequencedModelDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -116,7 +116,7 @@ public class SequenceDirector extends SequencedModelDirector{
      *   CompositeActor and the name collides with an entity in the container.
      */
     public SequenceDirector(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -143,11 +143,10 @@ public class SequenceDirector extends SequencedModelDirector{
 
         // Must call preinitialize() before fire(), since otherwise the
         // schedule will not be set
-            // Call superclass function with _schedule as argument to handle firing 
-            fireSchedule(_schedule);
+        // Call superclass function with _schedule as argument to handle firing 
+        fireSchedule(_schedule);
     }
 
-    
     /** Preinitialize the actors associated with this director and
      *  compute the schedule.  The schedule is computed during
      *  preinitialization so that hierarchical opaque composite actors
@@ -160,47 +159,47 @@ public class SequenceDirector extends SequencedModelDirector{
 
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         // Sort the list of sequenced actors
         // The scheduler will check for duplicates 
         // The ProcessDirector is different from the SequenceDirector
         // in that we don't want everything to be in one list.  However,
         // .sort() knows how to handle sequence attributes vs. process attributes
-        Collections.sort(_sequencedList); 
-        
+        Collections.sort(_sequencedList);
+
         // Call getSchedule and pass in the _sequencedList
         _schedule = _scheduler.getSchedule(_sequencedList);
-        
+
         // Check to see if there are any unreachable upstream actors
         // Different in that all schedules must be processed before calling this
-        if (_scheduler.unreachableActorExists())
-        {
+        if (_scheduler.unreachableActorExists()) {
             // Throw an exception for unreachable actors
             // One exclusion:  TestExceptionHandler actors are not reported
             // since these are disconnected from the model, but don't have any
             // functionality for the model
             // This could be changed in the future to have an option to allow unreachable actors
             StringBuffer unreachableActors = new StringBuffer("");
-            
-            for (Actor a : _scheduler.unreachableActorList())
-            {
+
+            for (Actor a : _scheduler.unreachableActorList()) {
                 unreachableActors.append(a.getFullName() + ", ");
             }
-            
+
             // Remove the last two characters ", "
             // Throw exception
-            throw new IllegalActionException("There are unreachable upstream actors in the model: " + unreachableActors.substring(0, unreachableActors.length() - 2));
+            throw new IllegalActionException(
+                    "There are unreachable upstream actors in the model: "
+                            + unreachableActors.substring(0, unreachableActors
+                                    .length() - 2));
         }
-        
+
         // The firing iterator is called in prefire()
         // This ensures a new sequence of firings for each iteration
         // FIXME:  Also get an actor iterator?  Actor iterators are not implemented yet in SequenceSchedule.
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The top level SequenceSchedule object.  */
     private SequenceSchedule _schedule;
 }
-

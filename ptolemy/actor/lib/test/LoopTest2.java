@@ -48,29 +48,25 @@ import ptolemy.kernel.util.NameDuplicationException;
  * 
  */
 
-
 public class LoopTest2 extends TypedAtomicActor {
 
     boolean continueLooping = true;
     /**
      * The Point (Lat,Long) the user selected from the map
      */
-    public TypedIOPort counter = new TypedIOPort(this,
-            "counter", true, false);
+    public TypedIOPort counter = new TypedIOPort(this, "counter", true, false);
 
-    public TypedIOPort xmlResults = new TypedIOPort(this,
-            "XML Results", true, false);
+    public TypedIOPort xmlResults = new TypedIOPort(this, "XML Results", true,
+            false);
 
     /**
      */
 
-    public TypedIOPort searchOutput = new TypedIOPort(this,
-            "searchOutput", false, true);
-
+    public TypedIOPort searchOutput = new TypedIOPort(this, "searchOutput",
+            false, true);
 
     public TypedIOPort foundResultsOutput = new TypedIOPort(this,
             "found Results Output", false, true);
-
 
     public LoopTest2(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -93,33 +89,34 @@ public class LoopTest2 extends TypedAtomicActor {
      *
      */
     public void fire() throws IllegalActionException {
-        super.fire();            
+        super.fire();
 
         if (counter.getWidth() > 0 && counter.hasToken(0)) {
             String counterStr = ((StringToken) counter.get(0)).stringValue();
-            int counterInt  = new Integer(counterStr).intValue();
-            System.out.println("counter input  is "+counterInt);
+            int counterInt = new Integer(counterStr).intValue();
+            System.out.println("counter input  is " + counterInt);
 
             // if (xmlResults.getWidth() <= 0) { }
 
             // see if I can have the loop stop itself before it reaches
             // the limit of 75 "searches"
             if (xmlResults.getWidth() > 0 && xmlResults.hasToken(0)) {
-                String xmlResultsStr = ((StringToken) xmlResults.get(0)).stringValue();
-                System.out.println("#"+xmlResultsStr+"# \n");
-                if (xmlResultsStr.equals("Results Found")) {    
-                    System.out.println("Got data, set to "+ xmlResultsStr);
-                    foundResultsOutput.broadcast(new StringToken(xmlResultsStr));
+                String xmlResultsStr = ((StringToken) xmlResults.get(0))
+                        .stringValue();
+                System.out.println("#" + xmlResultsStr + "# \n");
+                if (xmlResultsStr.equals("Results Found")) {
+                    System.out.println("Got data, set to " + xmlResultsStr);
+                    foundResultsOutput
+                            .broadcast(new StringToken(xmlResultsStr));
                     continueLooping = false;
                 }
             } else {
-                System.out.println("counter is "+counterInt);
-                searchOutput.broadcast(new StringToken("Search "+counterInt));
-                if (counterInt == 75 ) {
-                    System.out.println("Ending this "+counterInt);
+                System.out.println("counter is " + counterInt);
+                searchOutput.broadcast(new StringToken("Search " + counterInt));
+                if (counterInt == 75) {
+                    System.out.println("Ending this " + counterInt);
                     continueLooping = false;
                 }
-
 
             }
 

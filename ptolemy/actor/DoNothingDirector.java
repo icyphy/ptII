@@ -27,9 +27,6 @@
  */
 package ptolemy.actor;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Initializable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -70,14 +67,35 @@ public class DoNothingDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    public void addInitializable(Initializable initializable) {}
-    public void fire() {}
-    public void initialize() {}
-    public boolean postfire() {return false;}
-    public boolean prefire() {return false;}
-    public void preinitialize() {}
-    public boolean transferInputs(IOPort port) {return false;}
-    public boolean transferOutputs(IOPort port) {return false;}
-    public void wrapup() {}
+
+    public void addInitializable(Initializable initializable) {
+    }
+
+    public void fire() {
+    }
+
+    public void initialize() {
+    }
+
+    public boolean postfire() {
+        return false;
+    }
+
+    public boolean prefire() {
+        return false;
+    }
+
+    public void preinitialize() {
+    }
+
+    public boolean transferInputs(IOPort port) {
+        return false;
+    }
+
+    public boolean transferOutputs(IOPort port) {
+        return false;
+    }
+
+    public void wrapup() {
+    }
 }

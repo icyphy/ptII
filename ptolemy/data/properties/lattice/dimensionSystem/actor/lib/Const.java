@@ -30,7 +30,6 @@ package ptolemy.data.properties.lattice.dimensionSystem.actor.lib;
 import java.util.List;
 
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////

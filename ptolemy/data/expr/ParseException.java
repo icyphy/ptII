@@ -161,7 +161,8 @@ public class ParseException extends Exception {
             tok = tok.next;
         }
 
-        retval.append("\" at line " + currentToken.next.beginLine + ", column " + currentToken.next.beginColumn);
+        retval.append("\" at line " + currentToken.next.beginLine + ", column "
+                + currentToken.next.beginColumn);
         retval.append("." + eol);
 
         if (expectedTokenSequences.length == 1) {

@@ -200,7 +200,7 @@ public class ModelDirectory extends CompositeEntity {
      * </ol>
      * Formerly, we were seeing exceptions about missing directory.
      */
-    private void _purgeConfigurationURL () {
+    private void _purgeConfigurationURL() {
         if (getContainer() != null) {
             List attributes = getContainer().attributeList(URIAttribute.class);
             if (attributes.size() > 0) {

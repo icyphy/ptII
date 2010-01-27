@@ -457,8 +457,7 @@ public class GTTools {
      *  @return The object, or null if not found.
      *  @see #getCodeFromObject(NamedObj, NamedObj)
      */
-    public static NamedObj getObjectFromCode(String code,
-            NamedObj topContainer) {
+    public static NamedObj getObjectFromCode(String code, NamedObj topContainer) {
         String abbreviation = code.substring(0, 2);
         String name = code.substring(2);
         if (abbreviation.equals("A:")) {
@@ -513,8 +512,7 @@ public class GTTools {
             NameDuplicationException {
         Attribute attribute = object.getAttribute("patternObject");
         if (createNew
-                && (attribute == null ||
-                        !(attribute instanceof PatternObjectAttribute))) {
+                && (attribute == null || !(attribute instanceof PatternObjectAttribute))) {
             attribute = new PatternObjectAttribute(object, "patternObject");
         }
         return (PatternObjectAttribute) attribute;
@@ -545,8 +543,7 @@ public class GTTools {
      *  @see #isInReplacement(NamedObj)
      */
     public static boolean isInPattern(NamedObj object) {
-        CompositeActorMatcher container =
-            getContainingPatternOrReplacement(object);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(object);
         return container != null && container instanceof Pattern;
     }
 
@@ -557,8 +554,7 @@ public class GTTools {
      *  @see #isInPattern(NamedObj)
      */
     public static boolean isInReplacement(NamedObj object) {
-        CompositeActorMatcher container =
-            getContainingPatternOrReplacement(object);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(object);
         return container != null && container instanceof Replacement;
     }
 

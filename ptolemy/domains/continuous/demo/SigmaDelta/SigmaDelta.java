@@ -112,8 +112,7 @@ public class SigmaDelta extends TypedCompositeActor {
         TypedIOPort subout = new TypedIOPort(ctsub, "Pout");
         subout.setOutput(true);
 
-        ContinuousDirector ctdir = new ContinuousDirector(ctsub,
-                "CTEmbDir");
+        ContinuousDirector ctdir = new ContinuousDirector(ctsub, "CTEmbDir");
 
         //ctdir.addDebugListener(new StreamListener());
         // ---------------------------------
@@ -156,7 +155,8 @@ public class SigmaDelta extends TypedCompositeActor {
         ctsub.connect(scale0.output, add1.plus, "CR1");
         ctsub.connect(add1.output, integrator1.derivative, "CR2");
 
-        Relation cr3 = ctsub.connect(integrator1.state, integrator2.derivative, "CR3");
+        Relation cr3 = ctsub.connect(integrator1.state, integrator2.derivative,
+                "CR3");
         Relation cr4 = ctsub.connect(integrator2.state, ctPlot.input, "CR4");
         scale1.input.link(cr3);
         scale2.input.link(cr4);

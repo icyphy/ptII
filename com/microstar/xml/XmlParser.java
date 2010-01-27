@@ -2205,7 +2205,7 @@ public class XmlParser {
             }
 
             // Dwight Richards pointed out that newSize was ignored (11/03)
-            char [] newArray = new char[newSize];
+            char[] newArray = new char[newSize];
 
             System.arraycopy(dataBuffer, 0, newArray, 0, currentSize);
             dataBuffer = newArray;

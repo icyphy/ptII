@@ -146,8 +146,8 @@ public class DifferentialSystem extends TypedCompositeActor {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public DifferentialSystem(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public DifferentialSystem(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -159,7 +159,7 @@ public class DifferentialSystem extends TypedCompositeActor {
      *  The default is an ArrayToken of an empty String.
      */
     public Parameter stateVariableNames;
-    
+
     /** The value of current time. This parameter is not visible in
      *  the expression screen except in expert mode. Its value initially
      *  is just 0.0, a double, but upon each firing, it is given a
@@ -180,12 +180,11 @@ public class DifferentialSystem extends TypedCompositeActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
-        if (attribute instanceof Parameter
-                && attribute != t
+        if (attribute instanceof Parameter && attribute != t
                 && attribute != stateVariableNames) {
             // If the attribute name matches an input port name,
             // do not reinitialize.
-            TypedIOPort port = (TypedIOPort)getPort(attribute.getName());
+            TypedIOPort port = (TypedIOPort) getPort(attribute.getName());
             if (port == null || !port.isInput()) {
                 // Change of any parameter triggers reinitialization.
                 _requestInitialization();
@@ -195,7 +194,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         // will recreate the contents.
         _upToDate = false;
     }
-    
+
     /** Override the base class to first set the value of the
      *  parameter <i>t</i> to match current time, then to set
      *  the local parameters that mirror input values,
@@ -205,7 +204,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         // Set the time variable.
         double currentTime = getDirector().getModelTime().getDoubleValue();
         t.setToken(new DoubleToken(currentTime));
-        
+
         // Set the input parameters.
         /* NOTE: There is no need to set the values of these shadow
          * variables. They are not used.
@@ -218,10 +217,10 @@ public class DifferentialSystem extends TypedCompositeActor {
             }
         }
         */
-        
+
         super.fire();
     }
-    
+
     /** Create the model inside from the parameter values.
      *  This method gets write access on the workspace.
      *  @exception IllegalActionException If there is no director,
@@ -268,8 +267,9 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // One Expression actor per integrator.
                 equations[i] = new Expression(this, states[i] + "_dot");
                 equations[i].setPersistent(false);
-                equations[i].expression.setExpression(
-                        ((Parameter) getAttribute(states[i] + "_dot")).getExpression());
+                equations[i].expression
+                        .setExpression(((Parameter) getAttribute(states[i]
+                                + "_dot")).getExpression());
 
                 connect(equations[i].output, integrators[i].derivative);
             }
@@ -301,8 +301,9 @@ public class DifferentialSystem extends TypedCompositeActor {
                         + outputs[outIndex]);
                 maps[outIndex].setPersistent(false);
 
-                maps[outIndex].expression.setExpression(
-                        ((Parameter) getAttribute(outputs[outIndex])).getExpression());
+                maps[outIndex].expression
+                        .setExpression(((Parameter) getAttribute(outputs[outIndex]))
+                                .getExpression());
                 maps[outIndex].output.setTypeEquals(BaseType.DOUBLE);
                 connect(maps[outIndex].output,
                         (TypedIOPort) getPort(outputs[outIndex]));
@@ -325,12 +326,14 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // Create and connect the port only if the input
                 // is used.
                 for (int k = 0; k < m; k++) {
-                    Parameter stateUpdateSpec = ((Parameter) getAttribute(states[i] + "_dot"));
-                    Set<String> freeIdentifiers = stateUpdateSpec.getFreeIdentifiers();
+                    Parameter stateUpdateSpec = ((Parameter) getAttribute(states[i]
+                            + "_dot"));
+                    Set<String> freeIdentifiers = stateUpdateSpec
+                            .getFreeIdentifiers();
                     // Create an output port only if the expression references the input.
                     if (freeIdentifiers.contains(inputs[k])) {
-                        TypedIOPort port = new TypedIOPort(equations[i], inputs[k],
-                                true, false);
+                        TypedIOPort port = new TypedIOPort(equations[i],
+                                inputs[k], true, false);
                         port.setTypeEquals(BaseType.DOUBLE);
                         port.link(inputRelations[k]);
                     }
@@ -356,7 +359,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                 // if you want that output port in a feedback loop.
                 for (int k = 0; k < m; k++) {
                     Parameter outputSpec = ((Parameter) getAttribute(outputs[l]));
-                    Set<String> freeIdentifiers = outputSpec.getFreeIdentifiers();
+                    Set<String> freeIdentifiers = outputSpec
+                            .getFreeIdentifiers();
                     // Create an output port only if the expression references the input.
                     if (freeIdentifiers.contains(inputs[k])) {
                         TypedIOPort port = new TypedIOPort(maps[l], inputs[k],
@@ -395,7 +399,7 @@ public class DifferentialSystem extends TypedCompositeActor {
     protected void _addPort(Port port) throws IllegalActionException,
             NameDuplicationException {
         super._addPort(port);
-        
+
         // Add the parameter, if it does not already exist.
         String name = port.getName();
         if (getAttribute(name) == null) {
@@ -473,17 +477,18 @@ public class DifferentialSystem extends TypedCompositeActor {
         stateVariableNames.setToken(new ArrayToken(BaseType.STRING, empty));
 
         setClassName("ptolemy.domains.ct.lib.DifferentialSystem");
-        
+
         t = new Parameter(this, "t");
         t.setTypeEquals(BaseType.DOUBLE);
         t.setVisibility(Settable.EXPERT);
         t.setExpression("0.0");
-        
+
         // This actor contains a ContinuousDirector.
         // This director is not persistent, however.
         // There is no need to store it in the MoML file, since
         // it is created here in the constructor.
-        (new ContinuousDirector(this, "ContinuousDirector")).setPersistent(false);
+        (new ContinuousDirector(this, "ContinuousDirector"))
+                .setPersistent(false);
 
         // icon
         _attachText("_iconDescription", "<svg>\n"
@@ -506,10 +511,10 @@ public class DifferentialSystem extends TypedCompositeActor {
             dir.requestInitialization(this);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     /** Flag indicating whether the contained model is up to date. */
     private boolean _upToDate = false;
 }

@@ -62,7 +62,7 @@ public class SuppressSimultaneousEvents extends DETransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports.
      *  @param workspace The workspace for the new object.
@@ -71,7 +71,8 @@ public class SuppressSimultaneousEvents extends DETransformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SuppressSimultaneousEvents newObject = (SuppressSimultaneousEvents) super.clone(workspace);
+        SuppressSimultaneousEvents newObject = (SuppressSimultaneousEvents) super
+                .clone(workspace);
 
         newObject.output.setTypeEquals(input.getType());
         newObject.output.setWidthEquals(newObject.input, false);
@@ -87,12 +88,12 @@ public class SuppressSimultaneousEvents extends DETransformer {
      *  token seen at this point in physical time.
      * @exception IllegalActionException 
      */
-    public void fire() throws IllegalActionException{
+    public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
             Time currentTime = getDirector().getModelTime();
             Token currentToken = input.get(0);
-            if (_lastEventTime == null || !_lastEventTime.equals(currentTime)){
+            if (_lastEventTime == null || !_lastEventTime.equals(currentTime)) {
                 output.broadcast(currentToken);
             }
             _lastEventTime = currentTime;

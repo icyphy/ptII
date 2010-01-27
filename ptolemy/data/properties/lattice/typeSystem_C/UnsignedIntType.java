@@ -29,12 +29,10 @@
 package ptolemy.data.properties.lattice.typeSystem_C;
 
 import ptolemy.data.LongToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Property
@@ -53,22 +51,22 @@ public abstract class UnsignedIntType extends LatticeProperty implements
 
     /** Construct a node named "SignedIntType" in the lattice.
      *  @param lattice The lattice in which the node is to be constructed.   
-     */   
+     */
     public UnsignedIntType(PropertyLattice lattice) {
         // FIXME: why is this called UnsignedIntType and not UnsignedInt?
         // In SystemC, a SignedIt ia a "sc_uint".
         // See http://en.wikipedia.org/wiki/SystemC
         super(lattice, "UnsignedIntType");
     }
-    
+
     /** Construct a node named "SignedIntType" in the lattice.
      *  @param lattice The lattice in which the node is to be constructed.   
      *  @param name The name, used by subclasses.
-     */   
+     */
     public UnsignedIntType(PropertyLattice lattice, String name) {
-    // 09/21/09 - Charles Shelton - Additional constructor needed for
-    // subclasses that inherit from UnsignedIntType so that they can
-    // also set their name member when declared.
+        // 09/21/09 - Charles Shelton - Additional constructor needed for
+        // subclasses that inherit from UnsignedIntType so that they can
+        // also set their name member when declared.
         super(lattice, name);
     }
 
@@ -111,17 +109,17 @@ public abstract class UnsignedIntType extends LatticeProperty implements
         return true;
     }
 
-//     public boolean isInRange(Token token) throws IllegalActionException {
-//         // FIXME: Findbugs: Unchecked/unconfirmed cast.
-//         // The problem here is that token might not be a ScalarToken.
-//         // Is this method used?  Perhaps it can be removed.
-//         if ((((ScalarToken) token).longValue() < ((ScalarToken) getMinValue())
-//                         .longValue())
-//                 || (((ScalarToken) token).longValue() > ((ScalarToken) getMaxValue())
-//                         .longValue())) {
-//             return false;
-//         } else {
-//             return true;
-//         }
-//     }
+    //     public boolean isInRange(Token token) throws IllegalActionException {
+    //         // FIXME: Findbugs: Unchecked/unconfirmed cast.
+    //         // The problem here is that token might not be a ScalarToken.
+    //         // Is this method used?  Perhaps it can be removed.
+    //         if ((((ScalarToken) token).longValue() < ((ScalarToken) getMinValue())
+    //                         .longValue())
+    //                 || (((ScalarToken) token).longValue() > ((ScalarToken) getMaxValue())
+    //                         .longValue())) {
+    //             return false;
+    //         } else {
+    //             return true;
+    //         }
+    //     }
 }

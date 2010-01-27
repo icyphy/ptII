@@ -2021,23 +2021,24 @@ public class Query extends JPanel {
                 // NOTE: If the last argument is null, then choose a
                 // default dir.
                 JFileChooser fileChooser = new JFileChooser(_startingDirectory) {
-                        public void approveSelection() {
-                            File file = getSelectedFile();
-                            if (file.exists() && getDialogType() == SAVE_DIALOG) {
-                                String queryString = file.getName()
+                    public void approveSelection() {
+                        File file = getSelectedFile();
+                        if (file.exists() && getDialogType() == SAVE_DIALOG) {
+                            String queryString = file.getName()
                                     + " already exists. Overwrite?";
-                                int selected = JOptionPane.showOptionDialog(null,
-                                        queryString, "Confirm save",
-                                        JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.QUESTION_MESSAGE, null, null, null);
-                                if (selected == 0) {
-                                    super.approveSelection();
-                                }
-                            } else {
+                            int selected = JOptionPane.showOptionDialog(null,
+                                    queryString, "Confirm save",
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE, null, null,
+                                    null);
+                            if (selected == 0) {
                                 super.approveSelection();
                             }
+                        } else {
+                            super.approveSelection();
                         }
-                    };
+                    }
+                };
                 String fileName = getSelectedFileName().trim();
                 if (!fileName.equals("")) {
                     fileChooser.setSelectedFile(new File(fileName));
@@ -2049,12 +2050,13 @@ public class Query extends JPanel {
 
                 if (_allowFiles && _allowDirectories) {
                     fileChooser
-                        .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                            .setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 } else if (_allowFiles && !_allowDirectories) {
                     // This is the default.
                     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
                 } else if (!_allowFiles && _allowDirectories) {
-                    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    fileChooser
+                            .setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 } else {
                     // Usually, we would use InternalErrorException
                     // here, but if we do, then this package would
@@ -2065,7 +2067,7 @@ public class Query extends JPanel {
                 }
 
                 int returnValue = _save ? fileChooser.showSaveDialog(_owner)
-                    : fileChooser.showOpenDialog(_owner);
+                        : fileChooser.showOpenDialog(_owner);
 
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     if (_base == null) {
@@ -2098,7 +2100,8 @@ public class Query extends JPanel {
                             // Ignore, since we can't do much about it anyway.
                         }
 
-                        URI relativeURI = _base.relativize(selectedFile.toURI());
+                        URI relativeURI = _base
+                                .relativize(selectedFile.toURI());
                         if (relativeURI != null
                                 && relativeURI.getScheme() != null
                                 && relativeURI.getScheme().equals("file")) {
@@ -2106,9 +2109,10 @@ public class Query extends JPanel {
                             // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4022
                             String pathName = relativeURI.getPath();
                             // Sigh.  Under Windows, getPath() returns a leading /
-                            File file = new File(pathName.replace("%20",  " "));
+                            File file = new File(pathName.replace("%20", " "));
                             try {
-                                _entryBox.setText(file.getCanonicalPath().replace('\\', '/'));
+                                _entryBox.setText(file.getCanonicalPath()
+                                        .replace('\\', '/'));
                             } catch (IOException ex) {
                                 _entryBox.setText(file.toString());
                             }
@@ -2116,7 +2120,7 @@ public class Query extends JPanel {
                             _entryBox.setText(relativeURI.toString());
                         }
                     }
-                    
+
                     _owner._notifyListeners(_name);
                 }
             } finally {

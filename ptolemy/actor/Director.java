@@ -271,7 +271,7 @@ public class Director extends Attribute implements Executable {
             return BooleanDependency.OTIMES_IDENTITY;
         }
     }
-    
+
     /** Request that after the current iteration finishes postfire() returns
      *  false, indicating to the environment that no more iterations should
      *  be invoked. To support domains where actor firings do not necessarily
@@ -475,7 +475,7 @@ public class Director extends Attribute implements Executable {
     public double getErrorTolerance() {
         return 0.0;
     }
-    
+
     /** Return the global time for this model. The global time is
      *  defined to be the value returned by the @link{#getModelTime()}
      *  method of the top-level director in the model.
@@ -487,10 +487,9 @@ public class Director extends Attribute implements Executable {
         if (!(toplevel instanceof Actor)) {
             throw new IllegalActionException(this,
                     "Cannot get a global time because the top level is not an actor."
-                    + " It is "
-                    + toplevel);
+                            + " It is " + toplevel);
         }
-        return (((Actor)toplevel).getDirector()).getModelTime();
+        return (((Actor) toplevel).getDirector()).getModelTime();
     }
 
     /** Return the next time of interest in the model being executed by
@@ -1352,8 +1351,6 @@ public class Director extends Attribute implements Executable {
             }
         }
     }
-    
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1430,14 +1427,10 @@ public class Director extends Attribute implements Executable {
                 }
                 Time result = director.fireAt(container, time);
                 if (!result.equals(time)) {
-                    throw new IllegalActionException(this,
-                            director.getName()
-                                    + " is unable to fire "
-                                    + container.getName()
-                                    + " at the requested time: "
-                                    + time
-                                    + ". It responds it will fire it at: "
-                                    + result);
+                    throw new IllegalActionException(this, director.getName()
+                            + " is unable to fire " + container.getName()
+                            + " at the requested time: " + time
+                            + ". It responds it will fire it at: " + result);
                 }
                 return result;
             }
@@ -1589,7 +1582,7 @@ public class Director extends Attribute implements Executable {
 
     /** The current time of the model. */
     protected Time _currentTime;
-    
+
     /** Indicator that finish() has been called. */
     protected boolean _finishRequested;
 
@@ -1658,5 +1651,4 @@ public class Director extends Attribute implements Executable {
     /** Time resolution cache, with a reasonable default value. */
     private double _timeResolution = 1E-10;
 
-   
 }

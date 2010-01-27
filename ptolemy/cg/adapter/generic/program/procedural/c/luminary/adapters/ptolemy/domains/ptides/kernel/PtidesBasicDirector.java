@@ -93,8 +93,8 @@ public class PtidesBasicDirector
         // generate a name for it, and put the name along with this actor into a
         // HashMap.
         Map devices = new HashMap<Actor, String>();
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) getComponent().getContainer())
-                .deepEntityList()) {
+        for (Actor actor : (List<Actor>) ((TypedCompositeActor) getComponent()
+                .getContainer()).deepEntityList()) {
             // If the input is a sensor device, then we need to use interrupts to trigger it.
             if (actor instanceof LuminarySensorInputDevice) {
                 devices.put(actor, new String("Sensing_"
@@ -122,18 +122,21 @@ public class PtidesBasicDirector
         int configurationSize = LuminarySensorInputDevice.numberOfSupportedInputDeviceConfigurations;
         String[] GPHandlers = new String[configurationSize];
         boolean foundConfig = false;
-        for (LuminarySensorInputDevice actor : (Set<LuminarySensorInputDevice>) devices.keySet()) {
+        for (LuminarySensorInputDevice actor : (Set<LuminarySensorInputDevice>) devices
+                .keySet()) {
             for (int i = 0; i < actor.supportedConfigurations().size(); i++) {
-                if (actor.configuration().compareTo(actor
-                        .supportedConfigurations().get(i)) == 0) {
-                    GPHandlers[i + Integer.parseInt(actor.startingConfiguration())] = (String) devices.get(actor);
+                if (actor.configuration().compareTo(
+                        actor.supportedConfigurations().get(i)) == 0) {
+                    GPHandlers[i
+                            + Integer.parseInt(actor.startingConfiguration())] = (String) devices
+                            .get(actor);
                     foundConfig = true;
                     break;
                 }
             }
             if (foundConfig == false) {
-                throw new IllegalActionException(actor, "Cannot found the configuration for this " +
-                                "actor.");
+                throw new IllegalActionException(actor,
+                        "Cannot found the configuration for this " + "actor.");
             }
         }
         for (int i = 0; i < configurationSize; i++) {
@@ -202,7 +205,9 @@ public class PtidesBasicDirector
         code.append(getCodeGenerator().comment(
                 "Initialization code of the PtidesDirector."));
 
-        code.append(_templateParser.getCodeStream().getCodeBlock("initPDBlock"));
+        code
+                .append(_templateParser.getCodeStream().getCodeBlock(
+                        "initPDBlock"));
         code.append(super.generateInitializeCode());
 
         return code.toString();

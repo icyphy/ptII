@@ -214,8 +214,7 @@ public class RTMaudeUtility {
             BufferedReader reader = null;
             Stack<BufferedReader> readerStack = null;
             try {
-                reader = new BufferedReader(new InputStreamReader(
-                                stream));
+                reader = new BufferedReader(new InputStreamReader(stream));
                 readerStack = new Stack<BufferedReader>();
                 readerStack.push(null);
                 while (!readerStack.isEmpty()) {
@@ -227,8 +226,8 @@ public class RTMaudeUtility {
                             if (trim.startsWith("load ")) {
                                 trim = trim.substring(5).trim();
                                 stream = loader
-                                    .getResourceAsStream(SEMANTIC_FILE_PATH
-                                            + "/" + trim + ".maude");
+                                        .getResourceAsStream(SEMANTIC_FILE_PATH
+                                                + "/" + trim + ".maude");
                                 if (stream != null) {
                                     readerStack.push(reader);
                                     reader = new BufferedReader(
@@ -275,10 +274,10 @@ public class RTMaudeUtility {
                             try {
                                 reader.close();
                             } catch (IOException ex) {
-                                throw new IllegalActionException("Failed to close "
-                                        + reader);
+                                throw new IllegalActionException(
+                                        "Failed to close " + reader);
                             }
-                        } 
+                        }
                     }
                 }
             }

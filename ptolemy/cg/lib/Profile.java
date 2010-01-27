@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (rodiers)
  */
 abstract public class Profile {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -64,7 +64,8 @@ abstract public class Profile {
      *  @return A list with for each actor the information
      *  necessary to interface the generated code.
      */
-    abstract public List<FiringFunction> firings() throws IllegalActionException;
+    abstract public List<FiringFunction> firings()
+            throws IllegalActionException;
 
     /** Return firing per iteration of the actor
      * @return value of number of firings per iteration of the actor
@@ -77,6 +78,7 @@ abstract public class Profile {
         public String actorName;
         public String junctionName;
     }
+
     /**
      * A profiled Junction.
      * @author dai
@@ -86,19 +88,19 @@ abstract public class Profile {
         /** Construct a Junction.
          *  @param putActor The 
          */
-        public Junction(String putActor, String putActorPort,
-            String getActor, String getActorPort, int numTokens) {
+        public Junction(String putActor, String putActorPort, String getActor,
+                String getActorPort, int numTokens) {
             _putActor = putActor;
             numInitialTokens = numTokens;
         }
-        
+
         public String getPutActorName() {
             return _putActor;
         }
-        
+
         public int numInitialTokens = 0;
         private String _putActor = null;
-        
+
     }
 
     static public class FiringFunction {
@@ -107,31 +109,33 @@ abstract public class Profile {
             ports = new LinkedList();
             nextFiringFunctions = new LinkedList();
             previousFiringFunctions = new LinkedList();
-            
+
             nextIterationFirings = new LinkedList();
             previousIterationFirings = new LinkedList();
         }
-        
+
         public List<FiringFunctionPort> ports;
-        
+
         public List<Integer> nextFiringFunctions;
         public List<Integer> previousFiringFunctions;
-        
+
         public List<Integer> nextIterationFirings;
         public List<Integer> previousIterationFirings;
-        
+
         public int firingIndex;
     }
-    
+
     /**
      * A class for actors in a graph information.
      */
     static public class ProfileActor {
-        
-        public ProfileActor(String name, boolean original) throws IllegalActionException {
+
+        public ProfileActor(String name, boolean original)
+                throws IllegalActionException {
             _name = new String(name);
             _isOriginal = original;
         }
+
         /** Return if an actor is an original ptolemy actor or not.
          * @return true is the actor is an original ptolemy actor like Ramp,
          * false if the actor is generated from some composite actor, thus it has profile
@@ -139,61 +143,65 @@ abstract public class Profile {
         public boolean isOriginal() {
             return _isOriginal;
         }
-        
+
         /** Return the name of this ProfileActor.
          *  @return the name of this ProfileActor 
          */
         public String getName() {
             return _name;
         }
-        
+
         public Profile getProfile() throws IllegalActionException {
             try {
                 if (_profile != null) {
                     return _profile;
                 } else {
-                    String className = _name + "_profile";        
+                    String className = _name + "_profile";
                     Class<?> classInstance = null;
-    
-                    String home = System.getenv("HOME"); 
-                    URL url = new URL("file:"+home+"/cg/");
-                    
-                    ClassLoader classLoader = new URLClassLoader (new URL[] {url});
-                    
+
+                    String home = System.getenv("HOME");
+                    URL url = new URL("file:" + home + "/cg/");
+
+                    ClassLoader classLoader = new URLClassLoader(
+                            new URL[] { url });
+
                     classInstance = classLoader.loadClass(className);
                     _profile = (Profile) (classInstance.newInstance());
                 }
             } catch (Exception e) {
                 _profile = null;
-                throw new IllegalActionException("Cannot locate the profile of the actor: " + _name);
+                throw new IllegalActionException(
+                        "Cannot locate the profile of the actor: " + _name);
             }
             return _profile;
         }
-        
+
         Profile _profile = null;
-        
+
         private String _name;
         private boolean _isOriginal = true;
     }
-    
+
     static public class FiringFunctionPort {
-        public FiringFunctionPort(String portName, String externalPort, int portRate, boolean isInputPort) {
+        public FiringFunctionPort(String portName, String externalPort,
+                int portRate, boolean isInputPort) {
             name = portName;
             externalPortName = externalPort;
             rate = portRate;
             isInput = isInputPort;
         }
-        public String name;     //name of the external port
+
+        public String name; //name of the external port
         public String externalPortName;
         public int rate;
         public boolean isInput;
     }
-    
+
     /** A class contains the port information to
      * interface with modular code.
      */
     static public class Port {
-        
+
         /** Create the port.
          * @param name The name of the port.
          * @param publisher A flag that specifies whether it is a subscriber.
@@ -205,8 +213,9 @@ abstract public class Profile {
          * @param output A flag that specifies whether the port is an output port.
          * @param pubSubChannelName The name
          */
-        public Port(String name, boolean publisher, boolean subscriber, int width, int rate, int type,
-                boolean input, boolean output, String pubSubChannelName) {
+        public Port(String name, boolean publisher, boolean subscriber,
+                int width, int rate, int type, boolean input, boolean output,
+                String pubSubChannelName) {
             _name = name;
             _publisher = publisher;
             _subscriber = subscriber;
@@ -217,81 +226,96 @@ abstract public class Profile {
             _output = output;
             _pubSubChannelName = pubSubChannelName;
         }
-        
+
         /** Get the channel name for the publisher/subscriber pattern.
          *  @return The channel name for the publisher/subscriber.
          */
-        public String getPubSubChannelName() { return _pubSubChannelName; }
+        public String getPubSubChannelName() {
+            return _pubSubChannelName;
+        }
 
         /** Return whether the port is an input.
          *  @return True when the port is an input port.
          */
-        public boolean input() { return _input; }
-        
+        public boolean input() {
+            return _input;
+        }
+
         /** Return the name of the port.
          *  @return the port name.
          */
-        public String name() { return _name; }
-        
+        public String name() {
+            return _name;
+        }
+
         /** Return whether the port is an output.
          *  @return True when the port is an output port.
          */
-        public boolean output() { return _output; }
+        public boolean output() {
+            return _output;
+        }
 
         /** Return whether the port is an publisher port.
          *  @return True when the port is an publisher port.
          */
-        public boolean publisher() { return _publisher; }
-        
+        public boolean publisher() {
+            return _publisher;
+        }
+
         /** Return whether the port is an subscriber port.
          *  @return True when the port is an subscriber port.
          */
-        public boolean subscriber() { return _subscriber; }
+        public boolean subscriber() {
+            return _subscriber;
+        }
 
         /** Return whether the width of the port.
          *  @return the width of the port.
-         */     
-        public int width() { return _width; }
-        
+         */
+        public int width() {
+            return _width;
+        }
+
         /** Return whether the rate of the port.
          *  @return the rate of the port.
-         */     
-        public int rate() { return _rate;}
-        
+         */
+        public int rate() {
+            return _rate;
+        }
+
         /** Return whether the rate of the port.
          *  @return the rate of the port.
-         */     
-        public int type() { return _type;}
-        
+         */
+        public int type() {
+            return _type;
+        }
 
         /** A flag that specifies whether the port in an input port.*/
         private boolean _input;
 
         /** The name of the port.*/
         private String _name;
-        
+
         /** A flag that specifies whether the port in an output port.*/
         private boolean _output;
-        
+
         /** A flag that specifies whether the port in an publisher port.*/
         private boolean _publisher;
-        
+
         /** The name of the channel for the publisher port/subscriber port.*/
         private String _pubSubChannelName;
-        
+
         /** A flag that specifies whether the port in an subscriber port.*/
         private boolean _subscriber;
 
         /** The width of the port.*/
         private int _width;
-        
+
         /** The rate of the port */
         private int _rate;
-        
+
         /** The codegen type of the port */
         private int _type;
-    }    
-    
-    
-    
+    }
+
 }

@@ -298,23 +298,20 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         code.append(adapter.generateInitializeCode());
         return code.toString();
     }
-    
+
     /** Return the closing entry code, if any.
      *  @return the closing entry code.
-     */   
+     */
     public String generateClosingEntryCode() {
         return comment("closing entry code");
     }
 
-
     /** Return the closing exit code, if any.
      *  @return the closing exit code.
-     */   
+     */
     public String generateClosingExitCode() {
         return comment("closing exit code");
     }
-
-
 
     /** Generate the initialization procedure entry point.
      *  @return a string for the initialization procedure entry point.
@@ -457,8 +454,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  @return The generated variable name.
      */
     public String generateVariableName(NamedObj attribute) {
-        return NamedProgramCodeGeneratorAdapter.generateName(attribute)
-                + "_";
+        return NamedProgramCodeGeneratorAdapter.generateName(attribute) + "_";
     }
 
     /** Generate into the specified code stream the code associated with
@@ -531,19 +527,22 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      */
     protected CodeGeneratorAdapter _instantiateAdapter(Object component,
             Class<?> componentClass, String adapterClassName)
-        throws IllegalActionException {
-        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super._instantiateAdapter(component, componentClass, adapterClassName);
+            throws IllegalActionException {
+        ProgramCodeGeneratorAdapter adapter = (ProgramCodeGeneratorAdapter) super
+                ._instantiateAdapter(component, componentClass,
+                        adapterClassName);
         try {
             Class<?> templateParserClass = _templateParserClass();
             if (templateParserClass != null) {
-                adapter.setTemplateParser((TemplateParser) templateParserClass.newInstance());
+                adapter.setTemplateParser((TemplateParser) templateParserClass
+                        .newInstance());
             }
         } catch (InstantiationException e) {
             throw new InternalErrorException(e);
         } catch (IllegalAccessException e) {
             throw new InternalErrorException(e);
         }
-        
+
         return adapter;
     }
 
@@ -729,8 +728,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected String _formatComment(String comment) {
         String callingMethod = "";
         try {
-            if (((IntToken)verbosity.getToken()).intValue() > 9) {
-                callingMethod = new Throwable().getStackTrace()[2].getClassName().replace('$', '.') + _eol;
+            if (((IntToken) verbosity.getToken()).intValue() > 9) {
+                callingMethod = new Throwable().getStackTrace()[2]
+                        .getClassName().replace('$', '.')
+                        + _eol;
             }
         } catch (IllegalActionException ex) {
             callingMethod = ex.toString();
@@ -932,7 +933,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String closingEntryCode = generateClosingEntryCode();
         String closingExitCode = generateClosingExitCode();
 
-
         // Generating variable declarations needs to happen after buffer
         // sizes are set(?).
         String variableDeclareCode = generateVariableDeclaration();
@@ -1042,8 +1042,8 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                 code.append(wrapupProcedureName);
             }
             //if (containsCode(closingExitCode)) {
-                code.append(closingExitCode);
-                //}
+            code.append(closingExitCode);
+            //}
         }
 
         code.append(mainExitCode);
@@ -1108,7 +1108,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected String _printExecutionTime() {
         return comment("Print execution time.");
     }
-    
+
     /** Return the prototype for fire functions.
      *  @return In this base class, return "()".
      *  Derived classes, such as the C code generator adapter
@@ -1117,7 +1117,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected String _getFireFunctionArguments() {
         return "()";
     }
-    
+
     /** Generate the code for recording the current time.
      *  This base class only generates a comment.
      *  @return Return the code for recording the current time.

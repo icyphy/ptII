@@ -29,12 +29,10 @@
 package ptolemy.data.properties.lattice.typeSystem_C;
 
 import ptolemy.data.DoubleToken;
-import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 import ptolemy.data.properties.lattice.TypeProperty;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Property
@@ -52,7 +50,7 @@ public class LongDouble extends LatticeProperty implements TypeProperty {
 
     /** Construct a node named "LongDouble" in the lattice.
      *  @param lattice The lattice in which the node is to be constructed.   
-     */   
+     */
     public LongDouble(PropertyLattice lattice) {
         super(lattice, "LongDouble");
     }
@@ -84,18 +82,18 @@ public class LongDouble extends LatticeProperty implements TypeProperty {
         return true;
     }
 
-//    public boolean isInRange(Token token) throws IllegalActionException {
-//         // FIXME: Findbugs: Unchecked/unconfirmed cast.
-//         // The problem here is that token might not be a ScalarToken.
-//         // Is this method used?  Perhaps it can be removed.
-//         if ((((ScalarToken) token).doubleValue() < ((ScalarToken) getMinValue())
-//                 .doubleValue())
-//                 || (((ScalarToken) token).doubleValue() > ((ScalarToken) getMaxValue())
-//                         .doubleValue())) {
-//
-//             return false;
-//         } else {
-//             return true;
-//         }
-//     }
+    //    public boolean isInRange(Token token) throws IllegalActionException {
+    //         // FIXME: Findbugs: Unchecked/unconfirmed cast.
+    //         // The problem here is that token might not be a ScalarToken.
+    //         // Is this method used?  Perhaps it can be removed.
+    //         if ((((ScalarToken) token).doubleValue() < ((ScalarToken) getMinValue())
+    //                 .doubleValue())
+    //                 || (((ScalarToken) token).doubleValue() > ((ScalarToken) getMaxValue())
+    //                         .doubleValue())) {
+    //
+    //             return false;
+    //         } else {
+    //             return true;
+    //         }
+    //     }
 }

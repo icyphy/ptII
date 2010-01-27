@@ -81,23 +81,23 @@ public class PtidesBasicReceiver extends DEReceiver {
         super(container);
     }
 
-//    /**
-//     * Return true if there are <i>numberOfTokens</i> tokens tokens available to
-//     * the get() method.
-//     *
-//     * @param numberOfTokens
-//     *            An int indicating how many tokens are needed.
-//     * @return True if there are numberOfTokens tokens available.
-//     */
-//    public boolean hasToken(int numberOfTokens) {
-//        try {
-//            throw new IllegalActionException(
-//                    "This method should not be used in PtidesBasicReceiver");
-//        } catch (IllegalActionException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
+    //    /**
+    //     * Return true if there are <i>numberOfTokens</i> tokens tokens available to
+    //     * the get() method.
+    //     *
+    //     * @param numberOfTokens
+    //     *            An int indicating how many tokens are needed.
+    //     * @return True if there are numberOfTokens tokens available.
+    //     */
+    //    public boolean hasToken(int numberOfTokens) {
+    //        try {
+    //            throw new IllegalActionException(
+    //                    "This method should not be used in PtidesBasicReceiver");
+    //        } catch (IllegalActionException e) {
+    //            e.printStackTrace();
+    //        }
+    //        return false;
+    //    }
 
     /**
      * Wrap the token in an DETokenEvent and post the trigger event to the director.

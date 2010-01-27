@@ -27,20 +27,13 @@
  */
 package ptolemy.vergil.pdfrenderer;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.URL;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -50,7 +43,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
@@ -102,7 +94,7 @@ public class PDFAttribute extends VisibleAttribute {
     public PDFAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _icon = new PDFIcon(this, "_icon");
         _icon.setPersistent(false);
 
@@ -111,13 +103,14 @@ public class PDFAttribute extends VisibleAttribute {
         // Put the sample PDF in the local directory so that it stays with this actor.
         // Use $CLASSSPATH intstead of $PTII so that this class can find sample.pdf
         // under Web Start.
-        source.setExpression("$CLASSPATH/ptolemy/vergil/pdfrenderer/sample.pdf");
-        
+        source
+                .setExpression("$CLASSPATH/ptolemy/vergil/pdfrenderer/sample.pdf");
+
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.DOUBLE);
         scale.setExpression("100.0");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -149,42 +142,57 @@ public class PDFAttribute extends VisibleAttribute {
                     File file = source.asFile();
                     RandomAccessFile raf = new RandomAccessFile(file, "r");
                     FileChannel channel = raf.getChannel();
-                    byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+                    byteBuffer = channel.map(FileChannel.MapMode.READ_ONLY, 0,
+                            channel.size());
                 } catch (Exception ex) {
                     URL jarURL = null;
                     // We might be under WebStart.  In theory, we should be able to read
                     // the URL and create a ByteBuffer, but there are problems with the non-ascii bytes
                     // in the pdf file.  The basic idea was to new BufferedOutputStream(new ByteArrayOutputStream()).
                     try {
-                        jarURL = FileUtilities.nameToURL(source.getExpression(), null, null);
+                        jarURL = FileUtilities.nameToURL(
+                                source.getExpression(), null, null);
                     } catch (Exception ex2) {
-                        throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression()
-                                                         + ". Tried opening as URL, exception was: " + ex2);
+                        throw new IllegalActionException(
+                                this,
+                                ex,
+                                "Failed to open "
+                                        + source.getExpression()
+                                        + ". Tried opening as URL, exception was: "
+                                        + ex2);
                     }
-                    if (! jarURL.toString().startsWith("jar:")) {
-                        throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression());
+                    if (!jarURL.toString().startsWith("jar:")) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to open " + source.getExpression());
                     } else {
                         try {
-                            byte [] contents = FileUtilities.binaryReadURLToByteArray(jarURL);
+                            byte[] contents = FileUtilities
+                                    .binaryReadURLToByteArray(jarURL);
                             byteBuffer = ByteBuffer.wrap(contents);
                         } catch (Exception ex3) {
-                            throw new IllegalActionException(this, ex, "Failed to open " + source.getExpression()
-                                    + ".  Also, tried to open jar URL " + jarURL + ", exception was: \n"
-                                    + KernelException.stackTraceToString(ex3));
+                            throw new IllegalActionException(this, ex,
+                                    "Failed to open "
+                                            + source.getExpression()
+                                            + ".  Also, tried to open jar URL "
+                                            + jarURL
+                                            + ", exception was: \n"
+                                            + KernelException
+                                                    .stackTraceToString(ex3));
                         }
                     }
                 }
 
                 PDFFile pdffile = new PDFFile(byteBuffer);
-    
+
                 // draw the first page to an image
                 PDFPage page = pdffile.getPage(0);
-                
+
                 _icon.setPage(page);
             } catch (IOException ex) {
                 // FIXME: Better would be to show an ERROR icon
                 // like ImageAttribute does.
-                throw new IllegalActionException(this, ex, "Cannot read PDF file.");
+                throw new IllegalActionException(this, ex,
+                        "Cannot read PDF file.");
             }
         } else if (attribute == scale) {
             double scaleValue = ((DoubleToken) scale.getToken()).doubleValue();

@@ -97,7 +97,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                 "_containmentExtender");
         containmentExtender.setPersistent(false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -292,7 +292,8 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                     // This can happen if the container was created first
                     // and populated with its ports before this refinement
                     // was created.
-                    ModalRefinementPort port = new ModalRefinementPort(this, name);
+                    ModalRefinementPort port = new ModalRefinementPort(this,
+                            name);
                     // Create the link on the outside of the port.
                     String relationName = name + "Relation";
                     Relation relation = container.getRelation(relationName);
@@ -303,7 +304,7 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                         containerPort.link(relation);
                     }
                     port.link(relation);
-                    
+
                     // Mirror the change downwards in the hierarchy.
                     Iterator entities = entityList().iterator();
                     while (entities.hasNext()) {
@@ -312,10 +313,12 @@ public class ModalRefinement extends ModalModel implements DropTargetHandler,
                         if (entity instanceof RefinementActor) {
                             if (entity.getPort(name) == null) {
                                 try {
-                                    ((RefinementActor) entity).setMirrorDisable(1);
+                                    ((RefinementActor) entity)
+                                            .setMirrorDisable(1);
                                     entity.newPort(name);
                                 } finally {
-                                    ((RefinementActor) entity).setMirrorDisable(0);
+                                    ((RefinementActor) entity)
+                                            .setMirrorDisable(0);
                                 }
                             }
                         }

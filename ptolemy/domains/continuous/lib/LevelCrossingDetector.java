@@ -101,7 +101,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
 
         level = new Parameter(this, "level", new DoubleToken(0.0));
         level.setTypeEquals(BaseType.DOUBLE);
-        
+
         value = new Parameter(this, "value");
         value.setExpression("level");
 
@@ -147,7 +147,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      *  iteration.
      */
     public Parameter level;
-    
+
     /** The output value to produce when a level-crossing is detected.
      *  This can be any data type. It defaults to the same value
      *  as the <i>level</i> parameter.
@@ -233,11 +233,11 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         double currentStepSize = dir.getCurrentStepSize();
         Time currentTime = dir.getModelTime();
         int microstep = dir.getIndex();
-        
+
         if (_debugging) {
             _debug("Called fire() at time " + dir.getModelTime()
-                    + " with microstep " + microstep
-                    + " and step size " + currentStepSize);
+                    + " with microstep " + microstep + " and step size "
+                    + currentStepSize);
         }
         // If the trigger input is not connected, or there is no
         // token, then produce no output.
@@ -437,7 +437,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
 
     // Last trigger input.
     private double _lastTrigger;
-    
+
     // Indicator that the output is postponed by one microstep at
     // the indicated time.
     private Time _postponed;

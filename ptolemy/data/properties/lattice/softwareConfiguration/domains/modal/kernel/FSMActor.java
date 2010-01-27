@@ -54,7 +54,7 @@ public class FSMActor extends PropertyConstraintModalFSMHelper {
      * @param actor The given ActomicActor.
      * @exception IllegalActionException 
      */
-    public FSMActor(PropertyConstraintSolver solver, 
+    public FSMActor(PropertyConstraintSolver solver,
             ptolemy.domains.modal.kernel.FSMActor actor)
             throws IllegalActionException {
         super(solver, actor);

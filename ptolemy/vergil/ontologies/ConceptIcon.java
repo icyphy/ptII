@@ -75,7 +75,8 @@ public class ConceptIcon extends StateIcon {
      */
     protected Paint _getFill() {
         NamedObj container = getContainer();
-        List<ColorAttribute> colors = container.attributeList(ColorAttribute.class);
+        List<ColorAttribute> colors = container
+                .attributeList(ColorAttribute.class);
         if (colors.size() > 0) {
             return colors.get(0).asColor();
         }

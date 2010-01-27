@@ -70,7 +70,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
 
         CodeStream codeStream = getTemplateParser().getCodeStream();
-        
+
         ArrayList args = new ArrayList();
         args.add(Integer.toString(0));
         String type = getCodeGenerator().codeGenType(actor.output.getType());

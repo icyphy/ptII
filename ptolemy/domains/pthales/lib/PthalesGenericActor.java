@@ -172,7 +172,8 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         // Call to elemetary task (JNI or JAVA) 
         ///////////////////////////////////////
         Object[] args = null;
-        String function = ((Parameter)getAttribute("function")).getExpression();
+        String function = ((Parameter) getAttribute("function"))
+                .getExpression();
 
         try {
             PthalesDirector director = (PthalesDirector) getDirector();
@@ -258,9 +259,10 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         int numIn = 0;
         int numOut = 0;
         int increase = 0;
-        
-        String arguments = ((Parameter)getAttribute("arguments")).getExpression();
-        
+
+        String arguments = ((Parameter) getAttribute("arguments"))
+                .getExpression();
+
         String[] listArgs = arguments.split(";");
 
         for (int i = 0; i < listArgs.length; i++) {
@@ -271,8 +273,9 @@ public class PthalesGenericActor extends PthalesAtomicActor {
                             .getDataProducedSizes((IOPort) outputPortList()
                                     .get(numOut));
                     for (int size : sizes) {
-                        if (size > 1)
+                        if (size > 1) {
                             objs.add(size);
+                        }
                     }
                     objs.add(out[numOut]);
                     numOut++;
@@ -282,8 +285,9 @@ public class PthalesGenericActor extends PthalesAtomicActor {
                             .getDataProducedSizes(((IOPort) inputPortList()
                                     .get(numIn)));
                     for (int size : sizes) {
-                        if (size > 1)
+                        if (size > 1) {
                             objs.add(size);
+                        }
                     }
                     objs.add(in[numIn]);
                     numIn++;
@@ -328,7 +332,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
 
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {
-        
+
         super._initialize();
 
         if (getAttribute("arguments") == null) {

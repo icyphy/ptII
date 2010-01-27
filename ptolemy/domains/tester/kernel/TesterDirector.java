@@ -64,7 +64,7 @@ public class TesterDirector extends Director {
     public TesterDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         trainingMode = new Parameter(this, "trainingMode");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
         trainingMode.setExpression("false");
@@ -72,7 +72,7 @@ public class TesterDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** Indicator of whether to invoke train() or test() on the Testable
      *  objects. This defaults to false which means test().
      */
@@ -82,19 +82,26 @@ public class TesterDirector extends Director {
     ////                         public methods                    ////
 
     /** Do nothing. */
-    public void addInitializable(Initializable initializable) {}
+    public void addInitializable(Initializable initializable) {
+    }
 
     /** Do nothing. */
-    public void fire() {}
+    public void fire() {
+    }
 
     /** Do nothing. */
-    public void initialize() {}
+    public void initialize() {
+    }
 
     /** Return false, indicating that we are done. */
-    public boolean postfire() {return false;}
+    public boolean postfire() {
+        return false;
+    }
 
     /** Return true. */
-    public boolean prefire() {return true;}
+    public boolean prefire() {
+        return true;
+    }
 
     /** Override the base class to first invoke preinitialize() on all
      *  contained actors and then invoke either test() or train() on all
@@ -103,8 +110,9 @@ public class TesterDirector extends Director {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
-        boolean training = ((BooleanToken)trainingMode.getToken()).booleanValue();
+
+        boolean training = ((BooleanToken) trainingMode.getToken())
+                .booleanValue();
         List<Testable> testables = getContainer().attributeList(Testable.class);
         for (Testable testable : testables) {
             if (training) {
@@ -116,11 +124,16 @@ public class TesterDirector extends Director {
     }
 
     /** Do nothing. */
-    public boolean transferInputs(IOPort port) {return false;}
+    public boolean transferInputs(IOPort port) {
+        return false;
+    }
 
     /** Do nothing. */
-    public boolean transferOutputs(IOPort port) {return false;}
+    public boolean transferOutputs(IOPort port) {
+        return false;
+    }
 
     /** Do nothing. */
-    public void wrapup() {}
+    public void wrapup() {
+    }
 }

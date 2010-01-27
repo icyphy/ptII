@@ -168,7 +168,8 @@ public class TimedDelay extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimedDelay newObject = (TimedDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
-        newObject._causalityMarker = (CausalityMarker)newObject.getAttribute("causalityMarker");
+        newObject._causalityMarker = (CausalityMarker) newObject
+                .getAttribute("causalityMarker");
         return newObject;
     }
 
@@ -277,7 +278,7 @@ public class TimedDelay extends DETransformer {
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
         _delay = ((DoubleToken) delay.getToken()).doubleValue();
-        
+
         Set<Port> dependentPorts = new HashSet<Port>();
         _causalityMarker = new CausalityMarker(this, "causalityMarker");
         _causalityMarker.addDependentPortSet(dependentPorts);
@@ -297,12 +298,12 @@ public class TimedDelay extends DETransformer {
 
     /** A local event queue to store the delayed output tokens. */
     protected CalendarQueue _delayedOutputTokens;
-    
+
     /** A causality marker to store information about how pure events are causally
      *  related to trigger events.
      */
     protected CausalityMarker _causalityMarker;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -326,7 +327,7 @@ public class TimedDelay extends DETransformer {
             throw new IllegalActionException(this, "No director.");
         }
         Time result = null;
-            result = director.fireAt(this, time);
+        result = director.fireAt(this, time);
         if (!result.equals(time)) {
             throw new IllegalActionException(this,
                     "Director is unable to fire the actor at the requested time: "

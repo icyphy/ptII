@@ -367,8 +367,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         try {
             Attribute attribute = getModifiedVariable();
             if (attribute instanceof Variable) {
-                result.add(new Inequality(
-                        ((Variable)attribute).getTypeTerm(),
+                result.add(new Inequality(((Variable) attribute).getTypeTerm(),
                         output.getTypeTerm()));
             }
         } catch (IllegalActionException e) {
@@ -376,7 +375,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         }
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

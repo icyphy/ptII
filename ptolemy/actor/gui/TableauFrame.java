@@ -301,7 +301,7 @@ public class TableauFrame extends Top {
         if (configuration != null) {
             String alternateTopPackClass = "_alternateTopPackClass";
             StringAttribute alternateTopPackClassAttribute = (StringAttribute) configuration
-                .getAttribute(alternateTopPackClass);
+                    .getAttribute(alternateTopPackClass);
 
             // If the _alternateTopPackClass attribute is present,
             // then we use the specified class to pack the gui
@@ -314,27 +314,33 @@ public class TableauFrame extends Top {
                     topPackClassName = alternateTopPackClassAttribute
                             .getExpression();
                     if (topPackClassName == null) {
-                        throw new NullPointerException("Null expression from the \""
-                                + alternateTopPackClass + "\" attribute?  It could be that "
-                                + "the Configuration is not yet constructed?");
+                        throw new NullPointerException(
+                                "Null expression from the \""
+                                        + alternateTopPackClass
+                                        + "\" attribute?  It could be that "
+                                        + "the Configuration is not yet constructed?");
                     }
                     Class topPackClass = Class.forName(topPackClassName);
                     if (topPackClass == null) {
-                        throw new ClassNotFoundException("Failed to find class \""
-                                + topPackClass + "\", Class.forName() returned null.");
+                        throw new ClassNotFoundException(
+                                "Failed to find class \"" + topPackClass
+                                        + "\", Class.forName() returned null.");
                     }
                     _topPack = (TopPack) topPackClass.newInstance();
                     // Do the alternate pack
                     _topPack.pack(this, _packCalled);
                     _packCalled = true;
                 } catch (Exception ex) {
-                    throw new InternalErrorException(configuration, ex,
+                    throw new InternalErrorException(
+                            configuration,
+                            ex,
                             "Could not get the alternate top pack class \""
-                            + topPackClassName
-                            + "\" named in the configuration by the \""
-                            + alternateTopPackClass + "\" attribute because: "
-                            + ex.getMessage()
-                            + "\nPlease check your configuration and try again.");
+                                    + topPackClassName
+                                    + "\" named in the configuration by the \""
+                                    + alternateTopPackClass
+                                    + "\" attribute because: "
+                                    + ex.getMessage()
+                                    + "\nPlease check your configuration and try again.");
                 }
             } else {
                 super.pack();
@@ -1053,7 +1059,7 @@ public class TableauFrame extends Top {
             JFileChooser fileDialog = _saveAsFileDialog();
             if (_initialSaveAsFileName != null) {
                 fileDialog.setSelectedFile(new File(fileDialog
-                                .getCurrentDirectory(), _initialSaveAsFileName));
+                        .getCurrentDirectory(), _initialSaveAsFileName));
             }
 
             // Show the dialog.

@@ -97,7 +97,7 @@ public class IOPortEvent implements DebugEvent {
         _vectorLength = SINGLETOKEN;
         _receiverPort = null;
     }
-    
+
     /** Create a new port event with the given parameters.  This
      *  constructor is used when a token is directly put in a
      *  receiver instead of transferred with IOPort's send() or
@@ -277,7 +277,7 @@ public class IOPortEvent implements DebugEvent {
      * into a receiver instead of transferred via IOPort send or sendInside.
      */
     private IOPort _receiverPort;
-    
+
     /** The IOPort that was activated. */
     private IOPort _port;
 

@@ -390,7 +390,7 @@ public class PortCriterion extends Criterion {
     public void setOutputEnabled(boolean enabled) {
         setEnabled(3, enabled);
     }
-    
+
     /** Enable or disable the port name.
      *  <p>Used as part of the test harness.   
      *  @param enabled true if the element is set to be enabled; false if it

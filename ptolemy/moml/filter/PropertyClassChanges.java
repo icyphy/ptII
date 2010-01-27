@@ -622,9 +622,9 @@ public class PropertyClassChanges implements MoMLFilter {
 
         // DocAttribute
         HashMap DocAttributeClassChanges = new HashMap();
-        DocAttributeClassChanges.put("description", "ptolemy.kernel.util.StringAttribute");
-        _actorsWithPropertyClassChanges
-            .put("ptolemy.vergil.basic.DocAttribute",
-                        DocAttributeClassChanges);
+        DocAttributeClassChanges.put("description",
+                "ptolemy.kernel.util.StringAttribute");
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.vergil.basic.DocAttribute", DocAttributeClassChanges);
     }
 }

@@ -59,7 +59,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
     public GenericCodeGenerator getCodeGenerator() {
         return _codeGenerator;
     }
-    
+
     /** Get the component associated with this adapter.
      *  @return The associated component.
      */
@@ -75,7 +75,7 @@ public class TypedCompositeActor extends CodeGeneratorAdapter {
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
     }
-    
+
     private GenericCodeGenerator _codeGenerator;
 
     /** The associated component. */

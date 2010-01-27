@@ -162,7 +162,7 @@ public class PthalesAtomicActor extends TypedAtomicActor {
             _workspace.doneWriting();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////              static methods implementation              ////
 

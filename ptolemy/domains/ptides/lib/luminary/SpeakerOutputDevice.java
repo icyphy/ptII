@@ -46,7 +46,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating
  *
  */
-public class SpeakerOutputDevice extends ActuatorOutputDevice implements ActuationDevice {
+public class SpeakerOutputDevice extends ActuatorOutputDevice implements
+        ActuationDevice {
 
     /**
      * Constructs a SpeakerOutputDevice  object.

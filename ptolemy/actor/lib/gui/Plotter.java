@@ -160,9 +160,8 @@ public class Plotter extends PlotterBase {
                 // to destroy the original window.
                 plotEffigy.identifier.setExpression(getFullName());
 
-                _tableau = new PlotWindowTableau(plotEffigy,
-                        "tableau");
-                
+                _tableau = new PlotWindowTableau(plotEffigy, "tableau");
+
                 _frame = _tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,

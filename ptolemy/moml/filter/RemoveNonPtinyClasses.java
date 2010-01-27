@@ -215,7 +215,7 @@ public class RemoveNonPtinyClasses implements MoMLFilter {
         // We can convert any graphical classes that have a port named "input" to
         // a Discard actor.  However, classes like XYPlot have ports named "X" and Y",
         // so XYPlot cannot be converted.
-        _nonPtinyClasses.put("ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
-                null);
+        _nonPtinyClasses.put(
+                "ptolemy.codegen.kernel.StaticSchedulingCodeGenerator", null);
     }
 }

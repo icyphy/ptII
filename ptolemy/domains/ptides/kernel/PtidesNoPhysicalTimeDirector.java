@@ -151,7 +151,7 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
             port = null;
         }
         if (actor == null) {
-            actor = (Actor)event.ioPort().getContainer();
+            actor = (Actor) event.ioPort().getContainer();
         }
         boolean result = true;
         for (IOPort inputPort : (List<IOPort>) actor.inputPortList()) {
@@ -207,10 +207,12 @@ public class PtidesNoPhysicalTimeDirector extends PtidesBasicDirector {
         eventList.add(((PtidesListEventQueue) _eventQueue).take(_peekingIndex));
         int eventIndex = _peekingIndex;
         while (eventIndex < _eventQueue.size()) {
-            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue).get(eventIndex);
+            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
+                    .get(eventIndex);
             if (nextEvent.hasTheSameTagAs(event)) {
                 if (_destinedToSameEquivalenceClass(event, nextEvent)) {
-                    eventList.add(((PtidesListEventQueue) _eventQueue).take(eventIndex));
+                    eventList.add(((PtidesListEventQueue) _eventQueue)
+                            .take(eventIndex));
                 } else {
                     eventIndex++;
                 }

@@ -65,44 +65,48 @@ public class Entity extends RTMaudeAdaptor {
      * any entity of Ptolemy is translated to Object term
      *   < Name : ClassName | attr_1 : attr_value_1, ... , attr_n : attr_value_n >
      */
-    protected String _generateFireCode() throws IllegalActionException { 
-        return _generateBlockCode("fireBlock",
-                CodeStream.indent(1,
-                    new ListTerm<String>("", "," + _eol, 
-                            _codeStream.getAllCodeBlockNames()) {
-                        public String item(String v) throws IllegalActionException {
-                            return v.startsWith("attr_") ? _generateBlockCode(v) : null;
-                        }
-                    }.generateCode())
-            );
+    protected String _generateFireCode() throws IllegalActionException {
+        return _generateBlockCode("fireBlock", CodeStream.indent(1,
+                new ListTerm<String>("", "," + _eol, _codeStream
+                        .getAllCodeBlockNames()) {
+                    public String item(String v) throws IllegalActionException {
+                        return v.startsWith("attr_") ? _generateBlockCode(v)
+                                : null;
+                    }
+                }.generateCode()));
     }
-    
+
     /* (non-Javadoc)
      * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#getInfo(java.lang.String, java.util.List)
      */
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
-        if (name.equals("class"))
-            return getInfoFromTemplateWithClass("semantics", "class\\s+(\\S+)\\s+(?:\\.|\\|)");
-        if (name.equals("semanticsModule"))
+        if (name.equals("class")) {
+            return getInfoFromTemplateWithClass("semantics",
+                    "class\\s+(\\S+)\\s+(?:\\.|\\|)");
+        }
+        if (name.equals("semanticsModule")) {
             return getInfoFromTemplateWithClass("semantics", "tomod\\s+(\\S+)");
-        if (name.equals("ports"))
-            return new ListTerm<Port>("none", "", 
-                    ((ptolemy.kernel.Entity)getComponent()).portList()) {
+        }
+        if (name.equals("ports")) {
+            return new ListTerm<Port>("none", "",
+                    ((ptolemy.kernel.Entity) getComponent()).portList()) {
                 public String item(Port v) throws IllegalActionException {
                     return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
                 }
             }.generateCode();
-        if (name.equals("parameters"))
-            return new ListTerm<Variable>("emptyMap", " ;" + _eol, 
+        }
+        if (name.equals("parameters")) {
+            return new ListTerm<Variable>("emptyMap", " ;" + _eol,
                     getComponent().attributeList(Variable.class)) {
                 public String item(Variable v) throws IllegalActionException {
                     return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();
                 }
             }.generateCode();
+        }
         return super.getInfo(name, parameters);
     }
-    
+
     /**
      * @param mod
      * @param pattern
@@ -111,20 +115,22 @@ public class Entity extends RTMaudeAdaptor {
      */
     private String getInfoFromTemplateWithClass(String mod, String pattern)
             throws IllegalActionException {
-        for (Class c = getComponent().getClass() ;
-                !c.getSimpleName().equals("NamedObj"); c = c.getSuperclass()) {
+        for (Class c = getComponent().getClass(); !c.getSimpleName().equals(
+                "NamedObj"); c = c.getSuperclass()) {
             String blockName = mod + "_" + c.getSimpleName();
-            if ( _codeStream.getAllCodeBlockNames().contains(blockName) ) {
+            if (_codeStream.getAllCodeBlockNames().contains(blockName)) {
                 String target = _generateBlockCode(blockName);
                 Matcher mat = Pattern.compile(pattern).matcher(target);
-                if (!mat.find() || mat.groupCount() < 1)
+                if (!mat.find() || mat.groupCount() < 1) {
                     throw new IllegalActionException(
-                            "Cannot retrive information from " + mod + "block: " + pattern);
-                else
+                            "Cannot retrive information from " + mod
+                                    + "block: " + pattern);
+                } else {
                     return mat.group(1);
+                }
             }
         }
-        throw new IllegalActionException(
-                "Cannot retrive information from " + mod + "module: " + pattern);
+        throw new IllegalActionException("Cannot retrive information from "
+                + mod + "module: " + pattern);
     }
 }

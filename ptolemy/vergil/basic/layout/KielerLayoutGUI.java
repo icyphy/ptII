@@ -91,7 +91,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
             throws IllegalActionException, NameDuplicationException {
         super(model, tableau);
         setTitle("Layout of " + model.getName());
-        
+
         // Caveats panel.
         JPanel caveatsPanel = new JPanel();
         caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
@@ -116,8 +116,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
                     // Use Thread.currentThread() so that this code will
                     // work under WebStart.
                     URL infoURL = Thread.currentThread()
-                            .getContextClassLoader().getResource(
-                                    infoResource);
+                            .getContextClassLoader().getResource(infoResource);
                     configuration.openModel(null, infoURL, infoURL
                             .toExternalForm());
                 } catch (Exception ex) {
@@ -136,33 +135,28 @@ public class KielerLayoutGUI extends PtolemyFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 4));
 
-        String[][] buttons = new String [][] {
-            {"Place All", "placeall.gif", 
-             "Automatic layout. Places all items including attributes. No routing is done."},
-            {"Place", "place.gif", 
-             "Automatic layout. Only places connected items. No routing is done."},
-            {"Place and Route", "placeandroute.gif", 
-             "Place and Route! Inserts new Relation Vertices. (EXPERIMENTAL)"},
-            {"Remove Vertices", "removevertices.gif", 
-             "Remove unnecessary relation vertices."},
-            {"Hide/Show Vertices", "hidevertices.gif", 
-             "Toggle hide/show unnecessary relation vertices"},
-            {"Classic Layout", "classic.gif", 
-             "Older layout style"}
-        };
+        String[][] buttons = new String[][] {
+                { "Place All", "placeall.gif",
+                        "Automatic layout. Places all items including attributes. No routing is done." },
+                { "Place", "place.gif",
+                        "Automatic layout. Only places connected items. No routing is done." },
+                { "Place and Route", "placeandroute.gif",
+                        "Place and Route! Inserts new Relation Vertices. (EXPERIMENTAL)" },
+                { "Remove Vertices", "removevertices.gif",
+                        "Remove unnecessary relation vertices." },
+                { "Hide/Show Vertices", "hidevertices.gif",
+                        "Toggle hide/show unnecessary relation vertices" },
+                { "Classic Layout", "classic.gif", "Older layout style" } };
 
-        AbstractAction[] actions = new AbstractAction[] {
-            new PlaceAllAction(),
-            new PlaceAction(),
-            new PlaceAndRouteAction(),
-            new RemoveVerticesAction(),
-            new HideVerticesAction(),
-            new PtolemyLayoutAction()
-        };
+        AbstractAction[] actions = new AbstractAction[] { new PlaceAllAction(),
+                new PlaceAction(), new PlaceAndRouteAction(),
+                new RemoveVerticesAction(), new HideVerticesAction(),
+                new PtolemyLayoutAction() };
 
         for (int i = 0; i < buttons.length; i++) {
             JButton button;
-            URL url = getClass().getResource("/ptolemy/vergil/basic/layout/img/" + buttons[i][1]);
+            URL url = getClass().getResource(
+                    "/ptolemy/vergil/basic/layout/img/" + buttons[i][1]);
             if (url == null) {
                 button = new JButton(buttons[i][0]);
             } else {
@@ -175,7 +169,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
 
         //buttonPanel.setMaximumSize(new Dimension(500, 50));
         upper.add(buttonPanel);
-        upper.setPreferredSize(new Dimension(200, 100));        
+        upper.setPreferredSize(new Dimension(200, 100));
         getContentPane().add(upper, BorderLayout.CENTER);
     }
 
@@ -199,13 +193,13 @@ public class KielerLayoutGUI extends PtolemyFrame {
         public BaseLayoutAction(boolean applyEdgeLayout, boolean boxLayout,
                 boolean removeUnnecessaryRelations,
                 boolean showUnnecessaryRelationsToggle) {
-            if (((applyEdgeLayout || boxLayout) 
-                            && (removeUnnecessaryRelations || showUnnecessaryRelationsToggle))
+            if (((applyEdgeLayout || boxLayout) && (removeUnnecessaryRelations || showUnnecessaryRelationsToggle))
                     || (removeUnnecessaryRelations && showUnnecessaryRelationsToggle)) {
-                throw new InternalErrorException("If either applyEdgeLayout or boxLayout "
-                        + "is true, then removeUnnecessaryRelations and showUnnecessaryRelationsToggle"
-                        + "must be false.  Also, only one of "
-                        + "removeUnnecessaryRelations and showUnnecessaryRelationsToggle can be true.");
+                throw new InternalErrorException(
+                        "If either applyEdgeLayout or boxLayout "
+                                + "is true, then removeUnnecessaryRelations and showUnnecessaryRelationsToggle"
+                                + "must be false.  Also, only one of "
+                                + "removeUnnecessaryRelations and showUnnecessaryRelationsToggle can be true.");
             }
             _applyEdgeLayout = applyEdgeLayout;
             _boxLayout = boxLayout;
@@ -213,34 +207,39 @@ public class KielerLayoutGUI extends PtolemyFrame {
             _showUnnecessaryRelationsToggle = showUnnecessaryRelationsToggle;
         }
 
-
         public void actionPerformed(ActionEvent e) {
             try {
                 // Get the frame and the current model here.
                 NamedObj model = getModel();
-                List tableaux = Configuration.findEffigy(model).entityList(Tableau.class);
-                JFrame frame = ((Tableau)tableaux.get(0)).getFrame();
+                List tableaux = Configuration.findEffigy(model).entityList(
+                        Tableau.class);
+                JFrame frame = ((Tableau) tableaux.get(0)).getFrame();
                 // Check for supported type of editor
-                if ( !(frame instanceof ActorGraphFrame) || !(model instanceof CompositeActor)) {
+                if (!(frame instanceof ActorGraphFrame)
+                        || !(model instanceof CompositeActor)) {
                     MessageHandler
-                        .error("For now only actor oriented graphs with ports are supported by KIELER layout, "
-                                + "Frame was: " + frame + " and should be an ActorGraphFrame, model was: "
-                                + model + " and should be a CompositeActor");
+                            .error("For now only actor oriented graphs with ports are supported by KIELER layout, "
+                                    + "Frame was: "
+                                    + frame
+                                    + " and should be an ActorGraphFrame, model was: "
+                                    + model + " and should be a CompositeActor");
                 } else {
                     if (_removeUnnecessaryRelations) {
                         PtolemyModelUtil
-                            ._removeUnnecessaryRelations((CompositeActor) model);
+                                ._removeUnnecessaryRelations((CompositeActor) model);
                     } else if (_showUnnecessaryRelationsToggle) {
                         PtolemyModelUtil
-                            ._showUnnecessaryRelationsToggle((CompositeActor) model);
+                                ._showUnnecessaryRelationsToggle((CompositeActor) model);
                     } else {
                         BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
 
                         // fetch everything needed to build the LayoutTarget
-                        GraphController graphController = graphFrame.getJGraph()
-                            .getGraphPane().getGraphController();
-                        GraphModel graphModel = graphFrame.getJGraph().getGraphPane()
-                            .getGraphController().getGraphModel();
+                        GraphController graphController = graphFrame
+                                .getJGraph().getGraphPane()
+                                .getGraphController();
+                        GraphModel graphModel = graphFrame.getJGraph()
+                                .getGraphPane().getGraphController()
+                                .getGraphModel();
                         BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
                                 graphController);
 
@@ -263,6 +262,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
                         JOptionPane.WARNING_MESSAGE);
             }
         }
+
         public boolean _applyEdgeLayout;
         public boolean _boxLayout;
         public boolean _removeUnnecessaryRelations;
@@ -274,8 +274,9 @@ public class KielerLayoutGUI extends PtolemyFrame {
         public void actionPerformed(ActionEvent e) {
             // Get the frame and the current model here.
             NamedObj model = getModel();
-            List tableaux = Configuration.findEffigy(model).entityList(Tableau.class);
-            JFrame frame = ((Tableau)tableaux.get(0)).getFrame();
+            List tableaux = Configuration.findEffigy(model).entityList(
+                    Tableau.class);
+            JFrame frame = ((Tableau) tableaux.get(0)).getFrame();
             BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
             graphFrame.layoutGraphWithPtolemyLayout();
         }
@@ -302,7 +303,6 @@ public class KielerLayoutGUI extends PtolemyFrame {
             super(false, true, false, false);
         }
     }
-
 
     /** Action to do automatic layout. Only places connected items. No
      * routing is done.

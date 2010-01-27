@@ -186,14 +186,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         return result;
     }
-    
+
     /**
      * Return the index of the type in the typesArray in the generated code.
      * @param type The given codegen type.
      * @return The index of the type in the typesArray
      * @exception IllegalActionException If the type is unsupported.
      */
-    static public Short codeGenTypeValue(String type) throws IllegalActionException {
+    static public Short codeGenTypeValue(String type)
+            throws IllegalActionException {
         // FIXME: the typesArray should only include types used
         // by the model.
         // FIXME: why does this return a Short, but codeGenTypeToPtType()
@@ -222,11 +223,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         } else {
             throw new IllegalActionException("Unsuported type");
         }
-        
-        
+
         return typeReturn;
     }
-    
+
     /**
      * Return the type that corresponds with an index in the typesArray in
      * in the generated type.
@@ -235,13 +235,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @exception IllegalActionException If the type is unsupported.
      * @see #ptTypeToCodegenType(Type)
      */
-    static public Type codeGenTypeToPtType(int codeGenType) throws IllegalActionException {
+    static public Type codeGenTypeToPtType(int codeGenType)
+            throws IllegalActionException {
         Type returnType;
-        
+
         // FIXME: Add more types.
         // FIXME: the typesArray should only include types used
         // by the model.
-        switch(codeGenType) {
+        switch (codeGenType) {
         case 0:
             returnType = BaseType.STRING;
             break;
@@ -268,7 +269,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
         return returnType;
     }
-    
+
     /**
      * Return the index of the type in the typesArray in the generated code.
      * @param type The given Ptolemy type.
@@ -276,17 +277,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * @exception IllegalActionException If the type is unsupported.
      * @see #codeGenTypeToPtType(int)
      */
-    static public int ptTypeToCodegenType(Type type) throws IllegalActionException {
+    static public int ptTypeToCodegenType(Type type)
+            throws IllegalActionException {
         // FIXME: the typesArray should only include types used
         // by the model.
-        int result = type == BaseType.INT ? 2
-                : type == BaseType.LONG ? 3
-                        : type == BaseType.STRING ? 0
-                                : type == BaseType.DOUBLE ? 4
-                                        : type == BaseType.BOOLEAN ? 5
-                                                : type == BaseType.UNSIGNED_BYTE ? 6
-                                                        : type == PointerToken.POINTER ? 7
-                                                                : -10;
+        int result = type == BaseType.INT ? 2 : type == BaseType.LONG ? 3
+                : type == BaseType.STRING ? 0 : type == BaseType.DOUBLE ? 4
+                        : type == BaseType.BOOLEAN ? 5
+                                : type == BaseType.UNSIGNED_BYTE ? 6
+                                        : type == PointerToken.POINTER ? 7
+                                                : -10;
 
         if (result == -10) {
             if (type instanceof ArrayType) {
@@ -296,11 +296,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 result = 8;
             }
         }
-        
+
         if (result == -10) {
             throw new IllegalActionException("Unsuported type");
         }
-        
+
         return result;
     }
 
@@ -365,18 +365,17 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
     /** Return the closing entry code, if any.
      *  @return the closing entry code.
-     */   
+     */
     public String generateClosingEntryCode() {
         return "public void doWrapup() throws Exception { " + _eol;
     }
 
     /** Return the closing exit code, if any.
      *  @return the closing exit code.
-     */   
+     */
     public String generateClosingExitCode() {
         return "}" + _eol;
     }
-
 
     /** Generate the initialization procedure entry point.
      *  @return a string for the initialization procedure entry point.
@@ -433,27 +432,24 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (_isTopLevel()) {
-//          mainEntryCode
-//          .append(_eol
-//                  + _eol
-//                  + "public static void main(String [] args) throws Exception {"
-//                  + _eol + _sanitizedModelName + " model = new "
-//                  + _sanitizedModelName + "();" + _eol
-//                  + "model.run();" + _eol + "}" + _eol
-//                  + "public void run() throws Exception {" + _eol);
+            //          mainEntryCode
+            //          .append(_eol
+            //                  + _eol
+            //                  + "public static void main(String [] args) throws Exception {"
+            //                  + _eol + _sanitizedModelName + " model = new "
+            //                  + _sanitizedModelName + "();" + _eol
+            //                  + "model.run();" + _eol + "}" + _eol
+            //                  + "public void run() throws Exception {" + _eol);
 
             mainEntryCode
-            .append(_eol
-                 + _eol
-                 + "public static void main(String [] args) throws Exception {"
-                 + _eol + _sanitizedModelName + " model = new "
-                 + _sanitizedModelName + "();" + _eol
-                 + "model.initialize();" + _eol
-                 + "model.execute();" + _eol
-                 + "model.doWrapup();" + _eol
-                 + "System.exit(0);" + _eol
-                 + "}" + _eol);
-
+                    .append(_eol
+                            + _eol
+                            + "public static void main(String [] args) throws Exception {"
+                            + _eol + _sanitizedModelName + " model = new "
+                            + _sanitizedModelName + "();" + _eol
+                            + "model.initialize();" + _eol + "model.execute();"
+                            + _eol + "model.doWrapup();" + _eol
+                            + "System.exit(0);" + _eol + "}" + _eol);
 
         } else {
             mainEntryCode.append(_eol + _eol + "public Object[] " + _eol
@@ -487,9 +483,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         if (_isTopLevel()) {
             return "}";
         } else {
-            if (_model instanceof CompositeActor && ((CompositeActor) _model).outputPortList().isEmpty()) { 
-                return INDENT1 + "return null;" + _eol + "}"
-                + _eol + "}" + _eol;
+            if (_model instanceof CompositeActor
+                    && ((CompositeActor) _model).outputPortList().isEmpty()) {
+                return INDENT1 + "return null;" + _eol + "}" + _eol + "}"
+                        + _eol;
             } else {
                 return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                         + _eol + "}" + _eol;
@@ -551,7 +548,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         // actors can use true and false etc.  StringMatches needs this.
 
         CodeStream sharedStream = new CodeStream(
-                "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/SharedCode.j", this);
+                "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/SharedCode.j",
+                this);
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
@@ -573,12 +571,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             + typesArray[i] + ".j", this);
 
             //FIXME: temporarily statically assign types, is there any better way to do that?
-//            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
-            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + codeGenTypeValue(typesArray[i].toString()) + _eol);
+            //            code.append("#define PTCG_TYPE_" + typesArray[i] + " " + i + _eol);
+            code.append("#define PTCG_TYPE_" + typesArray[i] + " "
+                    + codeGenTypeValue(typesArray[i].toString()) + _eol);
 
-//            code.append("private final short TYPE_" + typesArray[i] + " = " + i
-            code.append("private final short TYPE_" + typesArray[i] + " = " + codeGenTypeValue(typesArray[i].toString())
-                    + ";" + _eol);
+            //            code.append("private final short TYPE_" + typesArray[i] + " = " + i
+            code.append("private final short TYPE_" + typesArray[i] + " = "
+                    + codeGenTypeValue(typesArray[i].toString()) + ";" + _eol);
 
             // Dynamically generate all the types within the union.
             if (i > 0) {
@@ -602,40 +601,36 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
         }
 
-
-        
-        
         // Generate type and function definitions.
         for (int i = 0; i < typesArray.length; i++) {
             // The "declareBlock" contains all necessary declarations for the
             // type; thus, it is always read into the code stream when
             // accessing this particular type.
-            
+
             StringBuffer declareBlock = new StringBuffer();
             declareBlock.append(typeStreams[i].getCodeBlock("declareBlock"));
             if (declareBlock.length() > 0) {
-                _writeCodeFileName(declareBlock, typesArray[i]+".java", false, true);
+                _writeCodeFileName(declareBlock, typesArray[i] + ".java",
+                        false, true);
             }
         }
 
-        
         // Token declareBlock.
         if (typeMembers.length() != 0) {
-            
+
             sharedStream.clear();
             StringBuffer declareTokenBlock = new StringBuffer();
-            declareTokenBlock.append(sharedStream.getCodeBlock("tokenDeclareBlock"));
-            
+            declareTokenBlock.append(sharedStream
+                    .getCodeBlock("tokenDeclareBlock"));
+
             if (defineEmptyToken) {
                 sharedStream.append("Token emptyToken; "
                         + comment("Used by *_delete() and others.") + _eol);
             }
-            
+
             _writeCodeFileName(declareTokenBlock, "Token.java", false, true);
         }
 
-        
-        
         // Set to true if we need the unsupportedFunction() method.
         boolean defineUnsupportedTypeFunctionMethod = false;
 
@@ -773,7 +768,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         return code.toString();
     }
 
-
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @return code The generated code.
@@ -862,7 +856,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         return "wrapup();" + _eol;
     }
-    
+
     /**
      * Return the return signature for run() and execute().
      * @return The visibility signature.
@@ -870,7 +864,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String getMethodVisibiliyString() {
         return "public ";
     }
-    
+
     /**
      * Return the exception signature (for Java).
      * @return The exception signature.
@@ -878,7 +872,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String getMethodExceptionString() {
         return " throws Exception";
     }
-
 
     /** Add called functions to the set of overloaded functions for
      *  later use.
@@ -1255,7 +1248,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         + " + \"%\");\n");
         return endCode.toString();
     }
-    
+
     /** Process the specified code for the adapter associated with the
      *  container.  Replace macros with their values.
      *  @param code The code to process.
@@ -1274,7 +1267,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     protected Class<? extends TemplateParser> _templateParserClass() {
         return JavaTemplateParser.class;
     }
-    
+
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
      *
@@ -1536,7 +1529,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             buffer.append(iterator.next());
         }
         return buffer.toString();
-    }    
+    }
 
     /** Return the set of referenced functions.
      * @return The set of referenced functions.

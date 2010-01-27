@@ -111,8 +111,7 @@ public class SMVUtility {
             return " EF(" + returnSpecStringBuffer.toString() + ")";
         }
     }
-    
-    
+
     /**
      * Return a StringBuffer that contains the converted .smv format of the
      * system. Current algorithm uses a modular approach for construction, enabling us to deal with
@@ -353,7 +352,6 @@ public class SMVUtility {
         returnSMVFormat.append(mainModuleDescription);
         return returnSMVFormat;
     }
-
 
     /**
      * This function decides if the director of the current actor is SR. If not,
@@ -1945,9 +1943,8 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        Integer
-                                                .parseInt(rValueOperends[1]
-                                                        .trim());
+                                        Integer.parseInt(rValueOperends[1]
+                                                .trim());
                                     } catch (Exception ex) {
                                         // check if the value is of format (-a)
                                         if (rValueOperends[1].trim().endsWith(
@@ -2001,9 +1998,8 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        Integer
-                                                .parseInt(rValueOperends[1]
-                                                        .trim());
+                                        Integer.parseInt(rValueOperends[1]
+                                                .trim());
                                     } catch (Exception ex) {
                                         // check if the value is of format (-a)
                                         if (rValueOperends[1].trim().endsWith(
@@ -2056,9 +2052,8 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        Integer
-                                                .parseInt(rValueOperends[1]
-                                                        .trim());
+                                        Integer.parseInt(rValueOperends[1]
+                                                .trim());
                                     } catch (Exception ex) {
                                         // check if the value is of format (-a)
                                         if (rValueOperends[1].trim().endsWith(
@@ -2115,9 +2110,8 @@ public class SMVUtility {
                                     String offset = rValueOperends[1].trim();
 
                                     try {
-                                        Integer
-                                                .parseInt(rValueOperends[1]
-                                                        .trim());
+                                        Integer.parseInt(rValueOperends[1]
+                                                .trim());
                                     } catch (Exception ex) {
                                         // check if the value is of format
                                         // (-a)
@@ -2394,8 +2388,6 @@ public class SMVUtility {
 
     }
 
-    
-
     /**
      * A private function used as a recursive step to generate all premises for
      * enabling transition in .smv file. In variable valueDomain, it specifies
@@ -2439,7 +2431,7 @@ public class SMVUtility {
             HashMap<String, ArrayList<Integer>> valueDomain, String lValue,
             String newVariableValue, String operatingSign)
             throws IllegalActionException {
-    
+
         if (index >= maxIndex) {
             // MODIFICATION 2008.07.22:
             // if the variable lValue is equal to the type XX_value,
@@ -2465,7 +2457,7 @@ public class SMVUtility {
                 }
             } else {
                 // Store in the array
-    
+
                 VariableTransitionInfo newTransitionInfo = new VariableTransitionInfo();
                 newTransitionInfo._preCondition = currentPremise;
                 // newTransitionInfo._variableName = lValue;
@@ -2481,11 +2473,11 @@ public class SMVUtility {
                     _variableTransitionInfo.put(lValue, temp);
                 }
             }
-    
+
         } else {
             // retrieve all possible variable value in this stage, skip when no
             // possible value is needed.
-    
+
             // See if this key corresponds to the lValue; if so we need to
             // record the new value of the outcome.
             if (keySetArray[index].equalsIgnoreCase(lValue)) {
@@ -2497,13 +2489,13 @@ public class SMVUtility {
                             .get(keySetArray[index]);
                     if ((vList != null) && (vList.size() != 0)) {
                         for (int i = 0; i < vList.size(); i++) {
-    
+
                             // check whether the offset is positive or negative.
                             if (Integer.parseInt(newVariableValue) >= 0) {
                                 // Offset positive/zero case (positive_const)
-    
+
                                 if (vList.get(i).intValue() == DOMAIN_GT) {
-    
+
                                     // newpremise=currentPremise & (var = C)
                                     // String newPremise = new String(
                                     // currentPremise + " & "
@@ -2511,7 +2503,7 @@ public class SMVUtility {
                                     // + "gt");
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
-    
+
                                     // When the original value is GT, then
                                     // GT + positive_const = GT
                                     // Hence the updated value remains the same.
@@ -2519,14 +2511,14 @@ public class SMVUtility {
                                             newPremise, index + 1, maxIndex,
                                             keySetArray, valueDomain, lValue,
                                             "gt", operatingSign);
-    
+
                                 } else if (vList.get(i).intValue() == DOMAIN_LS) {
                                     // For DOMAIN_LS, we place conservative
                                     // analysis and assert that it might lead to
                                     // all its possible values. For example, if
                                     // min=1, and offset=3, then possible value
                                     // may include LS, 1, 2.
-    
+
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
                                     // String newPremise = new String(
@@ -2552,7 +2544,7 @@ public class SMVUtility {
                                                     .parseInt(variableInfo._minValue);
                                             for (int j = 0; j < (Integer
                                                     .parseInt(newVariableValue)); j++) {
-    
+
                                                 // We need to make sure that it
                                                 // would
                                                 // never exceeds upper bound. If
@@ -2561,7 +2553,7 @@ public class SMVUtility {
                                                 // stop it
                                                 // and use GT to replace the
                                                 // value.
-    
+
                                                 if ((minimumInBoundary + j) > Integer
                                                         .parseInt(variableInfo._maxValue)) {
                                                     _generatePremiseAndResultEachTransitionRecursiveStep(
@@ -2574,7 +2566,7 @@ public class SMVUtility {
                                                             operatingSign);
                                                     break;
                                                 }
-    
+
                                                 String updatedVariableValue = String
                                                         .valueOf(minimumInBoundary
                                                                 + j);
@@ -2597,20 +2589,20 @@ public class SMVUtility {
                                             // would exceeds the upper
                                             // bound. If so, then use DOMAIN_GT
                                             // to replace the value.
-    
+
                                             String newPremise = currentPremise
                                                     + " & "
                                                     + keySetArray[index]
                                                     + "="
                                                     + String.valueOf(vList.get(
                                                             i).intValue());
-    
+
                                             String updatedVariableValue = String
                                                     .valueOf(vList.get(i)
                                                             .intValue()
                                                             + (Integer
                                                                     .parseInt(newVariableValue)));
-    
+
                                             if (vList.get(i).intValue()
                                                     + (Integer
                                                             .parseInt(newVariableValue)) > Integer
@@ -2619,7 +2611,7 @@ public class SMVUtility {
                                                 // value.
                                                 updatedVariableValue = "gt";
                                             }
-    
+
                                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                                     newPremise, index + 1,
                                                     maxIndex, keySetArray,
@@ -2628,16 +2620,16 @@ public class SMVUtility {
                                                     operatingSign);
                                         }
                                     }
-    
+
                                 }
                             } else {
                                 // Offset negative case (negative_const)
-    
+
                                 if (vList.get(i).intValue() == DOMAIN_LS) {
-    
+
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
-    
+
                                     // When the original value is LS, then
                                     // LS + negative_const = LS
                                     // Hence the updated value remains the same.
@@ -2645,21 +2637,21 @@ public class SMVUtility {
                                             newPremise, index + 1, maxIndex,
                                             keySetArray, valueDomain, lValue,
                                             "ls", operatingSign);
-    
+
                                 } else if (vList.get(i).intValue() == DOMAIN_GT) {
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
-    
+
                                     // When the original value is GT, we place
                                     // conservative analysis and assert that it
                                     // might lead to all its possible values.
-    
+
                                     // First case: GT + negative_const = GT
                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                             newPremise, index + 1, maxIndex,
                                             keySetArray, valueDomain, lValue,
                                             "gt", operatingSign);
-    
+
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
                                     if (variableInfo == null) {
@@ -2677,7 +2669,7 @@ public class SMVUtility {
                                                 // here j-- because
                                                 // newVariableValue is
                                                 // negative
-    
+
                                                 // We need to make sure that it
                                                 // would
                                                 // never exceeds upper bound. If
@@ -2686,7 +2678,7 @@ public class SMVUtility {
                                                 // stop it
                                                 // and use LS to replace the
                                                 // value.
-    
+
                                                 if ((maximumInBoundary + j) < Integer
                                                         .parseInt(variableInfo._minValue)) {
                                                     _generatePremiseAndResultEachTransitionRecursiveStep(
@@ -2699,7 +2691,7 @@ public class SMVUtility {
                                                             operatingSign);
                                                     break;
                                                 }
-    
+
                                                 String updatedVariableValue = String
                                                         .valueOf(maximumInBoundary
                                                                 + j);
@@ -2724,20 +2716,20 @@ public class SMVUtility {
                                             // bound. If so, then use DOMAIN_LS
                                             // to
                                             // replace the value.
-    
+
                                             String newPremise = currentPremise
                                                     + " & "
                                                     + keySetArray[index]
                                                     + "="
                                                     + String.valueOf(vList.get(
                                                             i).intValue());
-    
+
                                             String updatedVariableValue = String
                                                     .valueOf(vList.get(i)
                                                             .intValue()
                                                             + (Integer
                                                                     .parseInt(newVariableValue)));
-    
+
                                             if (vList.get(i).intValue()
                                                     + (Integer
                                                             .parseInt(newVariableValue)) < Integer
@@ -2746,7 +2738,7 @@ public class SMVUtility {
                                                 // value.
                                                 updatedVariableValue = "ls";
                                             }
-    
+
                                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                                     newPremise, index + 1,
                                                     maxIndex, keySetArray,
@@ -2755,45 +2747,45 @@ public class SMVUtility {
                                                     operatingSign);
                                         }
                                     }
-    
+
                                 }
                             }
-    
+
                         }
                     } else {
-    
+
                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                 currentPremise, index + 1, maxIndex,
                                 keySetArray, valueDomain, lValue,
                                 newVariableValue, operatingSign);
                     }
-    
+
                 } else if (operatingSign.equalsIgnoreCase("-")) {
                     // Cases when operating sign is minus.
-    
+
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-    
+
                     if ((vList != null) && (vList.size() != 0)) {
                         for (int i = 0; i < vList.size(); i++) {
-    
+
                             // check whether the offset is positive or negative.
                             if (Integer.parseInt(newVariableValue) >= 0) {
                                 // Offset positive/zero case (positive_const)
-    
+
                                 if (vList.get(i).intValue() == DOMAIN_LS) {
                                     // When the original value is LS, then
                                     // LS - positive_const = LS
-    
+
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
-    
+
                                     // Hence the updated value remains the same.
                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                             newPremise, index + 1, maxIndex,
                                             keySetArray, valueDomain, lValue,
                                             "ls", operatingSign);
-    
+
                                 } else if (vList.get(i).intValue() == DOMAIN_GT) {
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
@@ -2807,24 +2799,24 @@ public class SMVUtility {
                                             // that it might lead to all its
                                             // possible
                                             // values.
-    
+
                                             String newPremise = currentPremise
                                                     + " & "
                                                     + keySetArray[index] + "="
                                                     + "gt";
-    
+
                                             // First, it may keep to be GT
                                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                                     newPremise, index + 1,
                                                     maxIndex, keySetArray,
                                                     valueDomain, lValue, "gt",
                                                     operatingSign);
-    
+
                                             int maximumInBoundary = Integer
                                                     .parseInt(variableInfo._maxValue);
                                             for (int j = 0; j < (Integer
                                                     .parseInt(newVariableValue)); j++) {
-    
+
                                                 // We need to make sure that it
                                                 // would
                                                 // never exceeds upper bound. If
@@ -2833,7 +2825,7 @@ public class SMVUtility {
                                                 // stop it
                                                 // and use LS to replace the
                                                 // value.
-    
+
                                                 if ((maximumInBoundary - j) < Integer
                                                         .parseInt(variableInfo._minValue)) {
                                                     _generatePremiseAndResultEachTransitionRecursiveStep(
@@ -2846,7 +2838,7 @@ public class SMVUtility {
                                                             operatingSign);
                                                     break;
                                                 }
-    
+
                                                 String updatedVariableValue = String
                                                         .valueOf(maximumInBoundary
                                                                 - j);
@@ -2859,20 +2851,20 @@ public class SMVUtility {
                                             }
                                         }
                                     }
-    
+
                                 } else {
                                     // For ordinary part, we only need to check
                                     // if the new value would exceed the lower
                                     // bound. If so, then use DOMAIN_LS to
                                     // replace the value.
-    
+
                                     String newPremise = currentPremise
                                             + " & "
                                             + keySetArray[index]
                                             + "="
                                             + String.valueOf(vList.get(i)
                                                     .intValue());
-    
+
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
                                                     - (Integer
@@ -2891,42 +2883,42 @@ public class SMVUtility {
                                             }
                                         }
                                     }
-    
+
                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                             newPremise, index + 1, maxIndex,
                                             keySetArray, valueDomain, lValue,
                                             updatedVariableValue, operatingSign);
                                 }
-    
+
                             } else {
                                 // Offset negative case (negative_const)
-    
+
                                 if (vList.get(i).intValue() == DOMAIN_GT) {
                                     // GT - negative_const = GT
-    
+
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
-    
+
                                     // Hence the updated value remains the same.
                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                             newPremise, index + 1, maxIndex,
                                             keySetArray, valueDomain, lValue,
                                             "gt", operatingSign);
-    
+
                                 } else if (vList.get(i).intValue() == DOMAIN_LS) {
                                     // For DOMAIN_LS, we place conservative
                                     // analysis and assert that it might lead to
                                     // all its possible values
-    
+
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
-    
+
                                     // First, LS - negative_const = LS
                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                             newPremise, index + 1, maxIndex,
                                             keySetArray, valueDomain, lValue,
                                             "ls", operatingSign);
-    
+
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
                                     if (variableInfo == null) {
@@ -2939,10 +2931,10 @@ public class SMVUtility {
                                                 && variableInfo._maxValue != null) {
                                             int minimumInBoundary = Integer
                                                     .parseInt(variableInfo._minValue);
-    
+
                                             for (int j = 0; j > (Integer
                                                     .parseInt(newVariableValue)); j--) {
-    
+
                                                 // We need to make sure that it
                                                 // would
                                                 // never exceeds upper bound. If
@@ -2951,7 +2943,7 @@ public class SMVUtility {
                                                 // stop it
                                                 // and use GT to replace the
                                                 // value.
-    
+
                                                 if ((minimumInBoundary - j) < Integer
                                                         .parseInt(variableInfo._maxValue)) {
                                                     _generatePremiseAndResultEachTransitionRecursiveStep(
@@ -2964,18 +2956,18 @@ public class SMVUtility {
                                                             operatingSign);
                                                     break;
                                                 }
-    
+
                                                 String updatedVariableValue = String
                                                         .valueOf(minimumInBoundary
                                                                 - j);
-    
+
                                                 _generatePremiseAndResultEachTransitionRecursiveStep(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
                                                         updatedVariableValue,
                                                         operatingSign);
-    
+
                                             }
                                         }
                                     }
@@ -2997,20 +2989,20 @@ public class SMVUtility {
                                             // bound. If so, then use DOMAIN_GT
                                             // to
                                             // replace the value.
-    
+
                                             String newPremise = currentPremise
                                                     + " & "
                                                     + keySetArray[index]
                                                     + "="
                                                     + String.valueOf(vList.get(
                                                             i).intValue());
-    
+
                                             String updatedVariableValue = String
                                                     .valueOf(vList.get(i)
                                                             .intValue()
                                                             - (Integer
                                                                     .parseInt(newVariableValue)));
-    
+
                                             if (vList.get(i).intValue()
                                                     - (Integer
                                                             .parseInt(newVariableValue)) > Integer
@@ -3019,7 +3011,7 @@ public class SMVUtility {
                                                 // value.
                                                 updatedVariableValue = "gt";
                                             }
-    
+
                                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                                     newPremise, index + 1,
                                                     maxIndex, keySetArray,
@@ -3028,36 +3020,36 @@ public class SMVUtility {
                                                     operatingSign);
                                         }
                                     }
-    
+
                                 }
                             }
                         }
-    
+
                     } else {
                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                 currentPremise, index + 1, maxIndex,
                                 keySetArray, valueDomain, lValue,
                                 newVariableValue, operatingSign);
                     }
-    
+
                 } else if (operatingSign.equalsIgnoreCase("*")) {
-    
+
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
                     if ((vList != null) && (vList.size() != 0)) {
                         for (int i = 0; i < vList.size(); i++) {
-    
+
                             // check whether the offset is positive or negative.
                             if (Integer.parseInt(newVariableValue) > 0) {
                                 // Positive case (positive_const)
-    
+
                                 if (vList.get(i).intValue() == DOMAIN_GT) {
-    
+
                                     // newpremise = currentPremise & (var =
                                     // const)
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
-    
+
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
                                     if (variableInfo == null) {
@@ -3117,10 +3109,10 @@ public class SMVUtility {
                                                 // are
                                                 // tricks that needs to be
                                                 // applied.
-    
+
                                                 int starter = Integer
                                                         .parseInt(variableInfo._maxValue) + 1;
-    
+
                                                 while (starter
                                                         * Integer
                                                                 .parseInt(newVariableValue) <= Integer
@@ -3145,7 +3137,7 @@ public class SMVUtility {
                                                                 valueDomain,
                                                                 lValue, "ls",
                                                                 operatingSign);
-    
+
                                                     } else if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
@@ -3168,25 +3160,25 @@ public class SMVUtility {
                                                                 updatedVariableValue,
                                                                 operatingSign);
                                                     }
-    
+
                                                     starter++;
-    
+
                                                 }
-    
+
                                                 _generatePremiseAndResultEachTransitionRecursiveStep(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
                                                         "gt", operatingSign);
-    
+
                                             }
                                         }
                                     }
                                 } else if (vList.get(i).intValue() == DOMAIN_LS) {
-    
+
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
-    
+
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
                                     if (variableInfo == null) {
@@ -3216,7 +3208,7 @@ public class SMVUtility {
                                                 // calculate all possible values
                                                 // until
                                                 // the value is greater than LS.
-    
+
                                                 int starter = Integer
                                                         .parseInt(variableInfo._minValue) - 1;
                                                 while (starter
@@ -3231,7 +3223,7 @@ public class SMVUtility {
                                                                     * Integer
                                                                             .parseInt(newVariableValue) <= Integer
                                                                     .parseInt(variableInfo._maxValue))) {
-    
+
                                                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                                                 newPremise,
                                                                 index + 1,
@@ -3240,7 +3232,7 @@ public class SMVUtility {
                                                                 valueDomain,
                                                                 lValue, "gt",
                                                                 operatingSign);
-    
+
                                                     } else if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
@@ -3263,16 +3255,16 @@ public class SMVUtility {
                                                                 updatedVariableValue,
                                                                 operatingSign);
                                                     }
-    
+
                                                     starter++;
-    
+
                                                 }
                                                 _generatePremiseAndResultEachTransitionRecursiveStep(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
                                                         "ls", operatingSign);
-    
+
                                             }
                                         }
                                     }
@@ -3280,19 +3272,19 @@ public class SMVUtility {
                                     // For ordinary part, we only need to check
                                     // if the new value would exceed the lower
                                     // or upper bound.
-    
+
                                     String newPremise = currentPremise
                                             + " & "
                                             + keySetArray[index]
                                             + "="
                                             + String.valueOf(vList.get(i)
                                                     .intValue());
-    
+
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
                                                     * (Integer
                                                             .parseInt(newVariableValue)));
-    
+
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
                                     if (variableInfo == null) {
@@ -3310,14 +3302,14 @@ public class SMVUtility {
                                                 // Use DOMAIN_LS to replace the
                                                 // value.
                                                 updatedVariableValue = "ls";
-    
+
                                             } else if (vList.get(i).intValue()
                                                     * (Integer
                                                             .parseInt(newVariableValue)) > Integer
                                                     .parseInt(variableInfo._maxValue)) {
                                                 updatedVariableValue = "gt";
                                             }
-    
+
                                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                                     newPremise, index + 1,
                                                     maxIndex, keySetArray,
@@ -3329,12 +3321,12 @@ public class SMVUtility {
                                 }
                             } else if (Integer.parseInt(newVariableValue) < 0) {
                                 // Negative case (negative_const)
-    
+
                                 if (vList.get(i).intValue() == DOMAIN_GT) {
-    
+
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
-    
+
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
                                     if (variableInfo == null) {
@@ -3345,7 +3337,7 @@ public class SMVUtility {
                                     } else {
                                         if (variableInfo._minValue != null
                                                 && variableInfo._maxValue != null) {
-    
+
                                             if (Integer
                                                     .parseInt(variableInfo._maxValue) >= 0) {
                                                 // Starting from the upper bound
@@ -3362,15 +3354,15 @@ public class SMVUtility {
                                                 // then we might have possible
                                                 // new
                                                 // set-values -4, -6, LS
-    
+
                                                 int starter = Integer
                                                         .parseInt(variableInfo._maxValue) + 1;
-    
+
                                                 while (starter
                                                         * Integer
                                                                 .parseInt(newVariableValue) >= Integer
                                                         .parseInt(variableInfo._minValue)) {
-    
+
                                                     String updatedVariableValue = String
                                                             .valueOf(starter
                                                                     * Integer
@@ -3384,16 +3376,16 @@ public class SMVUtility {
                                                             lValue,
                                                             updatedVariableValue,
                                                             operatingSign);
-    
+
                                                     starter++;
                                                 }
-    
+
                                                 _generatePremiseAndResultEachTransitionRecursiveStep(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
                                                         "ls", operatingSign);
-    
+
                                             } else if (Integer
                                                     .parseInt(variableInfo._maxValue) < 0) {
                                                 // One important thing is that
@@ -3403,7 +3395,7 @@ public class SMVUtility {
                                                 // Because 0 is in GT, so we
                                                 // would have
                                                 // new value GT as a choice.
-    
+
                                                 int starter = Integer
                                                         .parseInt(variableInfo._maxValue) + 1;
                                                 while (starter
@@ -3418,7 +3410,7 @@ public class SMVUtility {
                                                                     * Integer
                                                                             .parseInt(newVariableValue) <= Integer
                                                                     .parseInt(variableInfo._maxValue))) {
-    
+
                                                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                                                 newPremise,
                                                                 index + 1,
@@ -3427,7 +3419,7 @@ public class SMVUtility {
                                                                 valueDomain,
                                                                 lValue, "gt",
                                                                 operatingSign);
-    
+
                                                     } else if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
@@ -3450,16 +3442,16 @@ public class SMVUtility {
                                                                 updatedVariableValue,
                                                                 operatingSign);
                                                     }
-    
+
                                                     starter++;
-    
+
                                                 }
                                                 _generatePremiseAndResultEachTransitionRecursiveStep(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
                                                         "ls", operatingSign);
-    
+
                                                 // Special case where 0 * const
                                                 // = 0
                                                 _generatePremiseAndResultEachTransitionRecursiveStep(
@@ -3467,17 +3459,17 @@ public class SMVUtility {
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
                                                         "gt", operatingSign);
-    
+
                                             }
                                         }
                                     }
                                 } else if (vList.get(i).intValue() == DOMAIN_LS) {
                                     // (Integer.parseInt(newVariableValue) < 0)
                                     // && original variable value == DOMAIN_LS
-    
+
                                     String newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
-    
+
                                     VariableInfo variableInfo = _variableInfo
                                             .get(lValue);
                                     if (variableInfo == null) {
@@ -3504,15 +3496,15 @@ public class SMVUtility {
                                                 // then we might have possible
                                                 // new
                                                 // set-values 4, 6, GT
-    
+
                                                 int starter = Integer
                                                         .parseInt(variableInfo._minValue) - 1;
-    
+
                                                 while (starter
                                                         * Integer
                                                                 .parseInt(newVariableValue) <= Integer
                                                         .parseInt(variableInfo._maxValue)) {
-    
+
                                                     String updatedVariableValue = String
                                                             .valueOf(starter
                                                                     * Integer
@@ -3526,16 +3518,16 @@ public class SMVUtility {
                                                             lValue,
                                                             updatedVariableValue,
                                                             operatingSign);
-    
+
                                                     starter++;
                                                 }
-    
+
                                                 _generatePremiseAndResultEachTransitionRecursiveStep(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
                                                         "gt", operatingSign);
-    
+
                                             } else if (Integer
                                                     .parseInt(variableInfo._minValue) > 0) {
                                                 // One important thing is that
@@ -3545,7 +3537,7 @@ public class SMVUtility {
                                                 // Because 0 is in LS, so we
                                                 // would have
                                                 // new value LS as a choice.
-    
+
                                                 int starter = Integer
                                                         .parseInt(variableInfo._minValue) - 1;
                                                 while (starter
@@ -3560,7 +3552,7 @@ public class SMVUtility {
                                                                     * Integer
                                                                             .parseInt(newVariableValue) >= Integer
                                                                     .parseInt(variableInfo._minValue))) {
-    
+
                                                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                                                 newPremise,
                                                                 index + 1,
@@ -3569,7 +3561,7 @@ public class SMVUtility {
                                                                 valueDomain,
                                                                 lValue, "ls",
                                                                 operatingSign);
-    
+
                                                     } else if ((starter
                                                             * Integer
                                                                     .parseInt(newVariableValue) <= Integer
@@ -3592,16 +3584,16 @@ public class SMVUtility {
                                                                 updatedVariableValue,
                                                                 operatingSign);
                                                     }
-    
+
                                                     starter++;
-    
+
                                                 }
                                                 _generatePremiseAndResultEachTransitionRecursiveStep(
                                                         newPremise, index + 1,
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
                                                         "gt", operatingSign);
-    
+
                                                 // Special case where 0 * const
                                                 // = 0
                                                 _generatePremiseAndResultEachTransitionRecursiveStep(
@@ -3609,7 +3601,7 @@ public class SMVUtility {
                                                         maxIndex, keySetArray,
                                                         valueDomain, lValue,
                                                         "ls", operatingSign);
-    
+
                                             }
                                         }
                                     }
@@ -3631,20 +3623,20 @@ public class SMVUtility {
                                             // bound. If so, then use DOMAIN_GT
                                             // to
                                             // replace the value.
-    
+
                                             String newPremise = currentPremise
                                                     + " & "
                                                     + keySetArray[index]
                                                     + "="
                                                     + String.valueOf(vList.get(
                                                             i).intValue());
-    
+
                                             String updatedVariableValue = String
                                                     .valueOf(vList.get(i)
                                                             .intValue()
                                                             - (Integer
                                                                     .parseInt(newVariableValue)));
-    
+
                                             if (vList.get(i).intValue()
                                                     - (Integer
                                                             .parseInt(newVariableValue)) > Integer
@@ -3653,7 +3645,7 @@ public class SMVUtility {
                                                 // value.
                                                 updatedVariableValue = "gt";
                                             }
-    
+
                                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                                     newPremise, index + 1,
                                                     maxIndex, keySetArray,
@@ -3662,7 +3654,7 @@ public class SMVUtility {
                                                     operatingSign);
                                         }
                                     }
-    
+
                                 }
                             } else {
                                 // Integer.parseInt(newVariableValue)==0
@@ -3670,14 +3662,14 @@ public class SMVUtility {
                                 // zero. So we only need to check if zero
                                 // exceeds the upper bound or is below the lower
                                 // bound.
-    
+
                                 String newPremise = currentPremise
                                         + " & "
                                         + keySetArray[index]
                                         + "="
                                         + String.valueOf(vList.get(i)
                                                 .intValue());
-    
+
                                 if (vList.get(i).intValue() == DOMAIN_LS) {
                                     newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
@@ -3685,9 +3677,9 @@ public class SMVUtility {
                                     newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "gt";
                                 }
-    
+
                                 String updatedVariableValue = "0";
-    
+
                                 VariableInfo variableInfo = _variableInfo
                                         .get(lValue);
                                 if (variableInfo == null) {
@@ -3707,7 +3699,7 @@ public class SMVUtility {
                                                 .parseInt(variableInfo._minValue)) {
                                             updatedVariableValue = "ls";
                                         }
-    
+
                                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                                 newPremise, index + 1,
                                                 maxIndex, keySetArray,
@@ -3715,7 +3707,7 @@ public class SMVUtility {
                                                 updatedVariableValue,
                                                 operatingSign);
                                     }
-    
+
                                 }
                             }
                         }
@@ -3725,14 +3717,14 @@ public class SMVUtility {
                                 keySetArray, valueDomain, lValue,
                                 newVariableValue, operatingSign);
                     }
-    
+
                 } else if (operatingSign.equalsIgnoreCase("/")) {
                     // FIXME: Right now the execution of division is not
                     // implemented.
-    
+
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
-    
+
                     // Do as usual
                     if ((vList != null) && (vList.size() != 0)) {
                         for (int i = 0; i < vList.size(); i++) {
@@ -3743,7 +3735,7 @@ public class SMVUtility {
                             String newPremise = currentPremise + " & "
                                     + keySetArray[index] + "="
                                     + String.valueOf(vList.get(i).intValue());
-    
+
                             if (vList.get(i).intValue() == DOMAIN_LS) {
                                 newPremise = currentPremise + " & "
                                         + keySetArray[index] + "=" + "ls";
@@ -3751,7 +3743,7 @@ public class SMVUtility {
                                 newPremise = currentPremise + " & "
                                         + keySetArray[index] + "=" + "gt";
                             }
-    
+
                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                     newPremise, index + 1, maxIndex,
                                     keySetArray, valueDomain, lValue,
@@ -3763,9 +3755,9 @@ public class SMVUtility {
                                 keySetArray, valueDomain, lValue,
                                 newVariableValue, operatingSign);
                     }
-    
+
                 } else if (operatingSign.equalsIgnoreCase("N")) {
-    
+
                     ArrayList<Integer> vList = valueDomain
                             .get(keySetArray[index]);
                     if ((vList != null) && (vList.size() != 0)) {
@@ -3774,7 +3766,7 @@ public class SMVUtility {
                         if (b1 == true) {
                             String updatedVariableValue = newVariableValue;
                             String newPremise = currentPremise;
-    
+
                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                     newPremise, index + 1, maxIndex,
                                     keySetArray, valueDomain, lValue,
@@ -3787,7 +3779,7 @@ public class SMVUtility {
                                 // attach XX_isPresent to the value.
                                 String[] variable = keySetArray[index].trim()
                                         .split("_value");
-    
+
                                 if (currentPremise.trim().equalsIgnoreCase("")) {
                                     _generatePremiseAndResultEachTransitionRecursiveStep(
                                             currentPremise + variable[0].trim()
@@ -3809,7 +3801,7 @@ public class SMVUtility {
                                 // also attach the premise XX_isPresent
                                 String[] variable = keySetArray[index].trim()
                                         .split("_value");
-    
+
                                 for (int i = 0; i < vList.size(); i++) {
                                     String updatedVariableValue = newVariableValue;
                                     // retrieve the string and concatenate
@@ -3821,7 +3813,7 @@ public class SMVUtility {
                                                     .intValue()) + "&"
                                             + variable[0].trim()
                                             + "_isPresent ";
-    
+
                                     if (vList.get(i).intValue() == DOMAIN_LS) {
                                         newPremise = currentPremise + " & "
                                                 + keySetArray[index] + "="
@@ -3850,7 +3842,7 @@ public class SMVUtility {
                                             + "="
                                             + String.valueOf(vList.get(i)
                                                     .intValue());
-    
+
                                     if (vList.get(i).intValue() == DOMAIN_LS) {
                                         newPremise = currentPremise + " & "
                                                 + keySetArray[index] + "="
@@ -3866,24 +3858,24 @@ public class SMVUtility {
                                             updatedVariableValue, operatingSign);
                                 }
                             }
-    
+
                         }
-    
+
                     } else {
                         _generatePremiseAndResultEachTransitionRecursiveStep(
                                 currentPremise, index + 1, maxIndex,
                                 keySetArray, valueDomain, lValue,
                                 newVariableValue, operatingSign);
                     }
-    
+
                 }
-    
+
             } else {
                 // meaning: if
                 // (keySetArray[index].equalsIgnoreCase(lValue)==false)
-    
+
                 ArrayList<Integer> vList = valueDomain.get(keySetArray[index]);
-    
+
                 if ((vList != null) && (vList.size() != 0)) {
                     // if the keySetArray[index] is similar to "XX_isPresent",
                     // skip the update of premise.
@@ -3898,12 +3890,12 @@ public class SMVUtility {
                         boolean b2 = Pattern.matches(".*_value",
                                 keySetArray[index].trim());
                         if ((b2 == true) && (vList.size() == 2)) {
-    
+
                             _generatePremiseAndResultEachTransitionRecursiveStep(
                                     currentPremise, index + 1, maxIndex,
                                     keySetArray, valueDomain, lValue,
                                     newVariableValue, operatingSign);
-    
+
                         } else if (b2 == true) {
                             String[] variable = keySetArray[index].trim()
                                     .split("_value");
@@ -3916,7 +3908,7 @@ public class SMVUtility {
                                         + String.valueOf(vList.get(i)
                                                 .intValue()) + " & "
                                         + variable[0].trim() + "_isPresent ";
-    
+
                                 if (vList.get(i).intValue() == DOMAIN_LS) {
                                     newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls"
@@ -3942,7 +3934,7 @@ public class SMVUtility {
                                         + "="
                                         + String.valueOf(vList.get(i)
                                                 .intValue());
-    
+
                                 if (vList.get(i).intValue() == DOMAIN_LS) {
                                     newPremise = currentPremise + " & "
                                             + keySetArray[index] + "=" + "ls";
@@ -3955,11 +3947,11 @@ public class SMVUtility {
                                         keySetArray, valueDomain, lValue,
                                         newVariableValue, operatingSign);
                             }
-    
+
                         }
-    
+
                     }
-    
+
                 } else {
                     _generatePremiseAndResultEachTransitionRecursiveStep(
                             currentPremise, index + 1, maxIndex, keySetArray,
@@ -3967,9 +3959,9 @@ public class SMVUtility {
                             operatingSign);
                 }
             }
-    
+
         }
-    
+
     }
 
     /**
@@ -3984,7 +3976,7 @@ public class SMVUtility {
     private static ArrayList<StringBuffer> _generateSMVDescriptionModalModelWithRefinement(
             ModalModel modalmodel, String span, String upperStateName)
             throws IllegalActionException, NameDuplicationException {
-        
+
         /* The sketch of the algorithm is roughly as follows:
          *
          * (Step 0) All signals has been detected prior to execute this function.
@@ -4187,8 +4179,6 @@ public class SMVUtility {
 
     }
 
-    
-    
     /**
      * This private function generates the system description of a
      * subsystem which has a ModalModel controller as its upper-layer.
@@ -4626,8 +4616,6 @@ public class SMVUtility {
 
     }
 
- 
-
     /**
      * This function is trying to generate the definition for modules contained
      * in a controller. It need to check whether a signal is visible by the
@@ -4643,7 +4631,7 @@ public class SMVUtility {
      */
     private static ArrayList<StringBuffer> _retrieveSubSystemModuleNameParameterInfo(
             FSMActor controller) throws IllegalActionException {
-    
+
         // One important modification is that we need to see if the signal is
         // exchanged between subsystems of a certain controller.
         // Because a subsystem can not see the signal outside the system,
@@ -4651,7 +4639,7 @@ public class SMVUtility {
         // need to add up the signal name (without the position) as an invoker
         // for example subModule (Sec_isPresent)
         //
-    
+
         ArrayList<StringBuffer> returnList = new ArrayList<StringBuffer>();
         Iterator states = controller.entityList().iterator();
         while (states.hasNext()) {
@@ -4698,7 +4686,7 @@ public class SMVUtility {
                                                 .keySet().iterator();
                                         while (it.hasNext()) {
                                             String place = it.next();
-    
+
                                             if (_globalSignalRetrivalInfo
                                                     .get(place) != null) {
                                                 if (_globalSignalRetrivalInfo
@@ -4709,9 +4697,9 @@ public class SMVUtility {
                                                     break;
                                                 }
                                             }
-    
+
                                         }
-    
+
                                         // Now we need to see whether this
                                         // signal
                                         // is within the scope of the
@@ -4726,9 +4714,9 @@ public class SMVUtility {
                                                     .contains(signalName)) {
                                                 containInTheModule = true;
                                             }
-    
+
                                         }
-    
+
                                         if (containInTheSystem == true) {
                                             if (containInTheModule == true) {
                                                 if (i == signalInfo.size() - 1) {
@@ -4763,7 +4751,7 @@ public class SMVUtility {
                                                                 .add(signalName);
                                                     }
                                                 }
-    
+
                                                 if (i == signalInfo.size() - 1) {
                                                     moduleDescription
                                                             .append(signalName
@@ -4774,7 +4762,7 @@ public class SMVUtility {
                                                                     + ", ");
                                                 }
                                             }
-    
+
                                         } else {
                                             // use 1 to represent the signal
                                             if (i == signalInfo.size() - 1) {
@@ -4788,16 +4776,16 @@ public class SMVUtility {
                                 // Add up the state as parameter because
                                 // these subsystems are controlled by the state
                                 // of the controller.
-    
+
                                 if ((signalInfo != null)
                                         && (signalInfo.size() > 0)) {
                                     moduleDescription.append(", state );\n");
                                 } else {
                                     moduleDescription.append(" state );\n");
                                 }
-    
+
                                 returnList.add(moduleDescription);
-    
+
                             } else if (innerActor instanceof CompositeActor) {
                                 // First see if its director is SR.
                                 // If not, then it is beyond our current
@@ -4813,7 +4801,7 @@ public class SMVUtility {
                                     // The general case, we need to list out
                                     // all modules in the lower level
                                     // (one layer lower only)
-    
+
                                     for (Iterator innerInnerActors = (((CompositeActor) innerActor)
                                             .entityList()).iterator(); innerInnerActors
                                             .hasNext();) {
@@ -4835,7 +4823,7 @@ public class SMVUtility {
                                             ArrayList<String> signalInfo = _globalSignalDistributionInfo
                                                     .get(innerInnerEntity
                                                             .getName());
-    
+
                                             if (signalInfo != null) {
                                                 for (int i = 0; i < signalInfo
                                                         .size(); i++) {
@@ -4861,7 +4849,7 @@ public class SMVUtility {
                                                                 break;
                                                             }
                                                         }
-    
+
                                                     }
                                                     if (_globalSignalNestedRetrivalInfo
                                                             .get(controller
@@ -4875,7 +4863,7 @@ public class SMVUtility {
                                                             containInTheModule = true;
                                                         }
                                                     }
-    
+
                                                     if (containInTheSystem == true) {
                                                         if (containInTheModule == true) {
                                                             if (i == signalInfo
@@ -4912,7 +4900,7 @@ public class SMVUtility {
                                                                                     signalName);
                                                                 }
                                                             }
-    
+
                                                             if (i == signalInfo
                                                                     .size() - 1) {
                                                                 moduleDescription
@@ -4924,7 +4912,7 @@ public class SMVUtility {
                                                                                 + ", ");
                                                             }
                                                         }
-    
+
                                                     } else {
                                                         // use 1 to represent
                                                         // the signal
@@ -4947,9 +4935,9 @@ public class SMVUtility {
                                                 moduleDescription
                                                         .append(" state );\n");
                                             }
-    
+
                                             returnList.add(moduleDescription);
-    
+
                                         } else if (innerInnerEntity instanceof ModalModel) {
                                             moduleDescription.append("\t\t"
                                                     + innerInnerEntity
@@ -4963,7 +4951,7 @@ public class SMVUtility {
                                             ArrayList<String> signalInfo = _globalSignalDistributionInfo
                                                     .get(innerInnerEntity
                                                             .getName());
-    
+
                                             if (signalInfo != null) {
                                                 for (int i = 0; i < signalInfo
                                                         .size(); i++) {
@@ -4999,7 +4987,7 @@ public class SMVUtility {
                                                             containInTheModule = true;
                                                         }
                                                     }
-    
+
                                                     if (containInTheSystem == true) {
                                                         if (containInTheModule == true) {
                                                             if (i == signalInfo
@@ -5036,7 +5024,7 @@ public class SMVUtility {
                                                                                     signalName);
                                                                 }
                                                             }
-    
+
                                                             if (i == signalInfo
                                                                     .size() - 1) {
                                                                 moduleDescription
@@ -5048,7 +5036,7 @@ public class SMVUtility {
                                                                                 + ", ");
                                                             }
                                                         }
-    
+
                                                     } else {
                                                         // use 1 to represent
                                                         // the signal
@@ -5074,13 +5062,13 @@ public class SMVUtility {
                                             returnList.add(moduleDescription);
                                         }
                                     }
-    
+
                                 }
                             } else {
                                 // We are not able to deal with it.
                                 // Simply skip without doing anything
                             }
-    
+
                         } else {
                             // Theoretically this should not happen.
                             // Once this happens, report an error to
@@ -5093,7 +5081,7 @@ public class SMVUtility {
                 }
             }
         }
-    
+
         return returnList;
     }
 

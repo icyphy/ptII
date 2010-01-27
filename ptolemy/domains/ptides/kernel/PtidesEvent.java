@@ -67,8 +67,8 @@ public class PtidesEvent extends DEEvent {
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
-    public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp, int microstep, 
-            int depth, Time absoluteDeadline) 
+    public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp,
+            int microstep, int depth, Time absoluteDeadline)
             throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
         _ioPort = ioPort;
@@ -124,7 +124,7 @@ public class PtidesEvent extends DEEvent {
             return false;
         }
     }
-    
+
     /** Return the receiver.
      *  @return The receiver.
      */
@@ -138,15 +138,15 @@ public class PtidesEvent extends DEEvent {
     public final Receiver receiver() {
         return _receiver;
     }
-    
+
     /** Return the relative deadline of this event
      *  @return relative deadline if the event is not a pure event.
      */
     public final Time absoluteDeadline() {
         if (!isPureEvent()) {
-            throw new InternalErrorException("Event is not a pure event, " +
-                    "in which case the absolute deadline should be obtained " +
-                    "from the destination port of the event.");
+            throw new InternalErrorException("Event is not a pure event, "
+                    + "in which case the absolute deadline should be obtained "
+                    + "from the destination port of the event.");
         }
         return _absoluteDeadline;
     }
@@ -191,12 +191,12 @@ public class PtidesEvent extends DEEvent {
 
     /** The receiver this token is destined at. */
     private Receiver _receiver;
-    
+
     /** The relative deadline of this event. This field is used only when the
      *  event is a pure event.
      */
     private Time _absoluteDeadline;
 
     /** The token associated with this event. */
-    private Token _token;    
+    private Token _token;
 }

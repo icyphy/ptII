@@ -207,48 +207,48 @@ public class PteraGraphController extends FSMGraphController {
 
             if (frame == null) {
                 // Findbugs points out NP: Null pointer dereference
-                throw new NullPointerException(PteraGraphController.this +
-                        ": frame is null?");
+                throw new NullPointerException(PteraGraphController.this
+                        + ": frame is null?");
             } else {
                 // Create the state.
                 String moml = "<group name=\"auto\">"
-                    + frame._getDefaultEventMoML() + "</group>";
+                        + frame._getDefaultEventMoML() + "</group>";
 
-                MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel,
-                        moml) {
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        toplevel, moml) {
 
-                        protected void _postParse(MoMLParser parser) {
-                            List<NamedObj> topObjects = parser.topObjectsCreated();
-                            if (topObjects == null) {
-                                return;
-                            }
-                            for (NamedObj object : topObjects) {
-                                Location location = (Location) object
+                    protected void _postParse(MoMLParser parser) {
+                        List<NamedObj> topObjects = parser.topObjectsCreated();
+                        if (topObjects == null) {
+                            return;
+                        }
+                        for (NamedObj object : topObjects) {
+                            Location location = (Location) object
                                     .getAttribute("_location");
-                                if (location == null) {
-                                    try {
-                                        location = new Location(object, "_location");
-                                    } catch (KernelException e) {
-                                        // Ignore.
-                                    }
-                                }
-                                if (location != null) {
-                                    try {
-                                        location.setLocation(new double[] { x, y });
-                                    } catch (IllegalActionException e) {
-                                        // Ignore.
-                                    }
+                            if (location == null) {
+                                try {
+                                    location = new Location(object, "_location");
+                                } catch (KernelException e) {
+                                    // Ignore.
                                 }
                             }
-                            parser.clearTopObjectsList();
-                            super._postParse(parser);
+                            if (location != null) {
+                                try {
+                                    location.setLocation(new double[] { x, y });
+                                } catch (IllegalActionException e) {
+                                    // Ignore.
+                                }
+                            }
                         }
+                        parser.clearTopObjectsList();
+                        super._postParse(parser);
+                    }
 
-                        protected void _preParse(MoMLParser parser) {
-                            super._preParse(parser);
-                            parser.clearTopObjectsList();
-                        }
-                    };
+                    protected void _preParse(MoMLParser parser) {
+                        super._preParse(parser);
+                        parser.clearTopObjectsList();
+                    }
+                };
                 toplevel.requestChange(request);
 
                 try {

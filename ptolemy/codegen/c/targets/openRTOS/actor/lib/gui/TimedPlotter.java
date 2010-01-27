@@ -55,7 +55,6 @@ public class TimedPlotter extends CCodeGeneratorHelper {
         super(actor);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

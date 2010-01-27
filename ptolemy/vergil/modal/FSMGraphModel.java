@@ -466,7 +466,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
                 try {
                     if (linkRelation instanceof Transition) {
-                        refinements = ((Transition) linkRelation).getRefinement();
+                        refinements = ((Transition) linkRelation)
+                                .getRefinement();
                     }
                 } catch (IllegalActionException e) {
                     // Ignore, no refinement to remove.

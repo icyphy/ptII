@@ -28,29 +28,12 @@ package ptolemy.data.ontologies;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
-import ptolemy.data.expr.ASTPtArrayConstructNode;
 import ptolemy.data.expr.ASTPtAssignmentNode;
-import ptolemy.data.expr.ASTPtBitwiseNode;
-import ptolemy.data.expr.ASTPtFunctionApplicationNode;
-import ptolemy.data.expr.ASTPtFunctionDefinitionNode;
-import ptolemy.data.expr.ASTPtFunctionalIfNode;
 import ptolemy.data.expr.ASTPtLeafNode;
-import ptolemy.data.expr.ASTPtLogicalNode;
-import ptolemy.data.expr.ASTPtMatrixConstructNode;
 import ptolemy.data.expr.ASTPtMethodCallNode;
-import ptolemy.data.expr.ASTPtPowerNode;
-import ptolemy.data.expr.ASTPtProductNode;
-import ptolemy.data.expr.ASTPtRecordConstructNode;
-import ptolemy.data.expr.ASTPtRelationalNode;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ASTPtShiftNode;
-import ptolemy.data.expr.ASTPtSumNode;
-import ptolemy.data.expr.ASTPtUnaryNode;
-import ptolemy.data.expr.ASTPtUnionConstructNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.PtParserConstants;
-import ptolemy.data.expr.Token;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
@@ -128,14 +111,16 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
      *  @param node The leaf node to be visited
      *  @exception IllegalActionException If the node label cannot be resolved to a
      *  component in the model 
-     */    
+     */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        _evaluatedObject = _resolveLabel(_getNodeLabel(node), _adapter.getComponent());
-        
-        if (_evaluatedObject == null) {               
-            throw _unsupportedVisitException("Cannot resolve label: " + node.getName());
+        _evaluatedObject = _resolveLabel(_getNodeLabel(node), _adapter
+                .getComponent());
+
+        if (_evaluatedObject == null) {
+            throw _unsupportedVisitException("Cannot resolve label: "
+                    + node.getName());
         }
-     // FIXME: Not handling AST constraint yet.
+        // FIXME: Not handling AST constraint yet.
     }
 
     /**
@@ -207,8 +192,6 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
         _evaluatedObject = null;
     }
      */
-
-
 
     private Object _resolveLabel(String name, Object container) {
         int dotIndex = name.indexOf('.');

@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
  @see Ontology
  */
 public class ConceptRelation extends ComponentRelation {
-    
+
     /** Construct a ConceptRelation with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown. This ConceptRelation will use the

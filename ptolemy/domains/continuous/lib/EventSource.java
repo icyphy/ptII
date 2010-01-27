@@ -309,7 +309,7 @@ public class EventSource extends TypedAtomicActor {
 
     /** The flag indicating whether the time is right to produce output. */
     private transient int _readyToFire;
-    private static final int _TIME_RIGHT = 0;    
+    private static final int _TIME_RIGHT = 0;
     private static final int _TIME_RIGHT_INDEX_EARLY = 1;
     private static final int _TIME_NOT_RIGHT = 2;
 }

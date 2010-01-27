@@ -198,7 +198,7 @@ public class ComponentDef implements Comparable<Object> {
         InputStream paletteStream = null;
         try {
             paletteStream = ComponentDef.class
-                .getResourceAsStream("components.xml");
+                    .getResourceAsStream("components.xml");
             if (paletteStream == null) {
                 paletteStream = getCompFile();
             }
@@ -210,7 +210,7 @@ public class ComponentDef implements Comparable<Object> {
 
             try {
                 DocumentBuilder documentBuilder = DocumentBuilderFactory
-                    .newInstance().newDocumentBuilder();
+                        .newInstance().newDocumentBuilder();
                 dataDocument = documentBuilder.parse(paletteStream);
                 Node paletteNode = dataDocument.getDocumentElement();
                 Node[] componentNodes = getNodesNamed(paletteNode, "component");
@@ -220,7 +220,8 @@ public class ComponentDef implements Comparable<Object> {
                     components.add(new ComponentDef(componentNode));
                 }
             } catch (Exception e) {
-                throw new RuntimeException("Unable to create DocumentBuilder", e);
+                throw new RuntimeException("Unable to create DocumentBuilder",
+                        e);
             }
 
             Collections.sort(components);

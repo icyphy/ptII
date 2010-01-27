@@ -138,7 +138,6 @@ public class JavaCodeGenerator extends CodeGenerator {
         //return ptolemyType.replace("Int", "Integer").replace("Integerger", "Integer").replace("Array", "Token");
     }
 
-    
     /** Generate the function table.  In this base class return
      *  the empty string.
      *  @param types An array of types.
@@ -200,14 +199,14 @@ public class JavaCodeGenerator extends CodeGenerator {
 
     /** Return the closing entry code, if any.
      *  @return the closing entry code.
-     */   
+     */
     public String generateClosingEntryCode() {
         return "public void doWrapup() throws Exception { " + _eol;
     }
 
     /** Return the closing exit code, if any.
      *  @return the closing exit code.
-     */   
+     */
     public String generateClosingExitCode() {
         return "}" + _eol;
     }
@@ -267,14 +266,14 @@ public class JavaCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
-//             mainEntryCode
-//                     .append(_eol
-//                             + _eol
-//                             + "public static void main(String [] args) throws Exception {"
-//                             + _eol + _sanitizedModelName + " model = new "
-//                             + _sanitizedModelName + "();" + _eol
-//                             + "model.run();" + _eol + "}" + _eol
-//                             + "public void run() throws Exception {" + _eol);
+            //             mainEntryCode
+            //                     .append(_eol
+            //                             + _eol
+            //                             + "public static void main(String [] args) throws Exception {"
+            //                             + _eol + _sanitizedModelName + " model = new "
+            //                             + _sanitizedModelName + "();" + _eol
+            //                             + "model.run();" + _eol + "}" + _eol
+            //                             + "public void run() throws Exception {" + _eol);
 
             mainEntryCode
                     .append(_eol
@@ -282,12 +281,9 @@ public class JavaCodeGenerator extends CodeGenerator {
                             + "public static void main(String [] args) throws Exception {"
                             + _eol + _sanitizedModelName + " model = new "
                             + _sanitizedModelName + "();" + _eol
-                            + "model.initialize();" + _eol
-                            + "model.execute();" + _eol
-                            + "model.doWrapup();" + _eol
-                            + "System.exit(0);" + _eol
-                            + "}" + _eol);
-
+                            + "model.initialize();" + _eol + "model.execute();"
+                            + _eol + "model.doWrapup();" + _eol
+                            + "System.exit(0);" + _eol + "}" + _eol);
 
             String targetValue = target.getExpression();
             if (!targetValue.equals(_DEFAULT_TARGET)) {
@@ -1408,11 +1404,13 @@ public class JavaCodeGenerator extends CodeGenerator {
 
     /** Return the value of the iterations parameter of the director, if any. */
     private int _iterations() throws IllegalActionException {
-        Director director = ((ptolemy.actor.CompositeActor)getComponent()).getDirector();
+        Director director = ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector();
         if (director != null) {
             Attribute iterations = director.getAttribute("iterations");
             if (iterations != null) {
-                return ((IntToken) ((Variable) iterations).getToken()).intValue();
+                return ((IntToken) ((Variable) iterations).getToken())
+                        .intValue();
             }
         }
         return -1;

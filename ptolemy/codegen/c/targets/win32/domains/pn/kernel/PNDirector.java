@@ -158,9 +158,10 @@ public class PNDirector extends Director {
      * @param port The port.
      * @param channel The channel
      * @return a string that refers to the port and channel.
-     */ 
+     */
     public static String generatePortHeader(IOPort port, int channel) {
-        return CodeGeneratorHelper.generateName(port) + "_" + channel + "_pnHeader";
+        return CodeGeneratorHelper.generateName(port) + "_" + channel
+                + "_pnHeader";
     }
 
     /**
@@ -529,7 +530,7 @@ public class PNDirector extends Director {
                     }
                     if (port.isInput()) {
                         pnPostfireCode.append(portHelper.updateOffset(rate,
-                                        _director));
+                                _director));
                     }
                 }
 

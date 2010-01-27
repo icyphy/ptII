@@ -74,11 +74,12 @@ public class TopLevelCurrentTime extends TimedSource {
      *  @exception IllegalActionException If send() throws it.
      */
     public void fire() throws IllegalActionException {
-        
+
         NamedObj container = getContainer();
         while (container instanceof CompositeActor) {
             if (((CompositeActor) container).getExecutiveDirector() == null) {
-                double time = ((Actor)container).getDirector().getModelTime().getDoubleValue();
+                double time = ((Actor) container).getDirector().getModelTime()
+                        .getDoubleValue();
                 output.send(0, new DoubleToken(time));
                 break;
             }

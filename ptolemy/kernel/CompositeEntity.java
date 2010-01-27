@@ -2306,14 +2306,14 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected void _finishedAddEntity(ComponentEntity entity) {
     }
-    
+
     /** Record decorated attributes to store at the level of the
      *  container of the decorator.
      *  @param attributes The decorated attributes.
      */
     protected void _recordDecoratedAttributes(DecoratedAttributes attributes) {
         _decoratedAttributesToStoreAtThisLevel.add(attributes);
-    }    
+    }
 
     /** Remove the specified entity. This method should not be used
      *  directly.  Call the setContainer() method of the entity instead with
@@ -2667,7 +2667,6 @@ public class CompositeEntity extends ComponentEntity {
 
     /** Workspace version for cache. */
     private transient long _classDefinitionListVersion = -1L;
-    
 
     /** Decorated attributes within this composite for which this composite
      *  is responsible.  This data structure is populated when exportMoML()

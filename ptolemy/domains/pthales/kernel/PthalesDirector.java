@@ -242,7 +242,7 @@ public class PthalesDirector extends SDFDirector {
         }
         return super.prefire();
     }
-    
+
     /** Attribute update
      * @see ptolemy.domains.sdf.kernel.SDFDirector#attributeChanged(ptolemy.kernel.util.Attribute)
      */
@@ -320,37 +320,48 @@ public class PthalesDirector extends SDFDirector {
                                     + port.getName());
                         }
 
-                        if (port.getRemoteReceivers().length > 0)
-                        {
+                        if (port.getRemoteReceivers().length > 0) {
                             port.send(i, port.get(i, rate), rate);
-                        }
-                        else
-                        {
-                            CompositeActor compositeActor = ((CompositeActor)port.getContainer());
-                            List<Actor> actors = compositeActor.deepEntityList();
+                        } else {
+                            CompositeActor compositeActor = ((CompositeActor) port
+                                    .getContainer());
+                            List<Actor> actors = compositeActor
+                                    .deepEntityList();
 
                             // External ports
-                            List<TypedIOPort> externalPorts = compositeActor.inputPortList();
+                            List<TypedIOPort> externalPorts = compositeActor
+                                    .inputPortList();
                             for (TypedIOPort externalPort : externalPorts) {
                                 Receiver recv = externalPort.getReceivers()[0][0];
                                 Token[] buffer = null;
                                 if (recv instanceof SDFReceiver) {
                                     // Buffer acquisition
-                                    buffer = ((SDFReceiver) recv).getArray(DFUtilities.getRate(externalPort));
+                                    buffer = ((SDFReceiver) recv)
+                                            .getArray(DFUtilities
+                                                    .getRate(externalPort));
                                 }
-                    
+
                                 // Dispatch to all input ports using output port
                                 for (Actor actor : actors) {
                                     List<IOPort> ports = actor.inputPortList();
                                     for (IOPort inputPort : ports) {
-                                        if (inputPort.connectedPortList().contains(externalPort)) {
-                                            Receiver[][] receivers = inputPort.getReceivers();
-                                            if (receivers != null && receivers.length > 0) {
+                                        if (inputPort.connectedPortList()
+                                                .contains(externalPort)) {
+                                            Receiver[][] receivers = inputPort
+                                                    .getReceivers();
+                                            if (receivers != null
+                                                    && receivers.length > 0) {
                                                 for (Receiver[] receiverss : receivers) {
-                                                    if (receiverss != null && receiverss.length > 0) {
+                                                    if (receiverss != null
+                                                            && receiverss.length > 0) {
                                                         for (Receiver receiver : receiverss) {
-                                                            if (receiver instanceof PthalesReceiver)
-                                                                ((PthalesReceiver) receiver).setExternalBuffer(compositeActor, externalPort, buffer);
+                                                            if (receiver instanceof PthalesReceiver) {
+                                                                ((PthalesReceiver) receiver)
+                                                                        .setExternalBuffer(
+                                                                                compositeActor,
+                                                                                externalPort,
+                                                                                buffer);
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -359,9 +370,9 @@ public class PthalesDirector extends SDFDirector {
                                     }
                                 }
                             }
-                            
+
                         }
-                        
+
                         wasTransferred = true;
                     } else {
                         throw new IllegalActionException(

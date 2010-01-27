@@ -57,12 +57,12 @@ public class BooleanSelect extends AtomicActor {
      * @param actor The associated actor.
      * @exception IllegalActionException If thrown by the super class.
      */
-    public BooleanSelect(PropertyConstraintSolver solver, 
+    public BooleanSelect(PropertyConstraintSolver solver,
             ptolemy.actor.lib.BooleanSelect actor)
             throws IllegalActionException {
         super(solver, actor, false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -77,22 +77,23 @@ public class BooleanSelect extends AtomicActor {
         ptolemy.actor.lib.BooleanSelect actor = (ptolemy.actor.lib.BooleanSelect) getComponent();
 
         // Rules for forward solver are determined by monotonic function
-        setAtLeast(actor.output, new FunctionTerm(actor.trueInput, actor.falseInput, actor.control));
-        
+        setAtLeast(actor.output, new FunctionTerm(actor.trueInput,
+                actor.falseInput, actor.control));
+
         // Rules for backward solver are implemented here
         // Control input is at least the output 
         // No relation between the data inputs and the output
         // (because, maybe only one of them is used.  In this case
         // the other one can be anything.)
         setAtLeast(actor.control, actor.output);
-        
+
         // Output is determined by function below ("forward solver" rules)
         // Hopefully the forward solver + backward solver rules form a 
         // monotonic function when combined - I think they do.
 
         return super.constraintList();
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -103,7 +104,8 @@ public class BooleanSelect extends AtomicActor {
      */
     private class FunctionTerm extends MonotonicFunction {
 
-        public FunctionTerm(TypedIOPort trueInput, TypedIOPort falseInput, TypedIOPort control) {
+        public FunctionTerm(TypedIOPort trueInput, TypedIOPort falseInput,
+                TypedIOPort control) {
             _trueInput = trueInput;
             _falseInput = falseInput;
             _control = control;
@@ -121,7 +123,7 @@ public class BooleanSelect extends AtomicActor {
             Property trueInputProperty = getSolver().getProperty(_trueInput);
             Property falseInputProperty = getSolver().getProperty(_falseInput);
             Property controlProperty = getSolver().getProperty(_control);
-            
+
             // Rules for forward solver are implemented here
             // If control property is null, return NotSpecified
             // If control is NotConfigured, then output is at least NotConfigured
@@ -134,29 +136,28 @@ public class BooleanSelect extends AtomicActor {
             //  an improvement would be to see if the control is Configured and Const,
             //  and then use 
 
-            if (controlProperty != null)
-            {
-                if (controlProperty == _lattice.getElement("NotConfigured"))
-                {
+            if (controlProperty != null) {
+                if (controlProperty == _lattice.getElement("NotConfigured")) {
                     return _lattice.getElement("NotConfigured");
-                }
-                else if (controlProperty == _lattice.getElement("Conflict"))
-                {
+                } else if (controlProperty == _lattice.getElement("Conflict")) {
                     return _lattice.getElement("Conflict");
                 }
-                
-                else if ( (trueInputProperty != null && trueInputProperty == _lattice.getElement("Configured")) ||
-                            falseInputProperty != null && falseInputProperty == _lattice.getElement("Configured"))
-                {
+
+                else if ((trueInputProperty != null && trueInputProperty == _lattice
+                        .getElement("Configured"))
+                        || falseInputProperty != null
+                        && falseInputProperty == _lattice
+                                .getElement("Configured")) {
                     return _lattice.getElement("Configured");
                 }
             }
-            
+
             return _lattice.getElement("NotSpecified");
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] { getPropertyTerm(_trueInput), getPropertyTerm(_falseInput), getPropertyTerm(_control) };
+            return new InequalityTerm[] { getPropertyTerm(_trueInput),
+                    getPropertyTerm(_falseInput), getPropertyTerm(_control) };
         }
 
         // Return true

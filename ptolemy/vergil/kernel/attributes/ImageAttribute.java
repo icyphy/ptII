@@ -153,7 +153,7 @@ public class ImageAttribute extends VisibleAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected members                   ////
-    
+
     /** The image icon. */
     protected ImageIcon _icon;
 }

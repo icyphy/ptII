@@ -44,7 +44,6 @@ public class DynamicResult implements PartialResult {
         _result = result;
     }
 
-
     public Object getResult() {
         return _result;
     }

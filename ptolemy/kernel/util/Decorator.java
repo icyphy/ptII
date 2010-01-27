@@ -30,7 +30,6 @@ package ptolemy.kernel.util;
 //////////////////////////////////////////////////////////////////////////
 ////Decorator
 
-
 /**
 A decorator is a class that decorates other NamedObj
 with extra attributes that are specific to both the decorator
@@ -55,7 +54,7 @@ These attributes are stored seperately and can be retrieved by using
 @Pt.AcceptedRating Red (rodiers)
 */
 
-public interface Decorator extends Nameable{
+public interface Decorator extends Nameable {
 
     /** Return the decorated attributes for the target NamedObj.
      *  @param target The NamedObj that will be decorated.
@@ -65,8 +64,9 @@ public interface Decorator extends Nameable{
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException;
-    
+    public DecoratedAttributes createDecoratedAttributes(NamedObj target)
+            throws IllegalActionException, NameDuplicationException;
+
     /** Set the current type of the decorated attributes.
      *  The type information of the parameters are not saved in the
      *  model hand hence this has to be reset when reading the model
@@ -76,5 +76,6 @@ public interface Decorator extends Nameable{
      *   acceptable class for the container, or if the name contains a period.
      */
     public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes) throws IllegalActionException;
+            DecoratedAttributes decoratedAttributes)
+            throws IllegalActionException;
 }

@@ -99,7 +99,7 @@ public class MeetFunction extends MonotonicFunction {
             if (term.isEffective()) {
                 termValue = (Property) term.getValue();
 
-                 meetValue = meetValue == null ? termValue : _solver
+                meetValue = meetValue == null ? termValue : _solver
                         .getLattice().greatestLowerBound(meetValue, termValue);
             }
         }

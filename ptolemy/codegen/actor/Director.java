@@ -693,7 +693,6 @@ public class Director extends CodeGeneratorHelper {
         return wcet;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

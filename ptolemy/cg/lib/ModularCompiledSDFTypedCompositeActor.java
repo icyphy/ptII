@@ -169,7 +169,8 @@ will simply result in the expression failing to evaluate.
  @Pt.AcceptedRating Red (rodiers)
  */
 
-public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeActor {
+public class ModularCompiledSDFTypedCompositeActor extends
+        LazyTypedCompositeActor {
 
     /** Construct a library in the default workspace with no
      *  container and an empty string as its name. Add the library to the
@@ -201,8 +202,9 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ModularCompiledSDFTypedCompositeActor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public ModularCompiledSDFTypedCompositeActor(CompositeEntity container,
+            String name) throws NameDuplicationException,
+            IllegalActionException {
         super(container, name);
         _init();
     }
@@ -219,23 +221,23 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      */
     public Parameter recompileThisLevel;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** Convert this Ptolemy port to a port that will be saved in the profile.
      *  @param port The Ptolemy port.
      *  @exception IllegalActionException When the width can't be retrieved.
      *  @return The profile port for an I/O port.
      */
-    public Profile.Port convertProfilePort(IOPort port) throws IllegalActionException {
+    public Profile.Port convertProfilePort(IOPort port)
+            throws IllegalActionException {
         boolean publisher = _isPublishedPort(port);
         boolean subscriber = _isSubscribedPort(port);
-        return new Profile.Port(port.getName(), publisher,
-                subscriber, port.getWidth(), DFUtilities.getTokenConsumptionRate(port),
-                JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort)port).getType()),
-                port.isInput(), port.isOutput(), _pubSubChannelName(port, publisher, subscriber));
+        return new Profile.Port(port.getName(), publisher, subscriber, port
+                .getWidth(), DFUtilities.getTokenConsumptionRate(port),
+                JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort) port)
+                        .getType()), port.isInput(), port.isOutput(),
+                _pubSubChannelName(port, publisher, subscriber));
     }
 
     /** React to a change in an attribute.  This method is called by
@@ -246,27 +248,27 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
-    public void  attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == recompileHierarchy) {
             // We will set the recompileHierarchy of all directly contained
             // ModularCodeGenTypedCompositeActors.
             // These will then do the same.
-            if (((BooleanToken) recompileHierarchy.getToken()).booleanValue()) { 
+            if (((BooleanToken) recompileHierarchy.getToken()).booleanValue()) {
                 List<?> entities = entityList(ModularCompiledSDFTypedCompositeActor.class);
                 for (Object entity : entities) {
-                    ((ModularCompiledSDFTypedCompositeActor) entity).recompileHierarchy.setToken(new BooleanToken(true));
+                    ((ModularCompiledSDFTypedCompositeActor) entity).recompileHierarchy
+                            .setToken(new BooleanToken(true));
                 }
             }
-        }
-        else if (attribute != recompileThisLevel) {
+        } else if (attribute != recompileThisLevel) {
             // We don't support this yet. Enabling results in a recompilation when
             // opening the model since expressions are lazy, and the notification does
             // not happen when you parse the model, but when you read the model.
             //_setRecompileFlag();
         }
     }
-
 
     /** Generate actor name from its class name.
      * @param className The class name of the actor
@@ -275,7 +277,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     static public String classToActorName(String className) {
         return className + "_obj";
     }
-    
+
     /** Invalidate the schedule and type resolution and create
      *  new receivers if the specified port is an opaque
      *  output port.  Also, notify the containers of any ports
@@ -286,14 +288,13 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     public void connectionsChanged(Port port) {
         super.connectionsChanged(port);
         try {
-            if (!inferringWidths()) { 
+            if (!inferringWidths()) {
                 _setRecompileFlag();
             }
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
     }
-    
 
     /** Create receivers for each port. If the port is an
      *  input port, then receivers are created for outside
@@ -304,18 +305,19 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      *  @exception IllegalActionException If any port throws it.
      */
     public void createReceivers() throws IllegalActionException {
-        if (_modelChanged())
+        if (_modelChanged()) {
             super.createReceivers();
-        else {
+        } else {
             if (workspace().getVersion() != _receiversVersion) {
                 Iterator<?> ports = portList().iterator();
-    
+
                 try {
                     workspace().getWriteAccess();
                     while (ports.hasNext()) {
                         IOPort onePort = (IOPort) ports.next();
-                        if (onePort.isInput())
+                        if (onePort.isInput()) {
                             onePort.createReceivers();
+                        }
                     }
                     _receiversVersion = workspace().getVersion();
                 } finally {
@@ -335,7 +337,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     public List portList() {
         Profile profile = _getProfile();
         if (_USE_PROFILE && profile != null) {
-            List<TypedIOPort> ports = new LinkedList<TypedIOPort>(super.portList());
+            List<TypedIOPort> ports = new LinkedList<TypedIOPort>(super
+                    .portList());
             HashSet<String> portSet = new HashSet<String>();
             for (Object port : ports) {
                 portSet.add(((NamedObj) port).getName());
@@ -351,7 +354,10 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                             ports.add(new TypedIOPort(this, port.name()));
                             NamedObj container = getContainer();
                             if (container instanceof CompositeActor) {
-                                ((CompositeActor) container).registerPublisherPort(port.getPubSubChannelName(), newPort);
+                                ((CompositeActor) container)
+                                        .registerPublisherPort(port
+                                                .getPubSubChannelName(),
+                                                newPort);
                             }
                         }
                     }
@@ -368,14 +374,14 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             List<?> entities = entityList(ModularCompiledSDFTypedCompositeActor.class);
             for (Object entity : entities) {
                 ((ModularCompiledSDFTypedCompositeActor) entity).populate();
-            }            
+            }
         } else {
             System.err.println("Error");
         }
         return super.portList();
-        
+
     }
-    
+
     /** If this actor is opaque, transfer any data from the input ports
      *  of this composite to the ports connected on the inside, and then
      *  invoke the fire() method of its local director.
@@ -397,7 +403,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             if (_debugging) {
                 _debug("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             }
-            System.out.println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
+            System.out
+                    .println("ModularCodeGenerator: No generated code. Calling simulation fire method.");
             super.fire();
             return;
         }
@@ -408,17 +415,17 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             }
 
             List<Object> argList = new LinkedList<Object>();
-            
-            Iterator<?> inputPorts = inputPortList()
-                .iterator();
+
+            Iterator<?> inputPorts = inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort port = (TypedIOPort) inputPorts.next();
                 int rate = DFUtilities.getTokenConsumptionRate(port);
-                Type type = ((TypedIOPort) port).getType();
+                Type type = (port).getType();
                 Object tokenHolder = null;
 
                 int numberOfChannels = port.getWidth() < port.getWidthInside() ? port
-                        .getWidth() : port.getWidthInside();
+                        .getWidth()
+                        : port.getWidthInside();
 
                 if (type == BaseType.INT) {
                     tokenHolder = new int[numberOfChannels][];
@@ -440,8 +447,9 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                                 Token[] tokens = port.get(i, rate);
 
                                 if (_debugging) {
-                                    _debug(getName(), "transferring input from "
-                                            + port.getName());
+                                    _debug(getName(),
+                                            "transferring input from "
+                                                    + port.getName());
                                 }
 
                                 if (type == BaseType.INT) {
@@ -453,7 +461,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                                         }
                                         tokenHolder = intTokens;
                                     } else {
-                                        tokenHolder = ((IntToken) tokens[0]).intValue();
+                                        tokenHolder = ((IntToken) tokens[0])
+                                                .intValue();
                                     }
                                 } else if (type == BaseType.DOUBLE) {
                                     if (rate > 1) {
@@ -464,7 +473,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                                             tokenHolder = doubleTokens;
                                         }
                                     } else {
-                                        tokenHolder = ((DoubleToken) tokens[0]).doubleValue();
+                                        tokenHolder = ((DoubleToken) tokens[0])
+                                                .doubleValue();
                                     }
                                 } else if (type == BaseType.BOOLEAN) {
                                     if (rate > 1) {
@@ -475,7 +485,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                                         }
                                         tokenHolder = booleanTokens;
                                     } else {
-                                        tokenHolder = ((BooleanToken) tokens[0]).booleanValue();
+                                        tokenHolder = ((BooleanToken) tokens[0])
+                                                .booleanValue();
                                     }
 
                                 } else {
@@ -483,8 +494,11 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                                 }
                                 argList.add(tokenHolder);
                             } else {
-                                throw new IllegalActionException(this, port,
-                                        "Port should consume " + rate
+                                throw new IllegalActionException(
+                                        this,
+                                        port,
+                                        "Port should consume "
+                                                + rate
                                                 + " tokens, but there were not "
                                                 + " enough tokens available.");
                             }
@@ -512,25 +526,28 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             Object[] tokensToAllOutputPorts;
             tokensToAllOutputPorts = (Object[]) _fireMethod.invoke(
                     _objectWrapper, argList.toArray());
-        
+
             int portNumber = 0;
             for (Object port : outputPortList()) {
-                    IOPort iOPort = (IOPort) port;
-                    _transferOutputs(iOPort, tokensToAllOutputPorts[portNumber++]);
+                IOPort iOPort = (IOPort) port;
+                _transferOutputs(iOPort, tokensToAllOutputPorts[portNumber++]);
             }
-    
+
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling fire method of generated code.");
             }
         } catch (IllegalArgumentException e) {
-            throw new IllegalActionException(this, e, "Could no execute the generated code.");
+            throw new IllegalActionException(this, e,
+                    "Could no execute the generated code.");
         } catch (IllegalAccessException e) {
-            throw new IllegalActionException(this, e, "Could no execute the generated code.");
+            throw new IllegalActionException(this, e,
+                    "Could no execute the generated code.");
         } catch (InvocationTargetException e) {
-            throw new IllegalActionException(this, e, "Could no execute the generated code.");
+            throw new IllegalActionException(this, e,
+                    "Could no execute the generated code.");
         }
     }
-        
+
     /** Create receivers and invoke the
      *  preinitialize() method of the local director. If this actor is
      *  not opaque, throw an exception.  This method also resets
@@ -546,7 +563,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      *   is not opaque.
      */
     public void initialize() throws IllegalActionException {
-//        super.initialize(); // TODO only do when not generating code
+        //        super.initialize(); // TODO only do when not generating code
         try {
             _generatingCode = true;
             _createCodeGenerator();
@@ -554,7 +571,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 super.initialize();
                 _generateCode();
             }
-            String className = NamedProgramCodeGeneratorAdapter.generateName(this);        
+            String className = NamedProgramCodeGeneratorAdapter
+                    .generateName(this);
             Class<?> classInstance = null;
             URL url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
             URL[] urls = new URL[] { url };
@@ -573,32 +591,29 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
 
             Method[] methods = classInstance.getMethods();
             Method intializeMethod = null;
-            
+
             for (int i = 0; i < methods.length; i++) {
                 String name = methods[i].getName();
                 if (name.equals("fire")) {
                     _fireMethod = methods[i];
                 }
-                
+
                 if (name.equals("initialize")) {
                     intializeMethod = methods[i];
                 }
             }
             if (_fireMethod == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find fire "
-                                + "method in the wrapper class.");
+                throw new IllegalActionException(this, "Cannot find fire "
+                        + "method in the wrapper class.");
             }
-            
+
             if (intializeMethod == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find intialize "
-                                + "method in the wrapper class.");
+                throw new IllegalActionException(this, "Cannot find intialize "
+                        + "method in the wrapper class.");
             }
-        
+
             //initialize the generated object
-            intializeMethod.invoke(
-                _objectWrapper, (Object[]) null);
+            intializeMethod.invoke(_objectWrapper, (Object[]) null);
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
             }
@@ -616,12 +631,11 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     /** Always return true (opaque)
      * @return true if the composite actor is set to opaque, return false otherwise.
      */
-    
+
     public boolean isOpaque() {
         return _isOpaque;
     }
-    
-    
+
     /** Link the subscriberPort with a already registered "published port" coming
      *  from a publisher. The name is the name being used in the
      *  matching process to match publisher and subscriber. A
@@ -637,11 +651,13 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      *          as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
      */
-    public void linkToPublishedPort(String name, IOPort subscriberPort) throws IllegalActionException, NameDuplicationException {
+    public void linkToPublishedPort(String name, IOPort subscriberPort)
+            throws IllegalActionException, NameDuplicationException {
         try {
             ++_creatingPubSub;
-            
-            if (_publisherRelations != null && _publisherRelations.containsKey(name)) {
+
+            if (_publisherRelations != null
+                    && _publisherRelations.containsKey(name)) {
                 IOPort port = _getPublishedPort(name);
 
                 if (port != null && port.getContainer() == null) {
@@ -649,46 +665,49 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                     port.setContainer(this);
                     port.liberalLink(_publisherRelations.get(name));
                 }
-                
+
                 super.linkToPublishedPort(name, subscriberPort);
             } else {
                 NamedObj container = getContainer();
                 if (!isOpaque() && container instanceof CompositeActor) {
                     // Published ports are not propagated if this actor
                     // is opaque.
-                    ((CompositeActor) container).linkToPublishedPort(name, subscriberPort);
+                    ((CompositeActor) container).linkToPublishedPort(name,
+                            subscriberPort);
                 } else {
                     if (container != null) {
                         IOPort stubPort;
-                        if (!(_subscriberPorts != null && _subscriberPorts.containsKey(name))) {
-                            stubPort = new TypedIOPort(this, uniqueName("subscriberStubPort"));
+                        if (!(_subscriberPorts != null && _subscriberPorts
+                                .containsKey(name))) {
+                            stubPort = new TypedIOPort(this,
+                                    uniqueName("subscriberStubPort"));
                             stubPort.setMultiport(true);
                             stubPort.setInput(true);
                             stubPort.setPersistent(false);
                             new Parameter(stubPort, "_hide", BooleanToken.TRUE);
-                            
+
                             if (_subscriberPorts == null) {
                                 _subscriberPorts = new HashMap<String, IOPort>();
                             }
                             _subscriberPorts.put(name, stubPort);
-                            
-                            IORelation relation = new TypedIORelation((CompositeEntity) this, this
-                                    .uniqueName("subscriberRelation"));
-                    
+
+                            IORelation relation = new TypedIORelation(this,
+                                    this.uniqueName("subscriberRelation"));
+
                             // Prevent the relation and its links from being exported.
                             relation.setPersistent(false);
-                            
+
                             if (_subscriberRelations == null) {
                                 _subscriberRelations = new HashMap<String, IORelation>();
                             }
-        
+
                             _subscriberRelations.put(name, relation);
-        
+
                             // Prevent the relation from showing up in vergil.
                             new Parameter(relation, "_hide", BooleanToken.TRUE);
-                            stubPort.liberalLink(relation);                        
+                            stubPort.liberalLink(relation);
                             subscriberPort.liberalLink(relation);
-        
+
                             Director director = getDirector();
                             if (director != null) {
                                 director.invalidateSchedule();
@@ -699,11 +718,13 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                             if (stubPort.getContainer() == null) {
                                 // The user deleted the port.
                                 stubPort.setContainer(this);
-                                stubPort.liberalLink(_subscriberRelations.get(name));
+                                stubPort.liberalLink(_subscriberRelations
+                                        .get(name));
                             }
                         }
                         if (container instanceof CompositeActor) {
-                            ((CompositeActor) container).linkToPublishedPort(name, stubPort);
+                            ((CompositeActor) container).linkToPublishedPort(
+                                    name, stubPort);
                         }
                     }
                 }
@@ -755,46 +776,46 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     public void preinitialize() throws IllegalActionException {
         Profile profile = _getProfile();
         if (!_USE_PROFILE || profile == null || _modelChanged()) {
-          //could not find the profile yet
+            //could not find the profile yet
             //do whatever initialization we need
             //code generation is done initialization
             //preinitialization (create schedule) -> type, width inferences -> initialization (code generation)
-            
-            
+
             //create a director for default preinitialize
             Nameable container = getContainer();
             if (container instanceof Actor) {
                 if (getDirector() == ((Actor) container).getDirector()) {
                     try {
-                        Director director = new SDFDirector(this, "SDF Director");
+                        Director director = new SDFDirector(this,
+                                "SDF Director");
                         setDirector(director);
-                        
+
                     } catch (NameDuplicationException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
-                        throw new IllegalActionException(this, "Cannot init a new SDF director");
+                        throw new IllegalActionException(this,
+                                "Cannot init a new SDF director");
                     }
                 }
             }
-            
+
             //default preinitialize
             super.preinitialize();
-            
+
             //we could do it our own
-            
+
             //create the schedule
-            
 
         } else {
             // Read back the widths, types, rates, ...
             if (!_addedSubscribersFromProfile) {
                 _addedSubscribersFromProfile = true;
                 if (profile != null) {
-                    for (FiringFunction firing: profile.firings()) {
+                    for (FiringFunction firing : profile.firings()) {
                         System.out.print(firing.firingIndex + ": ");
                         System.out.println(firing.ports);
                     }
-                    
+
                     List ports = new LinkedList(super.portList());
                     HashSet<String> portSet = new HashSet<String>();
                     for (Object port : ports) {
@@ -803,32 +824,50 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                     try {
                         for (Profile.Port port : profile.ports()) {
                             for (Object actorPort : ports) {
-                                if (port.name().equals(((NamedObj) actorPort).getName())) {
-                                    DFUtilities.setRateVariable((IOPort)actorPort, 
-                                            port.input() ? "tokenConsumptionRate":"tokenProductionRate", port.rate());
-                                    ((TypedIOPort)actorPort).setTypeEquals(JavaCodeGenerator.codeGenTypeToPtType(port.type()));
-                                    ((IOPort)actorPort).setDefaultWidth(port.width());
+                                if (port.name().equals(
+                                        ((NamedObj) actorPort).getName())) {
+                                    DFUtilities
+                                            .setRateVariable(
+                                                    (IOPort) actorPort,
+                                                    port.input() ? "tokenConsumptionRate"
+                                                            : "tokenProductionRate",
+                                                    port.rate());
+                                    ((TypedIOPort) actorPort)
+                                            .setTypeEquals(JavaCodeGenerator
+                                                    .codeGenTypeToPtType(port
+                                                            .type()));
+                                    ((IOPort) actorPort).setDefaultWidth(port
+                                            .width());
                                     break;
                                 }
                             }
-                              
-                            if (port.subscriber() && !portSet.contains(port.name())) {
-                                IOPort newPort = new TypedIOPort(this, port.name());
-                                new Parameter(newPort, "_hide", BooleanToken.TRUE);
+
+                            if (port.subscriber()
+                                    && !portSet.contains(port.name())) {
+                                IOPort newPort = new TypedIOPort(this, port
+                                        .name());
+                                new Parameter(newPort, "_hide",
+                                        BooleanToken.TRUE);
                                 newPort.setInput(port.input());
                                 newPort.setOutput(port.output());
-                                DFUtilities.setRateVariable(newPort, port.input() ? "tokenConsumptionRate":"tokenProductionRate", port.rate());
+                                DFUtilities.setRateVariable(newPort, port
+                                        .input() ? "tokenConsumptionRate"
+                                        : "tokenProductionRate", port.rate());
                                 NamedObj container = getContainer();
                                 if (container instanceof CompositeActor) {
-                                    ((CompositeActor) container).linkToPublishedPort(port.getPubSubChannelName(), newPort);
+                                    ((CompositeActor) container)
+                                            .linkToPublishedPort(port
+                                                    .getPubSubChannelName(),
+                                                    newPort);
                                 }
                             }
                         }
                     } catch (NameDuplicationException e) {
-                        throw new IllegalActionException(this, e, "Can't preinitialize.");
+                        throw new IllegalActionException(this, e,
+                                "Can't preinitialize.");
                     }
 
-                }                
+                }
             }
 
             // FIXME port.getTypeTerm().setValue(resolvedType);
@@ -851,7 +890,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      *  @exception IllegalActionException If the published port can't
      *          be added.
      */
-    public void registerPublisherPort(String name, IOPort port) throws NameDuplicationException, IllegalActionException {
+    public void registerPublisherPort(String name, IOPort port)
+            throws NameDuplicationException, IllegalActionException {
         try {
             ++_creatingPubSub;
             if (_subscriberPorts != null && _subscriberPorts.containsKey(name)) {
@@ -860,7 +900,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 // we now have a publisher.
                 this.unlinkToPublishedPort(name, _subscriberPorts.get(name));
             }
-            
+
             if (_publishedPorts != null && _publishedPorts.containsKey(name)) {
                 throw new NameDuplicationException(this, port,
                         "There is already a published port with name " + name);
@@ -868,15 +908,16 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
 
             NamedObj container = getContainer();
             if (container != null) {
-                IOPort stubPort = new TypedIOPort(this, uniqueName("publisherStubPort"));
+                IOPort stubPort = new TypedIOPort(this,
+                        uniqueName("publisherStubPort"));
                 stubPort.setMultiport(true);
                 stubPort.setOutput(true);
                 stubPort.setPersistent(false);
                 new Parameter(stubPort, "_hide", BooleanToken.TRUE);
-                
-                IORelation relation = new TypedIORelation((CompositeEntity) this,
+
+                IORelation relation = new TypedIORelation(this,
                         uniqueName("publisherRelation"));
-        
+
                 // Prevent the relation and its links from being exported.
                 relation.setPersistent(false);
                 // Prevent the relation from showing up in vergil.
@@ -893,19 +934,20 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 List<IOPort> portList = _publishedPorts.get(name);
                 if (portList == null) {
                     portList = new LinkedList<IOPort>();
-                    _publishedPorts.put(name, portList);    
+                    _publishedPorts.put(name, portList);
                 }
                 portList.add(stubPort);
-                
+
                 if (container instanceof CompositeActor) {
-                    ((CompositeActor) container).registerPublisherPort(name, stubPort);
+                    ((CompositeActor) container).registerPublisherPort(name,
+                            stubPort);
                 }
             }
         } finally {
             --_creatingPubSub;
         }
     }
-    
+
     /** Request that execution of the current iteration complete.
      *  do nothing in this case
      */
@@ -930,7 +972,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
      *          as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
      */
-    public void unlinkToPublishedPort(String name, IOPort subscriberPort) throws IllegalActionException {
+    public void unlinkToPublishedPort(String name, IOPort subscriberPort)
+            throws IllegalActionException {
         try {
             ++_creatingPubSub;
             if (_subscriberRelations != null) {
@@ -946,7 +989,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                     port.setContainer(null);
                     NamedObj container = getContainer();
                     if (container instanceof CompositeActor) {
-                        ((CompositeActor) container).unlinkToPublishedPort(name, port);
+                        ((CompositeActor) container).unlinkToPublishedPort(
+                                name, port);
                     }
                     _subscriberPorts.remove(name);
                 }
@@ -956,19 +1000,22 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 director.invalidateSchedule();
                 director.invalidateResolvedTypes();
             }
-    
-            if (_publisherRelations != null && _publisherRelations.containsKey(name)) {
+
+            if (_publisherRelations != null
+                    && _publisherRelations.containsKey(name)) {
                 super.unlinkToPublishedPort(name, subscriberPort);
             } else {
                 NamedObj container = getContainer();
                 if (!isOpaque() && container instanceof CompositeActor) {
                     // Published ports are not propagated if this actor
                     // is opaque.
-                    ((CompositeActor) container).unlinkToPublishedPort(name, subscriberPort);
+                    ((CompositeActor) container).unlinkToPublishedPort(name,
+                            subscriberPort);
                 }
             }
         } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e, "Can't unlink the container");
+            throw new IllegalActionException(this, e,
+                    "Can't unlink the container");
         } finally {
             --_creatingPubSub;
         }
@@ -992,7 +1039,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             ++_creatingPubSub;
             NamedObj container = getContainer();
             if (container != null) {
-                if (_publishedPorts != null) {                
+                if (_publishedPorts != null) {
                     try {
                         _getPublishedPort(name).setContainer(null); // Remove stubPort
                     } catch (IllegalActionException e) {
@@ -1005,7 +1052,8 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 }
                 super.unregisterPublisherPort(name, publisherPort);
                 if (container instanceof CompositeActor) {
-                    ((CompositeActor) container).unregisterPublisherPort(name, publisherPort);
+                    ((CompositeActor) container).unregisterPublisherPort(name,
+                            publisherPort);
                 }
             }
         } finally {
@@ -1031,19 +1079,22 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             super.wrapup();
         }
     }
-    
+
     /** Return the profile for the composite actor.
      * @return The profile.
      */
     public Profile getProfile() {
         if (_profile == null) {
-            String className = NamedProgramCodeGeneratorAdapter.generateName(this) + "_profile";        
+            String className = NamedProgramCodeGeneratorAdapter
+                    .generateName(this)
+                    + "_profile";
             Class<?> classInstance = null;
 
             NamedObj toplevel = toplevel();
             FileParameter path;
             try {
-                path = new FileParameter(toplevel, toplevel.uniqueName("dummyParam"));
+                path = new FileParameter(toplevel, toplevel
+                        .uniqueName("dummyParam"));
                 path.setExpression("$HOME/cg/");
                 URL url = path.asFile().toURI().toURL();
                 path.setContainer(null); //Remove the parameter again.
@@ -1052,7 +1103,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 ClassLoader classLoader = new URLClassLoader(urls);
                 classInstance = classLoader.loadClass(className);
                 _profile = (Profile) (classInstance.newInstance());
-                
+
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -1072,12 +1123,12 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            
+
         }
-            
+
         return _profile;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1125,7 +1176,6 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
         _setRecompileFlag();
         super._addRelation(relation);
     }
-    
 
     /** Remove the specified entity. This method should not be used
      *  directly.  Call the setContainer() method of the entity instead with
@@ -1167,19 +1217,19 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
         super._removeRelation(relation);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
-    private void _createCodeGenerator() throws IllegalActionException, NameDuplicationException {
+    private void _createCodeGenerator() throws IllegalActionException,
+            NameDuplicationException {
         if (_codeGenerator == null) {
-            _codeGenerator = new ModularSDFCodeGenerator(this, "ModularSDFCodeGenerator");
+            _codeGenerator = new ModularSDFCodeGenerator(this,
+                    "ModularSDFCodeGenerator");
             _codeGenerator.setPersistent(false);
             new Parameter(_codeGenerator, "_hide", BooleanToken.TRUE);
         }
     }
-    
+
     private void _init() {
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is ModularCodeGenTypedCompositeActor.
@@ -1189,11 +1239,11 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
         // derived class Java definition. Thus, we force the class name
         // here to be ModularCodeGenTypedCompositeActor.
         setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
-        try {        
+        try {
             recompileHierarchy = new Parameter(this, "recompileHierarchy");
             recompileHierarchy.setExpression("False");
             recompileHierarchy.setTypeEquals(BaseType.BOOLEAN);
-            
+
             recompileThisLevel = new Parameter(this, "recompileThisLevel");
             recompileThisLevel.setExpression("False");
             recompileThisLevel.setTypeEquals(BaseType.BOOLEAN);
@@ -1208,37 +1258,40 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
     }
 
     private boolean _isPublishedPort(IOPort port) {
-     // FIXME: this method might be slow
-        return _publishedPorts != null && _publishedPorts.containsValue(port);        
+        // FIXME: this method might be slow
+        return _publishedPorts != null && _publishedPorts.containsValue(port);
     }
-    
+
     private void _generateCode() throws KernelException {
         _createCodeGenerator();
         _codeGenerator.createProfile();
-//        _codeGenerator.generateCode();
-      
+        //        _codeGenerator.generateCode();
+
     }
 
     private Profile _getProfile() {
         try {
-        if (_profile != null || _modelChanged()) {
-            // if _modelChanged => _profile == null
-            return _profile;
-        } else {
-            String className = NamedProgramCodeGeneratorAdapter.generateName(this) + "_profile";        
-            Class<?> classInstance = null;
+            if (_profile != null || _modelChanged()) {
+                // if _modelChanged => _profile == null
+                return _profile;
+            } else {
+                String className = NamedProgramCodeGeneratorAdapter
+                        .generateName(this)
+                        + "_profile";
+                Class<?> classInstance = null;
 
-            NamedObj toplevel = toplevel();
-            FileParameter path = new FileParameter(toplevel, toplevel.uniqueName("dummyParam"));
-            path.setExpression("$HOME/cg/");
-            URL url = path.asFile().toURI().toURL();
-            path.setContainer(null); //Remove the parameter again.
-            URL[] urls = new URL[] { url };
+                NamedObj toplevel = toplevel();
+                FileParameter path = new FileParameter(toplevel, toplevel
+                        .uniqueName("dummyParam"));
+                path.setExpression("$HOME/cg/");
+                URL url = path.asFile().toURI().toURL();
+                path.setContainer(null); //Remove the parameter again.
+                URL[] urls = new URL[] { url };
 
-            ClassLoader classLoader = new URLClassLoader(urls);
-            classInstance = classLoader.loadClass(className);
-            _profile = (Profile) (classInstance.newInstance());
-        }
+                ClassLoader classLoader = new URLClassLoader(urls);
+                classInstance = classLoader.loadClass(className);
+                _profile = (Profile) (classInstance.newInstance());
+            }
         } catch (Exception e) {
             try {
                 if (_USE_PROFILE) {
@@ -1252,31 +1305,33 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
         return _profile;
     }
 
-    
     private boolean _modelChanged() throws IllegalActionException {
-        return ((BooleanToken) recompileThisLevel.getToken()).booleanValue() ||
-                ((BooleanToken) recompileHierarchy.getToken()).booleanValue();
+        return ((BooleanToken) recompileThisLevel.getToken()).booleanValue()
+                || ((BooleanToken) recompileHierarchy.getToken())
+                        .booleanValue();
     }
-    
 
-    private String _pubSubChannelName(IOPort port, boolean publisher, boolean subscriber) {
-     // FIXME: this method might be slow
+    private String _pubSubChannelName(IOPort port, boolean publisher,
+            boolean subscriber) {
+        // FIXME: this method might be slow
         if (subscriber) {
-            for (Map.Entry<String, IOPort> element : _subscriberPorts.entrySet()) {
+            for (Map.Entry<String, IOPort> element : _subscriberPorts
+                    .entrySet()) {
                 if (element.getValue() == port) {
                     return element.getKey();
                 }
             }
         } else if (publisher) {
-            for (Entry<String, List<IOPort>> element : _publishedPorts.entrySet()) {
+            for (Entry<String, List<IOPort>> element : _publishedPorts
+                    .entrySet()) {
                 if (element.getValue().contains(port)) {
                     return element.getKey();
                 }
-            }                
+            }
         }
         return "";
     }
-    
+
     private void _setRecompileFlag() throws IllegalActionException {
         if (_configureDone && !_populating && !_generatingCode
                 && _creatingPubSub == 0) {
@@ -1284,7 +1339,7 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
             _profile = null;
         }
     }
-    
+
     private void _transferOutputs(IOPort port, Object outputTokens)
             throws IllegalActionException {
 
@@ -1334,88 +1389,100 @@ public class ModularCompiledSDFTypedCompositeActor extends LazyTypedCompositeAct
 
             for (int i = 0; i < port.getWidthInside(); i++) {
                 for (int k = 0; k < rate; k++) {
-                    type = ((ArrayType)type).getElementType();
+                    type = ((ArrayType) type).getElementType();
                     try {
-                        Object[][] tmpOutputTokens = (Object[][])outputTokens;
+                        Object[][] tmpOutputTokens = (Object[][]) outputTokens;
                         Class<?> tokenClass = tmpOutputTokens[i][k].getClass();
-                        
+
                         Method getPayload;
-                        getPayload = tokenClass.getMethod("getPayload", (Class[]) null);
-                        
+                        getPayload = tokenClass.getMethod("getPayload",
+                                (Class[]) null);
+
                         Object payload = null;
-                        payload = (Object) getPayload.invoke(tmpOutputTokens[i][k], (Object[])null);
-                        
-                        Field objSize = (Field) (payload.getClass().getField("size"));
+                        payload = getPayload.invoke(tmpOutputTokens[i][k],
+                                (Object[]) null);
+
+                        Field objSize = (payload.getClass().getField("size"));
                         int size = objSize.getInt(payload);
-                        
-                        Field elementsField = (Field) (payload.getClass().getField("elements"));
-                        Object[] elements = (Object[])elementsField.get(payload);
-                        
+
+                        Field elementsField = (payload.getClass()
+                                .getField("elements"));
+                        Object[] elements = (Object[]) elementsField
+                                .get(payload);
+
                         Token[] convertedTokens = new Token[size];
-                        
+
                         for (int j = 0; j < size; j++) {
-                            Object element =  (Object)getPayload.invoke(elements[j], (Object[])null);
+                            Object element = getPayload.invoke(elements[j],
+                                    (Object[]) null);
                             if (type == BaseType.INT) {
-                                convertedTokens[j] = new IntToken(Integer.parseInt(element.toString())); 
+                                convertedTokens[j] = new IntToken(Integer
+                                        .parseInt(element.toString()));
                             } else if (type == BaseType.DOUBLE) {
-                                convertedTokens[j] = new DoubleToken(Double.parseDouble(element.toString()));
+                                convertedTokens[j] = new DoubleToken(Double
+                                        .parseDouble(element.toString()));
                             } else if (type == BaseType.BOOLEAN) {
-                                convertedTokens[j] = new BooleanToken(Boolean.parseBoolean(element.toString()));
+                                convertedTokens[j] = new BooleanToken(Boolean
+                                        .parseBoolean(element.toString()));
                             } else {
                                 //FIXME: need to deal with other types
                             }
                         }
-                        
+
                         Token token = new ArrayToken(type, convertedTokens);
                         port.send(i, token);
-                        
+
                     } catch (SecurityException e) {
-                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
+                        throw new IllegalActionException(this, e,
+                                "Can't generate transfer code.");
                     } catch (NoSuchMethodException e) {
-                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
+                        throw new IllegalActionException(this, e,
+                                "Can't generate transfer code.");
                     } catch (IllegalArgumentException e) {
-                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
+                        throw new IllegalActionException(this, e,
+                                "Can't generate transfer code.");
                     } catch (IllegalAccessException e) {
-                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
+                        throw new IllegalActionException(this, e,
+                                "Can't generate transfer code.");
                     } catch (InvocationTargetException e) {
-                        throw new IllegalActionException(this, e, "Can't generate transfer code.");                        
+                        throw new IllegalActionException(this, e,
+                                "Can't generate transfer code.");
                     } catch (NoSuchFieldException e) {
-                        throw new IllegalActionException(this, e, "Can't generate transfer code.");
-                    } 
+                        throw new IllegalActionException(this, e,
+                                "Can't generate transfer code.");
+                    }
                 }
             }
         } else {
             // FIXME: need to deal with other types
         }
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    
     private boolean _addedSubscribersFromProfile = false;
 
     private boolean _generatingCode = false;
-    
+
     private ModularSDFCodeGenerator _codeGenerator = null;
-    
+
     private transient Method _fireMethod;
-    
+
     private Object _objectWrapper;
-    
+
     private boolean _isOpaque = true;
-    
+
     private long _receiversVersion;
-    
+
     private int _creatingPubSub = 0;
-   
+
     private Profile _profile = null;
-    
+
     private Map<String, IOPort> _subscriberPorts;
-    
+
     private Map<String, IORelation> _subscriberRelations;
-    
+
     static private boolean _USE_PROFILE = true;
-    
+
 }

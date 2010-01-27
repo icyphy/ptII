@@ -93,13 +93,13 @@ public class SDFDirector
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        _updatePortBufferSize();        
+        _updatePortBufferSize();
 
         code.append(super.generatePreinitializeCode());
-        
+
         _updatePortBufferSize();
         _portNumber = 0;
-        
+
         return code.toString();
     }
 
@@ -331,12 +331,13 @@ public class SDFDirector
             // Print period only if it is the containing actor is the top level.
             // FIXME: should this test also be applied to the other code?
             ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
-            if (director.getContainer().getContainer()==null) {
+            if (director.getContainer().getContainer() == null) {
                 variableDeclarations.append(_eol
                         + getCodeGenerator().comment(
                                 "Provide the period attribute as constant."));
-                variableDeclarations.append("public final static double PERIOD = "
-                        + periodValue + ";" + _eol);
+                variableDeclarations
+                        .append("public final static double PERIOD = "
+                                + periodValue + ";" + _eol);
             }
 
         }
@@ -364,7 +365,8 @@ public class SDFDirector
      */
     @Override
     protected String _generateVariableDeclaration(
-            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target)
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -449,8 +451,8 @@ public class SDFDirector
 
             //result.append("[" + channelAndOffset[1] + "]");
             result.insert(0, "("
-                    + getCodeGenerator().codeGenType(elementType).replace("Array",
-                            "Token").replace("Matrix", "Token")
+                    + getCodeGenerator().codeGenType(elementType).replace(
+                            "Array", "Token").replace("Matrix", "Token")
                     + ")(/*JCGH44*/Array_get(");
             if (getCodeGenerator().isPrimitive(elementType)) {
                 result.insert(0, "(");
@@ -510,7 +512,9 @@ public class SDFDirector
         }
 
         if (port.isMultiport()) {
-            code.append("[" + java.lang.Math.max(port.getWidth(), port.getWidthInside()) + "]");
+            code.append("["
+                    + java.lang.Math
+                            .max(port.getWidth(), port.getWidthInside()) + "]");
         }
 
         if (bufferSize > 1) {
@@ -591,10 +595,12 @@ public class SDFDirector
                 // avoid duplicate declaration.
                 if (!getCodeGenerator().getModifiedVariables().contains(
                         parameter)) {
-                    code.append("static " + targetType(parameter.getType())
+                    code.append("static "
+                            + targetType(parameter.getType())
                             + " "
-                            + getCodeGenerator().generateVariableName(parameter)
-                            + ";" + _eol);
+                            + getCodeGenerator()
+                                    .generateVariableName(parameter) + ";"
+                            + _eol);
                 }
             }
         }
@@ -609,13 +615,14 @@ public class SDFDirector
      *  getting port information.
      */
     private String _generateTypeConvertVariableDeclaration(
-            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target)
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> channels = target.getTypeConvertChannels()
-                .iterator();
+        Iterator<?> channels = target.getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
-            ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels.next();
+            ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels
+                    .next();
             Type portType = ((TypedIOPort) channel.port).getType();
 
             if (getCodeGenerator().isPrimitive(portType)) {
@@ -623,8 +630,7 @@ public class SDFDirector
                 code.append("static ");
                 code.append(targetType(portType));
                 //getStrategy();
-                code.append(" "
-                        + getTypeConvertReference(channel));
+                code.append(" " + getTypeConvertReference(channel));
 
                 //int bufferSize = getBufferSize(channel.port);
                 int bufferSize = Math.max(DFUtilities

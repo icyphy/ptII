@@ -30,8 +30,8 @@ package ptolemy.data.properties.lattice.dimensionSystem.actor.lib;
 import java.util.List;
 
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.dimensionSystem.MultiplyMonotonicFunction;
 import ptolemy.data.properties.lattice.dimensionSystem.DivideMonotonicFunction;
+import ptolemy.data.properties.lattice.dimensionSystem.MultiplyMonotonicFunction;
 import ptolemy.data.properties.lattice.dimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -69,7 +69,7 @@ public class Scale extends AtomicActor {
         // So use the MultiplyMonotonicFunction for the output property.
         setAtLeast(actor.output, new MultiplyMonotonicFunction(actor.input,
                 actor.factor, _lattice, this));
-        
+
         // The input of the Scale actor is the a factor of multiplication
         // So use the FactorMonotonicFunction for the input property.
         setAtLeast(actor.input, new DivideMonotonicFunction(actor.output,

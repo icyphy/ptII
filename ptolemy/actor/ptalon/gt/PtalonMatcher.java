@@ -99,13 +99,13 @@ public class PtalonMatcher extends TypedCompositeActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         ports and parameters              ////
-    
+
     /** The location of the Ptalon code. */
     public FileParameter ptalonCodeLocation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Setup parameters for this actor. 
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If there are problems setting
@@ -163,7 +163,6 @@ public class PtalonMatcher extends TypedCompositeActor implements
         _actors.clear();
     }
 
-
     /** Set the container.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
@@ -198,7 +197,7 @@ public class PtalonMatcher extends TypedCompositeActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public inner classes              ////
-    
+
     /**  A nested ptalon actor.
      */
     public static class NestedPtalonActor extends PtalonActor implements

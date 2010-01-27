@@ -30,7 +30,6 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
-import ptolemy.cg.kernel.generic.CGException;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.kernel.util.IllegalActionException;
@@ -71,7 +70,8 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      * not found or it encounters an error while generating the
      * get code.
      */
-    abstract public String generateGetCode(String offset) throws IllegalActionException;
+    abstract public String generateGetCode(String offset)
+            throws IllegalActionException;
 
     /** Generate code to check if the receiver has a token.
      *  @param offset The offset in the array representation of the port.
@@ -80,8 +80,9 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      *  getting the receiver adapters or generating their initialize
      *  code.
      */
-    abstract public String generateHasTokenCode(String offset) throws IllegalActionException;
-    
+    abstract public String generateHasTokenCode(String offset)
+            throws IllegalActionException;
+
     /**
      * Generate the initialize code. In this base class, return empty
      * string. Subclasses may extend this method to generate initialize
@@ -94,7 +95,7 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
     public String generateInitializeCode() throws IllegalActionException {
         return _generateBlockByName(_defaultBlocks[1]);
     }
-    
+
     /** 
      * Generate code for putting tokens to the receiver.
      * Note the type conversion is also done in this put method.
@@ -106,8 +107,8 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      * not found or it encounters an error while generating the send
      * code.
      */
-    abstract public String generatePutCode(IOPort sourcePort, String offset, String token)
-            throws IllegalActionException;
+    abstract public String generatePutCode(IOPort sourcePort, String offset,
+            String token) throws IllegalActionException;
 
     /** Get the corresponding component.
      *  @return the component that corresponds with this receiver.   
@@ -126,13 +127,15 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
             try {
                 channel = port.getChannelForReceiver(getComponent());
             } catch (IllegalActionException e) {
-                throw new InvalidStateException(port, e, "Can't retrieve channel for receiver.");
+                throw new InvalidStateException(port, e,
+                        "Can't retrieve channel for receiver.");
             }
-            _name = getCodeGenerator().generateVariableName(port) + "_" + channel;
-        }        
+            _name = getCodeGenerator().generateVariableName(port) + "_"
+                    + channel;
+        }
         return _name;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -147,9 +150,10 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
-    abstract protected String _generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source)
+    abstract protected String _generateTypeConvertStatement(
+            ProgramCodeGeneratorAdapter.Channel source)
             throws IllegalActionException;
-    
+
     /** Given a String that is an assignment operation, return the
      *  right hand side (the source).   
      *  <p>The token should be in the form of "sinkRef = $convert(sourceRef)".</p>
@@ -161,19 +165,19 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
         int equalIndex = TemplateParser.indexOf("=", token, 0);
 
         if (equalIndex < 0) {
-            throw new IllegalActionException(((ptolemy.actor.Receiver)getComponent()).getContainer(),
-                    "The parsed type conversion statement is" +
-                    "expected to be of the form: sinkRef = $convert(sourceRef), not \"" +
-                    token + "\", which does not contain \"=\".");
+            throw new IllegalActionException(
+                    (getComponent()).getContainer(),
+                    "The parsed type conversion statement is"
+                            + "expected to be of the form: sinkRef = $convert(sourceRef), not \""
+                            + token + "\", which does not contain \"=\".");
         }
-        
+
         return token.substring(equalIndex + 2);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    
     /** Each receiver is associated with a director, return that director.
      *  @return The director associated with this receiver.
      *  @exception IllegalActionException 
@@ -181,7 +185,8 @@ public abstract class Receiver extends ProgramCodeGeneratorAdapter {
      *  FIXME: this is not exactly correct.
      */
     protected Director _getDirectorForReceiver() throws IllegalActionException {
-        return (Director)getAdapter(((Actor)getComponent().getContainer().getContainer()).getDirector());
+        return (Director) getAdapter(((Actor) getComponent().getContainer()
+                .getContainer()).getDirector());
     }
 
     ///////////////////////////////////////////////////////////////////

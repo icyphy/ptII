@@ -87,14 +87,14 @@ public class ProcessAttribute extends SequenceAttribute {
      *   an attribute already in the container.
      */
     public ProcessAttribute(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setTypeEquals(new ArrayType(BaseType.STRING,2));
+        setTypeEquals(new ArrayType(BaseType.STRING, 2));
 
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-2\" "
                 + "width=\"60\" height=\"4\" " + "style=\"fill:blue\"/>\n"
                 + "<rect x=\"15\" y=\"-10\" " + "width=\"4\" height=\"20\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n"); 
+                + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     // FIXME:  Do we want the sequence director to ignore the process name alltogether
@@ -120,108 +120,95 @@ public class ProcessAttribute extends SequenceAttribute {
 
         int seq1 = 0;
         int seq2 = 0;
-        
+
         // Check for either a SequenceAttribute or ProcessAttribute (which is a SequenceAttribute)
-        if (obj instanceof SequenceAttribute)
-        {
-            
+        if (obj instanceof SequenceAttribute) {
+
             // If the second object is a ProcessAttribute, compare the process names
-            if (obj instanceof ProcessAttribute)
-            {
+            if (obj instanceof ProcessAttribute) {
                 String proc1 = this.getProcessName();
                 String proc2 = ((ProcessAttribute) obj).getProcessName();
-                
+
                 int procCompare = proc1.compareTo(proc2);
-                
+
                 // If not equal, return result
-                if (procCompare != 0)
-                {
+                if (procCompare != 0) {
                     return procCompare;
                 }
-                
+
                 // If process names are the same, compare the sequence numbers
                 seq1 = this.getSequenceNumber();
                 seq2 = ((ProcessAttribute) obj).getSequenceNumber();
-             
-                if (seq1 < seq2)
-                {
+
+                if (seq1 < seq2) {
                     return -1;
-                }
-                else if (seq1 > seq2)
-                {
+                } else if (seq1 > seq2) {
                     return 1;
-                }
-                else
-                {
+                } else {
                     return 0;
                 }
             }
-            
+
             else {
                 // For process name and sequence number, just compare sequence numbers
                 // Need to call getSequenceNumber from SequenceAttribute
                 seq1 = this.getSequenceNumber();
                 seq2 = ((SequenceAttribute) obj).getSequenceNumber();
-         
-                if (seq1 < seq2)
-                {
+
+                if (seq1 < seq2) {
                     return -1;
-                }
-                else if (seq1 > seq2)
-                {
+                } else if (seq1 > seq2) {
                     return 1;
-                }
-                else
-                {
+                } else {
                     return 0;
                 }
             }
         }
-        
+
         // FIXME:  Throw exception?  Otherwise we can not compare them, if the second object
         // is not a SequenceAttribute or ProcessAttribute
         return 0;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Returns the process name, or an empty string if there is none.
      * 
      * @return String process name
      */
-    
-    public String getProcessName()
-    {
+
+    public String getProcessName() {
         String processName = "";
-        String expr  = this.getExpression();
-    
+        String expr = this.getExpression();
+
         if (expr.contains("{")) {
 
-            processName = expr.substring(expr.indexOf("{")+1, expr.indexOf(",")).replace("\'", "");
+            processName = expr.substring(expr.indexOf("{") + 1,
+                    expr.indexOf(",")).replace("\'", "");
         }
-        
+
         return processName;
-    }   
-    
+    }
+
     /** Returns the sequence number as an int, or 0 if there is none.
      * 
      * @return int sequence number
-     */   
-    
+     */
+
     // FIXME:  0 is actually a valid sequence number - want different default return?
-        
-    public int getSequenceNumber()
-    {
+
+    public int getSequenceNumber() {
         int seqNumber = 0;
         String expr = this.getExpression();
-        
+
         if (expr.contains("{")) {
-            seqNumber = Integer.parseInt(expr.substring(expr.indexOf(",")+1, expr.indexOf("}")).replace("\'", ""));
+            seqNumber = Integer.parseInt(expr.substring(expr.indexOf(",") + 1,
+                    expr.indexOf("}")).replace("\'", ""));
         }
-        
+
         return seqNumber;
-   
+
     }
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

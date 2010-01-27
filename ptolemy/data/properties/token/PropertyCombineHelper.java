@@ -41,7 +41,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
 //// PropertyCombineHelper
@@ -143,11 +142,11 @@ public class PropertyCombineHelper extends PropertyHelper {
                 // Findbugs: BC: "Unchecked unconfirmed cast"
                 getSolver().putToken(object, (PropertyToken) property);
             } else {
-                throw new InternalErrorException((getComponent() instanceof NamedObj ? (NamedObj) getComponent() : null),
-                        null,
-                        "Property " +
-                        property + " is not a PropertyToken, it is a "
-                        + property.getClass().getName());
+                throw new InternalErrorException(
+                        (getComponent() instanceof NamedObj ? (NamedObj) getComponent()
+                                : null), null, "Property " + property
+                                + " is not a PropertyToken, it is a "
+                                + property.getClass().getName());
             }
         }
     }

@@ -82,13 +82,13 @@ perspective.
 */
 
 public class TemplateParser {
-    
+
     /** Construct the TemplateParser associated
      *  with the given component and the given adapter.
      */
     public TemplateParser() {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -143,9 +143,10 @@ public class TemplateParser {
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
-    public String generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
-            ProgramCodeGeneratorAdapter.Channel sink, int offset, String alternativeSourceRef)
-            throws IllegalActionException {
+    public String generateTypeConvertStatement(
+            ProgramCodeGeneratorAdapter.Channel source,
+            ProgramCodeGeneratorAdapter.Channel sink, int offset,
+            String alternativeSourceRef) throws IllegalActionException {
 
         Type sourceType = ((TypedIOPort) source.port).getType();
         Type sinkType = ((TypedIOPort) sink.port).getType();
@@ -163,10 +164,11 @@ public class TemplateParser {
         String sourcePortChannel = source.port.getName() + "#"
                 + source.channelNumber + ", " + offset;
         String sourceRef;
-        
+
         if (alternativeSourceRef == null) {
-            sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(source.port
-                .getContainer())).getReference(sourcePortChannel);
+            sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
+                    .getAdapter(source.port.getContainer()))
+                    .getReference(sourcePortChannel);
         } else {
             sourceRef = alternativeSourceRef;
         }
@@ -181,8 +183,9 @@ public class TemplateParser {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(sink.port
-                .getContainer())).getReference(sinkPortChannel, true);
+        String sinkRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
+                .getAdapter(sink.port.getContainer())).getReference(
+                sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
@@ -200,21 +203,22 @@ public class TemplateParser {
 
         if (!sinkType.equals(sourceType)) {
             if (_codeGenerator.isPrimitive(sinkType)) {
-                result = _codeGenerator.codeGenType(sourceType) + "to" + _codeGenerator.codeGenType(sinkType)
-                        + "(" + result + ")";
+                result = _codeGenerator.codeGenType(sourceType) + "to"
+                        + _codeGenerator.codeGenType(sinkType) + "(" + result
+                        + ")";
 
             } else if (_codeGenerator.isPrimitive(sourceType)) {
-                result = "$new(" + _codeGenerator.codeGenType(sourceType) + "(" + result
-                        + "))";
+                result = "$new(" + _codeGenerator.codeGenType(sourceType) + "("
+                        + result + "))";
             }
 
             if (sinkType != BaseType.SCALAR && sinkType != BaseType.GENERAL
                     && !_codeGenerator.isPrimitive(sinkType)) {
                 if (sinkType instanceof ArrayType) {
                     if (_codeGenerator.isPrimitive(sourceType)) {
-                        result = "$new(" + _codeGenerator.codeGenType(sinkType) + "(1, 1, "
-                                + result + ", TYPE_" + _codeGenerator.codeGenType(sourceType)
-                                + "))";
+                        result = "$new(" + _codeGenerator.codeGenType(sinkType)
+                                + "(1, 1, " + result + ", TYPE_"
+                                + _codeGenerator.codeGenType(sourceType) + "))";
                     }
 
                     // Deep converting for ArrayType.
@@ -231,17 +235,20 @@ public class TemplateParser {
                                 + "::convert("
                                 + result
                                 + ", /*CGH*/ TYPE_"
-                                + _codeGenerator.codeGenType(((ArrayType) sinkType)
-                                        .getElementType()) + "))";
+                                + _codeGenerator
+                                        .codeGenType(((ArrayType) sinkType)
+                                                .getElementType()) + "))";
                     }
 
                 } else {
-                    result = "$typeFunc(TYPE_" + _codeGenerator.codeGenType(sinkType)
+                    result = "$typeFunc(TYPE_"
+                            + _codeGenerator.codeGenType(sinkType)
                             + "::convert(" + result + "))";
                 }
             }
         }
-        return sinkRef + " = " + result + ";" + StringUtilities.getProperty("line.separator");
+        return sinkRef + " = " + result + ";"
+                + StringUtilities.getProperty("line.separator");
     }
 
     /** Return the code stream.
@@ -278,7 +285,7 @@ public class TemplateParser {
 
         return files;
     }
-    
+
     /** Return the value or an expression in the target language for
      *  the specified parameter of the associated actor.  If the
      *  parameter is specified by an expression, then the expression
@@ -321,8 +328,8 @@ public class TemplateParser {
         StringTokenizer tokenizer2 = new StringTokenizer(attributeName, "()",
                 false);
         if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
-            CGException.throwException(_component,
-                    "Invalid cast type: " + attributeName);
+            CGException.throwException(_component, "Invalid cast type: "
+                    + attributeName);
         }
 
         if (tokenizer2.countTokens() == 2) {
@@ -336,8 +343,8 @@ public class TemplateParser {
         if (attribute == null) {
             attribute = container.getAttribute(attributeName);
             if (attribute == null) {
-                CGException.throwException(container,
-                        "No attribute named: " + name);
+                CGException.throwException(container, "No attribute named: "
+                        + name);
             }
         }
 
@@ -454,7 +461,7 @@ public class TemplateParser {
         }
         return ""; // We never get here
     }
-    
+
     /** Return the parse tree to use with expressions.
      *  @return the parse tree to use with expressions.
      */
@@ -534,7 +541,7 @@ public class TemplateParser {
         _component = component;
         _codeGenerator = adapter.getCodeGenerator();
         _codeStream = new CodeStream(adapter);
-        
+
         _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
             /** Given a string, escape special characters as necessary for the
              *  target language.
@@ -647,7 +654,7 @@ public class TemplateParser {
 
         return result.toString();
     }
- 
+
     /** Given a block name, generate code for that block.
      *  This method is called by actors adapters that have simple blocks
      *  that do not take parameters or have widths.
@@ -666,7 +673,7 @@ public class TemplateParser {
         codeStream.appendCodeBlock(blockName, args);
         return processCode(codeStream.toString());
     }
-    
+
     /** Return the translated token instance function invocation string.
      *  @param functionString The string within the $tokenFunc() macro.
      *  @param isStatic True if the method is static.
@@ -690,8 +697,8 @@ public class TemplateParser {
         // Syntax checking.
         if ((commaIndex == -1) || (openFuncParenIndex == -1)
                 || (closeFuncParenIndex != (functionString.length() - 1))) {
-            CGException.throwException(
-                    "Bad Syntax with the $tokenFunc / $typeFunc macro. "
+            CGException
+                    .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
                             + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
                             + "String was:\n:" + functionString);
         }
@@ -708,8 +715,8 @@ public class TemplateParser {
             _codeGenerator._typeFuncUsed.add(functionName);
 
             if (argumentList.length() == 0) {
-                CGException.throwException(
-                        "Static type function requires at least one argument(s).");
+                CGException
+                        .throwException("Static type function requires at least one argument(s).");
             }
 
             return "functionTable[(int)" + typeOrToken + "][FUNC_"
@@ -751,8 +758,8 @@ public class TemplateParser {
         // Syntax checking.
         if ((openFuncParenIndex == -1)
                 || (closeFuncParenIndex != (constructorString.length() - 1))) {
-            CGException.throwException(
-                    "Bad Syntax with the $new() macro. "
+            CGException
+                    .throwException("Bad Syntax with the $new() macro. "
                             + "[i.e. -- $new([elementType]Array(8, 8, arg1, arg2, ...))]");
         }
 
@@ -803,7 +810,6 @@ public class TemplateParser {
         return null;
     }
 
-
     /** Get the size of a parameter. The size of a parameter
      *  is the length of its array if the parameter's type is array,
      *  and 1 otherwise.
@@ -815,8 +821,8 @@ public class TemplateParser {
     public String getSize(String name) throws IllegalActionException {
 
         // Try if the name is a parameter.
-        Variable attribute = ModelScope.getScopedVariable(null, (NamedObj) _component,
-                name);
+        Variable attribute = ModelScope.getScopedVariable(null,
+                (NamedObj) _component, name);
 
         if (attribute != null) {
             Token token = attribute.getToken();
@@ -840,16 +846,18 @@ public class TemplateParser {
                             // TODO: This is a workaround and should be removed.
                             // Probably we should remove the $size feature, or at least,
                             // not support it on ports, but instead on tokens.
-                            return ((NamedProgramCodeGeneratorAdapter) _codeGenerator.getAdapter(_component)).getReference(name) + ".payload."
-                                    + _getCodeGenerator().codeGenType(type) + "->size";
+                            return ((NamedProgramCodeGeneratorAdapter) _codeGenerator
+                                    .getAdapter(_component)).getReference(name)
+                                    + ".payload."
+                                    + _getCodeGenerator().codeGenType(type)
+                                    + "->size";
                         }
                     }
                 }
             }
         }
 
-        CGException.throwException(_component,
-                "Attribute not found: " + name);
+        CGException.throwException(_component, "Attribute not found: " + name);
         return ""; //We never get here.
     }
 
@@ -860,6 +868,7 @@ public class TemplateParser {
     final public void setCodeGenerator(ProgramCodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 
@@ -900,8 +909,9 @@ public class TemplateParser {
         } else if (macro.equals("hasToken")) {
             return _replaceHasTokenMacro(parameter);
         } else if (macro.equals("ref")) {
-            CGException.throwException("$ref is no longer supported as a macro. To reference " +
-                            "input/output ports, use $get() and $put(). For parameters, use $param()");
+            CGException
+                    .throwException("$ref is no longer supported as a macro. To reference "
+                            + "input/output ports, use $get() and $put(). For parameters, use $param()");
         } else if (macro.equals("param")) {
             return _replaceParameter(parameter);
         } else if (macro.equals("targetType")) {
@@ -932,7 +942,8 @@ public class TemplateParser {
 
             Variable variable = _getVariable(parameter);
             if (variable != null) {
-                return type + _getCodeGenerator().codeGenType(variable.getType());
+                return type
+                        + _getCodeGenerator().codeGenType(variable.getType());
             }
             CGException.throwException(parameter
                     + " is not a port. $type macro takes in a port.");
@@ -945,14 +956,16 @@ public class TemplateParser {
 
         } else if (macro.equals("actorSymbol")) {
             if (parameter.trim().length() == 0) {
-                return _codeGenerator.generateVariableName(((NamedObj)_component));
+                return _codeGenerator
+                        .generateVariableName(((NamedObj) _component));
             } else {
-                return _codeGenerator.generateVariableName(((NamedObj)_component)) + "_"
-                        + processCode(parameter);
+                return _codeGenerator
+                        .generateVariableName(((NamedObj) _component))
+                        + "_" + processCode(parameter);
             }
         } else if (macro.equals("actorClass")) {
-            return ((NamedObj)_component).getClassName().replace('.', '_') + "_"
-                    + processCode(parameter);
+            return ((NamedObj) _component).getClassName().replace('.', '_')
+                    + "_" + processCode(parameter);
 
             // Handle type function macros.
         } else if (macro.equals("new")) {
@@ -1107,7 +1120,7 @@ public class TemplateParser {
 
         return codeStream;
     }
-    
+
     /** Return the actual CodeStream for this Adapter.
      * @return The actual CodeStream.
      * @exception IllegalActionException If thrown by a called method.
@@ -1172,7 +1185,7 @@ public class TemplateParser {
      *  @exception IllegalActionException
      */
     private String[] _parsePortChannel(String name)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         String[] result = { "", "" };
 
@@ -1180,28 +1193,25 @@ public class TemplateParser {
         //     "port", or
         //     "port#channel".
 
-        int commaIndex = TemplateParser.indexOf(",", name,
-                0);
+        int commaIndex = TemplateParser.indexOf(",", name, 0);
 
         if (commaIndex >= 0) {
-            throw new IllegalActionException("Parsing the string:" +
-                    name + ". However we are expecting a string" +
-                    "of the form: port, or port#channel.");
+            throw new IllegalActionException("Parsing the string:" + name
+                    + ". However we are expecting a string"
+                    + "of the form: port, or port#channel.");
         }
 
-        int poundIndex = indexOf("#", name,
-                0);
+        int poundIndex = indexOf("#", name, 0);
         if (poundIndex < 0) {
             result[0] = name;
             result[1] = "0";
         } else {
             result[0] = name.substring(0, poundIndex);
-            result[1] = name.substring(poundIndex + 1); 
+            result[1] = name.substring(poundIndex + 1);
         }
         return result;
     }
 
-    
     private String _replaceGetMacro(String parameter)
             throws IllegalActionException {
         // e.g. $get(input#channel, offset); or
@@ -1220,28 +1230,29 @@ public class TemplateParser {
 
         TypedIOPort port = getPort(portChannel[0]);
         String channel = portChannel[1];
-        
+
         if (port == null || channel.length() == 0) {
             CGException.throwException(parameter
                     + " is not acceptable by $get(). "
                     + "The $get macro can accept the following forms: "
                     + "$get(input#channel, offset); or, "
-                    + "$get(input, offset); or, "
-                    + "$get(input#channel); or, "
+                    + "$get(input, offset); or, " + "$get(input#channel); or, "
                     + "$get(input);");
         }
 
-        PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator.getAdapter(port);
+        PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator
+                .getAdapter(port);
 
         return processCode(portAdapter.generateGetCode(channel, offset));
     }
-    
+
     /** replace the $hasToken() with the corresponding parameter 
      *  @param parameter The name and offset of the parameter
      *  @return the hasToken parameter is returned
      *  @exception IllegalActionException
      */
-    private String _replaceHasTokenMacro(String parameter) throws IllegalActionException {
+    private String _replaceHasTokenMacro(String parameter)
+            throws IllegalActionException {
         // e.g. $hasToken(input#channel, offset); or
         // $hasToken(input, offset); or,
         // $hasToken(input#channel); or,
@@ -1258,45 +1269,49 @@ public class TemplateParser {
 
         TypedIOPort port = getPort(portChannel[0]);
         String channel = portChannel[1];
-        
+
         if (port == null || channel.length() == 0) {
             CGException.throwException(parameter
                     + " is not acceptable by $hasToken(). "
                     + "The $hasToken macro can accept the following forms: "
                     + "$hasToken(input#channel, offset); or, "
                     + "$hasToken(input, offset); or, "
-                    + "$hasToken(input#channel); or, "
-                    + "$hasToken(input);");
+                    + "$hasToken(input#channel); or, " + "$hasToken(input);");
         }
 
-        PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator.getAdapter(port);
+        PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator
+                .getAdapter(port);
 
         return processCode(portAdapter.generateHasTokenCode(channel, offset));
     }
-    
+
     /** replace the $param() with the corresponding parameter
      *  @param parameter The name and offset of the parameter.
      *  @return the parameter to be returned.
      *  @exception IllegalActionException
      */
-    private String _replaceParameter(String parameter) throws IllegalActionException {
+    private String _replaceParameter(String parameter)
+            throws IllegalActionException {
         // e.g. $param(thisParam, 0), or $param(thisParam).
         // First is the name of the parameter, second is the offset of the parameter.
         if (!(_component instanceof Actor)) {
-            CGException.throwException(_component, "Parameters are only supported for" +
-                            "actors, but this component is not one.");
+            CGException.throwException(_component,
+                    "Parameters are only supported for"
+                            + "actors, but this component is not one.");
         }
-        Director directorAdapter = (Director)_codeGenerator.getAdapter(((Actor)_component).getDirector());
-        NamedProgramCodeGeneratorAdapter adapter = 
-            (NamedProgramCodeGeneratorAdapter)_codeGenerator.getAdapter(_component);
+        Director directorAdapter = (Director) _codeGenerator
+                .getAdapter(((Actor) _component).getDirector());
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) _codeGenerator
+                .getAdapter(_component);
         List<String> parameters = parseList(parameter);
         String paramName = parameters.get(0);
-        String[] offset = new String[]{"", ""};
+        String[] offset = new String[] { "", "" };
         if (parameters.size() == 2) {
             offset[1] = parameters.get(1);
         } else if (parameters.size() != 1) {
-            CGException.throwException(_component, "$param() can be used as follows:" +
-                            "$param(name), or, $param(name, offset)");
+            CGException.throwException(_component,
+                    "$param() can be used as follows:"
+                            + "$param(name), or, $param(name, offset)");
         }
         Attribute attribute = adapter.getComponent().getAttribute(paramName);
         return directorAdapter.getParameter(adapter, attribute, offset);
@@ -1312,7 +1327,7 @@ public class TemplateParser {
 
         String offset = null;
         String dataToken = null;
-        
+
         if (parameters.size() == 2) {
             offset = "0";
             dataToken = parameters.get(1);
@@ -1320,51 +1335,55 @@ public class TemplateParser {
             offset = parameters.get(1);
             dataToken = parameters.get(2);
         } else {
-            CGException.throwException(parameter, " is not acceptable by $put(). " + 
-                    "$put could be used in the following ways: " +
-                    "$put(output#channel, token); or, $put(output, token); or," +
-                    "$put(input#channel, offset, token); or, $put(input, offset, token)");
+            CGException
+                    .throwException(
+                            parameter,
+                            " is not acceptable by $put(). "
+                                    + "$put could be used in the following ways: "
+                                    + "$put(output#channel, token); or, $put(output, token); or,"
+                                    + "$put(input#channel, offset, token); or, $put(input, offset, token)");
         }
-        
+
         TypedIOPort port = null;
         String channel = "";
-        
+
         String[] portAndChannel = _parsePortChannel(parameters.get(0));
-        
+
         port = getPort(portAndChannel[0]);
         channel = portAndChannel[1];
-        
+
         if (port == null) {
-            CGException.throwException("parameter is not acceptable by $put(). " + 
-                    "$put could be used in the following ways: " +
-                    "$put(output#channel, token); or, $put(output, token); or," +
-                    "$put(input#channel, offset, token); or, $put(input, offset, token)");
+            CGException
+                    .throwException("parameter is not acceptable by $put(). "
+                            + "$put could be used in the following ways: "
+                            + "$put(output#channel, token); or, $put(output, token); or,"
+                            + "$put(input#channel, offset, token); or, $put(input, offset, token)");
         }
 
-        PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator.getAdapter(port);
+        PortCodeGenerator portAdapter = (PortCodeGenerator) _codeGenerator
+                .getAdapter(port);
 
-        return processCode(portAdapter.generatePutCode(channel, offset, dataToken));
+        return processCode(portAdapter.generatePutCode(channel, offset,
+                dataToken));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     private ProgramCodeGenerator _codeGenerator;
-    
+
     /**
      * The code stream associated with this adapter.
      */
     private CodeStream _codeStream = null;
-    
+
     private Object _component;
 
     /** The parse tree to use with expressions. */
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
 
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.

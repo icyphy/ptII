@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating red (eal)
  */
 public interface Suspendable extends Executable {
-    
+
     /** Return the accumulated time that the actor has been suspended
      *  since the last call to initialize(), or null if it has never
      *  been suspended.
@@ -47,7 +47,7 @@ public interface Suspendable extends Executable {
      *   calls to resume, or null if the actor has not been suspended.
      */
     public Time accumulatedSuspendTime();
-    
+
     /** Resume the actor at the specified time. If the actor has not
      *  been suspended since the last call to initialize(), then this
      *  has no effect.
@@ -55,7 +55,7 @@ public interface Suspendable extends Executable {
      *  @exception IllegalActionException If the resume cannot be completed.
      */
     public void resume(Time time) throws IllegalActionException;
-    
+
     /** Suspend the actor at the specified time.
      *  If the actor is already suspended, then it remains suspended
      *  but the accumulated suspend time is incremented by the time

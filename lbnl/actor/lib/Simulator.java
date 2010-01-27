@@ -168,21 +168,25 @@ public class Simulator extends SDFTransformer {
 
         // expert settings
         socketPortNumber = new Parameter(this, "socketPortNumber");
-        socketPortNumber.setDisplayName("socketPortNumber (used if non-negative)");
+        socketPortNumber
+                .setDisplayName("socketPortNumber (used if non-negative)");
         socketPortNumber.setExpression("-1");
         socketPortNumber.setTypeEquals(BaseType.INT);
         socketPortNumber.setVisibility(Settable.EXPERT);
 
-        socketConfigurationFile = new FileParameter(this, "socketConfigurationFile");
+        socketConfigurationFile = new FileParameter(this,
+                "socketConfigurationFile");
         socketConfigurationFile.setTypeEquals(BaseType.STRING);
         socketConfigurationFile.setExpression("socket.cfg");
         new Parameter(socketConfigurationFile, "allowFiles", BooleanToken.TRUE);
-        new Parameter(socketConfigurationFile, "allowDirectories", BooleanToken.FALSE);
+        new Parameter(socketConfigurationFile, "allowDirectories",
+                BooleanToken.FALSE);
         socketConfigurationFile.setVisibility(Settable.EXPERT);
 
         // we produce one (DOUBLE_MATRIX) token as the initial output
         output_tokenInitProduction.setExpression("1");
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -237,35 +241,42 @@ public class Simulator extends SDFTransformer {
                     // Get values sent by simulator
                     double[] dblRea = server.getDoubleArray();
                     outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
-                    
+
                     // Make sure that simulation times are synchronized
-                    final double simTimRea = server.getSimulationTimeReadFromClient();
-                    final double simTim = getDirector().getModelTime().getDoubleValue();
-                    if ( firstFire )
+                    final double simTimRea = server
+                            .getSimulationTimeReadFromClient();
+                    final double simTim = getDirector().getModelTime()
+                            .getDoubleValue();
+                    if (firstFire) {
                         firstFire = false;
-                    else {
-                        if (Math.abs((simTimRea - simTimReaPre)-(simTim - simTimPre)) > 0.0001) {
+                    } else {
+                        if (Math.abs((simTimRea - simTimReaPre)
+                                - (simTim - simTimPre)) > 0.0001) {
                             final String em = "Simulation time of "
-                                + this.getFullName() + " is not synchronized."
-                                + LS + "Time step in Ptolemy = " + (simTim - simTimPre) + LS
-                                + "Time step in client  = " + (simTimRea - simTimReaPre) + LS 
-                                + "Time in client = " + simTimRea;
+                                    + this.getFullName()
+                                    + " is not synchronized." + LS
+                                    + "Time step in Ptolemy = "
+                                    + (simTim - simTimPre) + LS
+                                    + "Time step in client  = "
+                                    + (simTimRea - simTimReaPre) + LS
+                                    + "Time in client = " + simTimRea;
                             throw new IllegalActionException(this, em);
                         }
                     }
                     // Store simulation time
                     simTimReaPre = simTimRea;
-                    simTimPre    = simTim;
+                    simTimPre = simTim;
                 }
-                
+
             } else { // Either client is down or this is the first time step.
-                if ( clientTerminated ) {
+                if (clientTerminated) {
                     // Client terminated in last call, but Ptolemy keeps doing a
                     // (at least one) more time step. Hence we issue a warning.
                     // Start a new thread for the warning window so that the simulation can continue.
-                    if ( warWin == null ) {
+                    if (warWin == null) {
                         if (!isHeadless) {
-                            warWin = new Thread(new WarningWindow(terminationMessage));
+                            warWin = new Thread(new WarningWindow(
+                                    terminationMessage));
                             warWin.start();
                         }
                         System.err.println("*** " + terminationMessage);
@@ -273,12 +284,14 @@ public class Simulator extends SDFTransformer {
                 }
                 // Consume token
                 input.get(0);
-                final double simTimRea = server.getSimulationTimeReadFromClient();
-                final double simTim = getDirector().getModelTime().getDoubleValue();
+                final double simTimRea = server
+                        .getSimulationTimeReadFromClient();
+                final double simTim = getDirector().getModelTime()
+                        .getDoubleValue();
                 // Store simulation time
                 simTimReaPre = simTimRea;
-                simTimPre    = simTim;
-            
+                simTimPre = simTim;
+
             }
         }
         //////////////////////////////////////////////////////
@@ -325,11 +338,12 @@ public class Simulator extends SDFTransformer {
             server.read();
 
             final int serFla = server.getClientFlag();
-            if ( serFla < 0) {
+            if (serFla < 0) {
                 String em = "Error: Client " + this.getFullName()
-                    + " terminated communication by sending flag = " + serFla
-                    + " at time "
-                    + getDirector().getModelTime().getDoubleValue() + "," + LS;
+                        + " terminated communication by sending flag = "
+                        + serFla + " at time "
+                        + getDirector().getModelTime().getDoubleValue() + ","
+                        + LS;
                 // Add specifics of error message.
                 switch (serFla) {
                 case -10:
@@ -344,7 +358,7 @@ public class Simulator extends SDFTransformer {
                 }
                 throw new IllegalActionException(this, em);
             }
-            
+
             if (serFla > 0) {
                 // Client reached its final time. If this is also the last
                 // step from Ptolemy, then we don't want to issue a warning.
@@ -352,41 +366,54 @@ public class Simulator extends SDFTransformer {
                 // step from Ptolemy, then we issue a warning.
                 clientTerminated = true;
                 terminationMessage = "Warning: "
-                    + this.getFullName()
-                    + " terminated communication by sending flag = "
-                    + serFla
-                    + " at time "
-                    + getDirector().getModelTime().getDoubleValue()
-                    + "."
-                    + LS
-                    + "Simulation will continue withouth updated values from client program.";
+                        + this.getFullName()
+                        + " terminated communication by sending flag = "
+                        + serFla
+                        + " at time "
+                        + getDirector().getModelTime().getDoubleValue()
+                        + "."
+                        + LS
+                        + "Simulation will continue withouth updated values from client program.";
             }
         } catch (java.net.SocketTimeoutException e) {
             String em = "SocketTimeoutException while reading from client in "
-                + this.getFullName()
-                + ": "
-                + LS
-                + e.getMessage()
-                + "."
-                + LS
-                + "Try to increase the value of the parameter 'socketTimeout'." + LS
-                + "It could be that the client \""
-                + programName.getExpression() 
-                + "\" is not executing properly.  From the command line, "
-                + "try running:" + LS
-                + "  " + programName.getExpression() + " " 
-                + programArguments.getExpression() + LS
-                + "You should see something like:" + LS
-                + "  Simulation model has time step       60" + LS
-                + "  Error: Failed to obtain socket file descriptor. sockfd=-1." + LS
-                + "The error message is expected because Ptolemy is not "
-                + "present." + LS
-                + "Also, make sure that the directory that contains" + LS 
-                + "\"bcvtb.dll\" (on Windows), \"libbcvtb.so\" (on Linux) or" + LS
-                + "\"libbcvtb.dylib\" (on Mac OS X) is on your"
-                + "PATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH for Windows, " + LS
-                + "Linux and Mac OS X respectively." + LS
-                + "That directory contains the shared library used by the simulator.";
+                    + this.getFullName()
+                    + ": "
+                    + LS
+                    + e.getMessage()
+                    + "."
+                    + LS
+                    + "Try to increase the value of the parameter 'socketTimeout'."
+                    + LS
+                    + "It could be that the client \""
+                    + programName.getExpression()
+                    + "\" is not executing properly.  From the command line, "
+                    + "try running:"
+                    + LS
+                    + "  "
+                    + programName.getExpression()
+                    + " "
+                    + programArguments.getExpression()
+                    + LS
+                    + "You should see something like:"
+                    + LS
+                    + "  Simulation model has time step       60"
+                    + LS
+                    + "  Error: Failed to obtain socket file descriptor. sockfd=-1."
+                    + LS
+                    + "The error message is expected because Ptolemy is not "
+                    + "present."
+                    + LS
+                    + "Also, make sure that the directory that contains"
+                    + LS
+                    + "\"bcvtb.dll\" (on Windows), \"libbcvtb.so\" (on Linux) or"
+                    + LS
+                    + "\"libbcvtb.dylib\" (on Mac OS X) is on your"
+                    + "PATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH for Windows, "
+                    + LS
+                    + "Linux and Mac OS X respectively."
+                    + LS
+                    + "That directory contains the shared library used by the simulator.";
             try {
                 server.close();
             } catch (IOException e2) {
@@ -396,7 +423,7 @@ public class Simulator extends SDFTransformer {
             try {
                 // If the subprocess is still running, then we may
                 // get an exception here.  See Process.exitValue().
-                em +=  cliPro.exitValue();
+                em += cliPro.exitValue();
             } catch (Throwable throwable) {
                 em += "<<Unknown: " + throwable.getMessage();
             }
@@ -416,8 +443,9 @@ public class Simulator extends SDFTransformer {
             // Without the check (!clientTerminated), an IOException is thrown
             // on Windows (but not on Mac or Linux) from the actor that connects 
             // to EnergyPlus.
-            if ( ! clientTerminated )
+            if (!clientTerminated) {
                 throw new IllegalActionException(this, e, em);
+            }
         }
     }
 
@@ -438,9 +466,10 @@ public class Simulator extends SDFTransformer {
         warWin = null;
 
         // Check if we run in headless mode
-        isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless").equals("true");
+        isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless")
+                .equals("true");
         // Working directory
-        worDir = Simulator.resolveDirectory(getContainer(), 
+        worDir = Simulator.resolveDirectory(getContainer(),
                 cutQuotationMarks(workingDirectory.getExpression()));
 
         // Verify that directory exist
@@ -459,7 +488,8 @@ public class Simulator extends SDFTransformer {
         // Instantiate server for IPC
         try {
             // time out in milliseconds
-            final int timOutMilSec = Integer.valueOf(socketTimeout.getExpression());
+            final int timOutMilSec = Integer.valueOf(socketTimeout
+                    .getExpression());
             if (timOutMilSec <= 0) {
                 final String em = "Parameter for socket time out must be positive."
                         + LS + "Received " + timOutMilSec + " milliseconds";
@@ -488,8 +518,7 @@ public class Simulator extends SDFTransformer {
         XMLWriter xmlWri = new XMLWriter(worDir, simCon, porNo);
         try {
             xmlWri.write();
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             String em = "FileNotFoundException when trying to write '"
                     + new File(worDir, simCon).getAbsolutePath() + "'.";
             throw new IllegalActionException(this, e, em);
@@ -511,40 +540,42 @@ public class Simulator extends SDFTransformer {
      *  @exception IllegalActionException If the simulation process arguments
      *                           are invalid.
      */
-    public static String resolveCommandName(final File programName) 
-        throws IllegalActionException {
+    public static String resolveCommandName(final File programName)
+            throws IllegalActionException {
         File commandFile = programName;
 
         // If we are under Windows, look for the .exe
-        if ( System.getProperty("os.name").startsWith("Windows") ) {
+        if (System.getProperty("os.name").startsWith("Windows")) {
             File winComFil = new File(commandFile.toString() + ".exe");
-            if (winComFil.exists())
+            if (winComFil.exists()) {
                 commandFile = winComFil;
+            }
         }
 
         // Remove the path if the argument points to a directory.
         // This fixes the problem if the argument is matlab, and the
         // user runs vergil from a directory that has a subdirectory 
         // called matlab.
-        if ( commandFile.isDirectory() )
-            return commandFile.getName(); 
-        
+        if (commandFile.isDirectory()) {
+            return commandFile.getName();
+        }
+
         String comArg = commandFile.toString();
         // Get the absolute file name. Otherwise, invoking a command
         // like ../cclient will not work
         commandFile = new File(comArg);
-        if (commandFile.exists() && !commandFile.isDirectory() ) {
+        if (commandFile.exists() && !commandFile.isDirectory()) {
             try {
                 comArg = commandFile.getCanonicalPath();
             } catch (IOException exc) {
                 String em = "Error: Could not get canonical path for '"
-                    + comArg + "'.";
+                        + comArg + "'.";
                 throw new IllegalActionException(em);
             }
-        }
-        else
+        } else {
             comArg = commandFile.getName();
-            
+        }
+
         return comArg;
     }
 
@@ -555,9 +586,10 @@ public class Simulator extends SDFTransformer {
      *@exception IllegalActionException If an attribute is found with the name "_uri" 
      *           that is not an instance of the URIAttribute class
      */
-    public static File getMoMLFile(final NamedObj namedObj) 
-            throws IllegalActionException{
-        URIAttribute modelURI = (URIAttribute) namedObj.getAttribute("_uri", URIAttribute.class);
+    public static File getMoMLFile(final NamedObj namedObj)
+            throws IllegalActionException {
+        URIAttribute modelURI = (URIAttribute) namedObj.getAttribute("_uri",
+                URIAttribute.class);
         return new File(modelURI.getURI());
     }
 
@@ -572,10 +604,11 @@ public class Simulator extends SDFTransformer {
      *  @exception IllegalActionException If an attribute is found with the name "_uri" 
      *           that is not an instance of the URIAttribute class
      */
-    public static String resolveDirectory(final NamedObj namedObj, final String dir) 
-            throws IllegalActionException {
-        if ( new File(dir).isAbsolute() )
+    public static String resolveDirectory(final NamedObj namedObj,
+            final String dir) throws IllegalActionException {
+        if (new File(dir).isAbsolute()) {
             return dir;
+        }
         String chi = new String(dir);
         if (chi.length() == 0) {
             chi = ".";
@@ -584,7 +617,7 @@ public class Simulator extends SDFTransformer {
         chi = fil.getPath();
         return chi;
     }
-    
+
     /** Start the simulation program.
      *
      *  @exception IllegalActionException If the simulation process arguments
@@ -597,11 +630,11 @@ public class Simulator extends SDFTransformer {
 
         // Process the program name
         // Maybe the user specified $CLASSPATH/lbnl/demo/CRoom/client
-        com.add( Simulator.resolveCommandName(programName.asFile() ));
+        com.add(Simulator.resolveCommandName(programName.asFile()));
 
         // Process program arguments
-        final String argLin = cutQuotationMarks(programArguments.getExpression());
-
+        final String argLin = cutQuotationMarks(programArguments
+                .getExpression());
 
         StringTokenizer st = new StringTokenizer(argLin);
         while (st.hasMoreTokens()) {
@@ -610,15 +643,17 @@ public class Simulator extends SDFTransformer {
         // Close the window that contains the console output.
         // This is needed if a simulation is started multiple times.
         // Otherwise, each new run would make a new window.
-        if ( cliPro != null )
+        if (cliPro != null) {
             cliPro.disposeWindow();
+        }
 
         cliPro = new ClientProcess(this.getFullName());
         cliPro.redirectErrorStream(true);
         cliPro.setProcessArguments(com, worDir);
         // Check if we run in headless mode
-        final boolean showConsole = ((BooleanToken)(showConsoleWindow.getToken())).booleanValue();
-        cliPro.showConsoleWindow( showConsole && (! isHeadless) );
+        final boolean showConsole = ((BooleanToken) (showConsoleWindow
+                .getToken())).booleanValue();
+        cliPro.showConsoleWindow(showConsole && (!isHeadless));
 
         // Set simulation log file.
         // The call to System.gc() is required on Windows: If this actor is called multiple times
@@ -678,16 +713,17 @@ public class Simulator extends SDFTransformer {
         _readFromServer();
         double[] dblRea = server.getDoubleArray();
         final int serFla = server.getClientFlag();
-        if ( serFla != 0) {
+        if (serFla != 0) {
             String em = "Actor " + this.getFullName() + ": " + LS
-                + "When trying to read from server, at time "
-                + getDirector().getModelTime().getDoubleValue() + ", " 
-                + "client sent flag " + server.getClientFlag() + "," + LS;
+                    + "When trying to read from server, at time "
+                    + getDirector().getModelTime().getDoubleValue() + ", "
+                    + "client sent flag " + server.getClientFlag() + "," + LS;
             // Add specifics of error message.
             switch (serFla) {
             case 1:
-                em += "which indicates that it reached the end of its simulation." + LS
-                    + "This should not happen during the initialization of this actor.";
+                em += "which indicates that it reached the end of its simulation."
+                        + LS
+                        + "This should not happen during the initialization of this actor.";
                 break;
             case -10:
                 em += "which indicates a problem in the client during its initialization.";
@@ -702,10 +738,13 @@ public class Simulator extends SDFTransformer {
             throw new IllegalActionException(em);
         }
         // Check for null to avoid a NullPointerException
-        if ( dblRea == null ) {
-            final String em = "Actor " + this.getFullName() + ": " + LS
-                + "When trying to read from server, obtained 'null' at time "
-                + getDirector().getModelTime().getDoubleValue();
+        if (dblRea == null) {
+            final String em = "Actor "
+                    + this.getFullName()
+                    + ": "
+                    + LS
+                    + "When trying to read from server, obtained 'null' at time "
+                    + getDirector().getModelTime().getDoubleValue();
             throw new IllegalActionException(em);
         }
         outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
@@ -726,8 +765,9 @@ public class Simulator extends SDFTransformer {
             // Close the server.
             server.close();
         } catch (IOException e) {
-            if ( ! clientTerminated )
+            if (!clientTerminated) {
                 throw new IllegalActionException(this, e, e.getMessage());
+            }
         }
         if (!isHeadless) {
             // Reset position of window that shows console output so

@@ -52,8 +52,7 @@ public class SearchTest extends TypedAtomicActor {
     /**
      * The Point (Lat,Long) the user selected from the map
      */
-    public TypedIOPort search = new TypedIOPort(this,
-            "search", true, false);
+    public TypedIOPort search = new TypedIOPort(this, "search", true, false);
 
     /* // Once we get this working, allow the user to change the 
     // match value.
@@ -66,9 +65,8 @@ public class SearchTest extends TypedAtomicActor {
      * ; acts as an output trigger
      */
 
-    public TypedIOPort resultsOutput = new TypedIOPort(this,
-            "results Output", false, true);
-
+    public TypedIOPort resultsOutput = new TypedIOPort(this, "results Output",
+            false, true);
 
     public SearchTest(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -92,16 +90,16 @@ public class SearchTest extends TypedAtomicActor {
      * we've "got" data. Let the Loop Actor know it can stop searching
      */
     public void fire() throws IllegalActionException {
-        super.fire();            
+        super.fire();
 
         if (search.getWidth() > 0 && search.hasToken(0)) {
             String searchStr = ((StringToken) search.get(0)).stringValue();
             if (searchStr.equals("Search 50")) {
                 System.out.println("Found DATA!");
                 resultsOutput.broadcast(new StringToken("Results Found"));
- 
+
             } else {
-                System.out.println("Didn't Match! "+searchStr);
+                System.out.println("Didn't Match! " + searchStr);
                 resultsOutput.broadcast(new StringToken("No Data"));
             }
         }

@@ -99,10 +99,8 @@ import java.io.PrintStream;
   * @Pt.ProposedRating Red (cxh)
   * @Pt.AcceptedRating Red (cxh)
   */
-class Simulate
-{  
-    public static void main(String args[])
-    {
+class Simulate {
+    public static void main(String args[]) {
         // Make sure that we have three arguments
         if (args.length != 3) {
             System.err.println("Error: This program requires three arguments.");
@@ -121,9 +119,8 @@ class Simulate
             fos = new FileOutputStream("outputX2.txt");
             new PrintStream(fos).println(args[2]);
             fos.close();
-        }
-        catch (IOException e) {
-            System.err.println ("Unable to write to file");
+        } catch (IOException e) {
+            System.err.println("Unable to write to file");
             System.exit(1);
         }
     }

@@ -78,7 +78,6 @@ public class GiottoDirector extends
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-
     /**
      * Generate The fire function code. This method is called when the firing
      * code of each actor is not inlined. Each actor's firing code is in a
@@ -93,6 +92,7 @@ public class GiottoDirector extends
         }
         return "";
     }
+
     /** Generate the preinitialization code for the Giotto Director which includes
      * generating driver code for all the actors as well as the firefunction code.
      * None of the methods can be inlined in this implementation.
@@ -259,7 +259,6 @@ public class GiottoDirector extends
                     isWrite, helper);
         }
     }
-
 
     /**
      * This method is similar to the getReference() method however it it tailored 
@@ -455,7 +454,6 @@ public class GiottoDirector extends
         return code.toString();
     }
 
-
     /** Generate the content of output driver methods. The output
      *  driver updates the value of a port to be that of the output of
      *  the latest execution of a task.
@@ -521,7 +519,7 @@ public class GiottoDirector extends
                         args.add(sinkReference);
                         args.add(srcReference);
                         actorDriverCode.append(_generateBlockCode("updatePort",
-                                        args));
+                                args));
                     }
                 }
             } else if (actor instanceof CompositeActor
@@ -571,8 +569,8 @@ public class GiottoDirector extends
                             src = temp + "(" + srcReference + ")";
                         }
 
-                        actorDriverCode.append(sinkReference + " = " + src + ";"
-                                + _eol);
+                        actorDriverCode.append(sinkReference + " = " + src
+                                + ";" + _eol);
                     }
                 }
 
@@ -626,8 +624,8 @@ public class GiottoDirector extends
                             src = temp + "(" + srcReference + ")";
                         }
 
-                        actorDriverCode.append(sinkReference + " = " + src + ";"
-                                + _eol);
+                        actorDriverCode.append(sinkReference + " = " + src
+                                + ";" + _eol);
                     }
                 }
             } else {
@@ -662,7 +660,7 @@ public class GiottoDirector extends
                         code.append(_eol + "//in Last Else of outDriverCode"
                                 + _eol);
                         actorDriverCode.append(_generateBlockCode("updatePort",
-                                        args));
+                                args));
                     }
                 }
 
@@ -692,7 +690,6 @@ public class GiottoDirector extends
         }
         return "";
     }
-
 
     /**
      * Generate the fire code for the director.
@@ -1029,7 +1026,8 @@ public class GiottoDirector extends
                                 //I don't think this is correct
                                 for (int j = 0; j < i; j++) {
 
-                                    actorTransferCode.append("//multiport stuff here");
+                                    actorTransferCode
+                                            .append("//multiport stuff here");
                                 }
                             } else {
                                 channelOffset[0] = "0";
@@ -1044,7 +1042,7 @@ public class GiottoDirector extends
                                 args.add(sinkReference);
                                 args.add(srcReference);
                                 actorTransferCode.append(_generateBlockCode(
-                                                "updatePort", args));
+                                        "updatePort", args));
                             }
                         }
                         code.append(methodSignature);
@@ -1073,7 +1071,7 @@ public class GiottoDirector extends
                                 args.add(sinkReference);
                                 args.add(srcReference);
                                 actorTransferCode.append(_generateBlockCode(
-                                                "updatePort", args));
+                                        "updatePort", args));
                             }
 
                         }

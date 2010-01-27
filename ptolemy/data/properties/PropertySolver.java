@@ -64,7 +64,8 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public abstract class PropertySolver extends PropertySolverBase implements Testable {
+public abstract class PropertySolver extends PropertySolverBase implements
+        Testable {
 
     /**
      * Construct a PropertySolver with the specified container and name. If this
@@ -389,7 +390,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
     public boolean isView() {
         return action.getExpression().equals(PropertySolver.VIEW);
     }
-    
+
     /** Run a test. This invokes the solver in TEST mode.
      *  @exception IllegalActionException If the test fails.
      */
@@ -405,7 +406,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
             action.setExpression(previousAction);
         }
     }
-    
+
     /** Train a test. This invokes the solver in TRAINING mode.
      */
     public void train() {
@@ -504,7 +505,7 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
             throws KernelException {
 
         System.out.println("In resolveProperties of PropertySolver");
-        
+
         boolean success = true;
 
         boolean noException = true;
@@ -959,9 +960,10 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
         // The first check is for singleton elements, and the equals()
         // comparison is necessary for "equivalent" elements, such as
         // those in the SetLattice usecase.
-       
+
         if ((previousProperty == null && property != null)
-                || (previousProperty != null && !previousProperty.equals(property))) {
+                || (previousProperty != null && !previousProperty
+                        .equals(property))) {
 
             addErrors(_eol + "Property \"" + getUseCaseName()
                     + "\" resolution failed for " + namedObj.getFullName()
@@ -1048,7 +1050,6 @@ public abstract class PropertySolver extends PropertySolverBase implements Testa
                     + "." + _eol);
         }
     }
-    
 
     /**
      * Set the solver to testing mode.

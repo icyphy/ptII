@@ -56,7 +56,7 @@ import ptolemy.math.Fraction;
 *  @Pt.AcceptedRating Red (jiazou)
 */
 public class SDFModularScheduler extends SDFScheduler {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -68,10 +68,9 @@ public class SDFModularScheduler extends SDFScheduler {
      *  firing.
      * @exception IllegalActionException
      */
-    public Map getFiringVector(CompositeActor container, int vectorizationFactor) 
-        throws IllegalActionException {
-        
-        
+    public Map getFiringVector(CompositeActor container, int vectorizationFactor)
+            throws IllegalActionException {
+
         if (vectorizationFactor < 1) {
             throw new NotSchedulableException(this,
                     "The supplied vectorizationFactor must be "
@@ -116,7 +115,7 @@ public class SDFModularScheduler extends SDFScheduler {
         // Set the firing vector.
         return entityToFiringsPerIteration;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -183,7 +182,6 @@ public class SDFModularScheduler extends SDFScheduler {
             entityToFiringsPerIteration.put(entity, _minusOne);
         }
 
-
         // Ned Stoffel's change to support disconnected graphs:
         // Finally, the schedule can jump from one island to
         // another among the disconnected graphs. There is nothing
@@ -222,7 +220,6 @@ public class SDFModularScheduler extends SDFScheduler {
                 }
             }
 
-            
             // Now we have _clusteredActors, which contains actors in
             // one cluster (they are connected). Find the LCM of their
             // denominator and normalize their firings. This means firings
@@ -369,7 +366,7 @@ public class SDFModularScheduler extends SDFScheduler {
 
         return entityToFiringsPerIteration;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -458,7 +455,7 @@ public class SDFModularScheduler extends SDFScheduler {
             }
         }
     }
-    
+
     /** Search the given list of actors for one that contains at least
      *  one port that has zero rate.
      *
@@ -599,11 +596,11 @@ public class SDFModularScheduler extends SDFScheduler {
             }
         }
 
-//        Director director = (Director) getContainer();
-//        CompositeActor model = (CompositeActor) director.getContainer();
+        //        Director director = (Director) getContainer();
+        //        CompositeActor model = (CompositeActor) director.getContainer();
 
-        CompositeActor model = container;    //FIXME
-        
+        CompositeActor model = container; //FIXME
+
         // Get the rate of this port.
         int currentRate;
 
@@ -802,7 +799,7 @@ public class SDFModularScheduler extends SDFScheduler {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -812,5 +809,3 @@ public class SDFModularScheduler extends SDFScheduler {
      */
     private Fraction _minusOne = new Fraction(-1);
 }
-
-

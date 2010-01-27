@@ -52,7 +52,8 @@ import ptolemy.moml.MoMLModelAttribute;
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)
  */
-public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute implements Testable {
+public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute
+        implements Testable {
 
     /** Construct an actor with the given container and name.
      *  The output and trigger ports are also constructed.
@@ -63,24 +64,29 @@ public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute impl
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public CollectLatticeOntologySolverDetails(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public CollectLatticeOntologySolverDetails(CompositeEntity container,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
 
         solverName = new StringParameter(this, "solverName");
         solverName.setExpression("");
-        
-        trainedInitialSolverStatistics = new StringAttribute(this, "trainedInitialSolverStatistics");
-        trainedInitialSolverStatistics.setExpression("");    
-        
-        trainedInitialSolverConstraints = new StringAttribute(this, "trainedInitialSolverConstraints");
-        trainedInitialSolverConstraints.setExpression(""); 
-        
-        trainedResolvedSolverStatistics = new StringAttribute(this, "trainedResolvedSolverStatistics");
-        trainedResolvedSolverStatistics.setExpression("");    
-        
-        trainedResolvedSolverConstraints = new StringAttribute(this, "trainedResolvedSolverConstraints");
-        trainedResolvedSolverConstraints.setExpression(""); 
+
+        trainedInitialSolverStatistics = new StringAttribute(this,
+                "trainedInitialSolverStatistics");
+        trainedInitialSolverStatistics.setExpression("");
+
+        trainedInitialSolverConstraints = new StringAttribute(this,
+                "trainedInitialSolverConstraints");
+        trainedInitialSolverConstraints.setExpression("");
+
+        trainedResolvedSolverStatistics = new StringAttribute(this,
+                "trainedResolvedSolverStatistics");
+        trainedResolvedSolverStatistics.setExpression("");
+
+        trainedResolvedSolverConstraints = new StringAttribute(this,
+                "trainedResolvedSolverConstraints");
+        trainedResolvedSolverConstraints.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -91,22 +97,22 @@ public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute impl
      *  when the actor fires.
      */
     public StringParameter solverName;
-    
+
     /** The string attribute holding the value of the initial solver statistics for
      *  the LatticeOntologySolver.
      */
     public StringAttribute trainedInitialSolverStatistics;
-    
+
     /** The string attribute holding the value of the initial solver constraints for
      *  the LatticeOntologySolver.
      */
     public StringAttribute trainedInitialSolverConstraints;
-    
+
     /** The string attribute holding the value of the resolved solver statistics for
      *  the LatticeOntologySolver.
      */
     public StringAttribute trainedResolvedSolverStatistics;
-    
+
     /** The string attribute holding the value of the resolved solver constraints for
      *  the LatticeOntologySolver.
      */
@@ -114,7 +120,7 @@ public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute impl
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////    
-    
+
     /** Initialize the LatticeOntologySolver and check to see if the solverName refers to a LatticeOntologySolver in the model.
      *  If not, then throw an exception.
      *  
@@ -122,87 +128,132 @@ public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute impl
      */
     public void initializeLatticeOntologySolver() throws IllegalActionException {
         String solverNameString = solverName.stringValue();
-        _solver = (LatticeOntologySolver) ((CompositeEntity) getContainer()).getAttribute(solverNameString,
-                LatticeOntologySolver.class);
-        
+        _solver = (LatticeOntologySolver) ((CompositeEntity) getContainer())
+                .getAttribute(solverNameString, LatticeOntologySolver.class);
+
         if (_solver == null) {
-            throw new IllegalActionException(this, "There is no LatticeOntologySolver in the model named " +
-                    solverNameString + ".");
+            throw new IllegalActionException(this,
+                    "There is no LatticeOntologySolver in the model named "
+                            + solverNameString + ".");
         }
     }
-    
-    
+
     /** Test whether the details received from the LatticeOntologySolver
      *  matches the stored values in the actor.
      *  
      *  @exception IllegalActionException If the test fails and the results are different.
      */
     public void test() throws IllegalActionException {
-        initializeLatticeOntologySolver();        
+        initializeLatticeOntologySolver();
         Hashtable initialSolverInfo = _solver.getInitialSolverInformation();
         Hashtable resolvedSolverInfo = _solver.getResolvedSolverInformation();
-        
-        String currentInitialSolverStatsString = (String) initialSolverInfo.get("initialSolverStats");        
-        if (currentInitialSolverStatsString == null ||
-                !currentInitialSolverStatsString.equals(trainedInitialSolverStatistics.getValueAsString())) {
-            throw new IllegalActionException(this, _solver, "Test failed: The initial solver statistics string collected from the " +
-                    _solver.getName() + " LatticeOntologySolver does not match the trained value.\n" +
-                    "Trained value:\n" + trainedInitialSolverStatistics.getValueAsString() + "\nCurrent value:\n" +
-                    currentInitialSolverStatsString);
+
+        String currentInitialSolverStatsString = (String) initialSolverInfo
+                .get("initialSolverStats");
+        if (currentInitialSolverStatsString == null
+                || !currentInitialSolverStatsString
+                        .equals(trainedInitialSolverStatistics
+                                .getValueAsString())) {
+            throw new IllegalActionException(
+                    this,
+                    _solver,
+                    "Test failed: The initial solver statistics string collected from the "
+                            + _solver.getName()
+                            + " LatticeOntologySolver does not match the trained value.\n"
+                            + "Trained value:\n"
+                            + trainedInitialSolverStatistics.getValueAsString()
+                            + "\nCurrent value:\n"
+                            + currentInitialSolverStatsString);
         }
-        
-        String currentInitialSolverConstraintsString = (String) initialSolverInfo.get("initialSolverConstraints");        
-        if (currentInitialSolverConstraintsString == null ||
-                !currentInitialSolverConstraintsString.equals(trainedInitialSolverConstraints.getValueAsString())) {
-            throw new IllegalActionException(this, _solver, "Test failed: The initial solver constraints string collected from the " +
-                    _solver.getName() + " LatticeOntologySolver does not match the trained value.\n" +
-                    "Trained value:\n" + trainedInitialSolverConstraints.getValueAsString() + "\nCurrent value:\n" +
-                    currentInitialSolverConstraintsString);
+
+        String currentInitialSolverConstraintsString = (String) initialSolverInfo
+                .get("initialSolverConstraints");
+        if (currentInitialSolverConstraintsString == null
+                || !currentInitialSolverConstraintsString
+                        .equals(trainedInitialSolverConstraints
+                                .getValueAsString())) {
+            throw new IllegalActionException(
+                    this,
+                    _solver,
+                    "Test failed: The initial solver constraints string collected from the "
+                            + _solver.getName()
+                            + " LatticeOntologySolver does not match the trained value.\n"
+                            + "Trained value:\n"
+                            + trainedInitialSolverConstraints
+                                    .getValueAsString() + "\nCurrent value:\n"
+                            + currentInitialSolverConstraintsString);
         }
-        
-        String currentResolvedSolverStatsString = (String) resolvedSolverInfo.get("resolvedSolverStats");        
-        if (currentResolvedSolverStatsString == null ||
-                !currentResolvedSolverStatsString.equals(trainedResolvedSolverStatistics.getValueAsString())) {
-            throw new IllegalActionException(this, _solver, "Test failed: The resolved solver statistics string collected from the " +
-                    _solver.getName() + " LatticeOntologySolver does not match the trained value.\n" +
-                    "Trained value:\n" + trainedResolvedSolverStatistics.getValueAsString() + "\nCurrent value:\n" +
-                    currentResolvedSolverStatsString);
+
+        String currentResolvedSolverStatsString = (String) resolvedSolverInfo
+                .get("resolvedSolverStats");
+        if (currentResolvedSolverStatsString == null
+                || !currentResolvedSolverStatsString
+                        .equals(trainedResolvedSolverStatistics
+                                .getValueAsString())) {
+            throw new IllegalActionException(
+                    this,
+                    _solver,
+                    "Test failed: The resolved solver statistics string collected from the "
+                            + _solver.getName()
+                            + " LatticeOntologySolver does not match the trained value.\n"
+                            + "Trained value:\n"
+                            + trainedResolvedSolverStatistics
+                                    .getValueAsString() + "\nCurrent value:\n"
+                            + currentResolvedSolverStatsString);
         }
-        
-        String currentResolvedSolverConstraintsString = (String) resolvedSolverInfo.get("resolvedSolverConstraints");        
-        if (currentResolvedSolverConstraintsString == null ||
-                !currentResolvedSolverConstraintsString.equals(trainedResolvedSolverConstraints.getValueAsString())) {
-            throw new IllegalActionException(this, _solver, "Test failed: The resolved solver constraints string collected from the " +
-                    _solver.getName() + " LatticeOntologySolver does not match the trained value.\n" +
-                    "Trained value:\n" + trainedResolvedSolverConstraints.getValueAsString() + "\nCurrent value:\n" +
-                    currentResolvedSolverConstraintsString);
+
+        String currentResolvedSolverConstraintsString = (String) resolvedSolverInfo
+                .get("resolvedSolverConstraints");
+        if (currentResolvedSolverConstraintsString == null
+                || !currentResolvedSolverConstraintsString
+                        .equals(trainedResolvedSolverConstraints
+                                .getValueAsString())) {
+            throw new IllegalActionException(
+                    this,
+                    _solver,
+                    "Test failed: The resolved solver constraints string collected from the "
+                            + _solver.getName()
+                            + " LatticeOntologySolver does not match the trained value.\n"
+                            + "Trained value:\n"
+                            + trainedResolvedSolverConstraints
+                                    .getValueAsString() + "\nCurrent value:\n"
+                            + currentResolvedSolverConstraintsString);
         }
     }
-    
+
     /** Collect the solver details from the LatticeOntologySolver and store
      *  the values received in the actor for future tests.
      */
     public void train() {
         try {
-            initializeLatticeOntologySolver();            
+            initializeLatticeOntologySolver();
             Hashtable initialSolverInfo = _solver.getInitialSolverInformation();
-            Hashtable resolvedSolverInfo = _solver.getResolvedSolverInformation();
-            
-            trainedInitialSolverStatistics.setExpression((String) initialSolverInfo.get("initialSolverStats"));
-            trainedInitialSolverConstraints.setExpression((String) initialSolverInfo.get("initialSolverConstraints"));
-            trainedResolvedSolverStatistics.setExpression((String) resolvedSolverInfo.get("resolvedSolverStats"));
-            trainedResolvedSolverConstraints.setExpression((String) resolvedSolverInfo.get("resolvedSolverConstraints"));
+            Hashtable resolvedSolverInfo = _solver
+                    .getResolvedSolverInformation();
+
+            trainedInitialSolverStatistics
+                    .setExpression((String) initialSolverInfo
+                            .get("initialSolverStats"));
+            trainedInitialSolverConstraints
+                    .setExpression((String) initialSolverInfo
+                            .get("initialSolverConstraints"));
+            trainedResolvedSolverStatistics
+                    .setExpression((String) resolvedSolverInfo
+                            .get("resolvedSolverStats"));
+            trainedResolvedSolverConstraints
+                    .setExpression((String) resolvedSolverInfo
+                            .get("resolvedSolverConstraints"));
         } catch (IllegalActionException ex) {
-            _debug("Unable to train the CollectLatticeOntologySolverDetails " +
-                    getName() + " attribute with values from the LatticeOntologySolver." +
-                    " Exception thrown: " + ex);
-        }            
+            _debug("Unable to train the CollectLatticeOntologySolverDetails "
+                    + getName()
+                    + " attribute with values from the LatticeOntologySolver."
+                    + " Exception thrown: " + ex);
+        }
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The LatticeOntologySolver from which details will be collected. */
     private LatticeOntologySolver _solver;
 }

@@ -29,7 +29,6 @@ package ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
@@ -53,8 +52,8 @@ public class Source extends AtomicActor {
      * @param actor The given Source actor
      * @exception IllegalActionException
      */
-    public Source(LatticeOntologySolver solver,
-            ptolemy.actor.lib.Source actor) throws IllegalActionException {
+    public Source(LatticeOntologySolver solver, ptolemy.actor.lib.Source actor)
+            throws IllegalActionException {
 
         super(solver, actor, false);
     }
@@ -68,7 +67,8 @@ public class Source extends AtomicActor {
 
         if (_ownConstraints.isEmpty()) {
             // force outputs to UNKNOWN by default; overwrite in actor specific adapter class
-            setAtLeast(actor.output, (Concept) getSolver().getOntology().getEntity("Unknown"));
+            setAtLeast(actor.output, getSolver().getOntology().getEntity(
+                    "Unknown"));
         }
 
         return super.constraintList();

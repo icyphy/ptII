@@ -78,7 +78,7 @@ public class TimedSource extends Source implements TimedActor {
         stopTime = new Parameter(this, "stopTime");
         stopTime.setExpression("Infinity");
         stopTime.setTypeEquals(BaseType.DOUBLE);
-        
+
         stopTimeIsLocal = new Parameter(this, "stopTimeIsLocal");
         stopTimeIsLocal.setTypeEquals(BaseType.BOOLEAN);
         stopTimeIsLocal.setExpression("false");
@@ -106,7 +106,7 @@ public class TimedSource extends Source implements TimedActor {
      *  having been exceeded).
      */
     public Parameter stopTime;
-    
+
     /** If true, use the local time to compare against the <i>stopTime</i>
      *  parameter, rather than the global time. Local time may differ
      *  from global time inside modal models and certain domains
@@ -138,7 +138,8 @@ public class TimedSource extends Source implements TimedActor {
 
                 if (director != null) {
                     Time currentTime;
-                    boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+                    boolean localTime = ((BooleanToken) stopTimeIsLocal
+                            .getToken()).booleanValue();
                     if (localTime) {
                         currentTime = director.getModelTime();
                     } else {
@@ -200,7 +201,8 @@ public class TimedSource extends Source implements TimedActor {
         _stopTime = new Time(getDirector(), stopTimeValue);
 
         Time currentTime;
-        boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+        boolean localTime = ((BooleanToken) stopTimeIsLocal.getToken())
+                .booleanValue();
         if (localTime) {
             currentTime = director.getModelTime();
         } else {
@@ -226,7 +228,8 @@ public class TimedSource extends Source implements TimedActor {
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime;
-        boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+        boolean localTime = ((BooleanToken) stopTimeIsLocal.getToken())
+                .booleanValue();
         if (localTime) {
             currentTime = getDirector().getModelTime();
         } else {
@@ -248,7 +251,8 @@ public class TimedSource extends Source implements TimedActor {
     public boolean prefire() throws IllegalActionException {
         Boolean result = super.prefire();
         Time currentTime;
-        boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+        boolean localTime = ((BooleanToken) stopTimeIsLocal.getToken())
+                .booleanValue();
         if (localTime) {
             currentTime = getDirector().getModelTime();
         } else {
@@ -259,7 +263,7 @@ public class TimedSource extends Source implements TimedActor {
         }
         return result;
     }
-    
+
     /** Override the base class to reset a flag that indicates that the
      *  model is executing. This method is invoked exactly once per execution
      *  of an application.  None of the other action methods should be

@@ -117,7 +117,8 @@ public class OntologyGraphTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        OntologyGraphFrame frame = new OntologyGraphFrame(model, this, defaultLibrary);
+        OntologyGraphFrame frame = new OntologyGraphFrame(model, this,
+                defaultLibrary);
 
         try {
             setFrame(frame);
@@ -171,7 +172,8 @@ public class OntologyGraphTableau extends Tableau {
                 return null;
             }
 
-            Tableau tableau = (Tableau) effigy.getEntity("OntologyGraphTableau");
+            Tableau tableau = (Tableau) effigy
+                    .getEntity("OntologyGraphTableau");
             if (tableau != null) {
                 return tableau;
             }

@@ -128,7 +128,7 @@ public class PtolemyExpressionString {
     /** The Ptolemy expression.
      */
     private String _value;
-    
+
     /** The value parse tree.
      */
     private ASTPtRootNode _valueParseTree;

@@ -101,8 +101,9 @@ public class GiottoDirector extends
             code.append("xSemaphoreGive($actorSymbol()_scheduler_start);"
                     + _eol);
             //code.append(_eol+""+_eol);
-        } else
+        } else {
             code.append(_generateFireCode());
+        }
 
         return code.toString();
     }
@@ -225,9 +226,9 @@ public class GiottoDirector extends
             TypedIOPort tempPt;
             while (outpts.hasNext()) {
                 tempPt = (TypedIOPort) outpts.next();
-                if (initOutput == null)
+                if (initOutput == null) {
                     code.append(_getPortName(tempPt) + " = 0;" + _eol);
-                else {
+                } else {
                     //check the different types of the output port
                     code.append(_getPortName(tempPt)
                             + " = "
@@ -292,7 +293,7 @@ public class GiottoDirector extends
      * Generate code to create the threads.
      * @return the code for the threads.
      * @exception IllegalActionException If thrown while accessing the model.
-     */  
+     */
     public String generateMyThreads() throws IllegalActionException {
         // FIXME: Change the name of this method so that it does not
         // have "My" in it.
@@ -397,8 +398,9 @@ public class GiottoDirector extends
             //code.append("vTaskSuspend(NULL);");
             code.append(_eol + "}" + _eol); // close if
             code.append(_eol + "}" + _eol);// close the for loop
-            if (i < _getAllFrequencies().size())
+            if (i < _getAllFrequencies().size()) {
                 code.append("}" + _eol);// close the method loop
+            }
 
         }
 
@@ -421,8 +423,8 @@ public class GiottoDirector extends
         //for (Actor actor : (List<Actor>) ((TypedCompositeActor) _director
         //        .getContainer()).deepEntityList()) {
 
-            //for each of the actors generate postfire code
-            //code.append(generatePostFireCode(actor)); 
+        //for each of the actors generate postfire code
+        //code.append(generatePostFireCode(actor)); 
         //}
 
         return code.toString();
@@ -546,12 +548,10 @@ public class GiottoDirector extends
             // will need to take care of the case of where the output is for a composite actor
             return CodeGeneratorHelper.generateName(port);
             // return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[0];  
-        }
-
-        else
-
+        } else {
             return super.getReference(port, channelAndOffset, forComposite,
                     isWrite, helper);
+        }
     }
 
     /** 
@@ -580,12 +580,10 @@ public class GiottoDirector extends
             // will need to take care of the case of where the output is for a composite actor
             return CodeGeneratorHelper.generateName(port) + "_PORT";
             // return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[0];  
-        }
-
-        else
-
+        } else {
             return super.getReference(port, channelAndOffset, forComposite,
                     isWrite, helper);
+        }
     }
 
     /**
@@ -884,7 +882,6 @@ public class GiottoDirector extends
 
         return variableDeclarations.toString();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1463,10 +1460,11 @@ public class GiottoDirector extends
                     }
                     String src;
                     temp = _typeConversion(sourcePort, port);
-                    if (temp.length() == 0)
+                    if (temp.length() == 0) {
                         src = srcReference;
-                    else
+                    } else {
                         src = temp + "(" + srcReference + ")";
+                    }
 
                     actorDriverCode += sinkReference + " = " + src + ";" + _eol;
 
@@ -1550,7 +1548,7 @@ public class GiottoDirector extends
                         args.add(sinkReference);
                         args.add(srcReference);
                         actorDriverCode.append(_generateBlockCode("updatePort",
-                                        args));
+                                args));
                     }
                 } else {
                     channelOffset[0] = "0";
@@ -1560,7 +1558,8 @@ public class GiottoDirector extends
                     ArrayList args = new ArrayList();
                     args.add(sinkReference);
                     args.add(srcReference);
-                    actorDriverCode.append(_generateBlockCode("updatePort", args));
+                    actorDriverCode.append(_generateBlockCode("updatePort",
+                            args));
                 }
             }
             if (_debugging) {
@@ -1685,7 +1684,6 @@ public class GiottoDirector extends
         return wcet;
     }
 
-
     /** Generate PORT variables. A PORT allows control over the value read
      *  A port is an efficient way to handle double buffering
      *  @return port variables
@@ -1743,8 +1741,9 @@ public class GiottoDirector extends
         int it = 0;
         while (it < frequencyCount) {
 
-            if ((Integer) theseFrequencies[it] > maxfrequency)
+            if ((Integer) theseFrequencies[it] > maxfrequency) {
                 maxfrequency = (Integer) theseFrequencies[it];
+            }
             if (_debugging) {
                 _debug("fequency value: " + theseFrequencies[it]);
             }
@@ -2014,9 +2013,9 @@ public class GiottoDirector extends
         String sinkType;
         sourceType = _targetType(source.getType());
         sinkType = _targetType(sink.getType());
-        if (sourceType.equals(sinkType))
+        if (sourceType.equals(sinkType)) {
             return "";
-        else {
+        } else {
             char tc = sourceType.charAt(0);
             sourceType = Character.toUpperCase(tc) + sourceType.substring(1);
             tc = sinkType.charAt(0);
@@ -2031,10 +2030,11 @@ public class GiottoDirector extends
      * */
     private String _targetType(Type ptType) {
         String ttype = targetType(ptType);
-        if (ttype.equals("Token"))
+        if (ttype.equals("Token")) {
             return "int";
-        else
+        } else {
             return ttype;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

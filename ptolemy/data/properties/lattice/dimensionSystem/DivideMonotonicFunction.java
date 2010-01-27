@@ -61,7 +61,8 @@ public class DivideMonotonicFunction extends MonotonicFunction {
      * @param adapter The given PropertyConstraintHelper using this monotonic function
      */
     public DivideMonotonicFunction(Object dividend, Object divisor,
-            PropertyLattice dimensionSystemLattice, PropertyConstraintHelper adapter) {
+            PropertyLattice dimensionSystemLattice,
+            PropertyConstraintHelper adapter) {
         _dividend = dividend;
         _divisor = divisor;
         _lattice = dimensionSystemLattice;
@@ -76,7 +77,7 @@ public class DivideMonotonicFunction extends MonotonicFunction {
      *  @return A Property.
      *  @exception IllegalActionException
      */
-  
+
     public Object getValue() throws IllegalActionException {
 
         // Get the properties of the dividend and divisor
@@ -94,32 +95,32 @@ public class DivideMonotonicFunction extends MonotonicFunction {
         // Speed / Time = Acceleration
         if (dividendProperty == speed && divisorProperty == time) {
             return acceleration;
-            
-        // Position / Time = Speed
+
+            // Position / Time = Speed
         } else if (dividendProperty == position && divisorProperty == time) {
             return speed;
-            
-        // Position / Speed = Time
+
+            // Position / Speed = Time
         } else if (dividendProperty == position && divisorProperty == speed) {
             return time;
-            
-        // Speed / Acceleration = Time    
+
+            // Speed / Acceleration = Time    
         } else if (dividendProperty == speed && divisorProperty == acceleration) {
             return time;
-            
-        // If divisor is Unitless, then the quotient = dividend property
+
+            // If divisor is Unitless, then the quotient = dividend property
         } else if (divisorProperty == unitless) {
             return dividendProperty;
-            
-        // If either the dividend or divisor is Unknown then the quotient is Unknown
+
+            // If either the dividend or divisor is Unknown then the quotient is Unknown
         } else if (dividendProperty == unknown || divisorProperty == unknown) {
             return unknown;
-            
-        // If the dividend property == the divisor property, the quotient is Unitless
+
+            // If the dividend property == the divisor property, the quotient is Unitless
         } else if (dividendProperty == divisorProperty) {
             return unitless;
-            
-        // For all other cases return Top    
+
+            // For all other cases return Top    
         } else {
             return top;
         }
@@ -131,20 +132,19 @@ public class DivideMonotonicFunction extends MonotonicFunction {
 
     public void setEffective(boolean isEffective) {
     }
-    
+
     protected InequalityTerm[] _getDependentTerms() {
         return new InequalityTerm[] { _adapter.getPropertyTerm(_dividend),
                 _adapter.getPropertyTerm(_divisor) };
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // _dividend and _divisor are Objects because they can be any propertyable object
     // which might be IOPorts, Attributes, ASTPtNodes, etc.
     private Object _dividend;
     private Object _divisor;
-    private PropertyLattice _lattice;    
+    private PropertyLattice _lattice;
     private PropertyConstraintHelper _adapter;
 }
-

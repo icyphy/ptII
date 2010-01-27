@@ -250,12 +250,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             _debug("Current state is:", currentState.getName());
         }
 
-        Transition chosenTransition = controller.chooseTransition(currentState.preemptiveTransitionList());
+        Transition chosenTransition = controller.chooseTransition(currentState
+                .preemptiveTransitionList());
         _enabledTransition = chosenTransition;
 
         if (chosenTransition != null) {
             if (_debugging) {
-                _debug("Preemptive transition enabled:",  chosenTransition.getName());
+                _debug("Preemptive transition enabled:", chosenTransition
+                        .getName());
             }
             // First execute the refinements of the transition.
             Actor[] actors = chosenTransition.getRefinement();
@@ -299,11 +301,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         currentState.setVisited(true);
         controller.readOutputsFromRefinement();
 
-        chosenTransition = controller.chooseTransition(currentState.nonpreemptiveTransitionList());
+        chosenTransition = controller.chooseTransition(currentState
+                .nonpreemptiveTransitionList());
         _enabledTransition = chosenTransition;
         if (chosenTransition != null) {
             if (_debugging) {
-                _debug("Nonpreemptive transition enabled:",  chosenTransition.getName());
+                _debug("Nonpreemptive transition enabled:", chosenTransition
+                        .getName());
             }
             actors = chosenTransition.getRefinement();
             if (actors != null) {
@@ -873,7 +877,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                                 // if (insideReceivers[i][j].hasToken()) {
                                 // insideReceivers[i][j].get();
                                 // }
-                            
+
                                 insideReceivers[i][j].put(t);
                                 if (_debugging) {
                                     _debug(getFullName(),

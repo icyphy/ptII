@@ -462,7 +462,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
             newObject._attributes = null;
-            
+
             newObject._decoratedAttributes = new HashMap<Decorator, DecoratedAttributes>();
 
             // NOTE: As of version 5.0, clones inherit the derived
@@ -501,7 +501,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     }
                 }
             }
-            
+
             for (DecoratedAttributes attribute : _decoratedAttributes.values()) {
                 DecoratedAttributes newParameter = (DecoratedAttributes) attribute
                         .clone(workspace);
@@ -1093,21 +1093,22 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @return The decorated attributes. 
      */
     public DecoratedAttributes getDecoratorAttributes(Decorator decorator) {
-        synchronized(_decoratedAttributes) {
+        synchronized (_decoratedAttributes) {
             if (_decoratedAttributes.containsKey(decorator)) {
                 return _decoratedAttributes.get(decorator);
-            } else {                
+            } else {
                 try {
-                    DecoratedAttributes attributes = decorator.createDecoratedAttributes(this);
+                    DecoratedAttributes attributes = decorator
+                            .createDecoratedAttributes(this);
                     _decoratedAttributes.put(decorator, attributes);
                     return attributes;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
-                }                
+                }
             }
         }
     }
-    
+
     /** Return the decorated attribute with the given name for the decorator.
      *  If the attribute can't be found null be returned.
      *  @param decorator The decorator.
@@ -1122,7 +1123,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
         }
         return null;
-    }    
+    }
 
     /** Get the minimum level above this object in the hierarchy where a
      *  parent-child relationship implies the existence of this object.
@@ -2133,19 +2134,19 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             IllegalActionException {
         try {
             _workspace.getWriteAccess();
-            
+
             if (p instanceof DecoratedAttributes) {
                 DecoratedAttributes decoratedAttributes = (DecoratedAttributes) p;
                 Decorator decorator = decoratedAttributes.getDecorator();
-                
+
                 // When you are constructing the model, the decorator might
                 // not yet be filled in.
-                if (decorator != null) {                    
+                if (decorator != null) {
                     _decoratedAttributes.put(decorator, decoratedAttributes);
                 }
                 return;
             }
-            
+
             try {
                 if (_attributes == null) {
                     _attributes = new NamedList();
@@ -2306,9 +2307,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             List<DebugListener> list;
 
             if (_debugListeners == null) {
-                System.err.println("Warning, _debugListeners was null, "
-                        + "which means that _debugging was set to true, but no "
-                        + "listeners were added?");
+                System.err
+                        .println("Warning, _debugListeners was null, "
+                                + "which means that _debugging was set to true, but no "
+                                + "listeners were added?");
                 System.err.println(message);
             } else {
                 // NOTE: This used to synchronize on this, which caused
@@ -2484,9 +2486,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         }
         for (Decorator decorator : _decoratedAttributes.keySet()) {
             if (decorator instanceof NamedObj) {
-                NamedObj container = ((NamedObj)decorator).getContainer();
+                NamedObj container = ((NamedObj) decorator).getContainer();
                 if (container != null) {
-                    container._recordDecoratedAttributes(_decoratedAttributes.get(decorator));
+                    container._recordDecoratedAttributes(_decoratedAttributes
+                            .get(decorator));
                 }
             }
         }
@@ -2687,13 +2690,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
     }
-    
 
     /** Record decorated attributes to store at the level of the
      *  container of the decorator.
      *  @param attributes The decorated attributes.
      */
-    protected void _recordDecoratedAttributes(DecoratedAttributes attributes) {        
+    protected void _recordDecoratedAttributes(DecoratedAttributes attributes) {
     }
 
     /** Remove the given attribute.

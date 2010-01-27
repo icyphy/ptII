@@ -1327,9 +1327,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     // Give better error message than null pointer exception.
                     throw new InternalErrorException(
                             "Invalid connection found between ports "
-                                    + currentPort.getFullName() + " and "
+                                    + currentPort.getFullName()
+                                    + " and "
                                     + connectedPort.getFullName()
-                                    + ". The rate of the " + connectedPort.getFullName() 
+                                    + ". The rate of the "
+                                    + connectedPort.getFullName()
                                     + " was not found in the map from external ports of the container"
                                     + " to the fractional rates of that port, or is null.  "
                                     + " Perhaps there is a link to a port within a class definition?");

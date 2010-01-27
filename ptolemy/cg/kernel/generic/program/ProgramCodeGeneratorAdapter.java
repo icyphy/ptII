@@ -64,7 +64,8 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      *  @return The code generator adapter.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
-    public final ProgramCodeGeneratorAdapter getAdapter(Object component) throws IllegalActionException {
+    public final ProgramCodeGeneratorAdapter getAdapter(Object component)
+            throws IllegalActionException {
         return (ProgramCodeGeneratorAdapter) getCodeGenerator().getAdapter(
                 component);
     }
@@ -110,7 +111,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public void setCodeGenerator(GenericCodeGenerator codeGenerator) {
         _codeGenerator = (ProgramCodeGenerator) codeGenerator;
     }
-    
+
     /** Get the template parser associated with this strategy.
      *  @return The associated template parser.
      *  @see #setTemplateParser(TemplateParser)
@@ -125,7 +126,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Generate code for a given block.  The comment includes
      *  the portion of the blockName parameter up until the string
      *  "Block".
@@ -150,12 +151,14 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
             } else {
                 shortBlockName = blockName;
             }
-            
+
             if (getComponent() instanceof Nameable) {
 
                 codeStream.insert(0, _eol
-                        + getCodeGenerator().comment(shortBlockName
-                                + (((Nameable) getComponent()).getName())));
+                        + getCodeGenerator().comment(
+                                shortBlockName
+                                        + (((Nameable) getComponent())
+                                                .getName())));
             }
         }
         return processCode(codeStream.toString());
@@ -164,7 +167,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The associated component. */
     protected Object _component;
 
@@ -190,7 +193,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The code generator that contains this adapter class.
      */
     private ProgramCodeGenerator _codeGenerator;
@@ -204,7 +207,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
     public static class Channel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
-    
+
         /** Construct the channel with the given port and channel number.
          * @param portObject The given port.
          * @param channel The channel number of this object in the given port.
@@ -213,7 +216,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
             port = portObject;
             channelNumber = channel;
         }
-    
+
         /**
          * Whether this channel is the same as the given object.
          * @param object The given object.
@@ -225,7 +228,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
                     && port.equals(((Channel) object).port)
                     && channelNumber == ((Channel) object).channelNumber;
         }
-    
+
         /**
          * Return the hash code for this channel. Implementing this method
          * is required for comparing the equality of channels.
@@ -234,7 +237,7 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         public int hashCode() {
             return port.hashCode() + channelNumber;
         }
-    
+
         /**
          * Return the string representation of this channel.
          * @return The string representation of this channel.
@@ -242,15 +245,14 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
         public String toString() {
             return port.getName() + "_" + channelNumber;
         }
-    
+
         /** The port that contains this channel.
          */
         public IOPort port;
-    
+
         /** The channel number of this channel.
          */
         public int channelNumber;
     }
-
 
 }

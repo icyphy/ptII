@@ -68,9 +68,12 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
-        String outputType = getCodeGenerator().codeGenType(actor.output.getType());
-        String multiplyType = getCodeGenerator().codeGenType(actor.multiply.getType());
-        String divideType = getCodeGenerator().codeGenType(actor.divide.getType());
+        String outputType = getCodeGenerator().codeGenType(
+                actor.output.getType());
+        String multiplyType = getCodeGenerator().codeGenType(
+                actor.multiply.getType());
+        String divideType = getCodeGenerator().codeGenType(
+                actor.divide.getType());
 
         ArrayList args = new ArrayList();
 
@@ -119,8 +122,9 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
 
         if (codeStream.isEmpty()) {
             codeStream.append(_eol
-                    + getCodeGenerator().comment("preinitialize "
-                            + generateSimpleName(getComponent())));
+                    + getCodeGenerator().comment(
+                            "preinitialize "
+                                    + generateSimpleName(getComponent())));
         }
 
         codeStream.appendCodeBlock("preinitBlock", args);

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (beth)
  */
 public class RegisterReceiver extends Mailbox {
- 
+
     /** Construct an empty RegisterReceiver with no container.
      */
     public RegisterReceiver() {
@@ -62,7 +62,7 @@ public class RegisterReceiver extends Mailbox {
     public RegisterReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
-    
+
     /** Get the contained Token.  If there is none, throw an exception.
      *  @return The token contained by this receiver.
      *  @exception NoTokenException If this receiver is empty.
@@ -75,7 +75,7 @@ public class RegisterReceiver extends Mailbox {
 
         return _token;
     }
-    
+
     /** Put a token into the registerReceiver.  
      *  @param token The token to be put into the mailbox, or null to set
      *   the mailbox to empty.

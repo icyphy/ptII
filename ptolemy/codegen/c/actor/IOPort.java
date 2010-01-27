@@ -384,7 +384,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
 
                 for (Channel channel : channels) {
                     code.append(_updatePNOffset(rate, channel.port,
-                                    channel.channelNumber, directorHelper, false));
+                            channel.channelNumber, directorHelper, false));
                 }
                 //                code += getCodeGenerator().comment(_eol + "....End updateOffset (PN)...."
                 //                                                   + CodeGeneratorHelper.generateName(port));
@@ -517,7 +517,7 @@ public class IOPort extends CCodeGeneratorHelper implements PortCodeGenerator {
      * @exception IllegalActionException If thrown while accessing the port
      * or read offset
      */
-    protected String _updateOffset(int channel, int rate) 
+    protected String _updateOffset(int channel, int rate)
             throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();

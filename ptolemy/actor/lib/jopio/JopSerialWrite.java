@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (mschoebe)
  */
 public class JopSerialWrite extends Sink {
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
@@ -99,9 +99,9 @@ public class JopSerialWrite extends Sink {
         if (input.hasToken(0)) {
             _last_val = ((IntToken) input.get(0)).intValue();
         }
-        System.out.println("fire "+_last_val);
+        System.out.println("fire " + _last_val);
     }
-    
+
     /** Record the most recent token for the serial output.
      *  @exception IllegalActionException If the base class throws it.
      */

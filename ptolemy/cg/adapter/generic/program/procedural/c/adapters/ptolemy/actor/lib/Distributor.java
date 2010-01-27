@@ -77,7 +77,7 @@ public class Distributor extends NamedProgramCodeGeneratorAdapter {
             args.set(0, Integer.toString(i));
 
             String codeBlock = "";
-            if (getCodeGenerator().isPrimitive(inputType) 
+            if (getCodeGenerator().isPrimitive(inputType)
                     && !getCodeGenerator().isPrimitive(actor.output.getType())) {
                 codeBlock = "toTokenBlock";
             } else {

@@ -198,7 +198,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -212,10 +212,11 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  @return A new ComponentEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ContinuousIntegrator newObject = (ContinuousIntegrator) super.clone(workspace);
+        ContinuousIntegrator newObject = (ContinuousIntegrator) super
+                .clone(workspace);
         newObject._auxVariables = null;
-        newObject._causalityInterface = new IntegratorCausalityInterface(newObject,
-                BooleanDependency.OTIMES_IDENTITY);
+        newObject._causalityInterface = new IntegratorCausalityInterface(
+                newObject, BooleanDependency.OTIMES_IDENTITY);
         return newObject;
     }
 
@@ -243,11 +244,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
         if (_debugging) {
             Time currentTime = dir.getModelTime();
-            _debug("Fire at time " + currentTime
-                    + " and microstep "
-                    + microstep
-                    + " with step size "
-                    + stepSize);
+            _debug("Fire at time " + currentTime + " and microstep "
+                    + microstep + " with step size " + stepSize);
         }
         // First handle the impulse input.
         if (impulse.getWidth() > 0 && impulse.hasToken(0)) {
@@ -263,16 +261,19 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                 double currentState = getState() + impulseValue;
                 setTentativeState(currentState);
                 if (_debugging) {
-                    _debug("-- Due to impulse input, set state to " + currentState);
+                    _debug("-- Due to impulse input, set state to "
+                            + currentState);
                 }
             }
         }
         // Next handle the initialState port.
         ParameterPort initialStatePort = initialState.getPort();
         if (initialStatePort.getWidth() > 0 && initialStatePort.hasToken(0)) {
-            double initialValue = ((DoubleToken) initialStatePort.get(0)).doubleValue();
+            double initialValue = ((DoubleToken) initialStatePort.get(0))
+                    .doubleValue();
             if (_debugging) {
-                _debug("-- initialState input received with value " + initialValue);
+                _debug("-- initialState input received with value "
+                        + initialValue);
             }
             if (microstep == 0.0) {
                 throw new IllegalActionException(this,
@@ -280,7 +281,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             }
             setTentativeState(initialValue);
             if (_debugging) {
-                _debug("-- Due to initialState input, set state to " + initialValue);
+                _debug("-- Due to initialState input, set state to "
+                        + initialValue);
             }
         }
 
@@ -468,7 +470,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         }
         return true;
     }
-    
+
     /** If either the <i>impulse</i> or <i>initialState</i> input is unknown,
      *  then return false. Otherwise, return true.
      *  @return True If the actor is ready to fire.
@@ -477,7 +479,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
         if ((impulse.getWidth() == 0 || impulse.isKnown(0))
-                && (initialState.getPort().getWidth() == 0 || initialState.getPort().isKnown(0))) {
+                && (initialState.getPort().getWidth() == 0 || initialState
+                        .getPort().isKnown(0))) {
             return result;
         }
         return false;
@@ -565,7 +568,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The last output produced in the same round. */
     private double _lastOutput;
-    
+
     /** The last round this integrator is fired. */
     private int _lastRound;
 
@@ -589,7 +592,8 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
      *  equivalent (the base class will make all ports equivalent because
      *  the initialState input is a ParameterPort).
      */
-    private static class IntegratorCausalityInterface extends DefaultCausalityInterface {
+    private static class IntegratorCausalityInterface extends
+            DefaultCausalityInterface {
         public IntegratorCausalityInterface(ContinuousIntegrator actor,
                 Dependency defaultDependency) {
             super(actor, defaultDependency);
@@ -597,7 +601,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
             _derivativeEquivalents.add(actor.derivative);
             _otherEquivalents.add(actor.impulse);
             _otherEquivalents.add(actor.initialState.getPort());
-            
+
             removeDependency(actor.derivative, actor.state);
         }
 

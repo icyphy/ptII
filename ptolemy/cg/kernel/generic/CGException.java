@@ -54,7 +54,8 @@ public class CGException {
      *  @param string The message.
      *  @exception IllegalActionException Always thrown by this method.
      */
-    public static void throwException(String string) throws IllegalActionException {
+    public static void throwException(String string)
+            throws IllegalActionException {
         throwException(null, null, string);
     }
 
@@ -64,7 +65,8 @@ public class CGException {
      *  @param string The message.
      *  @exception IllegalActionException Always thrown by this method.
      */
-    public static void throwException(Object component, String string) throws IllegalActionException {
+    public static void throwException(Object component, String string)
+            throws IllegalActionException {
         throwException(component, null, string);
     }
 
@@ -79,7 +81,8 @@ public class CGException {
     public static void throwException(Object component, Throwable cause,
             String detail) throws IllegalActionException {
         if (component instanceof Nameable) {
-            throw new IllegalActionException((Nameable) component, cause, detail);
+            throw new IllegalActionException((Nameable) component, cause,
+                    detail);
         } else {
             throw new IllegalActionException(null, cause, detail);
         }

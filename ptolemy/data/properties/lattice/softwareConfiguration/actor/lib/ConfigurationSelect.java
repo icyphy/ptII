@@ -59,12 +59,12 @@ public class ConfigurationSelect extends AtomicActor {
      * @param actor The associated actor.
      * @exception IllegalActionException If thrown by the super class.
      */
-    public ConfigurationSelect(PropertyConstraintSolver solver, 
+    public ConfigurationSelect(PropertyConstraintSolver solver,
             ptolemy.actor.lib.ConfigurationSelect actor)
             throws IllegalActionException {
         super(solver, actor, false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -79,27 +79,28 @@ public class ConfigurationSelect extends AtomicActor {
         ptolemy.actor.lib.ConfigurationSelect actor = (ptolemy.actor.lib.ConfigurationSelect) getComponent();
 
         // Rules for forward solver are determined by monotonic function
-        setAtLeast(actor.output, new FunctionTerm(actor.trueInput, actor.falseInput, actor.selector));
-        
+        setAtLeast(actor.output, new FunctionTerm(actor.trueInput,
+                actor.falseInput, actor.selector));
+
         // Rules for backward solver are implemented here
         // The selected input is at least the output 
         // No relation between the unselected input and the output
-        
+
         if (actor.selector != null) {
             if (((BooleanToken) actor.selector.getToken()).booleanValue()) {
                 setAtLeast(actor.trueInput, actor.output);
             } else {
                 setAtLeast(actor.falseInput, actor.output);
-            }        
+            }
         }
-        
+
         // Output is determined by function below ("forward solver" rules)
         // Hopefully the forward solver + backward solver rules form a 
         // monotonic function when combined - I think they do.
 
         return super.constraintList();
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -114,7 +115,8 @@ public class ConfigurationSelect extends AtomicActor {
         TypedIOPort _falseInput;
         Parameter _control;
 
-        public FunctionTerm(TypedIOPort trueInput, TypedIOPort falseInput, Parameter control) {
+        public FunctionTerm(TypedIOPort trueInput, TypedIOPort falseInput,
+                Parameter control) {
             _trueInput = trueInput;
             _falseInput = falseInput;
             _control = control;
@@ -131,7 +133,7 @@ public class ConfigurationSelect extends AtomicActor {
 
             Property trueInputProperty = getSolver().getProperty(_trueInput);
             Property falseInputProperty = getSolver().getProperty(_falseInput);
-            
+
             // Rules for forward solver are implemented here
             // If control parameter is null, return NotSpecified
             // If the control parameter is set to a value, then the output the property
@@ -144,12 +146,13 @@ public class ConfigurationSelect extends AtomicActor {
                     return falseInputProperty;
                 }
             }
-            
+
             return _lattice.getElement("NotSpecified");
         }
 
         protected InequalityTerm[] _getDependentTerms() {
-            return new InequalityTerm[] { getPropertyTerm(_trueInput), getPropertyTerm(_falseInput) };
+            return new InequalityTerm[] { getPropertyTerm(_trueInput),
+                    getPropertyTerm(_falseInput) };
         }
 
         // Return true

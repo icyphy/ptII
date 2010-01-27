@@ -51,22 +51,22 @@ public class ModularCodeGenTypedCompositeActor
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
      */
-    
-    public ModularCodeGenTypedCompositeActor(ptolemy.cg.lib.ModularCodeGenTypedCompositeActor component) {
+
+    public ModularCodeGenTypedCompositeActor(
+            ptolemy.cg.lib.ModularCodeGenTypedCompositeActor component) {
         super(component);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Generate the type conversion fire code. This method is called by the
      * Director to append necessary fire code to handle type conversion.
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateTypeConvertFireCode()
-            throws IllegalActionException {
+    public String generateTypeConvertFireCode() throws IllegalActionException {
         return "";
     }
 }

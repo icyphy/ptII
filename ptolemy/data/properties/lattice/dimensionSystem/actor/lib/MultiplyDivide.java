@@ -30,8 +30,8 @@ package ptolemy.data.properties.lattice.dimensionSystem.actor.lib;
 import java.util.List;
 
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.dimensionSystem.MultiplyMonotonicFunction;
 import ptolemy.data.properties.lattice.dimensionSystem.DivideMonotonicFunction;
+import ptolemy.data.properties.lattice.dimensionSystem.MultiplyMonotonicFunction;
 import ptolemy.data.properties.lattice.dimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -76,16 +76,16 @@ public class MultiplyDivide extends AtomicActor {
 
         // The output is the quotient of the multiply and divide ports, so use the 
         // DivideMonotonicFunction
-        setAtLeast(actor.output, new DivideMonotonicFunction(actor.multiply, actor.divide,
-                                                               _lattice, this));
-        
+        setAtLeast(actor.output, new DivideMonotonicFunction(actor.multiply,
+                actor.divide, _lattice, this));
+
         // The multiply input port is the dividend, so use the DividendMonotonicFunction
-        setAtLeast(actor.multiply, new MultiplyMonotonicFunction(actor.output, actor.divide,
-                                                               _lattice, this));
-        
+        setAtLeast(actor.multiply, new MultiplyMonotonicFunction(actor.output,
+                actor.divide, _lattice, this));
+
         // The divide input port is the divisor, so use the DivisorMonotonicFunction
-        setAtLeast(actor.divide, new DivideMonotonicFunction(actor.multiply, actor.output,
-                                                              _lattice, this));
+        setAtLeast(actor.divide, new DivideMonotonicFunction(actor.multiply,
+                actor.output, _lattice, this));
 
         return super.constraintList();
     }

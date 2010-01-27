@@ -53,7 +53,6 @@ import ptolemy.kernel.util.StringAttribute;
 
 public class Break extends ControlActor {
 
-    
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -76,21 +75,21 @@ public class Break extends ControlActor {
 
         // create inports
         input = new TypedIOPort(this, "input", true, false);
-        
+
         // Beth added 12/18/08 - Break input is now also a control input 
         // Beth changed 02/04/09 - Break input changed back to a regular input
         // This is to be able to connect possibly unsequenced upstream actors
         // which do not necessarily output a boolean
         //input.setControl(true);
-        
+
         // set portnames to visible
         StringAttribute inputShowName = new StringAttribute(input, "_showName");
         inputShowName.setExpression("false");
-        
+
         // set direction of ports
         StringAttribute inputCardinal = new StringAttribute(input, "_cardinal");
         inputCardinal.setExpression("WEST");
-        
+
         // set type constraints for ports   
         // The input to the break statement should be a control signal
         // which should be a boolean
@@ -102,7 +101,7 @@ public class Break extends ControlActor {
         // This way, the unsequenced actors upstream of the original return port
         // will be sequenced correctly.
         //input.setTypeEquals(BaseType.BOOLEAN);
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -124,13 +123,11 @@ public class Break extends ControlActor {
      *  @exception IllegalActionException Not thrown here
      */
     public void preinitialize() throws IllegalActionException {
-            super.preinitialize();
-            
-            if (input.connectedPortList().isEmpty())
-            {
-                    input.setTypeEquals(BaseType.BOOLEAN);
-            }
+        super.preinitialize();
+
+        if (input.connectedPortList().isEmpty()) {
+            input.setTypeEquals(BaseType.BOOLEAN);
+        }
     }
-    
-    
+
 }

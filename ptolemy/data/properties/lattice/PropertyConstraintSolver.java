@@ -480,7 +480,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                         .stringValue()),
                 _getConstraintType(expressionASTNodeConstraintType
                         .stringValue()));
-        
+
         // Collect and solve type constraints.
         List<Inequality> constraintList = toplevelHelper.constraintList();
 
@@ -499,17 +499,17 @@ public class PropertyConstraintSolver extends PropertySolver {
      */
     protected void _resolveProperties(NamedObj toplevel,
             PropertyConstraintHelper toplevelHelper,
-            List<Inequality> constraintList) throws IllegalActionException, TypeConflictException {
+            List<Inequality> constraintList) throws IllegalActionException,
+            TypeConflictException {
         Writer writer = null;
 
         List<Inequality> conflicts = new LinkedList<Inequality>();
-        
+
         try {
             // Check declared properties across all connections.
             //List propertyConflicts = topLevel._checkDeclaredProperties();
             //conflicts.addAll(propertyConflicts);
 
-          
             /*
              * // FIXME: this is the iterative approach. List constraintList =
              * new ArrayList(); Iterator adapters =
@@ -659,7 +659,7 @@ public class PropertyConstraintSolver extends PropertySolver {
                     if (!inequality.isSatisfied(_lattice)) {
                         conflicts.add(inequality);
 
-                    } 
+                    }
                 }
             }
 
@@ -758,14 +758,14 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
 
     private void _checkMissingConstraints() {
-        StringBuffer errorMessage = new StringBuffer(_eol + "Property \"" + getUseCaseName()
-                + "\" resolution failed." + _eol);
+        StringBuffer errorMessage = new StringBuffer(_eol + "Property \""
+                + getUseCaseName() + "\" resolution failed." + _eol);
 
         boolean hasError = false;
 
         for (String trainedValue : _trainedConstraints) {
-            errorMessage.append("    Missing constraint: \"" + trainedValue + "\"."
-                    + _eol);
+            errorMessage.append("    Missing constraint: \"" + trainedValue
+                    + "\"." + _eol);
 
             hasError = true;
         }
@@ -1088,11 +1088,9 @@ public class PropertyConstraintSolver extends PropertySolver {
         }
         NamedObj namedObj = (NamedObj) object;
 
-        StringBuffer errorMessage = new StringBuffer(_eol +
-                "Property \"" + getUseCaseName() +
-                "\" resolution failed for " +
-                namedObj.getFullName() +
-                "'s adapter." + _eol);
+        StringBuffer errorMessage = new StringBuffer(_eol + "Property \""
+                + getUseCaseName() + "\" resolution failed for "
+                + namedObj.getFullName() + "'s adapter." + _eol);
 
         List<Inequality>[] constraintSet = new List[2];
         constraintSet[0] = adapter._ownConstraints;

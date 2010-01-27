@@ -107,9 +107,8 @@ public class OntologyGraphFrame extends FSMGraphFrame implements ActionListener 
 
     protected JMenuItem[] _debugMenuItems() {
         // Add debug menu.
-        JMenuItem[] debugMenuItems = {
-            new JMenuItem(CHECK_LATTICE, KeyEvent.VK_D)
-        };
+        JMenuItem[] debugMenuItems = { new JMenuItem(CHECK_LATTICE,
+                KeyEvent.VK_D) };
         return debugMenuItems;
     }
 
@@ -141,11 +140,13 @@ public class OntologyGraphFrame extends FSMGraphFrame implements ActionListener 
                     tableau.setDebuggable(ontologyModel);
 
                     boolean isLattice = ontologyModel.isLattice();
-                    
+
                     if (isLattice) {
-                        MessageHandler.message("The model graph is a valid lattice.");
+                        MessageHandler
+                                .message("The model graph is a valid lattice.");
                     } else {
-                        MessageHandler.message("The model graph is not a valid lattice.");
+                        MessageHandler
+                                .message("The model graph is not a valid lattice.");
                     }
                 }
             } catch (KernelException ex) {

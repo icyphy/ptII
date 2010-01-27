@@ -71,7 +71,7 @@ public class IfThenElse extends ControlActor {
         // set name to invisible
         StringAttribute hideName = new StringAttribute(this, "_hideName");
         hideName.setExpression("true");
-        
+
         // create inports
         ifInput = new TypedIOPort(this, "If", true, false);
 
@@ -82,17 +82,21 @@ public class IfThenElse extends ControlActor {
         // set portnames to visible
         StringAttribute ifShowName = new StringAttribute(ifInput, "_showName");
         ifShowName.setExpression("false");
-        StringAttribute thenShowName = new StringAttribute(thenOutput, "_showName");
+        StringAttribute thenShowName = new StringAttribute(thenOutput,
+                "_showName");
         thenShowName.setExpression("false");
-        StringAttribute elseShowName = new StringAttribute(elseOutput, "_showName");
+        StringAttribute elseShowName = new StringAttribute(elseOutput,
+                "_showName");
         elseShowName.setExpression("false");
 
         // set direction of ports
         StringAttribute ifCardinal = new StringAttribute(ifInput, "_cardinal");
         ifCardinal.setExpression("WEST");
-        StringAttribute thenCardinal = new StringAttribute(thenOutput, "_cardinal");
+        StringAttribute thenCardinal = new StringAttribute(thenOutput,
+                "_cardinal");
         thenCardinal.setExpression("EAST");
-        StringAttribute elseCardinal = new StringAttribute(elseOutput, "_cardinal");
+        StringAttribute elseCardinal = new StringAttribute(elseOutput,
+                "_cardinal");
         elseCardinal.setExpression("SOUTH");
 
         // set type constraints for ports        
@@ -133,16 +137,16 @@ public class IfThenElse extends ControlActor {
 
             // Set the enabled output ports accordingly
             clearEnabledOutports();
-            
-         // Beth - changed 02/06/09 - use the .equals() function instead of ==
+
+            // Beth - changed 02/06/09 - use the .equals() function instead of ==
             if (token.equals(BooleanToken.TRUE)) {
                 addEnabledOutport(thenOutput);
-                
+
                 thenOutput.send(0, BooleanToken.TRUE);
                 elseOutput.send(0, BooleanToken.FALSE);
             } else {
                 addEnabledOutport(elseOutput);
-                
+
                 thenOutput.send(0, BooleanToken.FALSE);
                 elseOutput.send(0, BooleanToken.TRUE);
             }

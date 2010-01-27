@@ -45,7 +45,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class LatticeProperty extends Property implements PropertyTerm, Cloneable {
+public class LatticeProperty extends Property implements PropertyTerm,
+        Cloneable {
 
     // FIXME: There is no reason that for this to have to be
     // subclassed at all to create a lattice. Instead, we should have
@@ -149,9 +150,7 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
      * contains this property.
      */
     public InequalityTerm[] getConstants() {
-        return new InequalityTerm[] {
-            this
-        };
+        return new InequalityTerm[] { this };
     }
 
     /**
@@ -182,13 +181,13 @@ public class LatticeProperty extends Property implements PropertyTerm, Cloneable
     // FIXME: Having a hashCode method() causes lots of tests to fail?
     // why?
 
-//     /** Return a hash code value for this LatticeProperty.
-//      *  This method returns the hashCode of the {@link #_lattice}.   
-//      *  @return A hash code value for this LatticeProperty.
-//      */
-//     public int hashCode() {
-//         return _lattice.hashCode();
-//     }
+    //     /** Return a hash code value for this LatticeProperty.
+    //      *  This method returns the hashCode of the {@link #_lattice}.   
+    //      *  @return A hash code value for this LatticeProperty.
+    //      */
+    //     public int hashCode() {
+    //         return _lattice.hashCode();
+    //     }
 
     /**
      * Initialize the property term. Since LatticeProperty is a constant term,

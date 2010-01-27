@@ -37,8 +37,8 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
 import ptolemy.data.ontologies.OntologyAdapter;
+import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.modal.ModalModel;
@@ -72,8 +72,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @exception IllegalActionException Thrown if the adapter cannot be
      * initialized.
      */
-    public LatticeOntologyAdapter(LatticeOntologySolver solver,
-            Object component) throws IllegalActionException {
+    public LatticeOntologyAdapter(LatticeOntologySolver solver, Object component)
+            throws IllegalActionException {
         this(solver, component, true);
     }
 
@@ -349,8 +349,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
          * @param greaterTerm The greater term of the Inequality
          * @param isBase true if the Inequality is composeable, false otherwise
          */
-        public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm,
-                boolean isBase) {
+        public Inequality(InequalityTerm lesserTerm,
+                InequalityTerm greaterTerm, boolean isBase) {
             super(lesserTerm, greaterTerm);
 
             _isBase = isBase;
@@ -383,8 +383,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
          * of the terms.
          */
         public boolean isSatisfied(CPO cpo) throws IllegalActionException {
-            InequalityTerm lesserTerm = (InequalityTerm) getLesserTerm();
-            InequalityTerm greaterTerm = (InequalityTerm) getGreaterTerm();
+            InequalityTerm lesserTerm = getLesserTerm();
+            InequalityTerm greaterTerm = getGreaterTerm();
 
             if (lesserTerm.getValue() == null) {
                 return true;
@@ -728,7 +728,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * removeConstraints.add(inequality); } } }
      * _constraints.removeAll(removeConstraints); }
      */
-    
+
     /**
      * Set the effective terms for the Inequality constraints for the model component
      * referred to by this OntologyAdapter.  This method does nothing in the base class

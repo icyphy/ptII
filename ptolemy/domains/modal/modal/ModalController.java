@@ -292,7 +292,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
                     // and populated with its ports before this controller
                     // was created.
                     RefinementPort port = new RefinementPort(this, name);
-                    
+
                     // Create links.
                     String relationName = name + "Relation";
                     Relation relation = container.getRelation(relationName);

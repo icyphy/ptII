@@ -92,11 +92,12 @@ public class Expression extends JavaCodeGeneratorHelper {
         //code.append(processCode("    $ref(output)." + portType + "Port = ("
         //        + _javaParseTreeCodeGenerator.generateFireCode()) + ");" + _eol);
         if (_javaParseTreeCodeGenerator == null) {
-            throw new NullPointerException("_javaParseTreeCodeGenerator is null? "
-                                           + " This can happen if there is an odd order of execution");
+            throw new NullPointerException(
+                    "_javaParseTreeCodeGenerator is null? "
+                            + " This can happen if there is an odd order of execution");
         }
         if (_javaParseTreeCodeGenerator.generateFireCode() == null) {
-            throw new NullPointerException("calling generateFireCode on "         
+            throw new NullPointerException("calling generateFireCode on "
                     + _javaParseTreeCodeGenerator + " returned null");
         }
         code.append(processCode("    $ref(output) = "
@@ -143,16 +144,16 @@ public class Expression extends JavaCodeGeneratorHelper {
             // Note that the parser is NOT retained, since in most
             // cases the expression doesn't change, and the parser
             // requires a large amount of memory.
-//            if (1 == 0) {
-//                // Debugging
-//                PtParser parser = new PtParser();
-//                ASTPtRootNode parseTree = parser
-//                        .generateParseTree(actor.expression.getExpression());
-//
-//                System.out.println("Expression trace:\n"
-//                        + _javaParseTreeCodeGenerator.traceParseTreeEvaluation(
-//                                parseTree, new VariableScope(actor)));
-//            }
+            //            if (1 == 0) {
+            //                // Debugging
+            //                PtParser parser = new PtParser();
+            //                ASTPtRootNode parseTree = parser
+            //                        .generateParseTree(actor.expression.getExpression());
+            //
+            //                System.out.println("Expression trace:\n"
+            //                        + _javaParseTreeCodeGenerator.traceParseTreeEvaluation(
+            //                                parseTree, new VariableScope(actor)));
+            //            }
             PtParser parser = new PtParser();
             ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
                     .getExpression());

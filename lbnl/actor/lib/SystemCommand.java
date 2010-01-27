@@ -156,7 +156,7 @@ public class SystemCommand extends TypedAtomicActor {
 
         exitValue = new TypedIOPort(this, "exitValue", false, true);
         output = new TypedIOPort(this, "output", false, true);
-        error  = new TypedIOPort(this, "error", false, true);
+        error = new TypedIOPort(this, "error", false, true);
 
         programName = new FileParameter(this, "programName");
         new Parameter(programName, "allowFiles", BooleanToken.TRUE);
@@ -235,7 +235,7 @@ public class SystemCommand extends TypedAtomicActor {
                 .getAttribute("workingDirectory");
         newObject.showConsoleWindow = (Parameter) newObject
                 .getAttribute("showConsoleWindow");
-  
+
         newObject._iterationCount = 1;
         newObject._tokenMap = null;
 
@@ -274,8 +274,7 @@ public class SystemCommand extends TypedAtomicActor {
             exitValue.send(0, new IntToken(exiVal));
             output.send(0, new StringToken(cliPro.getStandardOutput()));
             error.send(0, new StringToken(cliPro.getStandardError()));
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             String em = "Error: System command has been interrupted.";
             throw new IllegalActionException(this, e, em);
         }
@@ -291,7 +290,8 @@ public class SystemCommand extends TypedAtomicActor {
         super.preinitialize();
 
         // Check if we run in headless mode
-        isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless").equals("true");
+        isHeadless = StringUtilities.getProperty("ptolemy.ptII.isHeadless")
+                .equals("true");
 
         // Working directory
         String workDire = cutQuotationMarks(workingDirectory.getExpression());
@@ -317,7 +317,7 @@ public class SystemCommand extends TypedAtomicActor {
      */
     private void _initializeSimulation() throws IllegalActionException {
         //////////////////////////////////////////////////////////////        
-        worDir = Simulator.resolveDirectory(getContainer(), 
+        worDir = Simulator.resolveDirectory(getContainer(),
                 cutQuotationMarks(workingDirectory.getExpression()));
 
         //////////////////////////////////////////////////////////////        
@@ -339,7 +339,8 @@ public class SystemCommand extends TypedAtomicActor {
                 comArg = programName.getExpression();
             }
         }
-        final String argLin = cutQuotationMarks(programArguments.getExpression());
+        final String argLin = cutQuotationMarks(programArguments
+                .getExpression());
         commandList = new ArrayList<String>();
         /* mwetter: 
            Disabled section. Otherwise, C:\Program Files\xyz is parsed to
@@ -358,11 +359,13 @@ public class SystemCommand extends TypedAtomicActor {
         // Close the window that contains the console output.
         // This is needed if a simulation is started multiple times.
         // Otherwise, each new run would make a new window.
-        if ( cliPro != null )
+        if (cliPro != null) {
             cliPro.disposeWindow();
+        }
         cliPro = new ClientProcess(this.getFullName());
-        final boolean showConsole = ((BooleanToken)(showConsoleWindow.getToken())).booleanValue();
-        cliPro.showConsoleWindow( showConsole && (! isHeadless) );
+        final boolean showConsole = ((BooleanToken) (showConsoleWindow
+                .getToken())).booleanValue();
+        cliPro.showConsoleWindow(showConsole && (!isHeadless));
     }
 
     /** Starts the simulation program.
@@ -370,8 +373,7 @@ public class SystemCommand extends TypedAtomicActor {
      *@exception IllegalActionException If the simulation process arguments
      *                                  are invalid.
      */
-    private void _startSimulation() 
-            throws IllegalActionException{
+    private void _startSimulation() throws IllegalActionException {
         ArrayList<String> com = new ArrayList<String>();
         // Iterate over the list of command to replace all references to input port names.
         // Reference take the form $portName where portName is the name of the port.
@@ -379,23 +381,26 @@ public class SystemCommand extends TypedAtomicActor {
         // may have. Otherwise, an entry programArguments=$fileName may be parsed to
         // programArguments="$fileName" and commands such as cat $fileName may not find
         // the file on Linux.
-        for (Iterator itc = commandList.iterator(); itc.hasNext (); ) {
-            String comIte = (String)itc.next();
+        for (Iterator itc = commandList.iterator(); itc.hasNext();) {
+            String comIte = (String) itc.next();
             for (Map.Entry<String, Token> e : _tokenMap.entrySet()) {
                 final String fin = '$' + e.getKey();
-                while ( comIte.contains(fin) )
-                    comIte = comIte.replace(fin, 
-                                            cutQuotationMarks(e.getValue().toString()));
+                while (comIte.contains(fin)) {
+                    comIte = comIte.replace(fin, cutQuotationMarks(e.getValue()
+                            .toString()));
+                }
             }
             // Replace $time and $iteration
             String fin = "$time";
-            while (comIte.contains(fin))
-                comIte = comIte.replace(fin, 
-                        cutQuotationMarks(getDirector().getModelTime().toString()));
+            while (comIte.contains(fin)) {
+                comIte = comIte.replace(fin, cutQuotationMarks(getDirector()
+                        .getModelTime().toString()));
+            }
             fin = "$iteration";
-            while (comIte.contains(fin))
-                comIte = comIte.replace(fin, 
-                        Integer.valueOf(_iterationCount).toString());
+            while (comIte.contains(fin)) {
+                comIte = comIte.replace(fin, Integer.valueOf(_iterationCount)
+                        .toString());
+            }
             com.add(comIte);
         }
         ///////////////////////////////
@@ -442,8 +447,8 @@ public class SystemCommand extends TypedAtomicActor {
 
         if (!cliPro.processStarted()) {
             String em = "Error: Simulation process did not start." + LS
-                + cliPro.getErrorMessage() + LS
-                + "Check configuration of '" + this.getFullName() + "'.";
+                    + cliPro.getErrorMessage() + LS
+                    + "Check configuration of '" + this.getFullName() + "'.";
             throw new IllegalActionException(this, em);
         }
     }

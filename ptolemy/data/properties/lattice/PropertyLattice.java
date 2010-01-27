@@ -420,7 +420,8 @@ public class PropertyLattice extends DirectedAcyclicGraph {
     public static PropertyLattice getPropertyLattice(String latticeName) {
 
         // Check whether the lattice is included in the model.
-        if (latticeName.startsWith(PropertyConstraintSolver._USER_DEFINED_LATTICE)) {
+        if (latticeName
+                .startsWith(PropertyConstraintSolver._USER_DEFINED_LATTICE)) {
             // In this case, we don't want to look
             // in the predefined lattices.
             latticeName = latticeName.replace(
@@ -475,8 +476,8 @@ public class PropertyLattice extends DirectedAcyclicGraph {
      *  @return the name of the package that contains this class.
      */
     public String toString() {
-         String name = getClass().getPackage().getName();
-         return name.substring(name.lastIndexOf('.') + 1);
+        String name = getClass().getPackage().getName();
+        return name.substring(name.lastIndexOf('.') + 1);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -48,20 +48,18 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
-import java.util.Properties;
 import java.util.zip.ZipFile;
 
-import ptolemy.util.StringUtilities;
 import ptolemy.util.StreamExec;
-
+import ptolemy.util.StringUtilities;
 import sun.misc.BASE64Encoder;
 import sun.security.util.ManifestDigester;
-
 
 /**
  * Sign a Jar file.
@@ -128,7 +126,8 @@ public class JarSigner {
         try {
             FileInputStream fileInputStream = null;
             try {
-                fileInputStream = new FileInputStream(keystorePropertiesFileName);
+                fileInputStream = new FileInputStream(
+                        keystorePropertiesFileName);
                 properties.load(fileInputStream);
                 String property = null;
                 if ((property = properties.getProperty("keystoreFileName")) != null) {
@@ -150,13 +149,12 @@ public class JarSigner {
                             + ex);
         }
 
-        System.out.println("About to sign \"" + args[0]
-                + "\" and create \"" + args[1] + "\""
-                + " using keystore: \"" + keystoreFileName + "\""
-                + " and alias: \"" + alias + "\""); 
+        System.out.println("About to sign \"" + args[0] + "\" and create \""
+                + args[1] + "\"" + " using keystore: \"" + keystoreFileName
+                + "\"" + " and alias: \"" + alias + "\"");
         try {
-            sign(args[0], args[1], keystoreFileName, alias, storePassword.toCharArray(),
-                    keyPassword.toCharArray());
+            sign(args[0], args[1], keystoreFileName, alias, storePassword
+                    .toCharArray(), keyPassword.toCharArray());
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -215,16 +213,13 @@ public class JarSigner {
             KeyFactory keyFactory = KeyFactory.getInstance(key.getAlgorithm());
             KeySpec keySpec = null;
             try {
-                 keySpec = keyFactory.getKeySpec(key,
-                         DSAPrivateKeySpec.class);
-             } catch (java.security.spec.InvalidKeySpecException ex) {
+                keySpec = keyFactory.getKeySpec(key, DSAPrivateKeySpec.class);
+            } catch (java.security.spec.InvalidKeySpecException ex) {
                 System.out.println("Using RSA");
-                keySpec = keyFactory.getKeySpec(key,
-                        RSAPrivateKeySpec.class);
+                keySpec = keyFactory.getKeySpec(key, RSAPrivateKeySpec.class);
             }
             PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-            JarSigner jarSigner = new JarSigner(alias, privateKey,
-                    certChain);
+            JarSigner jarSigner = new JarSigner(alias, privateKey, certChain);
 
             JarFile jarFile = null;
             try {
@@ -272,12 +267,10 @@ public class JarSigner {
         System.out.println("Working around bug where the chain of certs "
                 + "is not included in the .RSA file");
         List commands = new LinkedList();
-        commands.add("jarsigner -keystore \"" +
-                keystoreFileName +
-                "\" -keypass \"" + new String(keyPassword) +
-                "\" -storepass \"" + new String(storePassword) +
-                "\" \"" + signedJarFileName + "\"  \"" +
-                alias + "\"");
+        commands.add("jarsigner -keystore \"" + keystoreFileName
+                + "\" -keypass \"" + new String(keyPassword)
+                + "\" -storepass \"" + new String(storePassword) + "\" \""
+                + signedJarFileName + "\"  \"" + alias + "\"");
 
         final StreamExec exec = new StreamExec();
         exec.setCommands(commands);

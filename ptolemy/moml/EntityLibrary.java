@@ -612,7 +612,7 @@ public class EntityLibrary extends CompositeEntity implements LazyComposite {
 
     /** Text specified to the configure() method. */
     private String _configureText;
-    
+
     /** Flag indicating populate() has been called, and hence
      *  the configuration should be obtained from the current contents
      *  (in case they have changed) rather than from the _configureText.

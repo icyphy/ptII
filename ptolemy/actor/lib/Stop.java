@@ -162,7 +162,7 @@ public class Stop extends Sink {
             // determinate stopping, this actor needs to complete
             // the current iteration.
             getDirector().finish();
-            
+
             // To support multithreaded domains, also have to call
             // stopFire() to request that all actors conclude ongoing firings.
             getDirector().stopFire();

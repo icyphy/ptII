@@ -110,7 +110,10 @@ public class ABF implements ABFConstants {
                 Nrows1_2, Matprod);
     }
 
-    public static void CalcWeights(int Nb_ants, int Nb_beams, float[] Vec,int Nb_ants2,int Nb_ants3, float[] Mat,int Nb_ants4, int Nb_beams2, float[] W) {
-        ABFJNI.CalcWeights(Nb_ants, Nb_beams, Vec, Nb_ants2, Nb_ants3, Mat, Nb_ants4, Nb_beams2, W);
-     }
+    public static void CalcWeights(int Nb_ants, int Nb_beams, float[] Vec,
+            int Nb_ants2, int Nb_ants3, float[] Mat, int Nb_ants4,
+            int Nb_beams2, float[] W) {
+        ABFJNI.CalcWeights(Nb_ants, Nb_beams, Vec, Nb_ants2, Nb_ants3, Mat,
+                Nb_ants4, Nb_beams2, W);
+    }
 }

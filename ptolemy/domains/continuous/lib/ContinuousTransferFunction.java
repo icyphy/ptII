@@ -109,8 +109,8 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public ContinuousTransferFunction(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public ContinuousTransferFunction(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }

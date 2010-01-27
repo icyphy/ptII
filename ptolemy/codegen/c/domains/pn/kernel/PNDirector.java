@@ -584,7 +584,7 @@ public class PNDirector extends Director {
                     }
                     if (port.isInput()) {
                         pnPostfireCode.append(portHelper.updateOffset(rate,
-                                        _director));
+                                _director));
                     }
                 }
 

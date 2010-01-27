@@ -107,7 +107,6 @@ public class PropertyTokenSolver extends PropertySolver {
      */
     public Parameter numberIterations;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -139,7 +138,7 @@ public class PropertyTokenSolver extends PropertySolver {
 
     /** Return the value of the listeningMethod expression.
      *  @return the value of the listeningMethod expression.   
-     */   
+     */
     public String getListening() {
         // FIXME: this should be called getListeningMethod
         return listeningMethod.getExpression();
@@ -173,7 +172,7 @@ public class PropertyTokenSolver extends PropertySolver {
      *  @param object The object.
      *  @return the token.  
      *  @see #putToken(Object, Token)
-     */   
+     */
     public Token getToken(Object object) {
         return _tokenMap.get(object);
     }

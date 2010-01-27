@@ -79,9 +79,9 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-//        code.append(processCode("    $ref(output) = "
-//                + _javaParseTreeCodeGenerator.generateFireCode())
-//                + ";" + _eol);
+        //        code.append(processCode("    $ref(output) = "
+        //                + _javaParseTreeCodeGenerator.generateFireCode())
+        //                + ";" + _eol);
         code.append(processCode("    $put(output, "
                 + _javaParseTreeCodeGenerator.generateFireCode())
                 + ");" + _eol);

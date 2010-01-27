@@ -48,7 +48,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.AcceptedRating
  *
  */
-public class GPOutputDevice extends ActuatorOutputDevice implements ActuationDevice {
+public class GPOutputDevice extends ActuatorOutputDevice implements
+        ActuationDevice {
 
     /**
      * Constructs a GPOutputDevice object.

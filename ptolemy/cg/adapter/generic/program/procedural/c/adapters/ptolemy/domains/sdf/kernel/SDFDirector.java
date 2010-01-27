@@ -513,7 +513,8 @@ public class SDFDirector
      */
     @Override
     protected String _generateVariableDeclaration(
-            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target)
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -583,11 +584,8 @@ public class SDFDirector
                 continue;
             }
 
-            code.append("static "
-                    + targetType(inputPort.getType())
-                    + " "
-                    + NamedProgramCodeGeneratorAdapter
-                            .generateName(inputPort));
+            code.append("static " + targetType(inputPort.getType()) + " "
+                    + NamedProgramCodeGeneratorAdapter.generateName(inputPort));
 
             int bufferSize = _ports.getBufferSize(inputPort);
             if (inputPort.isMultiport()) {
@@ -655,21 +653,21 @@ public class SDFDirector
      *  getting port information.
      */
     private String _generateTypeConvertVariableDeclaration(
-            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target)
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Iterator<?> channels = target.getTypeConvertChannels()
-                .iterator();
+        Iterator<?> channels = target.getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
-            ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels.next();
+            ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels
+                    .next();
             Type portType = ((TypedIOPort) channel.port).getType();
 
             if (getCodeGenerator().isPrimitive(portType)) {
 
                 code.append("static ");
                 code.append(targetType(portType));
-                code.append(" "
-                        + getTypeConvertReference(channel));
+                code.append(" " + getTypeConvertReference(channel));
 
                 //int bufferSize = getBufferSize(channel.port);
                 int bufferSize = Math.max(DFUtilities
@@ -699,10 +697,12 @@ public class SDFDirector
                 // avoid duplicate declaration.
                 if (!getCodeGenerator().getModifiedVariables().contains(
                         parameter)) {
-                    code.append("static " + targetType(parameter.getType())
+                    code.append("static "
+                            + targetType(parameter.getType())
                             + " "
-                            + getCodeGenerator().generateVariableName(parameter)
-                            + ";" + _eol);
+                            + getCodeGenerator()
+                                    .generateVariableName(parameter) + ";"
+                            + _eol);
                 }
             }
         }

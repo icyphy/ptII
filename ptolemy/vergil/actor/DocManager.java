@@ -46,7 +46,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -155,80 +154,78 @@ public class DocManager extends HandlerBase {
         _targetClass = target.getClass();
         _className = target.getClassName();
         //try {
-            List docAttributes = _target.attributeList(DocAttribute.class);
-            // Get the last doc attribute.
-            if (docAttributes.size() > 0) {
-                DocAttribute instanceDoc = (DocAttribute) docAttributes
-                        .get(docAttributes.size() - 1);
-                // Populate fields from the attribute.
-                //String descriptionValue = instanceDoc.description.stringValue();
-                String descriptionValue = instanceDoc.description.getExpression();
-                if (descriptionValue != null
-                        && !descriptionValue.trim().equals("")) {
-                    _isInstanceDoc = true;
-                    _description = descriptionValue;
-                }
-                /* No rating fields in instance documentation.
-                 String acceptedRatingValue = instanceDoc.acceptedRating.getExpression();
-                 if (!acceptedRatingValue.trim().equals("")) {
-                 _isInstanceDoc = true;
-                 _ptAcceptedRating = acceptedRatingValue;
-                 }
-                 */
-                String authorValue = instanceDoc.author.getExpression();
-                if (authorValue != null && !authorValue.trim().equals("")) {
-                    _isInstanceDoc = true;
-                    _author = authorValue;
-                }
-                /* No rating fields in instance documentation.
-                 String proposedRatingValue = instanceDoc.proposedRating.getExpression();
-                 if (!proposedRatingValue.trim().equals("")) {
-                 _isInstanceDoc = true;
-                 _ptProposedRating = proposedRatingValue;
-                 }
-                 */
-                String sinceValue = instanceDoc.since.getExpression();
-                if (sinceValue != null && !sinceValue.trim().equals("")) {
-                    _isInstanceDoc = true;
-                    _since = sinceValue;
-                }
-                String versionValue = instanceDoc.version.getExpression();
-                if (versionValue != null && !versionValue.trim().equals("")) {
-                    _isInstanceDoc = true;
-                    _version = versionValue;
-                }
+        List docAttributes = _target.attributeList(DocAttribute.class);
+        // Get the last doc attribute.
+        if (docAttributes.size() > 0) {
+            DocAttribute instanceDoc = (DocAttribute) docAttributes
+                    .get(docAttributes.size() - 1);
+            // Populate fields from the attribute.
+            //String descriptionValue = instanceDoc.description.stringValue();
+            String descriptionValue = instanceDoc.description.getExpression();
+            if (descriptionValue != null && !descriptionValue.trim().equals("")) {
+                _isInstanceDoc = true;
+                _description = descriptionValue;
+            }
+            /* No rating fields in instance documentation.
+             String acceptedRatingValue = instanceDoc.acceptedRating.getExpression();
+             if (!acceptedRatingValue.trim().equals("")) {
+             _isInstanceDoc = true;
+             _ptAcceptedRating = acceptedRatingValue;
+             }
+             */
+            String authorValue = instanceDoc.author.getExpression();
+            if (authorValue != null && !authorValue.trim().equals("")) {
+                _isInstanceDoc = true;
+                _author = authorValue;
+            }
+            /* No rating fields in instance documentation.
+             String proposedRatingValue = instanceDoc.proposedRating.getExpression();
+             if (!proposedRatingValue.trim().equals("")) {
+             _isInstanceDoc = true;
+             _ptProposedRating = proposedRatingValue;
+             }
+             */
+            String sinceValue = instanceDoc.since.getExpression();
+            if (sinceValue != null && !sinceValue.trim().equals("")) {
+                _isInstanceDoc = true;
+                _since = sinceValue;
+            }
+            String versionValue = instanceDoc.version.getExpression();
+            if (versionValue != null && !versionValue.trim().equals("")) {
+                _isInstanceDoc = true;
+                _version = versionValue;
+            }
 
-                // Next look for attributes.
-                Iterator attributes = target.attributeList(Settable.class)
-                        .iterator();
-                while (attributes.hasNext()) {
-                    NamedObj attribute = (NamedObj) attributes.next();
-                    if (((Settable) attribute).getVisibility() != Settable.NONE) {
-                        String attributeDoc = instanceDoc
-                                .getParameterDoc(attribute.getName());
-                        if (attributeDoc != null
-                                && !attributeDoc.trim().equals("")) {
-                            _isInstanceDoc = true;
-                            _properties.put(attribute.getName(), attributeDoc);
-                        }
-                    }
-                }
-                // Next look for ports.
-                if (target instanceof Entity) {
-                    Iterator ports = ((Entity) target).portList().iterator();
-                    while (ports.hasNext()) {
-                        Port port = (Port) ports.next();
-                        String portDoc = instanceDoc.getPortDoc(port.getName());
-                        if (portDoc != null && !portDoc.trim().equals("")) {
-                            _isInstanceDoc = true;
-                            _ports.put(port.getName(), portDoc);
-                        }
+            // Next look for attributes.
+            Iterator attributes = target.attributeList(Settable.class)
+                    .iterator();
+            while (attributes.hasNext()) {
+                NamedObj attribute = (NamedObj) attributes.next();
+                if (((Settable) attribute).getVisibility() != Settable.NONE) {
+                    String attributeDoc = instanceDoc.getParameterDoc(attribute
+                            .getName());
+                    if (attributeDoc != null && !attributeDoc.trim().equals("")) {
+                        _isInstanceDoc = true;
+                        _properties.put(attribute.getName(), attributeDoc);
                     }
                 }
             }
-            //} catch (IllegalActionException e) {
-            //_exception = "Error evaluating DocAttribute parameter:\n" + e + ptolemy.kernel.util.KernelException.stackTraceToString(e);
-            //}
+            // Next look for ports.
+            if (target instanceof Entity) {
+                Iterator ports = ((Entity) target).portList().iterator();
+                while (ports.hasNext()) {
+                    Port port = (Port) ports.next();
+                    String portDoc = instanceDoc.getPortDoc(port.getName());
+                    if (portDoc != null && !portDoc.trim().equals("")) {
+                        _isInstanceDoc = true;
+                        _ports.put(port.getName(), portDoc);
+                    }
+                }
+            }
+        }
+        //} catch (IllegalActionException e) {
+        //_exception = "Error evaluating DocAttribute parameter:\n" + e + ptolemy.kernel.util.KernelException.stackTraceToString(e);
+        //}
     }
 
     /** Construct a manager to handle documentation for the specified target

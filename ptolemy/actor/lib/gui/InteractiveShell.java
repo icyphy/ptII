@@ -246,7 +246,7 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
             }
         };
         SwingUtilities.invokeLater(doSetEditable);
-        
+
         String userCommand = getOutput();
 
         if (userCommand.trim().equalsIgnoreCase("quit")

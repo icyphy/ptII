@@ -73,21 +73,21 @@ public abstract class LuminarySensorInputDevice extends SensorInputDevice {
      *  sensor input devices. A sensor device could have multiple access
      *  pin and pads (configurations), this number keeps track of the
      *  total number of configurations available.
-     */ 
+     */
     public static int numberOfSupportedInputDeviceConfigurations = 8;
-    
+
     /** A sensor device could have multiple access pin and pads 
      *  (configurations), This method returns the current configuration.
      *  @return The current configuration captured in a string.
      *  @exception IllegalActionException
      */
     abstract public String configuration() throws IllegalActionException;
-    
+
     /** The set of supported configurations.
      *  @return The set of supported configurations.
      */
     abstract public List<String> supportedConfigurations();
-    
+
     /** There is a default configuration, which is returned.
      *  @return The default configuration.
      */

@@ -131,7 +131,6 @@ public class GPOutputDevice extends OutputDevice {
         return processCode(_codeStream.toString());
     }
 
-
     /**
      * Return the hardware initialization code.
      * @return the hardware initialization code, which is read from the

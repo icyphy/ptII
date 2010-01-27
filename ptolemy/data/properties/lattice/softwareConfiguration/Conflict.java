@@ -31,7 +31,6 @@ package ptolemy.data.properties.lattice.softwareConfiguration;
 import ptolemy.data.properties.lattice.LatticeProperty;
 import ptolemy.data.properties.lattice.PropertyLattice;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Property
 
@@ -45,7 +44,7 @@ import ptolemy.data.properties.lattice.PropertyLattice;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Conflict extends LatticeProperty {
-        
+
     /**
      * Create a new lattice property with the name "Conflict" and the specified
      * lattice.

@@ -67,7 +67,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
-
 ///////////////////////////////////////////////////////////////////
 ////SDFDirector
 
@@ -89,7 +88,7 @@ public class SDFDirector
      *  @param sdfDirector The associated
      *  ptolemy.domains.sdf.kernel.SDFDirector
      */
-    
+
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
         super(sdfDirector);
         // TODO Auto-generated constructor stub
@@ -120,15 +119,15 @@ public class SDFDirector
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing) actorsToFire.next();
             Actor actor = firing.getActor();
-            
+
             // FIXME: Before looking for a adapter class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the adapter.
             NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-                    .getAdapter((NamedObj) actor);
+                    .getAdapter(actor);
 
-            if (actor instanceof ModularCodeGenTypedCompositeActor ||
-                actor instanceof ModularCompiledSDFTypedCompositeActor) {
+            if (actor instanceof ModularCodeGenTypedCompositeActor
+                    || actor instanceof ModularCompiledSDFTypedCompositeActor) {
                 /*
                 //call the internal code generator of the composite actor
                 try {
@@ -137,91 +136,105 @@ public class SDFDirector
                     throw new IllegalActionException(actor, e, "Can't generate code for " + actor.getName());
                 }
                 */
-                
-                String className = NamedProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
-                String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
-                
+
+                String className = NamedProgramCodeGeneratorAdapter
+                        .generateName((NamedObj) actor);
+                String actorName = ModularCodeGenTypedCompositeActor
+                        .classToActorName(className);
+
                 code.append(actorName + ".fire(");
-                
-                NamedProgramCodeGeneratorAdapter codegeneratorAdaptor = (NamedProgramCodeGeneratorAdapter) getAdapter((NamedObj)actor);
-                
-                Iterator<?> inputPorts = actor.inputPortList()
-                .iterator();
+
+                NamedProgramCodeGeneratorAdapter codegeneratorAdaptor = (NamedProgramCodeGeneratorAdapter) getAdapter((NamedObj) actor);
+
+                Iterator<?> inputPorts = actor.inputPortList().iterator();
                 boolean addComma = false;
                 while (inputPorts.hasNext()) {
                     TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-                    
+
                     for (int i = 0; i < inputPort.getWidth(); i++) {
                         if (addComma) {
                             code.append(", ");
                         }
-                        code.append(codegeneratorAdaptor.getReference( inputPort.getName() + "#" + i));
+                        code.append(codegeneratorAdaptor.getReference(inputPort
+                                .getName()
+                                + "#" + i));
                         addComma = true;
                     }
                 }
-        /*
-                Iterator<?> outputPorts = actor.outputPortList()
-                .iterator();
-                while (outputPorts.hasNext()) {
-                    TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-                    if (addComma) {
-                        code.append(", ");
-                    }
-                    
-                    for (int i = 0; i < outputPort.getWidth(); i++) {
-                        code.append(codegeneratorAdaptor.getReference( outputPort.getName() + "#" + i));
-                    }
-                    
-                    addComma = true;
-                }
-                */
-                
-                code.append(");"+ _eol);
-                
+                /*
+                        Iterator<?> outputPorts = actor.outputPortList()
+                        .iterator();
+                        while (outputPorts.hasNext()) {
+                            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+                            if (addComma) {
+                                code.append(", ");
+                            }
+                            
+                            for (int i = 0; i < outputPort.getWidth(); i++) {
+                                code.append(codegeneratorAdaptor.getReference( outputPort.getName() + "#" + i));
+                            }
+                            
+                            addComma = true;
+                        }
+                        */
+
+                code.append(");" + _eol);
+
                 //transfer to external ports
-                Iterator<?> outputPorts = actor.outputPortList()
-                .iterator();
+                Iterator<?> outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
-                    
+
                     int rate = DFUtilities.getTokenProductionRate(outputPort);
-                    
-                    
+
                     for (int i = 0; i < outputPort.getWidth(); i++) {
-                        if (rate <= 1)
-                            code.append(codegeneratorAdaptor.getReference( outputPort.getName() + "#" + i) + 
-                                " = " + actorName + "." + codegeneratorAdaptor.getReference( "@" + outputPort.getName() + "#" + i) + ";" + _eol);
-                        else {
+                        if (rate <= 1) {
+                            code.append(codegeneratorAdaptor
+                                    .getReference(outputPort.getName() + "#"
+                                            + i)
+                                    + " = "
+                                    + actorName
+                                    + "."
+                                    + codegeneratorAdaptor.getReference("@"
+                                            + outputPort.getName() + "#" + i)
+                                    + ";" + _eol);
+                        } else {
                             for (int k = 0; k < rate; k++) {
-                                code.append(codegeneratorAdaptor.getReference( outputPort.getName() + "#" + i)
-                                    + " = " + actorName + "." + codegeneratorAdaptor.getReference( "@" + outputPort.getName() + "#" + i) + ";" + _eol);
+                                code.append(codegeneratorAdaptor
+                                        .getReference(outputPort.getName()
+                                                + "#" + i)
+                                        + " = "
+                                        + actorName
+                                        + "."
+                                        + codegeneratorAdaptor.getReference("@"
+                                                + outputPort.getName() + "#"
+                                                + i) + ";" + _eol);
                             }
                         }
                     }
                 }
-                
+
             } else {
                 if (inline) {
                     for (int i = 0; i < firing.getIterationCount(); i++) {
-    
+
                         // generate fire code for the actor
                         code.append(adapter.generateFireCode());
-    
+
                         _generateUpdatePortOffsetCode(code, actor);
                     }
                 } else {
-    
+
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (int i = 0; i < " + count + " ; i++) {"
-                                + _eol);
+                        code.append("for (int i = 0; i < " + count
+                                + " ; i++) {" + _eol);
                     }
-    
-                    code.append(generateName((NamedObj) actor)
-                            + "();" + _eol);
-    
+
+                    code.append(generateName((NamedObj) actor) + "();" + _eol);
+
                     _generateUpdatePortOffsetCode(code, actor);
-    
+
                     if (count > 1) {
                         code.append("}" + _eol);
                     }
@@ -230,8 +243,7 @@ public class SDFDirector
         }
         return code.toString();
     }
-    
-    
+
     /** Generate code for transferring enough tokens to complete an internal
      *  iteration.
      *  @param inputPort The port to transfer tokens.
@@ -249,37 +261,36 @@ public class SDFDirector
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
                 .getAdapter(container);
 
+        // FindBugs wants this instanceof check.
+        if (!(inputPort instanceof TypedIOPort)) {
+            throw new InternalErrorException(inputPort, null,
+                    " is not an instance of TypedIOPort.");
+        }
 
-            // FindBugs wants this instanceof check.
-            if (!(inputPort instanceof TypedIOPort)) {
-                throw new InternalErrorException(inputPort, null,
-                        " is not an instance of TypedIOPort.");
-            }
+        String portName = inputPort.getName();
 
-            String portName = inputPort.getName();
+        for (int i = 0; i < inputPort.getWidth(); i++) {
+            if (i < inputPort.getWidthInside()) {
 
-            for (int i = 0; i < inputPort.getWidth(); i++) {
-                if (i < inputPort.getWidthInside()) {
-
-                    String portNameWithChannelNumber = portName;
-                    if (inputPort.isMultiport()) {
-                        portNameWithChannelNumber = portName + '#' + i;
-                    }
-                    if (rate > 1) {
-                        for (int k = 0; k < rate; k++) {
-                            code.append(compositeActorAdapter.getReference("@"
-                                    + portNameWithChannelNumber + "," + k));
-                            code.append(" = " + portName + "_" + i + "[" + k
-                                    + "];" + _eol);
-                        }
-                    } else {
-                        code.append(compositeActorAdapter.getReference("@"
-                                + portNameWithChannelNumber));
-                        code.append(" = " + portName + "_" + i + ";" + _eol);
-                    }
-                    
+                String portNameWithChannelNumber = portName;
+                if (inputPort.isMultiport()) {
+                    portNameWithChannelNumber = portName + '#' + i;
                 }
+                if (rate > 1) {
+                    for (int k = 0; k < rate; k++) {
+                        code.append(compositeActorAdapter.getReference("@"
+                                + portNameWithChannelNumber + "," + k));
+                        code.append(" = " + portName + "_" + i + "[" + k + "];"
+                                + _eol);
+                    }
+                } else {
+                    code.append(compositeActorAdapter.getReference("@"
+                            + portNameWithChannelNumber));
+                    code.append(" = " + portName + "_" + i + ";" + _eol);
+                }
+
             }
+        }
 
         // Generate the type conversion code before fire code.
         code.append(compositeActorAdapter.generateTypeConvertFireCode(true));
@@ -287,7 +298,7 @@ public class SDFDirector
         // The offset of the input port itself is updated by outside director.
         _updateConnectedPortsOffset(inputPort, code, rate);
     }
-    
+
     /** Generate code for transferring enough tokens to fulfill the output
      *  production rate.
      *  @param outputPort The port to transfer tokens.
@@ -297,18 +308,17 @@ public class SDFDirector
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
         CompositeActor container = (CompositeActor) getComponent()
-                                        .getContainer();
+                .getContainer();
         TypedCompositeActor compositeActorAdapter = (TypedCompositeActor) getCodeGenerator()
-                                    .getAdapter(container);
+                .getAdapter(container);
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
-        
+
         if (_portNumber == 0) {
             int numberOfOutputPorts = container.outputPortList().size();
 
-            code.append("Object[] tokensToAllOutputPorts = "
-                    + " new Object[" + String.valueOf(numberOfOutputPorts)
-                    + "];" + _eol);
+            code.append("Object[] tokensToAllOutputPorts = " + " new Object["
+                    + String.valueOf(numberOfOutputPorts) + "];" + _eol);
         }
 
         String portName = outputPort.getName();
@@ -332,8 +342,8 @@ public class SDFDirector
 
         } else if (type == BaseType.DOUBLE) {
             code.append("double[][] " + tokensToThisPort + " ="
-                    + " new double[ " + String.valueOf(numberOfChannels)
-                    + "][" + rate + "];" + _eol);
+                    + " new double[ " + String.valueOf(numberOfChannels) + "]["
+                    + rate + "];" + _eol);
         } else if (type == BaseType.BOOLEAN) {
             code.append("boolean[][] " + tokensToThisPort + " ="
                     + " new boolean[ " + String.valueOf(numberOfChannels)
@@ -350,9 +360,8 @@ public class SDFDirector
             }
 
             for (int k = 0; k < rate; k++) {
-                String portReference = compositeActorAdapter
-                        .getReference("@" + portNameWithChannelNumber + ","
-                                + k);
+                String portReference = compositeActorAdapter.getReference("@"
+                        + portNameWithChannelNumber + "," + k);
                 /*if (type == PointerToken.POINTER) {
                     code.append(tokensToOneChannel + "[" + k
                             + "] = " + "(int) " + portReference + ";"
@@ -363,7 +372,7 @@ public class SDFDirector
                 //}
             }
         }
-        
+
         if (outputPort.getWidthInside() > 0) {
             code.append("tokensToAllOutputPorts ["
                     + String.valueOf(_portNumber) + "] = " + tokensToThisPort
@@ -371,9 +380,9 @@ public class SDFDirector
         }
 
         _portNumber++;
-        
+
     }
-    
+
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @return code The generated code.
@@ -383,9 +392,9 @@ public class SDFDirector
     @Override
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         code.append(super.generateVariableDeclaration());
-        
+
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
         Schedule schedule = director.getScheduler().getSchedule();
 
@@ -393,16 +402,18 @@ public class SDFDirector
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing) actorsToFire.next();
             Actor actor = firing.getActor();
-            
-            if (actor instanceof ModularCodeGenTypedCompositeActor ||
-                actor instanceof ModularCompiledSDFTypedCompositeActor) {
-                String className = NamedProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
-                String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
-                
+
+            if (actor instanceof ModularCodeGenTypedCompositeActor
+                    || actor instanceof ModularCompiledSDFTypedCompositeActor) {
+                String className = NamedProgramCodeGeneratorAdapter
+                        .generateName((NamedObj) actor);
+                String actorName = ModularCodeGenTypedCompositeActor
+                        .classToActorName(className);
+
                 code.append(className + " " + actorName + ";" + _eol);
             }
         }
-        
+
         return code.toString();
     }
 
@@ -412,10 +423,11 @@ public class SDFDirector
      *   director cannot be found.
      */
     @Override
-    public String generateVariableInitialization() throws IllegalActionException {
+    public String generateVariableInitialization()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateVariableInitialization());
-        
+
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
         Schedule schedule = director.getScheduler().getSchedule();
 
@@ -423,23 +435,25 @@ public class SDFDirector
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing) actorsToFire.next();
             Actor actor = firing.getActor();
-            
-            if (actor instanceof ModularCodeGenTypedCompositeActor ||
-                    actor instanceof ModularCompiledSDFTypedCompositeActor) {
+
+            if (actor instanceof ModularCodeGenTypedCompositeActor
+                    || actor instanceof ModularCompiledSDFTypedCompositeActor) {
                 //call the internal generated code of the composite actor
-                
-                String className = NamedProgramCodeGeneratorAdapter.generateName((NamedObj) actor);
-                String actorName = ModularCodeGenTypedCompositeActor.classToActorName(className);
-                
+
+                String className = NamedProgramCodeGeneratorAdapter
+                        .generateName((NamedObj) actor);
+                String actorName = ModularCodeGenTypedCompositeActor
+                        .classToActorName(className);
+
                 code.append(actorName + " = new " + className + "();" + _eol);
-                
+
                 code.append(actorName + ".initialize();" + _eol);
             }
         }
-        
+
         return code.toString();
     }
-    
+
     /**
      * Return an unique label for the given port channel referenced
      * by the given adapter. By default, this delegates to the adapter to 
@@ -458,7 +472,8 @@ public class SDFDirector
      */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite,
-            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target)
+            throws IllegalActionException {
 
         StringBuffer result = new StringBuffer();
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
@@ -517,16 +532,20 @@ public class SDFDirector
                 return result.toString();
             }
 
-            ProgramCodeGeneratorAdapter.Channel sourceChannel = new ProgramCodeGeneratorAdapter.Channel(port, channelNumber);
+            ProgramCodeGeneratorAdapter.Channel sourceChannel = new ProgramCodeGeneratorAdapter.Channel(
+                    port, channelNumber);
 
-            List<ProgramCodeGeneratorAdapter.Channel> typeConvertSinks = target.getTypeConvertSinkChannels(sourceChannel);
+            List<ProgramCodeGeneratorAdapter.Channel> typeConvertSinks = target
+                    .getTypeConvertSinkChannels(sourceChannel);
 
-            List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = getSinkChannels(port, channelNumber);
+            List<ProgramCodeGeneratorAdapter.Channel> sinkChannels = getSinkChannels(
+                    port, channelNumber);
 
             boolean hasTypeConvertReference = false;
 
             for (int i = 0; i < sinkChannels.size(); i++) {
-                ProgramCodeGeneratorAdapter.Channel channel = sinkChannels.get(i);
+                ProgramCodeGeneratorAdapter.Channel channel = sinkChannels
+                        .get(i);
                 IOPort sinkPort = channel.port;
                 int sinkChannelNumber = channel.channelNumber;
 
@@ -547,10 +566,8 @@ public class SDFDirector
                                         + "]");
                             } else {
                                 result.append("["
-                                        + _generateChannelOffset(port,
-                                                        isWrite,
-                                                        channelAndOffset[0])
-                                        + "]");
+                                        + _generateChannelOffset(port, isWrite,
+                                                channelAndOffset[0]) + "]");
                             }
                         } else {
                             int rate = Math
@@ -580,29 +597,29 @@ public class SDFDirector
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");
                     }
-                    
+
                     if (channelAndOffset[1].equals("")) {
                         channelAndOffset[1] = "0";
                     }
-                    
-//                    result.append(_ports.generateOffset(sinkPort,
-//                            channelAndOffset[1], sinkChannelNumber, true));
-                    
-                    
+
+                    //                    result.append(_ports.generateOffset(sinkPort,
+                    //                            channelAndOffset[1], sinkChannelNumber, true));
+
                     String res = _ports.generateOffset(sinkPort,
                             channelAndOffset[1], sinkChannelNumber, true);
                     if (res.equals("")) {
                         if (sinkPort.getContainer() instanceof CompositeActor) {
-                            SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor)sinkPort.getContainer()).getDirector());
-                            result.append(directorAdapter._ports.generateOffset(sinkPort,
-                                channelAndOffset[1], sinkChannelNumber, true));
+                            SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor) sinkPort
+                                    .getContainer()).getDirector());
+                            result.append(directorAdapter._ports
+                                    .generateOffset(sinkPort,
+                                            channelAndOffset[1],
+                                            sinkChannelNumber, true));
                         }
-                    }
-                    else {
+                    } else {
                         result.append(res);
                     }
- 
- 
+
                 }
             }
 
@@ -617,24 +634,23 @@ public class SDFDirector
 
         if (_checkLocal(forComposite, port)) {
 
-            result.append(NamedProgramCodeGeneratorAdapter
-                    .generateName(port));
+            result.append(NamedProgramCodeGeneratorAdapter.generateName(port));
 
             //if (!channelAndOffset[0].equals("")) {
             if (port.isMultiport()) {
                 // Channel number specified. This must be a multiport.
                 result.append("[" + channelAndOffset[0] + "]");
             }
-/*
-            if (port.getContainer() instanceof CompositeActor) {
-                SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor)port.getContainer()).getDirector());
-                result.append(directorAdapter._ports.generateOffset(port,
-                        channelAndOffset[1], channelNumber, isWrite));
-            } else {
-                result.append(_ports.generateOffset(port,
-                    channelAndOffset[1], channelNumber, isWrite));
-            }
-            */
+            /*
+                        if (port.getContainer() instanceof CompositeActor) {
+                            SDFDirector directorAdapter = (SDFDirector) getAdapter(((CompositeActor)port.getContainer()).getDirector());
+                            result.append(directorAdapter._ports.generateOffset(port,
+                                    channelAndOffset[1], channelNumber, isWrite));
+                        } else {
+                            result.append(_ports.generateOffset(port,
+                                channelAndOffset[1], channelNumber, isWrite));
+                        }
+                        */
             result.append(_ports.generateOffset(port, channelAndOffset[1],
                     channelNumber, isWrite));
 
@@ -645,7 +661,6 @@ public class SDFDirector
         return "";
     }
 
-    
     /** Check to see if the buffer size for the current schedule is greater
      *  than the previous size. If so, set the buffer size to the current
      *  buffer size needed.
@@ -672,8 +687,7 @@ public class SDFDirector
                 }
             }
 
-            if (!(actor instanceof AtomicActor))
-            {
+            if (!(actor instanceof AtomicActor)) {
                 Iterator<?> outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
@@ -686,7 +700,7 @@ public class SDFDirector
                     }
                 }
             }
-            
+
         }
 
         Iterator<?> outputPorts = container.outputPortList().iterator();
@@ -700,7 +714,7 @@ public class SDFDirector
                 }
             }
         }
-        
+
         Iterator<?> inputPorts = container.inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
@@ -713,18 +727,18 @@ public class SDFDirector
             }
         }
     }
-    
+
     static private boolean _checkLocal(boolean forComposite, IOPort port)
             throws IllegalActionException {
         return (port.isInput() && !forComposite && port.isOutsideConnected())
                 || (port.isOutput() && forComposite);
     }
-    
+
     static private boolean _checkRemote(boolean forComposite, IOPort port) {
         return (port.isOutput() && !forComposite)
                 || (port.isInput() && forComposite);
     }
-    
+
     /**
      * Generate a string that represents the offset for a dynamically determined
      *  channel of a multiport.
@@ -740,36 +754,36 @@ public class SDFDirector
         if (channelString.equals("")) {
             channelString = "0";
         }
-    
+
         String channelOffset = generateName(port);
         channelOffset += (isWrite) ? "_writeOffset" : "_readOffset";
         channelOffset += "[" + channelString + "]";
-    
+
         return channelOffset;
     }
-    
 
     private static String _generatePortReference(IOPort port,
             String[] channelAndOffset, boolean isWrite) {
-    
+
         StringBuffer result = new StringBuffer();
         String channelOffset;
         if (channelAndOffset[1].equals("")) {
-            channelOffset = _generateChannelOffset(port, isWrite, channelAndOffset[0]);
+            channelOffset = _generateChannelOffset(port, isWrite,
+                    channelAndOffset[0]);
         } else {
             channelOffset = channelAndOffset[1];
         }
-    
+
         result.append(generateName(port));
-    
+
         if (port.isMultiport()) {
             result.append("[" + channelAndOffset[0] + "]");
         }
         result.append("[" + channelOffset + "]");
-    
+
         return result.toString();
     }
     ///////////////////////////////////////////////////////////////////
     ////                         private members                        ////
-    
+
 }

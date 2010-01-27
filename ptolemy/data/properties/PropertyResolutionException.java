@@ -54,7 +54,6 @@ public class PropertyResolutionException extends IllegalActionException {
         this(solver, null, null, detail);
     }
 
-
     /** Construct an exception that includes the PropertySolver that 
      *  that was involved.
      *  

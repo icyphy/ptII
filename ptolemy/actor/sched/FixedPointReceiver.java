@@ -252,11 +252,12 @@ public class FixedPointReceiver extends AbstractReceiver {
                                 + "to a present status.  Call reset() first.");
             } else {
                 if (!token.isEqualTo(_token).booleanValue()) {
-                    throw new IllegalActionException(getContainer(),
+                    throw new IllegalActionException(
+                            getContainer(),
                             "Cannot put a token with a different value "
-                            + token
-                            + " into a receiver with an already established value "
-                            + _token);
+                                    + token
+                                    + " into a receiver with an already established value "
+                                    + _token);
                 }
             }
         }

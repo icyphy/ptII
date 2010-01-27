@@ -148,16 +148,21 @@ public class Publisher extends TypedAtomicActor {
             // ptolemy/actor/lib/test/auto/PublisherClassNoParameter.xml
             if (!isWithinClassDefinition()) {
                 String newValue = channel.stringValue();
-                if (!newValue.equals(_channel)) {                    
+                if (!newValue.equals(_channel)) {
                     NamedObj container = getContainer();
                     if (container instanceof CompositeActor) {
                         try {
-                            ((CompositeActor) container).registerPublisherPort(newValue, output);
-                            if (!(_channel == null || _channel.trim().equals(""))) {                            
-                                ((CompositeActor) container).unregisterPublisherPort(_channel, output);
+                            ((CompositeActor) container).registerPublisherPort(
+                                    newValue, output);
+                            if (!(_channel == null || _channel.trim()
+                                    .equals(""))) {
+                                ((CompositeActor) container)
+                                        .unregisterPublisherPort(_channel,
+                                                output);
                             }
                         } catch (NameDuplicationException e) {
-                            throw new IllegalActionException(this, e, "Can't add published port.");
+                            throw new IllegalActionException(this, e,
+                                    "Can't add published port.");
                         }
                     }
                     _channel = newValue;
@@ -235,14 +240,16 @@ public class Publisher extends TypedAtomicActor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        
-        if (container == null && !(_channel == null || _channel.trim().equals(""))) {
+
+        if (container == null
+                && !(_channel == null || _channel.trim().equals(""))) {
             NamedObj previousContainer = getContainer();
             if (previousContainer instanceof CompositeActor) {
-                ((CompositeActor) previousContainer).unregisterPublisherPort(_channel, output);
+                ((CompositeActor) previousContainer).unregisterPublisherPort(
+                        _channel, output);
             }
         }
-        
+
         super.setContainer(container);
     }
 

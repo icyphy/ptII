@@ -65,8 +65,7 @@ public class Integrator extends PropertyConstraintHelper {
     }
 
     public List<Inequality> constraintList() throws IllegalActionException {
-        ptolemy.domains.continuous.lib.Integrator actor =
-          (ptolemy.domains.continuous.lib.Integrator) getComponent();
+        ptolemy.domains.continuous.lib.Integrator actor = (ptolemy.domains.continuous.lib.Integrator) getComponent();
 
         setAtLeast(actor.state, new StateOfDerivative(actor.derivative));
         setSameAs(actor.state, actor.initialState);
@@ -131,7 +130,7 @@ public class Integrator extends PropertyConstraintHelper {
             return new InequalityTerm[] { getPropertyTerm(_derivative) };
         }
     }
-    
+
     // This class implements a monotonic function that takes in the
     // input property of the integrator (the derivative) and returns
     // the output property (the state).
@@ -186,5 +185,5 @@ public class Integrator extends PropertyConstraintHelper {
             return new InequalityTerm[] { getPropertyTerm(_state) };
         }
     }
-    
+
 }

@@ -92,19 +92,21 @@ public class JopSerialRead extends Source {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        
+
         String hello = "Hello World! ";
         super.fire();
         if (_firstFire) {
-            int v = (int) hello.charAt(_cnt);
+            int v = hello.charAt(_cnt);
             _cnt++;
-            if (_cnt>=hello.length()) _cnt = 0;
+            if (_cnt >= hello.length()) {
+                _cnt = 0;
+            }
             _val = new IntToken(v);
             _firstFire = false;
         }
         output.send(0, _val);
     }
-    
+
     /** Enable read on the next invokation of fire().
      *  @exception IllegalActionException If the base class throws it.
      */

@@ -335,19 +335,21 @@ public class ModalRefinementPort extends RefinementPort {
     public void setContainer(Entity container) throws IllegalActionException,
             NameDuplicationException {
         NamedObj oldContainer = getContainer();
-        
+
         if (_mirrorDisable || oldContainer == null) {
             // Mirroring changes from above, or there
             // is no pre-existing above.
-            
+
             // Use the superclass to delegate up the hierarchy and mirror the change
             // to ports in the enclosing modal model and its refinements.
             super.setContainer(container);
 
-            if ((oldContainer instanceof CompositeEntity) && (container != oldContainer)) {
+            if ((oldContainer instanceof CompositeEntity)
+                    && (container != oldContainer)) {
                 // The port is being removed from the current container.
                 // Remove it from the mirrored ports.
-                Iterator entities = ((CompositeEntity)oldContainer).entityList().iterator();
+                Iterator entities = ((CompositeEntity) oldContainer)
+                        .entityList().iterator();
 
                 while (entities.hasNext()) {
                     Entity entity = (Entity) entities.next();
@@ -367,8 +369,8 @@ public class ModalRefinementPort extends RefinementPort {
                 }
 
                 // Remove the relation as well.
-                ComponentRelation relation = ((CompositeEntity)oldContainer).getRelation(getName()
-                        + "Relation");
+                ComponentRelation relation = ((CompositeEntity) oldContainer)
+                        .getRelation(getName() + "Relation");
 
                 if (relation != null) {
                     relation.setContainer(null);
@@ -399,7 +401,7 @@ public class ModalRefinementPort extends RefinementPort {
     public void setInput(boolean isInput) throws IllegalActionException {
         try {
             _workspace.getWriteAccess();
-            
+
             // Use the superclass, which will mirror the change
             // upward in the hierarchy to the ports of the container
             // unless the change originated from above.
@@ -429,7 +431,7 @@ public class ModalRefinementPort extends RefinementPort {
             _workspace.doneWriting();
         }
     }
-    
+
     /** If the argument is true, make the port a multiport.
      *  If the argument is false, make the port not a multiport.
      *  This method overrides the base class to make the same
@@ -450,7 +452,7 @@ public class ModalRefinementPort extends RefinementPort {
             // upward in the hierarchy to the ports of the container
             // unless the change originated from above.
             super.setMultiport(isMultiport);
-            
+
             // Mirror the change in mirror ports.
             CompositeEntity container = (CompositeEntity) getContainer();
             Iterator entities = container.entityList().iterator();
@@ -557,7 +559,7 @@ public class ModalRefinementPort extends RefinementPort {
             // upward in the hierarchy to the ports of the container
             // unless the change originated from above.
             super.setOutput(isOutput);
-            
+
             // Mirror the change in mirror ports.
             CompositeEntity container = (CompositeEntity) getContainer();
             Iterator entities = container.entityList().iterator();
@@ -603,7 +605,7 @@ public class ModalRefinementPort extends RefinementPort {
             _workspace.doneWriting();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

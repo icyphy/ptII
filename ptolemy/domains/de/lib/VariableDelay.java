@@ -127,7 +127,7 @@ public class VariableDelay extends TimedDelay {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);
-        
+
         Set<Port> dependentPorts = new HashSet<Port>();
         _causalityMarker = new CausalityMarker(this, "causalityMarker");
         _causalityMarker.addDependentPortSet(dependentPorts);

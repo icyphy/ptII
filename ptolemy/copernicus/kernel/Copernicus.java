@@ -401,7 +401,7 @@ public class Copernicus {
         temporaryFile.deleteOnExit();
 
         FileWriter writer = null;
-        try { 
+        try {
             writer = new FileWriter(temporaryFile);
             String header = "<class name=\"Temp\" extends=\"ptolemy.actor.TypedCompositeActor\">\n";
             writer.write(header, 0, header.length());
@@ -409,7 +409,7 @@ public class Copernicus {
 
             String footer = "</class>\n";
             writer.write(footer, 0, footer.length());
-        } finally { 
+        } finally {
             if (writer != null) {
                 writer.close();
             }

@@ -65,7 +65,7 @@ See DecoratedAttributes for more information.
  */
 
 public class GiottoDecoratedAttributesImplementation extends
-DecoratedAttributes {
+        DecoratedAttributes {
 
     /** Construct a DecoratedAttribute from the container and the decorator.
      *  @param container The container this object.
@@ -85,10 +85,12 @@ DecoratedAttributes {
         //out
         if (_debugging) {
             _debug("inside GiottoDecoratedAttributesImplementation Constructor.");
-            _debug("container has name " + container.getDisplayName()+ " decorator has name " + decorator.getDisplayName());
+            _debug("container has name " + container.getDisplayName()
+                    + " decorator has name " + decorator.getDisplayName());
         }
         Parameter dummyParam;
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) container.getContainer()).deepEntityList()) {
+        for (Actor actor : (List<Actor>) ((TypedCompositeActor) container
+                .getContainer()).deepEntityList()) {
             NamedObj temp = (NamedObj) actor;
             if (_debugging) {
                 _debug("temp has name " + temp.getDisplayName());
@@ -131,16 +133,20 @@ DecoratedAttributes {
         try {
             //add parameter to the container if it's not already there
             if (_debugging) {
-                _debug("the container is "+container.getContainer().getDisplayName()+"it should get value "+dirWCET);
+                _debug("the container is "
+                        + container.getContainer().getDisplayName()
+                        + "it should get value " + dirWCET);
             }
             dummyParam = new Parameter(container.getContainer(), "WCET");
             dummyParam.setTypeEquals(BaseType.DOUBLE);
             dummyParam.setExpression(Double.toString(dirWCET));
         } catch (Exception e) {
             if (_debugging) {
-                _debug("container already had wcet parameter set so updating the value to "+dirWCET);
+                _debug("container already had wcet parameter set so updating the value to "
+                        + dirWCET);
             }
-            dummyParam = (Parameter) container.getContainer().getAttribute("WCET");
+            dummyParam = (Parameter) container.getContainer().getAttribute(
+                    "WCET");
             dummyParam.setTypeEquals(BaseType.DOUBLE);
             dummyParam.setExpression(Double.toString(dirWCET));
         }
@@ -179,7 +185,7 @@ DecoratedAttributes {
      */
     public GiottoDecoratedAttributesImplementation(
             NamedObj containerOfDecorator, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // FIXME: There should be a more elegant way to get this right.
         // This also only works for attributes not for entities.
         super(_getRealContainer(containerOfDecorator, name), name
@@ -200,7 +206,7 @@ DecoratedAttributes {
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("attribute changed method called");
         }
@@ -219,7 +225,7 @@ DecoratedAttributes {
                 _register();
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
-                "Can't register this decorated attribute.");
+                        "Can't register this decorated attribute.");
             }
         }
         super.attributeChanged(attribute);
@@ -235,7 +241,7 @@ DecoratedAttributes {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GiottoDecoratedAttributesImplementation newObject = (GiottoDecoratedAttributesImplementation) super
-        .clone(workspace);
+                .clone(workspace);
         newObject._decorator = _decorator;
         return newObject;
     }
@@ -284,7 +290,7 @@ DecoratedAttributes {
      *   an instance of the expect class (in derived classes).
      */
     protected void _addAttribute(Attribute p) throws NameDuplicationException,
-    IllegalActionException {
+            IllegalActionException {
         if (_decorator == null) {
             if (p.getName().equals("_decorator")) {
                 _decoratorPath = (StringAttribute) p;
@@ -318,7 +324,7 @@ DecoratedAttributes {
         if (object == null) {
             if (containerOfCodeGenerator instanceof CompositeEntity) {
                 object = ((CompositeEntity) containerOfCodeGenerator)
-                .getEntity(elementName);
+                        .getEntity(elementName);
             }
         }
         return object;

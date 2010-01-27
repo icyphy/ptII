@@ -40,7 +40,6 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
 import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
@@ -187,7 +186,7 @@ public abstract class OntologyAdapter {
      * {@link #getPropertyables()} throws it.
      */
     public void reinitialize() throws IllegalActionException {
-        
+
         for (OntologyAnnotationAttribute annotation : _getAnnotationAttributes()) {
             _evaluateAnnotation(annotation);
         }
@@ -196,33 +195,6 @@ public abstract class OntologyAdapter {
 
             // Remove all ConceptAttributes.
             if (propertyable instanceof NamedObj) {
-                NamedObj namedObj = (NamedObj) propertyable;
-                /** FIXME: Not using ConceptAttribute
-                ConceptAttribute attribute = (ConceptAttribute) namedObj
-                        .getAttribute(_solver.getExtendedUseCaseName());
-
-                if (attribute != null) {
-                    // Clear the property under two cases:
-                    // 1. The (invoked or auxilary) solver is in trainingMode.
-                    // 2. The solver is invoked under testing mode.
-                    if (record) {
-
-                        _solver.recordPreviousProperty(propertyable, attribute
-                                .getProperty());
-
-                        // Remove the property attribute.
-                        try {
-                            attribute.setContainer(null);
-
-                        } catch (NameDuplicationException e) {
-                            // This shouldn't happen since we are removing it.
-                            assert false;
-                        }
-
-                    }
-                }
-                */
-
                 if (_solver.isSettable(propertyable)) {
                     _solver.clearResolvedProperty(propertyable);
                 }
@@ -388,8 +360,8 @@ public abstract class OntologyAdapter {
         for (ASTPtRootNode root : _getAttributeParseTrees()) {
             if (root != null) {
                 //                try {
-                List<OntologyAdapter> adapters = collector.collectAdapters(root,
-                        getSolver());
+                List<OntologyAdapter> adapters = collector.collectAdapters(
+                        root, getSolver());
                 astHelpers.addAll(adapters);
                 //                } catch (IllegalActionException ex) {
                 //                    // This means the expression is not parse-able.
@@ -573,7 +545,7 @@ public abstract class OntologyAdapter {
      */
     protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
-        OntologySolver solver = getSolver();
+        getSolver();
         /* FIXME: Haven't included these options yet on default constraints.
         if (solver.expressionASTNodeConstraintType.getExpression().equals(
                 "NONE")) {
@@ -633,13 +605,13 @@ public abstract class OntologyAdapter {
             throws IllegalActionException {
         Map map;
         try {
-            ASTPtRootNode parseTree = OntologySolver.getParser()
+            ASTPtRootNode parseTree = OntologySolverBase.getParser()
                     .generateParseTree(annotation.getExpression());
 
             map = new HashMap();
             map.put(parseTree, parseTree);
         } catch (IllegalActionException ex) {
-            map = OntologySolver.getParser().generateAssignmentMap(
+            map = OntologySolverBase.getParser().generateAssignmentMap(
                     annotation.getExpression());
 
         }
@@ -704,8 +676,8 @@ public abstract class OntologyAdapter {
          * @param isBase       true if the inequality is composeable;
          * false otherwise
          */
-        public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm,
-                boolean isBase) {
+        public Inequality(InequalityTerm lesserTerm,
+                InequalityTerm greaterTerm, boolean isBase) {
             super(lesserTerm, greaterTerm);
 
             _isBase = isBase;
@@ -738,8 +710,8 @@ public abstract class OntologyAdapter {
          * of the terms.
          */
         public boolean isSatisfied(CPO cpo) throws IllegalActionException {
-            InequalityTerm lesserTerm = (InequalityTerm) getLesserTerm();
-            InequalityTerm greaterTerm = (InequalityTerm) getGreaterTerm();
+            InequalityTerm lesserTerm = getLesserTerm();
+            InequalityTerm greaterTerm = getGreaterTerm();
 
             if (lesserTerm.getValue() == null) {
                 return true;

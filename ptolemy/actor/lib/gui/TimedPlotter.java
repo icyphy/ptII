@@ -101,7 +101,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
 
     /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
-    
+
     /** If true, use the model time reported by the input port,
      *  which is normally the model time of the local director.
      *  If false (the default), use the model time reported by
@@ -161,11 +161,13 @@ public class TimedPlotter extends Plotter implements TimedActor {
 
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
-                boolean localTime = ((BooleanToken)useLocalTime.getToken()).booleanValue();
+                boolean localTime = ((BooleanToken) useLocalTime.getToken())
+                        .booleanValue();
                 if (localTime) {
                     currentTimeValue = input.getModelTime(i).getDoubleValue();
                 } else {
-                    currentTimeValue = getDirector().getGlobalTime().getDoubleValue();
+                    currentTimeValue = getDirector().getGlobalTime()
+                            .getDoubleValue();
                 }
 
                 DoubleToken currentToken = (DoubleToken) input.get(i);

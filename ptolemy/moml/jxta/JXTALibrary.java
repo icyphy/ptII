@@ -771,8 +771,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             try {
                 actStream = new FileInputStream(_configDir + "/" + ActorFile);
             } catch (java.io.IOException ex) {
-                System.out.println("failed to read/parse pipe " + "advertisement"
-                        + ex.getMessage());
+                System.out.println("failed to read/parse pipe "
+                        + "advertisement" + ex.getMessage());
             }
 
             // create the pipe message
@@ -784,8 +784,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             //actStream.close();
             //if (size < MAXBUFF) {
             try {
-                MessageElement msgelm = msg
-                    .newMessageElement(_TAG, null, actStream);
+                MessageElement msgelm = msg.newMessageElement(_TAG, null,
+                        actStream);
                 msg.addElement(msgelm);
             } catch (java.io.IOException e) {
                 // go try again;
@@ -809,7 +809,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             }
         }
     }
- 
+
     private boolean _startJxta() {
         try {
             _netPeerGroup = PeerGroupFactory.newNetPeerGroup();

@@ -74,7 +74,8 @@ public class XmlWriter extends LoggableOp {
 
             if (url != null) {
                 if (!url.getProtocol().equals("file")) {
-                    throw new IOException("XmlWriter can only write to file:/ URLs");
+                    throw new IOException(
+                            "XmlWriter can only write to file:/ URLs");
                 }
 
                 out = new FileWriter(url.getFile());

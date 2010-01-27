@@ -374,7 +374,8 @@ public class AnalyzerAttribute extends Attribute {
 
     private void _addChoices() throws IllegalActionException {
 
-        _solvers.addAll(getListOfSolverClass("ptolemy.data.properties.configuredSolvers"));
+        _solvers
+                .addAll(getListOfSolverClass("ptolemy.data.properties.configuredSolvers"));
 
         if (_solvers.size() > 0) {
             property.setExpression(_solvers.get(0).getSimpleName());

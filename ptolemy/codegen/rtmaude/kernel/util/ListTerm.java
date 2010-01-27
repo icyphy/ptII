@@ -47,10 +47,10 @@ public class ListTerm<T> {
 
     /** The delimiter for the list term representation, e.g., ",". */
     protected String delimiter;
-    
+
     /** The term for the empty list. */
     protected String empty;
-    
+
     /** The contents of the given list. */
     protected Iterator<T> iter;
 

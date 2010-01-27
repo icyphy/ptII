@@ -167,13 +167,13 @@ public class ConceptController extends StateController {
 
             NamedObj target = getTarget();
 
-            boolean isLattice = ((Ontology) target
-                    .getContainer()).isLattice();
+            boolean isLattice = ((Ontology) target.getContainer()).isLattice();
 
             if (isLattice) {
                 MessageHandler.message("The model graph is a valid lattice.");
             } else {
-                MessageHandler.message("The model graph is not a valid lattice.");
+                MessageHandler
+                        .message("The model graph is not a valid lattice.");
             }
         }
     }

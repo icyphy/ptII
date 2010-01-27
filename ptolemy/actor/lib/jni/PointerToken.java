@@ -307,22 +307,22 @@ public class PointerToken extends Token {
      *  @return true if this is a 32bit JVM.
      */
     public static boolean is32Bit() {
-        String dataModelProperty = StringUtilities.getProperty("sun.arch.data.model");
+        String dataModelProperty = StringUtilities
+                .getProperty("sun.arch.data.model");
         // FIXME: it is difficult to detect if we are under a
         // 64bit JVM.  See
         // http://forums.sun.com/thread.jspa?threadID=5306174
         if (dataModelProperty.indexOf("64") != -1) {
             return false;
         } else {
-            String javaVmNameProperty = StringUtilities.getProperty("java.vm.name");
+            String javaVmNameProperty = StringUtilities
+                    .getProperty("java.vm.name");
             if (javaVmNameProperty.indexOf("64") != -1) {
                 return false;
             }
-        } 
+        }
         return true;
     }
-
-
 
     /** The Pointer type: the least upper bound of all the pointer
      *  types.
@@ -339,9 +339,10 @@ public class PointerToken extends Token {
             _is32Bit = is32Bit();
         }
         if (!_is32Bit) {
-            throw new RuntimeException("PointerTokens do not work "
-                                       + "under 64bit JVMs, see "
-                                       + "https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285");
+            throw new RuntimeException(
+                    "PointerTokens do not work "
+                            + "under 64bit JVMs, see "
+                            + "https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=285");
         }
     }
 
@@ -351,7 +352,7 @@ public class PointerToken extends Token {
     /** True if we have checked that we are on a 32 Bit platform. */
     private static boolean _checked32Bit;
 
-    /** True if we are on a 32Bit platform. */ 
+    /** True if we are on a 32Bit platform. */
     private static boolean _is32Bit;
 
     // FIXME: This will not work on a 64-bit machine, see

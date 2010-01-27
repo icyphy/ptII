@@ -25,7 +25,6 @@
 package ptolemy.data.properties.lattice;
 
 import ptolemy.data.Token;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * An interface for type property.

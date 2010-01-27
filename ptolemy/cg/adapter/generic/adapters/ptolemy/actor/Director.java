@@ -435,7 +435,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *   exist or does not have a value.
      */
     public String getReference(String name, boolean isWrite,
-            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target)
+            throws IllegalActionException {
         return "";
     }
 
@@ -507,10 +508,11 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  @exception IllegalActionException
      */
     public String getParameter(NamedProgramCodeGeneratorAdapter target,
-            Attribute attribute, String[] channelAndOffset) throws IllegalActionException {
+            Attribute attribute, String[] channelAndOffset)
+            throws IllegalActionException {
         return _getParameter(target, attribute, channelAndOffset);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -544,7 +546,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *   director cannot be found.
      */
     protected String _generateVariableDeclaration(
-            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target)
+            throws IllegalActionException {
         return "";
     }
 
@@ -555,10 +558,11 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *   director cannot be found.
      */
     protected String _generateVariableInitialization(
-            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target)
+            throws IllegalActionException {
         return "";
     }
-    
+
     /**
      * Return an unique label for the given attribute referenced
      * by the given adapter. Subclass should override this method

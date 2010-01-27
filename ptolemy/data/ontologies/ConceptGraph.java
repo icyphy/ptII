@@ -51,7 +51,7 @@ import ptolemy.graph.Node;
  * @see ptolemy.graph.CPO
  */
 public class ConceptGraph extends DirectedAcyclicGraph {
-    
+
     /** Construct a graph associated with the specified ontology.
      *  @param ontology The associated ontology.
      */
@@ -74,13 +74,15 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      * @exception IllegalArgumentException If the newEdgeWeight argument is not an
      *  instance of {@link ConceptRelation}.
      */
-    public Collection addEdge(Object weight1, Object weight2, Object newEdgeWeight) {
+    public Collection addEdge(Object weight1, Object weight2,
+            Object newEdgeWeight) {
         if (!(newEdgeWeight instanceof ConceptRelation)) {
-            throw new IllegalArgumentException("Attempt to add a relation that is not a ConceptRelation to an Ontology graph.");
+            throw new IllegalArgumentException(
+                    "Attempt to add a relation that is not a ConceptRelation to an Ontology graph.");
         }
         return super.addEdge(weight1, weight2, newEdgeWeight);
     }
-    
+
     /** Add a concept to this concept graph.
      *  @param weight The concept.
      *  @return The constructed node in the graph.
@@ -89,7 +91,8 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      */
     public Node addNodeWeight(Object weight) {
         if (!(weight instanceof Concept)) {
-            throw new IllegalArgumentException("Attempt to add a non-Concept to an Ontology graph.");
+            throw new IllegalArgumentException(
+                    "Attempt to add a non-Concept to an Ontology graph.");
         }
         return super.addNodeWeight(weight);
     }

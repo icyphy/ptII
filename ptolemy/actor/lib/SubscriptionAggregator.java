@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (cxh)
  */
 public class SubscriptionAggregator extends Subscriber {
-    
+
     /** Construct a subscriber with the specified container and name.
      *  @param container The container actor.
      *  @param name The name of the actor.
@@ -116,13 +116,15 @@ public class SubscriptionAggregator extends Subscriber {
             } else {
                 _addOperation = false;
             }
-        } else if (attribute == channel) {            
+        } else if (attribute == channel) {
             String newValue = channel.stringValue();
             if (!newValue.equals(_channel)) {
                 NamedObj container = getContainer();
-                if (container instanceof CompositeActor && !(_channel == null || _channel.trim().equals(""))) {
-                    ((CompositeActor) container).unlinkToPublishedPort(_channelPattern, input);
-                }            
+                if (container instanceof CompositeActor
+                        && !(_channel == null || _channel.trim().equals(""))) {
+                    ((CompositeActor) container).unlinkToPublishedPort(
+                            _channelPattern, input);
+                }
                 _channel = newValue;
                 // Don't call super here because super.attributeChanged() tries to unlink _channel
                 // as a non-regular expression string, which seems wrong.
@@ -162,8 +164,8 @@ public class SubscriptionAggregator extends Subscriber {
         if (width == 0) {
             throw new IllegalActionException(this,
                     "SubscriptionAggregator has no matching Publisher, "
-                    + "channel was \"" + channel.getExpression()
-                    + "\".");
+                            + "channel was \"" + channel.getExpression()
+                            + "\".");
         }
         Token result = null;
         for (int i = 0; i < width; i++) {
@@ -193,14 +195,16 @@ public class SubscriptionAggregator extends Subscriber {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        
-        if (container == null && !(_channel == null || _channel.trim().equals(""))) {
+
+        if (container == null
+                && !(_channel == null || _channel.trim().equals(""))) {
             NamedObj previousContainer = getContainer();
             if (previousContainer instanceof CompositeActor) {
-              ((CompositeActor) previousContainer).unlinkToPublishedPort(_channelPattern, input);
+                ((CompositeActor) previousContainer).unlinkToPublishedPort(
+                        _channelPattern, input);
             }
         }
-        
+
         super.setContainer(container);
     }
 
@@ -218,11 +222,12 @@ public class SubscriptionAggregator extends Subscriber {
         if (_channel == null) {
             return;
         }
-        
+
         NamedObj container = getContainer();
         if (container instanceof CompositeActor) {
             try {
-              ((CompositeActor) container).linkToPublishedPort(_channelPattern, input);
+                ((CompositeActor) container).linkToPublishedPort(
+                        _channelPattern, input);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
                         "Can't link Subscriber with Publisher.");

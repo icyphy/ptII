@@ -67,7 +67,7 @@ import ptolemy.util.StringUtilities;
 abstract public class CodeGeneratorAdapter extends NamedObj {
 
     //FIXME: Overhaul comments.
-    
+
     /** Create and return the decorated attributes for the corresponding Ptolemy Component.
      *  @param target The NamedObj that will be decorated.
      *  @param genericCodeGenerator The code generator that is the decorator for the
@@ -78,8 +78,11 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target, GenericCodeGenerator genericCodeGenerator) throws IllegalActionException, NameDuplicationException {
-            return new DecoratedAttributesImplementation(target, genericCodeGenerator);
+    public DecoratedAttributes createDecoratedAttributes(NamedObj target,
+            GenericCodeGenerator genericCodeGenerator)
+            throws IllegalActionException, NameDuplicationException {
+        return new DecoratedAttributesImplementation(target,
+                genericCodeGenerator);
     }
 
     /**
@@ -110,14 +113,14 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      *  @see #setCodeGenerator(GenericCodeGenerator)
      */
     abstract public GenericCodeGenerator getCodeGenerator();
-    
+
     /** Set the code generator associated with this adapter class.
      *  @param codeGenerator The code generator associated with this
      *   adapter class.
      *  @see #getCodeGenerator()
      */
     abstract public void setCodeGenerator(GenericCodeGenerator codeGenerator);
-    
+
     /** Set the current type of the decorated attributes.
      *  The type information of the parameters are not saved in the
      *  model hand hence this has to be reset when reading the model
@@ -127,7 +130,8 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      *   acceptable class for the container, or if the name contains a period.
      */
     public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes) throws IllegalActionException {        
+            DecoratedAttributes decoratedAttributes)
+            throws IllegalActionException {
     }
 
 }

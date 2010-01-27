@@ -72,14 +72,13 @@ public class MoMLUtilities {
                         "Failed to instantiate ptolemy.moml.MoMLParser");
             }
 
-
             // We synchronize here because MatlabUtilities is synchronized.
             synchronized (_parserClass) {
                 _parserResetAll.invoke(parser, new Object[0]);
 
                 NamedObj parseResult = (NamedObj) _parserParse.invoke(parser,
-                        new Object[] {moml});
-                return new ActorToken((Entity)parseResult);
+                        new Object[] { moml });
+                return new ActorToken((Entity) parseResult);
             }
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
@@ -111,8 +110,7 @@ public class MoMLUtilities {
             _parserParse = _parserClass.getMethod("parse",
                     new Class[] { String.class });
 
-            _parserResetAll = _parserClass.getMethod("resetAll",
-                    new Class[0]);
+            _parserResetAll = _parserClass.getMethod("resetAll", new Class[0]);
         } catch (NoSuchMethodException ex) {
             throw new IllegalActionException(null, ex,
                     "Problem finding a method of " + "ptolemy.moml.MoMLParser");

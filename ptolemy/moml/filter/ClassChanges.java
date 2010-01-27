@@ -346,13 +346,14 @@ public class ClassChanges implements MoMLFilter {
 
         _classChanges.put("ptolemy.data.unit.UnitAttribute",
                 "ptolemy.moml.unit.UnitAttribute");
-        
+
         _classChanges.put("ptolemy.domains.properties.LatticeElement",
-            "ptolemy.domains.properties.kernel.LatticeElement");
+                "ptolemy.domains.properties.kernel.LatticeElement");
         _classChanges.put("ptolemy.domains.properties.LatticeElementIcon",
-            "ptolemy.vergil.properties.LatticeElementIcon");
-        _classChanges.put("ptolemy.domains.properties.PropertyLatticeComposite",
-            "ptolemy.domains.properties.kernel.PropertyLatticeComposite");
+                "ptolemy.vergil.properties.LatticeElementIcon");
+        _classChanges.put(
+                "ptolemy.domains.properties.PropertyLatticeComposite",
+                "ptolemy.domains.properties.kernel.PropertyLatticeComposite");
     }
 
     // Set of class names that are obsolete and should be simply

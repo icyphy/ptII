@@ -108,9 +108,8 @@ public class LatticeGraphFrame extends FSMGraphFrame implements ActionListener {
 
     protected JMenuItem[] _debugMenuItems() {
         // Add debug menu.
-        JMenuItem[] debugMenuItems = {
-            new JMenuItem(CHECK_LATTICE, KeyEvent.VK_D)
-        };
+        JMenuItem[] debugMenuItems = { new JMenuItem(CHECK_LATTICE,
+                KeyEvent.VK_D) };
         return debugMenuItems;
     }
 

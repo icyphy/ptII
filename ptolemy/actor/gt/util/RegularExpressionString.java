@@ -53,7 +53,6 @@ public class RegularExpressionString {
         this("");
     }
 
-
     /** Construct a Ptolemy expression string with the given value as its
      *  initial value.
      *

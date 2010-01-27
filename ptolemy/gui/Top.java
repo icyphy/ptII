@@ -343,7 +343,7 @@ public abstract class Top extends JFrame {
                     _menubar.add(_fileMenu);
 
                     // History fill
-                    try { 
+                    try {
                         _populateHistory(_readHistory());
                     } catch (IOException ex) {
                         // Ignore
@@ -638,8 +638,8 @@ public abstract class Top extends JFrame {
 
         if (StringUtilities.inApplet()) {
             JMenuItem[] appletFileMenuItems = new JMenuItem[8];
-            System.arraycopy(fileMenuItems, 0,
-                    appletFileMenuItems, 0, appletFileMenuItems.length);
+            System.arraycopy(fileMenuItems, 0, appletFileMenuItems, 0,
+                    appletFileMenuItems.length);
             appletFileMenuItems[7] = fileMenuItems[10];
             fileMenuItems = appletFileMenuItems;
             // If we are in an applet, disable certain menu items.
@@ -811,7 +811,7 @@ public abstract class Top extends JFrame {
                                 + " ms.");
                     }
                     // Only add file if no exception
-                    _updateHistory(file.getAbsolutePath(),false);
+                    _updateHistory(file.getAbsolutePath(), false);
 
                 } catch (Error error) {
                     // Be sure to catch Error here so that if we throw an
@@ -1293,7 +1293,7 @@ public abstract class Top extends JFrame {
      *  "~/.ptolemyII/history.txt".
      *  @exception IOException If thrown while reading the preferences directory.
      */
-    private String _getHistoryFileName() throws IOException { 
+    private String _getHistoryFileName() throws IOException {
         return StringUtilities.preferencesDirectory() + "history.txt";
     }
 
@@ -1309,8 +1309,7 @@ public abstract class Top extends JFrame {
     }
 
     // History management
-    
-    
+
     /** Get the history from the file that contains names
      * Always return a list, that can be empty
      * @return list of file history
@@ -1318,7 +1317,7 @@ public abstract class Top extends JFrame {
     private List<String> _readHistory() throws IOException {
         ArrayList<String> historyList = new ArrayList<String>();
         String historyFileName = _getHistoryFileName();
-        if (! new File(historyFileName).exists()) {
+        if (!new File(historyFileName).exists()) {
             // No history file, so just return
             return historyList;
         }
@@ -1338,10 +1337,9 @@ public abstract class Top extends JFrame {
 
         return historyList;
     }
-    
+
     /** Write history to the file defined by _getHistoryFileName(). */
-    private void _writeHistory(List<String> historyList)
-            throws IOException {
+    private void _writeHistory(List<String> historyList) throws IOException {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter(_getHistoryFileName());
@@ -1359,19 +1357,20 @@ public abstract class Top extends JFrame {
      * to the first position if already in the list
      * @param file name of the file to add
      */
-    private void _updateHistory(String file, boolean delete) 
-            throws IOException {
+    private void _updateHistory(String file, boolean delete) throws IOException {
         List<String> historyList = _readHistory();
-        
+
         // Remove if already present (then added to first position)
         for (int i = 0; i < historyList.size(); i++) {
-            if (historyList.get(i).equals(file))
+            if (historyList.get(i).equals(file)) {
                 historyList.remove(i);
+            }
         }
-     
+
         // Remove if depth > limit
-        if (historyList.size() >= _historyDepth)
+        if (historyList.size() >= _historyDepth) {
             historyList.remove(historyList.size() - 1);
+        }
 
         // Add to fist position
         if (!delete) {
@@ -1381,7 +1380,7 @@ public abstract class Top extends JFrame {
         // Serialize history
         _writeHistory(historyList);
 
-         // Update submenu
+        // Update submenu
         _populateHistory(historyList);
     }
 
@@ -1403,9 +1402,9 @@ public abstract class Top extends JFrame {
                     "Unexpected loss of Recent Files menu.");
         }
         HistoryMenuListener listener = new HistoryMenuListener();
-        
+
         history.removeAll();
-        
+
         for (int i = 0; i < historyList.size(); i++) {
             JMenuItem item = new JMenuItem((String) historyList.get(i));
             item.addActionListener(listener);
@@ -1427,13 +1426,16 @@ public abstract class Top extends JFrame {
 
             File file = new File(actionCommand);
             try {
-                                
+
                 _read(file.toURI().toURL());
                 _updateHistory(actionCommand, false);
                 setDirectory(file);
                 // Impossible to read History
             } catch (Exception ex) {
-                MessageHandler.error("Impossible to read history. Please check that file exists and is not in use !", ex);
+                MessageHandler
+                        .error(
+                                "Impossible to read history. Please check that file exists and is not in use !",
+                                ex);
                 try {
                     _updateHistory(actionCommand, true);
                 } catch (IOException ex2) {

@@ -1983,7 +1983,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (refinement instanceof Suspendable) {
             // Adjust current time to be the environment time minus
             // the accumulated suspended time of the refinement.
-            Time suspendedTime = ((Suspendable)refinement).accumulatedSuspendTime();
+            Time suspendedTime = ((Suspendable) refinement)
+                    .accumulatedSuspendTime();
             if (suspendedTime != null) {
                 director.setModelTime(environmentTime.subtract(suspendedTime));
                 return;

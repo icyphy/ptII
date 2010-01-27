@@ -328,7 +328,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 for (int i = 0; i < port.getWidth(); i++) {
                     int bufferSize = this
-                            /*called on the director*/.getBufferSize(port, i);
+                    /*called on the director*/.getBufferSize(port, i);
                     _ports.setBufferSize(port, i, bufferSize);
                 }
 
@@ -430,7 +430,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      *   director cannot be found.
      */
     protected String _generateVariableInitialization(
-            NamedProgramCodeGeneratorAdapter target) throws IllegalActionException {
+            NamedProgramCodeGeneratorAdapter target)
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ProgramCodeGenerator codeGenerator = getCodeGenerator();
@@ -613,10 +614,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                             width = sourcePort.getWidth();
                         }
                         for (int j = 0; j < width; j++) {
-                            Iterator<?> channels =
-                                getSinkChannels(sourcePort, j).iterator();
+                            Iterator<?> channels = getSinkChannels(sourcePort,
+                                    j).iterator();
                             while (channels.hasNext()) {
-                                ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels.next();
+                                ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels
+                                        .next();
                                 if (channel.port == outputPort
                                         && channel.channelNumber == i) {
                                     writeTokens = DFUtilities
@@ -660,11 +662,14 @@ public class SDFDirector extends StaticSchedulingDirector {
                         Variable firings = (Variable) ((NamedObj) actor)
                                 .getAttribute("firingsPerIteration");
                         if (firings == null) {
-                            throw new InternalErrorException(actor, null,
-                                    "Actor " + actor.getFullName() +
-                                    "does not have a firingsPerIteration attribute? " +
-                                    "This can occur if a previous run created java files that " +
-                                    "cannot be compiled.");
+                            throw new InternalErrorException(
+                                    actor,
+                                    null,
+                                    "Actor "
+                                            + actor.getFullName()
+                                            + "does not have a firingsPerIteration attribute? "
+                                            + "This can occur if a previous run created java files that "
+                                            + "cannot be compiled.");
                         }
                         int firingsPerIteration = ((IntToken) firings
                                 .getToken()).intValue();
@@ -695,11 +700,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 width = sourcePort.getWidth();
                             }
                             for (int j = 0; j < width; j++) {
-                                Iterator<?> channels = 
-                                        getSinkChannels(sourcePort, j)
-                                        .iterator();
+                                Iterator<?> channels = getSinkChannels(
+                                        sourcePort, j).iterator();
                                 while (channels.hasNext()) {
-                                    ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels.next();
+                                    ProgramCodeGeneratorAdapter.Channel channel = (ProgramCodeGeneratorAdapter.Channel) channels
+                                            .next();
                                     if (channel.port == inputPort
                                             && channel.channelNumber == i) {
                                         writeTokens = DFUtilities
@@ -746,7 +751,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // the buffer size will be updated later on with the maximum
                 // for all possible schedules.
                 int bufferSize = this
-                        /*directorAdapter*/.getBufferSize(port, i);
+                /*directorAdapter*/.getBufferSize(port, i);
                 _ports.setBufferSize(port, i, bufferSize);
             }
 

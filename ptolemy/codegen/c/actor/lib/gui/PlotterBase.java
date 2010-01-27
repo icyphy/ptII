@@ -170,9 +170,10 @@ public class PlotterBase extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateWrapupCode());
         ptolemy.actor.lib.gui.PlotterBase actor = (ptolemy.actor.lib.gui.PlotterBase) getComponent();
-        if (((BooleanToken)actor.fillOnWrapup.getToken()).booleanValue()) {
+        if (((BooleanToken) actor.fillOnWrapup.getToken()).booleanValue()) {
             code.append("jmethodID fillPlotMethod = (*env)->GetMethodID"
-                    + "(env, $actorSymbol(plotClass), \"fillPlot\", \"()V\");" + _eol
+                    + "(env, $actorSymbol(plotClass), \"fillPlot\", \"()V\");"
+                    + _eol
                     + "(*env)->CallVoidMethod(env, $actorSymbol(plotObject), "
                     + "fillPlotMethod);" + _eol);
         }

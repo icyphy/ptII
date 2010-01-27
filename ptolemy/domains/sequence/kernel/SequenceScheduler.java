@@ -177,11 +177,12 @@ public class SequenceScheduler extends Scheduler {
      *  @return The new Scheduler.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SequenceScheduler newObject = (SequenceScheduler) super.clone(workspace);
+        SequenceScheduler newObject = (SequenceScheduler) super
+                .clone(workspace);
         // Invalidate the schedule, so that a new schedule must be calculated
         newObject.setValid(false);
         newObject._cachedGetSchedule = null;
-        
+
         // Set other data members that refer to original model to null
         // The data structures hold references to objects from the original model, 
         // so they are not relevant for the clone
@@ -192,7 +193,7 @@ public class SequenceScheduler extends Scheduler {
         newObject._dependentList = null;
         newObject._independentList = null;
         newObject._sequencedActorNodesToSubgraph = null;
-  
+
         return newObject;
     }
 
@@ -230,23 +231,25 @@ public class SequenceScheduler extends Scheduler {
      *  throws it. Not thrown in this base class, but may be needed
      *  by the derived schedulers.
      */
-    public SequenceSchedule getSchedule(List<SequenceAttribute> independentList) throws IllegalActionException,
-            NotSchedulableException {
-            
-            // Check the list of sequence attributes
-            // There must be at least one actor with a sequence attribute in the model
+    public SequenceSchedule getSchedule(List<SequenceAttribute> independentList)
+            throws IllegalActionException, NotSchedulableException {
+
+        // Check the list of sequence attributes
+        // There must be at least one actor with a sequence attribute in the model
         if (independentList == null || independentList.isEmpty()) {
-            throw new IllegalActionException(this, "A model or composite actor with a SequencedModelDirector must have at least one actor, not dependent on other actors such as control actors, with a SequenceAttribute or ProcessAttribute.  No SequenceAttributes or ProcessAttributes were found.");
+            throw new IllegalActionException(
+                    this,
+                    "A model or composite actor with a SequencedModelDirector must have at least one actor, not dependent on other actors such as control actors, with a SequenceAttribute or ProcessAttribute.  No SequenceAttributes or ProcessAttributes were found.");
         }
-        
+
         // Set class variables _independentList and _dependentList
         _independentList = independentList;
         _dependentList = new ArrayList<SequenceAttribute>();
-            
-            // From Scheduler.java
+
+        // From Scheduler.java
         try {
-            workspace().getReadAccess();            
-            
+            workspace().getReadAccess();
+
             // Changed this to SequencedModelDirector instead of StaticSchedulingDirector
             SequencedModelDirector director = (SequencedModelDirector) getContainer();
 
@@ -271,7 +274,7 @@ public class SequenceScheduler extends Scheduler {
         } finally {
             workspace().doneReading();
         }
-    
+
     }
 
     /** Returns a list of unreachable actors found in the most recent call to
@@ -290,7 +293,7 @@ public class SequenceScheduler extends Scheduler {
      */
     public List<Actor> unreachableActorList() {
         ArrayList<Actor> unreachables = new ArrayList<Actor>();
-        
+
         // Get key set from hash table populated
         // in the most recent call to getSchedule().
         for (Node key : _visitedNodes.keySet()) {
@@ -351,18 +354,19 @@ public class SequenceScheduler extends Scheduler {
                 // old container. Search for another scheduler contained
                 // by the composite.  If it contains more than one,
                 // use the most recently added one.
-                    // Beth - 10/29/08 - Changes this to a SequenceScheduler instead of just Scheduler
+                // Beth - 10/29/08 - Changes this to a SequenceScheduler instead of just Scheduler
                 SequenceScheduler previous = null;
-                
+
                 // Beth - changed to SequencedModelDirector
                 //StaticSchedulingDirector castContainer = (StaticSchedulingDirector) oldContainer;
-                
+
                 SequencedModelDirector castContainer = (SequencedModelDirector) oldContainer;
                 Iterator schedulers = castContainer.attributeList(
                         Scheduler.class).iterator();
 
                 while (schedulers.hasNext()) {
-                    SequenceScheduler altScheduler = (SequenceScheduler) schedulers.next();
+                    SequenceScheduler altScheduler = (SequenceScheduler) schedulers
+                            .next();
 
                     // Since we haven't yet removed this director, we have
                     // to be sure to not just set it to the active
@@ -377,12 +381,12 @@ public class SequenceScheduler extends Scheduler {
             super.setContainer(container);
 
             // FIXME: What to do with this?
-            
+
             if (container instanceof SequencedModelDirector) {
                 // Set cached value in director
                 ((SequencedModelDirector) container)._setScheduler(this);
             }
-            
+
         } finally {
             _workspace.doneWriting();
         }
@@ -428,186 +432,188 @@ public class SequenceScheduler extends Scheduler {
      *  by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepEntityList()
      */
-    
+
     protected SequenceSchedule _getSchedule() throws IllegalActionException,
             NotSchedulableException {
-        
+
         // Sequenced actors should all share the same opaque container
         // Contained composite entities that are opaque may have a sequence attribute
         // If they do not, they are processed as upstream of the next opaque actor 
         // Contained composite entities that are transparent must not have a 
         // sequence number
-        
+
         // Create a graph of all actors
         // so that we know which are connected to each other
         // This graph must use all opaque entities (i.e., those
         // returned by container.deepEntityList
-    
-            // The director is the container of the SequenceScheduler
-            SequencedModelDirector director = (SequencedModelDirector) getContainer();
-            
+
+        // The director is the container of the SequenceScheduler
+        SequencedModelDirector director = (SequencedModelDirector) getContainer();
+
         // Get the deepEntityList from the container of the director (the composite actor it's in)
-        _createActorGraph(((CompositeEntity) director.getContainer()).deepEntityList());
-        
+        _createActorGraph(((CompositeEntity) director.getContainer())
+                .deepEntityList());
+
         // Assemble control table
         // Hashtable <SequenceAttribute controlActor, Hashtable<String portName, ArrayList<SequenceAttribute> connectedActors>> 
         _controlTable = new Hashtable();
-        
+
         // Create a new table to store the subgraphs
         // Hashtable <Actor, DirectedAcyclicGraph>
-        _sequencedActorNodesToSubgraph = new Hashtable<Actor,DirectedAcyclicGraph>();
-        
+        _sequencedActorNodesToSubgraph = new Hashtable<Actor, DirectedAcyclicGraph>();
+
         Iterator seqAttribute = _independentList.iterator();
-        
+
         // Beth 01/26/09
         // Added list for additional actors that have e.g. a process name of "None", so are not
         // included in the independent list, but that also need their upstream actors calculated
         // This happens for actors connected to control actors
         ArrayList moreActors = new ArrayList();
-        
-        while (seqAttribute.hasNext())
-        {
+
+        while (seqAttribute.hasNext()) {
             // Get sequence attribute
             SequenceAttribute seq = (SequenceAttribute) seqAttribute.next();
-            
+
             // If it is a control actor, add information to the control table
             if (seq.getContainer() instanceof ControlActor)
 
             {
                 // Get actor
                 ControlActor act = (ControlActor) seq.getContainer();
-                
+
                 // Create a new hashtable to store the outgoing port names
                 // and connected actors
                 // Hashtable <String portName, ArrayList<SequenceAttribute> connected actors>
                 Hashtable portToActors = new Hashtable();
-                
+
                 // Find the actors connected to its output ports
                 // (if any actors and if any output ports)
                 Iterator outPorts = act.outputPortList().iterator();
-                
-                while (outPorts.hasNext())
-                {
+
+                while (outPorts.hasNext()) {
                     // Create an arraylist for actors connected to this port
                     // This list may be empty
                     List connectedActorSeqNums = new ArrayList();
-                    
+
                     // Get port and name
                     IOPort out = (IOPort) outPorts.next();
                     String outName = out.getName();
-                    
+
                     // Get connected actors
                     // FIXME: Do I need the deep connected port list?
                     List connectedPorts = out.connectedPortList();
-                    
-                    if (connectedPorts != null)
-                    {
+
+                    if (connectedPorts != null) {
                         Iterator conPorts = connectedPorts.iterator();
-                        while (conPorts.hasNext())
-                        {
+                        while (conPorts.hasNext()) {
                             // Get the sequence numbers for the actors
                             // corresponding to the connected actors
                             // Each connected actor must have a sequence number
                             IOPort con = (IOPort) conPorts.next();
-                            
+
                             // Get the first sequence attribute (there should be only one)
                             // Make sure there is one; otherwise, throw an exception
-                            if ( ((Entity) con.getContainer()).attributeList(SequenceAttribute.class).isEmpty())
-                            {
-                                throw new IllegalActionException(this, "Error:  downstream actor: " + ((Actor) con.getContainer()).getName() + " from control actor: " + act.getName() + " does not have a sequence or process attribute.");
+                            if (((Entity) con.getContainer()).attributeList(
+                                    SequenceAttribute.class).isEmpty()) {
+                                throw new IllegalActionException(
+                                        this,
+                                        "Error:  downstream actor: "
+                                                + ((Actor) con.getContainer())
+                                                        .getName()
+                                                + " from control actor: "
+                                                + act.getName()
+                                                + " does not have a sequence or process attribute.");
                             }
-                               
-                            else
-                            {
-                            SequenceAttribute conAttribute = (SequenceAttribute) ((Entity) con.getContainer()).attributeList(SequenceAttribute.class).get(0); 
-                            
+
+                            else {
+                                SequenceAttribute conAttribute = (SequenceAttribute) ((Entity) con
+                                        .getContainer()).attributeList(
+                                        SequenceAttribute.class).get(0);
+
                                 // Otherwise, add this sequence attribute to the list
                                 connectedActorSeqNums.add(conAttribute);
-                                
+
                                 // Beth added 01/26/09
                                 // Check to make sure 
                                 // For the process director, if the process name for this is "None",
                                 // (which it should be), the actor will not be in the original list
                                 // Add it so that its upstream actors will be calculated
-                                if (!_independentList.contains(conAttribute) && !moreActors.contains(conAttribute))
-                                {        
-                                        moreActors.add(conAttribute);
+                                if (!_independentList.contains(conAttribute)
+                                        && !moreActors.contains(conAttribute)) {
+                                    moreActors.add(conAttribute);
                                 }
-                                
+
                                 // Also, add these sequence attributes to the _dependentList
                                 // so that they can later be removed from the _independentList
                                 // after the control table has completely assembled
                                 _dependentList.add(conAttribute);
                             }
                         }
-                    }  // End list of actors connected to this port
-                    
+                    } // End list of actors connected to this port
+
                     // If the connected actor list is not null and not empty, sort it
-                    if (connectedActorSeqNums != null && !connectedActorSeqNums.isEmpty())
-                    {
-                        Collections.sort(connectedActorSeqNums); 
-                        
+                    if (connectedActorSeqNums != null
+                            && !connectedActorSeqNums.isEmpty()) {
+                        Collections.sort(connectedActorSeqNums);
+
                         // Check for duplicates in these lists
                         _identifyDuplicateSequences(connectedActorSeqNums);
                     }
-                    
+
                     // Add the list to the hashtable of port to actors
                     portToActors.put(outName, connectedActorSeqNums);
-                    
-                }  // End while there are more output ports
-                    
+
+                } // End while there are more output ports
+
                 // Add the port to actors hashtable to the control table
                 // The key here is the sequence attribute for the control actor
                 _controlTable.put(seq, portToActors);
-                    
-                } // End if control actor
-            }  // End while more sequence attributes
-        
+
+            } // End if control actor
+        } // End while more sequence attributes
+
         // Beth added 01/26/09 
         // Add everything in the moreActors list to the independentList
         // so that the subgraphs will be calculated
         _independentList.addAll(moreActors);
-        
+
         // This function also creates a control graph now, starting
         // at the actor with the lowest sequence number in the current
         // director's container
         // Need to include the dependent actors here, because they might 
         // also have upstream actors
         _createSubGraphFiringScheduleList();
-        
+
         // Now, remove all actors from the _independentList that have been
         // added to the _dependentList, so that the scheduler does not 
         // execute them on their own
         seqAttribute = _dependentList.iterator();
-        
-        while (seqAttribute.hasNext())
-        {
+
+        while (seqAttribute.hasNext()) {
             // Find entry in _independentList.  
             // It should exist if this is called by a SequenceDirector
             // However, if called by the ProcessDirector, it may not exist,
             // since actors with no process names are not included in the _independentList
             // from the ProcessDirector
             int removeMe = _independentList.indexOf(seqAttribute.next());
-            
-            if (removeMe != -1)
-            {
+
+            if (removeMe != -1) {
                 _independentList.remove(removeMe);
-            }
-            else
-            {  
-                System.out.println("SequenceScheduler can't find dependent sequence actor to remove it."); 
+            } else {
+                System.out
+                        .println("SequenceScheduler can't find dependent sequence actor to remove it.");
             }
         }
-        
+
         // Check the remaining sequence actors in the _independentList for duplicates
         _identifyDuplicateSequences(_independentList);
-        
+
         // Return a new schedule based on these data structures
-        return new SequenceSchedule(_independentList, _controlTable, _sequencedActorNodesToSubgraph);
-        
-    }   // End function
-    
-    
+        return new SequenceSchedule(_independentList, _controlTable,
+                _sequencedActorNodesToSubgraph);
+
+    } // End function
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -622,46 +628,44 @@ public class SequenceScheduler extends Scheduler {
      * 
      */
     private void _createActorGraph(List<Entity> actorList) {
-    
+
         _actorGraph = new DirectedGraph();
-        
+
         // Create also additional data structures
         // FIXME: Optimize in the future?
-        _actorGraphNodeList = new Hashtable<Actor,Node>();
-        _visitedNodes = new Hashtable<Node,Boolean>();
-        
+        _actorGraphNodeList = new Hashtable<Actor, Node>();
+        _visitedNodes = new Hashtable<Node, Boolean>();
+
         // Create the edges.
         Iterator actors = actorList.iterator();
         while (actors.hasNext()) {
             Actor sa = (Actor) actors.next();
-            if (!_actorGraph.containsNodeWeight(sa))
+            if (!_actorGraph.containsNodeWeight(sa)) {
                 _actorGraph.addNodeWeight(sa);
-    
+            }
+
             // Add also an entry in the hashtable to easily look
             // up the node that goes with this actor
             // Get the node that was just added
             Iterator nodeIterator = _actorGraph.nodes(sa).iterator();
-            if (nodeIterator.hasNext())
-            {
+            if (nodeIterator.hasNext()) {
                 Node n = (Node) nodeIterator.next();
                 _actorGraphNodeList.put(sa, n);
                 // Also, mark this node as not yet visited
                 // Don't add TestExceptionHandler actors
                 // These are typically not connected in the model, 
                 // but this isn't an error
-                if (! (sa instanceof TestExceptionHandler))
-                {
+                if (!(sa instanceof TestExceptionHandler)) {
                     _visitedNodes.put(n, false);
                 }
             }
-            
+
             // Find all the predecessors of actor
             Iterator predecessors = _predecessorList(sa).iterator();
-    
+
             while (predecessors.hasNext()) {
                 Actor ps = (Actor) predecessors.next();
-                if (!_actorGraph.containsNodeWeight(ps))
-                {
+                if (!_actorGraph.containsNodeWeight(ps)) {
                     _actorGraph.addNodeWeight(ps);
                 }
                 _actorGraph.addEdge(ps, sa);
@@ -679,7 +683,8 @@ public class SequenceScheduler extends Scheduler {
      *  
      * @exception IllegalActionException
      */
-    private void _createSubGraphFiringScheduleList() throws IllegalActionException {
+    private void _createSubGraphFiringScheduleList()
+            throws IllegalActionException {
 
         // This should still be OK
         List<Object[]> subGraphList = new ArrayList<Object[]>();
@@ -692,43 +697,42 @@ public class SequenceScheduler extends Scheduler {
         // But, what if we re-do one of the schedules and not the others?
         // How to remove nodes that are no longer there?
         // Make a 'clear' function to clear both the actor graph and this list?
-        
+
         // Set this when the actorGraph is created 
         // (maybe in 'clear'?)
         //List<Node> actorGraphNodeList = new ArrayList<Node>(_actorGraph.nodes());
-        
-        
-        List<Node> sequencedActorGraphNodes = new ArrayList<Node>(_independentList.size() + _dependentList.size());
-        
+
+        List<Node> sequencedActorGraphNodes = new ArrayList<Node>(
+                _independentList.size() + _dependentList.size());
+
         // Determine which nodes in the graph correspond to actors with a 
         // sequence number.  Assumes that the director has removed any 
         // invalid sequence attributes, or sequence attributes that don't
         // matter (for example an actor with a sequence attribute value zero)
-        
-        for ( SequenceAttribute sequenceAtt  : _independentList ) {
-            Actor sequenceActorNode = (Actor)sequenceAtt.getContainer();
-            
+
+        for (SequenceAttribute sequenceAtt : _independentList) {
+            Actor sequenceActorNode = (Actor) sequenceAtt.getContainer();
+
             // Find node in the hash table
             Node graphNode = _actorGraphNodeList.get(sequenceActorNode);
-            
-            if (graphNode != null)
-            {
+
+            if (graphNode != null) {
                 sequencedActorGraphNodes.add(graphNode);
             }
         }
-        
+
         // Process the list of sequence attributes to determine which actors
         // are associated with which upstream attributes
         // This list must contain ALL nodes with sequence numbers in the whole model
         // since the backtrack function checks to see if a node has a sequence number
         // so as not to include it in a list of upstream actors
         _processGraph(subGraphList, sequencedActorGraphNodes);
-        
+
         // Return from this method
         // A SequenceSchedule will determine its own set of firings (since they are
         // dynamically determined)
     }
-    
+
     /** Return the predecessors of the given actor in the same level of
      *  hierarchy. If the argument is null, return null. If the actor is
      *  a source, return an empty list.
@@ -739,29 +743,30 @@ public class SequenceScheduler extends Scheduler {
         if (actor == null) {
             return null;
         }
-    
+
         LinkedList<Actor> predecessors = new LinkedList<Actor>();
         Iterator inPorts = (actor).inputPortList().iterator();
-    
+
         while (inPorts.hasNext()) {
             IOPort port = (IOPort) inPorts.next();
             Iterator outPorts = port.deepConnectedOutPortList().iterator();
-            
+
             while (outPorts.hasNext()) {
                 IOPort outPort = (IOPort) outPorts.next();
-                Actor pre = (Actor)outPort.getContainer();
-                
+                Actor pre = (Actor) outPort.getContainer();
+
                 // NOTE: This could be done by using
                 // NamedObj.depthInHierarchy() instead of comparing the
                 // executive directors, but its tested this way, so we
                 // leave it alone.
-                if ((actor.getExecutiveDirector() == (pre).getExecutiveDirector())
+                if ((actor.getExecutiveDirector() == (pre)
+                        .getExecutiveDirector())
                         && !predecessors.contains(pre)) {
                     predecessors.addLast(pre);
                 }
             }
         }
-    
+
         return predecessors;
     }
 
@@ -772,28 +777,30 @@ public class SequenceScheduler extends Scheduler {
      * @param sequencedActorGraphNodes
      * @exception IllegalActionException
      */
-    private void _processGraph(List<Object[]> subGraphList, List<Node> sequencedActorGraphNodes) throws IllegalActionException {
+    private void _processGraph(List<Object[]> subGraphList,
+            List<Node> sequencedActorGraphNodes) throws IllegalActionException {
 
-         // From original SequenceDirector 
+        // From original SequenceDirector 
 
-         // Added: Create a hash table
-         //  of actors to directed graphs of upstream actors
+        // Added: Create a hash table
+        //  of actors to directed graphs of upstream actors
 
         DirectedAcyclicGraph subGraph;
 
         //For each sequenced Actor in the graph
         //System.out.println("Number of sequenceActorGraphNodes: " + sequencedActorGraphNodes.size());
-        for (Node seqActorNode : sequencedActorGraphNodes ) {
+        for (Node seqActorNode : sequencedActorGraphNodes) {
 
             //For each sequence actor,  remove outgoing edges
             // Beth - edges are no longer removed.  Note that 
             // _backwardReachableNodes does not process past sequenced actors
             // removeEdges(_actorGraph,seqActorNode);
-            
+
             // Instead of removing the nodes, we mark them as 'visited' in the hash table
             // This lets the scheduler determine in a separate function whether or
             // not there are any unreachable nodes
-            subGraph = (DirectedAcyclicGraph)_backwardReachableNodes(seqActorNode,sequencedActorGraphNodes);
+            subGraph = _backwardReachableNodes(seqActorNode,
+                    sequencedActorGraphNodes);
 
             if (!subGraph.isAcyclic()) {// if cycles throw exception
                 Object[] cycleNodes = subGraph.cycleNodes();
@@ -806,12 +813,14 @@ public class SequenceScheduler extends Scheduler {
                     }
                     nodesAsList.add(cycleNodes[i]);
                 }
-                throw new IllegalActionException("There is a cycle of the actors in the model. " + nodesAsList.toString());
+                throw new IllegalActionException(
+                        "There is a cycle of the actors in the model. "
+                                + nodesAsList.toString());
             } else {// else if no cycles: subgraph => list
 
-                    // Uncomment this section to print the subgraph
-                
-                    /*
+                // Uncomment this section to print the subgraph
+
+                /*
                 printSubGraph(subGraph);
                 
                 System.out.println("For actor: " + seqActorNode.getWeight().toString());
@@ -819,43 +828,41 @@ public class SequenceScheduler extends Scheduler {
 
                 List<Edge> subGraphData = new ArrayList<Edge>(subGraph.edges());
                 for (Edge edge : subGraphData) {
-                    System.out.println("SubGraph Edges: "+ edge );                    
+                System.out.println("SubGraph Edges: "+ edge );                    
                 }
                 System.out.println(" Printing subGraph Nodes -- >" );
 
                 List<Node> subGraphNode = new ArrayList<Node>(subGraph.nodes());
 
                 for (Node node : subGraphNode) {
-                    System.out.println("SubGraph Node: "+ node );                    
+                System.out.println("SubGraph Node: "+ node );                    
                 }
                 */
-                
-                
+
             }
-            
+
             // If there is a subgraph, keep track of which sequenced actor this graph goes
             // with for our 
             // There should be at most one subgraph per sequenced actor
             // The subgraph will need to be sorted later
             // Table is <Actor, DirectedAcyclicGraph>
-            if (subGraph != null)
-            {
-                _sequencedActorNodesToSubgraph.put((Actor) seqActorNode.getWeight(), subGraph);
+            if (subGraph != null) {
+                _sequencedActorNodesToSubgraph.put((Actor) seqActorNode
+                        .getWeight(), subGraph);
                 // Mark all nodes in the subgraph as visited.  
                 // The subgraph should always include at least one node, 
                 // the sequence node itself
                 // Also, we do not remove the nodes anymore, but instead mark them as visited
                 // OK to have upstream actors be upstream of multiple sequenced actors
-                
-                for (Node n: (Collection<Node>) subGraph.nodes())
-                {
+
+                for (Node n : (Collection<Node>) subGraph.nodes()) {
                     // This will overwrite the current value in the hashtable
                     _visitedNodes.put(n, true);
                 }
             }
         }
     }
-    
+
     /** Prints a list of unreachable actors, that are unreachable due to a lack of 
      *  connected actors.  These will be 'upstream' actors that are not upstream
      *  of any sequenced actor.  
@@ -868,20 +875,15 @@ public class SequenceScheduler extends Scheduler {
      *
      * @return True if there is an unreachable actor
      */
-    
-    public boolean unreachableActorExists()
-    {
-        if (_visitedNodes.containsValue(false))
-        {
+
+    public boolean unreachableActorExists() {
+        if (_visitedNodes.containsValue(false)) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
-    
+
     /** Print the subGraph edges and nodes.
      * @param subGraph  The directed acyclic graph to print.
      */
@@ -892,16 +894,16 @@ public class SequenceScheduler extends Scheduler {
 
             List<Edge> subGraphData = new ArrayList<Edge>(subGraph.edges());
             for (Edge edge : subGraphData) {
-                _debug("SubGraph Edges: "+ edge );                    
+                _debug("SubGraph Edges: " + edge);
             }
-            _debug(" Printing subGraph Nodes -- >" );
+            _debug(" Printing subGraph Nodes -- >");
 
             List<Node> subGraphNode = new ArrayList<Node>(subGraph.nodes());
 
             for (Node node : subGraphNode) {
-                _debug("SubGraph Node: "+ node );                    
+                _debug("SubGraph Node: " + node);
             }
-        }        
+        }
     }
 
     /** From original SequenceDirector - copied directly
@@ -913,14 +915,15 @@ public class SequenceScheduler extends Scheduler {
      * @param sequencedActorGraphNodes
      * @return subGraph of Sequenced Actor alongwith the upstream actor List directed to it. 
      */
-    private DirectedAcyclicGraph _backwardReachableNodes(Node node, List<Node> sequencedActorGraphNodes) {
+    private DirectedAcyclicGraph _backwardReachableNodes(Node node,
+            List<Node> sequencedActorGraphNodes) {
 
-        DirectedAcyclicGraph subGraph =  new DirectedAcyclicGraph();
+        DirectedAcyclicGraph subGraph = new DirectedAcyclicGraph();
         // In Java the graph is altered by reference through methods
-        _connectedSubGraph(node, subGraph,sequencedActorGraphNodes);
+        _connectedSubGraph(node, subGraph, sequencedActorGraphNodes);
         return subGraph;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -932,7 +935,8 @@ public class SequenceScheduler extends Scheduler {
      * @param graph
      * @param sequencedActorGraphNodes
      */
-    private void _connectedSubGraph(Node node, DirectedAcyclicGraph graph, List<Node> sequencedActorGraphNodes) {
+    private void _connectedSubGraph(Node node, DirectedAcyclicGraph graph,
+            List<Node> sequencedActorGraphNodes) {
 
         if (!graph.containsNode(node)) {
             graph.addNode(node);
@@ -940,7 +944,7 @@ public class SequenceScheduler extends Scheduler {
 
         // Handle source nodes.
         Collection inputEdgeCollection = _actorGraph.inputEdges(node);
-        if ( inputEdgeCollection.size() > 0) {
+        if (inputEdgeCollection.size() > 0) {
             Iterator inputEdges = inputEdgeCollection.iterator();
 
             while (inputEdges.hasNext()) {
@@ -948,86 +952,94 @@ public class SequenceScheduler extends Scheduler {
 
                 if (!graph.containsEdge(inputEdge)) {
                     Node sourceNode = inputEdge.source();
-                    
+
                     // Added to check actor for sequence attributes/process attributes
                     Actor a = (Actor) sourceNode.getWeight();
-                    
+
                     // if new subgraph does not contain the node and it is not a sequenced Actor node
                     // if (!graph.containsNode(sourceNode) && !( isSequencedGraphNode(sequencedActorGraphNodes,sourceNode) )) {
-                   
+
                     // Beth re-arranged 11/24/08
                     // If the connected node is not a sequenced actor
-                    if (((Entity) a).attributeList(SequenceAttribute.class).isEmpty())
-                    {
-                            // Check if the source node is already in the graph.  If not, add it, and 
-                            // process source node's connected nodes.
-                            if (!graph.containsNode(sourceNode)) {    
-                                graph.addNode(sourceNode);// then add node to new graph
-                                _connectedSubGraph(sourceNode, graph, sequencedActorGraphNodes);
-                                
-                                // Must add the edge after we add the node
-                                if (!graph.containsEdge(inputEdge) ) {
+                    if (((Entity) a).attributeList(SequenceAttribute.class)
+                            .isEmpty()) {
+                        // Check if the source node is already in the graph.  If not, add it, and 
+                        // process source node's connected nodes.
+                        if (!graph.containsNode(sourceNode)) {
+                            graph.addNode(sourceNode);// then add node to new graph
+                            _connectedSubGraph(sourceNode, graph,
+                                    sequencedActorGraphNodes);
 
-                                    graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
+                            // Must add the edge after we add the node
+                            if (!graph.containsEdge(inputEdge)) {
 
-                                    if (_debugging) {
-                                        _debug("Adding Edge node to SubGraph : sourceNode" + sourceNode.getWeight() + " sinkNode" + node.getWeight());
-                                    }
+                                graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
+
+                                if (_debugging) {
+                                    _debug("Adding Edge node to SubGraph : sourceNode"
+                                            + sourceNode.getWeight()
+                                            + " sinkNode" + node.getWeight());
                                 }
                             }
-                            
-                            // Else, if the graph contains the node, but not the edge, add just the edge
-                            else
-                            {
-                                    
-                                    // Beth added this 11/25/08 as a bug fix 
-                                    // New functional regression test case added under sequence director folder
-                                    // If the subgraph already contains the source node, just add the edge
-                                    // This would occur for a graph with edges:
-                                    // A -> B; A -> C; B -> D; C -> D
-                                    // so node A would be processed as a predecessor of either B or C
-                                    // Otherwise, without this edge, it is possible that the topological 
-                                    // sort will be incorrect, and that B or C would be fired before A
-                                    if (!graph.containsEdge(inputEdge) ) {
+                        }
 
-                                            graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
+                        // Else, if the graph contains the node, but not the edge, add just the edge
+                        else {
 
-                                            if (_debugging) {
-                                                    _debug("Adding Edge node to SubGraph : sourceNode" + sourceNode.getWeight() + " sinkNode" + node.getWeight());
-                                            }
-                                    }
+                            // Beth added this 11/25/08 as a bug fix 
+                            // New functional regression test case added under sequence director folder
+                            // If the subgraph already contains the source node, just add the edge
+                            // This would occur for a graph with edges:
+                            // A -> B; A -> C; B -> D; C -> D
+                            // so node A would be processed as a predecessor of either B or C
+                            // Otherwise, without this edge, it is possible that the topological 
+                            // sort will be incorrect, and that B or C would be fired before A
+                            if (!graph.containsEdge(inputEdge)) {
+
+                                graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
+
+                                if (_debugging) {
+                                    _debug("Adding Edge node to SubGraph : sourceNode"
+                                            + sourceNode.getWeight()
+                                            + " sinkNode" + node.getWeight());
+                                }
                             }
+                        }
 
                     }
                 }
             }
-        } 
-    }    
+        }
+    }
 
     /** From original SequenceDirector - copied directly
      *  Remove duplicate sequence numbers
      * @param sequenceList
      * @exception IllegalActionException
      */
-    private void _identifyDuplicateSequences(List sequenceList) throws IllegalActionException {
+    private void _identifyDuplicateSequences(List sequenceList)
+            throws IllegalActionException {
         HashSet<Integer> found = new HashSet<Integer>();
         Iterator seqIterator = sequenceList.iterator();
         SequenceAttribute obj = null;
         while (seqIterator.hasNext()) {
-            obj = (SequenceAttribute)seqIterator.next();
-            
+            obj = (SequenceAttribute) seqIterator.next();
+
             // Replaced with call to .getSequenceNumber() 
             // which should call the correct function from either 
             // SequenceAttribute or ProcessAttribute
             //Integer sequenceNumber = new Integer(obj.getExpression());
-            
+
             Integer sequenceNumber = new Integer(obj.getSequenceNumber());
             if (!found.add(sequenceNumber)) {
-                throw new IllegalActionException(this,"Attempted to use duplicate sequence number : " + sequenceNumber + " in sequenceAttribute "+obj.getContainer());
+                throw new IllegalActionException(this,
+                        "Attempted to use duplicate sequence number : "
+                                + sequenceNumber + " in sequenceAttribute "
+                                + obj.getContainer());
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1037,19 +1049,19 @@ public class SequenceScheduler extends Scheduler {
      * @param channel The channel of the port.
      * @return THe initialValueParameter name.
      */
-    protected static String _getInitialValueParameterName(TypedIOPort port, int channel) {
+    protected static String _getInitialValueParameterName(TypedIOPort port,
+            int channel) {
         //From original SequenceDirector - copied directly.
 
-
         if (port.isMultiport()) {
-            return port.getName() + "_" + channel + "_InitialValue";            
+            return port.getName() + "_" + channel + "_InitialValue";
         } else {
             return port.getName() + "_InitialValue";
         }
     }
 
-///////////////////////////////////////////////////////////////////
-////package friendly variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////package friendly variables                 ////
 
     /** Cache of the value of allowDisconnectedGraphs. */
     boolean _allowDisconnectedGraphs = false;
@@ -1066,7 +1078,7 @@ public class SequenceScheduler extends Scheduler {
     // Need to have own here, instead of using superclass, because we
     // want to save a SequenceSchedule and not just a Schedule
     private SequenceSchedule _cachedGetSchedule = null;
-       
+
     /** The DirectedGraph for the model. */
     public DirectedGraph _actorGraph;
 
@@ -1077,28 +1089,28 @@ public class SequenceScheduler extends Scheduler {
      *  The _dependentList may be empty */
     private List<SequenceAttribute> _independentList;
     private List<SequenceAttribute> _dependentList;
-    
+
     /** A hash table mapping a sequence actor name to a hash table of 
      *  branches and a list of dependent actors (if any) for each branch
      *
      *  Each list in the hash table is then sorted by sequence number
      *  and checked for duplicates
      */
-    private Hashtable<SequenceAttribute, Hashtable> _controlTable; 
-    
+    private Hashtable<SequenceAttribute, Hashtable> _controlTable;
+
     /** Hash table of actors to their subgraphs 
      *  Used in conjunction with the control graph for determining the
      *  schedule
      *  FIXME:  Check for null graphs?  There should not be any null graphs in the table.
      *  A graph should always include the sequenced actor itself.
      */
-    private Hashtable<Actor,DirectedAcyclicGraph> _sequencedActorNodesToSubgraph;
-    
+    private Hashtable<Actor, DirectedAcyclicGraph> _sequencedActorNodesToSubgraph;
+
     /** Hashtable of actors to graph nodes
      *  FIXME:  Is there a better way to do this?
      */
-    Hashtable<Actor,Node> _actorGraphNodeList;
-    
+    Hashtable<Actor, Node> _actorGraphNodeList;
+
     /** Hashtable of graph nodes to a boolean value
      *  Keeps track of which nodes in the graph have been visited
      *  (in other words, can be scheduled somewhere)
@@ -1108,6 +1120,6 @@ public class SequenceScheduler extends Scheduler {
      *  to see if an unreachable node exists, instead of having to check 
      *  each node and make sure it's not a TestExceptionHandler
      */
-    Hashtable<Node,Boolean> _visitedNodes;
+    Hashtable<Node, Boolean> _visitedNodes;
 
 }

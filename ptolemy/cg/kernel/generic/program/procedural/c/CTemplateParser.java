@@ -61,7 +61,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
      */
     public CTemplateParser() {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -91,12 +91,13 @@ public class CTemplateParser extends ProceduralTemplateParser {
      * @exception IllegalActionException If there is a problem getting the
      * adapters for the ports or if the conversion cannot be handled.
      */
-    public String generateTypeConvertStatement(ProgramCodeGeneratorAdapter.Channel source,
-            ProgramCodeGeneratorAdapter.Channel sink, int offset, String alternativeSourceRef)
-            throws IllegalActionException {
+    public String generateTypeConvertStatement(
+            ProgramCodeGeneratorAdapter.Channel source,
+            ProgramCodeGeneratorAdapter.Channel sink, int offset,
+            String alternativeSourceRef) throws IllegalActionException {
 
         CCodeGenerator codeGenerator = _getCodeGenerator();
-        
+
         Type sourceType = ((TypedIOPort) source.port).getType();
         Type sinkType = ((TypedIOPort) sink.port).getType();
 
@@ -113,10 +114,11 @@ public class CTemplateParser extends ProceduralTemplateParser {
         String sourcePortChannel = source.port.getName() + "#"
                 + source.channelNumber + ", " + offset;
         String sourceRef;
-        
+
         if (alternativeSourceRef == null) {
-            sourceRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator.getAdapter(source.port
-                .getContainer())).getReference(sourcePortChannel);
+            sourceRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(source.port.getContainer()))
+                    .getReference(sourcePortChannel);
         } else {
             sourceRef = alternativeSourceRef;
         }
@@ -131,7 +133,8 @@ public class CTemplateParser extends ProceduralTemplateParser {
                 && sink.port.isOutput()) {
             sinkPortChannel = "@" + sinkPortChannel;
         }
-        String sinkRef = ((NamedProgramCodeGeneratorAdapter)(codeGenerator.getAdapter(sink.port.getContainer()))).getReference(
+        String sinkRef = ((NamedProgramCodeGeneratorAdapter) (codeGenerator
+                .getAdapter(sink.port.getContainer()))).getReference(
                 sinkPortChannel, true);
 
         // When the sink port is contained by a modal controller, it is
@@ -155,7 +158,8 @@ public class CTemplateParser extends ProceduralTemplateParser {
             result = "$convert_" + sourceCodeGenType + "_" + sinkCodeGenType
                     + "(" + result + ")";
         }
-        return sinkRef + " = " + result + ";" + StringUtilities.getProperty("line.separator");
+        return sinkRef + " = " + result + ";"
+                + StringUtilities.getProperty("line.separator");
     }
 
     /** Return a new parse tree code generator to use with expressions.
@@ -165,7 +169,8 @@ public class CTemplateParser extends ProceduralTemplateParser {
         // FIXME: We need to create new ParseTreeCodeGenerator each time
         // here or else we get lots of test failures.  It would be better
         // if we could use the same CParseTreeCodeGenerator over and over.
-        _parseTreeCodeGenerator = new CParseTreeCodeGenerator(_getCodeGenerator());
+        _parseTreeCodeGenerator = new CParseTreeCodeGenerator(
+                _getCodeGenerator());
         return _parseTreeCodeGenerator;
     }
 
@@ -178,7 +183,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
     protected CCodeGenerator _getCodeGenerator() {
         return (CCodeGenerator) super._getCodeGenerator();
     }
-    
+
     /** Return the replacement string of the given macro. Subclass
      * of GenericCodeGenerator may overriding this method to extend or support
      * a different set of macros.
@@ -208,7 +213,8 @@ public class CTemplateParser extends ProceduralTemplateParser {
                                 + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (_getCodeGenerator().isPrimitive(port.getType())) {
-                return ".payload." + _getCodeGenerator().codeGenType(port.getType());
+                return ".payload."
+                        + _getCodeGenerator().codeGenType(port.getType());
             } else {
                 return "";
             }

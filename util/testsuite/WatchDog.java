@@ -63,8 +63,8 @@ public class WatchDog {
             public void run() {
                 try {
                     System.err.println("*** util.testsuite.WatchDog went "
-                            + "off after " + timeToDie + "ms. " +
-                                       new Date().toString());
+                            + "off after " + timeToDie + "ms. "
+                            + new Date().toString());
 
                     // Get the root ThreadGroup
                     ThreadGroup parent;

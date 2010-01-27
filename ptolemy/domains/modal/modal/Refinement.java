@@ -67,7 +67,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class Refinement extends TypedCompositeActor implements RefinementActor, Suspendable {
+public class Refinement extends TypedCompositeActor implements RefinementActor,
+        Suspendable {
     /** Construct a modal controller with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -91,7 +92,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the accumulated time that the actor has been suspended
      *  since the last call to initialize(), or null if it has never
      *  been suspended.
@@ -101,7 +102,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
     public Time accumulatedSuspendTime() {
         return _accumulatedSuspendTime;
     }
-    
+
     /** Perform no action but throw an IllegalActionException because a
      *  refinement cannot be created in an arbitrary actor-oriented refinement.
      *
@@ -168,7 +169,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
         _lastSuspendTime = null;
         super.initialize();
     }
-    
+
     /** Create a new port with the specified name in the container of
      *  this refinement, which in turn creates a port in this refinement
      *  all other refinements, and the controller.
@@ -181,7 +182,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
     public Port newPort(String name) throws NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            
+
             ModalModel container = (ModalModel) getContainer();
 
             if (_mirrorDisable || container == null) {
@@ -224,7 +225,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
             _workspace.doneWriting();
         }
     }
-    
+
     /** Resume the actor at the specified time. If the actor has not
      *  been suspended since the last call to initialize(), then this
      *  has no effect. If this actor has a director that implements
@@ -237,17 +238,17 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
             if (_accumulatedSuspendTime == null) {
                 _accumulatedSuspendTime = time.subtract(_lastSuspendTime);
             } else {
-                _accumulatedSuspendTime
-                        = _accumulatedSuspendTime.add(time.subtract(_lastSuspendTime));                
+                _accumulatedSuspendTime = _accumulatedSuspendTime.add(time
+                        .subtract(_lastSuspendTime));
             }
             _lastSuspendTime = null;
         }
         Director director = getDirector();
         if (director instanceof Suspendable) {
-            ((Suspendable)director).resume(time);
+            ((Suspendable) director).resume(time);
         }
     }
-    
+
     /** Suspend the actor at the specified time.
      *  If the actor is already suspended, then it remains suspended
      *  but the accumulated suspend time is incremented by the time
@@ -262,7 +263,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
         _lastSuspendTime = time;
         Director director = getDirector();
         if (director instanceof Suspendable) {
-            ((Suspendable)director).suspend(time);
+            ((Suspendable) director).suspend(time);
         }
     }
 
@@ -301,7 +302,7 @@ public class Refinement extends TypedCompositeActor implements RefinementActor, 
 
     /** Indicator that we are processing a newPort request. */
     protected boolean _mirrorDisable = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

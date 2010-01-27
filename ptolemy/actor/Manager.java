@@ -941,7 +941,6 @@ public class Manager extends NamedObj implements Runnable {
             //_container.createReceivers(); // Undid this change temporarily since the move of createReceivers breaks HDF
             //_container.createSchedule(); // Undid this change temporarily since the move of createReceivers breaks HDF
             executeChangeRequests();
-            
 
             // Infer widths (if not already done)
             if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {

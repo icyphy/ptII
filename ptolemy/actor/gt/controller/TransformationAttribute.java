@@ -406,8 +406,7 @@ public class TransformationAttribute extends Attribute implements Configurable,
 
     /** The list of execution listeners.
      */
-    private List<ExecutionListener> _executionListeners =
-        new LinkedList<ExecutionListener>();
+    private List<ExecutionListener> _executionListeners = new LinkedList<ExecutionListener>();
 
     /** The model updater.
      */

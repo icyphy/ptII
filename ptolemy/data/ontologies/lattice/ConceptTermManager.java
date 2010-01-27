@@ -118,7 +118,8 @@ public class ConceptTermManager implements ConceptTermFactory {
      * @return The list of inequality terms that are affected by the OntologySolver
      * @exception IllegalActionException If an exception is thrown
      */
-    public List<ptolemy.graph.InequalityTerm> getAffectedTerms(ptolemy.graph.InequalityTerm updateTerm)
+    public List<ptolemy.graph.InequalityTerm> getAffectedTerms(
+            ptolemy.graph.InequalityTerm updateTerm)
             throws IllegalActionException {
         return new ArrayList<ptolemy.graph.InequalityTerm>();
     }
@@ -143,10 +144,10 @@ public class ConceptTermManager implements ConceptTermFactory {
     public class InequalityTerm implements ptolemy.graph.InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-        
+
         /** The model object associated with the InequalityTerm. */
         protected Object _object;
-        
+
         private boolean _isEffective;
 
         /**
@@ -223,13 +224,15 @@ public class ConceptTermManager implements ConceptTermFactory {
          */
         public void initialize(Object property) throws IllegalActionException {
             if (!isSettable()) {
-                throw new IllegalActionException("ptolemy.graph.InequalityTerm.initialize: "
-                        + "Cannot initialize a constant property.");
+                throw new IllegalActionException(
+                        "ptolemy.graph.InequalityTerm.initialize: "
+                                + "Cannot initialize a constant property.");
             }
 
             if (!(property instanceof Concept)) {
-                throw new IllegalActionException("ptolemy.graph.InequalityTerm.initialize: "
-                        + "The argument is not a Concept.");
+                throw new IllegalActionException(
+                        "ptolemy.graph.InequalityTerm.initialize: "
+                                + "The argument is not a Concept.");
             }
 
             // FIX: Check with Jackie if this is the right implementation! This fix is for OIL 182.

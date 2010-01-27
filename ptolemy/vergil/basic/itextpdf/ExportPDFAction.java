@@ -27,24 +27,27 @@
 
 package ptolemy.vergil.basic.itextpdf;
 
-import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
-import java.io.FileOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import diva.gui.GUIUtilities;
+import javax.swing.AbstractAction;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+
+import ptolemy.gui.JFileChooserBugFix;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.BasicGraphFrame;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Rectangle;
@@ -52,10 +55,7 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import ptolemy.gui.JFileChooserBugFix;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.BasicGraphFrame;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportPDFAction
@@ -119,7 +119,10 @@ public class ExportPDFAction extends AbstractAction {
             pageSize = new Rectangle(size.width, size.height);
         } catch (Throwable ex) {
             // This exception will occur if the iText library is not installed.
-            MessageHandler.error("iText library is not installed. See http://itextpdf.com/.", ex);
+            MessageHandler
+                    .error(
+                            "iText library is not installed. See http://itextpdf.com/.",
+                            ex);
             return;
         }
         Document document = new Document(pageSize);
@@ -133,43 +136,49 @@ public class ExportPDFAction extends AbstractAction {
             LinkedList extensions = new LinkedList();
             extensions.add("pdf");
             extensions.add("PDF");
-            fileDialog.addChoosableFileFilter(new ExtensionFileFilter(extensions));
+            fileDialog.addChoosableFileFilter(new ExtensionFileFilter(
+                    extensions));
 
             // FIXME: _directory is protected in BasicGraphFrame
             //if (_directory != null) {
             //    fileDialog.setCurrentDirectory(_directory);
             //} else {
-                // The default on Windows is to open at user.home, which is
-                // typically an absurd directory inside the O/S installation.
-                // So we use the current directory instead.
-                // This will throw a security exception in an applet.
-                // FIXME: we should support users under applets opening files
-                // on the server.
-                String currentWorkingDirectory = StringUtilities.getProperty("user.dir");
-                if (currentWorkingDirectory != null) {
-                    fileDialog.setCurrentDirectory(new File(currentWorkingDirectory));
-                }
-                //}
+            // The default on Windows is to open at user.home, which is
+            // typically an absurd directory inside the O/S installation.
+            // So we use the current directory instead.
+            // This will throw a security exception in an applet.
+            // FIXME: we should support users under applets opening files
+            // on the server.
+            String currentWorkingDirectory = StringUtilities
+                    .getProperty("user.dir");
+            if (currentWorkingDirectory != null) {
+                fileDialog
+                        .setCurrentDirectory(new File(currentWorkingDirectory));
+            }
+            //}
 
             int returnVal = fileDialog.showSaveDialog(_frame);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 // FIXME: _directory is protected in BasicGraphFrame
                 //_directory = fileDialog.getCurrentDirectory();
                 File file = fileDialog.getSelectedFile().getCanonicalFile();
-                
+
                 if (file.getName().indexOf(".") == -1) {
                     // If the user has not given the file an extension, add it
                     file = new File(file.getAbsolutePath() + ".pdf");
                 }
 
-                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+                PdfWriter writer = PdfWriter.getInstance(document,
+                        new FileOutputStream(file));
                 // To ensure Latex compatibility, use earlier PDF version.
                 writer.setPdfVersion(PdfWriter.VERSION_1_3);
                 document.open();
                 PdfContentByte contentByte = writer.getDirectContent();
 
-                PdfTemplate template = contentByte.createTemplate(size.width, size.height);
-                Graphics2D graphics = template.createGraphics(size.width, size.height);
+                PdfTemplate template = contentByte.createTemplate(size.width,
+                        size.height);
+                Graphics2D graphics = template.createGraphics(size.width,
+                        size.height);
                 template.setWidth(size.width);
                 template.setHeight(size.height);
 
@@ -193,7 +202,6 @@ public class ExportPDFAction extends AbstractAction {
         }
         document.close();
     }
-
 
     private JFileChooser _saveAsFileDialog() {
         // FIXME: copied from Top.
@@ -316,6 +324,5 @@ public class ExportPDFAction extends AbstractAction {
         // The list of acceptable file extensions.
         private List _extensions;
     }
-
 
 }

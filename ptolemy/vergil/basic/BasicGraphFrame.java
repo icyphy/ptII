@@ -35,7 +35,6 @@ import java.awt.Event;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -55,11 +54,9 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
-import java.awt.print.Paper;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -108,7 +105,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.Query;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -146,7 +142,6 @@ import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.PTreeMenuCreator;
 import ptolemy.vergil.tree.VisibleTreeModel;
-
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.JCanvas;
@@ -696,8 +691,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             moml.append("<entity name=\"" + compositeActorName
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
             moml.append("\t<property name=\"_location\" class=\""
-                    + "ptolemy.kernel.util.Location\" value=\"" + location[0] + ", "
-                    + location[1] + "\">\n");
+                    + "ptolemy.kernel.util.Location\" value=\"" + location[0]
+                    + ", " + location[1] + "\">\n");
             moml.append("\t</property>\n");
             moml.append(newPorts);
 
@@ -853,7 +848,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         }
     }
-    
+
     /** Return the center location of the visible part of the pane.
      *  @return The center of the visible part.
      *  @see #setCenter(Point2D)
@@ -992,34 +987,42 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         try {
             Configuration configuration = getConfiguration();
             StringParameter layoutGraphDialogParameter = (StringParameter) configuration
-                .getAttribute("_layoutGraphDialog", Parameter.class);
+                    .getAttribute("_layoutGraphDialog", Parameter.class);
             if (layoutGraphDialogParameter == null) {
                 layoutGraphWithPtolemyLayout();
                 success = true;
             } else {
-                String layoutGraphDialogClassName = layoutGraphDialogParameter.stringValue();
+                String layoutGraphDialogClassName = layoutGraphDialogParameter
+                        .stringValue();
                 try {
                     Class layoutGraphDialogClass = Class
-                        .forName(layoutGraphDialogClassName);
-                    List layoutFactories = getModel().attributeList(layoutGraphDialogClass);
+                            .forName(layoutGraphDialogClassName);
+                    List layoutFactories = getModel().attributeList(
+                            layoutGraphDialogClass);
                     EditorFactory editorFactory = null;
                     if (layoutFactories.size() > 0) {
                         editorFactory = (EditorFactory) layoutFactories.get(0);
                     } else {
-                        Constructor layoutGraphDialogConstructor =  layoutGraphDialogClass.getDeclaredConstructor(NamedObj.class, String.class);
-                        editorFactory = (EditorFactory) layoutGraphDialogConstructor.newInstance(getModel(), "layoutGraphFactory");
+                        Constructor layoutGraphDialogConstructor = layoutGraphDialogClass
+                                .getDeclaredConstructor(NamedObj.class,
+                                        String.class);
+                        editorFactory = (EditorFactory) layoutGraphDialogConstructor
+                                .newInstance(getModel(), "layoutGraphFactory");
                     }
                     editorFactory.createEditor(getModel(), this);
                     success = true;
                 } catch (Throwable throwable) {
-                    new Exception("Failed to invoke layout graph dialog class \""
-                            + layoutGraphDialogClassName
-                            + "\", which was read from the configuration.", throwable).printStackTrace();
+                    new Exception(
+                            "Failed to invoke layout graph dialog class \""
+                                    + layoutGraphDialogClassName
+                                    + "\", which was read from the configuration.",
+                            throwable).printStackTrace();
                     layoutGraphWithPtolemyLayout();
                 }
             }
         } catch (Throwable throwable) {
-            new Exception("Failed to read _layoutGraphDialogParameter from configuration",
+            new Exception(
+                    "Failed to read _layoutGraphDialogParameter from configuration",
                     throwable).printStackTrace();
             if (!success) {
                 layoutGraphWithPtolemyLayout();
@@ -1750,7 +1753,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _cutAction = new CutAction();
         _copyAction = new CopyAction();
         _pasteAction = new PasteAction();
-        
+
         // FIXME: vergil.kernel.AttributeController also defines context
         // menu choices that do the same thing.
         _moveToFrontAction = new MoveToFrontAction();
@@ -1767,7 +1770,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected void _addMenus() {
         super._addMenus();
-        
+
         _editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
         _menubar.add(_editMenu);
@@ -1922,8 +1925,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 //new Exception("BSF: configuration is null").printStackTrace();
             } else {
                 StringParameter exportPDFActionClassNameParameter = (StringParameter) configuration
-                    .getAttribute("_exportPDFActionClassName", StringParameter.class);
-
+                        .getAttribute("_exportPDFActionClassName",
+                                StringParameter.class);
 
                 if (exportPDFActionClassNameParameter == null) {
                     // Parameter not set, so just return
@@ -1931,17 +1934,24 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
 
                 if (_exportPDFAction == null) {
-                    String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+                    String exportPDFActionClassName = exportPDFActionClassNameParameter
+                            .stringValue();
                     try {
                         Class exportPDFActionClass = Class
-                            .forName(exportPDFActionClassName);
-                        Constructor exportPDFActionConstructor = exportPDFActionClass.getDeclaredConstructor(BasicGraphFrame.class);
-                        _exportPDFAction = (AbstractAction) exportPDFActionConstructor.newInstance(this);
-                        System.out.println("BGF: _exportPDFAction: " + _exportPDFAction);
+                                .forName(exportPDFActionClassName);
+                        Constructor exportPDFActionConstructor = exportPDFActionClass
+                                .getDeclaredConstructor(BasicGraphFrame.class);
+                        _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                                .newInstance(this);
+                        System.out.println("BGF: _exportPDFAction: "
+                                + _exportPDFAction);
                     } catch (Throwable throwable) {
-                        new InternalErrorException(null, throwable, "Failed to construct export PDF class \""
-                                + exportPDFActionClassName
-                                + "\", which was read from the configuration.");
+                        new InternalErrorException(
+                                null,
+                                throwable,
+                                "Failed to construct export PDF class \""
+                                        + exportPDFActionClassName
+                                        + "\", which was read from the configuration.");
                     }
                 }
             }
@@ -1954,20 +1964,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // We don't want it always enabled because ptiny, the applets and
         // Web Start should not included this AGPL'd piece of software
 
-//         if (_exportPDFAction == null) {
-//             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
-//             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
-//             try {
-//                 Class exportPDFActionClass = Class
-//                     .forName(exportPDFActionClassName);
-//                 Constructor exportPDFActionConstructor = exportPDFActionClass.getDeclaredConstructor(BasicGraphFrame.class);
-//                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor.newInstance(this);
-//             } catch (Throwable throwable) {
-//                 new InternalErrorException(null, throwable, "Failed to construct export PDF class \""
-//                         + exportPDFActionClassName
-//                         + "\", which was read from the configuration.");
-//             }
-//         }
+        //         if (_exportPDFAction == null) {
+        //             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+        //             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+        //             try {
+        //                 Class exportPDFActionClass = Class
+        //                     .forName(exportPDFActionClassName);
+        //                 Constructor exportPDFActionConstructor = exportPDFActionClass.getDeclaredConstructor(BasicGraphFrame.class);
+        //                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor.newInstance(this);
+        //             } catch (Throwable throwable) {
+        //                 new InternalErrorException(null, throwable, "Failed to construct export PDF class \""
+        //                         + exportPDFActionClassName
+        //                         + "\", which was read from the configuration.");
+        //             }
+        //         }
 
         if (_exportPDFAction != null) {
             // Insert the Export PDF item after the Print item in the menu.
@@ -2188,12 +2198,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
                 if (graphModel.isNode(userObject)) {
                     NamedObj actual = (NamedObj) graphModel
-                        .getSemanticObject(userObject);
+                            .getSemanticObject(userObject);
                     //System.out.println("BasicGraphFrame._getSelectionSet() actual: " + actual.getClass().getName());
                     //if ( !(actual instanceof PortParameter)) { 
-                        nodeSet.add(userObject);
-                        namedObjSet.add(actual);
-                        //}
+                    nodeSet.add(userObject);
+                    namedObjSet.add(actual);
+                    //}
                 }
             }
         }
@@ -2232,8 +2242,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         NamedObj actual = (NamedObj) graphModel
                                 .getSemanticObject(userObject);
                         namedObjSet.add(actual);
-                        System.out.println("BasicGraphFrame._getSelectionSet() actual2: " + actual.getClass().getName());
-                    
+                        System.out
+                                .println("BasicGraphFrame._getSelectionSet() actual2: "
+                                        + actual.getClass().getName());
+
                     }
                 }
             }
@@ -2397,7 +2409,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             super._writeFile(file);
         }
     }
-    
+
     /** Return the MoML to delete the specified selection objects.
      *  This has the side effect of unselecting the objects. It also
      *  deletes edges that are not fully connected (these deletions
@@ -2457,8 +2469,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             if (graphModel.isNode(userObject)
                     && !(namedObjNodeModel instanceof AttributeNodeModel)) {
                 NamedObj actual = (NamedObj) graphModel
-                    .getSemanticObject(userObject);
-                if (! (actual instanceof ParameterPort)) {
+                        .getSemanticObject(userObject);
+                if (!(actual instanceof ParameterPort)) {
                     // We don't delete ParameterPorts here because if
                     // we drag a region around a ParmeterPort, then
                     // both the PortParameter and the ParameterPort
@@ -2480,7 +2492,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     .getNodeModel(userObject);
             if (graphModel.isNode(userObject)
                     && namedObjNodeModel instanceof AttributeNodeModel) {
-                 moml.append(graphModel.getDeleteNodeMoML(userObject));
+                moml.append(graphModel.getDeleteNodeMoML(userObject));
             }
         }
 
@@ -2513,7 +2525,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         return moml;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -2531,7 +2542,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The action to edit preferences. */
     protected EditPreferencesAction _editPreferencesAction;
-    
+
     /** The export to PDF action. */
     protected Action _exportPDFAction;
 
@@ -2807,7 +2818,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //            }
     //        }
     //    }
-
 
     ///////////////////////////////////////////////////////////////////
     //// LinkElementProperties

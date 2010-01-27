@@ -50,7 +50,8 @@ public interface PortCodeGenerator {
      *  @return The code that gets data from the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
-    public String generateGetCode(String channel, String offset) throws IllegalActionException;
+    public String generateGetCode(String channel, String offset)
+            throws IllegalActionException;
 
     /** Generate the code to put a token to a port.
      *  @param channel The channel for which the send code is generated.
@@ -59,8 +60,8 @@ public interface PortCodeGenerator {
      *  @return The code that sends the dataToken on the channel.
      *  @exception IllegalActionException If the director adapter class cannot be found.
      */
-    public String generatePutCode(String channel, String offset, String dataToken)
-            throws IllegalActionException;
+    public String generatePutCode(String channel, String offset,
+            String dataToken) throws IllegalActionException;
 
     /** Generates code to check the receiver has a token.
      *  @param channel The channel for which the get code is generated.

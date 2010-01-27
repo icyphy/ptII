@@ -55,7 +55,6 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 ///////////////////////////////////////////////////////////////////
 //// RTMLExpTranslator
 
@@ -272,7 +271,7 @@ public class RTMExpTranslator extends AbstractParseTreeVisitor {
         } else {
             _writer.print("{");
         }
-        
+
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) {
                 _writer.print(", ");

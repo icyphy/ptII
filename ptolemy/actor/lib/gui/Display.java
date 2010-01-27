@@ -441,7 +441,6 @@ public class Display extends AbstractPlaceableActor {
         }
     }
 
-
     /** Set a name to present to the user.
      *  <p>If the <i>title</i> parameter is set to the empty string,
      *  and the Display window has been rendered, then the title of the
@@ -509,8 +508,7 @@ public class Display extends AbstractPlaceableActor {
                 // to destroy the original window.
                 textEffigy.identifier.setExpression(getFullName());
 
-                _tableau = new DisplayWindowTableau(this,
-                        textEffigy, "tableau");
+                _tableau = new DisplayWindowTableau(this, textEffigy, "tableau");
                 _frame = _tableau.frame;
             } catch (Exception ex) {
                 throw new IllegalActionException(this, null, ex,

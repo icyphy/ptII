@@ -57,30 +57,31 @@ public class GetCurrentMicrostep extends TimedSource {
     *  @exception NameDuplicationException If the container already has an
     *   actor with this name.
     */
-   public GetCurrentMicrostep(CompositeEntity container, String name)
-           throws NameDuplicationException, IllegalActionException {
-       super(container, name);
+    public GetCurrentMicrostep(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-       // set the type constraints.
-       output.setTypeEquals(BaseType.INT);
-   }
+        // set the type constraints.
+        output.setTypeEquals(BaseType.INT);
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   /** Send the simulated physical time to the output, which is the
-    *  currentTime of the enclosing DE director.
-    *  @exception IllegalActionException If send() throws it.
-    */
-   public void fire() throws IllegalActionException {
-       if (!(getDirector() instanceof DEDirector)) {
-           throw new IllegalActionException(this, "Actor can only work with DE or PTIDES directors.");
-       }
-       DEDirector director = (DEDirector)getDirector();
-       
-       output.send(0, new IntToken(director.getMicrostep()));
-       
-       super.fire();
-   }
+    /** Send the simulated physical time to the output, which is the
+     *  currentTime of the enclosing DE director.
+     *  @exception IllegalActionException If send() throws it.
+     */
+    public void fire() throws IllegalActionException {
+        if (!(getDirector() instanceof DEDirector)) {
+            throw new IllegalActionException(this,
+                    "Actor can only work with DE or PTIDES directors.");
+        }
+        DEDirector director = (DEDirector) getDirector();
+
+        output.send(0, new IntToken(director.getMicrostep()));
+
+        super.fire();
+    }
 
 }

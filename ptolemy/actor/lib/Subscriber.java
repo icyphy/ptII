@@ -138,8 +138,10 @@ public class Subscriber extends TypedAtomicActor {
             String newValue = channel.stringValue();
             if (!newValue.equals(_channel)) {
                 NamedObj container = getContainer();
-                if (container instanceof CompositeActor && !(_channel == null || _channel.trim().equals(""))) {
-                    ((CompositeActor) container).unlinkToPublishedPort(_channel, input);
+                if (container instanceof CompositeActor
+                        && !(_channel == null || _channel.trim().equals(""))) {
+                    ((CompositeActor) container).unlinkToPublishedPort(
+                            _channel, input);
                 }
                 _channel = newValue;
                 /* NOTE: We used to call _updateLinks(), as shown below,
@@ -252,7 +254,7 @@ public class Subscriber extends TypedAtomicActor {
             throw new IllegalActionException(this, "The channel name was null?");
         }
         _updateLinks();
-    
+
         // Call super.preinitialize() after updating links so that
         // we have connections made before possibly inferring widths.
         super.preinitialize();
@@ -268,14 +270,16 @@ public class Subscriber extends TypedAtomicActor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        
-        if (container == null && !(_channel == null || _channel.trim().equals(""))) {
+
+        if (container == null
+                && !(_channel == null || _channel.trim().equals(""))) {
             NamedObj previousContainer = getContainer();
             if (previousContainer instanceof CompositeActor) {
-                ((CompositeActor) previousContainer).unlinkToPublishedPort(_channel, input);
+                ((CompositeActor) previousContainer).unlinkToPublishedPort(
+                        _channel, input);
             }
         }
-        
+
         super.setContainer(container);
     }
 
@@ -302,7 +306,8 @@ public class Subscriber extends TypedAtomicActor {
         NamedObj container = getContainer();
         if (container instanceof CompositeActor) {
             try {
-                ((CompositeActor) container).linkToPublishedPort(_channel, input);
+                ((CompositeActor) container).linkToPublishedPort(_channel,
+                        input);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
                         "Can't link Subscriber with Publisher.");
@@ -315,7 +320,6 @@ public class Subscriber extends TypedAtomicActor {
 
     /** Cached channel name. */
     protected String _channel;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

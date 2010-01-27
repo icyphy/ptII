@@ -55,7 +55,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
     /** Construct the JavaTemplateParser associated
      *  with the given component and the given adapter.
      */
-    public JavaTemplateParser() {        
+    public JavaTemplateParser() {
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
         super.init(component, adapter);
         _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
     }
-    
+
     /** Return the translated token instance function invocation string.
      *  @param functionString The string within the $tokenFunc() macro.
      *  @param isStatic True if the method is static.
@@ -151,7 +151,6 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
         _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
         return _parseTreeCodeGenerator;
     }
-    
 
     /** Return the translated new constructor invocation string. Keep the types
      *  referenced in the info table of this adapter. The kernel will retrieve
@@ -176,7 +175,7 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
      */
     protected JavaCodeGenerator _getCodeGenerator() {
         return (JavaCodeGenerator) super._getCodeGenerator();
-    }    
+    }
 
     /** Return the replacement string of the given macro. Subclass
      * of GenericCodeGenerator may overriding this method to extend or support
@@ -212,7 +211,8 @@ public class JavaTemplateParser extends ProceduralTemplateParser {
                                 + " is not a port. $refinePrimitiveType macro takes in a port.");
             }
             if (codeGenerator.isPrimitive(port.getType())) {
-                return ".payload/*jcgh*/." + codeGenerator.codeGenType(port.getType());
+                return ".payload/*jcgh*/."
+                        + codeGenerator.codeGenType(port.getType());
             } else {
                 return "";
             }

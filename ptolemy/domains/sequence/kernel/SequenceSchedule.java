@@ -150,13 +150,13 @@ public class SequenceSchedule extends Schedule {
      *  creating a root schedule. The constructor that takes a
      *  parameter should be used when creating a subschedule.
      */
-    
+
     // FIXME: 
     // Allow a default constructor?  This doesn't really make sense for a SequenceSchedule.
     public SequenceSchedule() {
         super();
     }
-    
+
     /** Instantiate a new schedule based on these data structures.
      *  @param independentList List of independent sequence attributes. 
      *  (and, associated actors, found by calling .getContainer 
@@ -169,29 +169,30 @@ public class SequenceSchedule extends Schedule {
      *  nodes to their subgraphs Used in conjunction with the control
      *  graph for determining the schedule.
      */
-    public SequenceSchedule(List <SequenceAttribute> independentList, Hashtable<SequenceAttribute,Hashtable> controlTable, Hashtable<Actor,DirectedAcyclicGraph> sequencedActorsToSubgraph) {
+    public SequenceSchedule(List<SequenceAttribute> independentList,
+            Hashtable<SequenceAttribute, Hashtable> controlTable,
+            Hashtable<Actor, DirectedAcyclicGraph> sequencedActorsToSubgraph) {
         super();
-        
+
         // Store data structures
         _originalIndependentList = new ArrayList<SequenceAttribute>();
         _independentList = new ArrayList<SequenceAttribute>();
-        
-        for (int i= 0; i < independentList.size(); i++)
-        {
+
+        for (int i = 0; i < independentList.size(); i++) {
             _independentList.add(independentList.get(i));
             _originalIndependentList.add(independentList.get(i));
         }
-        
+
         _controlTable = controlTable;
         _sequencedActorsToSubgraph = sequencedActorsToSubgraph;
-        
+
         // Initialize the _schedule to an empty list
         // Note that, for the SequenceSchedule, the _schedule list only contains
         // actors that have already been fired since the order of execution
         // is determined dynamically
         _schedule = new ArrayList<ScheduleElement>();
         _schedulePosition = 0;
-        
+
         // Start at the first element in the _independentList
         // Inserts may only occur at or after the current position
         _independentListPosition = 0;
@@ -220,8 +221,7 @@ public class SequenceSchedule extends Schedule {
      *   any leaf nodes that are not an instance of Firing.
      */
     // Use superclass
-   // public Iterator actorIterator() {
-
+    // public Iterator actorIterator() {
 
     /** FIXME:  Not implemented.  What does "add" mean for a SequenceSchedule? 
      *  Should this be restricted to independently sequenced actors or
@@ -234,9 +234,9 @@ public class SequenceSchedule extends Schedule {
      *
      *  @param element The schedule element to add.
      */
-    
+
     // Use superclass
-     
+
     /** FIXME:  Again, same problems with insert() as with add()
      * 
      *  Insert the specified schedule element at the specified position in
@@ -253,7 +253,6 @@ public class SequenceSchedule extends Schedule {
     // Use superclass.  In future - new method?  Does this make sense for a 
     // control schedule?
     // public void add(int index, ScheduleElement element) {
-
 
     /** Return the actor invocation sequence of this schedule in the form
      *  of a sequence of firings. All of the lowest-level nodes of the
@@ -273,9 +272,9 @@ public class SequenceSchedule extends Schedule {
      *   underlying schedule structure is modified while the iterator
      *   is active.
      */
-        public Iterator firingIterator() {
-            return new FiringIterator(this);
-        }
+    public Iterator firingIterator() {
+        return new FiringIterator(this);
+    }
 
     /** Return the element at the specified position in the list.
      *
@@ -285,7 +284,6 @@ public class SequenceSchedule extends Schedule {
     // Use superclass
     //public ScheduleElement get(int index) {
 
-      
     /** FIXME:  What should this iterator return?
      *  Should it be supported?
      * 
@@ -304,8 +302,7 @@ public class SequenceSchedule extends Schedule {
      *   is active.
      */
     // Use superclass.  
-   // public Iterator iterator() {
-
+    // public Iterator iterator() {
 
     /**  FIXME:  What should remove do?  Should it be supported?
      * 
@@ -329,7 +326,6 @@ public class SequenceSchedule extends Schedule {
 
     // public int size() {
 
-
     /**
      * Output a string representation of this Schedule.
      * 
@@ -337,7 +333,6 @@ public class SequenceSchedule extends Schedule {
      */
     // Use superclass
     //public String toString() {
-       
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -352,11 +347,10 @@ public class SequenceSchedule extends Schedule {
      *  schedule. An exception is thrown if the schedule structure
      *  changes while this iterator is active.
      */
-    
+
     // Not doing actor iterator just yet
     // Deleted code - copy from Schedule
-    
-  
+
     /** For a SequenceSchedule, this iterator actually calculates the
      *  next firing and adds the firing to _schedule.
      *  The firings of a SequenceSchedule are dynamically determined.
@@ -380,33 +374,32 @@ public class SequenceSchedule extends Schedule {
             // FIXME:  In the future, save a list of all unexecuted
             // elements in both the _independentList and _schedule
             // for informational purposes
-            
+
             // Clear _independentList and add in elements
             _independentList.clear();
-            
-            for (int i= 0; i < _originalIndependentList.size(); i++)
-            {
+
+            for (int i = 0; i < _originalIndependentList.size(); i++) {
                 _independentList.add(_originalIndependentList.get(i));
             }
-            
+
             _schedule = new ArrayList<ScheduleElement>();
             _schedulePosition = 0;
-            
+
             // If _advance is true, then hasNext() can move
             // to the next node when invoked.
             _advance = true;
             _startingVersion = _getVersion();
-            
+
             // There was no last actor fired, so there was no last control
             // actor fired
             _currentControlSeqAttr = null;
-            
+
             // Start at the beginning of the list of sequenced actors
             _independentListPosition = 0;
-            
+
             // Print out the list
             // For debugging
-            
+
             /*
             for (int i = 0; i < _independentList.size(); i++)
             {
@@ -418,7 +411,7 @@ public class SequenceSchedule extends Schedule {
                 
                 // From the control table, get the hash table <String, List> corresponding to this SequenceAttribute
                 Hashtable branches = (Hashtable) _controlTable.get(seqControlActor);
-         
+            
                 // This sequence attribute may or may not correspond to a control element
                 // Even if it does, the control element may not have any branches
                 if (branches != null)
@@ -450,7 +443,7 @@ public class SequenceSchedule extends Schedule {
                 }
             }
             */
-            
+
         }
 
         /** Return true if the iteration has more elements.
@@ -468,115 +461,110 @@ public class SequenceSchedule extends Schedule {
          *  @return true if the iterator has more elements.
          */
         public boolean hasNext() {
-            
+
             // This code may look messy, but it simply walks the
             // schedule tree.
             if (_startingVersion != _getVersion()) {
-                
+
                 // For the future:
                 _lastHasNext = false;
                 throw new ConcurrentModificationException(
                         "Schedule structure changed while iterator is active.");
             } else if (_advance == true) {
-                
+
                 // Initialize _lastHasNext to false
                 _lastHasNext = false;
-                
+
                 // Optimization 
                 _advance = false;
-                
+
                 // If the last schedule element fired was a break, 
                 // then there are no more firings - don't have to check anything else
-                if (_schedulePosition > 0 && ((Firing) _schedule.get(_schedulePosition - 1)).getActor() instanceof Break)
-                {
-                    return _lastHasNext;  // which was just set to false
+                if (_schedulePosition > 0
+                        && ((Firing) _schedule.get(_schedulePosition - 1))
+                                .getActor() instanceof Break) {
+                    return _lastHasNext; // which was just set to false
                 }
-                
+
                 // If there are more ScheduleElements left in the schedule, 
                 // then hasNext is true
-                else if (_schedulePosition < _schedule.size())
-                {
+                else if (_schedulePosition < _schedule.size()) {
                     _lastHasNext = true;
                 }
-                
+
                 // Otherwise, if there are more sequenced actors to process, 
                 // return true
-                else if (_independentListPosition < _independentList.size())
-                {
+                else if (_independentListPosition < _independentList.size()) {
                     _lastHasNext = true;
                 }
-                
+
                 // Otherwise, if there are no more sequenced actors to process,
                 // but there is a control actor that was just fired, see
                 // if there are any depedendent branches that are true and that
                 // contain other actors for this control actor
-                else if (_currentControlSeqAttr != null)
-                {
+                else if (_currentControlSeqAttr != null) {
                     ArrayList<SequenceAttribute> seqAttributes = findBranchActors(_currentControlSeqAttr);
-                    if (seqAttributes != null && !seqAttributes.isEmpty())
-                    {
+                    if (seqAttributes != null && !seqAttributes.isEmpty()) {
                         _lastHasNext = true;
                     }
-                    
+
                 }
-                
-            }   // end advance == true
-            
-                // Return the answer (either calculated just now, or previously)
-                return _lastHasNext;
+
+            } // end advance == true
+
+            // Return the answer (either calculated just now, or previously)
+            return _lastHasNext;
         }
-                
-        
-//        /** Generate a list of actors that have not been fired yet.
-//         *  
-//         *  This function is designed to be called by the director after an 
-//         *  iteration has been completed, to report the list of actors that
-//         *  were not fired during that iteration.
-//         *  
-//         *  However, it can also be called at any time to report the list
-//         *  of actors that have not been fired yet.
-//         *  
-//         *  Note that this function checks the whole model, and not just the
-//         *  actors that are used in an individual process.
-//         *  
-//         *  @return List of actors that have not been fired
-//         */
-//        public List unfiredActors()
-//        {
-//            ArrayList<Actor> theUnfiredActors = new ArrayList();
-//            
-//            // First, construct a sorted set of fired actors from the schedule
-//            // Note that we only include firings up to the current schedule position
-//            // (firings after that have been scheduled but not fired)
-//            // FIXME:  Does this work?  Are actors comparable in order to use them
-//            // in a TreeSet?  Otherwise might have to use just the names
-//            TreeSet firedActors = new TreeSet();
-//            
-//            for (int i = 0; i < _schedulePosition; i++)
-//            {
-//                // The _schedule for a SequenceSchedule only contains firings
-//                Firing f = (Firing) _schedule.get(i);
-//                firedActors.add(f.getActor());
-//            }
-//            
-//            // FIXME:  What behavior do we want here?
-//            // Currently, just checks for unfired actors that are supposed to be fired
-//            // by this schedule (e.g., within the same process)
-//            // using _sequencedActorToSubgraph
-//            // FIXME:  Change once dag is different
-//            
-//            for (Actor key: _sequencedActorsToSubgraph.keySet())
-//            {
-//                if (!firedActors.contains(key))
-//                {
-//                    theUnfiredActors.add(key);
-//                }
-//            }
-//           
-//            return theUnfiredActors; 
-//        }
-        
-        
+
+        //        /** Generate a list of actors that have not been fired yet.
+        //         *  
+        //         *  This function is designed to be called by the director after an 
+        //         *  iteration has been completed, to report the list of actors that
+        //         *  were not fired during that iteration.
+        //         *  
+        //         *  However, it can also be called at any time to report the list
+        //         *  of actors that have not been fired yet.
+        //         *  
+        //         *  Note that this function checks the whole model, and not just the
+        //         *  actors that are used in an individual process.
+        //         *  
+        //         *  @return List of actors that have not been fired
+        //         */
+        //        public List unfiredActors()
+        //        {
+        //            ArrayList<Actor> theUnfiredActors = new ArrayList();
+        //            
+        //            // First, construct a sorted set of fired actors from the schedule
+        //            // Note that we only include firings up to the current schedule position
+        //            // (firings after that have been scheduled but not fired)
+        //            // FIXME:  Does this work?  Are actors comparable in order to use them
+        //            // in a TreeSet?  Otherwise might have to use just the names
+        //            TreeSet firedActors = new TreeSet();
+        //            
+        //            for (int i = 0; i < _schedulePosition; i++)
+        //            {
+        //                // The _schedule for a SequenceSchedule only contains firings
+        //                Firing f = (Firing) _schedule.get(i);
+        //                firedActors.add(f.getActor());
+        //            }
+        //            
+        //            // FIXME:  What behavior do we want here?
+        //            // Currently, just checks for unfired actors that are supposed to be fired
+        //            // by this schedule (e.g., within the same process)
+        //            // using _sequencedActorToSubgraph
+        //            // FIXME:  Change once dag is different
+        //            
+        //            for (Actor key: _sequencedActorsToSubgraph.keySet())
+        //            {
+        //                if (!firedActors.contains(key))
+        //                {
+        //                    theUnfiredActors.add(key);
+        //                }
+        //            }
+        //           
+        //            return theUnfiredActors; 
+        //        }
+
         /**  Finds the branch actors for a control actor
          *   corresponding to the sequence attribute passed in.
          *   
@@ -585,55 +573,54 @@ public class SequenceSchedule extends Schedule {
          *   @param seq The SequenceAttribute for a control actor.
          *   @return List of actors on the branch of a control actor that should be executed
          */
-        private ArrayList<SequenceAttribute> findBranchActors(SequenceAttribute seq) {
-            
-        ArrayList<SequenceAttribute> seqAttributes = new ArrayList<SequenceAttribute>();    
-        
-//      From the control table, get the hash table <String, List> corresponding to this SequenceAttribute
-        Hashtable branches = (Hashtable) _controlTable.get(seq);
- 
-        // This sequence attribute may or may not correspond to a control element
-        // Even if it does, the control element may not have any branches
-        if (branches != null)
-        {
-            // Figure out what branch has a token on the control actor
-            // Make sure the actor is actually a control actor
-            
-            if (seq.getContainer() instanceof ControlActor)
-            {
-                // Get list of enabled output ports
-            
-                ArrayList outPortList = ((ControlActor) seq.getContainer()).getEnabledOutports();
-            
-                // Check for null list
-                // Some actors do not have output ports (e.g. Break)
-            
-                if (outPortList != null)
-                {
-                    for (int i = 0; i < outPortList.size(); i++)
-                    {
-                        TypedIOPort p = (TypedIOPort) outPortList.get(i);
-                    
-                        // hasToken is only for input ports
-                    
-                            // Get the port name
-                        String portName = p.getName();                                     
-                                        
-                        // Get the list of actors, if any, for this branch
-                        // Get the sequence attributes of actors for this key
-                        seqAttributes.addAll((List<SequenceAttribute>)branches.get(portName));
-                            
-                        // return seqAttributes
-                        // The calling function will set _lastHasNext 
-                 
-                    } // end output port list
-                } // end if output port list != null
-            }  // end instance of control actor
+        private ArrayList<SequenceAttribute> findBranchActors(
+                SequenceAttribute seq) {
 
-        } // end if branches != null
-        return seqAttributes;
-    }
-    
+            ArrayList<SequenceAttribute> seqAttributes = new ArrayList<SequenceAttribute>();
+
+            //      From the control table, get the hash table <String, List> corresponding to this SequenceAttribute
+            Hashtable branches = (Hashtable) _controlTable.get(seq);
+
+            // This sequence attribute may or may not correspond to a control element
+            // Even if it does, the control element may not have any branches
+            if (branches != null) {
+                // Figure out what branch has a token on the control actor
+                // Make sure the actor is actually a control actor
+
+                if (seq.getContainer() instanceof ControlActor) {
+                    // Get list of enabled output ports
+
+                    ArrayList outPortList = ((ControlActor) seq.getContainer())
+                            .getEnabledOutports();
+
+                    // Check for null list
+                    // Some actors do not have output ports (e.g. Break)
+
+                    if (outPortList != null) {
+                        for (int i = 0; i < outPortList.size(); i++) {
+                            TypedIOPort p = (TypedIOPort) outPortList.get(i);
+
+                            // hasToken is only for input ports
+
+                            // Get the port name
+                            String portName = p.getName();
+
+                            // Get the list of actors, if any, for this branch
+                            // Get the sequence attributes of actors for this key
+                            seqAttributes
+                                    .addAll((List<SequenceAttribute>) branches
+                                            .get(portName));
+
+                            // return seqAttributes
+                            // The calling function will set _lastHasNext 
+
+                        } // end output port list
+                    } // end if output port list != null
+                } // end instance of control actor
+
+            } // end if branches != null
+            return seqAttributes;
+        }
 
         /** Although the iterator must return an "Object", a Schedule should 
          *  always return a Firing.
@@ -685,26 +672,23 @@ public class SequenceSchedule extends Schedule {
             } else {
                 _advance = true;
                 Firing theFiring = null;
-                
+
                 // First, check the _schedule.  If there are firings left, return
                 // the next one.
                 // next() only adds FIRINGS to the schedule
                 // _schedulePosition starts at 0
-                
-                if (_schedulePosition < _schedule.size())
-                {
-                    if (! (_schedule.get(_schedulePosition) instanceof Firing))
-                    {
-                        throw new NoSuchElementException("Error - SequenceScheduler encounter a ScheduleElement that is not an instance of Firing");
+
+                if (_schedulePosition < _schedule.size()) {
+                    if (!(_schedule.get(_schedulePosition) instanceof Firing)) {
+                        throw new NoSuchElementException(
+                                "Error - SequenceScheduler encounter a ScheduleElement that is not an instance of Firing");
                     }
-                    
+
                     theFiring = (Firing) _schedule.get(_schedulePosition);
-                    _schedulePosition ++;
+                    _schedulePosition++;
                 }
-                
-               
-                else
-                {
+
+                else {
                     // Check if we are currently executing a control branch
                     /*
                     *  Control branches:  Check _currentControlSeqAttr
@@ -716,126 +700,121 @@ public class SequenceSchedule extends Schedule {
                     *      Set _currentControlSeqAttr to null.
                     *      Call next() again to get the firing (applying all rules again).
                     */
-                    if (_currentControlSeqAttr != null)
-                    {
+                    if (_currentControlSeqAttr != null) {
                         // Check for branch actors to add to the _independentList
                         ArrayList seqAttributes = findBranchActors(_currentControlSeqAttr);
-                        
-                        if (seqAttributes != null)
-                        {
+
+                        if (seqAttributes != null) {
                             // Add dependent actors last-to-first at current position
                             // (so execution in _independentList will be first-to-last
-                            for (int i = seqAttributes.size() - 1; i >= 0; i--)
-                            {
-                                _independentList.add(_independentListPosition, (SequenceAttribute) seqAttributes.get(i));                  
+                            for (int i = seqAttributes.size() - 1; i >= 0; i--) {
+                                _independentList.add(_independentListPosition,
+                                        (SequenceAttribute) seqAttributes
+                                                .get(i));
                             }
                         }
-                        
+
                         // Set current control sequence attribute to null
                         _currentControlSeqAttr = null;
-                        
+
                         // Call next again to get the firing
                         // If the firing is not null, we returned something from
                         // the schedule, so increment the schedule position
                         // (because any changes by next() will be lost due to recursion)
-                        theFiring = (Firing) next();               
+                        theFiring = (Firing) next();
                     }
-               
+
                     // If we are not executing a control branch, get the next sequenced actor
                     // from _independentList
-                    
+
                     else {
-                         
+
                         /* All actors:  Compute upstream actors.  Add firings for these to _schedule.
                          *    Add sequenced actor to schedule.  Advance _independentListPosition.
                          * 
                          * Atomic contol actor:  Additionally, set _currentControlSeqAttr
                          */
-                         
-                         if (_independentList != null && _independentListPosition < _independentList.size())
-                         {
-                             // Get the next sequenced actor
-                             SequenceAttribute seq = _independentList.get(_independentListPosition);
-                             
-                             //System.out.println("Checking dag.");
-                             
-                             // Retrieve the associated collection of upstream actors
-                             DirectedAcyclicGraph dag = _sequencedActorsToSubgraph.get((Actor) seq.getContainer());
-                             
-                             // FIXME:  Throw an exception here, because the dag should always
-                             // include the actor itself
-                             if (dag != null)
-                             {
-                                 
-                                 // Sort them.  This is the only thing sorted by the 
-                                 // SequenceSchedule, since I'm not sure how to store a sorted graph?
-                                 // FIXME:  Store the sorted graph?  is this possible?
-                                 // The dag actually returns a list of node weights (i.e.
-                                 // the actors), and not a list of nodes
-                                 Object nodes[] = dag.topologicalSort();
-                                 if (nodes != null)
-                                 {
-                                     //System.out.println("Nodes in the dag:");
-                                     // Nodes in dag
-                                     //for (int i = 0; i < nodes.length; i++)
-                                     //{
-                                     //    System.out.println("Node: " + i + " is " + ((Actor) nodes[i]).getFullName());
-                                     //}
-                                     for (int i = 0; i < nodes.length; i++)
-                                     {
-                                         Actor act = (Actor) (nodes[i]);
 
-//                                       // Check if this actor has already been fired
-                                         // Note:  can't use contains() since the actual Firing object
-                                         // is different
-                              
-                                         if (! alreadyFired(act))
-                                         {
-                                             Firing nextFiring = new Firing();
-                                             nextFiring.setActor(act);
-                                             _schedule.add(nextFiring);
-                                             
-                                             // If the actor is a boolean select, fire it twice
-                                             // FIXME:  Also Boolean Switch, etc?
-                                             if (act instanceof BooleanSelect)
-                                             {
-                                                 _schedule.add(nextFiring);
-                                             }
-                                         }
-                                     }
-                                 }
-                             }
-                             
-                             else
-                             {
-                             // Add a firing for the sequenced actor itself
-                             // If dag exists, would have included this
-                                 // FIXME:  Make consistent; just store everything in table?
-                             
-                                 Firing nextFiring = new Firing();
-                                 nextFiring.setActor((Actor) seq.getContainer());
-                                 _schedule.add(nextFiring);
-                             }
-                             
-                             // Increment position in the sequenced actor list
-                             _independentListPosition++;
-                             
-                             // If actor is a control actor, set _currentControlSeqAttr
-                             // so that branches are found next time around
-                             if (seq.getContainer() instanceof ControlActor)
-                             {
-                                 _currentControlSeqAttr = seq;
-                             }
-                                 
-                             // Call next() to calculate the next firing
-                             theFiring = (Firing) next();                      
-                             
-                         }  // If there is nothing left in the list, a null firing will be returned.
-                    }  // End else not executing a control branch
-                }  // End else need to add things to the schedule
-            
+                        if (_independentList != null
+                                && _independentListPosition < _independentList
+                                        .size()) {
+                            // Get the next sequenced actor
+                            SequenceAttribute seq = _independentList
+                                    .get(_independentListPosition);
+
+                            //System.out.println("Checking dag.");
+
+                            // Retrieve the associated collection of upstream actors
+                            DirectedAcyclicGraph dag = _sequencedActorsToSubgraph
+                                    .get(seq.getContainer());
+
+                            // FIXME:  Throw an exception here, because the dag should always
+                            // include the actor itself
+                            if (dag != null) {
+
+                                // Sort them.  This is the only thing sorted by the 
+                                // SequenceSchedule, since I'm not sure how to store a sorted graph?
+                                // FIXME:  Store the sorted graph?  is this possible?
+                                // The dag actually returns a list of node weights (i.e.
+                                // the actors), and not a list of nodes
+                                Object nodes[] = dag.topologicalSort();
+                                if (nodes != null) {
+                                    //System.out.println("Nodes in the dag:");
+                                    // Nodes in dag
+                                    //for (int i = 0; i < nodes.length; i++)
+                                    //{
+                                    //    System.out.println("Node: " + i + " is " + ((Actor) nodes[i]).getFullName());
+                                    //}
+                                    for (int i = 0; i < nodes.length; i++) {
+                                        Actor act = (Actor) (nodes[i]);
+
+                                        //                                       // Check if this actor has already been fired
+                                        // Note:  can't use contains() since the actual Firing object
+                                        // is different
+
+                                        if (!alreadyFired(act)) {
+                                            Firing nextFiring = new Firing();
+                                            nextFiring.setActor(act);
+                                            _schedule.add(nextFiring);
+
+                                            // If the actor is a boolean select, fire it twice
+                                            // FIXME:  Also Boolean Switch, etc?
+                                            if (act instanceof BooleanSelect) {
+                                                _schedule.add(nextFiring);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            else {
+                                // Add a firing for the sequenced actor itself
+                                // If dag exists, would have included this
+                                // FIXME:  Make consistent; just store everything in table?
+
+                                Firing nextFiring = new Firing();
+                                nextFiring.setActor((Actor) seq.getContainer());
+                                _schedule.add(nextFiring);
+                            }
+
+                            // Increment position in the sequenced actor list
+                            _independentListPosition++;
+
+                            // If actor is a control actor, set _currentControlSeqAttr
+                            // so that branches are found next time around
+                            if (seq.getContainer() instanceof ControlActor) {
+                                _currentControlSeqAttr = seq;
+                            }
+
+                            // Call next() to calculate the next firing
+                            theFiring = (Firing) next();
+
+                        } // If there is nothing left in the list, a null firing will be returned.
+                    } // End else not executing a control branch
+                } // End else need to add things to the schedule
+
                 return theFiring;
-                
+
             } // End else !hasNext()
         }
 
@@ -848,38 +827,34 @@ public class SequenceSchedule extends Schedule {
         public void remove() {
             throw new UnsupportedOperationException();
         }
-        
+
         /** Determines if an actor has already been fired.
          *  FIXME:  Make this more efficient in the future!  Try hashtable of actors.
          */
-        private boolean alreadyFired(Actor act)
-        {
-            for (int i = 0; i < _schedulePosition; i++)
-            {
+        private boolean alreadyFired(Actor act) {
+            for (int i = 0; i < _schedulePosition; i++) {
                 Firing f = (Firing) _schedule.get(i);
-                if (f.getActor().equals(act))
-                {
+                if (f.getActor().equals(act)) {
                     return true;
                 }
             }
             return false;
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                 ////
 
-
         ///////////////////////////////////////////////////////////////////
         ////                         private variables                 ////
-        
+
         // Same as in Schedule
-        
+
         private boolean _advance;
 
         private boolean _lastHasNext;
 
         private long _startingVersion;
-       
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -895,12 +870,12 @@ public class SequenceSchedule extends Schedule {
      *  Beth - added parameterization &lt;ScheduleElement&gt;
      */
     protected List<ScheduleElement> _schedule;
-    
+
     /** Keeps track of our position in the list.  Used by the hasNext() methods
      *  of the iterators.
      */
     protected int _schedulePosition;
-    
+
     /** 
      *  Keeps track of the last-executed control actor.  If this variable is other
      *  than null, need to check the controlTable to get the correct next actor
@@ -911,49 +886,48 @@ public class SequenceSchedule extends Schedule {
      *  it will still have a SequenceAttribute, but no process name).
      */
     protected SequenceAttribute _currentControlSeqAttr;
-   
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** List of independent sequence attributes 
      *  (and, associated actors, found by calling .getContainer 
      *  on a SequenceAttribute)  
      *  There must be at least one sequence attribute in the _independentList.
      */
     private List<SequenceAttribute> _independentList;
-    
+
     /** Copy of the original list of independent actors passed in.
      *  This is used by the Firing Iterator, to reset the list each time
      *  a new Firing Iterator is constructed.
      */
     private List<SequenceAttribute> _originalIndependentList;
-    
+
     /** Position in the _independentList so that we can insert things into it.
      **/
     private int _independentListPosition;
-    
+
     /** A hash table mapping a sequence actor name to a hash table of 
      *  branches and a list of dependent actors (if any) for each branch.
      */
-    private Hashtable _controlTable; 
-    
+    private Hashtable _controlTable;
+
     /** Hash table of sequenced actor nodes to their subgraphs 
      *  Used in conjunction with the control graph for determining the
      *  schedule.
      */
-    private Hashtable<Actor,DirectedAcyclicGraph> _sequencedActorsToSubgraph;
-    
+    private Hashtable<Actor, DirectedAcyclicGraph> _sequencedActorsToSubgraph;
+
     /** Some data structures that are used by actorIterator() and 
      *  firingIterator() to figure out what comes next.
      */
-    
+
     // The list of Firings for this schedule.
     //private List _firingList;
     // The current version of the firing iterator list.
     //private long _firingIteratorVersion;
     // The depth of this schedule tree. This may grow.
-    
+
     // Need to include this again here, because inner classes ActorIterator and
     // FiringITerator cannot see it in superclass.
     //private int _treeDepth;

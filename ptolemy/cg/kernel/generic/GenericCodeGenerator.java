@@ -96,8 +96,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public GenericCodeGenerator(NamedObj container, String name) throws IllegalActionException,
-            NameDuplicationException {
+    public GenericCodeGenerator(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // Note: If you add publicly settable parameters, update
         // _commandFlags or _commandOptions.
@@ -206,7 +206,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *   to this container.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == codeDirectory) {
             // FIXME: This should not be necessary, but if we don't
             // do it, then getBaseDirectory() thinks we are in the current dir.
@@ -229,26 +229,27 @@ public abstract class GenericCodeGenerator extends Attribute implements
         return "";
     }
 
-   /** Return the decorated attributes for the target NamedObj.
-    *  @param target The NamedObj that will be decorated.
-    *  @return A list of decorated attributes for the target NamedObj. 
-    *  @exception IllegalActionException If thrown while creating a
-    *  {@link ptolemy.kernel.DecoratedAttributesImplementation} or while
-    *  creating the decoratedAttributes.
-    *  @exception NameDuplicationException If thrown while creating a
-    *  {@link ptolemy.kernel.DecoratedAttributesImplementation} or while
-    *  creating the decoratedAttributes.
-    */
-   public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException{
-       CodeGeneratorAdapter adapter;
-       try {
-           adapter = _getAdapter(target);
-       } catch (IllegalActionException e) {
-           // If no adapter, return empty list
-           return new DecoratedAttributesImplementation(target, this);
-       }           
-       return adapter.createDecoratedAttributes(target, this);
-   }    
+    /** Return the decorated attributes for the target NamedObj.
+     *  @param target The NamedObj that will be decorated.
+     *  @return A list of decorated attributes for the target NamedObj. 
+     *  @exception IllegalActionException If thrown while creating a
+     *  {@link ptolemy.kernel.DecoratedAttributesImplementation} or while
+     *  creating the decoratedAttributes.
+     *  @exception NameDuplicationException If thrown while creating a
+     *  {@link ptolemy.kernel.DecoratedAttributesImplementation} or while
+     *  creating the decoratedAttributes.
+     */
+    public DecoratedAttributes createDecoratedAttributes(NamedObj target)
+            throws IllegalActionException, NameDuplicationException {
+        CodeGeneratorAdapter adapter;
+        try {
+            adapter = _getAdapter(target);
+        } catch (IllegalActionException e) {
+            // If no adapter, return empty list
+            return new DecoratedAttributesImplementation(target, this);
+        }
+        return adapter.createDecoratedAttributes(target, this);
+    }
 
     /** Generate code and write it to the file specified by the
      *  <i>codeDirectory</i> parameter.
@@ -288,7 +289,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
             if (manager == null) {
                 CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
-                .toplevel();
+                        .toplevel();
                 manager = new Manager(toplevel.workspace(), "Manager");
                 toplevel.setManager(manager);
             }
@@ -333,11 +334,11 @@ public abstract class GenericCodeGenerator extends Attribute implements
             if (args.length == 0) {
                 System.err
                         .println("Usage: java -classpath $PTII "
-                        + "ptolemy.cg.kernel.generic.GenericCodeGenerator model.xml "
+                                + "ptolemy.cg.kernel.generic.GenericCodeGenerator model.xml "
                                 + "[model.xml . . .]"
                                 + _eol
-                        + "  The arguments name MoML files containing models."
-                        + "  Use -help to get a full list of command line arguments.");
+                                + "  The arguments name MoML files containing models."
+                                + "  Use -help to get a full list of command line arguments.");
                 return -1;
             }
 
@@ -396,15 +397,15 @@ public abstract class GenericCodeGenerator extends Attribute implements
                         parser.reset();
                         MoMLParser.purgeModelRecord(modelURL);
                         toplevel = (CompositeActor) parser
-                        .parse(null, modelURL);
+                                .parse(null, modelURL);
                     } catch (Exception ex) {
                         throw new Exception("Failed to parse \"" + args[i]
-                                                                        + "\"", ex);
+                                + "\"", ex);
                     }
 
                     // Get all instances of this class contained in the model
                     List<GenericCodeGenerator> codeGenerators = toplevel
-                    .attributeList(GenericCodeGenerator.class);
+                            .attributeList(GenericCodeGenerator.class);
 
                     // If the user called this with -generatorPackage ptolemy.codegen.java,
                     // the process that argument.  This is a bit hacky, but works.
@@ -433,10 +434,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
                         // Add a codeGenerator
                         Constructor<?> codeGeneratorConstructor = generatorClass
                                 .getConstructor(new Class[] { NamedObj.class,
-                                    String.class});
+                                        String.class });
                         codeGenerator = (GenericCodeGenerator) codeGeneratorConstructor
                                 .newInstance(new Object[] { toplevel,
-                                "CodeGenerator_AutoAdded"});
+                                        "CodeGenerator_AutoAdded" });
                     }
 
                     codeGenerator._updateParameters(toplevel);
@@ -466,7 +467,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
             }
 
             if (codeGenerator != null) {
-                ExecuteCommands executeCommands = codeGenerator.getExecuteCommands();
+                ExecuteCommands executeCommands = codeGenerator
+                        .getExecuteCommands();
                 if (executeCommands != null) {
                     return executeCommands.getLastSubprocessReturnCode();
                 } else {
@@ -481,7 +483,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
         }
         return -1;
     }
-
 
     /** Return the copyright for this code.
      *  In this base class, the empty string is returned.
@@ -559,7 +560,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     public NamedObj getComponent() {
         return getContainer();
     }
-    
+
     /** Get the command executor, which can be either non-graphical
      *  or graphical.  The initial default is non-graphical, which
      *  means that stderr and stdout from subcommands is written
@@ -578,7 +579,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     public String getMethodVisibiliyString() {
         return "";
     }
-    
+
     /**
      * Return the exception signature (for Java).
      * @return The exception signature, empty string for C.
@@ -620,11 +621,11 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *   container with the same name.
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
                     "CodeGenerator can only be contained"
-                    + " by CompositeEntity");
+                            + " by CompositeEntity");
         }
 
         super.setContainer(container);
@@ -640,7 +641,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     public void setExecuteCommands(ExecuteCommands executeCommands) {
         _executeCommands = executeCommands;
     }
-    
+
     /** Set the current type of the decorated attributes.
      *  The type information of the parameters are not saved in the
      *  model hand hence this has to be reset when reading the model
@@ -650,7 +651,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *   acceptable class for the container, or if the name contains a period.
      */
     public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes) throws IllegalActionException {        
+            DecoratedAttributes decoratedAttributes)
+            throws IllegalActionException {
         CodeGeneratorAdapter adapter;
         try {
             adapter = _getAdapter(decoratedAttributes.getContainer());
@@ -694,7 +696,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
         _codeFileName = _writeCode(code);
         return 0;
     }
-    
+
     /**
      * Get the code generator adapter associated with the given object.
      * @param object The given object.
@@ -716,10 +718,11 @@ public abstract class GenericCodeGenerator extends Attribute implements
         ArrayList<String> packages = new ArrayList<String>(
                 _generatorPackageListParser.generatorPackages());
         if (packages.isEmpty()) {
-            throw new IllegalActionException("Failed to generate the list of packages, "
-                    + "the package list parser returned an empty list."
-                    + " The value of the generatorPackageList parameter was: "
-                    + generatorPackageList.stringValue());
+            throw new IllegalActionException(
+                    "Failed to generate the list of packages, "
+                            + "the package list parser returned an empty list."
+                            + " The value of the generatorPackageList parameter was: "
+                            + generatorPackageList.stringValue());
         }
         //ArrayList<String> packagesWorkingSet = new ArrayList<String>(packagesToBacktrack);
 
@@ -735,10 +738,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
             String className = componentClass.getName();
 
             if (packages.isEmpty()) {
-                throw new IllegalActionException("There is no "
-                        + "codegen adaptor for " + object.getClass()
-                        + ".  Searched the contents of the generatorPackageList parameter, "
-                        + "which was: " + generatorPackageList.stringValue());
+                throw new IllegalActionException(
+                        "There is no "
+                                + "codegen adaptor for "
+                                + object.getClass()
+                                + ".  Searched the contents of the generatorPackageList parameter, "
+                                + "which was: "
+                                + generatorPackageList.stringValue());
             }
 
             if (!className.contains("ptolemy")) {
@@ -752,9 +758,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
                         packages.set(i, packageName);
                     } else {
                         if (_debugging) {
-                            _debug("Removing " + packageName
-                                + " from the list of packages to be searched because it does "
-                                + "not of a '.' in it");
+                            _debug("Removing "
+                                    + packageName
+                                    + " from the list of packages to be searched because it does "
+                                    + "not of a '.' in it");
                         }
                         packages.remove(i);
                         --i;
@@ -778,13 +785,16 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
                 } catch (IllegalActionException ex) {
                     if (_debugging) {
-                        _debug("Warning: Failed to instantiate adapter: object: " + object
-                                + " packageName: " + packageName
-                                + " adapterClassName: " + adapterClassName
+                        _debug("Warning: Failed to instantiate adapter: object: "
+                                + object
+                                + " packageName: "
+                                + packageName
+                                + " adapterClassName: "
+                                + adapterClassName
                                 + KernelException.stackTraceToString(ex));
 
                     }
-                                
+
                     // If adapter class cannot be found, get to next package
                     continue;
                 }
@@ -807,7 +817,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     protected Class<?> _getAdapterClassFilter() {
         return CodeGeneratorAdapter.class;
     }
-    
+
     /**
      * Return the name of the output file.
      * @return The output file name.
@@ -832,7 +842,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     protected CodeGeneratorAdapter _instantiateAdapter(Object component,
             Class<?> componentClass, String adapterClassName)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         Class<?> adapterClass = null;
 
@@ -852,9 +862,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + adapterClassName
-                    + " which accepts an instance of "
-                    + component.getClass().getName()
-                    + " as the argument.");
+                            + " which accepts an instance of "
+                            + component.getClass().getName()
+                            + " as the argument.");
         }
 
         CodeGeneratorAdapter adapterObject = null;
@@ -863,24 +873,29 @@ public abstract class GenericCodeGenerator extends Attribute implements
             adapterObject = (CodeGeneratorAdapter) constructor
                     .newInstance(new Object[] { component });
         } catch (ClassCastException ex0) {
-            throw new InternalErrorException((component instanceof NamedObj ? (NamedObj)component : null),
+            throw new InternalErrorException(
+                    (component instanceof NamedObj ? (NamedObj) component
+                            : null),
                     ex0,
-                    "Problem casting a " + constructor
-                    + " to a CodeGeneratorAdapter. Perhaps " + adapterClass
-                    + " should extend " + CodeGeneratorAdapter.class.getName()
-                    + "? Thus we fail to create an adapter class code generator for "
-                    + adapterClassName + ".");
+                    "Problem casting a "
+                            + constructor
+                            + " to a CodeGeneratorAdapter. Perhaps "
+                            + adapterClass
+                            + " should extend "
+                            + CodeGeneratorAdapter.class.getName()
+                            + "? Thus we fail to create an adapter class code generator for "
+                            + adapterClassName + ".");
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
                     "Failed to create adapter class code generator for "
-                    + adapterClassName + ".");
+                            + adapterClassName + ".");
         }
 
         if (!_getAdapterClassFilter().isInstance(adapterObject)) {
             throw new IllegalActionException(this,
                     "Cannot generate code for this component: " + component
-                            + ". Its adapter class "
-                            + adapterObject + " does not" + " implement "
+                            + ". Its adapter class " + adapterObject
+                            + " does not" + " implement "
                             + _getAdapterClassFilter() + ".");
         }
 
@@ -919,10 +934,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
         // Reset the code file name so that getCodeFileName()
         // accurately reports whether code was generated.
         _codeFileName = null;
-        
+
         _adapterStore.clear();
     }
-    
+
     /** Write the code to a directory named by the codeDirectory
      *  parameter, with a file name that is a sanitized version of the
      *  model name, and an extension that is the last package of
@@ -938,16 +953,17 @@ public abstract class GenericCodeGenerator extends Attribute implements
         String codeFileName = _getOutputFilename();
 
         // Check if needs to overwrite.
-        boolean overwriteFile = ((BooleanToken) overwriteFiles.getToken()).booleanValue();
-        
-        
+        boolean overwriteFile = ((BooleanToken) overwriteFiles.getToken())
+                .booleanValue();
+
         if (_executeCommands != null) {
             _executeCommands.stdout("Writing "
-                    + (codeFileName == null ? "<codeFileName was null?> " : codeFileName)
+                    + (codeFileName == null ? "<codeFileName was null?> "
+                            : codeFileName)
                     + " in "
-                    + (codeDirectory == null ? "<codeDirectory was null?>" : codeDirectory.getBaseDirectory())
-                    + " (" + (code == null ? 0 : code.length())
-                    + " characters)");
+                    + (codeDirectory == null ? "<codeDirectory was null?>"
+                            : codeDirectory.getBaseDirectory()) + " ("
+                    + (code == null ? 0 : code.length()) + " characters)");
         }
 
         return _writeCodeFileName(code, codeFileName, overwriteFile, false);
@@ -966,9 +982,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
-    protected String _writeCodeFileName(StringBuffer code, String codeFileName, boolean overwriteFile, boolean dontShowDialog)
+    protected String _writeCodeFileName(StringBuffer code, String codeFileName,
+            boolean overwriteFile, boolean dontShowDialog)
             throws IllegalActionException {
-
 
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
@@ -979,8 +995,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 // like this, since it makes it impossible to call
                 // this method from a script.  If the question is
                 // asked, the build will hang.
-                if (!dontShowDialog && !MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                        + " exists. OK to overwrite?")) {
+                if (!dontShowDialog
+                        && !MessageHandler.yesNoQuestion(codeDirectory.asFile()
+                                + " exists. OK to overwrite?")) {
                     /*
                     throw new IllegalActionException(this,
                             "Please select another file name.");
@@ -1011,7 +1028,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
             // it is a file and removes this from the path.
             // To fix this we explicitly call setBaseDirectory again.
             codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
-            
+
             Writer writer = null;
             try {
                 writer = FileUtilities.openForWriting(codeFileName,
@@ -1032,7 +1049,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     + codeDirectory.getBaseDirectory());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1052,8 +1069,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
         if (packageValue.indexOf(".") == -1) {
             return "";
         }
-        String outputFileExtension = packageValue
-                .substring(packageValue.lastIndexOf("."));
+        String outputFileExtension = packageValue.substring(packageValue
+                .lastIndexOf("."));
         return outputFileExtension;
     }
 
@@ -1076,7 +1093,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 // Use a MoMLChangeRequest so that visual rendition (if
                 // any) is updated and listeners are notified.
                 String moml = "<property name=\"" + name + "\" value=\""
-                + value + "\"/>";
+                        + value + "\"/>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this, model,
                         moml);
                 model.requestChange(request);
@@ -1087,7 +1104,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     // Use a MoMLChangeRequest so that visual rendition (if
                     // any) is updated and listeners are notified.
                     String moml = "<property name=\"" + name + "\" value=\""
-                    + value + "\"/>";
+                            + value + "\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             this, moml);
                     model.requestChange(request);
@@ -1097,7 +1114,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
             if (model instanceof CompositeActor) {
                 ptolemy.actor.Director director = ((CompositeActor) model)
-                .getDirector();
+                        .getDirector();
 
                 if (director != null) {
                     attribute = director.getAttribute(name);
@@ -1108,7 +1125,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                         // visual rendition (if any) is
                         // updated and listeners are notified.
                         String moml = "<property name=\"" + name
-                        + "\" value=\"" + value + "\"/>";
+                                + "\" value=\"" + value + "\"/>";
                         MoMLChangeRequest request = new MoMLChangeRequest(this,
                                 director, moml);
                         director.requestChange(request);
@@ -1136,9 +1153,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
             return true;
         } else if (arg.equals("-version")) {
             System.out
-            .println("Version "
-                    + VersionAttribute.CURRENT_VERSION.getExpression()
-                    + ", Build $Id$");
+                    .println("Version "
+                            + VersionAttribute.CURRENT_VERSION.getExpression()
+                            + ", Build $Id$");
 
             StringUtilities.exit(0);
             // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
@@ -1171,7 +1188,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 .lastIndexOf("."));
         String capitalizedLanguage = language.substring(1, 2).toUpperCase()
                 + language.substring(2);
-        String codeGeneratorClassName = generatorPackageValue + "." 
+        String codeGeneratorClassName = generatorPackageValue + "."
                 + capitalizedLanguage + "CodeGenerator";
         System.out.println("GCG: language: " + language);
 
@@ -1183,18 +1200,23 @@ public abstract class GenericCodeGenerator extends Attribute implements
             capitalizedLanguage = language.toUpperCase();
             String oldCodeGeneratorClassName = codeGeneratorClassName;
             codeGeneratorClassName = generatorPackageValue
-                + capitalizedLanguage + "CodeGenerator";
+                    + capitalizedLanguage + "CodeGenerator";
             try {
                 result = Class.forName(codeGeneratorClassName);
             } catch (Throwable throwable2) {
-                throw new IllegalActionException(null, throwable2, "Failed to find \""
-                        + oldCodeGeneratorClassName + "\" and \"" 
-                        + codeGeneratorClassName
-                        + "\", generatorPackage parameter was \""
-                        + generatorPackageValue + "\". "
-                        + "Common values are ptolemy.cg.kernel.generic.program.procedural.c, "
-                        + "ptolemy.cg.kernel.generic.html, or "
-                        + "ptolemy.cg.kernel.generic.program.procedural.java");
+                throw new IllegalActionException(
+                        null,
+                        throwable2,
+                        "Failed to find \""
+                                + oldCodeGeneratorClassName
+                                + "\" and \""
+                                + codeGeneratorClassName
+                                + "\", generatorPackage parameter was \""
+                                + generatorPackageValue
+                                + "\". "
+                                + "Common values are ptolemy.cg.kernel.generic.program.procedural.c, "
+                                + "ptolemy.cg.kernel.generic.html, or "
+                                + "ptolemy.cg.kernel.generic.program.procedural.java");
             }
         }
         return result;
@@ -1202,7 +1224,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-  
+
     /** Indent string for indent level 1.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
@@ -1212,12 +1234,12 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
     public static final String INDENT2 = StringUtilities.getIndentPrefix(2);
-    
+
     /** Indent string for indent level 3.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
     public static final String INDENT3 = StringUtilities.getIndentPrefix(3);
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1229,7 +1251,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
-    
+
     /** Execute commands to run the generated code.
      */
     protected ExecuteCommands _executeCommands;
@@ -1256,28 +1278,33 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
     /** The command-line options that take arguments. */
     private static String[][] _commandOptions = {
-        //{ "-allowDynamicMultiportReferences",
-        //  "        true|false (default: false)" },
-        { "-codeDirectory", "        <directory in which to put code (default: $HOME/cg/. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
-        // { "-compile", "           true|false (default: true)" },
-        //    { "-compileTarget",
-        // "     <target to be run, defaults to empty string>" },
-        //{ "-generateComment", "   true|false (default: true)" },
-        { "-generatorPackage"," <Java package of code generator, defaults to ptolemy.c>" },
-        { "-generatorPackage"," <Semicolon or * separated list of Java packages to be searched for adapters>"},
-        { "-generatorPackageList"," <Semicolon or * separated list of Java packages to be searched for adapters>"},
-        //{ "-inline", "            true|false (default: false)" },
-        //{ "-measureTime", "       true|false (default: false)" },
-        //{ "-overwriteFiles", "    true|false (default: true)" },
-        //{ "-padBuffers", "        true|false (default: true)" },
-        //{ "-run", "               true|false (default: true)" },
-        //{ "-sourceLineBinding", " true|false (default: false)" },
-        //{ "-target", "            <target name, defaults to false>" },
-        { "-<parameter name>","     <parameter value>" } };
+            //{ "-allowDynamicMultiportReferences",
+            //  "        true|false (default: false)" },
+            {
+                    "-codeDirectory",
+                    "        <directory in which to put code (default: $HOME/cg/. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
+            // { "-compile", "           true|false (default: true)" },
+            //    { "-compileTarget",
+            // "     <target to be run, defaults to empty string>" },
+            //{ "-generateComment", "   true|false (default: true)" },
+            { "-generatorPackage",
+                    " <Java package of code generator, defaults to ptolemy.c>" },
+            { "-generatorPackage",
+                    " <Semicolon or * separated list of Java packages to be searched for adapters>" },
+            { "-generatorPackageList",
+                    " <Semicolon or * separated list of Java packages to be searched for adapters>" },
+            //{ "-inline", "            true|false (default: false)" },
+            //{ "-measureTime", "       true|false (default: false)" },
+            //{ "-overwriteFiles", "    true|false (default: true)" },
+            //{ "-padBuffers", "        true|false (default: true)" },
+            //{ "-run", "               true|false (default: true)" },
+            //{ "-sourceLineBinding", " true|false (default: false)" },
+            //{ "-target", "            <target name, defaults to false>" },
+            { "-<parameter name>", "     <parameter value>" } };
 
     /** The form of the command line. */
     private static final String _commandTemplate = "ptcg [ options ] [file ...]";
-        
+
     private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
 
     /** List of parameter names seen on the command line. */
@@ -1307,14 +1334,14 @@ public abstract class GenericCodeGenerator extends Attribute implements
 
         /** Return the list of generator packages.
          *  @return the list of generator packages.
-         */  
+         */
         public List<String> generatorPackages() throws IllegalActionException {
             _updateGeneratorPackageList();
             return _generatorPackages;
         }
 
         /** Update the internal list of generator packages.
-         */   
+         */
         private void _updateGeneratorPackageList()
                 throws IllegalActionException {
             String packageList = generatorPackageList.stringValue();

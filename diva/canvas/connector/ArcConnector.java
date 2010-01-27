@@ -333,15 +333,15 @@ public class ArcConnector extends AbstractConnector {
         }
 
         // Draw self loops correctly.
-//        if (false && _selfloop) {
-//            if (alpha < 0.0) {
-//                _extentAngle = (2.0 * alpha) + (2 * Math.PI);
-//            } else {
-//                _extentAngle = (2.0 * alpha) - (2 * Math.PI);
-//            }
-//        } else {
-            _extentAngle = (2.0 * alpha);
-//        }
+        //        if (false && _selfloop) {
+        //            if (alpha < 0.0) {
+        //                _extentAngle = (2.0 * alpha) + (2 * Math.PI);
+        //            } else {
+        //                _extentAngle = (2.0 * alpha) - (2 * Math.PI);
+        //            }
+        //        } else {
+        _extentAngle = (2.0 * alpha);
+        //        }
 
         // Set the arc
         _arc.setArcByCenter(centerX, centerY, radius, _startAngle / Math.PI

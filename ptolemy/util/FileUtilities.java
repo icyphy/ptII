@@ -80,7 +80,7 @@ public class FileUtilities {
     public static boolean binaryCopyURLToFile(URL sourceURL,
             File destinationFile) throws IOException {
         URL destinationURL = destinationFile.getCanonicalFile().toURI().toURL();
- 
+
         if (sourceURL.sameFile(destinationURL)) {
             return false;
         }
@@ -120,7 +120,7 @@ public class FileUtilities {
      *  @exception IOException If the source URL does not exist.
      */
     public static byte[] binaryReadURLToByteArray(URL sourceURL)
-             throws IOException {
+            throws IOException {
         return _binaryReadStream(sourceURL.openStream());
     }
 
@@ -223,7 +223,7 @@ public class FileUtilities {
             return null;
         }
 
-        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {        
+        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {
             URL result = null;
             try {
                 result = _searchClassPath(name, null);
@@ -247,7 +247,8 @@ public class FileUtilities {
             if (base != null) {
                 // Need to replace \ with /, otherwise resolve would fail even
                 // if invoked in a windows OS. -- tfeng (02/27/2009)
-                URI newURI = base.resolve(StringUtilities.substitute(name, " ", "%20").replace('\\', '/'));
+                URI newURI = base.resolve(StringUtilities.substitute(name, " ",
+                        "%20").replace('\\', '/'));
 
                 //file = new File(newURI);
                 String urlString = newURI.getPath();
@@ -294,12 +295,11 @@ public class FileUtilities {
             return null;
         }
 
-        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {        
+        if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {
             URL result = _searchClassPath(name, classLoader);
             if (result == null) {
                 throw new IOException("Cannot find file '"
-                        + _trimClassPath(name)
-                        + "' in classpath");
+                        + _trimClassPath(name) + "' in classpath");
             }
 
             return result;
@@ -649,13 +649,12 @@ public class FileUtilities {
         }
     }
 
-
     /** Read a stream safely.  If there are problems, the streams are
      *  close appropriately.
      *  @param inputStream The input stream.
      *  @exception IOException If the input stream cannot be read.
      */
-    private static byte [] _binaryReadStream(InputStream inputStream)
+    private static byte[] _binaryReadStream(InputStream inputStream)
             throws IOException {
         // Copy the source file.
         BufferedInputStream input = null;
@@ -669,7 +668,7 @@ public class FileUtilities {
                 output = new ByteArrayOutputStream();
                 // Read the stream in 8k chunks
                 final int BUFFERSIZE = 8192;
-                byte [] buffer = new byte[BUFFERSIZE];
+                byte[] buffer = new byte[BUFFERSIZE];
                 int bytesRead = 0;
                 while ((bytesRead = input.read(buffer, 0, BUFFERSIZE)) != -1) {
                     output.write(buffer, 0, bytesRead);
@@ -694,7 +693,7 @@ public class FileUtilities {
                 }
             }
         }
-        if (output != null) { 
+        if (output != null) {
             return output.toByteArray();
         }
         return null;

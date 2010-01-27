@@ -54,7 +54,7 @@ public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
     public SampleDelay(ptolemy.domains.sdf.lib.SampleDelay actor) {
         super(actor);
     }
-    
+
     /**
      * Generate preinitialize code.
      * Read the <code>preinitBlock</code> from SampleDealy.j,

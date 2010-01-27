@@ -50,7 +50,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-
 /**
  * An abstract base class for SequenceDirector and ProcessDirector.
  *
@@ -65,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Red (beth)
  * @Pt.AcceptedRating Red (beth)
  */
-public abstract class SequencedModelDirector extends Director{
+public abstract class SequencedModelDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -93,8 +92,8 @@ public abstract class SequencedModelDirector extends Director{
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public SequencedModelDirector(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public SequencedModelDirector(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -115,7 +114,7 @@ public abstract class SequencedModelDirector extends Director{
      *   CompositeActor and the name collides with an entity in the container.
      */
     public SequencedModelDirector(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -133,22 +132,22 @@ public abstract class SequencedModelDirector extends Director{
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
-    
+
     /** If true, enable user defined output initial vaues.  The default value
      *  is a boolean true.
-     */   
+     */
     public Parameter userDefinedOutputInitialValue;
-    
+
     /** The user defined default output initial value.  The default type
      *  is BaseType.GENERAL.
      */
     public Parameter userDefinedDefaultOutputInitialValue;
-    
+
     /** If true, enable default output initial vaues.  The default value
      *  is a boolean true.
-     */   
+     */
     public Parameter defaultOutputInitialValue;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -164,8 +163,7 @@ public abstract class SequencedModelDirector extends Director{
         }
         return _currentTime;
     }
-    
-    
+
     /** Code copied from StaticSchedulingDirector
      *  FIXME:  Do we just want a SequencedModelDirector to be a subclass of
      *  StaticSchedulingDirector?  But, the complete schedule is not statically computable
@@ -182,20 +180,22 @@ public abstract class SequencedModelDirector extends Director{
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        SequencedModelDirector newObject = (SequencedModelDirector) super.clone(workspace);
+        SequencedModelDirector newObject = (SequencedModelDirector) super
+                .clone(workspace);
         SequenceScheduler scheduler = getScheduler();
-        
+
         // Note that _setScheduler() invalidates the schedule (which is what we want)
         // That way, the new clone will need to re-compute the schedule, so the new schedule
         // will include references to the new cloned model actors instead of the original model actors
         if (scheduler == null) {
             newObject._setScheduler(null);
         } else {
-            newObject._setScheduler((SequenceScheduler)newObject.getAttribute(getScheduler().getName()));
+            newObject._setScheduler((SequenceScheduler) newObject
+                    .getAttribute(getScheduler().getName()));
         }
         return newObject;
     }
-    
+
     /** 
      *  Return the scheduler that is responsible for scheduling the
      *  directed actors.  This method is read-synchronized on the
@@ -212,7 +212,7 @@ public abstract class SequencedModelDirector extends Director{
             workspace().doneReading();
         }
     }
-    
+
     /** Indicate that a schedule for the model may no longer be valid.
      *  This method should be called when topology changes are made,
      *  or for that matter when any change that may invalidate the
@@ -258,14 +258,13 @@ public abstract class SequencedModelDirector extends Director{
         // Note:  Dependent actors with sequence numbers are also initialized
         // This is since, even though they are dependent, perhaps they are part of 
         // a loop or something
-        
+
         for (SequenceAttribute attribute : _sequencedList) {
             Entity actorEntity = (Entity) attribute.getContainer();
-                
+
             // FIXME:  How to initialize control actors?
             //         Only initialize the branch that should be fired?
-            if (!(actorEntity instanceof ControlActor))
-            {
+            if (!(actorEntity instanceof ControlActor)) {
                 setOutputInitialValues(actorEntity);
             }
         }
@@ -286,55 +285,89 @@ public abstract class SequencedModelDirector extends Director{
      * @exception IllegalActionException If thrown while getting the width of a port or
      * getting the value of a parameter. 
      */
-    public void setOutputInitialValues(Entity actorEntity) throws IllegalActionException {
+    public void setOutputInitialValues(Entity actorEntity)
+            throws IllegalActionException {
 
-        String actorName = ((Actor)actorEntity).getName();
+        String actorName = ((Actor) actorEntity).getName();
         Parameter initialValueParameter = null;
-        for (TypedIOPort port : (List<TypedIOPort>)((Actor)actorEntity).outputPortList()) {
+        for (TypedIOPort port : (List<TypedIOPort>) ((Actor) actorEntity)
+                .outputPortList()) {
 
             for (int channel = 0; channel < port.getWidth(); channel++) {
-                if ( userDefinedOutputInitialValue.getToken().equals(BooleanToken.FALSE) && defaultOutputInitialValue.getToken().equals(BooleanToken.TRUE) ) { 
+                if (userDefinedOutputInitialValue.getToken().equals(
+                        BooleanToken.FALSE)
+                        && defaultOutputInitialValue.getToken().equals(
+                                BooleanToken.TRUE)) {
                     initialValueParameter = new Parameter();
-                    if ( userDefinedDefaultOutputInitialValue.getToken() != null ) {
-                        port.send(channel, userDefinedDefaultOutputInitialValue.getToken());
+                    if (userDefinedDefaultOutputInitialValue.getToken() != null) {
+                        port.send(channel, userDefinedDefaultOutputInitialValue
+                                .getToken());
                     } else {
-                        initialValueParameter.setExpression(port.getType().zero().toString());
+                        initialValueParameter.setExpression(port.getType()
+                                .zero().toString());
                         port.send(channel, initialValueParameter.getToken());
                     }
 
-                } else if ( userDefinedOutputInitialValue.getToken().equals(BooleanToken.TRUE) && defaultOutputInitialValue.getToken().equals(BooleanToken.TRUE)) { 
-                    initialValueParameter = (Parameter)(actorEntity.getAttribute(_getInitialValueParameterName(port, channel).trim()));
-                    if ( initialValueParameter == null ) {
-                        if ( userDefinedDefaultOutputInitialValue.getToken() != null ) {
-                            port.send(channel, userDefinedDefaultOutputInitialValue.getToken());
-                        } else { 
+                } else if (userDefinedOutputInitialValue.getToken().equals(
+                        BooleanToken.TRUE)
+                        && defaultOutputInitialValue.getToken().equals(
+                                BooleanToken.TRUE)) {
+                    initialValueParameter = (Parameter) (actorEntity
+                            .getAttribute(_getInitialValueParameterName(port,
+                                    channel).trim()));
+                    if (initialValueParameter == null) {
+                        if (userDefinedDefaultOutputInitialValue.getToken() != null) {
+                            port.send(channel,
+                                    userDefinedDefaultOutputInitialValue
+                                            .getToken());
+                        } else {
                             initialValueParameter = new Parameter();
-                            initialValueParameter.setExpression(port.getType().zero().toString());
-                            port.send(channel, initialValueParameter.getToken());
+                            initialValueParameter.setExpression(port.getType()
+                                    .zero().toString());
+                            port
+                                    .send(channel, initialValueParameter
+                                            .getToken());
                         }
                     } else {
-                        initialValueParameter.setTypeAtMost(port.getType());                        
+                        initialValueParameter.setTypeAtMost(port.getType());
                         port.send(channel, initialValueParameter.getToken());
                     }
-                } else if ( userDefinedOutputInitialValue.getToken().equals(BooleanToken.TRUE) && defaultOutputInitialValue.getToken().equals(BooleanToken.FALSE) ) {
-                    initialValueParameter = (Parameter)(actorEntity.getAttribute(_getInitialValueParameterName(port, channel).trim()));
-                    if ( initialValueParameter == null ) {
-                        if ( port.isMultiport() ) {
-                            throw new IllegalActionException("Please provide the outputPortName_channelNumber_InitialValue parameters [out_0_InitialValue] for all the connected outputPorts of the sequenceActor"+ actorName);
+                } else if (userDefinedOutputInitialValue.getToken().equals(
+                        BooleanToken.TRUE)
+                        && defaultOutputInitialValue.getToken().equals(
+                                BooleanToken.FALSE)) {
+                    initialValueParameter = (Parameter) (actorEntity
+                            .getAttribute(_getInitialValueParameterName(port,
+                                    channel).trim()));
+                    if (initialValueParameter == null) {
+                        if (port.isMultiport()) {
+                            throw new IllegalActionException(
+                                    "Please provide the outputPortName_channelNumber_InitialValue parameters [out_0_InitialValue] for all the connected outputPorts of the sequenceActor"
+                                            + actorName);
                         } else {
-                            throw new IllegalActionException("Please provide the outputPortName_InitialValue parameter ["+ port.getName() +"_InitialValue] for the sequenceActor"+ actorName);                                
+                            throw new IllegalActionException(
+                                    "Please provide the outputPortName_InitialValue parameter ["
+                                            + port.getName()
+                                            + "_InitialValue] for the sequenceActor"
+                                            + actorName);
                         }
                     }
-                    initialValueParameter.setTypeAtMost(port.getType());                        
+                    initialValueParameter.setTypeAtMost(port.getType());
                     port.send(channel, initialValueParameter.getToken());
 
-                } else { 
+                } else {
                     // FIXME:  If both of the settings are false, there is no way to run the model
                     // This error message does not tell the user what the problem is.
-                    if ( port.isMultiport() ) {
-                        throw new IllegalActionException("Please provide the outputPortName_channelNumber_InitialValue parameters [out_0_InitialValue] for all the connected outputPorts of the sequenceActor"+ actorName);
+                    if (port.isMultiport()) {
+                        throw new IllegalActionException(
+                                "Please provide the outputPortName_channelNumber_InitialValue parameters [out_0_InitialValue] for all the connected outputPorts of the sequenceActor"
+                                        + actorName);
                     } else {
-                        throw new IllegalActionException("Please provide the outputPortName_InitialValue parameter ["+ port.getName() +"_InitialValue] for the sequenceActor"+ actorName);                                
+                        throw new IllegalActionException(
+                                "Please provide the outputPortName_InitialValue parameter ["
+                                        + port.getName()
+                                        + "_InitialValue] for the sequenceActor"
+                                        + actorName);
                     }
                 }
             }
@@ -366,7 +399,7 @@ public abstract class SequencedModelDirector extends Director{
      *  @exception InvalidStateException If this director does not have a
      *  container.
      */
-    
+
     /** Preinitialize will be added to in subclasses
      * 
      *  Preinitialize the actors associated with this director and
@@ -389,28 +422,27 @@ public abstract class SequencedModelDirector extends Director{
         if (_debugging) {
             _debug("Preinitialize : ");
         }
-       
+
         // Assemble a list of all sequenced actors in the model
         CompositeActor compositeActor = (CompositeActor) getContainer();
-        _sequencedList = new ArrayList<SequenceAttribute>();  
-        
+        _sequencedList = new ArrayList<SequenceAttribute>();
+
         // Get all relevant actors and place in _sequenceList
         getContainedEntities(compositeActor);
-        
+
         // There must be at least one actor with a sequence or process attribute
         // If not, throw an exception
-        if (_sequencedList == null)
-        {
-            throw new IllegalActionException(this, "There are no actors in the models with sequence numbers.");
+        if (_sequencedList == null) {
+            throw new IllegalActionException(this,
+                    "There are no actors in the models with sequence numbers.");
         }
-       
+
         // The ProcessDirector and SequenceDirector should:
         // Separate the list into processes, for the ProcessDirector
         // Sort the list or lists
         // Get a schedule for each list
         // Check for unreachable actors in each list
     }
-   
 
     /** The SequencedModelDirector adds all actors with sequence numbers to the 
      *  _sequencedList, regardless of whether or not the actors have a 
@@ -423,16 +455,17 @@ public abstract class SequencedModelDirector extends Director{
      * @param compositeActor The composite actor to be searched for entities.
      * @exception IllegalActionException If thrown while checking the attribute type.
      */
-    public void getContainedEntities(CompositeActor compositeActor) throws IllegalActionException {
+    public void getContainedEntities(CompositeActor compositeActor)
+            throws IllegalActionException {
 
         //System.out.println("Getting contained entities of: " + compositeActor.getFullName());
-        List sequenceAttributes = null; 
+        List sequenceAttributes = null;
         List processAttributes = null;
-        
+
         // Beth - Removed code here
         // Transparent composite entities should NOT have sequence attributes
         // If they do, these sequence attributes are ignored
-        
+
         /*
         List<Entity> compositeActorList = (List<Entity>)compositeActor.allCompositeEntityList();
         boolean isTransparentCompositeActor = false;
@@ -447,27 +480,30 @@ public abstract class SequencedModelDirector extends Director{
 
         } 
         */
-        
+
         //Check for attribute types of Opaque composite Actor and non-composite Actors and create a list of all the actors in model
-        List<Entity> deepEntityList = (List<Entity>)compositeActor.deepEntityList();
+        List<Entity> deepEntityList = compositeActor.deepEntityList();
         for (Entity actorEntity : deepEntityList) {
-            Actor actor = (Actor)actorEntity;
-            sequenceAttributes = ((Entity)actor).attributeList(SequenceAttribute.class);
-            processAttributes = ((Entity)actor).attributeList(ProcessAttribute.class);
-            
+            Actor actor = (Actor) actorEntity;
+            sequenceAttributes = ((Entity) actor)
+                    .attributeList(SequenceAttribute.class);
+            processAttributes = ((Entity) actor)
+                    .attributeList(ProcessAttribute.class);
+
             // Check for actors with multiple sequence attributes
             // This is not allowed:  Each actor can have at most one sequence attribute
             // or at most one process attribute (and can not have both)
             checkAttributeType(actor, sequenceAttributes, processAttributes);
-            
-            if ( actor instanceof TypedCompositeActor ) {
+
+            if (actor instanceof TypedCompositeActor) {
 
                 if (_debugging) {
-                    _debug("Actor: "+ actor +" depthInHierarchy = " + actorEntity.depthInHierarchy());
+                    _debug("Actor: " + actor + " depthInHierarchy = "
+                            + actorEntity.depthInHierarchy());
                 }
 
                 // FIXME:  This is true of any opaque actor, not just a composite actor
-                if ( ((CompositeEntity)actor).isOpaque() ) {
+                if (((CompositeEntity) actor).isOpaque()) {
 
                     // Beth - added check for no director in current entity
                     // FIXME:  Throw an exception if there is no director in opaque
@@ -476,21 +512,27 @@ public abstract class SequencedModelDirector extends Director{
                     // the future?  How to sort models where only some things have a
                     // process attribute and some just have sequence attributes?
                     // FIXME:  Sequence director should not know about process attributes?
-                    
-                    if ( compositeActor.getDirector() != null && !sequenceAttributes.isEmpty() ) {
-         
-                        if ( ( compositeActor.getDirector().getClass() == SequenceDirector.class ) && (sequenceAttributes.get(0).getClass() == ProcessAttribute.class)) {
-                            System.out.println("Warning: " + actor.getName() +"'s Process Attribute will be ignored");
-                        }  if ( ( compositeActor.getDirector().getClass() == ProcessDirector.class ) && (sequenceAttributes.get(0).getClass() == SequenceAttribute.class)) {
 
-                            System.out.println("Warning: " + actor.getName() +"'s Sequence Attribute will be ignored");
-                        } 
-                    } 
-                    
+                    if (compositeActor.getDirector() != null
+                            && !sequenceAttributes.isEmpty()) {
+
+                        if ((compositeActor.getDirector().getClass() == SequenceDirector.class)
+                                && (sequenceAttributes.get(0).getClass() == ProcessAttribute.class)) {
+                            System.out.println("Warning: " + actor.getName()
+                                    + "'s Process Attribute will be ignored");
+                        }
+                        if ((compositeActor.getDirector().getClass() == ProcessDirector.class)
+                                && (sequenceAttributes.get(0).getClass() == SequenceAttribute.class)) {
+
+                            System.out.println("Warning: " + actor.getName()
+                                    + "'s Sequence Attribute will be ignored");
+                        }
+                    }
+
                     // FIXME: Now in checkAttributeType, BUT, ProcessDirector should require
                     // ProcessAttributes on actors.  This should go in the ProcessDirector. 
                     // Possibly, refactor all checking code into a separate function
-                    
+
                     /*
                     else {
                         if ( sequenceAttributes.isEmpty() && processAttributes.isEmpty() ) {
@@ -513,14 +555,13 @@ public abstract class SequencedModelDirector extends Director{
             // If entity has a process attribute or a sequence attribute, add it
             // to the sequenced list
             // FIXME:  Beth comment 01/26/09 - handle sequence numbers of zero
-            if (!processAttributes.isEmpty())
-            {
-                    _sequencedList.add((ProcessAttribute) processAttributes.get(0));
+            if (!processAttributes.isEmpty()) {
+                _sequencedList.add((ProcessAttribute) processAttributes.get(0));
             }
-                
-            else if (!sequenceAttributes.isEmpty())
-            {
-                    _sequencedList.add((SequenceAttribute) sequenceAttributes.get(0));
+
+            else if (!sequenceAttributes.isEmpty()) {
+                _sequencedList.add((SequenceAttribute) sequenceAttributes
+                        .get(0));
             }
         }
     }
@@ -533,7 +574,8 @@ public abstract class SequencedModelDirector extends Director{
      * @exception IllegalActionException If sequenceAttributes has a length greater than one
      * or if actor is not an instance of ControlActor. 
      */
-    public void checkAttributeType(Actor actor, List sequenceAttributes, List processAttributes) throws IllegalActionException {
+    public void checkAttributeType(Actor actor, List sequenceAttributes,
+            List processAttributes) throws IllegalActionException {
         // FIXME: can we use Generics here for the lists?
 
         /*  Beth removed - There should not be any transparent composite actors
@@ -559,21 +601,28 @@ public abstract class SequencedModelDirector extends Director{
         
             */
         // Note that a ProcessAttribute is also a SequenceAttribute
-        
-        if ( !sequenceAttributes.isEmpty() ) {
-            if ( sequenceAttributes.size() > 1) {
-                throw new IllegalActionException(this," Actor " + actor.getName() +" can have only one Sequence Attribute or Process Attribute");
-                } 
-            }  
-        
+
+        if (!sequenceAttributes.isEmpty()) {
+            if (sequenceAttributes.size() > 1) {
+                throw new IllegalActionException(
+                        this,
+                        " Actor "
+                                + actor.getName()
+                                + " can have only one Sequence Attribute or Process Attribute");
+            }
+        }
+
         // Check for control actors that do not have sequence/process attributes
         else // else, if the sequence attribute list is empty 
         {
-            if (actor instanceof ControlActor)
-            {
-                throw new IllegalActionException(this, " Control Actor " + actor.getName() + " must have a Sequence Attribute or Process Attribute");
+            if (actor instanceof ControlActor) {
+                throw new IllegalActionException(
+                        this,
+                        " Control Actor "
+                                + actor.getName()
+                                + " must have a Sequence Attribute or Process Attribute");
             }
-            
+
             // Check for opaque composite actors that do not have sequence attributes
             // These must have sequence attributes in order to be handled correctly by
             // the scheduler (since we must 'fire' the opaque composite to call the 
@@ -582,19 +631,18 @@ public abstract class SequencedModelDirector extends Director{
             // attribute or sequence attribute.  In many models, they do not and are scheduled
             // as upstream.  However we still want a director inside, since the entities inside the 
             // composite actors should be fired locally and not scheduled globally.
-            
+
             /*
             if (actor instanceof TypedCompositeActor && ((CompositeEntity)actor).isOpaque())
             {
                 throw new IllegalActionException(this, " Opaque Composite Actor " + actor.getName() + " must have a Sequence Attribute or Process Attribute");
             }
             */
-        
+
         }
-            
+
         //FIXME:  Add more checks here, for actors that need sequence attributes
     }
-
 
     /** Return false if the system has finished executing, either by
      *  reaching the iteration limit, or having an actor in the system return
@@ -641,7 +689,7 @@ public abstract class SequencedModelDirector extends Director{
     public String[] suggestedModalModelDirectors() {
         return new String[] { "ptolemy.domains.fsm.kernel.FSMDirector",
                 "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
-        "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
+                "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
     /** Return true to indicate that a ModalModel under control
@@ -652,7 +700,7 @@ public abstract class SequencedModelDirector extends Director{
     public boolean supportMultirateFiring() {
         return false;
     }
- 
+
     /** Copied from SDFScheduler; also, same as in StaticSchedulingDirector
      *  Set the scheduler for this SequenceDirector.
      *  The container of the specified scheduler is set to this director.
@@ -679,8 +727,7 @@ public abstract class SequencedModelDirector extends Director{
         }
         _setScheduler(scheduler);
     }
-  
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -704,8 +751,7 @@ public abstract class SequencedModelDirector extends Director{
             invalidateSchedule();
         }
     }
-    
-    
+
     /** Fire the given SequenceSchedule
      * 
      *  This is the same for the ProcessDirector and SequenceDirector
@@ -714,76 +760,80 @@ public abstract class SequencedModelDirector extends Director{
      *  @param seqSchedule   The SequenceSchedule to fire
      *  @exception IllegalActionException  From actor.iterate()
      */
-    
-    void fireSchedule(SequenceSchedule seqSchedule) throws IllegalActionException
-    {
-            // Get a firing iterator for this schedule
-            Iterator firings = seqSchedule.firingIterator();
-    
-            if (firings == null)
-            {
-                    // FIXME: Throw exception?  Should exclude empty schedules
-                    System.out.println("Null firing iterator in ProcessDirector or SequenceDirector");
-        
+
+    void fireSchedule(SequenceSchedule seqSchedule)
+            throws IllegalActionException {
+        // Get a firing iterator for this schedule
+        Iterator firings = seqSchedule.firingIterator();
+
+        if (firings == null) {
+            // FIXME: Throw exception?  Should exclude empty schedules
+            System.out
+                    .println("Null firing iterator in ProcessDirector or SequenceDirector");
+
+        }
+
+        while (firings.hasNext() && !_stopRequested) {
+            Firing firing = (Firing) firings.next();
+            Actor actor = firing.getActor();
+
+            int iterationCount = firing.getIterationCount();
+
+            if (_debugging) {
+                _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE,
+                        iterationCount));
             }
-    
-            while (firings.hasNext() && !_stopRequested) {
-                    Firing firing = (Firing) firings.next();
-                    Actor actor = firing.getActor();
-        
-                    int iterationCount = firing.getIterationCount();
 
-                    if (_debugging) {
-                            _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE,
-                                            iterationCount));
-                    }
+            int returnValue = actor.iterate(iterationCount);
 
-                    int returnValue = actor.iterate(iterationCount);
-
-                    if (returnValue == STOP_ITERATING) {
-                            _postfireReturns = false;
-                    } else if (returnValue == NOT_READY) {
-                            throw new IllegalActionException(this, actor, "Actor "
-                                            + "is not ready to fire.");
-                    }
-
-                    if (_debugging) {
-                            _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE,
-                    iterationCount));
-                    }
+            if (returnValue == STOP_ITERATING) {
+                _postfireReturns = false;
+            } else if (returnValue == NOT_READY) {
+                throw new IllegalActionException(this, actor, "Actor "
+                        + "is not ready to fire.");
             }
+
+            if (_debugging) {
+                _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE,
+                        iterationCount));
+            }
+        }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Initialize the object.   In this case, we give the SequencedModelDirector a
      *  default scheduler of the class SequenceScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
      */
     private void _init() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         // Create a new SequenceScheduler object
         // This sets the container at the same time
-        SequenceScheduler scheduler = new SequenceScheduler(this, uniqueName("SequenceScheduler"));
+        SequenceScheduler scheduler = new SequenceScheduler(this,
+                uniqueName("SequenceScheduler"));
         setScheduler(scheduler);
-        
+
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setExpression("0");
 
-        userDefinedOutputInitialValue = new Parameter(this, "Enable User Defined Output Initial Values", BooleanToken.TRUE);
-        userDefinedOutputInitialValue.setTypeEquals(BaseType.BOOLEAN); 
+        userDefinedOutputInitialValue = new Parameter(this,
+                "Enable User Defined Output Initial Values", BooleanToken.TRUE);
+        userDefinedOutputInitialValue.setTypeEquals(BaseType.BOOLEAN);
 
-        userDefinedDefaultOutputInitialValue = new Parameter(this, "User Defined Default Output Initial Value");
-        userDefinedDefaultOutputInitialValue.setTypeEquals(BaseType.GENERAL);   
+        userDefinedDefaultOutputInitialValue = new Parameter(this,
+                "User Defined Default Output Initial Value");
+        userDefinedDefaultOutputInitialValue.setTypeEquals(BaseType.GENERAL);
 
-        defaultOutputInitialValue = new Parameter(this, "Enable Default Output Initial Value", BooleanToken.TRUE);
-        defaultOutputInitialValue.setTypeEquals(BaseType.BOOLEAN);   
+        defaultOutputInitialValue = new Parameter(this,
+                "Enable Default Output Initial Value", BooleanToken.TRUE);
+        defaultOutputInitialValue.setTypeEquals(BaseType.BOOLEAN);
     }
 
-///////////////////////////////////////////////////////////////////
-////protected methods                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////protected methods                 ////
 
     /**
      * Return the initialValueParameter Name for each of the port.
@@ -791,17 +841,18 @@ public abstract class SequencedModelDirector extends Director{
      * @param channel The channel of the port to be analyzed.
      * @return The initial value parameter name.
      */
-    protected static String _getInitialValueParameterName(TypedIOPort port, int channel) {
+    protected static String _getInitialValueParameterName(TypedIOPort port,
+            int channel) {
 
         if (port.isMultiport()) {
-            return port.getName() + "_" + channel + "_InitialValue";            
+            return port.getName() + "_" + channel + "_InitialValue";
         } else {
             return port.getName() + "_InitialValue";
         }
     }
 
-///////////////////////////////////////////////////////////////////
-////package friendly variables                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////package friendly variables                 ////
 
     // FIXME:  Currently disconnected graphs (or, connected graphs with unschedulable
     // upstream actors) are not allowed.  
@@ -811,13 +862,13 @@ public abstract class SequencedModelDirector extends Director{
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The list of sequenced actors in the model. */
-    protected List<SequenceAttribute> _sequencedList;  
+    protected List<SequenceAttribute> _sequencedList;
 
     /** The scheduler for this director. */
     protected SequenceScheduler _scheduler;
-    
+
     /** The value that the postfire method will return. */
     protected boolean _postfireReturns;
 
@@ -825,4 +876,3 @@ public abstract class SequencedModelDirector extends Director{
     protected int _iterationCount = 0;
 
 }
-

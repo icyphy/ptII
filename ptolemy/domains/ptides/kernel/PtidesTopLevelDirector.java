@@ -64,7 +64,7 @@ public class PtidesTopLevelDirector extends DEDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     /** Uses the fireAt() method of the DE Director, compensating the fireAt
      *  time by subtracting the platform synchronization error associated with
      *  the PTIDES actor.
@@ -72,12 +72,13 @@ public class PtidesTopLevelDirector extends DEDirector {
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         if (actor.getDirector() instanceof PtidesBasicDirector) {
-            return super.fireAt(actor, time.subtract(_ptidesPlatformSyncError.get(actor)));
+            return super.fireAt(actor, time.subtract(_ptidesPlatformSyncError
+                    .get(actor)));
         } else {
             return super.fireAt(actor, time);
         }
     }
-    
+
     /** Return a simulated physical time, which is the current time plus the
      *  synchronization error of that particular PTIDES actor.
      *  @return A time object that contains the value of the current time plus
@@ -86,21 +87,23 @@ public class PtidesTopLevelDirector extends DEDirector {
     public Time getSimulatedPhysicalTime(Actor ptidesActor) {
         return getModelTime().add(_ptidesPlatformSyncError.get(ptidesActor));
     }
-    
+
     /** Preinitialize the PTIDES top level director. This will store all the actors
      *  as well as the synchronization error of each of the actors.
      */
     public void preinitialize() throws IllegalActionException {
         _ptidesPlatformSyncError = new HashMap<Actor, Double>();
-        for (Actor actor : (List<Actor>)((CompositeActor)getContainer()).deepEntityList()) {
+        for (Actor actor : (List<Actor>) ((CompositeActor) getContainer())
+                .deepEntityList()) {
             Director director = actor.getDirector();
             if (director instanceof PtidesBasicDirector) {
-                _ptidesPlatformSyncError.put(actor, 
-                        Double.valueOf(((PtidesBasicDirector)director).getSyncError()));
+                _ptidesPlatformSyncError.put(actor, Double
+                        .valueOf(((PtidesBasicDirector) director)
+                                .getSyncError()));
             }
         }
         super.preinitialize();
     }
-    
+
     private Map<Actor, Double> _ptidesPlatformSyncError;
 }

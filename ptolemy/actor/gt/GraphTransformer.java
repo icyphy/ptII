@@ -1793,10 +1793,10 @@ public class GraphTransformer extends ChangeRequest {
          */
         private List<NamedObj> _createdObjects;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// ReplacementObjectAttribute
-    
+
     /**
      A temporary attribute to record the corresponding object in the replacement
      for any object in the pattern.

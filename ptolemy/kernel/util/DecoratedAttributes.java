@@ -61,7 +61,7 @@ functionality is divided in two classes to solve dependency issues.
 */
 
 public abstract class DecoratedAttributes extends Attribute {
-    
+
     /** Construct a DecoratedAttributes instance with the given name and the container of the decorator.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -75,13 +75,14 @@ public abstract class DecoratedAttributes extends Attribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public DecoratedAttributes(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
+    public DecoratedAttributes(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Export the Decorated attributes. This is a special method
      *  where we don't store the Decorated Attributes directly in the
      *  container, but we do it is another container (typically the container
@@ -98,25 +99,30 @@ public abstract class DecoratedAttributes extends Attribute {
      *   itself. Note that this is a runtime exception so it need not
      *   be declared explicitly.
      */
-    public void exportToMoML(NamedObj container, Writer output, int depth) throws InvalidStateException, IOException{
+    public void exportToMoML(NamedObj container, Writer output, int depth)
+            throws InvalidStateException, IOException {
         if (this.attributeList().isEmpty()) {
             return;
         }
-        StringAttribute attribute = (StringAttribute) this.getAttribute("_decorator");
+        StringAttribute attribute = (StringAttribute) this
+                .getAttribute("_decorator");
         if (attribute == null) {
             try {
                 attribute = new StringAttribute(this, "_decorator");
                 attribute.setVisibility(Settable.NONE);
             } catch (IllegalActionException e) {
-                throw new InvalidStateException(this, e, "Can't export the decorated attributes.");
+                throw new InvalidStateException(this, e,
+                        "Can't export the decorated attributes.");
             } catch (NameDuplicationException e) {
-                throw new InvalidStateException(this, e, "Can't export the decorated attributes.");
+                throw new InvalidStateException(this, e,
+                        "Can't export the decorated attributes.");
             }
         }
         try {
             attribute.setExpression(getDecorator().getName(toplevel()));
         } catch (IllegalActionException e) {
-            throw new InvalidStateException(this, e, "Can't export the decorated attributes.");
+            throw new InvalidStateException(this, e,
+                    "Can't export the decorated attributes.");
         }
         exportMoML(output, depth, getName(container));
     }
@@ -136,7 +142,7 @@ public abstract class DecoratedAttributes extends Attribute {
      *  @return The full path of the decorator in the model.
      */
     protected abstract StringAttribute _decoratorPath();
-    
+
     /** Register this attribute again to the container. This is necessary, since when
      *  opening the model, the decorator is not directly know, the container doesn't
      *  have the mapping between attribute and decorator.
@@ -145,7 +151,8 @@ public abstract class DecoratedAttributes extends Attribute {
      *  @exception IllegalActionException If the attribute is not an
      *   an instance of the expect class (in derived classes).
      */
-    final protected void _register() throws NameDuplicationException, IllegalActionException {
+    final protected void _register() throws NameDuplicationException,
+            IllegalActionException {
         getContainer()._addAttribute(this);
     }
 }

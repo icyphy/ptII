@@ -159,7 +159,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
 
         // Constrain trialsRemaining to be less than or equal to the sourcePool.
         if (trialsRemaining > sourcePool) {
-                trialsRemaining = (int) sourcePool;
+            trialsRemaining = (int) sourcePool;
         }
         // While there are trials remaining...
         // Loop through the array multiple times.  Formerly, if we passed
@@ -171,7 +171,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         // selections in one or two populations given, results like 7, 8, 14
         // or 7, 11, 11 were common.
         // See test/auto/ColtBinomialSelectorManyTrials.xml
-        while (trialsRemaining>0) {
+        while (trialsRemaining > 0) {
             for (int i = 0; i < _current.length; i++) {
                 // Do a selection for a population.
                 int selected = 0;
@@ -191,7 +191,8 @@ public class ColtBinomialSelector extends ColtRandomSource {
                         // correct number of selections should the
                         // first pass (with high probability) fail to
                         // select the required number of selections
-                        selected = _generator.nextInt((int) Math.min(trialsRemaining,sourceValues[i]), p);
+                        selected = _generator.nextInt((int) Math.min(
+                                trialsRemaining, sourceValues[i]), p);
                     } else {
                         selected = trialsRemaining;
                     }
@@ -199,9 +200,9 @@ public class ColtBinomialSelector extends ColtRandomSource {
 
                 // Add to the selection record (_current).
                 _current[i] += selected;
-            
+
                 // Reduce the amount that can be selected from this population in the future.
-                sourceValues[i]-=selected;
+                sourceValues[i] -= selected;
 
                 // Reduce the trials remaining by the successful trials.
                 trialsRemaining -= selected;

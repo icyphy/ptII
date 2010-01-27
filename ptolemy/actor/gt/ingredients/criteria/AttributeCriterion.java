@@ -317,8 +317,7 @@ public class AttributeCriterion extends Criterion {
     private PtolemyExpressionString _attributeValue;
 
     static {
-        ChoiceCriterionElement attributeTypes =
-            (ChoiceCriterionElement) _ELEMENTS[1];
+        ChoiceCriterionElement attributeTypes = (ChoiceCriterionElement) _ELEMENTS[1];
         attributeTypes.addChoices(Constants.types().keySet());
         attributeTypes.addChoice("arrayType(int)");
         attributeTypes.addChoice("arrayType(int,5)");

@@ -71,10 +71,12 @@ public class PtidesPreemptiveUserEDFDirector extends
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
      */
-    public PtidesPreemptiveUserEDFDirector(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+    public PtidesPreemptiveUserEDFDirector(CompositeEntity container,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
-        calculateDeadlineFromModelDelay = new Parameter(this, "calculateDeadlineFromModelDelay");
+        calculateDeadlineFromModelDelay = new Parameter(this,
+                "calculateDeadlineFromModelDelay");
         calculateDeadlineFromModelDelay.setExpression("false");
         calculateDeadlineFromModelDelay.setTypeEquals(BaseType.BOOLEAN);
     }
@@ -86,7 +88,7 @@ public class PtidesPreemptiveUserEDFDirector extends
      *  using model time delays.
      */
     public Parameter calculateDeadlineFromModelDelay;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -109,12 +111,13 @@ public class PtidesPreemptiveUserEDFDirector extends
      *  with only model time delays, not worst-case-execution-times (WCET). 
      */
     protected void _calculateDeadline() throws IllegalActionException {
-        BooleanToken token = (BooleanToken)calculateDeadlineFromModelDelay.getToken();
+        BooleanToken token = (BooleanToken) calculateDeadlineFromModelDelay
+                .getToken();
         if (token != null && token.booleanValue()) {
             super._calculateDeadline();
         }
     }
-    
+
     /** Calculates the dependencies between each pair of input ports within the composite
      *  actor that is governed by this director.
      *  @exception IllegalActionException
@@ -128,51 +131,65 @@ public class PtidesPreemptiveUserEDFDirector extends
         // AND, there exists another port j', where j' is in o's sinkPortList(), and either
         // j' == j_n, or j' resides in the same finite equivalence class as j_n.
         List<IOPort> startInputs = new ArrayList<IOPort>();
-        for (Actor actor : ((List<Actor>)((TypedCompositeActor)getContainer()).deepEntityList())) {
+        for (Actor actor : ((List<Actor>) ((TypedCompositeActor) getContainer())
+                .deepEntityList())) {
             if (actor == getContainer()) {
                 break;
             }
-            for (IOPort firstInput : (List<IOPort>)actor.inputPortList()) {
+            for (IOPort firstInput : (List<IOPort>) actor.inputPortList()) {
                 startInputs.add(firstInput);
                 // FIXME: we assume events at the same finite equivalent classes should be processed
                 // in timestamp order regardless of the timestamps of events at the outputs. Thus
                 // we do not need to know the dependency between the equivalent input ports.
-                for (IOPort secondInput : (PtidesBasicDirector._finiteEquivalentPorts(firstInput))) {
-                    Map<IOPort, Dependency> portDependency = _inputPairDependencies.get(firstInput);
+                for (IOPort secondInput : (PtidesBasicDirector
+                        ._finiteEquivalentPorts(firstInput))) {
+                    Map<IOPort, Dependency> portDependency = _inputPairDependencies
+                            .get(firstInput);
                     if (portDependency == null) {
                         portDependency = new HashMap<IOPort, Dependency>();
                     }
-                    portDependency.put(secondInput, SuperdenseDependency.OTIMES_IDENTITY);
+                    portDependency.put(secondInput,
+                            SuperdenseDependency.OTIMES_IDENTITY);
                     _inputPairDependencies.put(firstInput, portDependency);
                 }
-                for (IOPort output : PtidesBasicDirector._finiteDependentPorts(firstInput)) {
-                    Dependency dependency = actor.getCausalityInterface().getDependency(firstInput, output);
-                    for (IOPort secondInput : (List<IOPort>)output.sinkPortList()) {
+                for (IOPort output : PtidesBasicDirector
+                        ._finiteDependentPorts(firstInput)) {
+                    Dependency dependency = actor.getCausalityInterface()
+                            .getDependency(firstInput, output);
+                    for (IOPort secondInput : (List<IOPort>) output
+                            .sinkPortList()) {
                         if (secondInput.getContainer() != getContainer()) {
-                            Map<IOPort, Dependency> portDependency = _inputPairDependencies.get(firstInput);
+                            Map<IOPort, Dependency> portDependency = _inputPairDependencies
+                                    .get(firstInput);
                             if (portDependency == null) {
                                 portDependency = new HashMap<IOPort, Dependency>();
                             }
-                            SuperdenseDependency prevDependency = (SuperdenseDependency)portDependency.get(secondInput);
-                            if (prevDependency != null && prevDependency.compareTo(dependency) < 0) {
+                            SuperdenseDependency prevDependency = (SuperdenseDependency) portDependency
+                                    .get(secondInput);
+                            if (prevDependency != null
+                                    && prevDependency.compareTo(dependency) < 0) {
                                 dependency = prevDependency;
                             }
                             portDependency.put(secondInput, dependency);
-                            for (IOPort equivSecondInput : (PtidesBasicDirector._finiteEquivalentPorts(secondInput))) {
-                                portDependency.put(equivSecondInput, dependency);
+                            for (IOPort equivSecondInput : (PtidesBasicDirector
+                                    ._finiteEquivalentPorts(secondInput))) {
+                                portDependency
+                                        .put(equivSecondInput, dependency);
                             }
-                            _inputPairDependencies.put(firstInput, portDependency);
+                            _inputPairDependencies.put(firstInput,
+                                    portDependency);
                         }
                     }
                 }
             }
         }
-        
+
         // Given the initialized input pair dependencies, use Floyd-Warshall algorithm to calculate
         // the dependency between all pairs of input ports in the composite actor governed by this
         // director.
-        IOPort[] allInputs= (IOPort[])(startInputs.toArray(new IOPort[startInputs.size()]));
-        int length = allInputs.length; 
+        IOPort[] allInputs = (startInputs
+                .toArray(new IOPort[startInputs.size()]));
+        int length = allInputs.length;
         for (int i = 0; i < length; i++) {
             IOPort middleInput = allInputs[i];
             for (int j = 0; j < length; j++) {
@@ -182,22 +199,31 @@ public class PtidesPreemptiveUserEDFDirector extends
                     Dependency middleEndDependency = null;
                     Dependency startMiddleDependency = null;
                     Dependency prevDependency = null;
-                    Map<IOPort, Dependency> middlePortDependency = _inputPairDependencies.get(middleInput);
+                    Map<IOPort, Dependency> middlePortDependency = _inputPairDependencies
+                            .get(middleInput);
                     if (middlePortDependency != null) {
-                        middleEndDependency = middlePortDependency.get(endInput);
+                        middleEndDependency = middlePortDependency
+                                .get(endInput);
                         if (middleEndDependency != null) {
-                            Map<IOPort, Dependency> startPortDependency = _inputPairDependencies.get(startInput);
+                            Map<IOPort, Dependency> startPortDependency = _inputPairDependencies
+                                    .get(startInput);
                             if (startPortDependency != null) {
-                                startMiddleDependency = startPortDependency.get(middleInput);
+                                startMiddleDependency = startPortDependency
+                                        .get(middleInput);
                                 if (startMiddleDependency != null) {
-                                    prevDependency = startPortDependency.get(endInput);
-                                    Dependency newDependency = startMiddleDependency.oTimes(middleEndDependency);
+                                    prevDependency = startPortDependency
+                                            .get(endInput);
+                                    Dependency newDependency = startMiddleDependency
+                                            .oTimes(middleEndDependency);
                                     if (prevDependency != null) {
-                                        if (newDependency.compareTo(prevDependency) < 0) {
-                                            startPortDependency.put(endInput, newDependency);
+                                        if (newDependency
+                                                .compareTo(prevDependency) < 0) {
+                                            startPortDependency.put(endInput,
+                                                    newDependency);
                                         }
                                     } else {
-                                        startPortDependency.put(endInput, newDependency);
+                                        startPortDependency.put(endInput,
+                                                newDependency);
                                     }
                                 }
                             }
@@ -217,7 +243,8 @@ public class PtidesPreemptiveUserEDFDirector extends
      *  @param event The event of interest.
      *  @exception IllegalActionException
      */
-    protected boolean _safeToProcess(PtidesEvent event) throws IllegalActionException {
+    protected boolean _safeToProcess(PtidesEvent event)
+            throws IllegalActionException {
         boolean result = super._safeToProcess(event);
         if (result == false) {
             return false;
@@ -229,7 +256,7 @@ public class PtidesPreemptiveUserEDFDirector extends
                     // if the input port is null, i.e., it does not causally relate to any event
                     // that is coming from any other input ports, then this event is always safe
                     // to process
-                    return true;                    
+                    return true;
                 } else {
                     thisPort = _getOneSinkPort(thisPort);
                 }
@@ -238,10 +265,11 @@ public class PtidesPreemptiveUserEDFDirector extends
             // but it depends on events coming from other input ports.
             List<PtidesEvent> eventList = new ArrayList();
             for (DoubleTimedEvent timedEvent : _currentlyExecutingStack) {
-                eventList.addAll((List<PtidesEvent>)timedEvent.contents);
+                eventList.addAll((List<PtidesEvent>) timedEvent.contents);
             }
             for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
-                PtidesEvent earlierEvent = ((PtidesListEventQueue)_eventQueue).get(eventIndex);
+                PtidesEvent earlierEvent = ((PtidesListEventQueue) _eventQueue)
+                        .get(eventIndex);
                 // Since the event queue is sorted in the order of timestamps, any event with
                 // larger timestamp cannot causally affect the execution of the event of interest.
                 // Any smaller event will also 
@@ -256,26 +284,32 @@ public class PtidesPreemptiveUserEDFDirector extends
                     if (earlierPort == null) {
                         // The earlier event doesn't have a ioPort, so we assume the pure event
                         // can result in events at all of its output ports. 
-                        earlierPort = _getOneSinkPort((IOPort)earlierEvent.actor().inputPortList().get(0));
+                        earlierPort = _getOneSinkPort((IOPort) earlierEvent
+                                .actor().inputPortList().get(0));
                     } else {
-                        earlierPort = _getOneSinkPort(earlierPort);                        
+                        earlierPort = _getOneSinkPort(earlierPort);
                     }
                 }
                 Map<IOPort, Dependency> portDependency = _inputPairDependencies
-                .get(earlierPort);
+                        .get(earlierPort);
                 if (portDependency != null) {
-                    SuperdenseDependency dependency = (SuperdenseDependency)portDependency.get(thisPort);
-                    Time timeDifference = event.timeStamp().subtract(earlierEvent.timeStamp());
+                    SuperdenseDependency dependency = (SuperdenseDependency) portDependency
+                            .get(thisPort);
+                    Time timeDifference = event.timeStamp().subtract(
+                            earlierEvent.timeStamp());
                     if (dependency != null) {
                         // if the difference in model time between these two events is smaller
                         // or equal to the dependency between the two residing ports, then the
                         // event is unsafe.
-                        if (timeDifference.getDoubleValue() > dependency.timeValue()) {
+                        if (timeDifference.getDoubleValue() > dependency
+                                .timeValue()) {
                             return false;
-                        } else if (timeDifference.getDoubleValue() == dependency.timeValue()) {
+                        } else if (timeDifference.getDoubleValue() == dependency
+                                .timeValue()) {
                             // If they are equal, and these two events do not reside at the same
                             // equivalence class, then the event of interest is not safe.
-                            if (!_destinedToSameEquivalenceClass(earlierEvent, event)) {
+                            if (!_destinedToSameEquivalenceClass(earlierEvent,
+                                    event)) {
                                 return false;
                             }
                         }
@@ -288,38 +322,40 @@ public class PtidesPreemptiveUserEDFDirector extends
         }
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** Computed dependencies between each pair of input ports of actors in the
      *  composite actor that is governed by this director. */
     private Map<IOPort, Map<IOPort, Dependency>> _inputPairDependencies;
-    
+
     /** Given an input port (a), return one input port (b) such that \delta_0{a, o) < \infty,
      *  where o is an output port, and o is directly connected to b. 
      *  @param thisPort
      *  @return one input port.
      *  @exception IllegalActionException 
      */
-    private IOPort _getOneSinkPort(IOPort thisPort) throws IllegalActionException {
+    private IOPort _getOneSinkPort(IOPort thisPort)
+            throws IllegalActionException {
         Collection<IOPort> outputPorts = _finiteDependentPorts(thisPort);
         if (outputPorts.size() == 0) {
-            throw new IllegalActionException(thisPort.getContainer(), thisPort,
-                    "This actor's output ports are not finitely dependent on any " +
-                    "of its input ports, We cannot determine whether pure events " +
-                    "produced by this actor are safe to process or not.");
+            throw new IllegalActionException(
+                    thisPort.getContainer(),
+                    thisPort,
+                    "This actor's output ports are not finitely dependent on any "
+                            + "of its input ports, We cannot determine whether pure events "
+                            + "produced by this actor are safe to process or not.");
         }
         IOPort outputPort = outputPorts.iterator().next();
         List<IOPort> sinkPorts = outputPort.sinkPortList();
         if (sinkPorts.size() == 0) {
-            throw new IllegalActionException(outputPort, "This port " +
-                            "must be connected to some downstream actor.");
+            throw new IllegalActionException(outputPort, "This port "
+                    + "must be connected to some downstream actor.");
         }
         // This port can be any arbitrary port that is going to receive outputs
         // from this pure event.
         return sinkPorts.get(0);
     }
-
 
 }

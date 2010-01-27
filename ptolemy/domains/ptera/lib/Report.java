@@ -357,6 +357,5 @@ public class Report extends Event {
 
     /** The message handler for the dialogs.
      */
-    private static final MessageHandler _MESSAGE_HANDLER =
-        new UndeferredGraphicalMessageHandler();
+    private static final MessageHandler _MESSAGE_HANDLER = new UndeferredGraphicalMessageHandler();
 }

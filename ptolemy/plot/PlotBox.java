@@ -474,28 +474,28 @@ public class PlotBox extends JPanel implements Printable {
 
         // Remove the buttons
         if (_printButton != null) {
-            ActionListener [] listeners = _printButton.getActionListeners();
+            ActionListener[] listeners = _printButton.getActionListeners();
             for (int i = 0; i < listeners.length; i++) {
                 _printButton.removeActionListener(listeners[i]);
             }
             _printButton = null;
         }
         if (_resetButton != null) {
-            ActionListener [] listeners = _resetButton.getActionListeners();
+            ActionListener[] listeners = _resetButton.getActionListeners();
             for (int i = 0; i < listeners.length; i++) {
                 _resetButton.removeActionListener(listeners[i]);
             }
             _resetButton = null;
         }
         if (_formatButton != null) {
-            ActionListener [] listeners = _formatButton.getActionListeners();
+            ActionListener[] listeners = _formatButton.getActionListeners();
             for (int i = 0; i < listeners.length; i++) {
                 _formatButton.removeActionListener(listeners[i]);
             }
             _formatButton = null;
         }
         if (_fillButton != null) {
-            ActionListener [] listeners = _fillButton.getActionListeners();
+            ActionListener[] listeners = _fillButton.getActionListeners();
             for (int i = 0; i < listeners.length; i++) {
                 _fillButton.removeActionListener(listeners[i]);
             }
@@ -4470,7 +4470,7 @@ public class PlotBox extends JPanel implements Printable {
             // not work on mouse drags.  It does work on MouseListener
             // methods, so those methods set a variable _zooming that
             // is used by _zoomBox to determine whether to draw a box.
-            if ((event.getModifiers() & InputEvent.BUTTON1_MASK)!= 0
+            if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0
                     && ((event.getModifiers() & InputEvent.BUTTON3_MASK) == 0)) {
                 PlotBox.this._zoomBox(event.getX(), event.getY());
             }

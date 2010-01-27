@@ -32,7 +32,6 @@ package ptolemy.data.properties.lattice;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PropertyTerm
 

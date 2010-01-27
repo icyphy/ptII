@@ -127,7 +127,7 @@ public class VariableDelayCounter extends VariableDelay {
             }
         }
     }
-    
+
     /** Override the base class to zero the counter.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -174,7 +174,7 @@ public class VariableDelayCounter extends VariableDelay {
 
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -205,7 +205,7 @@ public class VariableDelayCounter extends VariableDelay {
                             + result);
         }
     }
-    
+
     /** Override the method of the super class to initialize the
      *  parameter values.
      */
@@ -214,7 +214,7 @@ public class VariableDelayCounter extends VariableDelay {
         delay = new PortParameter(this, "delay");
         delay.setExpression("1.0");
         delay.setTypeEquals(BaseType.DOUBLE);
-        
+
         Set<Port> dependentPorts = new HashSet<Port>();
         dependentPorts.add(input);
         dependentPorts.add(delay.getPort());

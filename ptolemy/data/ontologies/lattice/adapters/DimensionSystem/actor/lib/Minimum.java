@@ -53,8 +53,8 @@ public class Minimum extends AtomicActor {
      * @param actor The given Minimum actor
      * @exception IllegalActionException
      */
-    public Minimum(LatticeOntologySolver solver,
-            ptolemy.actor.lib.Minimum actor) throws IllegalActionException {
+    public Minimum(LatticeOntologySolver solver, ptolemy.actor.lib.Minimum actor)
+            throws IllegalActionException {
 
         super(solver, actor, false);
     }

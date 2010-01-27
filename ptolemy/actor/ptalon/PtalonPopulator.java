@@ -450,7 +450,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 AST __t14 = _t;
                 PtalonAST tmp9_AST = null;
                 PtalonAST tmp9_AST_in = null;
-                tmp9_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp9_AST = (PtalonAST) astFactory.create(_t);
                 tmp9_AST_in = (PtalonAST) _t;
                 astFactory.addASTChild(currentAST, tmp9_AST);
                 ASTPair __currentAST14 = currentAST.copy();
@@ -481,8 +481,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                         AST __t16 = _t;
                         PtalonAST tmp10_AST = null;
                         PtalonAST tmp10_AST_in = null;
-                        tmp10_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
+                        tmp10_AST = (PtalonAST) astFactory.create(_t);
                         tmp10_AST_in = (PtalonAST) _t;
                         astFactory.addASTChild(currentAST, tmp10_AST);
                         ASTPair __currentAST16 = currentAST.copy();
@@ -536,7 +535,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 AST __t17 = _t;
                 PtalonAST tmp11_AST = null;
                 PtalonAST tmp11_AST_in = null;
-                tmp11_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp11_AST = (PtalonAST) astFactory.create(_t);
                 tmp11_AST_in = (PtalonAST) _t;
                 astFactory.addASTChild(currentAST, tmp11_AST);
                 ASTPair __currentAST17 = currentAST.copy();
@@ -567,8 +566,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                         AST __t19 = _t;
                         PtalonAST tmp12_AST = null;
                         PtalonAST tmp12_AST_in = null;
-                        tmp12_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
+                        tmp12_AST = (PtalonAST) astFactory.create(_t);
                         tmp12_AST_in = (PtalonAST) _t;
                         astFactory.addASTChild(currentAST, tmp12_AST);
                         ASTPair __currentAST19 = currentAST.copy();
@@ -655,7 +653,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 AST __t21 = _t;
                 PtalonAST tmp13_AST = null;
                 PtalonAST tmp13_AST_in = null;
-                tmp13_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp13_AST = (PtalonAST) astFactory.create(_t);
                 tmp13_AST_in = (PtalonAST) _t;
                 astFactory.addASTChild(currentAST, tmp13_AST);
                 ASTPair __currentAST21 = currentAST.copy();
@@ -686,8 +684,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                         AST __t23 = _t;
                         PtalonAST tmp14_AST = null;
                         PtalonAST tmp14_AST_in = null;
-                        tmp14_AST = (PtalonAST) astFactory
-                                .create((PtalonAST) _t);
+                        tmp14_AST = (PtalonAST) astFactory.create(_t);
                         tmp14_AST_in = (PtalonAST) _t;
                         astFactory.addASTChild(currentAST, tmp14_AST);
                         ASTPair __currentAST23 = currentAST.copy();
@@ -741,7 +738,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 AST __t24 = _t;
                 PtalonAST tmp15_AST = null;
                 PtalonAST tmp15_AST_in = null;
-                tmp15_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp15_AST = (PtalonAST) astFactory.create(_t);
                 tmp15_AST_in = (PtalonAST) _t;
                 astFactory.addASTChild(currentAST, tmp15_AST);
                 ASTPair __currentAST24 = currentAST.copy();
@@ -809,7 +806,7 @@ public class PtalonPopulator extends antlr.TreeParser implements
                 AST __t26 = _t;
                 PtalonAST tmp16_AST = null;
                 PtalonAST tmp16_AST_in = null;
-                tmp16_AST = (PtalonAST) astFactory.create((PtalonAST) _t);
+                tmp16_AST = (PtalonAST) astFactory.create(_t);
                 tmp16_AST_in = (PtalonAST) _t;
                 astFactory.addASTChild(currentAST, tmp16_AST);
                 ASTPair __currentAST26 = currentAST.copy();

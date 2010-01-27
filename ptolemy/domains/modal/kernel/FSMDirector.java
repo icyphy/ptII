@@ -327,15 +327,19 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         .getName());
             }
             // First execute the refinements of the transition.
-            Actor[] transitionRefinements = _lastChosenTransition.getRefinement();
+            Actor[] transitionRefinements = _lastChosenTransition
+                    .getRefinement();
 
             if (transitionRefinements != null) {
                 for (int i = 0; i < transitionRefinements.length; ++i) {
-                    if (_stopRequested || _disabledActors.contains(transitionRefinements[i])) {
+                    if (_stopRequested
+                            || _disabledActors
+                                    .contains(transitionRefinements[i])) {
                         break;
                     }
                     if (_debugging) {
-                        _debug("Fire transition refinement:",  transitionRefinements[i].getName());
+                        _debug("Fire transition refinement:",
+                                transitionRefinements[i].getName());
                     }
                     // FIXME: What should model time be for transition refinements?
                     // It is not reasonable for it to be the time of the originating
@@ -343,17 +347,18 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     // and time will end up bouncing around...
                     if (transitionRefinements[i].prefire()) {
                         transitionRefinements[i].fire();
-                        _transitionRefinementsToPostfire.add(transitionRefinements[i]);
+                        _transitionRefinementsToPostfire
+                                .add(transitionRefinements[i]);
                     }
                 }
             }
             // FIXME: Next line needed?
             setModelTime(environmentTime);
-            
+
             controller.readOutputsFromRefinement();
             return;
         }
-        
+
         // If some preemptive transition guards could not be evaluated due to unknown
         // inputs, then return now. It is not correct to execute the refinements until
         // we know that all preemptive transitions are not enabled.
@@ -365,13 +370,15 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         if (stateRefinements != null) {
             for (int i = 0; i < stateRefinements.length; ++i) {
-                if (_stopRequested || _disabledActors.contains(stateRefinements[i])) {
+                if (_stopRequested
+                        || _disabledActors.contains(stateRefinements[i])) {
                     break;
                 }
                 _setTimeForRefinement(stateRefinements[i]);
                 if (stateRefinements[i].prefire()) {
                     if (_debugging) {
-                        _debug("Fire state refinement:",  stateRefinements[i].getName());
+                        _debug("Fire state refinement:", stateRefinements[i]
+                                .getName());
                     }
                     // NOTE: If the state refinement is an FSMActor, then the following
                     // fire() method doesn't do the right thing. That fire() method does
@@ -384,29 +391,32 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             }
         }
         setModelTime(environmentTime);
-        
+
         controller.readOutputsFromRefinement();
 
         _lastChosenTransition = controller.chooseTransition(currentState
                 .nonpreemptiveTransitionList());
         if (_lastChosenTransition != null) {
             if (_debugging) {
-                _debug("Nonpreemptive transition enabled:", _lastChosenTransition
-                        .getName());
+                _debug("Nonpreemptive transition enabled:",
+                        _lastChosenTransition.getName());
             }
             stateRefinements = _lastChosenTransition.getRefinement();
             if (stateRefinements != null) {
                 for (int i = 0; i < stateRefinements.length; ++i) {
-                    if (_stopRequested || _disabledActors.contains(stateRefinements[i])) {
+                    if (_stopRequested
+                            || _disabledActors.contains(stateRefinements[i])) {
                         break;
                     }
                     // FIXME: What to set time to for the refinement?
                     if (stateRefinements[i].prefire()) {
                         if (_debugging) {
-                            _debug("Fire transition refinement:",  stateRefinements[i].getName());
+                            _debug("Fire transition refinement:",
+                                    stateRefinements[i].getName());
                         }
                         stateRefinements[i].fire();
-                        _transitionRefinementsToPostfire.add(stateRefinements[i]);
+                        _transitionRefinementsToPostfire
+                                .add(stateRefinements[i]);
                     }
                 }
                 controller.readOutputsFromRefinement();
@@ -771,18 +781,18 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         _buildLocalReceiverMaps();
         _resetOutputReceivers();
         _disabledActors.clear();
-        
+
         // Suspend the refinements of all non-initial states at the start time.
         List<State> states = getController().entityList();
         for (State state : states) {
-            if (((BooleanToken)state.isInitialState.getToken()).booleanValue()) {
+            if (((BooleanToken) state.isInitialState.getToken()).booleanValue()) {
                 continue;
             }
             TypedActor[] refinements = state.getRefinement();
             if (refinements != null) {
                 for (TypedActor refinement : refinements) {
                     if (refinement instanceof Suspendable) {
-                        ((Suspendable)refinement).suspend(_currentTime);
+                        ((Suspendable) refinement).suspend(_currentTime);
                     }
                 }
             }
@@ -893,9 +903,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         Actor[] refinements = controller.currentState().getRefinement();
         if (refinements != null) {
             for (Actor stateRefinement : refinements) {
-                if (_lastChosenTransition != null && stateRefinement instanceof Suspendable) {
-                    ((Suspendable)stateRefinement).suspend(environmentTime);
-                }            
+                if (_lastChosenTransition != null
+                        && stateRefinement instanceof Suspendable) {
+                    ((Suspendable) stateRefinement).suspend(environmentTime);
+                }
             }
         }
 
@@ -904,11 +915,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         if (_lastChosenTransition != null) {
             State destinationState = _lastChosenTransition.destinationState();
             if (destinationState != null) {
-                TypedActor[] destinationRefinements = destinationState.getRefinement();
+                TypedActor[] destinationRefinements = destinationState
+                        .getRefinement();
                 if (destinationRefinements != null) {
                     for (TypedActor destinationRefinement : destinationRefinements) {
                         if (destinationRefinement instanceof Suspendable) {
-                            ((Suspendable)destinationRefinement).resume(environmentTime);
+                            ((Suspendable) destinationRefinement)
+                                    .resume(environmentTime);
                         }
                     }
                 }
@@ -930,7 +943,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 // result = false;
             }
         }
-        
+
         _currentLocalReceiverMap = (Map) _localReceiverMaps.get(controller
                 .currentState());
 
@@ -1077,7 +1090,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                                 if (_debugging) {
                                     _debug(getName(),
                                             "input port has no token. Clearing "
-                                            + (insideReceivers[i][j]).getContainer().getFullName());
+                                                    + (insideReceivers[i][j])
+                                                            .getContainer()
+                                                            .getFullName());
                                 }
                                 insideReceivers[i][j].clear();
                             }
@@ -1259,7 +1274,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         return (Receiver[][]) _currentLocalReceiverMap.get(port);
     }
-    
+
     /** If the specified actor is currently enabled (because it
      *  previously returned false from postfire), then re-enable it.
      *  This is called by FSMActor upon taking a reset transition.
@@ -1463,7 +1478,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *   is no executive director.
      */
     private Time _getEnvironmentTime() {
-        Actor container = (Actor)getContainer();
+        Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
         if (executiveDirector != null) {
             Time environmentTime = executiveDirector.getModelTime();
@@ -1480,7 +1495,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         List<IOPort> outputs = ((Actor) getContainer()).outputPortList();
         for (IOPort output : outputs) {
             if (_debugging) {
-                _debug("Resetting inside receivers of output port: " + output.getName());
+                _debug("Resetting inside receivers of output port: "
+                        + output.getName());
             }
             Receiver[][] receivers = output.getInsideReceivers();
             if (receivers != null) {
@@ -1496,7 +1512,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             }
         }
     }
-    
+
     /** If the specified refinement implements Suspendable, then set its
      *  current time equal to the current environment time minus the refinement's
      *  total accumulated suspension time. Otherwise, set current time to
@@ -1506,14 +1522,15 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      */
     private void _setTimeForRefinement(Actor refinement)
             throws IllegalActionException {
-        Actor container = (Actor)getContainer();
+        Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
         if (executiveDirector != null) {
             Time environmentTime = executiveDirector.getModelTime();
             if (refinement instanceof Suspendable) {
                 // Adjust current time to be the environment time minus
                 // the accumulated suspended time of the refinement.
-                Time suspendedTime = ((Suspendable)refinement).accumulatedSuspendTime();
+                Time suspendedTime = ((Suspendable) refinement)
+                        .accumulatedSuspendTime();
                 if (suspendedTime != null) {
                     setModelTime(environmentTime.subtract(suspendedTime));
                     _currentOffset = suspendedTime;
@@ -1523,7 +1540,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             setModelTime(environmentTime);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1532,10 +1549,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
     /** Version of cached reference to mode controller. */
     private long _controllerVersion = -1;
-    
+
     /** The current offset indicating how far behind environment time local time is. */
     private Time _currentOffset;
-    
+
     /** The last chosen transition, or null if none was chosen. */
     private Transition _lastChosenTransition;
 

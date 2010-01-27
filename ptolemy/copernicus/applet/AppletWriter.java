@@ -387,7 +387,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     continue;
                 }
 
-
                 if (jarFilesResults.length() > 0) {
                     jarFilesResults.append(",");
                 }
@@ -620,17 +619,17 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         // Read in the templates and generate new files.
         try {
-//            if (1 == 0) {
-//                // If we are generating only jnlp files to update the demos,
-//                // then we might want to skip generating applets.
-//                CodeGeneratorUtilities.substitute(_templateDirectory
-//                        + "model.htm.in", _substituteMap, _outputDirectory
-//                        + "/" + _sanitizedModelName + ".htm");
-//                CodeGeneratorUtilities.substitute(_templateDirectory
-//                        + "modelVergil.htm.in", _substituteMap,
-//                        _outputDirectory + "/" + _sanitizedModelName
-//                                + "Vergil.htm");
-//            }
+            //            if (1 == 0) {
+            //                // If we are generating only jnlp files to update the demos,
+            //                // then we might want to skip generating applets.
+            //                CodeGeneratorUtilities.substitute(_templateDirectory
+            //                        + "model.htm.in", _substituteMap, _outputDirectory
+            //                        + "/" + _sanitizedModelName + ".htm");
+            //                CodeGeneratorUtilities.substitute(_templateDirectory
+            //                        + "modelVergil.htm.in", _substituteMap,
+            //                        _outputDirectory + "/" + _sanitizedModelName
+            //                                + "Vergil.htm");
+            //            }
             if (!(new File(_outputDirectory + File.separator
                     + _sanitizedModelName + ".htm").exists())) {
                 CodeGeneratorUtilities.substitute(_templateDirectory
@@ -643,11 +642,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         + "/" + _sanitizedModelName + "JNLP.htm");
             }
             if (!(new File(_outputDirectory + File.separator
-                        + _sanitizedModelName + "Vergil.htm").exists())) {
+                    + _sanitizedModelName + "Vergil.htm").exists())) {
                 CodeGeneratorUtilities.substitute(_templateDirectory
                         + "modelVergil.htm.in", _substituteMap,
                         _outputDirectory + "/" + _sanitizedModelName
-                        + "Vergil.htm");
+                                + "Vergil.htm");
             }
             CodeGeneratorUtilities.substitute(_templateDirectory
                     + "model.jnlp.in", _substituteMap, jnlpSourceFileName);
@@ -1233,8 +1232,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
      *  because the filters will have removed the DocAttribute and the Annotations   
      *  @return the value DocAttribute.description or the longest
      *  Annotation.text if there is no DocAttribute
-     */   
-    private static String _getToplevelDocumentation(URL modelPathURL) throws Exception {
+     */
+    private static String _getToplevelDocumentation(URL modelPathURL)
+            throws Exception {
         String documentation = "";
 
         // Create a parser.
@@ -1260,7 +1260,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // Handle Backward Compatibility.
             MoMLParser.addMoMLFilters(BackwardCompatibility.allFilters());
 
-
             // Parse the model.
             CompositeActor toplevel = null;
             toplevel = (CompositeActor) parser
@@ -1268,37 +1267,48 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             // 1) Try to find a DocAttribute
             Attribute docAttribute = toplevel.getAttribute("DocAttribute");
             if (docAttribute != null) {
-                documentation = ((StringParameter) docAttribute.getAttribute("description")).stringValue();
+                documentation = ((StringParameter) docAttribute
+                        .getAttribute("description")).stringValue();
             }
             // 2) If there was no DocAttribute, search for the longest TextAttribute.
             if (documentation.length() == 0) {
                 // Loop through all the TextAttributes and set the documentation to the longest one.
-                Iterator attributes = toplevel.attributeList(TextAttribute.class).iterator();
+                Iterator attributes = toplevel.attributeList(
+                        TextAttribute.class).iterator();
                 while (attributes.hasNext()) {
-                    Attribute annotationAttribute = (TextAttribute)attributes.next();
-                    String annotationText = ((StringAttribute) annotationAttribute.getAttribute("text")).getExpression();
+                    Attribute annotationAttribute = (TextAttribute) attributes
+                            .next();
+                    String annotationText = ((StringAttribute) annotationAttribute
+                            .getAttribute("text")).getExpression();
                     if (annotationText.length() > documentation.length()) {
                         documentation = annotationText;
                     }
                 }
-            } 
+            }
             // 3) If there were no TextAttributes, then look for an annotation.
-            if (documentation.length() == 0 || documentation.startsWith("Author")) {
+            if (documentation.length() == 0
+                    || documentation.startsWith("Author")) {
                 // Might be an older model like the continuous V2V demo.
                 Attribute annotation = toplevel.getAttribute("annotation");
                 if (annotation != null) {
                     // Loop through all the TextAttributes and set the documentation to the longest one.
-                    Iterator attributes = toplevel.attributeList(Attribute.class).iterator();
+                    Iterator attributes = toplevel.attributeList(
+                            Attribute.class).iterator();
                     while (attributes.hasNext()) {
-                        Attribute annotationAttribute = (Attribute)attributes.next();
-                        if (annotationAttribute.getName().contains("annotation")) {
-                            String annotationText = ((ConfigurableAttribute)annotationAttribute.getAttribute("_iconDescription")).getExpression();
-                            if (annotationText.length() > documentation.length()) {
+                        Attribute annotationAttribute = (Attribute) attributes
+                                .next();
+                        if (annotationAttribute.getName()
+                                .contains("annotation")) {
+                            String annotationText = ((ConfigurableAttribute) annotationAttribute
+                                    .getAttribute("_iconDescription"))
+                                    .getExpression();
+                            if (annotationText.length() > documentation
+                                    .length()) {
                                 documentation = annotationText;
                             }
                         }
                     }
-                } 
+                }
             }
         } finally {
             MoMLParser.setMoMLFilters(oldFilters);
@@ -1372,10 +1382,9 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         auxiliaryJarMap.put("ptolemy.actor.gt.ModelExecutor", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.TransformationMode", gtJar);
         auxiliaryJarMap.put("ptolemy.actor.gt.TransformationRule", gtJar);
-        auxiliaryJarMap.put("ptolemy.actor.gt.TransformationRule$TransformationDirector",
+        auxiliaryJarMap.put(
+                "ptolemy.actor.gt.TransformationRule$TransformationDirector",
                 gtJar);
-
-
 
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
 
@@ -1405,7 +1414,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
         // classes from data.property require tester.jar
         String propertiesJar = "ptolemy/data/properties/properties.jar";
-        auxiliaryJarMap.put("ptolemy.data.properties.lattice.PropertyConstraintSolver",
+        auxiliaryJarMap.put(
+                "ptolemy.data.properties.lattice.PropertyConstraintSolver",
                 propertiesJar);
         auxiliaryJarMap.put("ptolemy.data.properties.PropertyRemover",
                 propertiesJar);
@@ -1453,7 +1463,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         jarFilesThatHaveBeenRequired.remove("ptolemy/data/data.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/kernel/kernel.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/ptolemy.jar");
-
 
         File potentialDomainJarFile = new File(_ptIIJarsPath, _domainJar);
 
@@ -1564,17 +1573,22 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "ptolemy/actor/ptalon/antlr/antlr.jar");
         }
 
-        if (jarFilesThatHaveBeenRequired.contains("ptolemy/domains/properties/properties.jar")) {
+        if (jarFilesThatHaveBeenRequired
+                .contains("ptolemy/domains/properties/properties.jar")) {
             jarFilesThatHaveBeenRequired.add(propertiesJar);
         }
 
         if (jarFilesThatHaveBeenRequired.contains(propertiesJar)) {
             auxiliaryClassMap.put("data/properties.jar needs tester.jar",
                     "ptolemy/domains/tester/tester.jar");
-            auxiliaryClassMap.put("data/properties.jar needs domains/properties/properties.jar",
-                    "ptolemy/domains/properties/properties.jar");
-            auxiliaryClassMap.put("data/properties.jar needs vergil/properties/properties.jar",
-                    "ptolemy/vergil/properties/properties.jar");
+            auxiliaryClassMap
+                    .put(
+                            "data/properties.jar needs domains/properties/properties.jar",
+                            "ptolemy/domains/properties/properties.jar");
+            auxiliaryClassMap
+                    .put(
+                            "data/properties.jar needs vergil/properties/properties.jar",
+                            "ptolemy/vergil/properties/properties.jar");
         }
 
         if (jarFilesThatHaveBeenRequired.contains(pythonJar)) {
@@ -1705,7 +1719,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         try {
             FileInputStream fileInputStream = null;
             try {
-                fileInputStream = new FileInputStream(keystorePropertiesFileName);
+                fileInputStream = new FileInputStream(
+                        keystorePropertiesFileName);
                 properties.load(fileInputStream);
                 String property = null;
                 if ((property = properties.getProperty("keystoreFileName")) != null) {
@@ -1730,7 +1745,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         System.out.println("About to sign \"" + jarFileName
                 + "\" and create \"" + signedJarFileName + "\""
                 + " using keystore: \"" + keystoreFileName + "\""
-                + " and alias: \"" + alias + "\""); 
+                + " and alias: \"" + alias + "\"");
         File signedJarFile = new File(signedJarFileName);
         File parent = signedJarFile.getParentFile();
         if (parent != null) {
@@ -1855,7 +1870,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     try {
                         inputStream = new FileInputStream(jarFile);
                         jarInputStream = new JarInputStream(inputStream);
-                        /*jarFileNames =*/ _updateJar(jarOutputStream,
+                        /*jarFileNames =*/_updateJar(jarOutputStream,
                                 jarInputStream, jarFileNames);
                     } finally {
                         if (inputStream != null) {

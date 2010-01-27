@@ -67,11 +67,13 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public DecoratedAttributesImplementation(NamedObj container, Decorator decorator) throws IllegalActionException, NameDuplicationException {
+    public DecoratedAttributesImplementation(NamedObj container,
+            Decorator decorator) throws IllegalActionException,
+            NameDuplicationException {
         super(container, decorator.getFullName().replaceAll("\\.", "_"));
         _decorator = decorator;
     }
-    
+
     /** Construct a DecoratedAttributes instance with the given name and the container of the decorator.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -88,12 +90,15 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
      *   an attribute already in the container.
      *   @deprecated
      */
-    public DecoratedAttributesImplementation(NamedObj containerOfDecorator, String name) throws IllegalActionException, NameDuplicationException {
+    public DecoratedAttributesImplementation(NamedObj containerOfDecorator,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         // FIXME: There should be a more elegant way to get this right.
         // This also only works for attributes not for entities.
-        super(_getRealContainer(containerOfDecorator, name),
-                name.substring(name.lastIndexOf(".") + 1));
+        super(_getRealContainer(containerOfDecorator, name), name
+                .substring(name.lastIndexOf(".") + 1));
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -111,18 +116,20 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
             throws IllegalActionException {
         StringAttribute decoratorPath = _decoratorPath();
         if (_decorator == null && attribute == decoratorPath) {
-            _decorator = (Decorator) toplevel().getAttribute(decoratorPath.getExpression());
+            _decorator = (Decorator) toplevel().getAttribute(
+                    decoratorPath.getExpression());
             // We get here we we are reading a MoML file. The type information of the parameter
             // is not stored, so we need to create it again.
             _decorator.setTypesOfDecoratedVariables(this);
             decoratorPath.setVisibility(Settable.NONE);
-            
+
             try {
                 // Register this object again, since we now know
                 // the decorator.
                 _register();
             } catch (NameDuplicationException e) {
-                throw new IllegalActionException(this, e, "Can't register this decorated attribute.");
+                throw new IllegalActionException(this, e,
+                        "Can't register this decorated attribute.");
             }
         }
         super.attributeChanged(attribute);
@@ -137,11 +144,12 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        DecoratedAttributesImplementation newObject = (DecoratedAttributesImplementation) super.clone(workspace);
+        DecoratedAttributesImplementation newObject = (DecoratedAttributesImplementation) super
+                .clone(workspace);
         newObject._decorator = _decorator;
         return newObject;
     }
-    
+
     /** Return all the decorators for a given object.
      *  @param object The object.
      *  @return The decorators for the given object.
@@ -168,7 +176,7 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
     public Decorator getDecorator() {
         return _decorator;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -184,7 +192,7 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
      *   has an attribute with the same name.
      *  @exception IllegalActionException If the attribute is not an
      *   an instance of the expect class (in derived classes).
-     */    
+     */
     protected void _addAttribute(Attribute p) throws NameDuplicationException,
             IllegalActionException {
         if (_decorator == null) {
@@ -195,7 +203,7 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
         }
         super._addAttribute(p);
     }
-    
+
     /** Return the decorator path. It is the full path of the
      *  decorator in the model.
      *  This variable is used for persistence to recreate
@@ -204,6 +212,7 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
     protected StringAttribute _decoratorPath() {
         return _decoratorPath;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -211,25 +220,27 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
      *  @param containerOfCodeGenerator The container of the decorator.
      *  @param name The name of this attribute.
      *  @return The container of this object.
-     */    
-    static private NamedObj _getRealContainer(NamedObj containerOfCodeGenerator, String name) {
+     */
+    static private NamedObj _getRealContainer(
+            NamedObj containerOfCodeGenerator, String name) {
         String elementName = name.substring(0, name.lastIndexOf("."));
         NamedObj object = containerOfCodeGenerator.getAttribute(elementName);
         if (object == null) {
             if (containerOfCodeGenerator instanceof CompositeEntity) {
-                object = ((CompositeEntity) containerOfCodeGenerator).getEntity(elementName);
+                object = ((CompositeEntity) containerOfCodeGenerator)
+                        .getEntity(elementName);
             }
         }
         return object;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-        
+
     /** The decorater.*/
     private Decorator _decorator = null;
-    
+
     /** The decorater path. This variable is used for persistence to recreate
       * the code generator after having parsed the model.*/
-    private StringAttribute _decoratorPath = null; 
+    private StringAttribute _decoratorPath = null;
 }

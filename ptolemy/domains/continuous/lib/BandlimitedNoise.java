@@ -91,24 +91,24 @@ public class BandlimitedNoise extends Gaussian {
     public BandlimitedNoise(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         output.setTypeEquals(BaseType.DOUBLE);
 
         bandwidth = new Parameter(this, "bandwidth");
         bandwidth.setTypeEquals(BaseType.DOUBLE);
         bandwidth.setExpression("10.0");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The bandwidth of the noise random process in Hertz.
      *  The bandwidth is the frequency where the power spectral
      *  density first hits zero. This is a double that defaults to
      *  10.0 Hertz.
      */
     public Parameter bandwidth;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -125,7 +125,7 @@ public class BandlimitedNoise extends Gaussian {
         if (_debugging) {
             _debug("Called fire()");
         }
-        
+
         standardDeviation.update();
         mean.update();
 
@@ -135,9 +135,12 @@ public class BandlimitedNoise extends Gaussian {
         Director director = getDirector();
         Time currentTime = director.getModelTime();
         // Use the quantized version of the interval. Note that this will never be zero.
-        double timeGapBetweenValues = _timeOfValueAtEnd.subtract(_timeOfValueAtStart).getDoubleValue();
-        double interval = currentTime.subtract(_timeOfValueAtStart).getDoubleValue();
-        _current = _valueAtStart + (_valueAtEnd - _valueAtStart) * interval / timeGapBetweenValues;
+        double timeGapBetweenValues = _timeOfValueAtEnd.subtract(
+                _timeOfValueAtStart).getDoubleValue();
+        double interval = currentTime.subtract(_timeOfValueAtStart)
+                .getDoubleValue();
+        _current = _valueAtStart + (_valueAtEnd - _valueAtStart) * interval
+                / timeGapBetweenValues;
         output.send(0, new DoubleToken(_current));
     }
 
@@ -150,7 +153,7 @@ public class BandlimitedNoise extends Gaussian {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         // Generate the first random number.
         super._generateRandomNumber();
         _valueAtEnd = _current;
@@ -160,7 +163,7 @@ public class BandlimitedNoise extends Gaussian {
         _generateRandomNumber();
         getDirector().fireAt(this, _timeOfValueAtEnd);
     }
-    
+
     /** If we are at the end of the current interval, then generate
      *  a new random number for the new interval, and request a
      *  refiring at the end of that interval.
@@ -169,7 +172,7 @@ public class BandlimitedNoise extends Gaussian {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = super.postfire();
-        
+
         Director director = getDirector();
         Time currentTime = director.getModelTime();
 
@@ -184,7 +187,7 @@ public class BandlimitedNoise extends Gaussian {
         }
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -210,15 +213,15 @@ public class BandlimitedNoise extends Gaussian {
         if (!(director instanceof ContinuousDirector)) {
             throw new IllegalActionException(this, director,
                     "WhiteNoise actor is designed to work with ContinuousDirector,"
-                    + " but the director is "
-                    + director.getClass());
+                            + " but the director is " + director.getClass());
         }
         _valueAtStart = _valueAtEnd;
         _timeOfValueAtStart = _timeOfValueAtEnd;
         super._generateRandomNumber();
         _valueAtEnd = _current;
-        
-        double period = 1.0 / ((DoubleToken)bandwidth.getToken()).doubleValue();
+
+        double period = 1.0 / ((DoubleToken) bandwidth.getToken())
+                .doubleValue();
         _timeOfValueAtEnd = _timeOfValueAtStart.add(period);
     }
 
@@ -227,10 +230,10 @@ public class BandlimitedNoise extends Gaussian {
 
     /** Time associated with the second random number of the current interval. */
     private Time _timeOfValueAtEnd;
-    
+
     /** Time associated with the first random number of the current interval. */
     private Time _timeOfValueAtStart;
-    
+
     /** The random number at the start of the current interval. */
     private double _valueAtStart;
 

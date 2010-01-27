@@ -26,10 +26,6 @@
  */
 package ptolemy.data.ontologies;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,7 +45,6 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.Configurer;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -58,9 +53,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLModelAttribute;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.StringBufferExec;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 ////OntologySolverBase
@@ -274,14 +266,14 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public Ontology getOntology() throws IllegalActionException {
         NamedObj containedModel = getContainedModel();
         if (containedModel instanceof CompositeEntity) {
-            List<Ontology> ontologies = ((CompositeEntity)containedModel).entityList(Ontology.class);
+            List<Ontology> ontologies = ((CompositeEntity) containedModel)
+                    .entityList(Ontology.class);
             if (ontologies.size() > 0) {
                 return ontologies.get(ontologies.size() - 1);
             }
         }
         return null;
     }
-
 
     /**
      * Return the expression parser.
@@ -386,7 +378,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
         // Try resolve the property.
         try {
-            if (resolve && !getOntologySolverUtilities().getRanSolvers().contains(this)) {
+            if (resolve
+                    && !getOntologySolverUtilities().getRanSolvers().contains(
+                            this)) {
                 resolveProperties();
             }
         } catch (KernelException ex) {
@@ -562,7 +556,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         // FIXME: Is it a good idea to hard code the adapters string in the package name?
         // 12/17/09 Charles Shelton
         // This was missing adapters directory for the correct package name.
-        return getClass().getPackage().getName() + ".adapters." + getOntology().getName();
+        return getClass().getPackage().getName() + ".adapters."
+                + getOntology().getName();
     }
 
     /**
@@ -615,7 +610,6 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      */
     protected OntologySolverUtilities _ontologySolverUtilities;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -626,8 +620,6 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private StringBufferExec _executeCommands;
 
     /**
      * The expression parser.

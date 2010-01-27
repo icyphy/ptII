@@ -176,7 +176,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     public void setVisibility(Visibility visibility) {
         _visibility = visibility;
     }
-    
+
     /**
      * The validate() method must be implemented to implement the 
      * {@linkplain ptolemy.kernel.util.Settable Settable}
@@ -198,7 +198,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     protected Concept _concept;
 
     //    private Visibility _visibility = Settable.NONE;
-    
+
     /** The visibility property of this attribute. */
     private Visibility _visibility = Settable.FULL;
 

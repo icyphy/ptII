@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  */
 public class ConstraintManager {
-    
+
     /**
      * Constructs a ConstraintManager object.
      *
@@ -66,7 +66,7 @@ public class ConstraintManager {
      * @param constraints The list of inequality constraints
      */
     public void setConstraints(List<Inequality> constraints) {
-        
+
         for (Inequality constraint : constraints) {
             if (constraint.isBase()) {
                 InequalityTerm greaterTerm = constraint.getGreaterTerm();
@@ -86,18 +86,18 @@ public class ConstraintManager {
     public List<ptolemy.graph.InequalityTerm> getConstrainingTerms(Object object) {
         boolean least;
         try {
-            least = ((StringToken)_solver.solvingFixedPoint.getToken()).stringValue().equals(
-                    "least");
+            least = ((StringToken) _solver.solvingFixedPoint.getToken())
+                    .stringValue().equals("least");
         } catch (IllegalActionException e) {
             least = true;
         }
 
         if (least) {
-            return (List<ptolemy.graph.InequalityTerm>) _greaterTermMap.get(_solver
-                    .getConceptTerm(object));
+            return (List<ptolemy.graph.InequalityTerm>) _greaterTermMap
+                    .get(_solver.getConceptTerm(object));
         } else {
-            return (List<ptolemy.graph.InequalityTerm>) _lesserTermMap.get(_solver
-                    .getConceptTerm(object));
+            return (List<ptolemy.graph.InequalityTerm>) _lesserTermMap
+                    .get(_solver.getConceptTerm(object));
         }
     }
 

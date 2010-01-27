@@ -105,7 +105,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
         fireAtStart = new Parameter(this, "fireAtStart");
         fireAtStart.setExpression("true");
         fireAtStart.setTypeEquals(BaseType.BOOLEAN);
-        
+
         // Note that this class copies much of TimedSource into here
         // because it can't subclass both TimedSource and RandomSource.
         stopTime = new Parameter(this, "stopTime");
@@ -139,7 +139,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *  This parameter must contain a DoubleToken.
      */
     public Parameter meanTime;
-    
+
     /** The time at which postfire() should return false. This is a
      *  double that defaults to Infinity, which means that postfire()
      *  never returns false (or at least, doesn't do so due to stopTime
@@ -175,7 +175,8 @@ public class PoissonClock extends RandomSource implements TimedActor {
             ArrayToken val = (ArrayToken) (values.getToken());
             _length = val.length();
         } else if (attribute == stopTime) {
-            double newStopTimeValue = ((DoubleToken) stopTime.getToken()).doubleValue();
+            double newStopTimeValue = ((DoubleToken) stopTime.getToken())
+                    .doubleValue();
 
             if (_executing) {
                 Time newStopTime = new Time(getDirector(), newStopTimeValue);
@@ -232,7 +233,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
         super.fire();
         output.send(0, _getValue(_nextOutputIndex));
     }
-    
+
     /** Get the stop time.
      *  @return The stop time.
      *  @deprecated As of Ptolemy II 4.1, replaced by
@@ -332,7 +333,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
         if (_debugging) {
             _debug("Called prefire()");
         }
-        
+
         // If any trigger input has a token, then return true.
         // NOTE: It might seem that using trigger.numberOfSources() is
         // correct here, but it is not. It is possible for channels
@@ -353,7 +354,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
         if (currentTime.compareTo(_nextFiringTime) == 0) {
             return true;
         }
-        
+
         // Otherwise, return false.
         return false;
     }
@@ -376,7 +377,8 @@ public class PoissonClock extends RandomSource implements TimedActor {
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
-        double meanTimeValue = ((DoubleToken) meanTime.getToken()).doubleValue();
+        double meanTimeValue = ((DoubleToken) meanTime.getToken())
+                .doubleValue();
         _current = -Math.log((1 - _random.nextDouble())) * meanTimeValue;
     }
 
@@ -398,7 +400,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // Most recently generated exponential random number.
     private double _current;
 
@@ -414,7 +416,7 @@ public class PoissonClock extends RandomSource implements TimedActor {
 
     // The next firing time requested of the director.
     private transient Time _nextFiringTime;
-    
+
     // The index of the next output.
     private transient int _nextOutputIndex;
 

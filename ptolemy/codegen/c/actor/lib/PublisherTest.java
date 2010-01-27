@@ -95,7 +95,7 @@ public class PublisherTest extends CCodeGeneratorHelper {
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            
+
             if (isPrimitive(codeGenType(actor.input.getType()))) {
                 inputType = codeGenType(actor.input.getType());
             } else {

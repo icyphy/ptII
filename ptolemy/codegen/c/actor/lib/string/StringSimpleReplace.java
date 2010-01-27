@@ -47,7 +47,8 @@ public class StringSimpleReplace extends CCodeGeneratorHelper {
      * Construct the StringSimpleReplace helper.
      * @param actor The associated actor.
      */
-    public StringSimpleReplace(ptolemy.actor.lib.string.StringSimpleReplace actor) {
+    public StringSimpleReplace(
+            ptolemy.actor.lib.string.StringSimpleReplace actor) {
         super(actor);
     }
 

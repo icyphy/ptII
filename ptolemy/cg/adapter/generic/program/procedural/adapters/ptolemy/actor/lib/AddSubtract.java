@@ -69,9 +69,11 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
 
-        String outputType = getCodeGenerator().codeGenType(actor.output.getType());
+        String outputType = getCodeGenerator().codeGenType(
+                actor.output.getType());
         String plusType = getCodeGenerator().codeGenType(actor.plus.getType());
-        String minusType = getCodeGenerator().codeGenType(actor.minus.getType());
+        String minusType = getCodeGenerator()
+                .codeGenType(actor.minus.getType());
 
         ArrayList<String> args = new ArrayList<String>();
 

@@ -76,7 +76,7 @@ public class JopWritePort extends JavaCodeGeneratorHelper {
 
         return code.toString();
     }
-    
+
     /**
      * Generate the postfire code.
      * 

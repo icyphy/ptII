@@ -56,8 +56,7 @@ public class GPInputDevice extends InputDevice {
      *  @exception IllegalActionException 
      * @exception NameDuplicationException 
      */
-    public GPInputDevice(
-            ptolemy.domains.ptides.lib.luminary.GPInputDevice actor)
+    public GPInputDevice(ptolemy.domains.ptides.lib.luminary.GPInputDevice actor)
             throws IllegalActionException, NameDuplicationException {
         super(actor);
 
@@ -95,8 +94,7 @@ public class GPInputDevice extends InputDevice {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
-        args.add(NamedProgramCodeGeneratorAdapter
-                .generateName(getComponent()));
+        args.add(NamedProgramCodeGeneratorAdapter.generateName(getComponent()));
         args.add(_padID);
         args.add(_pinID);
 

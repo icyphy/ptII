@@ -515,7 +515,7 @@ public class Plot extends PlotBox {
         _sawFirstDataSet = false;
         super.parseFile(filespec, documentBase);
     }
-    
+
     /** Mark the disconnections with a Dot in case value equals true, otherwise these
      *  points are not marked. 
      *  @param value True when disconnections should be marked.
@@ -1962,7 +1962,7 @@ public class Plot extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /* Add a legend if necessary, return the value of the connected flag.
      */
     private boolean _addLegendIfNecessary(boolean connected) {
@@ -2463,7 +2463,8 @@ public class Plot extends PlotBox {
             marks = fmt.marks;
         }
 
-        if (_markDisconnections && marks == 0 && endPosition > startPosition && startPosition > 0) {
+        if (_markDisconnections && marks == 0 && endPosition > startPosition
+                && startPosition > 0) {
             PlotPoint previousPoint = points.get(startPosition - 1);
             if (!(connectedFlag && points.get(startPosition).connected)) {
 
@@ -2543,7 +2544,8 @@ public class Plot extends PlotBox {
                 PlotPoint point = points.get(i);
 
                 // I a point is not connected, we mark it with a dot.
-                if (_marks != 0 || (_markDisconnections && !(connectedFlag && point.connected))) {
+                if (_marks != 0
+                        || (_markDisconnections && !(connectedFlag && point.connected))) {
                     long ypos = _lry - (long) ((point.y - _yMin) * _yscale);
                     if (prevypos != ypos || prevxpos != xpos) {
                         int updatedMarks = marks;
@@ -2933,7 +2935,8 @@ public class Plot extends PlotBox {
                 }
             }
 
-            if (_markDisconnections && marks == 0 && endPosition > startPosition
+            if (_markDisconnections && marks == 0
+                    && endPosition > startPosition
                     && endPosition < points.size()) {
                 PlotPoint point = points.get(endPosition - 1);
                 if ((connectedFlag && point.connected)) {

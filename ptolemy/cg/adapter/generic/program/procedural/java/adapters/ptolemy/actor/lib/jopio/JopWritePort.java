@@ -71,7 +71,7 @@ public class JopWritePort extends NamedProgramCodeGeneratorAdapter {
 
         ArrayList args = new ArrayList();
 
-//        args.add(Integer.valueOf(0));
+        //        args.add(Integer.valueOf(0));
         args.add("0");
         code.append(_templateParser.generateBlockCode("FireBlock", args));
 

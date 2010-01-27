@@ -665,7 +665,6 @@ public abstract class PropertySolverBase extends Attribute {
      */
     protected SharedUtilities _sharedUtilities;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

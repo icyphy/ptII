@@ -102,6 +102,7 @@ public class LinearStateSpace extends TypedCompositeActor {
         super(container, name);
         _init();
     }
+
     /** Construct a LinearStateSpace in the specified
      *  workspace with no container and an empty string as a name. You
      *  can then change the name with setName(). If the workspace

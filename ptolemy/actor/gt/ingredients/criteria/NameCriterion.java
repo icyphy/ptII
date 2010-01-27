@@ -161,8 +161,8 @@ public class NameCriterion extends Criterion {
 
     /** The elements.
      */
-    private static final CriterionElement[] _ELEMENTS = {
-            new StringCriterionElement("name", false, true, false) };
+    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
+            "name", false, true, false) };
 
     /** Value of the name element.
      */

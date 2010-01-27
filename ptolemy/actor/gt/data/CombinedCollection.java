@@ -223,8 +223,8 @@ public class CombinedCollection<E> implements Collection<E> {
     public <T> T[] toArray(T[] array) {
         int size = size();
         if (array.length < size) {
-            array = (T[]) Array.newInstance(array.getClass().getComponentType(),
-                    size);
+            array = (T[]) Array.newInstance(
+                    array.getClass().getComponentType(), size);
         }
 
         int i = 0;
@@ -253,8 +253,7 @@ public class CombinedCollection<E> implements Collection<E> {
 
     /** The list containing all the component collections.
      */
-    private List<Collection<? extends E>> _collectionList =
-        new LinkedList<Collection<? extends E>>();
+    private List<Collection<? extends E>> _collectionList = new LinkedList<Collection<? extends E>>();
 
     /** Whether the last component collection in the list can be modified (i.e.,
      *  it is not given by the user but is created for storing new elements.

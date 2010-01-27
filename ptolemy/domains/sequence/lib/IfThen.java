@@ -71,7 +71,7 @@ public class IfThen extends ControlActor {
         // set name to invisible
         StringAttribute hideName = new StringAttribute(this, "_hideName");
         hideName.setExpression("true");
-        
+
         // create inports
         ifInput = new TypedIOPort(this, "If", true, false);
 
@@ -81,13 +81,15 @@ public class IfThen extends ControlActor {
         // set portnames to visible
         StringAttribute ifShowName = new StringAttribute(ifInput, "_showName");
         ifShowName.setExpression("false");
-        StringAttribute thenShowName = new StringAttribute(thenOutput, "_showName");
+        StringAttribute thenShowName = new StringAttribute(thenOutput,
+                "_showName");
         thenShowName.setExpression("false");
 
         // set direction of ports
         StringAttribute ifCardinal = new StringAttribute(ifInput, "_cardinal");
         ifCardinal.setExpression("WEST");
-        StringAttribute thenCardinal = new StringAttribute(thenOutput, "_cardinal");
+        StringAttribute thenCardinal = new StringAttribute(thenOutput,
+                "_cardinal");
         thenCardinal.setExpression("EAST");
 
         // set type constraints for ports        
@@ -117,20 +119,20 @@ public class IfThen extends ControlActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (ifInput.hasToken(0)) {
             BooleanToken token = (BooleanToken) ifInput.get(0);
 
             // Set the enabled output ports accordingly
             clearEnabledOutports();
-            
+
             // Beth - changed 02/06/09 - use the .equals() function instead of ==
             if (token.equals(BooleanToken.TRUE)) {
                 addEnabledOutport(thenOutput);
-                
+
                 thenOutput.send(0, BooleanToken.TRUE);
             } else {
-                thenOutput.send(0, BooleanToken.FALSE);                
+                thenOutput.send(0, BooleanToken.FALSE);
             }
         }
     }

@@ -986,41 +986,50 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
             for (int i = 0; i < port.getWidthInside(); i++) {
                 for (int k = 0; k < rate; k++) {
-                    type = ((ArrayType)type).getElementType();
+                    type = ((ArrayType) type).getElementType();
                     try {
-                        Object[][] tmpOutputTokens = (Object[][])outputTokens;
+                        Object[][] tmpOutputTokens = (Object[][]) outputTokens;
                         Class<?> tokenClass = tmpOutputTokens[i][k].getClass();
-                        
+
                         Method getPayload;
-                        getPayload = tokenClass.getMethod("getPayload", (Class[]) null);
-                        
+                        getPayload = tokenClass.getMethod("getPayload",
+                                (Class[]) null);
+
                         Object payload = null;
-                        payload = (Object) getPayload.invoke(tmpOutputTokens[i][k], (Object[])null);
-                        
-                        Field objSize = (Field) (payload.getClass().getField("size"));
+                        payload = (Object) getPayload.invoke(
+                                tmpOutputTokens[i][k], (Object[]) null);
+
+                        Field objSize = (Field) (payload.getClass()
+                                .getField("size"));
                         int size = objSize.getInt(payload);
-                        
-                        Field elementsField = (Field) (payload.getClass().getField("elements"));
-                        Object[] elements = (Object[])elementsField.get(payload);
-                        
+
+                        Field elementsField = (Field) (payload.getClass()
+                                .getField("elements"));
+                        Object[] elements = (Object[]) elementsField
+                                .get(payload);
+
                         Token[] convertedTokens = new Token[size];
-                        
+
                         for (int j = 0; j < size; j++) {
-                            Object element =  (Object)getPayload.invoke(elements[j], (Object[])null);
+                            Object element = (Object) getPayload.invoke(
+                                    elements[j], (Object[]) null);
                             if (type == BaseType.INT) {
-                                convertedTokens[j] = new IntToken(Integer.parseInt(element.toString())); 
+                                convertedTokens[j] = new IntToken(Integer
+                                        .parseInt(element.toString()));
                             } else if (type == BaseType.DOUBLE) {
-                                convertedTokens[j] = new DoubleToken(Double.parseDouble(element.toString()));
+                                convertedTokens[j] = new DoubleToken(Double
+                                        .parseDouble(element.toString()));
                             } else if (type == BaseType.BOOLEAN) {
-                                convertedTokens[j] = new BooleanToken(Boolean.parseBoolean(element.toString()));
+                                convertedTokens[j] = new BooleanToken(Boolean
+                                        .parseBoolean(element.toString()));
                             } else {
                                 //FIXME: need to deal with other types
                             }
                         }
-                        
+
                         Token token = new ArrayToken(type, convertedTokens);
                         port.send(i, token);
-                        
+
                     } catch (SecurityException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -1036,11 +1045,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     } catch (InvocationTargetException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
-                        
+
                     } catch (NoSuchFieldException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
-                    } 
+                    }
                 }
             }
         } else {

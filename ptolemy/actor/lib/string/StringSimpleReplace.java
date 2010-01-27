@@ -142,8 +142,7 @@ public class StringSimpleReplace extends TypedAtomicActor {
         if (attribute == pattern) {
             // We don't call super here because we don't
             // want to compile the pattern
-            _patternValue = ((StringToken) pattern.getToken())
-                .stringValue();
+            _patternValue = ((StringToken) pattern.getToken()).stringValue();
             if (_patternValue.equals("\\r")) {
                 _patternValue = "\r";
             }
@@ -170,7 +169,8 @@ public class StringSimpleReplace extends TypedAtomicActor {
 
         String outputString;
 
-        outputString = stringToEditValue.replace(_patternValue, replacementValue);
+        outputString = stringToEditValue.replace(_patternValue,
+                replacementValue);
 
         output.send(0, new StringToken(outputString));
     }

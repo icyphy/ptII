@@ -180,20 +180,22 @@ public class VergilApplication extends MoMLApplication {
         try {
             System.exit(0);
         } catch (SecurityException ex) {
-                System.out.println("Warning: Failed to call System.exit()."
-                        + "(-sandbox always causes this)");
-                System.out.println("About to clean configurations");
-                Iterator configurations = Configuration.configurations().iterator();
-                while (configurations.hasNext()) {
-                    Configuration configuration = (Configuration) configurations.next();
-                    try {
-                        System.out.println("Setting container of " + configuration.getFullName() + " to null");
-                        configuration.setContainer(null);
-                    } catch (Exception ex2) {
-                        ex2.printStackTrace();
-                    }
+            System.out.println("Warning: Failed to call System.exit()."
+                    + "(-sandbox always causes this)");
+            System.out.println("About to clean configurations");
+            Iterator configurations = Configuration.configurations().iterator();
+            while (configurations.hasNext()) {
+                Configuration configuration = (Configuration) configurations
+                        .next();
+                try {
+                    System.out.println("Setting container of "
+                            + configuration.getFullName() + " to null");
+                    configuration.setContainer(null);
+                } catch (Exception ex2) {
+                    ex2.printStackTrace();
                 }
-                
+            }
+
         }
     }
 

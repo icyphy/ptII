@@ -38,8 +38,8 @@ import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.MonotonicFunction;
 import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
 import ptolemy.data.properties.lattice.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.dimensionSystem.MultiplyMonotonicFunction;
 import ptolemy.data.properties.lattice.dimensionSystem.DivideMonotonicFunction;
+import ptolemy.data.properties.lattice.dimensionSystem.MultiplyMonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -73,7 +73,7 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public List<Inequality> constraintList() throws IllegalActionException {        
+    public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_getNode(), new ASTPtProductNodeMonotonicFunction());
         return super.constraintList();
     }
@@ -99,45 +99,47 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
 
             ptolemy.data.expr.ASTPtProductNode node = (ptolemy.data.expr.ASTPtProductNode) _getNode();
             List tokenList = node.getLexicalTokenList();
-            
+
             // Throw an exception if there is a modulo (%) operation in the product node expression.
             for (Object lexicalToken : tokenList) {
                 if (((Token) lexicalToken).kind == PtParserConstants.MODULO) {
                     throw new IllegalActionException(
                             ASTPtProductNode.this.getSolver(),
                             "The Dimension System property analysis "
-                                + "supports only multiplication and division, not modulo.");
+                                    + "supports only multiplication and division, not modulo.");
                 }
             }
-            
+
             // Loop through all the child nodes in the product node
             // and get the correct result property by calling MultiplyMonotonicFunction
             // or DivideMonotonicFunction depending on the operator used.
-            
+
             // Initialize the result to the first node in the product node
             Property result = getSolver().getProperty(node.jjtGetChild(0));
-            
+
             // Iterate through the operator tokens
             Iterator lexicalTokenIterator = tokenList.iterator();
-            
+
             for (int i = 1; i < node.jjtGetNumChildren(); i++) {
                 if (lexicalTokenIterator.hasNext()) {
                     Token lexicalToken = (Token) lexicalTokenIterator.next();
                     MonotonicFunction propertyFunction = null;
-                    
+
                     // If operator token is '*' call the MultiplyMonotonicFunction
                     if (lexicalToken.kind == PtParserConstants.MULTIPLY) {
-                        propertyFunction = new MultiplyMonotonicFunction(result,
-                                node.jjtGetChild(i), _lattice, ASTPtProductNode.this);
+                        propertyFunction = new MultiplyMonotonicFunction(
+                                result, node.jjtGetChild(i), _lattice,
+                                ASTPtProductNode.this);
                         result = (Property) propertyFunction.getValue();
-                        
-                    // If operator token is '/' call the DivideMonotonicFunction
+
+                        // If operator token is '/' call the DivideMonotonicFunction
                     } else {
                         propertyFunction = new DivideMonotonicFunction(result,
-                                node.jjtGetChild(i), _lattice, ASTPtProductNode.this);
-                        result = (Property) propertyFunction.getValue(); 
+                                node.jjtGetChild(i), _lattice,
+                                ASTPtProductNode.this);
+                        result = (Property) propertyFunction.getValue();
                     }
-                    
+
                 } else {
                     throw new IllegalActionException(
                             ASTPtProductNode.this.getSolver(),
@@ -145,7 +147,7 @@ public class ASTPtProductNode extends PropertyConstraintASTNodeHelper {
                                     + "the number of operators don't match the number of operands.");
                 }
             }
-            
+
             return result;
         }
 

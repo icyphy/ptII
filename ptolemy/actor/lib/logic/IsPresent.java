@@ -70,7 +70,7 @@ public class IsPresent extends Transformer {
         input.setMultiport(true);
         output.setTypeEquals(BaseType.BOOLEAN);
         output.setMultiport(true);
-        
+
         input.setWidthEquals(output, true);
 
         _attachText("_iconDescription", "<svg>\n"

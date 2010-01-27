@@ -66,7 +66,7 @@ public class JopWatchDog extends Sink {
     public JopWatchDog(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-//        trigger = new TypedIOPort(this, "trigger", true, false);
+        //        trigger = new TypedIOPort(this, "trigger", true, false);
         input.setTypeEquals(BaseType.BOOLEAN);
         input.setMultiport(false);
 
@@ -77,8 +77,7 @@ public class JopWatchDog extends Sink {
 
     /** Trigger the watch dog LED to toggle.
      */
-//    public TypedIOPort trigger;
-
+    //    public TypedIOPort trigger;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -105,16 +104,16 @@ public class JopWatchDog extends Sink {
     public void fire() throws IllegalActionException {
         super.fire();
         _last_val = _val;
-        
-//        if (trigger.hasToken(0)) {
-//            trigger.get(0);
-//            _last_val = !_val;
-//        }
+
+        //        if (trigger.hasToken(0)) {
+        //            trigger.get(0);
+        //            _last_val = !_val;
+        //        }
         if (input.hasToken(0)) {
             _last_val = ((BooleanToken) input.get(0)).booleanValue();
         }
     }
-    
+
     /** Record the most recent input for the watch dog value.
      *  @exception IllegalActionException If the base class throws it.
      */

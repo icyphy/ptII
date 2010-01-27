@@ -72,7 +72,7 @@ public class CurrentTime extends TimedSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** If true, use the model time reported by the input port,
      *  which is normally the model time of the local director.
      *  If false (the default), use the model time reported by
@@ -106,13 +106,14 @@ public class CurrentTime extends TimedSource {
             // output the current time (that is associated with the token).
             for (int i = 0; i < trigger.getWidth(); i++) {
                 if (trigger.hasToken(i)) {
-                    boolean localTime = ((BooleanToken)useLocalTime.getToken()).booleanValue();
+                    boolean localTime = ((BooleanToken) useLocalTime.getToken())
+                            .booleanValue();
                     if (localTime) {
                         currentTimeValue = Math.min(currentTimeValue, trigger
                                 .getModelTime(i).getDoubleValue());
                     } else {
-                        currentTimeValue = Math.min(currentTimeValue, getDirector()
-                                .getGlobalTime().getDoubleValue());
+                        currentTimeValue = Math.min(currentTimeValue,
+                                getDirector().getGlobalTime().getDoubleValue());
                     }
 
                     // Do not consume the token... It will be consumed
@@ -123,11 +124,14 @@ public class CurrentTime extends TimedSource {
             }
         } else {
             // Trigger port is not connected.
-            boolean localTime = ((BooleanToken)useLocalTime.getToken()).booleanValue();
+            boolean localTime = ((BooleanToken) useLocalTime.getToken())
+                    .booleanValue();
             if (localTime) {
-                currentTimeValue = getDirector().getModelTime().getDoubleValue();
+                currentTimeValue = getDirector().getModelTime()
+                        .getDoubleValue();
             } else {
-                currentTimeValue = getDirector().getGlobalTime().getDoubleValue();
+                currentTimeValue = getDirector().getGlobalTime()
+                        .getDoubleValue();
             }
             output.send(0, new DoubleToken(currentTimeValue));
         }

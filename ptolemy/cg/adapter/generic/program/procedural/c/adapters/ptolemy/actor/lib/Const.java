@@ -39,7 +39,9 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */
-public class Const extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Const {
+public class Const
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Const {
     /**
      *  Construct a AddSubtract adapter.
      *  @param actor The given ptolemy.actor.lib.AddSubtract actor.

@@ -581,7 +581,7 @@ public class Time implements Comparable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return the time resolution for this Time object, which in this
      *  class is the time resolution of the director given in the
      *  constructor.

@@ -561,10 +561,10 @@ public class CodeStream {
         selfTest();
 
         if (args.length < 1) {
-            throw new IllegalActionException("Called main() with no arguments.\n"
-                    + "Usage: java -classpath $PTII ptolemy.cg.kernel.generic.program.CodeStream foo.c\n");
+            throw new IllegalActionException(
+                    "Called main() with no arguments.\n"
+                            + "Usage: java -classpath $PTII ptolemy.cg.kernel.generic.program.CodeStream foo.c\n");
         }
-
 
         try {
             CodeStream code = new CodeStream(args[0], null);
@@ -1169,8 +1169,8 @@ public class CodeStream {
         // Keep parsing for extra parameters.
         for (int commaIndex = TemplateParser.indexOf(",",
                 codeInFile.toString(), startIndex); commaIndex != -1
-                && commaIndex <= endIndex; commaIndex = TemplateParser
-                .indexOf(",", codeInFile.toString(), commaIndex + 1)) {
+                && commaIndex <= endIndex; commaIndex = TemplateParser.indexOf(
+                ",", codeInFile.toString(), commaIndex + 1)) {
 
             String newParameter = codeInFile.substring(startIndex, commaIndex);
 
@@ -1223,18 +1223,18 @@ public class CodeStream {
             try {
                 replaceString = _checkArgumentName(arguments.get(i));
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(null, ex,
-                        "Failed to cast " + arguments.get(i)
-                        + " which is a " + arguments.get(i).getClass().getName()
+                throw new IllegalActionException(null, ex, "Failed to cast "
+                        + arguments.get(i) + " which is a "
+                        + arguments.get(i).getClass().getName()
                         + " to a String.");
             }
             String parameterName = "";
             try {
                 parameterName = _checkParameterName(parameters.get(i));
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(null, ex,
-                        "Failed to cast " + parameters.get(i)
-                        + " which is a " + parameters.get(i).getClass().getName()
+                throw new IllegalActionException(null, ex, "Failed to cast "
+                        + parameters.get(i) + " which is a "
+                        + parameters.get(i).getClass().getName()
                         + " to a String.");
             }
 
@@ -1472,8 +1472,8 @@ public class CodeStream {
 
                     int dotIndex = codeBlock.indexOf(".", macroIndex);
                     int openIndex = codeBlock.indexOf("(", macroIndex);
-                    int closeParen = TemplateParser
-                            ._findClosedParen(codeBlock.toString(), openIndex);
+                    int closeParen = TemplateParser._findClosedParen(codeBlock
+                            .toString(), openIndex);
 
                     boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
 

@@ -58,7 +58,8 @@ public class PeriodicDirectorHelper {
     public PeriodicDirectorHelper(PeriodicDirector director)
             throws IllegalActionException {
         if (!(director instanceof Director)) {
-            throw new IllegalActionException(director, "Helper must be passed a Director");
+            throw new IllegalActionException(director,
+                    "Helper must be passed a Director");
         }
         _director = director;
     }
@@ -91,8 +92,8 @@ public class PeriodicDirectorHelper {
         // the period.
         Actor container = (Actor) _director.getContainer();
         double periodValue = _director.periodValue();
-        Time currentTime = ((Director)_director).getModelTime();
-        
+        Time currentTime = ((Director) _director).getModelTime();
+
         // Check the most common case first.
         if (periodValue == 0.0) {
             if (container != null) {
@@ -136,7 +137,7 @@ public class PeriodicDirectorHelper {
         Time result = futureTime;
         return result;
     }
-    
+
     /** If the <i>period</i> parameter is greater than zero, then
      *  request a first firing of the executive director, if there
      *  is one.
@@ -144,8 +145,8 @@ public class PeriodicDirectorHelper {
      */
     public void initialize() throws IllegalActionException {
         if (_director.periodValue() > 0.0) {
-            _nextFiringTime = ((Director)_director).getModelTime();
-    
+            _nextFiringTime = ((Director) _director).getModelTime();
+
             // In case we are embedded within a timed director, request a first
             // firing.
             Actor container = (Actor) _director.getContainer();
@@ -168,7 +169,7 @@ public class PeriodicDirectorHelper {
         if (periodValue > 0.0) {
             Actor container = (Actor) _director.getContainer();
             Director executiveDirector = container.getExecutiveDirector();
-            Time currentTime = ((Director)_director).getModelTime();
+            Time currentTime = ((Director) _director).getModelTime();
             _nextFiringTime = currentTime.add(periodValue);
 
             if (executiveDirector != null) {
@@ -180,12 +181,12 @@ public class PeriodicDirectorHelper {
                 _fireContainerAt(_nextFiringTime);
             } else {
                 // Increment time to the next cycle.
-                ((Director)_director).setModelTime(_nextFiringTime);
+                ((Director) _director).setModelTime(_nextFiringTime);
             }
             // Set the index to zero because the next firing will occur at
             // a strictly greater time.
             if (_director instanceof SuperdenseTimeDirector) {
-                ((SuperdenseTimeDirector)_director).setIndex(0);
+                ((SuperdenseTimeDirector) _director).setIndex(0);
             }
         }
     }
@@ -211,7 +212,7 @@ public class PeriodicDirectorHelper {
         // catch up.
         double periodValue = _director.periodValue();
         if (periodValue > 0.0) {
-            Time enclosingTime = ((Director)_director).getModelTime();
+            Time enclosingTime = ((Director) _director).getModelTime();
             int comparison = _nextFiringTime.compareTo(enclosingTime);
             if (comparison == 0) {
                 // The enclosing time matches the time we expect to fire.
@@ -257,9 +258,11 @@ public class PeriodicDirectorHelper {
                 if (comparison == 0) {
                     return true;
                 } else {
-                    Director executive = ((Actor)_director.getContainer()).getExecutiveDirector();
+                    Director executive = ((Actor) _director.getContainer())
+                            .getExecutiveDirector();
                     if (executive != null) {
-                        executive.fireAt((Actor)_director.getContainer(), _nextFiringTime);
+                        executive.fireAt((Actor) _director.getContainer(),
+                                _nextFiringTime);
                     }
                     return false;
                 }
@@ -340,11 +343,9 @@ public class PeriodicDirectorHelper {
                                     + director.getName()
                                     + " is unable to fire "
                                     + container.getName()
-                                    + " at the requested time: "
-                                    + time
+                                    + " at the requested time: " + time
                                     + ". It responds it will fire it at: "
-                                    + result
-                                    + ".");
+                                    + result + ".");
                 }
                 return result;
             }
@@ -357,7 +358,7 @@ public class PeriodicDirectorHelper {
 
     /** The associated director. */
     private PeriodicDirector _director;
-    
+
     /** The expected next firing time. */
     private Time _nextFiringTime;
 }

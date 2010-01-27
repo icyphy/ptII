@@ -664,7 +664,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  director, then return the director associated with the
      *  object passed in to the constructor.
      *  @return the executive director or the director of the actor.
-     */  
+     */
     public ptolemy.actor.Director getDirector() {
         ptolemy.actor.Director director = ((Actor) _object)
                 .getExecutiveDirector();
@@ -1277,7 +1277,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return 500.0;
     }
 
-
     /**
      * Get the write offset in the buffer of a given channel to which a token
      * should be put. The channel is given by its containing port and the
@@ -1733,7 +1732,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return name.replaceAll("\\$", "Dollar");
     }
 
-
     /**
      *  Return a reference to the port.  
      *  @param port The port.
@@ -1741,7 +1739,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param isWrite True if the port is to be written to.
      *  @return The reference to the port.
      *  @see #getReference(TypedIOPort, String[], boolean, boolean)
-     */  
+     */
     public static String generatePortReference(IOPort port,
             String[] channelAndOffset, boolean isWrite) {
 
@@ -1783,7 +1781,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @return The reference.
      *  @exception IllegalActionException If the attribute does not
      *   exist or does not have a value.
-     */  
+     */
     public String getReference(Attribute attribute, String[] channelAndOffset)
             throws IllegalActionException {
         StringBuffer result = new StringBuffer();
@@ -1817,7 +1815,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return result.toString();
     }
 
-
     /**
      *  Return a reference.
      *  @param name The reference to be parsed.  The format is
@@ -1826,7 +1823,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @return The reference.
      *  @exception IllegalActionException If the attribute does not
      *   exist or does not have a value.
-     */  
+     */
     public String getReference(String name, boolean isWrite)
             throws IllegalActionException {
         ptolemy.actor.Director director = getDirector();
@@ -1887,7 +1884,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 "Reference not found: " + name);
     }
 
-
     /**
      *  Return a reference to the port.
      *  @param port The port.
@@ -1898,7 +1894,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @exception IllegalActionException If the attribute does not
      *   exist or does not have a value.
      *  @see #generatePortReference(IOPort, String[], boolean)
-     */  
+     */
     public String getReference(TypedIOPort port, String[] channelAndOffset,
             boolean forComposite, boolean isWrite)
             throws IllegalActionException {
@@ -2501,32 +2497,33 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             String castType, String refType) throws IllegalActionException {
 
         if (castType == null || refType == null || castType.equals(refType)) {
-            if (castType == null && (refType != null && refType.equals("Token") )
+            if (castType == null
+                    && (refType != null && refType.equals("Token"))
                     && (expression.equals("true") || expression.equals("false"))) {
                 // FIXME: is this right?  It is needed by the Case actor in
                 // $PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/hoc/test/auto/Case5.xml
-                return("Boolean_new(" + expression + ")");
+                return ("Boolean_new(" + expression + ")");
             } else {
                 return expression;
             }
         }
 
-        if (castType.length() == 0 ) {
+        if (castType.length() == 0) {
             throw new IllegalActionException("_generateTypeConvertMethod(\""
-                    + expression + "\", \"" + castType + "\", \""
-                    + refType + "\") called with castType (the 2nd arg) "
+                    + expression + "\", \"" + castType + "\", \"" + refType
+                    + "\") called with castType (the 2nd arg) "
                     + "having length 0.");
         }
 
-        if (refType.length() == 0 ) {
+        if (refType.length() == 0) {
             throw new IllegalActionException("_generateTypeConvertMethod(\""
-                    + expression + "\", \"" + castType + "\", \""
-                    + refType + "\") called with refType (the 3rd arg) "
+                    + expression + "\", \"" + castType + "\", \"" + refType
+                    + "\") called with refType (the 3rd arg) "
                     + "having length 0.");
         }
 
         expression = "$convert_" + refType + "_" + castType + "(" + expression
-            + ")";
+                + ")";
 
         return processCode(expression);
     }
@@ -2703,9 +2700,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     protected String[] _getChannelAndOffset(String name)
             throws IllegalActionException {
 
-        String[] result = {
-                "", ""
-        };
+        String[] result = { "", "" };
 
         // Given expression of forms:
         //     "port"
@@ -2939,24 +2934,21 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 userMacro = Class.forName("ptolemy.codegen.kernel.userMacro."
                         + macro);
 
-                handler = userMacro.getMethod("handleMacro", new Class[] {
-                    List.class
-                });
-                checker = userMacro.getMethod("checkArguments", new Class[] {
-                    List.class
-                });
+                handler = userMacro.getMethod("handleMacro",
+                        new Class[] { List.class });
+                checker = userMacro.getMethod("checkArguments",
+                        new Class[] { List.class });
             } catch (Exception ex) {
                 // Don't print out error, since this is probably not an user macro.
                 return null;
             }
 
             try {
-                checker.invoke(userMacro, new Object[] {
-                    parseList(parameter)
-                });
-                return (String) handler.invoke(userMacro, new Object[] {
-                    parseList(parameter)
-                });
+                checker
+                        .invoke(userMacro,
+                                new Object[] { parseList(parameter) });
+                return (String) handler.invoke(userMacro,
+                        new Object[] { parseList(parameter) });
             } catch (Exception ex) {
                 throw new IllegalActionException(getComponent(), ex,
                         "Failed to invoke user macro ($" + macro + ").");
@@ -3100,10 +3092,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * The code block table that stores the code block body (StringBuffer) with
      * the code block name (String) as key.
      */
-    private static final String[] _defaultBlocks = {
-            "preinitBlock", "initBlock", "fireBlock", "postfireBlock",
-            "wrapupBlock"
-    };
+    private static final String[] _defaultBlocks = { "preinitBlock",
+            "initBlock", "fireBlock", "postfireBlock", "wrapupBlock" };
 
     //private boolean printedNullPortWarnings = false;
 

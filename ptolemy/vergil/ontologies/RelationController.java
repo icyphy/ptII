@@ -73,7 +73,7 @@ public class RelationController extends TransitionController {
     */
     public void addHotKeys(JGraph jgraph) {
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -100,7 +100,7 @@ public class RelationController extends TransitionController {
     /** Renderer for a relation in an ontology.
      */
     public static class LinkRenderer implements EdgeRenderer {
-        
+
         /** Render a visual representation of the given edge. */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ArcConnector c = new ArcConnector(tailSite, headSite);
@@ -114,14 +114,13 @@ public class RelationController extends TransitionController {
             c.setUserObject(edge);
 
             Arc arc = (Arc) edge;
-            ConceptRelation relation = (ConceptRelation)arc.getRelation();
+            ConceptRelation relation = (ConceptRelation) arc.getRelation();
 
             // When first dragging out a relation, the relation
             // may still be null.
             if (relation != null) {
 
                 c.setToolTipText(relation.getName());
-
 
                 try {
                     double exitAngle = ((DoubleToken) (relation.exitAngle

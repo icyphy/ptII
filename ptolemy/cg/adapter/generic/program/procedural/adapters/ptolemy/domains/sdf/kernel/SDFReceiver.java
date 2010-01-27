@@ -72,13 +72,13 @@ public class SDFReceiver extends Receiver {
      *  getting the adapter, getting the director or getting the port reference.
      */
     public String generateGetCode(String offset) throws IllegalActionException {
-        TypedIOPort port = (TypedIOPort)getComponent().getContainer();
+        TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter)
-            getAdapter(getComponent().getContainer().getContainer());
-        
-        return _getDirectorForReceiver().getReference(port, new String[]{
-                Integer.toString(channel), offset}, 
+        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
+                .getContainer().getContainer());
+
+        return _getDirectorForReceiver().getReference(port,
+                new String[] { Integer.toString(channel), offset },
                 _forComposite, false, containingActorAdapter);
     }
 
@@ -89,7 +89,8 @@ public class SDFReceiver extends Receiver {
      *  is returned
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateHasTokenCode(String offset) throws IllegalActionException {
+    public String generateHasTokenCode(String offset)
+            throws IllegalActionException {
         return "true"; // Assume "true" is a defined constant.
     }
 
@@ -101,21 +102,22 @@ public class SDFReceiver extends Receiver {
      *  @exception IllegalActionException If thrown while getting the component,
      *  getting the adapter, getting the director or getting the port reference.
      */
-    public String generatePutCode(IOPort sourcePort, String offset, String token) throws IllegalActionException {
-        TypedIOPort port = (TypedIOPort)getComponent().getContainer();
+    public String generatePutCode(IOPort sourcePort, String offset, String token)
+            throws IllegalActionException {
+        TypedIOPort port = (TypedIOPort) getComponent().getContainer();
         int channel = port.getChannelForReceiver(getComponent());
-        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter)
-            getAdapter(getComponent().getContainer().getContainer());
+        NamedProgramCodeGeneratorAdapter containingActorAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
+                .getContainer().getContainer());
 
         // The source's channel as well as the offsetis irrelevant here because 
         // we use the token as the sourceRef instead.
         // The sink is actually also irrelevant, since we will get rid of it later.
         ProgramCodeGeneratorAdapter.Channel source = new Channel(sourcePort, 0);
         ProgramCodeGeneratorAdapter.Channel sink = new Channel(port, channel);
-        token = ((NamedProgramCodeGeneratorAdapter)
-            getAdapter(getComponent().getContainer().getContainer())).getTemplateParser()
-            .generateTypeConvertStatement(source, sink, 0, token);
-        
+        token = ((NamedProgramCodeGeneratorAdapter) getAdapter(getComponent()
+                .getContainer().getContainer())).getTemplateParser()
+                .generateTypeConvertStatement(source, sink, 0, token);
+
         token = _removeSink(token);
 
         boolean forComposite = _forComposite;
@@ -129,19 +131,20 @@ public class SDFReceiver extends Receiver {
             // which has nested ModularCodegen.
             forComposite = false;
         }
-        return _getDirectorForReceiver().getReference(port, new String[]{Integer.toString(channel), offset}, 
-                forComposite, true, containingActorAdapter) + "=" + token + ";" + _eol;
-//        adapter.processCode("$ref(" + port.getName() + "#" + channel
-//                + ")")
-//                + " = " + token + ";" + _eol;
+        return _getDirectorForReceiver().getReference(port,
+                new String[] { Integer.toString(channel), offset },
+                forComposite, true, containingActorAdapter)
+                + "=" + token + ";" + _eol;
+        //        adapter.processCode("$ref(" + port.getName() + "#" + channel
+        //                + ")")
+        //                + " = " + token + ";" + _eol;
     }
 
-    
     protected String _generateTypeConvertStatement(Channel source)
             throws IllegalActionException {
-        
+
         Type sourceType = ((TypedIOPort) source.port).getType();
-//        Type sinkType = ((TypedIOPort) getComponent().getContainer()).getType();
+        //        Type sinkType = ((TypedIOPort) getComponent().getContainer()).getType();
 
         // In a modal model, a refinement may have an output port which is
         // not connected inside, in this case the type of the port is
@@ -151,68 +154,68 @@ public class SDFReceiver extends Receiver {
             return "";
         }
         // FIXME: what do we do with offset?
-//
-//        // The references are associated with their own adapter, so we need
-//        // to find the associated adapter.
-//        String sourcePortChannel = source.port.getName() + "#"
-//                + source.channelNumber + ", " + offset;
-//        String sourceRef = (_getAdapter(source.port.getContainer()))
-//                .getReference(sourcePortChannel);
-//
-//        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
-//                + ", " + offset;
-//
-//        // For composite actor, generate a variable corresponding to
-//        // the inside receiver of an output port.
-//        // FIXME: I think checking sink.port.isOutput() is enough here.
-//        if (sink.port.getContainer() instanceof CompositeActor
-//                && sink.port.isOutput()) {
-//            sinkPortChannel = "@" + sinkPortChannel;
-//        }
-//        String sinkRef = (_getAdapter(sink.port.getContainer())).getReference(
-//                sinkPortChannel, true);
-//
-//        // When the sink port is contained by a modal controller, it is
-//        // possible that the port is both input and output port. we need
-//        // to pay special attention. Directly calling getReference() will
-//        // treat it as output port and this is not correct.
-//        // FIXME: what about offset?
-//        if (sink.port.getContainer() instanceof ModalController) {
-//            sinkRef = ProgramCodeGeneratorAdapter.generateName(sink.port);
-//            if (sink.port.isMultiport()) {
-//                sinkRef = sinkRef + "[" + sink.channelNumber + "]";
-//            }
-//        }
-//
-//        String result = sourceRef;
-//
-//        String sourceCodeGenType = _codeGenerator.codeGenType(sourceType);
-//        String sinkCodeGenType = _codeGenerator.codeGenType(sinkType);
-//
-//        if (!sinkCodeGenType.equals(sourceCodeGenType)) {
-//            result = "$convert_" + sourceCodeGenType + "_" + sinkCodeGenType
-//                    + "(" + result + ")";
-//        }
-//        return sinkRef + " = " + result + ";" + _eol;
-//    }
+        //
+        //        // The references are associated with their own adapter, so we need
+        //        // to find the associated adapter.
+        //        String sourcePortChannel = source.port.getName() + "#"
+        //                + source.channelNumber + ", " + offset;
+        //        String sourceRef = (_getAdapter(source.port.getContainer()))
+        //                .getReference(sourcePortChannel);
+        //
+        //        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
+        //                + ", " + offset;
+        //
+        //        // For composite actor, generate a variable corresponding to
+        //        // the inside receiver of an output port.
+        //        // FIXME: I think checking sink.port.isOutput() is enough here.
+        //        if (sink.port.getContainer() instanceof CompositeActor
+        //                && sink.port.isOutput()) {
+        //            sinkPortChannel = "@" + sinkPortChannel;
+        //        }
+        //        String sinkRef = (_getAdapter(sink.port.getContainer())).getReference(
+        //                sinkPortChannel, true);
+        //
+        //        // When the sink port is contained by a modal controller, it is
+        //        // possible that the port is both input and output port. we need
+        //        // to pay special attention. Directly calling getReference() will
+        //        // treat it as output port and this is not correct.
+        //        // FIXME: what about offset?
+        //        if (sink.port.getContainer() instanceof ModalController) {
+        //            sinkRef = ProgramCodeGeneratorAdapter.generateName(sink.port);
+        //            if (sink.port.isMultiport()) {
+        //                sinkRef = sinkRef + "[" + sink.channelNumber + "]";
+        //            }
+        //        }
+        //
+        //        String result = sourceRef;
+        //
+        //        String sourceCodeGenType = _codeGenerator.codeGenType(sourceType);
+        //        String sinkCodeGenType = _codeGenerator.codeGenType(sinkType);
+        //
+        //        if (!sinkCodeGenType.equals(sourceCodeGenType)) {
+        //            result = "$convert_" + sourceCodeGenType + "_" + sinkCodeGenType
+        //                    + "(" + result + ")";
+        //        }
+        //        return sinkRef + " = " + result + ";" + _eol;
+        //    }
 
         return null;
     }
-    
+
     /** Each receiver is associated with a director, return that director.
      *  @return The director associated with this receiver.
      *  @exception IllegalActionException 
      *  
      *  FIXME: this is not exactly correct.
      */
-    protected StaticSchedulingDirector _getDirectorForReceiver() throws IllegalActionException {
+    protected StaticSchedulingDirector _getDirectorForReceiver()
+            throws IllegalActionException {
         return (StaticSchedulingDirector) super._getDirectorForReceiver();
     }
 
     //$send(port#channel) ==> port_channel[writeOffset]
     //$get(port#channel) ==> port_channel[readOffset]
 
-    
     private boolean _forComposite;
-    
+
 }

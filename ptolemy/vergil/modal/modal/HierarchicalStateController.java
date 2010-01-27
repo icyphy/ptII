@@ -198,7 +198,7 @@ public class HierarchicalStateController extends StateController {
             Frame owner = null;
             GraphController controller = getController();
             if (controller instanceof BasicGraphController) {
-                owner = ((BasicGraphController)controller).getFrame();
+                owner = ((BasicGraphController) controller).getFrame();
             }
             ComponentDialog dialog = new ComponentDialog(owner,
                     "Specify Refinement", query);

@@ -189,9 +189,9 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
 
                             if (_debugging) {
                                 _debug(getFullName() + " port: "
-                                        + destination.getName()
-                                        + " channel: " + channel.intValue()
-                                        + ", token: " + token);
+                                        + destination.getName() + " channel: "
+                                        + channel.intValue() + ", token: "
+                                        + token);
                             }
                         } else {
                             if (token == null) {

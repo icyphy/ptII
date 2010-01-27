@@ -792,7 +792,7 @@ public class TypeLattice {
                 // Strange bug here, see moml/test/aJVMBug.xml
                 // and ptdevel email from 7/21.
                 //_basicLattice.addNodeWeight(BaseType.ACTOR);
-                _basicLattice.addNodeWeight(ActorToken.TYPE); 
+                _basicLattice.addNodeWeight(ActorToken.TYPE);
 
                 _basicLattice.addNodeWeight(BaseType.XMLTOKEN);
                 _basicLattice.addNodeWeight(BaseType.SCALAR);

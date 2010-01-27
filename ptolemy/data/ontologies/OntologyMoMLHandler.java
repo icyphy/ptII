@@ -30,12 +30,10 @@ package ptolemy.data.ontologies;
 
 import java.util.List;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -110,30 +108,30 @@ public class OntologyMoMLHandler extends Attribute {
      *  when removing the annotation attributes.
      */
     public void clearAnnotations() throws IllegalActionException {
-        OntologySolver solver = (OntologySolver) getContainer();
+        //OntologySolver solver = (OntologySolver) getContainer();
 
         StringBuffer completeMoML = new StringBuffer("<group>");
 
-        for (OntologyAdapter adapter : solver.getAllAdapters()) {
-            if (adapter.getComponent() instanceof NamedObj) {
-                NamedObj namedObj = (NamedObj) adapter.getComponent();
-
-                for (OntologyAnnotationAttribute attribute : (List<OntologyAnnotationAttribute>) namedObj
-                        .attributeList(OntologyAnnotationAttribute.class)) {
-
-                    /* FIXME
-                    if (solver.isIdentifiable(attribute.getUseCaseIdentifier())) {
-
-                        String request = "<deleteProperty name=\""
-                                + attribute.getName() + "\"/>";
-                        request = _completeHierarchyInMoML(namedObj, request);
-
-                        completeMoML.append(request);
-                    }
-                    */
-                }
-            }
-        }
+//        for (OntologyAdapter adapter : solver.getAllAdapters()) {
+//            if (adapter.getComponent() instanceof NamedObj) {
+//                NamedObj namedObj = (NamedObj) adapter.getComponent();
+//
+//                for (OntologyAnnotationAttribute attribute : (List<OntologyAnnotationAttribute>) namedObj
+//                        .attributeList(OntologyAnnotationAttribute.class)) {
+//
+//                    /* FIXME
+//                    if (solver.isIdentifiable(attribute.getUseCaseIdentifier())) {
+//
+//                        String request = "<deleteProperty name=\""
+//                                + attribute.getName() + "\"/>";
+//                        request = _completeHierarchyInMoML(namedObj, request);
+//
+//                        completeMoML.append(request);
+//                    }
+//                    */
+//                }
+//            }
+//        }
         completeMoML.append("</group>");
         _requestChange(completeMoML.toString());
     }
@@ -188,7 +186,6 @@ public class OntologyMoMLHandler extends Attribute {
         try {
             for (Object propertyable : solver.getAllPropertyables()) {
                 if (propertyable instanceof NamedObj) {
-                    NamedObj namedObj = (NamedObj) propertyable;
 
                     /* FIXME
                     String attributeName = solver.getExtendedUseCaseName();
@@ -339,13 +336,8 @@ public class OntologyMoMLHandler extends Attribute {
             propertyString = "";
         }
 
-        // 12/18/09 Charles Shelton
-        // Get ColorAttribute from Concept to provide
-        // correct highlight color
-        ColorAttribute conceptColor = null;        
         if (property != null) {
-            conceptColor =
-                (ColorAttribute) property.getAttribute("ColorAttribute");
+            //(ColorAttribute) (property.getAttribute("ColorAttribute"));
         }
         
         /* FIXME: This change request that sets the highlight color

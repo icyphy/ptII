@@ -52,12 +52,11 @@ public class AtomicActor extends PropertyConstraintHelper {
      * @param actor The associated actor.
      * @exception IllegalActionException If thrown by the super class.
      */
-    public AtomicActor(PropertyConstraintSolver solver, 
-            ptolemy.actor.AtomicActor actor)
-            throws IllegalActionException {
+    public AtomicActor(PropertyConstraintSolver solver,
+            ptolemy.actor.AtomicActor actor) throws IllegalActionException {
         super(solver, actor);
     }
-    
+
     /**
      * Construct the AtomicActor property constraint adapter for the
      * given component and property lattice.
@@ -67,12 +66,11 @@ public class AtomicActor extends PropertyConstraintHelper {
      *  uses the default actor constraints.
      * @exception IllegalActionException If thrown by the super class.
      */
-    public AtomicActor(PropertyConstraintSolver solver, 
-            ptolemy.actor.AtomicActor actor, 
-            boolean useDefaultConstraints)
+    public AtomicActor(PropertyConstraintSolver solver,
+            ptolemy.actor.AtomicActor actor, boolean useDefaultConstraints)
             throws IllegalActionException {
         super(solver, actor, useDefaultConstraints);
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -93,4 +91,4 @@ public class AtomicActor extends PropertyConstraintHelper {
      */
     public void setEffective(boolean isEffective) {
     }
- }
+}

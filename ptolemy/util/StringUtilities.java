@@ -168,39 +168,39 @@ public class StringUtilities {
         int i = 0;
         int length = string.length();
         while (i < length) {
-                switch (buffer.charAt(i)) {
-                case '\n':
-                    buffer.deleteCharAt(i);
-                    buffer.insert(i, "&#10;");
-                    length += 4;
-                    break;
-                case '\r':
-                    buffer.deleteCharAt(i);
-                    buffer.insert(i, "&#13;");
-                    length += 4;
-                    break;
-                case '"':
-                    buffer.deleteCharAt(i);
-                    buffer.insert(i, "&quot;");
-                    length += 5;
-                    break;
-                case '&':
-                    buffer.deleteCharAt(i);
-                    buffer.insert(i, "&amp;");
-                    length += 4;
-                    break;
-                case '<':
-                    buffer.deleteCharAt(i);
-                    buffer.insert(i, "&lt;");
-                    length += 3;
-                    break;
-                case '>':
-                    buffer.deleteCharAt(i);
-                    buffer.insert(i, "&gt;");
-                    length += 3;
-                    break;
-                }
-                i++;
+            switch (buffer.charAt(i)) {
+            case '\n':
+                buffer.deleteCharAt(i);
+                buffer.insert(i, "&#10;");
+                length += 4;
+                break;
+            case '\r':
+                buffer.deleteCharAt(i);
+                buffer.insert(i, "&#13;");
+                length += 4;
+                break;
+            case '"':
+                buffer.deleteCharAt(i);
+                buffer.insert(i, "&quot;");
+                length += 5;
+                break;
+            case '&':
+                buffer.deleteCharAt(i);
+                buffer.insert(i, "&amp;");
+                length += 4;
+                break;
+            case '<':
+                buffer.deleteCharAt(i);
+                buffer.insert(i, "&lt;");
+                length += 3;
+                break;
+            case '>':
+                buffer.deleteCharAt(i);
+                buffer.insert(i, "&gt;");
+                length += 3;
+                break;
+            }
+            i++;
         }
         return buffer.toString();
     }

@@ -31,7 +31,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.type.BaseType.DoubleType;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -74,13 +74,13 @@ public class Derivative extends DETransformer {
         super(container, name);
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setMultiport(true);
-        input.setTypeAtMost(DoubleType.DOUBLE);
-        output.setTypeEquals(DoubleType.DOUBLE);
+        input.setTypeAtMost(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports.
      *  @param workspace The workspace for the new object.
@@ -91,8 +91,8 @@ public class Derivative extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Derivative newObject = (Derivative) super.clone(workspace);
 
-        newObject.input.setTypeAtMost(DoubleType.DOUBLE);
-        newObject.output.setTypeEquals(DoubleType.DOUBLE);
+        newObject.input.setTypeAtMost(BaseType.DOUBLE);
+        newObject.output.setTypeEquals(BaseType.DOUBLE);
 
         // This is not strictly needed (since it is always recreated
         // in preinitialize) but it is safer.
@@ -112,24 +112,28 @@ public class Derivative extends DETransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
-            Time  currentTime = getDirector().getModelTime();
-            DoubleToken currentToken = (DoubleToken)input.get(0);
+            Time currentTime = getDirector().getModelTime();
+            DoubleToken currentToken = (DoubleToken) input.get(0);
             _currentInput = new TimedEvent(currentTime, currentToken);
-            
+
             if (_lastInput != null) {
-                Time  lastTime = _lastInput.timeStamp;
-                DoubleToken lastToken = (DoubleToken)_lastInput.contents;
-                DoubleToken timeGap = new DoubleToken(currentTime.subtract(lastTime).getDoubleValue());
-                
+                Time lastTime = _lastInput.timeStamp;
+                DoubleToken lastToken = (DoubleToken) _lastInput.contents;
+                DoubleToken timeGap = new DoubleToken(currentTime.subtract(
+                        lastTime).getDoubleValue());
+
                 //If the timeGap is zero, then we have received a simultaneous event. If the
                 // value of the input has not changed, then we can ignore this input, as a control
                 // signal was already generated. However if the value has changed, then the signal
                 // is discontinuous and an exception will be thrown.
-                if (timeGap.doubleValue() == 0 && !currentToken.equals(lastToken)){
-                    throw new IllegalActionException("Derivative received discontinuous input.");
+                if (timeGap.doubleValue() == 0
+                        && !currentToken.equals(lastToken)) {
+                    throw new IllegalActionException(
+                            "Derivative received discontinuous input.");
                 }
-                
-                output.broadcast(currentToken.subtract(lastToken).divide(timeGap));
+
+                output.broadcast(currentToken.subtract(lastToken).divide(
+                        timeGap));
             }
         }
     }
@@ -149,11 +153,11 @@ public class Derivative extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         //If reset port is connected and has a token, reset state.
-        if (reset.getWidth() > 0){
-            if (reset.hasToken(0)){
+        if (reset.getWidth() > 0) {
+            if (reset.hasToken(0)) {
                 //Consume reset token
                 reset.get(0);
-                
+
                 //Reset the current input
                 _currentInput = null;
             }
@@ -161,7 +165,7 @@ public class Derivative extends DETransformer {
         _lastInput = _currentInput;
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 

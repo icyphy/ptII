@@ -206,8 +206,9 @@ public class TransitionController extends BasicEdgeController {
                         float[] dashvalues = new float[2];
                         dashvalues[0] = (float) 2.0;
                         dashvalues[1] = (float) 2.0;
-                        Stroke dashed = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-                                BasicStroke.JOIN_BEVEL, 0, dashvalues, 0);
+                        Stroke dashed = new BasicStroke(1.0f,
+                                BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL,
+                                0, dashvalues, 0);
                         c.setStroke(dashed);
                     }
                 } catch (IllegalActionException e) {
@@ -304,7 +305,6 @@ public class TransitionController extends BasicEdgeController {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-
     /** Create an edge renderer specifically for instances of Transition.
      */
     protected void _createEdgeRenderer() {
@@ -394,8 +394,8 @@ public class TransitionController extends BasicEdgeController {
                 // don't already exist.
                 String moml = "<group><property name=\"exitAngle\" value=\""
                         + angle + "\" class=\"ptolemy.data.expr.Parameter\"/>"
-                        + "<property name=\"gamma\" value=\""
-                        + gamma + "\" class=\"ptolemy.data.expr.Parameter\"/></group>";
+                        + "<property name=\"gamma\" value=\"" + gamma
+                        + "\" class=\"ptolemy.data.expr.Parameter\"/></group>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this,
                         transition, moml);
                 transition.requestChange(request);

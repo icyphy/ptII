@@ -33,7 +33,6 @@ import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;

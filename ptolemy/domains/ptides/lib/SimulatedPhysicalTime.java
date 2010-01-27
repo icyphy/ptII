@@ -59,27 +59,28 @@ public class SimulatedPhysicalTime extends TimedSource {
     *  @exception NameDuplicationException If the container already has an
     *   actor with this name.
     */
-   public SimulatedPhysicalTime(CompositeEntity container, String name)
-           throws NameDuplicationException, IllegalActionException {
-       super(container, name);
+    public SimulatedPhysicalTime(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-       // set the type constraints.
-       output.setTypeEquals(BaseType.DOUBLE);
-   }
+        // set the type constraints.
+        output.setTypeEquals(BaseType.DOUBLE);
+    }
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-   /** Send the simulated physical time to the output, which is the
-    *  currentTime of the enclosing DE director.
-    *  @exception IllegalActionException If send() throws it.
-    */
-   public void fire() throws IllegalActionException {
-       PtidesBasicDirector director = (PtidesBasicDirector)getDirector();
-       
-       output.send(0, new DoubleToken(director.getPhysicalTime().getDoubleValue()));
-       
-       super.fire();
-   }
+    /** Send the simulated physical time to the output, which is the
+     *  currentTime of the enclosing DE director.
+     *  @exception IllegalActionException If send() throws it.
+     */
+    public void fire() throws IllegalActionException {
+        PtidesBasicDirector director = (PtidesBasicDirector) getDirector();
+
+        output.send(0, new DoubleToken(director.getPhysicalTime()
+                .getDoubleValue()));
+
+        super.fire();
+    }
 
 }

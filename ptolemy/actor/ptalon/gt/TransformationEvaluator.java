@@ -255,7 +255,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
      *  @param object The NamedObj to be processed.
      *  @exception PtalonRuntimeException If thrown while processing
      *  the attribute.
-     */ 
+     */
     protected void _processAttributes(NamedObj object)
             throws PtalonRuntimeException {
         if (_isInTransformation) {

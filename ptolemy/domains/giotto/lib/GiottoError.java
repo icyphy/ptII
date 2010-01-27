@@ -57,8 +57,6 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-
     /**
      * Construct a GiottoError actor. A Giotto Error actor
      * is used to specify how simulation should handle
@@ -71,7 +69,7 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
      */
 
     public GiottoError(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // Parameters
         errorAction = new StringParameter(this, "errorAction");
@@ -99,7 +97,7 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
                 _debug("the model error handler is set to " + getDisplayName()
                         + " for container " + container.getDisplayName());
             }
-            container.setModelErrorHandler((ModelErrorHandler) this);
+            container.setModelErrorHandler(this);
         }
 
     }
@@ -111,7 +109,7 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
      *  @exception IllegalActionException If the comparison is not recognized.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         String errorActionName = "";
         if (attribute == errorAction) {
             errorActionName = errorAction.getExpression().trim();
@@ -155,8 +153,8 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
             IllegalActionException exception) throws IllegalActionException {
 
         System.out
-        .println("handleModelError called for the GiottoError Actor with name "
-                + this.getDisplayName());
+                .println("handleModelError called for the GiottoError Actor with name "
+                        + this.getDisplayName());
         System.out.println("error action has value " + _errorAction);
         if (_errorAction == ErrorAction.warn) {
             System.out.println("an error was detected in "
@@ -164,7 +162,7 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
             return true;
         } else if (_errorAction == ErrorAction.timedutilityfunction) {
             System.out
-            .println("I should check to see if I'm within the acceptable range for the timed utility function");
+                    .println("I should check to see if I'm within the acceptable range for the timed utility function");
             String temp = exception.toString();
             int i, j, k, l = 0;
             i = temp.indexOf("(");

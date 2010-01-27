@@ -212,14 +212,14 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     /** Return the closing entry code, if any.
      *  @return the closing entry code.
-     */   
+     */
     public String generateClosingEntryCode() {
         return "void doWrapup() { " + _eol;
     }
 
     /** Return the closing exit code, if any.
      *  @return the closing exit code.
-     */   
+     */
     public String generateClosingExitCode() {
         return "}" + _eol;
     }
@@ -270,10 +270,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // for the whole model.
         if (_isTopLevel()) {
             // add some function declarations
-            mainEntryCode.append("void run();" + _eol
-                    + "void execute();" + _eol
-                    + "void doWrapup();" + _eol);
-                    
+            mainEntryCode.append("void run();" + _eol + "void execute();"
+                    + _eol + "void doWrapup();" + _eol);
+
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
             //String targetValue = target.getExpression();
@@ -284,13 +283,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             //                        + "init();" + _eol);
             //            }
 
-            mainEntryCode
-            .append(_eol
-                 + "initialize();" + _eol
-                 + "execute();" + _eol
-                 + "doWrapup();" + _eol
-                 + "exit(0);" + _eol
-                 + "}" + _eol);
+            mainEntryCode.append(_eol + "initialize();" + _eol + "execute();"
+                    + _eol + "doWrapup();" + _eol + "exit(0);" + _eol + "}"
+                    + _eol);
 
         } else {
             // If the container is not in the top level, we are generating code
@@ -388,7 +383,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
         CodeStream sharedStream = new CodeStream(
-                "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/SharedCode.c", this);
+                "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/SharedCode.c",
+                this);
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
@@ -406,8 +402,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
-                    "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/" + typesArray[i]
-                            + ".c", this);
+                    "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/c/type/"
+                            + typesArray[i] + ".c", this);
 
             code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
 
@@ -925,9 +921,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         _overloadedFunctions.parse(typeDir + "UnsignedByte.c");
 
         // Parse other function files.
-//        String directorFunctionDir = cCodegenPath
-//                + "kernel/parameterized/directorFunctions/";
-//        _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
+        //        String directorFunctionDir = cCodegenPath
+        //                + "kernel/parameterized/directorFunctions/";
+        //        _overloadedFunctions.parse(directorFunctionDir + "PNDirector.c");
     }
 
     /** Execute the compile and run commands in the
@@ -1064,8 +1060,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         if (!_isTopLevel()) {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
 
-            includingFiles
-                    .addAll(_getJVMHeaderFiles());
+            includingFiles.addAll(_getJVMHeaderFiles());
         }
 
         includingFiles.add("<stdarg.h>");
@@ -1127,7 +1122,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     protected Class<? extends TemplateParser> _templateParserClass() {
         return CTemplateParser.class;
     }
-    
+
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
      *
@@ -1307,7 +1302,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                 + "/makefile.in");
 
         // 3. Look for the generic C makefile.in
-        templateList.add("ptolemy/cg/kernel/generic/program/procedural/c/makefile.in");
+        templateList
+                .add("ptolemy/cg/kernel/generic/program/procedural/c/makefile.in");
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
@@ -1380,7 +1376,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         }
         return buffer.toString();
     }
-
 
     /** Get the header files needed to compile with the jvm library.
       *  @return A set of strings that are names of the header files
@@ -1473,8 +1468,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         String jvmLoaderDirective = "-ljvm";
         String libjvmAbsoluteDirectory = "";
         if (platform.equals("win32")) {
-            addInclude(
-                    "-I\"" + javaHome + "/include/" + platform + "\"");
+            addInclude("-I\"" + javaHome + "/include/" + platform + "\"");
 
             // The directive we use to find jvm.dll, which is usually in
             // something like c:/Program Files/Java/jre1.6.0_04/bin/client/jvm.dll
@@ -1498,8 +1492,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     String libjvmAbsolutePath = null;
                     try {
                         // Look for libjvm.dll.a in the codegen directory
-                        File libjvmFileCopy = new File(
-                                codeDirectory.asFile(),
+                        File libjvmFileCopy = new File(codeDirectory.asFile(),
                                 "libjvm.dll.a");
 
                         if (!libjvmFileCopy.canRead()) {
@@ -1539,8 +1532,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             }
         } else {
             // Solaris, Linux etc.
-            addInclude(
-                    "-I\"" + javaHome + "/include/" + platform + "\"");
+            addInclude("-I\"" + javaHome + "/include/" + platform + "\"");
         }
         addLibrary("-L\"" + libjvmAbsoluteDirectory + "\"");
         addLibrary(jvmLoaderDirective);
@@ -1549,7 +1541,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         files.add("<jni.h>");
         return files;
     }
-    
+
     /** Add called functions to the set of overloaded functions for
      *  later use.
      *  If the function starts with "Array_", add everything after the
@@ -1561,8 +1553,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  a function to the set of overloaded functions.
      */
     final public void markFunctionCalled(String name,
-            CTemplateParser templateParser)
-            throws IllegalActionException {
+            CTemplateParser templateParser) throws IllegalActionException {
 
         try {
             String functionCode = _overloadedFunctions.getCodeBlock(name);
@@ -1596,10 +1587,10 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
 
     /** An ordered set of function code */
     private LinkedHashSet<String> _overloadedFunctionSet;
-    
+
     /** True if we have printed the JVM warning. */
     private boolean _printedJVMWarning = true;
-    
+
     /** Set of type/function combinations that are not supported.
      *  We use one method so as to reduce code size.
      */

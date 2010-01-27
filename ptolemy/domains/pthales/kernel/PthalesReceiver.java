@@ -190,8 +190,9 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException, IllegalActionException {
-        for (int i = 0; i < numberOfTokens; i++)
+        for (int i = 0; i < numberOfTokens; i++) {
             put(tokenArray[i]);
+        }
     }
 
     /** Put a sequence of tokens to all receivers in the specified array.
@@ -275,9 +276,10 @@ public class PthalesReceiver extends SDFReceiver {
 
         // Total size of the array in "memory"
         int finalSize = PthalesIOPort.getArraySize(port);
-        if (_buffer == null || _buffer.length < finalSize)
+        if (_buffer == null || _buffer.length < finalSize) {
             _buffer = new Token[finalSize
                     * PthalesIOPort.getNbTokenPerData(port)];
+        }
 
         // Computed for output ports only
         _sizes = PthalesIOPort.getArraySizes(port);
@@ -285,18 +287,20 @@ public class PthalesReceiver extends SDFReceiver {
         String[] objs = PthalesIOPort.getDimensions(port);
         _dimensions = new String[objs.length];
 
-        for (int i = 0; i < objs.length; i++)
-            _dimensions[i] = (String) objs[i];
+        for (int i = 0; i < objs.length; i++) {
+            _dimensions[i] = objs[i];
+        }
 
         // Address jump for each dimension, determined by output port only
         int previousSize;
         for (int nDim = 0; nDim < _dimensions.length; nDim++) {
             previousSize = 1;
             for (int prev = 0; prev < nDim; prev++) {
-                if (_sizes.get(_dimensions[prev]) != null)
+                if (_sizes.get(_dimensions[prev]) != null) {
                     previousSize *= _sizes.get(_dimensions[prev]);
+                }
             }
-            _jumpAddr.put((String) _dimensions[nDim], previousSize);
+            _jumpAddr.put(_dimensions[nDim], previousSize);
         }
 
         // Common to all ports
@@ -305,7 +309,7 @@ public class PthalesReceiver extends SDFReceiver {
 
     public void fillParameters(Actor actor, IOPort port) {
         int[] repetitions = null;
-        
+
         PthalesIOPort.setDataType(port);
 
         repetitions = PthalesAtomicActor.getIterations((ComponentEntity) actor);
@@ -325,9 +329,10 @@ public class PthalesReceiver extends SDFReceiver {
         int origin = 0;
         for (int nDim = 0; nDim < _dimensions.length; nDim++) {
             // a base can be null so origin does not increase
-            if (base.get(_dimensions[nDim]) != null)
+            if (base.get(_dimensions[nDim]) != null) {
                 origin += base.get(_dimensions[nDim])[0]
                         * _jumpAddr.get(_dimensions[nDim]) * _nbTokens;
+            }
         }
 
         if (port.isInput()) {
@@ -353,9 +358,9 @@ public class PthalesReceiver extends SDFReceiver {
     public void setExternalBuffer(Actor actor, IOPort port, Token[] buffer) {
         if (_buffer == null) {
             _buffer = buffer;
-             _posOut = _buffer.length;
+            _posOut = _buffer.length;
             try {
-                setOutputArray(port,actor);
+                setOutputArray(port, actor);
             } catch (IllegalActionException e) {
                 e.printStackTrace();
             }
@@ -464,8 +469,9 @@ public class PthalesReceiver extends SDFReceiver {
             for (int nRep = 1; nRep < repetitions.length; nRep++) {
                 reps[nRep] = rep / repeats;
                 repeats *= repetitions[nRep];
-                if (nRep < repetitions.length - 1)
+                if (nRep < repetitions.length - 1) {
                     reps[nRep] = reps[nRep] % repetitions[nRep];
+                }
             }
         }
         int dimensions = pattern.get(patternOrder[0])[0];
@@ -473,8 +479,9 @@ public class PthalesReceiver extends SDFReceiver {
         for (int nDim = 1; nDim < pattern.size(); nDim++) {
             dims[nDim] = dim / dimensions;
             dimensions *= pattern.get(patternOrder[nDim])[0];
-            if (nDim < pattern.size() - 1)
+            if (nDim < pattern.size() - 1) {
                 dims[nDim] = dims[nDim] % pattern.get(patternOrder[nDim])[0];
+            }
         }
 
         // addresses creation

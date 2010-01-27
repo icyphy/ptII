@@ -526,8 +526,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 code.append(wrapupProcedureName);
             }
             //if (containsCode(closingExitCode)) {
-                code.append(closingExitCode);
-                //}
+            code.append(closingExitCode);
+            //}
         }
 
         code.append(mainExitCode);
@@ -792,15 +792,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Return the closing entry code, if any.
      *  @return the closing entry code.
-     */   
+     */
     public String generateClosingEntryCode() {
         return comment("closing entry code");
     }
 
-
     /** Return the closing exit code, if any.
      *  @return the closing exit code.
-     */   
+     */
     public String generateClosingExitCode() {
         return comment("closing exit code");
     }
@@ -1712,7 +1711,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 throw new IllegalActionException(this, "Failed to make the \""
                         + codeDirectory.stringValue() + "\" directory.");
             }
-            
+
             // The base directory has been set, this might have happened before
             // the directory was created. At that moment java assumes it is a file
             // when you call asFile().toURI(), and java removes the last "/".
@@ -1722,7 +1721,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // it is a file and removes this from the path.
             // To fix this we explicitly call setBaseDirectory again.
             codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
-            
+
             Writer writer = null;
             try {
                 writer = FileUtilities.openForWriting(codeFileName,
@@ -2413,28 +2412,28 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     //// Code
-//     protected static class Code implements Comparable {
-//         public Code(String string, int order) {
-//             this.string = string;
+    //     protected static class Code implements Comparable {
+    //         public Code(String string, int order) {
+    //             this.string = string;
 
-//             // Reverse the sign so that higher order value
-//             // will be first in the sorted list.
-//             this.order = -order;
-//         }
+    //             // Reverse the sign so that higher order value
+    //             // will be first in the sorted list.
+    //             this.order = -order;
+    //         }
 
-//         public int compareTo(Object object) {
-//             if (object instanceof Code) {
-//                 Code code2 = (Code) object;
+    //         public int compareTo(Object object) {
+    //             if (object instanceof Code) {
+    //                 Code code2 = (Code) object;
 
-//                 return (order > code2.order) ? 1 : (order < code2.order) ? -1
-//                         : 0;
-//             }
-//             return 0;
-//         }
+    //                 return (order > code2.order) ? 1 : (order < code2.order) ? -1
+    //                         : 0;
+    //             }
+    //             return 0;
+    //         }
 
-//         public final String string;
+    //         public final String string;
 
-//         private int order;
+    //         private int order;
 
-//     }
+    //     }
 }

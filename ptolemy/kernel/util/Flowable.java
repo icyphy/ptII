@@ -45,7 +45,7 @@ import ptolemy.kernel.ComponentPort;
  @see ChangeRequest
  */
 public interface Flowable {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

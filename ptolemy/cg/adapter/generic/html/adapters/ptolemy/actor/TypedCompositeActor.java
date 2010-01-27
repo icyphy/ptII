@@ -69,9 +69,9 @@ public class TypedCompositeActor extends HTMLCodeGeneratorAdapter {
             directorAdapter = (Director) director;
         } catch (ClassCastException ex) {
             throw new IllegalActionException(getComponent(), ex,
-                    "Failed to cast " + director
-                    + " of class " + director.getClass().getName()
-                    + " to " + Director.class.getName() + ".");
+                    "Failed to cast " + director + " of class "
+                            + director.getClass().getName() + " to "
+                            + Director.class.getName() + ".");
         }
         code.append(directorAdapter.generateHTML());
 

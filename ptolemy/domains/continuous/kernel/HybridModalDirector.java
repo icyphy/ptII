@@ -120,7 +120,8 @@ public class HybridModalDirector extends FSMDirector implements
      */
     public void fire() throws IllegalActionException {
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
-        if (enclosingDirector != null && enclosingDirector._isIntermediateStep()) {
+        if (enclosingDirector != null
+                && enclosingDirector._isIntermediateStep()) {
             FSMActor controller = getController();
             State currentState = controller.currentState();
             if (_debugging) {
@@ -137,7 +138,8 @@ public class HybridModalDirector extends FSMDirector implements
                     }
                     if (stateRefinements[i].prefire()) {
                         if (_debugging) {
-                            _debug("Fire state refinement:",  stateRefinements[i].getName());
+                            _debug("Fire state refinement:",
+                                    stateRefinements[i].getName());
                         }
                         stateRefinements[i].fire();
                         _stateRefinementsToPostfire.add(stateRefinements[i]);
@@ -681,7 +683,7 @@ public class HybridModalDirector extends FSMDirector implements
 
     /** Local variable to indicate the last committed distance to boundary. */
     private double _lastDistanceToBoundary = 0.0;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

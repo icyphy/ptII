@@ -408,7 +408,6 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
         }
     }
 
-
     /** Set a name to present to the user.
      *  <p>If the Plot window has been rendered, then the title of the
      *  Plot window will be updated to the value of the name parameter.</p>

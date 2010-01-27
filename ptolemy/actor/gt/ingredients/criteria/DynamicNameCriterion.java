@@ -66,7 +66,7 @@ public class DynamicNameCriterion extends Criterion {
      */
     public DynamicNameCriterion(GTIngredientList owner, String values) {
         super(owner, 1);
-        
+
         NamedObj container = owner.getOwner().getContainer();
         _name = new PtolemyExpressionString(container);
         setValues(values);
@@ -158,8 +158,8 @@ public class DynamicNameCriterion extends Criterion {
 
     /** The elements.
      */
-    private static final CriterionElement[] _ELEMENTS = {
-            new StringCriterionElement("name", false, false, true) };
+    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
+            "name", false, false, true) };
 
     /** Value of the name element.
      */

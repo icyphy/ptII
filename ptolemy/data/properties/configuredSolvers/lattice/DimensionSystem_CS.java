@@ -26,7 +26,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.data.properties.configuredSolvers.lattice;
 
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.DeltaConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -70,42 +69,42 @@ public class DimensionSystem_CS extends DeltaConstraintSolver {
         ColorAttribute highlightSpeedColor = new ColorAttribute(_momlHandler,
                 "speedHighlightColor");
         highlightSpeedColor.setExpression("{1.0,1.0,0.4,1.0}");
-        
+
         StringAttribute highlightAccelerationProperty = new StringAttribute(
                 _momlHandler, "acceleration");
         highlightAccelerationProperty.setExpression("Acceleration");
-        ColorAttribute highlightAccelerationColor = new ColorAttribute(_momlHandler,
-                "accelerationHighlightColor");
+        ColorAttribute highlightAccelerationColor = new ColorAttribute(
+                _momlHandler, "accelerationHighlightColor");
         highlightAccelerationColor.setExpression("{1.0,0.6,0.6,1.0}");
-        
+
         StringAttribute highlightPositionProperty = new StringAttribute(
                 _momlHandler, "position");
         highlightPositionProperty.setExpression("Position");
-        ColorAttribute highlightPositionColor = new ColorAttribute(_momlHandler,
-                "positionHighlightColor");
+        ColorAttribute highlightPositionColor = new ColorAttribute(
+                _momlHandler, "positionHighlightColor");
         highlightPositionColor.setExpression("{0.4,0.4,1.0,1.0}");
-        
+
         StringAttribute highlightTopProperty = new StringAttribute(
                 _momlHandler, "top");
         highlightTopProperty.setExpression("Top");
         ColorAttribute highlightTopColor = new ColorAttribute(_momlHandler,
                 "topHighlightColor");
         highlightTopColor.setExpression("{0.6,0.6,0.6,1.0}");
-        
+
         StringAttribute highlightTimeProperty = new StringAttribute(
                 _momlHandler, "time");
         highlightTimeProperty.setExpression("Time");
         ColorAttribute highlightTimeColor = new ColorAttribute(_momlHandler,
                 "timeHighlightColor");
         highlightTimeColor.setExpression("{0.8,1.0,1.0,1.0}");
-        
+
         StringAttribute highlightUnitlessProperty = new StringAttribute(
                 _momlHandler, "unitless");
         highlightUnitlessProperty.setExpression("Unitless");
-        ColorAttribute highlightUnitlessColor = new ColorAttribute(_momlHandler,
-                "unitlessHighlightColor");
+        ColorAttribute highlightUnitlessColor = new ColorAttribute(
+                _momlHandler, "unitlessHighlightColor");
         highlightUnitlessColor.setExpression("{1.0,1.0,1.0,1.0}");
-        
+
         StringAttribute highlightUnknownProperty = new StringAttribute(
                 _momlHandler, "unknown");
         highlightUnknownProperty.setExpression("Unknown");

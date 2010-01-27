@@ -290,7 +290,7 @@ public class IOPort extends JavaCodeGeneratorHelper implements
 
         StringBuffer code = new StringBuffer(getCodeGenerator().comment(
                 "....Begin updateOffset...."
-                + CodeGeneratorHelper.generateName(port)));
+                        + CodeGeneratorHelper.generateName(port)));
 
         //        int width = 0;
         //        if (port.isInput()) {
@@ -312,16 +312,17 @@ public class IOPort extends JavaCodeGeneratorHelper implements
 
                 for (Channel channel : channels) {
                     code.append(_updatePNOffset(rate, channel.port,
-                                    channel.channelNumber, directorHelper, false));
+                            channel.channelNumber, directorHelper, false));
                 }
                 code.append(getCodeGenerator().comment(
                         "....End updateOffset (PN)...."
-                        + CodeGeneratorHelper.generateName(port)));
-            } else {
-                code.append(_updateOffset(i, rate) +
-                        getCodeGenerator().comment(
-                                "\n....End updateOffset...."
                                 + CodeGeneratorHelper.generateName(port)));
+            } else {
+                code.append(_updateOffset(i, rate)
+                        + getCodeGenerator().comment(
+                                "\n....End updateOffset...."
+                                        + CodeGeneratorHelper
+                                                .generateName(port)));
             }
         }
         return code.toString();

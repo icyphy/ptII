@@ -54,9 +54,9 @@ public class CompositeEntity extends PropertyConstraintCompositeHelper {
      * @param entity The given entity.
      * @exception IllegalActionException 
      */
-    public CompositeEntity(PropertyConstraintSolver solver, 
+    public CompositeEntity(PropertyConstraintSolver solver,
             ptolemy.kernel.CompositeEntity entity)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         super(solver, entity);
     }

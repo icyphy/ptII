@@ -406,15 +406,16 @@ public class ConfigurationApplication implements ExecutionListener {
         parser.reset();
 
         Configuration configuration = null;
-        try {configuration = (Configuration) parser.parse(
-                    specificationURL, specificationURL);
-        } catch(Exception ex) {
+        try {
+            configuration = (Configuration) parser.parse(specificationURL,
+                    specificationURL);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         if (configuration == null) {
-            throw new NullPointerException("Failed to find configuration in " +
-                    specificationURL);
+            throw new NullPointerException("Failed to find configuration in "
+                    + specificationURL);
         }
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it

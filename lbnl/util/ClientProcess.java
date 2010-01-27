@@ -93,6 +93,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -130,8 +131,9 @@ public class ClientProcess extends Thread {
 
     /** Disposes the window that displays the console output. */
     public void disposeWindow() {
-        if ( stdFra != null )
+        if (stdFra != null) {
             stdFra.dispose();
+        }
     }
 
     /** Redirects the standard error stream to the standard output stream.
@@ -208,8 +210,7 @@ public class ClientProcess extends Thread {
      * @exception InterruptedException if the current thread is interrupted by another thread 
      *           while it is waiting, then the wait is ended and an InterruptedException is thrown.
      */
-    public int waitFor()
-            throws InterruptedException{
+    public int waitFor() throws InterruptedException {
         this.join();
         priStdOut.join();
         priStdErr.join();
@@ -242,7 +243,6 @@ public class ClientProcess extends Thread {
         return simPro.exitValue();
     }
 
-    
     /** Reset the position of the window that shows the console output.
      *
      * This function is typically called by actors in the <i>wrapUp()</i> method
@@ -250,18 +250,20 @@ public class ClientProcess extends Thread {
      * same position again as in the previous simulation
      */
     public static void resetWindowLocation() {
-        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = java.awt.Toolkit.getDefaultToolkit()
+                .getScreenSize();
         // Set the window to the bottom left corner, where it gets less in the way
         // compared to the top left corner.
-
 
         // Move window up on Mac and Windows so that it does not overlap with taskbar
         final String osName = System.getProperty("os.name").toLowerCase();
         int dLocY = 0;
-        if (osName.indexOf("windows") > -1)
+        if (osName.indexOf("windows") > -1) {
             dLocY = 20;
-        if (osName.indexOf("mac") > -1)
+        }
+        if (osName.indexOf("mac") > -1) {
             dLocY = 20;
+        }
 
         locY = Math.max(0, screenSize.height - dY - dLocY);
     }
@@ -296,38 +298,39 @@ public class ClientProcess extends Thread {
          */
         public PrintOutput(final String programName) {
             stdOut = new StringBuilder();
-            if ( showConsoleWindow && stdFra == null ) {
+            if (showConsoleWindow && stdFra == null) {
                 stdFra = new JFrame("Output of " + modNam);
                 JFrame.setDefaultLookAndFeelDecorated(true);
                 stdFra.setSize(600, dY);
                 stdAre = new JTextArea();
                 stdScrPan = new JScrollPane(stdAre);
-                if ( showConsoleWindow ) {
+                if (showConsoleWindow) {
                     // If locY < 0, then this is the first call to any instance of
                     // ClientProcess, hence we reset the window position.
-                    if ( locY < 0 )
+                    if (locY < 0) {
                         resetWindowLocation();
+                    }
 
                     stdFra.setLocation(30, locY);
                     // Move the location up so that the window of another simulation
                     // does not overlap
                     // Move window up on Windows so that it does not overlap with taskbar
-                    final String osName = System.getProperty("os.name").toLowerCase();
-                    if (osName.indexOf("linux") > -1)
-                        locY -= (dY+22);
-                    else if (osName.indexOf("mac") > -1)
-                        locY -= (dY+22);
-                    else
+                    final String osName = System.getProperty("os.name")
+                            .toLowerCase();
+                    if (osName.indexOf("linux") > -1) {
+                        locY -= (dY + 22);
+                    } else if (osName.indexOf("mac") > -1) {
+                        locY -= (dY + 22);
+                    } else {
                         locY -= dY;
+                    }
 
-                    
                     stdAre.setEditable(false);
-                    stdScrPan.setVerticalScrollBarPolicy(
-                            JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                    stdScrPan
+                            .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                     stdFra.add(stdScrPan);
                     stdFra.setVisible(true);
                 }
-
 
             }
         }
@@ -349,9 +352,9 @@ public class ClientProcess extends Thread {
                 br = new BufferedReader(isr);
                 pwSysOut = new PrintWriter(System.out);
                 try {
-                    filWri = new FileWriter( logFil );
-                    bufWri = new BufferedWriter (filWri);
-                    pwLogFil = new PrintWriter( bufWri );
+                    filWri = new FileWriter(logFil);
+                    bufWri = new BufferedWriter(filWri);
+                    pwLogFil = new PrintWriter(bufWri);
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
                     pwLogFil = new PrintWriter(System.err);
@@ -367,11 +370,11 @@ public class ClientProcess extends Thread {
                         pwLogFil.println(line);
                         pwLogFil.flush();
                         stdOut.append(line + LS);
-                        if ( showConsoleWindow ) {
+                        if (showConsoleWindow) {
                             stdAre.append(line + LS);
                             //scroll to bottom of text area
-                            stdAre.scrollRectToVisible(
-                                    new Rectangle(0,stdAre.getHeight()-2,1,1));
+                            stdAre.scrollRectToVisible(new Rectangle(0, stdAre
+                                    .getHeight() - 2, 1, 1));
                         }
                     }
                 } catch (java.io.IOException e) {
@@ -440,9 +443,9 @@ public class ClientProcess extends Thread {
                 br = new BufferedReader(isr);
                 pwSysOut = new PrintWriter(System.err);
                 try {
-                    filWri = new FileWriter( logFil );
-                    bufWri = new BufferedWriter (filWri);
-                    pwLogFil = new PrintWriter( bufWri );
+                    filWri = new FileWriter(logFil);
+                    bufWri = new BufferedWriter(filWri);
+                    pwLogFil = new PrintWriter(bufWri);
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
                     pwLogFil = new PrintWriter(System.err);
@@ -451,7 +454,7 @@ public class ClientProcess extends Thread {
                 String line;
                 try {
                     while ((line = br.readLine()) != null) {
-                        System.out.println("Error: "+ line);
+                        System.out.println("Error: " + line);
                         if (logToSysOut) {
                             pwSysOut.println(line);
                             pwSysOut.flush();
@@ -515,8 +518,9 @@ public class ClientProcess extends Thread {
         // Note: Earlier versions resolved the path name. This has been moved
         // to the calling program, as the calling program already implements
         // some file and path name checking.
-        for (int i = 0; i < cmdarray.size(); i++)
+        for (int i = 0; i < cmdarray.size(); i++) {
             cmdArr.add(cmdarray.get(i));
+        }
 
         if (dir.equalsIgnoreCase(".")) {
             worDir = new File(System.getProperty("user.dir"));

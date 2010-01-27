@@ -76,14 +76,16 @@ public class Display extends NamedProgramCodeGeneratorAdapter {
         if (title.trim().length() > 0) {
             args.add(title);
         } else {
-            args.add(NamedProgramCodeGeneratorAdapter
-                    .generateSimpleName(actor));
+            args
+                    .add(NamedProgramCodeGeneratorAdapter
+                            .generateSimpleName(actor));
         }
 
         args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(1, Integer.toString(i));
-            code.append(_templateParser.generateBlockCode(type + "PrintBlock", args));
+            code.append(_templateParser.generateBlockCode(type + "PrintBlock",
+                    args));
         }
 
         return code.toString();

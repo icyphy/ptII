@@ -60,7 +60,8 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public abstract class OntologySolver extends OntologySolverBase implements Testable {
+public abstract class OntologySolver extends OntologySolverBase implements
+        Testable {
 
     /**
      * Construct an OntologySolver with the specified container and name. If this
@@ -76,7 +77,7 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
     public OntologySolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         _momlHandler = new OntologyMoMLHandler(this, "OntologyMoMLHandler");
 
         // FIXME: We do not want this GUI dependency here...
@@ -122,7 +123,6 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
         }
     }
 
-    
     /**
      * Check if there are any OntologySolver resolution errors after resolving
      * properties. If so, throw an IllegalActionException.
@@ -318,7 +318,7 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
     public boolean isSettable(Object object) {
         return !_nonSettables.contains(object);
     }
-    
+
     /**
      * Record the previous property of the given object.
      * @param object The given object.
@@ -417,7 +417,7 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
             throws KernelException {
 
         System.out.println("In resolveProperties of PropertySolver");
-        
+
         boolean success = true;
 
         boolean noException = true;
@@ -464,11 +464,10 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
             String trainedException = failedSolver.getTrainedException()
                     .replaceAll("\r", "");
             String exception = ex.getMessage().replaceAll("\r", "");
-                if (!exception.equals(trainedException)) {
-                    addErrors(OntologySolver
-                            .getTrainedExceptionMismatchMessage(exception,
-                                    trainedException));
-                }
+            if (!exception.equals(trainedException)) {
+                addErrors(OntologySolver.getTrainedExceptionMismatchMessage(
+                        exception, trainedException));
+            }
         }
 
         if (noException && getTrainedException().length() > 0) {
@@ -507,7 +506,7 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
             getProperty(namedObj);
 
         }
-        
+
         System.out.println(_getStatsAsString(": "));
 
     }
@@ -612,8 +611,8 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
         _stats.put("# of adapters", _adapterStore.size());
         _stats.put("# of propertyables", getAllPropertyables().size());
         _stats.put("# of resolved properties", _resolvedProperties.size());
-        _stats.put("# of resolution errors", _ontologySolverUtilities.getErrors()
-                .size());
+        _stats.put("# of resolution errors", _ontologySolverUtilities
+                .getErrors().size());
         _stats.put("has trained resolution errors", getTrainedException()
                 .length() > 0);
     }
@@ -729,29 +728,6 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
                     + "." + _eol);
         }
     }
-    
-
-    /**
-     * @param attribute
-     * @param property
-     * @exception IllegalActionException
-     */
-    private void _updatePropertyAttribute(ConceptAttribute attribute,
-            Concept property) throws IllegalActionException {
-        if (attribute != null) {
-            if (property != null) {
-                // Write results to attribute
-                attribute.setExpression(property.toString());
-            } else {
-                attribute.setExpression("");
-            }
-        } else {
-            // FIXME: What to do?
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
     /**
      * The record of the previously resolved properties. It is a map between the
@@ -783,7 +759,6 @@ public abstract class OntologySolver extends OntologySolverBase implements Testa
         _stats.put("# of manual annotations", 0);
     }
 
-    
     /**
      * Add error statistics for OntologySolver to its solver
      * algorithm execution statistics Map.

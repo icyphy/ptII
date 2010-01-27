@@ -158,7 +158,8 @@ public class Thermostat extends TypedCompositeActor {
         ctrlSt.setInput(true);
 
         // the hybrid system director
-        HybridModalDirector hsdir = new HybridModalDirector(hs, "HybridModalDirector");
+        HybridModalDirector hsdir = new HybridModalDirector(hs,
+                "HybridModalDirector");
 
         //hs.setDirector(hsdir);
         hsdir.controllerName.setExpression("Controller");

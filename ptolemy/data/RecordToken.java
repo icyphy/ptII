@@ -703,7 +703,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
     protected void _initializeStorage() {
         _fields = new TreeMap();
     }
-    
+
     /**
      * Create a new RecordToken.
      * Subclasses of RecordToken may return a different subclass instance.
@@ -712,10 +712,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
      * @return a new RecordToken.
      * @exception IllegalActionException If thrown while constructing the RecordToken
      */
-    protected RecordToken _createRecordToken(String[] labels, Token[] values) throws IllegalActionException {
+    protected RecordToken _createRecordToken(String[] labels, Token[] values)
+            throws IllegalActionException {
         return new RecordToken(labels, values);
     }
-    
+
     /**
      * Create a Set implementation appropriate for operations on this RecordToken
      * Subclasses of RecordToken may return a different implementation.

@@ -32,7 +32,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType.DoubleType;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -97,15 +97,15 @@ public class PID extends DETransformer {
         super(container, name);
         reset = new TypedIOPort(this, "reset", true, false);
         reset.setMultiport(true);
-        input.setTypeAtMost(DoubleType.DOUBLE);
-        output.setTypeEquals(DoubleType.DOUBLE);
+        input.setTypeAtMost(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
         Kp = new Parameter(this, "Kp");
         Kp.setExpression("1.0");
         Ki = new Parameter(this, "Ki");
         Ki.setExpression("0.0");
         Kd = new Parameter(this, "Kd");
         Kd.setExpression("0.0");
-    }  
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////   
@@ -119,8 +119,8 @@ public class PID extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         PID newObject = (PID) super.clone(workspace);
 
-        newObject.input.setTypeAtMost(DoubleType.DOUBLE);
-        newObject.output.setTypeEquals(DoubleType.DOUBLE);
+        newObject.input.setTypeAtMost(BaseType.DOUBLE);
+        newObject.output.setTypeEquals(BaseType.DOUBLE);
 
         // This is not strictly needed (since it is always recreated
         // in preinitialize) but it is safer.
@@ -130,22 +130,26 @@ public class PID extends DETransformer {
 
         return newObject;
     }
-    
+
     /** If the attribute is <i>Kp</i>, <i>Ki</i>, or <i>Kd</i> then ensure
      *  that the value is numeric.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the value is non-numeric.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == Kp || attribute == Ki || attribute == Kd) {
-                try {
-                    Parameter value = (Parameter)attribute;
-                    if (value.getToken() == null || ((DoubleToken)value.getToken()).isNil()){
-                        throw new IllegalActionException(this, "Must have a numeric value for gains.");
-                    }
-                } catch (ClassCastException e) {
-                    throw new IllegalActionException(this, "Gain values must be castable to a double.");
+            try {
+                Parameter value = (Parameter) attribute;
+                if (value.getToken() == null
+                        || ((DoubleToken) value.getToken()).isNil()) {
+                    throw new IllegalActionException(this,
+                            "Must have a numeric value for gains.");
                 }
+            } catch (ClassCastException e) {
+                throw new IllegalActionException(this,
+                        "Gain values must be castable to a double.");
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -157,7 +161,7 @@ public class PID extends DETransformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _lastInput = null;
-        _accumulated = new DoubleToken(0.0); 
+        _accumulated = new DoubleToken(0.0);
     }
 
     /** Consume at most one token from the <i>input</i> port and output
@@ -169,53 +173,56 @@ public class PID extends DETransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         //Consume input, generate output only if input provided
         if (input.hasToken(0)) {
-            Time  currentTime = getDirector().getModelTime(); 
-            DoubleToken currentToken = (DoubleToken)input.get(0);
+            Time currentTime = getDirector().getModelTime();
+            DoubleToken currentToken = (DoubleToken) input.get(0);
             _currentInput = new TimedEvent(currentTime, currentToken);
 
             //Add proportional component to controller output
-            DoubleToken currentOutput = (DoubleToken)currentToken.multiply(Kp.getToken());
+            DoubleToken currentOutput = (DoubleToken) currentToken.multiply(Kp
+                    .getToken());
 
             //If a previous input was given, then add integral and derivative components
-            if (_lastInput != null){
-                DoubleToken lastToken = (DoubleToken)_lastInput.contents;
-                Time  lastTime = _lastInput.timeStamp;
-                DoubleToken timeGap = new DoubleToken(currentTime.subtract(lastTime).getDoubleValue());
-                
+            if (_lastInput != null) {
+                DoubleToken lastToken = (DoubleToken) _lastInput.contents;
+                Time lastTime = _lastInput.timeStamp;
+                DoubleToken timeGap = new DoubleToken(currentTime.subtract(
+                        lastTime).getDoubleValue());
+
                 //If the timeGap is zero, then we have received a simultaneous event. If the
                 // value of the input has not changed, then we can ignore this input, as a control
                 // signal was already generated. However if the value has changed, then the signal
                 // is discontinuous and we should throw an exception unless derivative control
                 // is disabled (Kd=0).
-                if (timeGap.equals(0)){
-                    if (!Kd.equals(0) && !currentToken.equals(lastToken)){
-                        throw new IllegalActionException("PID controller recevied discontinuous input.");
+                if (timeGap.equals(0)) {
+                    if (!Kd.equals(0) && !currentToken.equals(lastToken)) {
+                        throw new IllegalActionException(
+                                "PID controller recevied discontinuous input.");
                     }
                 }
                 // Otherwise, the signal is continuous and we add integral and derivative components
                 else {
-                    if (!Ki.getExpression().equals(0)){
+                    if (!Ki.getExpression().equals(0)) {
                         //Calculate integral component and accumulate
-                        _accumulated = (DoubleToken) _accumulated.add(currentToken.add(lastToken)
-                                .multiply(timeGap)
-                                .multiply(new DoubleToken(0.5)));
+                        _accumulated = (DoubleToken) _accumulated
+                                .add(currentToken.add(lastToken).multiply(
+                                        timeGap).multiply(new DoubleToken(0.5)));
                         //Add integral component to controller output
-                        currentOutput = (DoubleToken) currentOutput.add(_accumulated.multiply(Ki.getToken()));
+                        currentOutput = (DoubleToken) currentOutput
+                                .add(_accumulated.multiply(Ki.getToken()));
                     }
-                    
+
                     //Add derivative component to controller output
-                    if (!Kd.equals(0)){
-                        currentOutput = (DoubleToken) currentOutput.add(
-                                currentToken.subtract(lastToken)
-                                            .divide(timeGap)
-                                            .multiply(Kd.getToken()));
+                    if (!Kd.equals(0)) {
+                        currentOutput = (DoubleToken) currentOutput
+                                .add(currentToken.subtract(lastToken).divide(
+                                        timeGap).multiply(Kd.getToken()));
                     }
                 }
             }
-            
+
             output.broadcast(currentOutput);
         }
     }
@@ -226,22 +233,22 @@ public class PID extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         //If reset port is connected and has a token, reset state.
-        if (reset.getWidth() > 0){
-            if (reset.hasToken(0)){
+        if (reset.getWidth() > 0) {
+            if (reset.hasToken(0)) {
                 //Consume reset token
                 reset.get(0);
-                
+
                 //Reset the current input
                 _currentInput = null;
-                
+
                 //Reset accumulation
-                _accumulated = new DoubleToken(0.0); 
+                _accumulated = new DoubleToken(0.0);
             }
         }
         _lastInput = _currentInput;
         return super.postfire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -250,28 +257,28 @@ public class PID extends DETransformer {
      *  and no output is generated until two inputs have been received.
      */
     public TypedIOPort reset;
-    
+
     /** Proportional gain of the controller. Default value is 1.0.
      * */
     public Parameter Kp;
-    
+
     /** Integral gain of the controller. Default value is 0.0,
      *  which disables integral control.
      * */
     public Parameter Ki;
-    
+
     /** Derivative gain of the controller. Default value is 0.0, which disables
      *  derivative control. If Kd=0.0, this actor can receive discontinuous
      *  signals as input; otherwise, if Kd is nonzero and a discontinuous signal
      *  is received, an exception will be thrown.
      */
     public Parameter Kd;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private TimedEvent _currentInput;
 
     private TimedEvent _lastInput;
-    
+
     private DoubleToken _accumulated;
 }

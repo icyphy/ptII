@@ -79,7 +79,8 @@ public class MoMLModelAttributeControllerFactory extends TableauFactory {
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
         Configuration configuration = (Configuration) effigy.toplevel();
-        MoMLModelAttribute model = (MoMLModelAttribute) ((PtolemyEffigy) effigy).getModel();
+        MoMLModelAttribute model = (MoMLModelAttribute) ((PtolemyEffigy) effigy)
+                .getModel();
         Tableau tableau = configuration.openModel(model.getContainedModel());
         tableau.setContainer(effigy);
         return tableau;

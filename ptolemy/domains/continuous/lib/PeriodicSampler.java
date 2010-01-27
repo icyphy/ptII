@@ -143,10 +143,8 @@ public class PeriodicSampler extends Transformer {
         if (_inputIsComplete) {
             for (int i = 0; i < _recordedInputs.length; i++) {
                 if (_debugging) {
-                    _debug("Sending output value "
-                            + _recordedInputs[i]
-                            + " on channel "
-                            + i);
+                    _debug("Sending output value " + _recordedInputs[i]
+                            + " on channel " + i);
                 }
                 if (_recordedInputs[i] != null) {
                     output.send(i, _recordedInputs[i]);
@@ -186,10 +184,8 @@ public class PeriodicSampler extends Transformer {
                 if (input.hasToken(i)) {
                     _recordedInputs[i] = input.get(i);
                     if (_debugging) {
-                        _debug("Read input value " 
-                                + _recordedInputs[i] 
-                                + " at time "
-                                + director.getModelTime());
+                        _debug("Read input value " + _recordedInputs[i]
+                                + " at time " + director.getModelTime());
                     }
                 } else {
                     // Erase any previous value that may have been recorded.
@@ -203,7 +199,8 @@ public class PeriodicSampler extends Transformer {
             _nextSamplingTime = _nextSamplingTime.add(samplePeriodValue);
 
             if (_debugging) {
-                _debug("Request refiring at current time and at " + _nextSamplingTime);
+                _debug("Request refiring at current time and at "
+                        + _nextSamplingTime);
             }
             _fireAt(director.getModelTime());
             _fireAt(_nextSamplingTime);
@@ -230,10 +227,10 @@ public class PeriodicSampler extends Transformer {
 
     /** Flag indicating that the record of inputs is complete. */
     private boolean _inputIsComplete;
-    
+
     /** The next sampling time. */
     private Time _nextSamplingTime;
-    
+
     /** The recorded input data. */
     private Token[] _recordedInputs;
 }

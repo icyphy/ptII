@@ -113,7 +113,7 @@ public class PropertyToken extends Property {
 
     /** Return the token with which this property was created.
      *  @return The token.   
-     */   
+     */
     public Token getToken() {
         return _token;
     }
@@ -123,7 +123,7 @@ public class PropertyToken extends Property {
      *  the underlying token is null, then the empty string
      *  is returned.  Otherwise, the string value of the token
      *  is returned.
-     */ 
+     */
     public String toString() {
         // FIXME: Charles Shelton 05/27/09 - How do we distinguish between an empty string token and an unresolved property (null) token?
         return _token == null ? "" : _token.toString();

@@ -133,7 +133,7 @@ public class TimeDelay extends Transformer {
         _delay = 1.0;
 
         output.setTypeSameAs(input);
-        
+
         // empty set of dependent ports.
         Set<Port> dependentPorts = new HashSet<Port>();
         _causalityMarker = new CausalityMarker(this, "causalityMarker");
@@ -188,7 +188,8 @@ public class TimeDelay extends Transformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         TimeDelay newObject = (TimeDelay) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
-        newObject._causalityMarker = (CausalityMarker)newObject.getAttribute("causalityMarker");
+        newObject._causalityMarker = (CausalityMarker) newObject
+                .getAttribute("causalityMarker");
         return newObject;
     }
 
@@ -211,7 +212,7 @@ public class TimeDelay extends Transformer {
         // discard them here.
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
-        
+
         if (_delayedOutputTokens.size() == 0) {
             output.send(0, null);
             return;
@@ -246,7 +247,7 @@ public class TimeDelay extends Transformer {
         _delayedOutputTokens = new CalendarQueue(
                 new TimedEvent.TimeComparator());
     }
-    
+
     /** Return false indicating that this actor can be fired even if
      *  the inputs are unknown.
      *  @return False.

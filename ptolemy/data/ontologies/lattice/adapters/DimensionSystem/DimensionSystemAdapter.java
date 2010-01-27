@@ -29,8 +29,8 @@ package ptolemy.data.ontologies.lattice.adapters.DimensionSystem;
 
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.Ontology;
-import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
+import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -61,9 +61,9 @@ public class DimensionSystemAdapter extends LatticeOntologyAdapter {
      * @exception IllegalActionException If the adapter cannot be
      * initialized in the superclass.
      */
-    public DimensionSystemAdapter(LatticeOntologySolver solver,
-            Object component) throws IllegalActionException {
-        this(solver, component, true);        
+    public DimensionSystemAdapter(LatticeOntologySolver solver, Object component)
+            throws IllegalActionException {
+        this(solver, component, true);
     }
 
     /**
@@ -87,84 +87,90 @@ public class DimensionSystemAdapter extends LatticeOntologyAdapter {
             Object component, boolean useDefaultConstraints)
             throws IllegalActionException {
         super(solver, component, useDefaultConstraints);
-        
+
         // Instantiate the dimensionSystem ontology
         _dimensionSystemOntology = getSolver().getOntology();
-        
+
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the dimensionSystem ontology
         // Throw an exception if any of them are not found
-        _unknownConcept = (Concept) _dimensionSystemOntology.getEntity("Unknown");
+        _unknownConcept = (Concept) _dimensionSystemOntology
+                .getEntity("Unknown");
         if (_unknownConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Unknown not found in dimensionSystem ontology.");
         }
-        
-        _dimensionlessConcept = (Concept) getSolver().getOntology().getEntity("Dimensionless");
+
+        _dimensionlessConcept = (Concept) getSolver().getOntology().getEntity(
+                "Dimensionless");
         if (_dimensionlessConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Dimensionless not found in dimensionSystem ontology.");
         }
-        
+
         _timeConcept = (Concept) getSolver().getOntology().getEntity("Time");
         if (_timeConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Time not found in dimensionSystem ontology.");
         }
-        
-        _positionConcept = (Concept) getSolver().getOntology().getEntity("Position");
+
+        _positionConcept = (Concept) getSolver().getOntology().getEntity(
+                "Position");
         if (_positionConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Position not found in dimensionSystem ontology.");
         }
-        
-        _velocityConcept = (Concept) getSolver().getOntology().getEntity("Velocity");
+
+        _velocityConcept = (Concept) getSolver().getOntology().getEntity(
+                "Velocity");
         if (_velocityConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Velocity not found in dimensionSystem ontology.");
         }
-        
-        _accelerationConcept = (Concept) getSolver().getOntology().getEntity("Acceleration");
+
+        _accelerationConcept = (Concept) getSolver().getOntology().getEntity(
+                "Acceleration");
         if (_accelerationConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Acceleration not found in dimensionSystem ontology.");
         }
-        
-        _conflictConcept = (Concept) getSolver().getOntology().getEntity("Conflict");
+
+        _conflictConcept = (Concept) getSolver().getOntology().getEntity(
+                "Conflict");
         if (_conflictConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Conflict not found in dimensionSystem ontology.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
-    
+
     // The ontology for all the dimensionSystem adapters
-    
+
     /** The dimensionSystem ontology refered to by all dimensionSystem adapters. */
     protected Ontology _dimensionSystemOntology;
-    
+
     // Get all the Concepts from the ontology to use in all the dimensionSystem adapters   
-    
+
     /** The "Unknown" Concept from the dimensionSystem ontology. */
     protected Concept _unknownConcept;
-    
+
     /** The "Dimensionless" Concept from the dimensionSystem ontology. */
     protected Concept _dimensionlessConcept;
-    
+
     /** The "Time" Concept from the dimensionSystem ontology. */
     protected Concept _timeConcept;
-    
+
     /** The "Position" Concept from the dimensionSystem ontology. */
     protected Concept _positionConcept;
-    
+
     /** The "Velocity" Concept from the dimensionSystem ontology. */
     protected Concept _velocityConcept;
-    
+
     /** The "Acceleration" Concept from the dimensionSystem ontology. */
     protected Concept _accelerationConcept;
-    
+
     /** The "Conflict" Concept from the dimensionSystem ontology. */
     protected Concept _conflictConcept;
 }

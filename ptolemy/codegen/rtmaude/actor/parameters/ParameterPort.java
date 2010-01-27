@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating red (kquine)
  */
 public class ParameterPort extends IOPort {
-    
+
     /**
      * Constructs the code generator adapter
      * associated with the given ParameterPort.

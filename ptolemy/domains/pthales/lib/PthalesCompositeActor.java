@@ -169,8 +169,9 @@ public class PthalesCompositeActor extends TypedCompositeActor {
 
                 repetition += val;
 
-                if (i < dims.length - 1)
+                if (i < dims.length - 1) {
                     repetition += ",";
+                }
             }
         }
         repetition += "}";

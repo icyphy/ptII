@@ -110,7 +110,7 @@ public class ConvertToLazy implements ChangeListener {
             parser.resetAll();
             toplevel = (TypedCompositeActor) parser.parse(moml);
             System.out.println(toplevel.exportMoML());
-                
+
         } finally {
             MoMLParser.setMoMLFilters(oldFilters);
         }
@@ -172,19 +172,19 @@ public class ConvertToLazy implements ChangeListener {
                 }
             }
         }
-//         List<ComponentEntity> classDefinitions = actor.classDefinitionList();
-//         for (ComponentEntity classDefinition : classDefinitions) {
-//             if (classDefinition instanceof TypedCompositeActor) {
-//                 // Do the conversion depth-first.
-//                 convert((TypedCompositeActor) classDefinition, threshold);
-//                 if (classDefinition.getClassName().equals(
-//                         "ptolemy.actor.TypedCompositeActor")
-//                         && count((TypedCompositeActor) classDefinition) >= threshold) {
-//                     classDefinition
-//                             .setClassName("ptolemy.actor.LazyTypedCompositeActor");
-//                 }
-//             }
-//         }
+        //         List<ComponentEntity> classDefinitions = actor.classDefinitionList();
+        //         for (ComponentEntity classDefinition : classDefinitions) {
+        //             if (classDefinition instanceof TypedCompositeActor) {
+        //                 // Do the conversion depth-first.
+        //                 convert((TypedCompositeActor) classDefinition, threshold);
+        //                 if (classDefinition.getClassName().equals(
+        //                         "ptolemy.actor.TypedCompositeActor")
+        //                         && count((TypedCompositeActor) classDefinition) >= threshold) {
+        //                     classDefinition
+        //                             .setClassName("ptolemy.actor.LazyTypedCompositeActor");
+        //                 }
+        //             }
+        //         }
 
     }
 

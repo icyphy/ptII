@@ -147,7 +147,8 @@ public class NonlinearClientApplication {
                 orbinit.append(args[i] + " ");
             }
 
-            _client.ORBInitProperties.setToken(new StringToken(orbinit.toString()));
+            _client.ORBInitProperties.setToken(new StringToken(orbinit
+                    .toString()));
             _client.remoteActorName.setToken(new StringToken("Nonlinear"));
 
             man.startRun();

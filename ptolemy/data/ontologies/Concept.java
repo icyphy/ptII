@@ -51,7 +51,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.ProposedRating Red (blickly)
  * @Pt.AcceptedRating Red (blickly)
  */
-public class Concept extends ComponentEntity implements InequalityTerm, Flowable {
+public class Concept extends ComponentEntity implements InequalityTerm,
+        Flowable {
 
     /** Create a new concept with the specified name and the specified
      *  ontology.
@@ -65,20 +66,20 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     public Concept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
-        
+
         _name = name;
-        
+
         isAcceptable = new Parameter(this, "isAcceptable");
         isAcceptable.setTypeEquals(BaseType.BOOLEAN);
         isAcceptable.setExpression("true");
-        
+
         belowPort = new ComponentPort(this, "belowPort");
         abovePort = new ComponentPort(this, "abovePort");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                   parameters and ports                             ////
-    
+
     /** The port linked to concepts above this one in the lattice. */
     public ComponentPort abovePort;
 
@@ -104,7 +105,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     public Object getAssociatedObject() {
         return null;
     }
-    
+
     /** Return the outgoing port.
      *  @return The outgoing port.
      */
@@ -145,7 +146,8 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
      *  @exception IllegalActionException Always thrown.
      */
     public void initialize(Object object) throws IllegalActionException {
-        throw new IllegalActionException(this, "Cannot initialize an ontology concept.");
+        throw new IllegalActionException(this,
+                "Cannot initialize an ontology concept.");
     }
 
     /** Return true if this concept is greater than or equal to the
@@ -156,7 +158,8 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
      *  @exception IllegalActionException If the specified concept
      *   does not have the same ontology as this one.
      */
-    public boolean isAboveOrEqualTo(Concept concept) throws IllegalActionException {
+    public boolean isAboveOrEqualTo(Concept concept)
+            throws IllegalActionException {
         if (!(concept.getContainer().equals(getContainer()))) {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
@@ -186,7 +189,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
      */
     public boolean isValueAcceptable() {
         try {
-            return ((BooleanToken)isAcceptable.getToken()).booleanValue();
+            return ((BooleanToken) isAcceptable.getToken()).booleanValue();
         } catch (IllegalActionException e) {
             // If isAcceptable parameter cannot be read, fallback to
             // assumption that value is acceptable.
@@ -214,7 +217,7 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
     public String toString() {
         return _name;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -222,10 +225,10 @@ public class Concept extends ComponentEntity implements InequalityTerm, Flowable
      * The name of this Concept.
      */
     protected String _name;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Empty array. */
     private static InequalityTerm[] _EMPTY_ARRAY = new InequalityTerm[0];
 }

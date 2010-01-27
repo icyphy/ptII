@@ -51,10 +51,10 @@ public class OntologyGraphController extends FSMGraphController {
      */
     public OntologyGraphController() {
         super();
-        
+
         // FIXME: Need to impose constraints to prevent self loops.
         // Presumably this means overriding LinkCreator in the base class.
-        
+
         // FIXME: Need to override the NewStateAction of the base class
         // to create a Concept rather than a State.
 
@@ -79,8 +79,7 @@ public class OntologyGraphController extends FSMGraphController {
                 AttributeController.FULL);
         _portController = new ExternalIOPortController(this,
                 AttributeController.FULL);
-        _stateController = new ConceptController(this,
-                AttributeController.FULL);
+        _stateController = new ConceptController(this, AttributeController.FULL);
         _transitionController = new RelationController(this);
         _modalTransitionController = _transitionController;
     }
@@ -104,8 +103,7 @@ public class OntologyGraphController extends FSMGraphController {
 
             NamedObj target = getTarget();
 
-            boolean isLattice = ((Ontology) target
-                    .getContainer()).isLattice();
+            boolean isLattice = ((Ontology) target.getContainer()).isLattice();
 
             if (isLattice) {
                 MessageHandler.message("The model graph is a valid lattice.");

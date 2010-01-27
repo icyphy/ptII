@@ -33,7 +33,6 @@ package ptolemy.domains.pthales.JNI;
  * the SWIG interface file instead.
  * ----------------------------------------------------------------------------- */
 
-
 /**
  * ABFConstants class.
  *
@@ -44,27 +43,28 @@ package ptolemy.domains.pthales.JNI;
  * @Pt.AcceptedRating Red (cxh)
  */
 public interface ABFConstants {
-  public final static double C = ABFJNI.C_get();
-  public final static double Pi = ABFJNI.Pi_get();
-  public final static int ATL_nb_ant = ABFJNI.ATL_nb_ant_get();
-  public final static int ATL_nb_pls = ABFJNI.ATL_nb_pls_get();
-  public final static int ATL_nb_beams = ABFJNI.ATL_nb_beams_get();
-  public final static int ATL_nb_rg_cov = ABFJNI.ATL_nb_rg_cov_get();
-  public final static int ATL_org_rg_cov = ABFJNI.ATL_org_rg_cov_get();
-  public final static int ATL_lgth_chirp = ABFJNI.ATL_lgth_chirp_get();
-  public final static double ATL_K_chirp = ABFJNI.ATL_K_chirp_get();
-  public final static int ATL_rg_min = ABFJNI.ATL_rg_min_get();
-  public final static double ATL_lambda = ABFJNI.ATL_lambda_get();
-  public final static double ATL_Tpulse = ABFJNI.ATL_Tpulse_get();
-  public final static double ATL_SubarraySpacing = ABFJNI.ATL_SubarraySpacing_get();
-  public final static int ATL_Targ1_CIR = ABFJNI.ATL_Targ1_CIR_get();
-  public final static int ATL_Targ1_V = ABFJNI.ATL_Targ1_V_get();
-  public final static int ATL_Targ1_Dist = ABFJNI.ATL_Targ1_Dist_get();
-  public final static int ATL_Targ1_RCS = ABFJNI.ATL_Targ1_RCS_get();
-  public final static int ATL_rg_size = ABFJNI.ATL_rg_size_get();
-  public final static int ATL_Beamwidth = ABFJNI.ATL_Beamwidth_get();
-  public final static int ATL_noise_power = ABFJNI.ATL_noise_power_get();
-  public final static int ATL_jam_CIR = ABFJNI.ATL_jam_CIR_get();
-  public final static int ATL_jam_power = ABFJNI.ATL_jam_power_get();
-  public final static int ATL_jam_freq_MHz = ABFJNI.ATL_jam_freq_MHz_get();
+    public final static double C = ABFJNI.C_get();
+    public final static double Pi = ABFJNI.Pi_get();
+    public final static int ATL_nb_ant = ABFJNI.ATL_nb_ant_get();
+    public final static int ATL_nb_pls = ABFJNI.ATL_nb_pls_get();
+    public final static int ATL_nb_beams = ABFJNI.ATL_nb_beams_get();
+    public final static int ATL_nb_rg_cov = ABFJNI.ATL_nb_rg_cov_get();
+    public final static int ATL_org_rg_cov = ABFJNI.ATL_org_rg_cov_get();
+    public final static int ATL_lgth_chirp = ABFJNI.ATL_lgth_chirp_get();
+    public final static double ATL_K_chirp = ABFJNI.ATL_K_chirp_get();
+    public final static int ATL_rg_min = ABFJNI.ATL_rg_min_get();
+    public final static double ATL_lambda = ABFJNI.ATL_lambda_get();
+    public final static double ATL_Tpulse = ABFJNI.ATL_Tpulse_get();
+    public final static double ATL_SubarraySpacing = ABFJNI
+            .ATL_SubarraySpacing_get();
+    public final static int ATL_Targ1_CIR = ABFJNI.ATL_Targ1_CIR_get();
+    public final static int ATL_Targ1_V = ABFJNI.ATL_Targ1_V_get();
+    public final static int ATL_Targ1_Dist = ABFJNI.ATL_Targ1_Dist_get();
+    public final static int ATL_Targ1_RCS = ABFJNI.ATL_Targ1_RCS_get();
+    public final static int ATL_rg_size = ABFJNI.ATL_rg_size_get();
+    public final static int ATL_Beamwidth = ABFJNI.ATL_Beamwidth_get();
+    public final static int ATL_noise_power = ABFJNI.ATL_noise_power_get();
+    public final static int ATL_jam_CIR = ABFJNI.ATL_jam_CIR_get();
+    public final static int ATL_jam_power = ABFJNI.ATL_jam_power_get();
+    public final static int ATL_jam_freq_MHz = ABFJNI.ATL_jam_freq_MHz_get();
 }

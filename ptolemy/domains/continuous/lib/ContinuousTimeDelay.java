@@ -101,7 +101,7 @@ import ptolemy.kernel.util.Workspace;
 public class ContinuousTimeDelay extends Transformer {
     // FIXME: delay cannot change during a run (more
     // precisely... ignored until next initialize()).
-  
+
     // FIXME: implement solver step size control to capture periods of
     // fine granularity; without this, though input events were stored
     // with the same resolution as the solver deemed necessary, these
@@ -111,7 +111,6 @@ public class ContinuousTimeDelay extends Transformer {
     // resolution at which the input was generated, then subsequent
     // inputs to the delay actor will arrive with this frequency
     // regardless of whether or not this resolution is necessary.
-  
 
     /** Construct an actor with the specified container and name.
      *  Constrain that the output type to be the same as the input type.
@@ -132,7 +131,7 @@ public class ContinuousTimeDelay extends Transformer {
         _delay = 1.0;
 
         output.setTypeSameAs(input);
-        
+
         // empty set of dependent ports.
         Set<Port> dependentPorts = new HashSet<Port>();
         _causalityMarker = new CausalityMarker(this, "causalityMarker");
@@ -195,9 +194,11 @@ public class ContinuousTimeDelay extends Transformer {
      *   has an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ContinuousTimeDelay newObject = (ContinuousTimeDelay) super.clone(workspace);
+        ContinuousTimeDelay newObject = (ContinuousTimeDelay) super
+                .clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
-        newObject._causalityMarker = (CausalityMarker)newObject.getAttribute("causalityMarker");
+        newObject._causalityMarker = (CausalityMarker) newObject
+                .getAttribute("causalityMarker");
         return newObject;
     }
 
@@ -214,7 +215,7 @@ public class ContinuousTimeDelay extends Transformer {
         _nextFireAt = new Time(getDirector(), 0);
 
         //Place the initial token in the input buffer
-        if (initialToken != null){
+        if (initialToken != null) {
             Time modelStartTime = getDirector().getModelStartTime();
             _inputBuffer.put(new TimedEvent(modelStartTime, initialToken));
         }
@@ -253,25 +254,24 @@ public class ContinuousTimeDelay extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         Time currentTime = getDirector().getModelTime();
         Time centerTime = currentTime.subtract(_delay);
         TimedEvent leftEvent = null;
         TimedEvent rightEvent = null;
         _currentOutput = null;
-        
+
         // Consume input; if input is absent, do not add an event to the output queue,
         // as it will force the scheduler to fire this actor to produce an absent output.
         // Otherwise, the solver step size is prevented from increasing as delayed
         // absent events are present everywhere in the signal. This would result in
         // monotonically decreasing solver step size that quickly converges to the minimum
         // allowed step size, effectively bypassing the solver logic and slowing simulation.
-        if (input.isKnown(0) && input.hasToken(0)){
+        if (input.isKnown(0) && input.hasToken(0)) {
             Token inputToken = input.get(0);
-            if (!inputToken.equals(AbsentToken.ABSENT)){
+            if (!inputToken.equals(AbsentToken.ABSENT)) {
                 _inputBuffer.put(new TimedEvent(currentTime, inputToken));
-            }
-            else {
+            } else {
                 inputToken = null;
             }
         }
@@ -279,11 +279,11 @@ public class ContinuousTimeDelay extends Transformer {
         // Discard expired input events that will never be considered
         // by the solver. These are events that have timestamps before
         // the current time less delay.
-        while (_inputBuffer.size() > 0){
-            Time earliestEventTime = ((TimedEvent)_inputBuffer.get()).timeStamp;   
+        while (_inputBuffer.size() > 0) {
+            Time earliestEventTime = ((TimedEvent) _inputBuffer.get()).timeStamp;
 
             //Expired event
-            if (earliestEventTime.compareTo(centerTime) < 0){
+            if (earliestEventTime.compareTo(centerTime) < 0) {
                 _discarded = (TimedEvent) _inputBuffer.take();
             }
             //Earliest event is valid, so stop searching
@@ -291,40 +291,40 @@ public class ContinuousTimeDelay extends Transformer {
                 break;
             }
         }
-        
+
         //Record the left event; this is the most recently discarded input token.
         // Note that if we have not seen input, but we have an initial value, the
         // value was put to the input queue in the initialize() method, so the left
         // point will be the initial value at time 0.
         leftEvent = _discarded;
-        
+
         //Record the right event; because expired events are discarded from the
         // input queue, the right event is always the first element of the queue
-        if (_inputBuffer.size() > 0){
+        if (_inputBuffer.size() > 0) {
             rightEvent = (TimedEvent) _inputBuffer.get();
         }
-        
+
         // If the input signal was recorded at the center point, output it here,
         // and remove the event from the input queue to prevent refiring
-        if (rightEvent != null && rightEvent.timeStamp.equals(centerTime)){
-            _currentOutput = (Token)rightEvent.contents;
+        if (rightEvent != null && rightEvent.timeStamp.equals(centerTime)) {
+            _currentOutput = (Token) rightEvent.contents;
             _discarded = (TimedEvent) _inputBuffer.take();
         }
         // If the current time is less than the delay time, output the initial value
-        else if (currentTime.compareTo(new Time(getDirector(), _delay)) < 0){
+        else if (currentTime.compareTo(new Time(getDirector(), _delay)) < 0) {
             _currentOutput = initialOutput.getToken();
         }
         // If the current time is equal to the center time (delay=0), but the event was
         // not on the input queue, then we have not read the input. Output nothing now,
         // and postFire() will read the input and request a refiring at the current time;
         // this will force the director to increase its microstep.
-        else if (currentTime.equals(centerTime)){
+        else if (currentTime.equals(centerTime)) {
             //Do nothing
         }
         // If we have a left point, we construct the center point here
-        else if (leftEvent != null){
+        else if (leftEvent != null) {
             //If we have a right point, then we interpolate the center point
-            if (rightEvent != null){
+            if (rightEvent != null) {
                 _currentOutput = linearInterpolate(leftEvent, rightEvent);
             }
             // If we have a left point but no right point, we assume the value has not changed.
@@ -335,18 +335,18 @@ public class ContinuousTimeDelay extends Transformer {
         }
         // Otherwise, we did not record the event at the center time, have not seen input,
         // and do not have a left point (e.g. no initial value). We cannot generate output.
-        
+
         // Produce output
-        if (_currentOutput != null && !output.isKnown(0)){
+        if (_currentOutput != null && !output.isKnown(0)) {
             output.send(0, _currentOutput);
             // In the case where delay is zero (currentTime = centerTime) we have refired in
             // order to output a token with an increased microstep. After this token is sent,
             // it needs to be removed from the input buffer.
-            if (currentTime.equals(centerTime)){
-                _discarded = (TimedEvent)_inputBuffer.take();
+            if (currentTime.equals(centerTime)) {
+                _discarded = (TimedEvent) _inputBuffer.take();
             }
         }
-        
+
         //FIXME: What happens if two events in input buffer
         // have the same physical timestamp? We need to interpolate
         // earlier points by using the matching timestamp,
@@ -366,15 +366,16 @@ public class ContinuousTimeDelay extends Transformer {
     public boolean postfire() throws IllegalActionException {
         // Schedule the next output event. This event may fire at the same
         // physical time in the case of zero delay or simultaneous events.
-        if (_inputBuffer.size() > 0){
-            TimedEvent nextEvent = (TimedEvent)_inputBuffer.get();
+        if (_inputBuffer.size() > 0) {
+            TimedEvent nextEvent = (TimedEvent) _inputBuffer.get();
             Time nextOutputTime = nextEvent.timeStamp.add(_delay);
             Time currentTime = getDirector().getModelTime();
 
             // If the next output time is now, then there are additional tokens to output at the
             // current physical time, so a refire is requested. If the next output time is in the
             // future, first ensure we have not already scheduled this actor to fire. 
-            if (nextOutputTime.equals(currentTime) || !nextOutputTime.equals(_nextFireAt)){
+            if (nextOutputTime.equals(currentTime)
+                    || !nextOutputTime.equals(_nextFireAt)) {
                 getDirector().fireAt(this, nextOutputTime);
                 _nextFireAt = nextOutputTime;
             }
@@ -391,22 +392,22 @@ public class ContinuousTimeDelay extends Transformer {
         super.preinitialize();
         declareDelayDependency(input, output, _delay);
     }
-    
+
     /** Override the base class to declare that the actor is nonstrict
      *  if it has an initial value token.
      *  @exception IllegalActionException If the superclass throws it.
      */
-    public boolean isStrict(){
-//        //FIXME: Does strictness depend on presence of an initial value?
-  //      return false;
+    public boolean isStrict() {
+        //        //FIXME: Does strictness depend on presence of an initial value?
+        //      return false;
         try {
-            Token t = initialOutput.getToken(); 
+            Token t = initialOutput.getToken();
             return t == null;
         } catch (IllegalActionException e) {
             return true;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -425,18 +426,21 @@ public class ContinuousTimeDelay extends Transformer {
      * @exception IllegalActionException If thrown by arithmetic operations
      * on the events
      */
-    protected Token linearInterpolate(TimedEvent leftEvent, TimedEvent rightEvent) 
-            throws IllegalActionException {
+    protected Token linearInterpolate(TimedEvent leftEvent,
+            TimedEvent rightEvent) throws IllegalActionException {
         Time centerTime = getDirector().getModelTime().subtract(_delay);
-        
+
         //time gap (run) between left and right events
-        Token slope = new DoubleToken(rightEvent.timeStamp.subtract(leftEvent.timeStamp).getDoubleValue());
-        
+        Token slope = new DoubleToken(rightEvent.timeStamp.subtract(
+                leftEvent.timeStamp).getDoubleValue());
+
         //slope = rise / run
-        slope = ((Token)rightEvent.contents).subtract((Token)leftEvent.contents).divide(slope);
-        
+        slope = ((Token) rightEvent.contents).subtract(
+                (Token) leftEvent.contents).divide(slope);
+
         //leftEvent + estimated rise from leftEvent to centerEvent
-        return ((Token)leftEvent.contents).add(slope.multiply(new DoubleToken(centerTime.subtract(leftEvent.timeStamp).getDoubleValue())));
+        return ((Token) leftEvent.contents).add(slope.multiply(new DoubleToken(
+                centerTime.subtract(leftEvent.timeStamp).getDoubleValue())));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -444,16 +448,16 @@ public class ContinuousTimeDelay extends Transformer {
 
     /** Current output. */
     protected Token _currentOutput;
-    
+
     /** The amount of delay. */
     protected double _delay;
 
     /** A local event queue to store input tokens, sorted by input time. */
     protected CalendarQueue _inputBuffer;
-    
+
     /** Holds the most recently discarded event from the input buffer. */
     protected TimedEvent _discarded;
-    
+
     /** Records the next scheduled fireAt() call, so that we do not request more than
      *  one fireAt() call for a given input event. 
      */

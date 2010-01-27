@@ -124,11 +124,11 @@ public class ActorToken extends Token implements Cloneable {
      *  @exception IllegalActionException If thrown by 
      *  {@link #isEqualTo(Token)}.
      */
-    public BooleanToken isCloseTo(Token rightArgument, double epsilon) 
+    public BooleanToken isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         return isEqualTo(rightArgument);
     }
-    
+
     /** Model for equality of the values of this Token and the argument Token.
      *  It should be overridden in derived classes to provide type specific
      *  actions for equality testing.

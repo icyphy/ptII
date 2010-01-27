@@ -199,7 +199,7 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -210,13 +210,13 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SRDirector newObject = (SRDirector) super.clone(workspace);
         try {
-            newObject._periodicDirectorHelper = new PeriodicDirectorHelper(newObject);
+            newObject._periodicDirectorHelper = new PeriodicDirectorHelper(
+                    newObject);
         } catch (IllegalActionException e) {
             throw new CloneNotSupportedException("Failed to clone helper: " + e);
         }
         return newObject;
     }
-
 
     /** Request a firing of the given actor at the given absolute
      *  time, and return the time at which the specified will be
@@ -336,13 +336,13 @@ public class SRDirector extends FixedPointDirector implements PeriodicDirector {
         period = new Parameter(this, "period");
         period.setTypeEquals(BaseType.DOUBLE);
         period.setExpression("0.0");
-        
+
         _periodicDirectorHelper = new PeriodicDirectorHelper(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Helper class supporting the <i>period</i> parameter. */
     private PeriodicDirectorHelper _periodicDirectorHelper;
 }

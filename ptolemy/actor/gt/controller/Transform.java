@@ -130,8 +130,8 @@ public class Transform extends GTEvent implements ConfigurableEntity,
                 initializable.preinitialize();
                 initializable.initialize();
             } catch (IllegalActionException e) {
-                throw new KernelRuntimeException(e, "Unable to initialize " +
-                        "initializables.");
+                throw new KernelRuntimeException(e, "Unable to initialize "
+                        + "initializables.");
             }
         }
     }

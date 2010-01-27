@@ -105,12 +105,12 @@ public class VergilApplet extends BasicJApplet {
             }
         }
         int i = 0;
-        for (;i < vergilArguments.length; i++) {
+        for (; i < vergilArguments.length; i++) {
             if (vergilArguments[i].endsWith(".xml")) {
                 URL docBase = getDocumentBase();
                 try {
                     URL xmlFile = new URL(docBase, vergilArguments[i]);
-                    
+
                     try {
                         // Try to open the URL, if it can't be opened, try from the codebase.
                         URLConnection connection = xmlFile.openConnection();
@@ -124,12 +124,14 @@ public class VergilApplet extends BasicJApplet {
                             if (xmlFile.getProtocol().equals("file")) {
                                 File urlFile = new File(xmlFile.getPath());
                                 if (!urlFile.exists()) {
-                                    xmlFile = new URL(getCodeBase(), vergilArguments[i]);
+                                    xmlFile = new URL(getCodeBase(),
+                                            vergilArguments[i]);
                                 }
                             }
                         }
                     } catch (Exception ex) {
-                        System.out.println("Failed to open " + vergilArguments[i]);
+                        System.out.println("Failed to open "
+                                + vergilArguments[i]);
                         ex.printStackTrace();
                     }
                     vergilArguments[i] = xmlFile.toExternalForm();

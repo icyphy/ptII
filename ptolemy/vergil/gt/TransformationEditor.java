@@ -586,7 +586,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
 
                     //PatternObjectAttribute attribute;
                     try {
-                        /*attribute = */ GTTools.getPatternObjectAttribute(
+                        /*attribute = */GTTools.getPatternObjectAttribute(
                                 replacementObject, true);
                     } catch (KernelException e) {
                         throw new KernelRuntimeException(e, "Unable to "

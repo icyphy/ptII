@@ -82,11 +82,11 @@ public class Integrator extends DETransformer {
         output.setWidthEquals(input, false);
         initialValue = new Parameter(this, "initialValue");
         initialValue.setExpression("0.0");
-    }  
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports.
      *  @param workspace The workspace for the new object.
@@ -121,35 +121,34 @@ public class Integrator extends DETransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
-            Time  currentTime = getDirector().getModelTime();
+            Time currentTime = getDirector().getModelTime();
             Token currentToken = input.get(0);
             _currentInput = new TimedEvent(currentTime, currentToken);
-            
+
             if (_lastInput != null) {
-                Token lastToken = (Token)_lastInput.contents;
-                Time  lastTime = _lastInput.timeStamp;           
-                Token timeGap = new DoubleToken(currentTime.subtract(lastTime).getDoubleValue());         
-                Token integrand = new DoubleToken(0.0);             
-                
+                Token lastToken = (Token) _lastInput.contents;
+                Time lastTime = _lastInput.timeStamp;
+                Token timeGap = new DoubleToken(currentTime.subtract(lastTime)
+                        .getDoubleValue());
+                Token integrand = new DoubleToken(0.0);
+
                 //Calculate the interpolated value, multiply by dt
-                integrand = (currentToken.add(lastToken))
-                    .multiply(timeGap)
-                    .divide(new DoubleToken(2));
-                
+                integrand = (currentToken.add(lastToken)).multiply(timeGap)
+                        .divide(new DoubleToken(2));
+
                 //Accumulate the integrand
-                if (_accumulated != null){
+                if (_accumulated != null) {
                     _accumulated = _accumulated.add(integrand);
-                }
-                else {
+                } else {
                     _accumulated = integrand;
                 }
             }
         }
-        
+
         //If we have accumulated a value, output it here; otherwise,
         //   we did not have an initial value and have not yet received
         //   two inputs.
-        if (_accumulated != null){
+        if (_accumulated != null) {
             output.broadcast(_accumulated);
         }
     }
@@ -170,14 +169,14 @@ public class Integrator extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         //If reset port is connected and has a token, reset state.
-        if (reset.getWidth() > 0){
-            if (reset.hasToken(0)){
+        if (reset.getWidth() > 0) {
+            if (reset.hasToken(0)) {
                 //Consume reset token
                 reset.get(0);
-                
+
                 //Reset the current input
                 _currentInput = null;
-                
+
                 //Reset accumulation
                 resetAccumulation();
             }
@@ -185,26 +184,23 @@ public class Integrator extends DETransformer {
         _lastInput = _currentInput;
         return super.postfire();
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Reset value of the accumulator to either an initial value or null.
      * @exception IllegalActionException If the base class throws it
-     */  
-    protected void resetAccumulation() throws IllegalActionException{
+     */
+    protected void resetAccumulation() throws IllegalActionException {
         Token initialToken = initialValue.getToken();
-        
-        if (initialToken != null){
+
+        if (initialToken != null) {
             _accumulated = initialToken;
-        }
-        else {
+        } else {
             _accumulated = null;
         }
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -213,17 +209,17 @@ public class Integrator extends DETransformer {
      *  and no output is generated until two inputs have been received.
      */
     public TypedIOPort reset;
-    
+
     /** The value produced by the actor on its first iteration.
      *  The default value of this parameter is the double 0.0.
      */
-    public Parameter initialValue; 
+    public Parameter initialValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private TimedEvent _currentInput;
 
     private TimedEvent _lastInput;
-    
+
     private Token _accumulated;
 }

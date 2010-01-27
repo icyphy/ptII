@@ -51,7 +51,7 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
     public Register(ptolemy.domains.de.lib.Register actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method generates code that loops through each input [multi-port]
@@ -62,20 +62,20 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
     @Override
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
-                
+
         ptolemy.domains.de.lib.Register actor = (ptolemy.domains.de.lib.Register) getComponent();
-        int commonWidth = Math.min(actor.input.getWidth(), actor.output.getWidth());
+        int commonWidth = Math.min(actor.input.getWidth(), actor.output
+                .getWidth());
         ArrayList<String> templateArgs = new ArrayList<String>();
         String initialValueBlock;
-        
+
         CodeStream codeStream = _templateParser.getCodeStream();
-        
+
         //Generate preinit block; this block differs depending
         // on whether or not an initial value has been set.
         if (actor.initialValue.getToken() != null) {
             initialValueBlock = "preinitBlock_hasInitialValue";
-        }
-        else {
+        } else {
             initialValueBlock = "preinitBlock_noInitialValue";
         }
         templateArgs.add("");
@@ -83,14 +83,14 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
             templateArgs.set(0, Integer.valueOf(channel).toString());
             codeStream.appendCodeBlock(initialValueBlock, templateArgs);
         }
-        
+
         //Generate trigger block; if a trigger is received, output
         // the stored value for every channel
         for (int channel = 0; channel < commonWidth; channel++) {
             templateArgs.set(0, Integer.valueOf(channel).toString());
             codeStream.appendCodeBlock("triggerBlock", templateArgs);
         }
-        
+
         //Generate update (input) block; if a new value is received,
         // store the value and trigger the old value (if not already
         // for this firing)
@@ -98,7 +98,7 @@ public class Register extends NamedProgramCodeGeneratorAdapter {
             templateArgs.set(0, Integer.valueOf(channel).toString());
             codeStream.appendCodeBlock("updateValueBlock", templateArgs);
         }
-        
+
         return processCode(codeStream.toString());
     }
 }

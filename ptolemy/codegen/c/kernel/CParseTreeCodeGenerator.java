@@ -568,8 +568,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
             Type argumentType = ((ASTPtRootNode) node.jjtGetChild(i + 1))
                     .getType();
-            result.append( _specializeArgument(functionName, i, argumentType,
-                            _childCode));
+            result.append(_specializeArgument(functionName, i, argumentType,
+                    _childCode));
 
             argumentTypes.add(argumentType);
         }
@@ -907,7 +907,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[row * column];
 
         //_fireCode.append("((Token*) $new(Matrix(" + row + ", " + column);
-        StringBuffer result = new StringBuffer("" + row + ", " + column + ", " + row * column);
+        StringBuffer result = new StringBuffer("" + row + ", " + column + ", "
+                + row * column);
 
         ptolemy.data.Token childToken = null;
         ptolemy.data.type.Type elementType = BaseType.UNKNOWN;
@@ -925,8 +926,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     Type valueType = tokens[index].getType();
 
                     if (_generator.isPrimitive(valueType)) {
-                        result.append("$new(" + _generator.codeGenType(valueType)
-                                + "(" + _childCode + "))");
+                        result.append("$new("
+                                + _generator.codeGenType(valueType) + "("
+                                + _childCode + "))");
                     }
 
                     if (!elementType.equals(valueType)) { // find max type
@@ -944,7 +946,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             } else {
                 result.append(", TYPE_" + codegenType);
             }
-            result = new StringBuffer("($new(" + /*codegenType + */"Matrix(" + result.toString());
+            result = new StringBuffer("($new(" + /*codegenType + */"Matrix("
+                    + result.toString());
             _childCode = result.toString() + ")))";
 
             childToken = MatrixToken.arrayToMatrix(tokens, node.getRowCount(),
@@ -1087,7 +1090,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             //ptolemy.data.Token token = tokens[i];
             /*ptolemy.data.Token token =*/_evaluateChild(node, i);
 
-            result = new StringBuffer("pow(" + result.toString() + ", " + _childCode);
+            result = new StringBuffer("pow(" + result.toString() + ", "
+                    + _childCode);
 
             // Note that we check for ScalarTokens because anything
             // that has a meaningful intValue() method, such as
@@ -1165,9 +1169,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 if (type != null) {
-                    result = new StringBuffer("$multiply_" + _generator.codeGenType(resultType)
-                            + "_" + _generator.codeGenType(type) + "(" + result.toString()
-                            + ", " + _childCode + ")");
+                    result = new StringBuffer("$multiply_"
+                            + _generator.codeGenType(resultType) + "_"
+                            + _generator.codeGenType(type) + "("
+                            + result.toString() + ", " + _childCode + ")");
 
                     resultType = resultType.multiply(type);
 
@@ -1176,8 +1181,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 }
             } else if (operator.kind == PtParserConstants.DIVIDE) {
                 if (type != null) {
-                    result = new StringBuffer("$divide_" + _generator.codeGenType(resultType)
-                            + "_" + _generator.codeGenType(type) + "(" + result
+                    result = new StringBuffer("$divide_"
+                            + _generator.codeGenType(resultType) + "_"
+                            + _generator.codeGenType(type) + "(" + result
                             + ", " + _childCode + ")");
 
                     resultType = resultType.divide(type);
@@ -1453,8 +1459,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         String nodeType = _generator.codeGenType(node.getType());
 
-        result.append("$convert_" + childType + "_" + nodeType + "(" + _childCode
-                + ")");
+        result.append("$convert_" + childType + "_" + nodeType + "("
+                + _childCode + ")");
 
         for (int i = 1; i < numChildren; i++) {
             childType = _generator.codeGenType(((ASTPtRootNode) node
@@ -1464,13 +1470,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
             //ptolemy.data.Token nextToken = tokens[i];
             if (operator.kind == PtParserConstants.PLUS) {
-                result = new StringBuffer("$add_" + nodeType + "_" + childType + "(" + result.toString()
-                        + ", ");
+                result = new StringBuffer("$add_" + nodeType + "_" + childType
+                        + "(" + result.toString() + ", ");
 
                 //childToken = childToken.add(_evaluateChild(node, i));
             } else if (operator.kind == PtParserConstants.MINUS) {
-                result = new StringBuffer("$subtract_" + nodeType + "_" + childType + "("
-                        + result.toString() + ", ");
+                result = new StringBuffer("$subtract_" + nodeType + "_"
+                        + childType + "(" + result.toString() + ", ");
 
                 //childToken = childToken.subtract(_evaluateChild(node, i));
             } else {
@@ -1608,7 +1614,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         Type elementType = ((ArrayType) type).getElementType();
 
         //_fireCode.append("Array_get(");
-        StringBuffer result = new StringBuffer(_generator.codeGenType(elementType) + "Array_get(");
+        StringBuffer result = new StringBuffer(_generator
+                .codeGenType(elementType)
+                + "Array_get(");
 
         String name = value.toString();
         if (name.startsWith("object(")) {

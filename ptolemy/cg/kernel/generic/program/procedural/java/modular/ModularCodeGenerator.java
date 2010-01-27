@@ -102,35 +102,47 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         String profileClassName = modelName + "_profile";
 
         StringBuffer profileCode = new StringBuffer();
-        
+
         profileCode.append("import java.util.List;" + _eol);
         profileCode.append("import java.util.LinkedList;" + _eol);
         profileCode.append("import ptolemy.cg.lib.Profile;" + _eol);
-        profileCode.append("import ptolemy.kernel.util.IllegalActionException;" + _eol);
-
-       
-        profileCode.append(_eol + "public class " + profileClassName + " extends Profile {"
+        profileCode.append("import ptolemy.kernel.util.IllegalActionException;"
                 + _eol);
-        profileCode.append(INDENT1
-                + "public " + profileClassName + "() { }" + _eol);
-        
+
+        profileCode.append(_eol + "public class " + profileClassName
+                + " extends Profile {" + _eol);
+        profileCode.append(INDENT1 + "public " + profileClassName + "() { }"
+                + _eol);
+
         profileCode.append(createActorGraph());
-        
-        profileCode.append(INDENT1
-                + "public List<Profile.Port> ports() {" + _eol);
-        profileCode.append(INDENT2 + "List<Profile.Port> ports = new LinkedList<Profile.Port>();" + _eol);
+
+        profileCode.append(INDENT1 + "public List<Profile.Port> ports() {"
+                + _eol);
+        profileCode.append(INDENT2
+                + "List<Profile.Port> ports = new LinkedList<Profile.Port>();"
+                + _eol);
         ModularCodeGenTypedCompositeActor model = (ModularCodeGenTypedCompositeActor) _model;
         for (Object object : model.portList()) {
-            
+
             IOPort port = (IOPort) object;
             Profile.Port profilePort = model.convertProfilePort(port);
-            
+
             profileCode.append(INDENT2
-                    + "ports.add(new Profile.Port(\"" + profilePort.name() + "\", " + profilePort.publisher() + ", "
-                    + profilePort.subscriber() + ", " + profilePort.width() + ", "
-                    + (port.isInput() ? DFUtilities.getTokenConsumptionRate(port):DFUtilities.getTokenProductionRate(port)) + ", "
-                    + ptTypeToCodegenType(((TypedIOPort)port).getType()) + ", "
-                    + port.isInput() + ", " + port.isOutput() + ", \"" + profilePort.getPubSubChannelName() + "\"));" + _eol);
+                    + "ports.add(new Profile.Port(\""
+                    + profilePort.name()
+                    + "\", "
+                    + profilePort.publisher()
+                    + ", "
+                    + profilePort.subscriber()
+                    + ", "
+                    + profilePort.width()
+                    + ", "
+                    + (port.isInput() ? DFUtilities
+                            .getTokenConsumptionRate(port) : DFUtilities
+                            .getTokenProductionRate(port)) + ", "
+                    + ptTypeToCodegenType(((TypedIOPort) port).getType())
+                    + ", " + port.isInput() + ", " + port.isOutput() + ", \""
+                    + profilePort.getPubSubChannelName() + "\"));" + _eol);
         }
         profileCode.append(INDENT2 + "return ports;" + _eol);
         profileCode.append(INDENT1 + "}" + _eol);
@@ -138,27 +150,27 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         profileCode.append("}" + _eol);
 
         _writeCodeFileName(profileCode, profileClassName + ".java", true, true);
-        
+
         List<String> commands = new LinkedList<String>();
         commands.add("javac -classpath \"."
                 + StringUtilities.getProperty("path.separator")
-                + StringUtilities.getProperty("ptolemy.ptII.dir") + "\"" + profileClassName + ".java");
+                + StringUtilities.getProperty("ptolemy.ptII.dir") + "\""
+                + profileClassName + ".java");
 
         StringBufferExec executeCommands = new StringBufferExec(true);
         executeCommands.setWorkingDirectory(codeDirectory.asFile());
         executeCommands.setCommands(commands);
         executeCommands.start();
-        
+
         int lastSubprocessReturnCode = executeCommands
-        .getLastSubprocessReturnCode();
+                .getLastSubprocessReturnCode();
         if (lastSubprocessReturnCode != 0) {
             throw new IllegalActionException(this,
-                "Execution of subcommands failed, last process returned "
-                        + lastSubprocessReturnCode + ", which is not 0:\n"
-                        + executeCommands.buffer.toString());
+                    "Execution of subcommands failed, last process returned "
+                            + lastSubprocessReturnCode + ", which is not 0:\n"
+                            + executeCommands.buffer.toString());
         }
     }
-    
 
     /** Return the firings() method.
      *  @return The code for the firings method.
@@ -167,63 +179,81 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
      */
     public StringBuffer createActorGraph() throws IllegalActionException {
         StringBuffer actorGraph = new StringBuffer();
-        
-        actorGraph.append(INDENT1
-                + "public List<Profile.FiringFunction> firings() throws IllegalActionException {" + _eol);
-        actorGraph.append(INDENT2 + "List<Profile.FiringFunction> firingFunctions = new LinkedList<Profile.FiringFunction>();" + _eol);
-        actorGraph.append(INDENT2
-                + "FiringFunction firingFunction;" + _eol + _eol);
+
+        actorGraph
+                .append(INDENT1
+                        + "public List<Profile.FiringFunction> firings() throws IllegalActionException {"
+                        + _eol);
+        actorGraph
+                .append(INDENT2
+                        + "List<Profile.FiringFunction> firingFunctions = new LinkedList<Profile.FiringFunction>();"
+                        + _eol);
+        actorGraph.append(INDENT2 + "FiringFunction firingFunction;" + _eol
+                + _eol);
         int index = 0;
         ModularCodeGenTypedCompositeActor model = (ModularCodeGenTypedCompositeActor) _model;
         for (Object object : model.entityList()) {
-            
+
             Actor actor = (Actor) object;
-            
+
             StringBuffer firingFunction = new StringBuffer();
             firingFunction.append(INDENT2
-                    + "firingFunction = new Profile.FiringFunction(" + index++ + ");" + _eol);
+                    + "firingFunction = new Profile.FiringFunction(" + index++
+                    + ");" + _eol);
             String externalPortName;
 
             // Add ports name and rate
-            CompositeActor container = (CompositeActor)getContainer();
+            CompositeActor container = (CompositeActor) getContainer();
             boolean appendFiringFunction = false;
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort)(inputPorts.next());
+                IOPort inputPort = (IOPort) (inputPorts.next());
                 externalPortName = "";
-                for (Object connectedPort: inputPort.connectedPortList()) {
+                for (Object connectedPort : inputPort.connectedPortList()) {
                     if (container.portList().contains(connectedPort)) {
-                        externalPortName = ((IOPort)connectedPort).getName();
+                        externalPortName = ((IOPort) connectedPort).getName();
                         break;
                     }
                 }
-                
+
                 if (!externalPortName.equals("")) {
                     appendFiringFunction = true;
-                    firingFunction.append(INDENT2
-                        + "firingFunction.ports.add(new FiringFunctionPort(\"" + inputPort.getName() 
-                        + "\",\"" + externalPortName
-                        + "\"," + DFUtilities.getTokenConsumptionRate(inputPort) + "," + inputPort.isInput() + "));" + _eol);
+                    firingFunction
+                            .append(INDENT2
+                                    + "firingFunction.ports.add(new FiringFunctionPort(\""
+                                    + inputPort.getName()
+                                    + "\",\""
+                                    + externalPortName
+                                    + "\","
+                                    + DFUtilities
+                                            .getTokenConsumptionRate(inputPort)
+                                    + "," + inputPort.isInput() + "));" + _eol);
                 }
             }
 
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort)(outputPorts.next());
+                IOPort outputPort = (IOPort) (outputPorts.next());
                 externalPortName = "";
-                for (Object connectedPort: outputPort.connectedPortList()) {
+                for (Object connectedPort : outputPort.connectedPortList()) {
                     if (container.portList().contains(connectedPort)) {
-                        externalPortName = ((IOPort)connectedPort).getName();
+                        externalPortName = ((IOPort) connectedPort).getName();
                         break;
                     }
                 }
-                
+
                 if (!externalPortName.equals("")) {
                     appendFiringFunction = true;
-                    firingFunction.append(INDENT2
-                        + "firingFunction.ports.add(new FiringFunctionPort(\"" + outputPort.getName()
-                        + "\",\"" + externalPortName
-                        + "\"," + DFUtilities.getTokenProductionRate(outputPort) + "," + outputPort.isInput() + "));" + _eol);
+                    firingFunction
+                            .append(INDENT2
+                                    + "firingFunction.ports.add(new FiringFunctionPort(\""
+                                    + outputPort.getName()
+                                    + "\",\""
+                                    + externalPortName
+                                    + "\","
+                                    + DFUtilities
+                                            .getTokenProductionRate(outputPort)
+                                    + "," + outputPort.isInput() + "));" + _eol);
                 }
             }
             firingFunction.append(INDENT2
@@ -233,10 +263,10 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
             }
 
         }
-        
+
         actorGraph.append(INDENT2 + "return firingFunctions;" + _eol);
         actorGraph.append(INDENT1 + "}" + _eol);
-        
+
         return actorGraph;
     }
 
@@ -332,7 +362,8 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
 
                 String type = codeGenType2(inputPort.getType());
-                if (!type.equals("Token") && !isPrimitive(codeGenType(inputPort.getType()))) {
+                if (!type.equals("Token")
+                        && !isPrimitive(codeGenType(inputPort.getType()))) {
                     type = "Token";
                 }
                 for (int i = 0; i < inputPort.getWidth(); i++) {
@@ -394,9 +425,10 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         if (_isTopLevel()) {
             return INDENT1 + "System.exit(0);" + _eol + "}" + _eol + "}" + _eol;
         } else {
-            if (_model instanceof CompositeActor && ((CompositeActor) _model).outputPortList().isEmpty()) { 
-                return INDENT1 + "return null;" + _eol + "}"
-                + _eol + "}" + _eol;
+            if (_model instanceof CompositeActor
+                    && ((CompositeActor) _model).outputPortList().isEmpty()) {
+                return INDENT1 + "return null;" + _eol + "}" + _eol + "}"
+                        + _eol;
             } else {
                 return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                         + _eol + "}" + _eol;

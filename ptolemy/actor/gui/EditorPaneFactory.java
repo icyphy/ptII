@@ -123,36 +123,38 @@ public class EditorPaneFactory extends Attribute {
      *  @return An instance of the PtolemyQuery class that is created
      *  with styles according to the type given in each visible attribute.
      */
-    public static Component createEditorPane(NamedObj object,
-            PtolemyQuery query) {
+    public static Component createEditorPane(NamedObj object, PtolemyQuery query) {
 
         // Get decorated attributes
-        
+
         JTabbedPane tabs = new JTabbedPane();
         boolean foundOne = false;
-        
-        List<Settable> parameters = new LinkedList<Settable>(object.attributeList(Settable.class));
+
+        List<Settable> parameters = new LinkedList<Settable>(object
+                .attributeList(Settable.class));
         int nbrOfTabs = 1;
         PtolemyQuery mainTab = new PtolemyQuery(object);
         mainTab.setTextWidth(40);
         tabs.addTab(object.getDisplayName(), mainTab);
-        
-        List<Decorator> decorators = DecoratedAttributesImplementation.findDecorators(object);
-        for (Decorator decorator : decorators) {            
-            DecoratedAttributes decoratedAttributes = object.getDecoratorAttributes(decorator);
-            
+
+        List<Decorator> decorators = DecoratedAttributesImplementation
+                .findDecorators(object);
+        for (Decorator decorator : decorators) {
+            DecoratedAttributes decoratedAttributes = object
+                    .getDecoratorAttributes(decorator);
+
             PtolemyQuery decoratorQuery = new PtolemyQuery(object);
-            decoratorQuery.setAlignmentY(PtolemyQuery.TOP_ALIGNMENT);
+            decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
             decoratorQuery.setTextWidth(40);
             boolean foundDecoratorAttribute = false;
-            
+
             for (Object attribute : decoratedAttributes.attributeList()) {
                 if (attribute instanceof Settable) {
                     Settable settable = (Settable) attribute;
-                    if (Configurer.isVisible(object, settable)) {                        
+                    if (Configurer.isVisible(object, settable)) {
                         foundDecoratorAttribute = true;
                         decoratorQuery.addStyledEntry(settable);
-                    }                    
+                    }
                 }
             }
             foundOne = foundOne || foundDecoratorAttribute;
@@ -161,20 +163,20 @@ public class EditorPaneFactory extends Attribute {
                 nbrOfTabs += 1;
             }
         }
-        
+
         if (nbrOfTabs > 1) {
             query.add(tabs, BorderLayout.CENTER);
         }
 
-        PtolemyQuery queryForMainAttributes = (nbrOfTabs > 1) ? mainTab : query; 
-        
+        PtolemyQuery queryForMainAttributes = (nbrOfTabs > 1) ? mainTab : query;
+
         for (Settable parameter : parameters) {
             if (Configurer.isVisible(object, parameter)) {
                 foundOne = true;
                 queryForMainAttributes.addStyledEntry(parameter);
             }
         }
-        
+
         if (!foundOne) {
             return new JLabel(object.getName() + " has no parameters.");
         }

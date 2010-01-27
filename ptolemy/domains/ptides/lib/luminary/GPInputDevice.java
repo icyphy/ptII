@@ -91,23 +91,23 @@ public class GPInputDevice extends LuminarySensorInputDevice {
     public String configuration() throws IllegalActionException {
         return pad.stringValue();
     }
-    
+
     /** Returns the starting configuration, which is an integer.
      */
     public String startingConfiguration() {
         return startingConfiguration;
     }
-    
+
     /** Returns the list of supported configurations.
      */
     public List<String> supportedConfigurations() {
         return _supportedConfigurations;
     }
-    
+
     /** The default configuration.
      */
     private String startingConfiguration;
-    
+
     /** The set of supported configurations.
      */
     private List<String> _supportedConfigurations;

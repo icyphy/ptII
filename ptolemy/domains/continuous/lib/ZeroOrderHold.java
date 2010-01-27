@@ -75,7 +75,7 @@ public class ZeroOrderHold extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         defaultValue = new Parameter(this, "defaultValue");
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -104,7 +104,7 @@ public class ZeroOrderHold extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (input.hasToken(0)) {
             ContinuousDirector dir = (ContinuousDirector) getDirector();
             double stepSize = dir.getCurrentStepSize();
@@ -138,7 +138,7 @@ public class ZeroOrderHold extends Transformer {
         super.initialize();
         _lastToken = defaultValue.getToken();
     }
-    
+
     /** Override the method in the base class so that the type
      *  constraint for the <i>initialValue</i> parameter will be set
      *  if it contains a value.

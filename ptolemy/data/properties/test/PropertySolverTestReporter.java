@@ -67,7 +67,7 @@ public class PropertySolverTestReporter {
     /** Invoke the test harness.
      *  @param args The arguments, only the first argument is passed to
      *  the test harness.
-     */ 
+     */
     public static void main(String args[]) {
         testPropertiesAndGenerateReports(args[0]);
     }
@@ -87,7 +87,7 @@ public class PropertySolverTestReporter {
     public static void testPropertiesAndGenerateReports(String directoryPath) {
         try {
 
-            Map<Map, HashMap<Object,Map>>[] stats;
+            Map<Map, HashMap<Object, Map>>[] stats;
             stats = _testPropertiesDirectory(directoryPath);
             _printGlobalStats(stats[0]);
             _printLocalStats(stats[1]);
@@ -142,13 +142,15 @@ public class PropertySolverTestReporter {
         entry.put(entryHeader, entryValue);
     }
 
-    private static void _composeOutputs(Map<Map, HashMap<Object,Map>> summary,
-            Map<Map, HashMap<Object,Map>> intermediateOutputs) {
+    private static void _composeOutputs(Map<Map, HashMap<Object, Map>> summary,
+            Map<Map, HashMap<Object, Map>> intermediateOutputs) {
         //        for (Object field : intermediateOutputs.keySet()) {
         //            Object value = intermediateOutputs.get(field);
-        Set<Map.Entry<Map, HashMap<Object,Map>>> entrySet = intermediateOutputs.entrySet();
+        Set<Map.Entry<Map, HashMap<Object, Map>>> entrySet = intermediateOutputs
+                .entrySet();
         for (Map.Entry entry : entrySet) {
-            HashMap<Object, Map> value = (HashMap<Object, Map>) entry.getValue();
+            HashMap<Object, Map> value = (HashMap<Object, Map>) entry
+                    .getValue();
             //if (value instanceof Number) {
             //    PropertySolver.incrementStats(summary, entry.getKey(), (Number) value);
             //} else if (value instanceof Map) {
@@ -258,7 +260,7 @@ public class PropertySolverTestReporter {
     }
 
     //private static void _printLocalStats(Map<Object, Map> stats)
-    private static void _printLocalStats(Map<Map, HashMap<Object,Map>> stats)
+    private static void _printLocalStats(Map<Map, HashMap<Object, Map>> stats)
             throws IOException {
         BufferedWriter writer = null;
         try {
@@ -279,7 +281,8 @@ public class PropertySolverTestReporter {
             writer.newLine();
 
             // Iterate using triplet keys {testFile, solver, isInvoked}.
-            Set<Map.Entry<Map, HashMap<Object,Map>>> entrySet = stats.entrySet();
+            Set<Map.Entry<Map, HashMap<Object, Map>>> entrySet = stats
+                    .entrySet();
             for (Map.Entry entry : entrySet) {
                 writer.append(entry.getKey().toString());
 
@@ -306,16 +309,16 @@ public class PropertySolverTestReporter {
      * the exception logs directory cannot be created or if the error file
      * cannot be written.
      */
-    private static Map<Map, HashMap<Object,Map>>[] _testPropertiesDirectory(String directoryPath)
-            throws IOException {
+    private static Map<Map, HashMap<Object, Map>>[] _testPropertiesDirectory(
+            String directoryPath) throws IOException {
         // Create the log directories.
         if (!new File(_statsDirectory).mkdirs()) {
             throw new IOException("Failed to create \"" + _statsDirectory
                     + "\" directory.");
         }
         if (!new File(_exceptionLogsDirectory).mkdirs()) {
-            throw new IOException("Failed to create \"" + _exceptionLogsDirectory
-                    + "\" directory.");
+            throw new IOException("Failed to create \""
+                    + _exceptionLogsDirectory + "\" directory.");
         }
         // See MoMLSimpleApplication for similar code
         MoMLParser parser = new MoMLParser();
@@ -327,14 +330,15 @@ public class PropertySolverTestReporter {
         HashMap<Object, Map> localStats = new LinkedHashMap<Object, Map>();
         HashMap globalStats = new LinkedHashMap();
 
-        Map<Map, HashMap<Object,Map>> [] summary = new Map[] { globalStats, localStats };
+        Map<Map, HashMap<Object, Map>>[] summary = new Map[] { globalStats,
+                localStats };
 
         File directory = new File(directoryPath);
 
         for (File file : directory.listFiles()) {
 
             if (file.isDirectory()) {
-                Map<Map, HashMap<Object,Map>>[] directoryOutputs;
+                Map<Map, HashMap<Object, Map>>[] directoryOutputs;
                 directoryOutputs = _testPropertiesDirectory(file
                         .getAbsolutePath());
 

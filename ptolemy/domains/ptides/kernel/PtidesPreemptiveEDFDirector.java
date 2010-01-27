@@ -114,50 +114,65 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         // does this algorithm work?
         // initialize all port model delays to infinity.
         HashMap portDeadlines = new HashMap<IOPort, SuperdenseDependency>();
-        for (Actor actor : (List<Actor>)(((TypedCompositeActor)getContainer()).deepEntityList())) {
-            for (TypedIOPort inputPort : (List<TypedIOPort>)(actor.inputPortList())) {
-                portDeadlines.put(inputPort, SuperdenseDependency.OPLUS_IDENTITY);
+        for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
+                .deepEntityList())) {
+            for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
+                    .inputPortList())) {
+                portDeadlines.put(inputPort,
+                        SuperdenseDependency.OPLUS_IDENTITY);
             }
-            for (TypedIOPort outputPort : (List<TypedIOPort>)(actor.outputPortList())) {
-                portDeadlines.put(outputPort, SuperdenseDependency.OPLUS_IDENTITY);
+            for (TypedIOPort outputPort : (List<TypedIOPort>) (actor
+                    .outputPortList())) {
+                portDeadlines.put(outputPort,
+                        SuperdenseDependency.OPLUS_IDENTITY);
             }
         }
 
-        for (TypedIOPort outputPort : (List<TypedIOPort>)(((Actor)getContainer()).outputPortList())) {
+        for (TypedIOPort outputPort : (List<TypedIOPort>) (((Actor) getContainer())
+                .outputPortList())) {
             SuperdenseDependency startDelay = SuperdenseDependency.OTIMES_IDENTITY;
             portDeadlines.put(outputPort, startDelay);
         }
         // Now start from each sensor (input port at the top level), traverse through all
         // ports.
-        for (TypedIOPort startPort : (List<TypedIOPort>)(((TypedCompositeActor)getContainer()).outputPortList())) {
+        for (TypedIOPort startPort : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
+                .outputPortList())) {
             // Setup a local priority queue to store all reached ports
-            HashMap localPortDeadlines = new HashMap<IOPort, SuperdenseDependency>(portDeadlines);
+            HashMap localPortDeadlines = new HashMap<IOPort, SuperdenseDependency>(
+                    portDeadlines);
 
             PriorityQueue distQueue = new PriorityQueue<PortDependency>();
-            distQueue.add(new PortDependency(startPort, (SuperdenseDependency)localPortDeadlines.get(startPort)));
+            distQueue.add(new PortDependency(startPort,
+                    (SuperdenseDependency) localPortDeadlines.get(startPort)));
 
             // Dijkstra's algorithm to find all shortest time delays.
             while (!distQueue.isEmpty()) {
-                PortDependency portDependency = (PortDependency)distQueue.remove();
-                IOPort port = (IOPort)portDependency.port;
-                SuperdenseDependency prevDependency = (SuperdenseDependency)portDependency.dependency;
-                Actor actor = (Actor)port.getContainer();
+                PortDependency portDependency = (PortDependency) distQueue
+                        .remove();
+                IOPort port = portDependency.port;
+                SuperdenseDependency prevDependency = (SuperdenseDependency) portDependency.dependency;
+                Actor actor = (Actor) port.getContainer();
                 if (port.isInput() && port.isOutput()) {
-                    throw new IllegalActionException("the causality analysis cannot deal with" +
-                    "port that are both input and output");
+                    throw new IllegalActionException(
+                            "the causality analysis cannot deal with"
+                                    + "port that are both input and output");
                 }
                 // we do not want to traverse to the outside of the platform.
                 if (actor != getContainer()) {
                     if (port.isOutput()) {
                         Collection<IOPort> inputs = _finiteDependentPorts(port);
                         for (IOPort inputPort : inputs) {
-                            SuperdenseDependency minimumDelay = (SuperdenseDependency)_getDependency(inputPort, port);
+                            SuperdenseDependency minimumDelay = (SuperdenseDependency) _getDependency(
+                                    inputPort, port);
                             // FIXME: what do we do with the microstep portion of the dependency?
                             // need to make sure we did not visit this port before.
-                            SuperdenseDependency modelTime = (SuperdenseDependency) prevDependency.oTimes(minimumDelay);
-                            if (((SuperdenseDependency)localPortDeadlines.get(inputPort)).compareTo(modelTime) > 0) {
+                            SuperdenseDependency modelTime = (SuperdenseDependency) prevDependency
+                                    .oTimes(minimumDelay);
+                            if (((SuperdenseDependency) localPortDeadlines
+                                    .get(inputPort)).compareTo(modelTime) > 0) {
                                 localPortDeadlines.put(inputPort, modelTime);
-                                distQueue.add(new PortDependency(inputPort, modelTime));
+                                distQueue.add(new PortDependency(inputPort,
+                                        modelTime));
                             }
                         }
                     } else { // port is an input port
@@ -166,17 +181,22 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                         // a dependency already exists for that pair, that dependency must have a greater
                         // value, meaning it should be replaced. This is because the output port that
                         // led to that pair would not be in distQueue if it the dependency was smaller.
-                        
-                        for (IOPort sourcePort : (List<IOPort>)port.sourcePortList()) {
+
+                        for (IOPort sourcePort : (List<IOPort>) port
+                                .sourcePortList()) {
                             // Assume output ports only have width of 1.
                             // we do not want to traverse to the outside of the platform.
                             if (sourcePort.getContainer() != getContainer()) {
                                 // for this port channel pair, add the dependency.
                                 // After updating dependencies, we need to decide whether we should keep traversing
                                 // the graph.
-                                if (((SuperdenseDependency)localPortDeadlines.get(sourcePort)).compareTo(prevDependency) > 0) {
-                                    localPortDeadlines.put(sourcePort, prevDependency);
-                                    distQueue.add(new PortDependency(sourcePort, prevDependency));
+                                if (((SuperdenseDependency) localPortDeadlines
+                                        .get(sourcePort))
+                                        .compareTo(prevDependency) > 0) {
+                                    localPortDeadlines.put(sourcePort,
+                                            prevDependency);
+                                    distQueue.add(new PortDependency(
+                                            sourcePort, prevDependency));
                                 }
                             }
                         }
@@ -185,16 +205,20 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                     // The (almost) same code (except for getting receivers) is used if the
                     // port is a startPort or an input port.
                     // This does not support input/output port, should it?
-                    for (IOPort sourcePort : (List<IOPort>)port.deepInsidePortList()) {
+                    for (IOPort sourcePort : (List<IOPort>) port
+                            .deepInsidePortList()) {
                         // Assume output ports only have width of 1.
                         // we do not want to traverse to the outside of the platform.
                         if (sourcePort.getContainer() != getContainer()) {
                             // for this port channel pair, add the dependency.
                             // After updating dependencies, we need to decide whether we should keep traversing
                             // the graph.
-                            if (((SuperdenseDependency)localPortDeadlines.get(sourcePort)).compareTo(prevDependency) > 0) {
-                                localPortDeadlines.put(sourcePort, prevDependency);
-                                distQueue.add(new PortDependency(sourcePort, prevDependency));
+                            if (((SuperdenseDependency) localPortDeadlines
+                                    .get(sourcePort)).compareTo(prevDependency) > 0) {
+                                localPortDeadlines.put(sourcePort,
+                                        prevDependency);
+                                distQueue.add(new PortDependency(sourcePort,
+                                        prevDependency));
                             }
                         }
                     }
@@ -211,9 +235,10 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         // If this smallest value does not exist, then the event arriving at this port channel pair
         // is always safe to process, thus minDelay does not change (it was by default set to
         // double.POSITIVE_INFINITY.
-        for (IOPort port : (Set<IOPort>)(portDeadlines.keySet())) {
+        for (IOPort port : (Set<IOPort>) (portDeadlines.keySet())) {
             if (port.isInput()) {
-                SuperdenseDependency dependency = (SuperdenseDependency)(portDeadlines.get(port));
+                SuperdenseDependency dependency = (SuperdenseDependency) (portDeadlines
+                        .get(port));
                 _setDeadline(port, dependency);
             }
         }
@@ -225,14 +250,14 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     protected boolean _currentlyFiring(Actor actor) {
         for (int index = 0; index < _currentlyExecutingStack.size(); index++) {
             DoubleTimedEvent doubleTimedEvent = _currentlyExecutingStack.get(0);
-            List<PtidesEvent> executingEvents = (List<PtidesEvent>)doubleTimedEvent.contents;
+            List<PtidesEvent> executingEvents = (List<PtidesEvent>) doubleTimedEvent.contents;
             if (actor == executingEvents.get(0).actor()) {
                 return true;
             }
         }
         return false;
     }
-    
+
     /** Returns the event that was selected to preempt in _preemptExecutingActor.
      *  If no event was selected, return the event of smallest deadline that is
      *  safe to process.
@@ -273,7 +298,8 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         int result = 0;
 
         for (int eventIndex = 0; eventIndex < _eventQueue.size(); eventIndex++) {
-            PtidesEvent event = ((PtidesListEventQueue) _eventQueue).get(eventIndex);
+            PtidesEvent event = ((PtidesListEventQueue) _eventQueue)
+                    .get(eventIndex);
             if (event.isPureEvent()) {
                 if (event.actor().inputPortList().size() == 0) {
                     throw new IllegalActionException(
@@ -301,7 +327,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
                     } // else if they are equal, take the previous event.
                 }
             } // if the actor is currently firing, or if it's not safe to process, we
-              // do not considering firing it.
+            // do not considering firing it.
         }
 
         if (_eventToProcess == null) {
@@ -386,14 +412,16 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      * @param dependency The value of the relativeDeadline to be set.
      * @exception IllegalActionException If unsuccessful in getting the attribute.
      */
-    protected void _setDeadline(IOPort inputPort, SuperdenseDependency dependency) 
-            throws IllegalActionException {
-        Parameter parameter = (Parameter)(inputPort).getAttribute("relativeDeadline");
+    protected void _setDeadline(IOPort inputPort,
+            SuperdenseDependency dependency) throws IllegalActionException {
+        Parameter parameter = (Parameter) (inputPort)
+                .getAttribute("relativeDeadline");
         if (parameter == null) {
             try {
                 parameter = new Parameter(inputPort, "relativeDeadline");
             } catch (NameDuplicationException e) {
-                throw new IllegalActionException("A relativeDeadline parameter already exists");
+                throw new IllegalActionException(
+                        "A relativeDeadline parameter already exists");
             }
         }
         parameter.setToken(new DoubleToken(dependency.timeValue()));
@@ -409,20 +437,23 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
      */
     protected List<PtidesEvent> _takeAllSameTagEventsFromQueue(PtidesEvent event)
             throws IllegalActionException {
-        if (event != ((PtidesListEventQueue)_eventQueue).get(_peekingIndex)) {
-            throw new IllegalActionException("The event to get is not the event pointed " +
-                        "to by peeking index.");
+        if (event != ((PtidesListEventQueue) _eventQueue).get(_peekingIndex)) {
+            throw new IllegalActionException(
+                    "The event to get is not the event pointed "
+                            + "to by peeking index.");
         }
         List<PtidesEvent> eventList = new ArrayList<PtidesEvent>();
-        eventList.add(((PtidesListEventQueue)_eventQueue).take(_peekingIndex));
+        eventList.add(((PtidesListEventQueue) _eventQueue).take(_peekingIndex));
         // The original event at _peekingIndex has been taken, so the eventIndex points to
         // the next event.
         int eventIndex = _peekingIndex;
         while (eventIndex < _eventQueue.size()) {
-            PtidesEvent nextEvent = ((PtidesListEventQueue)_eventQueue).get(eventIndex);
+            PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
+                    .get(eventIndex);
             if (nextEvent.hasTheSameTagAs(event)) {
                 if (_destinedToSameEquivalenceClass(event, nextEvent)) {
-                    eventList.add(((PtidesListEventQueue)_eventQueue).take(eventIndex));
+                    eventList.add(((PtidesListEventQueue) _eventQueue)
+                            .take(eventIndex));
                 } else {
                     eventIndex++;
                 }
@@ -432,11 +463,11 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         }
         while (_peekingIndex > 0) {
             PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
-                    .get(_peekingIndex-1);
+                    .get(_peekingIndex - 1);
             if (nextEvent.hasTheSameTagAs(event)) {
                 if (_destinedToSameEquivalenceClass(event, nextEvent)) {
                     eventList.add(((PtidesListEventQueue) _eventQueue)
-                            .take(_peekingIndex-1));
+                            .take(_peekingIndex - 1));
                 }
             } else {
                 break;
@@ -451,7 +482,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
 
     /** The event to be processed next. */
     protected PtidesEvent _eventToProcess;
-    
+
     /** The index of the event we are peeking in the event queue. */
     protected int _peekingIndex;
 

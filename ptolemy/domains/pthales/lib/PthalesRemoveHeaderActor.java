@@ -36,6 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+
 /**
 This actor is used to remove header informations from another
 actor and acts as a flag to propagate informations from 
@@ -107,8 +108,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
         // Variables
         IOPort portIn = (IOPort) getPort("in");
         IOPort portOut = (IOPort) getPort("out");
-        
- 
+
         // Token Arrays from simulation
         Token[] tokensIn = null;
 
@@ -118,9 +118,9 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
         tokensIn = new FloatToken[dataSize];
 
         // Header
-        int nbToken = ((IntToken)portIn.get(0)).intValue();
+        int nbToken = ((IntToken) portIn.get(0)).intValue();
         Token[] headerIn = portIn.get(0, nbToken);
-        
+
         // Token Arrays from simulation
         tokensIn = portIn.get(0, dataSize - headerIn.length - 1);
 

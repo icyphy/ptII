@@ -43,7 +43,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 ////GiottoScheduler
 
 /**
@@ -118,7 +117,7 @@ public class GiottoScheduler extends Scheduler {
     public static int getFrequency(Actor actor) {
         try {
             Parameter parameter = (Parameter) ((NamedObj) actor)
-            .getAttribute("frequency");
+                    .getAttribute("frequency");
 
             if (parameter != null) {
                 IntToken intToken = (IntToken) parameter.getToken();
@@ -138,11 +137,11 @@ public class GiottoScheduler extends Scheduler {
      * Returns the LCM value.
      */
 
-    public int getLCM()
-    {
+    public int getLCM() {
         return _lcm;
 
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -184,13 +183,13 @@ public class GiottoScheduler extends Scheduler {
             throw new NotSchedulableException(
                     this,
                     "Could not get schedule, "
-                    + "the number of deeply contained entities for '"
-                    + compositeActor.getFullName()
-                    + "' is "
-                    + actorCount
-                    + ", which is less than 1."
-                    + "If you have empty composite actors, try adding an  actor"
-                    + "to the inside of one of the empty composite actors.");
+                            + "the number of deeply contained entities for '"
+                            + compositeActor.getFullName()
+                            + "' is "
+                            + actorCount
+                            + ", which is less than 1."
+                            + "If you have empty composite actors, try adding an  actor"
+                            + "to the inside of one of the empty composite actors.");
         }
 
         int[] frequencyArray = new int[actorCount];
@@ -270,7 +269,6 @@ public class GiottoScheduler extends Scheduler {
         return schedule;
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -279,7 +277,7 @@ public class GiottoScheduler extends Scheduler {
 
         if (count < 1) {
             throw new RuntimeException(
-            "Length array passed to _lcm() is less than 1?");
+                    "Length array passed to _lcm() is less than 1?");
         }
 
         int X = array[0];
@@ -305,13 +303,13 @@ public class GiottoScheduler extends Scheduler {
     ////                         private variables                 ////
     // This is a list of frequencies that can be used to calculate
     // _unitTimeIncrement accurately.
-//    private static int[] _candidateFrequencies = new int[] { 1, 2, 4, 5, 8, 10,
-//        16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256,
-//        320, 400, 500, 512, 625, 640, 800, 1000, 1024, 1250, 1280, 1600,
-//        2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 5000, 5120, 6250,
-//        6400, 8000, 8192, 10000, 10240, 12500, 12800, 15625, 16000, 16384,
-//        20000, 20480, 25000, 25600, 31250, 32000, 32768, 40000, 40960,
-//        50000, 51200, 62500, 64000, 65536, 78125, 80000, 81920, 100000 };
+    //    private static int[] _candidateFrequencies = new int[] { 1, 2, 4, 5, 8, 10,
+    //        16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256,
+    //        320, 400, 500, 512, 625, 640, 800, 1000, 1024, 1250, 1280, 1600,
+    //        2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 5000, 5120, 6250,
+    //        6400, 8000, 8192, 10000, 10240, 12500, 12800, 15625, 16000, 16384,
+    //        20000, 20480, 25000, 25600, 31250, 32000, 32768, 40000, 40960,
+    //        50000, 51200, 62500, 64000, 65536, 78125, 80000, 81920, 100000 };
 
     private int _giottoSchedulerTime = 0;
 

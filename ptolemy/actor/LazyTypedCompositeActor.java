@@ -828,7 +828,7 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
             // Get write access in case things change and
             // because super.setClassDefinition() gets write access.
             workspace().getWriteAccess();
-            if (isClass ) {
+            if (isClass) {
                 setClassName("ptolemy.actor.TypedCompositeActor");
                 populate();
             }
@@ -1038,10 +1038,10 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** Indicate whether data given by configure() has been processed. */
     protected boolean _configureDone = false;
-    
+
     /** Indicator that we are in the midst of populating. */
     protected boolean _populating = false;
 

@@ -89,9 +89,10 @@ public class Director extends HTMLCodeGeneratorAdapter {
                 adapter = (HTMLCodeGeneratorAdapter) object;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(getComponent(), ex,
-                    "Failed to cast " + object
-                    + " of class " + object.getClass().getName()
-                    + " to " + HTMLCodeGeneratorAdapter.class.getName() + ".");
+                        "Failed to cast " + object + " of class "
+                                + object.getClass().getName() + " to "
+                                + HTMLCodeGeneratorAdapter.class.getName()
+                                + ".");
 
             }
             code.append(adapter.generateHTML());

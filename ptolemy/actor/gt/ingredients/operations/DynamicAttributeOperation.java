@@ -91,8 +91,8 @@ public class DynamicAttributeOperation extends Operation {
      *  @param attributeClass Value of the attributeClass element.
      *  @param attributeValue Value of the attributeValue element.
      */
-    public DynamicAttributeOperation(GTIngredientList owner, String attributeName,
-            String attributeClass, String attributeValue) {
+    public DynamicAttributeOperation(GTIngredientList owner,
+            String attributeName, String attributeClass, String attributeValue) {
         super(owner, 3);
 
         NamedObj container = owner.getOwner().getContainer();
@@ -123,8 +123,8 @@ public class DynamicAttributeOperation extends Operation {
             _reparse();
         }
 
-        String attributeName =
-            ((StringToken)_attributeName.getToken()).stringValue();
+        String attributeName = ((StringToken) _attributeName.getToken())
+                .stringValue();
         String attributeClass;
         if (isAttributeClassEnabled()) {
             attributeClass = _attributeClass;

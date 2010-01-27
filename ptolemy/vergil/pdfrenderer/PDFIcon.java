@@ -114,7 +114,7 @@ public class PDFIcon extends DynamicEditorIcon {
     public void setPage(PDFPage page) {
         _page = page;
     }
-    
+
     /** Specify a scaling percentage of the PDF page.
      *  @param scalePercentage The scale percentage.
      */
@@ -127,10 +127,10 @@ public class PDFIcon extends DynamicEditorIcon {
 
     /** The PDF page to render. */
     private PDFPage _page;
-    
+
     // The scale percentage.
     private double _scale = 1.0;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -141,10 +141,10 @@ public class PDFIcon extends DynamicEditorIcon {
                 return new Rectangle2D.Double(0.0, 0.0, 40.0, 40.0);
             }
             Rectangle2D boundingBox = _page.getBBox();
-            return new Rectangle2D.Double(boundingBox.getX(),
-                    boundingBox.getY(),
-                    boundingBox.getWidth() * _scale,
-                    boundingBox.getHeight() * _scale);
+            return new Rectangle2D.Double(boundingBox.getX(), boundingBox
+                    .getY(), boundingBox.getWidth() * _scale, boundingBox
+                    .getHeight()
+                    * _scale);
         }
 
         public void paint(Graphics2D graphics) {
@@ -159,20 +159,19 @@ public class PDFIcon extends DynamicEditorIcon {
                 return;
             }
             Rectangle2D boundingBox = _page.getBBox();
-            PDFRenderer renderer = new PDFRenderer(_page, graphics, 
+            PDFRenderer renderer = new PDFRenderer(_page, graphics,
                     new Rectangle(0, 0,
-                            (int)(boundingBox.getWidth() * _scale),
-                            (int)(boundingBox.getHeight() * _scale)),
-                    null, // No clipping.
-                    null  // Transparent background.
-                    );
+                            (int) (boundingBox.getWidth() * _scale),
+                            (int) (boundingBox.getHeight() * _scale)), null, // No clipping.
+                    null // Transparent background.
+            );
             try {
                 _page.waitForFinish();
             } catch (InterruptedException e) {
                 // What can we do here?
                 e.printStackTrace();
             }
-            renderer.run();            
+            renderer.run();
         }
     }
 }

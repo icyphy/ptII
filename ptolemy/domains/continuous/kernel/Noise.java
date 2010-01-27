@@ -124,12 +124,12 @@ public class Noise extends Gaussian {
     public Noise(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         linearlyInterpolate = new Parameter(this, "linearlyInterpolate");
         linearlyInterpolate.setTypeEquals(BaseType.BOOLEAN);
         linearlyInterpolate.setExpression("true");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -138,7 +138,7 @@ public class Noise extends Gaussian {
      *  defaults to true.
      */
     public Parameter linearlyInterpolate;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -160,8 +160,9 @@ public class Noise extends Gaussian {
         }
         // Get required information from the director.
         Director director = getDirector();
-        double stepSize = ((ContinuousDirector)director)._getCurrentStepSize();
-        boolean interpolating = ((BooleanToken)linearlyInterpolate.getToken()).booleanValue();
+        double stepSize = ((ContinuousDirector) director)._getCurrentStepSize();
+        boolean interpolating = ((BooleanToken) linearlyInterpolate.getToken())
+                .booleanValue();
         if (!interpolating) {
             // Doing zero-order hold.
             // Output value should be the value at the beginning
@@ -174,14 +175,17 @@ public class Noise extends Gaussian {
             _current = _valueAtStart;
         } else {
             // Interpolating and step size is greater than zero.
-            Time iterationBeginTime = ((ContinuousDirector)director)._iterationBeginTime;
-            Time currentTime = ((ContinuousDirector)director).getModelTime();
-            double interval = currentTime.subtract(iterationBeginTime).getDoubleValue();
+            Time iterationBeginTime = ((ContinuousDirector) director)._iterationBeginTime;
+            Time currentTime = ((ContinuousDirector) director).getModelTime();
+            double interval = currentTime.subtract(iterationBeginTime)
+                    .getDoubleValue();
             if (interval == 0.0) {
                 _current = _valueAtStart;
             } else {
-                double timeGapBetweenValues = _timeOfValueAtEnd.subtract(iterationBeginTime).getDoubleValue();
-                _current = _valueAtStart + (_valueAtEnd - _valueAtStart) * interval / timeGapBetweenValues;
+                double timeGapBetweenValues = _timeOfValueAtEnd.subtract(
+                        iterationBeginTime).getDoubleValue();
+                _current = _valueAtStart + (_valueAtEnd - _valueAtStart)
+                        * interval / timeGapBetweenValues;
             }
         }
         // The superclass produces on the output the _current value.
@@ -220,14 +224,15 @@ public class Noise extends Gaussian {
     public boolean postfire() throws IllegalActionException {
         // The next line will set _needNew = true.
         boolean result = super.postfire();
-        
+
         Director director = getDirector();
         // The cast is safe because it was checked in fire().
-        double stepSize = ((ContinuousDirector)director)._getCurrentStepSize();
-        
+        double stepSize = ((ContinuousDirector) director)._getCurrentStepSize();
+
         // If we are not interpolating, then request a refiring at the current time
         // so that the new value is then produced at the current time.
-        boolean interpolating = ((BooleanToken)linearlyInterpolate.getToken()).booleanValue();
+        boolean interpolating = ((BooleanToken) linearlyInterpolate.getToken())
+                .booleanValue();
         if (!interpolating) {
             // Request a refiring at the current time in order to get a zero-order
             // hold effect, but only if the step size is non-zero.
@@ -241,7 +246,7 @@ public class Noise extends Gaussian {
         }
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -256,11 +261,11 @@ public class Noise extends Gaussian {
         if (!(director instanceof ContinuousDirector)) {
             throw new IllegalActionException(this, director,
                     "WhiteNoise actor is designed to work with ContinuousDirector,"
-                    + " but the director is "
-                    + director.getClass());
+                            + " but the director is " + director.getClass());
         }
-        double stepSize = ((ContinuousDirector)director)._getCurrentStepSize();
-        boolean interpolating = ((BooleanToken)linearlyInterpolate.getToken()).booleanValue();
+        double stepSize = ((ContinuousDirector) director)._getCurrentStepSize();
+        boolean interpolating = ((BooleanToken) linearlyInterpolate.getToken())
+                .booleanValue();
         if (!interpolating) {
             // Doing zero-order hold.
             _valueAtStart = _valueAtEnd;
@@ -285,7 +290,7 @@ public class Noise extends Gaussian {
                 _valueAtEnd = _current;
             } else {
                 _valueAtEnd = _valueAtStart;
-            }            
+            }
         }
     }
 
@@ -297,7 +302,7 @@ public class Noise extends Gaussian {
      *  number is generated.
      */
     private Time _timeOfValueAtEnd;
-    
+
     /** The random number at the start of the current integration period. */
     private double _valueAtStart;
 

@@ -27,7 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MultiplyDivide
 
@@ -40,7 +39,9 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  @Pt.ProposedRating Green (mankit)
  @Pt.AcceptedRating Green (cxh)
  */
-public class MultiplyDivide extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.MultiplyDivide {
+public class MultiplyDivide
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.MultiplyDivide {
     /**
      * Constructor method for the MultiplyDivide adapter.
      * @param actor the associated actor

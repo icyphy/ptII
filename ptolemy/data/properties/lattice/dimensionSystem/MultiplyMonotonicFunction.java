@@ -60,7 +60,8 @@ public class MultiplyMonotonicFunction extends MonotonicFunction {
      * @param adapter The given PropertyConstraintHelper using this monotonic function
      */
     public MultiplyMonotonicFunction(Object factor1, Object factor2,
-            PropertyLattice dimensionSystemLattice, PropertyConstraintHelper adapter) {
+            PropertyLattice dimensionSystemLattice,
+            PropertyConstraintHelper adapter) {
         _factor1 = factor1;
         _factor2 = factor2;
         _lattice = dimensionSystemLattice;
@@ -75,7 +76,7 @@ public class MultiplyMonotonicFunction extends MonotonicFunction {
      *  @return A Property.
      *  @exception IllegalActionException
      */
-  
+
     public Object getValue() throws IllegalActionException {
 
         // Get the properties of the two factors
@@ -94,29 +95,29 @@ public class MultiplyMonotonicFunction extends MonotonicFunction {
         if ((factor1Property == speed && factor2Property == time)
                 || (factor1Property == time && factor2Property == speed)) {
             return position;
-            
-        // Acceleration * Time = Speed    
+
+            // Acceleration * Time = Speed    
         } else if ((factor1Property == acceleration && factor2Property == time)
                 || (factor1Property == time && factor2Property == acceleration)) {
             return speed;
-            
-        // If either factor is Unknown, then the product is Unknown
+
+            // If either factor is Unknown, then the product is Unknown
         } else if (factor1Property == unknown || factor2Property == unknown) {
             return unknown;
-            
-        // If either factor is Top, then the product is Top
+
+            // If either factor is Top, then the product is Top
         } else if (factor1Property == top || factor2Property == top) {
             return top;
-            
-        // If factor1 is Unitless, then the product is the same as factor2 
+
+            // If factor1 is Unitless, then the product is the same as factor2 
         } else if (factor1Property == unitless) {
             return factor2Property;
-            
-        // If factor2 is Unitless, then the product is the same as factor1
+
+            // If factor2 is Unitless, then the product is the same as factor1
         } else if (factor2Property == unitless) {
             return factor1Property;
-            
-        // For all other cases return Top
+
+            // For all other cases return Top
         } else {
             return top;
         }
@@ -128,20 +129,19 @@ public class MultiplyMonotonicFunction extends MonotonicFunction {
 
     public void setEffective(boolean isEffective) {
     }
-    
+
     protected InequalityTerm[] _getDependentTerms() {
         return new InequalityTerm[] { _adapter.getPropertyTerm(_factor1),
                 _adapter.getPropertyTerm(_factor2) };
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // _factor1 and _factor2 are Objects because they can be any propertyable object
     // which might be IOPorts, Attributes, ASTPtNodes, etc.
     private Object _factor1;
     private Object _factor2;
-    private PropertyLattice _lattice;    
+    private PropertyLattice _lattice;
     private PropertyConstraintHelper _adapter;
 }
-

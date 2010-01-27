@@ -114,7 +114,7 @@ public class Ramp extends SequenceSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If the argument is the <i>init</i> parameter, then reset the
      *  state to the specified value.
      *  @param attribute The attribute that changed.
@@ -130,8 +130,7 @@ public class Ramp extends SequenceSource {
             Manager manager = getManager();
             if (manager != null) {
                 Manager.State state = manager.getState();
-                if (state == Manager.ITERATING
-                        || state == Manager.PAUSED
+                if (state == Manager.ITERATING || state == Manager.PAUSED
                         || state == Manager.PAUSED_ON_BREAKPOINT) {
                     _stateToken = output.getType().convert(init.getToken());
                 }

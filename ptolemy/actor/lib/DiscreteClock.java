@@ -333,7 +333,7 @@ public class DiscreteClock extends TimedSource {
 
         // Update the period from the port parameter, if appropriate.
         period.update();
-        
+
         // Check for a trigger input.
         // Have to consume all trigger inputs.
         if (trigger.numberOfSources() > 0) {
@@ -348,7 +348,7 @@ public class DiscreteClock extends TimedSource {
                 }
             }
         }
-        
+
         // See whether it is time to produce an output.
         Director director = getDirector();
         Time currentTime = director.getModelTime();
@@ -409,12 +409,14 @@ public class DiscreteClock extends TimedSource {
         }
         // If we get here, then current time has passed our
         // expected next firing time.  This should not occur.
-        throw new IllegalActionException(this, getDirector(),
+        throw new IllegalActionException(
+                this,
+                getDirector(),
                 "Director failed to fire this actor at the requested time "
-                + _nextOutputTime
-                + " Current time is "
-                + currentTime
-                + ". Perhaps the director is incompatible with DiscreteClock?");
+                        + _nextOutputTime
+                        + " Current time is "
+                        + currentTime
+                        + ". Perhaps the director is incompatible with DiscreteClock?");
     }
 
     /** Override the base class to initialize the index.
@@ -505,7 +507,8 @@ public class DiscreteClock extends TimedSource {
                     "Values and offsets vectors do not have the same length.");
         }
         Time currentTime;
-        boolean localTime = ((BooleanToken)stopTimeIsLocal.getToken()).booleanValue();
+        boolean localTime = ((BooleanToken) stopTimeIsLocal.getToken())
+                .booleanValue();
         if (localTime) {
             currentTime = getDirector().getModelTime();
         } else {
@@ -604,7 +607,7 @@ public class DiscreteClock extends TimedSource {
      *  skip to the next phase in postfire.
      */
     private boolean _outputProduced;
-    
+
     /** Indicator of whether trigger inputs have arrived
      *  since the last output.
      */

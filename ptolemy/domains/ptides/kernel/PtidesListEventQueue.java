@@ -128,7 +128,7 @@ public class PtidesListEventQueue implements DEEventQueue {
         // put the token of this event into the destined receiver.
         if (ptidesEvent.receiver() != null) {
             ((PtidesBasicReceiver) (ptidesEvent).receiver())
-            .putToReceiver((ptidesEvent).token());
+                    .putToReceiver((ptidesEvent).token());
         }
         if (_debugging) {
             _debug("--- taking from queue: " + ptidesEvent);
@@ -155,10 +155,11 @@ public class PtidesListEventQueue implements DEEventQueue {
         // put the token of this event into the destined receiver.
         if (ptidesEvent.receiver() != null) {
             ((PtidesBasicReceiver) (ptidesEvent).receiver())
-            .putToReceiver((ptidesEvent).token());
+                    .putToReceiver((ptidesEvent).token());
         }
         if (_debugging) {
-            _debug("--- taking " + index + "th element from queue: " + ptidesEvent);
+            _debug("--- taking " + index + "th element from queue: "
+                    + ptidesEvent);
         }
         return ptidesEvent;
     }
@@ -231,6 +232,6 @@ public class PtidesListEventQueue implements DEEventQueue {
     private LinkedList _listQueue;
 
     public void put(DEEvent event) throws IllegalActionException {
-        put((PtidesEvent)event);
+        put((PtidesEvent) event);
     }
 }
