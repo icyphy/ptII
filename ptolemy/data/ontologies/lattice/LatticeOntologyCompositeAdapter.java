@@ -52,14 +52,12 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
 
     /** Construct the property constraint adapter associated
      *  with the given TypedCompositeActor.
-     * @param solver TODO
+     * @param solver The lattice ontology solver used for this adapter.
      * @param component The associated component.
-     *  @exception IllegalActionException
-     * @exception IllegalActionException
+     * @exception IllegalActionException If the adapter cannot be intialized.
      */
     public LatticeOntologyCompositeAdapter(LatticeOntologySolver solver,
             CompositeEntity component) throws IllegalActionException {
-
         super(solver, component, false);
     }
 

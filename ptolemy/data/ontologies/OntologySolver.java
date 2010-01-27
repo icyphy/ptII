@@ -36,6 +36,7 @@ import java.util.TreeMap;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.gui.OntologyDisplayActions;
+import ptolemy.domains.tester.lib.Testable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -59,7 +60,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public abstract class OntologySolver extends OntologySolverBase {
+public abstract class OntologySolver extends OntologySolverBase implements Testable {
 
     /**
      * Construct an OntologySolver with the specified container and name. If this

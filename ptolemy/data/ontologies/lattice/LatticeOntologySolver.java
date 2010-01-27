@@ -30,6 +30,7 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,7 @@ import ptolemy.util.FileUtilities;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class LatticeOntologySolver extends OntologySolver implements Testable {
+public class LatticeOntologySolver extends OntologySolver {
 
     /**
      * Constructor for the OntologySolver.
@@ -315,6 +316,87 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
     public ConstraintManager getConstraintManager() {
         return _constraintManager;
     }
+    
+    
+    /** Initialize the solver and get the initial statistics for the Lattice OntologySolver.
+     *  This will return information about the number of constraints and concept terms generated
+     *  before the solver executes its algorithm.
+     * 
+     *  @return A hash table containing string representations of the solver statistics and
+     *   constraints information, separated by tabs.
+     *  @throws IllegalActionException If an exception occurs when collecting the constraints.
+     */
+    public Hashtable getInitialSolverInformation() throws IllegalActionException {
+        NamedObj toplevel = _toplevel();
+        LatticeOntologyAdapter toplevelHelper = (LatticeOntologyAdapter) getAdapter(toplevel);
+
+        toplevelHelper.reinitialize();
+
+        toplevelHelper
+                ._addDefaultConstraints(_getConstraintType(actorConstraintType
+                        .stringValue()));
+
+        // FIXME: have to generate the connection every time
+        // because the model structure can changed.
+        // (i.e. adding or removing connections.)
+        toplevelHelper._setConnectionConstraintType(
+                _getConstraintType(connectionConstraintType.stringValue()),
+                _getConstraintType(compositeConnectionConstraintType
+                        .stringValue()), _getConstraintType(fsmConstraintType
+                        .stringValue()),
+                _getConstraintType(expressionASTNodeConstraintType
+                        .stringValue()));
+        // Collect the constraints in a list
+        
+        List<Inequality> constraintList = toplevelHelper.constraintList();
+        
+        getStats().put("# of generated constraints",
+                constraintList.size());
+        getStats().put("# of concept terms",
+                _conceptTermManager.terms().size());
+        
+        String initialSolverStats = _getStatsAsString("\t");
+        String initialSolverConstraints = _getConstraintsAsLogFileString(constraintList, "I");
+        
+        Hashtable initialSolverInfo = new Hashtable();
+        initialSolverInfo.put("initialSolverStats", initialSolverStats);
+        initialSolverInfo.put("initialSolverConstraints", initialSolverConstraints);
+        
+        return initialSolverInfo;
+    }
+    
+    
+    /** Get the statistics for the Lattice OntologySolver after the model has been resolved.
+     *  This will return information about the number of constraints and concept terms generated
+     *  after the solver executes its algorithm.
+     * 
+     *  @return A hash table containing string representations of the solver statistics and
+     *   constraints information, separated by tabs.
+     *  @throws IllegalActionException If an exception occurs when collecting the constraints.
+     */
+    public Hashtable getResolvedSolverInformation() throws IllegalActionException {
+        if (_resolvedConstraintList == null) {
+            try {
+                resolveProperties(null, true);
+            } catch (KernelException kernelEx) {
+                throw new IllegalActionException(this, kernelEx, "Error while trying to execute LatticeOntologySolver " +
+                        getName() + " resolution algorithm: " + kernelEx);
+            }
+        }
+        
+        String resolvedSolverStats = _getStatsAsString("\t");
+        String resolvedSolverConstraints = _getConstraintsAsLogFileString(_resolvedConstraintList, "R");
+        
+        Hashtable resolvedSolverInfo = new Hashtable();
+        resolvedSolverInfo.put("resolvedSolverStats", resolvedSolverStats);
+        resolvedSolverInfo.put("resolvedSolverConstraints", resolvedSolverConstraints);
+        
+        // Reset the resolved constraint list for the next time it is tested.
+        _resolvedConstraintList = null;
+        
+        return resolvedSolverInfo;
+    }
+    
 
     /**
      * Returns the adapter that contains property information for the given AST
@@ -441,7 +523,7 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
         invokeSolver();
         resetAll();
     }
-    
+  
     /** Train a test. This invokes the solver in TRAINING mode.
      */
     public void train() {
@@ -564,6 +646,9 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
     protected void _resolveProperties(NamedObj analyzer) throws KernelException {
         super._resolveProperties(analyzer);
 
+        // Reset the list of resolved constraints before executing the ontology solver resolution. 
+        _resolvedConstraintList = null;
+        
         NamedObj toplevel = _toplevel();
         LatticeOntologyAdapter toplevelHelper = (LatticeOntologyAdapter) getAdapter(toplevel);
 
@@ -718,6 +803,8 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
                 } else {
                     solver.solveLeast();
                 }
+                
+                _resolvedConstraintList = constraintList;
 
 
                 // If some inequalities are not satisfied, or type variables
@@ -1232,6 +1319,9 @@ public class LatticeOntologySolver extends OntologySolver implements Testable {
     private boolean _logMode;
 
     private ConceptTermManager _conceptTermManager;
+    
+    /** The list of constraints after the ontology resolution algorithm has executed. */
+    private List<Inequality> _resolvedConstraintList;
 
     /**
      * The set of trained constraints. This set is populated from parsing the

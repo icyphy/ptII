@@ -7,7 +7,7 @@
     <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="ANNOTATE">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 75.0]">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.properties.MoMLModelAttributeControllerFactory">
         </property>
@@ -53,13 +53,13 @@
             </entity>
         </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={237, 169, 815, 501}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 82, 829, 536}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 394]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[614, 429]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 197.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.0, 214.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a placeholder for what will eventually be the car tracking demo.">
@@ -70,7 +70,7 @@
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 75}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 70.0]">
         </property>
     </property>
     <property name="DimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.value &gt;= Velocity">
@@ -85,14 +85,74 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 355.0]">
+        </property>
+    </property>
+    <property name="CollectLatticeOntologySolverDetails" class="ptolemy.data.ontologies.lattice.CollectLatticeOntologySolverDetails">
+        <property name="solverName" class="ptolemy.data.expr.StringParameter" value="LatticeOntologySolver">
+        </property>
+        <property name="trainedInitialSolverStatistics" class="ptolemy.kernel.util.StringAttribute" value="# of atomic actor default constraints	1&#13;&#10;# of composite default constraints	2&#13;&#10;# of concept terms	7&#13;&#10;# of default constraints	3&#13;&#10;# of generated constraints	9&#13;&#10;# of manual annotations	1&#13;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="trainedInitialSolverConstraints" class="ptolemy.kernel.util.StringAttribute" value="[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		ComponentEntity	Velocity	Velocity	&lt;=	eff		Parameter	.Const.value	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Const.output	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		TypedIOPort	.TimedPlotter.input	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$StateOfDerivative	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.derivative	Velocity	MFV	eff	.Integrator	MonotonicFunction	.Integrator$StateOfDerivative	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		PortParameter	.Integrator.initialState	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$DerivativeOfState	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	MFV	eff	.Integrator	MonotonicFunction	.Integrator$DerivativeOfState	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff	.Integrator	ASTPtLeafNode	PtLeafNode:true:null:0.0:null	Unknown	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	Velocity	&lt;=	eff		TypedIOPort	.Const.output	Velocity]&#13;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="trainedResolvedSolverStatistics" class="ptolemy.kernel.util.StringAttribute" value="# of AST default constraints	0&#13;&#10;# of adapters	0&#13;&#10;# of atomic actor default constraints	1&#13;&#10;# of composite default constraints	2&#13;&#10;# of concept terms	7&#13;&#10;# of default constraints	3&#13;&#10;# of generated constraints	24&#13;&#10;# of manual annotations	1&#13;&#10;# of property terms	7&#13;&#10;# of propertyables	0&#13;&#10;# of resolved properties	0&#13;&#10;# of trained constraints	0&#13;&#10;# of trained resolution errors	0&#13;&#10;has trained resolution errors	false&#13;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="trainedResolvedSolverConstraints" class="ptolemy.kernel.util.StringAttribute" value="[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		ComponentEntity	Velocity	Velocity	&lt;=	eff		Parameter	.Const.value	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Const.output	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		TypedIOPort	.TimedPlotter.input	Position]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		ComponentEntity	Velocity	Velocity	&lt;=	eff		Parameter	.Const.value	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Const.output	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		TypedIOPort	.TimedPlotter.input	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$StateOfDerivative	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.derivative	Velocity	MFV	eff	.Integrator	MonotonicFunction	.Integrator$StateOfDerivative	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		PortParameter	.Integrator.initialState	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$DerivativeOfState	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	MFV	eff	.Integrator	MonotonicFunction	.Integrator$DerivativeOfState	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff	.Integrator	ASTPtLeafNode	PtLeafNode:true:null:0.0:null	Unknown	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	Velocity	&lt;=	eff		TypedIOPort	.Const.output	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$StateOfDerivative	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.derivative	Velocity	MFV	eff	.Integrator	MonotonicFunction	.Integrator$StateOfDerivative	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		PortParameter	.Integrator.initialState	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$DerivativeOfState	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	MFV	eff	.Integrator	MonotonicFunction	.Integrator$DerivativeOfState	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff	.Integrator	ASTPtLeafNode	PtLeafNode:true:null:0.0:null	Unknown	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$StateOfDerivative	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.derivative	Velocity	MFV	eff	.Integrator	MonotonicFunction	.Integrator$StateOfDerivative	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		PortParameter	.Integrator.initialState	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$DerivativeOfState	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	MFV	eff	.Integrator	MonotonicFunction	.Integrator$DerivativeOfState	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff	.Integrator	ASTPtLeafNode	PtLeafNode:true:null:0.0:null	Unknown	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	Velocity	&lt;=	eff		TypedIOPort	.Const.output	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	Velocity	&lt;=	eff		TypedIOPort	.Const.output	Velocity]&#13;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 85.0]">
         </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
         <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="0.0">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 255.0]">
         </property>
+        <port name="impulse" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
+        <port name="derivative" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
+        </port>
+        <port name="state" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
+            </property>
+        </port>
+        <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
@@ -104,8 +164,19 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 255.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -122,8 +193,14 @@
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 255.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
+            </property>
+        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
