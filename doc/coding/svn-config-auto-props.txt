@@ -71,6 +71,7 @@ enable-auto-props	 = yes
 *.handlers = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.htc = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.html = svn:eol-style=native;svn:keywords=Author Date Id Revision
+*.htm = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.ico = svn:mime-type=image/x-icon
 *.ihtml = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.in = svn:eol-style=native;svn:keywords=Author Date Id Revision
