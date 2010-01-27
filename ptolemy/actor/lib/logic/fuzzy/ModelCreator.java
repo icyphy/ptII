@@ -322,10 +322,8 @@ public class ModelCreator extends DefaultHandler {
      *  will be prompted for a filename.
      * </p>
      * @param args with inputs to the main method.
-     * @exception Exception If the input file cannot be read or
+     * @exception IllegalActionException If the input file cannot be read or
      *  parsed.
-     * 
-     * Inputs are currently not used
      */
     public static void main(String args[])throws IllegalActionException {
         BufferedReader reader = null;
