@@ -133,6 +133,7 @@ OPTIONAL_FILES = \
 	$(EXPERIMENTAL_DOMAINS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 	dfm \
+	demo.jar \
 	generic \
 	gr \
 	ptinyos

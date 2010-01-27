@@ -89,7 +89,10 @@ JCLASS = $(JSRCS:%.java=%.class)
 #PTLIB=$(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # make clean removes $(KRUFT)
-KRUFT = launcher.exe
+KRUFT = \
+	launcher \
+	launcher.dSYM \
+	launcher.exe
 
 all: launcher
 	@echo "To see a demonstration, run \"make demo\""

@@ -52,7 +52,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	GiottoDirector.java 
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	GiottoDirector.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

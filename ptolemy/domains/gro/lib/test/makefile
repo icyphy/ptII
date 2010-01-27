@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to test the jmf actors
+# Makefile for the Java classes used to test the gro actors
 #
 # @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2003-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/actor/lib/jmf/test
+ME =		ptolemy/domains/gro/lib/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -61,7 +61,16 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS = \
+	$(TCL_SRCS) \
+	$(JSRCS) \
+	Box3D.xml \
+	Line3D.xml \
+	MovingLines.xml \
+	ViewScreen3D.xml \
+	WavingHand.xml
+
+ #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

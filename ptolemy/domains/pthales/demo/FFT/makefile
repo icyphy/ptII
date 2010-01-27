@@ -54,9 +54,6 @@ OTHER_FILES_TO_BE_JARED = \
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
 
-#	FixFIR.htm \
-#	FixFIRVergil.htm
-
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
@@ -77,13 +74,13 @@ install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer FixFIR.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer $(PTPACKAGE).htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" FixFIR.xml
+	"$(PTII)/bin/ptolemy" $(PTPACKAGE).xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" FixFIR.xml
+	"$(PTII)/bin/vergil" $(PTPACKAGE).xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

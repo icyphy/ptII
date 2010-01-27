@@ -31,7 +31,7 @@
 
 ME =        ptolemy/domains/gro/lib
 
-DIRS =      
+DIRS =      test
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../..
@@ -72,7 +72,8 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	doc \
+	'ViewScreen3D$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

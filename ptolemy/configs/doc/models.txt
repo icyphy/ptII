@@ -41,6 +41,7 @@ $CLASSPATH/ptolemy/actor/lib/jni/demo/Scale/Scale.xml
 $CLASSPATH/ptolemy/actor/lib/jni/demo/Scale/ScaleWithEmbeddedCFileActor.xml
 $CLASSPATH/ptolemy/actor/lib/jni/demo/SimplePassPointer/SimplePassPointer.xml
 $CLASSPATH/ptolemy/actor/lib/jni/demo/SimplePassPointer/SimplePassPointerWithECFA.xml
+$CLASSPATH/ptolemy/actor/lib/logic/fuzzy/demo/ArchitectureModel/ArchitectureModel.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml
 $CLASSPATH/ptolemy/actor/lib/security/demo/Signature/Signature.xml

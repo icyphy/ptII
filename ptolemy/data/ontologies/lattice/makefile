@@ -51,6 +51,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	CollectLatticeOntologySolverDetails.java \
 	ConstraintManager.java \
 	LatticeOntologySolver.java \
 	ParseTreeConstraintAnnotationEvaluator.java \

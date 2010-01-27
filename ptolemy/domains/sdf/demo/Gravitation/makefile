@@ -53,9 +53,11 @@ OTHER_FILES_TO_BE_JARED = \
 	GravitationWithCollisionDetection.xml
 
 EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
 	GravitationVergil.htm \
 	GravitationWithCollisionDetection.htm \
-	$(OTHER_FILES_TO_BE_JARED)
+	GravitationWithCollisionDetectionVergil.htm
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

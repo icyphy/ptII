@@ -48,13 +48,15 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	AdaptiveCarWashFSM.htm \
 	AdaptiveCarWashFSM.xml \
 	AdaptiveCarWash.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	AdaptiveCarWash.htm
+	AdaptiveCarWash.htm \
+	AdaptiveCarWashVergil.htm \
+	AdaptiveCarWashFSM.htm \
+	AdaptiveCarWashFSMVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

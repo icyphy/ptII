@@ -31,19 +31,16 @@ Note that not all the applets listed are missing.  Some of them
 use the serial port, JAI, JMF etc.
  <p>To add an applet:
 <pre>
+cd $PTII
+make install
 cd $PTII/ptolemy/domains/wireless/demo/SmartParking
 $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/wireless/demo/SmartParking SmartParking.xml
 </pre>
 Then add the <code>.htm</code> files to the makefile.
-<br>Note that sometimes we use just the Vergil applet, in which case
-we do
-<pre>
-mv <i>Foo</i>VergilApplet.htm <i>Foo</i>Applet.htm
-</pre>
 
 <li> Ptolemy handled 
 <a href="about:copyright"><code>about:copyright</code></a>
-URLS specially.  One facility on the copyrigth page is the ability
+URLS specially.  One facility on the copyright page is the ability
 to expand all the model, .html files and .pdf files on 
 the various demonstration pages.  This allows us to
 verify that all the resources are present in the tree.

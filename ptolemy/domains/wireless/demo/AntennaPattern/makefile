@@ -56,7 +56,11 @@ EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 	AntennaGainTest.htm \
+	AntennaGainTestVergil.htm \
+	ReceiveAntennaPattern.htm \
+	ReceiveAntennaPatternVergil.htm \
 	TransmitAntennaPattern.htm \
+	TransmitAntennaPatternVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

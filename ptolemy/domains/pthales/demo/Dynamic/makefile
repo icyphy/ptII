@@ -1,10 +1,10 @@
-# Makefile for the Java classes used to test the jmf actors
+# Makefile for Ptolemy II pthales Multimode and dynamicity demo
 #
 # @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/actor/lib/jmf/test
+ME =		ptolemy/domains/pthales/demo/Dynamic
 
-# Root of the Ptolemy II directory
+# Root of the Java directory
 ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
@@ -41,56 +40,46 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
+# Used to build jar files
+PTPACKAGE = 	Dynamic
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-# Non-graphical Java tests written in Tcl
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = \
-	dummy.tcl
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Dynamic.xml
 
-# Graphical Java tests.
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl \
-	auto
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc
 
-JCLASS =	$(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
+# to run 'make demos' to run the tests.
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+install: all $(PTCLASSJAR)
 
-test_java: jclass
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Dynamic.htm
 
-# PtolemyII-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Dynamic.xml
 
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) #alljtests.tcl #test_auto
-	@echo "Run 'make test_jgraphical' to run the graphical tests"
-
-test_jgraphical: test_auto
-
-
+demo_vergil:
+	"$(PTII)/bin/vergil" Dynamic.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

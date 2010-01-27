@@ -47,6 +47,9 @@ PTPACKAGE = 	lib
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	PthalesAddHeaderActor.java \
+	PthalesAtomicActor.java \
+	PthalesRemoveHeaderActor.java \
 	PthalesCompositeActor.java \
 	PthalesGenericActor.java \
 	PthalesIOPort.java

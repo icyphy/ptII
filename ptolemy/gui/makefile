@@ -134,6 +134,7 @@ OPTIONAL_FILES = \
 	'Top$$9.class' \
 	'Top$$FileMenuListener.class' \
 	'Top$$HelpMenuListener.class' \
+	'Top$$HistoryMenuListener.class' \
 	'UndoListener$$RedoAction.class' \
 	'UndoListener$$UndoAction.class'
 

@@ -69,7 +69,15 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	'KielerLayoutGUI$$1.class' \
+	'KielerLayoutGUI$$BaseLayoutAction.class' \
+	'KielerLayoutGUI$$HideVerticesAction.class' \
+	'KielerLayoutGUI$$PlaceAction.class' \
+	'KielerLayoutGUI$$PlaceAllAction.class' \
+	'KielerLayoutGUI$$PlaceAndRouteAction.class' \
+	'KielerLayoutGUI$$PtolemyLayoutAction.class' \
+	'KielerLayoutGUI$$RemoveVerticesAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

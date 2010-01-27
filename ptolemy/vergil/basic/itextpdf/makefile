@@ -54,11 +54,12 @@ PTCLASSALLJARS =
 JSRCS = \
 	ExportPDFAction.java
 
-OTHER_FILES_TO_JAR = \
+OTHER_FILES_TO_BE_JARED = \
 	itextpdf-copyright.htm
 
-EXTRA_SRCS =	$(JSRCS)
-
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -67,7 +68,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'ExportPDFAction$$ExtensionFileFilter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

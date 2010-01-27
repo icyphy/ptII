@@ -31,7 +31,7 @@
 ME =		ptolemy/domains/pthales/demo
 
 # Keep these alphabetical please.
-DIRS =		AdaptiveBeamForming FFT HelloWorld Illustrative
+DIRS =		AdaptiveBeamForming Dynamic FFT HelloWorld Illustrative
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -47,6 +47,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	AdaptiveBeamForming/AdaptiveBeamForming.jar \
+	Dynamic/Dynamic.jar \
 	FFT/FFT.jar \
 	HelloWorld/HelloWorld.jar \
 	Illustrative/Illustrative.jar

@@ -82,6 +82,7 @@ PTLIB=$(PTJNI_SHAREDLIBRARY_PREFIX)bcvtb.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # Files to remove with 'make clean'
 KRUFT = \
+	$(PTLIB) \
 	*.jar
 
 all: jclass

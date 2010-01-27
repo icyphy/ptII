@@ -68,13 +68,19 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'ConceptController$$CheckIsLatticeAction.class' \
+	'ConceptController$$ToggleAcceptabilityAction.class' \
 	'LatticeElementController$$CheckIsLatticeAction.class' \
 	'LatticeElementController$$ToggleAcceptabilityAction.class' \
 	'LatticeGraphFrame$$DebugMenuListener.class' \
 	'LatticeGraphFrameController$$CheckIsLatticeAction.class' \
 	'LatticeGraphTableau$$Factory.class' \
 	'ModelAttributeController$$Factory.class' \
-	'ModelAttributeController$$LookInsideAction.class'
+	'ModelAttributeController$$LookInsideAction.class' \
+	'OntologyGraphController$$CheckIsLatticeAction.class' \
+	'OntologyGraphFrame$$DebugMenuListener.class' \
+	'OntologyGraphTableau$$Factory.class' \
+	'RelationController$$LinkRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

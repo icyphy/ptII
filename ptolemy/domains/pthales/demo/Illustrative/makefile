@@ -53,6 +53,7 @@ OTHER_FILES_TO_BE_JARED = \
 	modalmodel2.xml \
 	modalmodel3-pthales.xml \
 	modalmodel4-pthales.xml \
+	modalmodel5-pthales.xml \
 	ModalModelPthales.xml
 
 EXTRA_SRCS = \

@@ -70,7 +70,10 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    doc
+	demo \
+	doc \
+	'JavaDia$$1.class' \
+	'JavaDia$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
