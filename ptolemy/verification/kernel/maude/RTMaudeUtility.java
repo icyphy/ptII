@@ -63,7 +63,7 @@ import ptolemy.verification.lib.BoundedBufferNondeterministicDelay;
  *
  * @author Kyungmin Bae
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (kbae4)
  * @Pt.AcceptedRating Red (kbae4)
  */

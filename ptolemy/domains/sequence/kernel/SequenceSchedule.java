@@ -138,7 +138,7 @@ import ptolemy.kernel.util.InvalidStateException;
 
  @author Brian K. Vogel, Steve Neuendorffer, Elizabeth Latronico (Bosch)
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (beth)
  @Pt.AcceptedRating Red (beth)
  @see ptolemy.actor.sched.Firing

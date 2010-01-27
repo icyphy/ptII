@@ -34,7 +34,7 @@ package ptolemy.data.properties.lattice;
 
  @author Charles Shelton (Bosch)
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

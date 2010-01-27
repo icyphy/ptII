@@ -25,6 +25,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.pthales.JNI;
 
+/**
+ * TestJNI class.
+ *
+ * @author rbarrere
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class TestJNI {
 
     /**

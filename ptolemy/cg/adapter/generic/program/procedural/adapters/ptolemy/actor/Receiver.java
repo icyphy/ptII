@@ -44,7 +44,7 @@ import ptolemy.kernel.util.InvalidStateException;
  *
  * @author Jia Zou, Man-Kit Leung, Isaac Liu, Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */

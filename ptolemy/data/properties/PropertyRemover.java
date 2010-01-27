@@ -34,6 +34,15 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+/**
+ * PropertyRemover class.
+ *
+ * @author mankit
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class PropertyRemover extends Attribute {
 
     public PropertyRemover(NamedObj container, String name)

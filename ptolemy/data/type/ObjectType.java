@@ -61,7 +61,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @see ObjectToken
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
@@ -357,7 +357,7 @@ public class ObjectType implements Cloneable, Type {
 
      @author Thomas Huining Feng
      @version $Id$
-     @since Ptolemy II 7.1
+     @since Ptolemy II 8.0
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */

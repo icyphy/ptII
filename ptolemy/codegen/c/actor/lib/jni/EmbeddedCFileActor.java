@@ -36,7 +36,7 @@ Code generator helper for EmbeddedCFileActor.
 
 @author Christine Avanessians
 @version $Id:
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
 @see ptolemy.actor.lib.jni.EmbeddedCFileActor
 @Pt.ProposedRating red (cavaness)
 @Pt.AcceptedRating Red (cavaness)

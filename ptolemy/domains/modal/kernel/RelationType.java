@@ -60,7 +60,7 @@ package ptolemy.domains.modal.kernel;
 
  @author  Haiyang Zheng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */

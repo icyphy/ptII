@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  All cg port adapter implementations should implement this interface.
  *  @author Man-kit Leung, Bert Rodiers
  *  @version $Id$
- *  @since Ptolemy II 7.1
+ *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */

@@ -47,6 +47,8 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  *  
  * @author eal
+@version $Id$
+@since Ptolemy II 8.0
  *
  */
 

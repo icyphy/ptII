@@ -33,6 +33,15 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
+/**
+ * TypeSystemCCS class.
+ *
+ * @author mankit
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class TypeSystemCCS extends PropertyConstraintSolver {
 
     public TypeSystemCCS(NamedObj container, String name)

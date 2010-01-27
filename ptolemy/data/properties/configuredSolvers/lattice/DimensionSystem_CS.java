@@ -34,6 +34,15 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
+/**
+ * DimensionSystem_CS class.
+ *
+ * @author cshelton
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class DimensionSystem_CS extends DeltaConstraintSolver {
 
     public DimensionSystem_CS(NamedObj container, String name)

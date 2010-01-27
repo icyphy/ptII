@@ -36,7 +36,7 @@ import ptolemy.actor.Actor;
  *
  * @author Patricia Derler
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  */
 public class LetTask {
 

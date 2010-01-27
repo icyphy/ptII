@@ -47,7 +47,7 @@ Model since a giotto model only specifies logical execution time.
 
  @author Shanna-Shaye Forbes
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (sssf)
  @Pt.AcceptedRating Red (sssf)
  */

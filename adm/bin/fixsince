@@ -12,9 +12,10 @@
 # by running diff between the old release and the new release
 
 oldVersion=7.0.1
-newVersion=8.0.beta
+newVersion=8.1.devel
+sinceVersion=8.0
 
-diffOutput=/tmp/fixsince.diffOutput.$$
+#diffOutput=/tmp/fixsince.diffOutput.$$
 diffOutput=/tmp/pt.diffs
 if [ ! -f $diffOutput ]; then
     echo "Generating $diffOutput, this will take awhile"
@@ -47,15 +48,20 @@ fi
 files=`cat $newJavaFiles`
 for file in $files
 do
+  if [ ! -f $file ]; then
+      echo "$file is not a file, skipping"
+      continue
+  fi
   grep @since $file >& /dev/null 
   retval=$?
   tmpfile=/tmp/fixsince.tmpfile
   tmpfile2=/tmp/fixsince.tmpfile2
   if [ $retval = 1 ]; then
     echo "$file does not have an @since tag"
-    awk '{  if ($0 ~ /@version/) {
+    awk -v sinceVersion=$sinceVersion \
+	'{  if ($0 ~ /@version/) {
 	       print $0
-	       print "@since Ptolemy II 7.1"
+	       print "@since Ptolemy II " sinceVersion
 	    } else {
 	       print $0
             }
@@ -64,19 +70,49 @@ do
     retval=$?
     if [ $retval = 1 ]; then
       echo "$file still does not have an @since tag, trying to add one after @version"
-      awk '{  if ($0 ~ /@author/) {
+      awk -v sinceVersion=$sinceVersion \
+          '{  if ($0 ~ /@author/) {
 	       print $0
 	       printf ("@version %cId%c\n", "$", "$")
-	       print "@since Ptolemy II 7.1"
+	       print "@since Ptolemy II " sinceVersion
 	    } else {
 	       print $0
             }
          }' <$file >$tmpfile
-     fi
+   
+       grep @since $tmpfile >& /dev/null 
+       retval=$?
+       if [ $retval = 1 ]; then
+	   echo "$file still! does not have an @since tag.  Adding a class comment"
+	   awk -v author=`$PTII/adm/bin/svnAuthor $file| awk '{print $1}'` -v class=`basename $file .java` -v sinceVersion=$sinceVersion \
+          '{  if ($0 ~ /^public/ && sawJavaDocStart == 0 && createdClassComment == 0) {
+               createdClassComment = 1
+               print "/**"
+               print " * " class " class."
+               print " *"
+               print " * @author " author
+	       printf (" * @version %cId%c\n", "$", "$")
+	       print " * @since Ptolemy II " sinceVersion
+               print " * @Pt.ProposedRating Red (cxh)"
+               print " * @Pt.AcceptedRating Red (cxh)"
+               print " */"
+	       print $0
+	    } else {
+               if ($0 ~ /^package/) {
+                   sawPackage = 1
+               } 
+               if (sawPackage == 1 && $0 ~ /\/\*\*/) {
+                   sawJavaDocStart = 1
+               } 
+	       print $0
+            }
+         }' <$file >$tmpfile
 
+       fi
+    fi
   else
     echo $file  
-    sed -e 's/@since.*/@since Ptolemy II 7.1/' \
+    sed -e "s/@since.*/@since Ptolemy II $sinceVersion/" \
 	$file > $tmpfile
 
   fi
@@ -98,6 +134,8 @@ do
   # remove the leading adm/dists/ptIIX.Y.devel and then uncomment the
   # lines below and rerun in $PTII
    
+  # Uncomment this line to actually update the file.
   #cp $tmpfile $file
+
   #cvs commit -m "This file is new since Ptolemy 6.1, so the copyright and @since tag should reflect that." $file
 done

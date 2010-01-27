@@ -36,7 +36,7 @@ package ptolemy.actor.lib.test;
 
  @author Daniel Crawl
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 8.0
  */
 public class ReturnNonZero {
 

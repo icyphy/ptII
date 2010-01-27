@@ -25,6 +25,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.pthales.JNI;
 
+/**
+ * ABF class.
+ *
+ * @author rbarrere
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class ABF implements ABFConstants {
     public static double C_get() {
         return ABFJNI.C_get();

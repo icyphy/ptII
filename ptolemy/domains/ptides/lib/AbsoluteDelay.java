@@ -52,7 +52,7 @@ where t is the current model time.
 
 @author Jia Zou, Slobodan Matic
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 8.0
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating Red (jiazou)
 */

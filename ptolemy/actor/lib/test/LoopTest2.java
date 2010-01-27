@@ -43,6 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * output : .
  * 
  *@author Jim Amrhein/Mark Ruebens Giovannii/GSFC Greenbelt
+@version $Id$
+@since Ptolemy II 8.0
  * 
  */
 

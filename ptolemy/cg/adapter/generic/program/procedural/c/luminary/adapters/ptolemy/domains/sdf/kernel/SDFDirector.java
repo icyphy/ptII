@@ -44,7 +44,7 @@ import ptolemy.kernel.util.InternalErrorException;
 
   @author Jia Zou
   @version $Id$
-  @since Ptolemy II 8.1
+  @since Ptolemy II 8.0
   @Pt.ProposedRating Red (tfeng)
   @Pt.AcceptedRating Red (tfeng)
  */

@@ -76,7 +76,7 @@ import ptolemy.plot.Plot;
  ability of simulating hybrid system in Ptolemy II.
  @author Jie Liu
  @version $Id$
- @since Ptolemy II 0.3
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (cxh)
  */

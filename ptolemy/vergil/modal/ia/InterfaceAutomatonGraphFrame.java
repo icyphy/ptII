@@ -46,7 +46,7 @@ import diva.graph.GraphPane;
 
  @author  Steve Neuendorffer, Yuhong Xiong, Contributor: Edward A. Lee
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (johnr)
  */

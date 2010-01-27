@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Settable;
 
  @author Remi Barrere
  @version $Id$
- @since Ptolemy II 8.2
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

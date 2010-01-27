@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Gang Zhou
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Green (zgang)
  @Pt.AcceptedRating Green (cxh)
  */

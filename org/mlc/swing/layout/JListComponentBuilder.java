@@ -42,7 +42,7 @@ import javax.swing.JScrollPane;
  *
  * @author Kevin Routley
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 public class JListComponentBuilder implements ComponentBuilder {
     List<BeanProperty> properties = new ArrayList<BeanProperty>();

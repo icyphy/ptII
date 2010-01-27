@@ -61,7 +61,7 @@ import org.w3c.dom.NodeList;
  * used when creating and editing component data.
  * @author Michael Connor
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 public class ComponentDef implements Comparable<Object> {
     private static final long serialVersionUID = 1L;

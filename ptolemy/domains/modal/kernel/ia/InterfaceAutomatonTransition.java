@@ -70,7 +70,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  @author Yuhong Xiong, Xiaojun Liu and Edward A. Lee
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (yuhong)
  @see InterfaceAutomaton

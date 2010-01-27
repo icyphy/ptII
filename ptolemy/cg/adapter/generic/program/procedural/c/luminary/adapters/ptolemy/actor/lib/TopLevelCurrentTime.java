@@ -37,7 +37,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
  @author Gang Zhou
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Green (mankit)
  @Pt.AcceptedRating Green (cxh)
  */

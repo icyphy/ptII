@@ -31,6 +31,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** Interface for attributes that implement tests.
  *  @author Christopher Brooks, Dai Bui, Edward A. Lee, Ben Lickly
+@version $Id$
+@since Ptolemy II 8.0
  */
 public interface Testable {
 

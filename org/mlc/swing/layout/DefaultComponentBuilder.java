@@ -50,7 +50,7 @@ import javax.swing.JPanel;
  *
  * @author Michael Connor mlconnor&#064;yahoo.com
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 public class DefaultComponentBuilder implements ComponentBuilder {
     Class clazz;

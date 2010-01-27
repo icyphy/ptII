@@ -41,7 +41,7 @@ import java.awt.datatransfer.DataFlavor;
  *
  * @author Michael Connor
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 public class TransferableWrapper implements java.awt.datatransfer.Transferable {
     Object dragObject;

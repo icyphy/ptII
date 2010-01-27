@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Yellow (neuendor)
  @see ptolemy.data.expr.ASTPtRootNode

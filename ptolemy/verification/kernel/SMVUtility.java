@@ -71,7 +71,7 @@ import ptolemy.verification.lib.SMVLegacyCodeActor;
  * @author Chih-Hong Cheng, Contributor: Edward A. Lee, Christopher
  *         Brooks
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red (patrickj)
  */

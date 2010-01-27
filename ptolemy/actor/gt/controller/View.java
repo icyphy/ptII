@@ -70,7 +70,7 @@ import ptolemy.vergil.gt.GTFrameTools;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */

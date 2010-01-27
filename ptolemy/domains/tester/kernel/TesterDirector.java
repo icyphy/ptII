@@ -50,6 +50,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  If any of those throws an exception, then preinitialize() throws
  *  an exception.
  *  @author Christopher Brooks, Dai Bui, Edward A. Lee, Ben Lickly
+@version $Id$
+@since Ptolemy II 8.0
  */
 public class TesterDirector extends Director {
 

@@ -30,6 +30,15 @@ import ptolemy.domains.modal.kernel.State;
 import ptolemy.domains.modal.kernel.Transition;
 import ptolemy.kernel.util.KernelException;
 
+/**
+ * SimpleFSMStructure class.
+ *
+ * @author eal
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class SimpleFSMStructure {
 
     public SimpleFSMStructure() {

@@ -51,7 +51,7 @@ import javax.swing.undo.UndoManager;
  *
  * @author Ben Leinfelder
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (cx)
  * @author ben leinfelder

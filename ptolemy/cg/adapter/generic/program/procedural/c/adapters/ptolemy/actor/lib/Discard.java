@@ -34,6 +34,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.l
  A adapter class for ptolemy.actor.lib.Discard.
 
  @author Jeff C. Jensen
+@version $Id$
+@since Ptolemy II 8.0
  */
 public class Discard extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Discard {
     /**

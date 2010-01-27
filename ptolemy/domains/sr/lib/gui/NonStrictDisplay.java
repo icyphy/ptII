@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author  Paul Whitaker, Yuhong Xiong, Edward A. Lee
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (pwhitake)
  @Pt.AcceptedRating Red (pwhitake)
  */

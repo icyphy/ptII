@@ -81,7 +81,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * Use a timer task for peer discovery and actor query.
  * @author Xiaojun Liu, Yang Zhao
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  */
 public class JxtaCorbaActorClient extends TypedAtomicActor implements
         QueryHandler {

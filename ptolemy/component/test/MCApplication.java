@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
  //FIXME:
  @author  Yang Zhao
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  @version $Id$
  */
 public class MCApplication {

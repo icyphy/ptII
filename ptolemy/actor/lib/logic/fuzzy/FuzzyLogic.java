@@ -80,7 +80,7 @@ to run under the {@link ptolemy.actor.Director}.
 </p>
 @author Shanna-Shaye Forbes
 @version $Id$
-@since Ptolemy II 8.1
+@since Ptolemy II 8.0
 @Pt.ProposedRating red (sssf)
 @Pt.AcceptedRating red (sssf)
  */

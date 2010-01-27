@@ -43,7 +43,7 @@ import javax.swing.JLabel;
  *
  * @author  fracpete (fracpete at waikato dot ac dot nz)
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  * @version $Id$
  */
 public abstract class QueryChooser extends Box implements SettableQueryChooser,

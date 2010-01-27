@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
@@ -173,7 +173,7 @@ public class ComboBox extends GUIProperty implements ItemListener {
 
      @author Thomas Huining Feng
      @version $Id$
-     @since Ptolemy II 7.1
+     @since Ptolemy II 8.0
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */

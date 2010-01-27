@@ -25,6 +25,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.properties;
 
+/**
+ * Propertyable class.
+ *
+ * @author mankit
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public interface Propertyable {
 
     public void clearHighlight();

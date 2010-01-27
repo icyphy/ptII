@@ -40,7 +40,7 @@ import com.jgoodies.forms.factories.DefaultComponentFactory;
  *
  * @author Michael Connor
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 public class SeparatorComponentBuilder implements ComponentBuilder {
     List<BeanProperty> properties = new ArrayList<BeanProperty>();

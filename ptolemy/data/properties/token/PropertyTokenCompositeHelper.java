@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NamedObj;
  * @author Thomas Mandl, Man-Kit Leung
  * @version $Id: PropertyTokenCompositeHelper.java 54702 2009-06-26 18:05:22Z
  * cxh $
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */

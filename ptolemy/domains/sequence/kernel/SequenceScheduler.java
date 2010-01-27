@@ -107,7 +107,7 @@ inside that module are executed
 
  @author Elizabeth Latronico (Bosch), Thomas Mandl (Bosch), Edward A. Lee 
  @version $Id$
- @since Ptolemy II 8.2
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (beth)
  @Pt.AcceptedRating Red (beth)
  @see ptolemy.actor.sched.Schedule

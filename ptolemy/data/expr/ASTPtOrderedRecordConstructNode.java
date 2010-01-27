@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Ben Leinfelder, based on ASTPtRecordConstructNode by Xiaojun Liu, Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (liuxj)
  @Pt.AcceptedRating Red (cxh)
  @see ptolemy.data.expr.ASTPtRootNode

@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Jie Liu
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (cxh)
  @see ptolemy.domains.ct.kernel.CTBaseIntegrator

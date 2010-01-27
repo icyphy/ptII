@@ -34,7 +34,7 @@ import ptolemy.codegen.java.kernel.JavaCodeGeneratorHelper;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Green (mankit)
  @Pt.AcceptedRating Green (cxh)
  */

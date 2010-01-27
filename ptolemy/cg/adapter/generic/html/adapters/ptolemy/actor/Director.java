@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see GenericCodeGenerator
  @author Man-Kit Leung, Bert Rodiers
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 

@@ -34,7 +34,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
  @author Man-Kit Leung, Tony Huang
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

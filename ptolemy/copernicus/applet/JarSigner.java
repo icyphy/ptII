@@ -68,7 +68,7 @@ import sun.security.util.ManifestDigester;
  * <p>From <a href="https://svn.cs.cf.ac.uk/projects/whip/trunk/whip-core/src/main/java/org/whipplugin/data/bundle/JarSigner15.java">https://svn.cs.cf.ac.uk/projects/whip/trunk/whip-core/src/main/java/org/whipplugin/data/bundle/JarSigner15.java</a>.
  * See also <a href="http://www.onjava.com/pub/a/onjava/2001/04/12/signing_jar.html?page=1">http://www.onjava.com/pub/a/onjava/2001/04/12/signing_jar.html?page=1</a>.
  * @author Andrew Harrison, Contributor: Christopher Brooks.
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @version $Id$
  */
 public class JarSigner {

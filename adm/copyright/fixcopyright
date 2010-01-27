@@ -17,14 +17,14 @@
 #    rm -rf thales com/jgoodies ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java
 #
 # 3. Generate a list of text files
-#    cd $PTII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
+#    Ptolemy: cd $PTII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
 #    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f)
 #
 # 4. Find files modified since the start of the year
 #    NOTE: this requires that ~/.subversion/config has
 #    use-commit-times = yes
 #
-#    find . -name .svn -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | sort > /tmp/new
+#    find . -name .svn -prune -o -name adm -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | sort > /tmp/new
 #    
 #    Note that if you wanted files since the start of last year, use run
 #    "date +%j" and add that number to the number of days in the last year.

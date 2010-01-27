@@ -42,6 +42,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.kernel.util.Workspace;
 
+/**
+ * PthalesAtomicActor class.
+ *
+ * @author rbarrere
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class PthalesAtomicActor extends TypedAtomicActor {
 
     /** Construct an actor in the specified workspace with an empty

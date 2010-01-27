@@ -87,7 +87,7 @@ import diva.graph.JGraph;
 
  @author Rowland R Johnson
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */

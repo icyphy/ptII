@@ -84,7 +84,7 @@ import ptolemy.moml.MoMLParser;
 
  @author Xiaojun Liu
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (liuxj)
  @Pt.AcceptedRating Yellow (kienhuis)
  @see Transition
@@ -729,7 +729,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
      @author Thomas Huining Feng
      @version $Id$
-     @since Ptolemy II 7.1
+     @since Ptolemy II 8.0
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */
@@ -763,7 +763,7 @@ public class State extends ComponentEntity implements ConfigurableEntity,
 
      @author Thomas Huining Feng
      @version $Id$
-     @since Ptolemy II 7.1
+     @since Ptolemy II 8.0
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */

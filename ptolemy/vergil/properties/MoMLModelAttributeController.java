@@ -52,7 +52,7 @@ import diva.gui.GUIUtilities;
  * @see ptolemy.vergil.properties.MoMLModelAttributeControllerFactory
  * @author Dai Bui
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */

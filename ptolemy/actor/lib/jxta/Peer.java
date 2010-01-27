@@ -78,7 +78,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * @author liuxj, Yang
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  *
  * To change this generated comment edit the template variable "typecomment":
  * Window>Preferences>Java>Templates.

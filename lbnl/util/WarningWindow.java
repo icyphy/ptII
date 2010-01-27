@@ -92,7 +92,7 @@ import javax.swing.JOptionPane;
  *
  * @author Michael Wetter
  * @version $Id$
- * @since BCVTB 0.3
+ * @since Ptolemy II 8.0
  *
  */
 public class WarningWindow implements Runnable {

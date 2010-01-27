@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author Patricia Derler
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  *
  */
 public class TDLReceiver extends AbstractReceiver implements StateReceiver {

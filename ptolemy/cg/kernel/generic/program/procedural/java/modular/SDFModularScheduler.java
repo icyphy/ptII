@@ -51,7 +51,7 @@ import ptolemy.math.Fraction;
 
 *  @author Dai Bui
 *  @version $Id$
-*  @since Ptolemy II 7.1
+*  @since Ptolemy II 8.0
 *  @Pt.ProposedRating Red (jiazou)
 *  @Pt.AcceptedRating Red (jiazou)
 */

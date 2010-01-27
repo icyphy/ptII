@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Jeff C. Jensen, Jia Zou
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  */
 public abstract class OutputDevice extends NamedProgramCodeGeneratorAdapter {
 

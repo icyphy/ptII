@@ -63,7 +63,7 @@ import ptolemy.util.MessageHandler;
  @see LayoutFrame
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */

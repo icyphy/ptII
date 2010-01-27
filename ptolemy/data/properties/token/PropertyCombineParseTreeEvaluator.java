@@ -37,6 +37,15 @@ import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
+/**
+ * PropertyCombineParseTreeEvaluator class.
+ *
+ * @author mankit
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class PropertyCombineParseTreeEvaluator extends ParseTreeEvaluator {
 
     public PropertyCombineParseTreeEvaluator(Object object,

@@ -42,6 +42,8 @@ actor and acts as a flag to propagate informations from
 PthalesAddHeaderActor in the preinitialize phase
 
 @author Remi Barrere
+@version $Id$
+@since Ptolemy II 8.0
 @see ptolemy.domains.pthales.lib.PthalesRemoveHeaderActor
 */
 

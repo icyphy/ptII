@@ -36,7 +36,7 @@ package ptolemy.codegen.rtmaude.domains.de.lib;
  * @see ptolemy.domains.de.lib.VariableDelay
  * @author Kyungmin Bae
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */

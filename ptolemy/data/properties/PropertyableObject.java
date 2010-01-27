@@ -25,6 +25,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.data.properties;
 
+/**
+ * PropertyableObject class.
+ *
+ * @author mankit
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class PropertyableObject implements Propertyable {
 
     public PropertyableObject(Object object) {

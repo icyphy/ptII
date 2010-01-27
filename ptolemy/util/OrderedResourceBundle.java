@@ -50,7 +50,7 @@ import java.util.ResourceBundle;
  *
  * @version $Id$
  * @author Matthew Brooke
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  */
 public class OrderedResourceBundle {
 

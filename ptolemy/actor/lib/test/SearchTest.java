@@ -41,11 +41,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  * input :  String "Search #Loop Number"
  * output : "No Data" or "Results Found"
  * 
- *@author Jim Amrhein/Mark Ruebens Giovannii/GSFC Greenbelt
- * 
+ * @author Jim Amrhein/Mark Ruebens Giovannii/GSFC Greenbelt
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
-
-
 public class SearchTest extends TypedAtomicActor {
 
     /**

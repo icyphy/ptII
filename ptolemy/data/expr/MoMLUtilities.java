@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Christopher Brooks.  Based on ParseMoML by Edward A. Lee. Based on MatlabUtilities by Steve Neuendorffer and Zoltan Kemenczy (Research in Motion Ltd.)
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  @see ptolemy.data.expr.ParseTreeEvaluator

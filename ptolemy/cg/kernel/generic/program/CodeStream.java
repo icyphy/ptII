@@ -90,7 +90,7 @@ import ptolemy.util.StringUtilities;
  *
  * @author Man-Kit Leung
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (mankit)
  * @Pt.AcceptedRating Yellow (mankit)
  */

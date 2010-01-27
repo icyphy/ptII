@@ -34,6 +34,15 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
+/**
+ * PropertyCombineCompositeHelper class.
+ *
+ * @author mankit
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class PropertyCombineCompositeHelper extends PropertyCombineHelper {
 
     public PropertyCombineCompositeHelper(PropertyCombineSolver solver,

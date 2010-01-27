@@ -33,6 +33,15 @@ import java.util.Set;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.kernel.util.Attribute;
 
+/**
+ * SharedUtilities class.
+ *
+ * @author mankit
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class SharedUtilities {
 
     /**

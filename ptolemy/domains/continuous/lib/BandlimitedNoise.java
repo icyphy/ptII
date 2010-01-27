@@ -75,7 +75,7 @@ simple demonstrations), you can use the {@link Noise} actor.
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */

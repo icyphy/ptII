@@ -35,7 +35,7 @@ package ptolemy.codegen.c.domains.modal.modal;
 
  @author Gang Zhou
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Green (cxh)
  */

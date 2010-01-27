@@ -137,7 +137,7 @@ import ptolemy.util.StringUtilities;
  *
  * @author Michael Wetter
  * @version $Id$
- * @since BCVTB 0.4
+ * @since Ptolemy II 8.0
  *
  */
 public class SystemCommand extends TypedAtomicActor {

@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red
  @Pt.AcceptedRating Red
  @see ptolemy.data.expr.ASTPtRootNode

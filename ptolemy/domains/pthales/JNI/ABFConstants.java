@@ -34,6 +34,15 @@ package ptolemy.domains.pthales.JNI;
  * ----------------------------------------------------------------------------- */
 
 
+/**
+ * ABFConstants class.
+ *
+ * @author rbarrere
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public interface ABFConstants {
   public final static double C = ABFJNI.C_get();
   public final static double Pi = ABFJNI.Pi_get();

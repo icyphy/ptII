@@ -42,7 +42,7 @@ Output the first token received on the input port, and suppress any other
 inputs received with the same physical time index.
  @author Jeff C. Jensen
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 8.0
  */
 public class SuppressSimultaneousEvents extends DETransformer {
     /** Construct an actor with the given container and name.

@@ -40,6 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
  A adapter class for ptolemy.domains.de.lib.Register.
 
  @author Jeff C. Jensen
+@version $Id$
+@since Ptolemy II 8.0
  */
 public class Register extends NamedProgramCodeGeneratorAdapter {
     /**

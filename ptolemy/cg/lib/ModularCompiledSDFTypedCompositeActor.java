@@ -164,7 +164,7 @@ will simply result in the expression failing to evaluate.
 
  @author Dai Bui 
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
  */

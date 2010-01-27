@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NamedObj;
  fire and wrapup code.
  @author Jia Zou, Isaac Liu, Jeff C. Jensen
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating red (jiazou)
  */

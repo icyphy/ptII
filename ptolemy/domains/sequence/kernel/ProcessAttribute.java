@@ -45,7 +45,7 @@ ProcessAttribute is a subclass of Parameter with support for strings
    
  @author Elizabeth Latronico (Bosch)
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (beth)
  @Pt.AcceptedRating Red (beth)
  */

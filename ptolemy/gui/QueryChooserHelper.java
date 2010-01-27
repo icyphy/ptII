@@ -37,7 +37,7 @@ import java.awt.Frame;
  *
  * @author  fracpete (fracpete at waikato dot ac dot nz)
  * @version $Revision$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

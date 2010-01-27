@@ -36,6 +36,8 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  A adapter class for ptolemy.domains.de.lib.TimeGap.
 
  @author Jeff C. Jensen
+@version $Id$
+@since Ptolemy II 8.0
  */
 public class TimeGap extends NamedProgramCodeGeneratorAdapter {
     /**

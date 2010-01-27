@@ -39,7 +39,7 @@ import ptolemy.kernel.ComponentRelation;
 
  @author Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  @see FSMGraphModel.ArcModel

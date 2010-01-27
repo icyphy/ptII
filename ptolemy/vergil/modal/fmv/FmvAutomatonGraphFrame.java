@@ -68,7 +68,7 @@ import diva.gui.GUIUtilities;
  * @author Chihhong Patrick Cheng Contributor: Edward A. Lee
  * @version $Id: FmvAutomatonGraphFrame.java,v 1.9 2008/01/29 07:51:58 patrickj
  *          Exp $
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red ()
  */

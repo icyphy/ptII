@@ -39,7 +39,7 @@ package ptolemy.domains.ptides.lib;
  *   
  *  @author Jia Zou
  *  @version $ld$
- *  @since Ptolemy II 7.1
+ *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jiazou)
  *  @Pt.AcceptedRating 
  */

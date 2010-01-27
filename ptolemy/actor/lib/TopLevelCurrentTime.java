@@ -45,7 +45,7 @@ the time of the top level director.
 
 @author Jia Zou
 @version $Id$
-@since Ptolemy II 0.3
+@since Ptolemy II 8.0
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating
 */

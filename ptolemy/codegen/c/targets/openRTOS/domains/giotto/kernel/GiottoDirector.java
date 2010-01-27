@@ -61,7 +61,7 @@ import ptolemy.util.StringUtilities;
 
  @author Shanna-Shaye Forbes, Man-Kit Leung, Ben Lickly
  @version $Id$
- @since Ptolemy II 7.2
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (sssf)
  @Pt.AcceptedRating Red (sssf)
  */

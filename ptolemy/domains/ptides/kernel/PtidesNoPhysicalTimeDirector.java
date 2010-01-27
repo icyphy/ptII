@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  *  @author Jia Zou
  *  @version $Id$
- *  @since Ptolemy II 7.1
+ *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Yellow (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  *

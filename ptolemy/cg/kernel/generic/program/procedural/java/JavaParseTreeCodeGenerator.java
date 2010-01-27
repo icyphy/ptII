@@ -102,7 +102,7 @@ import ptolemy.util.StringUtilities;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red
  @Pt.AcceptedRating Red
  @see ptolemy.data.expr.ASTPtRootNode

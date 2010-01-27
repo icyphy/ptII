@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung, Beth
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (beth)
  @Pt.AcceptedRating Red (beth)
 */

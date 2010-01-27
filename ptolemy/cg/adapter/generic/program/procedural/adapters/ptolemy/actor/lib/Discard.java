@@ -36,6 +36,8 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  A adapter class for ptolemy.actor.lib.Discard.
 
  @author Jeff C. Jensen
+@version $Id$
+@since Ptolemy II 8.0
  */
 public class Discard extends NamedProgramCodeGeneratorAdapter {
     /**

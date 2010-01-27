@@ -47,6 +47,8 @@ This actor adds and/or propagates informations throught relations to another
 actor that can understand and apply modifications.
 
 @author Remi Barrere
+@version $Id$
+@since Ptolemy II 8.0
 @see ptolemy.domains.pthales.lib.PthalesRemoveHeaderActor
 */
 

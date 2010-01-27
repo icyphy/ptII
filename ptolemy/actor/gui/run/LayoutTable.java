@@ -69,7 +69,7 @@ import com.jgoodies.forms.layout.CellConstraints;
 
  @author Unknown
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */

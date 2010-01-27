@@ -73,7 +73,7 @@ import com.jgoodies.forms.factories.Borders;
  *
  * @author Michael Connor mlconnor&#064;yahoo.com
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 @SuppressWarnings("serial")
 public class LayoutFrame extends JFrame implements MultiContainerFrame {

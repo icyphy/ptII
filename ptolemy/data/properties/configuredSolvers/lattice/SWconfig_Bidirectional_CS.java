@@ -33,6 +33,15 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
+/**
+ * SWconfig_Bidirectional_CS class.
+ *
+ * @author cshelton
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class SWconfig_Bidirectional_CS extends PropertyConstraintSolver {
 
     public SWconfig_Bidirectional_CS(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {

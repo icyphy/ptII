@@ -57,6 +57,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  - The tokenInitProduction parameter is not being used. ArrayOL equivalent?
  *  
  * @author eal
+@version $Id$
+@since Ptolemy II 8.0
  *
  */
 public class PthalesScheduler extends SDFScheduler {

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  these events
  @author Jia Zou, Jeff C. Jensen
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating
  */

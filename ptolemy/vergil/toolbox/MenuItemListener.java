@@ -41,7 +41,7 @@ import diva.gui.toolbox.JContextMenu;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @see MenuActionFactory
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)

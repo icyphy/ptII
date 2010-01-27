@@ -79,7 +79,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  @author Jeff C. Jensen
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 8.0
  @see ptolemy.domains.de.lib.Integrator
  @see ptolemy.domains.de.lib.Derivative
  */

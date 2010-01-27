@@ -58,7 +58,7 @@ the delay port (a parameter port).
 @see ptolemy.domains.de.lib.VariableDelay
 @author Jia Zou, Slobodan Matic
 @version $Id$
-@since Ptolemy II 1.0
+@since Ptolemy II 8.0
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating Red (jiazou)
 */

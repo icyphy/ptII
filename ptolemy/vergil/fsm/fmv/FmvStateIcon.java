@@ -41,7 +41,7 @@ An icon specialized for states of a state machine with reachability and risk ana
 
 @author Chihhong Patrick Cheng
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
 @Pt.ProposedRating Red (patrickj)
 @Pt.AcceptedRating Red (patrickj)
 */

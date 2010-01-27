@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Christine Avanessians, Edward Lee, and Man-Kit Leung
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cavaness)
  @Pt.AcceptedRating Red (cavaness)
  */

@@ -36,7 +36,7 @@ import diva.graph.GraphController;
   * @see ptolemy.vergil.properties.ModelAttributeController
   * @author Dai Bui.  Based on code by Man-Kit Leung
   * @version $Id$
-  * @since Ptolemy II 8.1
+  * @since Ptolemy II 8.0
   * @Pt.ProposedRating Red (cxh)
   * @Pt.AcceptedRating Red (cxh)
   */

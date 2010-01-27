@@ -43,7 +43,7 @@ Produce an output token on each firing with a value that is
 the current microstep.
 @author Jia Zou
 @version $Id$
-@since Ptolemy II 0.3
+@since Ptolemy II 8.0
 @Pt.ProposedRating Yellow (jiazou)
 @Pt.AcceptedRating
 */

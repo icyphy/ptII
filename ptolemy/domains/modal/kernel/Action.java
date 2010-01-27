@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Xiaojun Liu
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (liuxj)
  @Pt.AcceptedRating Yellow (liuxj)
  @see ChoiceAction

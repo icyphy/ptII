@@ -59,7 +59,7 @@ import ptolemy.verification.kernel.maude.RTMaudeUtility;
  * @author Chihhong Patrick Cheng   (modified by: Kyungmin Bae)   Contributors: Edward A. Lee , Christopher Brooks,
  * @version $Id: MathematicalModelConverter.java,v 1.5 2008/03/06 09:16:22
  *          patrickj Exp $
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red (patrickj)
  */

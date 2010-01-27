@@ -91,7 +91,7 @@ import java.net.SocketTimeoutException;
  *
  * @author Michael Wetter
  * @version $Id$
- * @since BCVTB 0.1
+ * @since Ptolemy II 8.0
  */
 public class Server {
 

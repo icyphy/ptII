@@ -60,7 +60,7 @@ import com.jgoodies.forms.layout.FormLayout;
  *
  * @author  Karsten Lentzsch
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 @SuppressWarnings("serial")
 public class FormDebugPanel extends JPanel {

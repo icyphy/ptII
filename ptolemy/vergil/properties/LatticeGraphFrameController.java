@@ -42,7 +42,7 @@ import diva.graph.JGraph;
  * @author Man-Kit Leung
  * @version $Id: LatticeGraphFrameController.java 53955 2009-05-27 20:49:38Z
  * cshelton $
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */

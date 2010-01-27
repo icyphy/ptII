@@ -53,7 +53,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter;
 
  @author Chihhong Patrick Cheng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (patrickj)
  @Pt.AcceptedRating Red ()
  */

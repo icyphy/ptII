@@ -51,7 +51,7 @@ relations in a composite actor.
 
 @author Bert Rodiers
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
 @Pt.ProposedRating Red (rodiers)
 */
 

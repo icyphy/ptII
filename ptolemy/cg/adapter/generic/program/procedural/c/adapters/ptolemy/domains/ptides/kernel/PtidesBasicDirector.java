@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
  of actor.
  @author Jia Zou, Isaac Liu, Jeff C. Jensen
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating red (jiazou)
  @Pt.AcceptedRating red (jiazou)
  */

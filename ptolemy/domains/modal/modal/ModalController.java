@@ -73,7 +73,7 @@ import ptolemy.moml.MoMLChangeRequest;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
@@ -376,7 +376,7 @@ public class ModalController extends FSMActor implements DropTargetHandler,
 
      @author Thomas Huining Feng
      @version $Id$
-     @since Ptolemy II 7.1
+     @since Ptolemy II 8.0
      @Pt.ProposedRating Red (tfeng)
      @Pt.AcceptedRating Red (tfeng)
      */

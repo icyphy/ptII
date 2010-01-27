@@ -47,7 +47,7 @@ import java.util.prefs.Preferences;
  * window size and positions, debug frame visibility, etc.
  * @author Kevin Routley
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 public class UserPrefs {
 

@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  C codegen implementation of a ptolemy.domains.de.kernel.DEReceiver.
  *  @author Jia Zou, Man-Kit Leung, Isaac Liu
  *  @version $Id$
- *  @since Ptolemy II 7.1
+ *  @since Ptolemy II 8.0
  *  @Pt.ProposedRating Red (jiazou)
  *  @Pt.AcceptedRating Red (jiazou)
  */

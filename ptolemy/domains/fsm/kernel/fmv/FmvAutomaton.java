@@ -58,7 +58,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter.FormulaType;
  *
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red (patrickj)
  * @see ptolemy.domains.fsm.kernel.State

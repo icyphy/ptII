@@ -61,7 +61,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Jeff C. Jensen
  @version $Id$
- @since Ptolemy II 8.1
+ @since Ptolemy II 8.0
  @see ptolemy.actor.lib.Accumulator
  */
 public class Integrator extends DETransformer {

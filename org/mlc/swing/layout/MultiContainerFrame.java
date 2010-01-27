@@ -38,7 +38,7 @@ import java.awt.Container;
  *
  *  @author Edward A. Lee eal&#064;eecs.berkeley.edu
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 public interface MultiContainerFrame {
 

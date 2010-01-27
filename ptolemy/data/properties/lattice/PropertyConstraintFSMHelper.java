@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
  * @author Man-Kit Leung, Thomas Mandl
  * @version $Id: PropertyConstraintFSMHelper.java 54803 2009-06-29 22:33:45Z
  * mankit $
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */

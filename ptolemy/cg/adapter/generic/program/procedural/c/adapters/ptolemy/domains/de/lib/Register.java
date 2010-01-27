@@ -34,6 +34,8 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
  A adapter class for ptolemy.domains.de.lib.Register.
 
  @author Jeff C. Jensen
+@version $Id$
+@since Ptolemy II 8.0
  */
 public class Register extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.Register {
     /**

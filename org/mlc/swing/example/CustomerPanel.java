@@ -39,7 +39,7 @@ import org.mlc.swing.layout.LayoutFrame;
 /**
  * @author Michael Connor
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 public class CustomerPanel extends javax.swing.JPanel {
     javax.swing.JComboBox suffixCombo = new javax.swing.JComboBox();

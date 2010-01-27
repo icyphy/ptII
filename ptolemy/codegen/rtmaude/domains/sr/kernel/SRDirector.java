@@ -39,7 +39,7 @@ import ptolemy.codegen.rtmaude.actor.Director;
  * @see ptolemy.domains.sr.kernel.SRDirector
  * @author Kyungmin Bae
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */

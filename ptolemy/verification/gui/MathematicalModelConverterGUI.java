@@ -72,7 +72,7 @@ import ptolemy.verification.kernel.MathematicalModelConverter.OutputType;
 
  @author Chih-Hong Cheng, Thomas Huining Feng, Edward A. Lee, Christopher Brooks
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (patrickj)
  @Pt.AcceptedRating Red (eal)
  */

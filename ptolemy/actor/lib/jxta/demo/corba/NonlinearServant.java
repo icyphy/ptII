@@ -47,7 +47,7 @@ import ptolemy.domains.ct.demo.Corba.util._CorbaActorImplBase;
 
  @author Jie Liu
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  @version $Id$
  */
 public class NonlinearServant extends _CorbaActorImplBase {

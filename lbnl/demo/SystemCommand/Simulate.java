@@ -92,6 +92,12 @@ import java.io.PrintStream;
   * All three arguments are written to the standard output
   * stream. In addition, x1 and x2 are written to the files
   * outputX1.txt and outputX2.txt
+  *
+  * @author Michael Wetter
+  * @version $Id$
+  * @since Ptolemy II 8.0
+  * @Pt.ProposedRating Red (cxh)
+  * @Pt.AcceptedRating Red (cxh)
   */
 class Simulate
 {  

@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.SpeakerOutputDevice.
  * @author Jia Zou, Isaac Liu, Jeff C. Jensen
  * @version $Id$
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
  */

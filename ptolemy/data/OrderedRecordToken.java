@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Ben Leinfelder
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  @version $Id$
  @Pt.ProposedRating yellow (leinfelder)
  @Pt.AcceptedRating red (leinfelder)

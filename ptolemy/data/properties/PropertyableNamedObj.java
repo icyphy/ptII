@@ -32,6 +32,15 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
+/**
+ * PropertyableNamedObj class.
+ *
+ * @author mankit
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class PropertyableNamedObj extends PropertyableObject {
 
     public PropertyableNamedObj(NamedObj object) {

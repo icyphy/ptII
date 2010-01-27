@@ -50,7 +50,7 @@ import diva.canvas.toolbox.RoundedRectangle;
 
  @author Thomas Huining Feng
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */

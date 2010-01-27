@@ -74,7 +74,7 @@ import ptolemy.plot.Plot;
 
  @author Jie Liu
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (cxh)
  */

@@ -78,7 +78,7 @@ import ptolemy.util.StringUtilities;
 
  @author Christopher Brooks, Edward Lee, Man-Kit Leung, Gang Zhou, Ye Zhou
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  o @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

@@ -38,7 +38,7 @@ import ptolemy.gui.Top;
 
  @author Chad Berkley
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.AcceptedRating Red (berkley)
  @Pt.ProposedRating Red (berkley)
  */

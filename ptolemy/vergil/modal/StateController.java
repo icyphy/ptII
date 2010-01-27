@@ -69,7 +69,7 @@ import diva.gui.GUIUtilities;
 
  @author Steve Neuendorffer and Edward A. Lee
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */

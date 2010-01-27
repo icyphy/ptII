@@ -33,6 +33,15 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
+/**
+ * LogicalOR_Backward_CS class.
+ *
+ * @author mankit
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class LogicalOR_Backward_CS extends PropertyConstraintSolver {
 
     public LogicalOR_Backward_CS(NamedObj container, String name)

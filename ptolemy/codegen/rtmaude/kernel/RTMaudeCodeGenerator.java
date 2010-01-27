@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Settable;
 * @see ptolemy.codegen.kernel.CodeGenerator
 * @author Kyungmin Bae
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
 * @version $Id$
 * @Pt.ProposedRating Red (kquine)
 *

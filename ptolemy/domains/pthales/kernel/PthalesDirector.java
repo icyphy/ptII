@@ -177,6 +177,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * within modal models.
  * 
  * @author Edward A. Lee, Eric Lenormand, Stavros Tripakis
+@version $Id$
+@since Ptolemy II 8.0
  *
  */
 public class PthalesDirector extends SDFDirector {

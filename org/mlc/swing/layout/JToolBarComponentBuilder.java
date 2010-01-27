@@ -42,7 +42,7 @@ import javax.swing.JToolBar;
  *
  * @author Michael Connor mlconnor&#064;yahoo.com
 @version $Id$
-@since Ptolemy II 7.1
+@since Ptolemy II 8.0
  */
 public class JToolBarComponentBuilder implements ComponentBuilder {
     List<BeanProperty> properties = new ArrayList<BeanProperty>();

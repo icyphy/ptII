@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Ben Lickly (based on SDFDirector)
  @version $Id$
- @since Ptolemy II 7.1
+ @since Ptolemy II 8.0
  @Pt.ProposedRating Red (blickly)
  @Pt.AcceptedRating Red (blickly)
  */

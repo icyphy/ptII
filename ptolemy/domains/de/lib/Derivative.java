@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  @author Jeff C. Jensen
  @version $Id: Derivative.java$
- @since Ptolemy II 8.1
+ @since Ptolemy II 8.0
  @see ptolemy.actor.lib.Differential
  */
 public class Derivative extends DETransformer {
