@@ -13,6 +13,9 @@
 # 2. Remove ptII/vendors
 #    PtII: cd ptII; export PTII=`pwd`; ./configure; make cleanDerivedJavaFiles clean_shipping
 #
+#    Remove files with copyrights by others
+#    rm -rf thales com/jgoodies ptolemy/graph/analysis/analyzer/SingleSourceLongestPathAnalyzer.java
+#
 # 3. Generate a list of text files
 #    cd $PTII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
 #    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f)
@@ -22,6 +25,13 @@
 #    use-commit-times = yes
 #
 #    find . -name .svn -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | sort > /tmp/new
+#    
+#    Note that if you wanted files since the start of last year, use run
+#    "date +%j" and add that number to the number of days in the last year.
+#    For example, if "date +%j" is 27, then 27+365 is 392, so use
+#    -mtime -392 in the find command
+#    
+#    Then, create a list of text files that are new:
 #    sort /tmp/f > /tmp/f.sort
 #    comm -12 /tmp/new /tmp/f.sort > /tmp/f.new
 #
@@ -90,77 +100,77 @@ cd $topdir
 }
 
 doit() {
-    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2008\2/' \
+    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2010\2/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright &[^ ]* 1998[ ,]"
-LOGMESSAGE="Changed copyright to 2008"
+LOGMESSAGE="Changed copyright to 2010"
 
 search $@
 
 doit() {
-    sed 's/\(199[0-8]\)-199[0-9]/\1-2008/' \
+    sed 's/\(199[0-8]\)-199[0-9]/\1-2010/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="199[0-8]-199[0-9]"
-LOGMESSAGE="Changed copyright to 2008"
+LOGMESSAGE="Changed copyright to 2010"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-200[0-7]/Copyright (c) \1-2008/' \
+    sed 's/Copyright (c) \(199[0-9]\)-200[0-9]/Copyright (c) \1-2010/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH='Copyright \(c\) 199[0-9]-200[0-7]'
-LOGMESSAGE="Changed copyright to 2008"
+EGREPMATCH='Copyright \(c\) 199[0-9]-200[0-9]'
+LOGMESSAGE="Changed copyright to 2010"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[0-7]\)-200[0-7] /Copyright (c) \1-2008 /' \
+    sed 's/Copyright (c) \(200[0-9]\)-200[0-9] /Copyright (c) \1-2010 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH='Copyright \(c\) 200[0-7]-200[0-7]'
-LOGMESSAGE="Changed copyright to 2008"
+EGREPMATCH='Copyright \(c\) 200[0-9]-200[0-9]'
+LOGMESSAGE="Changed copyright to 2010"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2008 /' \
+    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2010 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 199[0-9] "
-LOGMESSAGE="Changed copyright to 2008"
+LOGMESSAGE="Changed copyright to 2010"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[0-7]\) /Copyright (c) \1-2008 /' \
+    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2010 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 200[0-7] "
-LOGMESSAGE="Changed copyright to 2008"
+EGREPMATCH="Copyright \(c\) 200[0-9] "
+LOGMESSAGE="Changed copyright to 2010"
 
 search $@
 
