@@ -1,5 +1,5 @@
 /* ActuatorOutputDevice simulates a hardware device that sends actuation data to the environment.
-@Copyright (c) 2008-2009 The Regents of the University of California.
+@Copyright (c) 2008-2010 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

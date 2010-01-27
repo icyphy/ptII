@@ -1,7 +1,7 @@
 /*
  * A property solver that annotates the model with data tokens.
  * 
- * Copyright (c) 2008-2009 The Regents of the University of California. All
+ * Copyright (c) 2008-2010 The Regents of the University of California. All
  * rights reserved.
  * 
  * Permission is hereby granted, without written agreement and without license

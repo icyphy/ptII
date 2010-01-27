@@ -545,7 +545,7 @@ void initializeInterrupts(void) {
 ;
 ; startup_rvmdk.S - Startup code for use with Keil's uVision.
 ;
-; Copyright (c) 2005-2007 Luminary Micro, Inc.  All rights reserved.
+; Copyright (c) 2005-2010 Luminary Micro, Inc.  All rights reserved.
 ; 
 ; Software License Agreement
 ; 

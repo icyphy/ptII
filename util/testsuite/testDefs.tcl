@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1996-2006 The Regents of the University of California.
+# @Copyright (c) 1996-2009 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -36,7 +36,7 @@
 # they run their tests.  This improved approach to testing was designed
 # and initially implemented by Mary Ann May-Pumphrey of Sun Microsystems.
 #
-# Copyright (c) 1990-2006 The Regents of the University of California.
+# Copyright (c) 1990-2009 The Regents of the University of California.
 # Copyright (c) 1994-2006 Sun Microsystems, Inc.
 #
 # ========================================================================

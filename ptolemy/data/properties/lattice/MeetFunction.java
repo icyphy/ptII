@@ -1,7 +1,7 @@
 /*
  * A class that represents a meet function term.
  * 
- * Copyright (c) 1998-2009 The Regents of the University of California. All
+ * Copyright (c) 1998-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above

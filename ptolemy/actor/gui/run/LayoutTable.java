@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2005 by Michael Connor. All Rights Reserved.
+ * Copyright (c) 2004-2010 by Michael Connor. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:

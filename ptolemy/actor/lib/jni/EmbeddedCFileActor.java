@@ -1,7 +1,7 @@
 /* An actor that executes compiled embedded C code.  It takes in a file
  parameter that specifies the file where the code is located.
 
- Copyright (c) 2008-2009 The Regents of the University of California.
+ Copyright (c) 2008-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
