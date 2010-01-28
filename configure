@@ -2892,6 +2892,7 @@ JVERSION=unknown
 startdir="$PTII"
 
 cd "$srcdir/config"
+rm -f *.class
 if "$JAVAC" confTest.java ; then
     if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: ok" >&5
