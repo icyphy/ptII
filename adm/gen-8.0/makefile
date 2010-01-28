@@ -123,6 +123,7 @@ PTII_TOPDIR=	.cshrc \
 		doc \
 		jni \
 		lib \
+		lbnl \
 		makefile \
 		mk \
 		org \
@@ -204,7 +205,7 @@ release_windows:
 
 ####
 release_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
@@ -363,14 +364,14 @@ $(PTII_SRC): $(PTII_FULL)
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; \
-		echo "About to remove jars in `pwd`"; \
-		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		echo "(1)About to remove jars in `pwd`"; \
+		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" -name PDFSample.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		cd ptolemy/domains/ptinyos; \
-		echo "About to remove jars in `pwd`"; \
+		echo "(2)About to remove jars in `pwd`"; \
 		find . -name jdom.jar -prune -o -name nesc.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ../../../doc; \
-		echo "About to remove jars in `pwd`"; \
+		echo "(3)About to remove jars in `pwd`"; \
 		find . -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		rm -rf doc/codeDoc*; \
@@ -1022,7 +1023,7 @@ nonjsall:
 			( cd $(PTIIHOME)/$$x ; \
 			echo making tests  in $(PTIIHOME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 				tests \
 			);  \
 		    fi ; \
@@ -1178,6 +1179,7 @@ remote1distclean:
 	@echo "#"
 	@echo "#ptIInightly-mail#: Starting make clean at `date`"
 	@echo "`uptime`"
+	-rm -rf $(HOME)/codegen
 	(cd $(REMOTE1PTIIDIST); \
 		$(MAKE) clean)
 	-(cd $(REMOTE1PTIIDIST); \
@@ -1266,6 +1268,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/vq \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/tester/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/tester/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
@@ -1306,6 +1310,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal \
@@ -1373,9 +1378,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib/vhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/lib \
@@ -1402,12 +1404,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/ddi \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/util \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/exampleSetLattice \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalAND \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalOrBackward \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/typeSystem_C \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/token/firstValueToken \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/properties/kernel \
@@ -1419,6 +1415,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/verification \
 	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/jni/gui \
+	$(REMOTE1PTIIDIST)/lbnl \
+	$(REMOTE1PTIIDIST)/doc/books/design/modal \
+	$(REMOTE1PTIIDIST)/doc/books/design/time \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/demo \
@@ -1428,8 +1427,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/demo \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil \
-	$(REMOTE1PTIIDIST)/ptolemy/configs
+	$(REMOTE1PTIIDIST)/ptolemy/vergil
 
 # Directories we run make in before running make in the NONJSALLDIRS
 NONJSALLCOREDIRS = \
@@ -1443,6 +1441,7 @@ NONJSALLDIRS = \
 	ptolemy/kernel \
 	ptolemy/moml \
 	ptolemy/util \
+	ptolemy/configs \
 	adm
 
 # Run JavaScope Code Coverage tool in the distribution tree
@@ -1478,7 +1477,7 @@ remote1distjsall_1:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 				jsall JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
@@ -1494,7 +1493,7 @@ remote1distjsall_2:
 		install)
 	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 			AUXCLASSPATH=":$(JSCLASSPATH)" \
 			jsall JSINSTRFLAGS=;)
 
@@ -1520,6 +1519,8 @@ jsalldirs_check:
 # of the backtrack directories do not have makefiles.
 JSCLEANUPDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/applet \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib
@@ -1547,16 +1548,20 @@ remote1distjsrestore:
 	for x do \
 	    if [ -w $$x ] ; then \
 		( cd $$x ; \
-		echo running jsrestore in $$x ; \
+		echo running jsrestore in `pwd` ; \
+		ls jsoriginal; \
 		jsrestore *.java; \
 		if [ -d jsoriginal ]; then \
 			rm -f jsoriginal/README; \
 			rmdir jsoriginal; \
 		fi; \
+		grep "import COM.sun.suntest.javascope.database.CoverageUnit" *.java ; \
 		rm -f *.class; \
 		);  \
 	    fi ; \
 	done ; \
+	# Try to get rid of JavaScope files
+	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack; rm -rf automatic util; svn update)
 
 # Build the docs
 remote1doc:
@@ -1665,7 +1670,7 @@ remote1findbugs:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST)/doc; rm -rf findbugs.*; \
-		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k findbugs)
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k PTII=$(REMOTE1PTIIDIST) findbugs)
 
 # Build jnlp installers
 remote1jnlp:
@@ -1787,7 +1792,7 @@ remote2distjdk1.4test: #$(REMOTE2PTJACL_JAR)
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
 		$(MAKE) -k \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 			tests)
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -1890,7 +1895,7 @@ remote3disttest: $(REMOTE3PTJACL_JAR)
 	@echo "`uptime`"
 	-(cd $(REMOTE3PTIIDIST); \
 		$(OTHERMAKE) \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 		tests)
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -2259,7 +2264,7 @@ remote6buildjsall:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 				jsoriginal clean jsbuild JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
@@ -2274,7 +2279,7 @@ remote6autojsall:
 			( cd $$x/test ; \
 			echo making jstest_jauto in $$x/test ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 				jstest_jauto; \
 			);  \
 		    fi ; \
