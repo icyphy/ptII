@@ -49,15 +49,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-// FIXME: Change the parameters to be ordered record types
-// so that the full expression language is supported.
-// They should not be strings, and they need not be parsed.
-// Moreover, record types provide nice support for merging in defaults, etc.
-
-// FIXME: The value of the size parameter could optionally be inferred
-// if there is no torroidal wrap around desired.  Perhaps there should
-// be parameter indicating to do such inference.
-
 /** 
  * A director for multidimensional dataflow.
  * This is based on Array-OL, as described by:
@@ -177,11 +168,22 @@ import ptolemy.kernel.util.NameDuplicationException;
  * within modal models.
  * 
  * @author Edward A. Lee, Eric Lenormand, Stavros Tripakis
-@version $Id$
-@since Ptolemy II 8.0
- *
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class PthalesDirector extends SDFDirector {
+
+// FIXME: Change the parameters to be ordered record types
+// so that the full expression language is supported.
+// They should not be strings, and they need not be parsed.
+// Moreover, record types provide nice support for merging in defaults, etc.
+
+// FIXME: The value of the size parameter could optionally be inferred
+// if there is no torroidal wrap around desired.  Perhaps there should
+// be parameter indicating to do such inference.
+
 
     public PthalesDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -189,76 +191,22 @@ public class PthalesDirector extends SDFDirector {
         setScheduler(new PthalesScheduler(this, "PtalesScheduler"));
 
         if (getAttribute("library") == null) {
-            library = new StringParameter(this, "library");
-            library.setExpression("");
+            _library = new StringParameter(this, "library");
+            _library.setExpression("");
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public Receiver newReceiver() {
-        PthalesReceiver recv = new PthalesReceiver();
-        _receivers.add(recv);
-
-        return recv;
-    }
-
-    /** Preinitialize the actors associated with this director and
-     *  compute the schedule.  The schedule is computed during
-     *  preinitialization so that hierarchical opaque composite actors
-     *  can be scheduled properly, since the act of computing the
-     *  schedule sets the rate parameters of the external ports.  In
-     *  addition, performing scheduling during preinitialization
-     *  enables it to be present during code generation.  The order in
-     *  which the actors are preinitialized is arbitrary.
-     *  @exception IllegalActionException If the preinitialize() method of
-     *  one of the associated actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        // Garbage collector
-        System.gc();
-
-        // Load library needed to project
-        if (!(_library.length() == 0)) {
-            System.loadLibrary(_library);
-        }
-
-        // Empties list of receivers before filling it
-        _receivers.removeAll(_receivers);
-
-        super.preinitialize();
-    }
-
-    /** 
-     *  @exception IllegalActionException If port methods throw it.
-     *  @return true If all of the input ports of the container of this
-     *  director have enough tokens.
-     */
-    public boolean prefire() throws IllegalActionException {
-        // Set current time based on the enclosing model.
-        for (PthalesReceiver recv : _receivers) {
-            recv.reset();
-        }
-        return super.prefire();
-    }
-
     /** Attribute update
      * @see ptolemy.domains.sdf.kernel.SDFDirector#attributeChanged(ptolemy.kernel.util.Attribute)
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == library) {
-            _library = library.getExpression();
+        if (attribute == _library) {
+            _libraryName = _library.getExpression();
         }
-    }
-
-    /**
-     * @return the name of the library to use
-     * @exception IllegalActionException
-     */
-    public String getLibName() throws IllegalActionException {
-        return _library;
     }
 
     /** Calculate the current schedule, if necessary, and iterate the
@@ -281,6 +229,62 @@ public class PthalesDirector extends SDFDirector {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+    }
+
+    /** Get the name of the library to use.
+     * @return the name of the library to use.
+     * @exception IllegalActionException
+     */
+    public String getLibName() throws IllegalActionException {
+        return _libraryName;
+    }
+
+    /** Add a new receiver.
+     */
+    public Receiver newReceiver() {
+        PthalesReceiver receiver = new PthalesReceiver();
+        _receivers.add(receiver);
+
+        return receiver;
+    }
+
+    /** Return true if the director is ready to fire.
+     *  @return true If all of the input ports of the container of this
+     *  director have enough tokens.
+     *  @exception IllegalActionException If the port methods throw it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // Set current time based on the enclosing model.
+        for (PthalesReceiver recv : _receivers) {
+            recv.reset();
+        }
+        return super.prefire();
+    }
+
+    /** Preinitialize the actors associated with this director and
+     *  compute the schedule.  The schedule is computed during
+     *  preinitialization so that hierarchical opaque composite actors
+     *  can be scheduled properly, since the act of computing the
+     *  schedule sets the rate parameters of the external ports.  In
+     *  addition, performing scheduling during preinitialization
+     *  enables it to be present during code generation.  The order in
+     *  which the actors are preinitialized is arbitrary.
+     *  @exception IllegalActionException If the preinitialize() method of
+     *  one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        // Garbage collector
+        System.gc();
+
+        // Load library needed to project
+        if (!(_libraryName.length() == 0)) {
+            System.loadLibrary(_libraryName);
+        }
+
+        // Empties list of receivers before filling it
+        _receivers.removeAll(_receivers);
+
+        super.preinitialize();
     }
 
     /** Override the base class method to transfer enough tokens to
@@ -409,7 +413,7 @@ public class PthalesDirector extends SDFDirector {
     ////                         protected variables               ////
 
     /** Buffer memory. */
-    protected StringParameter library;
+    protected StringParameter _library;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -417,5 +421,5 @@ public class PthalesDirector extends SDFDirector {
     /** The dimensions relevant to this receiver. */
     private ArrayList<PthalesReceiver> _receivers = new ArrayList<PthalesReceiver>();
 
-    private String _library = "";
+    private String _libraryName = "";
 }

@@ -38,16 +38,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
-This actor is used to remove header informations from another
-actor and acts as a flag to propagate informations from 
-PthalesAddHeaderActor in the preinitialize phase
-
-@author Remi Barrere
-@version $Id$
-@since Ptolemy II 8.0
-@see ptolemy.domains.pthales.lib.PthalesRemoveHeaderActor
-*/
-
+ * Remove header informations from another actor and act as a flag to
+ * propagate information from PthalesAddHeaderActor in the
+ * preinitialize phase
+ *
+ * @see ptolemy.domains.pthales.lib.PthalesAddHeaderActor
+ *
+ * @author R&eacute;mi Barr&egrave;re
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
 
     /** Construct an actor in the default workspace with an empty string
@@ -61,22 +63,6 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
     public PthalesRemoveHeaderActor() throws IllegalActionException,
             NameDuplicationException {
         super();
-    }
-
-    /** Construct an actor in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument is null, then use the default workspace.
-     *  The object is added to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the entity.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     */
-    public PthalesRemoveHeaderActor(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-        super(workspace);
     }
 
     /** Create a new actor in the specified container with the specified
@@ -94,6 +80,22 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
     public PthalesRemoveHeaderActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+    }
+
+    /** Construct an actor in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public PthalesRemoveHeaderActor(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -131,7 +133,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {

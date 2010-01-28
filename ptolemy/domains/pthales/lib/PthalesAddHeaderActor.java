@@ -43,15 +43,17 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
-This actor adds and/or propagates informations throught relations to another
-actor that can understand and apply modifications.
+ * Add and/or propagate informations through relations to another
+ * actor that can understand and apply modifications.
+ *
+ * @see ptolemy.domains.pthales.lib.PthalesRemoveHeaderActor
 
-@author Remi Barrere
-@version $Id$
-@since Ptolemy II 8.0
-@see ptolemy.domains.pthales.lib.PthalesRemoveHeaderActor
-*/
-
+ * @author R&eacute;mi Barr&egrave;re
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class PthalesAddHeaderActor extends PthalesAtomicActor {
 
     /** Construct an actor in the default workspace with an empty string
@@ -65,22 +67,6 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
     public PthalesAddHeaderActor() throws IllegalActionException,
             NameDuplicationException {
         super();
-    }
-
-    /** Construct an actor in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument is null, then use the default workspace.
-     *  The object is added to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the entity.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     */
-    public PthalesAddHeaderActor(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-        super(workspace);
     }
 
     /** Create a new actor in the specified container with the specified
@@ -100,45 +86,28 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
         super(container, name);
     }
 
+    /** Construct an actor in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public PthalesAddHeaderActor(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create receivers. 
-     * Propagates array sizes to every actors that are connected to
-     * the associated PthalesRemoveActor. 
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Header
-        IOPort portOut = (IOPort) getPort("out");
-        IOPort portIn = (IOPort) getPort("in");
-
-        // One port in theory
-        IOPort port = (IOPort) portIn.connectedPortList().get(0);
-
-        // 1 tokens per dimension + 1 token for the number of dimensions
-        String[] dims = PthalesIOPort.getDimensions(port);
-        int[] sizes = new int[dims.length];
-        Object[] sizesString = PthalesIOPort.getArraySizes(port).values()
-                .toArray();
-        for (int i = 0; i < sizes.length; i++) {
-            sizes[i] = (Integer) sizesString[i];
-        }
-
-        // Ports modifications
-        PthalesIOPort._modifyPattern(portIn, dims, sizes);
-        PthalesIOPort._modifyPattern(portOut, "global", 1
-                + PthalesIOPort.getDimensions(port).length
-                + PthalesIOPort.getArraySize(port));
-
-        PthalesIOPort.propagateHeader(portOut, dims, sizes, 1 + PthalesIOPort
-                .getDimensions(port).length, PthalesIOPort
-                .getArraySizes(portIn));
-    }
-
-    /** Read the contents of the array, add a header containing 
-     * the number of dimensions and the size of each dimension
-     * at the beginning of the array
+    /** Read the contents of the array, add a header containing the
+     * number of dimensions and the size of each dimension at the
+     * beginning of the array
      */
     public void fire() throws IllegalActionException {
 
@@ -177,6 +146,39 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
             }
             portOut.send(i, tokensIn, dataSize);
         }
+    }
+
+    /** Create receivers. 
+     * Propagates array sizes to every actors that are connected to
+     * the associated PthalesRemoveActor. 
+     */
+    public void preinitialize() throws IllegalActionException {
+        super.preinitialize();
+        // Header
+        IOPort portOut = (IOPort) getPort("out");
+        IOPort portIn = (IOPort) getPort("in");
+
+        // One port in theory
+        IOPort port = (IOPort) portIn.connectedPortList().get(0);
+
+        // 1 tokens per dimension + 1 token for the number of dimensions
+        String[] dims = PthalesIOPort.getDimensions(port);
+        int[] sizes = new int[dims.length];
+        Object[] sizesString = PthalesIOPort.getArraySizes(port).values()
+                .toArray();
+        for (int i = 0; i < sizes.length; i++) {
+            sizes[i] = (Integer) sizesString[i];
+        }
+
+        // Ports modifications
+        PthalesIOPort.modifyPattern(portIn, dims, sizes);
+        PthalesIOPort.modifyPattern(portOut, "global", 1
+                + PthalesIOPort.getDimensions(port).length
+                + PthalesIOPort.getArraySize(port));
+
+        PthalesIOPort.propagateHeader(portOut, dims, sizes, 1 + PthalesIOPort
+                .getDimensions(port).length, PthalesIOPort
+                .getArraySizes(portIn));
     }
 
     ///////////////////////////////////////////////////////////////////

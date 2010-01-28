@@ -45,13 +45,14 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- *  
- * @author eal
-@version $Id$
-@since Ptolemy II 8.0
- *
+ * A receiver for the Pthales model of computation.
+ * 
+ * @author R&eacute;mi Barr&egrave;re
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
-
 public class PthalesReceiver extends SDFReceiver {
 
     ///////////////////////////////////////////////////////////////////
@@ -94,13 +95,66 @@ public class PthalesReceiver extends SDFReceiver {
         return new LinkedList();
     }
 
+    /** Update parameters of this receiver according to the actor and port.
+     * @param actor  The actor.
+     * @param port The port.
+     */  
+    public void fillParameters(Actor actor, IOPort port) {
+        int[] repetitions = null;
+
+        PthalesIOPort.setDataType(port);
+
+        repetitions = PthalesAtomicActor.getIterations((ComponentEntity) actor);
+
+        LinkedHashMap<String, Integer[]> base = PthalesIOPort.getBase(port);
+
+        // Number of tokens per data
+        _nbTokens = PthalesIOPort.getNbTokenPerData(port);
+
+        // FIXME: sizeRepetition is not used?
+        // total repetition size
+        int sizeRepetition = 1;
+        for (Integer size : repetitions) {
+            sizeRepetition *= size;
+        }
+
+        // origin construction once per port (order is not important)
+        int origin = 0;
+        for (int nDim = 0; nDim < _dimensions.length; nDim++) {
+            // a base can be null so origin does not increase
+            if (base.get(_dimensions[nDim]) != null) {
+                origin += base.get(_dimensions[nDim])[0]
+                        * _jumpAddr.get(_dimensions[nDim]) * _nbTokens;
+            }
+        }
+
+        if (port.isInput()) {
+            // Specific to input ports
+            _originIn = origin;
+            _repetitionsIn = repetitions;
+            _patternSizeIn = PthalesIOPort.getPatternNbAddress(port);
+            _patternIn = PthalesIOPort.getInternalPattern(port);
+            _tilingIn = PthalesIOPort.getExternalTiling(port,
+                    _repetitionsIn.length);
+
+        } else {
+            // Specific to output ports
+            _originOut = origin;
+            _repetitionsOut = repetitions;
+            _patternSizeOut = PthalesIOPort.getPatternNbAddress(port);
+            _patternOut = PthalesIOPort.getInternalPattern(port);
+            _tilingOut = PthalesIOPort.getExternalTiling(port,
+                    _repetitionsOut.length);
+        }
+    }
+
     /** Get a token from this receiver.
      *  @return A token read from the receiver.
      *  @exception NoTokenException If there is no token.
      */
     public Token get() throws NoTokenException {
         if (_buffer != null) {
-            Token result = _buffer[getAddress(_posIn++, true)];
+            Token result = _buffer[_getAddress(_posIn++, true)];
             return result;
         } else {
             throw new NoTokenException("Empty buffer in PthalesReceiver !");
@@ -172,7 +226,7 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public void put(Token token) {
         if (_buffer != null) {
-            _buffer[getAddress(_posOut++, false)] = token;
+            _buffer[_getAddress(_posOut++, false)] = token;
         }
     }
 
@@ -245,8 +299,21 @@ public class PthalesReceiver extends SDFReceiver {
         _posOut = 0;
     }
 
-    /** Specifies the input array that will read the buffer allocated as output.
-     * Here we only check that everything is correct, and computes addresses in output buffer.
+    public void setExternalBuffer(Actor actor, IOPort port, Token[] buffer) {
+        if (_buffer == null) {
+            _buffer = buffer;
+            _posOut = _buffer.length;
+            try {
+                setOutputArray(port, actor);
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /** Specifies the input array that will read the buffer allocated
+     * as output.  Here we only check that everything is correct, and
+     * computes addresses in output buffer.
      * @param port
      * @param actor
      * @exception IllegalActionException
@@ -262,9 +329,9 @@ public class PthalesReceiver extends SDFReceiver {
     }
 
     /** Specifies the output array that will be read by the receiver
-     * It is the output array that determines the available size and dimensions
-     * for the receivers.
-     * This function allocates a buffer that is used as a memory would be (linear)
+     * It is the output array that determines the available size and
+     * dimensions for the receivers.  This function allocates a buffer
+     * that is used as a memory would be (linear)
      * @param port
      * @param actor
      * @exception IllegalActionException
@@ -307,66 +374,6 @@ public class PthalesReceiver extends SDFReceiver {
         fillParameters(actor, port);
     }
 
-    public void fillParameters(Actor actor, IOPort port) {
-        int[] repetitions = null;
-
-        PthalesIOPort.setDataType(port);
-
-        repetitions = PthalesAtomicActor.getIterations((ComponentEntity) actor);
-
-        LinkedHashMap<String, Integer[]> base = PthalesIOPort.getBase(port);
-
-        // Number of tokens per data
-        _nbTokens = PthalesIOPort.getNbTokenPerData(port);
-
-        // total repetition size
-        int sizeRepetition = 1;
-        for (Integer size : repetitions) {
-            sizeRepetition *= size;
-        }
-
-        // origin construction once per port (order is not important)
-        int origin = 0;
-        for (int nDim = 0; nDim < _dimensions.length; nDim++) {
-            // a base can be null so origin does not increase
-            if (base.get(_dimensions[nDim]) != null) {
-                origin += base.get(_dimensions[nDim])[0]
-                        * _jumpAddr.get(_dimensions[nDim]) * _nbTokens;
-            }
-        }
-
-        if (port.isInput()) {
-            // Specific to input ports
-            _originIn = origin;
-            _repetitionsIn = repetitions;
-            _patternSizeIn = PthalesIOPort.getPatternNbAddress(port);
-            _patternIn = PthalesIOPort.getInternalPattern(port);
-            _tilingIn = PthalesIOPort.getExternalTiling(port,
-                    _repetitionsIn.length);
-
-        } else {
-            // Specific to output ports
-            _originOut = origin;
-            _repetitionsOut = repetitions;
-            _patternSizeOut = PthalesIOPort.getPatternNbAddress(port);
-            _patternOut = PthalesIOPort.getInternalPattern(port);
-            _tilingOut = PthalesIOPort.getExternalTiling(port,
-                    _repetitionsOut.length);
-        }
-    }
-
-    public void setExternalBuffer(Actor actor, IOPort port, Token[] buffer) {
-        if (_buffer == null) {
-            _buffer = buffer;
-            _posOut = _buffer.length;
-            try {
-                setOutputArray(port, actor);
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////               package friendly variables                  ////
 
@@ -375,7 +382,7 @@ public class PthalesReceiver extends SDFReceiver {
     int _posOut = 0;
 
     ///////////////////////////////////////////////////////////////////
-    // Variables for input ports
+    //                    Variables for input ports                ////
 
     int _originIn = 0;
 
@@ -421,7 +428,7 @@ public class PthalesReceiver extends SDFReceiver {
     ////                         private methods                   ////
 
     // Direct access method
-    int getAddress(int pos, boolean input) {
+    private int _getAddress(int pos, boolean input) {
 
         int origin = 0;
 

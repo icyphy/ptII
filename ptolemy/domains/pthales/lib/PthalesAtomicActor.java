@@ -43,32 +43,15 @@ import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * PthalesAtomicActor class.
+ * An atomic actor with Pthales model of computation semantics.
  *
- * @author rbarrere
+ * @author R&eacute;mi Barr&egrave;re
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
 public class PthalesAtomicActor extends TypedAtomicActor {
-
-    /** Construct an actor in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument is null, then use the default workspace.
-     *  The object is added to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the entity.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     */
-    public PthalesAtomicActor(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-        _initialize();
-    }
 
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
@@ -99,6 +82,23 @@ public class PthalesAtomicActor extends TypedAtomicActor {
     public PthalesAtomicActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        _initialize();
+    }
+
+    /** Construct an actor in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public PthalesAtomicActor(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
         _initialize();
     }
 
@@ -134,8 +134,30 @@ public class PthalesAtomicActor extends TypedAtomicActor {
         return realIn;
     }
 
+
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
+    ////              static methods implementation              ////
+
+    public static Integer[] getInternalRepetitions(ComponentEntity actor) {
+        return _parseRepetitions(actor, _INTERNAL_REPETITIONS);
+    }
+
+    public static int getIteration(ComponentEntity actor) {
+        return _computeIteration(_parseRepetitions(actor, _REPETITIONS),
+                _parseRepetitions(actor, _INTERNAL_REPETITIONS));
+    }
+
+    public static int[] getIterations(ComponentEntity actor) {
+        return _computeIterations(_parseRepetitions(actor, _REPETITIONS),
+                _parseRepetitions(actor, _INTERNAL_REPETITIONS));
+    }
+
+    public static Integer[] getRepetitions(ComponentEntity actor) {
+        return _parseRepetitions(actor, _REPETITIONS);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
 
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -164,14 +186,91 @@ public class PthalesAtomicActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////              static methods implementation              ////
+    ////              protected fields                             ////
+
+
+    /** The name of the internal repetitions parameter. */
+    protected static String _INTERNAL_REPETITIONS = "internalRepetitions";
+
+    protected static String _REPETITIONS = "repetitions";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Compute external iterations each time 
+     *  an attribute used to calculate it has changed. 
+     */
+    protected static int _computeIteration(Integer[] totalRepetitions,
+            Integer[] internalRepetitions) {
+
+        // FIXME: prepend an underscore to the name of this protected
+        // method.  if no total repetition, no way to calculate
+        int iterations = 0;
+        if (totalRepetitions != null && totalRepetitions.length > 0) {
+
+            // Internal Loops only used INSIDE the function
+            int internal = 1;
+            if (internalRepetitions != null) {
+                for (Integer iter : internalRepetitions) {
+                    internal *= iter;
+                }
+            }
+
+            // All loops are used to build array
+            int iterationCount = 1;
+            for (Integer iter : totalRepetitions) {
+                iterationCount *= iter;
+            }
+
+            // Iteration is only done on external loops
+            iterations = iterationCount / internal;
+        }
+        return iterations;
+    }
+
+    /** Compute external iterations each time 
+     *  an attribute used to calculate it has changed.
+     */
+    protected static int[] _computeIterations(Integer[] totalRepetitions,
+            Integer[] internalRepetitions) {
+        // FIXME: prepend an underscore to the name of this protected method.        
+        // if no total repetition, no way to calculate
+        int internal = 0;
+        if (internalRepetitions != null) {
+            internal = internalRepetitions.length;
+        }
+
+        int[] iterations = new int[totalRepetitions.length - internal];
+        if (totalRepetitions != null && totalRepetitions.length > 0) {
+
+            // All loops are used to build array
+            for (int i = internal; i < totalRepetitions.length; i++) {
+                iterations[i - internal] = totalRepetitions[i];
+            }
+        }
+        return iterations;
+    }
+    
+    protected void _initialize() throws IllegalActionException,
+            NameDuplicationException {
+
+        if (getAttribute("_iconDescription") != null) {
+            ((SingletonConfigurableAttribute) getAttribute("_iconDescription"))
+                    .setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/></svg>");
+        }
+        if (getAttribute("repetitions") == null) {
+            Parameter repetitions = new Parameter(this, "repetitions");
+            repetitions.setExpression("{1}");
+        }
+    }
 
     /** Return a data structure giving the dimension data contained by a
      *  parameter with the specified name in the specified port or actor.
      *  The dimension data is indexed by dimension name and contains two
      *  integers, a value and a stride, in that order.
      *  @param name The name of the parameter
-     *  @return The dimension data, or an empty array if the parameter does not exist.
+     *  @return The dimension data, or an empty array if the parameter
+     *  does not exist.
      *  @exception IllegalActionException If the parameter cannot be evaluated.
      */
     protected static Integer[] _parseRepetitions(ComponentEntity actor,
@@ -200,101 +299,5 @@ public class PthalesAtomicActor extends TypedAtomicActor {
         return result;
     }
 
-    public static Integer[] getRepetitions(ComponentEntity actor) {
-        return _parseRepetitions(actor, REPETITIONS);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////              static methods implementation              ////
-    public static Integer[] getInternalRepetitions(ComponentEntity actor) {
-        return _parseRepetitions(actor, INTERNAL_REPETITIONS);
-    }
-
-    public static int getIteration(ComponentEntity actor) {
-        return computeIteration(_parseRepetitions(actor, REPETITIONS),
-                _parseRepetitions(actor, INTERNAL_REPETITIONS));
-    }
-
-    public static int[] getIterations(ComponentEntity actor) {
-        return computeIterations(_parseRepetitions(actor, REPETITIONS),
-                _parseRepetitions(actor, INTERNAL_REPETITIONS));
-    }
-
-    /** Compute external iterations each time 
-     *  an attribute used to calculate it has changed 
-     */
-    protected static int computeIteration(Integer[] totalRepetitions,
-            Integer[] internalRepetitions) {
-        // FIXME: prepend an underscore to the name of this protected method.        
-        // if no total repetition, no way to calculate
-        int iterations = 0;
-        if (totalRepetitions != null && totalRepetitions.length > 0) {
-
-            // Internal Loops only used INSIDE the function
-            int internal = 1;
-            if (internalRepetitions != null) {
-                for (Integer iter : internalRepetitions) {
-                    internal *= iter;
-                }
-            }
-
-            // All loops are used to build array
-            int iterationCount = 1;
-            for (Integer iter : totalRepetitions) {
-                iterationCount *= iter;
-            }
-
-            // Iteration is only done on external loops
-            iterations = iterationCount / internal;
-        }
-        return iterations;
-    }
-
-    /** Compute external iterations each time 
-     *  an attribute used to calculate it has changed 
-     */
-    protected static int[] computeIterations(Integer[] totalRepetitions,
-            Integer[] internalRepetitions) {
-        // FIXME: prepend an underscore to the name of this protected method.        
-        // if no total repetition, no way to calculate
-        int internal = 0;
-        if (internalRepetitions != null) {
-            internal = internalRepetitions.length;
-        }
-
-        int[] iterations = new int[totalRepetitions.length - internal];
-        if (totalRepetitions != null && totalRepetitions.length > 0) {
-
-            // All loops are used to build array
-            for (int i = internal; i < totalRepetitions.length; i++) {
-                iterations[i - internal] = totalRepetitions[i];
-            }
-        }
-        return iterations;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////              static variables              ////
-
-    /** The name of the internal repetitions parameter. */
-    protected static String INTERNAL_REPETITIONS = "internalRepetitions";
-
-    protected static String REPETITIONS = "repetitions";
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
-
-        if (getAttribute("_iconDescription") != null) {
-            ((SingletonConfigurableAttribute) getAttribute("_iconDescription"))
-                    .setExpression("<svg width=\"60\" height=\"40\"><polygon points=\"2.54167,37.2083 13.9198,20.0125 2.54167,2.45833 46.675,2.45833 57.7083,20.0125 47.0198,37.2083\"style=\"fill:#c0c0ff;stroke:#000080;stroke-width:1\"/></svg>");
-        }
-        if (getAttribute("repetitions") == null) {
-            Parameter repetitions = new Parameter(this, "repetitions");
-            repetitions.setExpression("{1}");
-        }
-    }
-
+    
 }

@@ -79,22 +79,6 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         super();
     }
 
-    /** Construct an actor in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument is null, then use the default workspace.
-     *  The object is added to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the entity.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
-     */
-    public PthalesGenericActor(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-    }
-
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -112,8 +96,22 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         super(container, name);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
+    /** Construct an actor in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
+    public PthalesGenericActor(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -187,7 +185,7 @@ public class PthalesGenericActor extends PthalesAtomicActor {
                     if (method.getName().equals(function)) {
                         try {
                             // Arguments convertion and format as a list
-                            args = convertArguments(realIn, realOut);
+                            args = _convertArguments(realIn, realOut);
                             if (method.getParameterTypes().length == args.length) {
                                 // JNI Function call with arguments 
                                 method.invoke(c, args);
@@ -246,13 +244,31 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         return true;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected void _initialize() throws IllegalActionException,
+            NameDuplicationException {
+
+        super._initialize();
+
+        if (getAttribute("arguments") == null) {
+            Parameter arguments = new StringParameter(this, "arguments");
+            arguments.setExpression("");
+        }
+        if (getAttribute("function") == null) {
+            Parameter function = new StringParameter(this, "function");
+            function.setExpression("");
+        }
+    }
+
     /** Function which convert a list of arguments into real arguments
      * that will be used for JNI function call.
      * @param in
      * @param out
      * @return A list of arguments to be used for the JNI function call.
      */
-    protected Object[] convertArguments(float[][] in, float[][] out) {
+    protected Object[] _convertArguments(float[][] in, float[][] out) {
         // FIXME: prepend an underscore to the name of this protected method.
         List objs = new ArrayList();
 
@@ -322,26 +338,5 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         }
 
         return objs.toArray();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    protected void _initialize() throws IllegalActionException,
-            NameDuplicationException {
-
-        super._initialize();
-
-        if (getAttribute("arguments") == null) {
-            Parameter arguments = new StringParameter(this, "arguments");
-            arguments.setExpression("");
-        }
-        if (getAttribute("function") == null) {
-            Parameter function = new StringParameter(this, "function");
-            function.setExpression("");
-        }
     }
 }

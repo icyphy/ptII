@@ -50,6 +50,7 @@ import ptolemy.kernel.util.Workspace;
  as they contain needed values used by PThalesDirector.
  A PthalesCompositeActor can contain actors from different model (as SDF),
  but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
+
  @author R&eacute;mi Barr&egrave;re
  @see ptolemy.actor.TypedIOPort
  @version $Id$
@@ -67,32 +68,6 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     public PthalesCompositeActor() throws NameDuplicationException,
             IllegalActionException {
         super();
-
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is PthalesCompositeActor.
-        // In derived classes, however, we usually do not want to identify
-        // the class name as that of the derived class, but rather want
-        // to identify it as PthalesCompositeActor.  This way, the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be PthalesCompositeActor.
-        setClassName("ptolemy.domains.pthales.lib.PthalesCompositeActor");
-
-        _initialize();
-    }
-
-    /** Construct a PthalesCompositeActor in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.  You should set the local director or
-     *  executive director before attempting to send data to the actor
-     *  or to execute it. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     */
-    public PthalesCompositeActor(Workspace workspace)
-            throws NameDuplicationException, IllegalActionException {
-        super(workspace);
 
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is PthalesCompositeActor.
@@ -140,6 +115,44 @@ public class PthalesCompositeActor extends TypedCompositeActor {
         _initialize();
     }
 
+    /** Construct a PthalesCompositeActor in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  You should set the local director or
+     *  executive director before attempting to send data to the actor
+     *  or to execute it. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public PthalesCompositeActor(Workspace workspace)
+            throws NameDuplicationException, IllegalActionException {
+        super(workspace);
+
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is PthalesCompositeActor.
+        // In derived classes, however, we usually do not want to identify
+        // the class name as that of the derived class, but rather want
+        // to identify it as PthalesCompositeActor.  This way, the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be PthalesCompositeActor.
+        setClassName("ptolemy.domains.pthales.lib.PthalesCompositeActor");
+
+        _initialize();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The number of times this actor is fired.
+     *  The initial default value is an array with one element,
+     *  the integer "1".
+     */
+    public Parameter repetitions;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public method                         ////
+
     public void computeIterations(IOPort portIn,
             LinkedHashMap<String, Integer> sizes) {
 
@@ -149,7 +162,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
         LinkedHashMap<String, Integer[]> patternDims = PthalesIOPort
                 .getInternalPattern(portIn);
         LinkedHashMap<String, Integer[]> tilingDims = PthalesIOPort
-                ._getTiling(portIn);
+                .getTiling(portIn);
 
         // Input array dimension
         Object[] dims = tilingDims.keySet().toArray();
@@ -176,20 +189,11 @@ public class PthalesCompositeActor extends TypedCompositeActor {
         }
         repetition += "}";
 
-        Attribute repetitions = getAttribute(PthalesCompositeActor.REPETITIONS);
+        Attribute repetitions = getAttribute(PthalesCompositeActor._REPETITIONS);
         if (repetitions != null && repetitions instanceof Parameter) {
             ((Parameter) repetitions).setExpression(repetition);
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** The number of times this actor is fired.
-     *  The initial default value is an array with one element,
-     *  the integer "1".
-     */
-    public Parameter repetitions;
 
     /** Create a new PthalesIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -220,6 +224,11 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    protected static String _REPETITIONS = "repetitions";
+
+    ///////////////////////////////////////////////////////
+    ////              protected variables              ////
+
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {
 
@@ -232,10 +241,4 @@ public class PthalesCompositeActor extends TypedCompositeActor {
             repetitions.setExpression("{1}");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////              static variables              ////
-
-    protected static String REPETITIONS = "repetitions";
-
 }

@@ -72,14 +72,23 @@ import ptolemy.kernel.util.Settable;
 public class PthalesIOPort {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                     ports and parameters                  ////
 
-    /** Return the base of this port. 
-     *  @return base 
-     */
-    public static LinkedHashMap<String, Integer[]> getBase(IOPort port) {
-        return _parseSpec(port, BASE);
-    }
+
+    /** The name of the base parameter. */
+    public static String BASE = "base";
+
+    public static Integer ONE = new Integer(1);
+
+    /** The name of the pattern parameter. */
+    public static String PATTERN = "pattern";
+
+    /** The name of the tiling parameter. */
+    public static String TILING = "tiling";
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Compute total array size.
      *  @return array size
@@ -93,7 +102,7 @@ public class PthalesIOPort {
         return val;
     }
 
-    /** Computes array sizes (for each dimension)
+    /** Compute array sizes (for each dimension).
      *  @return array sizes
      */
     public static LinkedHashMap<String, Integer> getArraySizes(IOPort port) {
@@ -103,8 +112,8 @@ public class PthalesIOPort {
         Actor actor = (Actor) port.getContainer();
         Integer[] rep = { 1 };
 
-        LinkedHashMap<String, Integer[]> pattern = _getPattern(port);
-        LinkedHashMap<String, Integer[]> tiling = _getTiling(port);
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
 
         rep = PthalesAtomicActor.getRepetitions((ComponentEntity) actor);
 
@@ -179,75 +188,14 @@ public class PthalesIOPort {
         return sizes;
     }
 
-    /** Compute number of address needed for each iteration 
-     *  @return number of address
+    /** Return the base of this port. 
+     *  @return base 
      */
-    public static int getPatternNbAddress(IOPort port) {
-        int val = 1;
-        for (int size : getPatternNbAddresses(port)) {
-            val *= size;
-        }
-
-        return val;
+    public static LinkedHashMap<String, Integer[]> getBase(IOPort port) {
+        return _parseSpec(port, BASE);
     }
 
-    /** Compute  number of address by dimension needed for each iteration
-     *  @return address array
-     */
-    public static Integer[] getPatternNbAddresses(IOPort port) {
-        List myList = new ArrayList<String>();
-
-        Actor actor = (Actor) port.getContainer();
-        Integer[] rep = new Integer[0];
-
-        LinkedHashMap<String, Integer[]> pattern = _getPattern(port);
-        LinkedHashMap<String, Integer[]> tiling = _getTiling(port);
-
-        if (actor instanceof AtomicActor) {
-            rep = PthalesAtomicActor
-                    .getInternalRepetitions((AtomicActor) actor);
-        }
-
-        Set dims = pattern.keySet();
-        Set tilingSet = tiling.keySet();
-        int i = 0;
-
-        for (Object dim : dims.toArray()) {
-            if (!tilingSet.contains(dim) || rep.length == 0) {
-                myList.add(pattern.get(dim)[0]);
-            } else {
-                for (Object til : tilingSet) {
-                    if (til.equals(dim)) {
-                        if (i < rep.length) {
-                            myList.add(pattern.get(dim)[0] + rep[i]
-                                    * tiling.get(til)[0] - 1);
-                        } else {
-                            myList.add(pattern.get(dim)[0] + tiling.get(til)[0]
-                                    - 1);
-                        }
-                    }
-                }
-            }
-            i++;
-        }
-
-        if (rep != null) {
-            i = 0;
-            for (Object til : tilingSet) {
-                if (i < rep.length && !dims.contains(til)
-                        && !((String) til).startsWith("empty")) {
-                    myList.add(rep[i]);
-                }
-                i++;
-            }
-        }
-        Integer[] result = new Integer[myList.size()];
-        myList.toArray(result);
-
-        return result;
-    }
-
-    /** Computes data size produced for each iteration 
+    /** Computes data size produced for each iteration .
      *  @return data size
      */
     public static int getDataProducedSize(IOPort port) {
@@ -259,7 +207,7 @@ public class PthalesIOPort {
         return val;
     }
 
-    /** Computes data sizes (for each dimension) produced for each iteration
+    /** Computes data sizes (for each dimension) produced for each iteration.
      *  @return data sizes
      */
     public static Integer[] getDataProducedSizes(IOPort port) {
@@ -268,8 +216,8 @@ public class PthalesIOPort {
         Actor actor = (Actor) port.getContainer();
         Integer[] rep = { 1 };
 
-        LinkedHashMap<String, Integer[]> pattern = _getPattern(port);
-        LinkedHashMap<String, Integer[]> tiling = _getTiling(port);
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
 
         if (actor instanceof AtomicActor) {
             rep = PthalesAtomicActor
@@ -316,6 +264,50 @@ public class PthalesIOPort {
         return result;
     }
 
+    /** Return dimension names, in order of production.
+     *  @return dimension names
+     */
+    public static String[] getDimensions(IOPort port) {
+        List myList = new ArrayList<String>();
+
+        Set dims1 = getPattern(port).keySet();
+        Set dims2 = getTiling(port).keySet();
+
+        for (Object dim : dims1.toArray()) {
+            myList.add(dim);
+        }
+        for (Object dim : dims2.toArray()) {
+            if (!myList.contains(dim) && !((String) dim).startsWith("empty")) {
+                myList.add(dim);
+            }
+        }
+
+        String[] result = new String[myList.size()];
+        myList.toArray(result);
+
+        return result;
+    }
+
+    /** Return tiling of external loops iterations.
+     * @param port
+     * @param nb
+     * @return tiling map 
+     */
+    public static LinkedHashMap<String, Integer[]> getExternalTiling(
+            IOPort port, int nb) {
+        LinkedHashMap<String, Integer[]> result = new LinkedHashMap<String, Integer[]>();
+
+        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
+
+        Object[] tilingSet = tiling.keySet().toArray();
+        for (int i = 0; i < tilingSet.length; i++) {
+            if (tilingSet.length - nb <= i) {
+                result.put((String) tilingSet[i], tiling.get(tilingSet[i]));
+            }
+        }
+        return result;
+    }
+
     /** Compute pattern for external iteration
      *  @return data sizes
      */
@@ -326,8 +318,8 @@ public class PthalesIOPort {
         Actor actor = (Actor) port.getContainer();
         Integer[] rep = new Integer[0];
 
-        LinkedHashMap<String, Integer[]> pattern = _getPattern(port);
-        LinkedHashMap<String, Integer[]> tiling = _getTiling(port);
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
 
         if (actor instanceof AtomicActor) {
             rep = PthalesAtomicActor
@@ -381,26 +373,6 @@ public class PthalesIOPort {
         return internalPattern;
     }
 
-    /** Returns tiling of external loops iterations
-     * @param port
-     * @param nb
-     * @return tiling map 
-     */
-    public static LinkedHashMap<String, Integer[]> getExternalTiling(
-            IOPort port, int nb) {
-        LinkedHashMap<String, Integer[]> result = new LinkedHashMap<String, Integer[]>();
-
-        LinkedHashMap<String, Integer[]> tiling = _getTiling(port);
-
-        Object[] tilingSet = tiling.keySet().toArray();
-        for (int i = 0; i < tilingSet.length; i++) {
-            if (tilingSet.length - nb <= i) {
-                result.put((String) tilingSet[i], tiling.get(tilingSet[i]));
-            }
-        }
-        return result;
-    }
-
     /** Check if data type is a structure.
      * If yes, gives the number of tokens needed to store all the data
      * By default, the return value is 1
@@ -416,57 +388,87 @@ public class PthalesIOPort {
         return 1;
     }
 
-    /** Returns dimension names, in order of production 
-     *  @return dimension names
+    /** Return the pattern of this port.
+     *  @return pattern 
      */
-    public static String[] getDimensions(IOPort port) {
+    public static LinkedHashMap<String, Integer[]> getPattern(IOPort port) {
+        return _parseSpec(port, PATTERN);
+    }
+
+    /** Compute number of address needed for each iteration 
+     *  @return number of address
+     */
+    public static int getPatternNbAddress(IOPort port) {
+        int val = 1;
+        for (int size : getPatternNbAddresses(port)) {
+            val *= size;
+        }
+
+        return val;
+    }
+
+    /** Compute  number of address by dimension needed for each iteration
+     *  @return address array
+     */
+    public static Integer[] getPatternNbAddresses(IOPort port) {
         List myList = new ArrayList<String>();
 
-        Set dims1 = _getPattern(port).keySet();
-        Set dims2 = _getTiling(port).keySet();
+        Actor actor = (Actor) port.getContainer();
+        Integer[] rep = new Integer[0];
 
-        for (Object dim : dims1.toArray()) {
-            myList.add(dim);
+        LinkedHashMap<String, Integer[]> pattern = getPattern(port);
+        LinkedHashMap<String, Integer[]> tiling = getTiling(port);
+
+        if (actor instanceof AtomicActor) {
+            rep = PthalesAtomicActor
+                    .getInternalRepetitions((AtomicActor) actor);
         }
-        for (Object dim : dims2.toArray()) {
-            if (!myList.contains(dim) && !((String) dim).startsWith("empty")) {
-                myList.add(dim);
+
+        Set dims = pattern.keySet();
+        Set tilingSet = tiling.keySet();
+        int i = 0;
+
+        for (Object dim : dims.toArray()) {
+            if (!tilingSet.contains(dim) || rep.length == 0) {
+                myList.add(pattern.get(dim)[0]);
+            } else {
+                for (Object til : tilingSet) {
+                    if (til.equals(dim)) {
+                        if (i < rep.length) {
+                            myList.add(pattern.get(dim)[0] + rep[i]
+                                    * tiling.get(til)[0] - 1);
+                        } else {
+                            myList.add(pattern.get(dim)[0] + tiling.get(til)[0]
+                                    - 1);
+                        }
+                    }
+                }
+            }
+            i++;
+        }
+
+        if (rep != null) {
+            i = 0;
+            for (Object til : tilingSet) {
+                if (i < rep.length && !dims.contains(til)
+                        && !((String) til).startsWith("empty")) {
+                    myList.add(rep[i]);
+                }
+                i++;
             }
         }
-
-        String[] result = new String[myList.size()];
+        Integer[] result = new Integer[myList.size()];
         myList.toArray(result);
 
         return result;
     }
 
-    /** Check if data type is a structure.
-     * If yes, gives the number of tokens needed to store all the data
-     * By default, the return value is 1
+    /** Returns the tiling of this port. 
+     *  @return tiling 
      */
-    public static void setDataType(IOPort port) {
-        Parameter p = (Parameter) port.getAttribute("dataType");
-        if (p != null && port instanceof TypedIOPort) {
-            if (p.getExpression().equals("Cplfloat")
-                    || p.getExpression().equals("Splfloat")
-                    || p.getExpression().equals("float")) {
-                ((TypedIOPort) port).setTypeEquals(BaseType.FLOAT);
-            }
-            if (p.getExpression().equals("Cpldouble")
-                    || p.getExpression().equals("Spldouble")
-                    || p.getExpression().equals("double")) {
-                ((TypedIOPort) port).setTypeEquals(BaseType.DOUBLE);
-            }
-            if (p.getExpression().equals("Cplint")
-                    || p.getExpression().equals("Splint")
-                    || p.getExpression().equals("int")) {
-                ((TypedIOPort) port).setTypeEquals(BaseType.INT);
-            }
-        }
+    public static LinkedHashMap<String, Integer[]> getTiling(IOPort port) {
+        return _parseSpec(port, TILING);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
 
     /** Reset the variable part of this type to the specified type.
      *  @exception IllegalActionException If the type is not settable,
@@ -503,8 +505,59 @@ public class PthalesIOPort {
         }
     }
 
-    /** Propagate the header through application relations
-     * to update informations
+    public static void modifyPattern(IOPort port, String dim, int dimSize) {
+        Attribute pattern = port.getAttribute(PATTERN);
+        if (port.getAttribute(PATTERN) == null) {
+            try {
+                pattern = new Parameter(port, PATTERN);
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (pattern instanceof Parameter) {
+            ((Parameter) pattern).setExpression("[" + dim + "={" + dimSize
+                    + ",1}]");
+        }
+    }
+
+    /** Initialize the iteration counter.  A derived class must call
+     *  this method in its initialize() method or the <i>firingCountLimit</i>
+     *  feature will not work.
+     *  @exception IllegalActionException If the parent class throws it,
+     *   which could occur if, for example, the director will not accept
+     *   sequence actors.
+     */
+
+    public static void modifyPattern(IOPort port, String[] dims, int[] dimSizes) {
+        Attribute pattern = port.getAttribute(PATTERN);
+        if (port.getAttribute(PATTERN) == null) {
+            try {
+                pattern = new Parameter(port, PATTERN);
+            } catch (IllegalActionException e) {
+                e.printStackTrace();
+            } catch (NameDuplicationException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String s = "[";
+        if (pattern instanceof Parameter) {
+            for (int i = 0; i < dims.length; i++) {
+                s += dims[i] + "={" + dimSizes[i] + ",1}";
+                if (i < dims.length - 1) {
+                    s += ",";
+                }
+            }
+        }
+        s += "]";
+        ((Parameter) pattern).setExpression(s);
+    }
+
+    /** Propagate the header through application relations to update
+     * information.
      * @param portIn
      * @param dims
      * @param sizes
@@ -523,10 +576,10 @@ public class PthalesIOPort {
             sum += headersize;
 
             // Input pattern
-            PthalesIOPort._modifyPattern(portIn, "global", sum);
+            PthalesIOPort.modifyPattern(portIn, "global", sum);
 
             // Output pattern
-            PthalesIOPort._modifyPattern(
+            PthalesIOPort.modifyPattern(
                     (IOPort) ((PthalesRemoveHeaderActor) portIn.getContainer())
                             .getPort("out"), dims, sizes);
 
@@ -572,7 +625,7 @@ public class PthalesIOPort {
                             // If within Pthales domain, update of the port informations
                             if (((CompositeActor) portIn.getContainer())
                                     .getDirector() instanceof PthalesDirector) {
-                                PthalesIOPort._modifyPattern(portIn, "global",
+                                PthalesIOPort.modifyPattern(portIn, "global",
                                         sum);
                             }
                             propagateHeader(port2, dims, sizes, headersize,
@@ -584,7 +637,7 @@ public class PthalesIOPort {
         }
     }
 
-    /** Update actor iterations according to pattern and tiling informations 
+    /** Update actor iterations according to pattern and tiling informations.
      * @param portIn
      * @param sizes
      */
@@ -642,87 +695,34 @@ public class PthalesIOPort {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The name of the base parameter. */
-    public static String BASE = "base";
-
-    /** The name of the pattern parameter. */
-    public static String PATTERN = "pattern";
-
-    /** The name of the tiling parameter. */
-    public static String TILING = "tiling";
-
-    public static Integer ONE = new Integer(1);
-
-    /** Initialize the iteration counter.  A derived class must call
-     *  this method in its initialize() method or the <i>firingCountLimit</i>
-     *  feature will not work.
-     *  @exception IllegalActionException If the parent class throws it,
-     *   which could occur if, for example, the director will not accept
-     *   sequence actors.
+    /** Check if data type is a structure.
+     * If yes, gives the number of tokens needed to store all the data
+     * By default, the return value is 1.
      */
+    public static void setDataType(IOPort port) {
+        Parameter p = (Parameter) port.getAttribute("dataType");
+        if (p != null && port instanceof TypedIOPort) {
+            if (p.getExpression().equals("Cplfloat")
+                    || p.getExpression().equals("Splfloat")
+                    || p.getExpression().equals("float")) {
+                ((TypedIOPort) port).setTypeEquals(BaseType.FLOAT);
+            }
+            if (p.getExpression().equals("Cpldouble")
+                    || p.getExpression().equals("Spldouble")
+                    || p.getExpression().equals("double")) {
+                ((TypedIOPort) port).setTypeEquals(BaseType.DOUBLE);
+            }
+            if (p.getExpression().equals("Cplint")
+                    || p.getExpression().equals("Splint")
+                    || p.getExpression().equals("int")) {
+                ((TypedIOPort) port).setTypeEquals(BaseType.INT);
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Notify the type listener about type change.
-    /** returns the pattern of this port 
-     *  @return pattern 
-     */
-    public static LinkedHashMap<String, Integer[]> _getPattern(IOPort port) {
-        return _parseSpec(port, PATTERN);
-    }
 
-    public static void _modifyPattern(IOPort port, String dim, int dimSize) {
-        Attribute pattern = port.getAttribute(PATTERN);
-        if (port.getAttribute(PATTERN) == null) {
-            try {
-                pattern = new Parameter(port, PATTERN);
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-            } catch (NameDuplicationException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (pattern instanceof Parameter) {
-            ((Parameter) pattern).setExpression("[" + dim + "={" + dimSize
-                    + ",1}]");
-        }
-    }
-
-    public static void _modifyPattern(IOPort port, String[] dims, int[] dimSizes) {
-        Attribute pattern = port.getAttribute(PATTERN);
-        if (port.getAttribute(PATTERN) == null) {
-            try {
-                pattern = new Parameter(port, PATTERN);
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-            } catch (NameDuplicationException e) {
-                e.printStackTrace();
-            }
-        }
-
-        String s = "[";
-        if (pattern instanceof Parameter) {
-            for (int i = 0; i < dims.length; i++) {
-                s += dims[i] + "={" + dimSizes[i] + ",1}";
-                if (i < dims.length - 1) {
-                    s += ",";
-                }
-            }
-        }
-        s += "]";
-        ((Parameter) pattern).setExpression(s);
-    }
-
-    /** returns the tiling of this port 
-     *  @return tiling 
-     */
-    public static LinkedHashMap<String, Integer[]> _getTiling(IOPort port) {
-        return _parseSpec(port, TILING);
-    }
 
     /** Return a data structure giving the dimension data contained by a
      *  parameter with the specified name in the specified port or actor.

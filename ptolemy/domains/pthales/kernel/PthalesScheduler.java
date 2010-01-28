@@ -53,109 +53,31 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /** 
- *  FIXME: To do:
- *  - The tokenInitProduction parameter is not being used. ArrayOL equivalent?
+ * The scheduler for the Pthales model of computation.
  *  
- * @author eal
-@version $Id$
-@since Ptolemy II 8.0
- *
+ * @author R&eacute;mi Barr&egrave;re
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class PthalesScheduler extends SDFScheduler {
+
+    // FIXME: To do:
+    // The tokenInitProduction parameter is not being used. ArrayOL equivalent?
 
     public PthalesScheduler(Director container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    protected Schedule _getSchedule() throws IllegalActionException,
-            NotSchedulableException {
-        // Context of this scheduler.
-        PthalesDirector director = (PthalesDirector) getContainer();
-        CompositeActor compositeActor = (CompositeActor) (director
-                .getContainer());
-        List<Actor> actors = compositeActor.deepEntityList();
-
-        CompositeActor model = (CompositeActor) director.getContainer();
-        _checkDynamicRateVariables(model, _rateVariables);
-
-        // Iterate over the actors.
-        for (Actor actor : actors) {
-
-            // Next do the output ports.
-            List<IOPort> ports = actor.outputPortList();
-            for (IOPort port : ports) {
-
-                // FIXME: The following method looks for a stride as well,
-                // which does not make sense for a tiling spec.
-
-                // Now we need to set capacities of each of the receivers.
-                // Notify the destination receivers of the write pattern.
-
-                Receiver[][] receivers = port.getRemoteReceivers();
-                if (receivers != null && receivers.length > 0) {
-                    for (Receiver[] receiverss : receivers) {
-                        if (receiverss != null && receiverss.length > 0) {
-                            for (Receiver receiver : receiverss) {
-                                ((PthalesReceiver) receiver).setOutputArray(
-                                        port, actor);
-                            }
-                        }
-                    }
-                }
-            }
-            // FIXME: Need to do the input ports of the container of this director,
-            // treating them as output ports, in order to support hierarchical nestings
-            // of this director inside other models.
-
-            // Next do the input ports.
-            ports = actor.inputPortList();
-            for (IOPort port : ports) {
-
-                // Notify the receivers of the read pattern.
-                // This will have the side effect of setting the capacity of the receivers.
-                Receiver[][] receivers = port.getReceivers();
-                if (receivers != null && receivers.length > 0) {
-                    for (Receiver[] receiverss : receivers) {
-                        if (receiverss != null && receiverss.length > 0) {
-                            for (Receiver receiver : receiverss) {
-                                // FIXME: Is the cast to LinkedHashSet safe?
-                                // Depends on the Java implementation of LinkedHashMap.
-                                ((PthalesReceiver) receiver).setInputArray(
-                                        port, actor);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Populate the schedule with a subclass of Firing
-        // that keeps track of the dimensions for the firing.
-        // FIXME: Brute force technique here assumes an acyclic graph.
-        // It executes all firings of upstream actors before any firing
-        // of a downstream actor.
-        Schedule schedule = new Schedule();
-        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) compositeActor
-                .getCausalityInterface();
-        List<Actor> sortedActors = causality.topologicalSort();
-        for (Actor actor : sortedActors) {
-            Firing firing = new Firing(actor);
-
-            // Iteration is only done on external loops
-            firing.setIterationCount(PthalesAtomicActor
-                    .getIteration((ComponentEntity) actor));
-
-            schedule.add(firing);
-        }
-        return schedule;
-    }
+    ////                         public methods                    ////
 
     /** Declare the rate dependency on any external ports of the model.
      *  SDF directors should invoke this method once during preinitialize.
+     *  @exception IllegalActionException
      */
     public void declareRateDependency() throws IllegalActionException {
         ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
@@ -209,5 +131,98 @@ public class PthalesScheduler extends SDFScheduler {
                 }
             }
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /**
+     * @exception IllegalActionException   
+     * @exception NotSchedulableException
+     */
+    protected Schedule _getSchedule() throws IllegalActionException,
+            NotSchedulableException {
+        // Context of this scheduler.
+        PthalesDirector director = (PthalesDirector) getContainer();
+        CompositeActor compositeActor = (CompositeActor) (director
+                .getContainer());
+        List<Actor> actors = compositeActor.deepEntityList();
+
+        CompositeActor model = (CompositeActor) director.getContainer();
+        _checkDynamicRateVariables(model, _rateVariables);
+
+        // Iterate over the actors.
+        for (Actor actor : actors) {
+
+            // Next do the output ports.
+            List<IOPort> ports = actor.outputPortList();
+            for (IOPort port : ports) {
+
+                // FIXME: The following method looks for a stride as well,
+                // which does not make sense for a tiling spec.
+
+                // Now we need to set capacities of each of the receivers.
+                // Notify the destination receivers of the write pattern.
+
+                Receiver[][] receivers = port.getRemoteReceivers();
+                if (receivers != null && receivers.length > 0) {
+                    for (Receiver[] receiverss : receivers) {
+                        if (receiverss != null && receiverss.length > 0) {
+                            for (Receiver receiver : receiverss) {
+                                ((PthalesReceiver) receiver).setOutputArray(
+                                        port, actor);
+                            }
+                        }
+                    }
+                }
+            }
+            // FIXME: Need to do the input ports of the container of
+            // this director, treating them as output ports, in order
+            // to support hierarchical nestings of this director
+            // inside other models.
+
+            // Next do the input ports.
+            ports = actor.inputPortList();
+            for (IOPort port : ports) {
+
+                // Notify the receivers of the read pattern.  This
+                // will have the side effect of setting the capacity
+                // of the receivers.
+                Receiver[][] receivers = port.getReceivers();
+                if (receivers != null && receivers.length > 0) {
+                    for (Receiver[] receiverss : receivers) {
+                        if (receiverss != null && receiverss.length > 0) {
+                            for (Receiver receiver : receiverss) {
+                                // FIXME: Is the cast to LinkedHashSet
+                                // safe?  Depends on the Java
+                                // implementation of LinkedHashMap.
+                                ((PthalesReceiver) receiver).setInputArray(
+                                        port, actor);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Populate the schedule with a subclass of Firing
+        // that keeps track of the dimensions for the firing.
+        // FIXME: Brute force technique here assumes an acyclic graph.
+        // It executes all firings of upstream actors before any firing
+        // of a downstream actor.
+        Schedule schedule = new Schedule();
+        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) compositeActor
+                .getCausalityInterface();
+        List<Actor> sortedActors = causality.topologicalSort();
+        for (Actor actor : sortedActors) {
+            Firing firing = new Firing(actor);
+
+            // Iteration is only done on external loops
+            firing.setIterationCount(PthalesAtomicActor
+                    .getIteration((ComponentEntity) actor));
+
+            schedule.add(firing);
+        }
+        return schedule;
     }
 }
