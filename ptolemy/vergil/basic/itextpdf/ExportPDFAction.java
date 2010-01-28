@@ -69,9 +69,9 @@ import diva.gui.GUIUtilities;
  Thus, use of this package is optional.  To add the "Export PDF" menu
  choice to the GraphEditor, add the following to the configuration
  <pre>
-  <property name="_exportPDFClassName"
+  &lt;property name="_exportPDFClassName"
             class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.itextpdf.ExportPDFAction"/>
+            value="ptolemy.vergil.basic.itextpdf.ExportPDFAction"/&gt;
  </pre> 
  {@link ptolemy.vergil.basic.BasicGraphFrame} checks for this parameter
  and adds the "Export PDF" menu choice if the class named by that parameter exists.
