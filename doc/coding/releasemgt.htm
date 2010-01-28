@@ -277,7 +277,13 @@ svn commit -m "Added package.html and README.txt" `egrep '(README.txt|package.ht
 
 <li> Concatenate all the javadoc files in to one file and run
 <code>$PTII/util/testsuite/ptspell</code>. 
-
+<pre>
+cd $PTII/doc
+make docs
+cd codeDoc; find . -name "*.html" > /tmp/h
+cat /tmp/h | xargs cat > /tmp/docs
+cat /tmp/docs | aspell list -H --run-together-limit=10 | sort -u | 	sed -e 's/^\([A-Z]*\)\([A-Z]\)/\1 \2/g' | 	sed -e 's/\([a-z]\)\([A-Z]\)/\1 \2/g' | aspell list -H | sort -u
+</pre>
 
 <li> Run findbugs and look at the results:
 <pre>
