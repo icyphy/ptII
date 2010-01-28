@@ -135,7 +135,6 @@ PTCLASSALLJARS = \
 		jxta/jxta.jar \
 		luminary/luminary.jar \
 		pn/pn.jar \
-		properties/properties.jar \
 		ptiny/ptiny.jar \
 		ptinyKepler/ptinyKepler.jar \
 		ptinyViewer/ptinyViewer.jar \
