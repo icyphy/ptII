@@ -362,10 +362,11 @@ $(PTII_SRC): $(PTII_FULL)
 		echo "About to configure `pwd`"; \
 		PTII=`$(GENDIR)/ptcygpwd`  ./configure; make -k clean; \
 		touch mk/ptII.mk.in; \
+		echo "(0)About to remove class files in `pwd`"; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; \
 		echo "(1)About to remove jars in `pwd`"; \
-		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" -name PDFSample.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" -o -name PDFSample.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		cd ptolemy/domains/ptinyos; \
 		echo "(2)About to remove jars in `pwd`"; \
