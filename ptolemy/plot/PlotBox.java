@@ -1308,7 +1308,7 @@ public class PlotBox extends JPanel implements Printable {
      *  should be used only by applets, which normally do not have menus.
      *  This method should only be called from within the event dispatch
      *  thread, since it interacts with swing.
-     *  @see #removeButtons()
+     *  @see #destroy()
      */
     public synchronized void setButtons(boolean visible) {
         // Changing legend means we need to repaint the offscreen buffer.
