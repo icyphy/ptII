@@ -1,2 +1,0 @@
-# A test makefile
-# $Id$

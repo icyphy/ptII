@@ -1,5 +1,0 @@
-RelationTest is {
-	relation r;
-	parameter p;
-	relation r[[p]];
-}

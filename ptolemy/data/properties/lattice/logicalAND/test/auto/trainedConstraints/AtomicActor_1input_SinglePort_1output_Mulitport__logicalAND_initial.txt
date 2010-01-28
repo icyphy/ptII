@@ -1,7 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Const.output	null	<=	eff		TypedIOPort	.Distributor.input	null
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Distributor.output	null	<=	eff		TypedIOPort	.Discard.input	null
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Distributor.output	null	<=	eff		TypedIOPort	.Discard2.input	null
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Distributor.output	null	<=	eff		TypedIOPort	.Discard3.input	null
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	null	<=	eff		TypedIOPort	.Const.output	null
-ptolemy.data.properties.lattice.logicalAND.actor.lib	Const	.Const	base	eff	.Const	ASTPtLeafNode	PtLeafNode:true:null:1:null	True	<=	eff		Parameter	.Const.value	null
-ptolemy.data.properties.lattice.logicalAND.actor	AtomicActor	.Distributor	base	eff		TypedIOPort	.Distributor.input	null	<=	eff		TypedIOPort	.Distributor.output	null

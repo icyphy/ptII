@@ -1,1 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff	topLevelComposite	ASTPtLeafNode	PtLeafNode:true:null:5:null	True	<=	eff		Parameter	.Parameter	True

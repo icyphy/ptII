@@ -276,6 +276,11 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/copernicus/kernel/test/substitute.out \
 		ptolemy/copernicus/*/cg \
 		ptolemy/configs/doc/whatsNew8.0.htm \
+		ptolemy/configs/ontologyEffigyFactory.xml \
+		ptolemy/configs/ontologyTableauFactory.xml \
+		ptolemy/configs/properties \
+		ptolemy/data/ontologies \
+		ptolemy/data/properties \
 		ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock \
 		ptolemy/domains/ct/lib/IPCInterface.class \
 		ptolemy/domains/ct/lib/IPCInterface.java \
@@ -286,6 +291,8 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/domains/gr/lib/Loader3D.* \
 		ptolemy/domains/gr/lib/experimental \
 		ptolemy/domains/gro \
+		ptolemy/domains/properties \
+		ptolemy/domains/pthales \
 		ptolemy/domains/tm/lib/PeriodicTrigger* \
 		ptolemy/domains/wireless/demo/Network \
 		ptolemy/domains/wireless/lib/network \
@@ -302,7 +309,9 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/matlab/ptmatlab.obj \
 		ptolemy/moml/filter/test/testModels.txt \
 		ptolemy/moml/filter/test/testNamedObjs.txt \
-		ptolemy/ptp
+		ptolemy/ptp \
+		ptolemy/vergil/ontologies \
+		ptolemy/vergil/properties
 
 clean_shipping:
 	rm -rf $(CLEAN_SHIPPING_FILES)
@@ -310,7 +319,7 @@ clean_shipping:
 svn_delete_clean_shipping:
 	for files in $(CLEAN_SHIPPING_FILES); do \
 		if [ -e $$files ]; then \
-			svn delete -f $$files; \
+			svn delete $$files; \
 	        fi \
 	done 
 

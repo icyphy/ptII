@@ -1,2 +1,0 @@
-# Test of svn keywords
-# $Id$

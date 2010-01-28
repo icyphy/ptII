@@ -1,2 +1,0 @@
-ptolemy.data.properties.lattice.logicalOrBackward.kernel	CompositeEntity	topLevelComposite	base	eff		TypedIOPort	.Discard.input	False	<=	eff		TypedIOPort	.Differential.output	null
-ptolemy.data.properties.lattice.logicalOrBackward.actor	AtomicActor	.Differential	base	eff		TypedIOPort	.Differential.output	null	<=	eff		TypedIOPort	.Differential.input	null

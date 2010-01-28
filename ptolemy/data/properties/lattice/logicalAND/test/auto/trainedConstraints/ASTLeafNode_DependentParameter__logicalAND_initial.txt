@@ -1,3 +1,0 @@
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff	topLevelComposite	ASTPtLeafNode	PtLeafNode:true:null:5:null	True	<=	eff		Parameter	.Parameter	null
-ptolemy.data.properties.lattice.logicalAND.kernel	CompositeEntity	topLevelComposite	base	eff	topLevelComposite	ASTPtLeafNode	PtLeafNode:false:null:null:Parameter	null	<=	eff		Parameter	.Parameter2	null
-ptolemy.data.properties.lattice.logicalAND.data.expr	ASTPtLeafNode	PtLeafNode:false:null:null:Parameter	base	eff		Parameter	.Parameter	null	<=	eff	topLevelComposite	ASTPtLeafNode	PtLeafNode:false:null:null:Parameter	null

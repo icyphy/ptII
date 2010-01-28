@@ -1,4 +1,0 @@
-SimpleActorTest is {
-	actor expression = ptolemy.actor.lib.Expression;
-	expression();
-}

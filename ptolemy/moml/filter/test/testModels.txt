@@ -1,3 +1,0 @@
-$CLASSPATH/ptolemy/moml/demo/Networked/Networked.xml
-$CLASSPATH/NotAModel.xml
-file:./RemoveGraphicalClasses.xml
