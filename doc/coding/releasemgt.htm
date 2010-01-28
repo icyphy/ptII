@@ -1,4 +1,5 @@
-<!--$Id$ -->
+<!--$Id: releasemgt.htm 570-
+50 2010-01-28 00:24:31Z cxh $ -->
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -318,12 +319,6 @@ or
        <br>select "Remove unused local variables"
     </ul>
    <li>Save the cleanup settings by closing the Cleanup preferences window
-   <li>In the Preferences window, go to <code>Java</code> | <code>Appearance</code> |
-      <code>Members Sort Order</code> and change the order to
-      <pre>
-         Constructors
-         Methods
-      </pre>
 </ol>
 
 <li> Consider using 
@@ -344,18 +339,30 @@ grep error: gcj.out | awk -F: '{for(i=3;i<=NF;i++) {printf("%s ",$i)} printf("\n
 to build Windows installers.  Building the Windows installer is fairly complex,
 below are some things to be aware of
   <menu>
-  <li> The Windows installer includes source files.  These sourcesosvn commit -m "Made regular .java files and other files not executable" `cat /tmp/execs`
+  <li> The Windows installer includes source files.  These sources
+  come from $PTII/adm/gen-<i>N.M</i>/ptII<i>N.M</i>.src.jar.  Obviously,
+  this jar file should be created on a Windows machine so the end
+  of line characters are Windows end of line characters.
+  </menu>
+
+
+<li> Look for files with bad permissions
+<pre>
+cat /tmp/f | egrep "(.java$|.htm$|.html$|makefile$|.tcl$|.xml$)" | xargs ls -l | awk '{ if ($1 ~ /x/) print $NF}' | grep -v chkjava > /tmp/execs
+cat /tmp/execs | xargs svn proplist
+cat /tmp/execs | xargs svn propdel svn:executable
+svn commit -m "Made regular .java files and other files not executable" `cat /tmp/execs`
 </pre>
 
 <li> Tag the tree as the release tree and create a branch
 
  <p>To make a branch for 8.0.beta, use the following command:
 <pre>
-svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta -m "Creating Ptolemy II 8.0.beta branch"
+svn copy svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 -m "Creating Ptolemy II 8.0.beta branch"
 </pre>
 Then check out the release branch  with
 <pre>
-svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta ptII8.0.beta
+svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII8.0.beta
 
 </pre>
 <I>Note that you should avoid dots in the tag name</I>
