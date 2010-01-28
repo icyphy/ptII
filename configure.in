@@ -476,6 +476,7 @@ JVERSION=unknown
 startdir="$PTII"
 
 cd "$srcdir/config"
+rm -f *.class
 if "$JAVAC" confTest.java ; then
     PT_MSG_RESULT(ok)
 
