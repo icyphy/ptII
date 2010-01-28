@@ -36,7 +36,8 @@
 	    <input source="ptolemy/domains/gr/gr.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>	   
 	    <input source="ptolemy/domains/psdf/psdf.xml"/>	   
-            <input source="ptolemy/domains/pthales/lib/pthalesentities.xml"/>
+	    <!-- Do not ship Pthales in 8.0, it is still under development -->
+            <!-- input source="ptolemy/domains/pthales/lib/pthalesentities.xml"/ -->
 	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
 
       </group>

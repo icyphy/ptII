@@ -147,8 +147,6 @@ public class HTMLAbout {
                     .append("<tr rowspan=4><center><b>Full</b></center></tr>\n"
                             + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
                             + _aboutHTML("ptolemy/configs/doc/demos.htm")
-                            + _aboutHTML("ptolemy/configs/doc/whatsNew"
-                                    + version + ".htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew8.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew7.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew6.0.htm")

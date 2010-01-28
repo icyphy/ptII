@@ -59,7 +59,6 @@
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
     <input source="ptolemy/configs/fmvEffigyFactory.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
-    <input source="ptolemy/configs/ontologyEffigyFactory.xml"/>
   </entity>
 
   <!-- The list of tableau factories, which defines the visual   -->
@@ -68,7 +67,6 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <input source="ptolemy/configs/ontologyTableauFactory.xml"/>
     <input source="ptolemy/configs/gtTableauFactory.xml"/>
     <input source="ptolemy/configs/pteraTableauFactory.xml"/>
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
@@ -180,8 +178,8 @@
 
 	    <!--ptalon not shipped with 6.0 -->
             <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
-        <!-- Properties library -->
-            <input source="ptolemy/configs/properties/propertiesLibrary.xml"/>
+        <!-- Properties library: Do not ship in 8.0 -->
+            <!--input source="ptolemy/configs/properties/propertiesLibrary.xml"/ -->
 	    <!--ptp not shipped with 6.0 -->
             <!--input source="ptolemy/ptp/lib/ptpentities.xml"/-->
             <input source="ptolemy/actor/lib/python/python.xml"/>

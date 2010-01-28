@@ -34,7 +34,7 @@ ME =		ptolemy/configs
 # If you add a configuration, be sure to add the jar file
 # in PTCLASSALLJARS below
 DIRS =		codegen bcvtb doc dsp full fullViewer hyvisual jni jxta \
-		luminary properties pn ptiny ptinyKepler \
+		luminary pn ptiny ptinyKepler \
 		ptinyViewer \
 		space viptos visualsense test
 
@@ -96,8 +96,6 @@ OTHER_FILES_TO_BE_JARED = \
 	modalEffigyFactory.xml \
 	modalLibrary.xml \
 	modalTableauFactory.xml \
-	ontologyEffigyFactory.xml \
-	ontologyTableauFactory.xml \
 	ptIIplanet.gif \
 	pteraEffigyFactory.xml \
 	pteraTableauFactory.xml \
