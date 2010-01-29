@@ -107,7 +107,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
 
     /** Read the contents of the array, add a header containing the
      * number of dimensions and the size of each dimension at the
-     * beginning of the array
+     * beginning of the array.
      */
     public void fire() throws IllegalActionException {
 
