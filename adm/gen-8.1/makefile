@@ -2342,7 +2342,7 @@ indent_all:
 
 #IZPACKDIR=c:/Program Files/IzPack
 IZPACKDIR=$(PTII)/vendors/izpack
-IZPACK_COMPILE=$(IZPACKDIR)/_dist/bin/compile
+IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
 IZPACK_TAR=IzPack.src.3.10.2.tar.gz
 
 # Under Solaris: gmake make_izpack TAR=gtar
