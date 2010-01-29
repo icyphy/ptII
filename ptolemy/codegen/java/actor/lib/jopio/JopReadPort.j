@@ -1,15 +1,15 @@
 /***preinitBlock***/
-boolean _firstFire = true;
+boolean $actorSymbol(_firstFire) = true;
 /**/
 
 /*** FireBlock($channel) ***/
-if (_firstFire) {
+if ($actorSymbol(_firstFire)) {
     // read the value
     $ref(output) = com.jopdesign.sys.Native.rdMem($ref((Integer)portAddress));
-    _firstFire = false;
+    $actorSymbol(_firstFire) = false;
 }
 /**/
 
 /*** postfireBlock ***/
-_firstFire = true;
+$actorSymbol(_firstFire) = true;
 /**/
