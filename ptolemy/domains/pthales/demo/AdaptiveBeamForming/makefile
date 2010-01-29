@@ -48,10 +48,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	UCB_ABF.xml \
-	ptolemy_UCB_ABF.xml \
+	AdaptiveBeamForming.xml \
 	ptolemy_UCB_ABF_4.xml \
-	ptolemy_UCB_ABF_MultiMode_static.xml
+	ptolemy_UCB_ABF_MultiMode_static.xml \
+	UCB_ABF.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
