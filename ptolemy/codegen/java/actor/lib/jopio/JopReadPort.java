@@ -34,6 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A code generation helper class for ptolemy.actor.lib.jopio.JopWatchDog.
+ * 
  *
  * @author Martin Schoeberl
  * @version $Id$
