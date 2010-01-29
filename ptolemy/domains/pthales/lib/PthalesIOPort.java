@@ -74,10 +74,10 @@ public class PthalesIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-
     /** The name of the base parameter. */
     public static String BASE = "base";
 
+    /** Fixed variable (for compatibility ?) */
     public static Integer ONE = new Integer(1);
 
     /** The name of the pattern parameter. */
@@ -86,11 +86,11 @@ public class PthalesIOPort {
     /** The name of the tiling parameter. */
     public static String TILING = "tiling";
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Compute total array size.
+     *  @param port associated port
      *  @return array size
      */
     public static int getArraySize(IOPort port) {
@@ -103,6 +103,7 @@ public class PthalesIOPort {
     }
 
     /** Compute array sizes (for each dimension).
+     *  @param port associated port
      *  @return array sizes
      */
     public static LinkedHashMap<String, Integer> getArraySizes(IOPort port) {
@@ -189,6 +190,7 @@ public class PthalesIOPort {
     }
 
     /** Return the base of this port. 
+     *  @param port associated port
      *  @return base 
      */
     public static LinkedHashMap<String, Integer[]> getBase(IOPort port) {
@@ -196,6 +198,7 @@ public class PthalesIOPort {
     }
 
     /** Computes data size produced for each iteration .
+     *  @param port associated port
      *  @return data size
      */
     public static int getDataProducedSize(IOPort port) {
@@ -208,6 +211,7 @@ public class PthalesIOPort {
     }
 
     /** Computes data sizes (for each dimension) produced for each iteration.
+     *  @param port associated port
      *  @return data sizes
      */
     public static Integer[] getDataProducedSizes(IOPort port) {
@@ -265,6 +269,7 @@ public class PthalesIOPort {
     }
 
     /** Return dimension names, in order of production.
+     *  @param port associated port
      *  @return dimension names
      */
     public static String[] getDimensions(IOPort port) {
@@ -288,9 +293,9 @@ public class PthalesIOPort {
         return result;
     }
 
-    /** Return tiling of external loops iterations.
-     * @param port
-     * @param nb
+    /** Returns tiling of external loops iterations
+     * @param port associated port
+     * @param nb the number of used tilings (external ones)
      * @return tiling map 
      */
     public static LinkedHashMap<String, Integer[]> getExternalTiling(
@@ -308,8 +313,9 @@ public class PthalesIOPort {
         return result;
     }
 
-    /** Compute pattern for external iteration
-     *  @return data sizes
+    /** Compute pattern for external iteration.
+     * @param port associated port
+     * @return a hashmap of patterns for each dimension
      */
     public static LinkedHashMap<String, Integer[]> getInternalPattern(
             IOPort port) {
@@ -376,6 +382,7 @@ public class PthalesIOPort {
     /** Check if data type is a structure.
      * If yes, gives the number of tokens needed to store all the data
      * By default, the return value is 1
+     * @param port associated port
      * @return the number of token needed to store the values
      */
     public static int getNbTokenPerData(IOPort port) {
@@ -389,13 +396,15 @@ public class PthalesIOPort {
     }
 
     /** Return the pattern of this port.
+     *  @param port associated port
      *  @return pattern 
      */
     public static LinkedHashMap<String, Integer[]> getPattern(IOPort port) {
         return _parseSpec(port, PATTERN);
     }
 
-    /** Compute number of address needed for each iteration 
+    /** Compute number of address needed for each iteration.
+     *  @param port associated port
      *  @return number of address
      */
     public static int getPatternNbAddress(IOPort port) {
@@ -407,7 +416,8 @@ public class PthalesIOPort {
         return val;
     }
 
-    /** Compute  number of address by dimension needed for each iteration
+    /** Compute  number of address by dimension needed for each iteration.
+     *  @param port associated port
      *  @return address array
      */
     public static Integer[] getPatternNbAddresses(IOPort port) {
@@ -464,6 +474,7 @@ public class PthalesIOPort {
     }
 
     /** Returns the tiling of this port. 
+     *  @param port associated port
      *  @return tiling 
      */
     public static LinkedHashMap<String, Integer[]> getTiling(IOPort port) {
@@ -471,8 +482,11 @@ public class PthalesIOPort {
     }
 
     /** Reset the variable part of this type to the specified type.
+     *  @param port associated port
      *  @exception IllegalActionException If the type is not settable,
      *   or the argument is not a Type.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public static void initialize(IOPort port) throws IllegalActionException,
             NameDuplicationException {
@@ -505,6 +519,11 @@ public class PthalesIOPort {
         }
     }
 
+    /** Modify th pattern of the specified port with one dimension (for propagate)
+     * @param port associated port
+     * @param dim dimension name
+     * @param dimSize dimension size
+     */
     public static void modifyPattern(IOPort port, String dim, int dimSize) {
         Attribute pattern = port.getAttribute(PATTERN);
         if (port.getAttribute(PATTERN) == null) {
@@ -523,14 +542,11 @@ public class PthalesIOPort {
         }
     }
 
-    /** Initialize the iteration counter.  A derived class must call
-     *  this method in its initialize() method or the <i>firingCountLimit</i>
-     *  feature will not work.
-     *  @exception IllegalActionException If the parent class throws it,
-     *   which could occur if, for example, the director will not accept
-     *   sequence actors.
+    /** Modify th pattern of the specified port with dimensions (after propagate)
+     * @param port associated port
+     * @param dims dimension names
+     * @param dimSizes dimension sizes
      */
-
     public static void modifyPattern(IOPort port, String[] dims, int[] dimSizes) {
         Attribute pattern = port.getAttribute(PATTERN);
         if (port.getAttribute(PATTERN) == null) {
@@ -556,13 +572,13 @@ public class PthalesIOPort {
         ((Parameter) pattern).setExpression(s);
     }
 
-    /** Propagate the header through application relations to update
-     * information.
-     * @param portIn
-     * @param dims
-     * @param sizes
-     * @param headersize
-     * @param arraySizes
+    /** Propagate the header through application relations
+     * to update informations
+     * @param portIn port used in input for propages
+     * @param dims dimension names 
+     * @param sizes dimension sizes
+     * @param headersize added header size
+     * @param arraySizes sizes used to compute iterations
      */
     public static void propagateHeader(IOPort portIn, String[] dims,
             int[] sizes, int headersize,
@@ -637,9 +653,9 @@ public class PthalesIOPort {
         }
     }
 
-    /** Update actor iterations according to pattern and tiling informations.
-     * @param portIn
-     * @param sizes
+    /** Update actor iterations according to pattern and tiling informations 
+     * @param portIn port used in input for propages
+     * @param sizes sizes used to compute iterations
      */
     public static void propagateIterations(IOPort portIn,
             LinkedHashMap<String, Integer> sizes) {
@@ -695,9 +711,11 @@ public class PthalesIOPort {
         }
     }
 
+
     /** Check if data type is a structure.
      * If yes, gives the number of tokens needed to store all the data
-     * By default, the return value is 1.
+     * By default, the return value is 1
+     * @param port associated port
      */
     public static void setDataType(IOPort port) {
         Parameter p = (Parameter) port.getAttribute("dataType");
@@ -722,7 +740,6 @@ public class PthalesIOPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
     /** Return a data structure giving the dimension data contained by a
      *  parameter with the specified name in the specified port or actor.

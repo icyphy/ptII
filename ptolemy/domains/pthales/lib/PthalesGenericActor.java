@@ -262,10 +262,10 @@ public class PthalesGenericActor extends PthalesAtomicActor {
         }
     }
 
-    /** Function which convert a list of arguments into real arguments
+    /** Function which convert a list of arguments into real arguments and length
      * that will be used for JNI function call.
-     * @param in
-     * @param out
+     * @param in input arguments
+     * @param out output arguments
      * @return A list of arguments to be used for the JNI function call.
      */
     protected Object[] _convertArguments(float[][] in, float[][] out) {

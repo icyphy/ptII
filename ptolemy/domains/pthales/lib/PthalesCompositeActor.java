@@ -64,6 +64,10 @@ public class PthalesCompositeActor extends TypedCompositeActor {
      *  workspace directory.  You should set the local director or
      *  executive director before attempting to send data to the actor or
      *  to execute it. Increment the version number of the workspace.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public PthalesCompositeActor() throws NameDuplicationException,
             IllegalActionException {
@@ -123,6 +127,10 @@ public class PthalesCompositeActor extends TypedCompositeActor {
      *  or to execute it. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public PthalesCompositeActor(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
@@ -153,6 +161,12 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                     public method                         ////
 
+    /** Compute iteration number of the actor,
+     * which is the number of times internal entities are called 
+     * and set corresponding attribute
+     * @param portIn the input port
+     * @param sizes dimensions sizes of the input
+     */
     public void computeIterations(IOPort portIn,
             LinkedHashMap<String, Integer> sizes) {
 
@@ -224,11 +238,16 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** The name of the total repetitions parameter. */
     protected static String _REPETITIONS = "repetitions";
 
     ///////////////////////////////////////////////////////
     ////              protected variables              ////
 
+    /** Set specific attributes common to all Pthales composite actors
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {
 
