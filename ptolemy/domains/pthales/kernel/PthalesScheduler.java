@@ -66,11 +66,18 @@ public class PthalesScheduler extends SDFScheduler {
     // FIXME: To do:
     // The tokenInitProduction parameter is not being used. ArrayOL equivalent?
 
+    /** Construct a Pthales scheduler in the given container with the given name.
+     *  @param container The container.
+     *  @param name The name of this attribute.
+     *  @exception IllegalActionException If the attribute is not of an
+     *   acceptable class for the container, or if the name contains a period.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+     */
     public PthalesScheduler(Director container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

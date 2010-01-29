@@ -185,10 +185,20 @@ public class PthalesDirector extends SDFDirector {
 // be parameter indicating to do such inference.
 
 
+    /**
+     * Constructs a PthalesDirector object, using PthalesScheduler
+     *
+     * @param container Container of the director.
+     * @param name Name of this director.
+     * @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in a derived class.
+     * @exception NameDuplicationException If the container is not a
+     *  CompositeActor and the name collides with an entity in the container.
+     */
     public PthalesDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setScheduler(new PthalesScheduler(this, "PtalesScheduler"));
+        setScheduler(new PthalesScheduler(this, "PthalesScheduler"));
 
         if (getAttribute("library") == null) {
             _library = new StringParameter(this, "library");
@@ -199,7 +209,7 @@ public class PthalesDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Attribute update
+    /** Attribute update.
      * @see ptolemy.domains.sdf.kernel.SDFDirector#attributeChanged(ptolemy.kernel.util.Attribute)
      */
     public void attributeChanged(Attribute attribute)

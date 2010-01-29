@@ -181,28 +181,30 @@ public class PthalesReceiver extends SDFReceiver {
         return result;
     }
 
-    /** Return true if the buffer can contain one more token
+    /** Return true if the buffer can contain one more token.
      *  @return true or false.
      */
     public boolean hasRoom() {
         return (_posOut + 1 <= _buffer.length);
     }
 
-    /** Return true if the buffer can contain n more token
+    /** Return true if the buffer can contain n more token.
+     *  @param numberOfTokens the number of needed places to put tokens
      *  @return true or false.
      */
     public boolean hasRoom(int numberOfTokens) {
         return (_posOut + numberOfTokens <= _buffer.length);
     }
 
-    /** Return if the buffer contains 1 more token to be read
+    /** Return if the buffer contains 1 more token to be read.
      *  @return True.
      */
     public boolean hasToken() {
         return (_posOut >= _posIn + 1);
     }
 
-    /** Return if the buffer contains n more token to be read
+    /** Return if the buffer contains n more token to be read.
+     *  @param numberOfTokens the number of needed tokens
      *  @return True.
      */
     public boolean hasToken(int numberOfTokens) {
@@ -314,8 +316,8 @@ public class PthalesReceiver extends SDFReceiver {
     /** Specifies the input array that will read the buffer allocated
      * as output.  Here we only check that everything is correct, and
      * computes addresses in output buffer.
-     * @param port
-     * @param actor
+     * @param port the associated port
+     * @param actor the associated actor
      * @exception IllegalActionException
      */
     public void setInputArray(IOPort port, Actor actor)
@@ -332,8 +334,8 @@ public class PthalesReceiver extends SDFReceiver {
      * It is the output array that determines the available size and
      * dimensions for the receivers.  This function allocates a buffer
      * that is used as a memory would be (linear)
-     * @param port
-     * @param actor
+     * @param port the associated port
+     * @param actor the associated actor
      * @exception IllegalActionException
      */
     public void setOutputArray(IOPort port, Actor actor)
@@ -417,7 +419,7 @@ public class PthalesReceiver extends SDFReceiver {
     protected Token[] _buffer = null;
 
     // This variable is set by output ports only
-    /** array size by dimension */
+    /** array size by dimension. */
     protected LinkedHashMap<String, Integer> _sizes = null;
 
     // This variable is set by output ports only
