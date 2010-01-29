@@ -407,7 +407,8 @@ WIRELESS_JARS = \
 	ptolemy/domains/wireless/demo/demo.jar \
 	ptolemy/domains/wireless/doc/doc.jar
 
-FULL_8_1_JARS = \
+FULL_8_1_JARS =
+DEVEL_FULL_8_1_JARS = \
 	ptolemy/cg/cg.jar \
 	ptolemy/data/properties/properties.jar \
 	ptolemy/data/properties/lattice/imageOntology/demo/demo.jar \
