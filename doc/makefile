@@ -316,7 +316,9 @@ COPERNICUSPACKAGES = \
 # Packages used by data/properties 
 # Use this command to update:
 # cd $PTII/ptolemy/data/ontologies; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/ontologies" dir}' | sed 's@/@.@g'
-DATAONTOLOGIESPACKAGES = \
+DATAONTOLOGIESPACKAGES =
+
+DEVEL_DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies \
 	ptolemy.data.ontologies.gui \
 	ptolemy.data.ontologies.lattice \
@@ -331,7 +333,8 @@ DATAONTOLOGIESPACKAGES = \
 # Packages used by data/properties 
 # Use this command to update:
 # cd $PTII/ptolemy/data/properties; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/data/properties" dir}' | sed 's@/@.@g'
-DATAPROPERTIESPACKAGES = \
+DATAPROPERTIESPACKAGES =
+DEVEL_DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties \
 	ptolemy.data.properties.configuredSolvers.lattice \
 	ptolemy.data.properties.configuredSolvers.token \
@@ -405,7 +408,10 @@ DATAPROPERTIESPACKAGES = \
 	ptolemy.data.properties.token.firstValueToken.domains.fsm.kernel \
 	ptolemy.data.properties.token.firstValueToken.kernel \
 	ptolemy.data.properties.util \
-	ptolemy.domains.properties.lib
+	ptolemy.domains.properties.kernel \
+	ptolemy.domains.properties.lib \
+	ptolemy.vergil.properties
+
 
 # Packages used by Diva
 DIVAPACKAGES = \
@@ -506,6 +512,12 @@ LBNL_PACKAGES = \
 	lbnl.actor.lib.net \
 	lbnl.util
 
+PTHALES_PACKAGES =
+DEVEL_PTHALES_PACKAGES = \
+	ptolemy.domains.pthales.JNI \
+	ptolemy.domains.pthales.kernel \
+	ptolemy.domains.pthales.lib \
+
 # Currently, there are no .java files in fsm.lib
 #			ptolemy.domains.fsm.lib
 
@@ -603,6 +615,7 @@ ALLPACKAGES = \
 	$(PTGR_PACKAGES) \
 	$(PTGRO_PACKAGES) \
 	$(PTFUZZY_PACKAGES) \
+	$(PTHALES_PACKAGES) \
 	$(PTIDES_PACKAGES) \
 	$(PTITEXTPDF_PACKAGES) \
 	$(PTINYPACKAGES) \
@@ -659,12 +672,8 @@ ALLPACKAGES = \
 	ptolemy.domains.modal.kernel.fmv \
 	ptolemy.domains.petrinet.kernel \
 	ptolemy.domains.psdf.kernel \
-	ptolemy.domains.properties.kernel \
 	ptolemy.domains.ptera.kernel \
 	ptolemy.domains.ptera.lib \
-	ptolemy.domains.pthales.JNI \
-	ptolemy.domains.pthales.kernel \
-	ptolemy.domains.pthales.lib \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
 	ptolemy.domains.sequence.kernel \
@@ -711,7 +720,6 @@ ALLPACKAGES = \
 	ptolemy.vergil.kernel.attributes \
 	ptolemy.vergil.ontologies \
 	ptolemy.vergil.pdfrenderer \
-	ptolemy.vergil.properties \
 	ptolemy.vergil.ptera \
 	ptolemy.vergil.tdl \
 	ptolemy.vergil.toolbox \
