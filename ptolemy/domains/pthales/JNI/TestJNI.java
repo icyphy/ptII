@@ -36,8 +36,8 @@ package ptolemy.domains.pthales.JNI;
  */
 public class TestJNI {
 
-    /**
-     * @param args
+    /** Just a function to test float arrays in JNI 
+     * @param args The command line arguments, not used.
      */
     public static void main(String[] args) {
         System.loadLibrary("ABF");
