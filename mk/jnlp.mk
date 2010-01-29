@@ -137,12 +137,12 @@ lib/joystickWindows.jar:
 # NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
 # include it in ALL_JNLP_JARS
 NATIVE_SIGNED_LIB_JARS = \
-	lib/commWindows.jar \
 	lib/bcvtbMacOSX.jar \
 	lib/joystickWindows.jar \
 	lib/matlabMacOSX.jar \
 	lib/matlabSunOS.jar \
 	lib/matlabWindows.jar \
+	lib/rxtxMacOSX.jar \
 	lib/rxtxMacOSX.jar 
 
 # Not all hosts have matlab
@@ -312,13 +312,6 @@ PTINY_ONLY_JNLP_JARS = \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
-	ptolemy/codegen/codegen.jar \
-	ptolemy/codegen/c/vergil/vergil.jar \
-	ptolemy/codegen/demo/demo.jar \
-	ptolemy/codegen/c/domains/fsm/demo/demo.jar \
-	ptolemy/codegen/c/domains/modal/demo/demo.jar \
-	ptolemy/codegen/c/domains/pn/demo/demo.jar \
-	ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar \
 	$(PTALON_JARS) \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	ptolemy/data/type/demo/demo.jar \
@@ -335,7 +328,6 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/rendezvous/doc/doc.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
-	ptolemy/domains/tester/tester.jar \
 	ptolemy/moml/demo/demo.jar \
 	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
@@ -363,6 +355,15 @@ PTINY_SANDBOX_JNLP_JARS = \
 #######
 # Full
 #
+CODEGEN_JARS = \
+	ptolemy/codegen/codegen.jar \
+	ptolemy/codegen/c/vergil/vergil.jar \
+	ptolemy/codegen/demo/demo.jar \
+	ptolemy/codegen/c/domains/fsm/demo/demo.jar \
+	ptolemy/codegen/c/domains/modal/demo/demo.jar \
+	ptolemy/codegen/c/domains/pn/demo/demo.jar \
+	ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar \
+
 COPERNICUS_JARS = \
 	lib/jasminclasses.jar \
 	lib/sootclasses.jar \
@@ -422,6 +423,7 @@ DEVEL_FULL_8_1_JARS = \
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
 FULL_ONLY_JNLP_JARS = \
+	$(CODEGEN_JARS) \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
 	doc/img/img.jar \
@@ -476,6 +478,7 @@ FULL_ONLY_JNLP_JARS = \
 	lib/mapss.jar \
 	ptolemy/domains/sdf/lib/vq/vq.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
+	ptolemy/domains/tester/tester.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
 	ptolemy/verification/verification.jar \
