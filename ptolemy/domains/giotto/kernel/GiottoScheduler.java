@@ -135,6 +135,7 @@ public class GiottoScheduler extends Scheduler {
 
     /**
      * Returns the LCM value.
+     * @return an int representing the LCM value
      */
 
     public int getLCM() {

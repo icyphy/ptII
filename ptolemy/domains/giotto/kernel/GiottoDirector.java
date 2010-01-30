@@ -848,7 +848,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      * Return the WCET of the actors.
      * The Worst-Case Execution Time (WCET) of an actor is the maximum length of time 
      * the task could take to execute on a particular platform
-     *   
+     * @return A double containing the WCET of the actors
+     * @throws IllegalActionException If an error occurs
+
      */
     public double _getWCET() throws IllegalActionException {
         double wcet = 0;
