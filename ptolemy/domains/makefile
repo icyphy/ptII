@@ -49,7 +49,7 @@ DOMAINS =	ci continuous csp ct curriculum \
 	        dde ddf de fsm hdf modal pn sdf dt \
 	        giotto petrinet rendezvous \
 		$(PTPSDF_DIR) ptera ptides ptinyos $(PTSPACE_DIR) \
-		sequence sr tdl tester tm $(PTJAVA3D_DIR) $(PTGRO_DIR) wireless
+		sr tdl tester tm $(PTJAVA3D_DIR) $(PTGRO_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
 

@@ -328,7 +328,8 @@ DEVEL_DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib.logic \
 	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.data.expr \
 	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib \
-	ptolemy.data.ontologies.util
+	ptolemy.data.ontologies.util \
+	ptolemy.vergil.ontologies
 
 # Packages used by data/properties 
 # Use this command to update:
@@ -676,8 +677,6 @@ ALLPACKAGES = \
 	ptolemy.domains.ptera.lib \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
-	ptolemy.domains.sequence.kernel \
-	ptolemy.domains.sequence.lib \
 	ptolemy.domains.sr.kernel \
 	ptolemy.domains.sr.lib \
 	ptolemy.domains.sr.lib.gui \
@@ -718,7 +717,6 @@ ALLPACKAGES = \
 	ptolemy.vergil.modal.ia \
 	ptolemy.vergil.kernel \
 	ptolemy.vergil.kernel.attributes \
-	ptolemy.vergil.ontologies \
 	ptolemy.vergil.pdfrenderer \
 	ptolemy.vergil.ptera \
 	ptolemy.vergil.tdl \
