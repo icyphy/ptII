@@ -89,6 +89,18 @@ public class SMTSolver {
         final String fileName = tmpfile.getAbsolutePath();
 
         try {
+            // The code in this try block is a reflected version of
+            // fairly simple code for interfacing with Yices.
+            // Original unreflected import at top of file:
+            //    import yices.YicesLite;
+            //
+            // Original unreflected interfacing code:
+            //    YicesLite yicesLite = new YicesLite();
+            //    final int ctx = yicesLite.yicesl_mk_context();
+            //    yicesLite.yicesl_set_output_file(fileName);
+            //    yicesLite.yicesl_read(ctx, formula);
+            //    yicesLite.yicesl_del_context(ctx);
+            
             // Reflect an instance of the Yices Java API
             ClassLoader myClassLoader = ClassLoader.getSystemClassLoader();
             Class<?> yicesClass = myClassLoader.loadClass("yices.YicesLite");
@@ -100,9 +112,9 @@ public class SMTSolver {
             Method setOutputFile = yicesClass.getMethod("yicesl_set_output_file",
                     new Class[] { String.class });
             Method readFormula = yicesClass.getMethod("yicesl_read",
-                    new Class[] { Integer.class, String.class });
+                    new Class[] { int.class, String.class });
             Method deleteContext = yicesClass.getMethod("yicesl_del_context",
-                    new Class[] { Integer.class });
+                    new Class[] { int.class });
 
             // Actually create and invoke solver
             final int ctx = (Integer) makeContext.invoke(yicesLite, new Object[] {});
