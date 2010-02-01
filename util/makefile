@@ -43,7 +43,6 @@ include $(CONFIG)
 
 MISC_FILES = \
 	$(DIRS) \
-	kepler \
 	lisp
 
 all: suball
