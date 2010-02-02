@@ -26,6 +26,8 @@
  */
 package ptolemy.moml.test;
 
+import java.io.File;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
@@ -34,6 +36,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
+import ptolemy.moml.MoMLSimpleApplication;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 
@@ -54,19 +57,44 @@ java -classpath $PTII ptolemy.moml.test.UnloadModelTest ../demo/test.xml
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */
-public class UnloadModelTest {
+public class UnloadModelTest extends MoMLSimpleApplication {
 
-    public UnloadModelTest(String modelFileName) throws Exception {
-        _parser = new MoMLParser();
-        _model = (CompositeActor) _parser.parseFile(modelFileName);
+    /** Parse the xml file and run it.
+     *  @param xmlFileName A string that refers to an MoML file that
+     *  contains a Ptolemy II model.  The string should be
+     *  a relative pathname.
+     *  @exception Throwable If there was a problem parsing
+     *  or running the model.
+     */
+    public UnloadModelTest(String xmlFileName) throws Throwable {
+        final MoMLParser parser = new MoMLParser();
+
+        // The test suite calls MoMLSimpleApplication multiple times,
+        // and the list of filters is static, so we reset it each time
+        // so as to avoid adding filters every time we run an auto test.
+        // We set the list of MoMLFilters to handle Backward Compatibility.
         MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+
+        // Filter out any graphical classes.
         MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
-        _manager = new Manager(_model.workspace(), "MoMLSimpleApplication");
-        _model.setManager(_manager);
-        //_model.addChangeListener(this);
+        // If there is a MoML error, then throw the exception as opposed
+        // to skipping the error.  If we call StreamErrorHandler instead,
+        // then the nightly build may fail to report MoML parse errors
+        // as failed tests
+        //parser.setErrorHandler(new StreamErrorHandler());
+        // We use parse(URL, URL) here instead of parseFile(String)
+        // because parseFile() works best on relative pathnames and
+        // has problems finding resources like files specified in
+        // parameters if the xml file was specified as an absolute path.
+        final CompositeActor toplevel = (CompositeActor) parser.parse(null, new File(
+                xmlFileName).toURI().toURL());
 
-        //_manager.addExecutionListener(this);
+        _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
+        toplevel.setManager(_manager);
+        toplevel.addChangeListener(this);
+
+        _manager.addExecutionListener(this);
         _activeCount++;
 
         _manager.startRun();
@@ -74,6 +102,13 @@ public class UnloadModelTest {
         Thread waitThread = new Thread() {
             public void run() {
                 waitForFinish();
+                try {
+                    unloadModel(toplevel, parser);
+                    System.out.println("Sleeping for 100 seconds");
+                    Thread.sleep(100000);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException("InterrupteException", ex);
+                }
                 if (_sawThrowable != null) {
                     throw new RuntimeException("Execution failed",
                             _sawThrowable);
@@ -86,16 +121,15 @@ public class UnloadModelTest {
         // started before the subclass constructor finishes (FindBugs)
         waitThread.start();
         waitThread.join();
-
-        System.out.println(_model.exportMoML().substring(0,50) + "...");
-        unloadModel();
+        if (_sawThrowable != null) {
+            throw _sawThrowable;
+        }
     }
 
     /** Load a model and then unload it.
      *  @param args The first argument is the name of the file to be loaded.
-     *  @exception Exception If the model cannot be parsed or unloaded.
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         try {
             new UnloadModelTest(args[0]);
         } catch (Throwable ex) {
@@ -105,59 +139,60 @@ public class UnloadModelTest {
         }
     }
 
-    public static void unloadModel() {
-        if (_model == null) return;
+    public static void unloadModel(CompositeActor model, MoMLParser parser) throws InterruptedException {
+        // First, we gc and then print the memory stats
+        // BTW to get more info about gc,
+        // use java -verbose:gc . . .
+        System.gc();
+        Thread.sleep(1000);
+        System.out.println("Memory before unloading: "
+                + memory());
 
-        if (_model instanceof CompositeEntity) {
+        if (model == null) return;
+
+        if (model instanceof CompositeEntity) {
             try {
-                ((CompositeEntity)_model).setContainer(null);
+                ((CompositeEntity)model).setContainer(null);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
 
         try {
-            _model.workspace().getWriteAccess();
-            _model.workspace().removeAll();
+            model.workspace().getWriteAccess();
+            model.workspace().removeAll();
         } finally {
-            _model.workspace().doneWriting();
+            model.workspace().doneWriting();
         }
 
-        if (_parser != null) {
-            if(_parser.topObjectsCreated() != null) {
-                _parser.topObjectsCreated().remove(_model);
+        if (parser != null) {
+            if(parser.topObjectsCreated() != null) {
+                parser.topObjectsCreated().remove(model);
             }
-            _parser.resetAll();
-            _parser = null;
+            parser.resetAll();
+            parser = null;
         }
-        _model = null;
-    }
-    
-    /** Wait for all executing runs to finish, then return.
-     */
-    public synchronized void waitForFinish() {
-        while (_activeCount > 0) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                break;
-            }
-        }
+        model = null;
+
+        System.gc();
+        Thread.sleep(1000);
+        System.out.println("Memory after  unloading: "
+                + memory());
+
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The count of currently executing runs. */
-    protected volatile int _activeCount = 0;
-
-    /** The manager of this model. */
-    protected Manager _manager = null;
-
-    /** The exception seen by executionError(). */
-    protected volatile Throwable _sawThrowable = null;
-
-    private static CompositeActor _model;
-    private static MoMLParser _parser;
+    public static String memory() {
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory() / 1024;
+        long freeMemory = runtime.freeMemory() / 1024;
+        return "Memory: "
+                + totalMemory
+                + "K Free: "
+                + freeMemory
+                + "K ("
+                + Math
+                        .round((((double) freeMemory) / ((double) totalMemory)) * 100.0)
+                + "%)";
+    }
 }
  
