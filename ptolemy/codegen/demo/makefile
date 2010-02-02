@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/demo
 
-DIRS =		Butterfly Life Ramp 
+DIRS =		Butterfly Life Ramp OpenCVTracking
 
 # Root of the Java directory
 ROOT =		../../..
@@ -55,6 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	Butterfly/Butterfly.jar \
 	Life/Life.jar \
+	OpenCVTracking/OpenCVTracking.jar \
 	Ramp/Ramp.jar
 
 # Keep this list alphabetized.
