@@ -12,8 +12,8 @@
 # To compile using this makefile after substitution, run:
 #    make -f @modelName@.mk
 
-PTCGLIBRARIES = @PTCGLibraries@
-PTCGINCLUDES = @PTCGIncludes@
+PTCGLIBRARIES = -lcv -lcvaux -lcxcore -lhighgui -lSDLmain -lSDL @PTCGLibraries@
+PTCGINCLUDES = -I/usr/local/include/opencv -I/usr/local/include/SDL @PTCGIncludes@
 
 # Mac OS X, need when we call the plotter from generated C code. 
 PTJNI_PLATFORM_LDFLAG = -single_module @PTJNI_PLATFORM_LDFLAG@
@@ -24,7 +24,7 @@ CC_FLAGS:= -m32
 
 # If the user would like to add compile time options, run with
 # make -f @modelName@.mk USER_CC_FLAGS=xxx
-USER_CC_FLAGS := -I/usr/local/include/opencv -lcv -lcvaux -lcxcore -lhighgui -L/usr/local/lib -lSDLmain -lSDL -Wl,-framework,Cocoa -I/usr/local/include/SDL -D_GNU_SOURCE=1 -D_THREAD_SAFE
+USER_CC_FLAGS := -Wl,-framework,Cocoa  -D_GNU_SOURCE=1 -D_THREAD_SAFE
 
 # We use -ggdb because -g fails with very large .c files
 DEBUG = -ggdb
