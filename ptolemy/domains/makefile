@@ -48,7 +48,7 @@ EXPERIMENTAL_DOMAINS =
 DOMAINS =	ci continuous csp ct curriculum \
 	        dde ddf de fsm hdf modal pn sdf dt \
 	        giotto petrinet rendezvous \
-		$(PTPSDF_DIR) ptera ptides ptinyos $(PTSPACE_DIR) \
+		$(PTPSDF_DIR) ptera ptinyos $(PTSPACE_DIR) \
 		sr tdl tester tm $(PTJAVA3D_DIR) $(PTGRO_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
@@ -82,7 +82,6 @@ PTAUXALLJARS = \
 		$(PTGRDOMAIN_JAR) \
 		petrinet/petrinet.jar \
 		ptera/ptera.jar \
-		ptides/ptides.jar \
 		$(PTSPACEDOMAIN_JAR) \
 		tm/tm.jar \
 		wireless/wireless.jar
