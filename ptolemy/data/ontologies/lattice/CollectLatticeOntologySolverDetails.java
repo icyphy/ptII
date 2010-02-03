@@ -1,4 +1,4 @@
-/* Actor that collects the details of the lattice ontology solver resolution
+/* Model attribute that collects the details of the lattice ontology solver resolution
  * on the constraints collected and produces string outputs.
 
  Copyright (c) 2003-2010 The Regents of the University of California.
@@ -39,26 +39,25 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLModelAttribute;
 
 ///////////////////////////////////////////////////////////////////
-//// GetCausalityInterface
+//// CollectLatticeOntologySolverDetails
 
-/**
- Actor that collects the details of the lattice ontology solver resolution
- on the constraints collected and produces string outputs.
- This actor is meant mainly for testing the LatticeOntologySolver.
+/** Model attribute that collects the details of the lattice ontology solver resolution
+ *  on the constraints collected and produces string outputs.
+ *  This attribute is meant mainly for testing the LatticeOntologySolver.
 
- @author Charles Shelton
- @version $Id$
- @since Ptolemy II 8.0
- @Pt.ProposedRating Red (cshelton)
- @Pt.AcceptedRating Red (cshelton)
+ *  @author Charles Shelton
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.AcceptedRating Red (cshelton)
  */
 public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute
         implements Testable {
 
-    /** Construct an actor with the given container and name.
-     *  The output and trigger ports are also constructed.
+    /** Construct the CollectLatticeOntologySolverDetails attribute
+     *  with the given container and name.
      *  @param container The container.
-     *  @param name The name of this actor.
+     *  @param name The name of this attribute.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
@@ -136,7 +135,7 @@ public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute
                     "There is no LatticeOntologySolver in the model named "
                             + solverNameString + ".");
         }
-    }
+    }    
 
     /** Test whether the details received from the LatticeOntologySolver
      *  matches the stored values in the actor.

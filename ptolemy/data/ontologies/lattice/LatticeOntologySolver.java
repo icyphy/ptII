@@ -284,7 +284,7 @@ public class LatticeOntologySolver extends OntologySolver {
     /**
      * Get the list of affected InequalityTerms from the OntologySolver's
      * PropertyTermManager.
-     * FIXME: Not really sure what this method is used for. The call to
+     * FIXME: 01/28/10 Charles Shelton - Not really sure what this method is used for. The call to
      * _propertyTermManager.getAffectedTerms() appears to always return
      * an empty ArrayList.
      * 
@@ -312,6 +312,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  This will return information about the number of constraints and concept terms generated
      *  before the solver executes its algorithm.
      * 
+     *  @author Charles Shelton
      *  @return A hash table containing string representations of the solver statistics and
      *   constraints information, separated by tabs.
      *  @exception IllegalActionException If an exception occurs when collecting the constraints.
@@ -361,6 +362,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  This will return information about the number of constraints and concept terms generated
      *  after the solver executes its algorithm.
      * 
+     *  @author Charles Shelton
      *  @return A hash table containing string representations of the solver statistics and
      *   constraints information, separated by tabs.
      *  @exception IllegalActionException If an exception occurs when collecting the constraints.
@@ -448,10 +450,9 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /**
-     * Return the property term from the given object.
+     * Return the concept term from the given object.
      * @param object The given object.
-     * @return The property term of the given object.
-     * @exception IllegalActionException
+     * @return The concept term of the given object.
      */
     public ptolemy.graph.InequalityTerm getConceptTerm(Object object) {
         return getPropertyTermManager().getConceptTerm(object);
@@ -533,8 +534,9 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /**
-     * Update the property.
-     * @exception IllegalActionException
+     * Update the model objects with their associated concepts.
+     * 
+     * @exception IllegalActionException If the model objects cannot be updated with their concepts.
      */
     public void updateProperties() throws IllegalActionException {
         super.updateProperties();
@@ -555,7 +557,6 @@ public class LatticeOntologySolver extends OntologySolver {
 
             // Check if there are unmatched constraints.
             _checkMissingConstraints();
-
         }
     }
 
@@ -939,6 +940,9 @@ public class LatticeOntologySolver extends OntologySolver {
 
     }
 
+    /**
+     * 
+     */
     private void _checkMissingConstraints() {
         StringBuffer errorMessage = new StringBuffer(_eol + "Concept \""
                 + getName() + "\" resolution failed." + _eol);
@@ -970,12 +974,12 @@ public class LatticeOntologySolver extends OntologySolver {
     //  return (Concept) term.getValue();
     //  }
 
-    /**
-     * Return the Constraints as a log file string.
-     * @param inequality
-     * @param annotation
-     * @return The Constraints.
-     * @exception IllegalActionException
+    /** Return the specified inequality constraints as a string for the log file.
+     * 
+     *  @param inequality The inequality constraint to be returned as a string.
+     *  @param annotation FIXME: 01/28/10 Charles Shelton - This is not used anywhere in the function so I don't know why it's here.
+     *  @return A string representing the inequality constraint that can be written to a log file.
+     *  @exception IllegalActionException If the string cannot be formed from the inequality constraint.
      */
     private List<String> _getConstraintAsLogFileString(Inequality inequality,
             String annotation) throws IllegalActionException {
@@ -1054,6 +1058,14 @@ public class LatticeOntologySolver extends OntologySolver {
         return logConstraints;
     }
 
+    /** Return the string representation of the inequality term for one side of
+     *  an inequality constraint.
+     * 
+     *  @param propertyTerm The inequality term for which to construct a string.
+     *  @param actorName A string containing the name of the actor from which the constraint is derived.
+     *  @return A string representing the inequality term.
+     *  @throws IllegalActionException If the string cannot be formed from the inequality term.
+     */
     private String _getConstraintLogString(
             ptolemy.graph.InequalityTerm propertyTerm, String actorName)
             throws IllegalActionException {
@@ -1107,7 +1119,15 @@ public class LatticeOntologySolver extends OntologySolver {
         }
 
     }
-
+    
+    /** Return a string representing the list of inequality constraints specified
+     *  that can be written to a log file.
+     * 
+     *  @param constraintList The list of inequality constraints to be parsed into a string.
+     *  @param annotation FIXME: 01/28/10 Charles Shelton - This is not used anywhere in the function so I don't know why it's here.
+     *  @return A string representing the list of inequality constraints that can be written to a log file.
+     *  @throws IllegalActionException If the string cannot be formed from the list of inequality constraints.
+     */
     private String _getConstraintsAsLogFileString(
             List<Inequality> constraintList, String annotation)
             throws IllegalActionException {
@@ -1157,6 +1177,11 @@ public class LatticeOntologySolver extends OntologySolver {
         }
     }
 
+    /** Get the reduced full name of the model object in the Ptolemy model.
+     * 
+     *  @param object The model object whose reduced full name we want to get.
+     *  @return A string representing the reduced full name.
+     */
     private String _getReducedFullName(Object object) {
         if (object instanceof NamedObj) {
             String name = ((NamedObj) object).getFullName();
@@ -1217,6 +1242,12 @@ public class LatticeOntologySolver extends OntologySolver {
                 "%5c", "/");
     }
 
+    
+    /** Read in the constraint file that contains the list of trained constraints
+     *  for the model for this LatticeOntologySolver.
+     * 
+     *  @param filename The filename referring to the constraint file.
+     */
     private void _readConstraintFile(String filename) {
 
         File file = new File(filename);
@@ -1250,6 +1281,13 @@ public class LatticeOntologySolver extends OntologySolver {
         }
     }
 
+    
+    /** FIXME: 01/27/10 Charles Shelton - I don't know what this method does or is used for.
+     * 
+     * @param adapter The LatticeOntologyAdapter from which to get the constraints.
+     * @throws IllegalActionException If an exception is thrown when getting the component
+     *  referred to from the adapter.
+     */
     private void _regressionTestConstraints(LatticeOntologyAdapter adapter)
             throws IllegalActionException {
         Object object = adapter.getComponent();
@@ -1257,7 +1295,6 @@ public class LatticeOntologySolver extends OntologySolver {
             return;
         }
         //NamedObj namedObj = (NamedObj) object;
-
     }
 
     /**
@@ -1300,16 +1337,17 @@ public class LatticeOntologySolver extends OntologySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /**
-     * The set of Objects that have been manually annotated.
-     */
+    /** The set of Objects that have been manually annotated. */
     private final HashSet<Object> _annotatedObjects = new HashSet<Object>();
 
+    /** The constraint manager that keeps track of all the constraints in the model for the LatticeOntologySolver. */
     private final ConstraintManager _constraintManager = new ConstraintManager(
             this);
 
+    /** Boolean value that determines whether or not the LatticeOnologySolver is in log mode. */
     private boolean _logMode;
 
+    /** The concept term manager that keeps track of all the concept terms in the model for the LatticeOntologySolver. */
     private ConceptTermManager _conceptTermManager;
 
     /** The list of constraints after the ontology resolution algorithm has executed. */

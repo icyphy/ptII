@@ -368,6 +368,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * which Concepts in the Ontology are assigned to each object in the
      * model.
      * 
+     * @throws KernelException If the ontology resolution fails.
      */
     public void resolveProperties() throws KernelException {
         resolveProperties(_analyzer, false);
@@ -485,7 +486,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
     /**
      * Update the property. This method is called from both invoked and
      * auxiliary solvers.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If the properties cannot be updated.
      */
     public void updateProperties() throws IllegalActionException {
 
@@ -605,7 +606,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
 
     /**
      * Record tracing statistics.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If there is a problem collecting the statistics.
      */
     protected void _addStatistics() throws IllegalActionException {
         _stats.put("# of adapters", _adapterStore.size());
@@ -621,7 +622,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * Get the propertyable attribute contained by the given propertyable.
      * @param propertyable The given propertyable object.
      * @return The property attribute contained by the given propertyable.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If the attribute cannot be found for the object.
      */
     protected ConceptAttribute _getPropertyAttribute(NamedObj propertyable)
             throws IllegalActionException {
@@ -717,6 +718,9 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * property. If the given property is null, it does nothing. If the given
      * property is unacceptable, an error is recorded for the given
      * property-able object and the property.
+     * 
+     * @param propertyable The model object to which the concept is attached.
+     * @param property The concept attached to the model object.
      */
     private void _recordUnacceptableSolution(Object propertyable,
             Concept property) {
