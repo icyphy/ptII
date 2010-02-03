@@ -1405,7 +1405,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
     }
 
     /**
-     A validating CombBox table cell editor for use with JTable.
+     A validating ComboBox table cell editor for use with JTable.
      To determine if a selection is valid, this class uses the
      CellValidator class.
 
