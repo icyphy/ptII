@@ -202,13 +202,13 @@ public class SDFDirector
                             for (int k = 0; k < rate; k++) {
                                 code.append(codegeneratorAdaptor
                                         .getReference(outputPort.getName()
-                                                + "#" + i)
+                                                + "#" + i + "," + k)
                                         + " = "
                                         + actorName
                                         + "."
                                         + codegeneratorAdaptor.getReference("@"
                                                 + outputPort.getName() + "#"
-                                                + i) + ";" + _eol);
+                                                + i + "," + k) + ";" + _eol);
                             }
                         }
                     }
