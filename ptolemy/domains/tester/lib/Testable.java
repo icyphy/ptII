@@ -43,6 +43,7 @@ public interface Testable {
 
     /** Train the test. This method should record the
      *  the correct values for the test.
+     *  @exception IllegalActionException If training fails.
      */
-    public void train();
+    public void train() throws IllegalActionException;
 }
