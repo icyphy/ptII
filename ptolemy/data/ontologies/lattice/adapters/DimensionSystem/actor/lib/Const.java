@@ -29,6 +29,7 @@ package ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib;
 
 import java.util.List;
 
+import ptolemy.data.ontologies.OntologyInequality;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -71,7 +72,7 @@ public class Const extends Source {
      * @return The constraints of this component.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public List<Inequality> constraintList() throws IllegalActionException {
+    public List<OntologyInequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, _actor.value);
         return super.constraintList();
     }

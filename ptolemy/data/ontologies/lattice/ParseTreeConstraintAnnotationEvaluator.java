@@ -107,16 +107,13 @@ public class ParseTreeConstraintAnnotationEvaluator extends
 
         Token operator = node.getOperator();
         if (operator.kind == PtParserConstants.EQUALS) {
-            ((LatticeOntologyAdapter) _adapter).setSameAsManualAnnotation(
-                    leftChild, rightChild);
+            ((LatticeOntologyAdapter) _adapter).setSameAs(leftChild, rightChild);
 
         } else if (operator.kind == PtParserConstants.GTE) {
-            ((LatticeOntologyAdapter) _adapter).setAtLeastManualAnnotation(
-                    leftChild, rightChild);
+            ((LatticeOntologyAdapter) _adapter).setAtLeast(leftChild, rightChild);
 
         } else if (operator.kind == PtParserConstants.LTE) {
-            ((LatticeOntologyAdapter) _adapter).setAtLeastManualAnnotation(
-                    rightChild, leftChild);
+            ((LatticeOntologyAdapter) _adapter).setAtLeast(rightChild, leftChild);
 
         } else {
             throw _unsupportedVisitException("operator not supported.");

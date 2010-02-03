@@ -29,6 +29,7 @@ package ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib;
 
 import java.util.List;
 
+import ptolemy.data.ontologies.OntologyInequality;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.Attribute;
@@ -60,7 +61,7 @@ public class Expression extends AtomicActor {
         super(solver, actor, false);
     }
 
-    public List<Inequality> constraintList() throws IllegalActionException {
+    public List<OntologyInequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
 
         setAtLeast(actor.output, actor.expression);

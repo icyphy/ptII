@@ -40,8 +40,6 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.graph.CPO;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
@@ -659,71 +657,4 @@ public abstract class OntologyAdapter {
 
     /* The associated component. */
     private Object _component;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                        public inner class                 ////
-
-    /**
-     * Specialized Inequality class for the PropertyHelper class.
-     */
-    public class Inequality extends ptolemy.graph.Inequality {
-
-        /**
-         * Constructs an Inequality object for a PropertyHelper.
-         *
-         * @param lesserTerm   The lesser term in the inequality
-         * @param greaterTerm  The greater term in the inequality
-         * @param isBase       true if the inequality is composeable;
-         * false otherwise
-         */
-        public Inequality(InequalityTerm lesserTerm,
-                InequalityTerm greaterTerm, boolean isBase) {
-            super(lesserTerm, greaterTerm);
-
-            _isBase = isBase;
-            _adapter = OntologyAdapter.this;
-        }
-
-        /**
-         * Returns the the ontology adapter for this Inequality.
-         * 
-         * @return An OntologyAdapter object representing the ontology adapter
-         */
-        public OntologyAdapter getAdapter() {
-            return _adapter;
-        }
-
-        /**
-         * Return true if this inequality is composeable; otherwise, false.
-         * @return Whether this inequality is composeable.
-         */
-        public boolean isBase() {
-            return _isBase;
-        }
-
-        /**
-         * Test if this inequality is satisfied with the current value of
-         * variables.
-         * @param cpo A CPO over which this inequality is defined.
-         * @return True if this inequality is satisfied; false otherwise.
-         * @exception IllegalActionException If thrown while getting the value
-         * of the terms.
-         */
-        public boolean isSatisfied(CPO cpo) throws IllegalActionException {
-            InequalityTerm lesserTerm = getLesserTerm();
-            InequalityTerm greaterTerm = getGreaterTerm();
-
-            if (lesserTerm.getValue() == null) {
-                return true;
-            } else if (greaterTerm.getValue() == null) {
-                return false;
-            }
-
-            return super.isSatisfied(cpo);
-        }
-
-        private final boolean _isBase;
-
-        private final OntologyAdapter _adapter;
-    }
 }

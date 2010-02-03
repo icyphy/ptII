@@ -29,6 +29,7 @@ package ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib;
 
 import java.util.List;
 
+import ptolemy.data.ontologies.OntologyInequality;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,7 +60,7 @@ public class Minimum extends AtomicActor {
         super(solver, actor, false);
     }
 
-    public List<Inequality> constraintList() throws IllegalActionException {
+    public List<OntologyInequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
 
         // Set the minimumValue output to at least the input

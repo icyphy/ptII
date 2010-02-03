@@ -72,7 +72,6 @@ MISC_FILES = $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'LatticeOntologySolver$$ConstraintType.class' \
-	'LatticeOntologyAdapter$$Inequality.class' \
 	'ConceptTermManager$$InequalityTerm.class'	
 
 JCLASS = $(JSRCS:%.java=%.class)

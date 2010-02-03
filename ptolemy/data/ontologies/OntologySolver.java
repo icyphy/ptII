@@ -416,17 +416,10 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
             throws KernelException {
-
-        System.out.println("In resolveProperties of PropertySolver");
-
         boolean success = true;
-
         boolean noException = true;
-
         try {
-
             _initializeStatistics();
-
             getOntologySolverUtilities().addRanSolvers(this);
 
             _analyzer = analyzer;

@@ -36,13 +36,12 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.OntologyAdapter;
+import ptolemy.data.ontologies.OntologyInequality;
 import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.modal.ModalModel;
-import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -106,7 +105,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @return The constraints of this component.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public List<Inequality> constraintList() throws IllegalActionException {
+    public List<OntologyInequality> constraintList() throws IllegalActionException {
         _setEffectiveTerms();
 
         _constraintAttributes();
@@ -190,140 +189,38 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         return constraintSource;
     }
 
-    /**
-     * Set an inequality constraint between the two specified objects, such that
-     * the Concept value of object1 is greater than or equal to the Concept value
-     * of object2.
-     * 
-     * @param object1 The model object on the LHS of the >= inequality
-     * @param object2 The model object on the RHS of the >= inequality
+    /** Set an inequality constraint between the two specified objects, such that
+     *  the concept value of the greater term is greater than or equal to the
+     *  concept value of the lesser term.
+     *  @param greater The model object on the LHS of the >= inequality
+     *  @param lesser The model object on the RHS of the >= inequality
      */
-    public void setAtLeast(Object object1, Object object2) {
-        _setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), true);
-    }
-
-    /**
-     * Set an inequality constraint between the two specified objects, such that
-     * the Concept value of object1 is greater than or equal to the Concept value
-     * of object2.
-     * 
-     * @param object1 The model object on the LHS of the >= inequality
-     * @param object2 The model object on the RHS of the >= inequality
-     * @param isBase true if the Inequality is composeable, false otherwise
-     */
-    public void setAtLeast(Object object1, Object object2, boolean isBase) {
-        _setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), isBase);
-    }
-
-    /**
-     * Set a default inequality constraint between the two specified objects, such that
-     * the Concept value of term1 is greater than or equal to the Concept value
-     * of term2.
-     * 
-     * @param term1 The model object on the LHS of the >= inequality
-     * @param term2 The model object on the RHS of the >= inequality
-     */
-    public void setAtLeastByDefault(Object term1, Object term2) {
-        setAtLeast(term1, term2);
-
-        if (term1 != null && term2 != null) {
-            _solver.incrementStats("# of default constraints", 1);
-            _solver.incrementStats("# of atomic actor default constraints", 1);
+    public void setAtLeast(Object greater, Object lesser) {
+        if (greater != null && lesser != null) {
+            _ownConstraints.add(new OntologyInequality(
+                    this, getPropertyTerm(lesser), getPropertyTerm(greater)));
         }
     }
 
-    /**
-     * Set an inequality constraint between the two specified objects, such that
-     * the Concept value of term1 is greater than or equal to the Concept value
-     * of term2.  This constraint is specified by a user-defined manual annotation
-     * in the model, and the statistics on the manual annotations for the
-     * OntologySolver is incremented.
-     * 
-     * @param term1 The model object on the LHS of the >= inequality
-     * @param term2 The model object on the RHS of the >= inequality
+    /** Set an inequality constraint between the two specified objects, such that
+     *  the concept value of the greater term is greater than or equal to the
+     *  concept value of the lesser term.
+     *  @param lesser The model object on the RHS of the >= inequality
+     *  @param greater The model object on the LHS of the >= inequality
      */
-    public void setAtLeastManualAnnotation(Object term1, Object term2) {
-        setAtLeast(term1, term2);
-
-        if (term1 != null && term2 != null) {
-            getSolver().addAnnotated(term1);
-            getSolver().addAnnotated(term2);
-            _solver.incrementStats("# of manual annotations", 1);
-        }
+    public void setAtMost(Object lesser, Object greater) {
+        setAtLeast(greater, lesser);
     }
 
-    /**
-     * Set an inequality constraint between the two specified objects, such that
-     * the Concept value of object1 is less than or equal to the Concept value
-     * of object2.
-     * 
-     * @param object1 The model object on the LHS of the <= inequality
-     * @param object2 The model object on the RHS of the <= inequality
-     */
-    public void setAtMost(Object object1, Object object2) {
-        _setAtLeast(getPropertyTerm(object2), getPropertyTerm(object1), true);
-    }
-
-    /**
-     * Set an inequality constraint between the two specified objects, such that
-     * the Concept value of object1 is less than or equal to the Concept value
-     * of object2.
-     * 
-     * @param object1 The model object on the LHS of the <= inequality
-     * @param object2 The model object on the RHS of the <= inequality
-     * @param isBase true if the Inequality is composeable, false otherwise
-     */
-    public void setAtMost(Object object1, Object object2, boolean isBase) {
-        _setAtLeast(getPropertyTerm(object2), getPropertyTerm(object1), isBase);
-    }
-
-    /**
-     * Set an equality constraint between the two specified objects, such that
-     * the Concept value of object1 is equal to the Concept value
-     * of object2.
-     * 
-     * @param object1 The model object on the LHS of the equality
-     * @param object2 The model object on the RHS of the equality
+    /** Set two inequality constraints between the specified objects,
+     *  such that the Concept value of object1 is equal to the Concept value
+     *  of object2.
+     *  @param object1 The model object on the LHS of the equality
+     *  @param object2 The model object on the RHS of the equality
      */
     public void setSameAs(Object object1, Object object2) {
         setAtLeast(object1, object2);
         setAtLeast(object2, object1);
-    }
-
-    /**
-     * Set a default equality constraint between the two specified objects, such that
-     * the Concept value of term1  equal to the Concept value of term2.
-     * 
-     * @param term1 The model object on the LHS of the equality
-     * @param term2 The model object on the RHS of the equality
-     */
-    public void setSameAsByDefault(Object term1, Object term2) {
-        setSameAs(term1, term2);
-
-        if (term1 != null && term2 != null) {
-            _solver.incrementStats("# of default constraints", 2);
-            _solver.incrementStats("# of atomic actor default constraints", 2);
-        }
-    }
-
-    /**
-     * Set an equality constraint between the two specified objects, such that
-     * the Concept value of term1 is equal to the Concept value
-     * of term2.  This constraint is specified by a user-defined manual annotation
-     * in the model, and the statistics on the manual annotations for the
-     * OntologySolver is incremented.
-     * 
-     * @param term1 The model object on the LHS of the equality
-     * @param term2 The model object on the RHS of the equality
-     */
-    public void setSameAsManualAnnotation(Object term1, Object term2) {
-        setSameAs(term1, term2);
-
-        if (term1 != null && term2 != null) {
-            getSolver().addAnnotated(term1);
-            getSolver().addAnnotated(term2);
-            _solver.incrementStats("# of manual annotations", 2);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -335,73 +232,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     public ConstraintType interconnectConstraintType;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public inner class                 ////
-
-    /**
-     * Specialized Inequality class for the LatticeOntologyAdapter class.
-     */
-    public class Inequality extends ptolemy.graph.Inequality {
-
-        /**
-         * The constructor for the Inequality constraint.
-         * 
-         * @param lesserTerm The lesser term of the Inequality
-         * @param greaterTerm The greater term of the Inequality
-         * @param isBase true if the Inequality is composeable, false otherwise
-         */
-        public Inequality(InequalityTerm lesserTerm,
-                InequalityTerm greaterTerm, boolean isBase) {
-            super(lesserTerm, greaterTerm);
-
-            _isBase = isBase;
-            _adapter = LatticeOntologyAdapter.this;
-        }
-
-        /**
-         * Return the OntologyAdapter associated with this Inequality.
-         * 
-         * @return The associated OntologyAdapter
-         */
-        public OntologyAdapter getHelper() {
-            return _adapter;
-        }
-
-        /**
-         * Return true if this inequality is composeable; otherwise, false.
-         * @return Whether this inequality is composeable.
-         */
-        public boolean isBase() {
-            return _isBase;
-        }
-
-        /**
-         * Test if this inequality is satisfied with the current value of
-         * variables.
-         * @param cpo A CPO over which this inequality is defined.
-         * @return True if this inequality is satisfied; false otherwise.
-         * @exception IllegalActionException If thrown while getting the value
-         * of the terms.
-         */
-        public boolean isSatisfied(CPO cpo) throws IllegalActionException {
-            InequalityTerm lesserTerm = getLesserTerm();
-            InequalityTerm greaterTerm = getGreaterTerm();
-
-            if (lesserTerm.getValue() == null) {
-                return true;
-            } else if (greaterTerm.getValue() == null) {
-                return false;
-            }
-
-            return super.isSatisfied(cpo);
-        }
-
-        private final boolean _isBase;
-
-        private final OntologyAdapter _adapter;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                        protected methods                  ////
 
     /**
      * Add default constraints for the actor referred to by this OntologyAdapter
@@ -507,14 +338,13 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * are the sources.
      * 
      * @see ConstraintType
-     * @see #setAtLeastByDefault(Object, Object)
-     * @see #setSameAsByDefault(Object, Object)
      * @param constraintType The given ConstraintType to be used for the default constraints
      * @param object The given object that represents the sink for the default constraints
      * @param objectList The list of objects passed in as a {@linkplain List} that
      * represents the sources for the default constraints
      * @exception IllegalActionException If an exception is thrown
      */
+    // FIXME: Should this be named _constrainObject? Should this be private?
     protected void _constraintObject(ConstraintType constraintType,
             Object object, List objectList) throws IllegalActionException {
 
@@ -531,17 +361,17 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
                 for (Object object2 : objectList) {
 
                     if (isEquals) {
-                        setSameAsByDefault(object, object2);
+                        setSameAs(object, object2);
 
                     } else {
                         if (object2 instanceof ASTPtRootNode) {
                             if (constraintType == ConstraintType.SINK_EQUALS_GREATER) {
-                                setAtLeastByDefault(object, object2);
+                                setAtLeast(object, object2);
                             } else {
-                                setAtLeastByDefault(object2, object);
+                                setAtLeast(object2, object);
                             }
                         } else {
-                            setAtLeastByDefault(object, object2);
+                            setAtLeast(object, object2);
                         }
                     }
                 }
@@ -564,8 +394,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * are the sources.
      * 
      * @see ConstraintType
-     * @see #setAtLeastByDefault(Object, Object)
-     * @see #setSameAsByDefault(Object, Object)
      * @param constraintType The given ConstraintType to be used for the default constraints
      * @param object The given object that represents the sink for the default constraints
      * @param objectList The list of objects passed in as a {@linkplain Set} that
@@ -625,30 +453,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             return new LinkedList();
         }
         return _getASTNodeAdapters();
-    }
-
-    /**
-     * Create a constraint that sets the first term to be greater than or
-     * equal to the second term.
-     * 
-     * @param term1 The InequalityTerm on the LHS of the >= inequality
-     * @param term2 The InequalityTerm on the RHS of the >= inequality
-     * @param isBase true if the Inequality is composeable, false otherwise
-     */
-    protected void _setAtLeast(InequalityTerm term1, InequalityTerm term2,
-            boolean isBase) {
-        if (term1 != null && term2 != null) {
-            _ownConstraints.add(new Inequality(term2, term1, isBase));
-        }
-
-        // FIXME: Why are we setting the value here?
-        if (term2 instanceof Concept) {
-            try {
-                term1.setValue(term2);
-            } catch (IllegalActionException e) {
-                assert false;
-            }
-        }
     }
 
     /**
@@ -744,7 +548,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     }
 
     /** The list of permanent property constraints. */
-    protected List<Inequality> _subHelperConstraints = new LinkedList<Inequality>();
+    protected List<OntologyInequality> _subHelperConstraints = new LinkedList<OntologyInequality>();
 
     /**
      * Return the union of the two specified lists of inequality constraints by
@@ -753,10 +557,10 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @param list2 The second list.
      * @return The union of the two lists.
      */
-    protected static List<Inequality> _union(List<Inequality> list1,
-            List<Inequality> list2) {
+    protected static List<OntologyInequality> _union(List<OntologyInequality> list1,
+            List<OntologyInequality> list2) {
 
-        List<Inequality> result = new ArrayList<Inequality>(list1);
+        List<OntologyInequality> result = new ArrayList<OntologyInequality>(list1);
 
         result.addAll(list2);
         return result;
@@ -766,7 +570,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     ////                         protected variables               ////
 
     /** The list of Inequality constraints contained by this LatticeOntologyAdapter. */
-    protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
+    protected List<OntologyInequality> _ownConstraints = new LinkedList<OntologyInequality>();
 
     /** Indicate whether this adapter uses the default actor constraints. */
     protected boolean _useDefaultConstraints;

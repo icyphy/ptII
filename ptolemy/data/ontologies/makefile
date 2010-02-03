@@ -63,6 +63,7 @@ JSRCS = \
 	ParseTreeAnnotationEvaluator.java \
 	OntologyAdapter.java \
 	OntologyAnnotationAttribute.java \
+	OntologyInequality.java \
 	OntologyMoMLHandler.java \
 	OntologyResolutionException.java \
 	OntologySolver.java \
@@ -84,7 +85,6 @@ MISC_FILES = doc gui lattice util
 OPTIONAL_FILES = \
 	demo \
 	'OntologyAdapter$$Channel.class' \
-	'OntologyAdapter$$Inequality.class' \
 	'OntologySolver$$DirectoryNameFilter.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)

@@ -36,6 +36,7 @@ import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.ontologies.OntologyInequality;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.kernel.Entity;
@@ -92,7 +93,7 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
      *  @return A list of Inequalities.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public List<Inequality> constraintList() throws IllegalActionException {
+    public List<OntologyInequality> constraintList() throws IllegalActionException {
         boolean constraintParent = (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET)
                 || (interconnectConstraintType == ConstraintType.SINK_EQUALS_GREATER);
 

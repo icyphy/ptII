@@ -31,6 +31,7 @@ import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.OntologyInequality;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.AtomicActor;
 import ptolemy.data.properties.lattice.MonotonicFunction;
@@ -64,7 +65,7 @@ public class Comparator extends AtomicActor {
         super(solver, actor, false);
     }
 
-    public List<Inequality> constraintList() throws IllegalActionException {
+    public List<OntologyInequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.logic.Comparator actor = (ptolemy.actor.lib.logic.Comparator) getComponent();
 
         setAtLeast(actor.output, new FunctionTerm(actor.left, actor.right));
