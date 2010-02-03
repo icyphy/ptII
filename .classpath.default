@@ -24,5 +24,6 @@
     <classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/nesc.jar"/>
     <classpathentry kind="lib" path="ptolemy/actor/ptalon/antlr/antlr.jar"/>
     <classpathentry kind="lib" path="lib/PDFRenderer.jar"/>
+    <classpathentry kind="lib" path="vendors/misc/itext/iText.jar"/>
     <classpathentry kind="output" path=""/>
 </classpath>
