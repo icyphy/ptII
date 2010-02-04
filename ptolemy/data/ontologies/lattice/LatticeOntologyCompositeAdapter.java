@@ -31,7 +31,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ontologies.OntologyInequality;
+import ptolemy.graph.Inequality;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.kernel.CompositeEntity;
@@ -111,7 +111,7 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
      *  @return A list of Inequality.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public List<OntologyInequality> constraintList() throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         CompositeEntity actor = (CompositeEntity) getComponent();
 
         // Set up inter-actor constraints.
@@ -137,41 +137,6 @@ public class LatticeOntologyCompositeAdapter extends LatticeOntologyAdapter {
         }
 
         return super.constraintList();
-    }
-
-    /**
-     * Set a default inequality constraint between the two specified objects, such that
-     * the Concept value of term1 is greater than or equal to the Concept value
-     * of term2. This method increments the composite default constraints statistic in
-     * the LatticeOntologySolver.
-     * 
-     * @param term1 The model object on the LHS of the >= inequality
-     * @param term2 The model object on the RHS of the >= inequality
-     */
-    public void setAtLeastByDefault(Object term1, Object term2) {
-        setAtLeast(term1, term2);
-
-        if (term1 != null && term2 != null) {
-            _solver.incrementStats("# of default constraints", 1);
-            _solver.incrementStats("# of composite default constraints", 1);
-        }
-    }
-
-    /**
-     * Set a default equality constraint between the two specified objects, such that
-     * the Concept value of term1  equal to the Concept value of term2. This method
-     * increments the composite default constraints statistic in the LatticeOntologySolver.
-     * 
-     * @param term1 The model object on the LHS of the equality
-     * @param term2 The model object on the RHS of the equality
-     */
-    public void setSameAsByDefault(Object term1, Object term2) {
-        setSameAs(term1, term2);
-
-        if (term1 != null && term2 != null) {
-            _solver.incrementStats("# of default constraints", 2);
-            _solver.incrementStats("# of composite default constraints", 2);
-        }
     }
 
     /**

@@ -59,16 +59,15 @@ JSRCS = \
 	ConceptGraph.java \
 	ConceptRelation.java \
 	Ontology.java \
-	ParseTreeASTNodeAdapterCollector.java \
-	ParseTreeAnnotationEvaluator.java \
 	OntologyAdapter.java \
 	OntologyAnnotationAttribute.java \
-	OntologyInequality.java \
 	OntologyMoMLHandler.java \
 	OntologyResolutionException.java \
 	OntologySolver.java \
 	OntologySolverBase.java \
-	OntologySolverUtilities.java
+	OntologySolverUtilities.java \
+	ParseTreeASTNodeAdapterCollector.java \
+	ParseTreeAnnotationEvaluator.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ontologyLibrary.xml

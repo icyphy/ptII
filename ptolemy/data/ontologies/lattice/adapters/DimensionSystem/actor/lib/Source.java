@@ -29,7 +29,7 @@ package ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.ontologies.OntologyInequality;
+import ptolemy.graph.Inequality;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
@@ -62,7 +62,7 @@ public class Source extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public List<OntologyInequality> constraintList() throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.actor.lib.Source actor = (ptolemy.actor.lib.Source) getComponent();
         // add default constraints if no constraints specified in actor adapter
 

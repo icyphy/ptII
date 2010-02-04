@@ -31,7 +31,7 @@ import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.OntologyInequality;
+import ptolemy.graph.Inequality;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystemAdapter;
 import ptolemy.data.properties.lattice.MonotonicFunction;
@@ -66,7 +66,7 @@ public class Integrator extends DimensionSystemAdapter {
 
     }
 
-    public List<OntologyInequality> constraintList() throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.domains.continuous.lib.Integrator actor = (ptolemy.domains.continuous.lib.Integrator) getComponent();
 
         setAtLeast(actor.state, new StateOfDerivative(actor.derivative));

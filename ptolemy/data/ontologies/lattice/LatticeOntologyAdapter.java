@@ -37,11 +37,11 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.ontologies.OntologyAdapter;
-import ptolemy.data.ontologies.OntologyInequality;
 import ptolemy.data.ontologies.ParseTreeAnnotationEvaluator;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.modal.ModalModel;
+import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -105,7 +105,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @return The constraints of this component.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public List<OntologyInequality> constraintList() throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         _setEffectiveTerms();
 
         _constraintAttributes();
@@ -197,8 +197,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      */
     public void setAtLeast(Object greater, Object lesser) {
         if (greater != null && lesser != null) {
-            _ownConstraints.add(new OntologyInequality(
-                    this, getPropertyTerm(lesser), getPropertyTerm(greater)));
+            _ownConstraints.add(new Inequality(
+                    getPropertyTerm(lesser), getPropertyTerm(greater)));
         }
     }
 
@@ -548,7 +548,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     }
 
     /** The list of permanent property constraints. */
-    protected List<OntologyInequality> _subHelperConstraints = new LinkedList<OntologyInequality>();
+    protected List<Inequality> _subHelperConstraints = new LinkedList<Inequality>();
 
     /**
      * Return the union of the two specified lists of inequality constraints by
@@ -557,10 +557,10 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @param list2 The second list.
      * @return The union of the two lists.
      */
-    protected static List<OntologyInequality> _union(List<OntologyInequality> list1,
-            List<OntologyInequality> list2) {
+    protected static List<Inequality> _union(List<Inequality> list1,
+            List<Inequality> list2) {
 
-        List<OntologyInequality> result = new ArrayList<OntologyInequality>(list1);
+        List<Inequality> result = new ArrayList<Inequality>(list1);
 
         result.addAll(list2);
         return result;
@@ -570,7 +570,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     ////                         protected variables               ////
 
     /** The list of Inequality constraints contained by this LatticeOntologyAdapter. */
-    protected List<OntologyInequality> _ownConstraints = new LinkedList<OntologyInequality>();
+    protected List<Inequality> _ownConstraints = new LinkedList<Inequality>();
 
     /** Indicate whether this adapter uses the default actor constraints. */
     protected boolean _useDefaultConstraints;

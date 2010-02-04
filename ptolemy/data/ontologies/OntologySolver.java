@@ -28,10 +28,7 @@ import java.io.FilenameFilter;
 import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
@@ -98,7 +95,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
     }
 
     /**
-     * Check if there are any regression testing errors after resolving
+     * Check whether there are any regression testing errors after resolving
      * properties. If so, throw a new PropertyResolutionException with
      * an error message that includes all the properties that does not match the
      * regression test values.
@@ -107,11 +104,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * errors from running the OntologySolver in the regression test.
      */
     public void checkErrors() throws OntologyResolutionException {
-
-        // first, store errors to statistics
-        _addErrorStatistics();
-
-        // FIXME: remove the errors as well.
 
         List<String> errors = _ontologySolverUtilities.removeErrors();
         Collections.sort(errors);
@@ -124,7 +116,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
     }
 
     /**
-     * Check if there are any OntologySolver resolution errors after resolving
+     * Check whether there are any OntologySolver resolution errors after resolving
      * properties. If so, throw an IllegalActionException.
      * 
      * @exception IllegalActionException If an exception is thrown by calling checkErrors()
@@ -177,14 +169,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public Concept getPreviousProperty(Object object) {
         return _previousProperties.get(object);
-    }
-
-    /**
-     * Return the statistics map.
-     * @return The statistics map.
-     */
-    public Map<Object, Object> getStats() {
-        return _stats;
     }
 
     /**
@@ -246,52 +230,15 @@ public abstract class OntologySolver extends OntologySolverBase implements
     }
 
     /**
-     * Increment the given field the solver statistics by a given number. This
-     * is used for incrementing integer type statistics. If the given field does
-     * not exist, it starts the count of the field at zero.
-     * @param field The given field of the solver statistics.
-     * @param increment The given number to increment by.
-     */
-    public void incrementStats(Object field, long increment) {
-        incrementStats(_stats, field, increment);
-    }
-
-    /**
-     * Increment the given field in the given statistics map by a given number.
-     * This is used for incrementing integer type statistics. If the given field
-     * does not exist, it starts the count of the field at zero.
-     * @param map The statistics map.
-     * @param field The field (key) to increment.
-     * @param increment The increment amount.
-     */
-    public static void incrementStats(Map map, Object field, Number increment) {
-        Number current = (Number) map.get(field);
-        if (current == null) {
-            current = 0;
-        }
-        map.put(field, current.longValue() + increment.longValue());
-    }
-
-    /**
      * Invoke the solver directly.
      * @return True if the invocation succeeds; otherwise false which means an
      * error has occurred during the process.
      */
+    // FIXME: Why have this method? Why not call resolveProperties() directly?
     public boolean invokeSolver() {
-        return invokeSolver(null);
-    }
-
-    /**
-     * Invoke the solver from another component (e.g. model analyzer).
-     * @param component The given component.
-     * @return True if the invocation succeeds; otherwise false which means an
-     * error has occurred during the process.
-     */
-    public boolean invokeSolver(NamedObj component) {
         boolean success = false;
-
         try {
-            success = resolveProperties(component, true);
+            resolveProperties();
 
             updateProperties();
 
@@ -358,9 +305,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public void reset() {
         super.reset();
-        _analyzer = null;
         _previousProperties = new HashMap<Object, Concept>();
-        _stats = new TreeMap<Object, Object>();
     }
 
     /**
@@ -371,109 +316,9 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * @throws KernelException If the ontology resolution fails.
      */
     public void resolveProperties() throws KernelException {
-        resolveProperties(_analyzer, false);
-    }
-
-    /**
-     * Invoke the OntologySolver and run its algorithm to resolve
-     * which Concepts in the Ontology are assigned to each object in the
-     * model.
-     * 
-     * @param isInvoked Whether the solver is directly invoked or activated
-     * through solver dependencies.
-     * @return True if resolution succeeds as expected; Otherwise, false.
-     * @exception KernelException If the OntologySolver algorithm causes an exception
-     */
-    public boolean resolveProperties(boolean isInvoked) throws KernelException {
-        return resolveProperties(_analyzer, isInvoked);
-    }
-
-    /**
-     * Invoke the OntologySolver from a model analyzer graph transformation
-     * object and run its algorithm to resolve which Concepts in the Ontology
-     * are assigned to each object in the model.
-     * 
-     * @param analyzer The model analyzer that invokes the solver. However, this
-     * is null if the solver is invoked directly from its GUI.
-     * @return True if resolution succeeds as expected; Otherwise, false.
-     * @exception KernelException If the OntologySolver algorithm causes an exception
-     */
-    public boolean resolveProperties(NamedObj analyzer) throws KernelException {
-        return resolveProperties(analyzer, false);
-    }
-
-    /**
-     * Invoke the OntologySolver for the top-level entity that contains
-     * the solver and run its algorithm to resolve which Concepts in the
-     * Ontology are assigned to each object in the model.
-     * 
-     * @param analyzer The model analyzer that invokes the solver. However, this
-     * is null if the solver is invoked directly from its GUI.
-     * @param isInvoked Whether the solver is directly invoked or activated
-     * through solver dependencies.
-     * @return True if resolution succeeds as expected; Otherwise, false.
-     * @exception KernelException If the OntologySolver algorithm causes an exception
-     */
-    public boolean resolveProperties(NamedObj analyzer, boolean isInvoked)
-            throws KernelException {
-        boolean success = true;
-        boolean noException = true;
-        try {
-            _initializeStatistics();
-            getOntologySolverUtilities().addRanSolvers(this);
-
-            _analyzer = analyzer;
-            _isInvoked = isInvoked;
-
-            // If this is not an intermediate (invoked) solver,
-            // we need to clear the display.
-            if (isInvoked) {
-                OntologySolver previousSolver = _ontologySolverUtilities._previousInvokedSolver;
-
-                // Clear the display properties of the previous invoked solver.
-                // If no solver is invoked previously, at least clear
-                // the previous highlighting for this solver.
-                if (previousSolver == null
-                        || previousSolver.getContainer() == null) {
-                    previousSolver = this;
-                }
-
-                previousSolver._momlHandler.clearDisplay();
-
-                _ontologySolverUtilities._previousInvokedSolver = this;
-            }
-            _resolveProperties(analyzer);
-
-            checkResolutionErrors();
-
-        } catch (OntologyResolutionException ex) {
-            noException = false;
-            // resolution exceptions. that means resolution ended prematurely.
-            // But that may not means that this is an improper behavior
-            // Check whether we are expecting an exception,
-            // if in testing mode, then add a RegressionTestErrorException
-            OntologySolver failedSolver = (OntologySolver) ex.getSolver();
-
-            // Remove '\r' characters to make Windows-Linux comparable strings.
-            String trainedException = failedSolver.getTrainedException()
-                    .replaceAll("\r", "");
-            String exception = ex.getMessage().replaceAll("\r", "");
-            if (!exception.equals(trainedException)) {
-                addErrors(OntologySolver.getTrainedExceptionMismatchMessage(
-                        exception, trainedException));
-            }
-        }
-
-        if (noException && getTrainedException().length() > 0) {
-            // if in TEST mode, if there is a previously trained
-            // RegressionTestErrorExceptionException
-            // and we do not get one in the resolution,
-            // then we throw an exception.
-            addErrors(OntologySolver.getTrainedExceptionMismatchMessage("",
-                    getTrainedException()));
-        }
-
-        return success;
+        getOntologySolverUtilities().addRanSolvers(this);
+        _resolveProperties();
+        checkResolutionErrors();
     }
 
     /**
@@ -482,9 +327,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * @exception IllegalActionException If the properties cannot be updated.
      */
     public void updateProperties() throws IllegalActionException {
-
-        _addStatistics();
-
         for (Object propertyable : getAllPropertyables()) {
 
             if (!NamedObj.class.isInstance(propertyable)) {
@@ -498,11 +340,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
 
             // Get the value resolved by the solver.
             getProperty(namedObj);
-
         }
-
-        System.out.println(_getStatsAsString(": "));
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -598,20 +436,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
     }
 
     /**
-     * Record tracing statistics.
-     * @exception IllegalActionException If there is a problem collecting the statistics.
-     */
-    protected void _addStatistics() throws IllegalActionException {
-        _stats.put("# of adapters", _adapterStore.size());
-        _stats.put("# of propertyables", getAllPropertyables().size());
-        _stats.put("# of resolved properties", _resolvedProperties.size());
-        _stats.put("# of resolution errors", _ontologySolverUtilities
-                .getErrors().size());
-        _stats.put("has trained resolution errors", getTrainedException()
-                .length() > 0);
-    }
-
-    /**
      * Get the propertyable attribute contained by the given propertyable.
      * @param propertyable The given propertyable object.
      * @return The property attribute contained by the given propertyable.
@@ -646,45 +470,13 @@ public abstract class OntologySolver extends OntologySolverBase implements
         return attribute;
     }
 
-    /**
-     * Return the string representation of the recorded OntologySolver
-     * algorithm execution statistics.
-     * 
-     * @param separator The delimiter to separate the statistics fields.
-     * @return The string representation of the recorded statistics.
+    /** Run the solver.
+     *  @exception KernelException If the solver fails.
      */
-    protected String _getStatsAsString(String separator) {
-        StringBuffer result = new StringBuffer();
-        for (Object field : _stats.keySet()) {
-            result.append(field + separator + _stats.get(field) + _eol);
-        }
-        return result.toString();
-    }
-
-    /**
-     * Resolve the Concept values for the specified top-level entity. Print out
-     * the name of the this OntologySolver. Sub-classes should override this method.
-     * 
-     * @param analyzer The specified model analyzer.
-     * @exception KernelException Not thrown in this base class.
-     */
-    protected void _resolveProperties(NamedObj analyzer) throws KernelException {
-
-        /* FIXME: What the heck is an analyzer?
-        System.out.println("Invoking \"" + getName() + "\" ("
-                + getExtendedUseCaseName() + "):");
-                */
-
-    }
+    protected abstract void _resolveProperties() throws KernelException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /**
-     * The model analyzer, if the solver is created by one; otherwise, this is
-     * null.
-     */
-    protected NamedObj _analyzer = null;
 
     /**
      * The handler that issues MoML requests and makes model changes.
@@ -733,42 +525,9 @@ public abstract class OntologySolver extends OntologySolverBase implements
     private HashMap<Object, Concept> _previousProperties = new HashMap<Object, Concept>();
 
     /**
-     * The record of statistics for the resolution. It is a mapping between keys
-     * and values. To keep track of numerical data, by inserting an Integer or
-     * Long as value (See {@link #incrementStats(Object, long)}).
-     */
-    private Map<Object, Object> _stats = new LinkedHashMap<Object, Object>();
-
-    /**
      * The name of the trained exception attribute.
      */
     private static String _TRAINED_EXCEPTION_ATTRIBUTE_NAME = "PropertyResolutionExceptionMessage";
-
-    /**
-     * Initialize solver algorithm execution statistics Map for OntologySolver.
-     */
-    protected void _initializeStatistics() {
-        _stats.put("has trained resolution errors", false);
-        _stats.put("# of trained resolution errors", 0);
-        _stats.put("# of adapters", 0);
-        _stats.put("# of propertyables", 0);
-        _stats.put("# of resolved properties", 0);
-        _stats.put("# of manual annotations", 0);
-    }
-
-    /**
-     * Add error statistics for OntologySolver to its solver
-     * algorithm execution statistics Map.
-     */
-    protected void _addErrorStatistics() {
-        Integer errorCount = (Integer) _stats
-                .get("# of trained resolution errors");
-        if (errorCount == null) {
-            errorCount = 0;
-        }
-        _stats.put("# of trained resolution errors", errorCount
-                + _ontologySolverUtilities.getErrors().size());
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

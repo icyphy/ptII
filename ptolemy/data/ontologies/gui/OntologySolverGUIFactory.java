@@ -78,10 +78,12 @@ public class OntologySolverGUIFactory extends EditorFactory {
         // This is always used to configure the container, so
         // we just use that.
         OntologySolver solver = (OntologySolver) getContainer();
-        workspace().getWriteAccess();
-        solver.invokeSolver();
-        solver.resetAll();
-        workspace().doneWriting();
-
+        try {
+            workspace().getWriteAccess();
+            solver.invokeSolver();
+            solver.resetAll();
+        } finally {            
+            workspace().doneWriting();
+        }
     }
 }

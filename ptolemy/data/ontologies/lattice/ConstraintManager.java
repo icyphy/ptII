@@ -31,9 +31,9 @@ package ptolemy.data.ontologies.lattice;
 import java.util.List;
 
 import ptolemy.data.StringToken;
-import ptolemy.data.ontologies.OntologyInequality;
 import ptolemy.data.ontologies.util.MultiHashMap;
 import ptolemy.data.ontologies.util.MultiMap;
+import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -63,8 +63,8 @@ public class ConstraintManager {
      *  ConstraintManager.
      *  @param constraints The list of inequality constraints.
      */
-    public void setConstraints(List<OntologyInequality> constraints) {
-        for (OntologyInequality constraint : constraints) {
+    public void setConstraints(List<Inequality> constraints) {
+        for (Inequality constraint : constraints) {
             InequalityTerm greaterTerm = constraint.getGreaterTerm();
             InequalityTerm lesserTerm = constraint.getLesserTerm();
             _greaterTermMap.put(greaterTerm, lesserTerm);

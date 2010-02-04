@@ -29,7 +29,7 @@ package ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.ontologies.OntologyInequality;
+import ptolemy.graph.Inequality;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.AtomicActor;
 import ptolemy.kernel.util.Attribute;
@@ -71,7 +71,7 @@ public class CurrentTime extends AtomicActor {
      * @exception IllegalActionException If thrown while reading the lattice or
      * if thrown by the superclass. 
      */
-    public List<OntologyInequality> constraintList() throws IllegalActionException {
+    public List<Inequality> constraintList() throws IllegalActionException {
         setAtLeast(_actor.output, _timeConcept);
         return super.constraintList();
     }
