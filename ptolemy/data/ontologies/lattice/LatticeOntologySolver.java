@@ -30,15 +30,12 @@ import java.util.List;
 
 import ptolemy.actor.TypeConflictException;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.data.ontologies.OntologySolver;
 import ptolemy.data.ontologies.gui.OntologySolverGUIFactory;
-import ptolemy.data.type.BaseType;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
@@ -118,13 +115,6 @@ public class LatticeOntologySolver extends OntologySolver {
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nResolve Properties</text></svg>");
 
-        /* Removed to make compile
-         * --Ben on 12/04/2009
-         * 
-         * Added back in to provide double-click property resolution
-         * GUI operation for OntologySolver.
-         * 12/21/09 Charles Shelton
-         */
         new OntologySolverGUIFactory(this, "_LatticeOntologySolverGUIFactory");
     }
 
