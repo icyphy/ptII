@@ -1053,14 +1053,15 @@ public class TableauFrame extends Top {
     
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.
-	 *
+     *
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
      *
      *  @return URL of the saved file if the save succeeds, null 
-	 *  if save fails.
+     *  if save fails.
      */
     protected URL _saveAsHelper(String extension) {
+        // _saveAsHelper is needed as part of Kepler.
         if (_tableau == null) {
             throw new InternalErrorException(
                     "No associated Tableau! Can't save.");
