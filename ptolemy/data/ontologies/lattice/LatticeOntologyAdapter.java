@@ -106,7 +106,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
-        _setEffectiveTerms();
 
         _constraintAttributes();
 
@@ -159,19 +158,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      */
     public LatticeOntologySolver getSolver() {
         return (LatticeOntologySolver) _solver;
-    }
-
-    /**
-     * Return true if the given model object has been annotated with a manual annotation
-     * constraint. This method calls the LatticeOntologySolver's
-     * {@linkplain LatticeOntologySolver#isAnnotatedTerm(Object) isAnnotatedTerm()}
-     * method.
-     * 
-     * @param object The model object to be checked to see if it is annotated
-     * @return true if the model object is annotated, false otherwise
-     */
-    public boolean isAnnotated(Object object) {
-        return ((LatticeOntologySolver) _solver).isAnnotatedTerm(object);
     }
 
     /**
@@ -510,41 +496,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
         } else {
             interconnectConstraintType = constraintType;
         }
-    }
-
-    /*
-     * private void _removeConstraints() { Set<Inequality> removeConstraints =
-     * new HashSet<Inequality>();
-     * 
-     * Iterator inequalities = _constraints.iterator(); while
-     * (inequalities.hasNext()) { Inequality inequality = (Inequality)
-     * inequalities.next(); List<InequalityTerm> variables =
-     * _deepGetVariables(inequality.getGreaterTerm().getVariables());
-     * 
-     * variables.addAll(
-     * _deepGetVariables(inequality.getLesserTerm().getVariables()));
-     * 
-     * Iterator iterator = variables.iterator();
-     * 
-     * while (iterator.hasNext()) { InequalityTerm term = (InequalityTerm)
-     * iterator.next(); if
-     * (nonConstraintings.contains(term.getAssociatedObject())) {
-     * removeConstraints.add(inequality); } } }
-     * _constraints.removeAll(removeConstraints); }
-     */
-
-    /**
-     * Set the effective terms for the Inequality constraints for the model component
-     * referred to by this OntologyAdapter.  This method does nothing in the base class
-     * and is overridden in subclasses for specific cases where an OntologySolver wants
-     * to only set certain InequalityTerms as effective to be used in the
-     * OntologySolver algorithm.
-     * 
-     * @see ptolemy.data.ontologies.lattice.ConceptTermManager.InequalityTerm#isEffective isEffective()
-     */
-    protected void _setEffectiveTerms() {
-        // do nothing in here, overwrite use-case specific!
-
     }
 
     /** The list of permanent property constraints. */
