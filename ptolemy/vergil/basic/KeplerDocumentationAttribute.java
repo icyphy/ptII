@@ -46,6 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.StringUtilities;
 
 /**
@@ -169,6 +170,15 @@ public class KeplerDocumentationAttribute extends Attribute implements
                     _portHash.put(p.getName(), "");
                 }
             }
+
+            // Generate a generic change request so the KeplerLSID is updated
+            String caStr = "ptolemy.kernel.util.ConfigurableAttribute";
+
+            String updateMoml = "<property name=\"author\" " + "class=\""
+                    + caStr + "\" value=\"\"/>";
+            MoMLChangeRequest updateRequest = new MoMLChangeRequest(this,
+                    target, updateMoml);
+            this.requestChange(updateRequest);
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
                     "Could not add KeplerDocumentation internal attributes.");
