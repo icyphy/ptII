@@ -85,14 +85,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
     ////                         public methods                    ////
 
     /**
-     * Record the specified error message.
-     * @param error The specified error message string.
-     */
-    public void addErrors(String error) {
-        _ontologySolverUtilities.addErrors(error);
-    }
-
-    /**
      * Check whether there are any regression testing errors after resolving
      * properties. If so, throw a new PropertyResolutionException with
      * an error message that includes all the properties that does not match the
@@ -428,7 +420,8 @@ public abstract class OntologySolver extends OntologySolverBase implements
 
         // Check for unacceptable solution.
         if (property != null && !property.isValueAcceptable()) {
-            addErrors("Property \"" + property
+                _ontologySolverUtilities.addErrors(
+                    "Property \"" + property
                     + "\" is not an acceptable solution for " + propertyable
                     + "." + _eol);
         }
