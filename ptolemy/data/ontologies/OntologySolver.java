@@ -34,13 +34,11 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.gui.OntologyDisplayActions;
 import ptolemy.domains.tester.lib.Testable;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
@@ -169,24 +167,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public Concept getPreviousProperty(Object object) {
         return _previousProperties.get(object);
-    }
-
-    /**
-     * Return the trained exception attribute for the OntologySolver.
-     * 
-     * @return The name of the trained exception attribute
-     */
-    public Attribute getTrainedExceptionAttribute() {
-        return getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
-    }
-
-    /**
-     * Return the name of the trained exception attribute for the OntologySolver.
-     * 
-     * @return The name of the trained exception attribute
-     */
-    public String getTrainedExceptionAttributeName() {
-        return _TRAINED_EXCEPTION_ATTRIBUTE_NAME;
     }
 
     /**
@@ -459,11 +439,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * property-able objects and their resolved properties.
      */
     private HashMap<Object, Concept> _previousProperties = new HashMap<Object, Concept>();
-
-    /**
-     * The name of the trained exception attribute.
-     */
-    private static String _TRAINED_EXCEPTION_ATTRIBUTE_NAME = "PropertyResolutionExceptionMessage";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

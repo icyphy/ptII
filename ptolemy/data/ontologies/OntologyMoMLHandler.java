@@ -206,15 +206,6 @@ public class OntologyMoMLHandler extends Attribute {
             assert false;
         }
 
-        // Delete the trained exception attribute.
-        Attribute trainedException = solver.getTrainedExceptionAttribute();
-        if (trainedException != null) {
-            String request = "<deleteProperty name=\""
-                    + solver.getTrainedExceptionAttributeName() + "\"/>";
-            request = _completeHierarchyInMoML(solver, request);
-            completeMoML.append(request);
-        }
-
         completeMoML.append("</group>");
 
         _requestChange(completeMoML.toString());
