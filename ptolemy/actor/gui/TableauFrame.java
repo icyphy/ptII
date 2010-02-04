@@ -1044,10 +1044,28 @@ public class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs(String extension) {
+    	URL result = _saveAsHelper(extension);
+    	if (result == null){
+    		return false;
+    	}
+    	return true;
+    }
+    
+    /** Query the user for a filename, save the model to that file,
+     *  and open a new window to view the model.
+	 *
+     *  @param extension If non-null, then the extension that is
+     *  appended to the file name if there is no extension.
+     *
+     *  @return URL of the saved file if the save succeeds, null 
+	 *  if save fails.
+     */
+    protected URL _saveAsHelper(String extension) {
         if (_tableau == null) {
             throw new InternalErrorException(
                     "No associated Tableau! Can't save.");
         }
+        URL newURL = null;
 
         // Swap backgrounds and avoid white boxes in "common places" dialog
         JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
@@ -1073,10 +1091,10 @@ public class TableauFrame extends Top {
 
                 try {
                     if (!_confirmFile(null, file)) {
-                        return false;
+                        return null;
                     }
 
-                    URL newURL = file.toURI().toURL();
+                    newURL = file.toURI().toURL();
                     String newKey = newURL.toExternalForm();
 
                     _directory = fileDialog.getCurrentDirectory();
@@ -1102,16 +1120,16 @@ public class TableauFrame extends Top {
                         }
                     }
 
-                    return true;
+                    return newURL;
                 } catch (Exception ex) {
                     report("Error in save as.", ex);
-                    return false;
+                    return null;
                 }
             }
 
             // The user hit cancel or there was an error, so we did not
             // successfully save.
-            return false;
+            return null;
         } finally {
             jFileChooserBugFix.restoreBackground(background);
         }
