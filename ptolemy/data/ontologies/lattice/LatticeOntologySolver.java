@@ -207,16 +207,6 @@ public class LatticeOntologySolver extends OntologySolver {
     ////                         public methods                    ////
 
     /**
-     * Add the specified object to the hash table of manually annotated
-     * objects in the model.
-     * 
-     * @param object The java Object to be added to the hash table
-     */
-    public void addAnnotated(Object object) {
-        _annotatedObjects.add(object);
-    }
-
-    /**
      * Get the list of affected InequalityTerms from the OntologySolver's
      * PropertyTermManager.
      * FIXME: 01/28/10 Charles Shelton - Not really sure what this method is used for. The call to
