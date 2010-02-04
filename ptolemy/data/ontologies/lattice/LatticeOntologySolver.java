@@ -109,15 +109,6 @@ public class LatticeOntologySolver extends OntologySolver {
         expressionASTNodeConstraintType = new StringParameter(this,
                 "expressionASTNodeConstraintType");
         expressionASTNodeConstraintType.setExpression("parent >= child");
-
-        logMode = new Parameter(this, "logMode");
-        logMode.setTypeEquals(BaseType.BOOLEAN);
-        logMode.setExpression("false");
-
-        // Set to path of the model.
-        logDirectory = new FileParameter(this, "Log directory");
-        // In Windows, this should map to C:\temp\, /home/tmp/ in Linux.
-        logDirectory.setExpression("$HOME/temp/ConstraintFiles");
         
         _addChoices();
 
@@ -212,15 +203,6 @@ public class LatticeOntologySolver extends OntologySolver {
      * </ul>
      */
     public StringParameter fsmConstraintType;
-
-    /** Holds the value of the directory location for the log file for the OntologySolver. */
-    public FileParameter logDirectory;
-
-    /** 
-     * Holds the value of the logMode. "true" to enable logging for the
-     * OntologySolver and "false" to disable logging.
-     */
-    public Parameter logMode;
 
     /**
      * Indicate whether to compute the least or greatest fixed point solution.
