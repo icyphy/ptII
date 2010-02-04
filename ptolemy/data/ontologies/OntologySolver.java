@@ -172,21 +172,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
     }
 
     /**
-     * Return the trained exception message string. If there is no trained
-     * exception, an empty string is return.
-     * @return The trained exception message string.
-     */
-    public String getTrainedException() {
-        StringAttribute attribute = (StringAttribute) getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
-
-        if (attribute == null) {
-            return "";
-        } else {
-            return attribute.getExpression();
-        }
-    }
-
-    /**
      * Return the trained exception attribute for the OntologySolver.
      * 
      * @return The name of the trained exception attribute
@@ -202,31 +187,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public String getTrainedExceptionAttributeName() {
         return _TRAINED_EXCEPTION_ATTRIBUTE_NAME;
-    }
-
-    /**
-     * Return the error message string that shows the mismatch between the two
-     * given exception strings. This method does not compare the content between
-     * the input strings. It merely wraps the input strings into a larger error
-     * message that says there is a mismatch between the two. This is used to
-     * generate the error message for failed regression test that detects a
-     * mismatch between the expected (trained) exception and the generate
-     * exception.
-     * @param exception The first input error message.
-     * @param trainedException The second input error message.
-     * @return The exception message string.
-     */
-    public static String getTrainedExceptionMismatchMessage(String exception,
-            String trainedException) {
-        return "The generated exception:" + _eol
-                + "-------------------------------------------------------"
-                + _eol + exception + _eol
-                + "-------------------------------------------------------"
-                + _eol + " does not match the trained exception:" + _eol
-                + "-------------------------------------------------------"
-                + _eol + trainedException + _eol
-                + "-------------------------------------------------------"
-                + _eol;
     }
 
     /**
@@ -273,30 +233,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public void recordPreviousProperty(Object object, Concept property) {
         _previousProperties.put(object, property);
-    }
-
-    /**
-     * Record the specified exception message as a trained exception. This make
-     * the trained exception persistent by creating or updating the trained
-     * exception attribute contained by this solver.
-     * @param exceptionMessage The given exception message.
-     * @exception IllegalActionException Thrown if an error occurs when creating
-     * or updating the trained exception attribute.
-     */
-    public void recordTrainedException(String exceptionMessage)
-            throws IllegalActionException {
-        StringAttribute attribute = (StringAttribute) getAttribute(_TRAINED_EXCEPTION_ATTRIBUTE_NAME);
-        if (attribute == null) {
-
-            try {
-                attribute = new StringAttribute(this,
-                        _TRAINED_EXCEPTION_ATTRIBUTE_NAME);
-
-            } catch (NameDuplicationException e) {
-                assert false;
-            }
-        }
-        attribute.setExpression(exceptionMessage);
     }
 
     /**

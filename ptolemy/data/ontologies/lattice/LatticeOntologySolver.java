@@ -118,12 +118,7 @@ public class LatticeOntologySolver extends OntologySolver {
         logDirectory = new FileParameter(this, "Log directory");
         // In Windows, this should map to C:\temp\, /home/tmp/ in Linux.
         logDirectory.setExpression("$HOME/temp/ConstraintFiles");
-
-        trainedConstraintDirectory = new FileParameter(this,
-                "Trained constraint directory");
-        trainedConstraintDirectory
-                .setExpression("$CLASSPATH/trainedConstraints");
-
+        
         _addChoices();
 
         _attachText("_iconDescription", "<svg>\n"
@@ -235,12 +230,6 @@ public class LatticeOntologySolver extends OntologySolver {
      * </ul>
      */
     public StringParameter solvingFixedPoint;
-
-    /**
-     * Holds the value of the directory locatino for the trained constraints
-     * for regression tests for the OntologySolver resolution.
-     */
-    public FileParameter trainedConstraintDirectory;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -456,7 +445,6 @@ public class LatticeOntologySolver extends OntologySolver {
     public void reset() {
         super.reset();
         _conceptTermManager = null;
-        _trainedConstraints.clear();
     }
 
     /** Run a test. This invokes the solver in TEST mode.
@@ -892,12 +880,6 @@ public class LatticeOntologySolver extends OntologySolver {
 
     /** The list of constraints after the ontology resolution algorithm has executed. */
     private List<Inequality> _resolvedConstraintList;
-
-    /**
-     * The set of trained constraints. This set is populated from parsing the
-     * constraint file when training mode is off.
-     */
-    private final List<String> _trainedConstraints = new LinkedList<String>();
 
     /**
      * The string that identifies whether the OntologySolver should use
