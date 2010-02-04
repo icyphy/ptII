@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry
-        excluding="**/CVS/|**/adm/|**/codeDoc/|config/|diva/util/java2d/svg/|jni/test/jni/meaningOfLife/|jni/test/jni/testDeux/|jni/test/jni/testTrois/||ptolemy/actor/lib/logic/fuzzy/|ptolemy/backtrack/eclipse/|ptolemy/backtrack/test/|ptolemy/codegen/newInterfaces/|doc/coding/templates/|ptolemy/copernicus/kernel/fragment/|ptolemy/distributed/|doc/doclets/|ptolemy/apps/|ptolemy/domains/ct/demo/Saber/|ptolemy/domains/gr/|ptolemy/domains/gr/lib/experimental/|ptolemy/domains/gro/|ptolemy/domains/pdf/|ptolemy/domains/space/|ptolemy/plot/servlet/|vendors/|ptolemy/actor/lib/io/comm/|ptolemy/actor/lib/jai/|ptolemy/actor/lib/jmf/|ptolemy/actor/lib/joystick/|ptolemy/actor/lib/jxta/|ptolemy/actor/lib/x10/|ptolemy/domains/gr/lib/quicktime/|ptolemy/moml/jxta/|ptolemy/moml/test/NoPackageActor.java|src/|ptolemy/vergil/basica/itextpdf/|target/"
+        excluding="**/CVS/|**/adm/|**/codeDoc/|config/|diva/util/java2d/svg/|jni/test/jni/meaningOfLife/|jni/test/jni/testDeux/|jni/test/jni/testTrois/||ptolemy/actor/lib/logic/fuzzy/|ptolemy/backtrack/eclipse/|ptolemy/backtrack/test/|ptolemy/codegen/newInterfaces/|doc/coding/templates/|ptolemy/copernicus/kernel/fragment/|ptolemy/distributed/|doc/doclets/|ptolemy/apps/|ptolemy/domains/ct/demo/Saber/|ptolemy/domains/gr/|ptolemy/domains/gr/lib/experimental/|ptolemy/domains/gro/|ptolemy/domains/pdf/|ptolemy/domains/space/|ptolemy/plot/servlet/|vendors/|ptolemy/actor/lib/io/comm/|ptolemy/actor/lib/jai/|ptolemy/actor/lib/jmf/|ptolemy/actor/lib/joystick/|ptolemy/actor/lib/jxta/|ptolemy/actor/lib/x10/|ptolemy/domains/gr/lib/quicktime/|ptolemy/moml/jxta/|ptolemy/moml/test/NoPackageActor.java|src/|ptolemy/vergil/basic/itextpdf/|target/"
         kind="src" path=""/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
     <classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
@@ -24,6 +24,5 @@
     <classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/nesc.jar"/>
     <classpathentry kind="lib" path="ptolemy/actor/ptalon/antlr/antlr.jar"/>
     <classpathentry kind="lib" path="lib/PDFRenderer.jar"/>
-    <classpathentry kind="lib" path="vendors/misc/itext/iText.jar"/>
     <classpathentry kind="output" path=""/>
 </classpath>
