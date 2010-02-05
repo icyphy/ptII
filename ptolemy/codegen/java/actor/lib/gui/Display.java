@@ -51,7 +51,7 @@ public class Display extends JavaCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
+     * Generate the postfire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,
      * <code>printString</code>, or <code>printDouble</code> from Display.j,
      * replaces macros with their values and returns the results.
@@ -59,9 +59,9 @@ public class Display extends JavaCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    protected String _generateFireCode() throws IllegalActionException {
+    public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(super._generateFireCode());
+        code.append(super.generatePostfireCode());
 
         ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
 
