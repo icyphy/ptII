@@ -12,7 +12,7 @@
     </property>
     <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 0, 817, 612}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={161, 22, 815, 612}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[602, 505]">
     </property>
@@ -293,9 +293,9 @@
         </property>
     </entity>
     <entity name="A2" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
-        <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="True">
+        <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 235.0]">
         </property>
@@ -344,7 +344,7 @@
                     </property>
                 </entity>
                 <entity name="B1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
-                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 145.0]">
                     </property>
