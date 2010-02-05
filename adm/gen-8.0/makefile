@@ -210,6 +210,9 @@ release_windows_setup:
 release_mac:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
 
+release_mac_setup:
+	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar setup
+
 release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
 
@@ -2408,8 +2411,8 @@ $(PTII)/vendors/launch4j:
 
 
 # Launch4J console application that reads in .xml files and creates .exe files.
-L4JC=$(L4J_DIR)/launch4jc.exe
-#L4JC=$(L4J_DIR)/launch4j
+4JC=$(L4J_DIR)/launch4jc.exe
+L4JC=$(L4J_DIR)/launch4j
 
 PTSETUP_DEPENDENCIES = \
 	../../ptiny.exe \
@@ -2476,3 +2479,36 @@ full_jars:
 	@(cd $(PTII); make -s echo_jars JARS=FULL_ONLY_JNLP_JARS)
 	@(cd $(PTII); make -s echo_jars JARS=VIPTOS_ONLY_JNLP_JARS)
 	@(cd $(PTII); make -s echo_jars JARS=VISUAL_SENSE_ONLY_JNLP_JARS)
+
+########################################################################
+# Copy the jars for the Mac
+
+# The Macintosh application directory
+MACAPP=Ptolemy.app
+# The application inside the Macintosh application directory
+MACAPP_APP= $(MACAPP)/Ptolemy
+# The Contents directory
+MACAPP_CONTENTS=$(MACAPP_APP)/Contents
+MACAPP_PLIST=$(MACAPP)/Contents/Info.plist
+
+macapp_app: $(MACAPP_APP)
+$(MACAPP_APP):
+	@if [ ! -d  $(MACAPP_APP) ]; then \
+	    echo "Creating $(MACAPP_APP)"; \
+	    mkdir $(MACAPP_APP); \
+	fi
+	(cd $(PTII); tar -cf - `make echo_plist_jars JARS=FULL_JNLP_JARS`) | \
+	       (cd $(MACAPP_APP); tar -xvf -)
+
+# Create Info.plist by creating the middle part that has the classpath
+macapp_plist:$(MACAPP_PLIST)
+$(MACAPP_PLIST): $(MACAPP_PLIST).top $(MACAPP_PLIST).middle $(MACAPP_PLIST).bottom
+	cat $^ > $@
+
+$(MACAPP_PLIST).middle: $(PTII)/mk/jnlp.mk
+	(cd $(PTII); make echo_plist_jars JARS=FULL_JNLP_JARS) | \
+	  awk '{ for(i=1;i<NF;i++) { print "       <string>$$APP_PACKAGE/Ptolemy/" $$i "</string>"}}' > $@
+
+macapp_clean:
+	rm -rf $(MACAPP_APP)
+	rm -f $(MACAPP_PLIST).middle $(MACAPP_PLIST)

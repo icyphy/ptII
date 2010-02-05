@@ -1,0 +1,17 @@
+      </array>
+      <key>VMOptions</key>
+      <string>-Xmx512m</string>
+      <key>Arguments</key>
+      <string>-full</string>
+      <key>Properties</key>
+      <dict>
+        <key>java.library.path</key>
+        <string>$APP_PACKAGE/Ptolemy/lib</string>
+        <key>APP_PACKAGE</key>
+        <string>$APP_PACKAGE</string>
+        <key>PTII</key>
+        <string>$APP_PACKAGE/Ptolemy</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

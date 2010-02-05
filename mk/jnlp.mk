@@ -379,6 +379,11 @@ BACKTRACK_JARS =
 
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
+# We are not shipping the fuzzy logic actor because it is GPL'd
+FUZZY_JARS =
+DEVEL_FUZZY_JARS = \
+	ptolemy/actor/lib/logic/fuzzy/fuzzy.jar \
+	ptolemy/actor/lib/logic/fuzzy/demo/demo.jar \
 
 PDFRENDERER_JARS = ptolemy/vergil/pdfrenderer/pdfrenderer.jar \
 		lib/PDFRenderer.jar
@@ -417,6 +422,8 @@ DEVEL_FULL_8_1_JARS = \
 	ptolemy/vergil/properties/properties.jar \
 	ptolemy/data/ontologies/ontologies.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
+	ptolemy/domains/sequence/sequence.jar \
+	ptolemy/domains/sequence/demo/demo.jar \
 	ptolemy/domains/pthales/pthales.jar \
 	ptolemy/domains/pthales/demo/demo.jar
 
@@ -441,6 +448,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/joystick/joystick.jar \
 	vendors/misc/joystick/Joystick.jar \
 	ptolemy/actor/lib/jxta/jxta.jar \
+	$(FUZZY_JARS) \
 	ptolemy/actor/lib/x10/x10.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
 	ptolemy/actor/ptalon/gt/gt.jar \
@@ -1325,6 +1333,10 @@ visualsensedoc.exe: visualsensedoc_l4j.xml
 # For example:  make echo_jars JARS=PTINY_JNLP_JARS
 echo_jars:
 	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" |  awk '{for(i=1;i<=NF;i++){ print "            <file src=\"../../jar_dist/" $$i "\""; ns = split($$i, f, "/"); dir = ""; for(s=1;s<ns;s++) {dir = dir "/" f[s]}  print "                  targetdir=\"$$INSTALL_PATH" dir "\"/>"  } }'
+
+
+echo_plist_jars:
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)"
 
 ################################################################
 ################################################################
