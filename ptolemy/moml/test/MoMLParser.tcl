@@ -4319,3 +4319,66 @@ test MoMLParser-32.4 {parse a file that does not exist} {
     regsub [string range $cwdUpCased 1 [string length $cwdUpCased]] $errMsg3 {XXXCWDXXX} errMsg4
     list $errMsg4
 } {{java.io.FileNotFoundException: Could not find file "/This File Does Not Exist/Foo.xml", also tried "XXXCWDXXX/This File Does Not Exist/Foo.xml"}}
+
+set inputTopTest {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="inputTestTop" class="ptolemy.actor.TypedCompositeActor">
+  <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+    <input source="inputTestB.xml"/>
+  </entity>
+</entity> }
+
+test MoMLParser-33.1 {Use the input statement} {
+    $parser reset
+    set toplevel [$parser parse $inputTopTest]
+    set r [$toplevel exportMoML]
+    list $r
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="inputTestTop" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="inputTestB" class="ptolemy.actor.TypedCompositeActor">
+            <entity name="B" class="ptolemy.actor.TypedCompositeActor">
+            </entity>
+        </entity>
+    </entity>
+</entity>
+}}
+
+set inputTopTest_NotAFile {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="inputTestTop" class="ptolemy.actor.TypedCompositeActor">
+  <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+    <input source="notAFile.xml"/>
+  </entity>
+</entity> }
+
+test MoMLParser-33.2 {Use the input statement on a non-existant file} {
+    $parser reset
+    catch {set toplevel [$parser parse $inputTopTest_NotAFile]} errMsg
+    regsub -all -- {-- .*/ptolemy/moml/test} [string range $errMsg 0 200] {-- XXX/ptolemy/moml/test} result
+    list $result
+} {{com.microstar.xml.XmlException: -- XXX/ptolemy/moml/test/notAFile.xml (No such file or directory)
+-- XML file not found relative to classpath.
+-- XXX/ptolemy/moml/test/notAFile.}}
+
+set inputTopTest_NoSource {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="inputTestTop" class="ptolemy.actor.TypedCompositeActor">
+  <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+    <input/>
+  </entity>
+</entity> }
+
+test MoMLParser-33.3 {input statement with no source} {
+    $parser reset
+    catch {set toplevel [$parser parse $inputTopTest_NoSource]} errMsg
+    regsub -all {file:/.*/ptolemy/moml/test} $errMsg {file:/XXX/ptolemy/moml/test} result
+    list $result
+} {{com.microstar.xml.XmlException: No source for element "input" in file:/XXX/ptolemy/moml/test/ at line 6 and column 10}}

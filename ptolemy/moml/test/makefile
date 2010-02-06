@@ -50,7 +50,8 @@ JSRCS = \
 	MoMLParserLeak.java \
 	RecorderErrorHandler.java \
 	TestIconLoader.java \
-	TestLibraryBuilder.java
+	TestLibraryBuilder.java \
+	UnloadModelTest.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -104,6 +105,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	CompositeCopyAndPasteTest.xml \
 	ConvertToLazyTest.xml \
 	ConstClassDefinition.xml \
+	inputTestB.xml \
 	MoMLCommandLineApplicationTest.xml \
 	NoPackageActor.java.in \
 	NonexistantDirectorTest.xml \
@@ -129,7 +131,8 @@ MISC_FILES =	alljtests.tcl \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	NoPackageActor.class
+	NoPackageActor.class \
+	'UnloadModelTest$$1.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
