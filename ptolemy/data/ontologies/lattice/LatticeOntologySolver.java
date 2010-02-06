@@ -21,8 +21,6 @@
  */
 package ptolemy.data.ontologies.lattice;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -537,7 +535,6 @@ public class LatticeOntologySolver extends OntologySolver {
             LatticeOntologyAdapter toplevelAdapter,
             List<Inequality> constraintList) throws TypeConflictException,
             OntologyResolutionException {
-        Writer writer = null;
 
         List<Inequality> conflicts = new LinkedList<Inequality>();
         List<Inequality> unacceptable = new LinkedList<Inequality>();
@@ -658,15 +655,6 @@ public class LatticeOntologySolver extends OntologySolver {
             throw new OntologyResolutionException(this, toplevel, ex,
                     "Concept resolution failed because of an error "
                             + "during property inference");
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException ex) {
-                    throw new OntologyResolutionException(this, toplevel(), ex,
-                            "Failed to close a file");
-                }
-            }
         }
 
     }
