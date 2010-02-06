@@ -831,10 +831,4 @@ public class LatticeOntologySolver extends OntologySolver {
     /** The list of constraints after the ontology resolution algorithm has executed. */
     private List<Inequality> _resolvedConstraintList;
 
-    /**
-     * The string that identifies whether the OntologySolver should use
-     * a user-defined lattice.  This is obsolete and should be removed.
-     */
-    protected static final String _USER_DEFINED_LATTICE = "Attribute::";
-
 }

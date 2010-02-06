@@ -296,6 +296,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * attribute.
      * @exception IllegalActionException
      */
+    // FIXME: Why is this here? It does not seem to belong...
     public ASTPtRootNode getParseTree(Attribute attribute)
             throws IllegalActionException {
         Map<Attribute, ASTPtRootNode> parseTrees = getOntologySolverUtilities()
