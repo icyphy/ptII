@@ -144,28 +144,6 @@ public abstract class OntologyAdapter {
     }
 
     /**
-     * Return a list of property-able objects that are of the
-     * specified Class.
-     *
-     * @param filter The specified Class to filter the returned list.
-     * @return A list of property-able objects that are of the specified
-     * Class.
-     * @exception IllegalActionException Thrown if
-     * {@link #getPropertyables()} throws it.
-     */
-    public List<Object> getPropertyables(Class filter)
-            throws IllegalActionException {
-        List<Object> list = new LinkedList<Object>();
-
-        for (Object object : getPropertyables()) {
-            if (filter.isInstance(object)) {
-                list.add(object);
-            }
-        }
-        return list;
-    }
-
-    /**
      * Return The PropertySolver that uses this adapter.
      *
      * @return The PropertySolver that uses this adapter.
@@ -497,18 +475,6 @@ public abstract class OntologyAdapter {
     protected ASTPtRootNode getParseTree(Attribute attribute)
             throws IllegalActionException {
         return _solver.getParseTree(attribute);
-    }
-
-    /**
-     * Record the association between the specified ASTPtRootNode and the
-     * specified Attribute.
-     *
-     * @param node The specified ASTPtRootNode.
-     *
-     * @param attribute The specified Attribute.
-     */
-    protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
-        _solver.getOntologySolverUtilities().putAttribute(node, attribute);
     }
 
     ///////////////////////////////////////////////////////////////////
