@@ -590,6 +590,10 @@ public class Simulator extends SDFTransformer {
             throws IllegalActionException {
         URIAttribute modelURI = (URIAttribute) namedObj.getAttribute("_uri",
                 URIAttribute.class);
+        if (modelURI == null) {
+            modelURI = (URIAttribute) namedObj.toplevel().getAttribute("_uri",
+                URIAttribute.class);
+        }
         return new File(modelURI.getURI());
     }
 
