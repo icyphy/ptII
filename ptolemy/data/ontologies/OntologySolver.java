@@ -153,15 +153,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
     }
 
     /**
-     * Return the previous resolved property for the given object.
-     * @param object The given object.
-     * @return The previous resolved property for the given object.
-     */
-    public Concept getPreviousProperty(Object object) {
-        return _previousProperties.get(object);
-    }
-
-    /**
      * Invoke the solver directly.
      * @return True if the invocation succeeds; otherwise false which means an
      * error has occurred during the process.
@@ -199,21 +190,11 @@ public abstract class OntologySolver extends OntologySolverBase implements
     }
 
     /**
-     * Record the previous property of the given object.
-     * @param object The given object.
-     * @param property The given property.
-     */
-    public void recordPreviousProperty(Object object, Concept property) {
-        _previousProperties.put(object, property);
-    }
-
-    /**
      * Reset the solver. This removes the internal states of the solver (e.g.
      * previously recorded properties, statistics, etc.).
      */
     public void reset() {
         super.reset();
-        _previousProperties = new HashMap<Object, Concept>();
     }
 
     /**
@@ -296,12 +277,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
                     + "." + _eol);
         }
     }
-
-    /**
-     * The record of the previously resolved properties. It is a map between the
-     * property-able objects and their resolved properties.
-     */
-    private HashMap<Object, Concept> _previousProperties = new HashMap<Object, Concept>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
