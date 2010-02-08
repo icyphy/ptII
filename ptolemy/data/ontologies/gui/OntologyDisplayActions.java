@@ -93,15 +93,6 @@ public class OntologyDisplayActions extends NodeControllerFactory {
         return new HighlighterController(controller);
     }
 
-    /** Create an editor for configuring the specified object with the
-     *  specified parent window.
-     *  @param object The object to configure.
-     *  @param parent The parent window, or null if there is none.
-     */
-    public void createEditor(NamedObj object, Frame parent) {
-
-    }
-
     /** The action for the clear display command to be added
      *  to the context menu.
      */
