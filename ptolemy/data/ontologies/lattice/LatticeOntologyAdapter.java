@@ -115,16 +115,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     }
 
     /**
-     * Return the list of constraining terms for a given object. It delegates to
-     * the constraint manager of the solver linked with this adapter.
-     * @param object The given object.
-     * @return The list of constrainting terms.
-     */
-    public List<InequalityTerm> getConstraintingTerms(Object object) {
-        return getSolver().getConstraintManager().getConstrainingTerms(object);
-    }
-
-    /**
      * Return a list of property-able NamedObj contained by the component. All
      * ports and parameters are considered property-able.
      * @return The list of property-able named object.
@@ -372,25 +362,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
                 }
             }
         }
-    }
-
-    /**
-     * Set default constraints between the given object and a list of objects based
-     * on the given constraintType.  The given object is the sink and the list of objects
-     * are the sources.
-     * 
-     * @see ConstraintType
-     * @param constraintType The given ConstraintType to be used for the default constraints
-     * @param object The given object that represents the sink for the default constraints
-     * @param objectList The list of objects passed in as a {@linkplain Set} that
-     * represents the sources for the default constraints
-     * @exception IllegalActionException If an exception is thrown
-     */
-    protected void _constraintObject(ConstraintType constraintType,
-            Object object, Set<Object> objectList)
-            throws IllegalActionException {
-        _constraintObject(constraintType, object, new ArrayList<Object>(
-                objectList));
     }
 
     /**
