@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo
 
-DIRS =		BallDrop Speaker
+DIRS =		Speaker
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../../..
@@ -53,7 +53,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	BallDrop/BallDrop.jar \
 	Speaker/Speaker.jar
 
 # Keep this list alphabetized.
