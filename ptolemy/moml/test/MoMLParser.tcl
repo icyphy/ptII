@@ -4361,8 +4361,8 @@ set inputTopTest_NotAFile {<?xml version="1.0" standalone="no"?>
 test MoMLParser-33.2 {Use the input statement on a non-existant file} {
     $parser reset
     catch {set toplevel [$parser parse $inputTopTest_NotAFile]} errMsg
-    regsub -all -- {-- .*/ptolemy/moml/test} [string range $errMsg 0 200] {-- XXX/ptolemy/moml/test} result
-    list $result
+    regsub -all -- {-- .*/ptolemy/moml/test} $errMsg {-- XXX/ptolemy/moml/test} result
+    list [string range $result 0 176]
 } {{com.microstar.xml.XmlException: -- XXX/ptolemy/moml/test/notAFile.xml (No such file or directory)
 -- XML file not found relative to classpath.
 -- XXX/ptolemy/moml/test/notAFile.}}
