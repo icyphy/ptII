@@ -117,16 +117,6 @@ public class OntologySolverUtilities {
     }
 
     /**
-     * Record the mapping between the given attribute and the given root ast
-     * node.
-     * @param attribute The given attribute.
-     * @param root The given root ast node.
-     */
-    public void putParseTrees(Attribute attribute, ASTPtRootNode root) {
-        _parseTrees.put(attribute, root);
-    }
-
-    /**
      * Clear and return the previously recorded errors.
      * @return The list of previously recorded errors.
      */
@@ -167,9 +157,6 @@ public class OntologySolverUtilities {
     protected void putAttribute(ASTPtRootNode node, Attribute attribute) {
         _attributes.put(node, attribute);
     }
-
-    /**  The last most recent OntologySolver that was invoked on a model during runtime. */
-    protected OntologySolver _previousInvokedSolver = null;
 
     /**
      * The set of solvers that have already been invoked.
