@@ -101,42 +101,6 @@ public class OntologyMoMLHandler extends Attribute {
     ////                         public methods                    ////
 
     /**
-     * Clear every manual annotated constraints associated with the
-     * solver use-case. Each of these constraints is an
-     * AnnotationAttribute in the model.
-     * @exception IllegalActionException Thrown if an error occurs
-     *  when removing the annotation attributes.
-     */
-    public void clearAnnotations() throws IllegalActionException {
-        //OntologySolver solver = (OntologySolver) getContainer();
-
-        StringBuffer completeMoML = new StringBuffer("<group>");
-
-//        for (OntologyAdapter adapter : solver.getAllAdapters()) {
-//            if (adapter.getComponent() instanceof NamedObj) {
-//                NamedObj namedObj = (NamedObj) adapter.getComponent();
-//
-//                for (OntologyAnnotationAttribute attribute : (List<OntologyAnnotationAttribute>) namedObj
-//                        .attributeList(OntologyAnnotationAttribute.class)) {
-//
-//                    /* FIXME
-//                    if (solver.isIdentifiable(attribute.getUseCaseIdentifier())) {
-//
-//                        String request = "<deleteProperty name=\""
-//                                + attribute.getName() + "\"/>";
-//                        request = _completeHierarchyInMoML(namedObj, request);
-//
-//                        completeMoML.append(request);
-//                    }
-//                    */
-//                }
-//            }
-//        }
-        completeMoML.append("</group>");
-        _requestChange(completeMoML.toString());
-    }
-
-    /**
      * Remove the highlighting and visible annotations
      * for all property-able objects.
      */
