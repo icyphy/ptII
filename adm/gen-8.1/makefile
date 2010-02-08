@@ -1423,6 +1423,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/jni/gui \
 	$(REMOTE1PTIIDIST)/lbnl \
+	$(REMOTE1PTIIDIST)/lbnl/actor/lib \
 	$(REMOTE1PTIIDIST)/doc/books/design/modal \
 	$(REMOTE1PTIIDIST)/doc/books/design/time \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/demo \
