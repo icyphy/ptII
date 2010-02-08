@@ -231,14 +231,16 @@ public class LatticeOntologySolver extends OntologySolver {
         return _constraintManager;
     }
 
-    /** Initialize the solver and get the initial statistics for the Lattice OntologySolver.
-     *  This will return information about the number of constraints and concept terms generated
-     *  before the solver executes its algorithm.
+    /** Initialize the solver and get the initial statistics for the
+     *  Lattice OntologySolver.  This will return information about
+     *  the number of constraints and concept terms generated before
+     *  the solver executes its algorithm.
      * 
-     *  @author Charles Shelton
-     *  @return A hash table containing string representations of the solver statistics and
-     *   constraints information, separated by tabs.
-     *  @exception IllegalActionException If an exception occurs when collecting the constraints.
+     *  @return A hash table containing string representations of the
+     *   solver statistics and constraints information, separated by
+     *   tabs.
+     *  @exception IllegalActionException If an exception occurs when
+     *  collecting the constraints.
      */
     public Hashtable getInitialSolverInformation()
             throws IllegalActionException {
@@ -276,14 +278,16 @@ public class LatticeOntologySolver extends OntologySolver {
         return initialSolverInfo;
     }
 
-    /** Get the statistics for the Lattice OntologySolver after the model has been resolved.
-     *  This will return information about the number of constraints and concept terms generated
-     *  after the solver executes its algorithm.
+    /** Get the statistics for the Lattice OntologySolver after the
+     *  model has been resolved.  This will return information about
+     *  the number of constraints and concept terms generated after
+     *  the solver executes its algorithm.
      * 
-     *  @author Charles Shelton
-     *  @return A hash table containing string representations of the solver statistics and
-     *   constraints information, separated by tabs.
-     *  @exception IllegalActionException If an exception occurs when collecting the constraints.
+     *  @return A hash table containing string representations of the
+     *   solver statistics and constraints information, separated by
+     *   tabs.
+     *  @exception IllegalActionException If an exception occurs when
+     *  collecting the constraints.
      */
     public Hashtable getResolvedSolverInformation()
             throws IllegalActionException {
@@ -387,8 +391,8 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /**
-     * Return true if the given model object has been annotated with a manual annotation
-     * constraint.
+     * Return true if the given model object has been annotated with a
+     * manual annotation constraint.
      * 
      * @param object The model object to be checked to see if it is annotated
      * @return true if the model object is annotated, false otherwise
@@ -398,9 +402,10 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /**
-     * Reset the solver. This removes the internal states of the solver (e.g.
-     * previously recorded properties, statistics, etc.). Also resets the
-     * {@linkplain ConceptTermManager} to null and clears the trained constraints.
+     * Reset the solver. This removes the internal states of the
+     * solver (e.g.  previously recorded properties, statistics,
+     * etc.). Also resets the {@linkplain ConceptTermManager} to null
+     * and clears the trained constraints.
      */
     public void reset() {
         super.reset();
@@ -429,10 +434,10 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /**
-     * Return the LatticeOntologyAdapter for the specified component. This
-     * instantiates a new OntologyAdapter if it does not already exist
-     * for the specified component.  This returns specific LatticeOntologyAdapters
-     * for the LatticeOntologySolver.
+     * Return the LatticeOntologyAdapter for the specified
+     * component. This instantiates a new OntologyAdapter if it does
+     * not already exist for the specified component.  This returns
+     * specific LatticeOntologyAdapters for the LatticeOntologySolver.
      * 
      * @param component The specified component.
      * @return The LatticeOntologyAdapter for the specified component.
