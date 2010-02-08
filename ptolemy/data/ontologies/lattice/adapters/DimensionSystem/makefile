@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies/lattice/adapters/DimensionSystem
 
-DIRS = 		actor data domains
+DIRS = 		actor domains
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
@@ -48,7 +48,6 @@ PTPACKAGE = 	DimensionSystem
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	actor/actor.jar \
-	data/data.jar \
 	domains/domains.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -68,9 +67,7 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc \
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

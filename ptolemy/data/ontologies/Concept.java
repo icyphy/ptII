@@ -180,12 +180,13 @@ public class Concept extends ComponentEntity implements InequalityTerm,
         return false;
     }
 
-    /** Return whether this concept is a valid inference result.
+    /** Return whether this concept is a valid inference result. This method is required
+     *  to implement the InequalityTerm interface, but we do not want to use this method
+     *  going forward for ontology inferences. Acceptability criteria should be of the form
+     *  variable <= Concept. Acceptability criteria prevent a variable from being promoted
+     *  in the ontology lattice.
      *  @return True, if this concept is a valid result of inference.
-     *  False, otherwise.
-     *  @deprecated We do not want to use this method going forward. Acceptability
-     *  constraints should be of the form variable <= Concept.  Acceptability constraints
-     *  prevent a variable from being promoted in the ontology lattice.
+     *   False, otherwise.
      */
     public boolean isValueAcceptable() {
         try {
@@ -206,7 +207,7 @@ public class Concept extends ComponentEntity implements InequalityTerm,
      *  @see #getValue
      */
     public void setValue(Object value) throws IllegalActionException {
-        throw new IllegalActionException(this, "Cannot set a lattice property.");
+        throw new IllegalActionException(this, "Cannot set an ontology concept.");
     }
 
     /**

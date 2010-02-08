@@ -7,13 +7,13 @@
     <property name="LatticeOntologySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="action" class="ptolemy.actor.parameters.SharedParameter" value="ANNOTATE">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 85.0]">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.properties.MoMLModelAttributeControllerFactory">
         </property>
         <configure>
             <entity name="" class="ptolemy.kernel.CompositeEntity">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={366, 187, 815, 507}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 144, 815, 507}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -21,31 +21,50 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
                 </property>
-                <property name="f" class="ptolemy.data.expr.Parameter" value="function (in1:int, in2:int) in1+in2">
-                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                <property name="ConceptFunctionDefinitionAttribute" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
+                    <property name="numberOfArguments" class="ptolemy.data.expr.Parameter" value="3">
                     </property>
-                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                        </property>
+                    <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="DimensionSystem">
                     </property>
-                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                        <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 85.0}">
                     </property>
-                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    <property name="arg0Name" class="ptolemy.kernel.util.StringAttribute" value="arg0">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 35.0}">
+                    <property name="arg0DomainOntologyName" class="ptolemy.data.expr.StringParameter" value="DimensionSystem">
+                    </property>
+                    <property name="arg1Name" class="ptolemy.kernel.util.StringAttribute" value="arg1">
+                    </property>
+                    <property name="arg1DomainOntologyName" class="ptolemy.data.expr.StringParameter" value="DimensionSystem">
+                    </property>
+                    <property name="arg2Name" class="ptolemy.kernel.util.StringAttribute" value="arg2">
+                    </property>
+                    <property name="arg2DomainOntologyName" class="ptolemy.data.expr.StringParameter" value="DimensionSystem">
                     </property>
                 </property>
-                <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 105.0]">
+                <property name="BinaryOperationMonotonicFunctionDefinition" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
+                    <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="DimensionSystem">
                     </property>
-                    <property name="constraint" class="ptolemy.data.expr.Parameter" value="f(10, 2)">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 185.0]">
                     </property>
-                </entity>
+                </property>
+                <property name="MultiplyConceptFunctionDefinition" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+                    <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == Unknown || factor2 == Unknown ? Unknown :&#10; (factor1 == Velocity &amp;&amp; factor2 == Time) || (factor1 == Time &amp;&amp; factor2 == Velocity) ? Position :&#10;  (factor1 == Acceleration &amp;&amp; factor2 == Time) || (factor1 == Time &amp;&amp; factor2 == Acceleration) ? Velocity :&#10;   factor1 == Dimensionless ? factor2 :&#10;    factor2 == Dimensionless ? factor1 :&#10;     Conflict">
+                    </property>
+                    <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="DimensionSystem">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 290.0]">
+                    </property>
+                </property>
+                <property name="DivideConceptFunctionDefinition" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
+                    <property name="functionIsMonotonic" class="ptolemy.data.expr.Parameter" value="true">
+                    </property>
+                    <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unknown || divisor == Unknown ? Unknown :&#10; dividend == Velocity &amp;&amp; divisor == Time ? Acceleration :&#10;  dividend == Position &amp;&amp; divisor == Time ? Velocity :&#10;   (dividend == Position &amp;&amp; divisor == Velocity) || (dividend == Velocity &amp;&amp; divisor == Acceleration) ? Time :&#10;    divisor == Dimensionless ? dividend :&#10;     dividend == divisor ? Dimensionless :&#10;      Conflict">
+                    </property>
+                    <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="DimensionSystem">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 290.0]">
+                    </property>
+                </property>
                 <entity name="DimensionSystem" class="ptolemy.data.ontologies.lattice.adapters.DimensionSystem.DimensionSystem">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 95.0]">
                     </property>
@@ -53,13 +72,13 @@
             </entity>
         </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 82, 829, 536}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 228, 883, 694}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[614, 429]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[668, 587]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.0, 214.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.0, 293.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a placeholder for what will eventually be the car tracking demo.">
@@ -70,7 +89,101 @@
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 80.0]">
+        </property>
+    </property>
+    <property name="DimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="SpeedValue &gt;= Velocity">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 525.0]">
+        </property>
+    </property>
+    <property name="CollectLatticeOntologySolverDetails" class="ptolemy.data.ontologies.lattice.CollectLatticeOntologySolverDetails">
+        <property name="solverName" class="ptolemy.data.expr.StringParameter" value="LatticeOntologySolver">
+        </property>
+        <property name="trainedInitialSolverConstraints" class="ptolemy.kernel.util.StringAttribute" value="Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Const.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.TimedPlotter.input}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.desiredSpeed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.desiredSpeed}, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)), Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)&#13;&#10;(PtLeafNode:true:null:0.0:null, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Const.output}, Velocity)&#13;&#10;(PtLeafNode:true:null:1:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.desiredSpeed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Const.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.position}, Position)&#13;&#10;(PtLeafNode:true:null:10.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown)&#13;&#10;(PtLeafNode:true:null:0.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown)&#13;&#10;(PtLeafNode:true:null:10.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Const.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:timeConstant, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time) &lt;= (PtLeafNode:false:null:null:timeConstant, Time)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)), Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:initialPosition, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialPosition, Unknown)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(PtLeafNode:false:null:null:initialSpeed, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialSpeed, Unknown)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.input}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Const.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.output}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.CurrentTime2.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.JitterPeriod.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.desiredSpeed}, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:50:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time)&#13;&#10;(PtLeafNode:true:null:55:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Const.output}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:nominalSpeed, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity) &lt;= (PtLeafNode:false:null:null:nominalSpeed, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.input}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.output}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.minus}, Unknown) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;Time &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.CurrentTime2.output}, Time)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.JitterPeriod.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:jitterPeriod, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time) &lt;= (PtLeafNode:false:null:null:jitterPeriod, Time)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.input}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.output}, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Const2.value} 900, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Const2.output}, Position)&#13;&#10;(PtProductNode:false:null:null, Position) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const2.value} 900, Position)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:false:null:null:SpeedValue, Velocity), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time)), Position) &lt;= (PtProductNode:false:null:null, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity) &lt;= (PtLeafNode:false:null:null:SpeedValue, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="trainedResolvedSolverConstraints" class="ptolemy.kernel.util.StringAttribute" value="Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Const.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.TimedPlotter.input}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.desiredSpeed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.desiredSpeed}, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Const.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.TimedPlotter.input}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.desiredSpeed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.desiredSpeed}, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)), Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)&#13;&#10;(PtLeafNode:true:null:0.0:null, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Const.output}, Velocity)&#13;&#10;(PtLeafNode:true:null:1:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.desiredSpeed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Const.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.position}, Position)&#13;&#10;(PtLeafNode:true:null:10.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown)&#13;&#10;(PtLeafNode:true:null:0.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown)&#13;&#10;(PtLeafNode:true:null:10.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Const.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:timeConstant, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time) &lt;= (PtLeafNode:false:null:null:timeConstant, Time)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)), Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:initialPosition, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialPosition, Unknown)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(PtLeafNode:false:null:null:initialSpeed, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialSpeed, Unknown)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.input}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Const.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.output}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.CurrentTime2.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.JitterPeriod.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.desiredSpeed}, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:50:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time)&#13;&#10;(PtLeafNode:true:null:55:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Const.output}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:nominalSpeed, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity) &lt;= (PtLeafNode:false:null:null:nominalSpeed, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.input}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.output}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.minus}, Unknown) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;Time &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.CurrentTime2.output}, Time)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.JitterPeriod.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:jitterPeriod, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time) &lt;= (PtLeafNode:false:null:null:jitterPeriod, Time)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.input}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.output}, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Const2.value} 900, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Const2.output}, Position)&#13;&#10;(PtProductNode:false:null:null, Position) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const2.value} 900, Position)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:false:null:null:SpeedValue, Velocity), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time)), Position) &lt;= (PtProductNode:false:null:null, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity) &lt;= (PtLeafNode:false:null:null:SpeedValue, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)), Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)&#13;&#10;(PtLeafNode:true:null:0.0:null, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)), Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Integrator.state}, Position)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Integrator.derivative}, Velocity)&#13;&#10;(PtLeafNode:true:null:0.0:null, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Integrator.initialState} 0.0, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Const.output}, Velocity)&#13;&#10;(PtLeafNode:true:null:1:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Const.output}, Velocity)&#13;&#10;(PtLeafNode:true:null:1:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const.value} 1, Velocity)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.desiredSpeed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Const.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.position}, Position)&#13;&#10;(PtLeafNode:true:null:10.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown)&#13;&#10;(PtLeafNode:true:null:0.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown)&#13;&#10;(PtLeafNode:true:null:10.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.desiredSpeed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Const.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.acceleration}, Acceleration)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.speed}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.position}, Position)&#13;&#10;(PtLeafNode:true:null:10.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown)&#13;&#10;(PtLeafNode:true:null:0.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown)&#13;&#10;(PtLeafNode:true:null:10.0:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Const.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:timeConstant, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time) &lt;= (PtLeafNode:false:null:null:timeConstant, Time)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)), Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:initialPosition, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialPosition, Unknown)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(PtLeafNode:false:null:null:initialSpeed, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialSpeed, Unknown)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.minus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Subtract.output}, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.multiply}, Velocity), (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.output}, Acceleration)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.MultiplyDivide4.divide}, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Const.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:timeConstant, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Const.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:timeConstant, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Car Model.Const.value} 10.0, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time) &lt;= (PtLeafNode:false:null:null:timeConstant, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time) &lt;= (PtLeafNode:false:null:null:timeConstant, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.timeConstant} 10.0, Time) &lt;= (PtLeafNode:false:null:null:timeConstant, Time)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)), Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:initialPosition, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)), Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.state}, Position)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator2.derivative}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:initialPosition, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator2.initialState} 10.0, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialPosition, Unknown)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialPosition, Unknown)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialPosition} 10.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialPosition, Unknown)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(PtLeafNode:false:null:null:initialSpeed, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(functionForStateOutput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(functionForDerivativeInput((ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.state}, Velocity)), Acceleration) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Car Model.Integrator.derivative}, Acceleration)&#13;&#10;(PtLeafNode:false:null:null:initialSpeed, Unknown) &lt;= (ptolemy.actor.parameters.PortParameter {.CarTracking.Car Model.Integrator.initialState} 0.0, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialSpeed, Unknown)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialSpeed, Unknown)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Car Model.initialSpeed} 0.0, Unknown) &lt;= (PtLeafNode:false:null:null:initialSpeed, Unknown)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.input}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Const.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.output}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.CurrentTime2.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.JitterPeriod.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.desiredSpeed}, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:50:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time)&#13;&#10;(PtLeafNode:true:null:55:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity)&#13;&#10;Velocity &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;Time &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.input}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Const.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.output}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.CurrentTime2.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.JitterPeriod.output}, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.desiredSpeed}, Velocity)&#13;&#10;(PtLeafNode:true:null:30:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:50:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time)&#13;&#10;(PtLeafNode:true:null:55:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Const.output}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:nominalSpeed, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity) &lt;= (PtLeafNode:false:null:null:nominalSpeed, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.input}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.output}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.minus}, Unknown) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;Time &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.CurrentTime2.output}, Time)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.JitterPeriod.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:jitterPeriod, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time) &lt;= (PtLeafNode:false:null:null:jitterPeriod, Time)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.input}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.output}, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Const.output}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:nominalSpeed, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Const.output}, Velocity)&#13;&#10;(PtLeafNode:false:null:null:nominalSpeed, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Const.value} 55, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity) &lt;= (PtLeafNode:false:null:null:nominalSpeed, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity) &lt;= (PtLeafNode:false:null:null:nominalSpeed, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.nominalSpeed} 55, Velocity) &lt;= (PtLeafNode:false:null:null:nominalSpeed, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.input}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.output}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.input}, Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Sin.output}, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.minus}, Unknown) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.plus}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.minus}, Unknown) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Add2.output}, Velocity)&#13;&#10;Time &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.CurrentTime2.output}, Time)&#13;&#10;Time &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.CurrentTime2.output}, Time)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale.input}, Dimensionless)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:false:null:null:jitterAmplitude, Velocity) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale.factor} 30, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterAmplitude} 30, Velocity) &lt;= (PtLeafNode:false:null:null:jitterAmplitude, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.output}, Time), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.Scale2.input}, Time)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:false:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.Scale2.factor} 6.2831853071796, Dimensionless)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:2:null, Unknown), (PtLeafNode:false:null:null:pi, Unknown)), Unknown) &lt;= (PtProductNode:false:null:null, Unknown)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)), Dimensionless) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.multiply}, Time), (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.output}, Dimensionless)), Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.MultiplyDivide.divide}, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.JitterPeriod.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:jitterPeriod, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.JitterPeriod.output}, Time)&#13;&#10;(PtLeafNode:false:null:null:jitterPeriod, Time) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.JitterPeriod.value} 50, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time) &lt;= (PtLeafNode:false:null:null:jitterPeriod, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time) &lt;= (PtLeafNode:false:null:null:jitterPeriod, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.jitterPeriod} 50, Time) &lt;= (PtLeafNode:false:null:null:jitterPeriod, Time)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.input}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.output}, Velocity)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;Dimensionless &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.input}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.output}, Velocity)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale.input}, Velocity)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.scaleOnLeft} true, Unknown)&#13;&#10;(PtProductNode:true:null:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale.factor} 6.2137119223733E-4, Dimensionless)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:true:null:1:null, Unknown), (PtLeafNode:true:null:1609.344:null, Unknown)), Unknown) &lt;= (PtProductNode:true:null:null, Unknown)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(multiplyFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity)&#13;&#10;(divideFunction((ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.output}, Velocity), (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)), Velocity) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.DriverSimulator.UnitConversion.Scale2.input}, Velocity)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(PtLeafNode:true:null:true:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.scaleOnLeft} true, Unknown)&#13;&#10;(PtLeafNode:true:null:3600:null, Unknown) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.DriverSimulator.UnitConversion.Scale2.factor} 3600, Dimensionless)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Const2.value} 900, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Const2.output}, Position)&#13;&#10;(PtProductNode:false:null:null, Position) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const2.value} 900, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.Const2.value} 900, Position) &lt;= (ptolemy.actor.TypedIOPort {.CarTracking.Const2.output}, Position)&#13;&#10;(PtProductNode:false:null:null, Position) &lt;= (ptolemy.data.expr.Parameter {.CarTracking.Const2.value} 900, Position)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:false:null:null:SpeedValue, Velocity), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time)), Position) &lt;= (PtProductNode:false:null:null, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity) &lt;= (PtLeafNode:false:null:null:SpeedValue, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:false:null:null:SpeedValue, Velocity), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time)), Position) &lt;= (PtProductNode:false:null:null, Position)&#13;&#10;(defaultASTPtProductNodeFunction((PtLeafNode:false:null:null:SpeedValue, Velocity), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time), (PtLeafNode:false:null:null:TimeValue, Time)), Position) &lt;= (PtProductNode:false:null:null, Position)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity) &lt;= (PtLeafNode:false:null:null:SpeedValue, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.SpeedValue} 30, Velocity) &lt;= (PtLeafNode:false:null:null:SpeedValue, Velocity)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;(ptolemy.data.expr.Parameter {.CarTracking.TimeValue} 30, Time) &lt;= (PtLeafNode:false:null:null:TimeValue, Time)&#13;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 85.0]">
+        </property>
+    </property>
+    <property name="SpeedValue" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 475.0]">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+        </property>
+    </property>
+    <property name="TimeValue" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 495.0]">
+        </property>
+        <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+        </property>
+    </property>
+    <property name="DimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="TimeValue &gt;= Time">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 545.0]">
         </property>
     </property>
     <property name="DimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.value &gt;= Velocity">
@@ -85,45 +198,23 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 230.0]">
         </property>
     </property>
-    <property name="CollectLatticeOntologySolverDetails" class="ptolemy.data.ontologies.lattice.CollectLatticeOntologySolverDetails">
-        <property name="solverName" class="ptolemy.data.expr.StringParameter" value="LatticeOntologySolver">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="trainedInitialSolverStatistics" class="ptolemy.kernel.util.StringAttribute" value="# of atomic actor default constraints	1&#13;&#10;# of composite default constraints	2&#13;&#10;# of concept terms	7&#13;&#10;# of default constraints	3&#13;&#10;# of generated constraints	9&#13;&#10;# of manual annotations	1&#13;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate the&#10;driver of the&#10;leading car.&#10;Output is the &#10;driver's&#10;desired speed.">
         </property>
-        <property name="trainedInitialSolverConstraints" class="ptolemy.kernel.util.StringAttribute" value="[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		ComponentEntity	Velocity	Velocity	&lt;=	eff		Parameter	.Const.value	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Const.output	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		TypedIOPort	.TimedPlotter.input	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$StateOfDerivative	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.derivative	Velocity	MFV	eff	.Integrator	MonotonicFunction	.Integrator$StateOfDerivative	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		PortParameter	.Integrator.initialState	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$DerivativeOfState	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	MFV	eff	.Integrator	MonotonicFunction	.Integrator$DerivativeOfState	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff	.Integrator	ASTPtLeafNode	PtLeafNode:true:null:0.0:null	Unknown	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	Velocity	&lt;=	eff		TypedIOPort	.Const.output	Velocity]&#13;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 340.0]">
         </property>
-        <property name="trainedResolvedSolverStatistics" class="ptolemy.kernel.util.StringAttribute" value="# of AST default constraints	0&#13;&#10;# of adapters	0&#13;&#10;# of atomic actor default constraints	1&#13;&#10;# of composite default constraints	2&#13;&#10;# of concept terms	7&#13;&#10;# of default constraints	3&#13;&#10;# of generated constraints	24&#13;&#10;# of manual annotations	1&#13;&#10;# of property terms	7&#13;&#10;# of propertyables	0&#13;&#10;# of resolved properties	0&#13;&#10;# of trained constraints	0&#13;&#10;# of trained resolution errors	0&#13;&#10;has trained resolution errors	false&#13;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="trainedResolvedSolverConstraints" class="ptolemy.kernel.util.StringAttribute" value="[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		ComponentEntity	Velocity	Velocity	&lt;=	eff		Parameter	.Const.value	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Const.output	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		TypedIOPort	.TimedPlotter.input	Position]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		ComponentEntity	Velocity	Velocity	&lt;=	eff		Parameter	.Const.value	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Const.output	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice	LatticeOntologyCompositeAdapter	topLevelComposite	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		TypedIOPort	.TimedPlotter.input	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$StateOfDerivative	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.derivative	Velocity	MFV	eff	.Integrator	MonotonicFunction	.Integrator$StateOfDerivative	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		PortParameter	.Integrator.initialState	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$DerivativeOfState	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	MFV	eff	.Integrator	MonotonicFunction	.Integrator$DerivativeOfState	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff	.Integrator	ASTPtLeafNode	PtLeafNode:true:null:0.0:null	Unknown	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	Velocity	&lt;=	eff		TypedIOPort	.Const.output	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$StateOfDerivative	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.derivative	Velocity	MFV	eff	.Integrator	MonotonicFunction	.Integrator$StateOfDerivative	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		PortParameter	.Integrator.initialState	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$DerivativeOfState	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	MFV	eff	.Integrator	MonotonicFunction	.Integrator$DerivativeOfState	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff	.Integrator	ASTPtLeafNode	PtLeafNode:true:null:0.0:null	Unknown	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$StateOfDerivative	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.derivative	Velocity	MFV	eff	.Integrator	MonotonicFunction	.Integrator$StateOfDerivative	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		PortParameter	.Integrator.initialState	Position	&lt;=	eff		TypedIOPort	.Integrator.state	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		MonotonicFunction	.Integrator$DerivativeOfState	Velocity	&lt;=	eff		TypedIOPort	.Integrator.derivative	Velocity, ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff		TypedIOPort	.Integrator.state	Position	MFV	eff	.Integrator	MonotonicFunction	.Integrator$DerivativeOfState	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib	Integrator	.Integrator	base	eff	.Integrator	ASTPtLeafNode	PtLeafNode:true:null:0.0:null	Unknown	&lt;=	eff		PortParameter	.Integrator.initialState	Position]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	Velocity	&lt;=	eff		TypedIOPort	.Const.output	Velocity]&#13;&#10;[ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib	Const	.Const	base	eff		Parameter	.Const.value	Velocity	&lt;=	eff		TypedIOPort	.Const.output	Velocity]&#13;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simulate a car&#10;that matches&#10;the desired speed&#10;using feedback&#10;control with a&#10;specified time&#10;constant.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 335.0]">
         </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
@@ -131,7 +222,7 @@
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 175.0]">
         </property>
         <port name="impulse" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -156,6 +247,8 @@
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -164,7 +257,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 175.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -193,7 +286,7 @@
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 175.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -202,12 +295,889 @@
             </property>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Car Model" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 305.0]">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 409]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 115, 834, 516}, maximized=false}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.5, 204.5}">
+        </property>
+        <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Car simulator. This model takes as input a desired speed and implements a &#10;simple proportional controller with the specified loop gain to achieve that speed. &#10;It outputs the acceleration, speed, and position of the car.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 270.0]">
+            </property>
+        </property>
+        <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 20.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="initialSpeed" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 40.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+        </property>
+        <property name="timeConstant" class="ptolemy.data.expr.Parameter" value="10.0">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 20.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+            </property>
+        </property>
+        <property name="DimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="timeConstant &gt;= Time">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 35.0]">
+            </property>
+        </property>
+        <port name="desiredSpeed" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 45.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
+        </port>
+        <port name="acceleration" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 105.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Acceleration">
+            </property>
+        </port>
+        <port name="speed" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 165.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
+        </port>
+        <port name="position" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{495.0, 230.0}">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
+            </property>
+        </port>
+        <entity name="Subtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 95.0]">
+            </property>
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+        </entity>
+        <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 105.0]">
+            </property>
+            <port name="multiply" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+            <port name="divide" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Acceleration">
+                </property>
+            </port>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="timeConstant">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </property>
+            <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 145.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+        </entity>
+        <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialPosition">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 230.0]">
+            </property>
+            <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+            <port name="state" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
+                </property>
+            </port>
+            <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+        </entity>
+        <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
+            <property name="initialState" class="ptolemy.actor.parameters.PortParameter" value="initialSpeed">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 150.0}">
+            </property>
+            <port name="impulse" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+            <port name="derivative" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Acceleration">
+                </property>
+            </port>
+            <port name="state" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+            <port name="initialState" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[350.0, 190.0]">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+            <vertex name="vertex1" value="[260.0, 105.0]">
+            </vertex>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <link port="desiredSpeed" relation="relation5"/>
+        <link port="acceleration" relation="relation27"/>
+        <link port="speed" relation="relation"/>
+        <link port="position" relation="relation3"/>
+        <link port="Subtract.plus" relation="relation5"/>
+        <link port="Subtract.minus" relation="relation"/>
+        <link port="Subtract.output" relation="relation4"/>
+        <link port="MultiplyDivide4.multiply" relation="relation4"/>
+        <link port="MultiplyDivide4.divide" relation="relation6"/>
+        <link port="MultiplyDivide4.output" relation="relation27"/>
+        <link port="Const.output" relation="relation6"/>
+        <link port="Integrator2.derivative" relation="relation"/>
+        <link port="Integrator2.state" relation="relation3"/>
+        <link port="Integrator.derivative" relation="relation27"/>
+        <link port="Integrator.state" relation="relation"/>
+    </entity>
+    <entity name="DriverSimulator" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 305.0]">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Driver simulator">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 65.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 64, 1083, 676}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 528]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{282.1816603535353, 143.5099431818182}">
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model outputs the desired speed&#10;of a driver that wishes to maintain a&#10;nominal speed (55 miles per hour in this&#10;case), but superimposes a jitter (plus&#10;or minus 30 miles per hour in this case).&#10;It thus models a highly irregular driver.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 65.0]">
+            </property>
+        </property>
+        <property name="jitterAmplitude" class="ptolemy.data.expr.Parameter" value="30">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
+        </property>
+        <property name="DimensionSystem::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterAmplitude &gt;= Velocity">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 355.0]">
+            </property>
+        </property>
+        <property name="DimensionSystem::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="nominalSpeed &gt;= Velocity">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 315.0]">
+            </property>
+        </property>
+        <property name="jitterPeriod" class="ptolemy.data.expr.Parameter" value="50">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 80.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+            </property>
+        </property>
+        <property name="nominalSpeed" class="ptolemy.data.expr.Parameter" value="55">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 105.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
+        </property>
+        <property name="DimensionSystem::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 375.0]">
+            </property>
+        </property>
+        <property name="DimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="jitterPeriod &gt;= Time">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, 295.0}">
+            </property>
+        </property>
+        <port name="desiredSpeed" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 215.0]">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
+        </port>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <display name="Const&#10;Nominal Speed&#10;in miles per hour"/>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="nominalSpeed">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </property>
+            <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 105.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+        </entity>
+        <entity name="Sin" class="ptolemy.actor.lib.TrigFunction">
+            <property name="function" class="ptolemy.data.expr.StringParameter" value="sin">
+                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                    <property name="acos" class="ptolemy.kernel.util.StringAttribute" value="acos">
+                    </property>
+                    <property name="asin" class="ptolemy.kernel.util.StringAttribute" value="asin">
+                    </property>
+                    <property name="atan" class="ptolemy.kernel.util.StringAttribute" value="atan">
+                    </property>
+                    <property name="cos" class="ptolemy.kernel.util.StringAttribute" value="cos">
+                    </property>
+                    <property name="sin" class="ptolemy.kernel.util.StringAttribute" value="sin">
+                    </property>
+                    <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
+                    </property>
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 190.0]">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                </property>
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+        </entity>
+        <entity name="Add2" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 200.0]">
+            </property>
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+        </entity>
+        <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
+            <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 160.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+        </entity>
+        <entity name="Scale" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="jitterAmplitude">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </property>
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 225.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+        </entity>
+        <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="2*pi">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </property>
+            <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                </property>
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 160.0]">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </port>
+        </entity>
+        <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 210.0}">
+            </property>
+            <port name="multiply" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </port>
+            <port name="divide" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                </property>
+            </port>
+        </entity>
+        <entity name="JitterPeriod" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="jitterPeriod">
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </property>
+            <doc>Create a constant sequence</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, 220.0}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Time">
+                </property>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+                </property>
+            </port>
+        </entity>
+        <entity name="UnitConversion" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 215.0}">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 211, 815, 507}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{369.7329545454545, 199.9207702020202}">
+            </property>
+            <property name="DimensionSystem::constraint6" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale2.factor &gt;= Dimensionless">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 285.0}">
+                </property>
+            </property>
+            <property name="DimensionSystem::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Scale.factor &gt;= Dimensionless">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                    <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+                    </property>
+                </property>
+                <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 265.0]">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Mile / Meters">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 120.0]">
+                </property>
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Hour / Seconds">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 120.0]">
+                </property>
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 185.0]">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 185.0]">
+                </property>
+                <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                </property>
+            </port>
+            <entity name="Scale" class="ptolemy.actor.lib.Scale">
+                <property name="factor" class="ptolemy.data.expr.Parameter" value="1/1609.344">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 185.0}">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                    </property>
+                </port>
+            </entity>
+            <entity name="Scale2" class="ptolemy.actor.lib.Scale">
+                <property name="factor" class="ptolemy.data.expr.Parameter" value="3600">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Dimensionless">
+                    </property>
+                </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
+                    </property>
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 185.0]">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                    </property>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
+                    </property>
+                </port>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+                </property>
+            </relation>
+            <link port="output" relation="relation3"/>
+            <link port="input" relation="relation"/>
+            <link port="Scale.input" relation="relation"/>
+            <link port="Scale.output" relation="relation2"/>
+            <link port="Scale2.input" relation="relation2"/>
+            <link port="Scale2.output" relation="relation3"/>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation25_2_0" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5_2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="desiredSpeed" relation="relation25_2_0"/>
+        <link port="Const.output" relation="relation5"/>
+        <link port="Sin.input" relation="relation4"/>
+        <link port="Sin.output" relation="relation"/>
+        <link port="Add2.plus" relation="relation5"/>
+        <link port="Add2.plus" relation="relation2"/>
+        <link port="Add2.output" relation="relation5_2"/>
+        <link port="CurrentTime2.output" relation="relation3"/>
+        <link port="Scale.input" relation="relation"/>
+        <link port="Scale.output" relation="relation2"/>
+        <link port="Scale2.input" relation="relation3"/>
+        <link port="Scale2.output" relation="relation6"/>
+        <link port="MultiplyDivide.multiply" relation="relation6"/>
+        <link port="MultiplyDivide.divide" relation="relation7"/>
+        <link port="MultiplyDivide.output" relation="relation4"/>
+        <link port="JitterPeriod.output" relation="relation7"/>
+        <link port="UnitConversion.output" relation="relation25_2_0"/>
+        <link port="UnitConversion.input" relation="relation5_2"/>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="SpeedValue / TimeValue * TimeValue * TimeValue">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 480.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Integrator.derivative" relation="relation"/>
     <link port="Integrator.state" relation="relation2"/>
     <link port="Const.output" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="Car Model.desiredSpeed" relation="relation3"/>
+    <link port="DriverSimulator.desiredSpeed" relation="relation3"/>
 </entity>

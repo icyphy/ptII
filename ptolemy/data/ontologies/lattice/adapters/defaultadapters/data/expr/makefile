@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters DimensionSystem Actor Lib Logic
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters Defaultadapters Data Expr
 #
 # @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
@@ -29,12 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/ontologies/lattice/adapters/DimensionSystem/actor/lib/logic
+ME =        ptolemy/data/ontologies/lattice/adapters/defaultadapters/data/expr
 
 DIRS =      
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../../../../../../..
+ROOT =      ../../../../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -43,7 +43,7 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     logic
+PTPACKAGE =     expr
 
 PTCLASSJAR =
 
@@ -52,7 +52,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
-	Comparator.java
+	ASTPtProductNode.java
 	
 EXTRA_SRCS =    $(JSRCS)
 
@@ -63,7 +63,7 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'Comparator$$FunctionTerm.class'
+	'ASTPtProductNode$$ASTPtProductNodeFunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

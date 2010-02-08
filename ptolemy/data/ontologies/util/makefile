@@ -57,13 +57,11 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES =
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc \
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

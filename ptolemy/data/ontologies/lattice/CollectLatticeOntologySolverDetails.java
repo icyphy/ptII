@@ -30,13 +30,14 @@ package ptolemy.data.ontologies.lattice;
 
 import java.util.Hashtable;
 
+import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.domains.tester.lib.Testable;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.moml.MoMLModelAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// CollectLatticeOntologySolverDetails
@@ -44,14 +45,14 @@ import ptolemy.moml.MoMLModelAttribute;
 /** Model attribute that collects the details of the lattice ontology solver resolution
  *  on the constraints collected and produces string outputs.
  *  This attribute is meant mainly for testing the LatticeOntologySolver.
-
+ *  
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute
+public class CollectLatticeOntologySolverDetails extends Attribute
         implements Testable {
 
     /** Construct the CollectLatticeOntologySolverDetails attribute
@@ -74,10 +75,16 @@ public class CollectLatticeOntologySolverDetails extends MoMLModelAttribute
         trainedInitialSolverConstraints = new StringAttribute(this,
                 "trainedInitialSolverConstraints");
         trainedInitialSolverConstraints.setExpression("");
+        TextStyle trainedStyle = new TextStyle(trainedInitialSolverConstraints, "_style");
+        trainedStyle.height.setExpression("10");
+        trainedStyle.width.setExpression("80");
 
         trainedResolvedSolverConstraints = new StringAttribute(this,
                 "trainedResolvedSolverConstraints");
         trainedResolvedSolverConstraints.setExpression("");
+        TextStyle resolvedStyle = new TextStyle(trainedResolvedSolverConstraints, "_style");
+        resolvedStyle.height.setExpression("10");
+        resolvedStyle.width.setExpression("80");
     }
 
     ///////////////////////////////////////////////////////////////////

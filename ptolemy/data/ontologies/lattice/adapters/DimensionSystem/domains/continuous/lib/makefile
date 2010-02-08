@@ -63,12 +63,10 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'Integrator$$DerivativeOfState.class' \
-	'Integrator$$FunctionTerm.class' \
-	'Integrator$$StateOfDerivative.class'
+	'Integrator$$FunctionForDerivativeInput.class' \
+	'Integrator$$FunctionForStateOutput.class'
+	
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass jars

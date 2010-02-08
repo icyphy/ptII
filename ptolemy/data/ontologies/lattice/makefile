@@ -51,15 +51,18 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	BinaryOperationMonotonicFunctionDefinition.java \
 	CollectLatticeOntologySolverDetails.java \
+	ConceptTermFactory.java \
+	ConceptTermManager.java \
 	ConstraintManager.java \
-	LatticeOntologySolver.java \
-	ParseTreeConstraintAnnotationEvaluator.java \
+	DivideConceptFunctionDefinition.java \
+	LatticeOntologyAdapter.java \
 	LatticeOntologyASTNodeAdapter.java \
 	LatticeOntologyCompositeAdapter.java \
-	LatticeOntologyAdapter.java \
-	ConceptTermFactory.java \
-	ConceptTermManager.java
+	LatticeOntologySolver \
+	MultiplyConceptFunctionDefinition.java \
+	ParseTreeConstraintAnnotationEvaluator.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -71,15 +74,14 @@ MISC_FILES = $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'LatticeOntologySolver$$ConstraintType.class' \
-	'ConceptTermManager$$InequalityTerm.class'	
+	'ConceptTermManager$$InequalityTerm.class' \
+	'LatticeOntologySolver$$ConstraintType.class'		
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
 
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

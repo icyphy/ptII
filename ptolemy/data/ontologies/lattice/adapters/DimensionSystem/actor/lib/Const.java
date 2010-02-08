@@ -31,6 +31,7 @@ import java.util.List;
 
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.graph.Inequality;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -91,13 +92,6 @@ public class Const extends Source {
      * @see ptolemy.data.properties.Propertyable
      * @return The list of property-able Attributes.
      */
-
-    /* 12/17/09 Charles Shelton
-     * I don't think this method is necessary.
-     * value is a Parameter in the Const actor
-     * and all actor parameters are already added to
-     * the propertyable attribute list.
-    
     protected List<Attribute> _getPropertyableAttributes() {
         List<Attribute> result = super._getPropertyableAttributes();
         result.add(_actor.value);
@@ -107,8 +101,6 @@ public class Const extends Source {
         //result.remove(_actor.trigger);
         return result;
     }
-    
-    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

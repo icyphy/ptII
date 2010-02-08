@@ -484,6 +484,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         */
 
         String packageName = _getPackageName();
+        String defaultPackageName = getClass().getPackage().getName() +
+            ".adapters.defaultadapters";
 
         Class componentClass = component.getClass();
 
@@ -502,8 +504,16 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
             } catch (ClassNotFoundException e) {
                 // If adapter class cannot be found, search the adapter class
-                // for parent class instead.
-                componentClass = componentClass.getSuperclass();
+                // in the default adapters package.
+                try {                    
+                    adapterClass = Class.forName(componentClass.getName()
+                            .replaceFirst("ptolemy", defaultPackageName)); 
+                    
+                } catch (ClassNotFoundException e2) {
+                    // If adapter class cannot be found, search the adapter class
+                    // for parent class instead.
+                    componentClass = componentClass.getSuperclass();
+                }
             }
         }
 

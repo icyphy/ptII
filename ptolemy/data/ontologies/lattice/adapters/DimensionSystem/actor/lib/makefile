@@ -58,10 +58,8 @@ JSRCS = \
 	DiscreteClock.java \
 	Expression.java \
 	Minimum.java \
-	MultiplyDivide.java \
 	RecordAssembler.java \
 	RecordDisassembler.java \
-	Scale.java \
 	Source.java
 
 EXTRA_SRCS =    $(JSRCS)
@@ -73,17 +71,10 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'MultiplyDivide$$DivideFunctionTerm.class' \
-	'MultiplyDivide$$FunctionTerm.class' \
-	'MultiplyDivide$$MultiplyFunctionTerm.class' \
 	'RecordDisassembler$$1.class' \
 	'RecordDisassembler$$PortFunction.class' \
-	'Scale$$InputFunctionTerm.class' \
-	'Scale$$OutputFunctionTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass jars

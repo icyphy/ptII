@@ -201,6 +201,16 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public StringParameter solvingFixedPoint;
 
+    /** The string name of the attribute that defines the arithmetic multiply
+     *  concept function for this ontology solver.
+     */
+    public static final String MULTIPLY_FUNCTION_NAME = "MultiplyConceptFunctionDefinition";
+    
+    /** The string name of the attribute that defines the arithmetic divide
+     *  concept function for this ontology solver.
+     */
+    public static final String DIVIDE_FUNCTION_NAME = "DivideConceptFunctionDefinition";
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

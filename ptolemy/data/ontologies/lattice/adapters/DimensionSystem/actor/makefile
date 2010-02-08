@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/data/ontologies/lattice/adapters/dimensionSystem/actor
+ME =        ptolemy/data/ontologies/lattice/adapters/DimensionSystem/actor
 
 DIRS =      lib
 
@@ -63,11 +63,9 @@ MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-    doc
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass jars

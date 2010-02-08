@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies/lattice/adapters
 
-DIRS = 		DimensionSystem
+DIRS = 		defaultadapters DimensionSystem
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -46,13 +46,14 @@ include $(CONFIG)
 PTPACKAGE = 	adapters
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	defaultadapters/defaultadapters.jar
 	DimensionSystem/DimensionSystem.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -61,17 +62,13 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'LatticeOntologySolver$$ConstraintType.class' \
-	'LatticeOntologyAdapter$Inequality.class' \
-	'ConceptTermManager$InequalityTerm.class'	
+OPTIONAL_FILES = 	
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
 
-propertyTestReports:: test_properties_reports
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

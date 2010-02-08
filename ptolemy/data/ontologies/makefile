@@ -56,8 +56,13 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	Concept.java \
 	ConceptAttribute.java \
+	ConceptFunction.java \
+	ConceptFunctionDefinitionAttribute.java \
+	ConceptFunctionInequalityTerm.java \
 	ConceptGraph.java \
 	ConceptRelation.java \
+	ExpressionConceptFunction.java \
+	ExpressionConceptFunctionParseTreeEvaluator.java \
 	Ontology.java \
 	OntologyAdapter.java \
 	OntologyAnnotationAttribute.java \
@@ -83,6 +88,7 @@ MISC_FILES = doc gui lattice util
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	doc \
 	'OntologyAdapter$$Channel.class' \
 	'OntologySolver$$DirectoryNameFilter.class' \
 
