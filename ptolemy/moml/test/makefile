@@ -88,7 +88,7 @@ JSIMPLE_TESTS = \
 	UndoRename.tcl \
 	UndoUnlink.tcl \
 	UndoVertex.tcl \
-	UnloadModelTest.java \
+	UnloadModelTest.tcl \
 	Vertex.tcl
 
 # Graphical Java tests that use Tcl.
