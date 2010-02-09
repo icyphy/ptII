@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters DimensionSystem Actor Lib
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
 #
 # $Id$
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Copyright (c) 2009-2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,43 +26,53 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters
+ME =        ptolemy/data/ontologies/lattice/adapters/dimensionSystem/actor/lib
 
-DIRS = 		defaultAdapters dimensionSystem
+DIRS =      logic
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =      ../../../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	adapters
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	defaultAdapters/defaultAdapters.jar \
-	dimensionSystem/dimensionSystem.jar
+PTPACKAGE =     lib
+
+PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS =
+PTCLASSALLJARS = \
+	logic/logic.jar
 
-EXTRA_SRCS =	$(JSRCS)
+JSRCS = \
+	Const.java \
+	CurrentTime.java \
+	DiscreteClock.java \
+	Expression.java \
+	Minimum.java \
+	RecordAssembler.java \
+	RecordDisassembler.java \
+	Source.java
+
+EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# if $(DIRS) includes demo, then do not set MISC_FILES= $(DIRS) 
-MISC_FILES = $(DIRS)
+MISC_FILES =    $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	
+OPTIONAL_FILES = \
+	'RecordDisassembler$$1.class' \
+	'RecordDisassembler$$PortFunction.class' \
 
 JCLASS = $(JSRCS:%.java=%.class)
 

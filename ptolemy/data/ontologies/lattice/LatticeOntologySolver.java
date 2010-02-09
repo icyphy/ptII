@@ -111,7 +111,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 + "<rect x=\"-50\" y=\"-20\" width=\"120\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\nResolve Properties</text></svg>");
+                + "Double click to\nApply Ontology</text></svg>");
 
         new OntologySolverGUIFactory(this, "_LatticeOntologySolverGUIFactory");
     }

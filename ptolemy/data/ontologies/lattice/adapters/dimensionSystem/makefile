@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters
+# Makefile for Java Ptolemy Data Ontologies Lattice Adapters DimensionSystem
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # $Id$
 #
-# @Copyright (c) 2010 The Regents of the University of California.
+# @Copyright (c) 2009-2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters
+ME =		ptolemy/data/ontologies/lattice/adapters/dimensionSystem
 
-DIRS = 		defaultAdapters dimensionSystem
+DIRS = 		actor domains
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,17 +43,22 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	adapters
+PTPACKAGE = 	dimensionSystem
+
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	defaultAdapters/defaultAdapters.jar \
-	dimensionSystem/dimensionSystem.jar
+	actor/actor.jar \
+	domains/domains.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-JSRCS =
+JSRCS = \
+	DimensionSystemAdapter.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	dimensionSystem.xml
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -62,7 +67,7 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
