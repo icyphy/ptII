@@ -93,6 +93,12 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
         _argumentDomainOntologies = new LinkedList<StringParameter>();
         
         _conceptFunction = null;
+        
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"20\" "
+                + "style=\"fill:white\"/>" + "<text x=\"-40\" y=\"-5\" "
+                + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
+                + "f(c0, c1, .. , cn)</text></svg>");
     }
 
     ///////////////////////////////////////////////////////////////////

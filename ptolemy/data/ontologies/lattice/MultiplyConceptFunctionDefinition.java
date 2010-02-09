@@ -72,5 +72,11 @@ public class MultiplyConceptFunctionDefinition extends BinaryOperationMonotonicF
         for (StringParameter domainOntologyName : _argumentDomainOntologies) {
             domainOntologyName.setVisibility(Settable.NONE);
         }
+        
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-50\" y=\"-20\" width=\"60\" height=\"20\" "
+                + "style=\"fill:white\"/>" + "<text x=\"-40\" y=\"-5\" "
+                + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
+                + "c0 * c1</text></svg>");
     }    
 }

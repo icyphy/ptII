@@ -108,7 +108,7 @@ public class LatticeOntologySolver extends OntologySolver {
         _addChoices();
 
         _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" width=\"120\" height=\"40\" "
+                + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nApply Ontology</text></svg>");

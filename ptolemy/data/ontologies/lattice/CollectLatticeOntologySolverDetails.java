@@ -85,6 +85,12 @@ public class CollectLatticeOntologySolverDetails extends Attribute
         TextStyle resolvedStyle = new TextStyle(trainedResolvedSolverConstraints, "_style");
         resolvedStyle.height.setExpression("10");
         resolvedStyle.width.setExpression("80");
+        
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-50\" y=\"-20\" width=\"120\" height=\"40\" "
+                + "style=\"fill:orange\"/>" + "<text x=\"-40\" y=\"-5\" "
+                + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
+                + "OntologySolver\nResolution Details</text></svg>");
     }
 
     ///////////////////////////////////////////////////////////////////
