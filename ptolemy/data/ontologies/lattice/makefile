@@ -60,7 +60,7 @@ JSRCS = \
 	LatticeOntologyAdapter.java \
 	LatticeOntologyASTNodeAdapter.java \
 	LatticeOntologyCompositeAdapter.java \
-	LatticeOntologySolver \
+	LatticeOntologySolver.java \
 	MultiplyConceptFunctionDefinition.java \
 	ParseTreeConstraintAnnotationEvaluator.java
 
