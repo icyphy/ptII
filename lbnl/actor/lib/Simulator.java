@@ -81,6 +81,7 @@ package lbnl.actor.lib;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -579,24 +580,6 @@ public class Simulator extends SDFTransformer {
         return comArg;
     }
 
-    /** Get the MoML file.
-     *
-     *@param namedObj A named object, typically the container of the model
-     *@return the MoMOL file
-     *@exception IllegalActionException If an attribute is found with the name "_uri" 
-     *           that is not an instance of the URIAttribute class
-     */
-    public static File getMoMLFile(final NamedObj namedObj)
-            throws IllegalActionException {
-        URIAttribute modelURI = (URIAttribute) namedObj.getAttribute("_uri",
-                URIAttribute.class);
-        if (modelURI == null) {
-            modelURI = (URIAttribute) namedObj.toplevel().getAttribute("_uri",
-                URIAttribute.class);
-        }
-        return new File(modelURI.getURI());
-    }
-
     /** Resolve the working string.
      *
      *  This method adds the path of the MoML file to its argument if
@@ -617,7 +600,11 @@ public class Simulator extends SDFTransformer {
         if (chi.length() == 0) {
             chi = ".";
         }
-        final File fil = new File(getMoMLFile(namedObj).getParent(), chi);
+	final URI modelURI = URIAttribute.getModelURI(namedObj);
+	final String par = modelURI != null ?
+	    new File(modelURI.getPath()).getParent()
+	    : null;
+        final File fil = new File(par, chi);
         chi = fil.getPath();
         return chi;
     }
