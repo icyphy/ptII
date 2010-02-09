@@ -724,6 +724,7 @@ MAJOR_OS_NAME
 MATLAB_DIR
 MATLAB_LIBDIR
 MYSQL_JAR
+OPENCV_JAR
 ORACLE_OJDBC_JAR
 PSDF_DIR
 PTBACKTRACK_DIR
@@ -754,6 +755,8 @@ PTDISTRIBUTED_DIR
 PTDISTRIBUTED_JARS
 PTDISTRIBUTED_PACKAGES
 PTDOCLETS_DIR
+PTEXCEL_DIR
+PTEXCEL_PACKAGES
 PTFUZZY_DIR
 PTFUZZYENGINE_DIR
 PTFUZZY_PACKAGES
@@ -794,9 +797,14 @@ PTJOGL_DIR
 PTJOGL_JARS
 PTJOYSTICK_DIR
 PTJOYSTICK_PACKAGES
+PTJXL_JAR
 PTJYTHON_DIR
 PTJYTHON_PACKAGES
 PTJXTA_DIR
+PTOPENCV_DIR
+PTOPENCVCG_DIR
+PTOPENCV_INCLUDE_DIR
+PTOPENCV_PACKAGES
 PTKIELER_DIR
 PTKVM_DIR
 PTLBNL_DIR
@@ -1466,6 +1474,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/sun/jogl
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
+  --with-jxl=JARFILE       use Java Excel API from JARFILE,
+                          defaults to \$PTII/ptolemy/actor/lib/excel/jxl.jar
   --with-jython=DIR       use jython.jar from DIR,
                           defaults to \$PTII/lib, though the path
 			  is searched for jython
@@ -2892,7 +2902,6 @@ JVERSION=unknown
 startdir="$PTII"
 
 cd "$srcdir/config"
-rm -f *.class
 if "$JAVAC" confTest.java ; then
     if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: ok" >&5
@@ -7744,6 +7753,74 @@ else
     <classpathentry kind=\"lib\" path=\"$JOYSTICK_JAR\"/>"
 fi
 
+
+#--------------------------------------------------------------------
+#       JXL is the Java Excel library, which is GPL'd.
+#	For more information, see
+#       http://jexcelapi.sourceforge.net/
+#--------------------------------------------------------------------
+
+# PTEXCEL_DIR is set to excel and used in
+# $PTII/ptolemy/actor/lib/makefile if jxl was found
+PTEXCEL_DIR=
+
+# Used in ptolemy/actor/lib/excel/makefile
+PTJXL_JAR=
+
+# We only need to look for JXL if the actor/lib/excel directory is present
+EXCEL_USER_DIR="$PTII/ptolemy/actor/lib/excel"
+
+if test ! -d "$EXCEL_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $EXCEL_USER_DIR is not present,
+    so we need not find JXL - The Java Excel API." >&5
+echo "${ECHO_T}$EXCEL_USER_DIR is not present,
+    so we need not find JXL - The Java Excel API." >&6; }; fi
+else
+    { echo "$as_me:$LINENO: checking for the Java Excel API (JXL)" >&5
+echo $ECHO_N "checking for the Java Excel API (JXL)... $ECHO_C" >&6; }
+
+# Check whether --with-jxl was given.
+if test "${with_jxl+set}" = set; then
+  withval=$with_jxl; PTJXL_JAR=$withval
+else
+  PTJXL_JAR=$PTII/ptolemy/actor/lib/excel/jxl.jar
+fi
+
+
+    if test -f "$PTJXL_JAR"; then
+	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJXL_JAR" >&5
+echo "${ECHO_T}$PTJXL_JAR" >&6; }; fi
+	# Set to itextpdf and used in
+	# $PTII/ptolemy/vergil/basic/makefile if iText.jar is found
+	PTEXCEL_DIR=excel
+        # PTJXL_PACKAGES is used in ptII/doc/makefile
+	PTEXCEL_PACKAGES=ptolemy.actor.lib.excel
+    fi
+
+    if test "$PTEXCEL_DIR" = ""; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find jxl.jar
+    as $PTEXCEL_JAR.
+    Perhaps the Java Excel API (JXL)  is not installed?
+    You need not download the JXL interface unless you
+    would like to use the Excel actor." >&5
+echo "$as_me: WARNING: Failed to find jxl.jar
+    as $PTEXCEL_JAR.
+    Perhaps the Java Excel API (JXL)  is not installed?
+    You need not download the JXL interface unless you
+    would like to use the Excel actor." >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	PTJXL_JAR='${PTII}/ptolemy/actor/lib/excel/jxl.jar'
+    fi
+fi
+
+if test -z "$PTEXCEL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/excel/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PTJXL_JAR\"/>"
+fi
+
 #--------------------------------------------------------------------
 #       Jython is an implementation of Python in Java
 #	For more information,
@@ -8096,6 +8173,262 @@ else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$KIELER_JAR\"/>"
 fi
+
+
+#--------------------------------------------------------------------
+#       OpenCV is the Computer Vision platform
+#	For more information,
+#       http://ubaa.net/shared/processing/opencv
+#       See if there was a command-line option for where OpenVision is.
+#--------------------------------------------------------------------
+
+# PTOPENCV_DIR is set to opencv and used in
+# $PTII/ptolemy/actor/lib/makefile if opencv was found
+PTOPENCV_DIR=
+
+# Used in ptolemy/actor/lib/opencv/makefile
+OPENCV_JAR=
+
+# We only need to look for OpenCVif the actor/lib/opencv directory is present
+OPENCV_USER_DIR="$PTII/ptolemy/actor/lib/opencv"
+
+if test ! -d "$OPENCV_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $OPENCV_USER_DIR is not present,
+    so we need not find OpenCV - The Open Computer Vision API." >&5
+echo "${ECHO_T}$OPENCV_USER_DIR is not present,
+    so we need not find OpenCV - The Open Computer Vision API." >&6; }; fi
+else
+    { echo "$as_me:$LINENO: checking for OpenCV Java API" >&5
+echo $ECHO_N "checking for OpenCV Java API... $ECHO_C" >&6; }
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=$PTII
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" OpenCVTest.java ; then
+       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; fi
+       PTOPENCV_DIR=opencv
+       # PTOPENCV_PACKAGES is used in ptII/doc/makefile
+       PTOPENCV_PACKAGES=ptolemy.actor.lib.opencv
+	{ echo "$as_me:$LINENO: checking for the OpenCV jar files" >&5
+echo $ECHO_N "checking for the OpenCV jar files... $ECHO_C" >&6; }
+	if "$JAVAC" FindClass.java ; then
+	    # Usually e.jar will be in the CLASSPATH
+	    OPENCV_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass hypermedia.video.OpenCV`
+	    if test -f "$OPENCV_JAR" ; then
+	       if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $OPENCV_JAR" >&5
+echo "${ECHO_T}$OPENCV_JAR" >&6; }; fi
+	       # Here, we should not be adding OPENCV_JAR to Eclipse
+	       # if OpenCV.jar was in the jre
+               case "`uname -s`" in
+	       Darwin)
+  	            { echo "$as_me:$LINENO: WARNING: Not including
+   $OPENCV_JAR
+   to the Eclipse classpath under Darwin because it is already present." >&5
+echo "$as_me: WARNING: Not including
+   $OPENCV_JAR
+   to the Eclipse classpath under Darwin because it is already present." >&2;}
+      	  	   ;;
+               *)
+	           ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$OPENCV_JAR\"/>"
+		   ;;
+               esac
+	    else
+       	       { echo "$as_me:$LINENO: WARNING: Either we could not find
+    hypermedia.video.OpenCV or else it was already in the JRE.
+    Searching for OpenCV.jar returned:
+      $OPENCV_JAR
+    If the class cannot be found, then Eclipse might not be able to find
+    the OpenCV files.
+    This is only a problem if you are using Eclipse.
+    If the class was in the JRE, then Eclipse should compile the OpenCV files
+    without problems" >&5
+echo "$as_me: WARNING: Either we could not find
+    hypermedia.video.OpenCV or else it was already in the JRE.
+    Searching for OpenCV.jar returned:
+      $OPENCV_JAR
+    If the class cannot be found, then Eclipse might not be able to find
+    the OpenCV files.
+    This is only a problem if you are using Eclipse.
+    If the class was in the JRE, then Eclipse should compile the OpenCV files
+    without problems" >&2;}
+            fi
+	else
+	    { echo "$as_me:$LINENO: WARNING: '\"$JAVAC\" FindClass.java' failed.
+    This means that Eclipse might not be able to find the OpenCV files.
+    This is only a problem if you are using Eclipse" >&5
+echo "$as_me: WARNING: '\"$JAVAC\" FindClass.java' failed.
+    This means that Eclipse might not be able to find the OpenCV files.
+    This is only a problem if you are using Eclipse" >&2;}
+        fi
+    else
+       { echo "$as_me:$LINENO: WARNING: '\"$JAVAC\" OpenTest.java' failed.
+    perhaps the OpenCV Computer Vision API is not installed?
+    You need not download Jai unless you plan on using the video
+    actors in $OPENCV_USER_DIR
+    The OpenCV API can be downloaded from
+    http://ubaa.net/shared/processing/opencv.
+    See ptolemy/actor/lib/opencv/package.html for installing help." >&5
+echo "$as_me: WARNING: '\"$JAVAC\" OpenTest.java' failed.
+    perhaps the OpenCV Computer Vision API is not installed?
+    You need not download Jai unless you plan on using the video
+    actors in $OPENCV_USER_DIR
+    The OpenCV API can be downloaded from
+    http://ubaa.net/shared/processing/opencv.
+    See ptolemy/actor/lib/opencv/package.html for installing help." >&2;}
+    fi
+    cd "$startdir"
+fi
+
+if test -z "$PTOPENCV_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/"
+fi
+
+
+
+
+# PTCGOPENCV_DIR is set to OpenCVTracking and used in
+# $PTII/ptolemy/codegen/demo/makefile if opencv was found
+PTOPENCVCG_DIR=OpenCVTracking
+
+# We only need to look for OpenCVif the actor/lib/opencv directory is present
+OPENCVCG_USER_DIR="$PTII/ptolemy/codegen/demo/OpenCVTracking"
+
+if test ! -d "$OPENCVCG_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $OPENCVCG_USER_DIR is not present,
+    so we need not find OpenCV - The Open Computer Vision API." >&5
+echo "${ECHO_T}$OPENCVCG_USER_DIR is not present,
+    so we need not find OpenCV - The Open Computer Vision API." >&6; }; fi
+else
+    # Extract the first word of "gcc", so it can be a program name with args.
+set dummy gcc; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_PTCC+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTCC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PTCC=$ac_cv_path_PTCC
+if test -n "$PTCC"; then
+  { echo "$as_me:$LINENO: result: $PTCC" >&5
+echo "${ECHO_T}$PTCC" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+    if test "${PTCC:-none}" = "none"; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
+echo "$as_me: WARNING: Failed to find gcc" >&2;}
+        # Extract the first word of "cc", so it can be a program name with args.
+set dummy cc; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_PTCC+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTCC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PTCC=$ac_cv_path_PTCC
+if test -n "$PTCC"; then
+  { echo "$as_me:$LINENO: result: $PTCC" >&5
+echo "${ECHO_T}$PTCC" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+        if test "${PTCC:-none}" != "none"; then
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTCC" >&5
+echo "${ECHO_T}$PTCC" >&6; }; fi
+        else
+            { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
+    not be able use the OpenCV Codegen code in $OPENCVCG_USER_DIR" >&5
+echo "$as_me: WARNING: Failed to find gcc or cc, so we will
+    not be able use the OpenCV Codegen code in $OPENCVCG_USER_DIR" >&2;};
+        fi
+    fi
+
+    if test "${PTCC:-none}" != "none"; then
+       { echo "$as_me:$LINENO: checking for OpenCV C API" >&5
+echo $ECHO_N "checking for OpenCV C API... $ECHO_C" >&6; }
+       # FIXME: This will not work if $PTII has spaces
+       dirs="/Library/Frameworks/OpenCV.framework/Headers /usr/local/include/opencv"
+       for dir in $dirs
+       do
+           if test -f "$dir/cv.h"; then
+               if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $dir/cv.h}" >&5
+echo "${ECHO_T}$dir/cv.h}" >&6; }; fi
+	       PTOPENCV_INCLUDE_DIR=$dir
+	       break;
+           fi
+       done
+       if test ! -f "$PTOPENCV_INCLUDE_DIR/cv.h"; then
+           { echo "$as_me:$LINENO: WARNING: Failed to find cv.h
+    Checked the following directories:
+    $dirs
+    The OpenCV Codegen facility in $OPENCVCG_USER_DIR requires cv.h.
+    However, Ptolemy will run without this facility." >&5
+echo "$as_me: WARNING: Failed to find cv.h
+    Checked the following directories:
+    $dirs
+    The OpenCV Codegen facility in $OPENCVCG_USER_DIR requires cv.h.
+    However, Ptolemy will run without this facility." >&2;}
+       fi
+   fi
+fi
+
 
 #--------------------------------------------------------------------
 #       RXTX is the Serial Port interface that replaces
@@ -11165,6 +11498,9 @@ fi
 # used by domains/space and actor/lib/database
 
 
+# Jar file for Open Computer Vision (OpenCV)
+
+
 # Oracle Java Database jar (ojdbc6.jar), used by domains/space
 # and actor/lib/database
 
@@ -11277,6 +11613,13 @@ fi
 
 # PTDOCLETS_DIR is set to doclets and used in
 # $PTII/doc if tools.jar can be found.
+
+
+# PTEXCEL_DIR is set to excel and used in
+# $PTII/ptolemy/actor/lib/makefile if jxl was found
+
+
+# PTEXCEL_PACKAGES is used in doc/makefile
 
 
 # Set to fuzzy and used in
@@ -11422,6 +11765,9 @@ fi
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 
 
+# Used in ptolemy/actor/lib/excel/makefile
+
+
 # Set to python if jython.jar was found
 
 
@@ -11431,6 +11777,21 @@ fi
 
 # Set to jxta ans used in
 # $PTII/actor/lib/makefile if jxta.jar was found
+
+
+# Set to opencv and used in
+# $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
+
+
+# PTCGOPENCV_DIR is set to OpenCVTracking and used in
+# $PTII/ptolemy/codegen/demo/makefile if opencv was found
+
+
+# Directory that contains cv.h
+
+
+# Ptolemy II packages that use OpenCV
+# PTOPENCV_PACKAGES is used in ptII/doc/makefile
 
 
 # Set to kieler and used in
@@ -12411,6 +12772,7 @@ MAJOR_OS_NAME!$MAJOR_OS_NAME$ac_delim
 MATLAB_DIR!$MATLAB_DIR$ac_delim
 MATLAB_LIBDIR!$MATLAB_LIBDIR$ac_delim
 MYSQL_JAR!$MYSQL_JAR$ac_delim
+OPENCV_JAR!$OPENCV_JAR$ac_delim
 ORACLE_OJDBC_JAR!$ORACLE_OJDBC_JAR$ac_delim
 PSDF_DIR!$PSDF_DIR$ac_delim
 PTBACKTRACK_DIR!$PTBACKTRACK_DIR$ac_delim
@@ -12441,6 +12803,8 @@ PTDISTRIBUTED_DIR!$PTDISTRIBUTED_DIR$ac_delim
 PTDISTRIBUTED_JARS!$PTDISTRIBUTED_JARS$ac_delim
 PTDISTRIBUTED_PACKAGES!$PTDISTRIBUTED_PACKAGES$ac_delim
 PTDOCLETS_DIR!$PTDOCLETS_DIR$ac_delim
+PTEXCEL_DIR!$PTEXCEL_DIR$ac_delim
+PTEXCEL_PACKAGES!$PTEXCEL_PACKAGES$ac_delim
 PTFUZZY_DIR!$PTFUZZY_DIR$ac_delim
 PTFUZZYENGINE_DIR!$PTFUZZYENGINE_DIR$ac_delim
 PTFUZZY_PACKAGES!$PTFUZZY_PACKAGES$ac_delim
@@ -12481,20 +12845,17 @@ PTJOGL_DIR!$PTJOGL_DIR$ac_delim
 PTJOGL_JARS!$PTJOGL_JARS$ac_delim
 PTJOYSTICK_DIR!$PTJOYSTICK_DIR$ac_delim
 PTJOYSTICK_PACKAGES!$PTJOYSTICK_PACKAGES$ac_delim
+PTJXL_JAR!$PTJXL_JAR$ac_delim
 PTJYTHON_DIR!$PTJYTHON_DIR$ac_delim
 PTJYTHON_PACKAGES!$PTJYTHON_PACKAGES$ac_delim
 PTJXTA_DIR!$PTJXTA_DIR$ac_delim
+PTOPENCV_DIR!$PTOPENCV_DIR$ac_delim
+PTOPENCVCG_DIR!$PTOPENCVCG_DIR$ac_delim
+PTOPENCV_INCLUDE_DIR!$PTOPENCV_INCLUDE_DIR$ac_delim
+PTOPENCV_PACKAGES!$PTOPENCV_PACKAGES$ac_delim
 PTKIELER_DIR!$PTKIELER_DIR$ac_delim
 PTKVM_DIR!$PTKVM_DIR$ac_delim
 PTLBNL_DIR!$PTLBNL_DIR$ac_delim
-PTLEGO_DIR!$PTLEGO_DIR$ac_delim
-PTLEJOS_DIR!$PTLEJOS_DIR$ac_delim
-PTLIBEXPAT_DIR!$PTLIBEXPAT_DIR$ac_delim
-PTMATLAB_CC_FLAGS!$PTMATLAB_CC_FLAGS$ac_delim
-PTMATLAB_DIR!$PTMATLAB_DIR$ac_delim
-PTMATLAB_LD_ARGS!$PTMATLAB_LD_ARGS$ac_delim
-PTMESCAL_DIR!$PTMESCAL_DIR$ac_delim
-PTPDFRENDERER_DIR!$PTPDFRENDERER_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12536,6 +12897,14 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTLEGO_DIR!$PTLEGO_DIR$ac_delim
+PTLEJOS_DIR!$PTLEJOS_DIR$ac_delim
+PTLIBEXPAT_DIR!$PTLIBEXPAT_DIR$ac_delim
+PTMATLAB_CC_FLAGS!$PTMATLAB_CC_FLAGS$ac_delim
+PTMATLAB_DIR!$PTMATLAB_DIR$ac_delim
+PTMATLAB_LD_ARGS!$PTMATLAB_LD_ARGS$ac_delim
+PTMESCAL_DIR!$PTMESCAL_DIR$ac_delim
+PTPDFRENDERER_DIR!$PTPDFRENDERER_DIR$ac_delim
 PTPDFRENDERER_JAR!$PTPDFRENDERER_JAR$ac_delim
 PTPSDF_DIR!$PTPSDF_DIR$ac_delim
 PTSVG_DIR!$PTSVG_DIR$ac_delim
@@ -12579,7 +12948,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 41; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 49; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
