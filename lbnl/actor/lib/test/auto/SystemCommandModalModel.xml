@@ -69,26 +69,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 85.0}">
         </property>
     </property>
-    <property name="annotation" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model illustrates how to fire an actor every other time step.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 40.0]">
-        </property>
-    </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -109,13 +89,40 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 445.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 108, 1047, 648}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={111, 174, 1047, 648}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[834, 538]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7525248831113">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{480.3076001696533, 320.0057664313824}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{417.0, 269.0}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model illustrates how to fire actors at different rates.
+The actor SystemCommand at the top of the model fires each iteration.
+Inside the ModalModel, there is another actor SystemCommand, which
+fires once every three iterations.
+
+To change the rate of firing, change the parameter in the Remainder actor.
+
+To see the implementation, open the ModalModel actor.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 20.0]">
+        </property>
     </property>
     <entity name="SystemCommand" class="lbnl.actor.lib.SystemCommand">
         <property name="programName" class="ptolemy.data.expr.FileParameter" value="echo">
@@ -124,7 +131,7 @@
         </property>
         <property name="showConsoleWindow" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 230.0]">
         </property>
         <port name="exitValue" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -157,7 +164,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 230.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -374,7 +381,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 230.0]">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -382,12 +389,14 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{755, 310}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 305.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -401,14 +410,16 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="SystemCommand.output" relation="relation2"/>
     <link port="SystemCommand.actorNumber" relation="relation3"/>
     <link port="x1.output" relation="relation3"/>
     <link port="CurrentTime.output" relation="relation7"/>
-    <link port="Round.input" relation="relation6"/>
+    <link port="Round.input" relation="relation4"/>
     <link port="Round.output" relation="relation5"/>
     <link port="Remainder.input" relation="relation7"/>
-    <link port="Remainder.output" relation="relation6"/>
+    <link port="Remainder.output" relation="relation4"/>
     <link port="ModalModel.input" relation="relation5"/>
     <link port="ModalModel.port2" relation="relation"/>
     <link port="ModalModel.time" relation="relation7"/>
