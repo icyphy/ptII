@@ -46,7 +46,7 @@ include $(CONFIG)
 PTPACKAGE = 	adapters
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	defaultadapters/defaultadapters.jar
+	defaultadapters/defaultadapters.jar \
 	DimensionSystem/DimensionSystem.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
