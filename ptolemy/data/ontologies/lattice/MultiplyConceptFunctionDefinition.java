@@ -61,7 +61,7 @@ public class MultiplyConceptFunctionDefinition extends BinaryOperationMonotonicF
         super(container, name);
         
         conceptFunctionName.setExpression("multiplyFunction");
-        conceptFunctionName.setVisibility(Settable.NONE);
+        conceptFunctionName.setVisibility(Settable.NOT_EDITABLE);
      
         arg0Name.setExpression("factor1");
         arg0Name.setVisibility(Settable.NOT_EDITABLE);

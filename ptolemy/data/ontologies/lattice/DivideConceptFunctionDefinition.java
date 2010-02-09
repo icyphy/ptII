@@ -61,7 +61,7 @@ public class DivideConceptFunctionDefinition extends BinaryOperationMonotonicFun
         super(container, name);
         
         conceptFunctionName.setExpression("divideFunction");
-        conceptFunctionName.setVisibility(Settable.NONE);
+        conceptFunctionName.setVisibility(Settable.NOT_EDITABLE);
      
         arg0Name.setExpression("dividend");
         arg0Name.setVisibility(Settable.NOT_EDITABLE);
