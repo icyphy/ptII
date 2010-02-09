@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 1998-2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,6 +54,9 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for JXTA and sets PTJXTA_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
 #
+# $PTII/configure looks for Open Computer Vision and sets PTOPENCV_DIR in
+# $PTII/mk/ptII.mk if it was found.  Otherwise, PTOPENCV_DIR is empty.
+#
 # $PTII/configure looks for X10 and sets PTX10_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTX10_DIR is empty.
 
@@ -62,7 +65,8 @@ DIRS = 		conversions embeddedJava gui logic hoc image \
 		test comm security string tutorial vhdl video \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
-		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTX10_DIR)
+		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTOPENCV_DIR) \
+		$(PTX10_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
@@ -316,6 +320,7 @@ OPTIONAL_FILES = \
 	jmf \
 	jni \
 	joystick \
+	opencv \
 	x10 \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \

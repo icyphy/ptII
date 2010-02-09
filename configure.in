@@ -2377,6 +2377,91 @@ else
     <classpathentry kind=\"lib\" path=\"$KIELER_JAR\"/>"
 fi 
 
+
+#--------------------------------------------------------------------
+#       OpenCV is the Computer Vision platform
+#	For more information, 
+#       http://ubaa.net/shared/processing/opencv
+#       See if there was a command-line option for where OpenVision is.
+#--------------------------------------------------------------------
+
+# PTOPENCV_DIR is set to opencv and used in
+# $PTII/ptolemy/actor/lib/makefile if opencv was found
+PTOPENCV_DIR=
+
+# Used in ptolemy/actor/lib/opencv/makefile
+OPENCV_JAR=
+
+# We only need to look for OpenCVif the actor/lib/opencv directory is present
+OPENCV_USER_DIR="$PTII/ptolemy/actor/lib/opencv"
+
+if test ! -d "$OPENCV_USER_DIR"; then
+    PT_MSG_STATUS([$OPENCV_USER_DIR is not present,
+    so we need not find OpenCV - The Open Computer Vision API.])
+else
+    AC_MSG_CHECKING([for OpenCV API])
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=$PTII
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" OpenCVTest.java ; then
+       PT_MSG_RESULT(ok)
+       PTOPENCV_DIR=opencv
+       # PTOPENCV_PACKAGES is used in ptII/doc/makefile
+       PTOPENCV_PACKAGES=ptolemy.actor.lib.opencv
+	AC_MSG_CHECKING([for the OpenCV jar files])
+	if "$JAVAC" FindClass.java ; then
+	    # Usually e.jar will be in the CLASSPATH
+	    OPENCV_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass hypermedia.video.OpenCV`
+	    if test -f "$OPENCV_JAR" ; then
+	       PT_MSG_RESULT($OPENCV_JAR)
+	       # Here, we should not be adding OPENCV_JAR to Eclipse
+	       # if jai.jar was in the jre
+               case "`uname -s`" in
+	       Darwin) 
+  	            AC_MSG_WARN([Not including
+   $OPENCV_JAR
+   to the Eclipse classpath under Darwin because it is already present.])
+      	  	   ;;
+               *)
+	           ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$OPENCV_JAR\"/>"
+		   ;;
+               esac
+	    else 
+       	       AC_MSG_WARN([Either we could not find 
+    hypermedia.video.OpenCV or else it was already in the JRE.
+    Searching for OpenCV.jar returned:
+      $OPENCV_JAR
+    If the class cannot be found, then Eclipse might not be able to find
+    the OpenCV files.  
+    This is only a problem if you are using Eclipse.
+    If the class was in the JRE, then Eclipse should compile the OpenCV files
+    without problems])
+            fi
+	else
+	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
+    This means that Eclipse might not be able to find the OpenCV files.
+    This is only a problem if you are using Eclipse])
+        fi
+    else
+       AC_MSG_WARN(['"$JAVAC" OpenTest.java' failed.
+    perhaps the OpenCV Computer Vision API is not installed?
+    You need not download Jai unless you plan on using the video
+    actors in $OPENCV_USER_DIR
+    The OpenCV API can be downloaded from 
+    http://ubaa.net/shared/processing/opencv.
+    See ptolemy/actor/lib/opencv/package.html for installing help.])
+    fi
+    cd "$startdir"
+fi
+
+if test -z "$PTOPENCV_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/"
+fi
+
+
 #--------------------------------------------------------------------
 #       RXTX is the Serial Port interface that replaces
 #       Sun's commapi.
@@ -4454,6 +4539,9 @@ AC_SUBST(MATLAB_LIBDIR)
 # used by domains/space and actor/lib/database
 AC_SUBST(MYSQL_JAR)
 
+# Jar file for Open Computer Vision (OpenCV)
+AC_SUBST(OPENCV_JAR)
+
 # Oracle Java Database jar (ojdbc6.jar), used by domains/space
 # and actor/lib/database
 AC_SUBST(ORACLE_OJDBC_JAR)
@@ -4721,6 +4809,14 @@ AC_SUBST(PTJYTHON_PACKAGES)
 # Set to jxta ans used in
 # $PTII/actor/lib/makefile if jxta.jar was found
 AC_SUBST(PTJXTA_DIR)
+
+# Set to opencv and used in 
+# $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
+AC_SUBST(PTOPENCV_DIR)
+
+# Ptolemy II packages that use OpenCV
+# PTOPENCV_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTOPENCV_PACKAGES)
 
 # Set to kieler and used in
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found

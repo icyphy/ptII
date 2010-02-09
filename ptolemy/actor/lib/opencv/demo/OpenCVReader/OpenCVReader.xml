@@ -1,0 +1,47 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="OpenCVReader" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 34, 1000, 543}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[787, 433]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.5, 216.5}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 60}">
+        </property>
+    </property>
+    <entity name="OpenCVReader" class="ptolemy.actor.lib.opencv.OpenCVReader">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 122, 128, 44}, maximized=false}">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 175.0]">
+        </property>
+    </entity>
+    <entity name="ImageRotate" class="ptolemy.actor.lib.image.ImageRotate">
+        <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="45">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 255}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="OpenCVReader.output" relation="relation2"/>
+    <link port="ImageDisplay.input" relation="relation"/>
+    <link port="ImageRotate.input" relation="relation2"/>
+    <link port="ImageRotate.output" relation="relation"/>
+</entity>

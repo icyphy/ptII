@@ -1,0 +1,31 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>ptolemy.actor.lib.opencv</title>
+</head>
+<body>
+Actors that use the Open Computer Vision (OpenCV) API.
+
+<h2>Installing OpenCV</h2>
+See <a
+href="http://ubaa.net/shared/processing/opencv/"><code>http://ubaa.net/shared/processing/opencv/</code></a>
+for details.
+<h3>Installing OpenCV under Mac OS X</h3>
+<ol>
+ <li> Download <a href="http://ubaa.net/shared/processing/opencv/download/opencv-framework.1.1.dmg"><code>http://ubaa.net/shared/processing/opencv/download/opencv-framework.1.1.dmg</code></a>
+ <li> Install <code>opencv-framework.1.1.dmg</code>, which will
+ create <code>/Library/Frameworks/OpenCV.framework/</code>
+ <li> Download and unzip<a href="http://ubaa.net/shared/processing/opencv/download/opencv_01.zip"><code>http://ubaa.net/shared/processin
+g/opencv/download/opencv_01.zip</code></a>
+ <li> Copy the <code>.jar</code> and </code>.jnilib</code> to
+ <code>/System/Library/Java/Extensions</code>:
+ <pre>
+    sudo cp ~/Downloads/OpenCV/library/OpenCV.jar /System/Library/Java/Extensions/
+    sudo cp ~/Downloads/OpenCV/library/libOpenCV.jnilib /System/Library/Java/Extensions/
+ <pre>
+</ol>
+
+<p>
+@since Ptolemy II 8.1
+</body>
+</html>

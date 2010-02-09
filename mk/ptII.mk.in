@@ -316,6 +316,9 @@ KEYTOOL =	@KEYTOOL@
 # The Kieler jar file, used to layout models
 KIELER_JAR =	@KIELER_JAR@
 
+# Jar files for Open Computer Vision (OpenCV), used in ptolemy.actor.lib.opencv/makefile
+OPENCV_JAR =	@OPENCV_JAR@
+
 # The major type of OS we are running under.
 # Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
 # Used in ptolemy/matlab/makefile
@@ -604,6 +607,14 @@ PTJYTHON_PACKAGES = @PTJYTHON_PACKAGES@
 # Set to jxta and used in
 # $PTII/actor/lib/makefile if jxta.jar was found
 PTJXTA_DIR =	@PTJXTA_DIR@
+
+# Set to opencv and used in 
+# $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
+PTOPENCV_DIR = @PTOPENCV_DIR@
+
+# Ptolemy II packages that use OpenCV
+# PTOPENCV_PACKAGES is used in ptII/doc/makefile
+PTOPENCV_PACKAGES = @PTOPENCV_PACKAGES@
 
 # Set to kieler and used in
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
