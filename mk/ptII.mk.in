@@ -417,6 +417,13 @@ PTDISTRIBUTED_PACKAGES = @PTDISTRIBUTED_PACKAGES@
 # $PTII/doc if tools.jar can be found.
 PTDOCLETS_DIR =		@PTDOCLETS_DIR@ 	
 
+# PTEXCEL_DIR is set to excel and used in
+# $PTII/ptolemy/actor/lib/makefile if jxl was found
+PTEXCEL_DIR=	@PTEXCEL_DIR@
+
+# PTEXCEL_PACKAGES is used in doc/makefile
+PTEXCEL_PACKAGES=	@PTEXCEL_PACKAGES@
+
 # Set to fuzzy and used in
 # $PTII/ptolemy/actor/lib/logic/makefile if fuzzy/FuzzyEngine.class was found
 PTFUZZY_DIR = @PTFUZZY_DIR@
@@ -595,6 +602,9 @@ PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
 # Ptolemy II packages that use the Java Joystick facilty
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 PTJOYSTICK_PACKAGES =	@PTJOYSTICK_PACKAGES@
+
+# Used in ptolemy/actor/lib/excel/makefile
+PTJXL_JAR=	@PTJXL_JAR@
 
 # PTJYTHON_DIR is set to python (FIXME: should be jython) and used in
 # $PTII/ptolemy/actor/lib/makefile if Jython was found.

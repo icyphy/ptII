@@ -2152,6 +2152,60 @@ else
     <classpathentry kind=\"lib\" path=\"$JOYSTICK_JAR\"/>"
 fi 
 
+
+#--------------------------------------------------------------------
+#       JXL is the Java Excel library, which is GPL'd.
+#	For more information, see 
+#       http://jexcelapi.sourceforge.net/
+#--------------------------------------------------------------------
+
+# PTEXCEL_DIR is set to excel and used in
+# $PTII/ptolemy/actor/lib/makefile if jxl was found
+PTEXCEL_DIR=
+
+# Used in ptolemy/actor/lib/excel/makefile
+PTJXL_JAR=
+
+# We only need to look for JXL if the actor/lib/excel directory is present
+EXCEL_USER_DIR="$PTII/ptolemy/actor/lib/excel"
+
+if test ! -d "$EXCEL_USER_DIR"; then
+    PT_MSG_STATUS([$EXCEL_USER_DIR is not present,
+    so we need not find JXL - The Java Excel API.])
+else
+    AC_MSG_CHECKING([for the Java Excel API (JXL)])
+    AC_ARG_WITH(jxl, [  --with-jxl=JARFILE       use Java Excel API from JARFILE,
+                          defaults to \$PTII/ptolemy/actor/lib/excel/jxl.jar],
+	PTJXL_JAR=$withval,
+	PTJXL_JAR=$PTII/ptolemy/actor/lib/excel/jxl.jar)
+
+    if test -f "$PTJXL_JAR"; then
+	PT_MSG_RESULT([$PTJXL_JAR])
+	# Set to itextpdf and used in
+	# $PTII/ptolemy/vergil/basic/makefile if iText.jar is found
+	PTEXCEL_DIR=excel
+        # PTJXL_PACKAGES is used in ptII/doc/makefile
+	PTEXCEL_PACKAGES=ptolemy.actor.lib.excel
+    fi	
+
+    if test "$PTEXCEL_DIR" = ""; then
+        AC_MSG_WARN([Failed to find jxl.jar
+    as $PTEXCEL_JAR.
+    Perhaps the Java Excel API (JXL)  is not installed?
+    You need not download the JXL interface unless you
+    would like to use the Excel actor.])
+	# Note that we don't substitute in the ${PTII} here
+	PTJXL_JAR='${PTII}/ptolemy/actor/lib/excel/jxl.jar'
+    fi
+fi
+
+if test -z "$PTEXCEL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/excel/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$PTJXL_JAR\"/>"
+fi 
+
 #--------------------------------------------------------------------
 #       Jython is an implementation of Python in Java
 #	For more information, 
@@ -2417,7 +2471,7 @@ else
 	    if test -f "$OPENCV_JAR" ; then
 	       PT_MSG_RESULT($OPENCV_JAR)
 	       # Here, we should not be adding OPENCV_JAR to Eclipse
-	       # if jai.jar was in the jre
+	       # if OpenCV.jar was in the jre
                case "`uname -s`" in
 	       Darwin) 
   	            AC_MSG_WARN([Not including
@@ -4704,6 +4758,13 @@ AC_SUBST(PTDISTRIBUTED_PACKAGES)
 # $PTII/doc if tools.jar can be found.
 AC_SUBST(PTDOCLETS_DIR)
 
+# PTEXCEL_DIR is set to excel and used in
+# $PTII/ptolemy/actor/lib/makefile if jxl was found
+AC_SUBST(PTEXCEL_DIR)
+
+# PTEXCEL_PACKAGES is used in doc/makefile
+AC_SUBST(PTEXCEL_PACKAGES)
+
 # Set to fuzzy and used in
 # $PTII/ptolemy/actor/lib/logic/makefile if FuzzyEngine.jar was found
 AC_SUBST(PTFUZZY_DIR)
@@ -4846,6 +4907,9 @@ AC_SUBST(PTJOYSTICK_DIR)
 # Ptolemy II packages that use the Java Joystick facilty
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJOYSTICK_PACKAGES)
+
+# Used in ptolemy/actor/lib/excel/makefile
+AC_SUBST(PTJXL_JAR)
 
 # Set to python if jython.jar was found
 AC_SUBST(PTJYTHON_DIR)

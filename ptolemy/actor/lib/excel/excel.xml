@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Excel" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <doc>Excel actors</doc>
+	<entity name="Excel" class="ptolemy.actor.lib.excel.Excel">
+	</entity>
+      </group>
+    ?>
+  </configure>
+</entity>

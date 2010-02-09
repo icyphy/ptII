@@ -134,6 +134,9 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.util.ClassFileLoader",
                 "ptolemy/backtrack/util/gcj-copyright.html");
 
+        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.excel.Excel",
+                "ptolemy/actor/lib/excel/jxl-copyright.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
                 "ptolemy/actor/lib/io/comm/copyright.htm");
 
