@@ -33,6 +33,22 @@ g/opencv/download/opencv_01.zip</code></a>
  <pre>
 </ol>
 
+<h3>Installing OpenCV under Windows</h3>
+Make sure that you install "OpenCV release version 1.0", <b>not</b>
+2.0
+<pre>
+!!!required library not found:C:\Program Files
+(x86)\Java\jdk1.6.0_18\jre\bin\OpenCV.dll: Can't find dependent
+libraries
+Verify that the java.library.path property is correctly set and the
+'\path\to\OpenCV\bin' exists in your system path
+</pre>
+
+<p>Running dependency Walker on OpenCV.dll showed that it was dependent
+on <code>CV100.DLL</code>, <code>CXCORE100.DLL</code> and
+<code>HIGHGUI100.DLL</code>.
+However, The OpenCV2.0 directory (which is wrong) does not have these dlls.
+
 <p>
 @since Ptolemy II 8.1
 </body>
