@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen Butterfly
+# Makefile for Ptolemy Classic style Codegen Open Computer Vision (OpenCV)
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2006-2009 The Regents of the University of California
+# @Copyright (c) 2010 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -52,8 +52,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Tracking.mk.in \
-	Tracking.xml
+	OpenCVTracking.mk.in \
+	OpenCVTracking.xml \
+	OpenCVTrackingDisplay0.mk.in
 
 EXTRA_SRCS =	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -74,7 +75,7 @@ all: jclass
 	@echo "To run the demo, run 'make demo'"
 
 demo:
-	"$(PTII)/bin/vergil" Tracking.xml
+	"$(PTII)/bin/vergil" OpenCVTracking.xml
 	
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 

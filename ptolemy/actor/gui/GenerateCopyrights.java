@@ -180,6 +180,10 @@ public class GenerateCopyrights {
                 "ptolemy.vergil.basic.layout,KielerLayoutGUI",
                 "ptolemy/vergil/basic/layout/kieler/kieler-copyright.htm");
 
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.opencv.OpenCVReader",
+                "ptolemy/actor/lib/opencv/opencv-copyright.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
                 "ptolemy/matlab/copyright.htm");
 

@@ -2399,7 +2399,7 @@ if test ! -d "$OPENCV_USER_DIR"; then
     PT_MSG_STATUS([$OPENCV_USER_DIR is not present,
     so we need not find OpenCV - The Open Computer Vision API.])
 else
-    AC_MSG_CHECKING([for OpenCV API])
+    AC_MSG_CHECKING([for OpenCV Java API])
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
     startdir=$PTII
@@ -2459,6 +2459,54 @@ fi
 
 if test -z "$PTOPENCV_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/"
+fi
+
+
+
+
+# PTCGOPENCV_DIR is set to OpenCVTracking and used in 
+# $PTII/ptolemy/codegen/demo/makefile if opencv was found
+PTOPENCVCG_DIR=OpenCVTracking
+
+# We only need to look for OpenCVif the actor/lib/opencv directory is present
+OPENCVCG_USER_DIR="$PTII/ptolemy/codegen/demo/OpenCVTracking"
+
+if test ! -d "$OPENCVCG_USER_DIR"; then
+    PT_MSG_STATUS([$OPENCVCG_USER_DIR is not present,
+    so we need not find OpenCV - The Open Computer Vision API.])
+else
+    AC_PATH_PROG(PTCC, gcc)
+    if test "${PTCC:-none}" = "none"; then
+        AC_MSG_WARN([Failed to find gcc])
+        AC_PATH_PROG(PTCC, cc)
+        if test "${PTCC:-none}" != "none"; then
+            PT_MSG_RESULT([$PTCC])
+        else    
+            AC_MSG_WARN([Failed to find gcc or cc, so we will
+    not be able use the OpenCV Codegen code in $OPENCVCG_USER_DIR]);
+        fi
+    fi
+
+    if test "${PTCC:-none}" != "none"; then
+       AC_MSG_CHECKING([for OpenCV C API])
+       # FIXME: This will not work if $PTII has spaces
+       dirs="/Library/Frameworks/OpenCV.framework/Headers /usr/local/include/opencv"
+       for dir in $dirs
+       do
+           if test -f "$dir/cv.h"; then
+               PT_MSG_RESULT([$dir/cv.h}])
+	       PTOPENCV_INCLUDE_DIR=$dir
+	       break;
+           fi
+       done
+       if test ! -f "$PTOPENCV_INCLUDE_DIR/cv.h"; then
+           AC_MSG_WARN([Failed to find cv.h
+    Checked the following directories:
+    $dirs
+    The OpenCV Codegen facility in $OPENCVCG_USER_DIR requires cv.h.
+    However, Ptolemy will run without this facility.])
+       fi
+   fi
 fi
 
 
@@ -4813,6 +4861,13 @@ AC_SUBST(PTJXTA_DIR)
 # Set to opencv and used in 
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
 AC_SUBST(PTOPENCV_DIR)
+
+# PTCGOPENCV_DIR is set to OpenCVTracking and used in 
+# $PTII/ptolemy/codegen/demo/makefile if opencv was found
+AC_SUBST(PTOPENCVCG_DIR)
+
+# Directory that contains cv.h
+AC_SUBST(PTOPENCV_INCLUDE_DIR)
 
 # Ptolemy II packages that use OpenCV
 # PTOPENCV_PACKAGES is used in ptII/doc/makefile

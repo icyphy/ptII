@@ -12,8 +12,10 @@
 # To compile using this makefile after substitution, run:
 #    make -f @modelName@.mk
 
+include $(PTII)/mk/ptII.mk
+
 PTCGLIBRARIES = -lcv -lcvaux -lcxcore -lhighgui -lSDLmain -lSDL @PTCGLibraries@
-PTCGINCLUDES = -I/usr/local/include/opencv -I/usr/local/include/SDL @PTCGIncludes@
+PTCGINCLUDES = -I$(PTOPENCV_INCLUDE_DIR) -I/usr/local/include/opencv -I/usr/local/include/SDL @PTCGIncludes@
 
 # Mac OS X, need when we call the plotter from generated C code. 
 PTJNI_PLATFORM_LDFLAG = -single_module @PTJNI_PLATFORM_LDFLAG@

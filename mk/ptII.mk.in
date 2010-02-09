@@ -616,6 +616,14 @@ PTOPENCV_DIR = @PTOPENCV_DIR@
 # PTOPENCV_PACKAGES is used in ptII/doc/makefile
 PTOPENCV_PACKAGES = @PTOPENCV_PACKAGES@
 
+# PTCGOPENCV_DIR is set to OpenCVTracking and used in 
+# $PTII/ptolemy/codegen/demo/makefile if opencv was found
+PTOPENCVCG_DIR = @PTOPENCVCG_DIR@
+
+# Directory that contains cv.h.
+# Used in $PTII/ptolemy/codegen/demo/makefile/OpenCVTracking
+PTOPENCV_INCLUDE_DIR = @PTOPENCV_INCLUDE_DIR@
+
 # Set to kieler and used in
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
 PTKIELER_DIR =	@PTKIELER_DIR@

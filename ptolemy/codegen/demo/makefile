@@ -33,7 +33,8 @@
 
 ME =		ptolemy/codegen/demo
 
-DIRS =		Butterfly Life Ramp OpenCVTracking
+# Configure sets PTCGOPENCV_DIR is to OpenCVTracking if OpenCV is found.
+DIRS =		Butterfly Life Ramp $(PTCGOPENCV_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
