@@ -320,12 +320,13 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies \
 	ptolemy.data.ontologies.gui \
 	ptolemy.data.ontologies.lattice \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.actor.lib.logic \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.data.expr \
-	ptolemy.data.ontologies.lattice.adapters.DimensionSystem.domains.continuous.lib \
+	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.actor.lib \
+	ptolemy.data.ontologies.lattice.adapters.defaultAdapters.data.expr \
+	ptolemy.data.ontologies.lattice.adapters.dimensionSystem \
+	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor \
+	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.lib \
+	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.lib.logic \
+	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.domains.continuous.lib \
 	ptolemy.data.ontologies.util
 
 # Packages used by data/properties 
