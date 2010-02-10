@@ -254,6 +254,8 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public Hashtable getInitialSolverInformation()
             throws IllegalActionException {
+        resetAll();
+        
         NamedObj toplevel = _toplevel();
         LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
 
@@ -426,8 +428,8 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If the test fails.
      */
     public void test() throws IllegalActionException {
-        invokeSolver();
         resetAll();
+        invokeSolver();
     }
 
     /** Train a test. This invokes the solver in TRAINING mode.
@@ -436,8 +438,8 @@ public class LatticeOntologySolver extends OntologySolver {
         // Training is not supported yet.
         try {
             workspace().getWriteAccess();
-            invokeSolver();
             resetAll();
+            invokeSolver();            
         } finally {
             workspace().doneWriting();
         }

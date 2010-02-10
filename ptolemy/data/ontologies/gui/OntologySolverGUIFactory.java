@@ -80,8 +80,8 @@ public class OntologySolverGUIFactory extends EditorFactory {
         OntologySolver solver = (OntologySolver) getContainer();
         try {
             workspace().getWriteAccess();
-            solver.invokeSolver();
             solver.resetAll();
+            solver.invokeSolver();
         } finally {            
             workspace().doneWriting();
         }
