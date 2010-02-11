@@ -346,7 +346,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * @see #setResolvedProperty
      */
     public Concept getResolvedProperty(Object object) {
-        return getResolvedProperty(object, true);
+        return getResolvedConcept(object, true);
     }
 
     /**
@@ -357,7 +357,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * @return The resolved property for the specified object.
      * @see #setResolvedProperty
      */
-    public Concept getResolvedProperty(Object object, boolean resolve) {
+    public Concept getResolvedConcept(Object object, boolean resolve) {
         Concept property = _resolvedProperties.get(object);
 
         // See if it is already resolved.

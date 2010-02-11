@@ -135,10 +135,10 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public void displayProperties() throws IllegalActionException {
 
-        if (_momlHandler.highlight.getToken() == BooleanToken.TRUE) {
+        if (((BooleanToken)_momlHandler.highlight.getToken()).booleanValue()) {
             _momlHandler.highlightProperties();
         }
-        if (_momlHandler.showText.getToken() == BooleanToken.TRUE) {
+        if (((BooleanToken)_momlHandler.showText.getToken()).booleanValue()) {
             _momlHandler.showProperties();
         }
     }

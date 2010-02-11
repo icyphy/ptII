@@ -38,7 +38,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
 ///////////////////////////////////////////////////////////////////
@@ -175,36 +174,35 @@ public class OntologyMoMLHandler extends Attribute {
         _requestChange(completeMoML.toString());
     }
 
-    /**
-     * Highlight all property-able objects with
-     * the specified colors for their property values,
-     * if the highlight parameter value is true.
-     * Otherwise, do nothing.
+    /** Highlight all property-able objects with
+     *  the specified colors for their property values.
+     *  @throws IllegalActionException If getting the resolved concept fails.
      */
-    public void highlightProperties() {
-        StringBuffer completeMoML = new StringBuffer("<group>");
-
+    public void highlightProperties() throws IllegalActionException {
         // Get the PropertySolver.
         OntologySolver solver = (OntologySolver) getContainer();
-        try {
-            for (Object propertyable : solver.getAllPropertyables()) {
-
-                if (propertyable instanceof NamedObj) {
-                    NamedObj namedObj = (NamedObj) propertyable;
-
-                    Concept property = solver.getResolvedProperty(namedObj,
-                            false);
-
-                    completeMoML.append(_getMoMLHighlightString(namedObj,
-                            property));
+        // FIXME: Issuing a distinct change request for each highlight
+        // request will be quite inefficient. How to batch the change requests?
+        for (Object propertyable : solver.getAllPropertyables()) {
+            if (propertyable instanceof NamedObj) {
+                Concept concept = solver.getResolvedConcept(propertyable, false);
+                if (concept != null) {
+                    // Use the color in the concept instance.
+                    List<ColorAttribute> colors = concept.attributeList(ColorAttribute.class);
+                    if (colors != null && colors.size() > 0) {
+                        // ConceptIcon renders the first found ColorAttribute,
+                        // so we use that one here as well.
+                        ColorAttribute conceptColor = colors.get(0);
+                        String request = "<property name=\"_highlightColor\" "
+                            + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
+                            + conceptColor.getExpression()
+                            + "\"/>";
+                        MoMLChangeRequest change = new MoMLChangeRequest(this, (NamedObj)propertyable, request);
+                        ((NamedObj)propertyable).requestChange(change);
+                    }
                 }
             }
-        } catch (IllegalActionException ex) {
-            assert false;
         }
-        completeMoML.append("</group>");
-
-        _requestChange(completeMoML.toString());
     }
 
     /**
@@ -223,7 +221,7 @@ public class OntologyMoMLHandler extends Attribute {
                 if (propertyable instanceof NamedObj) {
                     NamedObj namedObj = (NamedObj) propertyable;
 
-                    Concept property = solver.getResolvedProperty(namedObj,
+                    Concept property = solver.getResolvedConcept(namedObj,
                             false);
 
                     completeMoML.append(_getMoMLShowInfoString(namedObj,
@@ -267,86 +265,6 @@ public class OntologyMoMLHandler extends Attribute {
             }
         }
         return request;
-    }
-
-    /**
-     * Return a MoML request string that create or update
-     * the _highlightColor attribute of the given property-able
-     * object, according to the given property value.
-     * If the given property is null, this would issue
-     * delete request to remove the _highlightColor attribute,
-     * if there exists any.
-     * @param propertyable The given property-able object.
-     * @param property The given property.
-     */
-    private String _getMoMLHighlightString(NamedObj propertyable,
-            Concept property) {
-
-        String request;
-        String propertyString;
-        if (property != null) {
-            propertyString = property.toString();
-
-        } else {
-            propertyString = "";
-        }
-
-        if (property != null) {
-            //(ColorAttribute) (property.getAttribute("ColorAttribute"));
-        }
-        
-        /* FIXME: This change request that sets the highlight color
-         * occasionally causes a dependency loop exception in
-         * ptolemy.data.expr.Variable.validate() and I don't know why.
-         * 12/18/09 Charles Shelton
-        if (conceptColor != null && !(propertyable instanceof OntologySolver)) {
-            request = "<property name=\"_highlightColor\" "
-                    + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
-                    + conceptColor.getExpression()
-                    + "\"/>";
-            request = _completeHierarchyInMoML(propertyable, request);
-            return request;
-        }
-        */
-
-        //Highlight Propertyable namedObj's.
-        for (ColorAttribute colorAttribute : (List<ColorAttribute>) attributeList(ColorAttribute.class)) {
-
-            String colorAttrName = colorAttribute.getName();
-            if (colorAttrName.endsWith("HighlightColor")) {
-
-                String propertyAttrName = colorAttrName.substring(0,
-                        colorAttrName.length() - 14);
-
-                Attribute attribute = getAttribute(propertyAttrName);
-
-                if (attribute != null && attribute instanceof StringAttribute) {
-
-                    String propertyToHighlight = ((StringAttribute) attribute)
-                            .getExpression();
-
-                    if (propertyToHighlight.equals(propertyString)) {
-
-                        ColorAttribute highlightAttribute = (ColorAttribute) propertyable
-                                .getAttribute("_highlightColor");
-
-                        if (property == null && highlightAttribute != null) {
-                            // Remove the _highlightColor attribute if we don't have
-                            // any property to display.
-                            request = "<deleteProperty name=\"_highlightColor\"/>";
-                        } else {
-                            request = "<property name=\"_highlightColor\" "
-                                    + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
-                                    + colorAttribute.getExpression() + "\"/>";
-                        }
-                        request = _completeHierarchyInMoML(propertyable,
-                                request);
-                        return request;
-                    }
-                }
-            }
-        }
-        return "";
     }
 
     /**

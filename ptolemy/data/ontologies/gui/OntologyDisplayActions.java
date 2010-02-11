@@ -38,6 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.properties.MoMLModelAttributeController;
@@ -250,8 +251,12 @@ public class OntologyDisplayActions extends NodeControllerFactory {
 
             NamedObj container = getContainer();
             if (container instanceof OntologySolver) {
-                ((OntologySolver) container).getMoMLHandler()
-                        .highlightProperties();
+                try {
+                    ((OntologySolver) container).getMoMLHandler()
+                            .highlightProperties();
+                } catch (IllegalActionException e1) {
+                    MessageHandler.error("Highlighting with concept color failed", e1);
+                }
             }
         }
     }
