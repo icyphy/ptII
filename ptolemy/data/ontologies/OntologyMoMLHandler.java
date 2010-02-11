@@ -197,12 +197,24 @@ public class OntologyMoMLHandler extends Attribute {
                             + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
                             + conceptColor.getExpression()
                             + "\"/>";
-                        MoMLChangeRequest change = new MoMLChangeRequest(this, (NamedObj)propertyable, request);
+                        // FIXME: Really should have a constructor for
+                        // MoMLChangeRequest with an extra argument to mark
+                        // this as a non-structural change.
+                        // Marking this as a non-structural change prevents a
+                        // repaint from happening, which is a good idea since we
+                        // are going to issue a lot of these change requests.
+                        MoMLChangeRequest change = new MoMLChangeRequest(this, (NamedObj)propertyable, request) {
+                            public boolean isStructuralChange() {
+                                return false;
+                            }
+                        };
                         ((NamedObj)propertyable).requestChange(change);
                     }
                 }
             }
         }
+        // Force a single repaint after all the above requests have been processed.
+        solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
     }
 
     /**
