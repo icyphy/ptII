@@ -107,25 +107,11 @@ public class OntologyDisplayActions extends NodeControllerFactory {
 
             NamedObj container = getContainer();
             if (container instanceof OntologySolver) {
-                ((OntologySolver) container).getMoMLHandler().clearDisplay();
-            }
-        }
-    }
-
-    /** The action for the clear property command to be added
-     *  to the context menu.
-     */
-    private class ClearProperty extends FigureAction {
-        public ClearProperty() {
-            super("Clear Property");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            NamedObj container = getContainer();
-            if (container instanceof OntologySolver) {
-                ((OntologySolver) container).getMoMLHandler().clearProperties();
+                try {
+                    ((OntologySolver) container).getMoMLHandler().clearDisplay();
+                } catch (IllegalActionException e1) {
+                    MessageHandler.error("Clearing concept display failed", e1);
+                }
             }
         }
     }
@@ -271,10 +257,6 @@ public class OntologyDisplayActions extends NodeControllerFactory {
         public HighlighterController(GraphController controller) {
             super(controller);
 
-            ClearProperty clearProperty = new ClearProperty();
-            _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(clearProperty));
-
             ClearDisplay clearDisplay = new ClearDisplay();
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(clearDisplay));
@@ -304,7 +286,11 @@ public class OntologyDisplayActions extends NodeControllerFactory {
             super.actionPerformed(e);
             NamedObj container = getContainer();
             if (container instanceof OntologySolver) {
-                ((OntologySolver) container).getMoMLHandler().showProperties();
+                try {
+                    ((OntologySolver) container).getMoMLHandler().showProperties();
+                } catch (IllegalActionException e1) {
+                    MessageHandler.error("Showing concept annotations failed", e1);
+                }
             }
         }
     }

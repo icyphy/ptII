@@ -134,13 +134,8 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * the highlightColor attribute in the property-able object.
      */
     public void displayProperties() throws IllegalActionException {
-
-        if (((BooleanToken)_momlHandler.highlight.getToken()).booleanValue()) {
             _momlHandler.highlightProperties();
-        }
-        if (((BooleanToken)_momlHandler.showText.getToken()).booleanValue()) {
             _momlHandler.showProperties();
-        }
     }
 
     /**

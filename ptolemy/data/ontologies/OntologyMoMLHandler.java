@@ -30,10 +30,7 @@ package ptolemy.data.ontologies;
 
 import java.util.List;
 
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -70,31 +67,7 @@ public class OntologyMoMLHandler extends Attribute {
     public OntologyMoMLHandler(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        showText = new Parameter(this, "showText");
-        showText.setTypeEquals(BaseType.BOOLEAN);
-        showText.setExpression("true");
-
-        highlight = new Parameter(this, "highlight");
-        highlight.setTypeEquals(BaseType.BOOLEAN);
-        highlight.setExpression("true");
-
-        // FIXME: we should check if the container is
-        // a PropertySolver.
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /**
-     * Indicate whether the _showInfo attributes will be set.
-     */
-    public Parameter showText;
-
-    /**
-     * Indicate whether the _highlightColor attributes will be set.
-     */
-    public Parameter highlight;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -102,77 +75,42 @@ public class OntologyMoMLHandler extends Attribute {
     /**
      * Remove the highlighting and visible annotations
      * for all property-able objects.
+     * @throws IllegalActionException If getting the resolved concept fails.
      */
-    public void clearDisplay() {
-
+    public void clearDisplay() throws IllegalActionException {
         // Get the PropertySolver.
         OntologySolver solver = (OntologySolver) getContainer();
-        StringBuffer completeMoML = new StringBuffer("<group>");
-        try {
-            for (Object propertyable : solver.getAllPropertyables()) {
-                if (propertyable instanceof NamedObj) {
-                    NamedObj namedObj = (NamedObj) propertyable;
-
-                    String request = "";
-                    if (namedObj.getAttribute("_showInfo") != null) {
-                        request += "<deleteProperty name=\"_showInfo\"/>";
-                    }
-                    if (namedObj.getAttribute("_highlightColor") != null) {
-                        request += "<deleteProperty name=\"_highlightColor\"/>";
-                    }
-                    request = _completeHierarchyInMoML(namedObj, request);
-
-                    completeMoML.append(request);
+        for (Object propertyable : solver.getAllPropertyables()) {
+            if (propertyable instanceof NamedObj) {
+                Concept concept = solver.getResolvedConcept(propertyable, false);
+                if (concept != null) {
+                        String request = "<group>";
+                        if (((NamedObj)propertyable).getAttribute("_showInfo") != null) {
+                            request += "<deleteProperty name=\"_showInfo\"/>";
+                        }
+                        if (((NamedObj)propertyable).getAttribute("_highlightColor") != null) {
+                            request += "<deleteProperty name=\"_highlightColor\"/>";
+                        }
+                        request += "</group>";
+                        // FIXME: Really should have a constructor for
+                        // MoMLChangeRequest with an extra argument to mark
+                        // this as a non-structural change.
+                        // Marking this as a non-structural change prevents a
+                        // repaint from happening, which is a good idea since we
+                        // are going to issue a lot of these change requests.
+                        MoMLChangeRequest change = new MoMLChangeRequest(this, (NamedObj)propertyable, request) {
+                            public boolean isStructuralChange() {
+                                return false;
+                            }
+                        };
+                        ((NamedObj)propertyable).requestChange(change);
                 }
             }
-        } catch (IllegalActionException e1) {
-            assert false;
         }
-
-        completeMoML.append("</group>");
-
-        _requestChange(completeMoML.toString());
-
+        // Force a single repaint after all the above requests have been processed.
+        solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
     }
 
-    /**
-     * Clear the property annotations of associated with
-     * the container solver. This deletes all the trained
-     * data, which includes the trained exception attribute,
-     * used by regression testing.
-     */
-    public void clearProperties() {
-        // Get the PropertySolver.
-        OntologySolver solver = (OntologySolver) getContainer();
-        StringBuffer completeMoML = new StringBuffer("<group>");
-
-        try {
-            for (Object propertyable : solver.getAllPropertyables()) {
-                if (propertyable instanceof NamedObj) {
-
-                    /* FIXME
-                    String attributeName = solver.getExtendedUseCaseName();
-                    ConceptAttribute attribute = (ConceptAttribute) namedObj
-                            .getAttribute(attributeName);
-
-                    if (attribute != null) {
-                        String request = "<deleteProperty name=\""
-                                + attributeName + "\"/>";
-                        request = _completeHierarchyInMoML(namedObj, request);
-
-                        completeMoML.append(request);
-                    }
-                    */
-                }
-            }
-        } catch (IllegalActionException e) {
-            assert false;
-        }
-
-        completeMoML.append("</group>");
-
-        _requestChange(completeMoML.toString());
-    }
 
     /** Highlight all property-able objects with
      *  the specified colors for their property values.
@@ -181,8 +119,6 @@ public class OntologyMoMLHandler extends Attribute {
     public void highlightProperties() throws IllegalActionException {
         // Get the PropertySolver.
         OntologySolver solver = (OntologySolver) getContainer();
-        // FIXME: Issuing a distinct change request for each highlight
-        // request will be quite inefficient. How to batch the change requests?
         for (Object propertyable : solver.getAllPropertyables()) {
             if (propertyable instanceof NamedObj) {
                 Concept concept = solver.getResolvedConcept(propertyable, false);
@@ -221,108 +157,35 @@ public class OntologyMoMLHandler extends Attribute {
      * If the value of the showText parameter is set to
      * true, show all property values visually.
      * Otherwise, do nothing.
+     * @throws IllegalActionException If getting the resolved concept fails.
      */
-    public void showProperties() {
-        StringBuffer completeMoML = new StringBuffer("<group>");
-
+    public void showProperties() throws IllegalActionException {
         // Get the PropertySolver.
         OntologySolver solver = (OntologySolver) getContainer();
-        try {
-            for (Object propertyable : solver.getAllPropertyables()) {
-
-                if (propertyable instanceof NamedObj) {
-                    NamedObj namedObj = (NamedObj) propertyable;
-
-                    Concept property = solver.getResolvedConcept(namedObj,
-                            false);
-
-                    completeMoML.append(_getMoMLShowInfoString(namedObj,
-                            property));
+        for (Object propertyable : solver.getAllPropertyables()) {
+            if (propertyable instanceof NamedObj) {
+                Concept concept = solver.getResolvedConcept(propertyable, false);
+                if (concept != null) {
+                        String request =
+                            "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
+                            + concept.toString() + "\"/>";
+                        // FIXME: Really should have a constructor for
+                        // MoMLChangeRequest with an extra argument to mark
+                        // this as a non-structural change.
+                        // Marking this as a non-structural change prevents a
+                        // repaint from happening, which is a good idea since we
+                        // are going to issue a lot of these change requests.
+                        MoMLChangeRequest change = new MoMLChangeRequest(this, (NamedObj)propertyable, request) {
+                            public boolean isStructuralChange() {
+                                return false;
+                            }
+                        };
+                        ((NamedObj)propertyable).requestChange(change);
                 }
             }
-        } catch (IllegalActionException e) {
-            assert false;
         }
-        completeMoML.append("</group>");
-
-        _requestChange(completeMoML.toString());
+        // Force a single repaint after all the above requests have been processed.
+        solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /**
-     * Wrap the given MoML request string with extra enclosing tags
-     * according to the relation of the specified namedObj to the
-     * toplevel context. This is used to issue a complete MoML request
-     * at the toplevel context.
-     * @param namedObj The specified namedObj.
-     * @param request The given MoML request.
-     */
-    private String _completeHierarchyInMoML(NamedObj namedObj, String request) {
-        // Extend the MoML request.
-        NamedObj momlContainer = namedObj;
-        if (momlContainer != null) {
-
-            // We don't need to specify the toplevel because
-            // that is the context which we will execute the
-            // change request.
-            while (momlContainer.getContainer() != null) {
-                String type = momlContainer.getElementName();
-                request = "<" + type + " name=\"" + momlContainer.getName()
-                        + "\" class=\"" + momlContainer.getClassName() + "\">"
-                        + request + "</" + type + ">";
-
-                momlContainer = momlContainer.getContainer();
-            }
-        }
-        return request;
-    }
-
-    /**
-     * Return a MoML request string that creates or updates
-     * the _showInfo attribute of the given property-able
-     * object, according to the given property value.
-     * If the given property is null, this would issue
-     * delete request to remove the _showInfo attribute,
-     * if there exists any.
-     * @param propertyable The given property-able object.
-     * @param property The given property.
-     */
-    private String _getMoMLShowInfoString(NamedObj propertyable,
-            Concept property) {
-
-        String request;
-        String propertyString;
-        if (property != null) {
-            propertyString = property.toString();
-
-        } else {
-            propertyString = "";
-        }
-
-        //StringParameter showAttribute = (StringParameter) propertyable
-        //        .getAttribute("_showInfo");
-
-        // Update the _showInfo attribute.
-        request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
-                + propertyString + "\"/>";
-
-        request = _completeHierarchyInMoML(propertyable, request);
-        return request;
-
-    }
-
-    /**
-     * Create and request an undo-able MoMLChangeRequest for the given
-     * MoML string. The context of the request is set to the toplevel.
-     * @param moml The given moml string that contains the change request.
-     */
-    private void _requestChange(String moml) {
-        // FIXME: we can only undo at the toplevel.
-        NamedObj toplevel = toplevel();
-        MoMLChangeRequest request = new MoMLChangeRequest(this, toplevel, moml);
-        request.setUndoable(true);
-        ((TypedCompositeActor) toplevel).requestChange(request);
-    }
 }
