@@ -57,18 +57,6 @@ public class OntologyResolutionException extends IllegalActionException {
     /** Construct an exception that includes the OntologySolver 
      *  that was involved and the cause.
      *  @param solver The OntologySolver, which must not be null.
-     *  @param cause The cause of this exception, or null if the cause
-     *  is not known or nonexistent.
-     *  @param detail The message.
-     */
-    public OntologyResolutionException(OntologySolverBase solver,
-            Throwable cause, String detail) {
-        this(solver, null, cause, detail);
-    }
-
-    /** Construct an exception that includes the OntologySolver 
-     *  that was involved and the cause.
-     *  @param solver The OntologySolver, which must not be null.
      *  @param nameable The Nameable object that was involved.
      *  @param detail The message.
      */

@@ -278,39 +278,4 @@ public abstract class OntologySolver extends OntologySolverBase implements
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /**
-     * Look for directories that are not CVS or .svn.
-     */
-    static class DirectoryNameFilter implements FilenameFilter {
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
-
-        /**
-         * Return true if the specified file names a directory that is not named
-         * "CVS" or ".svn".
-         * @param directory the directory in which the potential directory was
-         * found.
-         * @param name the name of the directory or file.
-         * @return true if the file is a directory that contains a file called
-         * configuration.xml
-         */
-        public boolean accept(File directory, String name) {
-            try {
-                File file = new File(directory, name);
-
-                if (!file.isDirectory() || file.getName().equals("CVS")
-                        || file.getName().equals(".svn")) {
-                    return false;
-                }
-            } catch (Exception ex) {
-                return false;
-            }
-
-            return true;
-        }
-    }
-
 }
