@@ -29,7 +29,6 @@ package ptolemy.moml;
 import java.net.URL;
 import java.util.List;
 
-import ptolemy.data.ontologies.OntologyMoMLHandler;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
