@@ -5,7 +5,8 @@
   <configure>
      <?moml
       <group>
-        <input source="ptolemy/cg/cg.xml"/>
+        <!-- ptolemy/cg is not shipping in 8.0 -->
+        <!-- input source="ptolemy/cg/cg.xml"/ -->
         <input source="ptolemy/codegen/codegen.xml"/>
 	<input source="ptolemy/verification/verification.xml"/> 
       </group>
