@@ -380,7 +380,7 @@ BACKTRACK_JARS =
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
 # We are not shipping the fuzzy logic actor because it is GPL'd
-FUZZY_JARS =
+FUZZY_JARS = \
 	ptolemy/actor/lib/logic/fuzzy/fuzzy.jar \
 	ptolemy/actor/lib/logic/fuzzy/demo/demo.jar \
 
@@ -412,7 +412,7 @@ WIRELESS_JARS = \
 	ptolemy/domains/wireless/demo/demo.jar \
 	ptolemy/domains/wireless/doc/doc.jar
 
-FULL_8_1_JARS =
+FULL_8_1_JARS = \
 	ptolemy/cg/cg.jar \
 	ptolemy/data/properties/properties.jar \
 	ptolemy/data/properties/lattice/imageOntology/demo/demo.jar \
