@@ -44,7 +44,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jai
+PTPACKAGE = 	opencv
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
