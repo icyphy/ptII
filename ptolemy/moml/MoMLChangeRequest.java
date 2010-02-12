@@ -29,6 +29,7 @@ package ptolemy.moml;
 import java.net.URL;
 import java.util.List;
 
+import ptolemy.data.ontologies.OntologyMoMLHandler;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -136,6 +137,25 @@ public class MoMLChangeRequest extends ChangeRequest {
         super(originator, request);
         _context = context;
         _base = base;
+    }
+    
+    /** Construct a mutation request to be executed in the specified context.
+     *  The context is typically a Ptolemy II container, such as an entity,
+     *  within which the objects specified by the MoML code will be placed.
+     *  This method resets and uses a parser that is a static member
+     *  of this class.
+     *  This constructor also accepts a boolean argument to tell whether the
+     *  change is structural.  Non-structural changes do not require
+     *  repainting.
+     *  @param originator The originator of the change request.
+     *  @param context The context in which to execute the MoML.
+     *  @param request The mutation request in MoML.
+     *  @param structural Whether or not this is a structural change.
+     */
+    public MoMLChangeRequest(Object originator, NamedObj context,
+            String request, boolean structural) {
+        super(originator, request, structural);
+        _context = context;
     }
 
     ///////////////////////////////////////////////////////////////////
