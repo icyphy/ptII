@@ -28,8 +28,14 @@
 package ptolemy.actor.lib.opencv;
 
 import hypermedia.video.OpenCV;
-import ptolemy.actor.lib.Source;
+
+import java.awt.Rectangle;
+
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -37,18 +43,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 ///////////////////////////////////////////////////////////////////
-//// OpenCVReader
+//// Detect
 
 /**
- * A simple actor starts a video capture process using
- * the Open Computer Vision (OpenCV) Library.
+ * An actor that uses OpenCV to detect objects in a video stream.
+ * The input is an OpenCV object wrapped in an ObjectToken.
+ * The output is an array of arrays of ints.
  * @author Edward A. Lee, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class OpenCVReader extends Source {
+public class Detect extends Transformer {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
@@ -61,43 +68,53 @@ public class OpenCVReader extends Source {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public OpenCVReader(CompositeEntity container, String name)
+    public Detect(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // FIXME: create a separate type for OpenCV Frames or
-        // create a type for ptolemy.data.AWTImageToken.
-        output.setTypeEquals(BaseType.OBJECT);
+        // FIXME: create a separate type for OpenCV.
+        input.setTypeEquals(BaseType.OBJECT);
+        ArrayType rectangleType = new ArrayType(BaseType.INT, 4);
+        ArrayType arrayOfRectanglesType = new ArrayType(rectangleType);
+        output.setTypeEquals(arrayOfRectanglesType);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Output a frame.
      *  @exception IllegalActionException If thrown while writing to the port.   
      */
     public void fire() throws IllegalActionException {
-        output.send(0, new ObjectToken(_openCV));
-    }
-   
-    /** Open the video capture device.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        if (_openCV == null) {
-            _openCV = new OpenCV();
+        if (input.hasToken(0)) {
+            ObjectToken inputToken = (ObjectToken)input.get(0);
+            Object inputObject = inputToken.getValue();
+            if (!(inputObject instanceof OpenCV)) {
+                throw new IllegalActionException(this,
+                        "Input is required to be an instance of OpenCV. Got "
+                        + inputObject.getClass());
+            }
+            OpenCV openCV = (OpenCV)inputObject;
+            if (_openCV != openCV) {
+                _openCV = openCV;
+                _openCV.cascade(OpenCV.CASCADE_FRONTALFACE_ALT);
+            }
+            Rectangle[] rectangles = _openCV.detect();
+            ArrayToken[] results = new ArrayToken[rectangles.length];
+            for (int i = 0; i < rectangles.length; i++) {
+                IntToken[] rectangle = new IntToken[4];
+                rectangle[0] = new IntToken(rectangles[i].x);
+                rectangle[1] = new IntToken(rectangles[i].y);
+                rectangle[2] = new IntToken(rectangles[i].width);
+                rectangle[3] = new IntToken(rectangles[i].height);
+
+                results[i] = new ArrayToken(rectangle);
+            }
+            if (results.length > 0) {
+                ArrayToken result = new ArrayToken(results);
+                output.send(0, result);
+            }
         }
-        // FIXME: Size of the image should be parameters of this object.
-        _openCV.capture( 640, 480 );
-        // _openCV.cascade( OpenCV.CASCADE_FRONTALFACE_ALT );
-    }
-    
-    /** Stop the capture.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        _openCV.stop();
     }
    
     ///////////////////////////////////////////////////////////////////

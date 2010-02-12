@@ -19,29 +19,48 @@
         </property>
     </property>
     <entity name="OpenCVReader" class="ptolemy.actor.lib.opencv.OpenCVReader">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 195.0]">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 122, 128, 44}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 122, 640, 524}, maximized=false}">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 110.0]">
         </property>
     </entity>
-    <entity name="ImageRotate" class="ptolemy.actor.lib.image.ImageRotate">
-        <property name="rotationInDegrees" class="ptolemy.data.expr.Parameter" value="45">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 255}">
+    <entity name="OpenCVToAWTImage" class="ptolemy.actor.lib.opencv.OpenCVToAWTImage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 120.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <entity name="Detect" class="ptolemy.actor.lib.opencv.Detect">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={492, 485, 484, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 235.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{100.0, 195.0}">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="OpenCVReader.output" relation="relation2"/>
+    <link port="OpenCVReader.output" relation="relation4"/>
     <link port="ImageDisplay.input" relation="relation"/>
-    <link port="ImageRotate.input" relation="relation2"/>
-    <link port="ImageRotate.output" relation="relation"/>
+    <link port="OpenCVToAWTImage.input" relation="relation4"/>
+    <link port="OpenCVToAWTImage.output" relation="relation"/>
+    <link port="Detect.input" relation="relation4"/>
+    <link port="Detect.output" relation="relation3"/>
+    <link port="Display.input" relation="relation3"/>
 </entity>

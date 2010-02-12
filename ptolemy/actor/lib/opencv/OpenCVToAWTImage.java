@@ -28,7 +28,13 @@
 package ptolemy.actor.lib.opencv;
 
 import hypermedia.video.OpenCV;
-import ptolemy.actor.lib.Source;
+
+import java.awt.Frame;
+import java.awt.Image;
+import java.awt.image.MemoryImageSource;
+
+import ptolemy.actor.lib.Transformer;
+import ptolemy.data.AWTImageToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -37,18 +43,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 ///////////////////////////////////////////////////////////////////
-//// OpenCVReader
+//// OpenCVToAWTImage
 
 /**
- * A simple actor starts a video capture process using
- * the Open Computer Vision (OpenCV) Library.
- * @author Edward A. Lee, Christopher Brooks
+ * Convert an input OpenCV object into an AWT image.
+ * FIXME: What does this really mean? Current frame? What's "current"?
+ * @author Edward A. Lee, Jan Reineke, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class OpenCVReader extends Source {
+public class OpenCVToAWTImage extends Transformer {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
@@ -61,13 +67,19 @@ public class OpenCVReader extends Source {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public OpenCVReader(CompositeEntity container, String name)
+    public OpenCVToAWTImage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // FIXME: create a separate type for OpenCV Frames or
         // create a type for ptolemy.data.AWTImageToken.
+        // Same should probably be true of an AWT Image.
+        input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
+
+        // FIXME: HACK! There must be a better way to get an
+        // AWT frame from OpenCV.
+        _dummyFrame = new Frame();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -76,33 +88,36 @@ public class OpenCVReader extends Source {
      *  @exception IllegalActionException If thrown while writing to the port.   
      */
     public void fire() throws IllegalActionException {
-        output.send(0, new ObjectToken(_openCV));
-    }
-   
-    /** Open the video capture device.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        if (_openCV == null) {
-            _openCV = new OpenCV();
+        if (input.hasToken(0)) {
+            ObjectToken inputToken = (ObjectToken)input.get(0);
+            Object inputObject = inputToken.getValue();
+            if (!(inputObject instanceof OpenCV)) {
+                throw new IllegalActionException(this,
+                        "Input is required to be an instance of OpenCV. Got "
+                        + inputObject.getClass());
+            }
+            OpenCV openCV = (OpenCV)inputObject;
+            // Read the next frame.
+            openCV.read();
+            // create a new image from cv pixels data
+            MemoryImageSource mis = new MemoryImageSource(
+                    openCV.width, openCV.height, openCV.pixels(), 0, openCV.width );
+            Image image = _dummyFrame.createImage( mis );
+
+            output.send(0, new AWTImageToken(image));
         }
-        // FIXME: Size of the image should be parameters of this object.
-        _openCV.capture( 640, 480 );
-        // _openCV.cascade( OpenCV.CASCADE_FRONTALFACE_ALT );
-    }
-    
-    /** Stop the capture.
-     *  @exception IllegalActionException If thrown by the super class.
-     */
-    public void wrapup() throws IllegalActionException {
-        super.wrapup();
-        _openCV.stop();
     }
    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The OpenCV object from which we read. */
-    private OpenCV _openCV;
+    /** The dummy frame, needed to create an image.
+     *  FIXME: can't we create an image without this?
+     *  Otherwise, this actor might not work in a headless environment.
+     *  Since we are reading from a camera, this might be moot, but
+     *  a good design would not have this dependency on Frame.   If
+     *  this dependency persists, then this actor should be movedd
+     *  to actor.lib.gui.opencv.
+     */
+    private Frame _dummyFrame;
 }
