@@ -55,7 +55,7 @@ ME =		ptolemy
 #
 DIRS = util math kernel plot graph moml data actor gui media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) verification \
-	vergil hsif $(PTCHIC_DIR) cg codegen component $(PTBACKTRACK_DIR) \
+	vergil hsif $(PTCHIC_DIR) codegen component $(PTBACKTRACK_DIR) \
 	configs \
 	$(PTDISTRIBUTED_DIR) ptp $(PTCALTROP_DIR) \
 	contrib demo
