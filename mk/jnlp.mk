@@ -137,13 +137,13 @@ lib/joystickWindows.jar:
 # NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
 # include it in ALL_JNLP_JARS
 NATIVE_SIGNED_LIB_JARS = \
-	lib/commWindows.jar \
 	lib/bcvtbMacOSX.jar \
 	lib/joystickWindows.jar \
 	lib/matlabMacOSX.jar \
 	lib/matlabSunOS.jar \
 	lib/matlabWindows.jar \
-	lib/rxtxMacOSX.jar 
+	lib/rxtxMacOSX.jar \
+	lib/rxtxWindows.jar 
 
 # Not all hosts have matlab
 MATLAB_JARS = \
@@ -312,13 +312,6 @@ PTINY_ONLY_JNLP_JARS = \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
-	ptolemy/codegen/codegen.jar \
-	ptolemy/codegen/c/vergil/vergil.jar \
-	ptolemy/codegen/demo/demo.jar \
-	ptolemy/codegen/c/domains/fsm/demo/demo.jar \
-	ptolemy/codegen/c/domains/modal/demo/demo.jar \
-	ptolemy/codegen/c/domains/pn/demo/demo.jar \
-	ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar \
 	$(PTALON_JARS) \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
 	ptolemy/data/type/demo/demo.jar \
@@ -335,7 +328,6 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/rendezvous/doc/doc.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
-	ptolemy/domains/tester/tester.jar \
 	ptolemy/moml/demo/demo.jar \
 	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
@@ -363,6 +355,15 @@ PTINY_SANDBOX_JNLP_JARS = \
 #######
 # Full
 #
+CODEGEN_JARS = \
+	ptolemy/codegen/codegen.jar \
+	ptolemy/codegen/c/vergil/vergil.jar \
+	ptolemy/codegen/demo/demo.jar \
+	ptolemy/codegen/c/domains/fsm/demo/demo.jar \
+	ptolemy/codegen/c/domains/modal/demo/demo.jar \
+	ptolemy/codegen/c/domains/pn/demo/demo.jar \
+	ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar \
+
 COPERNICUS_JARS = \
 	lib/jasminclasses.jar \
 	lib/sootclasses.jar \
@@ -378,6 +379,10 @@ BACKTRACK_JARS =
 
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
+# We are not shipping the fuzzy logic actor because it is GPL'd
+FUZZY_JARS =
+	ptolemy/actor/lib/logic/fuzzy/fuzzy.jar \
+	ptolemy/actor/lib/logic/fuzzy/demo/demo.jar \
 
 PDFRENDERER_JARS = ptolemy/vergil/pdfrenderer/pdfrenderer.jar \
 		lib/PDFRenderer.jar
@@ -407,7 +412,7 @@ WIRELESS_JARS = \
 	ptolemy/domains/wireless/demo/demo.jar \
 	ptolemy/domains/wireless/doc/doc.jar
 
-FULL_8_1_JARS = \
+FULL_8_1_JARS =
 	ptolemy/cg/cg.jar \
 	ptolemy/data/properties/properties.jar \
 	ptolemy/data/properties/lattice/imageOntology/demo/demo.jar \
@@ -415,12 +420,15 @@ FULL_8_1_JARS = \
 	ptolemy/vergil/properties/properties.jar \
 	ptolemy/data/ontologies/ontologies.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
+	ptolemy/domains/sequence/sequence.jar \
+	ptolemy/domains/sequence/demo/demo.jar \
 	ptolemy/domains/pthales/pthales.jar \
 	ptolemy/domains/pthales/demo/demo.jar
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
 FULL_ONLY_JNLP_JARS = \
+	$(CODEGEN_JARS) \
 	$(COPERNICUS_JARS) \
 	doc/design/design.jar \
 	doc/img/img.jar \
@@ -438,6 +446,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/joystick/joystick.jar \
 	vendors/misc/joystick/Joystick.jar \
 	ptolemy/actor/lib/jxta/jxta.jar \
+	$(FUZZY_JARS) \
 	ptolemy/actor/lib/x10/x10.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
 	ptolemy/actor/ptalon/gt/gt.jar \
@@ -475,6 +484,7 @@ FULL_ONLY_JNLP_JARS = \
 	lib/mapss.jar \
 	ptolemy/domains/sdf/lib/vq/vq.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
+	ptolemy/domains/tester/tester.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
 	ptolemy/verification/verification.jar \
@@ -1321,6 +1331,10 @@ visualsensedoc.exe: visualsensedoc_l4j.xml
 # For example:  make echo_jars JARS=PTINY_JNLP_JARS
 echo_jars:
 	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" |  awk '{for(i=1;i<=NF;i++){ print "            <file src=\"../../jar_dist/" $$i "\""; ns = split($$i, f, "/"); dir = ""; for(s=1;s<ns;s++) {dir = dir "/" f[s]}  print "                  targetdir=\"$$INSTALL_PATH" dir "\"/>"  } }'
+
+
+echo_plist_jars:
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)"
 
 ################################################################
 ################################################################
