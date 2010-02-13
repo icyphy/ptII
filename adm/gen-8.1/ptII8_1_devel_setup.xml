@@ -115,8 +115,6 @@ The Ptiny pack is required.
 
 		 Then add missing jars
 	      -->
-            <file src="../../jar_dist/ptolemy/actor/gui/jnlp/PtinyApplication.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/gui/jnlp"/>
             <file src="../../jar_dist/doc/docConfig.jar"
                   targetdir="$INSTALL_PATH/doc"/>
             <file src="../../jar_dist/lib/diva.jar"
@@ -307,10 +305,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
             <file src="../../jar_dist/ptolemy/actor/lib/jxta/jxta.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jxta"/>
-            <file src="../../jar_dist/ptolemy/actor/lib/logic/fuzzy/fuzzy.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/logic/fuzzy"/>
-            <file src="../../jar_dist/ptolemy/actor/lib/logic/fuzzy/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/logic/fuzzy/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/x10/x10.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/x10"/>
             <file src="../../jar_dist/ptolemy/actor/lib/x10/demo/demo.jar"
@@ -431,8 +425,6 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/vergil/ontologies"/>
             <file src="../../jar_dist/ptolemy/domains/sequence/sequence.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/sequence"/>
-            <file src="../../jar_dist/ptolemy/domains/sequence/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/sequence/demo"/>
             <file src="../../jar_dist/ptolemy/domains/pthales/pthales.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/pthales"/>
             <file src="../../jar_dist/ptolemy/domains/pthales/demo/demo.jar"

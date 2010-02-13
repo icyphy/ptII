@@ -380,7 +380,8 @@ BACKTRACK_JARS =
 EXEC_JARS = 	ptolemy/actor/gui/exec/exec.jar
 
 # We are not shipping the fuzzy logic actor because it is GPL'd
-FUZZY_JARS = \
+FUZZY_JARS =
+DEVEL_FUZZY_JARS = \
 	ptolemy/actor/lib/logic/fuzzy/fuzzy.jar \
 	ptolemy/actor/lib/logic/fuzzy/demo/demo.jar \
 
@@ -421,7 +422,6 @@ FULL_8_1_JARS = \
 	ptolemy/data/ontologies/ontologies.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
 	ptolemy/domains/sequence/sequence.jar \
-	ptolemy/domains/sequence/demo/demo.jar \
 	ptolemy/domains/pthales/pthales.jar \
 	ptolemy/domains/pthales/demo/demo.jar
 

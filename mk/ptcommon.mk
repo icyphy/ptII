@@ -193,8 +193,8 @@ fast:
 		    fi ; \
 		done ; \
 	fi
-	@if [ "x$(JSRCS)" != "x" ]; then \
-		echo "fast build with 'CLASSPATH=\"$(CLASSPATH)$(AUXCLASSPATH)\" "$(JAVAC)" $(JFLAGS) *.java' in `pwd`"; \
+	if [ "x$(JSRCS)" != "x" ]; then \
+		echo "fast build with 'CLASSPATH=\"$(CLASSPATH)$(AUXCLASSPATH)\" \"$(JAVAC)\" $(JFLAGS) *.java' in `pwd`"; \
 		CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVAC)" $(JFLAGS) *.java; \
 	fi
 	@if [ "x$(PTLIB)" != "x" ]; then \
