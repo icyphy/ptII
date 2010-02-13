@@ -150,7 +150,9 @@ KRUFT = \
 	vergilPtiny.jnlp \
 	vergilPtinySandbox.jnlp \
 	vergilVisualSense.jnlp \
-	ptKeystore
+	ptKeystore \
+	$(L4J_EXES) \
+	$(L4J_CONFIGS)
 
 # Files to be removed by 'make distclean'
 DISTCLEAN_STUFF = \
@@ -320,4 +322,3 @@ include $(ROOT)/mk/jnlp.mk
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-# A trivial update
