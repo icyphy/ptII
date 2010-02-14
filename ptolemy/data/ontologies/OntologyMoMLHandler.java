@@ -83,7 +83,9 @@ public class OntologyMoMLHandler extends Attribute {
         for (Object propertyable : solver.getAllPropertyables()) {
             if (propertyable instanceof NamedObj) {
                 Concept concept = solver.getResolvedConcept(propertyable, false);
-                if (concept != null) {
+                if (concept != null || (propertyable instanceof NamedObj &&
+                        (((NamedObj) propertyable).getAttribute("_showInfo") != null) ||
+                        (((NamedObj) propertyable).getAttribute("_highlightColor") != null))) {
                         String request = "<group>";
                         if (((NamedObj)propertyable).getAttribute("_showInfo") != null) {
                             request += "<deleteProperty name=\"_showInfo\"/>";
@@ -112,7 +114,7 @@ public class OntologyMoMLHandler extends Attribute {
         OntologySolver solver = (OntologySolver) getContainer();
         for (Object propertyable : solver.getAllPropertyables()) {
             if (propertyable instanceof NamedObj) {
-                Concept concept = solver.getResolvedConcept(propertyable, false);
+                Concept concept = solver.getResolvedConcept(propertyable, true);
                 if (concept != null) {
                     // Use the color in the concept instance.
                     List<ColorAttribute> colors = concept.attributeList(ColorAttribute.class);
@@ -146,7 +148,7 @@ public class OntologyMoMLHandler extends Attribute {
         OntologySolver solver = (OntologySolver) getContainer();
         for (Object propertyable : solver.getAllPropertyables()) {
             if (propertyable instanceof NamedObj) {
-                Concept concept = solver.getResolvedConcept(propertyable, false);
+                Concept concept = solver.getResolvedConcept(propertyable, true);
                 if (concept != null) {
                         String request =
                             "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""

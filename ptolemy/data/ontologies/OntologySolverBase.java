@@ -27,6 +27,7 @@
 package ptolemy.data.ontologies;
 
 import java.lang.reflect.Constructor;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -147,7 +148,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public void clearResolvedProperty(Object object) {
         _resolvedProperties.remove(object);
     }
-
+    
     /**
      * Return the list of all PropertyHelpers associated with this
      * ontology solver.

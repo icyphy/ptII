@@ -68,6 +68,12 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
             NameDuplicationException {
         super(container, name);
         
+        if (!(container instanceof OntologySolverModel)) {
+            throw new IllegalActionException(this, "Can only instantiate a " +
+                    " ConceptFunctionDefinitionAttribute inside of an " +
+                    " OntologySolverModel.");
+        }
+                
         conceptFunctionName = new StringAttribute(this, "conceptFunctionName");
         conceptFunctionName.setExpression("expressionConceptFunction");
 
@@ -138,7 +144,8 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
             int numArgs = numArgsToken.intValue();
             
             // Collect all the existing argument fields before checking if we need
-            // to add or remove any.
+            // to add or remove any.  This is required for when the attribute is
+            // loaded from a MoML file.
             _argumentNames.clear();
             for (Object argNameAttribute : attributeList(StringAttribute.class)) {
                 if (((StringAttribute) argNameAttribute).getName().startsWith("arg")) {
@@ -250,11 +257,11 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
         if (_conceptFunction == null) {
             _conceptFunction = new ExpressionConceptFunction(conceptFunctionName.getExpression(), numArgs,
                     argDomainOntologies, outputRangeOntology, argNameArray,
-                    conceptFunctionExpression.getExpression());
+                    conceptFunctionExpression.getExpression(), (OntologySolverModel) getContainer());
         } else {
             _conceptFunction.updateFunctionParameters(conceptFunctionName.getExpression(), numArgs,
                     argDomainOntologies, outputRangeOntology, argNameArray,
-                    conceptFunctionExpression.getExpression());
+                    conceptFunctionExpression.getExpression(), (OntologySolverModel) getContainer());
         }
         
         if (((BooleanToken) functionIsMonotonic.getToken()).booleanValue()) {

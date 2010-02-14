@@ -57,11 +57,14 @@ public class ExpressionConceptFunction extends ConceptFunction {
      *  @param argumentNames The list of strings that represent the names of the arguments to be used in parsing
      *   the concept function expression.
      *  @param conceptFunctionExpression A string representing the boolean expression that defines the concept function.
+     *  @param solverModel The ontology solver model that contains other concept function definitions that could
+     *   be called by the function defined in this expression.
      *  @throws IllegalActionException If the ontology inputs are null or the length of the array of domain ontologies does not
      *   match the number of arguments for the function.
      */
     public ExpressionConceptFunction(String name, int numArgs, Ontology[] argumentDomainOntologies,
-            Ontology outputRangeOntology, String[] argumentNames, String conceptFunctionExpression)
+            Ontology outputRangeOntology, String[] argumentNames, String conceptFunctionExpression,
+            OntologySolverModel solverModel)
         throws IllegalActionException {
         
         super(name, numArgs, argumentDomainOntologies, outputRangeOntology);
@@ -80,6 +83,8 @@ public class ExpressionConceptFunction extends ConceptFunction {
         if (_conceptFunctionExpression == null) {
             throw new IllegalActionException("The conceptFunctionExpression cannot be null.");
         }
+        
+        _solverModel = solverModel;
     }    
     
     ///////////////////////////////////////////////////////////////////
@@ -94,14 +99,18 @@ public class ExpressionConceptFunction extends ConceptFunction {
      * @param name The new name of the concept function.
      * @param argumentNames The new array of argument names.
      * @param conceptFunctionExpression The new expression string that defines the function.
+     * @param solverModel The ontology solver model that contains other concept function definitions that could
+     *   be called by the function defined in this expression.
      * @throws IllegalActionException If there is a problem setting the parameter values.
      */
     public void updateFunctionParameters(String name, int numArgs, Ontology[] argumentDomainOntologies,
-            Ontology outputRangeOntology, String[] argumentNames, String conceptFunctionExpression) 
+            Ontology outputRangeOntology, String[] argumentNames, String conceptFunctionExpression,
+            OntologySolverModel solverModel) 
         throws IllegalActionException {
         _numArgs = numArgs;
         _argumentDomainOntologies = argumentDomainOntologies;
         _outputRangeOntology = outputRangeOntology;
+        _solverModel = solverModel;
         
         if (_outputRangeOntology == null) {
             throw new IllegalActionException("The outputRangeOntology cannot be null.");
@@ -152,7 +161,8 @@ public class ExpressionConceptFunction extends ConceptFunction {
 
         // Evaluate concept function expression
         ExpressionConceptFunctionParseTreeEvaluator evaluator =
-            new ExpressionConceptFunctionParseTreeEvaluator(_argumentNames, inputConceptValues);
+            new ExpressionConceptFunctionParseTreeEvaluator(_argumentNames, inputConceptValues,
+                    _solverModel, _argumentDomainOntologies);
         StringToken conceptNameToken = (StringToken) evaluator.evaluateParseTree(parseTree);
         Concept output = (Concept) _outputRangeOntology.getEntity(conceptNameToken.stringValue());
         
@@ -174,4 +184,9 @@ public class ExpressionConceptFunction extends ConceptFunction {
     
     /** The boolean expression string that when evaluated implements the concept function. */
     private String _conceptFunctionExpression;
+    
+    /** The ontology solver model that contains definitions of other concept
+     *  functions that could be called in this expression.
+     */
+    private OntologySolverModel _solverModel;
 }

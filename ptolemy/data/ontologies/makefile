@@ -70,6 +70,7 @@ JSRCS = \
 	OntologyResolutionException.java \
 	OntologySolver.java \
 	OntologySolverBase.java \
+	OntologySolverModel.java \
 	OntologySolverUtilities.java \
 	ParseTreeASTNodeAdapterCollector.java \
 	ParseTreeAnnotationEvaluator.java

@@ -26,6 +26,7 @@ package ptolemy.data.ontologies;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.net.URI;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -116,6 +117,25 @@ public abstract class OntologySolver extends OntologySolverBase implements
             _recordUnacceptableSolution(propertyable, getProperty(propertyable));
         }
         checkErrors();
+    }    
+    
+    /** Construct and configure the contained model with the specified source and
+     *  text. This parses the specified MoML text. Also set the container solver
+     *  for the contained model to be the ontology solver.
+     *  @param base The base URL for relative references, or null if not known.
+     *  @param source The URI of a document providing source, which is ignored in this class.
+     *  @param text The MoML description.
+     *  @exception Exception If the parsing fails.
+     */
+    public void configure(URL base, String source, String text)
+        throws Exception {
+        super.configure(base, source, text);
+        
+        if (!(_model instanceof OntologySolverModel)) {
+            throw new IllegalActionException(this, "An OntologySolver can " +
+                    "only contain entities of the type OntologySolverModel.");
+        }        
+        ((OntologySolverModel) _model).setContainerSolver(this);
     }
 
     /**

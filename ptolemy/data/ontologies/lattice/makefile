@@ -51,6 +51,8 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	ActorConstraintsDefinitionAdapter.java \
+	ActorConstraintsDefinitionAttribute.java \
 	BinaryOperationMonotonicFunctionDefinition.java \
 	CollectLatticeOntologySolverDetails.java \
 	ConceptTermFactory.java \

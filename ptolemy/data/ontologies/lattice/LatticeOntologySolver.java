@@ -33,6 +33,7 @@ import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.data.ontologies.OntologySolver;
+import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.data.ontologies.gui.OntologySolverGUIFactory;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.graph.CPO;
@@ -82,7 +83,7 @@ public class LatticeOntologySolver extends OntologySolver {
         super(container, name);
 
         // Provide a default model so that this is never empty.
-        _model = new CompositeEntity(workspace());
+        _model = new OntologySolverModel(this, workspace());
 
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
@@ -460,9 +461,20 @@ public class LatticeOntologySolver extends OntologySolver {
             throws IllegalActionException {
         OntologyAdapter adapter = null;
 
-        try {
-            adapter = super._getAdapter(component);
-        } catch (IllegalActionException ex) {
+        // First look for the adapter in the LatticeOntologySolver model.
+        List modelDefinedAdapters = ((OntologySolverModel) _model).attributeList(ActorConstraintsDefinitionAttribute.class);
+        for (Object adapterDefinitionAttribute : modelDefinedAdapters) {
+            if (((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName.getExpression().equals(component.getClass().getName())) {
+                adapter = ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).getAdapter(component);
+                break;
+            }
+        }
+        
+        if (adapter == null) {
+            try {
+                adapter = super._getAdapter(component);
+            } catch (IllegalActionException ex) {
+            }
         }
 
         if (adapter == null) {
