@@ -44,6 +44,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// LatticeOntologyAdapter
@@ -185,7 +186,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      *  @throws IllegalActionException If the string cannot be correctly parsed
      *   and the concept function cannot be created.
      */
-    protected ConceptFunctionInequalityTerm _getConceptFunctionTerm(String functionString)
+    protected ConceptFunctionInequalityTerm _getConceptFunctionTerm(Object actorElement, String functionString)
         throws IllegalActionException {
         ArrayList<String> argumentNameList = new ArrayList<String>();
         ArrayList<InequalityTerm> argumentList = new ArrayList<InequalityTerm>();
@@ -237,7 +238,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         
         int numArgs = argumentNames.length;
         
-        ConceptFunction function = new ExpressionConceptFunction("actorConstraintFunction",
+        ConceptFunction function = new ExpressionConceptFunction(((NamedObj) getComponent()).getName() + "_" +
+                ((NamedObj) actorElement).getName() + "_ConstraintFunction",
                 numArgs, domainOntologies, functionOntology, argumentNames, functionString,
                 (OntologySolverModel) getSolver().getContainedModel());
         
@@ -350,7 +352,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             // If the right term is neither a Concept nor an attribute or port in
             // the actor, then it must be a parseable concept function definition.
             if (rightTerm == null) {
-                rightTerm = _getConceptFunctionTerm(constraintString);
+                rightTerm = _getConceptFunctionTerm(actorElement, constraintString);
             }
             
             if (rightTerm == null) {

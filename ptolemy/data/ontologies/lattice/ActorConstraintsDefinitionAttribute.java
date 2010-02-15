@@ -171,7 +171,9 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
 
                     // Verify that the actorClassName correctly specifies an existing class.
                     Class actorClass = Class.forName(actorClassName.getExpression());
-                    try {
+                    try {                        
+                        // Instantiate a temporary actor from this class in order
+                        // to get all the port and attribute information.
                         Constructor actorConstructor =
                             actorClass.getConstructor(new Class[] {CompositeEntity.class, String.class});
                         Object actorInstance = actorConstructor.newInstance(new Object[] {(CompositeEntity) this.getContainer(), "tempActor"});
