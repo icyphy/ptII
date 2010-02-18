@@ -658,7 +658,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
 
             if (_publisherRelations != null
                     && _publisherRelations.containsKey(name)) {
-                IOPort port = _getPublishedPort(name);
+                IOPort port = getPublishedPort(name);
 
                 if (port != null && port.getContainer() == null) {
                     // The user deleted the port.
@@ -1041,7 +1041,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
             if (container != null) {
                 if (_publishedPorts != null) {
                     try {
-                        _getPublishedPort(name).setContainer(null); // Remove stubPort
+                        getPublishedPort(name).setContainer(null); // Remove stubPort
                     } catch (IllegalActionException e) {
                         // Should not happen.
                         throw new IllegalStateException(e);
