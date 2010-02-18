@@ -375,3 +375,28 @@ test CompositeActor-10.1 {Test all actor list} {
 } {{.E0.E1 .E0.E3 .E0.E2.IDEN .E0.E2.E5}}
 #FIXME: test _removeEntity (using setContainer null).
 
+######################################################################
+#### 
+#
+test CompositeActor-11.1 {getPublishedPort()} {
+    # Brian Hudson writes:
+
+    # getPublishedPort(String name) will now recurse up the hierarchy
+    # looking for the port if the CompositeActor is not opaque. This mimics
+    # the behavior of the register/unregister methods. I thought it may be
+    # awkward that you could call registerPublisherPort("channel1", port)
+    # and then call getPublisherPort("channel1") and it would not be found
+    # if the CompositeActor was not opaque (even though it registered
+    # successfully).
+ 
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set e11 [java::new ptolemy.actor.CompositeActor $w]
+    set e11inside [java::new ptolemy.actor.CompositeActor $e11 e11inside]
+    set p11 [java::new ptolemy.actor.IOPort $e11 P11]
+    $e11 registerPublisherPort "channel1" $p11
+    list [[$e11 getPublishedPort "channel1"] getFullName] \
+	[[$e11inside getPublishedPort "channel1"] getFullName]
+} {..P11 ..P11}
+
+#FIXME: test _removeEntity (using setContainer null).
+
