@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Nameable;
  This queue is implemented as a circular array.  When the array becomes full,
  it is transparently doubled in size.
 
- @author Steve Neuendorffer, contributor: Brian Hudson
+ @author Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (neuendor)
@@ -67,6 +67,7 @@ public final class ArrayFIFOQueue implements Cloneable {
     public ArrayFIFOQueue() {
         _queueArray = new Object[STARTING_ARRAYSIZE];
         _queueMaxCapacity = INFINITE_CAPACITY;
+        _historyList = new LinkedList();
     }
 
     /** Construct an empty queue with no container and the given capacity.
@@ -75,6 +76,7 @@ public final class ArrayFIFOQueue implements Cloneable {
     public ArrayFIFOQueue(int size) {
         _queueArray = new Object[size];
         _queueMaxCapacity = size;
+        _historyList = new LinkedList();
     }
 
     /** Construct an empty queue with the specified container. The
@@ -112,9 +114,7 @@ public final class ArrayFIFOQueue implements Cloneable {
             _queueBack = model._queueBack;
             System.arraycopy(model._queueArray, 0, _queueArray, 0,
                     _queueArray.length);
-            if (model._historyList != null) {
-            	_historyList = new LinkedList(model._historyList);
-            }
+            _historyList.addAll(model._historyList);
         }
     }
 
@@ -209,20 +209,9 @@ public final class ArrayFIFOQueue implements Cloneable {
 
             object = _queueArray[location];
         } else {
-            if (_historyList != null) {
-                try {
-                    object = _historyList.get(historySize() + offset);
-                } catch (Exception ex) {
-                    String message = ".";
-
-                    if (_container != null) {
-                        message = " contained by " + _container.getFullName();
-                    }
-
-                    throw new NoSuchElementException("No object at offset "
-                            + offset + " in the FIFOQueue" + message);
-            	}
-            } else {
+            try {
+                object = _historyList.get(historySize() + offset);
+            } catch (Exception ex) {
                 String message = ".";
 
                 if (_container != null) {
@@ -230,7 +219,7 @@ public final class ArrayFIFOQueue implements Cloneable {
                 }
 
                 throw new NoSuchElementException("No object at offset "
-                        + offset + " in the FIFOQueue" + message + ". No history.");
+                        + offset + " in the FIFOQueue" + message);
             }
         }
 
@@ -273,14 +262,14 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return An enumeration of objects in the history.
      */
     public Enumeration historyElements() {
-        return Collections.enumeration((_historyList != null) ? _historyList : Collections.EMPTY_LIST);
+        return Collections.enumeration(_historyList);
     }
 
     /** Return the number of objects in the history.
      *  @return The current number of objects in the history.
      */
     public int historySize() {
-        return (_historyList != null) ? _historyList.size() : 0;
+        return _historyList.size();
     }
 
     /** Return true if the number of objects in the queue is zero.
@@ -440,15 +429,12 @@ public final class ArrayFIFOQueue implements Cloneable {
      */
     public void setHistoryCapacity(int capacity) throws IllegalActionException {
         if (capacity > 0) {
-            if (_historyList == null) {
-                _historyList = new LinkedList();
-            }
             while (_historyList.size() > capacity) {
                 _historyList.removeFirst();
+                ;
             }
         } else if (capacity == 0) {
             _historyList.clear();
-            _historyList = null;
         } else if (capacity != INFINITE_CAPACITY) {
             throw new IllegalActionException(_container,
                     "Cannot set history capacity to " + capacity);
@@ -500,11 +486,9 @@ public final class ArrayFIFOQueue implements Cloneable {
 
         // Add it to the history buffer.
         if (_historyCapacity != 0) {
-            if (_historyList == null) {
-                _historyList = new LinkedList();
-            }
             if (_historyCapacity == _historyList.size()) {
                 _historyList.removeFirst();
+                ;
             }
 
             _historyList.addLast(object);
@@ -572,6 +556,7 @@ public final class ArrayFIFOQueue implements Cloneable {
         if (_historyCapacity != 0) {
             if (_historyCapacity == _historyList.size()) {
                 _historyList.removeFirst();
+                ;
             }
 
             _historyList.addLast(objects);
