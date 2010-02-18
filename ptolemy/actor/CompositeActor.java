@@ -645,6 +645,67 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+    /** Get the published port with named name.
+     *  @param name The name of the published port.
+     *  @return The port of the publisher that has named name.
+     *  @exception IllegalActionException If the publisher can't be found.
+     *  @exception NameDuplicationException If there are multiple
+     *  publishers with the same name.
+     */
+    final public IOPort getPublishedPort(String name)
+            throws IllegalActionException, NameDuplicationException {
+    	NamedObj container = getContainer();
+    	if (!isOpaque() && container instanceof CompositeActor
+                && !((CompositeActor) container).isClassDefinition()) {
+            return ((CompositeActor) container).getPublishedPort(name);
+        } else { 
+            if (_publishedPorts == null) {
+                throw new IllegalActionException(this,
+                        "Can't find the publisher for " + name + ".");
+            }
+
+            List<IOPort> publishedPorts = _publishedPorts.get(name);
+            if (publishedPorts == null || publishedPorts.size() == 0) {
+                throw new IllegalActionException(this,
+                        "Can't find the publisher for " + name + ".");
+            } else if (publishedPorts.size() > 1) {
+                throw new NameDuplicationException(this,
+                        "We have multiple publishers with name " + name + ".");
+            }
+    		
+            IOPort publishedPort = publishedPorts.get(0);
+            return publishedPort;
+    	}
+    }
+    
+    /** Get the published ports with names that match a regular expression.
+     *  @param pattern The regular expression pattern to match.
+     *  @return The ports of the publisher that match the regular expression.
+     *  @exception IllegalActionException If the publisher can't be found.
+     *  @exception NameDuplicationException If there are multiple
+     *  publishers with the same name.
+     */
+    final public List<IOPort> getPublishedPorts(Pattern pattern)
+            throws IllegalActionException, NameDuplicationException {
+    	List<IOPort> ports = new LinkedList<IOPort>();
+    	NamedObj container = getContainer();
+    	if (!isOpaque() && container instanceof CompositeActor
+                && !((CompositeActor) container).isClassDefinition()) {
+            return ((CompositeActor) container).getPublishedPorts(pattern);
+        } else { 
+            if (_publishedPorts != null) {
+                for (String name : _publishedPorts.keySet()) {
+                    Matcher matcher = pattern.matcher(name);
+                    if (matcher.matches()) {
+                        ports.addAll(_publishedPorts.get(name));
+                    }
+                }
+            }
+    	}
+    	
+    	return ports;
+    }
+
     /** Determine whether widths are currently being inferred or not.
     *  @return True When widths are currently being inferred.
     */
@@ -1000,7 +1061,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     : null;
 
             if (relation == null) {
-                IOPort publishedPort = _getPublishedPort(name);
+                IOPort publishedPort = getPublishedPort(name);
                 try {
                     relation = new TypedIORelation(this, this
                             .uniqueName("publisherRelation"));
@@ -2083,31 +2144,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             director.invalidateResolvedTypes();
             director.requestInitialization((Actor) entity);
         }
-    }
-
-    /** Get the published port with name name.
-     *  @param name The name of the published port.
-     *  @return The port of the publisher that has name nname.
-     *  @exception IllegalActionException If the publisher can't be found.
-     *  @exception NameDuplicationException If there are multiple publishers with the same name.
-     */
-    final protected IOPort _getPublishedPort(String name)
-            throws IllegalActionException, NameDuplicationException {
-        if (_publishedPorts == null) {
-            throw new IllegalActionException(this,
-                    "Can't find the publisher for " + name + ".");
-        }
-
-        List<IOPort> publishedPorts = _publishedPorts.get(name);
-        if (publishedPorts == null || publishedPorts.size() == 0) {
-            throw new IllegalActionException(this,
-                    "Can't find the publisher for " + name + ".");
-        } else if (publishedPorts.size() > 1) {
-            throw new NameDuplicationException(this,
-                    "We have multiple publishers with name " + name + ".");
-        }
-        IOPort publishedPort = publishedPorts.get(0);
-        return publishedPort;
     }
 
     /** Set the local director for execution of this CompositeActor.
