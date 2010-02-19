@@ -291,10 +291,11 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                     name = name + '#' + i;
                 }
 
+                //FIXME: What should be the director? Executive or local?
                 code.append(CodeStream.indent(_compositeActorAdapter
-                        .getReference("@" + name)));
+                        .getReference("@" + name, false)));
                 code.append(" = ");
-                code.append(_compositeActorAdapter.getReference(name));
+                code.append(_compositeActorAdapter.getReference(name, false));
                 code.append(";" + _eol);
             }
         }
@@ -325,8 +326,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                     name = name + '#' + i;
                 }
 
-                code.append(_compositeActorAdapter.getReference(name) + " = ");
-                code.append(_compositeActorAdapter.getReference("@" + name));
+                code.append(_compositeActorAdapter.getReference(name, false) + " = ");
+                code.append(_compositeActorAdapter.getReference("@" + name, false));
                 code.append(";" + _eol);
             }
         }
