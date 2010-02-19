@@ -82,7 +82,7 @@ test ArrayFIFOQueue-2.2 {Construct an empty queue and attempt two gets and a tak
     catch { [$queue get -1] } msg2
     catch { [$queue take] } msg3
     list $msg1 $msg2 $msg3
-} {{java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue.} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} {java.util.NoSuchElementException: The FIFOQueue is empty!}}
+} {{java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue.} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue has no history.} {java.util.NoSuchElementException: The FIFOQueue is empty!}}
 
 ######################################################################
 ####
@@ -161,7 +161,7 @@ test ArrayFIFOQueue-3.2 {Get individual items} {
             getName]
     catch {[$queue get 5]} s1
     list $s0 $a0 $a1 $a2 $a3 $a4 $s1 [$queue size] [$queue isFull]
-} {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} n1 n2 n3 n4 n5 {java.util.NoSuchElementException: No object at offset 5 in the FIFOQueue.} 5 0}
+} {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue has no history.} n1 n2 n3 n4 n5 {java.util.NoSuchElementException: No object at offset 5 in the FIFOQueue.} 5 0}
 
 ######################################################################
 ####
@@ -221,7 +221,7 @@ test ArrayFIFOQueue-3.5 {Get individual items} {
             getName]
     catch {[$queue get 5]} s1
     list $s0 $a0 $a1 $a2 $a3 $a4 $s1 [$queue size] [$queue isFull]
-} {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} n1 n2 n3 n4 n5 {java.util.NoSuchElementException: No object at offset 5 in the FIFOQueue.} 5 0}
+} {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue has no history.} n1 n2 n3 n4 n5 {java.util.NoSuchElementException: No object at offset 5 in the FIFOQueue.} 5 0}
 
 ######################################################################
 ####
@@ -399,7 +399,7 @@ test ArrayFIFOQueue-4.5 {Get individual items from a queue of bounded capacity} 
             getName]
     catch {[$queue get 4]} s1
     list $s0 $a0 $a1 $a2 $a3 $s1 [$queue size] [$queue isFull]
-} {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} n1 n2 n3 n4 {java.util.NoSuchElementException: No object at offset 4 in the FIFOQueue.} 4 1}
+} {{java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue has no history.} n1 n2 n3 n4 {java.util.NoSuchElementException: No object at offset 4 in the FIFOQueue.} 4 1}
 
 ######################################################################
 ####
@@ -572,4 +572,4 @@ test ArrayFIFOQueue-6.2 {Test clear history queue} {
     catch {[$queue get 0]} msg1
     catch {[$queue get -1]} msg2
     list [_testEnums historyElements $newqueue] $msg1 $msg2
-} {{{n1 n2}} {java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue contained by .QueueContainer} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue contained by .QueueContainer}}
+} {{{n1 n2}} {java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue contained by .QueueContainer} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue contained by .QueueContainer has no history.}}
