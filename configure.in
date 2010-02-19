@@ -1917,6 +1917,7 @@ else
     This is only a problem if you are using Eclipse.
     If the class was in the JRE, then Eclipse should compile the JAI files
     without problems])
+	       JAI_JAR=
             fi
 	else
 	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
@@ -2001,6 +2002,7 @@ else
     This is only a problem if you are using Eclipse.
     If the class was in the JRE, then Eclipse should compile the JMF files
     without problems])
+		JMF_JAR=
             fi
 	else
 	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
@@ -2493,6 +2495,7 @@ else
     This is only a problem if you are using Eclipse.
     If the class was in the JRE, then Eclipse should compile the OpenCV files
     without problems])
+	       OPENCV_JAR= 
             fi
 	else
 	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
