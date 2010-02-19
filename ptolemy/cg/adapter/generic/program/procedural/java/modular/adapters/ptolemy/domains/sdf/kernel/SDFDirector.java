@@ -216,7 +216,6 @@ public class SDFDirector
     
                     code.append(");" + _eol);
                     
-                    _generateUpdatePortOffsetCode(code, actor); //FIXME: How to do it efficiently
     
                     //transfer to external ports
                     Iterator<?> outputPorts = actor.outputPortList().iterator();
@@ -251,6 +250,8 @@ public class SDFDirector
                             }
                         }
                     }
+                    
+                    _generateUpdatePortOffsetCode(code, actor); //FIXME: How to do it efficiently
                 }
                 
                 code.append("};" + _eol);
