@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!-- 
+    A sample installation file.
+    Use it as a base for your own installers :-)
+    
+    To compile it :
+    - go in the bin directory where you installed IzPack
+    - call "compile ../sample/install.xml -b ../sample"
+-->
+
+<installation version="1.0">
+
+    <!-- 
+        The info section.
+        The meaning of the tags should be natural ...
+    -->
+    <info>
+        <appname>Ptolemy II</appname>
+        <appversion>8.0.beta</appversion>
+	<appsubpath>Ptolemy/ptII8.0.beta</appsubpath>
+        <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
+	<javaversion>1.5</javaversion>
+    </info>
+    
+    <!-- 
+        The gui preferences indication.
+    -->
+    <guiprefs width="640" height="500" resizable="yes"/>
+    
+    <!-- 
+        The locale section.
+    -->
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+
+    <native type="izpack" name="ShellLink.dll"/>
+
+    <!-- 
+        The resources section.
+        The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
+    -->
+    <resources>
+        <res id="HTMLInfoPanel.info" src="index.htm"/> 
+        <res id="HTMLLicencePanel.licence" src="copyright.htm"/>
+        <res id="InfoPanel.info" src="../../README.txt"/>
+        <res id="TargetPanel.dir.windows" src="TargetPanel.dir.windows"/>
+	<res id="Installer.image" src="../../doc/img/PtolemyIISmall.gif" />
+	<res id="StyleSheet" src="../../doc/default.css" />
+	<res id="shortcutSpec.xml" src="shortcutSpec.xml" /> 
+        <res src="border1.png" id="Installer.image.0"/>
+        <res src="border2.png" id="Installer.image.1"/>
+        <res src="border3.png" id="Installer.image.2"/>
+        <res src="border4.png" id="Installer.image.3"/>
+        <res src="border5.png" id="Installer.image.4"/>
+        <res src="border5.png" id="Installer.image.5"/>
+        <res src="border6.png" id="Installer.image.6"/>
+        <res src="border7.png" id="Installer.image.7"/>
+        <res src="border8.png" id="Installer.image.8"/>
+        <res src="ProcessPanel.Spec.xml" id="ProcessPanel.Spec.xml"/>
+    </resources>
+    
+
+    <!-- 
+        The panels section.
+        We indicate here which panels we want to use. The order will be respected.
+    -->
+    <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="HTMLInfoPanel"/>
+        <panel classname="HTMLLicencePanel"/>
+        <panel classname="TargetPanel"/> 
+        <panel classname="JDKPathPanel"/>
+        <panel classname="PacksPanel"/>
+        <panel classname="SummaryPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ShortcutPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
+    
+    <!-- 
+        The packs section.
+        We specify here our packs.
+    -->
+    <packs>
+        <pack name="Ptiny" required="yes">
+            <description>Ptiny: The common domains: CT, DE, DDF, FSM, HDF, PN, Rendezvous, SDF and SR.
+The Ptiny pack is required. 
+</description>
+aaaaa
+aaaaa
+aaaaa
+aaaaa

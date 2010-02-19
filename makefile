@@ -103,6 +103,7 @@ EXTRA_SRCS = \
 	.classpath.in \
 	.eclipse.epf \
 	README.txt \
+	Vergil.app \
 	copyright.txt \
 	configure.in \
 	configure \
