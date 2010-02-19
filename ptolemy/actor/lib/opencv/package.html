@@ -10,6 +10,53 @@ Actors that use the Open Computer Vision (OpenCV) API.
 See <a
 href="http://ubaa.net/shared/processing/opencv/"><code>http://ubaa.net/shared/processing/opencv/</code></a>
 for details.
+<h3>Installing OpenCV under Linux</h3>
+<ol>
+<li>Find an OpenCV 1.1 RPM by searching the net for <code>opencv rpm</code>.
+You must install OpenCV-1.1.  OpenCV-1.0 and OpenCV-2.0 will not have
+the proper shared libraries.  If OpenCV-1.1 is <b>not</b> installed, then
+the ptII configure will print:
+<pre>
+checking for the OpenCV jar files...
+!!! required library not found : no OpenCV in java.library.path
+Verify that the java.library.path property is correctly set and 'libcxcore.so',
+'libcv.so', 'libcvaux.so', 'libml.so', and 'libhighgui.so' are placed (or linked)
+in one of your system shared libraries folder
+</pre>
+
+<li>Do the install:
+I could not find a 64 bit linux rpm that did not require lots of other
+packages, so I built from source:
+<pre>
+wget http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/1.1pre1/opencv-1.1pre1.tar.gz?use_mirror=iweb
+tar -zxf opencv-1.1pre1.tar.gz
+cd opencv-1.1.0
+./configure
+make
+sudo make install
+</pre>
+<li>Download
+<a href="http://ubaa.net/shared/processing/opencv/download/opencv_01.zip"><code>http://ubaa.net/shared/processing/opencv/download/opencv_01.zip</code></a>
+<pre>
+sudo -i
+cd /tmp
+wget http://ubaa.net/shared/processing/opencv/download/opencv_01.zip
+cd /usr/java
+unzip /tmp/opencv_01.zip
+cp /usr/java/OpenCV/library/OpenCV.jar /usr/java/default/jre/lib/ext/
+cp /usr/java/OpenCV/library/libOpenCV.so /usr/java/default/jre/bin/
+</pre>
+</ol>
+Note that <code>libOpenCV.so</code> is a 32 bit shared library, so to
+recompile for 64 bit:
+<pre>
+cd /usr/java/OpenCV/source/cpp
+javah -classpath ../java -jni hypermedia.video.OpenCV 
+g++ -fPIC -shared OpenCV.cpp -I/usr/local/include/opencv -lc\
+v -o libOpenCV.so
+cp libOpenCV.so /usr/java/default/jre/lib/amd64/
+</pre>
+
 <h3>Installing OpenCV under Mac OS X</h3>
 <b>Note that Under Mac OS 1.5, you <b>must</b> be running Java 1.5
 because Java 1.6 is 64 bit and OpenCV appears to come with only 32 bit
