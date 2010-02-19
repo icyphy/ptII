@@ -524,7 +524,8 @@ DEVEL_PTHALES_PACKAGES = \
 #			ptolemy.domains.fsm.lib
 
 # PTIDES packages
-PTIDES_PACKAGES = \
+PTIDES_PACKAGES =
+DEVEL_PTIDES_PACKAGES = \
 	ptolemy.domains.ptides.kernel \
 	ptolemy.domains.ptides.lib \
 	ptolemy.domains.ptides.lib.luminary
@@ -949,8 +950,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/petrinet/kernel/*.java \
 			../ptolemy/domains/rendezvous/kernel/*.java \
 			../ptolemy/domains/rendezvous/lib/*.java \
-			../ptolemy/domains/ptides/kernel/*.java \
-			../ptolemy/domains/ptides/lib/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
