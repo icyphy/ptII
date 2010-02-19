@@ -88,6 +88,8 @@
             <description>Ptiny: The common domains: CT, DE, DDF, FSM, HDF, PN, Rendezvous, SDF and SR.
 The Ptiny pack is required. 
 </description>
+<!--/MacOSInclude-->
+
             <file src="../../README.txt" targetdir="$INSTALL_PATH"/>
             <file src="../../copyright.txt" targetdir="$INSTALL_PATH"/>
 
@@ -102,6 +104,7 @@ The Ptiny pack is required.
             <file src="../../ptplot.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/ptplot.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
+<!--MacOSInclude-->
 
 	    <!-- Run (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS)
 		 and then copy the section below and use diff:
@@ -249,6 +252,7 @@ The Ptiny pack is required.
         </pack>
         <pack name="Full" required="no">
             <description>All of the domains, HyVisual and VisualSense.</description>
+<!--/MacOSInclude-->
             <file src="../../hyvisual.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/hyvisual.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
@@ -260,10 +264,10 @@ The Ptiny pack is required.
             <file src="../../visualsense.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/visualsense.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
-
             <!-- No Viptos, it does not work, it requires ptinyos -->
             <!-- file src="../../viptos.exe" targetdir="$INSTALL_PATH"/ -->
             <!-- file src="../../doc/img/viptos.ico" targetdir="$INSTALL_PATH/doc/img/"/ -->
+<!--MacOSInclude-->
 
 	    <!-- Update this $PTII/mk/jnlp.mk
 		 # Copy the section below to /tmp/f0, then
@@ -485,11 +489,13 @@ The Ptiny pack is required.
 
         <pack name="Docs" required="no">
             <description>The documentation for Ptiny and the full version of Vergil including user documentation and java documentation.</description>
+<!--/MacOSInclude-->
             <file src="../../designdocv1.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv2.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv3.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
+<!--MacOSInclude-->
             <file src="../../doc/design/ptIIdesign1-intro.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/ptIIdesign2-software.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/ptIIdesign3-domains.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
@@ -499,10 +505,13 @@ The Ptiny pack is required.
 
         <pack name="FullDocs" required="no">
             <description>The documentation for HyVisual and VisualSense, including user documentation and java documentation.</description>
+<!--/MacOSInclude-->
+
             <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../visualsensedoc.exe"
 	          targetdir="$INSTALL_PATH/bin"/>
             <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
+<!--MacOSInclude-->
             <file src="../../doc/design/hyvisual.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/visualsense.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../jar_dist/doc/codeDocHyVisual.jar"
@@ -521,6 +530,7 @@ The Ptiny pack is required.
 	    <!-- Can't just copy the directory, need to spec files -->
 	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
 	    <file src="src/ptII8.0.beta/README.txt" targetdir="$INSTALL_PATH"/>
+	    <!-- file src="src/ptII8.0.beta/Vergil.app" targetdir="$INSTALL_PATH"/ -->
 	    <file src="src/ptII8.0.beta/bin" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.beta/com" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.beta/config" targetdir="$INSTALL_PATH"/>

@@ -110,6 +110,7 @@ PTII_TOPDIR=	.cshrc \
 		.classpath.default \
 		.eclipse.epf \
 		README.txt \
+		Vergil.app \
 		bin \
 		com/JLex \
 		com/jgoodies \
@@ -2429,7 +2430,6 @@ PTSETUP_DEPENDENCIES = \
 	../../jar_dist \
 	../../ptolemy/matlab/ptmatlab.dll
 
-
 # Launch4J
 $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 			jre \
@@ -2491,12 +2491,30 @@ full_jars:
 	@(cd $(PTII); make -s echo_jars JARS=VISUAL_SENSE_ONLY_JNLP_JARS)
 
 ########################################################################
+# Mac installer
+ptsetup_mac: $(PTSETUP)_mac.xml
+$(PTSETUP)_mac.xml: $(PTSETUP).xml
+	awk 'BEGIN {sawMacOSInclude = 1} {if ($$0 ~/MacOSInclude/) { sawMacOSInclude == 1; if ($$0 ~ /\/MacOSInclude/) { sawMacOSInclude = 0; print "aaaaa"}}; if (sawMacOSInclude == 1) {print $$0}}' $< > $@
+setup_mac_jar: $(PTSETUP)_mac.jar
+$(PTSETUP)_mac.jar: $(PTSETUP)_mac.xml 
+	@echo "#"
+	@echo "# Building $@"
+	@echo "# `date`"
+	sh "$(IZPACK_COMPILE)" $<
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
+
+
+########################################################################
 # Copy the jars for the Mac
 
 # The Macintosh application directory
-MACAPP=Ptolemy.app
+MACAPP=Vergil.app
 # The application inside the Macintosh application directory
-MACAPP_APP= $(MACAPP)/Ptolemy
+MACAPP_APP= $(MACAPP)/Vergil
 # The Contents directory
 MACAPP_CONTENTS=$(MACAPP_APP)/Contents
 MACAPP_PLIST=$(MACAPP)/Contents/Info.plist
@@ -2517,7 +2535,7 @@ $(MACAPP_PLIST): $(MACAPP_PLIST).top $(MACAPP_PLIST).middle $(MACAPP_PLIST).bott
 
 $(MACAPP_PLIST).middle: $(PTII)/mk/jnlp.mk
 	(cd $(PTII); make echo_plist_jars JARS=FULL_JNLP_JARS) | \
-	  awk '{ for(i=1;i<NF;i++) { print "       <string>$$APP_PACKAGE/Ptolemy/" $$i "</string>"}}' > $@
+	  awk '{ for(i=1;i<NF;i++) { print "       <string>$$APP_PACKAGE/Vergil/" $$i "</string>"}}' > $@
 
 macapp_clean:
 	rm -rf $(MACAPP_APP)
