@@ -1,5 +1,4 @@
-<!--$Id: releasemgt.htm 570-
-50 2010-01-28 00:24:31Z cxh $ -->
+<!--$Id$ -->
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -319,6 +318,12 @@ or
        <br>select "Remove unused local variables"
     </ul>
    <li>Save the cleanup settings by closing the Cleanup preferences window
+   <li>In the Preferences window, go to <code>Java</code> | <code>Appearance</code> |
+      <code>Members Sort Order</code> and change the order to
+      <pre>
+         Constructors
+         Methods
+      </pre>
 </ol>
 
 <li> Consider using 
@@ -339,12 +344,11 @@ grep error: gcj.out | awk -F: '{for(i=3;i<=NF;i++) {printf("%s ",$i)} printf("\n
 to build Windows installers.  Building the Windows installer is fairly complex,
 below are some things to be aware of
   <menu>
-  <li> The Windows installer includes source files.  These sources
-  come from $PTII/adm/gen-<i>N.M</i>/ptII<i>N.M</i>.src.jar.  Obviously,
-  this jar file should be created on a Windows machine so the end
-  of line characters are Windows end of line characters.
+    <li> The Windows installer includes source files.  These sources
+    come from $PTII/adm/gen-<i>N.M</i>/ptII<i>N.M</i>.src.jar.  Obviously,
+    this jar file should be created on a Windows machine so the end
+    of line characters are Windows end of line characters.
   </menu>
-
 
 <li> Look for files with bad permissions
 <pre>
@@ -384,7 +388,7 @@ set up a new tree for the release tree.
 <li> We build a separate src.tar.gz file under Unix so that the line
 endings are correct. 
 <pre>
-svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII8.0.beta
+svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/branches/rel-8-0-beta-2 ptII8.0.beta
 cd ptII8.0.beta
 setenv PTII `pwd`
 ./configure
