@@ -452,6 +452,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
 	vendors/misc/x10/tjx10p-13/lib/x10.jar \
+	lib/naomi.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
