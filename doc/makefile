@@ -786,7 +786,7 @@ mainVergil.htm: main.htm
 		main.htm > $@
 
 mainVergilPtiny.htm: mainVergil.htm
-	awk -f $(ROOT)/doc/javahtml.awk mainVergil.htm $@ | \
+	awk -f $(ROOT)/doc/javahtml.awk mainVergil.htm | \
 	sed -e 's@completeDemos.htm@completeDemosPtiny.htm@' > $@  
 
 mainVergilPtinyKepler.htm: mainVergilPtiny.htm
