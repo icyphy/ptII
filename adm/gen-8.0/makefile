@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 # Version: $Id$
-# Copyright (c) 1994-2008 The Regents of the University of California.
+# Copyright (c) 1994-2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -185,6 +185,8 @@ release_fortytwo_remote4_test:
 	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
 
 ####
+# Build the release on sisyphus as cxh so that we can copy from
+# both a Linux box and a Windows box to update the web pages.
 release_sisyphus:
 	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar
 
@@ -196,6 +198,14 @@ release_sisyphus_remote4_test:
 
 release_sisyphus_update_ftp:
 	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
+
+
+####
+# Note, you probably don't want to build releases as bldmastr, see above.
+release_bldmastr:
+	make USER=bldmastr PTIIHOME=/home/bldmastr/ptII8.0.beta PTIIADM=/home/bldmastr/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup
+release_bldmastr_update_ftp:
+	$(MAKE) USER=bldmastr PTIIHOME=/home/bldmastr/ptII8.0.beta PTIIADM=/home/bldmastr/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
 
 ####
 release_windows:
