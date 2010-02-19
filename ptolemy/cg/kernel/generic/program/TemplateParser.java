@@ -168,7 +168,7 @@ public class TemplateParser {
         if (alternativeSourceRef == null) {
             sourceRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
                     .getAdapter(source.port.getContainer()))
-                    .getReference(sourcePortChannel);
+                    .getReference(sourcePortChannel, true);
         } else {
             sourceRef = alternativeSourceRef;
         }
@@ -185,7 +185,7 @@ public class TemplateParser {
         }
         String sinkRef = ((NamedProgramCodeGeneratorAdapter) _codeGenerator
                 .getAdapter(sink.port.getContainer())).getReference(
-                sinkPortChannel, true);
+                sinkPortChannel, false);
 
         // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
@@ -847,7 +847,7 @@ public class TemplateParser {
                             // Probably we should remove the $size feature, or at least,
                             // not support it on ports, but instead on tokens.
                             return ((NamedProgramCodeGeneratorAdapter) _codeGenerator
-                                    .getAdapter(_component)).getReference(name)
+                                    .getAdapter(_component)).getReference(name, true)
                                     + ".payload."
                                     + _getCodeGenerator().codeGenType(type)
                                     + "->size";

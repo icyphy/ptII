@@ -136,7 +136,7 @@ public class TypedCompositeActor extends
                         .generateVariableName(portParameter)));
                 // FIXME: The = sign is language specific.
                 tempCode.append(" = ");
-                tempCode.append(getReference(inputPort.getName()));
+                tempCode.append(getReference(inputPort.getName(), false));
                 tempCode.append(";" + _eol);
             }
         }

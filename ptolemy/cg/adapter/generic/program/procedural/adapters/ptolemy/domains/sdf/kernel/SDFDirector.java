@@ -148,10 +148,10 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                         for (int k = 0; k < rate; k++) {
                             code.append(containerAdapter.getReference(name
-                                    + "," + k));
+                                    + "," + k, true));
                             code.append(" = ");
                             code.append(containerAdapter.getReference("@"
-                                    + name + "," + k));
+                                    + name + "," + k, false));
                             code.append(";" + _eol);
                         }
                     }

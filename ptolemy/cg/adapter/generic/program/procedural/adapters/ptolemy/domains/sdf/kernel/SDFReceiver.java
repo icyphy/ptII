@@ -28,6 +28,7 @@
 
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
@@ -131,10 +132,19 @@ public class SDFReceiver extends Receiver {
             // which has nested ModularCodegen.
             forComposite = false;
         }
-        return _getDirectorForReceiver().getReference(port,
-                new String[] { Integer.toString(channel), offset },
-                forComposite, true, containingActorAdapter)
-                + "=" + token + ";" + _eol;
+        String result = null;
+        try {
+            result = _getDirectorForReceiver().getReference(port,
+                    new String[] { Integer.toString(channel), offset },
+                    forComposite, true, containingActorAdapter)
+                    + "=" + token + ";" + _eol;
+        } catch (Exception ex) {
+            result = _getExecutiveDirectorForReceiver().getReference(port,
+                    new String[] { Integer.toString(channel), offset },
+                    forComposite, true, containingActorAdapter)
+                    + "=" + token + ";" + _eol;
+        }
+        return result;
         //        adapter.processCode("$ref(" + port.getName() + "#" + channel
         //                + ")")
         //                + " = " + token + ";" + _eol;
@@ -207,10 +217,24 @@ public class SDFReceiver extends Receiver {
      *  @exception IllegalActionException 
      *  
      *  FIXME: this is not exactly correct.
+     *  This is probably because the information of the receiver is in the director of 
+     *  the container?
      */
     protected StaticSchedulingDirector _getDirectorForReceiver()
             throws IllegalActionException {
         return (StaticSchedulingDirector) super._getDirectorForReceiver();
+    }
+    
+    /** Each receiver is associated with a component of some executive director.
+     *  @return The executive director if the component associated with this receiver.
+     *  @exception IllegalActionException 
+     *  
+     *  FIXME: This is a patch for hierarchical SDF codegen, need to find a better way of doing this.  
+     */
+    protected StaticSchedulingDirector _getExecutiveDirectorForReceiver()
+            throws IllegalActionException {
+        return (StaticSchedulingDirector) getAdapter(((Actor) getComponent().getContainer()
+                .getContainer()).getExecutiveDirector());
     }
 
     //$send(port#channel) ==> port_channel[writeOffset]

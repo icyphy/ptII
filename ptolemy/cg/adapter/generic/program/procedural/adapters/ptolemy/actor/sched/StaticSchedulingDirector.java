@@ -859,7 +859,7 @@ public class StaticSchedulingDirector extends Director {
     /** A class that keeps track of information necessary to 
      *  generate communication code at ports inside a StaticScheduled model.
      */
-    private class PortInfo {
+    protected class PortInfo {
 
         /** Create a PortInfo instance.
          *  @param port The port for which we are doing
@@ -881,7 +881,9 @@ public class StaticSchedulingDirector extends Director {
             if (_bufferSizes.get(channel) == null) {
                 // This should be a special case for doing
                 // codegen for a sub-part of a model.
-                return channel.port.getWidth();
+                //FIXME Why is the buffer size of a port its width? Should it be the rate of the port?
+              return DFUtilities.getRate(channel.port);
+              //return channel.port.getWidth();
             }
 
             return _bufferSizes.get(channel);
@@ -978,6 +980,9 @@ public class StaticSchedulingDirector extends Director {
         public Object getReadOffset(int channelNumber)
                 throws IllegalActionException {
             ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
+            if(_readOffsets.get(channel) == null) {
+                throw new IllegalActionException("Could not find the specified channel in this director");
+            }
             return _readOffsets.get(channel);
 
         }
@@ -991,6 +996,9 @@ public class StaticSchedulingDirector extends Director {
         public Object getWriteOffset(int channelNumber)
                 throws IllegalActionException {
             ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
+            if(_writeOffsets.get(channel) == null) {
+                throw new IllegalActionException("Could not find the specified channel in this director");
+            }
             return _writeOffsets.get(channel);
 
         }

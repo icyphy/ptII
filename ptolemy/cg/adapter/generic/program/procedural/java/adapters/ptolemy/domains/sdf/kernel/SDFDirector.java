@@ -160,7 +160,7 @@ public class SDFDirector
                     }
                     for (int k = 0; k < rate; k++) {
                         code.append(compositeActorAdapter.getReference("@"
-                                + portNameWithChannelNumber + "," + k));
+                                + portNameWithChannelNumber + "," + k, false));
                         /*if (type == PointerToken.POINTER) {
                             code.append(" = (void *) "
                                     + pointerToTokensFromOneChannel + "[" + k
@@ -184,10 +184,10 @@ public class SDFDirector
 
                     for (int k = 0; k < rate; k++) {
                         code.append(compositeActorAdapter.getReference("@"
-                                + name + "," + k));
+                                + name + "," + k, false));
                         code.append(" = " + _eol);
                         code.append(compositeActorAdapter.getReference(name
-                                + "," + k));
+                                + "," + k, false));
                         code.append(";" + _eol);
                     }
                 }
@@ -272,7 +272,7 @@ public class SDFDirector
                 for (int k = 0; k < rate; k++) {
                     String portReference = compositeActorAdapter
                             .getReference("@" + portNameWithChannelNumber + ","
-                                    + k);
+                                    + k, false);
                     /*if (type == PointerToken.POINTER) {
                         code.append(tokensToOneChannel + "[" + k
                                 + "] = " + "(int) " + portReference + ";"
@@ -300,10 +300,10 @@ public class SDFDirector
 
                     for (int k = 0; k < rate; k++) {
                         code.append(CodeStream.indent(compositeActorAdapter
-                                .getReference(name + "," + k)));
+                                .getReference(name + "," + k, false)));
                         code.append(" =" + _eol);
                         code.append(CodeStream.indent(compositeActorAdapter
-                                .getReference("@" + name + "," + k)));
+                                .getReference("@" + name + "," + k, false)));
                         code.append(";" + _eol);
                     }
                 }

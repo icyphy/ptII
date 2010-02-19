@@ -149,13 +149,11 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      * Get the corresponding type in code generation from the given Ptolemy
      * type.
      * @param type The given Ptolemy type.
-     * @return The code generation type.
+     * @return The code generation type in primitive Java types.
      * @exception IllegalActionException If the given ptolemy cannot
      *  be resolved.
-     * @deprecated Why does this method exist? It seems to return C
-     * types (int vs Int, long vs. Long)
      */
-    public String codeGenType2(Type type) {
+    public static String codeGenType2(Type type) {
         // FIXME: why is this necessary?  It seems to return C types (int vs Int, long vs. Long)
         // It is used in ./ptolemy/cg/kernel/generic/program/procedural/java/modular/ModularCodeGenerator.java
         // It is used in ./ptolemy/cg/kernel/generic/program/procedural/java/modular/ModularSDFCodeGenerator.java

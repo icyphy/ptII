@@ -118,7 +118,7 @@ public class CTemplateParser extends ProceduralTemplateParser {
         if (alternativeSourceRef == null) {
             sourceRef = ((NamedProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter(source.port.getContainer()))
-                    .getReference(sourcePortChannel);
+                    .getReference(sourcePortChannel, false);
         } else {
             sourceRef = alternativeSourceRef;
         }

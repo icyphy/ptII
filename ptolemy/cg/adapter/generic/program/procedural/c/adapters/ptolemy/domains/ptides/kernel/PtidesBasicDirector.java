@@ -348,7 +348,7 @@ public class PtidesBasicDirector extends Director {
                 + "#" + source.channelNumber + ", " + offset;
         String sourceRef = ((NamedProgramCodeGeneratorAdapter) (getCodeGenerator()
                 .getAdapter(source.port.getContainer())))
-                .getReference(sourcePortChannel);
+                .getReference(sourcePortChannel, false);
 
         String sinkPortChannel = NamedProgramCodeGeneratorAdapter
                 .generateName(sink.port)

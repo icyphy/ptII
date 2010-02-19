@@ -682,9 +682,9 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
-    final public String getReference(String name) throws IllegalActionException {
+    final public String getReference(String name, boolean executive) throws IllegalActionException {
         boolean isWrite = false;
-        return getReference(name, isWrite);
+        return getReference(name, isWrite, executive);
     }
 
     /** Return the reference to the specified parameter or port of the
@@ -702,20 +702,40 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
-    public String getReference(String name, boolean isWrite)
+    public String getReference(String name, boolean isWrite, boolean executive)
             throws IllegalActionException {
-        try {
-            ptolemy.actor.Director director = ((Actor) _component)
-                    .getDirector();
-            Director directorAdapter = (Director) getAdapter(director);
-            return directorAdapter.getReference(name, isWrite, this);
-        } catch (Exception ex) {
+        if (!executive) {
+            try {
+                ptolemy.actor.Director director = ((Actor) _component)
+                .getDirector();
+                Director directorAdapter = (Director) getAdapter(director);
+                return directorAdapter.getReference(name, isWrite, this);
+            } catch (Exception ex) {
+                //If we can't find it with the local director, try the executive one. 
+                ptolemy.actor.Director director = ((Actor) _component)
+                .getExecutiveDirector();
+                Director directorAdapter = (Director) getAdapter(director);
+                return directorAdapter.getReference(name, isWrite, this);
+            }
+        } else {
             //If we can't find it with the local director, try the executive one. 
             ptolemy.actor.Director director = ((Actor) _component)
                     .getExecutiveDirector();
             Director directorAdapter = (Director) getAdapter(director);
             return directorAdapter.getReference(name, isWrite, this);
         }
+//        try {
+//            ptolemy.actor.Director director = ((Actor) _component)
+//                    .getDirector();
+//            Director directorAdapter = (Director) getAdapter(director);
+//            return directorAdapter.getReference(name, isWrite, this);
+//        } catch (Exception ex) {
+//            //If we can't find it with the local director, try the executive one. 
+//            ptolemy.actor.Director director = ((Actor) _component)
+//                    .getExecutiveDirector();
+//            Director directorAdapter = (Director) getAdapter(director);
+//            return directorAdapter.getReference(name, isWrite, this);
+//        }
     }
 
     /**
