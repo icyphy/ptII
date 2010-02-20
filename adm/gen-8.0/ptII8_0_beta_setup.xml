@@ -106,6 +106,9 @@ The Ptiny pack is required.
 	          targetdir="$INSTALL_PATH/doc/img/"/>
 <!--MacOSInclude-->
 
+	    <!-- The next line gets substituted for the mac by the makefile. -->
+	    <!-- Ptiny.app -->
+
 	    <!-- Run (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS)
 		 and then copy the section below and use diff:
 
@@ -268,6 +271,10 @@ The Ptiny pack is required.
             <!-- file src="../../viptos.exe" targetdir="$INSTALL_PATH"/ -->
             <!-- file src="../../doc/img/viptos.ico" targetdir="$INSTALL_PATH/doc/img/"/ -->
 <!--MacOSInclude-->
+
+	    <!-- The next line gets substituted for the mac by the makefile. -->
+	    <!-- Vergil.app -->
+
 
 	    <!-- Update this $PTII/mk/jnlp.mk
 		 # Copy the section below to /tmp/f0, then
@@ -521,16 +528,19 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/doc"/>
 
         </pack>
+
+<!--/MacOSInclude-->
         <pack name="JRE" required="no">
             <description>Java Runtime Environment (JRE) v1.5.0_14.  This JRE includes JAI, Java 3D, JavaComm,  Joystick,  JMF, Quicktime Java interface and X10.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).</description>
             <file src="jre" targetdir="$INSTALL_PATH"/>
         </pack>
+<!--MacOSInclude-->
+
         <pack name="Sources" required="no">
             <description>The Ptolemy II sources.</description>
 	    <!-- Can't just copy the directory, need to spec files -->
 	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
 	    <file src="src/ptII8.0.beta/README.txt" targetdir="$INSTALL_PATH"/>
-	    <!-- file src="src/ptII8.0.beta/Vergil.app" targetdir="$INSTALL_PATH"/ -->
 	    <file src="src/ptII8.0.beta/bin" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.beta/com" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.beta/config" targetdir="$INSTALL_PATH"/>

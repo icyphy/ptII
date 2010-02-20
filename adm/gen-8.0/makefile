@@ -222,7 +222,7 @@ release_mac:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac_setup:
-	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar setup
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar setup_mac_jar
 
 release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
@@ -2493,8 +2493,12 @@ full_jars:
 ########################################################################
 # Mac installer
 ptsetup_mac: $(PTSETUP)_mac.xml
-$(PTSETUP)_mac.xml: $(PTSETUP).xml
-	awk 'BEGIN {sawMacOSInclude = 1} {if ($$0 ~/MacOSInclude/) { sawMacOSInclude == 1; if ($$0 ~ /\/MacOSInclude/) { sawMacOSInclude = 0; print "aaaaa"}}; if (sawMacOSInclude == 1) {print $$0}}' $< > $@
+$(PTSETUP)_mac.xml: $(PTSETUP).xml makefile macOSInclude.awk
+	awk -f macOSInclude.awk $(PTSETUP).xml | \
+	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>@' \
+	    > $@
+
 setup_mac_jar: $(PTSETUP)_mac.jar
 $(PTSETUP)_mac.jar: $(PTSETUP)_mac.xml 
 	@echo "#"
@@ -2506,37 +2510,3 @@ $(PTSETUP)_mac.jar: $(PTSETUP)_mac.xml
 	else \
 		ls -l $@; \
 	fi
-
-
-########################################################################
-# Copy the jars for the Mac
-
-# The Macintosh application directory
-MACAPP=Vergil.app
-# The application inside the Macintosh application directory
-MACAPP_APP= $(MACAPP)/Vergil
-# The Contents directory
-MACAPP_CONTENTS=$(MACAPP_APP)/Contents
-MACAPP_PLIST=$(MACAPP)/Contents/Info.plist
-
-macapp_app: $(MACAPP_APP)
-$(MACAPP_APP):
-	@if [ ! -d  $(MACAPP_APP) ]; then \
-	    echo "Creating $(MACAPP_APP)"; \
-	    mkdir $(MACAPP_APP); \
-	fi
-	(cd $(PTII); tar -cf - `make echo_plist_jars JARS=FULL_JNLP_JARS`) | \
-	       (cd $(MACAPP_APP); tar -xvf -)
-
-# Create Info.plist by creating the middle part that has the classpath
-macapp_plist:$(MACAPP_PLIST)
-$(MACAPP_PLIST): $(MACAPP_PLIST).top $(MACAPP_PLIST).middle $(MACAPP_PLIST).bottom
-	cat $^ > $@
-
-$(MACAPP_PLIST).middle: $(PTII)/mk/jnlp.mk
-	(cd $(PTII); make echo_plist_jars JARS=FULL_JNLP_JARS) | \
-	  awk '{ for(i=1;i<NF;i++) { print "       <string>$$APP_PACKAGE/Vergil/" $$i "</string>"}}' > $@
-
-macapp_clean:
-	rm -rf $(MACAPP_APP)
-	rm -f $(MACAPP_PLIST).middle $(MACAPP_PLIST)

@@ -1326,11 +1326,11 @@ if [ "$error" = "none" ]; then
       <string>1.5</string>
       <key>ClassPath</key>
       <array>
-	<string>\$APP_PACKAGE/../..</string>
+       <string>\$APP_PACKAGE/../..</string>
 EOF
 
 	(cd $PTII; make echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
-	  awk '{ for(i=1;i<NF;i++) { print "       <string>$APP_PACKAGE/../.." $i "</string>"}}' >> $MACAPP_PLIST
+	  awk '{ for(i=1;i<NF;i++) { print "       <string>$APP_PACKAGE/../../" $i "</string>"}}' >> $MACAPP_PLIST
 	cat >>$MACAPP_PLIST <<EOF2
       </array>
       <key>VMOptions</key>
@@ -1344,7 +1344,7 @@ EOF
         <key>APP_PACKAGE</key>
         <string>\$APP_PACKAGE</string>
         <key>ptolemy.ptII.dir</key>
-        <string>$PTII</string>
+        <string>\$APP_PACKAGE/../..</string>
       </dict>
     </dict>
   </dict>
