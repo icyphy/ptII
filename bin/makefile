@@ -124,7 +124,7 @@ OPTIONAL_FILES = $(SHELL_FILES) \
 
 
 # Files to be removed by make clean
-KRUFT = $(SHELL_FILES) $(BAT_FILES)
+KRUFT = $(SHELL_FILES) $(BAT_FILES) $(MAC_APPS) makeapp makebat 
 
 all: $(SHELL_FILES) $(BAT_FILES) $(MAC_APPS)
 	chmod a+x $(EXTRA_EXECUTABLE_SRCS) 

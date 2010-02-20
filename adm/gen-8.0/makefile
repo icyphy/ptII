@@ -219,13 +219,14 @@ release_windows_setup:
 
 ####
 release_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup_mac_jar
 
 release_mac_setup:
 	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar setup_mac_jar
 
 release_mac2:
-	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar src.jar
+
 
 ####
 release_nightly:
@@ -901,9 +902,14 @@ untar:
 	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
 	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
-# Run this to copy the .exe
+
+# Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
 	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip bennett:$(PTII_FTP)
+
+PTSETUP_MAC=ptII$(VERSION).setup.mac
+update_mac: $(PTSETUP_MAC).jar
+	scp -p $(PTSETUP_MAC).jar bennett:$(PTII_FTP)
 
 ptII$(WINDOWS_VERSION)_src.zip:
 	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
@@ -2366,7 +2372,7 @@ $(PTII)/vendors/izpack:
 		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
 		$(TAR) -zxf $(IZPACK_TAR)
 
-PTSETUP=ptII$(WINDOWS_VERSION)_setup
+PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # IzPack installer
 setup_jar: $(PTSETUP).jar
 $(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil
@@ -2492,15 +2498,17 @@ full_jars:
 
 ########################################################################
 # Mac installer
-ptsetup_mac: $(PTSETUP)_mac.xml
-$(PTSETUP)_mac.xml: $(PTSETUP).xml makefile macOSInclude.awk
+ptsetup_mac: $(PTSETUP_MAC).xml
+$(PTSETUP_MAC).xml: $(PTSETUP).xml makefile macOSInclude.awk
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
 	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/>@' \
 	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>@' \
+	    -e 's@ptmatlab.dll@libptmatlab.dylib@' \
+	    -e 's@os="windows"@os="mac"@' \
 	    > $@
 
-setup_mac_jar: $(PTSETUP)_mac.jar
-$(PTSETUP)_mac.jar: $(PTSETUP)_mac.xml 
+setup_mac_jar: $(PTSETUP_MAC).jar
+$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist
 	@echo "#"
 	@echo "# Building $@"
 	@echo "# `date`"

@@ -1289,7 +1289,7 @@ if [ "$error" = "none" ]; then
 	    
 	    if [ ! -d $MACAPP_APP ]; then
 		mkdir $MACAPP_APP
-		(cd $MACAPP_APP; cp -r ../macContents/Contents .; find . -name ".svn" -exec rm {} \;)
+		(cd $MACAPP_APP; cp -r ../macContents/Contents .; find . -name ".svn" -exec rm -rf {} \;)
 	    fi
 		
 	    cat >$MACAPP_PLIST <<EOF

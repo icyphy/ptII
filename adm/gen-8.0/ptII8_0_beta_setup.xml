@@ -88,11 +88,11 @@
             <description>Ptiny: The common domains: CT, DE, DDF, FSM, HDF, PN, Rendezvous, SDF and SR.
 The Ptiny pack is required. 
 </description>
-<!--/MacOSInclude-->
 
             <file src="../../README.txt" targetdir="$INSTALL_PATH"/>
             <file src="../../copyright.txt" targetdir="$INSTALL_PATH"/>
 
+<!--/MacOSInclude-->
             <file src="../../ptiny.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/ptiny.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
