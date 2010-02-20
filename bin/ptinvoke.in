@@ -669,6 +669,32 @@ quiet=1
 commandname=`basename "$0"`
 # check to see if we are building bat files.
 case $commandname in
+    makeapp)
+	help="Make a Mac OS X .app file \
+             Usage: $0 appname config argument \
+             For example:
+             $0 Vergil.app FULL -full"
+
+	if [ $# -lt 3 ]; then
+	    echo $help
+	    exit 2
+        fi	    
+	if [ "$1" = "-q" ]; then
+	    # Do not echo the command. Useful for batch mode (repeated
+	    # test runs) to reduce stdout clutter
+	    quiet=1
+	    shift
+	    continue
+	fi
+	makeapp="1"
+	# MACAPP_APP should be Vergil.app or Ptiny.app etc.
+	MACAPP_APP=$1
+	# MACAPP_CONFIG should be FULL or PTINY etc.  See $PTII/mk/jnlp.mk
+	MACAPP_CONFIG=$2
+	# MACAPP_ARGUMENT should be -full or -ptiny etc
+	MACAPP_ARGUMENT=$3
+	shift; shift; shift
+    ;;
     makebat)
 	if [ "$1" = "-q" ]; then
 	    # Do not echo the command. Useful for batch mode (repeated
@@ -1255,7 +1281,79 @@ if [ "$error" = "none" ]; then
 	echo "$makebatstr %params%" >> $commandname.bat
 	echo "pause" >> $commandname.bat
     else
-	eval exec $str
+	if [ "$makeapp" = "1" ]; then   
+	    # Create a Mac OS X .app file
+	    PTVERSION=8.0.beta
+	    MACAPP_BASE=`basename $MACAPP_APP .app`
+	    MACAPP_PLIST=$MACAPP_APP/Contents/Info.plist 
+	    
+	    if [ ! -d $MACAPP_APP ]; then
+		mkdir $MACAPP_APP
+		(cd $MACAPP_APP; cp -r ../macContents/Contents .; find . -name ".svn" -exec rm {} \;)
+	    fi
+		
+	    cat >$MACAPP_PLIST <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+                       "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>CFBundleName</key>
+    <string>Ptolemy</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$PTVERSION</string>
+    <key>CFBundleGetInfoString</key>
+    <string>$PTVERSION</string>
+    <key>CFBundleAllowMixedLocalizations</key>
+    <string>false</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleExecutable</key>
+    <string>JavaApplicationStub</string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleSignature</key>
+    <string>PTOL</string>
+    <key>CFBundleIconFile</key>
+    <string>ptolemy.icns</string>
+    <key>Java</key>
+    <dict>
+      <key>MainClass</key>
+      <string>ptolemy.vergil.VergilApplication</string>
+      <key>JVMVersion</key>
+      <string>1.5</string>
+      <key>ClassPath</key>
+      <array>
+	<string>\$APP_PACKAGE/../..</string>
+EOF
+
+	(cd $PTII; make echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
+	  awk '{ for(i=1;i<NF;i++) { print "       <string>$APP_PACKAGE/../.." $i "</string>"}}' >> $MACAPP_PLIST
+	cat >>$MACAPP_PLIST <<EOF2
+      </array>
+      <key>VMOptions</key>
+      <string>-Xmx512m</string>
+      <key>Arguments</key>
+      <string>$MACAPP_ARGUMENT</string>
+      <key>Properties</key>
+      <dict>
+        <key>java.library.path</key>
+        <string>\$APP_PACKAGE/../lib</string>
+        <key>APP_PACKAGE</key>
+        <string>\$APP_PACKAGE</string>
+        <key>ptolemy.ptII.dir</key>
+        <string>$PTII</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>
+EOF2
+
+	else    
+	    eval exec $str
+        fi	    
     fi
 else
     if [ "$makebat" = "1" ]; then   
