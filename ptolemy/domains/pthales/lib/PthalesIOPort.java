@@ -77,7 +77,7 @@ public class PthalesIOPort {
     /** The name of the base parameter. */
     public static String BASE = "base";
 
-    /** Fixed variable (for compatibility ?) */
+    /** Fixed variable (for compatibility ?). */
     public static Integer ONE = new Integer(1);
 
     /** The name of the pattern parameter. */
@@ -293,7 +293,7 @@ public class PthalesIOPort {
         return result;
     }
 
-    /** Returns tiling of external loops iterations
+    /** Returns tiling of external loops iterations.
      * @param port associated port
      * @param nb the number of used tilings (external ones)
      * @return tiling map 
@@ -519,7 +519,8 @@ public class PthalesIOPort {
         }
     }
 
-    /** Modify th pattern of the specified port with one dimension (for propagate)
+    /** Modify the pattern of the specified port with one dimension
+     * (for propagate).
      * @param port associated port
      * @param dim dimension name
      * @param dimSize dimension size
@@ -542,7 +543,8 @@ public class PthalesIOPort {
         }
     }
 
-    /** Modify th pattern of the specified port with dimensions (after propagate)
+    /** Modify th pattern of the specified port with dimensions (after
+     * propagate).
      * @param port associated port
      * @param dims dimension names
      * @param dimSizes dimension sizes
@@ -573,7 +575,7 @@ public class PthalesIOPort {
     }
 
     /** Propagate the header through application relations
-     * to update informations
+     * to update information.
      * @param portIn port used in input for propages
      * @param dims dimension names 
      * @param sizes dimension sizes
@@ -653,7 +655,7 @@ public class PthalesIOPort {
         }
     }
 
-    /** Update actor iterations according to pattern and tiling informations 
+    /** Update actor iterations according to pattern and tiling informations.
      * @param portIn port used in input for propages
      * @param sizes sizes used to compute iterations
      */

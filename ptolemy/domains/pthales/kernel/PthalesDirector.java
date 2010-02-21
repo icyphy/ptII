@@ -186,7 +186,7 @@ public class PthalesDirector extends SDFDirector {
 
 
     /**
-     * Constructs a PthalesDirector object, using PthalesScheduler
+     * Constructs a PthalesDirector object, using PthalesScheduler.
      *
      * @param container Container of the director.
      * @param name Name of this director.

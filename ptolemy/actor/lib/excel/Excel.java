@@ -110,9 +110,6 @@ public class Excel extends TypedAtomicActor {
      }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Read the contents of the array and then call JNI function.
@@ -257,11 +254,14 @@ public class Excel extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The number of iterations, used for the Excel file name. */
     protected int _iterationCount = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Initialize the actor. */
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {
 //super._initialize();

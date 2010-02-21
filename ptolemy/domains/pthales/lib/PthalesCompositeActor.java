@@ -162,7 +162,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     ////                     public method                         ////
 
     /** Compute iteration number of the actor,
-     * which is the number of times internal entities are called 
+     * which is the number of times internal entities are called. 
      * and set corresponding attribute
      * @param portIn the input port
      * @param sizes dimensions sizes of the input
@@ -244,9 +244,11 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////
     ////              protected variables              ////
 
-    /** Set specific attributes common to all Pthales composite actors
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+    /** Set specific attributes common to all Pthales composite actors.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {

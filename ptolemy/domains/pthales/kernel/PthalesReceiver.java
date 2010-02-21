@@ -301,6 +301,12 @@ public class PthalesReceiver extends SDFReceiver {
         _posOut = 0;
     }
 
+    /**
+     * Set the external buffer for a port and actor.
+     * @param actor The actor.
+     * @param port The port.
+     * @param buffer The external buffer.
+     */
     public void setExternalBuffer(Actor actor, IOPort port, Token[] buffer) {
         if (_buffer == null) {
             _buffer = buffer;
