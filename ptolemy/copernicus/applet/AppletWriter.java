@@ -1721,10 +1721,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             try {
                 fileInputStream = new FileInputStream(
                         keystorePropertiesFileName);
+		System.out.println("Reading properties file: "
+				   + keystorePropertiesFileName);
                 properties.load(fileInputStream);
+		System.out.println("Properties: " + properties);
                 String property = null;
                 if ((property = properties.getProperty("keystoreFileName")) != null) {
                     keystoreFileName = property;
+		    System.out.println("keystoreFileName: " + keystoreFileName);
                 }
                 storePassword = properties.getProperty("storePassword");
                 keyPassword = properties.getProperty("keyPassword");

@@ -133,10 +133,12 @@ PTII_TOPDIR=	.cshrc \
 		thales \
 		util \
 		vergil.jnlp.in \
+		vergilBCVTB.jnlp.in \
 		vergilDSP.jnlp.in \
 		vergilHyVisual.jnlp.in \
 		vergilPtiny.jnlp.in \
 		vergilPtinySandbox.jnlp.in \
+		vergilSpace.jnlp.in \
 		vergilVisualSense.jnlp.in
 
 # Location of the SVN Repository
@@ -189,16 +191,16 @@ release_fortytwo_remote4_test:
 # Build the release on sisyphus as cxh so that we can copy from
 # both a Linux box and a Windows box to update the web pages.
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar
 
 release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
 
 release_sisyphus_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar remote4_test
 
 release_sisyphus_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
+	$(MAKE) USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
 
 
 ####
@@ -2518,3 +2520,46 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist
 	else \
 		ls -l $@; \
 	fi
+
+######################################################################
+# Web Start Applets
+#
+JNLPDIST=test/ptII$(VERSION)
+jnlpdist: $(JNLPDIST)/signed
+$(JNLPDIST): $(GENLOG_DIR)
+	$(MAKE)	release_sisyphus_remote4_test
+
+
+# Directory that should be in vendors so that we build the jar files
+$(JNLPDIST)/vendors/misc/x10/tjx10p-13/lib/x10.jar: $(JNLPDIST)
+	# Build joystick, rxtx, x10, tjx10
+	if [ ! -f $@ ]; then \
+		echo "Reconfiguring with all optional packages"; \
+		(cd $(JNLPDIST); rm -rf vendors; ln -s $(PTII)/vendors .; PTII=`pwd`;./configure;$(MAKE) PTII=`pwd` install); \
+	fi
+
+$(JNLPDIST)/signed: $(JNLPDIST)/vendors/misc/x10/tjx10p-13/lib/x10.jar
+	if [ ! -d $@ ]; then \
+		echo "Creating $@"; \
+		cp ptKeystore.properties $(JNLPDIST); \
+		(cd $(JNLPDIST); $(MAKE) PTII=`pwd` KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass $(PASSWORD)" KEYPASSWORD="-keypass $(PASSWORD)" jnlp_dist); \
+	fi
+
+
+$(JNLPDIST)/ptolemy/copernicus/applet/makeJNLPs: $(JNLPDIST)/signed
+	(cd $(JNLPDIST); export PTII=`pwd`; cd ptolemy/copernicus/applet; ./updateDemos > makeJNLPs)
+
+# One of the jnlp files to be created.
+TARGET_JNLP = $(JNLPDIST)/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.jnlp
+$(TARGET_JNLP): $(JNLPDIST)/ptolemy/copernicus/applet/makeJNLPs
+	(cd $(JNLPDIST); export PTII=`pwd`; cd ptolemy/copernicus/applet; sh makeJNLPs)
+
+JNLPS_TAR = jnlps.tar
+$(JNLPS_TAR): $(TARGET_JNLP)
+	(cd $(JNLPDIST)/doc; mv deployJava.js deployJavaApplet.js; \
+	   cp deployJavaJNLP.js deployJava.js)
+	(cd $(JNLPDIST); tar -cf ../../$(JNLPS_TAR) `find . -name "*.jnlp"` doc/deployJava.js doc/deployJavaApplet.js)
+
+updateJNLPs: $(JNLPS_TAR)
+	scp $(JNLPS_TAR) bennett:$(PTII_FTP)
+	ssh bennett "cd $(PTII_FTP)/ptII$(VERSION); /usr/local/bin/tar -xf ../$(JNLPS_TAR)"

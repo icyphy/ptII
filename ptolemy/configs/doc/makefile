@@ -151,6 +151,7 @@ check_tests:
 listDemos:
 	@ls `grep .xml completeDemos.htm | grep -v "<!--" | $(GAWK) -F \" '{print $$2}'`
 
+newDemos:
 	#@ls `grep .xml completeDemos.htm | grep -i "New in Ptolemy II 8.0" | grep -v "<!--" | $(GAWK) -F \" '{print $$2}'`
 
 # Open the demos 10 at a time, print statistics and close.
