@@ -223,14 +223,14 @@ public final class ArrayFIFOQueue implements Cloneable {
                             + offset + " in the FIFOQueue" + message);
             	}
             } else {
-                String message = ".";
+                String message = "";
 
                 if (_container != null) {
                     message = " contained by " + _container.getFullName();
                 }
 
                 throw new NoSuchElementException("No object at offset "
-                        + offset + " in the FIFOQueue" + message + ". No history.");
+                        + offset + " in the FIFOQueue" + message + " has no history.");
             }
         }
 
