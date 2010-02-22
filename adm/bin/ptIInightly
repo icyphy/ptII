@@ -21,5 +21,7 @@ chmod g-w $ADMDIR/test
 /usr/local/etc/rotate_log -L $ADMDIR/test -n 20 ptIInightly.txt
 
 # Build the tar file, run the tests, when done, call ptIInightly-mail
-gmake -k nightly EMAILTO=$1 >$ADMDIR/test/ptIInightly.txt 2>&1
+#gmake -k nightly EMAILTO=$1 >$ADMDIR/test/ptIInightly.txt 2>&1
+# Strip out the jnlp passwds
+gmake -k nightly EMAILTO=$1 2>&1 | sed -e 's/-storepass.*$/-storepass substituted.by.ptIInightly/' -e 's/-keypass.*$/-keypass substituted.by.ptIInightly/' >$ADMDIR/test/ptIInightly.txt 
 
