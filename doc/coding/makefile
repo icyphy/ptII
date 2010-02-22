@@ -53,6 +53,7 @@ EXTRA_SRCS = \
 	debugging.htm \
 	develsetup.htm \
 	eclipse.htm \
+	eclipse_index.htm \
 	index.htm \
 	installers.htm \
 	javalinks.htm \
@@ -64,6 +65,7 @@ EXTRA_SRCS = \
 	reviews.htm \
 	style.css \
 	style.htm \
+	style_index.htm \
 	style.pdf \
 	sunlicense.htm \
 	svn-config-auto-props.txt \

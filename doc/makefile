@@ -88,7 +88,9 @@ UI_FILES_TO_BE_JARED = \
 	expressionsa14_new.htm \
 	openInstanceHelp.htm \
 	sandbox.htm \
+	release.htm \
 	webStartHelp.htm \
+	webStartHelp_index.htm \
 	whatsnew.htm \
 	whatsnewVergil.htm
 
@@ -113,6 +115,7 @@ EXTRA_SRCS = \
 	hyVisualHtml.awk \
 	index.htm \
 	install.htm \
+	install_installo.htm \
 	installJNLP.htm \
 	javahtml.awk \
 	limitations.htm \

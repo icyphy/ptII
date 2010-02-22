@@ -11,8 +11,7 @@
 These instructions assume you are using Eclipse Galileo under 
 Windows or Mac OS X.
 Other ways of setting up and building Ptolemy II are described on the
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm">
-Ptolemy II install page</a>. 
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#in_browser" target="_top">Ptolemy II install page</a>. 
 <p>Contents of this page:
 <menu>
 <li><a href="#Installing">Install Eclipse</a>
@@ -35,7 +34,7 @@ Other local pages:
 <ol>
 <li>
 Download the latest version of Eclipse from
-<a href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a>.
+<a href="http://www.eclipse.org#in_browser" target="_top">http://www.eclipse.org</a>.
  <br>In July, 2009, we chose
  <B>Eclipse for RCP/Plug-in Developers</B>, which is 187Mb.
 The <B>Eclipse for RCP/Plug-in Developers</B> version includes the
@@ -45,7 +44,7 @@ restore their old state.  If the version of Eclipse that you install
 does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
 <li> (<i>Mac OS X</i>):
-See <a href="http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html"><code>http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html</a></code> about choosing between "Mac OS X (Carbon)", "Mac OS X (Cocao)" and "Mac OS X 64 bit (Cocao)".
+See <a href="http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html#in_browser" target="_top"><code>http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html</a></code> about choosing between "Mac OS X (Carbon)", "Mac OS X (Cocao)" and "Mac OS X 64 bit (Cocao)".
   
 <br>Most Mac users will download "Mac OS X (Cacao)" in to <code>/Applications</code>, which will create <code>/Applications/eclipse/Eclipse.app</code>.
 
@@ -82,7 +81,7 @@ so a few changes are necessary.
 <li>(<i>Mac OS X</i>):
   There is usuall no need to set the memory size for Eclipse under Mac OS X.  By default, it is set to 512 megabytes.  
   For details about setting the memory size, see:
-  <a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.user/tasks/running_eclipse.htm">Eclipse Workbench User Guide/Tasks/Running Eclipse</a>.
+  <a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.user/tasks/running_eclipse.htm#in_browser" target="_top">Eclipse Workbench User Guide/Tasks/Running Eclipse</a>.
   
 <li>(<i>Windows</i>): 
   There is usually no need to set the memory size for Eclipse.  By default, it is set to 512 megabytes in the
@@ -96,7 +95,7 @@ and selecting <code>Create Shortcut</code>.
 select <code>Pin to Start Menu</code>
 <p>
 <li>Eclipse requires some customization to build Ptolemy II
-and to keep the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/style.htm" target="_top">Ptolemy II coding style</a>.
+and to keep the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/style.htm#in_browser" target="_top">Ptolemy II coding style</a>.
 In the steps below, we
 outline changes to be made in the Eclipse Preferences window.
 <br> Under <i>Windows</i> the Eclipse Preferences window
@@ -190,7 +189,7 @@ under Mac OS X:
   Java 1.6.0_13.
 <li>Eclipse 3.4.0 Java Projects that include Eclipse Plug-ins don't work
   under either Java 1.5.0_13 or Java 1.6.0_05 on the Mac
-  For details, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac"><code>http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac</code></a>.
+  For details, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac#in_browser" target="_top"><code>http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac</code></a>.
 </menu>
 
 <li> Eclipse has very good compiler error/warning.  One of the
@@ -275,7 +274,7 @@ and don't want to update regularly
 <ol>
 
 <li> Download a ptII source tree from
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest</CODE></a>
 
 <li>Configure the .classpath and .project files. See <a href="#.classpath.default"><CODE>.classpath.default</CODE></a>. below.
 <li>Create the ptII project
@@ -294,9 +293,9 @@ and browse to the PTII directory. Finish.
 <ol>
 <li>Install Subversion:
    <ul>
-   <li> <a href="http://tortoisesvn.tigris.org/" target="_top">Tortoise SVN</a> - Windows GUI Client
+   <li> <a href="http://tortoisesvn.tigris.org/#in_browser" target="_top">Tortoise SVN</a> - Windows GUI Client
    <br> <i>If you are not installing Subversive, then choose TortoiseSVN</i>
-   <li> <a href="http://www.cygwin.com" target="_top">Cygwin</a> - Windows command line client
+   <li> <a href="http://www.cygwin.com/#in_browser" target="_top">Cygwin</a> - Windows command line client
    <br> If you are more comfortable with a command line, then choose Cygwin. Make sure that you also install Cygwin's Subversion package.
 <li> To check out the ptII svn repository with <b>read-only</b> access:
 <pre>
@@ -305,7 +304,7 @@ svn co svn://source.eecs.berkeley.edu/chess/ptII/trunk ptII
  <br><B>Note:</B> Most users will select <CODE>svn://</CODE> because
 they will be accessing the tree with <B>read-only</B> Subversion access.
 <br>If you have an 
-<a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
+<a href="http://chess.eecs.berkeley.edu/ptexternal/#in_browser" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
 read/write access:
 <pre>
 svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
@@ -331,15 +330,15 @@ and browse to the PTII directory. Finish.
 <h3>OR</h3>
 
 <h3>3. Setting up Eclipse for use with Subversion: <a name="Subversive">Installing Subversive</a></h3>
-<p>There are at least two Subversion plugins for Eclipse, Subversive and Subclipse.  Either will work, for a brief comparison, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#SubclipseVsSubversion">Subclipse vs. Subversion</a>.  The instructions below are for Subversive. To use Subclipse, see <a href="https://kepler-project.org/developers/reference/kepler-and-eclipse#7-installing-subversion-svn">Installing Subversion (SVN) into Eclipse</a>.
+<p>There are at least two Subversion plugins for Eclipse, Subversive and Subclipse.  Either will work, for a brief comparison, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#SubclipseVsSubversion" target="_top">Subclipse vs. Subversion</a>.  The instructions below are for Subversive. To use Subclipse, see <a href="https://kepler-project.org/developers/reference/kepler-and-eclipse#7-installing-subversion-svn" target="_top">Installing Subversion (SVN) into Eclipse</a>.
 
-<p>The <a href="http://www.eclipse.org/subversive/downloads.php" target="_top">Subversive</a>
+<p>The <a href="http://www.eclipse.org/subversive/downloads.php#in_browser" target="_top">Subversive</a>
 Eclipse plug-in adds Subversion to Eclipse.  After installation,
 you can use either Eclipse to manage your project, or the <code>svn</code>
 from the command line.
 
 <p>
-Follow the <a href="http://www.eclipse.org/subversive/downloads.php" target="_top">Subversive installation instructions</a> or these instructions below
+Follow the <a href="http://www.eclipse.org/subversive/downloads.php#in_browser" target="_top">Subversive installation instructions</a> or these instructions below
 <ol>
 <li> To download Subversive, in Eclipse, follow these menus
 <br><i>Mac OS X</i>:
@@ -613,8 +612,8 @@ abs-menulinks = svn:eol-style=native;svn:keywords=Author Date Id Revision
 </pre>
 
 
-<p>See <a href="http://svn.haxx.se/users/archive-2003-12/0063.shtml" _target="_top">Subversion Users: Re: Setting svn:eol-style</a>
-and <a href="http://maven.apache.org/developers/svn-eol-style.txt"><code>http://maven.apache.org/developers/svn-eol-style.txt</code></a>
+<p>See <a href="http://svn.haxx.se/users/archive-2003-12/0063.shtml#in_browser" _target="_top">Subversion Users: Re: Setting svn:eol-style</a>
+and <a href="http://maven.apache.org/developers/svn-eol-style.txt#in_browser" target="_top"><code>http://maven.apache.org/developers/svn-eol-style.txt</code></a>
 
 <p>BTW - To set the style on already checked in file, run:
 <pre>
@@ -675,7 +674,7 @@ svn://source.eecs.berkeley.edu/chess/ptII
 <CODE>svn://</CODE> because
 they will be accessing the tree with <B>read-only</B> Subversion access.
 <br>If you have an 
-<a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
+<a href="http://chess.eecs.berkeley.edu/ptexternal/#in_browser" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
 read/write access:
 <pre>
 svn+ssh://source.eecs.berkeley.edu/home/svn/chess/ptII
@@ -690,7 +689,7 @@ username and password. This typically happens more than once since in case the s
 
 <li>If you get a "Certificate Problem" window, then select
 <code>Trust</code> or <code>Trust Always</code>.  For details and
-a workaround, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnCertficateIsNotIssuedByATrustedAuthority">Certificate is not issued by a trusted authority</a>.
+a workaround, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnCertficateIsNotIssuedByATrustedAuthority" target="_top">Certificate is not issued by a trusted authority</a>.
 
 <li>In the SVN Repository view, right click on <code>trunk</code> and select <code>Find/Check out As</code>
 
@@ -795,7 +794,7 @@ You will get many warnings that you can ignore, but hopefully no errors.
 </ol>
 
 The Ptolemy II welcome window should appear.
- <p>You may now wish to read the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/design/usingVergil/index.htm">Using Vergil</a>
+ <p>You may now wish to read the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/design/usingVergil/index.htm#in_browser" target="_top">Using Vergil</a>
 tutorial.
 
 <h2><a name="simpleDebug">Simple Debugging Session</a></h2>
@@ -827,8 +826,7 @@ require execution of a script called "configure" in the Ptolemy II
 home directory, which in turn requires (on Windows) installation of
 Cygwin, a package that offers Unix-like facilities within Windows.
 You can find instructions for installing Cygwin at
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm">
-http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</a>.
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm#in_browser" target="_top">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</a>.
 <p>
 The procedure below will modify the .classpath file that is
 provided in the version control repository to customize it for
@@ -961,7 +959,7 @@ a problem in your .metadata file.
  <p>Basically, when eclipse starts up, it might try to update
 <a name="metadata"><CODE>H:/workspace/.metadata</CODE></a>
 .  The solution is covered in
-<a href="http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm" target="_top"><CODE>http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm</CODE></a>:
+<a href="http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm#in_browser" target="_top"><CODE>http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm</CODE></a>:
 
 The way I figured this out was by running Norton Antivirus and
 doing View -&gt; File System Realtime Scan Statistics and then I noticed 
