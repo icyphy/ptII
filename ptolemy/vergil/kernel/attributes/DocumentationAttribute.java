@@ -73,10 +73,14 @@ import ptolemy.util.StringUtilities;
  _documentation FileParameter will be on the container the
  specification for the file containing the documentation can be
  modified.
- </p><p>
+ </p>
+ <p>Note that if a DocumentationAttribute refers to a pdf file, then it
+ may not be possible to view the pdf file in an applet because
+ {@link ptolemy.actor.gui.BrowserLauncher} uses reflection to look up
+ classes.  The workaround is to use
+ {@link ptolemy.vergil.pdfrenderer.PDFRenderer}.
 
- @deprecated DocumentationAttribute provides no UI way to edit the URL, one must edit the MoML file by hand. Use ptolemy.vergil.basic.DocAttribute instead of
-using DocumentationAttribute
+ @deprecated DocumentationAttribute provides no UI way to edit the URL, one must edit the MoML file by hand. Use ptolemy.vergil.basic.DocAttribute or ptolemy.vergil.pdfrenderer.PDFRenderer instead of using DocumentationAttribute.
  @author Rowland R Johnson
  @version $Id$
  @since Ptolemy II 4.0
