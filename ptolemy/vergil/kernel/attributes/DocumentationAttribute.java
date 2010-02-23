@@ -74,13 +74,13 @@ import ptolemy.util.StringUtilities;
  specification for the file containing the documentation can be
  modified.
  </p><p>
- The DocumentationAttribute attribute can be found under more Utilities -&gt;
- Decorative -&gt; Documentation.</p>
 
- @deprecated Use DocAttribute instead.
+ @deprecated DocumentationAttribute provides no UI way to edit the URL, one must edit the MoML file by hand. Use ptolemy.vergil.basic.DocAttribute instead of
+using DocumentationAttribute
  @author Rowland R Johnson
  @version $Id$
  @since Ptolemy II 4.0
+ @see ptolemy.vergil.basic.DocAttribute
  @Pt.ProposedRating Red (rowland)
  @Pt.AcceptedRating Red (rowland)
  */
