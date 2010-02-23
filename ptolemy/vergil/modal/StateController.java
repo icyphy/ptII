@@ -47,6 +47,7 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AttributeController;
@@ -232,11 +233,16 @@ public class StateController extends AttributeController {
         public LookInsideAction() {
             super("Look Inside");
 
-            // For some inexplicable reason, the I key doesn't work here.
-            // So we use L.
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+            // If we are in an applet, so Control-L or Command-L will
+            // be caught by the browser as "Open Location", so we don't
+            // supply Control-L or Command-L as a shortcut under applets.
+            if (!StringUtilities.inApplet()) {
+                // For some inexplicable reason, the I key doesn't work here.
+                // So we use L.
+                putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                                KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                                .getMenuShortcutKeyMask()));
+            }
         }
 
         public void actionPerformed(ActionEvent e) {
