@@ -22,10 +22,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 82.5]">
         </property>
     </property>
-    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 87.5]">
-        </property>
-    </property>
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/ct/demo/SinuBouncingBall/sinu-ball.pdf">
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="0.9">
@@ -78,6 +74,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Haiyang Zheng, Robert D. Gregg, Aaron D. Ames&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 475.0]">
+        </property>
+    </property>
+    <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/demo/SinuBouncingBall/sinu-ball.pdf">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 20.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">

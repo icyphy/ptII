@@ -24,10 +24,6 @@
     </property>
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/ct/demo/CartPendulum/cartpendulum.pdf">
     </property>
-    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 60.0]">
-        </property>
-    </property>
     <property name="M" class="ptolemy.data.expr.Parameter" value="10">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -116,6 +112,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Aaron D. Ames, Robert D. Gregg, Haiyang Zheng">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 395.0]">
+        </property>
+    </property>
+    <property name="PDF" class="ptolemy.vergil.pdfrenderer.PDFAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/demo/CartPendulum/cartpendulum.pdf">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="50.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 40.0]">
         </property>
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
