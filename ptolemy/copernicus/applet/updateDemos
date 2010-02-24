@@ -18,7 +18,7 @@ do
      targetPath=`echo $modelPath | sed "s@$PTII/@@"`
 
      echo "make MODEL=$model MODELPATH=$modelPath/$model.xml TARGETPATH=$targetPath jnlpUpdateDemo"
-     echo $modelPath/$model.htm
+     #echo $modelPath/$model.htm
      continue
       
      #rm $modelPath/$model.htm
