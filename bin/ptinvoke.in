@@ -537,7 +537,7 @@ fi
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
 #  and update ptolemy/vergil/test/makefile
 ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${FUZZYLOGIC_JARS}${ITEXTPDF_JAR}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${JOGL_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${PDFRENDERER_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
-ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JYTHON_JFLAG} -Xmx256M"
+ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JYTHON_JFLAG} -Xmx1024M"
 
 #### Sandbox
 # Use a fairly tight sandbox to provide security when running models
@@ -754,7 +754,7 @@ case $commandname in
 	# domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResetsNullStates.xml
 	# domains/wireless/test/auto/performance.xml
 	# all fail if we use Xmx384
-	javaflag="-Xmx512M"
+	javaflag="-Xmx1024M"
         ;;
     decompile)
 	if [ -f "$JODE_JAR" ]; then
@@ -1334,7 +1334,7 @@ EOF
 	cat >>$MACAPP_PLIST <<EOF2
       </array>
       <key>VMOptions</key>
-      <string>-Xmx512m</string>
+      <string>-Xmx1024m</string>
       <key>Arguments</key>
       <string>$MACAPP_ARGUMENT</string>
       <key>Properties</key>
