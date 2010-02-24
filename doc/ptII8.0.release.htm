@@ -1037,7 +1037,6 @@ does not always work, especially under Windows if Netscape is already
 running.  The workaround is to exit Netscape and let Ptolemy II
 start up Netscape for you.
 
-
 <li> Web Start does not work very well if the pathname to the 
 <CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
 to place your Ptolemy II tree in a directory that does not have spaces
@@ -1076,32 +1075,32 @@ and continue with the start up.
 
 <li> Applet issues:
 	<ul>
-	  <li> The Ptalon applets don't work
-	  	  <!-- Confirmed on 2/22/10 -->
+	<li> Applets seem to run out of memory after about 82Mb.
+	  
+        <li> The Ptalon applets don't work because antlr tries to get
+           properties         
+	  <!-- appletviewer $PTII/ptolemy/actor/ptalon/demo/CruiseControl/CruiseControlVergil.htm --> 
+  	  <!-- Confirmed on 2/22/10 -->
 
-	<li> We've experienced problems with the browser freezing
-	when between applets.  What happens is that the previous
-	applet gets a InterruptedException and pops up a modal dialog
-	box, which freezed the browser.  We are working on a solution.
+        <li> Distributed SDF applets are very difficult or impossible
+	  to run because the user must start up servers.
+        <!-- appletviewer $PTII/ptolemy/distributed/demo/Sleep/SleepVergil.htm -->
+        <!-- Confirmed on 2/23/10 -->
 
-	<li> Applets do not correctly display the TextAttribute,
-	DocumentationAttribute or the TM "Show schedule" icon.
-	  <pre>
-appletviewer $PTII/ptolemy/data/unit/demo/StaticUnits/StaticUnitsVergil.htm (works)
-appletviewer $PTII/ptolemy/distributed/demo/Sleep/SleepVergil.htm (missing Distributed SDF director)
-appletviewer $PTII/ptolemy/domains/ct/demo/CartPendulum/CartPendulumVergil.htm (does not work)
-appletviewer $PTII/ptolemy/domains/ct/demo/Pendulum3D/Pendulum3DVergil.htm (does not work)
-appletviewer $PTII/ptolemy/domains/ct/demo/SinuBouncingBall/SinuBouncingBallVergil.htm (does not work)
+	<li>The caltrop applets fail because caltrop.main.Util.setDBFI()
+	  calls setProperty to set the parser:
+        <pre> 
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory", name);
+        </pre>
+        The workaround is to run the caltrop demos as Web Start applications.
+	  <!-- 
+	       appletviewer ptolemy/caltrop/demo/FunctionClosures/FunctionClosuresVergil.htm 
+	       appletviewer ptolemy/caltrop/demo/FunctionDefinition/FunctionDefinitionVergil.htm
+	       appletviewer ptolemy/caltrop/demo/Primes/PrimesVergil.htm
+	       appletviewer ptolemy/caltrop/demo/SDFDDI/SDFDDIVergil.htm
+	   -->    
           </pre>
-	<li>Applets seem to run out of memory after about 82Mb.
-
-	<li>The caltrop applets net saxon8.jar and saxon8-dom.jar in the classpath
-	  <pre>
-appletviewer ptolemy/caltrop/demo/FunctionClosures/FunctionClosuresVergil.htm needs
-appletviewer ptolemy/caltrop/demo/FunctionDefinition/FunctionDefinitionVergil.htm
-appletviewer ptolemy/caltrop/demo/Primes/PrimesVergil.htm
-appletviewer ptolemy/caltrop/demo/SDFDDI/SDFDDIVergil.htm
-          </pre>
+        <!-- Confirmed on 2/23/10 -->
 
 	<li> Running the Networked demo via an applet on the local
 	file system results in an AccessControlException.
@@ -1133,7 +1132,8 @@ Attempted to find as a moml class, but got:
 	 <br>The workaround is to run the applet by downloading it
 	from the Ptolemy Website:
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.beta/ptolemy/moml/demo/Networked/Networked.htm" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.beta/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
-
+        <!-- appletviewer $PTII/ptolemy/moml/demo/Networked/NetworkedVergil.htm -->
+        <!-- Confirmed on 2/23/10 -->
 
 	<li> If an icon file is not present, then a Vergil applet might
 	try to download the icon file multiple times.  Ptolemy II
@@ -1179,11 +1179,6 @@ Attempted to find as a moml class, but got:
 	Formerly, the problem was that the Matlab .m file cannot be found.
 	  <!-- Confirmed on 2/22/10 -->
 
-       <li> The JAI Adaptive Median model does not work under
-	Web Start - the repaired image might be corrupt.
-	The reason is that it uses the JAI acceleration libraries,
-	which Web Start does not load.  
-
 	<li> Viewing a pdf file may bring up a blank window along with
 	the pdf file.  Running the code generator may bring up
 	a blank window while the java or javac processes are running.
@@ -1192,14 +1187,16 @@ Attempted to find as a moml class, but got:
 	might not work under Web Start because the files they refer
 	to are not present. 
 
-	<li> The ModelTranformation PublisherTest model fails under Web Start because it can't find the
-      file in ../../test.
+	<li> The ModelTranformation PublisherTest model fails under
+        Web Start because it can't find the file in ../../test.
 	  <!-- Confirmed on 2/22/10 -->
 
-        <li> The ptalon/gt/demo/Adder/Adder.xml model does not work in Web Start because it can't find the BaseModel.xml.
+        <li> The ptalon/gt/demo/Adder/Adder.xml model does not work in
+        Web Start because it can't find the BaseModel.xml.
 	  <!-- Confirmed on 2/22/10 -->
 
-        <li> ptolemy/demo/RunDemos.xml does not work im Web Start - the .xml files can't be found.
+        <li> The ptolemy/demo/RunDemos.xml mode does not work im Web Start
+        because the .xml files can't be found.
 	  <!-- Confirmed on 2/22/10 -->
 
         <li> The ExecDemos model fails to run under Web Start - there is no vergil script.
@@ -1273,6 +1270,7 @@ Attempted to find as a moml class, but got:
   need to be sure that it is possible to build a version of Ptolemy that does not include the GPL'd library.
   One possible workaround would be to have an interim dialog pop up that tells the user how to
   install the library.
+
 <li> 1/8/07: GNU Make 3.81 no longer supports Windows style
 path names with colons in them.  The affects the Copernicus
 code generator because $PTII needs to be set to a pathname
