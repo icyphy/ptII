@@ -272,6 +272,8 @@ ptolemy/vergil/JModelViewer.java
 ptolemy/vergil/debugger/demo2
 ptolemy/vergil/graph
 ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
+ptolemy/verification/SystemGeneratedTempFolder*
+ptolemy/verification/demo/SimpleTrafficLight/stl.kripke
 updateMoMLFiles.xml
 devel
 htmlchek*
