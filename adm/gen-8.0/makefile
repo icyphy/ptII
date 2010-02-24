@@ -2558,7 +2558,7 @@ JNLPS_TAR = jnlps.tar
 $(JNLPS_TAR): $(TARGET_JNLP)
 	(cd $(JNLPDIST)/doc; mv deployJava.js deployJavaApplet.js; \
 	   cp deployJavaJNLP.js deployJava.js)
-	(cd $(JNLPDIST); tar -cf ../../$(JNLPS_TAR) `find . -name "*.jnlp"` doc/deployJava.js doc/deployJavaApplet.js)
+	(cd $(JNLPDIST); tar -cf ../../$(JNLPS_TAR) `find . -name "*.jnlp"` `find . -name "signed_*.jar"` signed doc/deployJava.js doc/deployJavaApplet.js)
 
 updateJNLPs: $(JNLPS_TAR)
 	scp $(JNLPS_TAR) bennett:$(PTII_FTP)
