@@ -71,8 +71,6 @@ public TypedIOPort GLPipelineObject;
         gl.glPointSize((float) radiusValue.doubleValue());
         gl.glBegin(GL.GL_POINTS);
         
-        
-        
         gl.glColor3d(
                 ((DoubleToken) rgbColorValue.getElement(0)).doubleValue(), 
                 ((DoubleToken) rgbColorValue.getElement(1)).doubleValue(), 

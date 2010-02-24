@@ -5,6 +5,8 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
     </property>
     <property name="GRODirector" class="ptolemy.domains.gro.kernel.GRODirector">
+        <property name="iterationInterval" class="ptolemy.data.expr.Parameter" value="{0, 10000000}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 35.0]">
         </property>
     </property>
@@ -12,9 +14,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.4096">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{175.3499524915541, 691.6883973817567}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{592.226272170608, 455.8149546030405}">
     </property>
     <entity name="Line3D" class="ptolemy.domains.gro.lib.Line3D">
         <property name="lineStart" class="ptolemy.data.expr.Parameter" value="{0.1444, -0.1463, 1.7692}">

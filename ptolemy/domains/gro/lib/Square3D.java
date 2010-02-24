@@ -32,10 +32,10 @@ public class Square3D extends GROActor {
         GL gl = ((GRODirector) getDirector()).getGL();
         gl.glBegin(GL.GL_QUADS); 
         gl.glColor3f(0.3f, 0.7f, 0.3f); 
-        gl.glVertex3f(-1.0f, 0.0f,  1.0f); 
-        gl.glVertex3f( 1.0f, 0.0f,  1.0f); 
-        gl.glVertex3f( 1.0f, 0.0f, -1.0f); 
-        gl.glVertex3f(-1.0f, 0.0f, -1.0f); 
+        gl.glVertex3f(0.2f, 0.2f, 0.0f); 
+        gl.glVertex3f( -0.2f, 0.2f,  0.0f); 
+        gl.glVertex3f( -0.2f, -0.2f, 0.0f); 
+        gl.glVertex3f(0.2f, -0.2f, 0.0f); 
         gl.glEnd();
     }
 

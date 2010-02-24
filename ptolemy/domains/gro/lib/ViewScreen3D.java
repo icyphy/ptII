@@ -1,6 +1,7 @@
 package ptolemy.domains.gro.lib;
 
 import java.awt.Frame;
+import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -8,7 +9,9 @@ import javax.media.opengl.GLCanvas;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.gro.kernel.GRODirector;
@@ -35,7 +38,9 @@ public class ViewScreen3D extends TypedAtomicActor {
         showAxis.setTypeEquals(BaseType.BOOLEAN);
         showAxis.setToken(BooleanToken.FALSE);
         
-        //_lastTransform = new Transform3D();
+        position = new Parameter(this, "position");
+        position.setExpression("{0, 0}");
+        
         // TODO Auto-generated constructor stub
     }
     ///////////////////////////////////////////////////////////////////
@@ -46,7 +51,7 @@ public class ViewScreen3D extends TypedAtomicActor {
      *  The type of this port is sceneGraph.
      */
     public TypedIOPort GLPipelineObject;
-
+    public Parameter position;
     public Parameter showAxis;
     
     /** Fire this actor.*/
@@ -61,14 +66,21 @@ public class ViewScreen3D extends TypedAtomicActor {
      */
     
     public void initialize() throws IllegalActionException {
+        
+        
+        
         _frame = new Frame("Jogl 3D Shape/Rotation");
         _canvas = new GLCanvas();
-
+      
+        ArrayToken positionToken = ((ArrayToken) position.getToken());
+        
         _animator = new Animator(_canvas);
         _animator.setRunAsFastAsPossible(true);
         _animator.start();
         
         _canvas.addGLEventListener((GRODirector)getDirector());
+        _canvas.setLocation(((DoubleToken) positionToken.getElement(0)).intValue(), 
+                ((DoubleToken) positionToken.getElement(1)).intValue());
         
         _frame.add(_canvas);
         _frame.setSize(500, 500);
@@ -77,6 +89,7 @@ public class ViewScreen3D extends TypedAtomicActor {
         //size |= Frame.MAXIMIZED_BOTH;
         _frame.setExtendedState(size);
         _frame.setResizable(true);
+        _frame.setLocationRelativeTo(_canvas);
        
         _frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
