@@ -1510,8 +1510,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/distributed/domains/sdf/sdf.jar")) {
-            auxiliaryClassMap.put("distributes sdf.jar needs regular sdf.jar",
+            auxiliaryClassMap.put("distributed sdf.jar needs regular sdf.jar",
                     "ptolemy/domains/sdf/sdf.jar");
+            auxiliaryClassMap.put("distributed sdf.jar needs client.jar",
+                    "ptolemy/distributed/client/client.jar");
         }
         if (jarFilesThatHaveBeenRequired.contains(gtJar)
                 || jarFilesThatHaveBeenRequired
