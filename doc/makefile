@@ -115,7 +115,7 @@ EXTRA_SRCS = \
 	hyVisualHtml.awk \
 	index.htm \
 	install.htm \
-	install_installo.htm \
+	install_index.htm \
 	installJNLP.htm \
 	javahtml.awk \
 	limitations.htm \
