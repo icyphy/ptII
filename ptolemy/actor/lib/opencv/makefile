@@ -37,7 +37,7 @@ DIRS = 		#demo test
 ROOT =		../../../..
 
 # OPENCV_JAR is set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
