@@ -297,6 +297,10 @@ JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-e
 # Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
 JMF_JARS =	@JMF_JARS@
 
+# Java Native Access jar file (jna.jar).  See
+# https://jna.dev.java.net/.  Used in ptolemy/actor/lib/opencv
+JNA_JAR =	@JNA_JAR@
+
 # Jar file that contains Joystick interface,
 # see http://sourceforge.net/projects/javajoystick/
 JOYSTICK_JAR =	@JOYSTICK_JAR@

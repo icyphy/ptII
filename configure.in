@@ -2451,6 +2451,8 @@ OPENCV_JAR=
 # We only need to look for OpenCVif the actor/lib/opencv directory is present
 OPENCV_USER_DIR="$PTII/ptolemy/actor/lib/opencv"
 
+# Java Native Access jar file (jna.jar).  See https://jna.dev.java.net/
+JNA_JAR=
 if test ! -d "$OPENCV_USER_DIR"; then
     PT_MSG_STATUS([$OPENCV_USER_DIR is not present,
     so we need not find OpenCV - The Open Computer Vision API.])
@@ -2468,7 +2470,7 @@ else
        PTOPENCV_PACKAGES=ptolemy.actor.lib.opencv
 	AC_MSG_CHECKING([for the OpenCV jar files])
 	if "$JAVAC" FindClass.java ; then
-	    # Usually e.jar will be in the CLASSPATH
+	    # Usually opencv.jar will be in the CLASSPATH
 	    OPENCV_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass hypermedia.video.OpenCV`
 	    if test -f "$OPENCV_JAR" ; then
 	       PT_MSG_RESULT($OPENCV_JAR)
@@ -2497,6 +2499,22 @@ else
     without problems])
 	       OPENCV_JAR= 
             fi
+
+
+            AC_MSG_CHECKING([for Java Native Access (JNA) jar])
+            if test -f "$PTII/lib/jna.jar"; then
+	        PT_MSG_RESULT($PTII/lib/jna.jar)
+		JNA_JAR="$PTII/lib/jna.jar"
+		ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	        <classpathentry kind=\"lib\" path=\"$JNA_JAR\"/> "
+	    else
+	        AC_MSG_WARN([Failed to find $PTII/lib/jna.jar,
+    JNA is the Java Native Access interfaced, used by the OpenCV
+    vision actors in ptolemy/actor/lib/opencv.
+    These actors are optional, but require JNA.
+    For more information about JNA, see https://jna.dev.java.net/])	
+    	    fi
+
 	else
 	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
     This means that Eclipse might not be able to find the OpenCV files.
@@ -2517,8 +2535,6 @@ fi
 if test -z "$PTOPENCV_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/"
 fi
-
-
 
 
 # PTCGOPENCV_DIR is set to OpenCVTracking and used in 
@@ -4596,6 +4612,10 @@ AC_SUBST(JVERSION)
 
 # Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
 AC_SUBST(JMF_JARS)
+
+# Java Native Access jar file (jna.jar).  See
+# https://jna.dev.java.net/.  Used in ptolemy/actor/lib/opencv
+AC_SUBST(JNA_JAR)
 
 # jode.jar used in bin/ptinvoke to start up Jode, the .class disassembler
 AC_SUBST(JODE_CLASSES)
