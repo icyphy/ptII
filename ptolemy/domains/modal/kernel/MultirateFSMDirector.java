@@ -912,7 +912,7 @@ public class MultirateFSMDirector extends FSMDirector {
             controller._lastChosenTransition = null;
 
             if (lastChosenTransition == null) {
-                throw new IllegalActionException(this,
+                throw new IllegalActionException(currentState,
                         "Reached a transient state "
                                 + "without an enabled transition.");
             }
