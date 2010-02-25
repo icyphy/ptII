@@ -28,6 +28,7 @@
 package ptolemy.data.ontologies.lattice;
 
 import java.lang.reflect.Constructor;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
+import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorConstraintsDefinitionAttribute
@@ -203,11 +205,30 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                         
                         // Set the icon for the attribute so that it looks like the actor
                         // for which it defines an OntologyAdapter.
-                        ConfigurableAttribute actorIconAttribute = (ConfigurableAttribute) ((ComponentEntity) actorInstance)
-                            .getAttribute("_iconDescription");
-                        String iconDescription = actorIconAttribute.getConfigureText();
-                        SingletonConfigurableAttribute description = (SingletonConfigurableAttribute) this.getAttribute("_iconDescription");
-                        description.configure(null, null, iconDescription);
+                        
+                        // First look for an icon file for the actor.
+                        // If no actor icon file is found, use the _iconDescription
+                        // attribute.
+                        String iconFile = actorClassName.getExpression().replace('.', '/')
+                                            + "Icon.xml";
+                        URL xmlFile = actorClass.getClassLoader().getResource(
+                                iconFile);
+                        if (xmlFile != null) {
+                            MoMLParser parser = new MoMLParser(this
+                                    .workspace());
+                            parser.setContext(this);
+                            parser.parse(xmlFile, xmlFile);
+                        }
+                        
+                        if (xmlFile == null) {
+                            ConfigurableAttribute actorIconAttribute = (ConfigurableAttribute) ((ComponentEntity) actorInstance)
+                                .getAttribute("_iconDescription");                   
+                            if (actorIconAttribute != null) {
+                                String iconDescription = actorIconAttribute.getConfigureText();
+                                SingletonConfigurableAttribute description = (SingletonConfigurableAttribute) this.getAttribute("_iconDescription");
+                                description.configure(null, null, iconDescription);
+                            }
+                        }
                         
                         ((ComponentEntity) actorInstance).setContainer(null);
                         
