@@ -49,12 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	CameraReader.java \
 	Detect.java \
-	ImageFlip.java \
-	ImageSmooth.java \
-	ImageSobel.java \
-	IplImageToAWTImage.java \
 	OpenCVReader.java \
 	OpenCVToAWTImage.java
 
