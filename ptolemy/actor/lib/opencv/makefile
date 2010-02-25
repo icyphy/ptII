@@ -37,7 +37,7 @@ DIRS = 		#demo test
 ROOT =		../../../..
 
 # OPENCV_JAR is set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -49,7 +49,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	OpenCVReader.java
+	CameraReader.java \
+	Detect.java \
+	ImageFlip.java \
+	ImageSmooth.java \
+	ImageSobel.java \
+	IplImageToAWTImage.java \
+	OpenCVReader.java \
+	OpenCVToAWTImage.java
 
 OTHER_FILES_TO_BE_JARED = \
 	opencv.xml \
