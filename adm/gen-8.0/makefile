@@ -2510,7 +2510,7 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml makefile macOSInclude.awk
 	    > $@
 
 setup_mac_jar: $(PTSETUP_MAC).jar
-$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist
+$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP)
 	@echo "#"
 	@echo "# Building $@"
 	@echo "# `date`"
@@ -2520,6 +2520,14 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist
 	else \
 		ls -l $@; \
 	fi
+
+
+PTINY_APP = src/ptII$(VERSION)/bin/Ptiny.app
+Ptiny.app: $(PTINY_APP)
+$(PTINY_APP): 
+	if [ ! -f $@ ]; then \
+		(cd src/ptII$(VERSION); PTII=$(PTII)/adm/gen-$(MAJOR_VERSION)/src/ptII$(VERSION) ./configure; cd bin;  make Ptiny.app Vergil.app); \
+        fi
 
 ######################################################################
 # Web Start Applets
