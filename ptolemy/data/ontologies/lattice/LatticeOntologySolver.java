@@ -431,16 +431,42 @@ public class LatticeOntologySolver extends OntologySolver {
     public void test() throws IllegalActionException {
         resetAll();
         invokeSolver();
+        for (NamedObj conceptable : getAllConceptableNamedObjs()) {
+            StringParameter inferred = (StringParameter) conceptable.getAttribute("_showInfo");
+            StringParameter trained = (StringParameter) conceptable.getAttribute("_trainedConcept");
+            if (trained == null) {
+                throw new IllegalActionException(conceptable,
+                        "Must train before testing at " + conceptable.toString());
+            }
+            if (!inferred.stringValue().equals(trained.stringValue())) {
+                throw new IllegalActionException(conceptable,
+                        "Testing failure at " + conceptable.toString() + '\n' +
+                        "Expected '" + trained.stringValue() + "' but got '" +
+                        inferred.stringValue() + "' instead.");
+            }
+        }
     }
 
     /** Train a test. This invokes the solver in TRAINING mode.
      */
-    public void train() {
+    public void train() throws IllegalActionException {
         // Training is not supported yet.
+        // FIXME: Do we need write access to update _showInfo strings?
+        // If so, test() would need to get write access too.
+        resetAll();
+        invokeSolver();
         try {
             workspace().getWriteAccess();
-            resetAll();
-            invokeSolver();            
+            for (NamedObj conceptable : getAllConceptableNamedObjs()) {
+                StringParameter inferred = (StringParameter) conceptable.getAttribute("_showInfo");
+                StringParameter trained;
+                try {
+                    trained = new StringParameter(conceptable, "_trainedConcept");
+                } catch (NameDuplicationException e) {
+                    trained = (StringParameter) conceptable.getAttribute("_trainedConcept");
+                }
+                trained.setExpression(inferred.stringValue());
+            }
         } finally {
             workspace().doneWriting();
         }

@@ -174,6 +174,24 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         return result;
     }
 
+    /** Return the subset of all concept-able objects that are NamedObjs.
+     *
+     * @return The set of all concept-able NamedObjs.
+     * @exception IllegalActionException Thrown if
+     * an error occurs when getting the adapters or the concept-able
+     * objects from them.
+     */
+    public Set<NamedObj> getAllConceptableNamedObjs() throws IllegalActionException {
+        Set<NamedObj> result = new HashSet<NamedObj>();
+
+        for (Object conceptable : getAllPropertyables()) {
+            if (conceptable instanceof NamedObj) {
+                result.add((NamedObj) conceptable);
+            }
+        }
+        return result;
+    }
+    
     /**
      * Return the set of all property-able objects obtained from
      * all PropertyHelper.
