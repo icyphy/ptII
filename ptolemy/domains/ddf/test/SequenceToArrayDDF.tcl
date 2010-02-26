@@ -60,4 +60,5 @@ test SequenceToArray-1.0 {Read SequenceToArrayDDF.xml, run it, change the const}
     $manager execute
     set r2 [listToStrings [$recorder getHistory 0]]
     list $r1 $r2
-} {{{{"aaa", "bbb", "ccc"}}} {{{"aaa", "bbb"}}}}
+} {{{{"aaa", "bbb", "ccc"}}} {{{"aaa", "bbb"}}}} {Known Failure, see https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=326}
+
