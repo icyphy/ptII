@@ -72,7 +72,7 @@ and continue with the start up.
 	  <li> How the JRE is handled by the installer is broken.
 	  Currently, we ship with a jre, which is used if it the jre
 	  has the highest version number.  Thus, if you have a JRE
-	  that is later than 1.5.0_08, then that more recent JRE will
+	  that is later than 1.5.0_22, then that more recent JRE will
 	  be used.  This is a problem because we would like Ptolemy II
 	  to use the JRE we ship, which contains extensions like Java
 	  3D etc.  Also, we would like Ptolemy II to be runnable over
@@ -89,10 +89,11 @@ and continue with the start up.
 
 <li> Applet issues:
 	<ul>
-	<li> Applets seem to run out of memory after about 82Mb.
+	<li> Applets seem to run out of memory after about 82Mb.  The workaround
+	  is to either restart your browser or to use the Web Start versions.
 	  
         <li> The Ptalon applets don't work because antlr tries to get
-           properties         
+           properties.         
 	  <!-- appletviewer $PTII/ptolemy/actor/ptalon/demo/CruiseControl/CruiseControlVergil.htm --> 
   	  <!-- Confirmed on 2/22/10 -->
 
@@ -171,103 +172,104 @@ Attempted to find as a moml class, but got:
 	<ul>
 
 	  <li> The Web Start download tends to be large because we are
-	  not using lazy downloading.
+	    not using lazy downloading.
 	  
 	  <li> The modelTransformation HierarchyFlattening demo fails under
-	  Web Start.
-	  When the "Match Ptolemy models in a directory is pressed, the a
-	  window with the title "Error" and the contents:
-	  <blockquote>
-	  "Directory "/ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/jnlp-8.0.beta/signed/ptolemy/actor/gt/patterns"
-	  does not exist, the value of the DefaultDirectoryAttribute parameter was "$PTII/ptolemy/actor/gt/patterns"
- 	  </blockquote>
-    There is no stack trace.  This is annoying,
-    it is like "Abort, Retry, Cancel?" because it does not tell the user 
-    where the error occurred.
-    The offending code is in
-    ptolemy/vergil/gt/TransformationEditor.java
-	  <!-- Confirmed on 2/22/10 -->
+	    Web Start.
+	    When the "Match Ptolemy models in a directory" button is pressed, the a
+	    window with the title "Error" and the contents:
+	    <blockquote>
+	      Directory "/ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/jnlp-8.0.beta/signed/ptolemy/actor/gt/patterns"
+	      does not exist, the value of the DefaultDirectoryAttribute parameter was "$PTII/ptolemy/actor/gt/patterns"
+ 	    </blockquote>
+	    There is no stack trace.  This is annoying,
+	    it is like "Abort, Retry, Cancel?" because it does not tell the user 
+	    where the error occurred.
+	    The offending code is in ptolemy/vergil/gt/TransformationEditor.java
+	    <!-- Confirmed on 2/22/10 -->
 
-	<li> The Matlab Wireless demo fails under Web Start.
-	Currently, the problem is that the share library cannot be found
-	Formerly, the problem was that the Matlab .m file cannot be found.
-	  <!-- Confirmed on 2/22/10 -->
+	  <li> The Matlab Wireless demo fails under Web Start.
+	    Currently, the problem is that the share library cannot be found
+	    Formerly, the problem was that the Matlab .m file cannot be found.
+	    <!-- Confirmed on 2/22/10 -->
 
-	<li> Viewing a pdf file may bring up a blank window along with
-	the pdf file.  Running the code generator may bring up
-	a blank window while the java or javac processes are running.
+	  <li> Viewing a pdf file may bring up a blank window along with
+	    the pdf file.  Running the code generator may bring up
+	    a blank window while the java or javac processes are running.
 
-	<li> Some of the links on the GR domain instructions page
-	might not work under Web Start because the files they refer
-	to are not present. 
+	  <li> Some of the links on the GR domain instructions page
+	    might not work under Web Start because the files they refer
+	    to are not present. 
 
-	<li> The ModelTranformation PublisherTest model fails under
-        Web Start because it can't find the file in ../../test.
-	  <!-- Confirmed on 2/22/10 -->
+	  <li> The ModelTranformation PublisherTest model fails under
+            Web Start because it can't find the file in ../../test.
+	    <!-- Confirmed on 2/22/10 -->
 
-        <li> The ptalon/gt/demo/Adder/Adder.xml model does not work in
-        Web Start because it can't find the BaseModel.xml.
-	  <!-- Confirmed on 2/22/10 -->
+          <li> The ptalon/gt/demo/Adder/Adder.xml model does not work in
+            Web Start because it can't find the BaseModel.xml.
+	    <!-- Confirmed on 2/22/10 -->
 
-        <li> The ptolemy/demo/RunDemos.xml mode does not work im Web Start
-        because the .xml files can't be found.
-	  <!-- Confirmed on 2/22/10 -->
+          <li> The ptolemy/demo/RunDemos.xml mode does not work im Web Start
+            because the .xml files can't be found.
+	    <!-- Confirmed on 2/22/10 -->
 
-        <li> The ExecDemos model fails to run under Web Start - there is no vergil script.
-	  <!-- Confirmed on 2/22/10 -->
+          <li> The ExecDemos model fails to run under Web Start - there is no vergil script.
+	    <!-- Confirmed on 2/22/10 -->
 
-	<li> <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=298" target="_top">Bug #298: ptinyViewer and fullViewer should optionally disable selection and drag</a>
-	  <!-- Confirmed on 2/22/10 -->
+	  <li> <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=298" target="_top">Bug #298: ptinyViewer and fullViewer should optionally disable selection and drag</a>
+	    <!-- Confirmed on 2/22/10 -->
 
        </ul>
 
 <li> Limitations in demonstrations (alphabetical by domain and demonstration)
         <ul>
 
-	<li> The CT CarTracking demonstration should be run using View-&gt;Run
-	so that the user can change the fault parameter.
+	  <li> The CT CarTracking demonstration should be run using View-&gt;Run
+	    so that the user can change the fault parameter.
 
-	<li> The database domain needs a space database demo that uses some sort of dummy public database.
-	  Java 1.6 includes Java db, see
-	  <a href="http://weblogs.java.net/blog/forsini/archive/2006/06/java_db_is_now.html">http://weblogs.java.net/blog/forsini/archive/2006/06/java_db_is_now.html</a>.
-	  However, Mac would need a separate install.
-	<li> The DDF RijndaelEncryption demo never terminates. Note that we have two Rijndael demos, the
-	  problem demo is at <code>$PTII/./ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml</code>
-	  <!--  $PTII/bin/vergil ./ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml -->
-	  <!-- Confirmed on 2/22/10 -->
+	  <li> The database domain needs a space database demo that uses some sort of dummy public database.
+	    Java 1.6 includes Java db, see
+	    <a href="http://weblogs.java.net/blog/forsini/archive/2006/06/java_db_is_now.html">http://weblogs.java.net/blog/forsini/archive/2006/06/java_db_is_now.html</a>.
+	    However, Mac would need a separate install.
 
-       <li><a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=324" target="_top">Bug #324: PN Gravitation codegen fails because of a segfault</a>
-	  <!-- Confirmed on 2/22/10 -->
+	  <li> The DDF RijndaelEncryption demo never terminates. Note that we have two Rijndael demos, the
+	    problem demo is at <code>$PTII/./ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml</code>
+	    <!--  $PTII/bin/vergil ./ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.xml -->
+	    <!-- Confirmed on 2/22/10 -->
 
-       <li> The SDF Bouncer demo: If the user drags the bouncing icon, it no
-	longer bounces
-	  <!-- $PTII/bin/vergil $PTII/ptolemy/actor/parameters/demo/Bouncer/Bouncer.xml -->
-	  <!-- Confirmed on 2/22/10 -->
+	  <li><a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=324" target="_top">Bug #324: PN Gravitation codegen fails because of a segfault</a>
+	    <!-- Confirmed on 2/22/10 -->
 
-	<li>The SDF JAI VQSequence demo produces stack traces on stdout.
-	  These are caused by actor.lib.gui.MatrixViewer.
-	  <!--  $PTII/bin/vergil $PTII/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml -->
-	  <!-- Confirmed on 2/22/10 -->
+	  <li> The SDF Bouncer demo: If the user drags the bouncing icon, it no
+	    longer bounces.
+	    <!-- $PTII/bin/vergil $PTII/ptolemy/actor/parameters/demo/Bouncer/Bouncer.xml -->
+	    <!-- Confirmed on 2/22/10 -->
+
+	  <li>The SDF JAI VQSequence demo produces stack traces on stdout.
+	    These are caused by actor.lib.gui.MatrixViewer.
+	    <!--  $PTII/bin/vergil $PTII/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml -->
+	    <!-- Confirmed on 2/22/10 -->
 
 	  <li> In HyVisual, the HSIF translater is merely a prototype,
-	  it is not a full implementation of a HSIF translator.
+	    it is not a full implementation of a HSIF translator.
 
         </ul>
+
 <li> Minor Limitations in demonstrations (alphabetical by domain and demonstration)
         <ul>
 	  <li> When the DE/GR Clock demo is run, the gong sound at the end is truncated.
-	  <!-- $PTII/bin/vergil ~/ptII/ptolemy/domains/de/demo/Clock/Clock.xml -->
-	  <!-- Confirmed on 2/22/10 -->
+	    <!-- $PTII/bin/vergil ~/ptII/ptolemy/domains/de/demo/Clock/Clock.xml -->
+	    <!-- Confirmed on 2/22/10 -->
 
 	  <li> The GT Model Execution demonstration highlights the stop button?
-	  After hitting the run button, a model opens up and is running, but the toolbar icon has the stop
-	  button highlighted?  Instead, the run button should be highlighted. 
+	    After hitting the run button, a model opens up and is running, but the toolbar icon has the stop
+	    button highlighted?  Instead, the run button should be highlighted. 
 
-	  <p>gt GameOfLife does something similar.  How do I stop it?
+	    <p>gt GameOfLife does something similar.  How do I stop it?
 
-	  <p>Maybe these need to bring up a viewer that does not have a run button.
-	  <!-- $PTII/bin/vergil ~/ptII8.0.beta/ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml -->
-	  <!-- Confirmed on 2/22/10 -->
+	    <p>Maybe these need to bring up a viewer that does not have a run button.
+	      <!-- $PTII/bin/vergil ~/ptII8.0.beta/ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml -->
+	      <!-- Confirmed on 2/22/10 -->
 	</ul>
 </ul>
 
@@ -275,115 +277,118 @@ Attempted to find as a moml class, but got:
 <ul>
   <li> <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=286" target="_top">Bug #286: JavaCC 4.1 and 4.2 fail because of ReInit() problems</a>.
 
-  <li> <code>de/test/auto/ModalModel.xml</code> is a test for de/demo/ModalModel/ModalModel.xml
-  However, the test does not produce the same results each time.
-
-  <li> <code>ddf/test/SequenceToArrayDDF.xml</code> fails because of strangeness with PortParameters
-
   <li> The "export PDF" facility is incomplete.  The issue is that the library that is used is GPL'd, so we
-  need to be sure that it is possible to build a version of Ptolemy that does not include the GPL'd library.
-  One possible workaround would be to have an interim dialog pop up that tells the user how to
-  install the library.
+    need to be sure that it is possible to build a version of Ptolemy that does not include the GPL'd library.
+    One possible workaround would be to have an interim dialog pop up that tells the user how to
+    install the library.
 
-<li> 1/8/07: GNU Make 3.81 no longer supports Windows style
-path names with colons in them.  The affects the Copernicus
-code generator because $PTII needs to be set to a pathname
-with a colon in it like <code>c:/Ptolemy/ptII8.0.beta</code>.
-A path name like <code>/cygdrive/c/Ptolemy/ptII8.0.beta</code>
-will <B>not</B> work with Java.
+  <li> 1/8/07: GNU Make 3.81 no longer supports Windows style
+    path names with colons in them.  The affects the Copernicus
+    code generator because $PTII needs to be set to a pathname
+    with a colon in it like <code>c:/Ptolemy/ptII8.0.beta</code>.
+    A path name like <code>/cygdrive/c/Ptolemy/ptII8.0.beta</code>
+    will <B>not</B> work with Java.
 
-<p>For example, if you run copernicus and copernicus runs
-make, you may see
-<pre>
-makefile:360: *** target pattern contains no `%'.  Stop.
-</pre>
-This is because a makefile variable uses the windows style
-pathnames with colons in them.  One solution is to
-edit the file to use pathnames with /cygdrive.
-Another solution is to download a working version from
-<a href="http://www.cmake.org/files/cygwin/make.exe"><code>http://www.cmake.org/files/cygwin/make.exe</code></a>
+    <p>For example, if you run copernicus and copernicus runs
+      make, you may see
+      <pre>
+	makefile:360: *** target pattern contains no `%'.  Stop.
+      </pre>
+      This is because a makefile variable uses the windows style
+      pathnames with colons in them.  One solution is to
+      edit the file to use pathnames with /cygdrive.
+      Another solution is to download a working version from
+      <a href="http://www.cmake.org/files/cygwin/make.exe"><code>http://www.cmake.org/files/cygwin/make.exe</code></a>
 
 
-<p>For details, see
-<a href="http://www.cygwin.com/ml/cygwin-announce/2006-07/msg00008.html"><code>http://www.cygwin.com/ml/cygwin-announce/2006-07/msg00008.html</code></a>
-<BLOCKQUOTE>
+    <p>For details, see
+      <a href="http://www.cygwin.com/ml/cygwin-announce/2006-07/msg00008.html"><code>http://www.cygwin.com/ml/cygwin-announce/2006-07/msg00008.html</code></a>
+      <BLOCKQUOTE>
 
-<li> From: Christopher Faylor &lt;cgf-no-personal-reply-please at cygwin dot com&gt;
+	<li> From: Christopher Faylor &lt;cgf-no-personal-reply-please at cygwin dot com&gt;
 
-<li> To: cygwin-announce at cygwin dot com
+	<li> To: cygwin-announce at cygwin dot com
 
-<li> Date: Sun, 9 Jul 2006 18:13:29 -0400
+	<li> Date: Sun, 9 Jul 2006 18:13:29 -0400
 
-<p>I've made a new version of 'make' available for download.  This updates
-the package to the latest version available from fedora.redhat.com.
-I've included the relevant portions of the NEWS file and the Fedora
-ChangeLog at the end of this message.
+	  <p>I've made a new version of 'make' available for download.  This updates
+	    the package to the latest version available from fedora.redhat.com.
+	    I've included the relevant portions of the NEWS file and the Fedora
+	    ChangeLog at the end of this message.
 
-<p>For a brief description of this package, see 
-<a href="http://cygwin.com/packages/">http://cygwin.com/packages/</a>.
+	  <p>For a brief description of this package, see 
+	    <a href="http://cygwin.com/packages/">http://cygwin.com/packages/</a>.
 
-<p>Note that the --win32 command line option and "MAKE_MODE" environment
-variable are no longer supported in Cygwin's make.  If you need to use a
-Makefile which contains MS-DOS path names, then please use a MinGW
-version of make.
+	  <p>Note that the --win32 command line option and "MAKE_MODE" environment
+	    variable are no longer supported in Cygwin's make.  If you need to use a
+	    Makefile which contains MS-DOS path names, then please use a MinGW
+	    version of make.
 
-<p>See: <a href="http://mingw.org/">http://mingw.org/</a>
-for details on downloading a version of make
-which understands MS-DOS path names.  Please! direct any questions about
-the MinGW version of make to the appropriate MinGW mailing list.
-</BLOCKQUOTE>
+	  <p>See: <a href="http://mingw.org/">http://mingw.org/</a>
+	    for details on downloading a version of make
+	    which understands MS-DOS path names.  Please! direct any questions about
+	    the MinGW version of make to the appropriate MinGW mailing list.
+      </BLOCKQUOTE>
 
-</menu>
+      I have no idea what prompted this change, it seems really lame.
+      The code worked fine under Cygwin for many years.  It seems like breaking
+      an important tool such as make only hurts the GNU tools.  This means that it
+      is <b>impossible</b> to use Cygwin make with Sun Java, which uses MS-DOS paths.
 
-I have no idea what prompted this change, it seems really lame.
-The code worked fine under Cygwin for many years.  It seems like breaking
-an important tool such as make only hurts the GNU tools.
+    <p>For further updates, see
+      <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=55" target="_top"><code>https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=55</code></a>.
 
-<p>For further updates, see
-<a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=55" target="_top"><code>https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=55</code></a>.
-
-<p>4/26/07: Wile compiling in <code>$PTII/jni/test</code>,
-I was getting
-<pre>
-Process_begin: CreateProcess((null), /usr/bin/gcc -shared
--Wl,--add-stdcall-alias -o testDeux.dll testDeux.c, ...) failed.
-</pre>
-The problem was I was running a broken version of make and updating
-to
-<a href="http://www.cmake.org/files/cygwin/make.exe"><code>http://www.cmake.org/files/cygwin/make.exe</code></a>
-helped.
+    <p>4/26/07: Wile compiling in <code>$PTII/jni/test</code>,
+      I was getting
+      <pre>
+	Process_begin: CreateProcess((null), /usr/bin/gcc -shared
+	-Wl,--add-stdcall-alias -o testDeux.dll testDeux.c, ...) failed.
+      </pre>
+      The problem was I was running a broken version of make and updating
+      to
+      <a href="http://www.cmake.org/files/cygwin/make.exe"><code>http://www.cmake.org/files/cygwin/make.exe</code></a>
+      helped.
 
 </ul>
 
-<h3>Limitations in the Class Mechanism</h3>
-The class mechanism is highly preliminary and is likely to change
-in future releases.  There are several known problems:
+<h3>Limitations in the Actor Oriented Class Mechanism</h3>
+The actor oriented class mechanism described in
+<ul>
+<li>Edward A. Lee, Xiaojun Liu, Stephen Neuendorffer. <a
+href="http://chess.eecs.berkeley.edu/pubs/624.html" target="_top">Classes and inheritance in actor-oriented design</a>,
+<i>ACM Transactions on Embedded Computing Systems
+(TECS)</i>, 8(4):Article No. 29, July 2009.
+</ul>
+has various restrictions and limitations:
 
 <ul>
-  <li> Several higher-order-components will not work inside class definitions.
-  (ModalModel, several CT actors, etc.).
+  <li> If an atomic actor is to be used in an Actor Oriented Class definition,
+    then the atomic actor must have a properly implemented clone(Workspace) 
+    method. See the design documents for details.
 
+  <li> Several higher-order-components will not work inside class definitions.
+    (ModalModel, several CT actors, etc.).
 
   <li> Name collisions can occur when adding objects to base classes
-  whose names collide with objects in derived classes.
-  Auto naming should look through the derivedList for name conflicts.
+    whose names collide with objects in derived classes.
+    Auto naming should look through the derivedList for name conflicts.
 
   <li> Propagation of changes to a base class is very slow in Vergil.
-  If there are more than just a very few instances or derived
-  classes, interactive editing is not practical.  As a workaround,
-  put the class definitions in a separate file and edit them
-  without opening the model that creates instances. The probable
-  reason is that MoMLParser handles propagation by issuing large
-  numbers of change requests.
+    If there are more than just a very few instances or derived
+    classes, interactive editing is not practical.  As a workaround,
+    put the class definitions in a separate file and edit them
+    without opening the model that creates instances. The probable
+    reason is that MoMLParser handles propagation by issuing large
+    numbers of change requests.
 
   <li> Certain actors, such as MathFunction, change the number of ports
-  when parameters change.  This violates the derivation invariance
-  for classes.  To demonstrate the bug, put a MathFunction actor
-  in a base class that has a subclass.  Change the function parameter
-  in the subclass to anything but "modulo".  Then change the function
-  in the base class to "modulo" (which adds a port).  Now attempt
-  to insert a parameter into the port.  You will get an
-  InternalErrorException when it tries to propagate the change.
+    when parameters change.  This violates the derivation invariance
+    for classes.  To demonstrate the bug, put a MathFunction actor
+    in a base class that has a subclass.  Change the function parameter
+    in the subclass to anything but "modulo".  Then change the function
+    in the base class to "modulo" (which adds a port).  Now attempt
+    to insert a parameter into the port.  You will get an
+    InternalErrorException when it tries to propagate the change.
 </ul>
 
 
@@ -398,7 +403,7 @@ in future releases.  There are several known problems:
   <li> The Ptolemy parameter parser uses comma "," to separate elements
   in an array.  This causes problems when Ptolemy is run on
   European machines that use a comma "1,0" instead of a period "1.1"
-  in floating point numbers.
+  in floating point numbers.  See <a href="http://mercury.nceas.ucsb.edu/kepler/pipermail/kepler-users/2009-September/001712.html" target="_top">[Kepler-users]: Where to go with the problems of internationalization or how create account into forum?
 
   <li> The Datagram actors do not work very well.
   The tests sometimes fail.
@@ -493,7 +498,8 @@ a non-process domain is likely to have problems.  Profess Lee wrote:
 
 <h3>Limitations in other domains</h3>
 <ul>
-<li>   <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=297" target="_top">Bug #297: Warn if ct and modal are combined or if continuous and fsm are combined</a>
+  <li> <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=297" target="_top">Bug #297: Warn if ct and modal are combined or if continuous and fsm are combined</a>
+  <li> <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=326" target="_top">Bug #326: DDF scheduler problem with SequenceToArray</a>
 </ul>    
 
 <h3>Limitations in the User Interface</h3>
@@ -502,49 +508,46 @@ Below are some of the limitations of Vergil, the Ptolemy II Graphical
 User Interface.
 
 <ul>
-
   <li> The <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=323" target="_top">Bug #323: Up button does not work in modal models</a>.
 
   <li> If a parameter name end with an underscore and a number, then
-  cutting and pasting drops the underscore and number.
+    cutting and pasting drops the underscore and number.
 
   <li> The labeling of ports gets messed up if you change cardinality.
 
   <li> Cancelling a style change doesn't restore original
-  state.  There are FIXME's about this in actor.gui.style.StyleConfigurer.
+    state.  There are FIXME's about this in actor.gui.style.StyleConfigurer.
 
   <li> If there are multiple windows open for a model, say, the top
-  level vergil window and the tree view, or the top level window
-  and the inside look of a composite component, when the top
-  level window is closed, all other windows are closed, but the
-  user is not prompted to save any change to the model.
+    level vergil window and the tree view, or the top level window
+    and the inside look of a composite component, when the top
+    level window is closed, all other windows are closed, but the
+    user is not prompted to save any change to the model.
 
   <li> When setting the type of a port, we should provide a combo
-  box that lists the common ports
+    box that lists the common ports
 
   <li> When creating a Modal Model, use Control-Right-Button to
-  drawn arcs between nodes.  One potential workaround would
-  be to have an information message in the status bar about this.
+    drawn arcs between nodes.  One potential workaround would
+    be to have an information message in the status bar about this.
 
   <li> You should not change the names of built in ports - The port
-  mechanism should disallow port name changes on ports that are
-  named in Java.  The UI could recognize this.  The UI should
-  not allow the user to remove built in Java defined ports.
+    mechanism should disallow port name changes on ports that are
+    named in Java.  The UI could recognize this.  The UI should
+    not allow the user to remove built in Java defined ports.
 
   <li> Manually setting of the types of actors like ArrayToSequence that
-  have constraints on their element types can cause problems.
+    have constraints on their element types can cause problems.
 
   <li> HTVQ demo is badly laid out when run under vergil.
-  
-  <li>Weak support for multiports in the graph editor.
-  <li>It is difficult to control wire routing.
-  <li>Cannot have more than one vertex in a connection.
-  <li>No mechanism to set the width of a relation.
-  <li>The integrated web browser is not a full-featured browser.
-  <li>Debugger not yet integrated.
-  <li>It is difficult to add actors to the libraries.
-  <li>No dynamic class reloading.
-
+  <li> Weak support for multiports in the graph editor.
+  <li> It is difficult to control wire routing.
+  <li> Cannot have more than one vertex in a connection.
+  <li> No mechanism to set the width of a relation.
+  <li> The integrated web browser is not a full-featured browser.
+  <li> Debugger not yet integrated.
+  <li> It is difficult to add actors to the libraries.
+  <li> No dynamic class reloading.
   <li> Plot windows don't resize when control panel is resized
 
   <br>If a model with plotters is executed using the run button on the
@@ -554,27 +557,27 @@ User Interface.
   re-open it, and then run first using the run control panel.
 
   <li>There is no mechanism in the UI to save a model as a class,
-  nor to save a submodel as a class.
+    nor to save a submodel as a class.
 
   <li>There is no mechanism in the UI to create a custom icon for
-  a library element and store it in the right place.
+    a library element and store it in the right place.
 
   <li>If an actor uses a slider, then the actor tree navigator pane
-  incorrectly shows the slider as a subitem of the actor.
+    incorrectly shows the slider as a subitem of the actor.
 
   <li> It seems that if you close a model that has been modified,
-  get prompted to save it, and select save, then the model
-  is saved but not closed.  It should be closed too...
+    get prompted to save it, and select save, then the model
+    is saved but not closed.  It should be closed too...
 
   <li> When I select a large number of items from one model, and
-  copy and paste them into a new one, they sometimes all get
-  placed at the origin.  Strangely, if I then auto-place,
-  and then undo, they get their original (correct) placement!
+    copy and paste them into a new one, they sometimes all get
+    placed at the origin.  Strangely, if I then auto-place,
+    and then undo, they get their original (correct) placement!
 
   <li> <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=289" target="_top">Bug #289: Under Mac OS X, printing to Acrobat 9.0 fails </a>
     
   <li> Printing a model that contains transparent objects can result
-  in problems when printing to Encapsulated Postscript (EPS).
+    in problems when printing to Encapsulated Postscript (EPS).
 
   <br>If a model has transparent objects, then when it is printed to
   EPS, the resulting file is a bitmap instead of a Postscript
@@ -612,7 +615,10 @@ User Interface.
 </ul>
 
 <h3>Limitations in $PTII/jni</h3>
-
+$PTII/jni has been replaced by the
+<a href="codeDoc/ptolemy/actor/lib/jni/EmbeddedCActor.html">EmbeddedCActor</a>.
+We keep $PTII/jni around because we need the launcher for use with JNI under Cygwin
+and $PTII/jni has some simple JNI tests.
 <ul>
 
   <li> The Interface to C actors using the Java Native Interface
