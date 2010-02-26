@@ -191,7 +191,7 @@ release_fortytwo_remote4_test:
 # Build the release on sisyphus as cxh so that we can copy from
 # both a Linux box and a Windows box to update the web pages.
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup
 
 release_sisyphus_setup:
 	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
