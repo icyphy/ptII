@@ -60,8 +60,6 @@ to the newsgroups etc.  See also main.htm
 	 communicating sequential processes,
 <li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
 	continuous-time modeling,
-<li> <a href="../ptolemy/domains/continuous/doc/body.htm" target="body">Continuos</a>:
-	continuous-time modeling (experimental),
 <li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
 	discrete-event modeling,
 <li> <a href="../ptolemy/domains/dde/doc/body.htm" target="body">DDE</a>:
@@ -103,10 +101,10 @@ to the newsgroups etc.  See also main.htm
 The core of Ptolemy II 8.0.beta is 100% Java, so it should work on any
 platform that has JDK 1.5 or later.
 
- <p>We developed Ptolemy II 8.0.beta under Mac OS 10.5 and Windows XP
-and with JDK1.5.0.0_19
+ <p>We developed Ptolemy II 8.0.beta under Mac OS 10.5 and Windows Server 2003
+and with JDK1.5.0._22.
 
-<p>Ptolemy II 5.0 will not compile under Java 1.3 because we use the
+<p>Ptolemy II 8.0 will not compile under Java 1.3 because we use the
 java.lang.URI class, which is present only in Java 1.4 and later.
 JDK 1.5 or later is required so that these packages can use generics:
 backtrack, ptalon and others.
@@ -136,7 +134,6 @@ might return elements in a different order.
    <li><a href="#pteraDomain">Ptera Domain</a>
    <li><a href="#causalityanalysis">Causality Analysis</a>
    <li><a href="#continuousModal">Continuous and Modal Domains</a>
-    <li><a href="#propertySystem">PropertySystem</a>
   </ul>
 <li> <a href="#other">Other Key New Capabilities</a>
 <li> <a href="#features">Additional features</a>
@@ -144,6 +141,7 @@ might return elements in a different order.
 <li> <a href="#libraries">New and Enhanced Actor Libraries</a>
 <li> <a href="#worksinprogress">Works in Progress</a>
 <li> <a href="#bugs">Bug fixes</a>
+<li> <a href="#limitations">Limitations</a>
 </ul>
 
 <h2><a name="highlights">Highlights</a></h2>
@@ -302,7 +300,9 @@ more efficient static analysis for directed cycles and scheduling.
 This work solved a bug concerning execution time with DE models
 that had many actors at one level of hierarchy.  The table
 below illustrates the improvement.
-<table>
+<center>
+<p>
+<table border="1">
   <tr>
    <th># of actors</th>
    <th>Total execution time before</th>
@@ -318,7 +318,10 @@ below illustrates the improvement.
    <td>149 sec.</td>
    <td>0.7 sec.</td>
  </tr>    
+ <caption>Run times for DE models</caption>
 </table>
+</p>
+</center>
 
 <p>    One of the challenges in complex, heterogeneous models is that
    portions of the model have temporal behavior while other portions
@@ -405,95 +408,6 @@ and Design of Embedded Systems</a>, Proceedings of the
 software, Christoph M. Kirsch,  Reinhard Wilhelm (eds.),
 ACM, 114-123, 2007.
 </ul>
-
-<h3><a name="propertySystem">Property System</h3>
-
-<p>The property system is designed the help model builders to extract 
-semantical information from a model. The information is often specific
-to some particular domain of knowledge. Thus, the analysis to infer this information
-requires the customizations specified by the model builder. The Ptolemy II property system allows
-a model builder to input the specifications for a particular analysis. It then
-automatically infers property values (semantical information) and check the consistency
-of these values in a model.
-
-
-<p>The property system is a generalization of the Ptolemy II type system.
-We consider each port as a taggable object that can be tagged with property 
-values. Given a specific ontology, the tool assigns one unique property value to
-each taggable object. To use the analysis tool, we pass to it as input a
-property lattice, a set of inequality constraints and solver parameters. The 
-bproperty lattice defines the relationships and concepts within a
-particular ontology. The tool provides an simple editor for constructing,
-naming, and storing such lattices as persistent objects that can be reused 
-across multiple models. The set of inequality constraints is specified 
-through property adapters which are actor-specific objects. The property solver 
-instantiates the adaptor objects required in the model and gathers from them 
-the set of constraints. The solver parameters allow configuration of the 
-solving strategy and the default constraints used by the solver if the 
-adaptors do not override them.
-
-
-<p>A property lattice is complete partial order (CPO) data structure. It consists 
-of properties and their relationships. A property is an element in the lattice, 
-and a relationship between two concepts is represented by a directed edge that 
-connects them. For example, a simple type lattice models the representation 
-relationship between different data types. Each child element is fully 
-expressible by its parent if there is an edge connecting 
-the two. For example, a edge going from Int to Double specifies that Int can be 
-converted losslessly to Double. An element may have multiple parents and children 
-as long as there is an unique least upper bound (LUB) element and a greatest 
-lower bound (GLB) element for every subset of elements.
-
-
-<p>The lattice specification can be generalized and used to specify a variety of 
-other relationships as well. For example, we can use a linear lattice to model
-the relationship between signal behaviors, 
-where we have Unknown (Bottom) -> Const -> Nonconst (Top).
-From an analysis perspective, their relationship is a subset relationship where 
-the parent contains more information than its child. These information are combined 
-during the analysis. In this case, every signal starts off with the property value 
-Unknown (the bottom value) which describes a signal to carry no known values. As 
-we traverse the model, we may discover more information. A signals may become 
-<i>Const</i> after we learn that it carries one known value, while tagging a signal with 
-<i>Nonconst</i> means it carries many values throughout its lifetime. The containment 
-relationship is a special case of the inheritance relationship popular in software 
-modeling.
-
-
-<p>The inference algorithm solves for the least solution that satisfies a set of 
-inequality constraints defined over a lattice. It 
-scales linearly with respects to the number of inequality constraints. The 
-inference solver systematically initializes and repeatedly updates property 
-variables until it finds a fixed-point solution. The process is equivalent to 
-performing fixed-point evaluation on a monotonic function. Thus, solution 
-uniqueness is guaranteed. In addition, the algorithm is decideable if we 
-restrict to using finite property lattices.
-
-
-<p>An inequality constraint describes the relationship between properties of taggable 
-objects. The inference engine infers the unspecified properties based on the set 
-of the constraints specific to the model. The meaning of these constraints is 
-coupled with the ontology definition. For example, in the type system lattice, a 
-constraint is used to express sub-typing relationship (e.g. Actor A's output type 
-is greater than or equal to its input type). A constraint is used to constrain the 
-value of a property variable, the property of a taggable object. We can add a 
-constraint to any taggable object through the PropertyConstraintHelper public interface 
-which provides the <i>setEquals()</i> and <i>setAtLeast()</i> methods.
-
-<h4>Property System Demonstrations</h4>
-<ul>
-<li> <a href="../ptolemy/data/properties/demo/CarTracking/CarTracking.htm">CarTracking</a> (Simple dimension analysis)</li>
-<li> <a href="../ptolemy/data/properties/demo/ConstNonconst/ConstNonconst.htm">ConstNonconst</a> (Constant propagation)</li>
-<li> <a href="../ptolemy/data/properties/demo/LogicalAND/LogicalAND.htm">LogicalAND</a> </li>
-<li> <a href="../ptolemy/data/properties/demo/LogicalOrBackward/LogicalOrBackward.htm">LogicalOrBackward</a> </li>
-<li> <a href="../ptolemy/data/properties/demo/RegressionTest/RegressionTest.htm">RegressionTest</a> (With the ModelAnalysis workflow actor)</li>
-<li> <a href="../ptolemy/data/properties/demo/Sinewave/Sinewave.htm">Sinewave</a> (With custom PropertyLattice)</li>
-<li> <a href="../ptolemy/data/properties/demo/Workflow/Workflow.htm">Workflow</a> (Workflow combined with GT)</li>
-</ul>
-
-<p>Primary Properties System Developer: Jackie Man-Kit Leung, Thomas Mandl, Elizabeth Latronico, Charles Shelton
-
-<p>
 
 <h2><a name="other">Other Key New Capabilities</a></h2>
 <ul>
@@ -1009,7 +923,7 @@ For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexte
 <h2><a name="limitations">Limitations</a>
 </h2>
 <ul>
-<li><a href="http://ptolemy.eecs.berkeley.edu/ptolemy/ptII8.0/limitations.htm#in_browser" target="_top">Ptolemy II 8.0.beta Limitations Page</a> - Limitations found after release.
+<li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/limitations.htm#in_browser" target="_top">Ptolemy II 8.0.beta Limitations Page</a> - Limitations found after release.
 <li><a
 href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html" target="_top">Ptolemy II Bugzilla</a>
 </ul>
@@ -1224,7 +1138,7 @@ Attempted to find as a moml class, but got:
 
 	  <li> The database domain needs a space database demo that uses some sort of dummy public database.
 	    Java 1.6 includes Java db, see
-	    <a href="http://weblogs.java.net/blog/forsini/archive/2006/06/java_db_is_now.html">http://weblogs.java.net/blog/forsini/archive/2006/06/java_db_is_now.html</a>.
+	    <a href="http://weblogs.java.net/blog/forsini/archive/2006/06/java_db_is_now.html" target="_top">http://weblogs.java.net/blog/forsini/archive/2006/06/java_db_is_now.html</a>.
 	    However, Mac would need a separate install.
 
 	  <li> The DDF RijndaelEncryption demo never terminates. Note that we have two Rijndael demos, the
@@ -1297,7 +1211,7 @@ Attempted to find as a moml class, but got:
 
 
     <p>For details, see
-      <a href="http://www.cygwin.com/ml/cygwin-announce/2006-07/msg00008.html"><code>http://www.cygwin.com/ml/cygwin-announce/2006-07/msg00008.html</code></a>
+      <a href="http://www.cygwin.com/ml/cygwin-announce/2006-07/msg00008.html" target="_top"><code>http://www.cygwin.com/ml/cygwin-announce/2006-07/msg00008.html</code></a>
       <BLOCKQUOTE>
 
 	<li> From: Christopher Faylor &lt;cgf-no-personal-reply-please at cygwin dot com&gt;
@@ -1312,14 +1226,14 @@ Attempted to find as a moml class, but got:
 	    ChangeLog at the end of this message.
 
 	  <p>For a brief description of this package, see 
-	    <a href="http://cygwin.com/packages/">http://cygwin.com/packages/</a>.
+	    <a href="http://cygwin.com/packages/" target="_top">http://cygwin.com/packages/</a>.
 
 	  <p>Note that the --win32 command line option and "MAKE_MODE" environment
 	    variable are no longer supported in Cygwin's make.  If you need to use a
 	    Makefile which contains MS-DOS path names, then please use a MinGW
 	    version of make.
 
-	  <p>See: <a href="http://mingw.org/">http://mingw.org/</a>
+	  <p>See: <a href="http://mingw.org/" target="_top">http://mingw.org/</a>
 	    for details on downloading a version of make
 	    which understands MS-DOS path names.  Please! direct any questions about
 	    the MinGW version of make to the appropriate MinGW mailing list.
@@ -1398,7 +1312,7 @@ has various restrictions and limitations:
   <li> The Ptolemy parameter parser uses comma "," to separate elements
   in an array.  This causes problems when Ptolemy is run on
   European machines that use a comma "1,0" instead of a period "1.1"
-  in floating point numbers.  See <a href="http://mercury.nceas.ucsb.edu/kepler/pipermail/kepler-users/2009-September/001712.html" target="_top">[Kepler-users]: Where to go with the problems of internationalization or how create account into forum?
+  in floating point numbers.  See <a href="http://mercury.nceas.ucsb.edu/kepler/pipermail/kepler-users/2009-September/001712.html" target="_top">[Kepler-users]: Where to go with the problems of internationalization or how create account into forum?</a>
 
   <li> The Datagram actors do not work very well.
   The tests sometimes fail.
@@ -1595,7 +1509,6 @@ User Interface.
   Or alternatively, we could switch to using pdftex instead of 
   latex-&gt;dvips-&gt;distill which should
   embed pdf for figures directly at the expense of less robust latex support.
-  <a href="http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html#in_browser" target="_top"><CODE>http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html</CODE></a>
 
   <br>Solution 2: Use the undocumented flag
   -Dsun.java2d.print.pipeline=pdl on the command line to force the
