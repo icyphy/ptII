@@ -634,7 +634,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/Program\ Files/Java/jdk1.5.0_22/bin/jar
+JAR=c:/Program Files/Java/jdk1.5.0_22/bin/jar
 
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
