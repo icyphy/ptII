@@ -104,7 +104,7 @@ reusing design patterns by incorporating them into new models.
   <li> <a href="../ptolemy/actor/gt/demo/MapReduce/MapReduceDDF.htm">MapReduceDDF</a> </li>
   <li> <a href="../ptolemy/actor/gt/demo/ModelExecution/ModelExecution.htm">ModelExecution</a> </li>
   <li> <a href="../ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration.htm">ModelGeneration</a> </li>
-  <li> <a href="../ptolemy/actor/gt/demo/ModelGeneration/ModelGeneration_DE.htm">ModelGeneration DE</a> </li>
+  <li> <a href="../ptolemy/actor/gt/demo/ModelGeneration/ModelGenerationDE.htm">ModelGeneration DE</a> </li>
   <li> <a href="../ptolemy/actor/gt/demo/PublisherTest/PublisherTest.htm">PublisherTest</a> </li>
   <li> <a href="../ptolemy/actor/gt/demo/RegressionTest/RegressionTest.htm">RegressionTest</a> </li>
   <li> <a href="../ptolemy/actor/gt/demo/SinewaveOptimization/SinewaveOptimization.htm">SinewaveOptimization</a> </li>
@@ -140,9 +140,9 @@ Events may also have parameters, and the actual values for those parameters are 
 
 <ul>
   <li> <a href="../ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.htm">AdaptiveCarWash</a> (With ModelUpdater) </li>
-  <li> <a href="../ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash_FSM.htm">AdaptiveCarWash</a> (With FSM Submodel) </li>
+  <li> <a href="../ptolemy/domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWashFSM.htm">AdaptiveCarWash</a> (With FSM Submodel) </li>
   <li> <a href="../ptolemy/domains/ptera/demo/CarWash/CarWash.htm">CarWash</a> </li>
-  <li> <a href="../ptolemy/domains/ptera/demo/CarWash/CarWash_DE.htm">CarWash</a>  (With DE) </li>
+  <li> <a href="../ptolemy/domains/ptera/demo/CarWash/CarWashDE.htm">CarWash</a>  (With DE) </li>
   <li> <a href="../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.htm">ConstOptimization</a> (Using Model-Based Transformation) </li>
   <li> <a href="../ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDE.htm">ConstOptimization</a> (With TransformationController) </li>
   <li> <a href="../ptolemy/actor/gt/demo/GameOfLife/GameOfLife.htm">GameOfLife</a> </li>
@@ -397,7 +397,7 @@ LazyTypedCompositeActor is a replacement for TypedCompositeActor that does lazy 
 <ul>
  <li><a href="codeDoc/ptolemy/kernel/util/LazyComposite.html">LazyComposite</a>
  <li><a href="codeDoc/ptolemy/actor/LazyTypedCompositeActor.html">LazyTypedCompositeActor</a>
- <li><a href="codeDoc/ptolemy/moml/filter.LazyTypedCompositeActorChanges.html">LazyTypedCompositeActorChanges</a> - a MoMLFilter that may be used to convert models to use LazyTypedCompositeActor
+ <li><a href="codeDoc/ptolemy/moml/filter/LazyTypedCompositeActorChanges.html">LazyTypedCompositeActorChanges</a> - a MoMLFilter that may be used to convert models to use LazyTypedCompositeActor
  <li><a href="codeDoc/ptolemy/moml/ConvertToLazy.html">ConvertToLazy</a> - A class that converts models to use LazyTypedCompositeActor 
 </ul>
 (Edward A. Lee, Christopher Brooks)
@@ -441,9 +441,9 @@ controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
 </ul>
 <h3>Synchronous/Reactive (SR) </h3>
 <ul>
-<li><a href="../ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.htm">iRobot Hill Climbing</a> (Requires NuSMV, see the <a href="../ptolemy/verification/README.html">Verification documentation)
+<li><code>$PTII/ptolemy/verification/demo/iRobotHillClimbing/iRobotHillClimbing.xml</code> (Requires NuSMV, see the <a href="../ptolemy/verification/README.html">Verification documentation)
 <li><a href="../ptolemy/actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.htm">MulticoreExecution</a>
-<li><a href="../ptolemy/verification/demo/RailroadControl/RailroadSystem.htm">Railroad System</a> (Requires NuSMV, see the <a href="../ptolemy/verification/README.html">Verification documentation)
+<li><code>$PTII/ptolemy/verification/demo/RailroadControl/RailroadSystem.htm</code> (Requires NuSMV, see the <a href="../ptolemy/verification/README.html">Verification documentation)
 <li><a href="../ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.htm">Simple Traffic Light</a> (Requires NuSMV, see the <a href="../ptolemy/verification/README.html">Verification documentation)
 </ul>
 
@@ -452,8 +452,6 @@ controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
 <!-- Please keep the demos alphabetical -->
 <li><a href="../ptolemy/codegen/c/domains/pn/demo/Gravitation/Gravitation.htm">Gravitation</a>
 <li><a href="../ptolemy/codegen/c/domains/pn/demo/PNButterfly/PNButterfly.htm">PN Butterfly</a>
-<li><a href="../ptolemy/codegen/c/targets/mpi/demo/PNButterfly/PNButterfly.htm">MPI PN Butterfly</a>
-<li><a href="../ptolemy/codegen/c/targets/openRTOS/demo/ControlRobot/ControlRobot.htm">OpenRTOS Control Robot</a>
 </ul>
 
 <h3><a name="sdfCodegen">SDF Code Generation</a></h3>
@@ -474,8 +472,6 @@ controlled, on the Mac look in <code>~/Documents/Java Printing.pdf</code>.
 <li><a href="../ptolemy/domains/wireless/demo/Intersections/Intersections.htm">Intersections</a>
 <li><a href="../ptolemy/domains/wireless/demo/Zigbee/Zigbee.htm">Zigbee</a>
 </ul>  
-
-See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
 
 <h2><a name="libraries">New and Enhanced Actor Libraries</a></h2>
@@ -500,13 +496,13 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
   <a href="../ptolemy/domains/space/demo/DOPCenter/DOPCenter.htm">DOPCenter</a>, which we use
   to manage the seating in the <a href="http://embedded.eecs.berkeley.edu/dopcenter#in_browser" target="_top">Donald O. Pederson Center</a>
   <ul>
-    <li><a href="codeDoc/ptolemy/actor/lib/database/ArrayOfRecordExporter.html">ArrayOfRecordsExporter</a>
-    <li><a href="codeDoc/ptolemy/actor/lib/database/ArrayOfRecordRecorder.html">ArrayOfRecordsRecorder</a>
+    <li><a href="codeDoc/ptolemy/actor/lib/database/ArrayOfRecordsExporter.html">ArrayOfRecordsExporter</a>
+    <li><a href="codeDoc/ptolemy/actor/lib/database/ArrayOfRecordsRecorder.html">ArrayOfRecordsRecorder</a>
     <li><a href="codeDoc/ptolemy/actor/lib/database/DatabaseInsert.html">DatabaseInsert</a>
     <li><a href="codeDoc/ptolemy/actor/lib/database/DatabaseManager.html">DatabaseManager</a>
     <li><a href="codeDoc/ptolemy/actor/lib/database/DatabaseQuery.html">DatabaseQuery</a>
     <li><a href="codeDoc/ptolemy/actor/lib/database/DatabaseQuery.html">DatabaseSelect</a>
-    <li><a href="codeDoc/ptolemy/actor/lib/database/SQLSelect.html">SQLSelect</a>
+    <li><a href="codeDoc/ptolemy/actor/lib/database/SQLStatement.html">SQLStatement</a>
   </ul>
 
 <li>Codegen
@@ -515,14 +511,14 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 <li><a href="codeDoc/ptolemy/actor/lib/jni/EmbeddedCFileActor.html">EmbeddedCFileActor</a>
 <li><a href="codeDoc/ptolemy/codegen/c/actor/lib/Interpolator.html">Interpolator</a>
 <li><a href="codeDoc/ptolemy/codegen/c/actor/lib/OrderedMerge.html">OrderedMerge</a>
-<li><a href="codeDoc/ptolemy/codegen/c/actor/lib/conversions.StringToUnsignedByteArray.html">StringToUnsignedByteArray</a>
-<li><a href="codeDoc/ptolemy/codegen/c/actor/lib/gui.TimedPlotter.html">TimedPlotter</a>
-<li><a href="codeDoc/ptolemy/codegen/c/actor/lib/hoc.MultiCompositePort.html">MultiCompositePort</a>
-<li><a href="codeDoc/ptolemy/codegen/c/actor/lib/hoc.RefinementPort.html">RefinementPort</a>
+<li><a href="codeDoc/ptolemy/codegen/c/actor/lib/conversions/StringToUnsignedByteArray.html">StringToUnsignedByteArray</a>
+<li><a href="codeDoc/ptolemy/codegen/c/actor/lib/gui/TimedPlotter.html">TimedPlotter</a>
+<li><a href="codeDoc/ptolemy/codegen/c/actor/lib/hoc/MultiCompositePort.html">MultiCompositePort</a>
+<li><a href="codeDoc/ptolemy/codegen/c/actor/lib/hoc/RefinementPort.html">RefinementPort</a>
 <li><a href="codeDoc/ptolemy/codegen/c/domains/fsm/modal/ModalPort.html">ModalPort</a>
 <li><a href="codeDoc/ptolemy/codegen/c/domains/fsm/modal/RefinementPort.html">RefinementPort</a>
 <li><a href="codeDoc/ptolemy/codegen/c/domains/fsm/modal/TransitionRefinementPort.html">TransitionRefinementPort</a>
-<li><a href="codeDoc/ptolemy/codegen/kernel/Director.html">Director</a>
+<li><a href="codeDoc/ptolemy/codegen/actor/Director.html">Director</a>
 <li><a href="codeDoc/ptolemy/codegen/kernel/PortCodeGenerator.html">PortCodeGenerator</a>
 <li>The code generator has been extended so that Java code may be generated for a model.
   <!-- FIXME: need demos -->
@@ -530,7 +526,9 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
   <li><a href="codeDoc/ptolemy/actor/lib/embeddedJava/package-summary.html">ptolemy/actor/lib/embeddedJava</a>
   <li><a href="codeDoc/ptolemy/codegen/java/actor/package-summary.html">ptolemy.codegen.java.actor</a>
   <li><a href="codeDoc/ptolemy/codegen/java/kernel/package-summary.html">ptolemy.codegen.java.kernel</a>
-  <li><a href="codeDoc/ptolemy/codegen/java/domains/package-summary.html">ptolemy.codegen.java.domains</a>
+  <li><a href="codeDoc/ptolemy/codegen/java/domains/modal/kernel/package-summary.html">ptolemy.codegen.java.domains.modal.kernel</a>
+  <li><a href="codeDoc/ptolemy/codegen/java/domains/sdf/kernel/package-summary.html">ptolemy.codegen.java.domains.sdf.kernel</a>
+  <li><a href="codeDoc/ptolemy/codegen/java/domains/sdf/lib/package-summary.html">ptolemy.codegen.java.domains.sdf.lib</a>
   </ul> 
 </ul>
 
@@ -538,7 +536,7 @@ See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
 
 <li><i>New Parameter:</i> 
 <ul>
-<li><a href="codeDoc/ptolemy/actor/parameters.Priority.html">Priority</a>
+<li><a href="codeDoc/ptolemy/actor/parameters/Priority.html">Priority</a>
 </ul>
 
 <li><i>New Continuous actors</i>:
