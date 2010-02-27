@@ -39,7 +39,7 @@
   	<nativelib href="signed/lib/matlabSunOS.jar"/>
   </resources>
   <resources os="Windows">
-  	<nativelib href="signed/lib/commWindows.jar"/>
+  	<nativelib href="signed/lib/rxtxWindows.jar"/>
   	<nativelib href="signed/lib/joystickWindows.jar"/>
   	<nativelib href="signed/lib/matlabWindows.jar"/>
   </resources>
