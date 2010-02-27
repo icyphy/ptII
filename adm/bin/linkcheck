@@ -1,0 +1,16 @@
+#!/bin/sh
+# $Id$
+# Check that links exist
+
+awk '{ split($0, b, ":")
+	     nf = split(b[1], bb, "/")
+             for (i=1;i<nf;i++) {
+	     	 printf("%s/", bb[i]);
+             }
+             for (i=1;i<=NF;i++) {
+	  	if ($i ~ /href/) {
+		   split($i, f, "\"")
+		   print f[2]
+		}
+             }
+ 	}'
