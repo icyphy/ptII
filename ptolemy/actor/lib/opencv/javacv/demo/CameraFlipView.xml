@@ -21,19 +21,19 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 180.0]">
         </property>
     </entity>
-    <entity name="IplImageToAWTImage" class="ptolemy.actor.lib.opencv.openjava.IplImageToAWTImage">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 185.0]">
+    <entity name="CameraReader" class="ptolemy.actor.lib.opencv.javacv.CameraReader">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 180.0]">
         </property>
     </entity>
-    <entity name="CameraReader" class="ptolemy.actor.lib.opencv.openjava.CameraReader">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 185.0]">
+    <entity name="ImageFlip" class="ptolemy.actor.lib.opencv.javacv.ImageFlip">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 180.0]">
         </property>
     </entity>
-    <entity name="ImageFlip" class="ptolemy.actor.lib.opencv.openjava.ImageFlip">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 185.0]">
+    <entity name="IplImageToAWTImage" class="ptolemy.actor.lib.opencv.javacv.IplImageToAWTImage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 180.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -42,10 +42,10 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ImageDisplay.input" relation="relation"/>
-    <link port="IplImageToAWTImage.input" relation="relation3"/>
-    <link port="IplImageToAWTImage.output" relation="relation"/>
-    <link port="CameraReader.output" relation="relation2"/>
-    <link port="ImageFlip.input" relation="relation2"/>
-    <link port="ImageFlip.output" relation="relation3"/>
+    <link port="ImageDisplay.input" relation="relation3"/>
+    <link port="CameraReader.output" relation="relation"/>
+    <link port="ImageFlip.input" relation="relation"/>
+    <link port="ImageFlip.output" relation="relation2"/>
+    <link port="IplImageToAWTImage.input" relation="relation2"/>
+    <link port="IplImageToAWTImage.output" relation="relation3"/>
 </entity>

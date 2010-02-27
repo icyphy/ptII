@@ -17,37 +17,39 @@
         </property>
     </property>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 225, 648, 528}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 266, 112, 48}, maximized=false}">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 180.0]">
         </property>
     </entity>
-    <entity name="IplImageToAWTImage" class="ptolemy.actor.lib.opencv.openjava.IplImageToAWTImage">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 185.0]">
+    <entity name="CameraReader" class="ptolemy.actor.lib.opencv.javacv.CameraReader">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 180.0]">
         </property>
     </entity>
-    <entity name="CameraReader" class="ptolemy.actor.lib.opencv.openjava.CameraReader">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 185.0]">
+    <entity name="ImageSobel" class="ptolemy.actor.lib.opencv.javacv.ImageSobel">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 180.0]">
         </property>
     </entity>
-    <entity name="ImageSobel" class="ptolemy.actor.lib.opencv.openjava.ImageSobel">
-        <property name="yorder" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 185.0]">
+    <entity name="IplImageToAWTImage" class="ptolemy.actor.lib.opencv.javacv.IplImageToAWTImage">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 180.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{0.0, 0.0}">
+        </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ImageDisplay.input" relation="relation"/>
-    <link port="IplImageToAWTImage.input" relation="relation2"/>
-    <link port="IplImageToAWTImage.output" relation="relation"/>
-    <link port="CameraReader.output" relation="relation3"/>
-    <link port="ImageSobel.input" relation="relation3"/>
-    <link port="ImageSobel.output" relation="relation2"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ImageDisplay.input" relation="relation2"/>
+    <link port="CameraReader.output" relation="relation4"/>
+    <link port="ImageSobel.input" relation="relation4"/>
+    <link port="ImageSobel.output" relation="relation3"/>
+    <link port="IplImageToAWTImage.input" relation="relation3"/>
+    <link port="IplImageToAWTImage.output" relation="relation2"/>
 </entity>
