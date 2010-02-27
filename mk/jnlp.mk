@@ -143,7 +143,7 @@ NATIVE_SIGNED_LIB_JARS = \
 	lib/matlabSunOS.jar \
 	lib/matlabWindows.jar \
 	lib/rxtxMacOSX.jar \
-	lib/rxtxMacOSX.jar 
+	lib/rxtxWindows.jar 
 
 # Not all hosts have matlab
 MATLAB_JARS = \
@@ -180,8 +180,7 @@ CORE_JNLP_JARS = \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
-	$(MATLAB_JARS) \
-	ptolemy/ptsupport.jar
+	$(MATLAB_JARS)
 
 #######
 # DSP - The smallest runtime
@@ -493,7 +492,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/verification/demo/demo.jar \
 	$(PTERA_JARS) \
 	$(PDFRENDERER_JARS) \
-	ptolemy/vergil/ptera/ptera.jar \
 	ptolemy/vergil/fsm/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
 	ptolemy/vergil/tdl/tdl.jar \
