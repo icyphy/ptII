@@ -181,6 +181,7 @@ OTHER_FILES_TO_BE_JARED = \
 	next.gif \
 	Helen256x256.png  \
 	Helen.png  \
+	 ptolemyMacIcon.tif \
 	PtolemyII256x256.png \
 	ptIIplanet.gif \
 	ptIIplanetIcon.gif \
