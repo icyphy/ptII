@@ -54,8 +54,7 @@ PTCLASSALLJARS = \
 	kernel/kernel.jar \
 	lib/lib.jar
 
-JSRCS = \
-	JavaDia.java
+JSRCS =
 
 OTHER_FILES_TO_JAR = \
 	JOGL-copyright.htm
