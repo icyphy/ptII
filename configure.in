@@ -2500,6 +2500,31 @@ else
 	       OPENCV_JAR= 
             fi
 
+	    # Look for JavaCV, which is GPL'd
+	    JAVACV_JAR=
+	    PTJAVACV_DIR=
+            AC_MSG_CHECKING([for JavaCV jar file])
+            AC_ARG_WITH(javacv, [  --with-javacv=JAR       use the javaCV JAR,
+                          defaults to \$PTII/vendors/misc/javacv-bin/javacv.jar],
+			  JAVACV_JAR=$withval,
+			  JAVACV_JAR=$PTII/vendors/misc/javacv-bin/javacv.jar)
+            if test -f "$JAVACV_JAR"; then
+	    	PT_MSG_RESULT([$JAVACV_JAR])
+		# Set to javacv and used in
+		# $PTII/ptolemy/actor/lib/opencv/makefile if JavaCV was found
+		PTJAVACV_DIR=javacv
+                ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$JAVACV_JAR\"/>"
+	    else	   
+	         AC_MSG_WARN([Failed to find PTII/vendors/misc/javacv-bin/javacv.jar
+    perhaps JavaCV is not installed?
+    You need only download JavaCV if you plan on using the actors in
+    in ptolemy/actor/lib/opencv/JavaCV
+    JavaCV may be downloaded from http://code.google.com/p/javacv/])
+    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv"
+  	         # Note that we don't substitute in the ${PTII} here
+   	         JAVACV_JAR='${PTII}/vendors/misc/javacv-bin/javacv.jar'
+            fi
 
             AC_MSG_CHECKING([for Java Native Access (JNA) jar])
             if test -f "$PTII/lib/jna.jar"; then
@@ -2510,11 +2535,13 @@ else
 	    else
 	        AC_MSG_WARN([Failed to find $PTII/lib/jna.jar,
     JNA is the Java Native Access interfaced, used by the OpenCV
-    vision actors in ptolemy/actor/lib/opencv.
+    vision actors in ptolemy/actor/lib/opencv/javacv.
     These actors are optional, but require JNA.
     For more information about JNA, see https://jna.dev.java.net/])	
+    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv"
     	    fi
 
+	    
 	else
 	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
     This means that Eclipse might not be able to find the OpenCV files.
@@ -4561,6 +4588,9 @@ AC_SUBST(JAVACC)
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
 
+# The JavaCV jar file, used in actor/lib/opencv/javacv for computer vision
+AC_SUBST(JAVACV_JAR)
+
 # The javadoc binary, used to create html documentation of java classes.
 AC_SUBST(JAVADOC)
 
@@ -4855,6 +4885,14 @@ AC_SUBST(PTJAI_DIR)
 # Ptolemy II packages that use Java Advanced Imaging
 # PTJAI_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJAI_PACKAGES)
+
+# Set to javacv and used in
+# $PTII/ptolemy/actor/lib/opencv/makefile if JavaCV was found
+AC_SUBST(PTJAVACV_DIR)
+
+# Ptolemy II packages that use JavaCV.
+# PTJAVACV_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTJAVACV_PACKAGES)
 
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)

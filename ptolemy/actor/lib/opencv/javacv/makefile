@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Open CV actors
+# Makefile for Ptolemy II Open CV actors that use JavaCV
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -29,34 +29,36 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/opencv
+ME =		ptolemy/actor/lib/opencv/javacv
 
-# PTJAVACV_DIR is set to javacv by configure if OpenCV is found
-DIRS = 		$(PTJAVACV_DIR) #demo test
+DIRS = 		#demo test
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-# OPENCV_JAR is set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)
+# JAVACV_JAR is set by configure if JavaCV is found.
+# JavaCV may be found at http://code.google.com/p/javacv/
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(JAVACV_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	opencv
+PTPACKAGE = 	javacv
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Detect.java \
-	OpenCVReader.java \
-	OpenCVToAWTImage.java
+	CameraReader.java \
+	ImageFlip.java \
+	ImageSmooth.java \
+	ImageSobel.java \
+	IplImageToAWTImage.java
 
 OTHER_FILES_TO_BE_JARED = \
-	opencv.xml \
-	opencv-copyright.htm
+	javacv.xml \
+	javacv-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

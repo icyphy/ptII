@@ -187,6 +187,10 @@ public class GenerateCopyrights {
                 "ptolemy.actor.lib.opencv.OpenCVReader",
                 "ptolemy/actor/lib/opencv/opencv-copyright.htm");
 
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.opencv.javacv.CameraReader",
+                "ptolemy/actor/lib/opencv/javacv/javacv-copyright.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
                 "ptolemy/matlab/copyright.htm");
 

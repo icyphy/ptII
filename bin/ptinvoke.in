@@ -325,11 +325,20 @@ if test "`uname -s`" = "CYGWIN_NT-5.1"; then
    esac
 fi
 
+#### JavaCV GPL'd interface to Open Computer Vision
+# PTJAVACV_DIR is set to javacv if configure found javacv.jar
+PTJAVACV_DIR=@PTJAVACV_DIR@
+JAVACV_JAR=@JAVACV_JAR@
+if [ "$PTJAVACV_DIR" = "javacv" ]; then 
+    JAVACV_JARS="${CLASSPATHSEPARATOR}${JAVACV_JAR}"
+fi
+
 #### JNA - Java Native Access jar file (jna.jar).  See
 # https://jna.dev.java.net/.  Used in ptolemy/actor/lib/opencv
-JNA_JAR=@JNA_JAR
+JNA_JAR=@JNA_JAR@
 if [ "$JNA_JAR" != "" ]; then
-    JNA_JARS="${CLASSPATHSEPARATOR}${JNA_JARS}"
+    JNA_JARS="${CLASSPATHSEPARATOR}${JNA_JAR}"
+    
 fi
 
 #### Jode..  Java decompiler
@@ -349,6 +358,16 @@ if [ "$PTGRO_DIR" = "gro" ]; then
     JOGL_JARS="@PTJOGL_JARS@"
 fi
 
+#### Java Excel API (JXL)
+# PTEXCEL_DIR is set to excel if we found JXL.
+PTEXCEL_DIR=@PTEXCEL_DIR@
+JXL_JARS=""
+if [ "$PTEXCEL_DIR" = "excel" ]; then
+    PTJXL_JAR="@PTJXL_JAR@"
+    # Jar file that contains Python interface
+    JXL_JARS="${CLASSPATHSEPARATOR}${PTJXL_JAR}"
+fi
+
 #### Mysql Java Database jar, used by space domain and actor/lib/database
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if mysql jar or ojdbc6.jar was found.
@@ -356,6 +375,28 @@ PTSPACE_DIR=@PTSPACE_DIR@
 MYSQL_JAR=""
 if [ "$PTSPACE_DIR" = "space" ]; then
     MYSQL_JAR="${CLASSPATHSEPARATOR}@MYSQL_JAR@"
+fi
+
+#### Open Computer Vision
+# OPENCV is set to kieler.jar if configure found kieler.jar
+PTOPENCV_DIR=@OPENCV_DIR@
+OPENCV_JAR=@OPENCV_JAR@
+if [ "$PTOPENCV_DIR" = "opencv" ]; then 
+    OPENCV_JARS="${CLASSPATHSEPARATOR}${OPENCV_JAR}"
+    if [ "$windows" = "yes" ]; then
+	export PATH="${PTII_CYGDRIVE}/bin;$PATH"
+    else
+    if [ "$LD_LIBRARY_PATH" != "" ]; then
+        export LD_LIBRARY_PATH="${PTII}/lib:${LD_LIBRARY_PATH}"
+    else
+        export LD_LIBRARY_PATH="${PTII}/lib"
+    fi
+    if [ "$DYLD_LIBRARY_PATH" != "" ]; then
+        export DYLD_LIBRARY_PATH="${PTII}/lib:${DYLD_LIBRARY_PATH}"
+    else
+        export DYLD_LIBRARY_PATH="${PTII}/lib"
+    fi
+fi
 fi
 
 #### Oracle Java Database jar (ojdbc6.jar), used by space domain
@@ -414,6 +455,7 @@ if [ "$PTCOPERNICUS_DIR" = "copernicus" ]; then
     SOOT_JARS="${CLASSPATHSEPARATOR}${SOOT_JAR}"
 fi
 
+
 #### JNI
 # PTJNI_DIR is set to jni if configure found gcc or cc
 PTJNI_DIR=@PTJNI_DIR@
@@ -434,16 +476,6 @@ if [ "$PTJOYSTICK_DIR" = "joystick" ]; then
     JOYSTICK_JARS="${CLASSPATHSEPARATOR}@JOYSTICK_JAR@"
 fi
 
-
-#### Java Excel API (JXL)
-# PTEXCEL_DIR is set to excel if we found JXL.
-PTEXCEL_DIR=@PTEXCEL_DIR@
-JXL_JARS=""
-if [ "$PTEXCEL_DIR" = "excel" ]; then
-    PTJXL_JAR="@PTJXL_JAR@"
-    # Jar file that contains Python interface
-    JXL_JARS="${CLASSPATHSEPARATOR}${PTJXL_JAR}"
-fi
 
 #### Jython is Python implemented in Java
 # PTJYTHON_DIR is set to python if configure found jython
@@ -475,14 +507,6 @@ PTKIELER_DIR=@PTKIELER_DIR@
 KIELER_JAR=@KIELER_JAR@
 if [ "$PTKIELER_DIR" = "kieler" ]; then 
     KIELER_JARS="${CLASSPATHSEPARATOR}${KIELER_JAR}"
-fi
-
-#### Open Computer Vision
-# OPENCV is set to kieler.jar if configure found kieler.jar
-PTOPENCV_DIR=@OPENCV_DIR@
-OPENCV_JAR=@OPENCV_JAR@
-if [ "$PTOPENCV_DIR" = "opencv" ]; then 
-    OPENCV_JARS="${CLASSPATHSEPARATOR}${OPENCV_JAR}"
 fi
 
 #### PDFRenderer
@@ -560,8 +584,8 @@ fi
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
 #  and update ptolemy/vergil/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${FUZZYLOGIC_JARS}${ITEXTPDF_JAR}${SOOT_JARS}${PTJACL_JARS}${JNA_JARS}${JOYSTICK_JARS}${JXL_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${JOGL_JARS}${OPENCV_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${PDFRENDERER_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
-ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JYTHON_JFLAG} -Xmx256M"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${FUZZYLOGIC_JARS}${ITEXTPDF_JAR}${SOOT_JARS}${PTJACL_JARS}${JAVACV_JARS}${JNA_JARS}${JOYSTICK_JARS}${JXL_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${JOGL_JARS}${OPENCV_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${PDFRENDERER_JARS}${PTALON_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
+ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JYTHON_JFLAG} -Xmx1024M"
 
 #### Sandbox
 # Use a fairly tight sandbox to provide security when running models
@@ -693,6 +717,32 @@ quiet=1
 commandname=`basename "$0"`
 # check to see if we are building bat files.
 case $commandname in
+    makeapp)
+	help="Make a Mac OS X .app file \
+             Usage: $0 appname config argument \
+             For example:
+             $0 Vergil.app FULL -full"
+
+	if [ $# -lt 3 ]; then
+	    echo $help
+	    exit 2
+        fi	    
+	if [ "$1" = "-q" ]; then
+	    # Do not echo the command. Useful for batch mode (repeated
+	    # test runs) to reduce stdout clutter
+	    quiet=1
+	    shift
+	    continue
+	fi
+	makeapp="1"
+	# MACAPP_APP should be Vergil.app or Ptiny.app etc.
+	MACAPP_APP=$1
+	# MACAPP_CONFIG should be FULL or PTINY etc.  See $PTII/mk/jnlp.mk
+	MACAPP_CONFIG=$2
+	# MACAPP_ARGUMENT should be -full or -ptiny etc
+	MACAPP_ARGUMENT=$3
+	shift; shift; shift
+    ;;
     makebat)
 	if [ "$1" = "-q" ]; then
 	    # Do not echo the command. Useful for batch mode (repeated
@@ -752,7 +802,7 @@ case $commandname in
 	# domains/hdf/kernel/test/auto/TwoLevelHierarchyWithResetsNullStates.xml
 	# domains/wireless/test/auto/performance.xml
 	# all fail if we use Xmx384
-	javaflag="-Xmx512M"
+	javaflag="-Xmx1024M"
         ;;
     decompile)
 	if [ -f "$JODE_JAR" ]; then
@@ -1279,7 +1329,79 @@ if [ "$error" = "none" ]; then
 	echo "$makebatstr %params%" >> $commandname.bat
 	echo "pause" >> $commandname.bat
     else
-	eval exec $str
+	if [ "$makeapp" = "1" ]; then   
+	    # Create a Mac OS X .app file
+	    PTVERSION=8.0.beta
+	    MACAPP_BASE=`basename $MACAPP_APP .app`
+	    MACAPP_PLIST=$MACAPP_APP/Contents/Info.plist 
+	    
+	    if [ ! -d $MACAPP_APP ]; then
+		mkdir $MACAPP_APP
+		(cd $MACAPP_APP; cp -r ../macContents/Contents .; find . -name ".svn" -exec rm -rf {} \;)
+	    fi
+		
+	    cat >$MACAPP_PLIST <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+                       "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>CFBundleName</key>
+    <string>Ptolemy</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$PTVERSION</string>
+    <key>CFBundleGetInfoString</key>
+    <string>$PTVERSION</string>
+    <key>CFBundleAllowMixedLocalizations</key>
+    <string>false</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleExecutable</key>
+    <string>JavaApplicationStub</string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleSignature</key>
+    <string>PTOL</string>
+    <key>CFBundleIconFile</key>
+    <string>ptolemy.icns</string>
+    <key>Java</key>
+    <dict>
+      <key>MainClass</key>
+      <string>ptolemy.vergil.VergilApplication</string>
+      <key>JVMVersion</key>
+      <string>1.5</string>
+      <key>ClassPath</key>
+      <array>
+       <string>\$APP_PACKAGE/../..</string>
+EOF
+
+	(cd $PTII; make echo_plist_jars JARS=${MACAPP_CONFIG}_JNLP_JARS) | \
+	  awk '{ for(i=1;i<=NF;i++) { print "       <string>$APP_PACKAGE/../../" $i "</string>"}}' >> $MACAPP_PLIST
+	cat >>$MACAPP_PLIST <<EOF2
+      </array>
+      <key>VMOptions</key>
+      <string>-Xmx1024m</string>
+      <key>Arguments</key>
+      <string>$MACAPP_ARGUMENT</string>
+      <key>Properties</key>
+      <dict>
+        <key>java.library.path</key>
+        <string>\$APP_PACKAGE/../lib</string>
+        <key>APP_PACKAGE</key>
+        <string>\$APP_PACKAGE</string>
+        <key>ptolemy.ptII.dir</key>
+        <string>\$APP_PACKAGE/../..</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>
+EOF2
+
+	else    
+	    eval exec $str
+        fi	    
     fi
 else
     if [ "$makebat" = "1" ]; then   
