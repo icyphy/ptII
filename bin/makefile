@@ -47,7 +47,7 @@ include $(CONFIG)
 # Bourne Shell scripts for Unix and Cygwin
 # These files are generated automatically as links to 
 # ptinvoke
-# Note that this does not contain ptinvoke and makebat,
+# Note that this does not contain ptinvoke, makeapp and makebat,
 # which are generated independently by this makefile.
 SHELL_FILES = \
 	.momllib-util \
@@ -100,6 +100,11 @@ EXTRA_SRCS = \
 	comm.policy.in \
 
 
+# Mac OS X applications, created by running ./makeapp
+MAC_APPS = \
+	Ptiny.app \
+	Vergil.app
+
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
@@ -109,16 +114,19 @@ MISC_FILES =
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = $(SHELL_FILES) \
 	$(BAT_FILES) \
+	$(MAC_APPS) \
 	comm.policy \
+	macContents \
+	makeapp \
 	makebat \
 	ptinvoke \
 	ptmatlab.dll
 
 
 # Files to be removed by make clean
-KRUFT = $(SHELL_FILES) $(BAT_FILES)
+KRUFT = $(SHELL_FILES) $(BAT_FILES) $(MAC_APPS) makeapp makebat 
 
-all: $(SHELL_FILES) $(BAT_FILES)
+all: $(SHELL_FILES) $(BAT_FILES) $(MAC_APPS)
 	chmod a+x $(EXTRA_EXECUTABLE_SRCS) 
 
 # We use a dependency here so that each time we run make we
@@ -130,6 +138,17 @@ $(SHELL_FILES): ptinvoke
 		ln -s ptinvoke "$$file"; \
 		chmod a+x "$$file"; \
 	done
+
+makeapp: ptinvoke
+	rm -f makeapp
+	ln -s ptinvoke makeapp
+
+macapps: $(MAC_APPS)
+
+Ptiny.app: makeapp
+	./makeapp $@ PTINY -ptiny
+Vergil.app: makeapp
+	./makeapp $@ FULL -full
 
 makebat: ptinvoke
 	rm -f makebat
@@ -143,6 +162,7 @@ $(BAT_FILES): makebat
 ptinvoke: ptinvoke.in ../config.status
 	(cd ..; ./config.status)
 	-chmod a+x ptinvoke
+
 
 # zip might not get the permissions of configure right, so we run /bin/sh.
 # Pass --exec-prefix and --prefix to configure so as to avoid:
