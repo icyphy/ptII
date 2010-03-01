@@ -699,6 +699,7 @@ JAR_INDEX
 JAVA_SYSTEM_JAR
 JAVACC
 JAVACC_DIR
+JAVACV_JAR
 JAVAX_CRYPTO_JAR
 JDOCBREAKITERATOR
 JDOCSOURCEFLAGS
@@ -776,6 +777,8 @@ PTJACL_DIR
 PTJACL_JAR
 PTJAI_DIR
 PTJAI_PACKAGES
+PTJAVACV_DIR
+PTJAVACV_PACKAGES
 PTJAVA_DIR
 PTJAVA_DIR_NO_CYGDRIVE
 PTJAVA_HOME
@@ -1484,6 +1487,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/sun/jxta
   --with-kieler-jar=JARFILE       use JARFILE,
                           defaults to \$PTII/lib/kieler.jar
+  --with-javacv=JAR       use the javaCV JAR,
+                          defaults to \$PTII/vendors/misc/javacv-bin/javacv.jar
   --with-rxtx=DIR       use Java Serial Port Interfacrxtx from DIR,
                           defaults to $RXTX_JAR_DEFAULT
   --with-lejos=DIR       use Java lejos from DIR,
@@ -8264,6 +8269,43 @@ echo "$as_me: WARNING: Either we could not find
 	       OPENCV_JAR=
             fi
 
+	    # Look for JavaCV, which is GPL'd
+	    JAVACV_JAR=
+	    PTJAVACV_DIR=
+            { echo "$as_me:$LINENO: checking for JavaCV jar file" >&5
+echo $ECHO_N "checking for JavaCV jar file... $ECHO_C" >&6; }
+
+# Check whether --with-javacv was given.
+if test "${with_javacv+set}" = set; then
+  withval=$with_javacv; JAVACV_JAR=$withval
+else
+  JAVACV_JAR=$PTII/vendors/misc/javacv-bin/javacv.jar
+fi
+
+            if test -f "$JAVACV_JAR"; then
+	    	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $JAVACV_JAR" >&5
+echo "${ECHO_T}$JAVACV_JAR" >&6; }; fi
+		# Set to javacv and used in
+		# $PTII/ptolemy/actor/lib/opencv/makefile if JavaCV was found
+		PTJAVACV_DIR=javacv
+                ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	           <classpathentry kind=\"lib\" path=\"$JAVACV_JAR\"/>"
+	    else
+	         { echo "$as_me:$LINENO: WARNING: Failed to find PTII/vendors/misc/javacv-bin/javacv.jar
+    perhaps JavaCV is not installed?
+    You need only download JavaCV if you plan on using the actors in
+    in ptolemy/actor/lib/opencv/JavaCV
+    JavaCV may be downloaded from http://code.google.com/p/javacv/" >&5
+echo "$as_me: WARNING: Failed to find PTII/vendors/misc/javacv-bin/javacv.jar
+    perhaps JavaCV is not installed?
+    You need only download JavaCV if you plan on using the actors in
+    in ptolemy/actor/lib/opencv/JavaCV
+    JavaCV may be downloaded from http://code.google.com/p/javacv/" >&2;}
+    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv"
+  	         # Note that we don't substitute in the ${PTII} here
+   	         JAVACV_JAR='${PTII}/vendors/misc/javacv-bin/javacv.jar'
+            fi
 
             { echo "$as_me:$LINENO: checking for Java Native Access (JNA) jar" >&5
 echo $ECHO_N "checking for Java Native Access (JNA) jar... $ECHO_C" >&6; }
@@ -8277,15 +8319,17 @@ echo "${ECHO_T}$PTII/lib/jna.jar" >&6; }; fi
 	    else
 	        { echo "$as_me:$LINENO: WARNING: Failed to find $PTII/lib/jna.jar,
     JNA is the Java Native Access interfaced, used by the OpenCV
-    vision actors in ptolemy/actor/lib/opencv.
+    vision actors in ptolemy/actor/lib/opencv/javacv.
     These actors are optional, but require JNA.
     For more information about JNA, see https://jna.dev.java.net/" >&5
 echo "$as_me: WARNING: Failed to find $PTII/lib/jna.jar,
     JNA is the Java Native Access interfaced, used by the OpenCV
-    vision actors in ptolemy/actor/lib/opencv.
+    vision actors in ptolemy/actor/lib/opencv/javacv.
     These actors are optional, but require JNA.
     For more information about JNA, see https://jna.dev.java.net/" >&2;}
+    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv"
     	    fi
+
 
 	else
 	    { echo "$as_me:$LINENO: WARNING: '\"$JAVAC\" FindClass.java' failed.
@@ -11427,6 +11471,9 @@ fi
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 
 
+# The JavaCV jar file, used in actor/lib/opencv/javacv for computer vision
+
+
 # The javadoc binary, used to create html documentation of java classes.
 
 
@@ -11720,6 +11767,14 @@ fi
 
 # Ptolemy II packages that use Java Advanced Imaging
 # PTJAI_PACKAGES is used in ptII/doc/makefile
+
+
+# Set to javacv and used in
+# $PTII/ptolemy/actor/lib/opencv/makefile if JavaCV was found
+
+
+# Ptolemy II packages that use JavaCV.
+# PTJAVACV_PACKAGES is used in ptII/doc/makefile
 
 
 # Location of the JDK
@@ -12738,6 +12793,7 @@ JAR_INDEX!$JAR_INDEX$ac_delim
 JAVA_SYSTEM_JAR!$JAVA_SYSTEM_JAR$ac_delim
 JAVACC!$JAVACC$ac_delim
 JAVACC_DIR!$JAVACC_DIR$ac_delim
+JAVACV_JAR!$JAVACV_JAR$ac_delim
 JAVAX_CRYPTO_JAR!$JAVAX_CRYPTO_JAR$ac_delim
 JDOCBREAKITERATOR!$JDOCBREAKITERATOR$ac_delim
 JDOCSOURCEFLAGS!$JDOCSOURCEFLAGS$ac_delim
@@ -12749,7 +12805,6 @@ JOYSTICK_JAR!$JOYSTICK_JAR$ac_delim
 JTCLSH!$JTCLSH$ac_delim
 JTREE!$JTREE$ac_delim
 JVERSION!$JVERSION$ac_delim
-JMF_JARS!$JMF_JARS$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12791,6 +12846,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+JMF_JARS!$JMF_JARS$ac_delim
 JNA_JAR!$JNA_JAR$ac_delim
 JODE_CLASSES!$JODE_CLASSES$ac_delim
 JYTHON_DIR!$JYTHON_DIR$ac_delim
@@ -12856,6 +12912,8 @@ PTJACL_DIR!$PTJACL_DIR$ac_delim
 PTJACL_JAR!$PTJACL_JAR$ac_delim
 PTJAI_DIR!$PTJAI_DIR$ac_delim
 PTJAI_PACKAGES!$PTJAI_PACKAGES$ac_delim
+PTJAVACV_DIR!$PTJAVACV_DIR$ac_delim
+PTJAVACV_PACKAGES!$PTJAVACV_PACKAGES$ac_delim
 PTJAVA_DIR!$PTJAVA_DIR$ac_delim
 PTJAVA_DIR_NO_CYGDRIVE!$PTJAVA_DIR_NO_CYGDRIVE$ac_delim
 PTJAVA_HOME!$PTJAVA_HOME$ac_delim
@@ -12885,9 +12943,6 @@ PTJXTA_DIR!$PTJXTA_DIR$ac_delim
 PTOPENCV_DIR!$PTOPENCV_DIR$ac_delim
 PTOPENCVCG_DIR!$PTOPENCVCG_DIR$ac_delim
 PTOPENCV_INCLUDE_DIR!$PTOPENCV_INCLUDE_DIR$ac_delim
-PTOPENCV_PACKAGES!$PTOPENCV_PACKAGES$ac_delim
-PTKIELER_DIR!$PTKIELER_DIR$ac_delim
-PTKVM_DIR!$PTKVM_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12929,6 +12984,9 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTOPENCV_PACKAGES!$PTOPENCV_PACKAGES$ac_delim
+PTKIELER_DIR!$PTKIELER_DIR$ac_delim
+PTKVM_DIR!$PTKVM_DIR$ac_delim
 PTLBNL_DIR!$PTLBNL_DIR$ac_delim
 PTLEGO_DIR!$PTLEGO_DIR$ac_delim
 PTLEJOS_DIR!$PTLEJOS_DIR$ac_delim
@@ -12981,7 +13039,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 50; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 53; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
