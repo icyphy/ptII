@@ -2061,7 +2061,7 @@ else
 	# $PTII/ptolemy/domains/makefile if jogl.jar was found.
 	PTGRO_DIR=gro
         # PTGRO_PACKAGES is used in ptII/doc/makefile
-	PTGRO_PACKAGES="ptolemy.domains.gro ptolemy.domains.gro.kernel ptolemy.domains.gro.lib"
+	PTGRO_PACKAGES="ptolemy.domains.gro.kernel ptolemy.domains.gro.lib"
 
 	# Look for Jogl jar files
 	jogljars="jogl.jar gluegen-rt.jar"
