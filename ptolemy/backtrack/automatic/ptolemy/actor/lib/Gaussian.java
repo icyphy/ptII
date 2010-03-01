@@ -104,9 +104,9 @@ public class Gaussian extends RandomSource implements Rollbackable {
      * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException  {
-        super.fire();
         mean.update();
         standardDeviation.update();
+        super.fire();
         output.send(0, new DoubleToken(_current));
     }
 
