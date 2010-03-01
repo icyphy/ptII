@@ -466,6 +466,9 @@ JAVACC_DIR =	@JAVACC_DIR@
 JJTREE =	"@JJTREE@"
 JAVACC =	"@JAVACC@"
 
+# The JavaCV jar file, used in actor/lib/opencv/javacv for computer vision
+JAVACV_JAR =	@JAVACV_JAR@
+
 # Mysql Java Database jar (mysql-connector-java-5.1.6-bin.jar),
 # used by domains/space and actor/lib/database
 MYSQL_JAR =		@MYSQL_JAR@
@@ -546,6 +549,14 @@ PTJAI_DIR =	@PTJAI_DIR@
 # Ptolemy II packages that use Java Advanced Imaging
 # PTJAI_PACKAGES is used in ptII/doc/makefile
 PTJAI_PACKAGES =	@PTJAI_PACKAGES@
+
+# Set to javacv and used in
+# $PTII/ptolemy/actor/lib/opencv/makefile if JavaCV was found
+PTJAVACV_DIR =	@PTJAVACV_DIR@
+
+# Ptolemy II packages that use JavaCV.
+# PTJAVACV_PACKAGES is used in ptII/doc/makefile
+PTJAVACV_PACKAGES =	@PTJAVACV_PACKAGES@ 
 
 # PTJMF_DIR is set to jmf if the JMF directory is found
 PTJMF_DIR =     @PTJMF_DIR@
