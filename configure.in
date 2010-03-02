@@ -2521,7 +2521,7 @@ else
     You need only download JavaCV if you plan on using the actors in
     in ptolemy/actor/lib/opencv/JavaCV
     JavaCV may be downloaded from http://code.google.com/p/javacv/])
-    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv"
+    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
   	         # Note that we don't substitute in the ${PTII} here
    	         JAVACV_JAR='${PTII}/vendors/misc/javacv-bin/javacv.jar'
             fi
@@ -2538,7 +2538,7 @@ else
     vision actors in ptolemy/actor/lib/opencv/javacv.
     These actors are optional, but require JNA.
     For more information about JNA, see https://jna.dev.java.net/])	
-    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv"
+    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
     	    fi
 
 	    
