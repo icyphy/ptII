@@ -30,20 +30,13 @@ package ptolemy.actor.lib.excel;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
 
 import jxl.Workbook;
-import jxl.write.Number;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.FloatToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
