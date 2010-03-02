@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies
 
-DIRS = 		demo doc gui lattice util #test
+DIRS = 		demo doc gui lattice util test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
