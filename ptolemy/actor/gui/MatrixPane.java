@@ -30,6 +30,7 @@ package ptolemy.actor.gui;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
 import ptolemy.data.MatrixToken;
@@ -67,6 +68,8 @@ public class MatrixPane extends JScrollPane {
         table.setTableHeader(null);
 
         // Adjust column widths automatically.
+        // If the matrix is large, then elements will be
+        // elided and replaced with ...
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         // Add the table to the scroll pane.
@@ -81,20 +84,36 @@ public class MatrixPane extends JScrollPane {
 
     /** Clear the display. */
     public void clear() {
-        table.setModel(_emptyTableModel);
+    	// When invoking methods in the table object,
+    	// be sure to invoke them from the Swing Event
+    	// thread.
+    	// See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4826
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                table.setModel(_emptyTableModel);
+            }
+        });
     }
 
     /** Set the matrix to display in the table.
      *  @param matrix The matrix to display in the table.
      */
     public void display(MatrixToken matrix) {
-        table.setModel(new MatrixAsTable(matrix));
+        final MatrixToken myMatrix = matrix;
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                table.setModel(new MatrixAsTable(myMatrix));
+            }
+        });
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The table representing the matrix. */
+    /** The table representing the matrix. Methods in the class
+     *  referred to by this field should only be invoked from the 
+     *  Swing event thread. See SwingUtilities.invokeLater().
+     */
     public JTable table;
 
     ///////////////////////////////////////////////////////////////////
