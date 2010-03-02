@@ -1152,11 +1152,6 @@ Attempted to find as a moml class, but got:
 	    <!-- $PTII/bin/vergil $PTII/ptolemy/actor/parameters/demo/Bouncer/Bouncer.xml -->
 	    <!-- Confirmed on 2/22/10 -->
 
-	  <li>The SDF JAI VQSequence demo produces stack traces on stdout.
-	    These are caused by actor.lib.gui.MatrixViewer.
-	    <!--  $PTII/bin/vergil $PTII/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml -->
-	    <!-- Confirmed on 2/22/10 -->
-
 	  <li> In HyVisual, the HSIF translater is merely a prototype,
 	    it is not a full implementation of a HSIF translator.
 
@@ -1434,8 +1429,10 @@ User Interface.
   <li> When setting the type of a port, we should provide a combo
     box that lists the common ports
 
-  <li> When creating a Modal Model, use Control-Right-Button to
-    drawn arcs between nodes.  One potential workaround would
+  <li> When creating a Modal Model, to create a transition between
+    states, hold the (Mac: Command-Mouse-Button, Windows: Control-Right-Mouse-Button)
+    and drag from one state to another.  
+    One potential workaround would
     be to have an information message in the status bar about this.
 
   <li> You should not change the names of built in ports - The port
@@ -1448,9 +1445,6 @@ User Interface.
 
   <li> HTVQ demo is badly laid out when run under vergil.
   <li> Weak support for multiports in the graph editor.
-  <li> It is difficult to control wire routing.
-  <li> Cannot have more than one vertex in a connection.
-  <li> No mechanism to set the width of a relation.
   <li> The integrated web browser is not a full-featured browser.
   <li> Debugger not yet integrated.
   <li> It is difficult to add actors to the libraries.
