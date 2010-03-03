@@ -180,8 +180,7 @@ CORE_JNLP_JARS = \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
-	$(MATLAB_JARS) \
-	ptolemy/ptsupport.jar
+	$(MATLAB_JARS)
 
 #######
 # DSP - The smallest runtime
@@ -385,6 +384,12 @@ DEVEL_FUZZY_JARS = \
 	ptolemy/actor/lib/logic/fuzzy/fuzzy.jar \
 	ptolemy/actor/lib/logic/fuzzy/demo/demo.jar \
 
+# Jar files for the New Associative Object Model of Integration (NAOMI) 
+# http://chess.eecs.berkeley.edu/naomi
+NAOMI_JARS = \
+	lib/naomi.jar \
+	ptolemy/codegen/rtmaude/rtmaude.jar 
+
 PDFRENDERER_JARS = ptolemy/vergil/pdfrenderer/pdfrenderer.jar \
 		lib/PDFRenderer.jar
 
@@ -413,7 +418,8 @@ WIRELESS_JARS = \
 	ptolemy/domains/wireless/demo/demo.jar \
 	ptolemy/domains/wireless/doc/doc.jar
 
-FULL_8_1_JARS = \
+FULL_8_1_JARS =
+DEVEL_FULL_8_1_JARS = \
 	ptolemy/cg/cg.jar \
 	ptolemy/data/properties/properties.jar \
 	ptolemy/data/properties/lattice/imageOntology/demo/demo.jar \
@@ -422,6 +428,7 @@ FULL_8_1_JARS = \
 	ptolemy/data/ontologies/ontologies.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
 	ptolemy/domains/sequence/sequence.jar \
+	ptolemy/domains/sequence/demo/demo.jar \
 	ptolemy/domains/pthales/pthales.jar \
 	ptolemy/domains/pthales/demo/demo.jar
 
@@ -452,7 +459,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
 	vendors/misc/x10/tjx10p-13/lib/x10.jar \
-	lib/naomi.jar \
+	$(NAOMI_JARS) \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
@@ -492,7 +499,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/verification/demo/demo.jar \
 	$(PTERA_JARS) \
 	$(PDFRENDERER_JARS) \
-	ptolemy/vergil/ptera/ptera.jar \
 	ptolemy/vergil/fsm/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
 	ptolemy/vergil/tdl/tdl.jar \
