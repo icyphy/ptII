@@ -61,8 +61,8 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-JAVAC =		/cygdrive/c/Program Files/Java/jdk1.5.0_11/bin/javac
-JAVA =		/cygdrive/c/Program Files/Java/jdk1.5.0_11/bin/java
+#JAVAC =		/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Commands/javac
+#JAVA =		/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Commands/java
 
 all: jclass
 	@echo "To run the demo, run 'make demo'"
