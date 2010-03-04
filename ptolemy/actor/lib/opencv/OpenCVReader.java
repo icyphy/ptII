@@ -90,6 +90,7 @@ public class OpenCVReader extends Source {
         // FIXME: Size of the image should be parameters of this object.
         _openCV.capture( 640, 480 );
         // _openCV.cascade( OpenCV.CASCADE_FRONTALFACE_ALT );
+ 
     }
     
     /** Stop the capture.

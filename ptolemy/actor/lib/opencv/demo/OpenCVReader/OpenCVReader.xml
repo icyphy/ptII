@@ -4,63 +4,93 @@
 <entity name="OpenCVReader" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 34, 1000, 543}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 34, 1190, 619}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[787, 433]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[967, 503]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{393.5, 216.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{483.5, 251.5}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110, 60}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 45.0]">
         </property>
     </property>
     <entity name="OpenCVReader" class="ptolemy.actor.lib.opencv.OpenCVReader">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 140.0]">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 122, 640, 524}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={425, 157, 656, 539}, maximized=false}">
         </property>
-        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 0]">
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[835.0, 140.0]">
         </property>
     </entity>
     <entity name="OpenCVToAWTImage" class="ptolemy.actor.lib.opencv.OpenCVToAWTImage">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[705.0, 140.0]">
         </property>
     </entity>
     <entity name="Detect" class="ptolemy.actor.lib.opencv.Detect">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 245.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={492, 485, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={693, 286, 500, 225}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 166]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 245.0]">
         </property>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+    <entity name="Blend" class="ptolemy.actor.lib.opencv.Blend">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 140.0]">
         </property>
-        <vertex name="vertex1" value="{100.0, 195.0}">
-        </vertex>
-    </relation>
+    </entity>
+    <entity name="Read" class="ptolemy.actor.lib.opencv.Read">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="Invert" class="ptolemy.actor.lib.opencv.Invert">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="Flip" class="ptolemy.actor.lib.opencv.Flip">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 140.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[265.0, 140.0]">
+        </vertex>
+    </relation>
     <link port="OpenCVReader.output" relation="relation4"/>
-    <link port="ImageDisplay.input" relation="relation"/>
-    <link port="OpenCVToAWTImage.input" relation="relation4"/>
-    <link port="OpenCVToAWTImage.output" relation="relation"/>
-    <link port="Detect.input" relation="relation4"/>
+    <link port="ImageDisplay.input" relation="relation2"/>
+    <link port="OpenCVToAWTImage.input" relation="relation7"/>
+    <link port="OpenCVToAWTImage.output" relation="relation2"/>
+    <link port="Detect.input" relation="relation6"/>
     <link port="Detect.output" relation="relation3"/>
     <link port="Display.input" relation="relation3"/>
+    <link port="Blend.input" relation="relation6"/>
+    <link port="Blend.output" relation="relation"/>
+    <link port="Read.input" relation="relation4"/>
+    <link port="Read.output" relation="relation6"/>
+    <link port="Invert.input" relation="relation"/>
+    <link port="Invert.output" relation="relation5"/>
+    <link port="Flip.input" relation="relation5"/>
+    <link port="Flip.output" relation="relation7"/>
 </entity>

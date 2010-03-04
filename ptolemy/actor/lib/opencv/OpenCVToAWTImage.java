@@ -1,4 +1,4 @@
-/* An actor that reads from images using Open Computer Vision (OpenCV)
+/* An actor that gets an image from an openCV object
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -28,11 +28,17 @@
 package ptolemy.actor.lib.opencv;
 
 import hypermedia.video.OpenCV;
-
+import java.awt.*;
+import java.awt.Component;
 import java.awt.Frame;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.image.MemoryImageSource;
-
+import javax.imageio.*;
+import java.io.File;
+import java.io.IOException;
+import java.lang.Object;
+import processing.core.*;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ObjectToken;
@@ -97,14 +103,12 @@ public class OpenCVToAWTImage extends Transformer {
                         + inputObject.getClass());
             }
             OpenCV openCV = (OpenCV)inputObject;
-            // Read the next frame.
-            openCV.read();
-            // create a new image from cv pixels data
+            PImage my_image = openCV.image();     
+            Image output_image;
             MemoryImageSource mis = new MemoryImageSource(
-                    openCV.width, openCV.height, openCV.pixels(), 0, openCV.width );
-            Image image = _dummyFrame.createImage( mis );
-
-            output.send(0, new AWTImageToken(image));
+					my_image.width, my_image.height, my_image.pixels, 0, my_image.width);
+			output_image = _dummyFrame.createImage(mis);
+			output.send(0, new AWTImageToken(output_image));
         }
     }
    
