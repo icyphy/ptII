@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1395,10 +1396,13 @@ public class CCodeGenerator extends CodeGenerator {
         List templateList = new LinkedList();
 
         // 1. Look for a .mk.in file with the same name as the model.
-        URIAttribute uriAttribute = (URIAttribute) _model.getAttribute("_uri",
-                URIAttribute.class);
-        if (uriAttribute != null) {
-            String uriString = uriAttribute.getURI().toString();
+        //URIAttribute uriAttribute = (URIAttribute) _model.getAttribute("_uri",
+        //        URIAttribute.class);
+        //if (uriAttribute != null) {
+        URI uri = URIAttribute.getModelURI(_model);
+        if (uri != null) {
+            //uriAttribute.getURI().toString();
+            String uriString = uri.toString();
             templateList.add(uriString.substring(0,
                     uriString.lastIndexOf("/") + 1)
                     + _sanitizedModelName + ".mk.in");
