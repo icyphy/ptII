@@ -132,10 +132,12 @@ PTII_TOPDIR=	.cshrc \
 		thales \
 		util \
 		vergil.jnlp.in \
+		vergilBCVTB.jnlp.in \
 		vergilDSP.jnlp.in \
 		vergilHyVisual.jnlp.in \
 		vergilPtiny.jnlp.in \
 		vergilPtinySandbox.jnlp.in \
+		vergilSpace.jnlp.in \
 		vergilVisualSense.jnlp.in
 
 # Location of the SVN Repository
