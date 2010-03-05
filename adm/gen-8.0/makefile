@@ -224,7 +224,7 @@ release_mac:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup_mac_jar
 
 release_mac_setup:
-	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar setup_mac_jar
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar setup_mac_app
 
 release_mac2:
 	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar src.jar
@@ -910,8 +910,8 @@ update_windows: ptII$(WINDOWS_VERSION)_src.zip
 	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip bennett:$(PTII_FTP)
 
 PTSETUP_MAC=ptII$(VERSION).setup.mac
-update_mac: $(PTSETUP_MAC).jar
-	scp -p $(PTSETUP_MAC).jar bennett:$(PTII_FTP)
+update_mac: $(PTSETUP_MAC).dmg
+	scp -p $(PTSETUP_MAC).dmg bennett:$(PTII_FTP)
 
 ptII$(WINDOWS_VERSION)_src.zip:
 	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
@@ -2501,7 +2501,7 @@ full_jars:
 ########################################################################
 # Mac installer
 ptsetup_mac: $(PTSETUP_MAC).xml
-$(PTSETUP_MAC).xml: $(PTSETUP).xml makefile macOSInclude.awk
+$(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
 	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
 	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
@@ -2529,6 +2529,12 @@ $(PTINY_APP):
 		(cd src/ptII$(VERSION); PTII=$(PTII)/adm/gen-$(MAJOR_VERSION)/src/ptII$(VERSION) ./configure; cd bin;  make Ptiny.app Vergil.app); \
         fi
 
+IZPACK2APP=$(IZPACKDIR)/utils/wrappers/izpack2app/izpack2app.py
+setup_mac_app: $(PTSETUP_MAC).app
+$(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
+	python $(IZPACK2APP) $^ $@ 
+	#cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
+	
 ######################################################################
 # Web Start Applets
 #
