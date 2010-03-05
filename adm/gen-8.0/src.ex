@@ -275,6 +275,7 @@ ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/verification/SystemGeneratedTempFolder*
 ptolemy/verification/demo/SimpleTrafficLight/stl.kripke
 updateMoMLFiles.xml
+socket.cfg
 devel
 htmlchek*
 fmfilesvisited
