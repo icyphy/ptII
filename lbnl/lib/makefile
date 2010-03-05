@@ -44,6 +44,7 @@ include $(CONFIG)
 
 MISC_FILES = \
 	defines.h \
+	labview \
 	matlab \
 	util
 
