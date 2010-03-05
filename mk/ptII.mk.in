@@ -297,6 +297,10 @@ JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-e
 # Jar files for Java Media Framework (JMF) used by ptolemy/actor/lib/makefile
 JMF_JARS =	@JMF_JARS@
 
+# Java Native Access jar file (jna.jar).  See
+# https://jna.dev.java.net/.  Used in ptolemy/actor/lib/opencv
+JNA_JAR =	@JNA_JAR@
+
 # Jar file that contains Joystick interface,
 # see http://sourceforge.net/projects/javajoystick/
 JOYSTICK_JAR =	@JOYSTICK_JAR@
@@ -316,6 +320,9 @@ KEYTOOL =	@KEYTOOL@
 # The Kieler jar file, used to layout models
 KIELER_JAR =	@KIELER_JAR@
 
+# Jar files for Open Computer Vision (OpenCV), used in ptolemy.actor.lib.opencv/makefile
+OPENCV_JAR =	@OPENCV_JAR@
+
 # The major type of OS we are running under.
 # Under all forms Windows, this should be Windows; ynder Linux: Linux, etc.
 # Used in ptolemy/matlab/makefile
@@ -327,6 +334,9 @@ MATLAB_DIR = 	@MATLAB_DIR@
 
 # Location of Matlab's engine libraries (libeng.so, libmx.so)
 MATLAB_LIBDIR =	@MATLAB_LIBDIR@
+
+# Location of Matlab's engine libraries (libeng.so, libmx.so) (64 bit)
+MATLAB_64LIBDIR =	@MATLAB_64LIBDIR@
 
 # Set to the BSH jar file and used to compile org/mlc
 PTBSH_JAR = @PTBSH_JAR@
@@ -414,6 +424,13 @@ PTDISTRIBUTED_PACKAGES = @PTDISTRIBUTED_PACKAGES@
 # $PTII/doc if tools.jar can be found.
 PTDOCLETS_DIR =		@PTDOCLETS_DIR@ 	
 
+# PTEXCEL_DIR is set to excel and used in
+# $PTII/ptolemy/actor/lib/makefile if jxl was found
+PTEXCEL_DIR=	@PTEXCEL_DIR@
+
+# PTEXCEL_PACKAGES is used in doc/makefile
+PTEXCEL_PACKAGES=	@PTEXCEL_PACKAGES@
+
 # Set to fuzzy and used in
 # $PTII/ptolemy/actor/lib/logic/makefile if fuzzy/FuzzyEngine.class was found
 PTFUZZY_DIR = @PTFUZZY_DIR@
@@ -451,6 +468,9 @@ JAVACC_DIR =	@JAVACC_DIR@
 
 JJTREE =	"@JJTREE@"
 JAVACC =	"@JAVACC@"
+
+# The JavaCV jar file, used in actor/lib/opencv/javacv for computer vision
+JAVACV_JAR =	@JAVACV_JAR@
 
 # Mysql Java Database jar (mysql-connector-java-5.1.6-bin.jar),
 # used by domains/space and actor/lib/database
@@ -533,6 +553,14 @@ PTJAI_DIR =	@PTJAI_DIR@
 # PTJAI_PACKAGES is used in ptII/doc/makefile
 PTJAI_PACKAGES =	@PTJAI_PACKAGES@
 
+# Set to javacv and used in
+# $PTII/ptolemy/actor/lib/opencv/makefile if JavaCV was found
+PTJAVACV_DIR =	@PTJAVACV_DIR@
+
+# Ptolemy II packages that use JavaCV.
+# PTJAVACV_PACKAGES is used in ptII/doc/makefile
+PTJAVACV_PACKAGES =	@PTJAVACV_PACKAGES@ 
+
 # PTJMF_DIR is set to jmf if the JMF directory is found
 PTJMF_DIR =     @PTJMF_DIR@
 
@@ -593,6 +621,9 @@ PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 PTJOYSTICK_PACKAGES =	@PTJOYSTICK_PACKAGES@
 
+# Used in ptolemy/actor/lib/excel/makefile
+PTJXL_JAR=	@PTJXL_JAR@
+
 # PTJYTHON_DIR is set to python (FIXME: should be jython) and used in
 # $PTII/ptolemy/actor/lib/makefile if Jython was found.
 PTJYTHON_DIR=	@PTJYTHON_DIR@
@@ -604,6 +635,22 @@ PTJYTHON_PACKAGES = @PTJYTHON_PACKAGES@
 # Set to jxta and used in
 # $PTII/actor/lib/makefile if jxta.jar was found
 PTJXTA_DIR =	@PTJXTA_DIR@
+
+# Set to opencv and used in 
+# $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
+PTOPENCV_DIR = @PTOPENCV_DIR@
+
+# Ptolemy II packages that use OpenCV
+# PTOPENCV_PACKAGES is used in ptII/doc/makefile
+PTOPENCV_PACKAGES = @PTOPENCV_PACKAGES@
+
+# PTCGOPENCV_DIR is set to OpenCVTracking and used in 
+# $PTII/ptolemy/codegen/demo/makefile if opencv was found
+PTOPENCVCG_DIR = @PTOPENCVCG_DIR@
+
+# Directory that contains cv.h.
+# Used in $PTII/ptolemy/codegen/demo/makefile/OpenCVTracking
+PTOPENCV_INCLUDE_DIR = @PTOPENCV_INCLUDE_DIR@
 
 # Set to kieler and used in
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
@@ -638,6 +685,10 @@ PTMATLAB_DIR =	@PTMATLAB_DIR@
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
 PTMATLAB_LD_ARGS = @PTMATLAB_LD_ARGS@
+
+# Linker args for Matlab
+# $PTII/ptolemy/matlab/makefile (64 bit)
+PTMATLAB_64LD_ARGS = @PTMATLAB_64LD_ARGS@
 
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found

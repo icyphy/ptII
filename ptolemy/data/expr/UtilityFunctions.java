@@ -835,139 +835,25 @@ public class UtilityFunctions {
         } catch (UnsatisfiedLinkError ex) {
             String sharedLibrarySuffix = "dll";
 
-            // The name of the library (everything after the last /)
-            String shortLibraryName = null;
-
             String osName = StringUtilities.getProperty("os.name");
 
             if (osName.startsWith("SunOS") || osName.startsWith("Linux")
                     || osName.startsWith("Mac OS X")) {
 
                 if (osName.startsWith("Mac OS X")) {
-                    sharedLibrarySuffix = "dylib";
+                    // FIXME: we should also look for dylib?
+                    sharedLibrarySuffix = "jnilib";
+                    try {
+                        _loadLibrary(library, "jnilib", ex);
+                    } catch (Exception exMac) {
+                        _loadLibrary(library, "dylib", ex);
+                    }
+                    return;
                 } else {
                     sharedLibrarySuffix = "so";
                 }
-
-                // Under Solaris, libraries start with lib, so
-                // we find the last /, and if the next chars are not "lib"
-                // then we insert "lib".
-                int index = library.lastIndexOf("/");
-
-                if (index == -1) {
-                    if (!library.startsWith("lib")) {
-                        library = "lib" + library;
-                    }
-
-                    shortLibraryName = library;
-                } else {
-                    if (!library.substring(index, index + 4).equals("/lib")) {
-                        if (osName.startsWith("Linux")) {
-                            library = library.substring(index + 1);
-                            shortLibraryName = library;
-                        } else {
-                            // Under SunOS and Mac OS X, we add lib to
-                            // the path.  If we don't do this on the Mac,
-                            // then libptymatlab.dynlib will not be found.
-                            shortLibraryName = "/lib"
-                                    + library.substring(index + 1);
-                            library = library.substring(0, index)
-                                    + shortLibraryName;
-                        }
-                    }
-                }
-            } else {
-                // Windows
-                int index = library.lastIndexOf("/");
-
-                if (index != -1) {
-                    // Everything after the trailing /
-                    shortLibraryName = library.substring(index + 1);
-                }
             }
-
-            String libraryWithSuffix = library + "." + sharedLibrarySuffix;
-
-            String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
-
-            boolean libraryPathExists = false;
-
-            try {
-                // It turns out that when looking for libraries under
-                // InstallAnywhere, findFile() can somehow end up returning
-                // a bogus value in C:/Documents and Settings
-                File libraryPathFile = new File(libraryPath);
-
-                if (libraryPathFile.exists()) {
-                    libraryPathExists = true;
-                }
-            } catch (Throwable throwable) {
-                // Ignore, the file can't be found
-            }
-
-            if (libraryPath.equals(libraryWithSuffix) || !libraryPathExists) {
-                try {
-                    // findFile did not find the library, so we try using
-                    // just the short library name.  This is necessary
-                    // for Web Start because Web Start requires that
-                    // native code be in the top level of a jar file
-                    // that is specially marked.  Matlab under Web Start
-                    // requires this.
-                    if (shortLibraryName != null) {
-                        System.loadLibrary(shortLibraryName);
-                    }
-                    return;
-                } catch (UnsatisfiedLinkError ex2) {
-                    // We ignore ex2 and report the original error.
-                    // UnsatisfiedLinkError does not have a (String, Throwable)
-                    // constructor, so we call initCause().
-                    String userDir = "<<user.dir unknown>>";
-
-                    try {
-                        userDir = System.getProperty("user.dir");
-                    } catch (Throwable throwable) {
-                        // Ignore.
-                    }
-
-                    String userHome = "<<user.home unknown>>";
-
-                    try {
-                        userHome = System.getProperty("user.home");
-                    } catch (Throwable throwable) {
-                        // Ignore.
-                    }
-
-                    String classpath = "<<classpath unknown>>";
-
-                    try {
-                        classpath = System.getProperty("java.class.path");
-                    } catch (Throwable throwable) {
-                        // Ignore.
-                    }
-
-                    Error error = new UnsatisfiedLinkError("Did not find '"
-                            + library + "' in path, searched " + "user.home ("
-                            + userDir + ") user.dir (" + userHome
-                            + ") and the classpath for '" + libraryPath
-                            + "', but that was not found either.\n"
-                            + "The Java classpath was: " + classpath
-                            + "\nIn addition, loadLibrary(\""
-                            + shortLibraryName
-                            + "\") was called, the exception for the "
-                            + "loadLibrary() call was: " + ex2);
-
-                    error.initCause(ex);
-                    throw error;
-                }
-            }
-
-            // System.loadLibrary() does not handle pathnames with separators.
-            // If we get to here and load a library that includes references
-            // to libraries not in the PATH or LD_LIBRARY_PATH, then we will
-            // get and UnsatisfiedLinkError on the file we depend on.
-            // For example, if liba.so uses libb.so and we call this
-            // method on a, then libb.so will not be found.
-            System.load(libraryPath);
+            _loadLibrary(library, sharedLibrarySuffix, ex);
         }
     }
 
@@ -1939,6 +1825,164 @@ public class UtilityFunctions {
         }
 
         return result;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Load a shared library
+     *  @param library the name of the library to be loaded.  The name
+     *  should not include the platform dependent suffix.
+     *  @param sharedLibrarySuffix The suffix for the shared library, without the dot.
+     *  Under Windows, this would be ".dll", under Mac OS X, "jnilib" or "dylib",
+     *  under Solaris or Linux, ".o".
+     *  @param throwable The throwable that occured when System.load() or System.loadLibrary()
+     *  was called.
+     */
+    private static void _loadLibrary(String library, String sharedLibrarySuffix,
+            Throwable throwable) {
+        // We have a separate method here so that we can call it with
+        // jnilib and then with dylib because under Web Start on Mac OS X 10.5
+        // with Java 10.5, shared libraries need to have a .jnilib extension.  Sigh.
+
+        // The name of the library (everything after the last /)
+        String shortLibraryName = null;
+
+        String osName = StringUtilities.getProperty("os.name");
+        if (osName.startsWith("SunOS") || osName.startsWith("Linux")
+                || osName.startsWith("Mac OS X")) {
+        // Under Solaris, libraries start with lib, so
+        // we find the last /, and if the next chars are not "lib"
+        // then we insert "lib".
+
+            int index = library.lastIndexOf("/");
+
+            if (index == -1) {
+                if (!library.startsWith("lib")) {
+                    library = "lib" + library;
+                }
+
+                shortLibraryName = library;
+            } else {
+                if (!library.substring(index, index + 4).equals("/lib")) {
+                    if (osName.startsWith("Linux")) {
+                        library = library.substring(index + 1);
+                        shortLibraryName = library;
+                    } else {
+                        // Under SunOS, we add lib to
+                        // the path.  If we don't do this on the Mac,
+                        // then libptymatlab.dynlib will not be found.
+                        shortLibraryName = "/lib"
+                            + library.substring(index + 1);
+                        library = library.substring(0, index)
+                            + shortLibraryName;
+                    }
+                }
+            }
+        } else {
+            // Windows
+            int index = library.lastIndexOf("/");
+
+            if (index != -1) {
+                // Everything after the trailing /
+                
+            }
+        }
+
+        String libraryWithSuffix = library + "." + sharedLibrarySuffix;
+        String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
+        boolean libraryPathExists = false;
+
+        try {
+            // It turns out that when looking for libraries under
+            // InstallAnywhere, findFile() can somehow end up returning
+            // a bogus value in C:/Documents and Settings
+            File libraryPathFile = new File(libraryPath);
+            if (libraryPathFile.exists()) {
+                libraryPathExists = true;
+            }
+        } catch (Throwable throwable2) {
+            // Ignore, the file can't be found
+        }
+
+        if (libraryPath.equals(libraryWithSuffix) || !libraryPathExists) {
+            try {
+                // findFile did not find the library, so we try using
+                // just the short library name.  This is necessary
+                // for Web Start because Web Start requires that
+                // native code be in the top level of a jar file
+                // that is specially marked.  Matlab under Web Start
+                // requires this.
+                if (shortLibraryName != null) {
+                    System.loadLibrary(shortLibraryName);
+                }
+                return;
+            } catch (UnsatisfiedLinkError ex2) {
+                String shortLibraryName2 = shortLibraryName;
+                try {
+                    int index = shortLibraryName2.lastIndexOf("/");
+                    if (index != -1) {
+                        shortLibraryName2 = shortLibraryName2.substring(index + 1);
+                    }
+                    index = shortLibraryName2.lastIndexOf("lib");
+                    if (index != -1) {
+                        shortLibraryName2 = shortLibraryName2.substring(index + 3);
+                    }
+                    System.loadLibrary(shortLibraryName2);
+                    return;
+                } catch (UnsatisfiedLinkError ex3) {
+                    // UnsatisfiedLinkError does not have a (String, Throwable)
+                    // constructor, so we call initCause().
+                    String userDir = "<<user.dir unknown>>";
+                    try {
+                        userDir = System.getProperty("user.dir");
+                    } catch (Throwable throwable3) {
+                        // Ignore.
+                    }
+
+                    String userHome = "<<user.home unknown>>";
+                    try {
+                        userHome = System.getProperty("user.home");
+                    } catch (Throwable throwable3) {
+                        // Ignore.
+                    }
+
+                    String classpath = "<<classpath unknown>>";
+                    try {
+                        classpath = System.getProperty("java.class.path");
+                    } catch (Throwable throwable3) {
+                        // Ignore.
+                    }
+
+                    Error error = new UnsatisfiedLinkError("Did not find '"
+                            + library + "' in path, searched " + "user.home ("
+                            + userDir + ") user.dir (" + userHome
+                            + ") and the classpath for '" + libraryPath
+                            + "', but that was not found either.\n"
+                            + "The Java classpath was: " + classpath
+                            + "\nIn addition, loadLibrary(\""
+                            + shortLibraryName
+                            + "\") was called, the exception for the "
+                            + "loadLibrary() call was: " + ex2
+                            + (shortLibraryName.equals(shortLibraryName2) ? ""
+                                    : "\nAlso, loadlibrary(\""
+                                    + shortLibraryName2 + "\") was called, "
+                                    + "the exception  for the loadLibrary call was: "
+                                    + ex3));
+                    error.initCause(throwable);
+                    error.printStackTrace();
+                    throw error;
+                }
+            }
+        }
+
+        // System.loadLibrary() does not handle pathnames with separators.
+        // If we get to here and load a library that includes references
+        // to libraries not in the PATH or LD_LIBRARY_PATH, then we will
+        // get and UnsatisfiedLinkError on the file we depend on.
+        // For example, if liba.so uses libb.so and we call this
+        // method on a, then libb.so will not be found.
+        System.load(libraryPath);
     }
 
     ///////////////////////////////////////////////////////////////////

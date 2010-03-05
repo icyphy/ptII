@@ -116,12 +116,41 @@ include $(ROOT)/mk/ptcommon.mk
 
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
 $(PTLIB): ptmatlab.cc Engine.class
+	if [ "`uname -s`" = "Darwin" ]; then \
+	    $(MAKE) $(MAC_UNIVERSAL_LIB); \
+	    mv $(MAC_UNIVERSAL_LIB) $@; \
+	    file $@; \
+        else \
+	    CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine; \
+	    "$(PTMATLAB_CC)" $(PTMATLAB_CC_FLAGS) \
+		"-I$(MATLAB_DIR)/extern/include" \
+		"-I$(PTJNI_INCLUDE)" \
+		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
+		$(PTMATLAB_LD_ARGS); \
+        fi
+
+PTLIB_32 = $(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab32.$(PTJNI_SHAREDLIBRARY_SUFFIX)
+PTLIB_64 = $(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab64.$(PTJNI_SHAREDLIBRARY_SUFFIX)
+$(PTLIB_32): ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine
 	"$(PTMATLAB_CC)" $(PTMATLAB_CC_FLAGS) \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJNI_INCLUDE)" \
 		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
 		$(PTMATLAB_LD_ARGS)
+
+$(PTLIB_64): ptmatlab.cc Engine.class
+	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine
+	"$(PTMATLAB_CC)" $(PTMATLAB_CC_FLAGS) -m64 \
+		"-I$(MATLAB_DIR)/extern/include" \
+		"-I$(PTJNI_INCLUDE)" \
+		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
+		$(PTMATLAB_64LD_ARGS);
+
+MAC_UNIVERSAL_LIB = $(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlabUniversal.$(PTJNI_SHAREDLIBRARY_SUFFIX)
+mac_universal_lib: $(MAC_UNIVERSAL_LIB)
+$(MAC_UNIVERSAL_LIB): $(PTLIB_32) $(PTLIB_64)
+	lipo -create -arch i386 $(PTLIB_32) -arch x86_64 $(PTLIB_64) -o $@
 
 # Rule to build under Microsoft Visual C
 $(PTLIB)_msvc: ptmatlab.cc Engine.class
