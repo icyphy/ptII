@@ -34,15 +34,19 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.Time;
@@ -56,6 +60,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
@@ -92,7 +97,8 @@ public class GRODirector extends StaticSchedulingDirector implements
      */
     public GRODirector(GLCapabilities capabilities, int width, int height) {
         
-            addGLEventListener(this);
+            // FIXME: The next line does not compile
+            // addGLEventListener(this);
     }
 
     /**
@@ -272,7 +278,9 @@ public class GRODirector extends StaticSchedulingDirector implements
         return time;
     }
 
-    
+    public GL getGL() {
+        throw new InternalErrorException("getGL is not implememnted");
+    }
 
     /**
      * Initialize all the actors associated with this director. Perform some
@@ -423,7 +431,7 @@ public class GRODirector extends StaticSchedulingDirector implements
     public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width,
             int height) {
         
-        final GL gl = drawable.getGL();
+        final GL gl = gLDrawable.getGL();
         gl.glViewport(0, 0, width, height);
 
         
@@ -712,6 +720,11 @@ public class GRODirector extends StaticSchedulingDirector implements
             GL gl = _director.getGL();
             gl.glPushMatrix();
         }
+    }
+
+    public void init(GLAutoDrawable arg0) {
+        // TODO Auto-generated method stub
+        
     }
 
 }
