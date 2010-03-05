@@ -10,6 +10,13 @@
             class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/ptinyKepler/intro.htm"/>
 
+  <!-- Remove the code generator from Ptiny -->
+  <property name="_classesToRemove" class="ptolemy.data.expr.Parameter"
+	    value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;}">
+    <doc>An array of Strings, where each element names a class
+      to removed by the MoMLFilter.</doc>
+  </property>
+
   <!-- Specify the help file to open. -->
   <property name="_help"
             class="ptolemy.data.expr.FileParameter"
