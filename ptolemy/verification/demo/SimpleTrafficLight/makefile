@@ -50,6 +50,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	PedestrianLightNormal.xml \
 	SimpleTrafficLight.xml \
+	SimpleTrafficLight_v4.xml \
 	SimpleTrafficLightBooleanToken.xml \
 	SimpleTrafficLightGraphicalSpec.xml \
 	SimpleTrafficLightSMVModule.xml \
