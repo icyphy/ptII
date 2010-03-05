@@ -725,6 +725,7 @@ LIBEXPAT_LIB_DIR
 MAJOR_OS_NAME
 MATLAB_DIR
 MATLAB_LIBDIR
+MATLAB_64LIBDIR
 MYSQL_JAR
 OPENCV_JAR
 ORACLE_OJDBC_JAR
@@ -818,6 +819,7 @@ PTLIBEXPAT_DIR
 PTMATLAB_CC_FLAGS
 PTMATLAB_DIR
 PTMATLAB_LD_ARGS
+PTMATLAB_64LD_ARGS
 PTMESCAL_DIR
 PTPDFRENDERER_DIR
 PTPDFRENDERER_JAR
@@ -8302,7 +8304,7 @@ echo "$as_me: WARNING: Failed to find PTII/vendors/misc/javacv-bin/javacv.jar
     You need only download JavaCV if you plan on using the actors in
     in ptolemy/actor/lib/opencv/JavaCV
     JavaCV may be downloaded from http://code.google.com/p/javacv/" >&2;}
-    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv"
+    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
   	         # Note that we don't substitute in the ${PTII} here
    	         JAVACV_JAR='${PTII}/vendors/misc/javacv-bin/javacv.jar'
             fi
@@ -8327,7 +8329,7 @@ echo "$as_me: WARNING: Failed to find $PTII/lib/jna.jar,
     vision actors in ptolemy/actor/lib/opencv/javacv.
     These actors are optional, but require JNA.
     For more information about JNA, see https://jna.dev.java.net/" >&2;}
-    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv"
+    	         ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
     	    fi
 
 
@@ -9394,7 +9396,7 @@ echo $ECHO_N "checking for the proper shared library suffix... $ECHO_C" >&6; }
 	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
 	    Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=dylib;;
+	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib;;
 	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
         esac
         if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
@@ -9778,6 +9780,7 @@ echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
 			;;
 		Darwin)
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/maci
+			MATLAB_64LIBDIR=${MATLAB_DIR}/bin/maci64
 			;;
 		*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
@@ -9892,7 +9895,8 @@ echo "$as_me: WARNING: Failed to find MSVC cl or GNU gcc, so we will
 		    fi
                 else
 		    if test $PTJNI_ARCHITECTURE = "darwin"; then
-		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
+		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab32.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
+		        PTMATLAB_64LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab64.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_64LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
 		    else
 		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx -lmex"
 		        if test "`uname -m`" = "x86_64"; then
@@ -11558,7 +11562,7 @@ fi
 # Set to the directory that contains expat.h and used in $PTII/lbnl/lib/util
 
 
-# Set to the directory that contains libexpat.{so,dylib,dll} and used in $PTII/lbnl/lib/util
+# Set to the directory that contains libexpat.{so,jnilib,dll} and used in $PTII/lbnl/lib/util
 
 
 # The major type of OS we are running under.
@@ -11571,6 +11575,9 @@ fi
 
 
 # Set the location of Matlab's engine libraries
+
+
+# Set the location of Matlab's engine libraries (64bit)
 
 
 # Mysql Java Database jar (mysql-connector-java-5.1.6-bin.jar),
@@ -11914,6 +11921,10 @@ fi
 
 # Set to matlab and used in
 # $PTII/ptolemy/makefile if the Matlab was found.
+
+
+# Linker args for Matlab
+# $PTII/ptolemy/matlab/makefile
 
 
 # Linker args for Matlab
@@ -12860,6 +12871,7 @@ LIBEXPAT_LIB_DIR!$LIBEXPAT_LIB_DIR$ac_delim
 MAJOR_OS_NAME!$MAJOR_OS_NAME$ac_delim
 MATLAB_DIR!$MATLAB_DIR$ac_delim
 MATLAB_LIBDIR!$MATLAB_LIBDIR$ac_delim
+MATLAB_64LIBDIR!$MATLAB_64LIBDIR$ac_delim
 MYSQL_JAR!$MYSQL_JAR$ac_delim
 OPENCV_JAR!$OPENCV_JAR$ac_delim
 ORACLE_OJDBC_JAR!$ORACLE_OJDBC_JAR$ac_delim
@@ -12942,7 +12954,6 @@ PTJYTHON_PACKAGES!$PTJYTHON_PACKAGES$ac_delim
 PTJXTA_DIR!$PTJXTA_DIR$ac_delim
 PTOPENCV_DIR!$PTOPENCV_DIR$ac_delim
 PTOPENCVCG_DIR!$PTOPENCVCG_DIR$ac_delim
-PTOPENCV_INCLUDE_DIR!$PTOPENCV_INCLUDE_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -12984,6 +12995,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTOPENCV_INCLUDE_DIR!$PTOPENCV_INCLUDE_DIR$ac_delim
 PTOPENCV_PACKAGES!$PTOPENCV_PACKAGES$ac_delim
 PTKIELER_DIR!$PTKIELER_DIR$ac_delim
 PTKVM_DIR!$PTKVM_DIR$ac_delim
@@ -12994,6 +13006,7 @@ PTLIBEXPAT_DIR!$PTLIBEXPAT_DIR$ac_delim
 PTMATLAB_CC_FLAGS!$PTMATLAB_CC_FLAGS$ac_delim
 PTMATLAB_DIR!$PTMATLAB_DIR$ac_delim
 PTMATLAB_LD_ARGS!$PTMATLAB_LD_ARGS$ac_delim
+PTMATLAB_64LD_ARGS!$PTMATLAB_64LD_ARGS$ac_delim
 PTMESCAL_DIR!$PTMESCAL_DIR$ac_delim
 PTPDFRENDERER_DIR!$PTPDFRENDERER_DIR$ac_delim
 PTPDFRENDERER_JAR!$PTPDFRENDERER_JAR$ac_delim
@@ -13039,7 +13052,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 53; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 55; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
