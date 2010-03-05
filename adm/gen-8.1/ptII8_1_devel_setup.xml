@@ -391,6 +391,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/verification"/>
             <file src="../../jar_dist/ptolemy/verification/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/verification/demo"/>
+            <file src="../../jar_dist/ptolemy/codegen/rtmaude/rtmaude.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/codegen/rtmaude"/>
             <file src="../../jar_dist/ptolemy/domains/ptera/ptera.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ptera"/>
             <file src="../../jar_dist/ptolemy/domains/ptera/demo/demo.jar"
