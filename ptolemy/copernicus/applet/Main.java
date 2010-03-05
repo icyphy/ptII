@@ -67,6 +67,7 @@ public class Main extends KernelMain {
                 "targetPackage:" + _targetPackage + " modelPath:" + _modelPath
                         + " outputDirectory:" + _outputDirectory
                         + " ptIIJarsPath:" + _ptIIJarsPath
+                        + " ptIILocalURL:" + _ptIILocalURL
                         + " ptIIUserDirectory:" + _ptIIUserDirectory
                         + " targetPath:" + _targetPath);
         System.out.println("applet.Main.addTransforms, targetPath: "
@@ -82,6 +83,7 @@ public class Main extends KernelMain {
         _modelPath = attribute.getParameter("modelPath");
         _outputDirectory = attribute.getParameter("outputDirectory");
         _ptIIJarsPath = attribute.getParameter("ptIIJarsPath");
+        _ptIILocalURL = attribute.getParameter("ptIILocalURL");
         _ptIIUserDirectory = attribute.getParameter("ptIIUserDirectory");
         _targetPackage = attribute.getParameter("targetPackage");
         _targetPath = attribute.getParameter("targetPath");
@@ -99,6 +101,8 @@ public class Main extends KernelMain {
     private String _outputDirectory = "unsetParameter";
 
     private String _ptIIJarsPath = "unsetParameter";
+
+    private String _ptIILocalURL = "unsetParameter";
 
     private String _ptIIUserDirectory = "unsetParameter";
 

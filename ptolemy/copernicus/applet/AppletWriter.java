@@ -155,12 +155,12 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     /** Return the declared options.  The declared options for
      *  this transformer is the string
      *  <pre>
-     *  modelPath outputDirectory ptIIJarsPath ptIIUserDirectory targetPackage targetPath templateDirectory
+     *  modelPath outputDirectory ptIIJarsPath ptIILocalURL ptIIUserDirectory targetPackage targetPath templateDirectory
      *  </pre>
      *  @return the declared options.
      */
     public String getDeclaredOptions() {
-        return "modelPath outputDirectory ptIIJarsPath ptIIUserDirectory targetPackage targetPath templateDirectory";
+        return "modelPath outputDirectory ptIIJarsPath ptIILocalURL ptIIUserDirectory targetPackage targetPath templateDirectory";
     }
 
     /** Return the phase name.  The phase name of
@@ -215,6 +215,23 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + "'ptolemy.ptII.dir'" + " property.  Vergil should be "
                     + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
         }
+
+	// The URL, usually a URL that refers to the _outputDirectory,
+	// except when we are deploying
+	_ptIILocalURL = PhaseOptions.getString(options,
+                "ptIILocalURL");
+	if (_ptIILocalURL == null) {
+	    try {
+		_ptIILocalURL = new URL(new File(
+					       _outputDirectory).toURI().toURL(), _codeBase).toString();
+		} catch (Exception ex) {
+		throw new InternalErrorException(null, ex,
+						 "Failed to create URL for \"" + _outputDirectory + "\"");
+	    }
+	} else {
+	    System.out.println("AppletWriter: ptIILocalURL = "
+			       + _ptIILocalURL);
+	}
 
         _ptIIUserDirectory = PhaseOptions.getString(options,
                 "ptIIUserDirectory");
@@ -511,14 +528,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@outputDirectory@", _outputDirectory);
         _substituteMap.put("@sanitizedModelName@", _sanitizedModelName);
         _substituteMap.put("@ptIIJarsPath@", _ptIIJarsPath);
+	_substituteMap.put("@ptIILocalURL@", _ptIILocalURL);
         _substituteMap.put("@ptIIUserDirectory@", _ptIIUserDirectory);
-        try {
-            _substituteMap.put("@ptIILocalURL@", new URL(new File(
-                    _outputDirectory).toURI().toURL(), _codeBase).toString());
-        } catch (Exception ex) {
-            throw new InternalErrorException(null, ex,
-                    "Failed to create URL for \"" + _outputDirectory + "\"");
-        }
         _substituteMap.put("@targetPath@", _targetPath);
         _substituteMap.put("@vergilHeight@", Integer.toString(vergilHeight));
         _substituteMap.put("@vergilJarFiles@", _vergilJarFiles);
@@ -1510,8 +1521,10 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         }
         if (jarFilesThatHaveBeenRequired
                 .contains("ptolemy/distributed/domains/sdf/sdf.jar")) {
-            auxiliaryClassMap.put("distributes sdf.jar needs regular sdf.jar",
+            auxiliaryClassMap.put("distributed sdf.jar needs regular sdf.jar",
                     "ptolemy/domains/sdf/sdf.jar");
+            auxiliaryClassMap.put("distributed sdf.jar needs client.jar",
+                    "ptolemy/distributed/client/client.jar");
         }
         if (jarFilesThatHaveBeenRequired.contains(gtJar)
                 || jarFilesThatHaveBeenRequired
@@ -1721,10 +1734,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             try {
                 fileInputStream = new FileInputStream(
                         keystorePropertiesFileName);
+		System.out.println("Reading properties file: "
+				   + keystorePropertiesFileName);
                 properties.load(fileInputStream);
+		System.out.println("Properties: " + properties);
                 String property = null;
                 if ((property = properties.getProperty("keystoreFileName")) != null) {
                     keystoreFileName = property;
+		    System.out.println("keystoreFileName: " + keystoreFileName);
                 }
                 storePassword = properties.getProperty("storePassword");
                 keyPassword = properties.getProperty("keyPassword");
@@ -2061,8 +2078,13 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     // $PTII/signed.
     private String _ptIIJarsPath;
 
-    // The top level directory in which to write code.  The default value is the value
-    // of the ptolemy.ptII.dir Java sytem property.  The code app
+    // The URL, usually a URL that refers to the _outputDirectory,
+    // except when we are deploying, when it is a url like
+    // http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.beta
+    private String _ptIILocalURL;
+
+    // The top level directory in which to write code.  The default
+    // value is the value of the ptolemy.ptII.dir Java sytem property.
     private String _ptIIUserDirectory;
 
     // Map used to map @model@ to MyModel.
