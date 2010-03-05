@@ -29,6 +29,7 @@ package ptolemy.codegen.rtmaude.kernel;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -147,7 +148,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _writer.print("{");
-        _printChildrenSeparated(node, ", ");
+        _printChildrenSeparated(node, ", ", false);
         _writer.print("}");
     }
 
@@ -157,7 +158,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         _writer.print("(");
-        _printChildrenSeparated(node, node.getOperator().image);
+        _printChildrenSeparated(node, node.getOperator().image, true);
         _writer.print(")");
     }
 
@@ -167,7 +168,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         _writer.print("(");
-        _printChildrenSeparated(node, node.getOperator().image);
+        _printChildrenSeparated(node, node.getOperator().image, true);
         _writer.print(")");
     }
 
@@ -177,7 +178,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         _writer.print("(");
-        _printChildrenSeparated(node, "^");
+        _printChildrenSeparated(node, "^", true);
         _writer.print(")");
     }
 
@@ -197,7 +198,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         _writer.print("(");
-        _printChildrenSeparated(node, node.getOperator().image);
+        _printChildrenSeparated(node, node.getOperator().image, true);
         _writer.print(")");
     }
 
@@ -207,7 +208,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         _writer.print("(");
-        _printChildrenSeparated(node, node.getOperator().image);
+        _printChildrenSeparated(node, node.getOperator().image, true);
         _writer.print(")");
     }
 
@@ -379,6 +380,11 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
      */
     private void _printChildrenSeparated(ASTPtRootNode node, List separatorList)
             throws IllegalActionException {
+        
+        char[] lefts = new char[separatorList.size()];
+        Arrays.fill(lefts,'(');
+        _writer.print(lefts);           // starts with left parentheses
+        
         Iterator separators = separatorList.iterator();
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) {
@@ -388,6 +394,8 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
                                 + " ");
             }
             _printChild(node, i);
+            if (i > 0)
+                _writer.print(')');
         }
     }
 
@@ -398,13 +406,21 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
      * @param string The separator
      * @exception IllegalActionException
      */
-    private void _printChildrenSeparated(ASTPtRootNode node, String string)
+    private void _printChildrenSeparated(ASTPtRootNode node, String string, boolean paran)
             throws IllegalActionException {
+        if (paran) {
+            char[] lefts = new char[node.jjtGetNumChildren() - 1];
+            Arrays.fill(lefts,'(');
+            _writer.print(lefts);           // starts with left parentheses
+        }
+        
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             if (i > 0) {
                 _writer.print(" " + _transformOp(string) + " ");
             }
             _printChild(node, i);
+            if (paran && i > 0)
+                _writer.print(')');     // close a parenthesis.
         }
     }
 

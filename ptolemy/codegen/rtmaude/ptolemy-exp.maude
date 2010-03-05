@@ -4,21 +4,33 @@ It is typed language, but I assume that the type of translated
 expression is already correct.
 ---)----------------------------------
 
---- Identifiers for variable 
-fmod PTOLEMY-ID is
-  protecting QID .
-  sort VarId .
-  subsort Qid < VarId .
+--- simple K-computation definition
+fmod K-COMPUTATION is
+  sort KLabel .
+  sorts K KProper KResult .
+  subsorts KLabel KProper KResult < K .
+
+  op .K : -> K .
+  op _->_ : K K -> K [prec 50 assoc id: .K] .
+  op _->_ : KProper K -> KProper [ditto] .
+
+  sort Computation .
+  op k : K -> KResult .
 endfm
+
+--- Identifiers for variable 
+fmod PTOLEMY-ID is protecting QID .
+  sort VarId .
+endfm
+
+fmod PTOLEMY-VALUE-SORT is sort Value .  endfm
 
 --- Values of Ptolemy expression
 --- There are three categories of values: base, data structure, and closure
 --- In this module, basic and structured values are defined
 fmod PTOLEMY-VALUE is
   protecting CONVERSION .
-  protecting RAT .
-  protecting FLOAT .
-  protecting STRING .
+  protecting RAT + FLOAT + STRING .
   protecting PTOLEMY-ID .
 
   --- basic values one of rational number, float point number, and boolean.
@@ -82,6 +94,9 @@ fmod PTOLEMY-EXP is
 
   sort ProperExp .
   subsort VarId < ProperExp < Exp . --- variable is not a value
+
+  --- auxiliary function : get a list of free variable
+  op #FREEVARS : Exp -> VarIdList .
 
   --- function definition (closure). closure is also value
   --- FIXME: free variables in exp is ignored. Usually,
@@ -166,21 +181,6 @@ fmod PTOLEMY-EXP is
   subsort ProperExpList < ProperMatrix < Matrix .
   op _;_ : Matrix ProperMatrix -> ProperMatrix [ditto] .
   op _;_ : ProperMatrix Matrix -> ProperMatrix [ditto] .
-endfm
-
---- K-computation of ptolemy expression.
---- Basic definition for continuation-passing style
---- semantics of Ptolemy Expression
-fmod K-COMPUTATION is
-  sort K KLabel KResult KProper .
-  subsort KLabel KResult KProper < K .
-
-  op .K : -> K .
-  op _->_ : K K -> K [prec 50 assoc id: .K] .
-  op _->_ : KProper K -> KProper [ditto] .
-
-  sort Computation .
-  op k : K -> KResult .
 endfm
 
 --- A Ptolemy Exp environment is a map from
@@ -316,6 +316,7 @@ fmod PTOLEMY-STRICTNESS is
    = k(PL -> [EM [] EM'] -> K) .
   eq k(VL -> [EM [] EM'] -> K)
    = k(  [EM ; VL ; EM'] -> K) .
+---FIXME: bugs?
 endfm
 
 --- Computation of each expression.
@@ -423,6 +424,7 @@ fmod PTOLEMY-EXP-DEFINITION is
 -----------------------------
   
   --- default functions 
+  subsort Qid < VarId .
 
   ---FIXME : 'sin is not a value. closure?
   --- defined as base library

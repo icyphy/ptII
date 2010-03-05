@@ -1,0 +1,38 @@
+/***semantics_Const***/
+(tomod CONST is 
+  inc ACTOR .
+
+  class Const .
+      subclass Const < Actor .
+  eq ^ Const = Actor .
+
+  vars PORTS : Configuration .
+  var O : Oid . var REST : ObjectConfiguration .
+  var AM : AssignMap . var MEM : Memory .
+  var V : Value . var EV : Exp .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- compute given expression
+  eq prefire(Const, 
+    < O : Const | parameters : ('value |-> EV ; AM) >) 
+   = prefire(^ Const, 
+    < O : Const | store : ('value |-> k(EV)) >) .
+
+  eq portFixPoints(
+     < O : Const | 
+      status : enabled,
+      store : ('value |-> V ; MEM),
+      ports : < 'trigger : InPort | status : present > 
+              < 'output : OutPort | status : unknown > PORTS
+     > REST)
+   = portFixPoints(
+     < O : Const | 
+      ports : < 'trigger : InPort | > 
+              < 'output : OutPort | status : present, value : V > PORTS 
+     >
+     REST) .
+endtom)
+/**/

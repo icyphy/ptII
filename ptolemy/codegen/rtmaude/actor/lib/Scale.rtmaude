@@ -1,0 +1,39 @@
+/***semantics_Scale***/
+(tomod SCALE is 
+  inc ACTOR .
+
+  class Scale .
+      subclass Scale < Actor .
+  eq ^ Scale = Actor .
+
+  vars PORTS : Configuration .
+  var O : Oid . var REST : ObjectConfiguration .
+  var AM : AssignMap . var MEM : Memory .
+  var VF VL VI : Value . var EF EL : Exp .
+
+---------------------------------------------------------------------
+--- Semantics Steps
+---------------------------------------------------------------------
+
+  --- compute given expression
+  eq prefire(Scale, 
+    < O : Scale | parameters : ('factor |-> EF ; 'scaleOnLeft |-> EL ; AM) >) 
+   = prefire(^ Scale, 
+    < O : Scale | store : ('factor |-> k(EF) ; 'scaleOnLeft |-> k(EL)) >) .
+
+  eq portFixPoints(
+     < O : Scale | 
+      status : enabled,
+      store : ('factor |-> VF ; 'scaleOnLeft |-> VL ; MEM),
+      ports : < 'input : InPort | status : present, value : VI  > 
+              < 'output : OutPort | status : unknown > PORTS
+     > REST)
+   = portFixPoints(
+     < O : Scale | 
+      ports : < 'input : InPort | > 
+              < 'output : OutPort | status : present, 
+                                    value : if VL == # true then VF * VI else VI * VF fi > PORTS 
+     >
+     REST) .
+endtom)
+/**/
