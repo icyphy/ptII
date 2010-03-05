@@ -79,12 +79,35 @@ and continue with the start up.
 	  many years, even if more recent versions of the JRE are
 	  present
 
-	  <li>Under Windows, the JDK selection panel should have the
-	  proper default path.
-
 	  <li>The User should be offered the possibility of starting
 	  the application.
 
+	  <li>Windows installer issues:  
+          <ul>
+	  <li>Under Windows, the JDK selection panel should have the
+	  proper default path.
+          <li>The ptII8.0.beta Windows installer does not have the jre
+	    set up for jmf.
+          </ul>
+
+	  <li>Mac OS X installer issues:
+	    <ul> 
+	  <li>When the  download the Mac installer, it does not automatically open,
+	    The user has to go to the downloads folder and open it.
+	  <li>After installing, Vergil.app is rather hard to find.  <code>Vergil.app</code>
+	    is in <code>bin/</code>, the default location is
+	    <code>/Applications/Ptolemy/ptII8.0.beta/bin/Vergil.app</code>
+	    The reason we use this path is because if the user rebuilds, then the
+	    <code>Vergil.app</code> script will be generated in <code>bin/</code>
+	  <li>On the command line, the <code>open</code> command does not work. 
+	    <pre>
+	      open -a Vergil Adder.xml
+            </pre>
+	    it starts Vergil, but it doesn't open Adder.xml
+            </ul>
+	    To fix this would require having Ptolemy use Apple Java Extensions, much like
+	    Kepler does.  See also
+	    <a href="http://book.javanb.com/mac-os-x-for-java-geeks/0596004001_macxjvgks-chp-5.html#in_browser" target="_top"><code>http://book.javanb.com/mac-os-x-for-java-geeks/0596004001_macxjvgks-chp-5.html#macxjvgks-CHP-5</code></a>.
 	</ul>
 
 <li> Applet issues:
@@ -243,11 +266,6 @@ Attempted to find as a moml class, but got:
 	  <li> The SDF Bouncer demo: If the user drags the bouncing icon, it no
 	    longer bounces.
 	    <!-- $PTII/bin/vergil $PTII/ptolemy/actor/parameters/demo/Bouncer/Bouncer.xml -->
-	    <!-- Confirmed on 2/22/10 -->
-
-	  <li>The SDF JAI VQSequence demo produces stack traces on stdout.
-	    These are caused by actor.lib.gui.MatrixViewer.
-	    <!--  $PTII/bin/vergil $PTII/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml -->
 	    <!-- Confirmed on 2/22/10 -->
 
 	  <li> In HyVisual, the HSIF translater is merely a prototype,
@@ -440,7 +458,8 @@ has various restrictions and limitations:
   <li> IterateOverArray issues
      <menu>
         <li> <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=322#in_browser" target="_top">Bug #322: IterateOverArray has a Configuration clone problem</a>.
-    
+    	      <!-- Confirmed on 3/01/10 -->
+
 	<li> IterateOverArray: When you drop in an actor, and then
 	another actor, and then select "undo," the second actor is
 	deleted without the first one being re-created. Thus, undo is
@@ -527,8 +546,10 @@ User Interface.
   <li> When setting the type of a port, we should provide a combo
     box that lists the common ports
 
-  <li> When creating a Modal Model, use Control-Right-Button to
-    drawn arcs between nodes.  One potential workaround would
+  <li> When creating a Modal Model, to create a transition between
+    states, hold the (Mac: Command-Mouse-Button, Windows: Control-Right-Mouse-Button)
+    and drag from one state to another.  
+    One potential workaround would
     be to have an information message in the status bar about this.
 
   <li> You should not change the names of built in ports - The port
@@ -541,9 +562,6 @@ User Interface.
 
   <li> HTVQ demo is badly laid out when run under vergil.
   <li> Weak support for multiports in the graph editor.
-  <li> It is difficult to control wire routing.
-  <li> Cannot have more than one vertex in a connection.
-  <li> No mechanism to set the width of a relation.
   <li> The integrated web browser is not a full-featured browser.
   <li> Debugger not yet integrated.
   <li> It is difficult to add actors to the libraries.
