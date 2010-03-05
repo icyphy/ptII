@@ -262,6 +262,14 @@ $Id$
 	       <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).  The necessaryClassPath parameter may end up duplicating some of the elements of this parameter.</doc>
      </property>
 
+     <property name="ptIILocalURL" 
+               class="ptolemy.data.expr.StringParameter"
+	       value="$outputDirectory"
+	       >
+	       <doc> The URL, usually a URL that refers to the _outputDirectory,
+except when we are deploying, when it is a url like http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.beta.</doc>
+     </property>
+
      <property name="ptIIUserDirectoryAsURL" 
                class="ptolemy.data.expr.StringParameter"
 	       value="$ptIIUserDirectory"
