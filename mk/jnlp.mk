@@ -79,12 +79,12 @@ DOC_CODEDOC_JAR = \
 SIGNED_DIR =		signed
 
 lib/bcvtbMacOSX.jar:
-	if [ -f lib/libbcvtb.dylib ]; then \
+	if [ -f lib/libbcvtb.jnilib ]; then \
 		(cd lib; \
-	 	"$(JAR)" -cvf bcvtbMacOSX.jar libbcvtb.dylib); \
+	 	"$(JAR)" -cvf bcvtbMacOSX.jar libbcvtb.jnilib); \
 	else \
-		echo "$$PTII/libbcvtb.dylib does not exist creating dummy jar"; \
-		echo "$$PTII/lib/libbcvtb.dylib not found, see PTII/mk/jnlp.mk" \
+		echo "$$PTII/libbcvtb.jnilib does not exist creating dummy jar"; \
+		echo "$$PTII/lib/libbcvtb.jnilib not found, see PTII/mk/jnlp.mk" \
 			> lib/README_bcvtb.txt; \
 		(cd lib; \
                 "$(JAR)" -cvf bcvtbMacOSX.jar \
@@ -418,8 +418,7 @@ WIRELESS_JARS = \
 	ptolemy/domains/wireless/demo/demo.jar \
 	ptolemy/domains/wireless/doc/doc.jar
 
-FULL_8_1_JARS =
-DEVEL_FULL_8_1_JARS = \
+FULL_8_1_JARS = \
 	ptolemy/cg/cg.jar \
 	ptolemy/data/properties/properties.jar \
 	ptolemy/data/properties/lattice/imageOntology/demo/demo.jar \
@@ -428,7 +427,6 @@ DEVEL_FULL_8_1_JARS = \
 	ptolemy/data/ontologies/ontologies.jar \
 	ptolemy/vergil/ontologies/ontologies.jar \
 	ptolemy/domains/sequence/sequence.jar \
-	ptolemy/domains/sequence/demo/demo.jar \
 	ptolemy/domains/pthales/pthales.jar \
 	ptolemy/domains/pthales/demo/demo.jar
 

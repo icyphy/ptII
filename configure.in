@@ -3170,7 +3170,7 @@ else
 	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
 	    Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=dylib;;
+	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib;;
 	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
         esac
         PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
@@ -3446,6 +3446,7 @@ changequote([, ])dnl
 			;;
 		Darwin)
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/maci
+			MATLAB_64LIBDIR=${MATLAB_DIR}/bin/maci64
 			;;
 		*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
@@ -3475,7 +3476,8 @@ changequote([, ])dnl
 		    fi
                 else 
 		    if test $PTJNI_ARCHITECTURE = "darwin"; then
-		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
+		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab32.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
+		        PTMATLAB_64LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab64.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_64LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
 		    else
 		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx -lmex"
 		        if test "`uname -m`" = "x86_64"; then
@@ -4675,7 +4677,7 @@ AC_SUBST(LEJOS_DIR)
 # Set to the directory that contains expat.h and used in $PTII/lbnl/lib/util
 AC_SUBST(LIBEXPAT_INCLUDE_DIR)
 
-# Set to the directory that contains libexpat.{so,dylib,dll} and used in $PTII/lbnl/lib/util
+# Set to the directory that contains libexpat.{so,jnilib,dll} and used in $PTII/lbnl/lib/util
 AC_SUBST(LIBEXPAT_LIB_DIR)
 
 # The major type of OS we are running under.
@@ -4689,6 +4691,9 @@ AC_SUBST(MATLAB_DIR)
 
 # Set the location of Matlab's engine libraries
 AC_SUBST(MATLAB_LIBDIR)
+
+# Set the location of Matlab's engine libraries (64bit)
+AC_SUBST(MATLAB_64LIBDIR)
 
 # Mysql Java Database jar (mysql-connector-java-5.1.6-bin.jar),
 # used by domains/space and actor/lib/database
@@ -5036,6 +5041,10 @@ AC_SUBST(PTMATLAB_DIR)
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
 AC_SUBST(PTMATLAB_LD_ARGS)
+
+# Linker args for Matlab
+# $PTII/ptolemy/matlab/makefile
+AC_SUBST(PTMATLAB_64LD_ARGS)
 
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found

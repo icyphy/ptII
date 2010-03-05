@@ -335,6 +335,9 @@ MATLAB_DIR = 	@MATLAB_DIR@
 # Location of Matlab's engine libraries (libeng.so, libmx.so)
 MATLAB_LIBDIR =	@MATLAB_LIBDIR@
 
+# Location of Matlab's engine libraries (libeng.so, libmx.so) (64 bit)
+MATLAB_64LIBDIR =	@MATLAB_64LIBDIR@
+
 # Set to the BSH jar file and used to compile org/mlc
 PTBSH_JAR = @PTBSH_JAR@
 
@@ -682,6 +685,10 @@ PTMATLAB_DIR =	@PTMATLAB_DIR@
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
 PTMATLAB_LD_ARGS = @PTMATLAB_LD_ARGS@
+
+# Linker args for Matlab
+# $PTII/ptolemy/matlab/makefile (64 bit)
+PTMATLAB_64LD_ARGS = @PTMATLAB_64LD_ARGS@
 
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found
