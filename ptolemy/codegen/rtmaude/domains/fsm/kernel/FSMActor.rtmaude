@@ -168,6 +168,25 @@ transitions : ($indent( $info(transitions) ))/**/
     >
     REST) .
     
+  --- if there is no output action, but a transition taken.
+  ceq portFixPoints(
+    < O : FSM-Actor |
+      ports : < PI' : InPort | status : present >
+              < PI : OutPort | status : unknown >
+      		 PORTS,
+      store : @next(STATE') ; MEM
+    >
+    REST)
+   = portFixPoints(
+    < O : FSM-Actor |
+      ports : < PI' : InPort | >
+              < PI : OutPort | status : absent >
+              setUnknownOutPortsAbsent(PORTS),
+      store : @next(STATE') ; MEM
+    >
+    REST) 
+   if noOutValue(MEM) .
+    
   op noOutValue : Memory -> Bool .
   eq noOutValue(@out(PI) |-> V ; MEM) = false .
   eq noOutValue(MEM) = true [owise] .
