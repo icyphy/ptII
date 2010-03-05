@@ -69,6 +69,7 @@ public class OntologySolverModel extends CompositeEntity {
 
     /** Return the OntologySolver that contains the model.
      *  @return The OntologySolver that contains this model.
+     *  @see #setContainerSolver
      */
     public OntologySolver getContainerSolver() {
         return _solverContainer;
@@ -76,6 +77,7 @@ public class OntologySolverModel extends CompositeEntity {
     
     /** Set the ontology solver that contains this model.
      *  @param solver The ontology solver that should contain this model.
+     *  @see #getContainerSolver
      */
     public void setContainerSolver(OntologySolver solver) {
         _solverContainer = solver;
