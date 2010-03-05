@@ -80,7 +80,7 @@ public class GetDocumentationAction extends FigureAction {
      */
     public GetDocumentationAction(int docPreference) {
         super("Get Documentation");
-        this.docPreference = docPreference;
+        _docPreference = docPreference;
     }
 
     /** Construct an instance of this action. */
@@ -146,9 +146,9 @@ public class GetDocumentationAction extends FigureAction {
         if (docAttributes.size() != 0 && keplerDocumentationAttribute != null) {
             //if there is both a docAttribute and a KeplerDocumentationAttribute
             //use the preference passed in to the constructor
-            if (docPreference == 0) {
+            if (_docPreference == 0) {
                 keplerDocumentationAttribute = null;
-            } else if (docPreference == 1) {
+            } else if (_docPreference == 1) {
                 docAttributeSize = 0;
             }
         }
@@ -158,7 +158,7 @@ public class GetDocumentationAction extends FigureAction {
             DocAttribute docAttribute = keplerDocumentationAttribute
                     .getDocAttribute(target);
             if (docAttribute != null) {
-                showDocAttributeTableau(docAttribute, target);
+                _showDocAttributeTableau(docAttribute, target);
             } else {
                 throw new InternalErrorException(
                         "Error building Kepler documentation");
@@ -167,7 +167,7 @@ public class GetDocumentationAction extends FigureAction {
             // Have a doc attribute. Use that.
             DocAttribute docAttribute = (DocAttribute) docAttributes
                     .get(docAttributes.size() - 1);
-            showDocAttributeTableau(docAttribute, target);
+            _showDocAttributeTableau(docAttribute, target);
         } else {
             // No doc attribute. Try for a doc file.
             String className = target.getClass().getName();
@@ -366,6 +366,13 @@ public class GetDocumentationAction extends FigureAction {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The configuration. */
+    protected Configuration _configuration;
+
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /**
@@ -373,7 +380,7 @@ public class GetDocumentationAction extends FigureAction {
      * _multipleDocumentationAllowed attribute is found in the
      * Configuration.
      */
-    private static boolean isMultipleDocumentationAllowed() {
+    private static boolean _isMultipleDocumentationAllowed() {
         // FIXME: This is necessary for Kepler, but not for Ptolemy?
         // Why?
         boolean retVal = false;
@@ -406,7 +413,7 @@ public class GetDocumentationAction extends FigureAction {
      * @param docAttribute the attribute to show
      * @param target the target of the documentation viewing
      */
-    private void showDocAttributeTableau(DocAttribute docAttribute,
+    private void _showDocAttributeTableau(DocAttribute docAttribute,
             NamedObj target) {
         // Need to create an effigy and tableau.
         ComponentEntity effigy = null;
@@ -447,7 +454,7 @@ public class GetDocumentationAction extends FigureAction {
                 throw new InternalErrorException(exception);
             }
         } else {
-            if (isMultipleDocumentationAllowed()) {
+            if (_isMultipleDocumentationAllowed()) {
                 try {
                     // FIXME: This is necessary for Kepler, but
                     // not for Ptolemy?  Why?
@@ -471,29 +478,23 @@ public class GetDocumentationAction extends FigureAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The configuration. */
-    protected Configuration _configuration;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The name of the last class for which we looked.  If the user
-     *  looks again for the same class and gets an error and
-     *  remoteDocumentationURLBase is set, we print a little more information.
-     */
-    private static String _lastClassName = null;
 
     /**
      * Defines a preference for whether to display kepler documentation or
      * ptolemy documentation.  This can be set in the constructor and it
      * default to ptolemy.  0 is ptolemy, 1 is kepler.
      */
-    private int docPreference = 0;
+    private int _docPreference = 0;
 
     /**
      * Defines the effigy to use if the effigy is not apparent from the model
      */
     private Effigy _effigy = null;
+
+    /** The name of the last class for which we looked.  If the user
+     *  looks again for the same class and gets an error and
+     *  remoteDocumentationURLBase is set, we print a little more information.
+     */
+    private static String _lastClassName = null;
 }
