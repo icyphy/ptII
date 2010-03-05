@@ -50,7 +50,7 @@ PTPACKAGE = 	labview
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = LabVIEWSimulator.java
 
 OTHER_FILES_TO_BE_JARED =
 

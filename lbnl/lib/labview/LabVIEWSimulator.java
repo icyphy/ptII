@@ -1,3 +1,29 @@
+/* Actor that calls a simulation program that interacts with a LabVIEW program.
+
+ Copyright (c) 1998-2010 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+ */
 package lbnl.lib.labview;
 
 import java.io.IOException;
@@ -56,7 +82,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  */
 public class LabVIEWSimulator extends Simulator {
-    /** Constructs an actor with the given container and name.
+    /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -68,7 +94,105 @@ public class LabVIEWSimulator extends Simulator {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
-    
+
+    /** Send the input token to the client program and send the
+     *  output from the client program to the output port. However
+     *  if the received proposed time to advance to from LabVIEW
+     *  is less than 0, it is interpreted as an indication to
+     *  terminate the program. In which case this actor does not 
+     *  send an event to the output port. Nor do we call fireAt().
+     *  Note the other way to stop execution is to set the stop time
+     *  of the DE actor to a finite value.
+     *
+     *  @exception IllegalActionException If the simulation time 
+     *  between Ptolemy and the client program is not synchronized.
+     */
+    public void fire() throws IllegalActionException {
+
+        // tokTim is the current time of in the Ptolemy world. This time
+        // is to be sent to the LabVIEW program to ensure time advances
+        // to the same value.
+        tokTim = getDirector().getModelTime().getDoubleValue();
+        //           if (!firstFire && server.getClientFlag() == 0) {
+        if (server.getClientFlag() == 0) {
+            // If clientflag is non-zero, do not read anymore
+
+            // this method write the tokTim to the LabVIEW program.
+            // Also, if data is present at the input of this actor,
+            // that data is sent to the LabVIEW program. If no data
+            // is present, then no data is sent to the LabVIEW
+            // program.
+            _writeToServer();
+
+            // Reading data from the LabVIEW program, which gets
+            // the next proposed time to advance to, as well as
+            // (possibly) data from the LabVIEW program.
+            // After reading, we call fireAt() to ensure this actor
+            // fires again at the proposed future time. Also, if data is read
+            // from the LabVIEW program, that data is sent to the
+            // output port of this actor.
+            _readFromServer();
+            double[] dblRea = server.getDoubleArray();
+            double nextSimulationTime = server.getSimulationTimeReadFromClient();
+            // If nextSimulationTime is negative, this implies the program
+            // should be stopped. Thus we simply return from fire().
+            if (nextSimulationTime < 0) {
+                return;
+            }
+            getDirector().fireAt(this, nextSimulationTime);
+            if (dblRea.length == 1) {
+                output.send(0, new DoubleToken(dblRea[0]));
+            } else if (dblRea.length != 0) {
+                throw new IllegalActionException(this, "Received data from " +
+                "LabVIEW, the only supported data lenght right now is 1.");
+            }
+        } else { // Either client is down or this is the first time step. Consume token
+            input.get(0);
+            firstFire = false;
+        }
+        //////////////////////////////////////////////////////
+        // send output token
+//        output.send(0, outTok);
+    }
+
+    /** Get a double array from the Token.
+    *
+    * @param t the token which must be a type that can be converted to an ArrayToken
+    * @return the double[] array with the elements of the Token
+    * @exception IllegalActionException If the base class throws it.
+    */
+   protected double[] _getDoubleArray(ptolemy.data.Token t)
+           throws IllegalActionException {
+       
+       double[] result;
+       if (t == null) {
+           result = new double[0];
+       } else {
+           result = new double[1];
+           if (t instanceof DoubleToken) {
+               result[0] = ((DoubleToken)t).doubleValue();
+           } else {
+               throw new IllegalActionException(this, "Data received at the " +
+                         "input of this actor must be of type double");
+           }
+       }
+       return result;
+   }
+
+    /** Return true. Overwrites the prefire method in SDFTransformer.
+     *  This actor extends Simulator, which unfortunately extends
+     *  SDFTransformer.
+     *  @return True if this actor is ready for firing, false otherwise.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called prefire()");
+        }
+
+        return true;
+    }
+
     /** Start the simulation program. Currently we do this manually, but
      *  there should be a way to run a labview model through command line.
      *
@@ -78,73 +202,13 @@ public class LabVIEWSimulator extends Simulator {
    protected void _startSimulation() throws IllegalActionException {
    }
 
-   /** We do not output any init token at startup.
+   /** During initialize, we output one token to startup the co-simulation
+    *  between Ptolemy and LabVIEW program.
     */
    protected void _outputInitToken() throws IllegalActionException {
        Token token = new DoubleToken(0.0);
        output.send(0, token);
    }
-
-   /** Send the input token to the client program and send the
-    *  output from the client program to the output port. However
-    *  if the received proposed time to advance to from LabVIEW
-    *  is less than 0, it is interpreted as an indication to
-    *  terminate the program. In which case this actor does not 
-    *  send an event to the output port. Nor do we call fireAt().
-    *  Note the other way to stop execution is to set the stop time
-    *  of the DE actor to a finite value.
-    *
-    *  @exception IllegalActionException If the simulation time 
-    *  between Ptolemy and the client program is not synchronized.
-    */
-   public void fire() throws IllegalActionException {
-
-       // tokTim is the current time of in the Ptolemy world. This time
-       // is to be sent to the LabVIEW program to ensure time advances
-       // to the same value.
-       tokTim = getDirector().getModelTime().getDoubleValue();
-       //           if (!firstFire && server.getClientFlag() == 0) {
-       if (server.getClientFlag() == 0) {
-           // If clientflag is non-zero, do not read anymore
-
-           // this method write the tokTim to the LabVIEW program.
-           // Also, if data is present at the input of this actor,
-           // that data is sent to the LabVIEW program. If no data
-           // is present, then no data is sent to the LabVIEW
-           // program.
-           _writeToServer();
-
-           // Reading data from the LabVIEW program, which gets
-           // the next proposed time to advance to, as well as
-           // (possibly) data from the LabVIEW program.
-           // After reading, we call fireAt() to ensure this actor
-           // fires again at the proposed future time. Also, if data is read
-           // from the LabVIEW program, that data is sent to the
-           // output port of this actor.
-           _readFromServer();
-           double[] dblRea = server.getDoubleArray();
-           double nextSimulationTime = server.getSimulationTimeReadFromClient();
-           // If nextSimulationTime is negative, this implies the program
-           // should be stopped. Thus we simply return from fire().
-           if (nextSimulationTime < 0) {
-               return;
-           }
-           getDirector().fireAt(this, nextSimulationTime);
-           if (dblRea.length == 1) {
-               output.send(0, new DoubleToken(dblRea[0]));
-           } else if (dblRea.length != 0) {
-               throw new IllegalActionException(this, "Received data from " +
-               "LabVIEW, the only supported data lenght right now is 1.");
-           }
-       } else { // Either client is down or this is the first time step. Consume token
-           input.get(0);
-           firstFire = false;
-       }
-       //////////////////////////////////////////////////////
-       // send output token
-//       output.send(0, outTok);
-   }
-   
    /** Write the data to the server instance, which will send it to
     * the client program.
     *
@@ -174,43 +238,4 @@ public class LabVIEWSimulator extends Simulator {
        tokTim = getDirector().getModelTime().getDoubleValue();
        System.out.println("the current time is " + tokTim);
    }
-   
-   /** Return true. Overwrites the prefire method in SDFTransformer.
-    *  This actor extends Simulator, which unfortunately extends
-    *  SDFTransformer.
-    *  @return True if this actor is ready for firing, false otherwise.
-    *  @exception IllegalActionException Not thrown in this base class.
-    */
-   public boolean prefire() throws IllegalActionException {
-       if (_debugging) {
-           _debug("Called prefire()");
-       }
-
-       return true;
-   }
-
-   
-   /** Get a double array from the Token.
-   *
-   * @param t the token which must be a type that can be converted to an ArrayToken
-   * @return the double[] array with the elements of the Token
-   * @exception IllegalActionException If the base class throws it.
-   */
-  protected double[] _getDoubleArray(ptolemy.data.Token t)
-          throws IllegalActionException {
-      
-      double[] result;
-      if (t == null) {
-          result = new double[0];
-      } else {
-          result = new double[1];
-          if (t instanceof DoubleToken) {
-              result[0] = ((DoubleToken)t).doubleValue();
-          } else {
-              throw new IllegalActionException(this, "Data received at the " +
-              		"input of this actor must be of type double");
-          }
-      }
-      return result;
-  }
 }
