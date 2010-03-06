@@ -51,9 +51,10 @@ OTHER_FILES_TO_BE_JARED = \
 	PedestrianLightNormal.xml \
 	SimpleTrafficLight.xml \
 	SimpleTrafficLightBooleanToken.xml \
+	SimpleTrafficLightDECTA.xml \
 	SimpleTrafficLightGraphicalSpec.xml \
+	SimpleTrafficLightRTMaudeCG.xml \
 	SimpleTrafficLightSMVModule.xml \
-	DE_SimpleTrafficLight_CTA.xml \
 	HierarchicalTrafficLight.xml
 
 EXTRA_SRCS =	\

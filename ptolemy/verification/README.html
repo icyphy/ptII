@@ -73,7 +73,7 @@ example.</li>
 
   <li> For models in the DE domain, an example with detailed
  instructions can be found in
- <a  href="demo/SimpleTrafficLight/DE_SimpleTrafficLight_CTA.xml"><code>$PTII/ptolemy/verification/demo/SimpleTrafficLight/DE_SimpleTrafficLight_CTA.xml</code></a>.
+ <a  href="demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml"><code>$PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml</code></a>.
 This example requires the installation of the real-time model checker
 <a href="#RED">RED 7.0</a>.</li>
 
@@ -136,8 +136,13 @@ faster than typing it.</li>
 illustrate the verification capability.
 
 <h2><a name="DemoRTM"> </a>Real Time Maude code generation and verification </h2>
- An example that shows the capability to generate models acceptable by the Real Time Maude tool, and how these models can be verified using this tool, can be
-found in  <a href="../codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml"><code>$PTII/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml</code></a>.
+A simple example that use the Ptolemy II code generator to generate Real Time Maude
+may be found at
+<a href="demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml"><code>$PTII/ptolemy/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml</code></a>.</p>
+
+<p> An example that shows the capability to generate models acceptable by the Real Time Maude tool, and how these models can be verified using this tool, can be
+found in  <a href="../codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml"><code>$PTII/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml</code></a>.</p>
+
 
 <h2><a name="InstallSMV"> </a>Installing NuSMV</h2>
 Install NuSMV by downloading from its <a href="http://nusmv.irst.itc.it/#in_browser" target="_top">website</a>.
@@ -169,7 +174,7 @@ it may analyze a single FSMActor, and a system consisting of multiple
 FSMActors or ModalModels (with state or SR refinement) interacting
 with SMVLegacyCodeActors in the SR domain. For models in the DE
 domain, we also perform preliminary experiments, see
- <a href="demo/SimpleTrafficLight/DE_SimpleTrafficLight_CTA.xml"><code>$PTII/ptolemy/verification/demo/SimpleTrafficLight/DE_SimpleTrafficLight_CTA.xml</code></a></li>
+ <a href="demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml"><code>$PTII/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml</code></a></li>
 
   <li> We find some examples having minor problems executing under
 NuSMV while they are executable under SMV. These problems can be

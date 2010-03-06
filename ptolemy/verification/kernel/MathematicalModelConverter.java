@@ -280,9 +280,7 @@ public class MathematicalModelConverter extends Attribute {
                             }
 
                         } finally {
-                            if (reader != null) {
-                                reader.close();
-                            }
+                            reader.close();
                         }
                         _deleteFolder(smvFolder);
                         return returnStringBuffer;
