@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SimpleTrafficLight_v4" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SimpleTrafficLightRTMaudeCG" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -50,13 +50,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 782}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 898, 615}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 649]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[685, 505]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{536.5, 324.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.5, 252.5}">
     </property>
     <property name="averageCarArrivalInterval" class="ptolemy.data.expr.Parameter" value="15.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -108,10 +108,26 @@
         <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Stavros Tripakis, Contributor: Christopher Brooks">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 475.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates a simple use of the Real Time Maude Code Generator.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 390.0]">
+        </property>
+    </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="queue size, red (high) or green (low)">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 348, 972, 380}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 348, 964, 353}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[964, 309]">
         </property>
@@ -124,8 +140,8 @@
 <title>TimedPlotter</title>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="240.0"/>
+<yRange min="0.0" max="5.0"/>
 <default marks="dots" stems="yes"/>
 </plot>?>
         </configure>
@@ -268,7 +284,7 @@
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="car arrivals, car departures">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 145, 859, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 145, 851, 200}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[851, 156]">
         </property>
@@ -281,8 +297,8 @@
 <title>TimedPlotter2</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="240.0"/>
+<yRange min="1.0" max="2.0"/>
 <default connected="no"/>
 </plot>?>
         </configure>
