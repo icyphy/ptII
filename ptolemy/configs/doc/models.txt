@@ -71,6 +71,7 @@ $CLASSPATH/ptolemy/codegen/demo/Butterfly/Butterfly.xml
 $CLASSPATH/ptolemy/codegen/demo/Life/Life.xml
 $CLASSPATH/ptolemy/codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml
 $CLASSPATH/ptolemy/codegen/java/actor/lib/embeddedJava/demo/Scale/Scale.xml
+$CLASSPATH/ptolemy/codegen/rtmaude/demo/HierarchicalTrafficLight/HierarchicalTrafficLight.xml
 $CLASSPATH/ptolemy/configs/doc/ClassesIllustrated.xml
 $CLASSPATH/ptolemy/data/properties/demo/CarTracking/CarTracking.xml
 $CLASSPATH/ptolemy/data/properties/demo/CarTracking/CarTrackingSoSYM.xml
@@ -355,6 +356,7 @@ $CLASSPATH/ptolemy/domains/wireless/demo/SmartParking/SmartParking.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/TerrainModel/TerrainModel.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml
 $CLASSPATH/ptolemy/domains/wireless/demo/Zigbee/Zigbee.xml
+$CLASSPATH/ptolemy/matlab/demo/MatlabContinuous/MatlabContinuous.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabCT/MatlabCT.xml
 $CLASSPATH/ptolemy/matlab/demo/MatlabExpression/MatlabExpression.xml
 $CLASSPATH/ptolemy/moml/demo/Networked/Networked.xml
@@ -362,3 +364,7 @@ $CLASSPATH/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml
 $CLASSPATH/ptolemy/verification/demo/iRobotHillClimbing/iRobotCreateVerification.xml
 $CLASSPATH/ptolemy/verification/demo/RailroadControl/RailroadControl.xml
 $CLASSPATH/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.xml
+$CLASSPATH/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightDECTA.xml
+$CLASSPATH/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightGraphicalSpec.xml
+$CLASSPATH/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightRTMaudeCG.xml
+$CLASSPATH/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLightSMVModule.xml
