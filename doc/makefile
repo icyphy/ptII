@@ -508,6 +508,7 @@ HYVISUAL_DOCS = \
 LBNL_PACKAGES = \
 	lbnl.actor.lib \
 	lbnl.actor.lib.net \
+	lbnl.lib.labview \
 	lbnl.util
 
 # Currently, there are no .java files in fsm.lib
