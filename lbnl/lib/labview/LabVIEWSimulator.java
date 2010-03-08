@@ -77,7 +77,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * program.
  *
  * @author Jia Zou
- * @version $Id: Simulator.java 55766 2009-09-25 14:22:32Z mwetter $
+ * @version $Id$
  * @since BCVTB 0.1
  *
  */
