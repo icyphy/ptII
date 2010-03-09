@@ -38,7 +38,7 @@ DIRS = 		$(PTJAVACV_DIR) #demo test
 ROOT =		../../../..
 
 # OPENCV_JAR is set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(PTPROCESSING_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -50,9 +50,22 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	Blend.java \
+	BlendADD.java \
+	BlendSUB.java \
+	Blur.java \
+	Brighten.java \
+	Darken.java \
 	Detect.java \
+	Filter.java \
+	Flip.java \
+	GrayScale.java \
+	HighContrast.java \
+	Invert.java \
+	LowContrast.java \
 	OpenCVReader.java \
-	OpenCVToAWTImage.java
+	OpenCVToAWTImage.java \
+	Read.java
 
 OTHER_FILES_TO_BE_JARED = \
 	opencv.xml \

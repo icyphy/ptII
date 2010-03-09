@@ -72,7 +72,15 @@ in your system Path
  create <code>/Library/Frameworks/OpenCV.framework/</code>
  <li> Download Processing from
   <a href="http://processing.org/download/index.html"><code>http://processing.org/download/index.html</code></a>
-
+ <li> Copy <code>core.jar</code> from Processing to the extensions directory
+  <pre>
+sudo cp /Applications/Processing.app/Contents/Resources/Java/core.jar /System/Library/Java/Extensions/
+  </pre>
+  If you don't do the copy, then you will get errors about
+  processing.core.PImage missing because OpenCV.jar is in the
+  extensions folder and needs PImage, so even if core.jar is on your
+  classpath, it will only be found if it is in the extensions folder.
+  
  <li> Download and unzip<a href="http://ubaa.net/shared/processing/opencv/download/opencv_01.zip"><code>http://ubaa.net/shared/processing/opencv/download/opencv_01.zip</code></a>
  <li> Copy the <code>.jar</code> and <code>.jnilib</code> to
  <code>/System/Library/Java/Extensions</code>:

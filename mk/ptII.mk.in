@@ -712,6 +712,9 @@ PTSVG_DIR =	@PTSVG_DIR@
 # Jar file used by diva/util/java2d/svg/makefile
 PTSVG_JAR =	@PTSVG_JAR@
 
+# Jar files used by the Image Processing library from http://processing.org
+PTPROCESSING_JARS =	@PTPROCESSING_JARS@
+
 # PTPTALON_DIR is set to ptalon and used in
 # $PTII/ptolemy/actor/makefile if antlr.jar was found.
 PTPTALON_DIR =  @PTPTALON_DIR@
