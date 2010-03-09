@@ -2499,6 +2499,9 @@ else
     without problems.
     For details, see $PTII/ptolemy/actor/lib/opencv/package.html])
 	       OPENCV_JAR= 
+               PTOPENCV_DIR=
+	       PTOPENCV_PACKAGES=
+               ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
             fi
 
 
@@ -2521,7 +2524,6 @@ else
 		        ;;
                     esac
                 else
-	            PTOPENCV_DIR=
        	       AC_MSG_WARN([Either we could not find 
     processing.core.PImage or else it was already in the JRE.
     Searching for PImage returned:
@@ -2537,6 +2539,8 @@ else
     These actors are optional, but require Processing.
     For details, see $PTII/ptolemy/actor/lib/opencv/package.html])
     		    PROCESSING_CORE_JAR= 
+	            PTOPENCV_DIR=
+		    PTOPENCV_PACKAGES=
     	            ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/opencv/javacv/"
                  fi
     	    fi
