@@ -432,17 +432,17 @@ public class LatticeOntologySolver extends OntologySolver {
         resetAll();
         invokeSolver();
         for (NamedObj conceptable : getAllConceptableNamedObjs()) {
-            StringParameter inferred = (StringParameter) conceptable.getAttribute("_showInfo");
+            String inferred = getResolvedProperty(conceptable).toString();
             StringParameter trained = (StringParameter) conceptable.getAttribute("_trainedConcept");
             if (trained == null) {
                 throw new IllegalActionException(conceptable,
                         "Must train before testing at " + conceptable.toString());
             }
-            if (!inferred.stringValue().equals(trained.stringValue())) {
+            if (!inferred.equals(trained.stringValue())) {
                 throw new IllegalActionException(conceptable,
                         "Testing failure at " + conceptable.toString() + '\n' +
                         "Expected '" + trained.stringValue() + "' but got '" +
-                        inferred.stringValue() + "' instead.");
+                        inferred + "' instead.");
             }
         }
     }
@@ -458,14 +458,14 @@ public class LatticeOntologySolver extends OntologySolver {
         try {
             workspace().getWriteAccess();
             for (NamedObj conceptable : getAllConceptableNamedObjs()) {
-                StringParameter inferred = (StringParameter) conceptable.getAttribute("_showInfo");
+                String inferred = getResolvedProperty(conceptable).toString();
                 StringParameter trained;
                 try {
                     trained = new StringParameter(conceptable, "_trainedConcept");
                 } catch (NameDuplicationException e) {
                     trained = (StringParameter) conceptable.getAttribute("_trainedConcept");
                 }
-                trained.setExpression(inferred.stringValue());
+                trained.setExpression(inferred);
             }
         } finally {
             workspace().doneWriting();
