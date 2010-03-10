@@ -89,8 +89,6 @@ public class ImageReader extends Source {
     *  @exception IllegalActionException If thrown while writing to the port.   
     */
    public void fire() throws IllegalActionException {
-       //output.broadcast(new ObjectToken(_image.getPointer()));
-       //output.send(0, new ObjectToken(_image.getPointer()));
        output.send(0, new ObjectToken(_image));
    }
   
@@ -115,13 +113,11 @@ public class ImageReader extends Source {
     */
    public void wrapup() throws IllegalActionException {
        super.wrapup();
-       //cvReleaseImage (_image.getPointerByReference());
        cvReleaseImage (new PointerByReference(_image));
    }
   
    ///////////////////////////////////////////////////////////////////
    ////                         private variables                 ////
 
-   //private IplImage  _image;
    private Pointer _image;
 }

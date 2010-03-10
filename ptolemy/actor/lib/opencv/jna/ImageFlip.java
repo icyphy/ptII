@@ -112,8 +112,6 @@ public class ImageFlip extends Transformer {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        //cvReleaseImage (_frame.pointerByReference());
-        //_frame.release();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -10,10 +10,6 @@ import com.sun.jna.ptr.PointerByReference;
 
 public class JnaTest {
     public static void main(String[] args) throws Exception {
-//        HighguiLib highgui = HighguiLib.INSTANCE;
-//        CvLib cv = CvLib.INSTANCE;
-//        CxcoreLib cxcore = CxcoreLib.INSTANCE;
-        
 //        // OK
 //        cvNamedWindow("Example1", 1);
 //        while(true){
@@ -47,19 +43,7 @@ public class JnaTest {
             if (c == 0x1b) break;
          }
          cvReleaseCapture (new PointerByReference(capture));
-         cvDestroyWindow ("Capture");
-
-        
-//        CvSize size = new CvSize(320,240);
-//        img = cxcore.cvCreateImage(size,CvLib.IPL_DEPTH_8U, 1);
-//        
-        //highgui.cvLoadImage("c:/temp/test.png",1);
-        //IplImage img = cvCreateImage(cvSize(320,240),IPL_DEPTH_32S,4);
-        //IplImage img;
-        
-        //cv.cvSmooth(new CvArr(img.getPointer()), new CvArr(img.getPointer()), cv.CV_GAUSSIAN, 5, 5, 0, 0);
-        //highgui.cvSaveImage("c:/temp/test_out.png",new CvArr(img.getPointer()));
-        //cxcore.cvReleaseImage(new PointerByReference(img.getPointer()));
+         cvDestroyWindow ("Capture");       
         System.out.println("done");
 
     }

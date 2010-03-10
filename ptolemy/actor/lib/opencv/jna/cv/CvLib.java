@@ -8,14 +8,12 @@ import com.sun.jna.NativeLibrary;
 import com.sun.jna.Pointer;
 
 public class CvLib implements Library {
-    //public static final String LibraryName = "C:/OpenCV2.0/bin/libcv200.dll";
     public static final String LibraryName = "cv100";
     public static final NativeLibrary LibraryInstance = NativeLibrary.getInstance(LibraryName);
     static {
         Native.register(LibraryName);
     }
 
-    //public static native void cvSmooth (CvArr src, CvArr dst, int soomthtype, int size1, int size2, double sigma1, double sigma2) ;
     public static native void cvSmooth (Pointer src, Pointer dst, int soomthtype, int size1, int size2, double sigma1, double sigma2) ;
     
     public static final int CV_BLUR_NO_SCALE = 0;

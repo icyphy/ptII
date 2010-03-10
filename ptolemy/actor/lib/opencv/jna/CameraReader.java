@@ -70,8 +70,6 @@ public class CameraReader extends Source {
            throws IllegalActionException, NameDuplicationException {
        super(container, name);
 
-       // FIXME: create a separate type for OpenCV Frames or
-       // create a type for ptolemy.data.AWTImageToken.
        output.setTypeEquals(BaseType.OBJECT);
    }
 
@@ -81,7 +79,6 @@ public class CameraReader extends Source {
     *  @exception IllegalActionException If thrown while writing to the port.   
     */
    public void fire() throws IllegalActionException {
-       //_frame = cvQueryFrame (_capture).getPointer();
        _frame = cvQueryFrame (_capture);
        output.send(0, new ObjectToken(_frame));
    }
@@ -103,15 +100,12 @@ public class CameraReader extends Source {
     */
    public void wrapup() throws IllegalActionException {
        super.wrapup();
-       //cvReleaseCapture (_capture.getPointerByReference());
        cvReleaseCapture (new PointerByReference(_capture));
    }
   
    ///////////////////////////////////////////////////////////////////
    ////                         private variables                 ////
 
-   //private CvCapture _capture;
    private Pointer _capture;
-   //private IplImage _frame;
    private Pointer _frame;
 }

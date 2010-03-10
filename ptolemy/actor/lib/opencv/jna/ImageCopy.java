@@ -93,10 +93,7 @@ public class ImageCopy extends Transformer {
             if(_copyFrame == Pointer.NULL){
                 _copyFrame = cvCloneImage(_frame).getPointer();
             }else{
-                
                 cvCopy(_frame, _copyFrame, Pointer.NULL);
-                cvSaveImage("c:/temp/test_out" + _fnum + ".png", _frame);
-                _fnum++;
             }
             output.send(0, new ObjectToken(_copyFrame));
         }
@@ -109,10 +106,6 @@ public class ImageCopy extends Transformer {
         super.initialize();
         _copyFrame = Pointer.NULL;
         
-        _fnum=0;
-        // FIXME: These setting don't work correctly.. 
-//        cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_WIDTH, 320);
-//        cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
     }
      /** Release image.
      *  @exception IllegalActionException If thrown by the super class.
@@ -128,6 +121,4 @@ public class ImageCopy extends Transformer {
     ////                         private variables                 ////
     private Pointer _frame;
     private Pointer _copyFrame; 
-    
-    private int _fnum;
 }
