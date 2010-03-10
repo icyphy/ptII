@@ -33,49 +33,186 @@ ENHANCEMENTS, OR MODIFICATIONS.</p>
 <p>Ptolemy II includes the work of others, to see those copyrights and licenses, follow
 the copyright link on the splash page.  Various configurations of
 Ptolemy include various copyrights, below we describe some of the
-licenses and copyrights.</p>
+licenses and copyrights.  For any given Ptolemy configuration, follow
+the Help -&gt; About -&gt; Copyright link to see what third party packages
+are part of the configuration and what their copyrights are.</p>
 
 <p>The short answer is that the Ptiny configuration, run by
 running <code>$PTII/bin/vergil -ptiny</code> or by running the
-vergil uses only the Ptolemy copyright above, 
+Mac OS X <code>Ptiny.app</code> or by running the 
+Windows "vergil -ptiny" executable uses only the Ptolemy copyright above, 
 <a href="#AElfred">AElfred</a>,
 <a href="#colt">Colt </a>,
 <a href="#matlab">Matlab Expression Actor</a> and
-<a href="#jython">Jython</li>.
+<a href="#jython">Jython</a>.
 Colt, Matlab Expression actor and Jython are all used by actors
 specific to those packages.
 The other license below
 are used primarily by actors that interface to those libraries.</p>
-<ul>
-  <li><a href="#AElfred">AElfred License</a></li>
-  <li><a href="#Java3D">Java 3D License</a></li>
-  <li><a href="#JGoodies">JGoodies License</a></li>
-  <li><a href="#rxtx">Rxtx License</a></li>
-  <li><a href="#colt">Colt License</a></li>
-  <li><a href="#joystick">Joystick license</a></li>
-  <li><a href="#bsh">FormLayoutMaker and Bean Shell (BSH) License</a></li>
-  <li><a href="#jniLauncher">JNI Launcher</a></li>
-  <li><a href="#gcj">GCJ License</a></li>
-  <li><a href="#mysql">License for Mysql Java Database Connector</a></li>
-  <li><a href="#OracleJDBC">Oracle Java Database Connector License</a></li>
-  <li><a href="#matlab">Matlab Expression Actor License</a></li>
-  <li><a href="#jython">Jython License</li>
-  <li><a href="#PDFRenderer">PDFRenderer</a></li>
-  <li><a href="#soot">Soot License</a></li>
-  <li><a href="#quicktime">QuickTime Java API License</a></li>
-  <li><a href="#jai">Java Advanced Imaging License</a></li>
-  <li><a href="#JMF">Java Media Framework (JMF) License</a></li>
-  <li><a href="#mapss">Copyright for mapss jar file used by PSDF</a></li>
-</ul>
+
+<p>In the table below, the columns have the following meaning
+<dl>
+ <dt><b>Third Party Product</b></dt>
+ <dd>The name of the package</dd>
+ <dt><b>Ptiny</b></dt>
+ <dd>If checked, then the package is required to run the Ptiny configuration of Ptolemy.</dd>
+ <dt><b>Windows JRE</b></dt>
+ <dd>If checked, then the package is included in the Windows Ptolemy II installer that includes a JRE.  On other platforms, the user must install these packages by hand.</dd>
+ <dt><b>Included in Sources</b></dt>
+ <dd>If checked, then the jar file for this package is included in the source distribution.</dd>
+ <dt><b>Summary</b></dt>
+ <dd>A brief summary of the license.  Check below for details.</dd>
+</dl>
+
+<table border="1">
+  <tr>
+    <th>Third Party Product</th>
+    <th>Ptiny</th>
+    <th>Windows JRE</th>
+    <th>Included in Sources</th>
+    <th>Summary</th>
+  <tr> 
+  <tr>
+    <td><a href="#AElfred">AElfred License</a></td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>Include Microstar's Copyright</td>
+  </tr>
+  <tr>
+    <td><a href="#Java3D">Java 3D License</a></td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>Sun</td>
+  </tr>
+  <tr>
+    <td><a href="#JGoodies">JGoodies License</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>3 Clause BSD</td>
+  </tr>
+  <tr>
+    <td><a href="#rxtx">Rxtx License</a></td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>LGPL 2.1 + exception</td>
+  </tr>
+  <tr>
+    <td><a href="#colt">Colt License</a></td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>BSD and others</td>
+  </tr>
+  <tr>
+    <td><a href="#joystick">Joystick license</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>Custom</td>
+  </tr>
+  <tr>
+    <td><a href="#bsh">FormLayoutMaker and Bean Shell (BSH) License</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>3 Clause BSD</td>
+  </tr>
+  <tr>
+    <td><a href="#jniLauncher">JNI Launcher</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>LGPL 2.1</td>
+  </tr>
+  <tr>
+    <td><a href="#gcj">GCJ License</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>GPL with exception</td>
+  </tr>
+  <tr>
+    <td><a href="#mysql">License for Mysql Java Database Connector</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>GPL + exceptions or Commercial</td>
+  </tr>
+  <tr>
+    <td><a href="#OracleJDBC">Oracle Java Database Connector License</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>Oracle</td>
+  </tr>
+  <tr>
+    <td><a href="#matlab">Matlab Expression Actor License</a></td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>BSD</td>
+  </tr>
+  <tr>
+    <td><a href="#jython">Jython License</td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>Python V2 + other licenses</td>
+  </tr>
+  <tr>
+    <td><a href="#PDFRenderer">PDFRenderer</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>LGPL 3</td>
+  </tr>
+  <tr>
+    <td><a href="#soot">Soot License</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>BSD + LGPL 2</td>
+  </tr>
+  <tr>
+    <td><a href="#quicktime">QuickTime Java API License</a></td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>Apple</td>
+  </tr>
+  <tr>
+    <td><a href="#jai">Java Advanced Imaging License</a></td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>Sun</td>
+  </tr>
+  <tr>
+    <td><a href="#JMF">Java Media Framework (JMF) License</a></td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>&nbsp;</td>
+    <td>Sun</td>
+  </tr>
+  <tr>
+    <td><a href="#mapss">Copyright for mapss jar file used by PSDF</a></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>X</td>
+    <td>BSD</td>
+  </tr>
+</table>
 
 <h2><a name="AElfred">AElfred License</h2>
 <p>It is possible to create Ptolemy models and execute them by
 writing models in Java.  However, most models are written
 in MoML, which uses the AElfred XML Parser, which has the
 license below.</p> 
-<p>The "Ptiny", configuration run by executing <code>$PTII/bin/vergil -ptiny</code>
-requires only the Ptolemy BSD license and the AElfred license</p>
-
+<blockquote>
 <pre>
 Version: $Id$
 AElfred, Version 1.1
@@ -97,426 +234,7 @@ This program is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 merchantability or fitness for a particular purpose.  Please use it AT
 YOUR OWN RISK.
-
-
-** NEWS **
-----------
-
-Version 1.2a:
-
-- AElfred has a new maintainer.  Side-effects of this will include
-  a gradual change in the indenting style of the source code, a
-  mixture of Unix and MSDOS-style text files, and other things that
-  people who actually use the source code will find annoying.
-  
-  The transition will be complete at the next numbered release.
-
-- Source code directory tree has changed to reflect JDK 1.2 requirements.
-
-- Other small tweaks to allow compilation under JDK 1.2.
-
-- No longer crashes when reading longish files from a Reader.
-
-- No longer hangs when syntax errors appear after the document element.
-
-- aelfred.jar is no longer out of date :-).
-
-- XmlApp, the base class for the included demos, no longer extends Applet.
-  The new class, XmlApplet, now works both as an applet and application
-  like XmlApp used to.  JDK 1.2 beta 3 had problems with this behaviour --
-  if an Applet was constructed (but not used) in an app, its finalization
-  would hang the JVM.  This change will persist even after the JDK bug is
-  fixed.
-  
-  The demos, therefore, no longer work as applets.
-
-- Performance should be somewhat improved.
-
-Version 1.2:
-
-- AElfred can parse from an InputStream, Reader, or a system ID
-- resolveEntity() can return an InputStream or Reader as well as a
-  system ID
-- new SAX driver for SAX 1.0gamma (http://www.megginson.com/SAX/)
-
-
-DESIGN PRINCIPLES
------------------
-
-In most Java applets and applications, XML should not be the central
-feature; instead, XML is the means to another end, such as loading
-configuration information, reading meta-data, or parsing transactions.
-
-When an XML parser is only a single component of a much larger
-program, it cannot be large, slow, or resource-intensive.  With Java
-applets, in particular, few programmers would be willing to require
-users to download an additional 50K to 100K in class files just for
-the sake of adding XML capability.
-
-AElfred is a new Java-based XML parser from Microstar Software
-Ltd. (http://www.microstar.com/), an established provider of XML and
-SGML solutions.  AElfred is distributed for free (with full source) for
-both commercial and non-commercial use, and is designed for easy and
-efficient use over the Internet, based on the following principles:
-
-1. AElfred must be as small as possible, so that it doesn't add too
-   much to your applet's download time.
-
-   STATUS: AElfred is currently about 26K in total.  The compressed
-    JAR file, including the optional classes, is only 15K.
-
-2. AElfred must use as few class files as possible, to minimize the number
-   of HTTP connections necessary.
-
-   STATUS: AElfred consists of only two core class files, the main
-    parser class (XmlParser.class) and a small interface for your own
-    program to implement (XmlHandler.class).  All other classes in
-    the distribution are either optional or for demonstration only.
-
-3. AElfred must be compatible with most or all Java implementations
-   and platforms.
-
-   STATUS: AElfred uses mainly JDK 1.0.2 features (you may parse from
-    a JDK 1.1 Reader if you wish), and we have tested it successfully
-    with the following Java implementations: JDK 1.1.1 (Linux), jview
-    (Windows NT), Netscape 4 (Linux and Windows NT), Internet Explorer
-    3 (Windows NT), and Internet Explorer 4 (Windows NT).
-
-4. AElfred must use as little memory as possible, so that it does not take
-   away resources from the rest of your program.
-
-   STATUS: On a P75 Linux system, using JDK 1.1.1, running AElfred
-    (with a 4MB XML document) takes only 2MB more memory than running
-    a simple "Hello world" Java application.  Because AElfred does not
-    build an in-memory parse tree, you can run it on very large input
-    files using little or no extra memory.
-
-5. AElfred must run as fast as possible, so that it does not slow down
-   the rest of your program.
-
-   STATUS: On a P75 Linux system, using JDK 1.1.1 (without a JIT
-    compiler), AElfred parses test files at about 70K/second.  On a
-    P166 NT workstation, using jview, AElfred parses test files at
-    about about 1MB/second.
-
-6. AElfred must produce correct output for well-formed and valid
-   documents, but need not reject every document that is not valid or
-   not well-formed.
-
-   STATUS: AElfred is DTD-aware, and handles all current XML features,
-    including CDATA and INCLUDE/IGNORE marked sections, internal and
-    external entities, proper whitespace treatment in element content,
-    and default attribute values.  It will sometimes accept input that
-    is technically incorrect, however, without reporting an error (see
-    below), since full error reporting would make the parser larger.
-
-7. AElfred must provide full internationalisation from the first release.
-
-   STATUS: AElfred supports Unicode to the fullest extent possible in
-    Java.  It correctly handles XML documents encoded using UTF-8,
-    UTF-16, ISO-10646-UCS-2, ISO-10646-UCS-4 (as far as surrogates
-    allow), and ISO-8859-1 (ISO Latin 1/Windows).  With these
-    character sets, AElfred can handle all of the world's major (and
-    most of its minor) languages.  To support other character
-    encodings, you can supply your own Reader.
-
-As you can see from this list, AElfred is designed for production use,
-not for validation: it will behave correctly with correct files, but
-it will not necessarily let you know when there are errors.  If you
-want to verify on your system that your XML document is valid or
-well-formed before you publish it to the Internet, then you should use
-a validating XML parser.
-
-
-SAX
----
-
-AElfred now has a SAX 1.0 (gamma) driver built-in to the main
-distribution, so there is no need to use an external driver.  The
-class name of the driver is
-
-  com.microstar.xml.driver.SAXDriver
-
-[Ptolemy Note:  We moved SAXDriver.java into the driver subdirectory
-because 'make fast' runs javac *.java, which was causing problems
-because SAXDriver uses SAX, which we do not ship]
-
-STARTUP
--------
-
-To test the parser, you can try one of the demonstration applications
-EventDemo, TimerDemo, DtdDemo, or StreamDemo (see descriptions below).
-To start an application, make certain that AElfred's classes are
-somewhere on your CLASSPATH, then use a command line like the
-following:
-
-  java EventDemo <uri>
-
-Where <uri> can be relative (i.e. a file in the current directory) or
-absolute (i.e. an XML document anywhere on the Internet).  Note that
-StreamDemo takes a file name rather than a URI.
-
-XML parsers like AElfred read one or more source files (called
-"entities"), and merge them into a single stream of logical events,
-such as character data, processing instructions, or the start or end
-of elements.  The EventDemo demonstration application gives you an
-idea of what information appears in the stream.
-
-
-PROGRAMMER'S USAGE
-------------------
-
-To use AElfred in your own Java applets or applications, you need to
-supply a class that implements the com.microstar.xml.XmlHandler
-interface (say, "MyHandler"), create a new com.microstar.xml.XmlParser
-object (supplying the URI of the XML document), then explicitly start
-a parse:
-
-  import com.microstar.xml.XmlParser;
-
-  [...]
-
-  String uri = "http://www.host.com/sample.xml";
-  MyHandler handler = new MyHandler();
-  XmlParser parser = new XmlParser();
-
-  parser.setHandler(handler);
-  parser.parse(uri, null, null);
-
-During the parse, AElfred will call methods in your handler to report
-events; for example, whenever a new element begins, it will call your
-method
-
-  void startElement(String name)
-
-There are thirteen callback methods altogether in the XmlHandler
-interface; for details, see HTML/com.microstar.xml.XmlHandler.html:
-
-public void startDocument ();
-public void endDocument ();
-public String resolveEntity (String ename, String publicId, String systemId);
-public String startExternalEntity (String systemId);
-public String endExternalEntity (String systemId);
-public void doctypeDecl (String dname, String publicId, String systemId);
-public void attribute (String name, String value, boolean isSpecified);
-public void startElement (String elname);
-public void endElement (String elname);
-public void charData (char ch[], int start, int length);
-public void ignorableWhitespace (char ch[], int start, int length);
-public void processingInstruction (String target, String data);
-public void error (String message, String url, int line, int column);
-
-If you want to avoid implementing all of these, you can derive your
-handler from com.microstar.xml.HandlerBase (see below), then fill in
-only the ones you need.
-
-
-REQUIRED CLASSES
-----------------
-
-If you want to use the XML parser with a Java applet, these are the
-only two classes that you must install (in addition to your own class
-that implements the XmlHandler interface):
-
-com/microstar/xml/XmlParser.class              
-                        The actual XML parser.
-
-com/microstar/xml/XmlHandler.class      
-                        The callback interface for the XML parser.
-
-
-OPTIONAL CLASSES
-----------------
-
-There are three optional classes that you may choose to install on a
-web site (all are very small):
-
-com/microstar/xml/XmlException.class
-                        A convenience class for reporting XML
-                        parsing errors.
-
-com/microstar/xml/HandlerBase.class
-                        (Requires XmlException.class.) A base class
-                        that provides a default implementation for all
-                        the handlers.
-
-com/microstar/xml/driver/SAXDriver.class
-                        A SAX driver for AElfred.
-
-[Ptolemy Note:  We moved SAXDriver.java into the driver subdirectory
-because 'make fast' runs javac *.java, which was causing problems
-because SAXDriver uses SAX, which we do not ship]
-
-Neither of the required classes refers to these, and you may leave
-them out of a web installation if you do not need them.
-
-
-DEMONSTRATION CLASSES
----------------------
-
-The distribution also contains some classes for the demonstration
-applications.  Normally, you will not include these in a web
-installation:
-
-XmlApp.class            A simple base class for the demonstrations.
-
-EventDemo.class         (Requires XmlApp.class.) A demonstration
-                        application showing the XML parse events.
-
-TimerDemo.class         (Requires XmlApp.class.) A demonstration
-                        application that simply parses a document
-                        without producing any running output (except
-                        for errors and warnings); useful for timing
-                        the parser on different documents.
-
-DtdDemo.class           (Requires XmlApp.class.) A demonstration
-                        application that parses a document and prints
-                        out a normalised version of the document's DTD
-                        (if any).
-
-StreamDemo.class        (Requires XmlApp.class.)  A demonstration
-                        application that parses a document from an
-                        input stream rather than a URL.
-
-
-PARSER QUERY METHODS
---------------------
-
-In addition to receiving callbacks, your XmlHandler object can send
-queries about the DTD back to the XmlParser object.  The results of
-these queries are not guaranteed complete until after your handler has
-received a doctypeDecl() event (for details of these query methods,
-see HTML/com.microstar.xml.XmlParser.html):
-
-package com.microstar.xml.XmlParser;
-
-public Enumeration declaredElements ()
-public int getElementContentType (String elname)
-public String getElementContentModel (String elname)
-
-public Enumeration declaredAttributes (String elname)
-public int getAttributeType (String elname, String aname)
-public String getAttributeEnumeration (String elname, String aname)
-public String getAttributeDefaultValue (String elname, String aname)
-public String getAttributeExpandedValue (String elname, String aname)
-public String getAttributeDefaultValueType (String elname, String aname)
-
-public Enumeration declaredEntities ()
-public int getEntityType (String ename)
-public String getEntityPublicId (String ename)
-public String getEntitySystemId (String ename)
-public String getEntityValue (String ename)
-public String getEntityNotationName (String ename)
-
-public Enumeration declaredNotations ()
-public String getNotationPublicId (String nname)
-public String getNotationSystemId (String nname)
-
-
-CHARACTER ENCODINGS
--------------------
-
-** WARNING: AS REQUIRED BY THE XML SPECIFICATION, AELFRED ASSUMES THAT
-            8-BIT CHARACTERS USE UTF-8 ENCODING UNLESS YOU PROVIDE AN
-            ENCODING DECLARATION.  UTF-8 IS NOT THE SAME AS
-            ISO-8859-1, SO 8-BIT ACCENTED CHARACTERS WILL CAUSE AN
-            ERROR UNLESS YOU EXPLICITLY DECLARE "ISO-8859-1" AS YOUR
-            ENCODING.
-
-The AElfred parser currently supports all of the following input
-encodings:
-
-UTF-8                   The 8-bit Unicode transformation encoding.
-UTF-16                  The 16-bit Unicode transformation encoding
-                        (two octet orders).
-ISO-10646-UCS-2         The standard 16-bit Unicode encoding (two
-                        octet orders).
-ISO-10646-UCS-4         The standard 32-bit Unicode encoding (four
-                        octet orders).
-ISO-8859-1              The 8-bit standard used in HTML and by Windows
-                        and Unix.
-
-If you need only 7-bit characters (i.e. ASCII), you can declare the
-encoding as either "UTF-8" or "ISO-8859-1":
-
-  <?xml version="1.0" encoding="ISO-8859-1"?>
-
-If you use ISO-8859-1, the parser will run slightly faster, since it
-doesn't need to do any character transformation on input.  If you do
-not declare an encoding, then the parser will (for 7- or 8-bit text)
-default to UTF-8, which will work for ASCII but is slightly slower.
-
-Since Java has only 16-bit characters, the parser does not resolve
-surrogate pairs in UTF-16; as a result, UTF-16 and UCS-2 are currently
-identical.
-
-
-ERRORS AND WARNINGS
--------------------
-
-AElfred should always produce correct output for valid and well-formed
-XML documents.  Since AElfred is not a fully conforming XML parser,
-however, it will sometimes accept documents that are not well-formed
-or are not valid, without signaling an error.
-
-For example, James Clark has a error-reporting test suite available at
-
-  ftp://ftp.jclark.com/pub/test/xmltest.zip
-
-These tests cover only well-formedness, not validity.  With the 1997
-version of this package, out of 141 tests AElfred _failed_ to report
-errors for 31 of them:
-
-002.xml                 Illegal character at the start of a NAME.
-006.xml                 '--' in comment.
-014.xml                 '<' in attribute value
-023.xml                 Illegal character at the start of a NAME.
-024.xml                 Illegal character at the start of a NAME.
-025.xml                 ']]>' in PCDATA.
-026.xml                 ']]>' in PCDATA.
-029.xml                 ']]>' in PCDATA.
-030.xml                 Illegal XML character (formfeed).
-031.xml                 Illegal XML character (formfeed).
-032.xml                 Illegal XML character (formfeed).
-033.xml                 Illegal XML character (ESC).
-034.xml                 Illegal XML character (formfeed).
-038.xml                 Duplicate attribute assignment.
-069.xml                 Missing space before 'NDATA'.
-070.xml                 '--' in comment.
-074.xml                 Element starting and ending in different entity.
-086.xml                 '[' in public identifier.
-087.xml                 '[' in public identifier.
-088.xml                 ' ' in system literal.
-089.xml                 NDATA parameter entity.
-090.xml                 '<' in attribute value.
-091.xml                 NDATA parameter entity.
-096.xml                 Missing space before 'encoding'.
-100.xml                 Wrong case for standalone value.
-104.xml                 Element begins and ends in different entities.
-116.xml                 Reference begins and ends in different entities.
-117.xml                 Reference begins and ends in different entities.
-119.xml                 Reference begins and ends in different entities.
-140.xml                 Illegal character at start of NAME.
-141.xml                 Illegal character in NAME.
-
-My experiments suggest that reporting all of these errors would add
-10-15K to AElfred's size and slow down parsing by about 15 per cent.
-
-
-ABOUT THE NAME "AElfred"
------------------------
-
-AElfred the Great (AElfred in ASCII) was king of Wessex, and at least
-nominally of all England, at the time of his death in 899AD.  AElfred
-introduced a wide-spread literacy program in the hope that his people
-would learn to read English, at least, if Latin was too difficult for
-them.  This AElfred hopes to bring another sort of literacy to Java,
-using XML, at least, if full SGML is too difficult.
-
-The initial "AE" ("Æ" in ISO-8859-1) is also a reminder that XML is
-not limited to ASCII.
-
-__end of README__
+</blockquote>
 
 </pre>
 
@@ -949,743 +667,12 @@ a private copy of the Java Virtual Machine which includes Rxtx
 |   All trademarks belong to their respective owners.
 --------------------------------------------------------------------------*/
 
-The original GNU Lesser General Public License Follows.
-
-
- 		  GNU LESSER GENERAL PUBLIC LICENSE
- 		       Version 2.1, February 1999
-
-  Copyright (C) 1991, 1999 Free Software Foundation, Inc.
-  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-  Everyone is permitted to copy and distribute verbatim copies
-  of this license document, but changing it is not allowed.
-
-[This is the first released version of the Lesser GPL.  It also counts
-  as the successor of the GNU Library Public License, version 2, hence
-  the version number 2.1.]
-
- 			    Preamble
-
-   The licenses for most software are designed to take away your
-freedom to share and change it.  By contrast, the GNU General Public
-Licenses are intended to guarantee your freedom to share and change
-free software--to make sure the software is free for all its users.
-
-   This license, the Lesser General Public License, applies to some
-specially designated software packages--typically libraries--of the
-Free Software Foundation and other authors who decide to use it.  You
-can use it too, but we suggest you first think carefully about whether
-this license or the ordinary General Public License is the better
-strategy to use in any particular case, based on the explanations below.
-
-   When we speak of free software, we are referring to freedom of use,
-not price.  Our General Public Licenses are designed to make sure that
-you have the freedom to distribute copies of free software (and charge
-for this service if you wish); that you receive source code or can get
-it if you want it; that you can change the software and use pieces of
-it in new free programs; and that you are informed that you can do
-these things.
-
-   To protect your rights, we need to make restrictions that forbid
-distributors to deny you these rights or to ask you to surrender these
-rights.  These restrictions translate to certain responsibilities for
-you if you distribute copies of the library or if you modify it.
-
-   For example, if you distribute copies of the library, whether gratis
-or for a fee, you must give the recipients all the rights that we gave
-you.  You must make sure that they, too, receive or can get the source
-code.  If you link other code with the library, you must provide
-complete object files to the recipients, so that they can relink them
-with the library after making changes to the library and recompiling
-it.  And you must show them these terms so they know their rights.
-
-   We protect your rights with a two-step method: (1) we copyright the
-library, and (2) we offer you this license, which gives you legal
-permission to copy, distribute and/or modify the library.
-
-   To protect each distributor, we want to make it very clear that
-there is no warranty for the free library.  Also, if the library is
-modified by someone else and passed on, the recipients should know
-that what they have is not the original version, so that the original
-author's reputation will not be affected by problems that might be
-introduced by others.
-
-   Finally, software patents pose a constant threat to the existence of
-any free program.  We wish to make sure that a company cannot
-effectively restrict the users of a free program by obtaining a
-restrictive license from a patent holder.  Therefore, we insist that
-any patent license obtained for a version of the library must be
-consistent with the full freedom of use specified in this license.
-
-   Most GNU software, including some libraries, is covered by the
-ordinary GNU General Public License.  This license, the GNU Lesser
-General Public License, applies to certain designated libraries, and
-is quite different from the ordinary General Public License.  We use
-this license for certain libraries in order to permit linking those
-libraries into non-free programs.
-
-   When a program is linked with a library, whether statically or using
-a shared library, the combination of the two is legally speaking a
-combined work, a derivative of the original library.  The ordinary
-General Public License therefore permits such linking only if the
-entire combination fits its criteria of freedom.  The Lesser General
-Public License permits more lax criteria for linking other code with
-the library.
-
-   We call this license the &quot;Lesser&quot; General Public License because it
-does Less to protect the user's freedom than the ordinary General
-Public License.  It also provides other free software developers Less
-of an advantage over competing non-free programs.  These disadvantages
-are the reason we use the ordinary General Public License for many
-libraries.  However, the Lesser license provides advantages in certain
-special circumstances.
-
-   For example, on rare occasions, there may be a special need to
-encourage the widest possible use of a certain library, so that it becomes
-a de-facto standard.  To achieve this, non-free programs must be
-allowed to use the library.  A more frequent case is that a free
-library does the same job as widely used non-free libraries.  In this
-case, there is little to gain by limiting the free library to free
-software only, so we use the Lesser General Public License.
-
-   In other cases, permission to use a particular library in non-free
-programs enables a greater number of people to use a large body of
-free software.  For example, permission to use the GNU C Library in
-non-free programs enables many more people to use the whole GNU
-operating system, as well as its variant, the GNU/Linux operating
-system.
-
-   Although the Lesser General Public License is Less protective of the
-users' freedom, it does ensure that the user of a program that is
-linked with the Library has the freedom and the wherewithal to run
-that program using a modified version of the Library.
-
-   The precise terms and conditions for copying, distribution and
-modification follow.  Pay close attention to the difference between a
-&quot;work based on the library&quot; and a &quot;work that uses the library&quot;.  The
-former contains code derived from the library, whereas the latter must
-be combined with the library in order to run.
-
- 		  GNU LESSER GENERAL PUBLIC LICENSE
-    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-
-   0. This License Agreement applies to any software library or other
-program which contains a notice placed by the copyright holder or
-other authorized party saying it may be distributed under the terms of
-this Lesser General Public License (also called &quot;this License&quot;).
-Each licensee is addressed as &quot;you&quot;.
-
-   A &quot;library&quot; means a collection of software functions and/or data
-prepared so as to be conveniently linked with application programs
-(which use some of those functions and data) to form executables.
-
-   The &quot;Library&quot;, below, refers to any such software library or work
-which has been distributed under these terms.  A &quot;work based on the
-Library&quot; means either the Library or any derivative work under
-copyright law: that is to say, a work containing the Library or a
-portion of it, either verbatim or with modifications and/or translated
-straightforwardly into another language.  (Hereinafter, translation is
-included without limitation in the term &quot;modification&quot;.)
-
-   &quot;Source code&quot; for a work means the preferred form of the work for
-making modifications to it.  For a library, complete source code means
-all the source code for all modules it contains, plus any associated
-interface definition files, plus the scripts used to control compilation
-and installation of the library.
-
-   Activities other than copying, distribution and modification are not
-covered by this License; they are outside its scope.  The act of
-running a program using the Library is not restricted, and output from
-such a program is covered only if its contents constitute a work based
-on the Library (independent of the use of the Library in a tool for
-writing it).  Whether that is true depends on what the Library does
-and what the program that uses the Library does.
-
-   1. You may copy and distribute verbatim copies of the Library's
-complete source code as you receive it, in any medium, provided that
-you conspicuously and appropriately publish on each copy an
-appropriate copyright notice and disclaimer of warranty; keep intact
-all the notices that refer to this License and to the absence of any
-warranty; and distribute a copy of this License along with the
-Library.
-
-   You may charge a fee for the physical act of transferring a copy,
-and you may at your option offer warranty protection in exchange for a
-fee.
-
-   2. You may modify your copy or copies of the Library or any portion
-of it, thus forming a work based on the Library, and copy and
-distribute such modifications or work under the terms of Section 1
-above, provided that you also meet all of these conditions:
-
-     a) The modified work must itself be a software library.
-
-     b) You must cause the files modified to carry prominent notices
-     stating that you changed the files and the date of any change.
-
-     c) You must cause the whole of the work to be licensed at no
-     charge to all third parties under the terms of this License.
-
-     d) If a facility in the modified Library refers to a function or a
-     table of data to be supplied by an application program that uses
-     the facility, other than as an argument passed when the facility
-     is invoked, then you must make a good faith effort to ensure that,
-     in the event an application does not supply such function or
-     table, the facility still operates, and performs whatever part of
-     its purpose remains meaningful.
-
-     (For example, a function in a library to compute square roots has
-     a purpose that is entirely well-defined independent of the
-     application.  Therefore, Subsection 2d requires that any
-     application-supplied function or table used by this function must
-     be optional: if the application does not supply it, the square
-     root function must still compute square roots.)
-
-These requirements apply to the modified work as a whole.  If
-identifiable sections of that work are not derived from the Library,
-and can be reasonably considered independent and separate works in
-themselves, then this License, and its terms, do not apply to those
-sections when you distribute them as separate works.  But when you
-distribute the same sections as part of a whole which is a work based
-on the Library, the distribution of the whole must be on the terms of
-this License, whose permissions for other licensees extend to the
-entire whole, and thus to each and every part regardless of who wrote
-it.
-
-Thus, it is not the intent of this section to claim rights or contest
-your rights to work written entirely by you; rather, the intent is to
-exercise the right to control the distribution of derivative or
-collective works based on the Library.
-
-In addition, mere aggregation of another work not based on the Library
-with the Library (or with a work based on the Library) on a volume of
-a storage or distribution medium does not bring the other work under
-the scope of this License.
-
-   3. You may opt to apply the terms of the ordinary GNU General Public
-License instead of this License to a given copy of the Library.  To do
-this, you must alter all the notices that refer to this License, so
-that they refer to the ordinary GNU General Public License, version 2,
-instead of to this License.  (If a newer version than version 2 of the
-ordinary GNU General Public License has appeared, then you can specify
-that version instead if you wish.)  Do not make any other change in
-these notices.
-
-   Once this change is made in a given copy, it is irreversible for
-that copy, so the ordinary GNU General Public License applies to all
-subsequent copies and derivative works made from that copy.
-
-   This option is useful when you wish to copy part of the code of
-the Library into a program that is not a library.
-
-   4. You may copy and distribute the Library (or a portion or
-derivative of it, under Section 2) in object code or executable form
-under the terms of Sections 1 and 2 above provided that you accompany
-it with the complete corresponding machine-readable source code, which
-must be distributed under the terms of Sections 1 and 2 above on a
-medium customarily used for software interchange.
-
-   If distribution of object code is made by offering access to copy
-from a designated place, then offering equivalent access to copy the
-source code from the same place satisfies the requirement to
-distribute the source code, even though third parties are not
-compelled to copy the source along with the object code.
-
-   5. A program that contains no derivative of any portion of the
-Library, but is designed to work with the Library by being compiled or
-linked with it, is called a &quot;work that uses the Library&quot;.  Such a
-work, in isolation, is not a derivative work of the Library, and
-therefore falls outside the scope of this License.
-
-   However, linking a &quot;work that uses the Library&quot; with the Library
-creates an executable that is a derivative of the Library (because it
-contains portions of the Library), rather than a &quot;work that uses the
-library&quot;.  The executable is therefore covered by this License.
-Section 6 states terms for distribution of such executables.
-
-   When a &quot;work that uses the Library&quot; uses material from a header file
-that is part of the Library, the object code for the work may be a
-derivative work of the Library even though the source code is not.
-Whether this is true is especially significant if the work can be
-linked without the Library, or if the work is itself a library.  The
-threshold for this to be true is not precisely defined by law.
-
-   If such an object file uses only numerical parameters, data
-structure layouts and accessors, and small macros and small inline
-functions (ten lines or less in length), then the use of the object
-file is unrestricted, regardless of whether it is legally a derivative
-work.  (Executables containing this object code plus portions of the
-Library will still fall under Section 6.)
-
-   Otherwise, if the work is a derivative of the Library, you may
-distribute the object code for the work under the terms of Section 6.
-Any executables containing that work also fall under Section 6,
-whether or not they are linked directly with the Library itself.
-
-   6. As an exception to the Sections above, you may also combine or
-link a &quot;work that uses the Library&quot; with the Library to produce a
-work containing portions of the Library, and distribute that work
-under terms of your choice, provided that the terms permit
-modification of the work for the customer's own use and reverse
-engineering for debugging such modifications.
-
-   You must give prominent notice with each copy of the work that the
-Library is used in it and that the Library and its use are covered by
-this License.  You must supply a copy of this License.  If the work
-during execution displays copyright notices, you must include the
-copyright notice for the Library among them, as well as a reference
-directing the user to the copy of this License.  Also, you must do one
-of these things:
-
-     a) Accompany the work with the complete corresponding
-     machine-readable source code for the Library including whatever
-     changes were used in the work (which must be distributed under
-     Sections 1 and 2 above); and, if the work is an executable linked
-     with the Library, with the complete machine-readable &quot;work that
-     uses the Library&quot;, as object code and/or source code, so that the
-     user can modify the Library and then relink to produce a modified
-     executable containing the modified Library.  (It is understood
-     that the user who changes the contents of definitions files in the
-     Library will not necessarily be able to recompile the application
-     to use the modified definitions.)
-
-     b) Use a suitable shared library mechanism for linking with the
-     Library.  A suitable mechanism is one that (1) uses at run time a
-     copy of the library already present on the user's computer system,
-     rather than copying library functions into the executable, and (2)
-     will operate properly with a modified version of the library, if
-     the user installs one, as long as the modified version is
-     interface-compatible with the version that the work was made with.
-
-     c) Accompany the work with a written offer, valid for at
-     least three years, to give the same user the materials
-     specified in Subsection 6a, above, for a charge no more
-     than the cost of performing this distribution.
-
-     d) If distribution of the work is made by offering access to copy
-     from a designated place, offer equivalent access to copy the above
-     specified materials from the same place.
-
-     e) Verify that the user has already received a copy of these
-     materials or that you have already sent this user a copy.
-
-   For an executable, the required form of the &quot;work that uses the
-Library&quot; must include any data and utility programs needed for
-reproducing the executable from it.  However, as a special exception,
-the materials to be distributed need not include anything that is
-normally distributed (in either source or binary form) with the major
-components (compiler, kernel, and so on) of the operating system on
-which the executable runs, unless that component itself accompanies
-the executable.
-
-   It may happen that this requirement contradicts the license
-restrictions of other proprietary libraries that do not normally
-accompany the operating system.  Such a contradiction means you cannot
-use both them and the Library together in an executable that you
-distribute.
-
-   7. You may place library facilities that are a work based on the
-Library side-by-side in a single library together with other library
-facilities not covered by this License, and distribute such a combined
-library, provided that the separate distribution of the work based on
-the Library and of the other library facilities is otherwise
-permitted, and provided that you do these two things:
-
-     a) Accompany the combined library with a copy of the same work
-     based on the Library, uncombined with any other library
-     facilities.  This must be distributed under the terms of the
-     Sections above.
-
-     b) Give prominent notice with the combined library of the fact
-     that part of it is a work based on the Library, and explaining
-     where to find the accompanying uncombined form of the same work.
-
-   8. You may not copy, modify, sublicense, link with, or distribute
-the Library except as expressly provided under this License.  Any
-attempt otherwise to copy, modify, sublicense, link with, or
-distribute the Library is void, and will automatically terminate your
-rights under this License.  However, parties who have received copies,
-or rights, from you under this License will not have their licenses
-terminated so long as such parties remain in full compliance.
-
-   9. You are not required to accept this License, since you have not
-signed it.  However, nothing else grants you permission to modify or
-distribute the Library or its derivative works.  These actions are
-prohibited by law if you do not accept this License.  Therefore, by
-modifying or distributing the Library (or any work based on the
-Library), you indicate your acceptance of this License to do so, and
-all its terms and conditions for copying, distributing or modifying
-the Library or works based on it.
-
-   10. Each time you redistribute the Library (or any work based on the
-Library), the recipient automatically receives a license from the
-original licensor to copy, distribute, link with or modify the Library
-subject to these terms and conditions.  You may not impose any further
-restrictions on the recipients' exercise of the rights granted herein.
-You are not responsible for enforcing compliance by third parties with
-this License.
-
-   11. If, as a consequence of a court judgment or allegation of patent
-infringement or for any other reason (not limited to patent issues),
-conditions are imposed on you (whether by court order, agreement or
-otherwise) that contradict the conditions of this License, they do not
-excuse you from the conditions of this License.  If you cannot
-distribute so as to satisfy simultaneously your obligations under this
-License and any other pertinent obligations, then as a consequence you
-may not distribute the Library at all.  For example, if a patent
-license would not permit royalty-free redistribution of the Library by
-all those who receive copies directly or indirectly through you, then
-the only way you could satisfy both it and this License would be to
-refrain entirely from distribution of the Library.
-
-If any portion of this section is held invalid or unenforceable under any
-particular circumstance, the balance of the section is intended to apply,
-and the section as a whole is intended to apply in other circumstances.
-
-It is not the purpose of this section to induce you to infringe any
-patents or other property right claims or to contest validity of any
-such claims; this section has the sole purpose of protecting the
-integrity of the free software distribution system which is
-implemented by public license practices.  Many people have made
-generous contributions to the wide range of software distributed
-through that system in reliance on consistent application of that
-system; it is up to the author/donor to decide if he or she is willing
-to distribute software through any other system and a licensee cannot
-impose that choice.
-
-This section is intended to make thoroughly clear what is believed to
-be a consequence of the rest of this License.
-
-   12. If the distribution and/or use of the Library is restricted in
-certain countries either by patents or by copyrighted interfaces, the
-original copyright holder who places the Library under this License may add
-an explicit geographical distribution limitation excluding those countries,
-so that distribution is permitted only in or among countries not thus
-excluded.  In such case, this License incorporates the limitation as if
-written in the body of this License.
-
-   13. The Free Software Foundation may publish revised and/or new
-versions of the Lesser General Public License from time to time.
-Such new versions will be similar in spirit to the present version,
-but may differ in detail to address new problems or concerns.
-
-Each version is given a distinguishing version number.  If the Library
-specifies a version number of this License which applies to it and
-&quot;any later version&quot;, you have the option of following the terms and
-conditions either of that version or of any later version published by
-the Free Software Foundation.  If the Library does not specify a
-license version number, you may choose any version ever published by
-the Free Software Foundation.
-
-   14. If you wish to incorporate parts of the Library into other free
-programs whose distribution conditions are incompatible with these,
-write to the author to ask for permission.  For software which is
-copyrighted by the Free Software Foundation, write to the Free
-Software Foundation; we sometimes make exceptions for this.  Our
-decision will be guided by the two goals of preserving the free status
-of all derivatives of our free software and of promoting the sharing
-and reuse of software generally.
-
- 			    NO WARRANTY
-
-   15. BECAUSE THE LIBRARY IS LICENSED FREE OF CHARGE, THERE IS NO
-WARRANTY FOR THE LIBRARY, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
-EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR
-OTHER PARTIES PROVIDE THE LIBRARY &quot;AS IS&quot; WITHOUT WARRANTY OF ANY
-KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE
-LIBRARY IS WITH YOU.  SHOULD THE LIBRARY PROVE DEFECTIVE, YOU ASSUME
-THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
-
-   16. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN
-WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY
-AND/OR REDISTRIBUTE THE LIBRARY AS PERMITTED ABOVE, BE LIABLE TO YOU
-FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR
-CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
-LIBRARY (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
-RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
-FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
-SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
-DAMAGES.
-
- 		     END OF TERMS AND CONDITIONS
-
-            How to Apply These Terms to Your New Libraries
-
-   If you develop a new library, and you want it to be of the greatest
-possible use to the public, we recommend making it free software that
-everyone can redistribute and change.  You can do so by permitting
-redistribution under these terms (or, alternatively, under the terms of the
-ordinary General Public License).
-
-   To apply these terms, attach the following notices to the library.  It is
-safest to attach them to the start of each source file to most effectively
-convey the exclusion of warranty; and each file should have at least the
-&quot;copyright&quot; line and a pointer to where the full notice is found.
-
-     
-     Copyright (C)   
-
-     This library is free software; you can redistribute it and/or
-     modify it under the terms of the GNU Lesser General Public
-     License as published by the Free Software Foundation; either
-     version 2.1 of the License, or (at your option) any later version.
-
-     This library is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-     Lesser General Public License for more details.
-
-     You should have received a copy of the GNU Lesser General Public
-     License along with this library; if not, write to the Free Software
-     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-
-Also add information on how to contact you by electronic and paper mail.
-
-You should also get your employer (if you work as a programmer) or your
-school, if any, to sign a &quot;copyright disclaimer&quot; for the library, if
-necessary.  Here is a sample; alter the names:
-
-   Yoyodyne, Inc., hereby disclaims all copyright interest in the
-   library `Frob' (a library for tweaking knobs) written by James Random Hacker.
-
-   , 1 April 1990
-   Ty Coon, President of Vice
-
 </pre>
 </blockquote>
 
+See <a href="#lgpl2.1">LGPL 2.1</a> for the LGPL license
 
-<h2><a name="colt">Colt License</a></h2>
-
-The Ptolemy II Colt actors use the
-Colt library from
-<a href="http://hoschek.home.cern.ch/hoschek/colt/#in_browser" target="_top"><CODE>http://hoschek.home.cern.ch/hoschek/colt/</CODE></a>
-to generate random numbers.  These actors were written by
-David Bauer, Kostas Oikonomou, and Edward A. Lee.
-
-
- <p>Colt is an
-"Open Source Libraries for High Performance
-Scientific and Technical Computing in Java"
-
-<p>We ship a subset of Colt classes we need in 
-<code>$PTII/lib/ptcolt.jar</code>.  
-
-<p>The portion of Colt that we ship has the following licenses:
-<blockquote>
-
-<code>packages cern.colt* , cern.jet*, cern.clhep</code>
-
-    <p>Written by <a href="http://cern.ch/hoschek">Wolfgang Hoschek</a>. Check 
-        the <a href="http://cern.ch/hoschek/colt">Colt home page</a> for more 
-        info.
-    <br>Copyright (c) 1999 CERN - European Organization for Nuclear Research.
-    Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose is hereby granted without fee, provided that the above copyright notice appear in all copies and that both that copyright notice and this permission notice appear in supporting documentation. CERN makes no representations about the suitability of this software for any purpose. It is provided "as is" without expressed or implied warranty.
-
-</blockquote>
-
-
-Colt 1.0.3 used a version of 
-<a href="http://www.honeylocust.com/RngPack/">RngPack</a>
-that used the GNU Public License (GPL)
-<br>We updated to RngPack 1.1a, which "fixes a number of serious bugs in RngPack 1.0 including an incorrect coefficient in the Ranecu implementation and fixes an off-by-one error in the choice() method."
-<br>In addition, RngPack 1.1a is release under the BSD License:
-<blockquote>
-<code>packages edu.cornell.lassp.houle.RngPack</code>
-<p>Copyright (c) 2003 by Paul Houle
-Portions copyright (c) 1993 by Michael Lecuyer and copyright (c) 2003
-by Sean Luke
-
-<p>All rights reserved
-
-<p>Redistribution and use in source and binary forms, with or without 
-modification, are permitted provided that the following conditions are met:
-
-<p>Redistributions of source code must retain the above copyright notice, 
-this list of conditions and the following disclaimer.
-
-<p>Redistributions in binary form must reproduce the above copyright notice, 
-this list of conditions and the following disclaimer in the documentation 
-and/or other materials provided with the distribution.
-
-<p>Neither the name of the copyright owners, their employers, nor the 
-names of its contributors may be used to endorse or promote products 
-derived from this software without specific prior written permission.
-
-
-<p> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
- DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNERS OR CONTRIBUTORS BE 
- LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
- POSSIBILITY OF SUCH DAMAGE.
-</blockquote>
-
-<h2><a name="joystick">Joystick license</a></h2>
-
-The Joystick actor uses the Joystick interface from
-<a href="http://sourceforge.net/projects/javajoystick/#in_browser" target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>.
-<p>The Joystick interface has the following license:
-<blockquote>
-The "Artistic License"
-
-<h3>Preamble</h3>
-The intent of this document is to state the conditions under which a Package
-may be copied, such that the Copyright Holder maintains some semblance of
-artistic control over the development of the package, while giving the users
-of the package the right to use and distribute the Package in a more-or-less
-customary fashion, plus the right to make reasonable modifications.
-
-<h4>Definitions:</h4>
-
-
-<p>"Package" refers to the collection of files distributed by the Copyright
-Holder, and derivatives of that collection of files created through textual
-modification.
-
-<p>"Standard Version" refers to such a Package if it has not been modified, or
-has been modified in accordance with the wishes of the Copyright Holder.
-
-<p>"Copyright Holder" is whoever is named in the copyright or copyrights for the
-package.
-
-<p>"You" is you, if you're thinking about copying or distributing this Package.
-
-<p>"Reasonable copying fee" is whatever you can justify on the basis of media
-cost, duplication charges, time of people involved, and so on. (You will not
-be required to justify it to the Copyright Holder, but only to the computing
-community at large as a market that must bear the fee.)
-
-<p>"Freely Available" means that no fee is charged for the item itself, though
-there may be fees involved in handling the item. It also means that recipients
-of the item may redistribute it under the same conditions they received it.
-
-<ol>
-<li> You may make and give away verbatim copies of the source form of the
-Standard Version of this Package without restriction, provided that you
-duplicate all of the original copyright notices and associated disclaimers.
-
-<li> You may apply bug fixes, portability fixes and other modifications derived
-from the Public Domain or from the Copyright Holder. A Package modified in
-such a way shall still be considered the Standard Version.
-
-<li> You may otherwise modify your copy of this Package in any way, provided
-that you insert a prominent notice in each changed file stating how and when
-you changed that file, and provided that you do at least ONE of the following:
-<br>a) place your modifications in the Public Domain or otherwise make them Freely
-Available, such as by posting said modifications to Usenet or an equivalent
-medium, or placing the modifications on a major archive site, or by allowing
-the Copyright Holder to include your modifications in the Standard Version of
-the Package.
-<br>b) use the modified Package only within your corporation or organization.
-<br>c) rename any non-standard executables so the names do not conflict with
-standard executables, which must also be provided, and provide a separate
-manual page for each non-standard executable that clearly documents how it
-differs from the Standard Version.
-<br>d) make other distribution arrangements with the Copyright Holder.
-
-<li> You may distribute the programs of this Package in object code or
-executable form, provided that you do at least ONE of the following:
-<br>a) distribute a Standard Version of the executables and library files,
-together with instructions (in the manual page or equivalent) on where to get
-the Standard Version.
-<br>b) accompany the distribution with the machine-readable source of the Package
-with your modifications.
-<br>c) accompany any non-standard executables with their corresponding Standard
-Version executables, giving the non-standard executables non-standard names,
-and clearly documenting the differences in manual pages (or equivalent),
-together with instructions on where to get the Standard Version.
-d) make other distribution arrangements with the Copyright Holder.
-
-<li> You may charge a reasonable copying fee for any distribution of this
-Package. You may charge any fee you choose for support of this Package.
-You may not charge a fee for this Package itself. However, you may
-distribute this Package in aggregate with other (possibly commercial)
-programs as part of a larger (possibly commercial) software distribution
-provided that you do not advertise this Package as a product of your own.
-
-<li> The scripts and library files supplied as input to or produced as output
-from the programs of this Package do not automatically fall under the
-copyright of this Package, but belong to whomever generated them, and may be
-sold commercially, and may be aggregated with this Package.
-
-<li> C or Java subroutines supplied by you and linked into this Package shall
-not be considered part of this Package.
-
-<li> The name of the Copyright Holder may not be used to endorse or promote
-products derived from this software without specific prior written permission.
-
-<li> THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
-WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
-MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-
-<li> EXCEPT AS EXPRESSLY SET FORTH IN THIS AGREEMENT, NEITHER RECIPIENT NOR
-ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING WITHOUT
-LIMITATION LOST PROFITS), HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OR DISTRIBUTION OF THE PROGRAM
-OR THE EXERCISE OF ANY RIGHTS GRANTED HEREUNDER, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGES. 
-
-</blockquote>
-
-<h2><a name="bsh">FormLayoutMaker and Bean Shell (BSH) License</a></h2>
-The Ptolemy II Run Control Panel uses FormLayoutMaker from
-<a href="http://formlayoutmaker.sourceforge.net#in_browser" target="_top"><code>http://formlayoutmaker.sourceforge.net</code></a>
-
-<p>The Ptolemy II source tree includes FormLayoutMaker in <code>ptII/org/mlc</code>.
-<p>FormLayoutMaker has the following licence:
-<blockquote>
- Copyright (c) 2004-2007 by Michael Connor. All Rights Reserved.
- <p>Redistribution and use in source and binary forms, with or without 
- modification, are permitted provided that the following conditions are met:
-
- <li> Redistributions of source code must retain the above copyright
-     notice, this list of conditions and the following disclaimer.
-      
- <li> Redistributions in binary form must reproduce the above
-     copyright notice, this list of conditions and the following
-     disclaimer in the documentation and/or other materials provided
-     with the distribution.
-      
- <li> Neither the name of FormLayoutBuilder or Michael Connor nor the
-     names of its contributors may be used to endorse or promote
-     products derived from this software without specific prior
-     written permission.
- 
-
-  <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-  CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
-  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-</blockquote>
-
-FormLayoutMaker in turn uses the Java Bean Shell from
-<a href="http://www.beanshell.org/#in_browser" target="_top"><code>http://www.beanshell.org/</code></a>
-
-<p>The Ptolemy II distribution includes Java Bean Shell as a jar
-file in <code>$PTII/lib</code>.
-<p>Bean Shell is dual licensed under 
-the <a href="http://www.sun.com/developers/spl.html">Sun Public License</a>
-and the
-<a href="http://www.gnu.org/copyleft/lesser.html">GNU Lesser General Public License (LGPL)</a>.
+<h2><a name="lgpl2.1">LGPL 2.1</a></h2>
 
 <p>The LGPL is reproduced below:
 
@@ -1699,7 +686,7 @@ why this change was necessary, read the
 Lesser GPL for your next library</A> article.
 <P>
 
-<H2>Table of Contents</H2>
+<H3>Table of Contents</H3>
 <UL>
 <LI><A NAME="TOC1" HREF="#SEC1">GNU LESSER GENERAL PUBLIC LICENSE</A>
 <UL>
@@ -1717,7 +704,7 @@ Lesser GPL for your next library</A> article.
 
 
 
-<H2><A NAME="SEC1" HREF="#TOC1">GNU LESSER GENERAL PUBLIC LICENSE</A></H2>
+<H3><A NAME="SEC1" HREF="#TOC1">GNU LESSER GENERAL PUBLIC LICENSE</A></H3>
 <P>
 Version 2.1, February 1999
 
@@ -1734,7 +721,7 @@ of this license document, but changing it is not allowed.
 </PRE>
 
 
-<H2><A NAME="SEC2" HREF="#TOC2">Preamble</A></H2>
+<H3><A NAME="SEC2" HREF="#TOC2">Preamble</A></H3>
 
 <P>
   The licenses for most software are designed to take away your
@@ -1838,7 +825,7 @@ former contains code derived from the library, whereas the latter must
 be combined with the library in order to run.
 <P>
 
-<H2><A NAME="SEC3" HREF="#TOC3">TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION</A></H2>
+<H3><A NAME="SEC3" HREF="#TOC3">TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION</A></H3>
 
 
 <P>
@@ -2206,9 +1193,9 @@ FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
 SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
 DAMAGES.
 <P>
-<H2>END OF TERMS AND CONDITIONS</H2>
+<H3>END OF TERMS AND CONDITIONS</H3>
 
-<H2><A NAME="SEC4" HREF="#TOC4">How to Apply These Terms to Your New Libraries</A></H2>
+<H3><A NAME="SEC4" HREF="#TOC4">How to Apply These Terms to Your New Libraries</A></H3>
 <P>
   If you develop a new library, and you want it to be of the greatest
 possible use to the public, we recommend making it free software that
@@ -2266,6 +1253,238 @@ That's all there is to it!
 </blockquote>
 
 
+<h2><a name="colt">Colt License</a></h2>
+
+The Ptolemy II Colt actors use the
+Colt library from
+<a href="http://hoschek.home.cern.ch/hoschek/colt/#in_browser" target="_top"><CODE>http://hoschek.home.cern.ch/hoschek/colt/</CODE></a>
+to generate random numbers.  These actors were written by
+David Bauer, Kostas Oikonomou, and Edward A. Lee.
+
+
+ <p>Colt is an
+"Open Source Libraries for High Performance
+Scientific and Technical Computing in Java"
+
+<p>We ship a subset of Colt classes we need in 
+<code>$PTII/lib/ptcolt.jar</code>.  
+
+<p>The portion of Colt that we ship has the following licenses:
+<blockquote>
+
+<code>packages cern.colt* , cern.jet*, cern.clhep</code>
+
+    <p>Written by <a href="http://cern.ch/hoschek">Wolfgang Hoschek</a>. Check 
+        the <a href="http://cern.ch/hoschek/colt">Colt home page</a> for more 
+        info.
+    <br>Copyright (c) 1999 CERN - European Organization for Nuclear Research.
+    Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose is hereby granted without fee, provided that the above copyright notice appear in all copies and that both that copyright notice and this permission notice appear in supporting documentation. CERN makes no representations about the suitability of this software for any purpose. It is provided "as is" without expressed or implied warranty.
+
+</blockquote>
+
+
+Colt 1.0.3 used a version of 
+<a href="http://www.honeylocust.com/RngPack/">RngPack</a>
+that used the GNU Public License (GPL)
+<br>We updated to RngPack 1.1a, which "fixes a number of serious bugs in RngPack 1.0 including an incorrect coefficient in the Ranecu implementation and fixes an off-by-one error in the choice() method."
+<br>In addition, RngPack 1.1a is release under the BSD License:
+<blockquote>
+<code>packages edu.cornell.lassp.houle.RngPack</code>
+<p>Copyright (c) 2003 by Paul Houle
+Portions copyright (c) 1993 by Michael Lecuyer and copyright (c) 2003
+by Sean Luke
+
+<p>All rights reserved
+
+<p>Redistribution and use in source and binary forms, with or without 
+modification, are permitted provided that the following conditions are met:
+
+<p>Redistributions of source code must retain the above copyright notice, 
+this list of conditions and the following disclaimer.
+
+<p>Redistributions in binary form must reproduce the above copyright notice, 
+this list of conditions and the following disclaimer in the documentation 
+and/or other materials provided with the distribution.
+
+<p>Neither the name of the copyright owners, their employers, nor the 
+names of its contributors may be used to endorse or promote products 
+derived from this software without specific prior written permission.
+
+
+<p> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+ DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNERS OR CONTRIBUTORS BE 
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ POSSIBILITY OF SUCH DAMAGE.
+</blockquote>
+
+<h2><a name="joystick">Joystick license</a></h2>
+
+The Joystick actor uses the Joystick interface from
+<a href="http://sourceforge.net/projects/javajoystick/#in_browser" target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>.
+<p>The Joystick interface has the following license:
+<blockquote>
+The "Artistic License"
+
+<h3>Preamble</h3>
+The intent of this document is to state the conditions under which a Package
+may be copied, such that the Copyright Holder maintains some semblance of
+artistic control over the development of the package, while giving the users
+of the package the right to use and distribute the Package in a more-or-less
+customary fashion, plus the right to make reasonable modifications.
+
+<h4>Definitions:</h4>
+
+
+<p>"Package" refers to the collection of files distributed by the Copyright
+Holder, and derivatives of that collection of files created through textual
+modification.
+
+<p>"Standard Version" refers to such a Package if it has not been modified, or
+has been modified in accordance with the wishes of the Copyright Holder.
+
+<p>"Copyright Holder" is whoever is named in the copyright or copyrights for the
+package.
+
+<p>"You" is you, if you're thinking about copying or distributing this Package.
+
+<p>"Reasonable copying fee" is whatever you can justify on the basis of media
+cost, duplication charges, time of people involved, and so on. (You will not
+be required to justify it to the Copyright Holder, but only to the computing
+community at large as a market that must bear the fee.)
+
+<p>"Freely Available" means that no fee is charged for the item itself, though
+there may be fees involved in handling the item. It also means that recipients
+of the item may redistribute it under the same conditions they received it.
+
+<ol>
+<li> You may make and give away verbatim copies of the source form of the
+Standard Version of this Package without restriction, provided that you
+duplicate all of the original copyright notices and associated disclaimers.
+
+<li> You may apply bug fixes, portability fixes and other modifications derived
+from the Public Domain or from the Copyright Holder. A Package modified in
+such a way shall still be considered the Standard Version.
+
+<li> You may otherwise modify your copy of this Package in any way, provided
+that you insert a prominent notice in each changed file stating how and when
+you changed that file, and provided that you do at least ONE of the following:
+<br>a) place your modifications in the Public Domain or otherwise make them Freely
+Available, such as by posting said modifications to Usenet or an equivalent
+medium, or placing the modifications on a major archive site, or by allowing
+the Copyright Holder to include your modifications in the Standard Version of
+the Package.
+<br>b) use the modified Package only within your corporation or organization.
+<br>c) rename any non-standard executables so the names do not conflict with
+standard executables, which must also be provided, and provide a separate
+manual page for each non-standard executable that clearly documents how it
+differs from the Standard Version.
+<br>d) make other distribution arrangements with the Copyright Holder.
+
+<li> You may distribute the programs of this Package in object code or
+executable form, provided that you do at least ONE of the following:
+<br>a) distribute a Standard Version of the executables and library files,
+together with instructions (in the manual page or equivalent) on where to get
+the Standard Version.
+<br>b) accompany the distribution with the machine-readable source of the Package
+with your modifications.
+<br>c) accompany any non-standard executables with their corresponding Standard
+Version executables, giving the non-standard executables non-standard names,
+and clearly documenting the differences in manual pages (or equivalent),
+together with instructions on where to get the Standard Version.
+d) make other distribution arrangements with the Copyright Holder.
+
+<li> You may charge a reasonable copying fee for any distribution of this
+Package. You may charge any fee you choose for support of this Package.
+You may not charge a fee for this Package itself. However, you may
+distribute this Package in aggregate with other (possibly commercial)
+programs as part of a larger (possibly commercial) software distribution
+provided that you do not advertise this Package as a product of your own.
+
+<li> The scripts and library files supplied as input to or produced as output
+from the programs of this Package do not automatically fall under the
+copyright of this Package, but belong to whomever generated them, and may be
+sold commercially, and may be aggregated with this Package.
+
+<li> C or Java subroutines supplied by you and linked into this Package shall
+not be considered part of this Package.
+
+<li> The name of the Copyright Holder may not be used to endorse or promote
+products derived from this software without specific prior written permission.
+
+<li> THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+<li> EXCEPT AS EXPRESSLY SET FORTH IN THIS AGREEMENT, NEITHER RECIPIENT NOR
+ANY CONTRIBUTORS SHALL HAVE ANY LIABILITY FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING WITHOUT
+LIMITATION LOST PROFITS), HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OR DISTRIBUTION OF THE PROGRAM
+OR THE EXERCISE OF ANY RIGHTS GRANTED HEREUNDER, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES. 
+
+</blockquote>
+
+<h2><a name="bsh">FormLayoutMaker and Bean Shell (BSH) License</a></h2>
+The Ptolemy II Run Control Panel uses FormLayoutMaker from
+<a href="http://formlayoutmaker.sourceforge.net#in_browser" target="_top"><code>http://formlayoutmaker.sourceforge.net</code></a>
+
+<p>The Ptolemy II source tree includes FormLayoutMaker in <code>ptII/org/mlc</code>.
+<p>FormLayoutMaker has the following licence:
+<blockquote>
+ Copyright (c) 2004-2007 by Michael Connor. All Rights Reserved.
+ <p>Redistribution and use in source and binary forms, with or without 
+ modification, are permitted provided that the following conditions are met:
+
+ <li> Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+      
+ <li> Redistributions in binary form must reproduce the above
+     copyright notice, this list of conditions and the following
+     disclaimer in the documentation and/or other materials provided
+     with the distribution.
+      
+ <li> Neither the name of FormLayoutBuilder or Michael Connor nor the
+     names of its contributors may be used to endorse or promote
+     products derived from this software without specific prior
+     written permission.
+ 
+
+  <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+  CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+</blockquote>
+
+FormLayoutMaker in turn uses the Java Bean Shell from
+<a href="http://www.beanshell.org/#in_browser" target="_top"><code>http://www.beanshell.org/</code></a>
+
+<p>The Ptolemy II distribution includes Java Bean Shell as a jar
+file in <code>$PTII/lib</code>.
+<p>Bean Shell is dual licensed under 
+the <a href="http://www.sun.com/developers/spl.html">Sun Public License</a>
+and the
+<a href="http://www.gnu.org/copyleft/lesser.html">GNU Lesser General Public License (LGPL)</a>.
+
+<p>See <a href="#lgpl2.1">LGPL 2.1</a> for a local copy of the LGPL.
+
 
 <h2><a name="jniLauncher">JNI Launcher</a></h2>
 
@@ -2275,512 +1494,8 @@ This directory contains a launcher for JNI Programs.  For details, see
 
 <p>The .cpp and .h files in this directory are from salma-hayek, found at
 <a href="http://software.jessies.org/terminator/#in_browser" target="_top"><code>http://software.jessies.org/terminator/</code></a>.
-The salma-hayek package is LGPL'd:
-<pre>
-		  GNU LESSER GENERAL PUBLIC LICENSE
-		       Version 2.1, February 1999
-
- Copyright (C) 1991, 1999 Free Software Foundation, Inc.
-     51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- Everyone is permitted to copy and distribute verbatim copies
- of this license document, but changing it is not allowed.
-
-[This is the first released version of the Lesser GPL.  It also counts
- as the successor of the GNU Library Public License, version 2, hence
- the version number 2.1.]
-
-			    Preamble
-
-  The licenses for most software are designed to take away your
-freedom to share and change it.  By contrast, the GNU General Public
-Licenses are intended to guarantee your freedom to share and change
-free software--to make sure the software is free for all its users.
-
-  This license, the Lesser General Public License, applies to some
-specially designated software packages--typically libraries--of the
-Free Software Foundation and other authors who decide to use it.  You
-can use it too, but we suggest you first think carefully about whether
-this license or the ordinary General Public License is the better
-strategy to use in any particular case, based on the explanations below.
-
-  When we speak of free software, we are referring to freedom of use,
-not price.  Our General Public Licenses are designed to make sure that
-you have the freedom to distribute copies of free software (and charge
-for this service if you wish); that you receive source code or can get
-it if you want it; that you can change the software and use pieces of
-it in new free programs; and that you are informed that you can do
-these things.
-
-  To protect your rights, we need to make restrictions that forbid
-distributors to deny you these rights or to ask you to surrender these
-rights.  These restrictions translate to certain responsibilities for
-you if you distribute copies of the library or if you modify it.
-
-  For example, if you distribute copies of the library, whether gratis
-or for a fee, you must give the recipients all the rights that we gave
-you.  You must make sure that they, too, receive or can get the source
-code.  If you link other code with the library, you must provide
-complete object files to the recipients, so that they can relink them
-with the library after making changes to the library and recompiling
-it.  And you must show them these terms so they know their rights.
-
-  We protect your rights with a two-step method: (1) we copyright the
-library, and (2) we offer you this license, which gives you legal
-permission to copy, distribute and/or modify the library.
-
-  To protect each distributor, we want to make it very clear that
-there is no warranty for the free library.  Also, if the library is
-modified by someone else and passed on, the recipients should know
-that what they have is not the original version, so that the original
-author's reputation will not be affected by problems that might be
-introduced by others.
-
-  Finally, software patents pose a constant threat to the existence of
-any free program.  We wish to make sure that a company cannot
-effectively restrict the users of a free program by obtaining a
-restrictive license from a patent holder.  Therefore, we insist that
-any patent license obtained for a version of the library must be
-consistent with the full freedom of use specified in this license.
-
-  Most GNU software, including some libraries, is covered by the
-ordinary GNU General Public License.  This license, the GNU Lesser
-General Public License, applies to certain designated libraries, and
-is quite different from the ordinary General Public License.  We use
-this license for certain libraries in order to permit linking those
-libraries into non-free programs.
-
-  When a program is linked with a library, whether statically or using
-a shared library, the combination of the two is legally speaking a
-combined work, a derivative of the original library.  The ordinary
-General Public License therefore permits such linking only if the
-entire combination fits its criteria of freedom.  The Lesser General
-Public License permits more lax criteria for linking other code with
-the library.
-
-  We call this license the "Lesser" General Public License because it
-does Less to protect the user's freedom than the ordinary General
-Public License.  It also provides other free software developers Less
-of an advantage over competing non-free programs.  These disadvantages
-are the reason we use the ordinary General Public License for many
-libraries.  However, the Lesser license provides advantages in certain
-special circumstances.
-
-  For example, on rare occasions, there may be a special need to
-encourage the widest possible use of a certain library, so that it becomes
-a de-facto standard.  To achieve this, non-free programs must be
-allowed to use the library.  A more frequent case is that a free
-library does the same job as widely used non-free libraries.  In this
-case, there is little to gain by limiting the free library to free
-software only, so we use the Lesser General Public License.
-
-  In other cases, permission to use a particular library in non-free
-programs enables a greater number of people to use a large body of
-free software.  For example, permission to use the GNU C Library in
-non-free programs enables many more people to use the whole GNU
-operating system, as well as its variant, the GNU/Linux operating
-system.
-
-  Although the Lesser General Public License is Less protective of the
-users' freedom, it does ensure that the user of a program that is
-linked with the Library has the freedom and the wherewithal to run
-that program using a modified version of the Library.
-
-  The precise terms and conditions for copying, distribution and
-modification follow.  Pay close attention to the difference between a
-"work based on the library" and a "work that uses the library".  The
-former contains code derived from the library, whereas the latter must
-be combined with the library in order to run.
-
-		  GNU LESSER GENERAL PUBLIC LICENSE
-   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-
-  0. This License Agreement applies to any software library or other
-program which contains a notice placed by the copyright holder or
-other authorized party saying it may be distributed under the terms of
-this Lesser General Public License (also called "this License").
-Each licensee is addressed as "you".
-
-  A "library" means a collection of software functions and/or data
-prepared so as to be conveniently linked with application programs
-(which use some of those functions and data) to form executables.
-
-  The "Library", below, refers to any such software library or work
-which has been distributed under these terms.  A "work based on the
-Library" means either the Library or any derivative work under
-copyright law: that is to say, a work containing the Library or a
-portion of it, either verbatim or with modifications and/or translated
-straightforwardly into another language.  (Hereinafter, translation is
-included without limitation in the term "modification".)
-
-  "Source code" for a work means the preferred form of the work for
-making modifications to it.  For a library, complete source code means
-all the source code for all modules it contains, plus any associated
-interface definition files, plus the scripts used to control compilation
-and installation of the library.
-
-  Activities other than copying, distribution and modification are not
-covered by this License; they are outside its scope.  The act of
-running a program using the Library is not restricted, and output from
-such a program is covered only if its contents constitute a work based
-on the Library (independent of the use of the Library in a tool for
-writing it).  Whether that is true depends on what the Library does
-and what the program that uses the Library does.
-  
-  1. You may copy and distribute verbatim copies of the Library's
-complete source code as you receive it, in any medium, provided that
-you conspicuously and appropriately publish on each copy an
-appropriate copyright notice and disclaimer of warranty; keep intact
-all the notices that refer to this License and to the absence of any
-warranty; and distribute a copy of this License along with the
-Library.
-
-  You may charge a fee for the physical act of transferring a copy,
-and you may at your option offer warranty protection in exchange for a
-fee.
-
-  2. You may modify your copy or copies of the Library or any portion
-of it, thus forming a work based on the Library, and copy and
-distribute such modifications or work under the terms of Section 1
-above, provided that you also meet all of these conditions:
-
-    a) The modified work must itself be a software library.
-
-    b) You must cause the files modified to carry prominent notices
-    stating that you changed the files and the date of any change.
-
-    c) You must cause the whole of the work to be licensed at no
-    charge to all third parties under the terms of this License.
-
-    d) If a facility in the modified Library refers to a function or a
-    table of data to be supplied by an application program that uses
-    the facility, other than as an argument passed when the facility
-    is invoked, then you must make a good faith effort to ensure that,
-    in the event an application does not supply such function or
-    table, the facility still operates, and performs whatever part of
-    its purpose remains meaningful.
-
-    (For example, a function in a library to compute square roots has
-    a purpose that is entirely well-defined independent of the
-    application.  Therefore, Subsection 2d requires that any
-    application-supplied function or table used by this function must
-    be optional: if the application does not supply it, the square
-    root function must still compute square roots.)
-
-These requirements apply to the modified work as a whole.  If
-identifiable sections of that work are not derived from the Library,
-and can be reasonably considered independent and separate works in
-themselves, then this License, and its terms, do not apply to those
-sections when you distribute them as separate works.  But when you
-distribute the same sections as part of a whole which is a work based
-on the Library, the distribution of the whole must be on the terms of
-this License, whose permissions for other licensees extend to the
-entire whole, and thus to each and every part regardless of who wrote
-it.
-
-Thus, it is not the intent of this section to claim rights or contest
-your rights to work written entirely by you; rather, the intent is to
-exercise the right to control the distribution of derivative or
-collective works based on the Library.
-
-In addition, mere aggregation of another work not based on the Library
-with the Library (or with a work based on the Library) on a volume of
-a storage or distribution medium does not bring the other work under
-the scope of this License.
-
-  3. You may opt to apply the terms of the ordinary GNU General Public
-License instead of this License to a given copy of the Library.  To do
-this, you must alter all the notices that refer to this License, so
-that they refer to the ordinary GNU General Public License, version 2,
-instead of to this License.  (If a newer version than version 2 of the
-ordinary GNU General Public License has appeared, then you can specify
-that version instead if you wish.)  Do not make any other change in
-these notices.
-
-  Once this change is made in a given copy, it is irreversible for
-that copy, so the ordinary GNU General Public License applies to all
-subsequent copies and derivative works made from that copy.
-
-  This option is useful when you wish to copy part of the code of
-the Library into a program that is not a library.
-
-  4. You may copy and distribute the Library (or a portion or
-derivative of it, under Section 2) in object code or executable form
-under the terms of Sections 1 and 2 above provided that you accompany
-it with the complete corresponding machine-readable source code, which
-must be distributed under the terms of Sections 1 and 2 above on a
-medium customarily used for software interchange.
-
-  If distribution of object code is made by offering access to copy
-from a designated place, then offering equivalent access to copy the
-source code from the same place satisfies the requirement to
-distribute the source code, even though third parties are not
-compelled to copy the source along with the object code.
-
-  5. A program that contains no derivative of any portion of the
-Library, but is designed to work with the Library by being compiled or
-linked with it, is called a "work that uses the Library".  Such a
-work, in isolation, is not a derivative work of the Library, and
-therefore falls outside the scope of this License.
-
-  However, linking a "work that uses the Library" with the Library
-creates an executable that is a derivative of the Library (because it
-contains portions of the Library), rather than a "work that uses the
-library".  The executable is therefore covered by this License.
-Section 6 states terms for distribution of such executables.
-
-  When a "work that uses the Library" uses material from a header file
-that is part of the Library, the object code for the work may be a
-derivative work of the Library even though the source code is not.
-Whether this is true is especially significant if the work can be
-linked without the Library, or if the work is itself a library.  The
-threshold for this to be true is not precisely defined by law.
-
-  If such an object file uses only numerical parameters, data
-structure layouts and accessors, and small macros and small inline
-functions (ten lines or less in length), then the use of the object
-file is unrestricted, regardless of whether it is legally a derivative
-work.  (Executables containing this object code plus portions of the
-Library will still fall under Section 6.)
-
-  Otherwise, if the work is a derivative of the Library, you may
-distribute the object code for the work under the terms of Section 6.
-Any executables containing that work also fall under Section 6,
-whether or not they are linked directly with the Library itself.
-
-  6. As an exception to the Sections above, you may also combine or
-link a "work that uses the Library" with the Library to produce a
-work containing portions of the Library, and distribute that work
-under terms of your choice, provided that the terms permit
-modification of the work for the customer's own use and reverse
-engineering for debugging such modifications.
-
-  You must give prominent notice with each copy of the work that the
-Library is used in it and that the Library and its use are covered by
-this License.  You must supply a copy of this License.  If the work
-during execution displays copyright notices, you must include the
-copyright notice for the Library among them, as well as a reference
-directing the user to the copy of this License.  Also, you must do one
-of these things:
-
-    a) Accompany the work with the complete corresponding
-    machine-readable source code for the Library including whatever
-    changes were used in the work (which must be distributed under
-    Sections 1 and 2 above); and, if the work is an executable linked
-    with the Library, with the complete machine-readable "work that
-    uses the Library", as object code and/or source code, so that the
-    user can modify the Library and then relink to produce a modified
-    executable containing the modified Library.  (It is understood
-    that the user who changes the contents of definitions files in the
-    Library will not necessarily be able to recompile the application
-    to use the modified definitions.)
-
-    b) Use a suitable shared library mechanism for linking with the
-    Library.  A suitable mechanism is one that (1) uses at run time a
-    copy of the library already present on the user's computer system,
-    rather than copying library functions into the executable, and (2)
-    will operate properly with a modified version of the library, if
-    the user installs one, as long as the modified version is
-    interface-compatible with the version that the work was made with.
-
-    c) Accompany the work with a written offer, valid for at
-    least three years, to give the same user the materials
-    specified in Subsection 6a, above, for a charge no more
-    than the cost of performing this distribution.
-
-    d) If distribution of the work is made by offering access to copy
-    from a designated place, offer equivalent access to copy the above
-    specified materials from the same place.
-
-    e) Verify that the user has already received a copy of these
-    materials or that you have already sent this user a copy.
-
-  For an executable, the required form of the "work that uses the
-Library" must include any data and utility programs needed for
-reproducing the executable from it.  However, as a special exception,
-the materials to be distributed need not include anything that is
-normally distributed (in either source or binary form) with the major
-components (compiler, kernel, and so on) of the operating system on
-which the executable runs, unless that component itself accompanies
-the executable.
-
-  It may happen that this requirement contradicts the license
-restrictions of other proprietary libraries that do not normally
-accompany the operating system.  Such a contradiction means you cannot
-use both them and the Library together in an executable that you
-distribute.
-
-  7. You may place library facilities that are a work based on the
-Library side-by-side in a single library together with other library
-facilities not covered by this License, and distribute such a combined
-library, provided that the separate distribution of the work based on
-the Library and of the other library facilities is otherwise
-permitted, and provided that you do these two things:
-
-    a) Accompany the combined library with a copy of the same work
-    based on the Library, uncombined with any other library
-    facilities.  This must be distributed under the terms of the
-    Sections above.
-
-    b) Give prominent notice with the combined library of the fact
-    that part of it is a work based on the Library, and explaining
-    where to find the accompanying uncombined form of the same work.
-
-  8. You may not copy, modify, sublicense, link with, or distribute
-the Library except as expressly provided under this License.  Any
-attempt otherwise to copy, modify, sublicense, link with, or
-distribute the Library is void, and will automatically terminate your
-rights under this License.  However, parties who have received copies,
-or rights, from you under this License will not have their licenses
-terminated so long as such parties remain in full compliance.
-
-  9. You are not required to accept this License, since you have not
-signed it.  However, nothing else grants you permission to modify or
-distribute the Library or its derivative works.  These actions are
-prohibited by law if you do not accept this License.  Therefore, by
-modifying or distributing the Library (or any work based on the
-Library), you indicate your acceptance of this License to do so, and
-all its terms and conditions for copying, distributing or modifying
-the Library or works based on it.
-
-  10. Each time you redistribute the Library (or any work based on the
-Library), the recipient automatically receives a license from the
-original licensor to copy, distribute, link with or modify the Library
-subject to these terms and conditions.  You may not impose any further
-restrictions on the recipients' exercise of the rights granted herein.
-You are not responsible for enforcing compliance by third parties with
-this License.
-
-  11. If, as a consequence of a court judgment or allegation of patent
-infringement or for any other reason (not limited to patent issues),
-conditions are imposed on you (whether by court order, agreement or
-otherwise) that contradict the conditions of this License, they do not
-excuse you from the conditions of this License.  If you cannot
-distribute so as to satisfy simultaneously your obligations under this
-License and any other pertinent obligations, then as a consequence you
-may not distribute the Library at all.  For example, if a patent
-license would not permit royalty-free redistribution of the Library by
-all those who receive copies directly or indirectly through you, then
-the only way you could satisfy both it and this License would be to
-refrain entirely from distribution of the Library.
-
-If any portion of this section is held invalid or unenforceable under any
-particular circumstance, the balance of the section is intended to apply,
-and the section as a whole is intended to apply in other circumstances.
-
-It is not the purpose of this section to induce you to infringe any
-patents or other property right claims or to contest validity of any
-such claims; this section has the sole purpose of protecting the
-integrity of the free software distribution system which is
-implemented by public license practices.  Many people have made
-generous contributions to the wide range of software distributed
-through that system in reliance on consistent application of that
-system; it is up to the author/donor to decide if he or she is willing
-to distribute software through any other system and a licensee cannot
-impose that choice.
-
-This section is intended to make thoroughly clear what is believed to
-be a consequence of the rest of this License.
-
-  12. If the distribution and/or use of the Library is restricted in
-certain countries either by patents or by copyrighted interfaces, the
-original copyright holder who places the Library under this License may add
-an explicit geographical distribution limitation excluding those countries,
-so that distribution is permitted only in or among countries not thus
-excluded.  In such case, this License incorporates the limitation as if
-written in the body of this License.
-
-  13. The Free Software Foundation may publish revised and/or new
-versions of the Lesser General Public License from time to time.
-Such new versions will be similar in spirit to the present version,
-but may differ in detail to address new problems or concerns.
-
-Each version is given a distinguishing version number.  If the Library
-specifies a version number of this License which applies to it and
-"any later version", you have the option of following the terms and
-conditions either of that version or of any later version published by
-the Free Software Foundation.  If the Library does not specify a
-license version number, you may choose any version ever published by
-the Free Software Foundation.
-
-  14. If you wish to incorporate parts of the Library into other free
-programs whose distribution conditions are incompatible with these,
-write to the author to ask for permission.  For software which is
-copyrighted by the Free Software Foundation, write to the Free
-Software Foundation; we sometimes make exceptions for this.  Our
-decision will be guided by the two goals of preserving the free status
-of all derivatives of our free software and of promoting the sharing
-and reuse of software generally.
-
-			    NO WARRANTY
-
-  15. BECAUSE THE LIBRARY IS LICENSED FREE OF CHARGE, THERE IS NO
-WARRANTY FOR THE LIBRARY, TO THE EXTENT PERMITTED BY APPLICABLE LAW.
-EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR
-OTHER PARTIES PROVIDE THE LIBRARY "AS IS" WITHOUT WARRANTY OF ANY
-KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-PURPOSE.  THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE
-LIBRARY IS WITH YOU.  SHOULD THE LIBRARY PROVE DEFECTIVE, YOU ASSUME
-THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.
-
-  16. IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN
-WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY
-AND/OR REDISTRIBUTE THE LIBRARY AS PERMITTED ABOVE, BE LIABLE TO YOU
-FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR
-CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE
-LIBRARY (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
-RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
-FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
-SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH
-DAMAGES.
-
-		     END OF TERMS AND CONDITIONS
-
-           How to Apply These Terms to Your New Libraries
-
-  If you develop a new library, and you want it to be of the greatest
-possible use to the public, we recommend making it free software that
-everyone can redistribute and change.  You can do so by permitting
-redistribution under these terms (or, alternatively, under the terms of the
-ordinary General Public License).
-
-  To apply these terms, attach the following notices to the library.  It is
-safest to attach them to the start of each source file to most effectively
-convey the exclusion of warranty; and each file should have at least the
-"copyright" line and a pointer to where the full notice is found.
-
-    &lt;one line to give the library's name and a brief idea of what it does.&gt;
-    Copyright (C) &lt;year&gt;  &lt;name of author&gt;
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-Also add information on how to contact you by electronic and paper mail.
-
-You should also get your employer (if you work as a programmer) or your
-school, if any, to sign a "copyright disclaimer" for the library, if
-necessary.  Here is a sample; alter the names:
-
-  Yoyodyne, Inc., hereby disclaims all copyright interest in the
-  library `Frob' (a library for tweaking knobs) written by James Random Hacker.
-
-  &lt;signature of Ty Coon&gt;, 1 April 1990
-  Ty Coon, President of Vice
-
-That's all there is to it!
-</pre>
-
+The salma-hayek package is LGPL'd, 
+see <a href="#lgpl2.1">LGPL 2.1</a> for a local copy of the LGPL.
 
 
 <h2><a name="gcj">GCJ License</a></h2>
@@ -2790,7 +1505,7 @@ GCJ can be found at
 
 <p>Backtracking requires partial Java implementaton from GCJ</p>
 <p>GCJ has the following license:</p>
-
+<blockquote>
 <h3>Libgcc Exception</h3>
 <p>21<sup>st</sup> Jan., 2002</p>
 
@@ -2953,6 +1668,8 @@ by James Hacker.</p>
 Ty Coon, President of Vice</p>
 
 <p>This General Public License does not permit incorporating your program into proprietary programs. If your program is a subroutine library, you may consider it more useful to permit linking proprietary applications with the library. If this is what you want to do, use the GNU Lesser General Public License instead of this License.</p>
+</blockquote>
+
 
 
 <h2><a name="mysql">Mysql Java Database Connector License</a></h2>
@@ -3366,6 +2083,7 @@ Jython is a Java implementation of a subset of Python.
 <p>Jython can be found at
 <a href="http://www.jython.org#in_browser" target="_top"><code>http://www.jython.org</code></a>
 <p>Jython has the following license:
+<blockquote>
 <pre>
 
 A. TERMS AND CONDITIONS FOR ACCESSING OR OTHERWISE USING JYTHON
@@ -3821,7 +2539,7 @@ WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
 ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
 OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-/pre>
+</pre>
 
 <pre>
                                  Apache License
@@ -4028,6 +2746,7 @@ OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 
 </pre>
+</blockquote>
 
 <h2><a name="PDFRenderer">PDFRenderer</a></h2>
 Vergil, the Ptolemy II visual editor, can render PDF files.
@@ -4254,27 +2973,24 @@ or in connection with the use or performance of this software.
 
  <p>The Soot and Jasmin copyright is below.
 
-</I>
-<P>
-<H2>
-  Table of Contents
-</H2>
+<blockquote>
+<H3>Table of Contents</H3>
 <UL>
   <LI>
-    <A NAME="TOC1" HREF="#SEC1">GNU LIBRARY GENERAL PUBLIC LICENSE</A>
+    <A NAME="TOC1v2" HREF="#SEC1v2">GNU LIBRARY GENERAL PUBLIC LICENSE</A>
     <UL>
       <LI>
-	<A NAME="TOC2" HREF="#SEC2">Preamble</A>
+	<A NAME="TOC2v2" HREF="#SEC2v2">Preamble</A>
       <LI>
-	<A NAME="TOC3" HREF="#SEC3">TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION
+	<A NAME="TOC3v2" HREF="#SEC3v2">TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION
 	AND MODIFICATION</A>
       <LI>
-	<A NAME="TOC4" HREF="#SEC4">How to Apply These Terms to Your New Libraries</A>
+	<A NAME="TOC4v2" HREF="#SEC4v2">How to Apply These Terms to Your New Libraries</A>
     </UL>
 </UL>
-<H2>
-  <A NAME="SEC1" HREF="#TOC1">GNU LIBRARY GENERAL PUBLIC LICENSE</A>
-</H2>
+<H3>
+  <A NAME="SEC1v2" HREF="#TOC1v2">GNU LIBRARY GENERAL PUBLIC LICENSE</A>
+</H3>
 <P>
 Version 2, June 1991
 <PRE>
@@ -4286,9 +3002,9 @@ of this license document, but changing it is not allowed.
 [This is the first released version of the library GPL.  It is
  numbered 2 because it goes with version 2 of the ordinary GPL.]
 </PRE>
-<H2>
-  <A NAME="SEC2" HREF="#TOC1">Preamble</A>
-</H2>
+<H3>
+  <A NAME="SEC2v2" HREF="#TOC1v2">Preamble</A>
+</H3>
 <P>
 The licenses for most software are designed to take away your freedom to
 share and change it. By contrast, the GNU General Public Licenses are intended
@@ -4372,10 +3088,10 @@ from the library, while the latter only works together with the library.
 <P>
 Note that it is possible for a library to be covered by the ordinary General
 Public License rather than by this special one.
-<H2>
-  <A NAME="SEC3" HREF="#TOC1">TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION
+<H3>
+  <A NAME="SEC3v2" HREF="#TOC1v2">TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION
   AND MODIFICATION</A>
-</H2>
+</H3>
 <P>
 <STRONG>0.</STRONG> This License Agreement applies to any software library
 which contains a notice placed by the copyright holder or other authorized
@@ -4706,12 +3422,10 @@ BY YOU OR THIRD PARTIES OR A FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER
 SOFTWARE), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGES.
 <P>
-<H2>
-  END OF TERMS AND CONDITIONS
-</H2>
-<H2>
-  <A NAME="SEC4" HREF="#TOC1">How to Apply These Terms to Your New Libraries</A>
-</H2>
+<H3>END OF TERMS AND CONDITIONS</H3>
+<H3>
+  <A NAME="SEC4v2" HREF="#TOC1v2">How to Apply These Terms to Your New Libraries</A>
+</H3>
 <P>
 If you develop a new library, and you want it to be of the greatest possible
 use to the public, we recommend making it free software that everyone can
@@ -4759,8 +3473,9 @@ Ty Coon, President of Vice
 <P>
 That's all there is to it!
 <P>
+</blockquote>
 
-<h2><a name="quicktime">QuickTime Java API License"</a></h2>
+<h2><a name="quicktime">QuickTime Java API License</a></h2>
 
 The QuickTime actors uses the Quicktime API from
 <a href="http://developer.apple.com/quicktime/qtjava/#in_browser" target="_top"><code>http://developer.apple.com/quicktime/qtjava/</code></a>
@@ -4771,13 +3486,298 @@ QuickTime Java API.
 
 <p>To use the QuickTime actors, you must separately install QuickTime
 on your machine.
-
-<p>The QuickTime API interface has the following license:
 <blockquote>
-<BR>
-<FONT SIZE="-1">&copy; Copyright 1991-2004 Apple Computer, Inc. </FONT>
-<BR>
-<FONT SIZE="-1">Apple, the Apple logo, Macintosh, and Power Macintosh are trademarks of Apple Computer, Inc., registered in the U.S. and other countries. iDVD, iMovie, Final Cut Pro, iTunes, QuickTime, QuickTime Player, and PictureViewer are trademarks of Apple Computer, Inc. All other trademarks are the property of their respective owners.</FONT> 
+<p>English
+
+<p>APPLE INC.
+<p>SOFTWARE LICENSE AGREEMENT FOR QUICKTIME
+
+<p>IMPORTANT NOTICE TO QUICKTIME PRO USERS:
+
+<p>INSTALLATION OF QUICKTIME 7 WILL DISABLE THE QUICKTIME PRO
+FUNCTIONALITY IN PRIOR VERSIONS OF QUICKTIME. IF YOU PROCEED WITH THIS
+INSTALLATION, YOU MUST PURCHASE A NEW QUICKTIME 7 PRO KEY TO REGAIN
+QUICKTIME PRO FUNCTIONALITY. AFTER INSTALLATION, VISIT
+www.apple.com/quicktime TO PURCHASE A QUICKTIME 7 PRO KEY.
+
+<p>PLEASE READ THIS SOFTWARE LICENSE AGREEMENT ("LICENSE") CAREFULLY
+BEFORE USING THE APPLE SOFTWARE.  BY USING THE APPLE SOFTWARE, YOU ARE
+AGREEING TO BE BOUND BY THE TERMS OF THIS LICENSE. IF YOU DO NOT AGREE
+TO THE TERMS OF THIS LICENSE, DO NOT USE THE SOFTWARE. IF YOU DO NOT
+AGREE TO THE TERMS OF THE LICENSE, YOU MAY RETURN THE APPLE SOFTWARE
+TO THE PLACE WHERE YOU OBTAINED IT FOR A REFUND. IF THE APPLE SOFTWARE
+WAS ACCESSED ELECTRONICALLY, CLICK "DISAGREE/DECLINE". FOR APPLE
+SOFTWARE INCLUDED WITH YOUR PURCHASE OF HARDWARE, YOU MUST RETURN THE
+ENTIRE HARDWARE/SOFTWARE PACKAGE IN ORDER TO OBTAIN A REFUND.
+
+<p>IMPORTANT NOTE: This software may be used to reproduce materials. It
+is licensed to you only for reproduction of non-copyrighted materials,
+materials in which you own the copyright, or materials you are
+authorized or legally permitted to reproduce. If you are uncertain
+about your right to copy any material, you should contact your legal
+advisor.
+<ol>
+<li> General. The software, documentation and any fonts accompanying
+this License whether on disk, in read only memory, on any other media
+or in any other form (collectively the "Apple Software") are licensed,
+not sold, to you by Apple Inc. ("Apple") for use only under the terms
+of this License, and Apple reserves all rights not expressly granted
+to you. The rights granted herein are limited to Apple's and its
+licensors' intellectual property rights in the Apple Software and do
+not include any other patents or intellectual property rights. You own
+the media on which the Apple Software is recorded but Apple and/or
+Apple's licensor(s) retain ownership of the Apple Software itself. The
+rights granted under the terms of this License include any software
+upgrades that replace and/or supplement the original Apple Software
+product, unless such upgrade contains a separate license.
+
+<br>Title and intellectual property rights in and to any content displayed
+by or accessed through the Apple Software belongs to the respective
+content owner. Such content may be protected by copyright or other
+intellectual property laws and treaties, and may be subject to terms
+of use of the third party providing such content. This License does
+not grant you any rights to use such content.
+ 
+<li> Permitted License Uses and Restrictions. This License allows you to
+install and use one copy of the Apple Software on a single computer at
+a time. This License does not allow the Apple Software to exist on
+more than one computer at a time, and you may not make the Apple
+Software available over a network where it could be used by multiple
+computers at the same time. You may make one copy of the Apple
+Software in machine-readable form for backup purposes only; provided
+that the backup copy must include all copyright or other proprietary
+notices contained on the original. Except as and only to the extent
+expressly permitted in this License or by applicable law, you may not
+copy, decompile, reverse engineer, disassemble, modify, or create
+derivative works of the Apple Software or any part thereof. THE APPLE
+SOFTWARE IS NOT INTENDED FOR USE IN THE OPERATION OF NUCLEAR
+FACILITIES, AIRCRAFT NAVIGATION OR COMMUNICATION SYSTEMS, AIR TRAFFIC
+CONTROL SYSTEMS, LIFE SUPPORT MACHINES OR OTHER EQUIPMENT IN WHICH THE
+FAILURE OF THE APPLE SOFTWARE COULD LEAD TO DEATH, PERSONAL INJURY, OR
+SEVERE PHYSICAL OR ENVIRONMENTAL DAMAGE.
+
+<li> Transfer. You may not rent, lease, lend or sublicense the Apple
+Software. You may, however, make a one-time permanent transfer of all
+of your license rights to the Apple Software to another party,
+provided that: (a) the transfer must include all of the Apple
+Software, including all its component parts, original media, printed
+materials and this License; (b) you do not retain any copies of the
+Apple Software, full or partial, including copies stored on a computer
+or other storage device; and (c) the party receiving the Apple
+Software reads and agrees to accept the terms and conditions of this
+License.
+
+<p>Updates: If an Apple Software update completely replaces (full
+install) a previously licensed version of the Apple Software, you may
+not use both versions of the Apple Software at the same time nor may
+you transfer them separately.
+
+<p>NFR (Not for Resale) Copies: Notwithstanding other sections of this
+License, Apple Software labeled or otherwise provided to you on a
+promotional basis may only be used for demonstration, testing and
+evaluation purposes and may not be resold or transferred.
+
+<p>Academic Copies: If the Apple Software package has an academic label
+or if you acquired the Apple Software at an academic discount, you
+must be an Eligible Educational End User to use the Apple
+Software. "Eligible Educational End Users" means students, faculty,
+staff and administration attending and/or working at an educational
+institutional facility (i.e., college campus, public or private K-12
+schools).
+
+<li> Consent to Use of Data. You agree that Apple and its subsidiaries
+may collect and use technical and related information, including but
+not limited to technical information about your computer, system and
+application software, and peripherals, that is gathered periodically
+to facilitate the provision of software updates, product support and
+other services to you (if any) related to the Apple Software. Apple
+may use this information, as long as it is in a form that does not
+personally identify you, to improve our products or to provide
+services or technologies to you.
+
+<li> Termination. This License is effective until terminated.  Your
+rights under this License will terminate automatically without notice
+from Apple if you fail to comply with any term(s) of this
+License. Upon the termination of this License, you shall cease all use
+of the Apple Software and destroy all copies, full or partial, of the
+Apple Software.
+
+<li> Limited Warranty on Media. Apple warrants the media on which the
+Apple Software is recorded and delivered by Apple to be free from
+defects in materials and workmanship under normal use for a period of
+ninety (90) days from the date of original retail purchase. Your
+exclusive remedy under this Section shall be, at Apple's option, a
+refund of the purchase price of the product containing the Apple
+Software or replacement of the Apple Software which is returned to
+Apple or an Apple authorized representative with a copy of the
+receipt. THIS LIMITED WARRANTY AND ANY IMPLIED WARRANTIES ON THE MEDIA
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY, OF SATISFACTORY QUALITY, AND OF FITNESS FOR A
+PARTICULAR PURPOSE, ARE LIMITED IN DURATION TO NINETY (90) DAYS FROM
+THE DATE OF ORIGINAL RETAIL PURCHASE.  SOME JURISDICTIONS DO NOT ALLOW
+LIMITATIONS ON HOW LONG AN IMPLIED WARRANTY LASTS, SO THE ABOVE
+LIMITATION MAY NOT APPLY TO YOU.  THE LIMITED WARRANTY SET FORTH
+HEREIN IS THE ONLY WARRANTY MADE TO YOU AND IS PROVIDED IN LIEU OF ANY
+OTHER WARRANTIES (IF ANY) CREATED BY ANY DOCUMENTATION OR
+PACKAGING. THIS LIMITED WARRANTY GIVES YOU SPECIFIC LEGAL RIGHTS, AND
+YOU MAY ALSO HAVE OTHER RIGHTS WHICH VARY BY JURISDICTION.
+
+<li> Disclaimer of Warranties. YOU EXPRESSLY ACKNOWLEDGE AND AGREE THAT
+USE OF THE APPLE SOFTWARE IS AT YOUR SOLE RISK AND THAT THE ENTIRE
+RISK AS TO SATISFACTORY QUALITY, PERFORMANCE, ACCURACY AND EFFORT IS
+WITH YOU. EXCEPT FOR THE LIMITED WARRANTY ON MEDIA SET FORTH ABOVE AND
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE APPLE SOFTWARE
+IS PROVIDED "AS IS", WITH ALL FAULTS AND WITHOUT WARRANTY OF ANY KIND,
+AND APPLE AND APPLE'S LICENSORS (COLLECTIVELY REFERRED TO AS "APPLE"
+FOR THE PURPOSES OF SECTIONS 7 AND 8) HEREBY DISCLAIM ALL WARRANTIES
+AND CONDITIONS WITH RESPECT TO THE APPLE SOFTWARE, EITHER EXPRESS,
+IMPLIED OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES AND/OR CONDITIONS OF MERCHANTABILITY, OF SATISFACTORY
+QUALITY, OF FITNESS FOR A PARTICULAR PURPOSE, OF ACCURACY, OF QUIET
+ENJOYMENT, AND NON-INFRINGEMENT OF THIRD PARTY RIGHTS.  APPLE DOES NOT
+WARRANT AGAINST INTERFERENCE WITH YOUR ENJOYMENT OF THE APPLE
+SOFTWARE, THAT THE FUNCTIONS CONTAINED IN THE APPLE SOFTWARE WILL MEET
+YOUR REQUIREMENTS, THAT THE OPERATION OF THE APPLE SOFTWARE WILL BE
+UNINTERRUPTED OR ERROR-FREE, THAT THE APPLE SOFTWARE WILL BE
+COMPATIBLE WITH THIRD PARTY SOFTWARE, OR THAT DEFECTS IN THE APPLE
+SOFTWARE WILL BE CORRECTED. NO ORAL OR WRITTEN INFORMATION OR ADVICE
+GIVEN BY APPLE OR AN APPLE AUTHORIZED REPRESENTATIVE SHALL CREATE A
+WARRANTY.  SHOULD THE APPLE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE
+ENTIRE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION.  SOME
+JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED WARRANTIES OR
+LIMITATIONS ON APPLICABLE STATUTORY RIGHTS OF A CONSUMER, SO THE ABOVE
+EXCLUSION AND LIMITATIONS MAY NOT APPLY TO YOU. QuickTime Player
+automatically produces search results that reference sites and
+information located worldwide throughout the Internet. Because Apple
+has no control over such sites and information, Apple makes no
+guarantees as to such sites and information, including: (i) the
+accuracy, currency, content, or quality of any such sites and
+information, or (ii) whether an Apple search completed through the
+QuickTime Player may locate unintended or objectionable
+content. Because some of the content on the Internet consists of
+material that is adult-oriented or otherwise objectionable to some
+people or viewers under the age of 18, the results of any search or
+entering of a particular URL using the QuickTime Player may
+automatically and unintentionally generate links or references to
+objectionable material. By using the QuickTime Player, you acknowledge
+that Apple makes no representations or warranties with regard to the
+appropriateness of the content viewed through the QuickTime Player,
+whether on a pre-installed channel button or as a result of your
+search. Apple does not guarantee the sequence, accuracy, completeness
+or timeliness of the content played through the QuickTime
+Player. Apple, its officers, affiliates and subsidiaries shall not,
+directly or indirectly, be liable, in any way, to you or any other
+person for the content you receive using the QuickTime Player or for
+any inaccuracies, errors in or omissions from the content.
+
+<li> Limitation of Liability. TO THE EXTENT NOT PROHIBITED BY LAW, IN NO
+EVENT SHALL APPLE BE LIABLE FOR PERSONAL INJURY, OR ANY INCIDENTAL,
+SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES WHATSOEVER, INCLUDING,
+WITHOUT LIMITATION, DAMAGES FOR LOSS OF PROFITS, LOSS OF DATA,
+BUSINESS INTERRUPTION OR ANY OTHER COMMERCIAL DAMAGES OR LOSSES,
+ARISING OUT OF OR RELATED TO YOUR USE OR INABILITY TO USE THE APPLE
+SOFTWARE, HOWEVER CAUSED, REGARDLESS OF THE THEORY OF LIABILITY
+(CONTRACT, TORT OR OTHERWISE) AND EVEN IF APPLE HAS BEEN ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGES. SOME JURISDICTIONS DO NOT ALLOW THE
+LIMITATION OF LIABILITY FOR PERSONAL INJURY, OR OF INCIDENTAL OR
+CONSEQUENTIAL DAMAGES, SO THIS LIMITATION MAY NOT APPLY TO YOU. In no
+event shall Apple's total liability to you for all damages (other than
+as may be required by applicable law in cases involving personal
+injury) exceed the amount of fifty dollars ($50.00). The foregoing
+limitations will apply even if the above stated remedy fails of its
+essential purpose.
+
+<li> Export Control. You may not use or otherwise export or reexport the
+Apple Software except as authorized by United States law and the laws
+of the jurisdiction in which the Apple Software was obtained. In
+particular, but without limitation, the Apple Software may not be
+exported or re-exported (a) into any U.S. embargoed countries or (b)
+to anyone on the U.S. Treasury Department's list of Specially
+Designated Nationals or the U.S. Department of Commerce Denied
+Person's List or Entity List. By using the Apple Software, you
+represent and warrant that you are not located in any such country or
+on any such list. You also agree that you will not use these products
+for any purposes prohibited by United States law, including, without
+limitation, the development, design, manufacture or production of
+nuclear, missiles, or chemical or biological weapons.
+
+<li> Government End Users. The Apple Software and related documentation
+are "Commercial Items", as that term is defined at 48 C.F.R. §2.101,
+consisting of "Commercial Computer Software" and "Commercial Computer
+Software Documentation", as such terms are used in 48 C.F.R. §12.212
+or 48 C.F.R. §227.7202, as applicable. Consistent with 48
+C.F.R. §12.212 or 48 C.F.R. §227.7202-1through 227.7202-4, as
+applicable, the Commercial Computer Software and Commercial Computer
+Software Documentation are being licensed to U.S. Government end users
+(a) only as Commercial Items and (b) with only those rights as are
+granted to all other end users pursuant to the terms and conditions
+herein.  Unpublished-rights reserved under the copyright laws of the
+United States.
+
+<li> Controlling Law and Severability. This License will be governed by
+and construed in accordance with the laws of the State of California,
+as applied to agreements entered into and to be performed entirely
+within California between California residents. This License shall not
+be governed by the United Nations Convention on Contracts for the
+International Sale of Goods, the application of which is expressly
+excluded. If for any reason a court of competent jurisdiction finds
+any provision, or portion thereof, to be unenforceable, the remainder
+of this License shall continue in full force and effect.
+
+12. Complete Agreement; Governing Language. This License constitutes the entire agreement between the parties with respect to the use of the Apple Software licensed hereunder and supersedes all prior or contemporaneous understandings regarding such subject matter.  No amendment to or modification of this License will be binding unless in writing and signed by Apple. Any translation of this License is done for local requirements and in the event of a dispute between the English and any non-English versions, the English version of this License shall govern.
+
+<li>. MPEG-2 Notice. To the extent that the Apple Software contains
+MPEG-2 functionality, the following provision applies: ANY USE OF THIS
+PRODUCT OTHER THAN CONSUMER PERSONAL USE IN ANY MANNER THAT COMPLIES
+WITH THE MPEG-2 STANDARD FOR ENCODING VIDEO INFORMATION FOR PACKAGED
+MEDIA IS EXPRESSLY PROHIBITED WITHOUT A LICENSE UNDER APPLICABLE
+PATENTS IN THE MPEG-2 PATENT PORTFOLIO, WHICH LICENSE IS AVAILABLE
+FROM MPEG LA, L.L.C, 250 STEELE STREET, SUITE 300, DENVER, COLORADO
+80206.
+
+<li> Use of MPEG-4. This product is licensed under the MPEG-4 Systems
+Patent Portfolio License for encoding in compliance with the MPEG-4
+Systems Standard, except that an additional license and payment of
+royalties are necessary for encoding in connection with (i) data
+stored or replicated in physical media which is paid for on a title by
+title basis and/or (ii) data which is paid for on a title by title
+basis and is transmitted to an end user for permanent storage and/or
+use.  Such additional license may be obtained from MPEG LA, LLC. See
+http://www.mpegla.com for additional details.
+
+<li>This product is licensed under the MPEG-4 Visual Patent Portfolio License for the personal and non-commercial use of a consumer for (i) encoding video in compliance with the MPEG-4 Visual Standard ("MPEG-4 Video") and/or (ii) decoding MPEG-4 video that was encoded by a consumer engaged in a personal and non-commercial activity and/or was obtained from a video provider licensed by MPEG LA to provide MPEG-4 video.  No license is granted or shall be implied for any other use. 
+
+<p>Additional information including that relating to promotional,
+internal and commercial uses and licensing may be obtained from MPEG
+LA, LLC.  See http: //www.mpegla.com.  For answers to frequently asked
+questions regarding use fees under the MPEG LA Visual Patent Portfolio
+License see www.apple.com/mpeg4 or
+www.apple.com/quicktime/products/qt/faq.html.
+
+<li> H.264/AVC Notice. To the extent that the Apple Software contains
+AVC encoding and/or decoding functionality, commercial use of
+H.264/AVC requires additional licensing and the following provision
+applies: THE AVC FUNCTIONALITY IN THIS PRODUCT IS LICENSED HEREIN ONLY
+FOR THE PERSONAL AND NON-COMMERCIAL USE OF A CONSUMER TO (i) ENCODE
+VIDEO IN COMPLIANCE WITH THE AVC STANDARD ("AVC VIDEO") AND/OR (ii)
+DECODE AVC VIDEO THAT WAS ENCODED BY A CONSUMER ENGAGED IN A PERSONAL
+AND NON-COMMERCIAL ACTIVITY AND/OR AVC VIDEO THAT WAS OBTAINED FROM A
+VIDEO PROVIDER LICENSED TO PROVIDE AVC VIDEO. INFORMATION REGARDING
+OTHER USES AND LICENSES MAY BE OBTAINED FROM MPEG LA L.L.C. SEE
+HTTP://WWW.MPEGLA.COM.
+
+<li> AMR Notice. The Adaptive Multi-Rate ("AMR") encoding and decoding
+functionality in this product is not licensed to perform cellular
+voice calls, or for use in any telephony products built on the
+QuickTime architecture for the Windows platform.  The AMR encoding and
+decoding functionality in this product is also not licensed for use in
+a cellular communications infrastructure including: base stations,
+base station controllers/radio network controllers, switching centers,
+and gateways to and from the public switched network.
+</ol>
+<p>EA0337
+<p>Rev. 01/18/07
+
 </blockquote>
 
 <h2><a name="jai">Java Advanced Imaging License</a></h2>
@@ -4950,7 +3950,7 @@ LFI# 129621/Form ID#011801
 
 <h2><a name="mapss">Copyright for mapss jar file used by PSDF</a></h2>
 PSDF uses $PTII/lib/mapss.jar, which has the following copyright:
-
+<blockquote>
  <p>Copyright (c) 2001-2005 The University of Maryland
 All rights reserved.
 
@@ -4972,6 +3972,7 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
+</blockquote>
 
 </body>
 </html>
