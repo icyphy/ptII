@@ -90,6 +90,7 @@ The Ptiny pack is required.
 </description>
 
             <file src="../../README.txt" targetdir="$INSTALL_PATH"/>
+            <file src="../../copyright.htm" targetdir="$INSTALL_PATH"/>
             <file src="../../copyright.txt" targetdir="$INSTALL_PATH"/>
 
 <!--/MacOSInclude-->
@@ -548,6 +549,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII8.0.beta/config" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.beta/configure" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.beta/configure.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII8.0.beta/copyright.htm" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.beta/copyright.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.beta/diva" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.beta/doc" targetdir="$INSTALL_PATH"/>
