@@ -327,7 +327,7 @@ _
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -341,7 +341,7 @@ _
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Position">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
