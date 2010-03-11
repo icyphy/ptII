@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 # Version: $Id$
-# Copyright (c) 1994-2008 The Regents of the University of California.
+# Copyright (c) 1994-2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -110,6 +110,7 @@ PTII_TOPDIR=	.cshrc \
 		.classpath.default \
 		.eclipse.epf \
 		README.txt \
+		Vergil.app \
 		bin \
 		com/JLex \
 		com/jgoodies \
@@ -118,11 +119,13 @@ PTII_TOPDIR=	.cshrc \
 		config \
 		configure \
 		configure.in \
+		copyright.htm \
 		copyright.txt \
 		diva \
 		doc \
 		jni \
 		lib \
+		lbnl \
 		makefile \
 		mk \
 		org \
@@ -131,10 +134,12 @@ PTII_TOPDIR=	.cshrc \
 		thales \
 		util \
 		vergil.jnlp.in \
+		vergilBCVTB.jnlp.in \
 		vergilDSP.jnlp.in \
 		vergilHyVisual.jnlp.in \
 		vergilPtiny.jnlp.in \
 		vergilPtinySandbox.jnlp.in \
+		vergilSpace.jnlp.in \
 		vergilVisualSense.jnlp.in
 
 # Location of the SVN Repository
@@ -184,30 +189,47 @@ release_fortytwo_remote4_test:
 	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
 
 ####
+# Build the release on sisyphus as cxh so that we can copy from
+# both a Linux box and a Windows box to update the web pages.
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup
 
 release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
 
 release_sisyphus_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar remote4_test
 
 release_sisyphus_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII8.0.beta PTIIADM=/home/cxh/src/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
+	$(MAKE) USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
+
+
+####
+# Note, you probably don't want to build releases as bldmastr, see above.
+release_bldmastr:
+	make USER=bldmastr PTIIHOME=/home/bldmastr/ptII8.0.beta PTIIADM=/home/bldmastr/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup
+release_bldmastr_update_ftp:
+	$(MAKE) USER=bldmastr PTIIHOME=/home/bldmastr/ptII8.0.beta PTIIADM=/home/bldmastr/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
 
 ####
 release_windows:
-	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_22/bin/jar clean all src.jar setup
+
+release_windows_setup:
+	make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_22/bin/jar setup
 
 ####
 
 ####
 release_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup_mac_jar
+
+release_mac_setup:
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar setup_mac_app
 
 release_mac2:
-	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar src.jar
+
 
 ####
 release_nightly:
@@ -363,14 +385,14 @@ $(PTII_SRC): $(PTII_FULL)
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; \
-		echo "About to remove jars in `pwd`"; \
-		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		echo "(1)About to remove jars in `pwd`"; \
+		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" -name PDFSample.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		cd ptolemy/domains/ptinyos; \
-		echo "About to remove jars in `pwd`"; \
+		echo "(2)About to remove jars in `pwd`"; \
 		find . -name jdom.jar -prune -o -name nesc.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ../../../doc; \
-		echo "About to remove jars in `pwd`"; \
+		echo "(3)About to remove jars in `pwd`"; \
 		find . -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		rm -rf doc/codeDoc*; \
@@ -613,12 +635,12 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
-JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
+JAR=c:/Program Files/Java/jdk1.5.0_22/bin/jar
 
 # The Jar file that we create.
 src.jar: $(PTII_SRC_JAR)
 $(PTII_SRC_JAR): src_jar
-	(cd src_jar/ptII$(VERSION); $(JAR) -cf ../../ptII$(VERSION).src.jar .)
+	(cd src_jar/ptII$(VERSION); "$(JAR)" -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
 src_jar: #$(PTII_SRC) 
@@ -642,7 +664,7 @@ HYVISUAL_SRC_JAR = hyvisual$(VERSION).src.jar
 # The Jar file that we create.
 hyvisual.jar: $(HYVISUAL_SRC_JAR)
 $(HYVISUAL_SRC_JAR): src_jar/hyvisual$(VERSION)
-	(cd src_jar/hyvisual$(VERSION); $(JAR) -cf ../../hyvisual$(VERSION).src.jar .)
+	(cd src_jar/hyvisual$(VERSION); "$(JAR)" -cf ../../hyvisual$(VERSION).src.jar .)
 
 HYVISUAL_SRC_TAR = hyvisual$(VERSION).src.tar.gz
 # The Jar file that we create.
@@ -663,7 +685,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
 	(cd src_jar/hyvisual$(VERSION); \
-		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
 
 	(cd src_jar/hyvisual$(VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
@@ -736,7 +758,7 @@ VIPTOS_SRC_JAR = viptos$(VIPTOS_VERSION).src.jar
 # The Jar file that we create.
 viptos.jar: $(VIPTOS_SRC_JAR)
 $(VIPTOS_SRC_JAR): src_jar/viptos$(VIPTOS_VERSION)
-	(cd src_jar/viptos$(VIPTOS_VERSION); $(JAR) -cf ../../viptos$(VIPTOS_VERSION).src.jar .)
+	(cd src_jar/viptos$(VIPTOS_VERSION); "$(JAR)" -cf ../../viptos$(VIPTOS_VERSION).src.jar .)
 
 VIPTOS_SRC_TAR = viptos$(VIPTOS_VERSION).src.tar.gz
 # The Jar file that we create.
@@ -759,7 +781,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		 mkdir -p src_jar/viptos$(VIPTOS_VERSION); \
 	fi
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
-		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
@@ -883,9 +905,14 @@ untar:
 	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
 	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
-# Run this to copy the .exe
+
+# Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
 	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip bennett:$(PTII_FTP)
+
+PTSETUP_MAC=ptII$(VERSION).setup.mac
+update_mac: $(PTSETUP_MAC).dmg
+	scp -p $(PTSETUP_MAC).dmg bennett:$(PTII_FTP)
 
 ptII$(WINDOWS_VERSION)_src.zip:
 	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
@@ -1022,7 +1049,7 @@ nonjsall:
 			( cd $(PTIIHOME)/$$x ; \
 			echo making tests  in $(PTIIHOME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 				tests \
 			);  \
 		    fi ; \
@@ -1178,6 +1205,7 @@ remote1distclean:
 	@echo "#"
 	@echo "#ptIInightly-mail#: Starting make clean at `date`"
 	@echo "`uptime`"
+	-rm -rf $(HOME)/codegen
 	(cd $(REMOTE1PTIIDIST); \
 		$(MAKE) clean)
 	-(cd $(REMOTE1PTIIDIST); \
@@ -1266,6 +1294,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/vq \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/tester/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/tester/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
@@ -1306,6 +1336,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
+	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal \
@@ -1373,9 +1404,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/vhdl/actor/lib/vhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/lib \
@@ -1402,12 +1430,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/ddi \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/util \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/exampleSetLattice \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalAND \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/logicalOrBackward \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/lattice/typeSystem_C \
-	$(REMOTE1PTIIDIST)/ptolemy/data/properties/token/firstValueToken \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/properties/kernel \
@@ -1419,6 +1441,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/verification \
 	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/jni/gui \
+	$(REMOTE1PTIIDIST)/lbnl \
+	$(REMOTE1PTIIDIST)/doc/books/design/modal \
+	$(REMOTE1PTIIDIST)/doc/books/design/time \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/demo \
@@ -1428,8 +1453,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/demo \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil \
-	$(REMOTE1PTIIDIST)/ptolemy/configs
+	$(REMOTE1PTIIDIST)/ptolemy/vergil
 
 # Directories we run make in before running make in the NONJSALLDIRS
 NONJSALLCOREDIRS = \
@@ -1443,6 +1467,7 @@ NONJSALLDIRS = \
 	ptolemy/kernel \
 	ptolemy/moml \
 	ptolemy/util \
+	ptolemy/configs \
 	adm
 
 # Run JavaScope Code Coverage tool in the distribution tree
@@ -1478,7 +1503,7 @@ remote1distjsall_1:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 				jsall JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
@@ -1494,7 +1519,7 @@ remote1distjsall_2:
 		install)
 	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 			AUXCLASSPATH=":$(JSCLASSPATH)" \
 			jsall JSINSTRFLAGS=;)
 
@@ -1520,6 +1545,8 @@ jsalldirs_check:
 # of the backtrack directories do not have makefiles.
 JSCLEANUPDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/applet \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib
@@ -1547,16 +1574,20 @@ remote1distjsrestore:
 	for x do \
 	    if [ -w $$x ] ; then \
 		( cd $$x ; \
-		echo running jsrestore in $$x ; \
+		echo running jsrestore in `pwd` ; \
+		ls jsoriginal; \
 		jsrestore *.java; \
 		if [ -d jsoriginal ]; then \
 			rm -f jsoriginal/README; \
 			rmdir jsoriginal; \
 		fi; \
+		grep "import COM.sun.suntest.javascope.database.CoverageUnit" *.java ; \
 		rm -f *.class; \
 		);  \
 	    fi ; \
 	done ; \
+	# Try to get rid of JavaScope files
+	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack; rm -rf automatic util; svn update)
 
 # Build the docs
 remote1doc:
@@ -1665,7 +1696,7 @@ remote1findbugs:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST)/doc; rm -rf findbugs.*; \
-		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k findbugs)
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k PTII=$(REMOTE1PTIIDIST) findbugs)
 
 # Build jnlp installers
 remote1jnlp:
@@ -1787,7 +1818,7 @@ remote2distjdk1.4test: #$(REMOTE2PTJACL_JAR)
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
 		$(MAKE) -k \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 			tests)
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -1890,7 +1921,7 @@ remote3disttest: $(REMOTE3PTJACL_JAR)
 	@echo "`uptime`"
 	-(cd $(REMOTE3PTIIDIST); \
 		$(OTHERMAKE) \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 		tests)
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -2259,7 +2290,7 @@ remote6buildjsall:
 			( cd $$x ; \
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 				jsoriginal clean jsbuild JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
@@ -2274,7 +2305,7 @@ remote6autojsall:
 			( cd $$x/test ; \
 			echo making jstest_jauto in $$x/test ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true -Xmx256M" \
+				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1000M" \
 				jstest_jauto; \
 			);  \
 		    fi ; \
@@ -2329,7 +2360,7 @@ indent_all:
 
 #IZPACKDIR=c:/Program Files/IzPack
 IZPACKDIR=$(PTII)/vendors/izpack
-IZPACK_COMPILE=$(IZPACKDIR)/_dist/bin/compile
+IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
 IZPACK_TAR=IzPack.src.3.10.2.tar.gz
 
 # Under Solaris: gmake make_izpack TAR=gtar
@@ -2344,7 +2375,7 @@ $(PTII)/vendors/izpack:
 		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
 		$(TAR) -zxf $(IZPACK_TAR)
 
-PTSETUP=ptII$(WINDOWS_VERSION)_setup
+PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # IzPack installer
 setup_jar: $(PTSETUP).jar
 $(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil
@@ -2400,14 +2431,13 @@ $(PTII)/vendors/launch4j:
 
 
 # Launch4J console application that reads in .xml files and creates .exe files.
-#L4JC=$(L4J_DIR)/launch4jc.exe
+4JC=$(L4J_DIR)/launch4jc.exe
 L4JC=$(L4J_DIR)/launch4j
 
 PTSETUP_DEPENDENCIES = \
 	../../ptiny.exe \
 	../../jar_dist \
 	../../ptolemy/matlab/ptmatlab.dll
-
 
 # Launch4J
 $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
@@ -2468,3 +2498,85 @@ full_jars:
 	@(cd $(PTII); make -s echo_jars JARS=FULL_ONLY_JNLP_JARS)
 	@(cd $(PTII); make -s echo_jars JARS=VIPTOS_ONLY_JNLP_JARS)
 	@(cd $(PTII); make -s echo_jars JARS=VISUAL_SENSE_ONLY_JNLP_JARS)
+
+########################################################################
+# Mac installer
+ptsetup_mac: $(PTSETUP_MAC).xml
+$(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
+	awk -f macOSInclude.awk $(PTSETUP).xml | \
+	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
+	    -e 's@os="windows"@os="mac"@' \
+	    > $@
+
+PTINY_APP = src/ptII$(VERSION)/bin/Ptiny.app
+Ptiny.app: $(PTINY_APP)
+$(PTINY_APP): 
+	if [ ! -f $@ ]; then \
+		(cd src/ptII$(VERSION); PTII=$(PTII)/adm/gen-$(MAJOR_VERSION)/src/ptII$(VERSION) ./configure; cd bin;  make Ptiny.app Vergil.app); \
+        fi
+
+setup_mac_jar: $(PTSETUP_MAC).jar
+$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP) src/ptII$(VERSION)/bin/vergil
+	@echo "#"
+	@echo "# Building $@"
+	@echo "# `date`"
+	sh "$(IZPACK_COMPILE)" $<
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
+
+
+
+
+IZPACK2APP=$(IZPACKDIR)/utils/wrappers/izpack2app/izpack2app.py
+setup_mac_app: $(PTSETUP_MAC).app
+$(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
+	python $(IZPACK2APP) $^ $@ 
+	#cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
+	
+######################################################################
+# Web Start Applets
+#
+JNLPDIST=test/ptII$(VERSION)
+jnlpdist: $(JNLPDIST)/signed
+$(JNLPDIST): $(GENLOG_DIR)
+	$(MAKE)	release_sisyphus_remote4_test
+
+
+# Directory that should be in vendors so that we build the jar files
+$(JNLPDIST)/vendors/misc/x10/tjx10p-13/lib/x10.jar: $(JNLPDIST)
+	# Build joystick, rxtx, x10, tjx10
+	if [ ! -f $@ ]; then \
+		echo "Reconfiguring with all optional packages"; \
+		(cd $(JNLPDIST); rm -rf vendors; ln -s $(PTII)/vendors .; PTII=`pwd`;./configure;$(MAKE) PTII=`pwd` install); \
+	fi
+
+$(JNLPDIST)/signed: $(JNLPDIST)/vendors/misc/x10/tjx10p-13/lib/x10.jar
+	if [ ! -d $@ ]; then \
+		echo "Creating $@"; \
+		cp ptKeystore.properties $(JNLPDIST); \
+		(cd $(JNLPDIST); $(MAKE) PTII=`pwd` KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass $(PASSWORD)" KEYPASSWORD="-keypass $(PASSWORD)" jnlp_dist); \
+	fi
+
+
+$(JNLPDIST)/ptolemy/copernicus/applet/makeJNLPs: $(JNLPDIST)/signed
+	(cd $(JNLPDIST); export PTII=`pwd`; cd ptolemy/copernicus/applet; ./updateDemos > makeJNLPs)
+
+# One of the jnlp files to be created.
+TARGET_JNLP = $(JNLPDIST)/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.jnlp
+$(TARGET_JNLP): $(JNLPDIST)/ptolemy/copernicus/applet/makeJNLPs
+	(cd $(JNLPDIST); export PTII=`pwd`; cd ptolemy/copernicus/applet; sh makeJNLPs)
+
+JNLPS_TAR = jnlps.tar
+$(JNLPS_TAR): $(TARGET_JNLP)
+	(cd $(JNLPDIST)/doc; mv deployJava.js deployJavaApplet.js; \
+	   cp deployJavaJNLP.js deployJava.js)
+	(cd $(JNLPDIST); tar -cf ../../$(JNLPS_TAR) `find . -name "*.jnlp"` `find . -name "signed_*.jar"` signed doc/deployJava.js doc/deployJavaApplet.js)
+
+updateJNLPs: $(JNLPS_TAR)
+	scp $(JNLPS_TAR) bennett:$(PTII_FTP)
+	ssh bennett "cd $(PTII_FTP)/ptII$(VERSION); /usr/local/bin/tar -xf ../$(JNLPS_TAR)"
