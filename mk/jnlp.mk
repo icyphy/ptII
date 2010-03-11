@@ -362,6 +362,7 @@ CODEGEN_JARS = \
 	ptolemy/codegen/c/domains/modal/demo/demo.jar \
 	ptolemy/codegen/c/domains/pn/demo/demo.jar \
 	ptolemy/codegen/java/actor/lib/embeddedJava/demo/demo.jar \
+	ptolemy/codegen/rtmaude/rtmaude.jar
 
 COPERNICUS_JARS = \
 	lib/jasminclasses.jar \
