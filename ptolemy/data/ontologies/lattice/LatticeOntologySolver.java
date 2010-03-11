@@ -486,13 +486,27 @@ public class LatticeOntologySolver extends OntologySolver {
     protected OntologyAdapter _getAdapter(Object component)
             throws IllegalActionException {
         OntologyAdapter adapter = null;
+        
+        // First see if the adapter has already been cached
+        // Must check the adapter store first because additional state
+        // is stored in the adapter that will be lost if we generate a new adapter from
+        // a model defined adapter definition after it was already instantiated before.
+        // This fixes the bug where backwards and bidirectional ontology solvers
+        // were not working because the adapter's interconnectConstraintType member variable
+        // would be reset to null because a new adapter object was created from the model
+        // definition.
+        if (_adapterStore.containsKey(component)) {
+            return _adapterStore.get(component);
+        }
 
-        // First look for the adapter in the LatticeOntologySolver model.
-        List modelDefinedAdapters = ((OntologySolverModel) _model).attributeList(ActorConstraintsDefinitionAttribute.class);
-        for (Object adapterDefinitionAttribute : modelDefinedAdapters) {
-            if (((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName.getExpression().equals(component.getClass().getName())) {
-                adapter = ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).getAdapter(component);
-                break;
+        // Next look for the adapter in the LatticeOntologySolver model.
+        if (adapter == null) {
+            List modelDefinedAdapters = ((OntologySolverModel) _model).attributeList(ActorConstraintsDefinitionAttribute.class);
+            for (Object adapterDefinitionAttribute : modelDefinedAdapters) {
+                if (((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName.getExpression().equals(component.getClass().getName())) {
+                    adapter = ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).getAdapter(component);
+                    break;
+                }
             }
         }
         
