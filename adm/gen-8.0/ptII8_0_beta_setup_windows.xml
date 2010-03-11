@@ -24,6 +24,23 @@
     </info>
     
     <!-- 
+        The conditions section
+    -->
+    <conditions>
+      <condition type="variable" id="startPtiny">
+	<name>startPtiny</name>
+	<value>true</value>
+      </condition>
+      <condition type="variable" id="startVergil">
+	<name>startVergil</name>
+	<value>true</value>
+      </condition>
+      <condition type="packselection" id="fullPackSelected">
+        <packid>Full</packid>
+      </condition> 
+    </conditions>
+
+    <!-- 
         The gui preferences indication.
     -->
     <guiprefs width="640" height="500" resizable="yes"/>
@@ -49,6 +66,7 @@
 	<res id="Installer.image" src="../../doc/img/PtolemyIISmall.gif" />
 	<res id="StyleSheet" src="../../doc/default.css" />
 	<res id="shortcutSpec.xml" src="shortcutSpec.xml" /> 
+ 	<res id="userInputSpec.xml" src="userInputSpec.xml" />
         <res src="border1.png" id="Installer.image.0"/>
         <res src="border2.png" id="Installer.image.1"/>
         <res src="border3.png" id="Installer.image.2"/>
@@ -76,7 +94,11 @@
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
         <panel classname="ShortcutPanel"/>
-        <panel classname="FinishPanel"/>
+ 	<panel classname="UserInputPanel" condition="!fullPackSelected"/>
+ 	<panel classname="UserInputPanel" condition="fullPackSelected"/>
+        <panel classname="ProcessPanel" condition="startPtiny|startVergil"/>
+        <panel classname="SimpleFinishPanel"/>
+        <!-- panel classname="FinishPanel"/ -->
     </panels>
     
     <!-- 

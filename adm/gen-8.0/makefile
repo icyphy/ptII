@@ -2506,12 +2506,19 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
 	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
 	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
-	    -e 's@ptmatlab.dll@libptmatlab.dylib@' \
+	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
 
+PTINY_APP = src/ptII$(VERSION)/bin/Ptiny.app
+Ptiny.app: $(PTINY_APP)
+$(PTINY_APP): 
+	if [ ! -f $@ ]; then \
+		(cd src/ptII$(VERSION); PTII=$(PTII)/adm/gen-$(MAJOR_VERSION)/src/ptII$(VERSION) ./configure; cd bin;  make Ptiny.app Vergil.app); \
+        fi
+
 setup_mac_jar: $(PTSETUP_MAC).jar
-$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP)
+$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP) src/ptII$(VERSION)/bin/vergil
 	@echo "#"
 	@echo "# Building $@"
 	@echo "# `date`"
@@ -2523,12 +2530,7 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP)
 	fi
 
 
-PTINY_APP = src/ptII$(VERSION)/bin/Ptiny.app
-Ptiny.app: $(PTINY_APP)
-$(PTINY_APP): 
-	if [ ! -f $@ ]; then \
-		(cd src/ptII$(VERSION); PTII=$(PTII)/adm/gen-$(MAJOR_VERSION)/src/ptII$(VERSION) ./configure; cd bin;  make Ptiny.app Vergil.app); \
-        fi
+
 
 IZPACK2APP=$(IZPACKDIR)/utils/wrappers/izpack2app/izpack2app.py
 setup_mac_app: $(PTSETUP_MAC).app
