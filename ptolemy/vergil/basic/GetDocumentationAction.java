@@ -419,14 +419,19 @@ public class GetDocumentationAction extends FigureAction {
         ComponentEntity effigy = null;
         Effigy context = Configuration.findEffigy(target);
         if (_effigy == null) {
+            NamedObj container = target.getContainer();
+            while (container != null && context == null) {
+                context = Configuration.findEffigy(container);
+                container = container.getContainer();
+            }
             if (context == null) {
-                context = Configuration.findEffigy(target.getContainer());
                 if (context == null) {
                     MessageHandler.error("Cannot find an effigy for "
                             + target.getFullName());
+                    return;
                 }
-                effigy = context.getEntity("DocEffigy");
             }
+            effigy = context.getEntity("DocEffigy");
         } else {
             effigy = _effigy;
         }
