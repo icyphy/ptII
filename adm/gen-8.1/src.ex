@@ -103,6 +103,7 @@ doc/design/src
 doc/design/html
 doc/doccheck
 doc/findbugs.xml
+doc/findbugs.out
 doc/findbugs.htm
 doc/img/PtolemyIISplash.psd
 doc/uml
@@ -116,7 +117,6 @@ jni/launcher/launcher
 jni/test/jni
 junk
 lib/cachedir
-lib/bsh-2.0b4.jar
 lib/javax.comm.properties
 lib/kepler-configs.jar
 lib/kepler-icons.jar
@@ -142,6 +142,7 @@ ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/python/demo/HelloWorld
 ptolemy/actor/lib/python/demo/NotifyFailedTest
 ptolemy/actor/lib/security/test/auto/foo.keystore
+ptolemy/actor/lib/security/test/foo.keystore
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/actor/lib/test/Const.txt
 ptolemy/actor/lib/test/ReadFile1Output.txt
@@ -241,7 +242,6 @@ ptolemy/lib/cachedir
 ptolemy/lib/chic.jar
 ptolemy/math/filter
 ptolemy/matlab/ptmatlab.h
-ptolemy/matlab/META-INF
 ptolemy/matlab/matlabLinux.jar
 ptolemy/media/AudioQueue.java
 ptolemy/media/ByteArrayAudioQueue.java
@@ -270,11 +270,15 @@ ptolemy/plot/RenderApplication.*
 ptolemy/plotml/build.xml
 ptolemy/schematic
 ptolemy/system
+ptolemy/util/test/FileUtilities-1.1.tmp
 ptolemy/vergil/JModelViewer.java
 ptolemy/vergil/debugger/demo2
 ptolemy/vergil/graph
 ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
+ptolemy/verification/SystemGeneratedTempFolder*
+ptolemy/verification/demo/SimpleTrafficLight/stl.kripke
 updateMoMLFiles.xml
+socket.cfg
 devel
 htmlchek*
 fmfilesvisited

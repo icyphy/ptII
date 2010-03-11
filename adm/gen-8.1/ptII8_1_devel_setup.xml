@@ -89,6 +89,7 @@
 The Ptiny pack is required. 
 </description>
             <file src="../../README.txt" targetdir="$INSTALL_PATH"/>
+            <file src="../../copyright.htm" targetdir="$INSTALL_PATH"/>
             <file src="../../copyright.txt" targetdir="$INSTALL_PATH"/>
 
             <file src="../../ptiny.exe" targetdir="$INSTALL_PATH"/>
@@ -529,6 +530,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII8.1.devel/config" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/configure" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/configure.in" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII8.1.devel/copyright.htm" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/diva" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/doc" targetdir="$INSTALL_PATH"/>

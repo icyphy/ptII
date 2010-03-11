@@ -118,6 +118,7 @@ PTII_TOPDIR=	.cshrc \
 		config \
 		configure \
 		configure.in \
+		copyright.htm \
 		copyright.txt \
 		diva \
 		doc \
@@ -897,9 +898,13 @@ untar:
 	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
 	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
-# Run this to copy the .exe
+# Run this to copy the .exe and zip file
 update_windows: ptII$(WINDOWS_VERSION)_src.zip
 	scp -p $(PTSETUP).exe ptII$(WINDOWS_VERSION)_src.zip bennett:$(PTII_FTP)
+
+PTSETUP_MAC=ptII$(VERSION).setup.mac
+update_mac: $(PTSETUP_MAC).dmg
+	scp -p $(PTSETUP_MAC).dmg bennett:$(PTII_FTP)
 
 ptII$(WINDOWS_VERSION)_src.zip:
 	@echo "create the .zip file by untaring $(PTII_SRC) and using zip"
@@ -1237,6 +1242,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
 	$(REMOTE1PTIIDIST)/ptolemy/data/type \
 	$(REMOTE1PTIIDIST)/ptolemy/actor \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/gt \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/data/unit \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/unit \
@@ -1297,6 +1303,10 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis \
+	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis/analyzer \
+	$(REMOTE1PTIIDIST)/ptolemy/graph/analysis/strategy \
+	$(REMOTE1PTIIDIST)/ptolemy/graph/mapping \
+	$(REMOTE1PTIIDIST)/ptolemy/graph/sched \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
@@ -1341,6 +1351,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/eclipse/ast \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor \
@@ -1352,7 +1363,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/modal/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sr/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/pn/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/colt \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/comm \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/conversions \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/hoc \
@@ -1369,6 +1382,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/pn \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/targets/mpi \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/parameters \
@@ -1376,6 +1390,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/colt \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/conversions \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/embeddedJava \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/hoc \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib/string \
@@ -1384,6 +1399,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/html \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter \
@@ -2375,7 +2391,7 @@ $(PTII)/vendors/izpack:
 		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
 		$(TAR) -zxf $(IZPACK_TAR)
 
-PTSETUP=ptII$(WINDOWS_VERSION)_setup
+PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # IzPack installer
 setup_jar: $(PTSETUP).jar
 $(PTSETUP).jar: $(PTSETUP).xml ../../ptiny.exe src/ptII$(VERSION)/bin/vergil
@@ -2499,3 +2515,85 @@ full_jars:
 	@(cd $(PTII); make -s echo_jars JARS=FULL_ONLY_JNLP_JARS)
 	@(cd $(PTII); make -s echo_jars JARS=VIPTOS_ONLY_JNLP_JARS)
 	@(cd $(PTII); make -s echo_jars JARS=VISUAL_SENSE_ONLY_JNLP_JARS)
+
+########################################################################
+# Mac installer
+ptsetup_mac: $(PTSETUP_MAC).xml
+$(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
+	awk -f macOSInclude.awk $(PTSETUP).xml | \
+	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
+	    -e 's@os="windows"@os="mac"@' \
+	    > $@
+
+PTINY_APP = src/ptII$(VERSION)/bin/Ptiny.app
+Ptiny.app: $(PTINY_APP)
+$(PTINY_APP): 
+	if [ ! -f $@ ]; then \
+		(cd src/ptII$(VERSION); PTII=$(PTII)/adm/gen-$(MAJOR_VERSION)/src/ptII$(VERSION) ./configure; cd bin;  make Ptiny.app Vergil.app); \
+        fi
+
+setup_mac_jar: $(PTSETUP_MAC).jar
+$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP) src/ptII$(VERSION)/bin/vergil
+	@echo "#"
+	@echo "# Building $@"
+	@echo "# `date`"
+	sh "$(IZPACK_COMPILE)" $<
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
+
+
+
+
+IZPACK2APP=$(IZPACKDIR)/utils/wrappers/izpack2app/izpack2app.py
+setup_mac_app: $(PTSETUP_MAC).app
+$(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
+	python $(IZPACK2APP) $^ $@ 
+	#cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
+
+######################################################################
+# Web Start Applets
+#
+JNLPDIST=test/ptII$(VERSION)
+jnlpdist: $(JNLPDIST)/signed
+$(JNLPDIST): $(GENLOG_DIR)
+	$(MAKE)	release_sisyphus_remote4_test
+
+
+# Directory that should be in vendors so that we build the jar files
+$(JNLPDIST)/vendors/misc/x10/tjx10p-13/lib/x10.jar: $(JNLPDIST)
+	# Build joystick, rxtx, x10, tjx10
+	if [ ! -f $@ ]; then \
+		echo "Reconfiguring with all optional packages"; \
+		(cd $(JNLPDIST); rm -rf vendors; ln -s $(PTII)/vendors .; PTII=`pwd`;./configure;$(MAKE) PTII=`pwd` install); \
+	fi
+
+$(JNLPDIST)/signed: $(JNLPDIST)/vendors/misc/x10/tjx10p-13/lib/x10.jar
+	if [ ! -d $@ ]; then \
+		echo "Creating $@"; \
+		cp ptKeystore.properties $(JNLPDIST); \
+		(cd $(JNLPDIST); $(MAKE) PTII=`pwd` KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass $(PASSWORD)" KEYPASSWORD="-keypass $(PASSWORD)" jnlp_dist); \
+	fi
+
+
+$(JNLPDIST)/ptolemy/copernicus/applet/makeJNLPs: $(JNLPDIST)/signed
+	(cd $(JNLPDIST); export PTII=`pwd`; cd ptolemy/copernicus/applet; ./updateDemos > makeJNLPs)
+
+# One of the jnlp files to be created.
+TARGET_JNLP = $(JNLPDIST)/ptolemy/verification/demo/SimpleTrafficLight/SimpleTrafficLight.jnlp
+$(TARGET_JNLP): $(JNLPDIST)/ptolemy/copernicus/applet/makeJNLPs
+	(cd $(JNLPDIST); export PTII=`pwd`; cd ptolemy/copernicus/applet; sh makeJNLPs)
+
+JNLPS_TAR = jnlps.tar
+$(JNLPS_TAR): $(TARGET_JNLP)
+	(cd $(JNLPDIST)/doc; mv deployJava.js deployJavaApplet.js; \
+	   cp deployJavaJNLP.js deployJava.js)
+	(cd $(JNLPDIST); tar -cf ../../$(JNLPS_TAR) `find . -name "*.jnlp"` `find . -name "signed_*.jar"` signed doc/deployJava.js doc/deployJavaApplet.js)
+
+updateJNLPs: $(JNLPS_TAR)
+	scp $(JNLPS_TAR) bennett:$(PTII_FTP)
+	ssh bennett "cd $(PTII_FTP)/ptII$(VERSION); /usr/local/bin/tar -xf ../$(JNLPS_TAR)"
