@@ -224,15 +224,17 @@ release_nightly:
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
 		all setup
 
+release_nightly_clean_setup:
+	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
+		PTII=/home/bldmastr/ptII \
+		PTIIHOME=/home/bldmastr/ptII \
+		clean all setup setup_mac_jar
+
 release_nightly_setup:
 	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
 		PTII=/home/bldmastr/ptII \
 		PTIIHOME=/home/bldmastr/ptII \
-		JFLAGS="-deprecation -g -source 1.5" \
-		JSDATABASE=/home/bldmastr/jsdatabase \
-		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
-		JSCLASSPATH=/usr/local/JavaScope/JavaScope.jar \
-		clean all setup
+		setup setup_mac_jar
 
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
@@ -278,8 +280,11 @@ $(PTIIDIST):
 		(cd $@; $(TAR) -xvpf -)
 	@echo "Removing codeDoc directories and other documentation"
 	@echo "  tar -X does not seem to work under Cygwin"
-	rm -rf $(PTIIDIST)/doc/codeDoc* $(PTIIDIST)/config/*.jar \
+	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
+	rm -rf $(PTIIDIST)/doc/codeDoc* \
+		$(PTIIDIST)/config/*.jar \
 		$(PTIIDIST)/config/*.class
+	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
 	-(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	#(cd $(PTIIDIST)/bin; make )
@@ -291,6 +296,7 @@ $(PTIIDIST):
 	#cd $(PTIIDIST); make javadocs
 	rm -f $(PTIIDIST)/.glimpse*
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
+	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
 	# Copy libjvm.dll.a because it was removed by src.ex
 	cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a $(PTIIDIST)/ptolemy/codegen/c/lib/win
 	ls -l  $(PTIIDIST)/ptolemy/codegen/c/lib/win/libjvm.dll.a
@@ -2491,8 +2497,7 @@ jre:
 		mkdir jre; \
 		echo "JRE Directory" > jre/README.txt; \
 	fi
-setup: $(PTSETUP).exe
-
+setup: $(PTSETUP).exe 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
 
