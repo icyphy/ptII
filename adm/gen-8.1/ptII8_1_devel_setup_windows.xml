@@ -24,6 +24,23 @@
     </info>
     
     <!-- 
+        The conditions section
+    -->
+    <conditions>
+      <condition type="variable" id="startPtiny">
+	<name>startPtiny</name>
+	<value>true</value>
+      </condition>
+      <condition type="variable" id="startVergil">
+	<name>startVergil</name>
+	<value>true</value>
+      </condition>
+      <condition type="packselection" id="fullPackSelected">
+        <packid>Full</packid>
+      </condition> 
+    </conditions>
+
+    <!-- 
         The gui preferences indication.
     -->
     <guiprefs width="640" height="500" resizable="yes"/>
@@ -49,6 +66,7 @@
 	<res id="Installer.image" src="../../doc/img/PtolemyIISmall.gif" />
 	<res id="StyleSheet" src="../../doc/default.css" />
 	<res id="shortcutSpec.xml" src="shortcutSpec.xml" /> 
+ 	<res id="userInputSpec.xml" src="userInputSpec.xml" />
         <res src="border1.png" id="Installer.image.0"/>
         <res src="border2.png" id="Installer.image.1"/>
         <res src="border3.png" id="Installer.image.2"/>
@@ -71,12 +89,16 @@
         <panel classname="HTMLInfoPanel"/>
         <panel classname="HTMLLicencePanel"/>
         <panel classname="TargetPanel"/> 
-        <panel classname="JDKPathPanel"/>
+        <!-- panel classname="JDKPathPanel"/ -->
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
         <panel classname="ShortcutPanel"/>
-        <panel classname="FinishPanel"/>
+ 	<panel classname="UserInputPanel" condition="!fullPackSelected"/>
+ 	<panel classname="UserInputPanel" condition="fullPackSelected"/>
+        <panel classname="ProcessPanel" condition="startPtiny|startVergil"/>
+        <panel classname="SimpleFinishPanel"/>
+        <!-- panel classname="FinishPanel"/ -->
     </panels>
     
     <!-- 
@@ -92,6 +114,7 @@ The Ptiny pack is required.
             <file src="../../copyright.htm" targetdir="$INSTALL_PATH"/>
             <file src="../../copyright.txt" targetdir="$INSTALL_PATH"/>
 
+<!--/MacOSInclude-->
             <file src="../../ptiny.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/ptiny.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
@@ -103,6 +126,11 @@ The Ptiny pack is required.
             <file src="../../ptplot.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/ptplot.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
+<!--MacOSInclude-->
+
+	    <!-- The next line gets substituted for the mac by the makefile. -->
+	    <!-- Ptiny.app -->
+
 
 	    <!-- Run (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS)
 		 and then copy the section below and use diff:
@@ -130,22 +158,31 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains"/>
             <file src="../../jar_dist/ptolemy/actor/parameters/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/parameters/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/sdf/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/sdf/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/doc"/>
             <file src="../../jar_dist/ptolemy/matlab/matlab.jar"
                   targetdir="$INSTALL_PATH/ptolemy/matlab"/>
             <file src="../../jar_dist/ptolemy/matlab/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/matlab/demo"/>
             <file src="../../jar_dist/lib/matlab.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../ptolemy/matlab/ptmatlab.dll"
+                  targetdir="$INSTALL_PATH/ptolemy/matlab"
+		  os="windows"/>
             <file src="../../jar_dist/ptolemy/ptsupport.jar"
                   targetdir="$INSTALL_PATH/ptolemy"/>
-            <file src="../../jar_dist/doc/codeDoc.jar"
-                  targetdir="$INSTALL_PATH/doc"/>
             <file src="../../jar_dist/doc/design/usingVergil/usingVergil.jar"
                   targetdir="$INSTALL_PATH/doc/design/usingVergil"/>
             <file src="../../jar_dist/lib/jython.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../../jar_dist/lib/ptcolt.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/ptolemy/actor/gt/gt.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gt"/>
+            <file src="../../jar_dist/ptolemy/actor/gt/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gt/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/colt/colt.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/colt"/>
             <file src="../../jar_dist/ptolemy/actor/lib/colt/demo/demo.jar"
@@ -166,10 +203,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/security/demo"/>
             <file src="../../jar_dist/ptolemy/actor/ptalon/antlr/antlr.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/antlr"/>
-            <file src="../../jar_dist/ptolemy/actor/ptalon/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/demo"/>
             <file src="../../jar_dist/ptolemy/actor/ptalon/ptalon.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/ptalon"/>
+            <file src="../../jar_dist/ptolemy/actor/ptalon/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/demo"/>
             <file src="../../jar_dist/ptolemy/domains/continuous/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/continuous/demo"/>
             <file src="../../jar_dist/ptolemy/domains/continuous/doc/doc.jar"
@@ -222,6 +259,9 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/moml/demo"/>
             <file src="../../jar_dist/ptolemy/vergil/kernel/attributes/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/kernel/attributes/demo"/>
+            <file src="../../jar_dist/ptolemy/plot/plotapplication.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/plot"/>
+
 
             <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
             <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
@@ -229,6 +269,7 @@ The Ptiny pack is required.
         </pack>
         <pack name="Full" required="no">
             <description>All of the domains, HyVisual and VisualSense.</description>
+<!--/MacOSInclude-->
             <file src="../../hyvisual.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/hyvisual.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
@@ -244,6 +285,12 @@ The Ptiny pack is required.
             <!-- No Viptos, it does not work, it requires ptinyos -->
             <!-- file src="../../viptos.exe" targetdir="$INSTALL_PATH"/ -->
             <!-- file src="../../doc/img/viptos.ico" targetdir="$INSTALL_PATH/doc/img/"/ -->
+
+<!--MacOSInclude-->
+
+	    <!-- The next line gets substituted for the mac by the makefile. -->
+	    <!-- Vergil.app -->
+
 
 	    <!-- Update this $PTII/mk/jnlp.mk
 		 # Copy the section below to /tmp/f0, then
@@ -489,11 +536,13 @@ The Ptiny pack is required.
 
         <pack name="Docs" required="no">
             <description>The documentation for Ptiny and the full version of Vergil including user documentation and java documentation.</description>
+<!--/MacOSInclude-->
             <file src="../../designdocv1.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv2.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv3.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
+<!--MacOSInclude-->
             <file src="../../doc/design/ptIIdesign1-intro.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/ptIIdesign2-software.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/ptIIdesign3-domains.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
@@ -503,10 +552,12 @@ The Ptiny pack is required.
 
         <pack name="FullDocs" required="no">
             <description>The documentation for HyVisual and VisualSense, including user documentation and java documentation.</description>
+<!--/MacOSInclude-->
             <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../visualsensedoc.exe"
 	          targetdir="$INSTALL_PATH/bin"/>
             <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
+<!--MacOSInclude-->
             <file src="../../doc/design/hyvisual.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/visualsense.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../jar_dist/doc/codeDocHyVisual.jar"
@@ -516,10 +567,14 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/doc"/>
 
         </pack>
+
+<!--/MacOSInclude-->
         <pack name="JRE" required="no">
             <description>Java Runtime Environment (JRE) v1.5.0_14.  This JRE includes JAI, Java 3D, JavaComm,  Joystick,  JMF, Quicktime Java interface and X10.  Ptolemy II requires either a Java Runtime Environment (JRE) or Java Development Kit (JDK).</description>
             <file src="jre" targetdir="$INSTALL_PATH"/>
         </pack>
+<!--MacOSInclude-->
+
         <pack name="Sources" required="no">
             <description>The Ptolemy II sources.</description>
 	    <!-- Can't just copy the directory, need to spec files -->
