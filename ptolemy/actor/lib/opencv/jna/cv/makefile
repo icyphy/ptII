@@ -1,8 +1,8 @@
-# Makefile for Ptolemy II Open CV actors
+# Makefile for Ptolemy II Open CV Java Native Access CV interface
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 57452 2010-03-09 02:03:53Z cxh $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,47 +29,30 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/opencv
+ME =		ptolemy/actor/lib/opencv/jna/cv
 
-DIRS = 		jna
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../..
 
-# OPENCV_JAR and PTPROCESSING_JARS are set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(PTPROCESSING_JARS)
-
+# OPENCV_JAR and JNA_JAR are set by configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	opencv
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	cv
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Blend.java \
-	BlendADD.java \
-	BlendSUB.java \
-	Blur.java \
-	Brighten.java \
-	Darken.java \
-	Detect.java \
-	Filter.java \
-	Flip.java \
-	GrayScale.java \
-	HighContrast.java \
-	Invert.java \
-	LowContrast.java \
-	OpenCVReader.java \
-	OpenCVToAWTImage.java \
-	Read.java
+	CvLib.java \
+	CvSize.java
 
-OTHER_FILES_TO_BE_JARED = \
-	opencv.xml \
-	opencv-copyright.htm
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -88,7 +71,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

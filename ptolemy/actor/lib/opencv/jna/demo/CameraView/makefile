@@ -1,8 +1,8 @@
-# Makefile for Ptolemy II Open CV actors
+# Makefile for Ptolemy II OpenCV demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 57177 2010-02-09 00:30:08Z cxh $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,66 +29,61 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/opencv
-
-DIRS = 		jna
+ME =		ptolemy/actor/lib/opencv/jna/demo/CameraView/
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../../../..
 
-# OPENCV_JAR and PTPROCESSING_JARS are set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(PTPROCESSING_JARS)
-
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	opencv
+PTPACKAGE = 	CameraView
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	Blend.java \
-	BlendADD.java \
-	BlendSUB.java \
-	Blur.java \
-	Brighten.java \
-	Darken.java \
-	Detect.java \
-	Filter.java \
-	Flip.java \
-	GrayScale.java \
-	HighContrast.java \
-	Invert.java \
-	LowContrast.java \
-	OpenCVReader.java \
-	OpenCVToAWTImage.java \
-	Read.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	opencv.xml \
-	opencv-copyright.htm
+	CameraView.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	$(PTCLASSJAR) \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer CameraView.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer CameraViewVergil.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" CameraView.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" CameraView.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
