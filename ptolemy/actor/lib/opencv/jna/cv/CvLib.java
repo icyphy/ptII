@@ -1,7 +1,5 @@
 package ptolemy.actor.lib.opencv.jna.cv;
 
-import ptolemy.actor.lib.opencv.jna.cxcore.*;
-
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;

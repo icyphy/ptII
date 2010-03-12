@@ -27,9 +27,9 @@
 
 package ptolemy.actor.lib.opencv.jna;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.PointerByReference;
-
+import static ptolemy.actor.lib.opencv.jna.cxcore.CxcoreLib.cvCloneImage;
+import static ptolemy.actor.lib.opencv.jna.cxcore.CxcoreLib.cvCopy;
+import static ptolemy.actor.lib.opencv.jna.cxcore.CxcoreLib.cvReleaseImage;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
@@ -37,8 +37,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import static ptolemy.actor.lib.opencv.jna.cxcore.CxcoreLib.*;
-import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.*;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
 
 
 ///////////////////////////////////////////////////////////////////

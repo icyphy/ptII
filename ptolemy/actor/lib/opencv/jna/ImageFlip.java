@@ -27,8 +27,7 @@
 
 package ptolemy.actor.lib.opencv.jna;
 
-import com.sun.jna.Pointer;
-
+import static ptolemy.actor.lib.opencv.jna.cxcore.CxcoreLib.cvFlip;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
@@ -38,7 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import static ptolemy.actor.lib.opencv.jna.cxcore.CxcoreLib.*;
+import com.sun.jna.Pointer;
 
 
 ///////////////////////////////////////////////////////////////////

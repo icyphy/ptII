@@ -29,12 +29,8 @@ package ptolemy.moml.test;
 import java.io.File;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLSimpleApplication;
 import ptolemy.moml.filter.BackwardCompatibility;

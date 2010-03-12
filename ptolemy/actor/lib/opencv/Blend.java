@@ -28,16 +28,8 @@
 package ptolemy.actor.lib.opencv;
 
 import hypermedia.video.OpenCV;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.MemoryImageSource;
-import javax.imageio.*;
-import java.io.File;
-import java.io.IOException;
-import java.lang.Object;
-import processing.core.*;
+import processing.core.PImage;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.AWTImageToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;

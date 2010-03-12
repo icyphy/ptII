@@ -1,7 +1,5 @@
 package ptolemy.actor.lib.opencv.jna.cxcore;
 
-import ptolemy.actor.lib.opencv.jna.cxcore.IplROI;
-
 import com.sun.jna.Structure;
 
 public class IplROI extends Structure {

@@ -23,16 +23,10 @@
  */
 package ptolemy.data.ontologies;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.net.URI;
 import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.gui.OntologyDisplayActions;
 import ptolemy.domains.tester.lib.Testable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -40,8 +34,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.ClassUtilities;
-import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////

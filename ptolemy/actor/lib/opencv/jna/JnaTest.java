@@ -1,9 +1,14 @@
 package ptolemy.actor.lib.opencv.jna;
 
-import static ptolemy.actor.lib.opencv.jna.cv.CvLib.*;
-import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.*;
-import static ptolemy.actor.lib.opencv.jna.cxcore.CxcoreLib.*;
-import ptolemy.actor.lib.opencv.jna.cxcore.IplImage;
+import static ptolemy.actor.lib.opencv.jna.cv.CvLib.CV_GAUSSIAN;
+import static ptolemy.actor.lib.opencv.jna.cv.CvLib.cvSmooth;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvCreateCameraCapture;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvDestroyWindow;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvNamedWindow;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvQueryFrame;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvReleaseCapture;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvShowImage;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvWaitKey;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.PointerByReference;

@@ -1,7 +1,6 @@
 package ptolemy.actor.lib.opencv.jna.cxcore;
 
 
-import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 

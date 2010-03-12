@@ -28,17 +28,18 @@
 package ptolemy.actor.lib.opencv.jna;
 
 
-import com.sun.jna.Pointer;
-
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvDestroyWindow;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvNamedWindow;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvShowImage;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvWaitKey;
 import ptolemy.actor.lib.Sink;
-import ptolemy.actor.lib.opencv.jna.cxcore.IplImage;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.*;
+import com.sun.jna.Pointer;
 
 
 ///////////////////////////////////////////////////////////////////

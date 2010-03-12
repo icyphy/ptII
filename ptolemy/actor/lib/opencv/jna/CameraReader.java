@@ -27,19 +27,18 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.opencv.jna;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.PointerByReference;
-
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvCreateCameraCapture;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvQueryFrame;
+import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.cvReleaseCapture;
 import ptolemy.actor.lib.Source;
-import ptolemy.actor.lib.opencv.jna.cxcore.IplImage;
-import ptolemy.actor.lib.opencv.jna.highgui.CvCapture;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import static ptolemy.actor.lib.opencv.jna.highgui.HighguiLib.*;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
 
 ///////////////////////////////////////////////////////////////////
 ////CameraReader
