@@ -97,8 +97,8 @@
  	<panel classname="UserInputPanel" condition="!fullPackSelected"/>
  	<panel classname="UserInputPanel" condition="fullPackSelected"/>
         <panel classname="ProcessPanel" condition="startPtiny|startVergil"/>
-        <panel classname="SimpleFinishPanel"/>
-        <!-- panel classname="FinishPanel"/ -->
+        <!-- panel classname="SimpleFinishPanel"/ -->
+        <panel classname="FinishPanel"/>
     </panels>
     
     <!-- 
@@ -168,9 +168,11 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/matlab/demo"/>
             <file src="../../jar_dist/lib/matlab.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+<!--/MacOSInclude-->
             <file src="../../ptolemy/matlab/ptmatlab.dll"
                   targetdir="$INSTALL_PATH/ptolemy/matlab"
 		  os="windows"/>
+<!--MacOSInclude-->
             <file src="../../jar_dist/ptolemy/ptsupport.jar"
                   targetdir="$INSTALL_PATH/ptolemy"/>
             <file src="../../jar_dist/doc/design/usingVergil/usingVergil.jar"

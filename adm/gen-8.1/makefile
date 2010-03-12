@@ -228,13 +228,13 @@ release_nightly_clean_setup:
 	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
 		PTII=/home/bldmastr/ptII \
 		PTIIHOME=/home/bldmastr/ptII \
-		clean all setup setup_mac_jar
+		clean all setup setup_mac_app_tar
 
 release_nightly_setup:
 	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
 		PTII=/home/bldmastr/ptII \
 		PTIIHOME=/home/bldmastr/ptII \
-		setup setup_mac_jar
+		setup setup_mac_app_tar
 
 # Rebuild the distributions
 rebuild: clean all installshield_app build_unixPtII
@@ -1248,7 +1248,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/data/expr \
 	$(REMOTE1PTIIDIST)/ptolemy/data/type \
 	$(REMOTE1PTIIDIST)/ptolemy/actor \
-	$(REMOTE1PTIIDIST)/ptolemy/actor/gt \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/data/unit \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/unit \
@@ -1295,6 +1294,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tester/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/gt \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/petrinet/kernel \
@@ -2504,7 +2504,7 @@ clean_setup:
 full_clean_setup: clean_setup
 	rm -rf $(PTSETUP_DEPENDENCIES)
 
-test_setup: setup
+test_setup: setup setup_mac_app_tar
 	@echo "#"
 	@echo "# Now testing the setup file" 
 	@echo "#"
@@ -2526,8 +2526,8 @@ full_jars:
 ptsetup_mac: $(PTSETUP_MAC).xml
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
-	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
-	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.1.devel/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.1.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
@@ -2544,6 +2544,7 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml ../../jar_dist $(PTINY_APP) src/ptII$(VER
 	@echo "#"
 	@echo "# Building $@"
 	@echo "# `date`"
+	ls -ldg $(PTINY_APP)
 	sh "$(IZPACK_COMPILE)" $<
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
@@ -2559,6 +2560,10 @@ setup_mac_app: $(PTSETUP_MAC).app
 $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
 	#cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
+
+setup_mac_app_tar: $(PTSETUP_MAC).app.tar.gz
+$(PTSETUP_MAC).app.tar.gz: $(PTSETUP_MAC).app
+	tar -zcf $@ $<
 
 ######################################################################
 # Web Start Applets
