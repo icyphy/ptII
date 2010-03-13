@@ -1294,7 +1294,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tester/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf/lib \
-	$(REMOTE1PTIIDIST)/ptolemy/actor/gt \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/petrinet/kernel \
@@ -1337,6 +1336,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/modal \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/gt \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/parameters \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/colt \
