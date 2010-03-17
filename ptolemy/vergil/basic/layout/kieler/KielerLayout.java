@@ -306,8 +306,8 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Configure whether the layout should only place nodes or additionally
      * route edges. Edge routing would be done by insertion of new relation
      * vertices which is a real manipulation of a model. Routing is only
-     * supported for stahndard actor based frames with relations. Different
-     * arrow styles like in Modal Models is not yet supported for routing.
+     * supported for standard actor based frames with relations. Different
+     * arrow styles like in Modal Models are not yet supported for routing.
      *
      * @param flag True iff edge routing shall be applied by insertion of
      *             relation vertices.
@@ -393,8 +393,11 @@ public class KielerLayout extends AbstractGlobalLayout {
             if (count == 0) {
                 KPort kSourcePort = kEdge.getSourcePort();
                 KNode kNode = kEdge.getSource();
-
+                NamedObj o = _kieler2ptolemyEntityNodes.get(kNode);
+               // FIXME: the o might be one of the relations. However, this will create too little links
+                 if(!o.equals(oldRelation)){ // o might be one of the relations itself
                 _replaceRelation(kSourcePort, kNode, relationName, oldRelation);
+                }
             }
 
             // process all other bendpoints
@@ -412,7 +415,11 @@ public class KielerLayout extends AbstractGlobalLayout {
         if (previousRelation != null) {
             KPort kTargetPort = kEdge.getTargetPort();
             KNode kNode = kEdge.getTarget();
-            _replaceRelation(kTargetPort, kNode, previousRelation, oldRelation);
+            NamedObj o = _kieler2ptolemyEntityNodes.get(kNode);
+            // FIXME
+            if(!o.equals(oldRelation)){ // o might be one of the relations itself
+                _replaceRelation(kTargetPort, kNode, previousRelation, oldRelation);
+            }
         }
         // remove old relation if it is no longer connected
         if (oldRelation.linkedObjectsList().isEmpty()) {

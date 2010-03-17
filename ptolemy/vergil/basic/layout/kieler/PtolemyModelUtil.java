@@ -492,12 +492,17 @@ public class PtolemyModelUtil {
      *            containing the objects for which changes are requested.
      */
     protected void _performChangeRequest(CompositeActor actor) {
+        if(_momlChangeRequest.toString().trim().equals("")){
+            // if request is empty, don't do anything.
+            return;
+        }
         _momlChangeRequest.insert(0, "<group>");
         _momlChangeRequest.append("</group>");
         //System.out.println(_momlChangeRequest);
         MoMLChangeRequest request = new MoMLChangeRequest(this, actor,
                 _momlChangeRequest.toString());
         request.setUndoable(true);
+        request.setMergeWithPreviousUndo(true);
         actor.requestChange(request);
         // reset the current request
         _momlChangeRequest = new StringBuffer();
@@ -520,7 +525,8 @@ public class PtolemyModelUtil {
         // top level element
         // so we need multiple requests here
         MoMLChangeRequest request = new MoMLChangeRequest(obj, obj, moml);
-        request.setUndoable(false);
+        request.setUndoable(true);
+        request.setMergeWithPreviousUndo(true);
         obj.requestChange(request);
     }
 
@@ -546,6 +552,7 @@ public class PtolemyModelUtil {
         MoMLChangeRequest request = new MoMLChangeRequest(vertex, relation,
                 moml);
         request.setUndoable(true);
+        request.setMergeWithPreviousUndo(true);
         relation.requestChange(request);
     }
 
