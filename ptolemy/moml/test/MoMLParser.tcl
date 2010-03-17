@@ -660,6 +660,38 @@ test MoMLParser-1.11.2 {test topObjectsCreated, clearTopObjectsList} {
     list [java::isnull $r1] [java::isnull $r2]
 } {1 0}
 
+
+test MoMLParser-1.11.3 {Test link to self} {
+    # Test for a situation that came up with the Kieler layout code
+    $parser reset
+    set modelBody {
+	<entity name="toplevel2_18" class="ptolemy.actor.TypedCompositeActor">
+	<relation name="r" class="ptolemy.actor.TypedIORelation"/>
+	</entity>
+    }
+    set modelMoML "$header $modelBody"
+    set toplevel2_18 [$parser parse $modelMoML]
+
+    set manager [java::new ptolemy.actor.Manager [$toplevel2_18 workspace] "w"]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel2_18 $toplevel2_18 {
+       <entity name=".toplevel2_18">
+	<link relation1="r" relation2="r"/>
+       </entity>
+    }]
+    # NOTE: Request is filled immediately because the model is not running.
+    catch {$manager requestChange $change} errMsg
+
+    list $errMsg
+} {{ptolemy.kernel.util.InternalErrorException: ChangeRequest failed (NOTE: there is no ChangeListener):
+
+       <entity name=".toplevel2_18">
+	<link relation1="r" relation2="r"/>
+       </entity>
+    
+  in .toplevel2_18
+Because:
+CrossRefLink.link: Illegal self-link.}}
+
 ######################################################################
 ####
 #
