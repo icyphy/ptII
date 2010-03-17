@@ -483,10 +483,10 @@ public class KielerLayout extends AbstractGlobalLayout {
                 if (namedObj instanceof Relation) {
                     Vertex vertex = (Vertex) _kieler2ptolemyDivaNodes
                             .get(knode);
-                    PtolemyModelUtil._setLocation(vertex, (Relation) namedObj,
+                    _ptolemyModelUtil._setLocation(vertex, (Relation) namedObj,
                             absoluteLayout.getXpos(), absoluteLayout.getYpos());
                 } else {
-                    PtolemyModelUtil._setLocation(namedObj, absoluteLayout
+                    _ptolemyModelUtil._setLocation(namedObj, absoluteLayout
                             .getXpos(), absoluteLayout.getYpos());
                 }
             }
