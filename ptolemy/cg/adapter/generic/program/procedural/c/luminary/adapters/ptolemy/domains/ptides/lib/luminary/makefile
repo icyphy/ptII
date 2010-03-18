@@ -51,14 +51,18 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 JSRCS = \
+	DropSensorInputDevice.java \
 	GPInputDevice.java \
 	GPOutputDevice.java \
+	MotorOutputDevice.java \
 	SongWrapper.java \
 	SpeakerOutputDevice.java
 	
 OTHER_FILES_TO_BE_JARED = \
+	DropSensorInputDevice.c \
 	GPInputDevice.c \
 	GPOutputDevice.c \
+	MotorOutputDevice.c \
 	SongWrapper.c \
 	SpeakerOutputDevice.c
 

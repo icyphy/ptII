@@ -48,9 +48,11 @@ PTPACKAGE = 	luminary
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	DropSensorInputDevice.java \
 	GPInputDevice.java \
 	GPOutputDevice.java \
 	LuminarySensorInputDevice.java \
+	MotorOutputDevice.java \
 	SongWrapper.java \
 	SpeakerOutputDevice.java
 

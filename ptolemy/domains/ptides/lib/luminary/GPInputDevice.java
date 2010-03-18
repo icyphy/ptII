@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
- * An abstract class for GPIO pins on the Luminary board.
+ * A class for GPIO pins on the Luminary board.
  * <p>This actor will have no effect in model simulations, but
  * allows for code generators to generate the actors.
  *

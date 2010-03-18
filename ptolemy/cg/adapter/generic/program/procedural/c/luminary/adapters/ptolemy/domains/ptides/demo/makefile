@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/demo
 
-DIRS =		Speaker
+DIRS =		Speaker TunnelingBallDevice
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../../..
@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	Speaker/Speaker.jar
+	TunnelingBallDevice/TunnelingBallDevice.jar
 
 # Keep this list alphabetized.
 JSRCS = 
