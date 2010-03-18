@@ -1,4 +1,4 @@
-/* An actor that capture image from camera by using javaCV
+/* An actor that capture image from camera by using OpenCV
 
 Copyright (c) 2010 The Regents of the University of California.
 All rights reserved.
@@ -27,21 +27,20 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import com.sun.jna.Platform;
-
 import ptolemy.actor.lib.Source;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 import static name.audet.samuel.javacv.jna.cxcore.v10.*;
 import static name.audet.samuel.javacv.jna.highgui.v10.*;
 
 
 ///////////////////////////////////////////////////////////////////
-////CameraReader
+////CvCameraCapture
 
 /**
 * A simple actor starts a video capture process using
@@ -52,7 +51,7 @@ import static name.audet.samuel.javacv.jna.highgui.v10.*;
 * @Pt.ProposedRating 
 * @Pt.AcceptedRating 
 */
-public class CameraReader extends Source {
+public class ImageReader extends Source {
    /** Construct an actor with the given container and name.
     *  In addition to invoking the base class constructors, construct
     *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
@@ -65,14 +64,21 @@ public class CameraReader extends Source {
     *  @exception NameDuplicationException If the container already has an
     *   actor with this name.
     */
-   public CameraReader(CompositeEntity container, String name)
+   public ImageReader(CompositeEntity container, String name)
            throws IllegalActionException, NameDuplicationException {
        super(container, name);
 
-       // FIXME: create a separate type for OpenCV Frames or
-       // create a type for ptolemy.data.AWTImageToken.
+       pathName = new StringAttribute(this, "pathName");
+       pathName.setExpression("test.png");
+       
        output.setTypeEquals(BaseType.OBJECT);
    }
+
+   ///////////////////////////////////////////////////////////////////
+   ////                     ports and parameters                  ////       
+   /** The name of the file to write to. The default
+    *  value of this parameter is "test.png"
+    */   public StringAttribute pathName;
 
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
@@ -80,22 +86,23 @@ public class CameraReader extends Source {
     *  @exception IllegalActionException If thrown while writing to the port.   
     */
    public void fire() throws IllegalActionException {
-       _frame = cvQueryFrame (_capture);
-       _frame.origin = IPL_ORIGIN_TL;
-       cvFlip(_frame,_frame,0);
-       output.send(0, new ObjectToken(_frame));
+       output.send(0, new ObjectToken(_image));
    }
   
-   /** Open the video capture device.
+   /** Load image from file
     *  @exception IllegalActionException If thrown by the super class.
     */
    public void initialize() throws IllegalActionException {
        super.initialize();
-       _capture = cvCreateCameraCapture(0);
-       
-       // FIXME: These setting don't work correctly.. 
-       cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_WIDTH, 320);
-       cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
+       String pathNameString = pathName.getExpression();
+       if (_image == null) {
+           _image = cvLoadImage(pathNameString,1);
+           if (_image == null) {
+               throw new IllegalActionException(this,
+                       "Fail to load image " + _image.getClass());
+           }
+           
+       }
    }
    
    /** Stop the capture.
@@ -103,12 +110,11 @@ public class CameraReader extends Source {
     */
    public void wrapup() throws IllegalActionException {
        super.wrapup();
-       cvReleaseCapture (_capture.pointerByReference());
+       _image.release();
    }
   
    ///////////////////////////////////////////////////////////////////
    ////                         private variables                 ////
 
-   private CvCapture _capture;
-   private IplImage _frame;
+   private IplImage _image;
 }
