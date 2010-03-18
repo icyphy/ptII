@@ -82,7 +82,8 @@ public class ActuatorOutputDevice extends OutputDevice {
         List args = new LinkedList();
         CodeStream _codeStream = _templateParser.getCodeStream();
 
-        ptolemy.domains.ptides.lib.luminary.GPOutputDevice actor = (ptolemy.domains.ptides.lib.luminary.GPOutputDevice) getComponent();
+        ptolemy.domains.ptides.lib.ActuatorOutputDevice actor = 
+            (ptolemy.domains.ptides.lib.ActuatorOutputDevice) getComponent();
         PtidesBasicDirector adapter = (PtidesBasicDirector) getAdapter(actor
                 .getDirector());
 

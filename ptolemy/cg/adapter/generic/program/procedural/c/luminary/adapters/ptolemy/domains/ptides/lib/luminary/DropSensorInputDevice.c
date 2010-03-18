@@ -22,7 +22,8 @@ uint32 dropTimeToImpactTime(const uint32 dropTime){
 /*** fireBlock ***/
 static uint32 dropCount = 0;										//Number of drop sensor events received
 static uint32 previousEventTimestamp = 0;
-const uint32 currentEventTimestamp = getRealTime();									
+const uint32 currentEventTimestamp = getRealTime();
+static int32 trajectoryCorrectionPeriod;						
 
 //GPIOPinIntClear(DROP_BASE, GPIOPinIntStatus(DROP_BASE, 0));			// Clear the interrupt
 
@@ -34,7 +35,7 @@ if((dropCount & 0x01) == 0){	//even drop count
 
 	//FIXME: If dropTime is out of range, dropCount may be erroneous and should be corrected	
     // send an dummy value out of its output port.
-	$put(actuation#0, trajectoryCorrectionPeriod(timeToImpact));
+	$put(output#0, trajectoryCorrectionPeriod(timeToImpact));
 }
 previousEventTimestamp = currentEventTimestamp;
 /**/

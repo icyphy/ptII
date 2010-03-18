@@ -62,6 +62,12 @@ void pwmDisable(void){
 	//Enable PWM generator
 	PWMGenEnable(PWM_BASE, MOTOR_PWM);
 /**/
+
+/*** fireBlock($actuator) ***/
+static int32 power;
+power = $get(input#0);
+setActuationInterrupt($actuator);
+/**/
  
 /*** actuationBlock ***/
 // power is a 32bit int, which is the input to this actor.
