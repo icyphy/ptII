@@ -422,16 +422,117 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 controller.readOutputsFromRefinement();
             }
         } else {
-            // If no transition was chosen, all relevant inputs are
-            // known, and the current state has no refinement, then make
-            // all outputs absent.
-            if (!controller.foundUnknown() && stateRefinements == null) {
-                // Use the controller to set absent.
-                List<IOPort> outputs = controller.outputPortList();
-                for (IOPort port : outputs) {
-                    for (int channel = 0; channel < port.getWidth(); channel++) {
-                        if (!port.isKnown(channel)) {
-                            port.send(channel, null);
+            // If no transition was chosen, then it still might
+            // possible to assert that certain outputs are absent.
+
+            // Next, for each output port, we need to check whether
+            // it is possible for an output to be produced on that port.
+            // It will not be possible if all transitions that can produce
+            // the output have guards that evaluate to false.
+            List<IOPort> outputs = controller.outputPortList();
+            //FIXME: maybe ask refinements too and send a lear out ONLYE
+            //guardsEvaluable regarding refinement
+            List<Transition> transitionList = controller._currentState.outgoingPort.linkedRelationList();
+
+            for (IOPort port : outputs) {
+                
+                // grab the HashMap for all transitions where this port is referenced
+                // in the output actions
+                HashMap transitionMap;
+                if (_portReferencedInTransitionMaps.containsKey(port)) {
+                    transitionMap = _portReferencedInTransitionMaps.get(port);
+                }
+                else {
+                    transitionMap = new HashMap<Transition,Boolean>();
+                    _portReferencedInTransitionMaps.put(port, transitionMap);
+                }
+                
+                for (int channel = 0; channel < port.getWidth(); channel++) {
+                    if (!port.isKnown(channel)) {
+                        // Check all transitions. If no transition can
+                        // possibly produce this output, set the output absent.
+                        boolean guardsEvaluable = true;
+                        
+                        if (controller._currentState.getRefinement() != null) {
+                            // this states has a refinement
+                            // in addition to the check below it is required that the refinement
+                            // has also cleared a port
+                            TypedActor[] refinements = controller._currentState.getRefinement();
+                            //do the following for all refinements
+                            for (Actor refinementActor: refinements) {
+                                if (refinementActor instanceof CompositeActor) {
+                                    CompositeActor refinement = (CompositeActor)refinementActor; 
+                                    for (IOPort refinementPort : ((List<IOPort>)refinement.outputPortList())) {
+                                        if (!refinementPort.getName().equals(port.getName())) {
+                                            // if not the same port name, don't inspect channels
+                                            continue;
+                                        }
+                                        // if the correct port name, get the right channel 
+                                        for (int refinementChannel = 0; refinementChannel < refinementPort.getWidth(); 
+                                                                                                    refinementChannel++) {
+                                            if (refinementChannel == channel) {
+                                                // this is the corresponding refinement port and channel
+                                                // check whether it is known (=> !cleared). if not, prevent
+                                                // clearing by setting guardsEvaluable to false
+                                                if (!refinementPort.isKnown()) {
+                                                        // only if it is really cleared (= not known because of a token)
+                                                        guardsEvaluable = false;
+                                                }
+                                            }//end if channel and port fits
+                                        }//end for all channels
+                                    }//end for all ports
+                                }//end if CompositeActor
+                            }//end for all refinements
+                        }//end if has refinement
+                        
+                        if (!guardsEvaluable) {
+                            // if we know already that a refinement didn't cleared
+                            // this channel[port], then we don't need to inspect any further
+                            // because this already prevents us from clearing the channel safely
+                            continue;
+                        }
+                        
+                        for (Transition transition : transitionList) {
+                            // Determine whether the transition includes an assignment to this port.
+                            // Use a HashMap for each port to save booleans for each transition
+                            Boolean matches;
+                            if (transitionMap.containsKey(transition)) {
+                                matches = (Boolean)transitionMap.get(transition);
+                            }
+                            else {
+                                String outputActionsExpression = transition.outputActions.getExpression();
+                                String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "\\s*=[^=](.|\\s)*";
+                                matches = (outputActionsExpression.trim().matches(regexp));
+                                transitionMap.put(transition, matches);
+                            }
+                            if (matches) {
+                                // Next check to see whether the guard evaluates to false.
+                                try {
+                                    if (!transition.isEnabled()) {
+                                      // if the transition is not enabled and NOT unknown-variable-error occurs this means
+                                      // the transition guard could (already) be evaluated to false
+                                      // => from this perspective it is okay to clear outputs (so dont prevent that)
+                                      //                                        guardsEvaluable = false;
+                                      //                                        break;
+                                    }
+                                } catch (IllegalActionException ex) {
+                                    // Guard cannot be evaluated. Cannot set this port
+                                    // to absent (yet).
+                                    guardsEvaluable = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (guardsEvaluable) {
+                                port.send(channel, null);
+                        }
+                    }
+                    else {
+                        if (port.isInput() && port.hasToken(0) ) {
+                            _debug("Token at port " +port.getName());
+                        }
+                        else {
+                            _debug("Unknown token or output port " +port.getName());
                         }
                     }
                 }
@@ -951,6 +1052,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // FIXME: Check derived classes. This may only make sense for FSMReceiver.
         _resetOutputReceivers();
 
+        //clear the list
+        hadToken.clear();
+        
         return result && !_stopRequested && !_finishRequested;
     }
 
@@ -1236,6 +1340,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             workspace().doneReading();
         }
     }
+    
+    
+    /** If the execution stops, that should result in clearing the HashMaps
+     * because the user might change the model (transition-labels). 
+     */
+    public void stop() {
+        this._portReferencedInTransitionMaps.clear();
+    }
 
     /** Return the enabled transition among the given list of transitions.
      *  Throw an exception if there is more than one transition enabled.
@@ -1288,7 +1400,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      *  @return The last chosen transition, or null if there has been none.
      *  @exception IllegalActionException If there is no controller.
      */
-    protected Transition _getLastChosenTransition()
+    public Transition _getLastChosenTransition()
             throws IllegalActionException {
         FSMActor controller = getController();
 
@@ -1390,13 +1502,17 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                                     + " from " + port.getName());
                         }
                         port.send(i, t);
+                        //mark this port as we sent a token to prevent sending a clear afterwards in this fixed point iteration
+                        hadToken.add(port);
                         result = true;
                     } else {
                         if (_debugging) {
                             _debug(getName(), "sending clear from "
                                     + port.getName());
                         }
-                        port.send(i, null);
+                        if (!hadToken.contains(port)) {
+                            port.send(i, null);
+                        }
                     }
                 }
             } catch (NoTokenException ex) {
@@ -1407,6 +1523,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         return result;
     }
 
+    LinkedList<IOPort> hadToken = new LinkedList<IOPort>();
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1444,6 +1562,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     /** Transition refinements to postfire(), as determined by the fire() method. */
     protected List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
 
+    /** A HashMap of transition-boolean-pairs for each port indicating if the port is contained
+     * in an output action of the specific transition. This information is lazily inserted into
+     * the HashMap during the simulation for performance reasons. It is not pre-done because during a run
+     * we may never traverse all nodes defined.
+     */
+    protected HashMap<IOPort,HashMap<Transition,Boolean>> _portReferencedInTransitionMaps 
+                                         = new HashMap<IOPort,HashMap<Transition,Boolean>>();
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _checkActorsForReceiver(TypedActor[] actors, Nameable cont,

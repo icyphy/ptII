@@ -389,6 +389,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
                 result = (Transition) enabledTransitions.get(randomChoice);
                 if (_referencedInputPortsByOutputKnown(result)) {
+                    // The chosen transition has an output action that
+                    // references an unknown input.
                     _foundUnknown = true;
                     break;
                 } else {
@@ -408,11 +410,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
             while (actions.hasNext()) {
                 Action action = (Action) actions.next();
+                // FIXME: Seems like this could be executed even
+                // if _foundUknown is now true, which means that
+                // _referencedInputPortsByOutputKnown(result)
+                // returned true. Won't the following line throw
+                // an exception in this case?
                 action.execute();
             }
 
             // If the current state has no refinement and there are
             // outputs that remain unknown, make them absent.
+            // FIXME: Even if there is a refinement, it might be
+            // reasonable to assert that outputs are absent.
+            // We can't do that here, however, because the outputs
+            // from the refinement have not been transferred. Is
+            // this case handled by the FSMDirector?
             if (_currentState.getRefinement() == null) {
                 List<IOPort> outputs = outputPortList();
                 for (IOPort port : outputs) {
@@ -647,25 +659,92 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // right thing!  It needs to do everything that the FSMDirector's
         // fire() method does.
         readInputs();
-        List transitionList = _currentState.outgoingPort.linkedRelationList();
+        List<Transition> transitionList = _currentState.outgoingPort.linkedRelationList();
         Transition chosenTransition = chooseTransition(transitionList);
 
-        // If no transition was chosen, all relevant inputs are
-        // known, and the current state has no refinement, then make
-        // all outputs absent.
-        if (chosenTransition == null && !foundUnknown()
-                && _currentState.getRefinement() == null) {
+        // If no transition was chosen, then it still might
+        // possible to assert that certain outputs are absent.
+        if (chosenTransition == null) {
+            // If all relevant inputs (those on guards of outgoing
+            // transitions) are known, and the current state has no refinement,
+            // then make all outputs absent.
+            // FIXME: Why require that the current state have no refinement?
+            // Probably because the transfer of the output from the refinement
+            // to this port hasn't occurred yet, and if we assert now that the
+            // output is absent, we will get an exception when do the transfer.
+            if (!foundUnknown()
+                    && _currentState.getRefinement() == null) {
+                List<IOPort> outputs = outputPortList();
+                for (IOPort port : outputs) {
+                    for (int channel = 0; channel < port.getWidth(); channel++) {
+                        if (!port.isKnown(channel)) {
+                            port.send(channel, null);
+                        }
+                    }
+                }
+            }
+            // Next, for each output port, we need to check whether
+            // it is possible for an output to be produced on that port.
+            // It will not be possible if all transitions that can produce
+            // the output have guards that evaluate to false.
             List<IOPort> outputs = outputPortList();
             for (IOPort port : outputs) {
+                
+                // grab the HashMap for all transitions where this port is referenced
+                // in the output actions
+                HashMap transitionMap;
+                if (_portReferencedInTransitionMaps.containsKey(port)) {
+                    transitionMap = _portReferencedInTransitionMaps.get(port);
+                }
+                else {
+                    transitionMap = new HashMap<Transition,Boolean>();
+                    _portReferencedInTransitionMaps.put(port, transitionMap);
+                }
+                
                 for (int channel = 0; channel < port.getWidth(); channel++) {
                     if (!port.isKnown(channel)) {
-                        port.send(channel, null);
+                        // Check all transitions. If no transition can
+                        // possibly produce this output, set the output absent.
+                        boolean guardsEvaluable = true;
+                        for (Transition transition : transitionList) {
+                            // Determine whether the transition includes an assignment to this port.
+                            // Use a HashMap for each port to save booleans for each transition
+                            Boolean matches;
+                            if (transitionMap.containsKey(transition)) {
+                                matches = (Boolean)transitionMap.get(transition);
+                            }
+                            else {
+                                String outputActionsExpression = transition.outputActions.getExpression();
+                                String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "\\s*=[^=](.|\\s)*";
+                                matches = (outputActionsExpression.trim().matches(regexp));
+                                transitionMap.put(transition, matches);
+                            }
+                            if (matches) {
+                                // Next check to see whether the guard evaluates to false.
+                                try {
+                                    if (!transition.isEnabled()) {
+                                        guardsEvaluable = false;
+                                        break;
+                                    }
+                                } catch (IllegalActionException ex) {
+                                    // Guard cannot be evaluated. Cannot set this port
+                                    // to absent (yet).
+                                    guardsEvaluable = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (guardsEvaluable) {
+                            // Send absent.
+                            port.send(channel, null);
+                        }
                     }
                 }
             }
         }
     }
-
+    
+    
     /** Return true if the most recent call to enabledTransition()
      *  or chooseTransition() found guard expressions or output value
      *  expressions that could not be evaluated due to unknown inputs.
@@ -1349,6 +1428,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public void stop() {
         _stopRequested = true;
+        // If the execution stops, that should result in clearing the HashMaps
+        // because the user might change the model (transition-labels). 
+        this._portReferencedInTransitionMaps.clear();
     }
 
     /** Do nothing.
@@ -2040,6 +2122,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
 
+    /** A HashMap of transition-boolean-pairs for each port indicating if the port is contained
+     * in an output action of the specific transition. This information is lazily inserted into
+     * the HashMap during the simulation for performance reasons. It is not pre-done because during a run
+     * we may never traverse all nodes defined.
+     */
+    protected HashMap<IOPort,HashMap<Transition,Boolean>> _portReferencedInTransitionMaps 
+                                         = new HashMap<IOPort,HashMap<Transition,Boolean>>();    
+
     ///////////////////////////////////////////////////////////////////
     ////                package friendly variables                 ////
 
@@ -2599,4 +2689,5 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _tokenListArrays;
+    
 }
