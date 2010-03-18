@@ -33,7 +33,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * A code generation adapter class for ptolemy.domains.ptides.lib.targets.luminary.MotorOutputDevice.
  * This actor is the same as ActuatorOutputDevice, however the C template is different.
  * @author Jia Zou
- * @version $Id: SpeakerOutputDevice.java 57044 2010-01-27 22:41:05Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
