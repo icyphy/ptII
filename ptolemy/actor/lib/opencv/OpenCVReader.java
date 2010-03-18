@@ -76,6 +76,8 @@ public class OpenCVReader extends Source {
      *  @exception IllegalActionException If thrown while writing to the port.   
      */
     public void fire() throws IllegalActionException {
+    	_openCV.read();
+    	_openCV.flip(OpenCV.FLIP_BOTH);
         output.send(0, new ObjectToken(_openCV));
     }
    
