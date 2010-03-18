@@ -633,7 +633,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                 }
 
                 else if (semanticNode instanceof Port) {
-                    KNode kPortNode = _createKNodeForPort((Port) semanticNode);
+                    KNode kPortNode = _createKNodeForPort(node, (Port) semanticNode);
                     // add it to the graph
                     kPortNode.setParent(hierarchicalLayoutNode);
                     // setup Kieler ports for the KNode of the internal Ptolemy
@@ -825,22 +825,18 @@ public class KielerLayout extends AbstractGlobalLayout {
      * For now this results a crude approximation of the node, because the
      * figure of the original Ptolemy port cannot be obtained by the layout
      * target. Hence we cannot ask the port for its original bounds.
-     * 
-     * @param node
+     * @param divaLocation Diva Representation of an inner port 
+     * @param port
      *            The Ptolemy inner port.
      * @return A new Kieler KNode corresponding to the Ptolemy inner port.
      */
-    private KNode _createKNodeForPort(Port node) {
+    private KNode _createKNodeForPort(Object divaLocation, Port port) {
         KNode knode = KimlLayoutUtil.createInitializedNode();
         KShapeLayout layout = KimlLayoutUtil.getShapeLayout(knode);
-        // Rectangle2D bounds = this.getLayoutTarget().getBounds(node);
-        // Object object = this.getLayoutTarget().getVisualObject(node);
-        // FIXME: do not set the size to a constant! Set it to the actual size
-        // of the port! Problem: Obtaining the inner port's figure from
-        // the layout target alway results null. Hence we cannot ask
-        // the port figure for its bounds.
-        layout.setHeight(DEFAULT_INNER_PORT_HEIGHT);
-        layout.setWidth(DEFAULT_INNER_PORT_WIDTH);
+        Rectangle2D bounds = this.getLayoutTarget().getBounds(divaLocation);
+        // set alignment offset in order to set right height
+        layout.setHeight((float)bounds.getHeight()+INNER_PORT_HEIGHT_OFFSET);
+        layout.setWidth((float)bounds.getWidth());
         LayoutOptions.setFixedSize(layout, true);
         return knode;
     }
@@ -1378,21 +1374,17 @@ public class KielerLayout extends AbstractGlobalLayout {
     // /////////////////////////////////////////////////////////////////
     // // private variables ////
 
-    /**
-     * The default width used by Kieler for inner ports.
-     */
-    private static final float DEFAULT_INNER_PORT_WIDTH = 30.0f;
-
-    /**
-     * The default height used by Kieler for inner ports.
-     */
-    private static final float DEFAULT_INNER_PORT_HEIGHT = 46.0f;
 
     /**
      * Default size of a port that will be used in Kieler layout if no explicit
      * size (e.g. copied from Ptolemy port) is given.
      */
     private static final float DEFAULT_PORT_SIZE = 5.0f;
+
+    /**
+     * The offset height used by Kieler for inner ports to correct connection anchor.
+     */
+    private static final float INNER_PORT_HEIGHT_OFFSET = 11.0f;
 
     /**
      * Minimal distance between nodes. Changing this value will decrease the
