@@ -120,9 +120,10 @@ public class ImageCopy extends Transformer {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if(_copyFrame != null){
-            _copyFrame.release();
-        }
+        // FIXME If releasing when the following actor using this frame, it causes fatal error.
+//        if(_copyFrame != null){
+//            _copyFrame.release();
+//        }
     }
 
     ///////////////////////////////////////////////////////////////////

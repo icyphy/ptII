@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.opencv.javacv;
 
+import name.audet.samuel.javacv.jna.cv;
+import name.audet.samuel.javacv.jna.highgui;
+
 import com.sun.jna.Platform;
 
 import ptolemy.actor.lib.Source;
@@ -81,8 +84,12 @@ public class CameraReader extends Source {
     */
    public void fire() throws IllegalActionException {
        _frame = cvQueryFrame (_capture);
-       _frame.origin = IPL_ORIGIN_TL;
-       cvFlip(_frame,_frame,0);
+       
+       // FIXME  In only OpenCV 1.0 for win, captured image is need to be flip. 
+       if( Platform.isWindows() && highgui.libname.indexOf("100") > 0){
+           _frame.origin = IPL_ORIGIN_TL;
+           cvFlip(_frame,_frame,0);
+       }
        output.send(0, new ObjectToken(_frame));
    }
   
@@ -93,7 +100,7 @@ public class CameraReader extends Source {
        super.initialize();
        _capture = cvCreateCameraCapture(0);
        
-       // FIXME: These setting don't work correctly.. 
+       // FIXME: These setting don't work correctly on OpenCV 1.0. (OpenCV2.0 is ok)
        cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_WIDTH, 320);
        cvSetCaptureProperty (_capture, CV_CAP_PROP_FRAME_HEIGHT, 240);
    }

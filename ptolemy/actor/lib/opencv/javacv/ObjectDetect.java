@@ -73,7 +73,7 @@ public class ObjectDetect extends Transformer {
         output.setTypeEquals(BaseType.OBJECT);
         
         pathName = new StringAttribute(this, "pathName");
-        pathName.setExpression("C:/temp/haarcascade_frontalface_default.xml");
+        pathName.setExpression("C:/Program Files/OpenCV/data/haarcascades/haarcascade_frontalface_default.xml");
    }
     
     ///////////////////////////////////////////////////////////////////
@@ -134,12 +134,15 @@ public class ObjectDetect extends Transformer {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if(_cascade != null){
-            _cascade.release();
-        }
-        if(_storage != null){
-            _storage.release();
-        }
+//        if(_cascade != null){
+//            _cascade.release();
+//        }
+//        if(_storage != null){
+//            _storage.release();
+//        }
+//        if(_objectSeq != null){
+//            _storage.release();
+//        }
     }
 
     ///////////////////////////////////////////////////////////////////
