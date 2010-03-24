@@ -492,15 +492,23 @@ public class PtolemyModelUtil {
      *            containing the objects for which changes are requested.
      */
     protected void _performChangeRequest(CompositeActor actor) {
+        if(_momlChangeRequest.toString().trim().equals("")){
+            // if request is empty, don't do anything.
+            return;
+        }
         _momlChangeRequest.insert(0, "<group>");
         _momlChangeRequest.append("</group>");
         //System.out.println(_momlChangeRequest);
         MoMLChangeRequest request = new MoMLChangeRequest(this, actor,
                 _momlChangeRequest.toString());
         request.setUndoable(true);
+        if(_anyRequestsSoFar){
+            request.setMergeWithPreviousUndo(true);
+        }
         actor.requestChange(request);
         // reset the current request
         _momlChangeRequest = new StringBuffer();
+        _anyRequestsSoFar = true;
     }
 
     /**
@@ -513,15 +521,19 @@ public class PtolemyModelUtil {
      * @param x new coordinate
      * @param y new coordinate
      */
-    protected static void _setLocation(NamedObj obj, double x, double y) {
+    protected void _setLocation(NamedObj obj, double x, double y) {
         String moml = "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{"
                 + x + "," + y + "}\"></property>\n";
         // need to request a MoML Change for a particular NamedObj and not the
         // top level element
         // so we need multiple requests here
         MoMLChangeRequest request = new MoMLChangeRequest(obj, obj, moml);
-        request.setUndoable(false);
+        request.setUndoable(true);
+        if(_anyRequestsSoFar){
+            request.setMergeWithPreviousUndo(true);
+        }
         obj.requestChange(request);
+        _anyRequestsSoFar = true;
     }
 
     /**
@@ -535,7 +547,7 @@ public class PtolemyModelUtil {
      * @param x new coordinate
      * @param y new coordinate
      */
-    protected static void _setLocation(Vertex vertex, Relation relation,
+    protected void _setLocation(Vertex vertex, Relation relation,
             double x, double y) {
         String moml = "<vertex name=\"" + vertex.getName() + "\" value=\"[" + x
                 + "," + y + "]\"></vertex>\n";
@@ -546,7 +558,11 @@ public class PtolemyModelUtil {
         MoMLChangeRequest request = new MoMLChangeRequest(vertex, relation,
                 moml);
         request.setUndoable(true);
+        if(_anyRequestsSoFar){
+            request.setMergeWithPreviousUndo(true);
+        }
         relation.requestChange(request);
+        _anyRequestsSoFar = true;
     }
 
     /**
@@ -684,12 +700,20 @@ public class PtolemyModelUtil {
     }
 
     /**
+     * Flag indicating whether there have been any MoMLChangeRequests
+     * processed so far or not. This is required for proper undo, because
+     * if there were some requests we also want to merge our undo to them.
+     */
+    private boolean _anyRequestsSoFar = false;
+
+    /**
      * StringBuffer for Requests of Model changes. In Ptolemy the main
      * infrastructure to do model changes is through XML change requests of the
      * XML representation. This field is used to collect all changes in one
      * String and then carry them out in only one operation whereas possible.
      */
     private StringBuffer _momlChangeRequest;
+    
 
     /**
      * Toggle variable to set the hidden status of unnecessary relation vertices.
