@@ -189,5 +189,90 @@ test RelationWidhtChanges-4.0 {Version 8.0, width set to 0} {
 </entity>
 }}
 
+
+################################################################################
+# Paste
+set topModel {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" value="2"/>
+    </property>
+</entity>
+}
+
+test RelationWidthChanges5.1 { test paste that wrongly sets the width to 1. See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4804} {
+    $parser resetAll
+    set toplevel5_1 [java::cast ptolemy.actor.TypedCompositeActor \
+            [$parser parse $topModel]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel5_1 workspace] "w"]
+    $toplevel5_1 setManager $manager
+
+    # A change that pastes to composites with a relation.
+    # The bug is that the width should not be set to 1
+    set changeMoML5_1 {
+<group>
+  <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+    <port name="port" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="multiport"/>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </port>
+  </entity>
+  <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
+    <port name="port" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="multiport"/>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+    </port>
+  </entity>
+  <relation name="relation" class="ptolemy.actor.TypedIORelation">
+  </relation>
+  <link port="CompositeActor.port" relation="relation"/>
+  <link port="CompositeActor2.port" relation="relation"/>
+</group>
+    }
+
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel5_1 $toplevel5_1 $changeMoML5_1]
+
+    $manager requestChange $change
+    list [$toplevel5_1 exportMoML]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </port>
+    </entity>
+    <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="CompositeActor.port" relation="relation"/>
+    <link port="CompositeActor2.port" relation="relation"/>
+</entity>
+}}
+
+
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
