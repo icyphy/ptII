@@ -800,6 +800,17 @@ test Functions-round-2 {test round} {
         [evaluate {roundToInt(1.5)}]
 } {1.0 2.0 -2.0 {{-2.0, 2.0}} {[2.0, -2.0]} {{-2L, 3L}} {[2L, -1L]} 1L -1L 2L -1 {{-2, 3}} {[2, -1]} 1 2}
 
+test Functions-round-3 {test round with longs} {
+    # Note that this exploits problems with floating point
+    list \
+	[expr {4.75e-12/1.0e-13}] \
+	[evaluate {round(4.75e-12/1.0e-13)}] \
+	[expr {4.65e-12/1.0e-13}] \
+	[evaluate {round(4.65e-12/1.0e-13)}] \
+	[expr {4.55e-12/1.0e-13}] \
+	[evaluate {round(4.55e-12/1.0e-13)}] \
+} {47.5 47L 46.5 46L 45.5 46L}
+
 ####################################################################
 # roundToInt
 
