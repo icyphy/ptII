@@ -987,7 +987,7 @@ Ptolemy II uses Diva to display block diagram editors.
  <br>Information about Diva can be found at
 <a href="http://embedded.eecs.berkeley.edu/diva" target="_top"><code>http://embedded.eecs.berkeley.edu/diva</code></a>
 Ptolemy II uses the notion of Tableaus to manage state for tools.
-The Ptolemy II design document has a chapter that discusses the UI
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm">The Ptolemy II design document</a> has a chapter that discusses the UI
 API.
 
  <p>The code that brings up the JVM Properties window is a simple example,
@@ -1006,11 +1006,16 @@ adds this feature with this line:
 
 <dt> <a name="MoML"><b>5.7 What file format are the models stored in?</b></a>
 <dd> Ptolemy II stores models in an XML format called MoML.
-The design doc covers MoML in detail.
+The <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm">design doc</a> covers MoML in detail.
  <p>The beauty of using a human readable (though verbose) file
 format is that we can use standard tools like XSLT and sed to 
 transform models.
-	
+
+<p>The MoML dtd may be found at
+  <a href="http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"><code>http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd</code></a></p>
+
+<p>In addition, MoML is registered as a MIME type, see
+  <a href="http://www.iana.org/assignments/media-types/model/vnd.moml+xml"><code>http://www.iana.org/assignments/media-types/model/vnd.moml+xml</code></a>
 <dt> <a name="Scripting"><b>5.8 Is there a scripting interface to Ptolemy II ?</b></a>
 
 <dd> The PythonScript actor includes and interface to
