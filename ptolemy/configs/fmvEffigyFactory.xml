@@ -5,7 +5,7 @@
   <entity name="Fmv Automaton Editor"
           class="ptolemy.actor.gui.PtolemyEffigy$Factory">
     <entity name="blank"
-            class="ptolemy.domains.fsm.kernel.fmv.FmvAutomaton">
+            class="ptolemy.domains.modal.kernel.fmv.FmvAutomaton">
     </entity>
   </entity>
 </group>
