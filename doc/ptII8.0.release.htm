@@ -973,48 +973,30 @@ and continue with the start up.
 	  We think this is an event thread issue, but we have not
 	  checked.
 
-          <li>The copyright page should list all the copyrights for
-	  all the software included in the release.
-
-	  <li> How the JRE is handled by the installer is broken.
-	  Currently, we ship with a jre, which is used if it the jre
-	  has the highest version number.  Thus, if you have a JRE
-	  that is later than 1.5.0_22, then that more recent JRE will
-	  be used.  This is a problem because we would like Ptolemy II
-	  to use the JRE we ship, which contains extensions like Java
-	  3D etc.  Also, we would like Ptolemy II to be runnable over
-	  many years, even if more recent versions of the JRE are
-	  present
-
-	  <li>The User should be offered the possibility of starting
-	  the application.
-
-	  <li>Windows installer issues:  
-          <ul>
-	  <li>Under Windows, the JDK selection panel should have the
-	  proper default path.
-          <li>The ptII8.0.beta Windows installer does not have the jre
-	    set up for jmf.
-          </ul>
-
 	  <li>Mac OS X installer issues:
 	    <ul> 
-	  <li>When the  download the Mac installer, it does not automatically open,
-	    The user has to go to the downloads folder and open it.
-	  <li>After installing, Vergil.app is rather hard to find.  <code>Vergil.app</code>
-	    is in <code>bin/</code>, the default location is
-	    <code>/Applications/Ptolemy/ptII8.0.beta/bin/Vergil.app</code>
-	    The reason we use this path is because if the user rebuilds, then the
-	    <code>Vergil.app</code> script will be generated in <code>bin/</code>
-	  <li>On the command line, the <code>open</code> command does not work. 
-	    <pre>
-	      open -a Vergil Adder.xml
-            </pre>
-	    it starts Vergil, but it doesn't open Adder.xml
+
+	      <li>When the  download the Mac installer, it does not automatically open,
+		The user has to go to the downloads folder and open it.
+
+	      <li>After installing, Vergil.app is rather hard to find.  <code>Vergil.app</code>
+		is in <code>bin/</code>, the default location is
+		<code>/Applications/Ptolemy/ptII8.0.beta/bin/Vergil.app</code>
+		The reason we use this path is because if the user rebuilds, then the
+		<code>Vergil.app</code> script will be generated
+		in <code>bin/</code>
+
+	      <li>On the command line, the <code>open</code> command does not work. 
+		<pre>
+		  open -a Vergil Adder.xml
+		</pre>
+		it starts Vergil, but it doesn't open Adder.xml
+
+		<br>To fix this would require having Ptolemy use Apple Java Extensions, much like
+		Kepler does.  See also
+		<a href="http://book.javanb.com/mac-os-x-for-java-geeks/0596004001_macxjvgks-chp-5.html#in_browser" target="_top"><code>http://book.javanb.com/mac-os-x-for-java-geeks/0596004001_macxjvgks-chp-5.html#macxjvgks-CHP-5</code></a>.
             </ul>
-	    To fix this would require having Ptolemy use Apple Java Extensions, much like
-	    Kepler does.  See also
-	    <a href="http://book.javanb.com/mac-os-x-for-java-geeks/0596004001_macxjvgks-chp-5.html#in_browser" target="_top"><code>http://book.javanb.com/mac-os-x-for-java-geeks/0596004001_macxjvgks-chp-5.html#macxjvgks-CHP-5</code></a>.
+
 	</ul>
 
 <li> Applet issues:
@@ -1139,7 +1121,7 @@ Attempted to find as a moml class, but got:
             Web Start because it can't find the BaseModel.xml.
 	    <!-- Confirmed on 2/22/10 -->
 
-          <li> The ptolemy/demo/RunDemos.xml mode does not work im Web Start
+          <li> The ptolemy/demo/RunDemos.xml mode does not work in Web Start
             because the .xml files can't be found.
 	    <!-- Confirmed on 2/22/10 -->
 
@@ -1344,7 +1326,7 @@ has various restrictions and limitations:
   <ul>
   <!-- If you change the next paragraph update install.htm -->
 
-  <li>The Matlab interface works only under Windows, Linux and Matlab.
+  <li>The Matlab interface works only under Windows, Linux and Mac OS X.
   The Matlab interface requires that Matlab be installed on the local
   machine.  The version of the Matlab interface that is shipped with
   the release might not work with your version of Matlab.  The solution
