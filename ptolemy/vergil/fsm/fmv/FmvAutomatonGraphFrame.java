@@ -27,6 +27,7 @@
  */
 package ptolemy.vergil.fsm.fmv;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
@@ -43,6 +44,7 @@ import javax.swing.JOptionPane;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -240,52 +242,60 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
                     fmvFormat.append(model.convertToSMVFormat(pattern,
                             finalChoice, span));
-                    JFileChooser fileSaveDialog = new JFileChooser();
-                    // SMVFileFilter filter = new SMVFileFilter();
-                    // fileSaveDialog.setFileFilter(filter);
-                    fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
-                    fileSaveDialog
+                    // Avoid white boxes in file chooser, see
+                    // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801
+                    JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+                    Color background = null;
+                    try {
+                        background = jFileChooserBugFix.saveBackground();
+                        JFileChooser fileSaveDialog = new JFileChooser();
+                        // SMVFileFilter filter = new SMVFileFilter();
+                        // fileSaveDialog.setFileFilter(filter);
+                        fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
+                        fileSaveDialog
                             .setDialogTitle("Convert Ptolemy model into .smv file");
-                    if (_directory != null) {
-                        fileSaveDialog.setCurrentDirectory(_directory);
-                    } else {
-                        // The default on Windows is to open at user.home, which
-                        // is
-                        // typically an absurd directory inside the O/S
-                        // installation.
-                        // So we use the current directory instead.
-                        // FIXME: Could this throw a security exception in an
-                        // applet?
-                        String cwd = StringUtilities.getProperty("user.dir");
+                        if (_directory != null) {
+                            fileSaveDialog.setCurrentDirectory(_directory);
+                        } else {
+                            // The default on Windows is to open at user.home, which
+                            // is
+                            // typically an absurd directory inside the O/S
+                            // installation.
+                            // So we use the current directory instead.
+                            // FIXME: Could this throw a security exception in an
+                            // applet?
+                            String cwd = StringUtilities.getProperty("user.dir");
 
-                        if (cwd != null) {
-                            fileSaveDialog.setCurrentDirectory(new File(cwd));
-                        }
-                    }
-
-                    int returnValue = fileSaveDialog
-                            .showOpenDialog(FmvAutomatonGraphFrame.this);
-
-                    if (returnValue == JFileChooser.APPROVE_OPTION) {
-                        _directory = fileSaveDialog.getCurrentDirectory();
-
-                        File smvFile = fileSaveDialog.getSelectedFile()
-                                .getCanonicalFile();
-
-                        if (smvFile.exists()) {
-                            String queryString = "Overwrite "
-                                    + smvFile.getName() + "?";
-                            int selected = JOptionPane.showOptionDialog(null,
-                                    queryString, "Overwrite?",
-                                    JOptionPane.YES_NO_OPTION,
-                                    JOptionPane.QUESTION_MESSAGE, null, null,
-                                    null);
-                            if (selected == 0) {
-                                smvFileWriter = new FileWriter(smvFile);
-                                smvFileWriter.write(fmvFormat.toString());
+                            if (cwd != null) {
+                                fileSaveDialog.setCurrentDirectory(new File(cwd));
                             }
                         }
 
+                        int returnValue = fileSaveDialog
+                            .showOpenDialog(FmvAutomatonGraphFrame.this);
+
+                        if (returnValue == JFileChooser.APPROVE_OPTION) {
+                            _directory = fileSaveDialog.getCurrentDirectory();
+
+                            File smvFile = fileSaveDialog.getSelectedFile()
+                                .getCanonicalFile();
+
+                            if (smvFile.exists()) {
+                                String queryString = "Overwrite "
+                                    + smvFile.getName() + "?";
+                                int selected = JOptionPane.showOptionDialog(null,
+                                        queryString, "Overwrite?",
+                                        JOptionPane.YES_NO_OPTION,
+                                        JOptionPane.QUESTION_MESSAGE, null, null,
+                                        null);
+                                if (selected == 0) {
+                                    smvFileWriter = new FileWriter(smvFile);
+                                    smvFileWriter.write(fmvFormat.toString());
+                                }
+                            }
+                        }
+                    } finally {
+                        jFileChooserBugFix.restoreBackground(background);
                     }
 
                 } catch (IOException ex) {
