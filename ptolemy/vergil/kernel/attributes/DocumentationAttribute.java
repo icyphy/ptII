@@ -26,6 +26,7 @@
  */
 package ptolemy.vergil.kernel.attributes;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.io.File;
 import java.net.URL;
@@ -37,6 +38,7 @@ import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -158,27 +160,36 @@ public class DocumentationAttribute extends VisibleAttribute {
                         container = object;
                     }
 
-                    JFileChooser fileDialog = new JFileChooser();
-                    fileDialog.setDialogTitle("Select a documentation file.");
+                    // Avoid white boxes in file chooser, see
+                    // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3801
+                    JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
+                    Color background = null;
+                    try {
+                        background = jFileChooserBugFix.saveBackground();
+                        JFileChooser fileDialog = new JFileChooser();
+                        fileDialog.setDialogTitle("Select a documentation file.");
 
-                    //File _directory = null;
+                        //File _directory = null;
 
-                    String cwd = StringUtilities.getProperty("user.dir");
+                        String cwd = StringUtilities.getProperty("user.dir");
 
-                    if (cwd != null) {
-                        fileDialog.setCurrentDirectory(new File(cwd));
-                    }
+                        if (cwd != null) {
+                            fileDialog.setCurrentDirectory(new File(cwd));
+                        }
 
-                    if (fileDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-                        // FIXME: why is this ignored?
-                        //_directory = fileDialog.getCurrentDirectory();
+                        if (fileDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
+                            // FIXME: why is this ignored?
+                            //_directory = fileDialog.getCurrentDirectory();
 
-                        String fileName = fileDialog.getSelectedFile()
+                            String fileName = fileDialog.getSelectedFile()
                                 .getAbsolutePath();
 
-                        docAttribute = new FileParameter(container,
+                            docAttribute = new FileParameter(container,
                                 "_documentation");
-                        docAttribute.setExpression(fileName);
+                            docAttribute.setExpression(fileName);
+                        }
+                    } finally {
+                        jFileChooserBugFix.restoreBackground(background);
                     }
                 }
             } catch (Throwable throwable) {
