@@ -386,7 +386,7 @@ $(PTII_SRC): $(PTII_FULL)
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; \
 		echo "(1)About to remove jars in `pwd`"; \
-		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" -name PDFSample.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		find . \( -name ptinyos -o -name jini -o -name extractJarFileTest.jar -o -name antlr.jar -o -name "ojdbc5.jar" -o -name "ojdbc6.jar" -o -name "mysql-connector-java-5.1.6-bin.jar" -o -name PDFSample.jar \) -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		cd ptolemy/domains/ptinyos; \
 		echo "(2)About to remove jars in `pwd`"; \
@@ -1405,8 +1405,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/java/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/ \
-	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
-	$(REMOTE1PTIIDIST)/ptolemy/cg/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp \
@@ -2431,7 +2429,7 @@ $(PTII)/vendors/launch4j:
 
 
 # Launch4J console application that reads in .xml files and creates .exe files.
-4JC=$(L4J_DIR)/launch4jc.exe
+#L4JC=$(L4J_DIR)/launch4jc.exe
 L4JC=$(L4J_DIR)/launch4j
 
 PTSETUP_DEPENDENCIES = \
@@ -2538,6 +2536,7 @@ $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
 	#cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
 	
+
 ######################################################################
 # Web Start Applets
 #
@@ -2580,3 +2579,4 @@ $(JNLPS_TAR): $(TARGET_JNLP)
 updateJNLPs: $(JNLPS_TAR)
 	scp $(JNLPS_TAR) bennett:$(PTII_FTP)
 	ssh bennett "cd $(PTII_FTP)/ptII$(VERSION); /usr/local/bin/tar -xf ../$(JNLPS_TAR)"
+
