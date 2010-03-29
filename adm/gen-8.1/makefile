@@ -1416,7 +1416,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/c \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java/modular \
-	$(REMOTE1PTIIDIST)/ptolemy/actor/gt \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ci \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/continuous \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp \
