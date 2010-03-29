@@ -29,9 +29,9 @@ package ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.lib;
 
 import java.util.List;
 
-import ptolemy.graph.Inequality;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.AtomicActor;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////

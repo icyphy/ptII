@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ConceptFunctionInequalityTerm implements InequalityTerm {
-    
+
     /** Initialize the inequality term with the ConceptFunction it refers to
      *  and the array of inequality terms that are inputs to the function.
      *  @param conceptFunction The concept function to be called to get the value for this
@@ -51,24 +51,30 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
      *  @throws IllegalActionException If the number of input terms does not match
      *   the required number of arguments for the concept function.
      */
-    public ConceptFunctionInequalityTerm(ConceptFunction conceptFunction, InequalityTerm[] inputTerms)
-        throws IllegalActionException {
+    public ConceptFunctionInequalityTerm(ConceptFunction conceptFunction,
+            InequalityTerm[] inputTerms) throws IllegalActionException {
         _conceptFunction = conceptFunction;
-        
+
         _dependentTerms = inputTerms;
         if (_dependentTerms == null) {
-            throw new IllegalActionException("The inputTerms array cannot be null.");
+            throw new IllegalActionException(
+                    "The inputTerms array cannot be null.");
         }
-        
+
         if (_conceptFunction == null) {
-            throw new IllegalActionException("The conceptFunction cannot be null.");
+            throw new IllegalActionException(
+                    "The conceptFunction cannot be null.");
         } else if (_conceptFunction.getNumberOfArguments() != inputTerms.length) {
-            throw new IllegalActionException("Wrong number of input arguments for the concept function contained by " +
-            		"this inequality term. Input terms has " + inputTerms.length + " elements " +
-            		"but the concept function " + _conceptFunction + " takes " + _conceptFunction.getNumberOfArguments() +
-            		" arguments.");
+            throw new IllegalActionException(
+                    "Wrong number of input arguments for the concept function contained by "
+                            + "this inequality term. Input terms has "
+                            + inputTerms.length + " elements "
+                            + "but the concept function " + _conceptFunction
+                            + " takes "
+                            + _conceptFunction.getNumberOfArguments()
+                            + " arguments.");
         }
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -80,7 +86,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
     public Object getAssociatedObject() {
         return _conceptFunction;
     }
-    
+
     /** Return an array of constants contained in this term. Since this term represents
      *  a function, return an array containing all the Concept constants in the function.
      *  @return An array of InequalityTerms
@@ -99,7 +105,7 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
 
         return array;
     }
-    
+
     /** Return the value of this inequality term. Since this term is for a concept function,
      *  return the evaluation of the concept function based on the current
      *  values of variables passed into the function.
@@ -110,19 +116,20 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
      */
     public Object getValue() throws IllegalActionException {
         List<Concept> inputConcepts = new ArrayList<Concept>();
-        
+
         // Get the concept values currently held by all the input terms.
         for (InequalityTerm inputTerm : _dependentTerms) {
             inputConcepts.add((Concept) inputTerm.getValue());
         }
-        
+
         Concept[] inputConceptArray = new Concept[inputConcepts.size()];
-        System.arraycopy(inputConcepts.toArray(), 0, inputConceptArray, 0, inputConcepts.size());
-        
+        System.arraycopy(inputConcepts.toArray(), 0, inputConceptArray, 0,
+                inputConcepts.size());
+
         // Return the current value of the function based on the current input concepts.
         return _conceptFunction.evaluateFunction(inputConceptArray);
     }
-    
+
     /** Return the concept variables for this inequality term. This method returns
      *  an array of InequalityTerms that the concept function referred to by this
      *  ConceptFunctionInequalityTerm depends on.
@@ -141,8 +148,8 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
         System.arraycopy(terms.toArray(), 0, array, 0, terms.size());
 
         return array;
-    }    
-    
+    }
+
     /** Throw an Exception. This method cannot be called on a
      *  function term.
      *  @param e The object value used to initialize the inequality term.
@@ -179,13 +186,13 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
         throw new IllegalActionException(getClass().getName()
                 + ": The inequality term is not settable.");
     }
-    
+
     /** Override the base class to give a description of this term.
      *  @return A description of this term.
      */
     public String toString() {
         StringBuffer output = new StringBuffer("(" + _conceptFunction + "(");
-        
+
         int index = 0;
         for (InequalityTerm inputTerm : _dependentTerms) {
             output.append(inputTerm);
@@ -193,22 +200,22 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
                 output.append(", ");
             }
             index++;
-        }        
+        }
         output.append("), ");
-        
+
         try {
             return output.toString() + getValue() + ")";
         } catch (IllegalActionException ex) {
             return output.toString() + "INVALID" + ")";
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The concept function to be evaluated for the inequality term. */
     private ConceptFunction _conceptFunction;
-    
+
     /** The array of inequality terms which are inputs to concept function.  */
     private InequalityTerm[] _dependentTerms;
 }

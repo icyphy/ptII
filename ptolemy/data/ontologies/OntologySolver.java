@@ -109,8 +109,8 @@ public abstract class OntologySolver extends OntologySolverBase implements
             _recordUnacceptableSolution(propertyable, getProperty(propertyable));
         }
         checkErrors();
-    }    
-    
+    }
+
     /** Construct and configure the contained model with the specified source and
      *  text. This parses the specified MoML text. Also set the container solver
      *  for the contained model to be the ontology solver.
@@ -120,13 +120,13 @@ public abstract class OntologySolver extends OntologySolverBase implements
      *  @exception Exception If the parsing fails.
      */
     public void configure(URL base, String source, String text)
-        throws Exception {
+            throws Exception {
         super.configure(base, source, text);
-        
+
         if (!(_model instanceof OntologySolverModel)) {
-            throw new IllegalActionException(this, "An OntologySolver can " +
-                    "only contain entities of the type OntologySolverModel.");
-        }        
+            throw new IllegalActionException(this, "An OntologySolver can "
+                    + "only contain entities of the type OntologySolverModel.");
+        }
         ((OntologySolverModel) _model).setContainerSolver(this);
     }
 
@@ -146,8 +146,8 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * the highlightColor attribute in the property-able object.
      */
     public void displayProperties() throws IllegalActionException {
-            _momlHandler.highlightProperties();
-            _momlHandler.showProperties();
+        _momlHandler.highlightProperties();
+        _momlHandler.showProperties();
     }
 
     /**
@@ -278,8 +278,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
 
         // Check for unacceptable solution.
         if (property != null && !property.isValueAcceptable()) {
-                _ontologySolverUtilities.addErrors(
-                    "Property \"" + property
+            _ontologySolverUtilities.addErrors("Property \"" + property
                     + "\" is not an acceptable solution for " + propertyable
                     + "." + _eol);
         }

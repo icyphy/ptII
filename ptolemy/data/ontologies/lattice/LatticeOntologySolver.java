@@ -105,7 +105,7 @@ public class LatticeOntologySolver extends OntologySolver {
         expressionASTNodeConstraintType = new StringParameter(this,
                 "expressionASTNodeConstraintType");
         expressionASTNodeConstraintType.setExpression("parent >= child");
-        
+
         _addChoices();
 
         _attachText("_iconDescription", "<svg>\n"
@@ -206,12 +206,12 @@ public class LatticeOntologySolver extends OntologySolver {
      *  concept function for this ontology solver.
      */
     public static final String MULTIPLY_FUNCTION_NAME = "MultiplyConceptFunctionDefinition";
-    
+
     /** The string name of the attribute that defines the arithmetic divide
      *  concept function for this ontology solver.
      */
     public static final String DIVIDE_FUNCTION_NAME = "DivideConceptFunctionDefinition";
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -256,7 +256,7 @@ public class LatticeOntologySolver extends OntologySolver {
     public Hashtable getInitialSolverInformation()
             throws IllegalActionException {
         resetAll();
-        
+
         NamedObj toplevel = _toplevel();
         LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
 
@@ -265,8 +265,9 @@ public class LatticeOntologySolver extends OntologySolver {
         // ensure that the constraint list it returns is valid.
         toplevelAdapter.reinitialize();
 
-        toplevelAdapter._addDefaultConstraints(
-                _getConstraintType(actorConstraintType.stringValue()));
+        toplevelAdapter
+                ._addDefaultConstraints(_getConstraintType(actorConstraintType
+                        .stringValue()));
 
         // FIXME: have to generate the connection every time
         // because the model structure can changed.
@@ -433,16 +434,18 @@ public class LatticeOntologySolver extends OntologySolver {
         invokeSolver();
         for (NamedObj conceptable : getAllConceptableNamedObjs()) {
             String inferred = getResolvedProperty(conceptable).toString();
-            StringParameter trained = (StringParameter) conceptable.getAttribute("_trainedConcept");
+            StringParameter trained = (StringParameter) conceptable
+                    .getAttribute("_trainedConcept");
             if (trained == null) {
                 throw new IllegalActionException(conceptable,
-                        "Must train before testing at " + conceptable.toString());
+                        "Must train before testing at "
+                                + conceptable.toString());
             }
             if (!inferred.equals(trained.stringValue())) {
                 throw new IllegalActionException(conceptable,
-                        "Testing failure at " + conceptable.toString() + '\n' +
-                        "Expected '" + trained.stringValue() + "' but got '" +
-                        inferred + "' instead.");
+                        "Testing failure at " + conceptable.toString() + '\n'
+                                + "Expected '" + trained.stringValue()
+                                + "' but got '" + inferred + "' instead.");
             }
         }
     }
@@ -461,9 +464,11 @@ public class LatticeOntologySolver extends OntologySolver {
                 String inferred = getResolvedProperty(conceptable).toString();
                 StringParameter trained;
                 try {
-                    trained = new StringParameter(conceptable, "_trainedConcept");
+                    trained = new StringParameter(conceptable,
+                            "_trainedConcept");
                 } catch (NameDuplicationException e) {
-                    trained = (StringParameter) conceptable.getAttribute("_trainedConcept");
+                    trained = (StringParameter) conceptable
+                            .getAttribute("_trainedConcept");
                 }
                 trained.setExpression(inferred);
             }
@@ -486,7 +491,7 @@ public class LatticeOntologySolver extends OntologySolver {
     protected OntologyAdapter _getAdapter(Object component)
             throws IllegalActionException {
         OntologyAdapter adapter = null;
-        
+
         // First see if the adapter has already been cached
         // Must check the adapter store first because additional state
         // is stored in the adapter that will be lost if we generate a new adapter from
@@ -501,15 +506,18 @@ public class LatticeOntologySolver extends OntologySolver {
 
         // Next look for the adapter in the LatticeOntologySolver model.
         if (adapter == null) {
-            List modelDefinedAdapters = ((OntologySolverModel) _model).attributeList(ActorConstraintsDefinitionAttribute.class);
+            List modelDefinedAdapters = ((OntologySolverModel) _model)
+                    .attributeList(ActorConstraintsDefinitionAttribute.class);
             for (Object adapterDefinitionAttribute : modelDefinedAdapters) {
-                if (((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName.getExpression().equals(component.getClass().getName())) {
-                    adapter = ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).getAdapter(component);
+                if (((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName
+                        .getExpression().equals(component.getClass().getName())) {
+                    adapter = ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute)
+                            .getAdapter(component);
                     break;
                 }
             }
         }
-        
+
         if (adapter == null) {
             try {
                 adapter = super._getAdapter(component);
@@ -791,7 +799,7 @@ public class LatticeOntologySolver extends OntologySolver {
         //      fsmConstraintType.addChoice("sink != src");
 
     }
-    
+
     /** Return a string representing the list of inequality constraints specified
      *  that can be written to a log file.
      * 
@@ -800,8 +808,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @throws IllegalActionException If the string cannot be formed from the list of inequality constraints.
      */
     private String _getConstraintsAsLogFileString(
-            List<Inequality> constraintList)
-            throws IllegalActionException {
+            List<Inequality> constraintList) throws IllegalActionException {
 
         StringBuffer output = new StringBuffer();
         for (Inequality inequality : constraintList) {

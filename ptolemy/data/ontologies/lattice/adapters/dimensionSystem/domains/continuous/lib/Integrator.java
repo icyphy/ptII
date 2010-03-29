@@ -33,9 +33,9 @@ import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
-import ptolemy.graph.Inequality;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.dimensionSystem.DimensionSystemAdapter;
+import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -72,35 +72,39 @@ public class Integrator extends DimensionSystemAdapter {
      */
     public List<Inequality> constraintList() throws IllegalActionException {
         ptolemy.domains.continuous.lib.Integrator actor = (ptolemy.domains.continuous.lib.Integrator) getComponent();
-        
+
         FunctionForStateOutput stateFunction = new FunctionForStateOutput();
         if (!stateFunction.isMonotonic()) {
-            throw new IllegalActionException(_solver, "The concept function for determining the " +
-            		"state output of the integrator is not monotonic. All concept functions used for a " +
-            		"lattice ontology solver must be monotonic.");
-        }
-        
-        FunctionForDerivativeInput derivativeFunction = new FunctionForDerivativeInput();
-        if (!derivativeFunction.isMonotonic()) {
-            throw new IllegalActionException(_solver, "The concept function for determining the " +
-                    "derivative input of the integrator is not monotonic. All concept functions used for a " +
-                    "lattice ontology solver must be monotonic.");
+            throw new IllegalActionException(
+                    _solver,
+                    "The concept function for determining the "
+                            + "state output of the integrator is not monotonic. All concept functions used for a "
+                            + "lattice ontology solver must be monotonic.");
         }
 
-        setAtLeast(actor.state,
-                new ConceptFunctionInequalityTerm(stateFunction,
-                        new InequalityTerm[]{ getPropertyTerm(actor.derivative) }));
+        FunctionForDerivativeInput derivativeFunction = new FunctionForDerivativeInput();
+        if (!derivativeFunction.isMonotonic()) {
+            throw new IllegalActionException(
+                    _solver,
+                    "The concept function for determining the "
+                            + "derivative input of the integrator is not monotonic. All concept functions used for a "
+                            + "lattice ontology solver must be monotonic.");
+        }
+
+        setAtLeast(actor.state, new ConceptFunctionInequalityTerm(
+                stateFunction,
+                new InequalityTerm[] { getPropertyTerm(actor.derivative) }));
         setSameAs(actor.state, actor.initialState);
-        setAtLeast(actor.derivative,
-                new ConceptFunctionInequalityTerm(derivativeFunction,
-                        new InequalityTerm[]{ getPropertyTerm(actor.state) }));
+        setAtLeast(actor.derivative, new ConceptFunctionInequalityTerm(
+                derivativeFunction,
+                new InequalityTerm[] { getPropertyTerm(actor.state) }));
 
         return super.constraintList();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** This class implements a monotonic function that takes in the
      *  input concept of the integrator (the derivative) and returns
      *  the output concept (the state).
@@ -125,7 +129,8 @@ public class Integrator extends DimensionSystemAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function.
          */
-        protected Concept _evaluateFunction(Concept[] inputConceptValues) throws IllegalActionException {
+        protected Concept _evaluateFunction(Concept[] inputConceptValues)
+                throws IllegalActionException {
 
             Concept derivativeProperty = inputConceptValues[0];
 
@@ -142,7 +147,8 @@ public class Integrator extends DimensionSystemAdapter {
                 return _timeConcept;
             }
 
-            if (derivativeProperty == null || derivativeProperty == _unknownConcept) {
+            if (derivativeProperty == null
+                    || derivativeProperty == _unknownConcept) {
                 return _unknownConcept;
             } else {
                 return _conflictConcept;
@@ -155,7 +161,7 @@ public class Integrator extends DimensionSystemAdapter {
      *  the input concept (the derivative).
      */
     private class FunctionForDerivativeInput extends ConceptFunction {
-        
+
         /** Initialize this ConceptMonotonicFunction. It takes 1 concept argument
          *  and both the input and output should be from the DimensionSystem ontology.
          *  @throws IllegalActionException If the ConceptMonotonicFunction class cannot be initialized.
@@ -174,7 +180,8 @@ public class Integrator extends DimensionSystemAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function.
          */
-        protected Concept _evaluateFunction(Concept[] inputConceptValues) throws IllegalActionException {
+        protected Concept _evaluateFunction(Concept[] inputConceptValues)
+                throws IllegalActionException {
 
             Concept stateProperty = inputConceptValues[0];
 

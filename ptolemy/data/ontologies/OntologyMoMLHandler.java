@@ -82,28 +82,31 @@ public class OntologyMoMLHandler extends Attribute {
         OntologySolver solver = (OntologySolver) getContainer();
         for (Object propertyable : solver.getAllPropertyables()) {
             if (propertyable instanceof NamedObj) {
-                Concept concept = solver.getResolvedConcept(propertyable, false);
-                if (concept != null || (propertyable instanceof NamedObj &&
-                        (((NamedObj) propertyable).getAttribute("_showInfo") != null) ||
-                        (((NamedObj) propertyable).getAttribute("_highlightColor") != null))) {
-                        String request = "<group>";
-                        if (((NamedObj)propertyable).getAttribute("_showInfo") != null) {
-                            request += "<deleteProperty name=\"_showInfo\"/>";
-                        }
-                        if (((NamedObj)propertyable).getAttribute("_highlightColor") != null) {
-                            request += "<deleteProperty name=\"_highlightColor\"/>";
-                        }
-                        request += "</group>";
-                        MoMLChangeRequest change = new MoMLChangeRequest(
-                                this, (NamedObj)propertyable, request, false);
-                        ((NamedObj)propertyable).requestChange(change);
+                Concept concept = solver
+                        .getResolvedConcept(propertyable, false);
+                if (concept != null
+                        || (propertyable instanceof NamedObj
+                                && (((NamedObj) propertyable)
+                                        .getAttribute("_showInfo") != null) || (((NamedObj) propertyable)
+                                .getAttribute("_highlightColor") != null))) {
+                    String request = "<group>";
+                    if (((NamedObj) propertyable).getAttribute("_showInfo") != null) {
+                        request += "<deleteProperty name=\"_showInfo\"/>";
+                    }
+                    if (((NamedObj) propertyable)
+                            .getAttribute("_highlightColor") != null) {
+                        request += "<deleteProperty name=\"_highlightColor\"/>";
+                    }
+                    request += "</group>";
+                    MoMLChangeRequest change = new MoMLChangeRequest(this,
+                            (NamedObj) propertyable, request, false);
+                    ((NamedObj) propertyable).requestChange(change);
                 }
             }
         }
         // Force a single repaint after all the above requests have been processed.
         solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
     }
-
 
     /** Highlight all property-able objects with
      *  the specified colors for their property values.
@@ -117,18 +120,18 @@ public class OntologyMoMLHandler extends Attribute {
                 Concept concept = solver.getResolvedConcept(propertyable, true);
                 if (concept != null) {
                     // Use the color in the concept instance.
-                    List<ColorAttribute> colors = concept.attributeList(ColorAttribute.class);
+                    List<ColorAttribute> colors = concept
+                            .attributeList(ColorAttribute.class);
                     if (colors != null && colors.size() > 0) {
                         // ConceptIcon renders the first found ColorAttribute,
                         // so we use that one here as well.
                         ColorAttribute conceptColor = colors.get(0);
                         String request = "<property name=\"_highlightColor\" "
-                            + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
-                            + conceptColor.getExpression()
-                            + "\"/>";
-                        MoMLChangeRequest change = new MoMLChangeRequest(
-                                this, (NamedObj)propertyable, request, false);
-                        ((NamedObj)propertyable).requestChange(change);
+                                + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
+                                + conceptColor.getExpression() + "\"/>";
+                        MoMLChangeRequest change = new MoMLChangeRequest(this,
+                                (NamedObj) propertyable, request, false);
+                        ((NamedObj) propertyable).requestChange(change);
                     }
                 }
             }
@@ -150,12 +153,11 @@ public class OntologyMoMLHandler extends Attribute {
             if (propertyable instanceof NamedObj) {
                 Concept concept = solver.getResolvedConcept(propertyable, true);
                 if (concept != null) {
-                        String request =
-                            "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
+                    String request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
                             + concept.toString() + "\"/>";
-                        MoMLChangeRequest change = new MoMLChangeRequest(
-                                this, (NamedObj)propertyable, request, false);
-                        ((NamedObj)propertyable).requestChange(change);
+                    MoMLChangeRequest change = new MoMLChangeRequest(this,
+                            (NamedObj) propertyable, request, false);
+                    ((NamedObj) propertyable).requestChange(change);
                 }
             }
         }

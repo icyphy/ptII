@@ -207,7 +207,8 @@ public class Concept extends ComponentEntity implements InequalityTerm,
      *  @see #getValue
      */
     public void setValue(Object value) throws IllegalActionException {
-        throw new IllegalActionException(this, "Cannot set an ontology concept.");
+        throw new IllegalActionException(this,
+                "Cannot set an ontology concept.");
     }
 
     /**

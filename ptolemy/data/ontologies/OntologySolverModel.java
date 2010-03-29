@@ -53,7 +53,7 @@ public class OntologySolverModel extends CompositeEntity {
         super(workspace);
         _solverContainer = null;
     }
-    
+
     /** Create a new OntologySolverModel with the specified workspace and the specified
      *  OntologySolver.
      *  @param solver The OntologySolver that contains the model.
@@ -74,7 +74,7 @@ public class OntologySolverModel extends CompositeEntity {
     public OntologySolver getContainerSolver() {
         return _solverContainer;
     }
-    
+
     /** Set the ontology solver that contains this model.
      *  @param solver The ontology solver that should contain this model.
      *  @see #getContainerSolver

@@ -82,7 +82,7 @@ public class OntologySolverGUIFactory extends EditorFactory {
             workspace().getWriteAccess();
             solver.resetAll();
             solver.invokeSolver();
-        } finally {            
+        } finally {
             workspace().doneWriting();
         }
     }

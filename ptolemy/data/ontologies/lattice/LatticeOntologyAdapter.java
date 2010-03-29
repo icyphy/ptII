@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.AtomicActor;
@@ -173,8 +172,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      */
     public void setAtLeast(Object greater, Object lesser) {
         if (greater != null && lesser != null) {
-            _ownConstraints.add(new Inequality(
-                    getPropertyTerm(lesser), getPropertyTerm(greater)));
+            _ownConstraints.add(new Inequality(getPropertyTerm(lesser),
+                    getPropertyTerm(greater)));
         }
     }
 

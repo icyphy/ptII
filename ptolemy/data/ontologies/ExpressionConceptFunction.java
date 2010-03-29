@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ExpressionConceptFunction extends ConceptFunction {
-    
+
     /** Initialize the expression concept function with the number of arguments it takes,
      *  the ontologies from which input and output concepts can be taken, the name of the function,
      *  and the string boolean expression that defines the function.
@@ -62,34 +62,38 @@ public class ExpressionConceptFunction extends ConceptFunction {
      *  @throws IllegalActionException If the ontology inputs are null or the length of the array of domain ontologies does not
      *   match the number of arguments for the function.
      */
-    public ExpressionConceptFunction(String name, int numArgs, Ontology[] argumentDomainOntologies,
-            Ontology outputRangeOntology, String[] argumentNames, String conceptFunctionExpression,
-            OntologySolverModel solverModel)
-        throws IllegalActionException {
-        
+    public ExpressionConceptFunction(String name, int numArgs,
+            Ontology[] argumentDomainOntologies, Ontology outputRangeOntology,
+            String[] argumentNames, String conceptFunctionExpression,
+            OntologySolverModel solverModel) throws IllegalActionException {
+
         super(name, numArgs, argumentDomainOntologies, outputRangeOntology);
-        
-        _argumentNames = argumentNames;        
+
+        _argumentNames = argumentNames;
         if (_argumentNames == null) {
-            throw new IllegalActionException("The argumentNames list cannot be null.");
+            throw new IllegalActionException(
+                    "The argumentNames list cannot be null.");
         } else if (_argumentNames.length != numArgs) {
-            throw new IllegalActionException("The size of the argument name list for the concept function's " +
-                    "argument array does not match the given number of arguments for the concept " +
-                    "function " + this + ": numArgs = " + _numArgs + ", size of the argument name list = " +
-                    _argumentNames.length);
+            throw new IllegalActionException(
+                    "The size of the argument name list for the concept function's "
+                            + "argument array does not match the given number of arguments for the concept "
+                            + "function " + this + ": numArgs = " + _numArgs
+                            + ", size of the argument name list = "
+                            + _argumentNames.length);
         }
-        
+
         _conceptFunctionExpression = conceptFunctionExpression;
         if (_conceptFunctionExpression == null) {
-            throw new IllegalActionException("The conceptFunctionExpression cannot be null.");
+            throw new IllegalActionException(
+                    "The conceptFunctionExpression cannot be null.");
         }
-        
+
         _solverModel = solverModel;
-    }    
-    
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Update the concept function parameters when the values change in
      *  the ConceptFunctionDefinitionAttribute.
      * 
@@ -103,48 +107,56 @@ public class ExpressionConceptFunction extends ConceptFunction {
      *   be called by the function defined in this expression.
      * @throws IllegalActionException If there is a problem setting the parameter values.
      */
-    public void updateFunctionParameters(String name, int numArgs, Ontology[] argumentDomainOntologies,
-            Ontology outputRangeOntology, String[] argumentNames, String conceptFunctionExpression,
-            OntologySolverModel solverModel) 
-        throws IllegalActionException {
+    public void updateFunctionParameters(String name, int numArgs,
+            Ontology[] argumentDomainOntologies, Ontology outputRangeOntology,
+            String[] argumentNames, String conceptFunctionExpression,
+            OntologySolverModel solverModel) throws IllegalActionException {
         _numArgs = numArgs;
         _argumentDomainOntologies = argumentDomainOntologies;
         _outputRangeOntology = outputRangeOntology;
         _solverModel = solverModel;
-        
+
         if (_outputRangeOntology == null) {
-            throw new IllegalActionException("The outputRangeOntology cannot be null.");
+            throw new IllegalActionException(
+                    "The outputRangeOntology cannot be null.");
         }
-        
+
         if (_argumentDomainOntologies == null) {
-            throw new IllegalActionException("The argumentDomainOntologies cannot be null.");
+            throw new IllegalActionException(
+                    "The argumentDomainOntologies cannot be null.");
         } else if (_argumentDomainOntologies.length != numArgs) {
-            throw new IllegalActionException("The size of the array of domain ontologies for the concept function's " +
-                    "argument array does not match the given number of arguments for the concept " +
-                    "function " + this + ": numArgs = " + _numArgs + ", size of domain ontologies array = " +
-                    _argumentDomainOntologies.length);
+            throw new IllegalActionException(
+                    "The size of the array of domain ontologies for the concept function's "
+                            + "argument array does not match the given number of arguments for the concept "
+                            + "function " + this + ": numArgs = " + _numArgs
+                            + ", size of domain ontologies array = "
+                            + _argumentDomainOntologies.length);
         }
-        
+
         _name = name;
         _argumentNames = argumentNames;
         if (_argumentNames == null) {
-            throw new IllegalActionException("The argumentNames list cannot be null.");
+            throw new IllegalActionException(
+                    "The argumentNames list cannot be null.");
         } else if (_argumentNames.length != numArgs) {
-            throw new IllegalActionException("The size of the argument name list for the concept function's " +
-                    "argument array does not match the given number of arguments for the concept " +
-                    "function " + this + ": numArgs = " + _numArgs + ", size of the argument name list = " +
-                    _argumentNames.length);
+            throw new IllegalActionException(
+                    "The size of the argument name list for the concept function's "
+                            + "argument array does not match the given number of arguments for the concept "
+                            + "function " + this + ": numArgs = " + _numArgs
+                            + ", size of the argument name list = "
+                            + _argumentNames.length);
         }
-        
-        _conceptFunctionExpression = conceptFunctionExpression;     
+
+        _conceptFunctionExpression = conceptFunctionExpression;
         if (_conceptFunctionExpression == null) {
-            throw new IllegalActionException("The conceptFunctionExpression cannot be null.");
+            throw new IllegalActionException(
+                    "The conceptFunctionExpression cannot be null.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return the output of the concept function based on the concept inputs. This
      *  method evaluates the expression string using the concept inputs and the argument
      *  names array.
@@ -152,39 +164,45 @@ public class ExpressionConceptFunction extends ConceptFunction {
      *  @return The concept output result of the function.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
-    protected Concept _evaluateFunction(Concept[] inputConceptValues) throws IllegalActionException {
+    protected Concept _evaluateFunction(Concept[] inputConceptValues)
+            throws IllegalActionException {
         // Get the shared parser.
         PtParser parser = new PtParser();
 
         // create parse tree
-        ASTPtRootNode parseTree = parser.generateParseTree(_conceptFunctionExpression);
+        ASTPtRootNode parseTree = parser
+                .generateParseTree(_conceptFunctionExpression);
 
         // Evaluate concept function expression
-        ExpressionConceptFunctionParseTreeEvaluator evaluator =
-            new ExpressionConceptFunctionParseTreeEvaluator(_argumentNames, inputConceptValues,
-                    _solverModel, _argumentDomainOntologies);
-        StringToken conceptNameToken = (StringToken) evaluator.evaluateParseTree(parseTree);
-        Concept output = (Concept) _outputRangeOntology.getEntity(conceptNameToken.stringValue());
-        
+        ExpressionConceptFunctionParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
+                _argumentNames, inputConceptValues, _solverModel,
+                _argumentDomainOntologies);
+        StringToken conceptNameToken = (StringToken) evaluator
+                .evaluateParseTree(parseTree);
+        Concept output = (Concept) _outputRangeOntology
+                .getEntity(conceptNameToken.stringValue());
+
         if (output == null) {
-            throw new IllegalActionException("Output Concept " + conceptNameToken.stringValue() +
-                    " not found in output range ontology " + _outputRangeOntology + ".");
+            throw new IllegalActionException("Output Concept "
+                    + conceptNameToken.stringValue()
+                    + " not found in output range ontology "
+                    + _outputRangeOntology + ".");
         }
-        
+
         return output;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The list of argument names for the argument array to be used for parsing the
      *  concept function expression string.
      */
     private String[] _argumentNames;
-    
+
     /** The boolean expression string that when evaluated implements the concept function. */
     private String _conceptFunctionExpression;
-    
+
     /** The ontology solver model that contains definitions of other concept
      *  functions that could be called in this expression.
      */

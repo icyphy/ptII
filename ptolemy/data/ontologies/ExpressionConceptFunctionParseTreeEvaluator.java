@@ -52,8 +52,9 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.AcceptedRating Red (cshelton)
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class ExpressionConceptFunctionParseTreeEvaluator extends ParseTreeEvaluator {
-    
+public class ExpressionConceptFunctionParseTreeEvaluator extends
+        ParseTreeEvaluator {
+
     /** Construct an ExpressionConceptFunctionParseTreeEvaluator for
      *  evaluating expressions that represent concept functions.
      *  @param argumentNames The array of argument names used in the
@@ -73,7 +74,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends ParseTreeEvalua
         _solverModel = solverModel;
         _domainOntologies = argumentDomainOntologies;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -84,33 +85,40 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends ParseTreeEvalua
      *  @throws IllegalActionException If the function cannot be parsed correctly.
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         String functionName = node.getFunctionName();
-        List conceptFunctionDefs = _solverModel.attributeList(ConceptFunctionDefinitionAttribute.class);
-        
+        List conceptFunctionDefs = _solverModel
+                .attributeList(ConceptFunctionDefinitionAttribute.class);
+
         ConceptFunction function = null;
         for (Object functionDef : conceptFunctionDefs) {
-            if (((StringAttribute) ((ConceptFunctionDefinitionAttribute) functionDef).
-                    getAttribute("conceptFunctionName")).getExpression().equals(functionName)) {
-                function = ((ConceptFunctionDefinitionAttribute) functionDef).getConceptFunction();
+            if (((StringAttribute) ((ConceptFunctionDefinitionAttribute) functionDef)
+                    .getAttribute("conceptFunctionName")).getExpression()
+                    .equals(functionName)) {
+                function = ((ConceptFunctionDefinitionAttribute) functionDef)
+                        .getConceptFunction();
             }
         }
-        
+
         if (function == null) {
-            throw new IllegalActionException("Unrecognized concept function name: " + functionName +
-                    " in the concept function expression string.");
+            throw new IllegalActionException(
+                    "Unrecognized concept function name: " + functionName
+                            + " in the concept function expression string.");
         }
-        
+
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
-        
+
         if (argCount != function.getNumberOfArguments()) {
-            throw new IllegalActionException("The concept function " + functionName +
-                    " has the wrong number of arguments. Expected # arguments: " +
-                    function.getNumberOfArguments() + ", actual # arguments: " + argCount);
+            throw new IllegalActionException(
+                    "The concept function "
+                            + functionName
+                            + " has the wrong number of arguments. Expected # arguments: "
+                            + function.getNumberOfArguments()
+                            + ", actual # arguments: " + argCount);
         }
-        
+
         Concept[] argValues = new Concept[argCount];
 
         // First try to find a signature using argument token values.
@@ -121,26 +129,28 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends ParseTreeEvalua
             argValues[i] = null;
             ptolemy.data.Token token = _evaluatedChildToken;
             for (Ontology domainOntology : _domainOntologies) {
-                Concept tempConcept =
-                    (Concept) domainOntology.getEntity(((StringToken) token).stringValue());
+                Concept tempConcept = (Concept) domainOntology
+                        .getEntity(((StringToken) token).stringValue());
                 if (tempConcept != null) {
                     argValues[i] = tempConcept;
                     break;
                 }
             }
-            
+
             if (argValues[i] == null) {
-                throw new IllegalActionException("Cannot find Concept named " + token +
-                        " in any of the domain ontologies for this concept function.");
+                throw new IllegalActionException(
+                        "Cannot find Concept named "
+                                + token
+                                + " in any of the domain ontologies for this concept function.");
             }
         }
-        
+
         // Evaluate the concept function and set the evaluated token to the string
         // name of the concept that is the output of the function.
-        _evaluatedChildToken = new StringToken(function.
-                evaluateFunction(argValues).getName());
-    }    
-    
+        _evaluatedChildToken = new StringToken(function.evaluateFunction(
+                argValues).getName());
+    }
+
     /** Evaluate the first child, and depending on its (boolean) result,
      *  evaluate either the second or the third child. The result of
      *  that evaluation becomes the result of the specified node. We needed to
@@ -193,8 +203,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends ParseTreeEvalua
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
-    }    
-    
+    }
+
     /** Evaluate each leaf node in the parse tree to a concept string. Either
      *  replace an argument label from the concept function with its concept value
      *  string name or assume it is a concept name if it is not a function argument
@@ -207,22 +217,23 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends ParseTreeEvalua
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         String nodeLabel = _getNodeLabel(node);
         _evaluatedChildToken = null;
-        
+
         // If the node is an argument in the function evaluate it to
         // the name of the concept it holds.
         for (int i = 0; i < _argumentNames.length; i++) {
             if (nodeLabel.equals(_argumentNames[i])) {
-                _evaluatedChildToken = new StringToken(_argumentConceptValues[i].getName());
+                _evaluatedChildToken = new StringToken(
+                        _argumentConceptValues[i].getName());
                 break;
             }
         }
-        
+
         // If the node is not an argument, it must be a name of a concept itself.
         if (_evaluatedChildToken == null) {
             _evaluatedChildToken = new StringToken(nodeLabel);
-        }        
-    } 
-    
+        }
+    }
+
     /**
      * Return the label for the leaf node.
      * 
@@ -238,18 +249,18 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends ParseTreeEvalua
             return node.getName();
         }
     }
-    
+
     /** The array of argument names that are used in the concept function expression. */
     private String[] _argumentNames;
-    
+
     /** The array of concept values to which the arguments are currently set. */
     private Concept[] _argumentConceptValues;
-    
+
     /** The array of ontologies that specify the domain for
      *  each input argument to the concept function defined by the parsed expression.
      */
     protected Ontology[] _domainOntologies;
-    
+
     /** The ontology solver model that contains definitions of other concept
      *  functions that could be called in this expression.
      */

@@ -29,8 +29,8 @@ package ptolemy.data.ontologies.lattice.adapters.defaultAdapters.actor.lib;
 
 import java.util.List;
 
-import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.ConceptFunction;
+import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition;
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
@@ -73,24 +73,24 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
         ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
         if (actor.multiply.getWidth() > 1 || actor.divide.getWidth() > 1) {
-            throw new IllegalActionException(
-                    actor,
-                    "The property analysis "
-                            + "currently supports only binary division (e.g. 1 "
-                            + "connection to the multiply port and 1 connection "
-                            + "to the divide port.");
+            throw new IllegalActionException(actor, "The property analysis "
+                    + "currently supports only binary division (e.g. 1 "
+                    + "connection to the multiply port and 1 connection "
+                    + "to the divide port.");
         }
-        
+
         ConceptFunction multiplyFunction = null;
-        MultiplyConceptFunctionDefinition multiplyDefinition = (MultiplyConceptFunctionDefinition)
-            (_solver.getContainedModel()).getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
+        MultiplyConceptFunctionDefinition multiplyDefinition = (MultiplyConceptFunctionDefinition) (_solver
+                .getContainedModel())
+                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
         if (multiplyDefinition != null) {
             multiplyFunction = multiplyDefinition.getConceptFunction();
         }
-        
+
         ConceptFunction divideFunction = null;
-        DivideConceptFunctionDefinition divideDefinition = (DivideConceptFunctionDefinition)
-            (_solver.getContainedModel()).getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
+        DivideConceptFunctionDefinition divideDefinition = (DivideConceptFunctionDefinition) (_solver
+                .getContainedModel())
+                .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
         if (divideDefinition != null) {
             divideFunction = divideDefinition.getConceptFunction();
         }
@@ -99,23 +99,26 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
             setAtLeast(actor.multiply, actor.output);
             setAtLeast(actor.multiply, actor.divide);
         } else {
-            setAtLeast(actor.multiply, new ConceptFunctionInequalityTerm(multiplyFunction,
-                    new InequalityTerm[]{ getPropertyTerm(actor.output),
-                                          getPropertyTerm(actor.divide)} ));
+            setAtLeast(actor.multiply, new ConceptFunctionInequalityTerm(
+                    multiplyFunction, new InequalityTerm[] {
+                            getPropertyTerm(actor.output),
+                            getPropertyTerm(actor.divide) }));
         }
-        
+
         if (divideFunction == null) {
             setAtLeast(actor.output, actor.multiply);
             setAtLeast(actor.output, actor.divide);
             setAtLeast(actor.divide, actor.multiply);
-            setAtLeast(actor.divide, actor.output);         
+            setAtLeast(actor.divide, actor.output);
         } else {
-            setAtLeast(actor.output, new ConceptFunctionInequalityTerm(divideFunction,
-                    new InequalityTerm[]{ getPropertyTerm(actor.multiply),
-                                          getPropertyTerm(actor.divide)} ));
-            setAtLeast(actor.divide, new ConceptFunctionInequalityTerm(divideFunction,
-                    new InequalityTerm[]{ getPropertyTerm(actor.multiply),
-                                          getPropertyTerm(actor.output)} ));
+            setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
+                    divideFunction, new InequalityTerm[] {
+                            getPropertyTerm(actor.multiply),
+                            getPropertyTerm(actor.divide) }));
+            setAtLeast(actor.divide, new ConceptFunctionInequalityTerm(
+                    divideFunction, new InequalityTerm[] {
+                            getPropertyTerm(actor.multiply),
+                            getPropertyTerm(actor.output) }));
         }
 
         return super.constraintList();

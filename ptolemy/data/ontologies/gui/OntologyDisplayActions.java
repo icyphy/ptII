@@ -108,7 +108,8 @@ public class OntologyDisplayActions extends NodeControllerFactory {
             NamedObj container = getContainer();
             if (container instanceof OntologySolver) {
                 try {
-                    ((OntologySolver) container).getMoMLHandler().clearDisplay();
+                    ((OntologySolver) container).getMoMLHandler()
+                            .clearDisplay();
                 } catch (IllegalActionException e1) {
                     MessageHandler.error("Clearing concept display failed", e1);
                 }
@@ -241,7 +242,8 @@ public class OntologyDisplayActions extends NodeControllerFactory {
                     ((OntologySolver) container).getMoMLHandler()
                             .highlightProperties();
                 } catch (IllegalActionException e1) {
-                    MessageHandler.error("Highlighting with concept color failed", e1);
+                    MessageHandler.error(
+                            "Highlighting with concept color failed", e1);
                 }
             }
         }
@@ -287,9 +289,11 @@ public class OntologyDisplayActions extends NodeControllerFactory {
             NamedObj container = getContainer();
             if (container instanceof OntologySolver) {
                 try {
-                    ((OntologySolver) container).getMoMLHandler().showProperties();
+                    ((OntologySolver) container).getMoMLHandler()
+                            .showProperties();
                 } catch (IllegalActionException e1) {
-                    MessageHandler.error("Showing concept annotations failed", e1);
+                    MessageHandler.error("Showing concept annotations failed",
+                            e1);
                 }
             }
         }

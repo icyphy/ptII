@@ -27,7 +27,6 @@
 package ptolemy.data.ontologies;
 
 import java.lang.reflect.Constructor;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -148,7 +147,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public void clearResolvedProperty(Object object) {
         _resolvedProperties.remove(object);
     }
-    
+
     /**
      * Return the list of all PropertyHelpers associated with this
      * ontology solver.
@@ -181,7 +180,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * an error occurs when getting the adapters or the concept-able
      * objects from them.
      */
-    public Set<NamedObj> getAllConceptableNamedObjs() throws IllegalActionException {
+    public Set<NamedObj> getAllConceptableNamedObjs()
+            throws IllegalActionException {
         Set<NamedObj> result = new HashSet<NamedObj>();
 
         for (Object conceptable : getAllPropertyables()) {
@@ -191,7 +191,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         }
         return result;
     }
-    
+
     /**
      * Return the set of all property-able objects obtained from
      * all PropertyHelper.
@@ -503,8 +503,8 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         */
 
         String packageName = _getPackageName();
-        String defaultAdaptersPackageName = getClass().getPackage().getName() +
-            ".adapters.defaultAdapters";
+        String defaultAdaptersPackageName = getClass().getPackage().getName()
+                + ".adapters.defaultAdapters";
 
         Class componentClass = component.getClass();
 
@@ -524,10 +524,11 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
             } catch (ClassNotFoundException e) {
                 // If adapter class cannot be found, search the adapter class
                 // in the default adapters package.
-                try {                    
-                    adapterClass = Class.forName(componentClass.getName()
-                            .replaceFirst("ptolemy", defaultAdaptersPackageName)); 
-                    
+                try {
+                    adapterClass = Class
+                            .forName(componentClass.getName().replaceFirst(
+                                    "ptolemy", defaultAdaptersPackageName));
+
                 } catch (ClassNotFoundException e2) {
                     // If adapter class cannot be found, search the adapter class
                     // for parent class instead.

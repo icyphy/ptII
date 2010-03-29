@@ -44,7 +44,8 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class MultiplyConceptFunctionDefinition extends BinaryOperationMonotonicFunctionDefinition {
+public class MultiplyConceptFunctionDefinition extends
+        BinaryOperationMonotonicFunctionDefinition {
 
     /** Construct the MultiplyConceptFunctionDefinition attribute
      *  with the given container and name.
@@ -59,24 +60,24 @@ public class MultiplyConceptFunctionDefinition extends BinaryOperationMonotonicF
             String name) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
-        
+
         conceptFunctionName.setExpression("multiplyFunction");
         conceptFunctionName.setVisibility(Settable.NOT_EDITABLE);
-     
+
         arg0Name.setExpression("factor1");
         arg0Name.setVisibility(Settable.NOT_EDITABLE);
         arg1Name.setExpression("factor2");
         arg1Name.setVisibility(Settable.NOT_EDITABLE);
-        
+
         outputRangeOntologyName.setVisibility(Settable.NONE);
         for (StringParameter domainOntologyName : _argumentDomainOntologies) {
             domainOntologyName.setVisibility(Settable.NONE);
         }
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"60\" height=\"20\" "
                 + "style=\"fill:white\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
                 + "c0 * c1</text></svg>");
-    }    
+    }
 }

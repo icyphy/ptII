@@ -47,7 +47,8 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class BinaryOperationMonotonicFunctionDefinition extends ConceptFunctionDefinitionAttribute {
+public class BinaryOperationMonotonicFunctionDefinition extends
+        ConceptFunctionDefinitionAttribute {
 
     /** Construct the BinaryOperationConceptFunctionDefinition attribute
      *  with the given container and name.
@@ -58,38 +59,40 @@ public class BinaryOperationMonotonicFunctionDefinition extends ConceptFunctionD
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public BinaryOperationMonotonicFunctionDefinition(CompositeEntity container,
-            String name) throws IllegalActionException,
-            NameDuplicationException {
+    public BinaryOperationMonotonicFunctionDefinition(
+            CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         numberOfArguments.setExpression("2");
         numberOfArguments.setVisibility(Settable.NONE);
-        
+
         // This attribute must define a monotonic concept function.
         functionIsMonotonic.setExpression("true");
         functionIsMonotonic.setVisibility(Settable.NOT_EDITABLE);
-        
+
         functionOntologyName = new StringParameter(this, "functionOntologyName");
         functionOntologyName.setExpression("");
 
         conceptFunctionName.setExpression("binaryOperationFunction");
-        
+
         _argumentNames.clear();
         _argumentDomainOntologies.clear();
         arg0Name = new StringAttribute(this, "arg0Name");
         arg0Name.setExpression("arg0");
         _argumentNames.add(0, arg0Name);
-        _argumentDomainOntologies.add(0, new StringParameter(this,"arg0DomainOntology"));
+        _argumentDomainOntologies.add(0, new StringParameter(this,
+                "arg0DomainOntology"));
         arg1Name = new StringAttribute(this, "arg1Name");
         arg1Name.setExpression("arg1");
         _argumentNames.add(1, arg1Name);
-        _argumentDomainOntologies.add(1, new StringParameter(this,"arg1DomainOntology"));
-        
+        _argumentDomainOntologies.add(1, new StringParameter(this,
+                "arg1DomainOntology"));
+
         outputRangeOntologyName.setVisibility(Settable.NONE);
         for (StringParameter domainOntologyName : _argumentDomainOntologies) {
             domainOntologyName.setVisibility(Settable.NONE);
         }
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"60\" height=\"20\" "
                 + "style=\"fill:white\"/>" + "<text x=\"-40\" y=\"-5\" "
@@ -99,34 +102,37 @@ public class BinaryOperationMonotonicFunctionDefinition extends ConceptFunctionD
 
     ///////////////////////////////////////////////////////////////////
     ////                  ports and parameters                     ////
-    
+
     /** The name of the ontology that specifies the domain and range of concepts
      *  for the defined binary operation concept function.
      */
     public StringParameter functionOntologyName;
-    
+
     /** The string name of the first argument for the concept function. */
     public StringAttribute arg0Name;
-    
+
     /** The string name of the second argument for the concept function. */
     public StringAttribute arg1Name;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Override the attributeChanged method so that the output range and all
      *  argument domain ontology names are set to the functionOntologyName. 
      *  @param attribute The attribute that has been changed.
      *  @throws IllegalActionException If there is a problem changing the attribute.
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
-        if (attribute == functionOntologyName) {            
-            outputRangeOntologyName.setExpression(functionOntologyName.getExpression());            
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == functionOntologyName) {
+            outputRangeOntologyName.setExpression(functionOntologyName
+                    .getExpression());
             for (StringParameter domainOntologyName : _argumentDomainOntologies) {
-                domainOntologyName.setExpression(functionOntologyName.getExpression());
+                domainOntologyName.setExpression(functionOntologyName
+                        .getExpression());
             }
         }
-        
+
         super.attributeChanged(attribute);
     }
 }

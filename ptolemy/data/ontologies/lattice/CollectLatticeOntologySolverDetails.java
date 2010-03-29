@@ -52,8 +52,8 @@ import ptolemy.kernel.util.StringAttribute;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class CollectLatticeOntologySolverDetails extends Attribute
-        implements Testable {
+public class CollectLatticeOntologySolverDetails extends Attribute implements
+        Testable {
 
     /** Construct the CollectLatticeOntologySolverDetails attribute
      *  with the given container and name.
@@ -75,17 +75,19 @@ public class CollectLatticeOntologySolverDetails extends Attribute
         trainedInitialSolverConstraints = new StringAttribute(this,
                 "trainedInitialSolverConstraints");
         trainedInitialSolverConstraints.setExpression("");
-        TextStyle trainedStyle = new TextStyle(trainedInitialSolverConstraints, "_style");
+        TextStyle trainedStyle = new TextStyle(trainedInitialSolverConstraints,
+                "_style");
         trainedStyle.height.setExpression("10");
         trainedStyle.width.setExpression("80");
 
         trainedResolvedSolverConstraints = new StringAttribute(this,
                 "trainedResolvedSolverConstraints");
         trainedResolvedSolverConstraints.setExpression("");
-        TextStyle resolvedStyle = new TextStyle(trainedResolvedSolverConstraints, "_style");
+        TextStyle resolvedStyle = new TextStyle(
+                trainedResolvedSolverConstraints, "_style");
         resolvedStyle.height.setExpression("10");
         resolvedStyle.width.setExpression("80");
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"120\" height=\"40\" "
                 + "style=\"fill:orange\"/>" + "<text x=\"-40\" y=\"-5\" "
@@ -173,10 +175,12 @@ public class CollectLatticeOntologySolverDetails extends Attribute
         Hashtable initialSolverInfo = _solver.getInitialSolverInformation();
         Hashtable resolvedSolverInfo = _solver.getResolvedSolverInformation();
 
-        trainedInitialSolverConstraints.setExpression((String)
-                initialSolverInfo.get("initialSolverConstraints"));
-        trainedResolvedSolverConstraints.setExpression((String)
-                resolvedSolverInfo.get("resolvedSolverConstraints"));
+        trainedInitialSolverConstraints
+                .setExpression((String) initialSolverInfo
+                        .get("initialSolverConstraints"));
+        trainedResolvedSolverConstraints
+                .setExpression((String) resolvedSolverInfo
+                        .get("resolvedSolverConstraints"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -196,7 +200,7 @@ public class CollectLatticeOntologySolverDetails extends Attribute
                     "There is no LatticeOntologySolver in the model named "
                             + solverNameString + ".");
         }
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
