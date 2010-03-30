@@ -2,7 +2,7 @@
  * A class representing a concept function that is defined by a boolean expression
  * of concepts specified in a ConceptFunctionDefinitionAttribute.
  * 
- * Copyright (c) 1998-2010 The Regents of the University of California. All
+ * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
@@ -45,21 +45,26 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ExpressionConceptFunction extends ConceptFunction {
 
-    /** Initialize the expression concept function with the number of arguments it takes,
-     *  the ontologies from which input and output concepts can be taken, the name of the function,
-     *  and the string boolean expression that defines the function.
+    /** Initialize the expression concept function with the number of
+     *  arguments it takes, the ontologies from which input and output
+     *  concepts can be taken, the name of the function, and the
+     *  string boolean expression that defines the function.
      *  @param numArgs The number of arguments to be passed into this function.
-     *  @param argumentDomainOntologies The array of ontologies that represent the concept domain
-     *   for each input concept argument.
-     *  @param outputRangeOntology The ontology that represents the range of output concepts for this
-     *   concept function.
+     *  @param argumentDomainOntologies The array of ontologies that
+     *   represent the concept domain for each input concept argument.
+     *  @param outputRangeOntology The ontology that represents the
+     *   range of output concepts for this concept function.
      *  @param name The string name used to identify this concept function.
-     *  @param argumentNames The list of strings that represent the names of the arguments to be used in parsing
-     *   the concept function expression.
-     *  @param conceptFunctionExpression A string representing the boolean expression that defines the concept function.
-     *  @param solverModel The ontology solver model that contains other concept function definitions that could
-     *   be called by the function defined in this expression.
-     *  @throws IllegalActionException If the ontology inputs are null or the length of the array of domain ontologies does not
+     *  @param argumentNames The list of strings that represent the
+     *   names of the arguments to be used in parsing the concept
+     *   function expression.
+     *  @param conceptFunctionExpression A string representing the
+     *  boolean expression that defines the concept function.
+     *  @param solverModel The ontology solver model that contains
+     *   other concept function definitions that could be called by
+     *   the function defined in this expression.
+     *  @exception IllegalActionException If the ontology inputs are null
+     *   or the length of the array of domain ontologies does not
      *   match the number of arguments for the function.
      */
     public ExpressionConceptFunction(String name, int numArgs,
@@ -76,7 +81,8 @@ public class ExpressionConceptFunction extends ConceptFunction {
         } else if (_argumentNames.length != numArgs) {
             throw new IllegalActionException(
                     "The size of the argument name list for the concept function's "
-                            + "argument array does not match the given number of arguments for the concept "
+                            + "argument array does not match the given number of "
+                            + "arguments for the concept "
                             + "function " + this + ": numArgs = " + _numArgs
                             + ", size of the argument name list = "
                             + _argumentNames.length);
@@ -102,10 +108,13 @@ public class ExpressionConceptFunction extends ConceptFunction {
      * @param outputRangeOntology The new output range ontology.
      * @param name The new name of the concept function.
      * @param argumentNames The new array of argument names.
-     * @param conceptFunctionExpression The new expression string that defines the function.
-     * @param solverModel The ontology solver model that contains other concept function definitions that could
-     *   be called by the function defined in this expression.
-     * @throws IllegalActionException If there is a problem setting the parameter values.
+     * @param conceptFunctionExpression The new expression string that
+     * defines the function.
+     * @param solverModel The ontology solver model that contains
+     *   other concept function definitions that could be called by
+     *   the function defined in this expression.
+     * @exception IllegalActionException If there is a problem setting
+     * the parameter values.
      */
     public void updateFunctionParameters(String name, int numArgs,
             Ontology[] argumentDomainOntologies, Ontology outputRangeOntology,
@@ -126,8 +135,9 @@ public class ExpressionConceptFunction extends ConceptFunction {
                     "The argumentDomainOntologies cannot be null.");
         } else if (_argumentDomainOntologies.length != numArgs) {
             throw new IllegalActionException(
-                    "The size of the array of domain ontologies for the concept function's "
-                            + "argument array does not match the given number of arguments for the concept "
+                    "The size of the array of domain ontologies for the concept"
+                            + "function's argument array does not match the given "
+                            + "number of arguments for the concept "
                             + "function " + this + ": numArgs = " + _numArgs
                             + ", size of domain ontologies array = "
                             + _argumentDomainOntologies.length);
@@ -157,23 +167,24 @@ public class ExpressionConceptFunction extends ConceptFunction {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the output of the concept function based on the concept inputs. This
-     *  method evaluates the expression string using the concept inputs and the argument
-     *  names array.
+    /** Return the output of the concept function based on the concept
+     *  inputs. This method evaluates the expression string using the
+     *  concept inputs and the argument names array.
      *  @param inputConceptValues The array of concept inputs to the function.
      *  @return The concept output result of the function.
-     *  @exception IllegalActionException If there is an error evaluating the function.
+     *  @exception IllegalActionException If there is an error
+     *  evaluating the function.
      */
     protected Concept _evaluateFunction(Concept[] inputConceptValues)
             throws IllegalActionException {
         // Get the shared parser.
         PtParser parser = new PtParser();
 
-        // create parse tree
+        // Create the parse tree.
         ASTPtRootNode parseTree = parser
                 .generateParseTree(_conceptFunctionExpression);
 
-        // Evaluate concept function expression
+        // Evaluate the concept function expression.
         ExpressionConceptFunctionParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 _argumentNames, inputConceptValues, _solverModel,
                 _argumentDomainOntologies);
@@ -195,16 +206,18 @@ public class ExpressionConceptFunction extends ConceptFunction {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The list of argument names for the argument array to be used for parsing the
-     *  concept function expression string.
+    /** The list of argument names for the argument array to be used
+     *  for parsing the concept function expression string.
      */
     private String[] _argumentNames;
 
-    /** The boolean expression string that when evaluated implements the concept function. */
+    /** The boolean expression string that when evaluated implements
+     * the concept function.
+     */
     private String _conceptFunctionExpression;
 
-    /** The ontology solver model that contains definitions of other concept
-     *  functions that could be called in this expression.
+    /** The ontology solver model that contains definitions of other
+     *  concept functions that could be called in this expression.
      */
     private OntologySolverModel _solverModel;
 }

@@ -1,6 +1,6 @@
 /* Attribute that defines a concept function with a boolean expression.
 
- Copyright (c) 2003-2010 The Regents of the University of California.
+ Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -115,7 +115,9 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
     /** The string that represents the boolean expression of the concept function. */
     public StringParameter conceptFunctionExpression;
 
-    /** The name to identify the expression concept function defined by this attribute. */
+    /** The name to identify the expression concept function defined
+     *  by this attribute.
+     */
     public StringAttribute conceptFunctionName;
 
     /** Parameter to select whether the concept function defined by this
@@ -134,11 +136,12 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the attributeChanged method so that if the number of arguments for the
-     *  concept function changes, the attribute interface adds or removes fields for those
-     *  arguments.
+    /** Override the attributeChanged method so that if the number of
+     *  arguments for the concept function changes, the attribute
+     *  interface adds or removes fields for those arguments.
      *  @param attribute The attribute that has been changed.
-     *  @throws IllegalActionException If there is a problem changing the attribute.
+     *  @exception IllegalActionException If there is a problem
+     *  changing the attribute.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -216,7 +219,8 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
                         this,
                         "Error when changing the number of arguments for "
                                 + this
-                                + ". The number of argument names and the number of argument domain ontologies is "
+                                + ". The number of argument names and the number "
+                                + "of argument domain ontologies is "
                                 + "different, and this should never happen.");
             }
         }
@@ -226,7 +230,8 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
 
     /** Return the concept function defined by this attribute's expression.
      *  @return The concept function.
-     *  @throws IllegalActionException If there is an error updating the conceptFunction.
+     *  @exception IllegalActionException If there is an error
+     *  updating the conceptFunction.
      */
     public ExpressionConceptFunction getConceptFunction()
             throws IllegalActionException {
@@ -243,7 +248,8 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
     ////                         protected methods                 ////
 
     /** Update the concept function with the most recent values of the attribute.
-     *  @throws IllegalActionException If there is an error updating the conceptFunction.
+     *  @exception IllegalActionException If there is an error
+     *  updating the conceptFunction.
      */
     protected void _updateConceptFunction() throws IllegalActionException {
         int numArgs = 0;

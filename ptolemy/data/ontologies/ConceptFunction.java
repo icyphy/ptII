@@ -45,11 +45,12 @@ public abstract class ConceptFunction {
      *  and the ontologies from which input and output concepts can be taken.
      *  @param name The name of the concept function.
      *  @param numArgs The number of arguments to be passed into this function.
-     *  @param argumentDomainOntologies The array of ontologies that represent the concept domain
-     *   for each input concept argument.
-     *  @param outputRangeOntology The ontology that represents the range of output concepts for this
-     *   concept function.
-     *  @throws IllegalActionException If the ontology inputs are null or the length of the array of domain ontologies does not
+     *  @param argumentDomainOntologies The array of ontologies that
+     *   represent the concept domain for each input concept argument.
+     *  @param outputRangeOntology The ontology that represents the
+     *   range of output concepts for this concept function.
+     *  @exception IllegalActionException If the ontology inputs are null
+     *   or the length of the array of domain ontologies does not
      *   match the number of arguments for the function.
      */
     public ConceptFunction(String name, int numArgs,
@@ -70,8 +71,9 @@ public abstract class ConceptFunction {
                     "The argumentDomainOntologies cannot be null.");
         } else if (_argumentDomainOntologies.length != numArgs) {
             throw new IllegalActionException(
-                    "The size of the array of domain ontologies for the concept function's "
-                            + "argument array does not match the given number of arguments for the concept "
+                    "The size of the array of domain ontologies for the concept "
+                            + "function's argument array does not match the given "
+                            + "number of arguments for the concept "
                             + "function " + this + ": numArgs = " + _numArgs
                             + ", size of domain ontologies array = "
                             + _argumentDomainOntologies.length);
@@ -84,8 +86,8 @@ public abstract class ConceptFunction {
     /** Return the output of the concept function based on the concept inputs.
      *  @param inputArgumentArray The array of concept inputs to the function.
      *  @return The concept output result of the function.
-     *  @exception IllegalActionException If there is an error with the input argument
-     *   array or evaluating the function.
+     *  @exception IllegalActionException If there is an error with
+     *   the input argument array or evaluating the function.
      */
     public Concept evaluateFunction(Concept[] inputArgumentArray)
             throws IllegalActionException {
@@ -167,11 +169,12 @@ public abstract class ConceptFunction {
         return _outputRangeOntology;
     }
 
-    /** Determine whether the concept function is monotonic over the ontology for the output
-     *  range and all the inputs that are also in that same ontology. Some of the input
-     *  arguments to the function might be in other domain ontologies that are not the same as
-     *  the output ontology range, so those arguments are not considered for determining
-     *  monotonicity.  
+    /** Determine whether the concept function is monotonic over the
+     *  ontology for the output range and all the inputs that are also
+     *  in that same ontology. Some of the input arguments to the
+     *  function might be in other domain ontologies that are not the
+     *  same as the output ontology range, so those arguments are not
+     *  considered for determining monotonicity.
      *  @return true if the concept function is monotonic, false otherwise.
      */
     public boolean isMonotonic() {
@@ -190,8 +193,9 @@ public abstract class ConceptFunction {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the output of the concept function based on the concept inputs. Derived classes
-     *  must implement this method to provide the definition of the concept function.
+    /** Return the output of the concept function based on the concept
+     *  inputs. Derived classes must implement this method to provide
+     *  the definition of the concept function.
      *  @param inputConceptValues The array of concept inputs to the function.
      *  @return The concept output result of the function.
      *  @exception IllegalActionException If there is an error evaluating the function.
