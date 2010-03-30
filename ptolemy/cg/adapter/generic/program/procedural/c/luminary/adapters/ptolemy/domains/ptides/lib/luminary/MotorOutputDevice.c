@@ -21,6 +21,7 @@ void pwmDisable(void){
 	PWMOutputState(PWM_BASE, MOTOR_PWM_REV_BIT, 0);
 	PWMGenDisable(PWM_BASE, MOTOR_PWM);							//disable PWM generator
 }
+
 /**/
 
 /*** sharedBlock ***/
@@ -32,10 +33,45 @@ void pwmDisable(void){
 #include "gpio.h"
 #include "pwm.h"
 
-//Local includes
-#include "motor.h"
-#include "encoder.h"			//must include in order to access disc position
-#include "time.h"				//must include in order to access time functions
+//Number of encoder pulses per revolution of the disc; this takes into account gearing ratio
+#define ENCODER_TICKS_PER_REV	1000
+
+#ifndef _UTILITY_H
+#define _UTILITY_H
+
+#define sign(x)					((x) < 0 ? -1 : 1)			//Signum function
+#define ABS(x) 					((x) > 0 ? (x) : -(x))		//Absolute value
+#define MIN(x, y)				((x) < (y) ? (x) : (y) )	//Least of two numbers
+#define MAX(x, y)				((x) > (y) ? (x) : (y) )	//Greatest of two numbers
+#define coerce(min, x, max) 	((x) < (min) ? (min) : ((x) > (max) ? (max) : (x)))	//Coerce a number to fall within a range
+
+//Explicit type definitions for the Luminary LM3s8962
+typedef unsigned long long      uint64;
+typedef unsigned long           uint32;
+typedef unsigned int            uint16;
+typedef unsigned char           uint8;
+typedef uint8                   byte;
+typedef signed long long        int64;
+typedef signed long             int32;
+typedef signed int              int16;
+typedef signed char             int8;
+
+//Byte-level operations
+#define LO(x)					((x) & 0xFF)			//Low order byte of a 16 bit number
+#define HO(x)					((x) >> 0x08)			//High order byte of a 16 bit number
+#define LLO(x)					((x) & 0xFF)			//Byte 0 (lowest order) byte of a 32-bit number
+#define LHO(x)					(((x) >> 0x08) & 0xFF)	//Byte 1 of a 32-bit number
+#define HLO(x)					(((x) >> 0x10) & 0xFF)	//Byte 2 of a 32-bit number
+#define HHO(x)					((x) >> 0x18)			//Byte 3 (highest order) byte of a 32-bit number
+
+//Dics position and period object captures the state of the disc
+typedef struct{
+	int32	position;		//Absolute position of the disc, in encoder ticks
+	int32	period;			//Period between encoder ticks
+} Disc;
+
+#define DISC_SMALLEST_RATE		(~(1 << 30))	// Smallest rate (closest to zero) corresponds to the largest encoder period
+extern const Disc Disc_0;						// Used as a reasonable initial value for Disc variables
 /**/
 
 /*** initBlock ***/
