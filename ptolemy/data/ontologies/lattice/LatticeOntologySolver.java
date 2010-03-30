@@ -426,21 +426,34 @@ public class LatticeOntologySolver extends OntologySolver {
         _conceptTermManager = null;
     }
 
-    /** Run a test. This invokes the solver in TEST mode.
-     *  @exception IllegalActionException If the test fails.
+    /** Run concept inference and check the values match those trained.
+     * 
+     *  This simply looks through the conceptable objects and
+     *  checks that their resolved concepts match the value
+     *  contained in the <i>_trainedConcept</i> attribute.  Conceptables
+     *  without a <i>_trainedConcept</i> attribute are just ignored, and
+     *  do not cause the test to fail.
+     * 
+     *  @exception IllegalActionException If inference fails or the test
+     *   resolves to the wrong values.
      */
     public void test() throws IllegalActionException {
-        resetAll();
-        invokeSolver();
+        try {
+            workspace().getWriteAccess();
+            resetAll();
+            invokeSolver();
+        } finally {
+            workspace().doneWriting();
+        }
         for (NamedObj conceptable : getAllConceptableNamedObjs()) {
-            String inferred = getResolvedProperty(conceptable).toString();
             StringParameter trained = (StringParameter) conceptable
                     .getAttribute("_trainedConcept");
             if (trained == null) {
-                throw new IllegalActionException(conceptable,
-                        "Must train before testing at "
-                                + conceptable.toString());
+                // Testing a conceptable that is not trained should not
+                // cause the test to fail.
+                continue;
             }
+            String inferred = getResolvedProperty(conceptable).toString();
             if (!inferred.equals(trained.stringValue())) {
                 throw new IllegalActionException(conceptable,
                         "Testing failure at " + conceptable.toString() + '\n'
@@ -450,18 +463,27 @@ public class LatticeOntologySolver extends OntologySolver {
         }
     }
 
-    /** Train a test. This invokes the solver in TRAINING mode.
+    /** Run concept inference and save the inferred concept values.
+     * 
+     *  For values that are correctly resolved to a non-null concept,
+     *  a string representation of the concept is stored in the
+     *  <i>_trainedConcept</i> attribute of the NamedObj.  For values
+     *  that resolve to null, nothing is recorded.
+     *  
+     *  @exception IllegalActionException If inference fails..
      */
     public void train() throws IllegalActionException {
-        // Training is not supported yet.
-        // FIXME: Do we need write access to update _showInfo strings?
-        // If so, test() would need to get write access too.
-        resetAll();
-        invokeSolver();
         try {
             workspace().getWriteAccess();
+            resetAll();
+            invokeSolver();
             for (NamedObj conceptable : getAllConceptableNamedObjs()) {
-                String inferred = getResolvedProperty(conceptable).toString();
+                Concept inferred = getResolvedProperty(conceptable);
+                if (inferred == null) {
+                    // If we have conceptables that do not resolve to concepts,
+                    // simply skip them.
+                    continue;
+                }
                 StringParameter trained;
                 try {
                     trained = new StringParameter(conceptable,
@@ -470,7 +492,7 @@ public class LatticeOntologySolver extends OntologySolver {
                     trained = (StringParameter) conceptable
                             .getAttribute("_trainedConcept");
                 }
-                trained.setExpression(inferred);
+                trained.setExpression(inferred.toString());
             }
         } finally {
             workspace().doneWriting();
