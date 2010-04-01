@@ -28,9 +28,11 @@ package ptolemy.cg.lib;
 
 import java.util.List;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -121,7 +123,14 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         executeEmbeddedCode.setExpression("true");
 
         // FIXME: SDFDirector should probably not be fixed
-        new SDFDirector(this, "SDFDirector");
+        if (((Actor)getContainer()).getDirector() instanceof SDFDirector) {
+            new SDFDirector(this, "SDFDirector");
+        } else if (((Actor)getContainer()).getDirector() instanceof PtidesBasicDirector) {
+            new PtidesBasicDirector(this, "PtidesBasicDirector");
+        } else {
+            throw new IllegalActionException(this, "This embedded actor is enclosed by" +
+            		"a director that is not currently supported.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -147,6 +147,81 @@ public class PtidesBasicDirector extends Director {
         return code.toString();
     }
 
+    /** Generate code for transferring all input tokens to the inside.
+     *  In general, this is not allowed, because PtidesBasicDirector
+     *  resides in an independent platform. Thus, it only connects to the outside
+     *  through sensors, actuators, and network interfaces, and we use InputDevice
+     *  and OutputDevice to generate sensor, actuator, and network interface
+     *  code. The only place where this method is used is when a EmbeddedCodeActor
+     *  is used inside of a Ptides director. In this case, the director for the
+     *  EmbeddedCodeActor also has a PtidesBasicDirector, and that PtidesBasicDirector
+     *  needs to transfer tokens inside of the EmbeddedCodeActor, which is done in
+     *  this method. Note, since the inside EmbeddedCodeActor could _ONLY_ have a
+     *  PTIDES director if the outside director is also a PTIDES director, we are
+     *  sure the outside receiver much also have a PTIDES receiver.
+     *   
+     *  @param inputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
+    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+            throws IllegalActionException {
+        code.append(CodeStream.indent(getCodeGenerator().comment(
+                "Transfer tokens to the inside")));
+        
+        // FIXME: Transfer token to inside actually only needs to run once...
+        code.append(CodeStream.indent(getCodeGenerator().comment(
+        "FIXME: Transfer tokens to the inside actually only needs to run once, because" +
+        "we are only setting one pointer to equal another.")));
+        for (int i = 0; i < inputPort.getWidth(); i++) {
+            String sourcePortString = "Event_Head_" + getAdapter(inputPort).getName() + "[" + 
+                    Integer.toString(i) + "]";
+            for (IOPort sinkPort : (List<IOPort>)inputPort.deepInsidePortList()) {
+                String sinkPortString = "Event_Head_" + getAdapter(sinkPort).getName() + "[" + 
+                Integer.toString(i) + "]";
+                code.append(sinkPortString + " = " + sourcePortString + ";" + _eol);
+            }
+        }
+    }
+
+    /** Generate code for transferring all output tokens to the outside.
+     *  In general, this is not allowed, because PtidesBasicDirector
+     *  resides in an independent platform. Thus, it only connects to the outside
+     *  through sensors, actuators, and network interfaces, and we use InputDevice
+     *  and OutputDevice to generate sensor, actuator, and network interface
+     *  code. The only place where this method is used is when a EmbeddedCodeActor
+     *  is used inside of a Ptides director. In this case, the director for the
+     *  EmbeddedCodeActor also has a PtidesBasicDirector, and that PtidesBasicDirector
+     *  needs to transfer tokens outside of the EmbeddedCodeActor, which is done in
+     *  this method.
+     *  
+     *  @param outputPort The port to transfer tokens.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If thrown while transferring tokens.
+     */
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    throws IllegalActionException {
+        code.append(getCodeGenerator()
+                .comment("Transfer tokens to the outside"));
+
+//        NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
+//        .getAdapter(_director.getContainer());
+//
+//        for (int i = 0; i < outputPort.getWidthInside(); i++) {
+//            if (i < outputPort.getWidth()) {
+//                String name = outputPort.getName();
+//
+//                if (outputPort.isMultiport()) {
+//                    name = name + '#' + i;
+//                }
+//
+//                code.append(_compositeActorAdapter.getReference(name, false) + " = ");
+//                code.append(_compositeActorAdapter.getReference("@" + name, false));
+//                code.append(";" + _eol);
+//            }
+//        }
+    }
+
     /**
      * Generate the type conversion fire code. Here we don't actually want to generate
      * any type conversion statement, the type conversion is done within the event creation.

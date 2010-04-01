@@ -101,7 +101,7 @@ public class PtidesBasicReceiver
     }
 
     /** 
-     * Generate code for putting tokens from the receiver.
+     * Generate code for putting tokens into the receiver.
      * @param sourcePort The port for which to generate the send code.
      * @param offset The offset in the array representation of the port.
      * @param token The token to be sent.
@@ -113,6 +113,29 @@ public class PtidesBasicReceiver
     public String generatePutCode(IOPort sourcePort, String offset, String token)
             throws IllegalActionException {
         TypedIOPort sinkPort = (TypedIOPort) getComponent().getContainer();
+        
+        if (sinkPort.isOutput()) {
+            StringBuffer code = new StringBuffer();
+            // This should only occur if the we have an actor governed
+            // by a Ptides director inside of another actor, which is also
+            // governed by a Ptides director. In this case, both this receiver,
+            // and also the receiver on the outside of this receiver are
+            // Ptides directors. Thus, we get the receivers
+            // that are sinks of this receiver, and put tokens to those
+            // receiver. Note a better place for this code may be at the port
+            // level, but different kinds of receivers have different semantics
+            // on how to generate put code, so it's not necessarily true that
+            // we should put to the sink receivers (e.g., for SDF receivers,
+            // we indeed want to put to this receiver, and generate transfer
+            // output code to transfer tokens to the outside.
+            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort portAdapter =
+                (ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.IOPort) getAdapter(sinkPort);
+            for (int channel = 0; channel < sinkPort.getWidth(); channel++) {
+                code.append(portAdapter.generatePutCode(Integer.toString(channel), offset, token));
+            }
+            return code.toString();
+        }
+
         int sinkChannel = sinkPort.getChannelForReceiver(getComponent());
 
         Channel source = new Channel(sourcePort, 0);
@@ -159,6 +182,8 @@ public class PtidesBasicReceiver
             offsetSecsString = Integer.toString(intPart);
             offsetNsecsString = Integer.toString(fracPart);
         } else {
+//            offsetSecsString = "deleteMe";
+//            offsetNsecsString = "deleteMe";
             throw new IllegalActionException(sinkPort,
                     "Cannot get the minDelay Parameter.");
         }

@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -166,11 +167,14 @@ public class PtidesBasicDirector
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code
-                .append(getCodeGenerator().comment(
+        code.append(getCodeGenerator().comment(
                         "Create a task for each actor."));
 
-        code.append("while (true);" + _eol);
+        for (Actor actor: (List<Actor>) (((CompositeActor)getComponent().getContainer()).deepEntityList())) {
+            NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter((NamedObj) actor);
+            code.append(adapter.generateFireCode());
+        }
+
         return code.toString();
     }
 
