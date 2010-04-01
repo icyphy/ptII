@@ -458,7 +458,7 @@ public class KernelException extends Exception {
     private String _message;
 
 
-    // Jiangwu Wang writes:
+    // Jianwu Wang writes:
     // "When implementing remote execution interfaces, such as
     // java.rmi.Remote, IllegalActionException and KernelException can
     // not be thrown since the _object1 and _object2 variables in
