@@ -85,6 +85,9 @@
 <entity name="When" class="ptolemy.domains.sr.lib.When">
 </entity>
 
+<entity name="Combine" class="ptolemy.domains.sr.lib.Combine">
+</entity>
+
       </group>
     ?>
   </configure>
