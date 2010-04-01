@@ -1,59 +1,47 @@
 /***semantics_VariableDelay***/
 (tomod VARIABLE-DELAY-ACTOR  is 
-  inc ACTOR .
+  inc DELAY-ACTOR .
 
-  class VariableDelay .   subclass VariableDelay < Actor .
-  eq ^ VariableDelay = Actor .
-    
-    ---FIXME: hierarchical OO desigin of actors is required. 
+  class VariableDelay .   subclass VariableDelay < Delay .
+  eq ^ VariableDelay = Delay .
 
-  vars O QUE : Oid . var REST : ObjectConfiguration .
-  var PORTS : Configuration . vars PI PI' : PortId . var PS : PortStatus .
-  var E : Exp . var V TV : Value . var NV : NumberValue . 
-  vars T : Time .
-  var AM : AssignMap . var MEM : Memory .
+---------------------------------------------------------------------
+--- Variable Declaration
+---------------------------------------------------------------------
+
+  vars PORTS : Configuration . vars O : Oid . vars V TV : Value .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  --- set each status of ports to 'unknown'
-  eq prefire(VariableDelay, 
-    < O : VariableDelay | 
-      parameters : ('delay |-> E ; AM) 
-    >) 
-   = prefire(^ VariableDelay, 
-    < O : VariableDelay | 
-      store : 'delay |-> k(E) 
-    >) .
+*** 0] init
 
-  --- Note: Delay actors generate events "later" and hence
-  --- do not generate output WHEN their ports are in unknown state
-  eq portFixPoints(
-     < O : VariableDelay | 
-       status : enabled,
-       ports :  < PI : OutPort | status : unknown > PORTS 
-     > 
-     REST) 
-   = portFixPoints(
-     < O : VariableDelay | 
-       ports : < PI : OutPort | status : absent > PORTS 
-     > REST) .
+*** 1] prefire
 
-  *** execute a step for variable delay operators
-  *** if 'delay port is present, it should be used instead of delay value.
-  *** (it will also updated at the top level as well. )
+*** 2] portFixPoints
 
-  eq postfire(VariableDelay, 
-    < O : VariableDelay | 
-      ports : ( 
-        < 'input : InPort | status : present, value : V >
-        < 'delay : InPort | status : PS, value : NV >
-        < 'output : OutPort | > PORTS), 
-      store : 'delay |-> TV ; MEM
-    >)
-    = relative-evt(event(O ! 'output, V), 
-                   toTime(if PS == present then NV else TV fi))
-      postfire(^ VariableDelay, < O : VariableDelay | >) .
+*** 3] postfire
+
+  --- parameter port "delay"
+  
+  --- 1] If the delay port is absent, the same with Delay.
+  eq postfire(VariableDelay,
+      < O : VariableDelay |
+         status : enabled,
+         ports : < 'delay : InPort | status : absent > PORTS >)
+   = postfire(Delay, < O : VariableDelay | >) .
+    
+  --- 2] Otherwise, use the value of "delay" port.
+  eq postfire(VariableDelay,
+      < O : VariableDelay |
+         status : enabled,
+         ports : < 'input : InPort | status : present, value : V >
+                 < 'delay : InPort | status : present, value : TV >
+                 < 'output : OutPort | > PORTS >)
+   =
+     relative-evt(event(O ! 'output, V), toTime(TV))
+     postfire(Actor, < O : VariableDelay | >) .
+  
 endtom)
 /**/

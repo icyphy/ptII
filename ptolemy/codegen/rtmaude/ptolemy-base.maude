@@ -1,50 +1,179 @@
 load ptolemy-exp
 load real-time-maude
 
-*** Note: All 'frozen' attributes are NOT needed, since all
+*** NOTE: All 'frozen' attributes are NOT needed, since all
 *** the rewrites happen at the GlobalSystem level!
 
--------------------------------------------------
----            Identifiers and Events         ---
--------------------------------------------------
+*** NOTE: Port Parameters should be defined for each actor...
+*** (Behavior: if something is arrived at the port, the value is used. 
+***  Otherwise, the default value is used.)
 
---- Configuration modifier, for ACU matching of ObjectConfiguration
+--- new Configuration 
 (tomod NEW-CONFIG is
-  op none : -> EmptyConfiguration [ctor] . 
+  --- for ACU matching of ObjectConfiguration
+  op none : -> EmptyConfiguration [ctor] .
+
+  --- stable object (for expression computation)
+  sort StableObject .
+  subsort StableObject < Object .
+
+  --- stable configuration
+  sort StableConfiguration NEStableConfiguration .
+  subsorts EmptyConfiguration < StableConfiguration < ObjectConfiguration .
+  subsorts StableObject < NEStableConfiguration <
+                StableConfiguration NEObjectConfiguration .
+  op __ : NEStableConfiguration NEStableConfiguration ->
+                                        NEStableConfiguration [ditto] .
+  op __ : StableConfiguration StableConfiguration ->
+                                        StableConfiguration [ditto] .
 endtom)
 
---- id for actors and ports is defined here
-(omod IDENTIFIERS is
-  pr PTOLEMY-ID .
-  pr QID .
+(omod ACTOR-ID is
+  pr NEW-CONFIG .
 
   --- ActorID is an extended version of OID, which
   --- can describe a hierarchical position of an actor
   --- "O1 . O2. ... On . O" : O1, O2, ..., On are ancestors of O
-  sort ActorID .
-  subsort Oid < ActorID .
-  op parent : -> ActorID [ctor] .
-  op _._ : ActorID ActorID -> ActorID [ctor assoc] .
+  sort ActorID NEActorID .
+  subsort Oid < NEActorID < ActorID .
+  op this : -> ActorID [ctor] .
+  op parent : -> NEActorID [ctor] .
+  op _._ : ActorID ActorID -> ActorID [ctor assoc id: this] .
+  eq O1:Oid . O2:Oid . parent = O1:Oid .
+endom)
 
+-------------------------------------------------
+---       Port, Parameter and Connection      ---
+-------------------------------------------------
+
+(omod PORTS is 
+  pr QID .
+  pr ACTOR-ID .
+  pr PTOLEMY-EXP .
+
+  class Port | status : PortStatus, value : Exp .
+  class InPort .    
+    subclass InPort < Port .
+  class OutPort .   
+    subclass OutPort < Port .
+
+  --- stable port
+  mb (< PI : Port | value : V:Value >) : StableObject .
+
+----- multi port -----
+  class MultiInPort | source : EPortIdSet .
+    subclass MultiInPort < InPort .
+
+  op _#_ : PortId EPortId -> PortId [ctor] .
+
+----- port id and status -----
   sorts PortId .
-  subsort Qid < PortId < Oid .	--- names for (local) ports
+  subsort Qid < PortId < Oid .   --- names for (local) ports
 
+  sort PortStatus DetPortStatus .
+  subsort DetPortStatus < PortStatus .
+  op unknown : -> PortStatus [ctor] .
+  ops present absent : -> DetPortStatus [ctor] .
+
+----- Extend port id -----
   --- EPortId is the "global" name of a port. 
-  sorts EPortId .	
+  sorts EPortId .
   op _!_ : ActorID PortId -> EPortId [ctor] . 
 
-  --- We need sets of destinations for one-to-many connections:
   sort EPortIdSet .
   subsort EPortId < EPortIdSet .
   op noPort : -> EPortIdSet [ctor] .
   op _;_ : EPortIdSet EPortIdSet -> EPortIdSet [ctor assoc comm id: noPort] .
-endom) 
+
+----- equations -----
+  var C : Cid .  var PORTS : Configuration .  
+  var PI : PortId . vars PS PS' : PortStatus . 
+
+  op setAllPorts : Configuration PortStatus ~> Configuration .
+  eq setAllPorts(< PI : Port | status : PS' > PORTS, PS)
+   = < PI : Port | status : PS > setAllPorts(PORTS, PS) .
+  eq setAllPorts(none, PS) = none .
+
+  op setUnknownOutPortsAbsent : Configuration ~> Configuration [frozen] .
+  eq setUnknownOutPortsAbsent(< PI : OutPort | status : PS > PORTS)
+   = < PI : OutPort | status : if PS == unknown then absent else PS fi >
+     setUnknownOutPortsAbsent(PORTS) .
+  eq setUnknownOutPortsAbsent(< PI : InPort | > PORTS)
+   = < PI : InPort | > setUnknownOutPortsAbsent(PORTS) .
+  eq setUnknownOutPortsAbsent(none) = none .
+
+  op allInputPortsAbsent? : Configuration ~> Bool [frozen] .
+  eq allInputPortsAbsent?(< PI : InPort | status : PS > PORTS)
+   = (PS == absent) and allInputPortsAbsent?(PORTS) .
+  eq allInputPortsAbsent?(none) = true .
+endom)
+
+--- PARAMETERS.
+(omod PARAMETERS is
+  pr QID .
+  pr NEW-CONFIG .
+  pr PTOLEMY-EXP .
+
+  --- during 
+  class Parameter | exp : Exp,
+                    value : Value,
+                    status : ParamStatus .
+
+  sort ParamStatus .
+  op invalid : -> ParamStatus [ctor] .		--- parameter will be computed
+  op valid : -> ParamStatus [ctor] .		--- exp == value attribute
+  op calculated : Value -> ParamStatus [ctor] . --- exp == Value
+
+  --- stable parameter
+  mb (< RI : Parameter | status : valid >) : StableObject .
+  mb (< RI : Parameter | status : calculated(V) >) : StableObject .
+
+  --- Parameter ID
+  sort ParamId .
+  subsort Qid < ParamId < Oid .
+
+  var RI : ParamId . var PARAMS : Configuration . var V : Value .
+
+  op _in_ : ParamId Configuration ~> Bool .
+  eq RI in < RI : Parameter | > PARAMS = true .
+  eq RI in PARAMS = false [owise] .
+
+  op updateParams : Configuration ~> Configuration .
+  eq updateParams(< RI : Parameter | status : calculated(V) > PARAMS)
+   = < RI : Parameter | status : valid, value : V > updateParams(PARAMS) .
+  eq updateParams(PARAMS) = PARAMS [owise] .
+
+endom)
+
+--- CONNECTIONS.
+(omod CONNECTIONS is 
+  pr PORTS .
+  sort Connection .
+  op _==>_ : EPortId EPortIdSet -> Connection [ctor] .
+
+  --- Connections are in the global configuration, 
+  --- we need to state that connections are also, e.g., objects
+  --- but it's not exactly object!
+  subsort Connection < NEStableConfiguration .
+
+  var EPI : EPortId . var EPIS : EPortIdSet .
+
+  eq EPI ==> noPort     = none .	    --- empty connection
+  eq EPI ==> EPI ; EPIS = EPI ==> EPIS .    --- self connection
+endom)
+
+-------------------------------------------------
+---                   Events                  ---
+-------------------------------------------------
 
 (tomod EVENTS is
-  pr PTOLEMY-EXP .
+  pr PORTS .
   pr POSRAT-TIME-DOMAIN-WITH-INF .
-  inc IDENTIFIERS .
-  inc NEW-CONFIG .
+
+  --- event in Ptolemy
+  --- An atomic event consists maybe of a port and the value that 
+  --- port should take.
+  op event : EPortId Value -> Event [ctor] .
 
   --- Event, and Multisets of such basic events:
   sort Event Events .
@@ -55,22 +184,19 @@ endom)
   --- Events with "timer" (not "time") stamp:
   sort TimedEvent .
   op _;_;_ : Events Time Nat -> TimedEvent [ctor] .
+endtom)
 
-  --- !!! Definition of 'EventQueue', should not impact Kyungmin's work:
+(tomod EVENT-QUEUE is
+  pr EVENTS .
   sort EventQueue .
   subsort TimedEvent < EventQueue .
-  op nil : -> EventQueue .
+  op nil : -> EventQueue [ctor] .
   op _::_ : EventQueue EventQueue -> EventQueue [ctor assoc id: nil] .
 
-  --- event in Ptolemy
-  --- An atomic event consists maybe of a port and the value that 
-  --- port should take.
-  op event : EPortId Value -> Event [ctor] .
-
   vars EQ : EventQueue .  var EVENT : Event .  var EVTS : Events .
-  var QUE : Oid . vars T T' : Time .  var N N' : Nat . 
+   vars T T' : Time .  var N N' : Nat . 
 
-  op addEvent : Event Time Nat EventQueue -> EventQueue .
+  op addEvent : Event Time Nat EventQueue ~> EventQueue .
 
   --- add event first:
   ceq addEvent(EVENT, T, N, (EVTS ; T' ; N') :: EQ) 
@@ -89,178 +215,50 @@ endom)
   eq addEvent(EVENT, T, N, nil) = (EVENT ; T ; N) .
 
   --- In a first attempt, the global event queue is just an "object":
-  class EventQUEUE | queue : EventQueue .
+  class EventQueue | queue : EventQueue .
+  op global : -> Oid [ctor] .
 
   --- generated events are just an "message" and delivered to an event queue.
   msg schedule-evt : Event Time Nat -> Msg .
 
-  --- event message is dilivered to event queue
-  eq < QUE : EventQUEUE | queue : EQ > schedule-evt(EVENT, T, N)
-   = < QUE : EventQUEUE | queue : addEvent(EVENT, T, N, EQ) > .
+  --- event message is dilivered to global event queue
+  eq < global : EventQueue | queue : EQ > schedule-evt(EVENT, T, N)
+   = < global : EventQueue | queue : addEvent(EVENT, T, N, EQ) > .
 
   --- events will be also delivered from a queue to each port.
   --- the acceptance of a message must be defined .
   msg active-evt : Event -> Msg .
 
   --- generate active events. 
-  op releaseEvt : Events -> Configuration .
+  op releaseEvt : Events ~> Configuration .
   eq releaseEvt(EVENT EVTS) = active-evt(EVENT) releaseEvt(EVTS) .
   eq releaseEvt(noEvent) = none .
 endtom)
 
 -------------------------------------------------
----            Port and Connection            ---
--------------------------------------------------
-
-(omod PORTS is 
-  pr IDENTIFIERS .
-  pr PTOLEMY-VALUE .
-
-  class Port | status : PortStatus, value : Value .
-  class InPort .
-    subclass InPort < Port .
-  class OutPort .
-    subclass OutPort < Port .
-  class InOutPort .
-    subclass InOutPort < InPort OutPort .
-
-  sort PortStatus DetPortStatus .
-  subsort DetPortStatus < PortStatus .
-  op unknown : -> PortStatus [ctor] .
-  ops present absent : -> DetPortStatus [ctor] .
-
-  var PI : PortId . var PORTS : Configuration .
-  var PS : PortStatus . 
-
-  op clearPorts : Configuration -> Configuration .
-  eq clearPorts(< PI : Port | status : PS > PORTS)
-   = < PI : Port | status : unknown > clearPorts(PORTS) .
-  eq clearPorts(none) = none .
-endom)
-
-(omod MULTI-PORTS is 
-  pr PORTS .
-
-  class MultiInPort | 
-    channels : ChannelSet .
-
-  sort Channel .
-  op `[_`,_`,_`] : EPortId PortStatus Value -> Channel [ctor] .
-
-  sort ChannelSet .
-  subsort Channel < ChannelSet .
-  op empty : -> ChannelSet [ctor] .
-  op _;_ : ChannelSet ChannelSet -> ChannelSet [ctor comm assoc id: empty] .
-
-  var PORTS : Configuration .  var EP : EPortId . var PI : PortId . 
-  var CHS : ChannelSet . var PS : PortStatus .
-  var V : Value .
-
-  op _in_ : EPortId ChannelSet -> Bool .
-  eq EP in ([EP,PS,V] ; CHS) = true .
-  eq EP in CHS = false [owise] .
-
-  --- clear multi-ports
-  eq clearPorts(< PI : MultiInPort | channels : CHS > PORTS)
-   = < PI : MultiInPort | channels : empty > clearPorts(PORTS) .
-endom)
-
---- coupled port to some parameter
-(omod PORT-PARAMETERS is 
-  pr PORTS .
-  pr EXP-ENVIRONMENT .
-
-  class PortParameter | paramName : VarId .
-    subclass PortParameter < InPort .
-
-  var VI : VarId . var E : Exp . var V : Value . var VAL : AssignMap .
-  var PI : PortId . var PORTS : Configuration . 
-
-  --- update given parameter by related port parameters.
-  op updateParam : AssignMap Configuration -> AssignMap [frozen (2)] .
-  eq updateParam( (VI |-> E) ; VAL,
-    < PI : PortParameter | status : present, paramName : VI, value : V > PORTS)
-   = updateParam((VI |-> V) ; VAL, PORTS) .
-  eq updateParam(VAL, PORTS) = VAL [owise] .
-endom)
-
---- CONNECTIONS.
---- Notice that we may only have one-to-one connections, 
-(omod CONNECTIONS is 
-  pr IDENTIFIERS .
-  sort Connection .
-  op _==>_ : EPortId EPortIdSet -> Connection [ctor] .
-
-  --- Connections are in the global configuration, 
-  --- we need to state that connections are also, e.g., objects:
-
-  subsort Connection < Object .
-  op Connection : -> Cid .
-  eq class(C:Connection) = Connection .
-endom)
-
--------------------------------------------------
 ---         Basic definition for Actor        ---
 -------------------------------------------------
-(tomod CASTING-DEF is
-  pr PTOLEMY-EXP-DEFINITION .
-  pr POSRAT-TIME-DOMAIN-WITH-INF .
-
-  op toTime : NumberValue -> TimeInf .
-  eq toTime(# R:Rat) = R:Rat .
-  eq toTime(# F:Float) = rat(F:Float) .
-  eq toTime(Infinity) = INF .	---FIXME
-endtom)
 
 (tomod ACTOR-BASE is
-  pr IDENTIFIERS .
+  pr EVENT-QUEUE .
   pr CONNECTIONS .
-  pr EXP-ENVIRONMENT .
-  pr K-COMPUTATION .
-  pr EVENTS .
 
-  vars CF : Configuration .  var NCF NCF' : NEConfiguration .
-  var OC : ObjectConfiguration .
-  var M : Msg .
-  var C : Cid . var QUE : Oid . var OBJ : Object . 
-  vars EQ : EventQueue .  var EVENT : Event .  var EVTS : Events .
-  var VI : VarId . var V V' : Value . 
-  vars MEM MEM' : Memory . var CP : Computation .
-  var T : Time . var N : Nat .
-  var KR : KResult .
-
-  sort ActorStatus .
-  ops enabled disabled : -> ActorStatus .
-
---- memory item
-  sorts MemoryItem MemoryId .
-  subsort VarId < MemoryId .
-  subsort ValueAssignment < MemoryItem .
-  op _|->_ : MemoryId KResult -> MemoryItem [ctor prec 80] .
-
-  sort Memory .
-  subsort ValueMap MemoryItem < Memory .
-  op _;_ : Memory Memory -> Memory [ditto] .
-
-  --- check that a variable with a varId is defined in Memory
-  op _in_ : VarId Memory -> Bool .
-  eq VI in ((VI |-> KR) ; MEM) = true .
-  eq VI in MEM = false [owise] .
-
-  --- overwrite AssignMap to memory
-  op _<+_ : AssignMap Memory -> Memory .
-  eq ((VI |-> V) ; MEM) <+ ((VI |-> V') ; MEM') = ((VI |-> V) ; MEM) <+ MEM' .
-  eq MEM <+ MEM' = MEM ; MEM' [owise] .
+  var C : Cid .  vars CF : Configuration .  var NCF NCF' : NEConfiguration .  
+  var OBJ : Object .  var OBJS : ObjectConfiguration .  
+  var SOBJ : StableObject . var SOBJS : StableConfiguration . 
+  var CONN : Connection .  var M : Msg .  
+  vars EQ : EventQueue . var EVENT : Event . var EVTS : Events . var T : Time .
 
 *** delta function for configuration
-  op delta : Configuration Time -> Configuration .
+  op delta : Configuration Time ~> Configuration [frozen] .
   eq delta(NCF NCF', T) = delta(NCF, T) delta(NCF', T) .
-  eq delta(O:Object, T) = O:Object [owise] .
+  eq delta(OBJ, T) = OBJ [owise] .
+  eq delta(CONN, T) = CONN .
   eq delta(M, T) = M .
   eq delta(none, T) = none .
 
 *** 
-  op relative-evt : Event Time -> Msg .
+  op relative-evt : Event Time -> Msg [ctor] .
   eq relative-evt(EVENT, T) 
    = schedule-evt(EVENT, T, if T == 0 then 1 else 0 fi) .
 
@@ -268,57 +266,138 @@ endtom)
 *** Each step should be implemented for each actor, or
 *** the default operations (do nothing) will be taken.
 
-  sort Cid? .
-  subsort Cid < Cid? .
-  op ^_ : Cid -> Cid? .
+  op ^_ : Cid ~> Cid .
 
 *** 0. init
-  op init : Cid Object -> Configuration [frozen (2)] .
-  eq init(Connection, OBJ) = OBJ .
-  eq init(C, M CF) = M init(C, CF) .
-  eq init(C, OBJ) = init(^ C, OBJ) [owise] .
+  op init : Cid Object ~> Configuration [frozen (2)] .
+  eq init(C, M CF) = M init(C, CF) .            --- when msg generated
+  eq init(C, OBJ) = init(^ C, OBJ) [owise] .    --- call super class
 
-  op initAll : Configuration -> Configuration [frozen (1)] .
+  op initAll : Configuration ~> Configuration [frozen] .
   eq initAll(OBJ CF) = init(class(OBJ), OBJ) initAll(CF) .
-  eq initAll(M CF) = M initAll(CF) .
-  eq initAll(none) = none .
-
+  eq initAll(CF) = CF [owise] .
 
 *** 1. preparing computation step.  (prefire)
-  op prefire : Cid Object -> Configuration [frozen (2)] .
-  eq prefire(Connection, OBJ) = OBJ .
+  op prefire : Cid Object ~> Configuration [frozen (2)] .
+  eq prefire(C, M CF) = M prefire(C, CF) .
   eq prefire(C, OBJ) = prefire(^ C, OBJ) [owise] .
 
-  --- functions for configuration level.
-  op prefireAll : Configuration -> Configuration [frozen (1)] .
-  eq prefireAll(OBJ CF) = prefire(class(OBJ), OBJ) prefireAll(CF) .
-  eq prefireAll(M CF) = prefireAll(CF) .
-  eq prefireAll(none) = none .
+  --- functions for configuration level. 
+  op prefire : Configuration ~> Configuration [frozen] .
+  eq prefire(OBJ OBJS) = prefire(class(OBJ), OBJ) prefire(OBJS) .
+  eq prefire(OBJS) = OBJS [owise] .
 
 *** 2. Compute fixed points for the various ports. (fire)
+  op portFixPoints : Configuration ~> Configuration [frozen] .
 
-  --- fixpoint computation
-  op portFixPoints : Configuration -> Configuration [frozen (1)] .
-
-  --- terminate portFixPoints if no change 
-  --- NOTE: redefined at CompositeActor for hierarchical models
----  eq portFixPoints(OC) = OC [owise] .
+  --- terminate portFixPoints if no change, when stable
+  eq portFixPoints(SOBJS) = SOBJS [owise] .
 
 *** 3. Generating events and updating states and parameters. (post-fire)
-  --- 1st argument : class id for hierarchical computation
-  --- 2nd argument : Target object. since messages can be generated, 
-  ---    Conf is used instead of Object 
-  --- 3rd argument : rest configuration
-  op postfire : Cid NEConfiguration -> Configuration [frozen (2)].
-  eq postfire(C, M CF) = M postfire(C, CF) .
-  eq postfire(Connection, CF) = CF .
+  op postfire : Cid Object ~> Configuration [frozen (2)].
+  eq postfire(C, M CF) = M postfire(C, CF) .    --- when msg generated 
   eq postfire(C, OBJ) = postfire(^ C, OBJ) [owise] .
 
-  op postfireAll : Configuration -> Configuration [frozen (1)] .
-  eq postfireAll(OBJ CF) = postfire(class(OBJ), OBJ) postfireAll(CF) .
-  eq postfireAll(M CF) = M postfireAll(CF) .
-  eq postfireAll(none) = none .
+  op postfire : Configuration ~> Configuration [frozen] .
+  eq postfire(OBJ OBJS) = postfire(class(OBJ), OBJ) postfire(OBJS) .
+  eq postfire(OBJS) = OBJS [owise] .
 
+*** 4. Parameter Computation
+  --- initiated only if stable
+
+  op update : Cid Object ~> Configuration [frozen (2)] .
+  eq update(C, OBJ) = update(^ C, OBJ) [owise] .
+
+  op update : Configuration ~> Configuration [frozen] .
+  eq update(SOBJ SOBJS) = update(class(SOBJ), SOBJ) update(SOBJS) .
+  eq update(SOBJS) = SOBJS [owise] .
+
+  --- make the global event queue reachable to the event
+  eq update(schedule-evt(EVENT,T,N:Nat) CF) 
+   = schedule-evt(EVENT,T,N:Nat) update(CF) .
+endtom)
+
+------------------------------------------------
+---           Execution Semantics            ---
+------------------------------------------------
+
+(tomod DE-DYNAMICS is 
+  pr ACTOR-BASE .    
+
+  vars SYSTEM : StableConfiguration . 
+  var O : Oid .  var P : PortId .  var PORTS : Configuration .
+  vars T T' : Time .  var NZT : NzTime . var N : Nat . var NZ : NzNat .
+  var EVTS : Events .  var QUEUE : EventQueue .
+
+  --- delta rules for event queue
+  op delta : EventQueue Time ~> EventQueue .
+  eq delta((EVTS ; T ; N) :: QUEUE, T') 
+   = (EVTS ; T monus T' ; N) :: delta(QUEUE, T') .
+  eq delta(nil, T) = nil .
+
+  --- Although we could probably be happy with ONE single rules, for conceptual
+  --- clarity, we use three rules in the first attempt.
+
+  --- NOTE: each rule is applied only for *stable* object configuration.
+
+  --- Basically, the rules advance time till the next event, 
+  --- and then, IN A SEPARATE rule, executes a transition.
+  --- These rules could obviously be combined into one ...
+
+  rl [tick] : 
+     { SYSTEM < global : EventQueue | queue : (EVTS ; NZT ; N) :: QUEUE > }
+  => { delta(SYSTEM, NZT) 
+       < global : EventQueue | queue : (EVTS ; 0 ; N) :: delta(QUEUE, NZT) > }
+  in time NZT .
+
+  --- shortTick should be invoked for non-zero case (for model checking)
+  rl [shortTick] : 
+     { SYSTEM < global : EventQueue | queue : (EVTS ; 0 ; NZ) :: QUEUE > }
+  =>
+     { SYSTEM < global : EventQueue | queue : (EVTS ; 0 ; 0) :: QUEUE > } .
+
+  --- execute a step:
+  rl [executeStep] : 
+     { < global : EventQueue | queue : (EVTS ; 0 ; 0) :: QUEUE > SYSTEM }
+  =>
+     { < global : EventQueue | queue : QUEUE > 
+       update(postfire(                             --- postfire
+               portFixPoints(                       --- fire
+                releaseEvt(EVTS) prefire(SYSTEM)    --- prefire
+      )))} .
+
+endtom)
+
+(tomod MODELCHECK-BASE is
+  pr ACTOR-BASE .
+  inc TIMED-MODEL-CHECKER .
+
+  sorts PropPattern .
+  op __ : ActorID PropPattern -> Prop [ctor] .
+
+  --- define checking under context. The context is the outside configuration.
+  msg prop-query : Prop -> Msg .
+  msg prop-result : Bool -> Msg .
+
+  var CF : Configuration . var B : Bool . var PROP : Prop .
+
+  --- make a query to the system. 
+  --- NOTE: Only one query is possible for a system
+  eq {CF} |= PROP = checkprop(CF prop-query(PROP)) .
+
+  --- return true if the quary result is true
+  op checkprop : Configuration ~> Bool [frozen] .
+  eq checkprop(prop-result(B) CF) = B .
+endtom)
+
+(tomod CASTING-DEF is
+  pr PTOLEMY-VALUE .
+  pr POSRAT-TIME-DOMAIN-WITH-INF .
+
+  op toTime : NumberValue ~> TimeInf .
+  eq toTime(# R:Rat) = R:Rat .
+  eq toTime(# F:Float) = rat(F:Float) .
+  eq toTime(Infinity) = INF .   ---FIXME
 endtom)
 
 (tomod OBJECT-WITH-TIMER is
@@ -332,58 +411,3 @@ endtom)
      = < O : TimeObj | current-time : T + T' > .
 endtom)
 
-------------------------------------------------
----           Execution Semantics            ---
-------------------------------------------------
-
-(tomod DE-DYNAMICS is 
-  pr ACTOR-BASE .	--- module refactoring required
-
-  vars SYSTEM PORTS : Configuration .
-  var QUE O : Oid .
-  var EVTS : Events .
-  var NZT : NzTime .
-  var N : Nat . var NZ : NzNat .
-  var EVENTQUEUE : EventQueue .
-  vars T T' : Time .
-  var P : PortId .
-
-  op delta : EventQueue Time -> EventQueue .
-  eq delta((EVTS ; T ; N) :: EVENTQUEUE, T') 
-   = (EVTS ; T monus T' ; N) :: delta(EVENTQUEUE, T') .
-  eq delta(nil, T) = nil .
-
-  --- Although we could probably be happy with ONE single rules, for conceptual
-  --- clarity, we use three rules in the first attempt.
-
-  --- Basically, the rules advance time till the next event, 
-  --- and then, IN A SEPARATE rule, executes a transition.
-  --- These rules could obviously be combined into one ...
-
-  rl [tick] : 
-     { SYSTEM < QUE : EventQUEUE | queue : (EVTS ; NZT ; N) :: EVENTQUEUE > }
-  => { delta(SYSTEM, NZT) < QUE : EventQUEUE | 
-	queue : (EVTS ; 0 ; N) :: delta(EVENTQUEUE, NZT) > }
-  in time NZT .
-
-  --- shortTick should be invoked for non-zero case (for model checking)
-  rl [shortTick] : 
-	{ SYSTEM < QUE : EventQUEUE | queue : (EVTS ; 0 ; NZ) :: EVENTQUEUE > }
-  =>	{ SYSTEM < QUE : EventQUEUE | queue : (EVTS ; 0 ; 0) :: EVENTQUEUE > } .
-
-  --- execute a step:
-  rl [executeStep] : 
-	{ SYSTEM < QUE : EventQUEUE | queue : (EVTS ; 0 ; 0) :: EVENTQUEUE > }
-  =>	{ postfireAll(portFixPoints(releaseEvt(EVTS) prefireAll(SYSTEM)))
-	 < QUE : EventQUEUE | queue : EVENTQUEUE >
-	} .
-
-endtom)
-
-(tomod MODELCHECK-BASE is
-  pr ACTOR-BASE .
-  inc TIMED-MODEL-CHECKER .
-
-  sort ActorPattern .
-  op __ : ActorID ActorPattern -> Prop [ctor] .
-endtom)

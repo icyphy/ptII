@@ -379,11 +379,15 @@
         </property>
         <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
         </property>
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 240.0]">
         </property>
         <property name="Safety Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[] ~ ('DE_SimpleTrafficLight | ('Pgrn = # 1, 'Cgrn = # 1))">
         </property>
-        <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[]&lt;&gt; ('DE_SimpleTrafficLight | ('Pgrn = # 1, 'Cgrn = # 0)) /\ []&lt;&gt; ('DE_SimpleTrafficLight | ('Pgrn = # 0, 'Cgrn = # 1))">
+        <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'DE_SimpleTrafficLight : ([]&lt;&gt; ( this | ('Pgrn = # 1, 'Cgrn = # 0)) /\ []&lt;&gt; (this | ('Pgrn = # 0, 'Cgrn = # 1)))">
+        </property>
+        <property name="Pairing" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'DE_SimpleTrafficLight : ([]('CarLightNormal | (port 'Pgo is present) -&gt;('CarLightNormal | (port 'Pstop is absent) U ('PedestrianLightNormal | (port 'Pgrn is present)))))">
         </property>
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">

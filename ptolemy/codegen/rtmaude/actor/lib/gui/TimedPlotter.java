@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.rtmaude.actor.lib.gui;
 
-import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedPlotter
@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class TimedPlotter extends Entity {
+public class TimedPlotter extends TypedAtomicActor {
     /**
      * Constructor method for the TimedPlotter adapter.
      * @param component The associated TimedPlotter actor

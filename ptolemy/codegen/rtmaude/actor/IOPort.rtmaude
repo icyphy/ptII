@@ -3,6 +3,10 @@
 < '$info(name) : $type | value : # 0, status : absent >
 /**/
 
-/***multiBlock***/
-< '$info(name) : MultiInPort | channels : empty >
+/***multiBlock($source)***/
+< '$info(name) : MultiInPort | value : # 0, status : absent, source : ($source) >
+/**/
+
+/***scopeBlock($actor, $name)***/
+('$actor ! '$name)
 /**/

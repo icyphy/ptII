@@ -27,7 +27,13 @@
  */
 package ptolemy.codegen.rtmaude.data.expr;
 
+import java.util.List;
+
+import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.PtParser;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 ////PropertyParameter
@@ -51,6 +57,38 @@ public class Variable extends RTMaudeAdaptor {
      */
     public Variable(ptolemy.data.expr.Variable component) {
         super(component);
+    }
+    
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.Entity#getInfo(java.lang.String, java.util.List)
+     */
+    protected String getInfo(String name, List<String> parameters)
+            throws IllegalActionException {
+        ptolemy.data.expr.Variable variable = (ptolemy.data.expr.Variable) getComponent();
+        
+        if (name.equals("evaluatedValue")) {
+            ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
+            PtParser parser = new PtParser();
+            ASTPtRootNode parseTree = null;
+            try {
+                // parse the value of this variable
+                parseTree = parser.generateParseTree(variable.getValueAsString());
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(variable, throwable,
+                        "Failed to generate parse tree for \"" + name + "\". in \"" 
+                        + this.getContainer() + "\"");
+            }
+            try {
+                parseTreeCodeGenerator.evaluateParseTree(parseTree, null);
+            } catch (Exception ex) {
+                throw new IllegalActionException(getComponent(), ex,
+                        "Failed to evaluate parse tree for\"" + name + "\". in \"" 
+                        + this.getContainer() + "\"");
+            }
+            return parseTreeCodeGenerator.generateFireCode();
+        }
+ 
+        return super.getInfo(name, parameters);
     }
 
 }

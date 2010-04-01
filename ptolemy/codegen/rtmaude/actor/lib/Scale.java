@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.rtmaude.actor.lib;
 
-import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// Clock
@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class Scale extends Entity {
+public class Scale extends TypedAtomicActor {
     /**
      * Constructor method for the Clock adapter.
      * @param component The associated Clock actor

@@ -97,7 +97,7 @@ public class Entity extends RTMaudeAdaptor {
             }.generateCode();
         }
         if (name.equals("parameters")) {
-            return new ListTerm<Variable>("emptyMap", " ;" + _eol,
+            return new ListTerm<Variable>("none", "",
                     getComponent().attributeList(Variable.class)) {
                 public String item(Variable v) throws IllegalActionException {
                     return ((RTMaudeAdaptor) _getHelper(v)).generateTermCode();

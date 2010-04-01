@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.rtmaude.actor.lib;
 
-import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// Pulse
@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class Pulse extends Entity {
+public class Pulse extends TypedAtomicActor {
     /**
      * Constructor method for the Pulse adapter.
      * @param component The associated Pulse actor

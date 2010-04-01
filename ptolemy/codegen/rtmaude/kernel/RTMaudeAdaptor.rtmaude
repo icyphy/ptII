@@ -22,10 +22,9 @@ $semantics_includes .
     --- the initial events are just created by the clocks:
 
     op init : -> Configuration .
-    op global : -> Oid .
 
     eq init 
-     = < global : EventQUEUE | queue : nil > 
+     = < global : EventQueue | queue : nil > 
        initAll(
        /**/
 

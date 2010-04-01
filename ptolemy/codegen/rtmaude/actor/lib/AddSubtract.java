@@ -1,4 +1,4 @@
-/* RTMaude Code generator helper class for the Clock class.
+/* RTMaude Code generator helper class for the Const class.
 
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
@@ -30,24 +30,24 @@ package ptolemy.codegen.rtmaude.actor.lib;
 import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
-//// Clock
+//// AddSubtract
 
 /**
- * Generate RTMaude code for a Clock actor in DE domain.
+ * Generate RTMaude code for a AddSubtract actor in DE domain.
  *
- * @see ptolemy.actor.lib.Clock
+ * @see ptolemy.actor.lib.AddSubtract
  * @author Kyungmin Bae
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class Clock extends TypedAtomicActor {
+public class AddSubtract extends TypedAtomicActor {
     /**
-     * Constructor method for the Clock adapter.
-     * @param component The associated Clock actor
+     * Constructor method for the AddSubtract adapter.
+     * @param component The associated AddSubtract actor
      */
-    public Clock(ptolemy.actor.lib.Clock component) {
+    public AddSubtract(ptolemy.actor.lib.AddSubtract component) {
         super(component);
     }
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AssemblyLine" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={359, 69, 743, 704}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={86, 36, 743, 704}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[530, 594]">
     </property>
@@ -180,11 +180,7 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[310.0, 120.0]">
-        </vertex>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Jobs.output" relation="relation7"/>
     <link port="StationsFinishedTimes.input" relation="relation"/>
@@ -194,11 +190,10 @@
     <link port="ServiceTimes2.trigger" relation="relation"/>
     <link port="ServiceTimes3.output" relation="relation5"/>
     <link port="ServiceTimes3.trigger" relation="relation4"/>
-    <link port="JobArrivedTime.input" relation="relation9"/>
-    <link port="JobArrivedTime.input" relation="relation9"/>
+    <link port="JobArrivedTime.input" relation="relation3"/>
     <link port="ServiceTimes1.output" relation="relation8"/>
     <link port="ServiceTimes1.trigger" relation="relation7"/>
-    <link port="CurrentTime.output" relation="relation9"/>
+    <link port="CurrentTime.output" relation="relation3"/>
     <link port="CurrentTime.trigger" relation="relation7"/>
     <link port="Station1.input" relation="relation8"/>
     <link port="Station1.output" relation="relation"/>

@@ -260,9 +260,9 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
 
         if (bound != null) {
             if (bound.toString().equals("Infinity")) {
-                commands.append("(rew {init} .)");
+                commands.append("(rew in INIT : {init} .)");
             } else {
-                commands.append("(trew {init} in time <= "
+                commands.append("(trew in INIT : {init} in time <= "
                         + IntToken.convert(bound).toString() + " .)");
             }
         }

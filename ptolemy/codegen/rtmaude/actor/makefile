@@ -50,8 +50,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR 
 PTCLASSALLJARS = \
-	lib/lib.jar \
-	parameters/parameters.jar 
+	lib/lib.jar 
 
 JSRCS = \
 	Director.java \

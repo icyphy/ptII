@@ -3,61 +3,82 @@ variableName : '$info(variableName)/**/
 
 /***semantics_SetVariable***/
 (tomod SET-VARIABLE is 
+  inc ATOMIC-ACTOR .
   inc COMPOSITE-ACTOR .    --- assuming composite actor
 
-  class SetVariable | variableName : VarId .
-    subclass SetVariable < Actor .
-  eq ^ SetVariable = Actor .
+  class SetVariable | variableName : ParamId .
+    subclass SetVariable < AtomicActor .
+  eq ^ SetVariable = AtomicActor .
 
-  --- message to change a variables of the container.
-  msg setv : VarId Value -> Msg .
+  --- message to change a variables of the container (possible any ancestor).
+  msg setv : ParamId Value -> Msg .
 
-  var O : Oid . var REST : ObjectConfiguration .
-  vars PORTS CF : Configuration .
-  var VI : VarId . var E : Exp . var V : Value . 
-  var VAL : AssignMap . var VM : ValueMap .
-  vars PI PI' : PortId . 
-  var PS : PortStatus . var DPS : DetPortStatus .
+---------------------------------------------------------------------
+--- Variable Declaration
+---------------------------------------------------------------------
+
+  vars PORTS PARAMS CF : Configuration .  
+  var REST : ObjectConfiguration . var O O' : Oid . 
+  var RI : ParamId .  vars PI : PortId .  
+  var E : Exp . vars V V' : Value . 
 
 ---------------------------------------------------------------------
 --- Message
 ---------------------------------------------------------------------
 
----- set a variables of a parent actor by the 'setv' message
+  ---- set a variables of a parent actor by the 'setv' message
   eq < O : CompositeActor | 
-       parameters : ((VI |-> E) ; VAL),
-       innerActors : CF setv(VI, V)
-     >
-   = < O : CompositeActor | 
-       parameters : ((VI |-> V) ; VAL), 
-       innerActors : CF 
-     > .
+        innerActors : CF setv(RI, V),
+        parameters : < RI : Parameter | exp : E > PARAMS >
+  = 
+     < O : CompositeActor | 
+        innerActors : CF,
+        parameters : < RI : Parameter | exp : V > PARAMS > .
+
+  --- check the nearest ancestor if a parent has no such parameter
+  ceq < O : CompositeActor | innerActors : CF setv(RI,V), parameters : PARAMS >
+    = < O : CompositeActor | innerActors : CF > setv(RI,V)
+   if not RI in PARAMS .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  --- The output port returns the same value to the input port
-  --- Assume that there are EXACTLY two ports.
+  --- NOTE: we assume "delayed" SetVariable actor, 
+  --- because a model should be deterministic.
+
+*** 0] init
+
+*** 1] prefire
+
+*** 2] portFixPoints
+
+  --- The output port returns the current parameter value.
+  --- Note: the value will be evalueated by computation rules
   eq portFixPoints(
-     < O : SetVariable | 
-       status : enabled,
-       ports : 
-         < PI : InPort | status : DPS, value : V > 
-         < PI' : OutPort | status : unknown > 
-     > REST)
-   = portFixPoints(
-     < O : SetVariable |
-       ports : 
-         < PI : InPort | >
-         < PI' : OutPort | status : DPS, value : V > 
-     > REST) .
+      < O : SetVariable | 
+         status : enabled,
+         variableName : RI,
+         ports : < PI : InPort | status : present >
+                 < 'output : OutPort | status : unknown > PORTS > 
+      REST)
+  =  
+     portFixPoints(
+      < O : SetVariable | 
+         ports : < PI : InPort | >
+                 < 'output : OutPort | status : present, value : RI > PORTS > 
+      REST) .
+
+*** 3] postfire
 
   --- generate a message to change a variables of the container.
   eq postfire(SetVariable,
-    < O : SetVariable | variableName : VI, 
-      ports : < PI : InPort | status : present, value : V > PORTS >) 
-   = setv(VI, V)
-     postfire(^ SetVariable, < O : SetVariable | >) .
+      < O : SetVariable | 
+         status : enabled,
+         variableName : RI, 
+         ports : < PI : InPort | status : present, value : V > PORTS >)
+  = 
+     setv(RI, V) postfire(Actor, < O : SetVariable | >) .
+
 endtom)
 /**/

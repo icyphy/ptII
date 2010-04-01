@@ -4,77 +4,58 @@ output-value : # 0/**/
 
 /***semantics_Ramp***/
 (tomod RAMP is 
-  inc ACTOR .
+  inc ATOMIC-ACTOR .
 
   class Ramp | firstStep : Bool,
                output-value : Value .
-    subclass Ramp < Actor .
-  eq ^ Ramp = Actor .
+    subclass Ramp < AtomicActor .
+  eq ^ Ramp = AtomicActor .
 
-  var PORTS : Configuration . vars PI PI' : PortId .
-  var O : Oid . var REST : ObjectConfiguration .
-  var AM : AssignMap . var MEM : Memory .
-  var V VI VS : Value . var EI ES : Exp .
-  var N : Nat . var B : Bool .
+---------------------------------------------------------------------
+--- Variable Declaration
+---------------------------------------------------------------------
+
+  var PORTS PARAMS : Configuration . var REST : ObjectConfiguration .
+  var O : Oid . var V V' VI VS : Value . var N : Nat . var B : Bool .
   
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  --- set each status of ports to 'unknown'
-  eq prefire(Ramp, 
-    < O : Ramp | 
-      parameters : ('init |-> EI ; 'step |-> ES ; AM)
-    >) 
-   = prefire(^ Ramp, 
-    < O : Ramp | 
-      store : 'init |-> k(EI) ; 'step |-> k(ES)
-    >) .
+*** 0] init
+
+*** 1] prefire
+
+*** 2] portFixPoints 
 
   eq portFixPoints(
-     < O : Ramp | 
-       status : enabled,
-       store : 'init |-> VI ; 'step |-> VS,
-       firstStep : B,
-       output-value : V,
-       ports : 
-         < PI : InPort | status : present >  
-         < PI' : OutPort | status : unknown > PORTS 
-     > REST)
-   = portFixPoints(
-     < O : Ramp | 
-       ports : 
-         < PI : InPort | > PORTS
-         < PI' : OutPort | status : present, 
-                            value : if B then VI else V + VS fi >
-     > REST) .
+      < O : Ramp | 
+         status : enabled,
+         firstStep : B,
+         parameters : < 'init : Parameter | value : VI >
+                      < 'step : Parameter | value : VS > PARAMS,
+         output-value : V,
+         ports : < 'trigger : InPort | status : present >  
+                 < 'output : OutPort | status : unknown > PORTS > 
+      REST)
+  = 
+     portFixPoints(
+      < O : Ramp | 
+         ports : < 'trigger : InPort | > 
+                 < 'output : OutPort | status : present, value : (# B ? VI : (V + VS)) > PORTS > 
+      REST) .
      
-  eq portFixPoints(
-     < O : Ramp | 
-       status : enabled,
-       ports : 
-         < PI : InPort | status : absent >  
-         < PI' : OutPort | status : unknown > PORTS 
-     > REST)
-   = portFixPoints(
-     < O : Ramp | 
-       ports : 
-         < PI : InPort | > 
-         < PI' : OutPort | status : absent > PORTS
-     > REST) .
+*** 3] postfire
 
   eq postfire(Ramp,
-    < O : Ramp | 
-      status : enabled,
-      store : 'init |-> VI ; 'step |-> VS,
-      firstStep : B,
-      output-value : V,
-      ports : < PI : OutPort | status : present >  PORTS
-    >) 
-  = postfire(^ Ramp, 
-    < O : Ramp | 
-      firstStep : false,
-      output-value : if B then VI else V + VS fi
-    >) .
+      < O : Ramp | 
+         status : enabled,
+         firstStep : B,
+         output-value : V,
+         ports : < 'output : OutPort | status : present, value : V' >  PORTS >) 
+  = 
+     postfire(Actor, 
+      < O : Ramp | firstStep : false, output-value : V' >) .
+        
 endtom)
 /**/

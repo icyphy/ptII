@@ -1,4 +1,4 @@
-/* RTMaude Code generator helper class for the ParameterPort class.
+/* RTMaude Code generator helper for typed composite actor.
 
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
@@ -25,46 +25,29 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.rtmaude.actor.parameters;
+package ptolemy.codegen.rtmaude.actor;
 
-import java.util.List;
-
-import ptolemy.codegen.rtmaude.actor.IOPort;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.codegen.rtmaude.kernel.Entity;
 
 //////////////////////////////////////////////////////////////////////////
-//// ParameterPort
+////TypedAtomicActor
 
 /**
- * Generate RTMaude code for a ParameterPort.
+ * Generate RTMaude code for a typed atomic actor.
  *
- * @see ptolemy.actor.parameters.ParameterPort
+ * @see ptolemy.actor.TypedAtomicActor
  * @author Kyungmin Bae
- * @version $Id$
  * @since Ptolemy II 8.0
+ * @version $Id$
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class ParameterPort extends IOPort {
-
-    /**
-     * Constructs the code generator adapter
-     * associated with the given ParameterPort.
-     * @param component The associated ParameterPort
+public class TypedAtomicActor extends Entity {
+    /** Construct the code generator helper associated
+     *  with the given TypedAtomicActor.
+     *  @param component The associated TypedCompositeActor.
      */
-    public ParameterPort(ptolemy.actor.parameters.ParameterPort component) {
+    public TypedAtomicActor(ptolemy.actor.TypedAtomicActor component) {
         super(component);
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor#getInfo(java.lang.String, java.util.List)
-     */
-    protected String getInfo(String name, List<String> parameters)
-            throws IllegalActionException {
-        if (name.equals("param")) {
-            return ((ptolemy.actor.parameters.ParameterPort) getComponent())
-                    .getParameter().getName();
-        }
-        return super.getInfo(name, parameters);
     }
 }

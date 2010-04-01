@@ -3,15 +3,18 @@ current-time : 0/**/
 
 /***semantics_CurrentTime***/
 (tomod CURRENT-TIME is
-  inc ACTOR .
+  inc ATOMIC-ACTOR .
   inc OBJECT-WITH-TIMER .
 
   class CurrentTime .
-    subclass CurrentTime < Actor TimeObj .
-  eq ^ CurrentTime = Actor .
+    subclass CurrentTime < AtomicActor TimeObj .
+  eq ^ CurrentTime = AtomicActor .
 
-  vars PORTS : Configuration . 
-  vars PI PI' : PortId . var DPS : DetPortStatus .
+---------------------------------------------------------------------
+--- Variable Declaration
+---------------------------------------------------------------------
+
+  vars PORTS : Configuration . var DPS : DetPortStatus .
   var O : Oid . var REST : ObjectConfiguration .
   var T : Time .
 
@@ -19,21 +22,27 @@ current-time : 0/**/
 --- Semantics Steps
 ---------------------------------------------------------------------
 
+*** 0] init
+
+*** 1] prefire
+
+*** 2] portFixPoints 
+
   eq portFixPoints(
-     < O : CurrentTime |
-        status : enabled,
-        current-time : T,
-        ports :
-            < PI : InPort | status : DPS >
-            < PI' : OutPort | status : unknown >
-            PORTS
-     > REST)
-   = portFixPoints(
-     < O : CurrentTime |
-        ports :
-            < PI : InPort | >
-            < PI' : OutPort | status : DPS, value : # T >
-            PORTS > REST) .
+      < O : CurrentTime |
+         status : enabled,
+         current-time : T,
+         ports : < 'trigger : InPort | status : DPS >
+                 < 'output : OutPort | status : unknown > PORTS > 
+      REST)
+  = 
+     portFixPoints(
+      < O : CurrentTime |
+         ports : < 'trigger : InPort | >
+                 < 'output : OutPort | status : DPS, value : # T > PORTS > 
+      REST) .
+
+*** 3] postfire
 
 endtom)
 /**/

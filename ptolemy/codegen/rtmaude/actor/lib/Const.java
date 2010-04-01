@@ -27,10 +27,10 @@
  */
 package ptolemy.codegen.rtmaude.actor.lib;
 
-import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
-//// Clock
+//// Const
 
 /**
  * Generate RTMaude code for a Const actor in DE domain.
@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class Const extends Entity {
+public class Const extends TypedAtomicActor {
     /**
      * Constructor method for the Clock adapter.
      * @param component The associated Clock actor
