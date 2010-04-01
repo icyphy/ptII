@@ -1,6 +1,6 @@
 /* When there is a token combine it with current value, if there are no tokens at all send a clear. 
  
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,8 +55,9 @@ import java.util.LinkedList;
  
  @author Christian Motika
  @version $Id: SRCombine.java 44783 2010-04-01 17:05:17Z $
- @since Ptolemy II 0.2
- @Pt.AcceptedRating Red (cmot)
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating red (cmot)
+ @Pt.AcceptedRating red (cmot)
  */
 public class Combine extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -72,7 +73,7 @@ public class Combine extends TypedAtomicActor {
         super(container, name);
         
         // Parameters
-        function = new StringAttribute(this, "combine function");
+        function = new StringAttribute(this, "function");
         function.setExpression("add");
         
         _function = _ADD;
@@ -89,7 +90,7 @@ public class Combine extends TypedAtomicActor {
         output.setTypeEquals(BaseType.INT);
         value.setTypeEquals(BaseType.INT);
 
-        //FIXME: add appropriate svg icon here 
+        // FIXME: add appropriate svg icon here 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-15\" " + "width=\"55\" height=\"40\" "
                 + "style=\"fill:red\"/>\n" + "</svg>\n");
@@ -113,7 +114,7 @@ public class Combine extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
-    /** Output a resulting
+    /** Output a resulting value.
      * This is a constant value of "1", always.
      */
     public TypedIOPort value;
@@ -123,22 +124,22 @@ public class Combine extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Collect the integer tokens of all available inputs and combine them 
-     * using the combine function.
-     * Do this non-strict to take part in a fixed point iteration process.
+     *  using the combine function.
+     *  Do this non-strict to take part in a fixed point iteration process.
      *  @exception IllegalActionException If calling send() or super.fire()
-     * throws it.
+     *  throws it.
      */
    public void fire() throws IllegalActionException {
         super.fire();
         
-        //Actor is scheduled
+        // Actor is scheduled
         if (_debugging) {
             _debug("Combine scheduled.");
         }
         
-    	//check if any ports have known inputs
+    	// Check if any ports have known inputs.
     	for (int i = 0; i < input.getWidth(); i++) {
-    		if (input.isKnown(i) && input.hasToken(i)) {
+            if (input.isKnown(i) && input.hasToken(i)) {
     	        _present = true;
     	        if (_debugging) {
     	            _debug("Combine: Port " + i + " has token.");
@@ -148,34 +149,33 @@ public class Combine extends TypedAtomicActor {
                 if (in != null) {
                     _value = _updateFunction(in.intValue(), _value);
                 }    	        
-    		}
+            }
     	}
 
     	if (!_present) {
+            if (_debugging) {
     	        _debug("Checking iff unknown by all connected ports");
-        	//check if all ports are cleared (known w/o any token)
-        	boolean allKnown = true;
-        	for (int i = 0; i < input.getWidth(); i++) {
-        		allKnown &= input.isKnown(i);
-                        _debug("allKnown after "+input.getName()+":"+allKnown);
-        	}
-        	if (allKnown) {
-                    _debug("Sending clear out");
-                    output.sendClear(0);
-                    value.sendClear(0);
-        	}
+            }
+            //check if all ports are cleared (known w/o any token)
+            boolean allKnown = true;
+            for (int i = 0; i < input.getWidth(); i++) {
+                allKnown &= input.isKnown(i);
+                _debug("allKnown after "+input.getName()+":"+allKnown);
+            }
+            if (allKnown) {
+                _debug("Sending clear out");
+                output.sendClear(0);
+                value.sendClear(0);
+            }
     	}
     	else  {
-        	//send out integer token if presentToken
-    	        _debug("Sending value "+_value+" out");
-        	output.send(0, new IntToken(1));
-        	value.send(0, new IntToken(_value));
+            // Send out integer token if presentToken
+            _debug("Sending value "+_value+" out");
+            output.send(0, new IntToken(1));
+            value.send(0, new IntToken(_value));
     	}
-
     }
 
-    //-------------------------------------------------------------------------
-    
     /** This actor must be *NON-strict* because it must not wait for more than
      * one input within an SR director iteration.
      */
@@ -183,7 +183,6 @@ public class Combine extends TypedAtomicActor {
         return false;
     }    
 
-    //-------------------------------------------------------------------------
     public boolean prefire() throws IllegalActionException {
         return true;
     }
@@ -196,8 +195,6 @@ public class Combine extends TypedAtomicActor {
     	  return true;
     }
     
-    //-------------------------------------------------------------------------
-
     /** Set the RailwayInterface and open a TCP connection to the
      *  Model Railway interface program w/ the given <i>host</i> and
      *  <i>port</i> parameters.
@@ -211,8 +208,6 @@ public class Combine extends TypedAtomicActor {
         resetValue();
     }
     
-    //-------------------------------------------------------------------------
-    
     /** This should reset the value according to the current combine function. 
      */
     private void resetValue() {
@@ -224,8 +219,6 @@ public class Combine extends TypedAtomicActor {
     		_value = 0;
     }
 
-    //-------------------------------------------------------------------------
-
     /** Terminate the TCP connection of the Model Railway interface.
      *  Set RI object to null so that for the next execution a new
      *  connection will be made.
@@ -236,8 +229,6 @@ public class Combine extends TypedAtomicActor {
     	super.wrapup();
     }
 
-    //-------------------------------------------------------------------------
-    
     /** Calculate the function on the given arguments.
      *  @param in The new input value.  Should never be null.
      *  @param old The old result value, or null if there is none.
@@ -291,8 +282,6 @@ public class Combine extends TypedAtomicActor {
 
         return result;
     }    
-    
-    //-------------------------------------------------------------------------
     
     /** Override the base class to determine which function is being
      *  specified.  Read the value of the function attribute and set

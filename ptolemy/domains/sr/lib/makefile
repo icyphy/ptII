@@ -55,6 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Absent.java \
+	Combine.java \
 	Current.java \
 	Default.java \
 	EnabledComposite.java \
@@ -68,6 +69,7 @@ JSRCS = \
         When.java	
 
 OTHER_FILES_TO_BE_JARED = \
+	Combine.xml \
 	CurrentIcon.xml \
 	DefaultIcon.xml \
 	PreIcon.xml \
