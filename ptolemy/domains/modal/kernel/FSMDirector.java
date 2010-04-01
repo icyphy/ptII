@@ -430,22 +430,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             // It will not be possible if all transitions that can produce
             // the output have guards that evaluate to false.
             List<IOPort> outputs = controller.outputPortList();
-            //FIXME: maybe ask refinements too and send a lear out ONLYE
-            //guardsEvaluable regarding refinement
+            //FIXME: maybe ask refinements too and send a clear out ONLY
             List<Transition> transitionList = controller._currentState.outgoingPort.linkedRelationList();
 
             for (IOPort port : outputs) {
-                
                 // grab the HashMap for all transitions where this port is referenced
                 // in the output actions
-                HashMap transitionMap;
-                if (_portReferencedInTransitionMaps.containsKey(port)) {
-                    transitionMap = _portReferencedInTransitionMaps.get(port);
-                }
-                else {
-                    transitionMap = new HashMap<Transition,Boolean>();
-                    _portReferencedInTransitionMaps.put(port, transitionMap);
-                }
+                HashMap transitionMap = _getTransitionMap(port);
                 
                 for (int channel = 0; channel < port.getWidth(); channel++) {
                     if (!port.isKnown(channel)) {
@@ -485,44 +476,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             }//end for all refinements
                         }//end if has refinement
                         
-                        if (!guardsEvaluable) {
-                            // if we know already that a refinement didn't cleared
-                            // this channel[port], then we don't need to inspect any further
-                            // because this already prevents us from clearing the channel safely
-                            continue;
-                        }
-                        
-                        for (Transition transition : transitionList) {
-                            // Determine whether the transition includes an assignment to this port.
-                            // Use a HashMap for each port to save booleans for each transition
-                            Boolean matches;
-                            if (transitionMap.containsKey(transition)) {
-                                matches = (Boolean)transitionMap.get(transition);
-                            }
-                            else {
-                                String outputActionsExpression = transition.outputActions.getExpression();
-                                String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "\\s*=[^=](.|\\s)*";
-                                matches = (outputActionsExpression.trim().matches(regexp));
-                                transitionMap.put(transition, matches);
-                            }
-                            if (matches) {
-                                // Next check to see whether the guard evaluates to false.
-                                try {
-                                    if (!transition.isEnabled()) {
-                                      // if the transition is not enabled and NOT unknown-variable-error occurs this means
-                                      // the transition guard could (already) be evaluated to false
-                                      // => from this perspective it is okay to clear outputs (so dont prevent that)
-                                      //                                        guardsEvaluable = false;
-                                      //                                        break;
-                                    }
-                                } catch (IllegalActionException ex) {
-                                    // Guard cannot be evaluated. Cannot set this port
-                                    // to absent (yet).
-                                    guardsEvaluable = false;
-                                    break;
-                                }
-                            }
-                        }
+                        // if we know already that a refinement didn't cleared
+                        // this channel[port], then we don't need to inspect any further
+                        // because this already prevents us from clearing the channel safely
+                        // (reason for &&)
+                        guardsEvaluable = guardsEvaluable && _isGuardsEvaluable(port, controller);
                         if (guardsEvaluable) {
                                 port.send(channel, null);
                         }
@@ -540,6 +498,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
     }
 
+   
     /** Schedule a firing of the given actor at the given time.
      *  If there exists an executive director, this method delegates to
      *  the fireAt() method of the executive director by requesting
@@ -1052,7 +1011,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // FIXME: Check derived classes. This may only make sense for FSMReceiver.
         _resetOutputReceivers();
 
-        //clear the list
+        //clear this runtime list of ports to remember that a token has passed thru
         hadToken.clear();
         
         return result && !_stopRequested && !_finishRequested;
@@ -1502,7 +1461,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                                     + " from " + port.getName());
                         }
                         port.send(i, t);
-                        //mark this port as we sent a token to prevent sending a clear afterwards in this fixed point iteration
+                        // mark this port as we sent a token to prevent sending a clear afterwards in this fixed point iteration
                         hadToken.add(port);
                         result = true;
                     } else {
@@ -1511,7 +1470,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                                     + port.getName());
                         }
                         if (!hadToken.contains(port)) {
-                            port.send(i, null);
+                            // only send a clear (=absent) to the port, iff it is ensured that
+                            // in the current state, there might not be an enabled transition (now or later)
+                            // that then would produce a token on that port
+                            FSMActor controller = getController();
+                            boolean guardsEvaluable = _isGuardsEvaluable(port, controller);
+                            if (guardsEvaluable) {
+                                   port.send(i, null);
+                            }
                         }
                     }
                 }
@@ -1523,8 +1489,88 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         return result;
     }
 
-    LinkedList<IOPort> hadToken = new LinkedList<IOPort>();
+    /**
+     * Grab the HashMap for all transitions where this port is referenced in the output actions.
+     * 
+     * @param port
+     *            the IOPort in question
+     * @return the transition map
+     */
+    protected HashMap<Transition,Boolean> _getTransitionMap(IOPort port) {
+        HashMap transitionMap = null;
+        if (_portReferencedInTransitionMaps.containsKey(port)) {
+            transitionMap = _portReferencedInTransitionMaps.get(port);
+        }
+        else {
+            transitionMap = new HashMap<Transition,Boolean>();
+            _portReferencedInTransitionMaps.put(port, transitionMap);
+        }
+        return transitionMap;
+    }
     
+    /**
+     * Search the current state (controller level) for any outgoing transition that
+     * could possibly output a token on the port. Return true if there is any such
+     * transition, i.e., a transition with a guard that cannot be evaluated to false (yet)
+     * and an output action writing to port. Return false if it safe to send a clear
+     * for this port (according to the current hierarchy level). Note that refinements
+     * could possibly have to be evaluated also.
+     * FIXME: The implementation should not re-parse the output actions and get the
+     * information from the parsed AST.
+     * 
+     * @param port
+     *            the IOPort in question
+     * @param controller
+     *            the controller for considering the current state
+     * @return true, if successful
+     */
+    protected boolean _isGuardsEvaluable(IOPort port, FSMActor controller) {
+        if (_debugging) {
+            _debug("Calling _isGuardsEvaluable on port: " + port.getFullName());
+        }
+        boolean guardsEvaluable = true;
+        // grab the HashMap for all transitions where this port is referenced
+        // in the output actions
+        HashMap transitionMap = _getTransitionMap(port);
+        
+        List<Transition> transitionList = controller._currentState.outgoingPort.linkedRelationList();
+        for (Transition transition : transitionList) {
+            // Determine whether the transition includes an assignment to this port.
+            // Use a HashMap for each port to save booleans for each transition
+            Boolean matches;
+            if (transitionMap.containsKey(transition)) {
+                matches = (Boolean)transitionMap.get(transition);
+            }
+            else {
+                String outputActionsExpression = transition.outputActions.getExpression();
+                String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "\\s*=[^=](.|\\s)*";
+                matches = (outputActionsExpression.trim().matches(regexp));
+                transitionMap.put(transition, matches);
+            }
+            if (matches) {
+                // Next check to see whether the guard evaluates to false.
+                try {
+                    if (!transition.isEnabled()) {
+                      // if the transition is not enabled and NO unknown-variable-error occurs this means
+                      // the transition guard could (already) be evaluated to false
+                      // => from this perspective it is okay to clear outputs (so dont prevent that)
+                      //                                        guardsEvaluable = false;
+                      //                                        break;
+                    }
+                } catch (IllegalActionException ex) {
+                    // Guard cannot be evaluated. Cannot set this port
+                    // to absent (yet).
+                    guardsEvaluable = false;
+                    break;
+                }
+            }
+        }
+        return guardsEvaluable;
+    }
+    
+    /** Ports that had seen a Token to prevent clearing them afterwards. */
+    LinkedList<IOPort> hadToken = new LinkedList<IOPort>();
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
