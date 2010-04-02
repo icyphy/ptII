@@ -75,8 +75,10 @@
 <!ELEMENT link EMPTY>
 <!ATTLIST link insertAt CDATA #IMPLIED
                insertInsideAt CDATA #IMPLIED
-               port CDATA #REQUIRED
+               port CDATA #IMPLIED
                relation CDATA #IMPLIED
+               relation1 CDATA #IMPLIED
+               relation2 CDATA #IMPLIED
                vertex CDATA #IMPLIED>
 
 <!-- Deprecated.  Use a property instead. -->
