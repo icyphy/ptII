@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE entity
-  PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "D:\PtolemyII\ptII\ptolemy\moml\MoML_1.dtd">
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AdaptiveBeamForming" class="ptolemy.actor.TypedCompositeActor">
    <property name="PThales Director" class="ptolemy.domains.pthales.kernel.PthalesDirector">
       <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 100.0]"/>
