@@ -43,6 +43,11 @@ import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
@@ -51,7 +56,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  This class provides a tree view of a ptolemy model, showing only the
  entities of the model.  The class supports drag-and-drop.
 
- @author Steve Neuendorffer and Edward A. Lee
+ @author Steve Neuendorffer and Edward A. Lee, contributor: Sean Riddle
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (eal)
@@ -131,7 +136,8 @@ public class PTree extends JTree {
                     return;
                 }
 
-                if (object instanceof NamedObj) {
+                if (object instanceof NamedObj
+                        && !_isPropertySet((NamedObj) object, "_notDraggable")) {
                     PtolemyTransferable transferable = new PtolemyTransferable();
                     transferable.addObject((NamedObj) object);
 
@@ -143,4 +149,29 @@ public class PTree extends JTree {
             }
         }
     }
+
+    private static boolean _isPropertySet(NamedObj object, String name) {
+        Attribute attribute = object.getAttribute(name);
+
+        if (attribute == null) {
+            return false;
+        }
+
+        if (attribute instanceof Parameter) {
+            try {
+                Token token = ((Parameter) attribute).getToken();
+
+                if (token instanceof BooleanToken) {
+                    if (!((BooleanToken) token).booleanValue()) {
+                        return false;
+                    }
+                }
+            } catch (IllegalActionException e) {
+                // Ignore, using default of true.
+            }
+        }
+
+        return true;
+    }
+
 }
