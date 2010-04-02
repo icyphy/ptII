@@ -51,12 +51,14 @@ TCL_SRCS = \
 	configTest.tcl \
 	testDefs.tcl
 
-JSRCS =
+JSRCS = \
+	ValidatingXMLParser.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	allConfigs.tcl \
-	allDemos.tcl
+	allDemos.tcl \
+	validDemos.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
