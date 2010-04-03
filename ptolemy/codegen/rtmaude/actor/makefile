@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/rtmaude/actor
 
-DIRS =      lib parameters
+DIRS =      lib
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../..
