@@ -205,9 +205,6 @@ import ptolemy.kernel.util.Workspace;
  This director is based on the CTDirector by Jie Liu and Haiyang Zheng,
  but it has a much simpler scheduler and a fixed-point semantics.</p>
 
-<p>FIXME: the design of clone method should be examined and reimplemented.
-All Continuous files need this.</P>
-
  @author Haiyang Zheng and Edward A. Lee, based on CTDirector by Jie Liu and Haiyang Zheng
  @version $Id$
  @since Ptolemy II 6.0
@@ -368,10 +365,14 @@ public class ContinuousDirector extends FixedPointDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ContinuousDirector newObject = (ContinuousDirector) super
                 .clone(workspace);
+        newObject._accumulatedSuspendTime = null;
         newObject._breakpoints = null;
         newObject._enclosingContinuousDirectorVersion = -1L;
+        newObject._lastSuspendTime = null;
         newObject._ODESolver = null;
+        newObject._statefulComponents = new LinkedList();
         newObject._statefulComponentsVersion = -1L;
+        newObject._stepSizeControllers = new LinkedList();
         newObject._stepSizeControllersVersion = -1L;
         return newObject;
     }
