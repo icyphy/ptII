@@ -196,6 +196,25 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the director into the specified workspace. This calls the
+     *  base class and then sets the attribute public members to refer
+     *  to the attributes of the new director.
+     *  @param workspace The workspace for the new director.
+     *  @return A new director.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *  an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        FixedPointDirector newObject = (FixedPointDirector) super.clone(workspace);
+        newObject._receivers = new LinkedList();
+        
+        newObject._actorsAllowedToFire = new HashSet();
+        newObject._actorsFinishedFiring = new HashSet();
+        newObject._actorsFired = new HashSet();
+        newObject._cachedAllInputsKnown = new HashSet();
+        return newObject;
+    }
+
     /** Prefire and fire actors in the order given by the scheduler
      *  until the iteration converges.
      *  An iteration converges when a pass through the schedule does
@@ -307,12 +326,8 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
             }
         }
 
-        _actorsAllowedToFire = new HashSet();
-        _actorsFinishedFiring = new HashSet();
-        _cachedAllInputsKnown = new HashSet();
-
         _cachedFunctionalProperty = true;
-        _functionalPropertyVersion = -1;
+        _functionalPropertyVersion = -1L;
 
         super.initialize();
 
@@ -888,18 +903,18 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
      *  in the current iteration. This is used only to check monotonicity
      *  constraints.
      */
-    private Set _actorsAllowedToFire;
+    private Set _actorsAllowedToFire = new HashSet();
 
     /** The set of actors that have been fired in this iteration with
      *  all inputs known.
      */
-    private Set _actorsFinishedFiring;
+    private Set _actorsFinishedFiring = new HashSet();
 
     /** Actors that were fired in the most recent invocation of the fire() method. */
     private Set _actorsFired = new HashSet();
 
     /** The set of actors that have all inputs known in the given iteration. */
-    private Set _cachedAllInputsKnown;
+    private Set _cachedAllInputsKnown = new HashSet();
 
     /** The cache of the functional property of the container of this director. */
     private boolean _cachedFunctionalProperty;
