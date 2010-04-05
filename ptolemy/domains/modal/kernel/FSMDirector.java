@@ -263,6 +263,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         newObject._lastChosenTransition = null;
         newObject._localReceiverMapsVersion = -1;
 
+        newObject._currentOffset = null;
+
         return newObject;
     }
 
