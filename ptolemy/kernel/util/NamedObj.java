@@ -2281,14 +2281,22 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             // Yes, this is slow, but hey, it's debug code.
             List<DebugListener> list;
 
-            // NOTE: This used to synchronize on this, which caused
-            // deadlocks.  We use a more specialized lock now.
-            synchronized (_debugListeners) {
-                list = new ArrayList<DebugListener>(_debugListeners);
-            }
+            if (_debugListeners == null) {
+                System.err
+                        .println("Warning, _debugListeners was null, "
+                                + "which means that _debugging was set to true, but no "
+                                + "listeners were added?");
+                System.err.println(event);
+            } else {
+                // NOTE: This used to synchronize on this, which caused
+                // deadlocks. We use a more specialized lock now.
+                synchronized (_debugListeners) {
+                    list = new ArrayList<DebugListener>(_debugListeners);
+                }
 
-            for (DebugListener listener : list) {
-                listener.event(event);
+                for (DebugListener listener : list) {
+                    listener.event(event);
+                }
             }
         }
     }
