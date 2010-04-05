@@ -269,11 +269,17 @@ public class Transition extends ComponentRelation {
         newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
         newObject.refinementName = (StringAttribute) newObject
                 .getAttribute("refinementName");
+        newObject._destinationState = null;
         newObject._guardParseTree = null;
         newObject._guardParseTreeVersion = -1;
         newObject._actionListsVersion = -1;
         newObject._choiceActionList = new LinkedList();
         newObject._commitActionList = new LinkedList();
+        newObject._parseTreeEvaluatorVersion = -1;
+        newObject._parseTreeEvaluator = null;
+        newObject._refinementVersion = -1;
+        newObject._refinement = null;
+        newObject._sourceState = null;
         newObject._stateVersion = -1;
         return newObject;
     }

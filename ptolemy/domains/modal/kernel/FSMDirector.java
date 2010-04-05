@@ -253,6 +253,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         newObject._currentLocalReceiverMap = null;
         newObject._enabledRefinements = null;
         newObject._disabledActors = new HashSet();
+        newObject._hadToken = new LinkedList<IOPort>();
         newObject._localReceiverMaps = new HashMap();
         newObject._stateRefinementsToPostfire = new LinkedList<Actor>();
         newObject._transitionRefinementsToPostfire = new LinkedList<Actor>();
@@ -262,6 +263,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         newObject._controllerVersion = -1;
         newObject._lastChosenTransition = null;
         newObject._localReceiverMapsVersion = -1;
+        
+        newObject._currentOffset = null;
+        
+        newObject._portReferencedInTransitionMaps 
+                = new HashMap<IOPort,HashMap<Transition,Boolean>>();
 
         return newObject;
     }
@@ -431,7 +437,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             // the output have guards that evaluate to false.
             List<IOPort> outputs = controller.outputPortList();
             //FIXME: maybe ask refinements too and send a clear out ONLY
-            List<Transition> transitionList = controller._currentState.outgoingPort.linkedRelationList();
 
             for (IOPort port : outputs) {
                 // grab the HashMap for all transitions where this port is referenced
@@ -1012,7 +1017,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         _resetOutputReceivers();
 
         //clear this runtime list of ports to remember that a token has passed thru
-        hadToken.clear();
+        _hadToken.clear();
         
         return result && !_stopRequested && !_finishRequested;
     }
@@ -1302,9 +1307,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     
     
     /** If the execution stops, that should result in clearing the HashMaps
-     * because the user might change the model (transition-labels). 
+     *  because the user might change the model (transition-labels). 
      */
     public void stop() {
+        // FIXME: This is not the right way to do this!!!
+        super.stop();
         this._portReferencedInTransitionMaps.clear();
     }
 
@@ -1462,14 +1469,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         }
                         port.send(i, t);
                         // mark this port as we sent a token to prevent sending a clear afterwards in this fixed point iteration
-                        hadToken.add(port);
+                        _hadToken.add(port);
                         result = true;
                     } else {
                         if (_debugging) {
                             _debug(getName(), "sending clear from "
                                     + port.getName());
                         }
-                        if (!hadToken.contains(port)) {
+                        if (!_hadToken.contains(port)) {
                             // only send a clear (=absent) to the port, iff it is ensured that
                             // in the current state, there might not be an enabled transition (now or later)
                             // that then would produce a token on that port
@@ -1500,8 +1507,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         HashMap transitionMap = null;
         if (_portReferencedInTransitionMaps.containsKey(port)) {
             transitionMap = _portReferencedInTransitionMaps.get(port);
-        }
-        else {
+        } else {
             transitionMap = new HashMap<Transition,Boolean>();
             _portReferencedInTransitionMaps.put(port, transitionMap);
         }
@@ -1568,9 +1574,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         return guardsEvaluable;
     }
     
-    /** Ports that had seen a Token to prevent clearing them afterwards. */
-    LinkedList<IOPort> hadToken = new LinkedList<IOPort>();
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1602,19 +1605,20 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      */
     protected Map _localReceiverMaps = new HashMap();
 
-    /** State refinements to postfire(), as determined by the fire() method. */
-    protected List<Actor> _stateRefinementsToPostfire = new LinkedList<Actor>();
-
-    /** Transition refinements to postfire(), as determined by the fire() method. */
-    protected List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
-
     /** A HashMap of transition-boolean-pairs for each port indicating if the port is contained
      * in an output action of the specific transition. This information is lazily inserted into
      * the HashMap during the simulation for performance reasons. It is not pre-done because during a run
      * we may never traverse all nodes defined.
      */
-    protected HashMap<IOPort,HashMap<Transition,Boolean>> _portReferencedInTransitionMaps 
-                                         = new HashMap<IOPort,HashMap<Transition,Boolean>>();
+    protected HashMap<IOPort,HashMap<Transition,Boolean>> 
+            _portReferencedInTransitionMaps 
+            = new HashMap<IOPort,HashMap<Transition,Boolean>>();
+
+    /** State refinements to postfire(), as determined by the fire() method. */
+    protected List<Actor> _stateRefinementsToPostfire = new LinkedList<Actor>();
+
+    /** Transition refinements to postfire(), as determined by the fire() method. */
+    protected List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1724,6 +1728,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
     /** The current offset indicating how far behind environment time local time is. */
     private Time _currentOffset;
+
+    /** Ports that had seen a Token to prevent clearing them afterwards. */
+    private LinkedList<IOPort> _hadToken = new LinkedList<IOPort>();
 
     /** The last chosen transition, or null if none was chosen. */
     private Transition _lastChosenTransition;
