@@ -185,7 +185,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return true or false.
      */
     public boolean hasRoom() {
-        return (_posOut + 1 <= _buffer.length);
+        return (_getAddress(_posOut, true) < _buffer.length);
     }
 
     /** Return true if the buffer can contain n more token.
@@ -193,14 +193,14 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return true or false.
      */
     public boolean hasRoom(int numberOfTokens) {
-        return (_posOut + numberOfTokens <= _buffer.length);
+        return (_getAddress(_posOut + (numberOfTokens-1), true) < _buffer.length);
     }
 
     /** Return if the buffer contains 1 more token to be read.
      *  @return True.
      */
     public boolean hasToken() {
-        return (_posOut >= _posIn + 1);
+        return (_getAddress(_posIn, true) < _buffer.length);
     }
 
     /** Return if the buffer contains n more token to be read.
@@ -208,7 +208,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return True.
      */
     public boolean hasToken(int numberOfTokens) {
-        return (_posOut >= _posIn + numberOfTokens);
+        return (_getAddress(_posIn + (numberOfTokens-1), true) < _buffer.length);
     }
 
     /** Return true.
