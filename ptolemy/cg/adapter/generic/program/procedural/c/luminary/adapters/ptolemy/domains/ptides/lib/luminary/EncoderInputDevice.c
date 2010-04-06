@@ -2,7 +2,9 @@
 //Global variables
 static volatile uint32 g_alignCount = 0;				// Number of alignment pulses received
 static volatile uint8 g_alignEnabled = 0;				// Indicates if alignment is enabled
-
+static volatile int32 	g_discPowerOffset = 0;		//Essentially a DC offset to overcome static friction; determined dynamically in main()
+static volatile uint8	g_run = 0;					// Boolean, used to control start/stop state of the TBD
+static volatile uint32	g_timeStart = 0;			// Time control loop is entered (following external input);				
 /**/
 
 /*** sharedBlock ***/
@@ -15,8 +17,6 @@ static volatile uint8 g_alignEnabled = 0;				// Indicates if alignment is enable
 
 //Number of encoder pulses per revolution of the disc; this takes into account gearing ratio
 #define ENCODER_TICKS_PER_REV	1000
-
-#define DISC_SMALLEST_RATE		(~(1 << 30))	// Smallest rate (closest to zero) corresponds to the largest encoder period
 /**/
 
 /*** initBlock ***/

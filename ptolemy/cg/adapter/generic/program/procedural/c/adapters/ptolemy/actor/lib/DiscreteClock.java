@@ -34,7 +34,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  * A adapter class for ptolemy.actor.lib.DiscreteClock.
  *
  * @author Jia Zou
- * @version $Id: TimeDelay.java 57044 2010-01-27 22:41:05Z cxh $
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (jiazou)
  * @Pt.AcceptedRating Red (jiazou)

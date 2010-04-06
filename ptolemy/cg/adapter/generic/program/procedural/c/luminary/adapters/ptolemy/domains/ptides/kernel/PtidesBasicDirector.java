@@ -216,6 +216,7 @@ public class PtidesBasicDirector
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
+        code.append(super.generateInitializeCode());
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case
         // the EmbeddedCodeActor would also have a Ptides director (in order to
@@ -232,7 +233,6 @@ public class PtidesBasicDirector
         code
                 .append(_templateParser.getCodeStream().getCodeBlock(
                         "initPDBlock"));
-        code.append(super.generateInitializeCode());
 
         return code.toString();
     }

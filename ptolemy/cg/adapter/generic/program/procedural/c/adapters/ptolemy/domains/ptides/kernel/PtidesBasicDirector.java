@@ -99,7 +99,8 @@ public class PtidesBasicDirector extends Director {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+        code.append(super.generateInitializeCode());
+
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case
         // the EmbeddedCodeActor would also have a Ptides director (in order to
@@ -110,8 +111,6 @@ public class PtidesBasicDirector extends Director {
             return code.toString();
         }
         
-        code.append(super.generateInitializeCode());
-
         code
                 .append(_templateParser.getCodeStream().getCodeBlock(
                         "initPIBlock"));

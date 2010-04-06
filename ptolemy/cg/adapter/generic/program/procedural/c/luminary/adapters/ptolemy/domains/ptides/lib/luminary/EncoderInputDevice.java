@@ -34,7 +34,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * is basically the same as GPInputDevice, only the C template includes more
  * calculations.
  * @author Jia Zou
- * @version $Id: EncoderInputDevice.java 57494 2010-03-18 00:51:02Z jiazou $
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Yellow (jiazou)
  * @Pt.AcceptedRating Red (jiazou)
