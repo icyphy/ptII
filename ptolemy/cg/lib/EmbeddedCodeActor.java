@@ -123,13 +123,10 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         executeEmbeddedCode.setExpression("true");
 
         // FIXME: SDFDirector should probably not be fixed
-        if (((Actor)getContainer()).getDirector() instanceof SDFDirector) {
-            new SDFDirector(this, "SDFDirector");
-        } else if (((Actor)getContainer()).getDirector() instanceof PtidesBasicDirector) {
-            //new PtidesBasicDirector(this, "PtidesBasicDirector");
+        if (((Actor)getContainer()).getDirector() instanceof PtidesBasicDirector) {
+            new PtidesBasicDirector(this, "PtidesBasicDirector");
         } else {
-            throw new IllegalActionException(this, "This embedded actor is enclosed by" +
-            		"a director that is not currently supported.");
+            new SDFDirector(this, "SDFDirector");
         }
     }
 
