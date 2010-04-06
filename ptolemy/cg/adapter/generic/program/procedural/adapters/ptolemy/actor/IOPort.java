@@ -295,9 +295,11 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         ptolemy.actor.Receiver[][] farReceivers = port.getRemoteReceivers();
         Receiver[][] receiverAdapters = new Receiver[farReceivers.length][];
         for (int i = 0; i < farReceivers.length; i++) {
-            receiverAdapters[i] = new Receiver[farReceivers[i].length];
-            for (int j = 0; j < farReceivers[i].length; j++) {
-                receiverAdapters[i][j] = (Receiver) getAdapter(farReceivers[i][j]);
+            if (farReceivers[i] != null) {
+                receiverAdapters[i] = new Receiver[farReceivers[i].length];
+                for (int j = 0; j < farReceivers[i].length; j++) {
+                    receiverAdapters[i][j] = (Receiver) getAdapter(farReceivers[i][j]);
+                }
             }
         }
         return receiverAdapters;

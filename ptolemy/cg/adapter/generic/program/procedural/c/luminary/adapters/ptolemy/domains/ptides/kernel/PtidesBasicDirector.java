@@ -36,7 +36,6 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.domains.ptides.lib.luminary.LuminarySensorInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
@@ -90,6 +89,17 @@ public class PtidesBasicDirector
      */
     public StringBuffer generateAsseblyFile() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no shared code needs to be
+        // generated.
+        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
+                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            return code;
+        }
+        
         // Get all actors that are interruptDevices. Then for each of these actors,
         // generate a name for it, and put the name along with this actor into a
         // HashMap.
@@ -206,6 +216,16 @@ public class PtidesBasicDirector
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no shared code needs to be
+        // generated.
+        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
+                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            return code.toString();
+        }
+        
         code.append(getCodeGenerator().comment(
                 "Initialization code of the PtidesDirector."));
 
@@ -227,7 +247,17 @@ public class PtidesBasicDirector
         StringBuffer code = new StringBuffer();
 
         code.append(super.generatePreinitializeCode());
-
+        
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no shared code needs to be
+        // generated.
+        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
+                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            return code.toString();
+        }
+        
         code.append(_templateParser.getCodeStream().getCodeBlock(
                 "preinitPDBlock"));
 
@@ -267,50 +297,6 @@ public class PtidesBasicDirector
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the offset variables for the given port.
-     *  Since built-in queue structure is used, it eliminates the
-     *  need for offset variables. Instead, this method generates
-     *  the declaration of the queues if the specified port has any
-     *  referable port channels. There is one referable port channel
-     *  for each connection. All input port channels are considered
-     *  referable.
-     *  @param port The specified port.
-     *  @return Code that declares the read and write offset variables.
-     *  @exception IllegalActionException If getting the code block
-     *   throws it.
-     */
-    protected String _createDynamicOffsetVariables(TypedIOPort port)
-            throws IllegalActionException {
-        /* FIXME: make it useful such that we know which event offset to write to
-           StringBuffer code = new StringBuffer();
-           code.append(_eol + _codeGenerator.comment(
-           "PtidesDirector's queue declarations."));
-
-           int width;
-           if (port.isInput()) {
-               width = port.getWidth();
-           } else {
-               width = 0;
-           }
-
-           // Declare a queue variable for each channel.
-           if (width != 0) {
-
-               List args = new LinkedList();
-               args.add("");
-
-               for (int i = 0; i < width; i++) {
-                   args.set(0, _generateQueueReference(port, i));
-                   code.append(_codeStream.getCodeBlock("declareBufferHeader", args));
-
-                   // Keep track of the queues.
-                   _queues.add(new Channel(port, i));
-               }
-           }
-           return code.toString()*/
-        return "";
-    }
-
     /** Generate the initialization code for any hardware component that is used.
      *  @return code initialization code for hardware peripherals
      *  @exception IllegalActionException
@@ -319,6 +305,16 @@ public class PtidesBasicDirector
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no shared code needs to be
+        // generated.
+        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
+                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            return code.toString();
+        }
+        
         // FIXME: output initialization always needs to happen before input initialization.
         code.append("void initializeHardware() {" + _eol);
         for (Actor actor : actuators.keySet()) {

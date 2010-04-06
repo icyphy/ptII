@@ -99,6 +99,17 @@ public class PtidesBasicDirector extends Director {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no shared code needs to be
+        // generated.
+        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
+                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            return code.toString();
+        }
+        
         code.append(super.generateInitializeCode());
 
         code
@@ -116,7 +127,10 @@ public class PtidesBasicDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(_eol + "void execute() { while (1){}; }" + _eol);
+        code.append(_eol + "void execute() {" + _eol +
+                "processEvents();" + _eol + 
+                "while (1);" + _eol +
+                "}" + _eol);
         return code.toString();
     }
 
@@ -135,6 +149,19 @@ public class PtidesBasicDirector extends Director {
 
         code.append(_generatePtrToEventHeadCodeInputs());
 
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no shared code needs to be
+        // generated.
+        // Notice here we append code from _generatePtrToEventHeadCodeInputs()
+        // because ports inside of the EmbeddedCodeActor needs to have pointers
+        // to event heads declared, which is done in the previous method.
+        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
+                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            return code.toString();
+        }
+        
         code.append(_generateActorFireCode());
 
         CodeStream codestream = _templateParser.getCodeStream();
@@ -193,7 +220,10 @@ public class PtidesBasicDirector extends Director {
      *  is used inside of a Ptides director. In this case, the director for the
      *  EmbeddedCodeActor also has a PtidesBasicDirector, and that PtidesBasicDirector
      *  needs to transfer tokens outside of the EmbeddedCodeActor, which is done in
-     *  this method.
+     *  this method. However, when an actor is trying to do "$put()$ on an output port
+     *  that is connected to another output port, then the PtidesBasicReceiver would
+     *  ensure a new event is created destined to the next actor on the outside, thus
+     *  this method does not need to generate any code.
      *  
      *  @param outputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
@@ -203,23 +233,6 @@ public class PtidesBasicDirector extends Director {
     throws IllegalActionException {
         code.append(getCodeGenerator()
                 .comment("Transfer tokens to the outside"));
-
-//        NamedProgramCodeGeneratorAdapter _compositeActorAdapter = (NamedProgramCodeGeneratorAdapter) getCodeGenerator()
-//        .getAdapter(_director.getContainer());
-//
-//        for (int i = 0; i < outputPort.getWidthInside(); i++) {
-//            if (i < outputPort.getWidth()) {
-//                String name = outputPort.getName();
-//
-//                if (outputPort.isMultiport()) {
-//                    name = name + '#' + i;
-//                }
-//
-//                code.append(_compositeActorAdapter.getReference(name, false) + " = ");
-//                code.append(_compositeActorAdapter.getReference("@" + name, false));
-//                code.append(";" + _eol);
-//            }
-//        }
     }
 
     /**
@@ -270,14 +283,25 @@ public class PtidesBasicDirector extends Director {
      */
     public Set getSharedCode() throws IllegalActionException {
 
+        Set sharedCode = new HashSet();
+
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no shared code needs to be
+        // generated.
+        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
+                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            return sharedCode;
+        }
+        
         _modelStaticAnalysis();
 
-        Set sharedCode = new HashSet();
         _templateParser.getCodeStream().clear();
 
         // define the number of actuators in the system as a macro.
-        _templateParser.getCodeStream().append(
-                "#define numActuators " + actuators.size() + _eol);
+        _templateParser.getCodeStream().append("#define numActuators "
+                + actuators.size() + _eol);
 
         _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
         _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");

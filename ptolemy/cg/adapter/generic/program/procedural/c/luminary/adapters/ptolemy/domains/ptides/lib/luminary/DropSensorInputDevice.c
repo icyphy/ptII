@@ -53,6 +53,8 @@ int32 trajectoryCorrectionPeriod(uint32 impactTime) {
 #define timeToDisc_shift	10 		//amount by which to shift measured drop time to determine table index; log2(dt) (in us)
 #define timeToDisc_size		52
 
+const Disc Disc_0 = {0, DISC_SMALLEST_RATE};			// Disc with zero position and large encoder period (essentially zero rate)
+static volatile Disc g_disc = {0, DISC_SMALLEST_RATE};	// Actual disc state
 /**/
 
 /*** initBlock ***/

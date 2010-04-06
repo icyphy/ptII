@@ -126,7 +126,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         if (((Actor)getContainer()).getDirector() instanceof SDFDirector) {
             new SDFDirector(this, "SDFDirector");
         } else if (((Actor)getContainer()).getDirector() instanceof PtidesBasicDirector) {
-            new PtidesBasicDirector(this, "PtidesBasicDirector");
+            //new PtidesBasicDirector(this, "PtidesBasicDirector");
         } else {
             throw new IllegalActionException(this, "This embedded actor is enclosed by" +
             		"a director that is not currently supported.");
