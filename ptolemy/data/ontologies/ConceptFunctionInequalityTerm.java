@@ -1,6 +1,6 @@
 /* A class for concept function inequality terms for ontology constraints.
  * 
- * Copyright (c) 1998-2010 The Regents of the University of California. All
+ * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
@@ -31,9 +31,9 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// ConceptFunctionInequalityTerm
 
-/** This class is an inequality term wrapper for concept functions that are used
- *  for ontology constraints. Use this class to set up inequality constraints
- *  between variables and concept functions.
+/** An inequality term wrapper for concept functions that are used for
+ *  ontology constraints. Use this class to set up inequality
+ *  constraints between variables and concept functions.
  * 
  *  @author Charles Shelton
  *  @version $Id$
@@ -43,13 +43,16 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ConceptFunctionInequalityTerm implements InequalityTerm {
 
-    /** Initialize the inequality term with the ConceptFunction it refers to
-     *  and the array of inequality terms that are inputs to the function.
-     *  @param conceptFunction The concept function to be called to get the value for this
-     *   inequality term.
-     *  @param inputTerms The array of inequality term inputs to the concept function.
-     *  @throws IllegalActionException If the number of input terms does not match
-     *   the required number of arguments for the concept function.
+    /** Initialize the inequality term with the ConceptFunction it
+     *  refers to and the array of inequality terms that are inputs to
+     *  the function.
+     *  @param conceptFunction The concept function to be called to
+     *   get the value for this inequality term.
+     *  @param inputTerms The array of inequality term inputs to the
+     *  concept function.
+     *  @exception IllegalActionException If the number of input terms
+     *   does not match the required number of arguments for the
+     *   concept function.
      */
     public ConceptFunctionInequalityTerm(ConceptFunction conceptFunction,
             InequalityTerm[] inputTerms) throws IllegalActionException {
@@ -66,7 +69,8 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
                     "The conceptFunction cannot be null.");
         } else if (_conceptFunction.getNumberOfArguments() != inputTerms.length) {
             throw new IllegalActionException(
-                    "Wrong number of input arguments for the concept function contained by "
+                    "Wrong number of input arguments for the concept function "
+                            + "contained by "
                             + "this inequality term. Input terms has "
                             + inputTerms.length + " elements "
                             + "but the concept function " + _conceptFunction
@@ -79,16 +83,18 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the concept function associated with this concept function
-     *  inequality term.
-     *  @return The concept function evaluated by this concept function inequality term.
+    /** Return the concept function associated with this concept
+     *  function inequality term.
+     *  @return The concept function evaluated by this concept
+     *  function inequality term.
      */
     public Object getAssociatedObject() {
         return _conceptFunction;
     }
 
-    /** Return an array of constants contained in this term. Since this term represents
-     *  a function, return an array containing all the Concept constants in the function.
+    /** Return an array of constants contained in this term. Since
+     *  this term represents a function, return an array containing
+     *  all the Concept constants in the function.
      *  @return An array of InequalityTerms
      */
     public final InequalityTerm[] getConstants() {
@@ -106,9 +112,10 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
         return array;
     }
 
-    /** Return the value of this inequality term. Since this term is for a concept function,
-     *  return the evaluation of the concept function based on the current
-     *  values of variables passed into the function.
+    /** Return the value of this inequality term. Since this term is
+     *  for a concept function, return the evaluation of the concept
+     *  function based on the current values of variables passed into
+     *  the function.
      *  @return An Object representing an element in the underlying CPO.
      *  @exception IllegalActionException If the value of this
      *  inequality term is not valid.
@@ -126,13 +133,15 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
         System.arraycopy(inputConcepts.toArray(), 0, inputConceptArray, 0,
                 inputConcepts.size());
 
-        // Return the current value of the function based on the current input concepts.
+        // Return the current value of the function based on the
+        // current input concepts.
         return _conceptFunction.evaluateFunction(inputConceptArray);
     }
 
-    /** Return the concept variables for this inequality term. This method returns
-     *  an array of InequalityTerms that the concept function referred to by this
-     *  ConceptFunctionInequalityTerm depends on.
+    /** Return the concept variables for this inequality term. This
+     *  method returns an array of InequalityTerms that the concept
+     *  function referred to by this ConceptFunctionInequalityTerm
+     *  depends on.
      *  @return An array of InequalityTerms.
      */
     public final InequalityTerm[] getVariables() {
@@ -152,8 +161,9 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
 
     /** Throw an Exception. This method cannot be called on a
      *  function term.
-     *  @param e The object value used to initialize the inequality term.
-     *   Since this method always throws an exception, this parameter is never used.
+     *  @param e The object value used to initialize the inequality
+     *   term.  Since this method always throws an exception, this
+     *   parameter is never used.
      *  @exception IllegalActionException Always thrown.
      */
     public final void initialize(Object e) throws IllegalActionException {
@@ -177,8 +187,9 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
     }
 
     /** Throw an Exception. The value of a function term cannot be set.
-     *  @param e The object value to set the inequality term. Since this method
-     *   always throws an exception, this parameter is never used.
+     *  @param e The object value to set the inequality term. Since
+     *   this method always throws an exception, this parameter is
+     *   never used.
      *  @exception IllegalActionException Always thrown.
      *  @see #getValue()
      */
@@ -216,6 +227,8 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
     /** The concept function to be evaluated for the inequality term. */
     private ConceptFunction _conceptFunction;
 
-    /** The array of inequality terms which are inputs to concept function.  */
+    /** The array of inequality terms which are inputs to concept
+     * function.
+     */
     private InequalityTerm[] _dependentTerms;
 }

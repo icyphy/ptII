@@ -1,8 +1,10 @@
 /* A class that creates lattice-based ontology adapter from
  * a model-based actor constraint definition attribute.
  * 
- * Copyright (c) 2007-2010 The Regents of the University of California. All
- * rights reserved. Permission is hereby granted, without written agreement and
+ * Copyright (c) 2010 The Regents of the University of California. All
+ * rights reserved.
+ *
+ * Permission is hereby granted, without written agreement and
  * without license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
  * copyright notice and the following two paragraphs appear in all copies of
@@ -47,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-//// LatticeOntologyAdapter
+//// ActorConstraintsDefinitionAdapter.java
 
 /**
  * A class that creates lattice-based ontology adapter from
@@ -61,13 +63,13 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
 
-    /** Construct the lattice ontology adapter for the given component and
-     *  property lattice.
+    /** Construct the lattice ontology adapter for the given component
+     *  and property lattice.
      *  @param solver The specified lattice-based ontology solver.
      *  @param component The given component.
-     *  @param constraintExpressions The list of constraint expressions for each port
-     *   or component in the actor.
-     *  @throws IllegalActionException Thrown if the adapter cannot be
+     *  @param constraintExpressions The list of constraint
+     *   expressions for each port or component in the actor.
+     *  @exception IllegalActionException Thrown if the adapter cannot be
      *   initialized.
      */
     public ActorConstraintsDefinitionAdapter(LatticeOntologySolver solver,
@@ -81,8 +83,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The string suffix for attribute names that represent constraint definitions
-     *  for actor attributes.
+    /** The string suffix for attribute names that represent
+     *  constraint definitions for actor attributes.
      */
     public static final String ATTR_SUFFIX = ActorConstraintsDefinitionAttribute.ATTR_SUFFIX;
 
@@ -93,25 +95,26 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
     public static final String GTE = ActorConstraintsDefinitionAttribute.GTE;
 
     /** String representing that the actor port or attribute should be
-     *  ignored for the ontology analysis and not have a concept assigned to it.
+     *  ignored for the ontology analysis and not have a concept
+     *  assigned to it.
      */
     public static final String IGNORE = ActorConstraintsDefinitionAttribute.IGNORE;
 
     /** String representing a less than or equal to constraint choice. */
     public static final String LTE = ActorConstraintsDefinitionAttribute.LTE;
 
-    /** String representing that the actor port or attribute has no constraints
-     *  but should have a concept assigned to it.
+    /** String representing that the actor port or attribute has no
+     *  constraints but should have a concept assigned to it.
      */
     public static final String NO_CONSTRAINTS = ActorConstraintsDefinitionAttribute.NO_CONSTRAINTS;
 
-    /** The string suffix for attribute names that represent constraint definitions
-     *  for actor ports.
+    /** The string suffix for attribute names that represent
+     *  constraint definitions for actor ports.
      */
     public static final String PORT_SUFFIX = ActorConstraintsDefinitionAttribute.PORT_SUFFIX;
 
-    /** String representing the separator character ";" between constraint expressions in
-     *  the constraint expression string.
+    /** String representing the separator character ";" between
+     *  constraint expressions in the constraint expression string.
      */
     public static final String SEPARATOR = ActorConstraintsDefinitionAttribute.SEPARATOR;
 
@@ -121,12 +124,14 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the constraints of this component. The constraints are generated from
-     *  the expressions passed in from an ActorConstraintsDefinitionAttribute that
-     *  allows the user to define actor constraints in the OntologySolver model.
+    /** Return the constraints of this component. The constraints are
+     *  generated from the expressions passed in from an
+     *  ActorConstraintsDefinitionAttribute that allows the user to
+     *  define actor constraints in the OntologySolver model.
      *  @return The list of constraints for this component.
-     *  @throws IllegalActionException If there is a problem parsing the constraint
-     *   expression strings to create the actor constraints.
+     *  @exception IllegalActionException If there is a problem
+     *   parsing the constraint expression strings to create the actor
+     *   constraints.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
@@ -152,9 +157,10 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         return super.constraintList();
     }
 
-    /** Return a list of property-able ports and attributes contained by the component.
-     *  If any of the actor element expressions are set to IGNORE then they
-     *  are not added to the list of property-able objects.
+    /** Return a list of property-able ports and attributes contained
+     *  by the component.  If any of the actor element expressions are
+     *  set to IGNORE then they are not added to the list of
+     *  property-able objects.
      *  @return The list of property-able ports and attributes.
      */
     public List<Object> getPropertyables() {
@@ -180,14 +186,15 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    /** Return the inequality term representing the concept function defined
-     *  by the specified string.
-     *  @param functionString The string containing the expression for the
-     *   concept function.
-     *  @return The concept function inequality term that implements the concept
-     *   function and contains the correct inequality term inputs.
-     *  @throws IllegalActionException If the string cannot be correctly parsed
-     *   and the concept function cannot be created.
+    /** Return the inequality term representing the concept function
+     *  defined by the specified string.
+     *  @param functionString The string containing the expression for
+     *   the concept function.
+     *  @return The concept function inequality term that implements
+     *   the concept function and contains the correct inequality term
+     *   inputs.
+     *  @exception IllegalActionException If the string cannot be
+     *   correctly parsed and the concept function cannot be created.
      */
     protected ConceptFunctionInequalityTerm _getConceptFunctionTerm(
             Object actorElement, String functionString)
@@ -199,11 +206,13 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             if (!constraintExpression.getExpression().trim().equals(IGNORE)) {
                 String actorElementName = getActorElementName(constraintExpression);
 
-                // Have to use a Java regular expression Pattern here because
-                // the String.regex() method doesn't match line terminators to the
-                // '.' character, so any function strings that contain multiple lines
-                // would have been incorrectly parsed.
+                // Have to use a Java regular expression Pattern here
+                // because the String.regex() method doesn't match
+                // line terminators to the '.' character, so any
+                // function strings that contain multiple lines would
+                // have been incorrectly parsed.
                 int regexOptions = Pattern.DOTALL;
+                // Note that "\\b" matches a word boundary.
                 Pattern compiledRegex = Pattern.compile(".*\\b"
                         + actorElementName + "\\b.*", regexOptions);
                 Matcher regexMatcher = compiledRegex.matcher(functionString);
@@ -261,10 +270,11 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         return functionTerm;
     }
 
-    /** Get the name of the element contained by the actor (either a port or an attribute)
-     *  for which the specified parameter defines a constraint.
-     *  @param expressionParameter The string parameter that defines the element's
-     *   constraints.
+    /** Get the name of the element contained by the actor (either a
+     *  port or an attribute) for which the specified parameter
+     *  defines a constraint.
+     *  @param expressionParameter The string parameter that defines
+     *   the element's constraints.
      *  @return The string name of the element (either a port or an attribute).
      */
     protected String getActorElementName(StringParameter expressionParameter) {
@@ -274,10 +284,11 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         return elementName;
     }
 
-    /** Return the list of property-able Attributes.
-     *  This list is defined by the expressions for each attribute
-     *  taken from the ActorConstraintsDefinitionAttribute.  Any attribute that
-     *  is set to IGNORE is not added to the list of property-able attributes.
+    /** Return the list of property-able Attributes.  This list is
+     *  defined by the expressions for each attribute taken from the
+     *  ActorConstraintsDefinitionAttribute.  Any attribute that is
+     *  set to IGNORE is not added to the list of property-able
+     *  attributes.
      *  @return The list of property-able Attributes.
      */
     protected List<Attribute> _getPropertyableAttributes() {
@@ -297,13 +308,15 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         return result;
     }
 
-    /** Set the constraints for the actor attribute or port based on the
-     *  parsed expression string.
-     *  @param actorElement The attribute or port from the actor to be constrained.
-     *  @param constraintExpressionString The expression string that is parsed to get the
-     *   constraints for the actor attribute or port.
-     *  @throws IllegalActionException If the constraint cannot be set due to problems
-     *   parsing the expression.
+    /** Set the constraints for the actor attribute or port based on
+     *  the parsed expression string.
+     *  @param actorElement The attribute or port from the actor to be
+     *  constrained.
+     *  @param constraintExpressionString The expression string that
+     *   is parsed to get the constraints for the actor attribute or
+     *   port.
+     *  @exception IllegalActionException If the constraint cannot be
+     *   set due to problems parsing the expression.
      */
     protected void _setConstraints(Object actorElement,
             String constraintExpressionString) throws IllegalActionException {
@@ -357,8 +370,9 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 }
             }
 
-            // If the right term is an attribute or port in the actor, check
-            // to make sure it is not set to be ignored for the ontology analysis.
+            // If the right term is an attribute or port in the actor,
+            // check to make sure it is not set to be ignored for the
+            // ontology analysis.
             if (rightTerm != null && !(rightTerm instanceof Concept)) {
                 for (StringParameter constraintExpression : _constraintTermExpressions) {
                     if (constraintExpression.getName().substring(
@@ -374,15 +388,18 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                                             + getComponent()
                                             + " because the actor element "
                                             + rightTerm
-                                            + " is on the RHS of the constraint but it is set "
-                                            + " to be ignored by the ontology analysis.");
+                                            + " is on the RHS of the "
+                                            + "constraint  but it is set "
+                                            + "to be ignored by the ontology "
+                                            + "analysis.");
                         }
                     }
                 }
             }
 
-            // If the right term is neither a Concept nor an attribute or port in
-            // the actor, then it must be a parseable concept function definition.
+            // If the right term is neither a Concept nor an attribute
+            // or port in the actor, then it must be a parseable
+            // concept function definition.
             if (rightTerm == null) {
                 rightTerm = _getConceptFunctionTerm(actorElement,
                         constraintString);
@@ -390,8 +407,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
 
             if (rightTerm == null) {
                 throw new IllegalActionException(
-                        "Could not parse constraint expression right term value for "
-                                + "the actor " + getComponent()
+                        "Could not parse constraint expression right term "
+                                + "value for the actor " + getComponent()
                                 + ". Right term string: " + constraintString);
             }
 

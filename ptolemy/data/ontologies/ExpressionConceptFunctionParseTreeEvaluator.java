@@ -1,6 +1,6 @@
 /* A visitor for parse trees of the expression language that implements a concept function.
 
- Copyright (c) 1998-2010 The Regents of the University of California.
+ Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,9 +41,9 @@ import ptolemy.kernel.util.StringAttribute;
 //// ExpressionConceptFunctionParseTreeEvaluator
 
 /**
- This class visits a parse tree for a string expression that defines
- a concept function and evaluates to the string name of the concept that
- should be the output.
+ Visit a parse tree for a string expression that defines a concept
+ function and evaluate to the string name of the concept that should
+ be the output.
 
  @author Charles Shelton
  @version $Id$
@@ -63,8 +63,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   arguments are set.
      *  @param solverModel The ontology solver model that contains the scope
      *   of other concept functions that can be called in the expression.
-     *  @param argumentDomainOntologies The array of ontologies that represent the concept domain
-     *   for each input concept argument.
+     *  @param argumentDomainOntologies The array of ontologies that
+     *   represent the concept domain for each input concept argument.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(String[] argumentNames,
             Concept[] argumentConceptValues, OntologySolverModel solverModel,
@@ -78,11 +78,12 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Evaluate a concept function contained in a concept function expression.
-     *  The concept function must be defined in an attribute contained in the
-     *  ontology solver model.
+    /** Evaluate a concept function contained in a concept function
+     *  expression.  The concept function must be defined in an
+     *  attribute contained in the ontology solver model.
      *  @param node The function expression node to be evaluated.
-     *  @throws IllegalActionException If the function cannot be parsed correctly.
+     *  @exception IllegalActionException If the function cannot be
+     *  parsed correctly.
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
@@ -114,7 +115,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             throw new IllegalActionException(
                     "The concept function "
                             + functionName
-                            + " has the wrong number of arguments. Expected # arguments: "
+                            + " has the wrong number of arguments. "
+                            + "Expected # arguments: "
                             + function.getNumberOfArguments()
                             + ", actual # arguments: " + argCount);
         }
@@ -141,21 +143,24 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
                 throw new IllegalActionException(
                         "Cannot find Concept named "
                                 + token
-                                + " in any of the domain ontologies for this concept function.");
+                                + " in any of the domain ontologies for this "
+                                + "concept function.");
             }
         }
 
-        // Evaluate the concept function and set the evaluated token to the string
-        // name of the concept that is the output of the function.
+        // Evaluate the concept function and set the evaluated token
+        // to the string name of the concept that is the output of the
+        // function.
         _evaluatedChildToken = new StringToken(function.evaluateFunction(
                 argValues).getName());
     }
 
-    /** Evaluate the first child, and depending on its (boolean) result,
-     *  evaluate either the second or the third child. The result of
-     *  that evaluation becomes the result of the specified node. We needed to
-     *  override this function to remove the type inferences in the superclass
-     *  since that is not necessary for concept functions.
+    /** Evaluate the first child, and depending on its (boolean)
+     *  result, evaluate either the second or the third child. The
+     *  result of that evaluation becomes the result of the specified
+     *  node. We needed to override this function to remove the type
+     *  inferences in the superclass since that is not necessary for
+     *  concept functions.
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
@@ -205,16 +210,17 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         }
     }
 
-    /** Evaluate each leaf node in the parse tree to a concept string. Either
-     *  replace an argument label from the concept function with its concept value
-     *  string name or assume it is a concept name if it is not a function argument
-     *  label.
+    /** Evaluate each leaf node in the parse tree to a concept
+     *  string. Either replace an argument label from the concept
+     *  function with its concept value string name or assume it is a
+     *  concept name if it is not a function argument label.
      *  
-     *  @param node The leaf node to be visited
-     *  @exception IllegalActionException If the node label cannot be resolved to a
-     *   concept. 
+     *  @param node The leaf node to be visited.
+     *  @exception IllegalActionException If the node label cannot be
+     *   resolved to a concept.
      */
-    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node) 
+            throws IllegalActionException {
         String nodeLabel = _getNodeLabel(node);
         _evaluatedChildToken = null;
 
@@ -234,6 +240,9 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /**
      * Return the label for the leaf node.
      * 
@@ -250,19 +259,30 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         }
     }
 
-    /** The array of argument names that are used in the concept function expression. */
-    private String[] _argumentNames;
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-    /** The array of concept values to which the arguments are currently set. */
-    private Concept[] _argumentConceptValues;
-
-    /** The array of ontologies that specify the domain for
-     *  each input argument to the concept function defined by the parsed expression.
+    /** The array of ontologies that specify the domain for each input
+     *  argument to the concept function defined by the parsed
+     *  expression.
      */
     protected Ontology[] _domainOntologies;
 
-    /** The ontology solver model that contains definitions of other concept
-     *  functions that could be called in this expression.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The array of concept values to which the arguments are
+     *  currently set.
+     */
+    private Concept[] _argumentConceptValues;
+
+    /** The array of argument names that are used in the concept
+     *  function expression.
+     */
+    private String[] _argumentNames;
+
+    /** The ontology solver model that contains definitions of other
+     *  concept functions that could be called in this expression.
      */
     private OntologySolverModel _solverModel;
 }
