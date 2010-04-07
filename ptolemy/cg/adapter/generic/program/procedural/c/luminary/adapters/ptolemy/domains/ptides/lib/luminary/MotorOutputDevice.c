@@ -1,19 +1,4 @@
 /***preinitBlock***/
-#define INTERRUPT_LATENCY		4					//Interrupt latency of the processor, in cycles (see LM3s8962 datasheet)
-
-//Motor output
-#define MOTOR_PWM				PWM_GEN_1			// Set PWM_GEN_1 (PWM2 and PWM3) as motor output
-#define MOTOR_PWM_FWD			PWM_OUT_2			// Set PWM2 (PB0/PWM2) as motor forward output channel
-#define MOTOR_PWM_FWD_BIT		PWM_OUT_2_BIT
-#define MOTOR_PWM_REV			PWM_OUT_3			// Set PWM3 (PB1/PMW3) as motor reverse output channel
-#define MOTOR_PWM_REV_BIT		PWM_OUT_3_BIT
-#define MOTOR_PWM_PERIOD		50000				// 50MHz clock / 50000 ticks = 1KHz PWM
-#define MOTOR_MAX_SPEED			(MOTOR_PWM_PERIOD - INTERRUPT_LATENCY)	// Largest PWM duty cycle, the range
-																		//	[PWM_PERIOD - INTERRUPT_LATENCY, PWM_PERIOD] results in an exception.
-#define MOTOR_MIN_SPEED			INTERRUPT_LATENCY						// Smallest nonzero PWM duty cycle, the range
-																		//	[1, INTERRUPT_LATENCY] results in an exception.
-#define MOTOR_SPIN_DELAY		10000				// Spinup sampling period in us (used for testing motor)
-
 void pwmDisable(void){
 	PWMPulseWidthSet(PWM_BASE, MOTOR_PWM_FWD, 0);				//0% duty cycle
 	PWMPulseWidthSet(PWM_BASE, MOTOR_PWM_REV, 0);
@@ -30,6 +15,21 @@ static uint32 lastOutput = 0;
 /*** sharedBlock ***/
 #include "hw_types.h"
 #include "pwm.h"
+#define INTERRUPT_LATENCY		4					//Interrupt latency of the processor, in cycles (see LM3s8962 datasheet)
+
+//Motor output
+#define MOTOR_PWM				PWM_GEN_1			// Set PWM_GEN_1 (PWM2 and PWM3) as motor output
+#define MOTOR_PWM_FWD			PWM_OUT_2			// Set PWM2 (PB0/PWM2) as motor forward output channel
+#define MOTOR_PWM_FWD_BIT		PWM_OUT_2_BIT
+#define MOTOR_PWM_REV			PWM_OUT_3			// Set PWM3 (PB1/PMW3) as motor reverse output channel
+#define MOTOR_PWM_REV_BIT		PWM_OUT_3_BIT
+#define MOTOR_PWM_PERIOD		50000				// 50MHz clock / 50000 ticks = 1KHz PWM
+#define MOTOR_MAX_SPEED			(MOTOR_PWM_PERIOD - INTERRUPT_LATENCY)	// Largest PWM duty cycle, the range
+																		//	[PWM_PERIOD - INTERRUPT_LATENCY, PWM_PERIOD] results in an exception.
+#define MOTOR_MIN_SPEED			INTERRUPT_LATENCY						// Smallest nonzero PWM duty cycle, the range
+																		//	[1, INTERRUPT_LATENCY] results in an exception.
+#define MOTOR_SPIN_DELAY		10000				// Spinup sampling period in us (used for testing motor)
+
 /**/
 
 /*** initBlock ***/

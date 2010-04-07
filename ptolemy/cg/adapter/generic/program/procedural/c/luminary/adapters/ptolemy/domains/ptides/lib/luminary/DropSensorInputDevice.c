@@ -1,7 +1,6 @@
 /***preinitBlock***/
 
 const Disc Disc_0 = {0, DISC_SMALLEST_RATE};			// Disc with zero position and large encoder period (essentially zero rate)
-static volatile Disc g_disc = {0, DISC_SMALLEST_RATE};	// Actual disc state
 
 static volatile Time g_impactTime;			// System time that a ball will impact the disc
 
@@ -24,25 +23,6 @@ uint32 dropTimeToImpactTime(const uint32 dropTime){
 		return 0;
 		
 	return timeToDisc[tableIndex];
-}
-
-
-// Find the change in period needed for the ball to fall through one hole
-int32 trajectoryCorrectionPeriod(uint32 impactTime) {
-	Disc disc = Disc_0;
-	int32 positionProjectedChange;
-	int32 positionCorrection;
-	
-	discState(&disc);	// Record disc position and encoder pulse period
-	positionProjectedChange = impactTime / disc.period;
-	positionCorrection = (disc.position + positionProjectedChange) % ENCODER_TICKS_PER_REV;
-	
-	if (positionCorrection < (ENCODER_TICKS_PER_REV / 4))	// If the disk needs to slow down for the ball to fall into the hole at 0 degrees
-		return impactTime/(positionProjectedChange - positionCorrection);
-	else if(positionCorrection >= (ENCODER_TICKS_PER_REV / 4) && positionCorrection < ((ENCODER_TICKS_PER_REV * 3)/4)) //For the hole at 180 degrees
-		return impactTime/(positionProjectedChange + (ENCODER_TICKS_PER_REV / 2) - positionCorrection);
-	else	// If the disk needs to speed up for the ball to fall into the hole at 0 degrees
-		return impactTime/(positionProjectedChange + ENCODER_TICKS_PER_REV - positionCorrection);
 }
 /**/
 
@@ -94,7 +74,7 @@ if((dropCount & 0x01) == 0){	//even drop count
 
 	//FIXME: If dropTime is out of range, dropCount may be erroneous and should be corrected	
     // send an dummy value out of its output port.
-	$put(output#0, trajectoryCorrectionPeriod(timeToImpact));
+	$put(output#0, timeToImpact);
 }
 previousEventTimestamp = currentEventTimestamp;
 /**/

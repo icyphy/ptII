@@ -2,6 +2,6 @@
 $put(output#0, 0);
 /**/
 
-/***fireBlock($intPart, $fracPart)***/
-$put(output#0, $get(input));
+/***fireBlock***/
+$put(output#0, $get(trigger#0));
 /**/

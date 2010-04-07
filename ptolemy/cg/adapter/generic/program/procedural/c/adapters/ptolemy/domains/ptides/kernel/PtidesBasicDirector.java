@@ -99,6 +99,9 @@ public class PtidesBasicDirector extends Director {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        
+        code.append(_templateParser.getCodeStream().getCodeBlock(
+                        "initPIBlock"));
         code.append(super.generateInitializeCode());
 
         // if the outside is already a Ptides director (this could only happen if
@@ -108,12 +111,9 @@ public class PtidesBasicDirector extends Director {
         // generated.
         if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
                 instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
-            return code.toString();
+            return "";
         }
-        
-        code
-                .append(_templateParser.getCodeStream().getCodeBlock(
-                        "initPIBlock"));
+
         return code.toString();
     }
 
@@ -326,10 +326,10 @@ public class PtidesBasicDirector extends Director {
     ////                         public variables                  ////
 
     /** Map of Actors to actuator number. */
-    public Map<Actor, Integer> actuators;
+    public Map<Actor, Integer> actuators = new HashMap<Actor, Integer>();
 
     /** Map of Sensor to sensor number. */
-    public Map<Actor, Integer> sensors;
+    public Map<Actor, Integer> sensors = new HashMap<Actor, Integer>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -491,8 +491,6 @@ public class PtidesBasicDirector extends Director {
      *  and actuators variables.
      */
     protected void _modelStaticAnalysis() {
-        actuators = new HashMap<Actor, Integer>();
-        sensors = new HashMap<Actor, Integer>();
 
         int actuatorIndex = 0;
         int sensorIndex = 0;

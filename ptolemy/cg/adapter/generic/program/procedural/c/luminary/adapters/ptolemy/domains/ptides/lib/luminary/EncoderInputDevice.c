@@ -1,10 +1,4 @@
 /***preinitBlock***/
-//Global variables
-static volatile uint32 g_alignCount = 0;				// Number of alignment pulses received
-static volatile uint8 g_alignEnabled = 0;				// Indicates if alignment is enabled
-static volatile int32 	g_discPowerOffset = 0;		//Essentially a DC offset to overcome static friction; determined dynamically in main()
-static volatile uint8	g_run = 0;					// Boolean, used to control start/stop state of the TBD
-static volatile uint32	g_timeStart = 0;			// Time control loop is entered (following external input);				
 /**/
 
 /*** sharedBlock ***/
@@ -15,12 +9,9 @@ static volatile uint32	g_timeStart = 0;			// Time control loop is entered (follo
 #define ENCODER_PIN_B			GPIO_PIN_6			// Set B[6] (PB6/C0-) as encoder input (encoder channel B)
 #define ENCODER_PIN_I			GPIO_PIN_2			// Set B[2] (PB2/SCL) as encoder input (encoder channel I)
 
-//Number of encoder pulses per revolution of the disc; this takes into account gearing ratio
-#define ENCODER_TICKS_PER_REV	1000
 /**/
 
 /*** initBlock ***/
-//GPIOA_Transmitter initBlock
 /**/
 
 /*** fireBlock ***/
@@ -55,9 +46,8 @@ IntEnable(INT_GPIO$pad);
 /**/
 
 /*** sensingBlock($sensorFireMethod, $pad, $pin) ***/
-
-static Time previousEncoderEventTime = 0;
-int32 interruptStatus;
+static int32 interruptStatus;
+static int32 pinStatus;
 
 #ifdef LCD_DEBUG
     debugMessage("$pad$pin");
@@ -75,32 +65,19 @@ if (numStackedModelTag > MAX_EVENTS) {
 getRealTime(&currentModelTime);
 currentMicrostep = 0;
 
-// do not need to disable interrupts if all interrupts have the same priority
-//disableInterrupts();
-
 interruptStatus = GPIOPinIntStatus(ENCODER_BASE, 0);
-
 // Clear the interrupt
 GPIOPinIntClear(ENCODER_BASE, interruptStatus);
 
-//Encoder pulse detected - record period (for rate)
-// and increment encoder count
-if(interruptStatus & ENCODER_PIN_A){
-    static Time timeGap;
-    const int32 pinStatus = GPIOPinRead(ENCODER_BASE, ENCODER_PIN_B);	//If encoder channel B is leading, then direction is negative
-    g_disc.position += pinStatus ? -1 : 1;
-    timeSub(currentModelTime, previousEncoderEventTime, &timeGap);
-    //FIXME: get rid of the division.
-    g_disc.period = timeGap.nsecs / 1000;
-	timeSet(currentModelTime, &previousEncoderEventTime);
-}
-//Encoder alignment detected - occurs twice per rotation.
-//when aligning, set position to zero
-if(g_alignEnabled && (interruptStatus & ENCODER_PIN_I)){
-	g_alignCount++;
-	g_disc.position = 0;
-}
+pinStatus = GPIOPinRead(ENCODER_BASE, ENCODER_PIN_B);
 
+interruptStatus |= (pinStatus << 8);
+
+// do not need to disable interrupts if all interrupts have the same priority
+//disableInterrupts();
+$sensorFireMethod();
 // stack manipulation here instead of later.
+$put(output, interruptStatus);
+
 addStack();
 /**/
