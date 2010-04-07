@@ -45,7 +45,8 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS =
+JSRCS = \
+	TokenUtilitiesTest.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -72,6 +73,7 @@ JSIMPLE_TESTS = \
 	RecordToken.tcl \
 	ShortToken.tcl \
 	StringToken.tcl \
+	TokenUtilities.tcl \
 	Token.tcl \
 	UnsignedByteToken.tcl \
 	UnsizedArrayToken.tcl \

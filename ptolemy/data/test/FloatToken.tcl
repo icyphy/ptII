@@ -83,7 +83,7 @@ test FloatToken-1.3 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.FloatToken String} "7.56E-10"]
     $p toString
 # We must account for roundoff error in floats.
-} {7.5599998483611E-10f}
+} {7.559999848361088E-10f}
 
 ######################################################################
 ####
