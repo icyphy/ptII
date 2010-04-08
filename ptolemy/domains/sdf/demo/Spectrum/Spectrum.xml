@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Spectrum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -148,6 +148,26 @@
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The blocks with red outlines are hierarchical.&#10;-Right click or Command-click (Mac) and &#10;  select &quot;Open Actor&quot;.&#10;-These generate sinusoids, one for the&#10;-signal and the other for the carrier">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 135.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Select &quot;Run Window&quot; from the View menu to execute the model,&#10;-or click on the red triangle in the toolbar.&#10;-Try changing the parameters in the run window or on the diagram.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 375.0]">
+        </property>
     </property>
     <entity name="Noise Source" class="ptolemy.actor.lib.Gaussian">
         <property name="seed" class="ptolemy.actor.parameters.SharedParameter" value="0">
