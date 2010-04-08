@@ -182,17 +182,23 @@ public class TypeAttribute extends Parameter {
     ////                         protected methods                 ////
 
     /** Override the base class to ensure that the proposed container
-     *  is a TypedIOPort.
+     *  is a TypedIOPort or a Kepler PortAttribute.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
      *   TypedIOPort, or if the base class throws it.
      */
     protected void _checkContainer(NamedObj container)
             throws IllegalActionException {
-        if (!(container instanceof TypedIOPort) && (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "TypeAttribute can only be contained by instances "
-                            + "of TypedIOPort.");
-        }
+        if ( (container != null) && !(container instanceof TypedIOPort)) {
+            // FIXME: this is a bit of hack brought on by
+            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4767 
+            if (!container.getClass().getName().equals("org.kepler.moml.PortAttribute")) {
+                throw new IllegalActionException(container, this,
+                        "TypeAttribute can only be contained by instances "
+                        + "of TypedIOPort or org.kepler.moml.PortAttribute.");
+
+            }
+
+        } 
     }
 }
