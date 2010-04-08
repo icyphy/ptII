@@ -1,4 +1,4 @@
-/* An actor that executes compiled embedded Java code.
+/* An actor that executes compiled embedded code.
 
  Copyright (c) 2007-2010 The Regents of the University of California.
  All rights reserved.
@@ -26,16 +26,16 @@
  */
 package ptolemy.cg.lib;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 
-import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
-import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
-import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
@@ -44,15 +44,29 @@ import ptolemy.kernel.util.StringAttribute;
 //// EmbeddedCodeActor
 
 /**
- FIXME: Fix documentation.
- An actor of this class executes compiled embedded Java code.
-
- <p>To use this actor within Vergil, double click on the actor and
+ An actor of this class executes compiled embedded code.
+ FIXME: Currently, it seems this only works with embedded Java code, but
+ in theory it should work with any embedded code that can be executed
+ within Java.
+ <p>
+ To use this actor within Vergil, double click on the actor and
  insert Java code into the code templates, as indicated by the sample
  template.  Normally you will also need to add ports to the actor.
  You may need to set the types of these ports as well.
+ <p>
+ This actor is actually a composite actor that contains a single
+ embedded actor that actually executes the generated code. The
+ reason for the extra level of hierarchy is so that the director
+ adapter code that handles conversion and transport across the boundary
+ can be consolidated in one place. In its preinitialize() method,
+ this actor will create an instance of whatever director is
+ in charge of executing it. The presumption is that that director
+ has a code generation adapter that knows how to transport data
+ from the simulation world in Java to the generated code world
+ within. 
 
- @author Edward A. Lee, Bert Rodiers, Gang Zhou
+
+ @author Bert Rodiers, Gang Zhou, Edward A. Lee, Jia Zou
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (zgang)
@@ -121,13 +135,11 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
         // For embeddedJavaActor, there is only embedded Java code specifying its
         // functionality.
         executeEmbeddedCode.setExpression("true");
-
-        // FIXME: SDFDirector should probably not be fixed
-        if (((Actor)getContainer()).getDirector() instanceof PtidesBasicDirector) {
-            new PtidesBasicDirector(this, "PtidesBasicDirector");
-        } else {
-            new SDFDirector(this, "SDFDirector");
-        }
+        
+        // In preinitialize(), this actor will create a director that matches
+        // the class of its enclosing director. However, we need it to have
+        // a director at all times, so we set a generic director here.
+        new Director(this, "Director");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -141,10 +153,39 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     /** Create the embedded actor and add ports to it.
      */
     public void preinitialize() throws IllegalActionException {
+        
+        Director executiveDirector = getExecutiveDirector();
+        Director localDirector = getDirector();
+        if (localDirector == null || !localDirector.getClass().equals(executiveDirector.getClass())) {
+            if (localDirector != null) {
+                try {
+                    localDirector.setContainer(null);
+                } catch (NameDuplicationException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
+            // The inside director should match the outside director.
+            // Use reflection to create a matching instance.
+            Class directorClass = getExecutiveDirector().getClass();
+            Constructor<?> constructor = null;
+            try {
+                constructor = directorClass.getConstructor(new Class[] {CompositeEntity.class, String.class});
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Cannot create an instance of the enclosing director class: " + directorClass);
+            }
+            try {
+                constructor.newInstance(new Object[] {this, getExecutiveDirector().getName()});
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to instantiate the enclosing director class: " + directorClass);
+            }
+        }
+
         try {
             setEmbeddedActor();
 
