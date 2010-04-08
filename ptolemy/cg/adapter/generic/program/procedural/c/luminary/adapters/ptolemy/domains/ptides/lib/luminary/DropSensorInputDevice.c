@@ -1,18 +1,23 @@
 /***preinitBlock***/
-
-const Disc Disc_0 = {0, DISC_SMALLEST_RATE};			// Disc with zero position and large encoder period (essentially zero rate)
-
-static volatile Time g_impactTime;			// System time that a ball will impact the disc
-
 // values generated using z0=532mm, sensorDistance=30mm
 //FIXME: Increase the resolution of this table.
 const uint32 timeToDisc[timeToDisc_size] = {
-	222481, 225081, 227500, 229753, 231854, 233814, 235646, 237358, 238959, 240458, 
-	241862, 243177, 244410, 245566, 246650, 247667, 248621, 249516, 250356, 251143, 
-	251882, 252575, 253223, 253831, 254401, 254933, 255431, 255896, 256329, 256733, 
-	257109, 257459, 257783, 258082, 258359, 258614, 258848, 259062, 259257, 259433, 
-	259592, 259735, 259862, 259973, 260070, 260153, 260223, 260279, 260323, 260356, 
-	260377, 260387};
+	181524, 184475, 187299, 190004, 192594, 195076, 197456, 199738, 201928, 204031, 
+	206049, 207989, 209853, 211644, 213368, 215026, 216622, 218159, 219639, 221065, 
+	222439, 223764, 225042, 226274, 227463, 228611, 229719, 230789, 231822, 232820, 
+	233785, 234717, 235618, 236489, 237332, 238147, 238935, 239698, 240436, 241150, 
+	241841, 242510, 243157, 243784, 244391, 244979, 245549, 246100, 246634, 247151, 
+	247652, 248137, 248607, 249062, 249503, 249930, 250343, 250744, 251131, 251507, 
+	251871, 252223, 252564, 252894, 253214, 253523, 253822, 254112, 254392, 254663, 
+	254925, 255178, 255423, 255660, 255889, 256109, 256323, 256529, 256727, 256919, 
+	257104, 257282, 257453, 257619, 257778, 257931, 258078, 258219, 258355, 258485, 
+	258610, 258730, 258844, 258954, 259058, 259158, 259254, 259344, 259431, 259512, 
+	259590, 259664, 259733, 259798, 259860, 259918, 259972, 260022, 260069, 260112, 
+	260152, 260188, 260222, 260252, 260278, 260302, 260323, 260341, 260355, 260367, 
+	260377, 260383, 260387, 260388};
+const Disc Disc_0 = {0, DISC_SMALLEST_RATE};			// Disc with zero position and large encoder period (essentially zero rate)
+
+static volatile Time g_impactTime;			// System time that a ball will impact the disc
 
 //	Based on dropTime (time it took for the ball to pass through the sensors)
 //	return the time it will take for the ball to reach the disk
@@ -33,9 +38,10 @@ uint32 dropTimeToImpactTime(const uint32 dropTime){
 #define DROP_BASE				GPIO_PORTG_BASE
 #define DROP_PIN				GPIO_PIN_0			// Set G[0] (PG0) as drop sensor input
 
-#define timeToDisc_offset	25000 	//minimum allowed drop time (in us) for this table; index zero offset
-#define timeToDisc_shift	10 		//amount by which to shift measured drop time to determine table index; log2(dt) (in us)
-#define timeToDisc_size		52
+#define timeToDisc_offset 	15000000 	//minimum allowed drop time (in ns) for this table; index zero offset
+#define timeToDisc_max 		78206000 	//maximum allowed drop time (in ns) for this table
+#define timeToDisc_shift 	9 	//amount by which to shift measured drop time to determine table index; log2(dt) (in us)
+#define timeToDisc_size 	124
 /**/
 
 /*** initBlock ***/
@@ -46,21 +52,18 @@ uint32 dropTimeToImpactTime(const uint32 dropTime){
 static uint32 dropCount = 0;										//Number of drop sensor events received
 static Time previousEventTimestamp;
 static Time currentEventTimestamp;
+static Time dropTime;
 getRealTime(&currentEventTimestamp);
-
+timeSub(currentEventTimestamp, previousEventTimestamp, &dropTime);		// Time it took ball to pass through both sensors
+    
 timeSet(ZERO_TIME, &previousEventTimestamp);
 
 //GPIOPinIntClear(DROP_BASE, GPIOPinIntStatus(DROP_BASE, 0));			// Clear the interrupt
 
-dropCount++;
-if((dropCount & 0x01) == 0){	//even drop count
-	Time dropTime;
+if (dropTime.nsecs < timeToDisc_max && dropTime.nsecs > timeToDisc_offset){			// dropTime is within the range of times that it could take a ball to drop
     Time currentSysTime;
     uint32 timeToImpact;
-    timeSub(currentEventTimestamp, previousEventTimestamp, &dropTime);		// Time it took ball to pass through both sensors
-    if (dropTime.secs > 0) {
-        die("system do not support such big drop time");
-    }
+
     // FIXME: don't do divisions or multiplications...
     // dropTimeToImpactTime is in us.
 	timeToImpact = dropTimeToImpactTime(dropTime.nsecs / 1000);					// Time ball will be in the air

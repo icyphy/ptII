@@ -28,8 +28,6 @@ static uint32 lastOutput = 0;
 																		//	[PWM_PERIOD - INTERRUPT_LATENCY, PWM_PERIOD] results in an exception.
 #define MOTOR_MIN_SPEED			INTERRUPT_LATENCY						// Smallest nonzero PWM duty cycle, the range
 																		//	[1, INTERRUPT_LATENCY] results in an exception.
-#define MOTOR_SPIN_DELAY		10000				// Spinup sampling period in us (used for testing motor)
-
 /**/
 
 /*** initBlock ***/
@@ -58,11 +56,17 @@ static uint32 lastOutput = 0;
 /**/
 
 /*** fireBlock($actuator) ***/
+Time currentRealTime;
 motorOutputPower[lastOutput++] = $get(input#0);
 if (lastOutput > 1000) {
 	lastOutput = 0;
 }
-setActuationInterrupt($actuator);
+getRealTime(&currentRealTime);
+if (timeCompare(currentRealTime, currentModelTime) <= 0) {
+	setActuationInterrupt($actuator);
+} else {
+	die("dead miss");
+}
 /**/
  
 /*** actuationBlock ***/
