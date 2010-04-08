@@ -116,7 +116,7 @@ public class EmbeddedCodeActor extends CompiledCompositeActor {
                 + "<rect x=\"-30\" y=\"-15\" " + "width=\"75\" height=\"30\" "
                 + "style=\"fill:black\"/>\n" + "<text x=\"-29\" y=\"4\""
                 + "style=\"font-size:10; fill:white; font-family:SansSerif\">"
-                + "embeddedJava</text>\n" + "</svg>\n");
+                + "embeddedCode</text>\n" + "</svg>\n");
 
         // For embeddedJavaActor, there is only embedded Java code specifying its
         // functionality.
