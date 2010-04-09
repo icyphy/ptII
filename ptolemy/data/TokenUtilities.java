@@ -66,9 +66,13 @@ public class TokenUtilities {
     // java.lang.IllegalArgumentException: digit mark following zero
     // in exponent - index: 17'
 
+    // See ptII/ptolemy/data/test/TokenUtilities.tcl for why we
+    // need that many # in the format.
+
     /** The format that is used to print floating point numbers that
      *  are very large, or very small.
      */
     public static final DecimalFormat exponentialFormat = new DecimalFormat(
-            "0.0############E0", new DecimalFormatSymbols(java.util.Locale.US));
+            "0.0##############E0",
+            new DecimalFormatSymbols(java.util.Locale.US));
 }

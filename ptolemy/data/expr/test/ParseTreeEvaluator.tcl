@@ -297,7 +297,7 @@ test ParseTreeEvaluator-6.1 {check overflow} {
 	[evaluate "MaxLong + 1L"] \
 	[evaluate "MaxDouble + 1.0"] \
 	[evaluate "MaxDouble * 2.0"]
-} {0ub -2147483648 -9223372036854775808L 1.7976931348623E308 Infinity}
+} {0ub -2147483648 -9223372036854775808L 1.797693134862316E308 Infinity}
 
 
 ######################################################################
