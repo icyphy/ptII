@@ -3209,14 +3209,19 @@ else
         PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_PREFIX'])
 
         AC_MSG_CHECKING([for the proper shared library suffix])
+	PTJNI_SHAREDLIBRARY_SUFFIX2=""
         case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
+	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
+	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
+	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib;;
-	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
+	    Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib
+	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dylib;;
+	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown
         esac
         PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
 
@@ -4501,12 +4506,13 @@ else
                PT_MSG_RESULT([$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}])
 	       LIBEXPAT_LIB_DIR=$dir
 	       break;
-           fi
-	   # Cygwin has /usr/lib/libexpat.dll.a
-           if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
-               PT_MSG_RESULT([$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a])
-	       LIBEXPAT_LIB_DIR=$dir
-	       break;
+           else
+	   # Mac OS X could have jnilib or dylib, Cygwin has /usr/lib/libexpat.dll.a
+	       if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}"; then
+                   PT_MSG_RESULT([$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}])
+	           LIBEXPAT_LIB_DIR=$dir
+	           break;
+               fi
            fi
        done
        if test ! -d "$LIBEXPAT_LIB_DIR"; then
