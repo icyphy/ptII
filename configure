@@ -9390,13 +9390,18 @@ echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_PREFIX'" >&6; }; fi
 
         { echo "$as_me:$LINENO: checking for the proper shared library suffix" >&5
 echo $ECHO_N "checking for the proper shared library suffix... $ECHO_C" >&6; }
+	PTJNI_SHAREDLIBRARY_SUFFIX2=""
         case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
+	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
+	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
+	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
+	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
+	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
 	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Linux)   PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib;;
+	    Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib
+	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dylib;;
 	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
         esac
         if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
@@ -11322,14 +11327,15 @@ echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $dir/libexpat.${
 echo "${ECHO_T}$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" >&6; }; fi
 	       LIBEXPAT_LIB_DIR=$dir
 	       break;
-           fi
-	   # Cygwin has /usr/lib/libexpat.dll.a
-           if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
-               if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a" >&5
-echo "${ECHO_T}$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a" >&6; }; fi
-	       LIBEXPAT_LIB_DIR=$dir
-	       break;
+           else
+	   # Mac OS X could have jnilib or dylib, Cygwin has /usr/lib/libexpat.dll.a
+	       if test -f "$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}"; then
+                   if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}" >&5
+echo "${ECHO_T}$dir/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}" >&6; }; fi
+	           LIBEXPAT_LIB_DIR=$dir
+	           break;
+               fi
            fi
        done
        if test ! -d "$LIBEXPAT_LIB_DIR"; then
