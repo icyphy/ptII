@@ -1,6 +1,6 @@
 /* Attribute that defines the lattice ontology solver constraints for an actor.
 
- Copyright (c) 2003-2010 The Regents of the University of California.
+ Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -140,8 +140,8 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      */
     public static final String PORT_SUFFIX = "PortTerm";
 
-    /** String representing the separator character ";" between constraint expressions in
-     *  the constraint expression string.
+    /** String representing the separator character ";" between
+     *  constraint expressions in the constraint expression string.
      */
     public static final String SEPARATOR = ";";
 
@@ -151,9 +151,9 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the attributeChanged method so that if the actor class name
-     *  changes, the attribute interface adds and removes fields for constraints
-     *  for the actor's ports and attributes.
+    /** Override the attributeChanged method so that if the actor
+     *  class name changes, the attribute interface adds and removes
+     *  fields for constraints for the actor's ports and attributes.
      *  @param attribute The attribute that has been changed.
      *  @throws IllegalActionException If there is a problem changing the attribute.
      */
@@ -161,9 +161,10 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             throws IllegalActionException {
         if (attribute == actorClassName) {
 
-            // Collect all the existing constraint parameter fields before checking if we need
-            // to remove them because the actor class name changed. This is necessary
-            // for the case when the attribute is loaded from a MoML file.
+            // Collect all the existing constraint parameter fields
+            // before checking if we need to remove them because the
+            // actor class name changed. This is necessary for the
+            // case when the attribute is loaded from a MoML file.
             _constraintTermExpressions.clear();
             for (Object constraintParameter : attributeList(StringParameter.class)) {
                 String parameterName = ((StringParameter) constraintParameter)
@@ -180,7 +181,8 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             foundActorClassName.getExpression())) {
                 try {
 
-                    // Verify that the actorClassName correctly specifies an existing class.
+                    // Verify that the actorClassName correctly
+                    // specifies an existing class.
                     Class actorClass = Class.forName(actorClassName
                             .getExpression());
                     try {
@@ -194,15 +196,16 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                                         (CompositeEntity) this.getContainer(),
                                         "tempActor" });
 
-                        // Remove all the old constraint parameters that no longer apply
-                        // since the actor class name has changed.
+                        // Remove all the old constraint parameters
+                        // that no longer apply since the actor class
+                        // name has changed.
                         for (StringParameter constraintParameter : _constraintTermExpressions) {
                             constraintParameter.setContainer(null);
                         }
                         _constraintTermExpressions.clear();
 
-                        // Create a constraint expression parameter for every port and
-                        // attribute in the actor.
+                        // Create a constraint expression parameter
+                        // for every port and attribute in the actor.
                         if (actorInstance instanceof ComponentEntity) {
                             for (Object actorPort : ((ComponentEntity) actorInstance)
                                     .portList()) {
@@ -227,8 +230,9 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                             }
                         }
 
-                        // Set the icon for the attribute so that it looks like the actor
-                        // for which it defines an OntologyAdapter.
+                        // Set the icon for the attribute so that it
+                        // looks like the actor for which it defines
+                        // an OntologyAdapter.
 
                         // First look for an icon file for the actor.
                         // If no actor icon file is found, use the _iconDescription
@@ -259,8 +263,10 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
 
                         ((ComponentEntity) actorInstance).setContainer(null);
 
-                        // Set the found actor name parameter so that we know what the previous
-                        // actor class was set to the next time attributeChanged is called.
+                        // Set the found actor name parameter so that
+                        // we know what the previous actor class was
+                        // set to the next time attributeChanged is
+                        // called.
                         foundActorClassName.setExpression(actorClassName
                                 .getExpression());
                     } catch (Exception ex) {
@@ -288,8 +294,9 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
     /** Get the adapter defined by this attribute.
      *  @param component The model component for which the adapter will be created.
      *  @return The ActorConstraintsDefinitionAdapter specified by this attribute.
-     *  @throws IllegalActionException If the container model's solver cannot
-     *   be found or there is a problem initializing the adapter.
+     *  @exception IllegalActionException If the container model's
+     *   solver cannot be found or there is a problem initializing the
+     *   adapter.
      */
     public ActorConstraintsDefinitionAdapter getAdapter(Object component)
             throws IllegalActionException {
@@ -320,9 +327,6 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
         return new ActorConstraintsDefinitionAdapter(solver, component,
                 _constraintTermExpressions);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
