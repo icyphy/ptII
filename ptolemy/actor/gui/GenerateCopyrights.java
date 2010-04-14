@@ -102,7 +102,7 @@ public class GenerateCopyrights {
         // Add the classnames and copyrights.
         // Alphabetical by className.
         _addIfPresent(copyrightsMap,
-                "com.jgoodies.forms.factories.DefaultComponentFactory",
+                "ptolemy.actor.gui.run.PtolemyFormEditor",
                 "com/jgoodies/jgoodies-copyright.htm");
 
         _addIfPresent(copyrightsMap, "actor.lib.logic.fuzzy.FuzzyLogic",
@@ -115,7 +115,7 @@ public class GenerateCopyrights {
                 "jni/launcher/launcher-copyright.htm");
 
         _addIfPresent(copyrightsMap,
-                "org.mlc.swing.layout.LayoutConstraintsManager",
+                "ptolemy.actor.gui.run.RunLayoutFrame",
                 "org/mlc/mlc-copyright.htm");
 
         _addIfPresent(copyrightsMap, "caltrop.ptolemy.actors.CalInterpreter",
@@ -133,6 +133,9 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.util.ClassFileLoader",
                 "ptolemy/backtrack/util/gcj-copyright.html");
+
+        _addIfPresent(copyrightsMap, "ptolemy.actor.lib.excel.Excel",
+                "ptolemy/actor/lib/excel/jxl-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
                 "ptolemy/actor/lib/io/comm/copyright.htm");
@@ -152,10 +155,16 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "com.mysql.jdbc.Driver",
+        // If actor.lib.database.DatabaseManager is present, then
+        // we look for MySQL and Oracle JDBC packages.
+        _addIfPresent(copyrightsMap, 
+                "ptolemy.actor.lib.database.DatabaseManager",
+                "com.mysql.jdbc.Driver",
                 "ptolemy/actor/lib/database/mysql-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "oracle.jdbc.OracleDriver",
+        _addIfPresent(copyrightsMap, 
+                "ptolemy.actor.lib.database.DatabaseManager",
+                "oracle.jdbc.OracleDriver",
                 "ptolemy/actor/lib/database/ojdbc-copyright.htm");
 
         _addIfPresent(copyrightsMap,
@@ -180,13 +189,21 @@ public class GenerateCopyrights {
                 "ptolemy.vergil.basic.layout,KielerLayoutGUI",
                 "ptolemy/vergil/basic/layout/kieler/kieler-copyright.htm");
 
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.opencv.OpenCVReader",
+                "ptolemy/actor/lib/opencv/opencv-copyright.htm");
+
+        _addIfPresent(copyrightsMap,
+                "ptolemy.actor.lib.opencv.javacv.CameraReader",
+                "ptolemy/actor/lib/opencv/javacv/javacv-copyright.htm");
+
         _addIfPresent(copyrightsMap, "ptolemy.matlab.Expression",
                 "ptolemy/matlab/copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.vergil.pdfrenderer.PDFAttribute",
                 "ptolemy/vergil/pdfrenderer/PDFRenderer-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "vendors.vr.Volume",
+        _addIfPresent(copyrightsMap, "ptolemy.domains.gr.lib.vr.GRTexture2D.java",
                 "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 
         _addIfPresent(copyrightsMap,
@@ -353,8 +370,43 @@ public class GenerateCopyrights {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // If a className is can be found, then add the className
-    // and copyrightPath to copyrightsMap
+
+    /* If a className is can be found, then add the className
+     * and copyrightPath to copyrightsMap
+     * @param The map of copyrights.
+     * @param applicationClassName The fully qualified, dot separated
+     * class name of an application class, such as a Ptolemy actor
+     * that uses (either by import or by reflection) the libraryClassName.
+     * @param libraryClassName The fully qualified, dot separated
+     * class name of the copyrighted or licensed library.
+     * @param copyrightPath The path or URL to the copyright for
+     * the library
+     */
+    private static void _addIfPresent(Map copyrightsMap,
+            String applicationClassName,
+            String libraryClassName,
+            String copyrightPath) {
+        // If actor.lib.database.DatabaseManager is present, then
+        // we look for MySQL and Oracle JDBC packages.
+        try {
+            Class.forName(applicationClassName);
+            _addIfPresent(copyrightsMap, libraryClassName,
+                    copyrightPath);
+        } catch (Throwable throwable) {
+            // Ignore, this just means that the applicationClassName
+            // could not be found, so we need not include information
+            // about the copyright.
+        }
+    }
+
+    /* If a className is can be found, then add the className
+     * and copyrightPath to copyrightsMap
+     * @param The map of copyrights.
+     * @param className The fully qualified, dot separated
+     * class name of the copyrighted or licensed library.
+     * @param copyrightPath The path or URL to the copyright for
+     * the library.
+     */
     private static void _addIfPresent(Map copyrightsMap, String className,
             String copyrightPath) {
         try {
