@@ -38,6 +38,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.ExceptionHandler;
@@ -129,7 +131,7 @@ import ptolemy.util.StringUtilities;
  workspace itself may change during preinitialize as domains add
  annotation to the model.
 
- @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee, Elaine Cheong, Contributor: Mudit Goel, John S. Davis II, Bert Rodiers
+ @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee, Elaine Cheong, Contributor: Mudit Goel, John S. Davis II, Bert Rodiers, Daniel Crawl
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (neuendor)
@@ -586,6 +588,39 @@ public class Manager extends NamedObj implements Runnable {
         return _state;
     }
 
+    /** Get the execution identifier object for a throwable.
+     *   
+     * <p> An execution identifier is an object given to the Manager
+     * via setExecutionIdentifier(), and cleared during preinitialize().
+     * If the Manager notifies a listener of a model error,
+     * getExecutionIdentifier() can be used to map that error back to
+     * the executionIdentifier object.
+     *
+     * @param throwable The throwable.
+     * @return The execution identifier object if one was set, otherwise null.
+     * @see #setExecutionIdentifier(Object)
+     */
+    public Object getExecutionIdentifier(Throwable throwable) {
+        // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4230
+
+        // "In SDF provenance records to the error table an exception
+        // thrown after the workflow stops. In PN, multiple exceptions
+        // may be thrown, and this happens during execution. Right now
+        // there's a problem with these errors getting
+        // recorded. Related/in addition: there's also difficulty
+        // knowing which execution errors are correlated with, since
+        // the same workflow may be executing and throwing errors in
+        // multiple windows. As Dan notes: Manager reports exceptions
+        // asynchronously; need a way to tie an exception to
+        // corresponding execution."
+
+        // "The issue is that the Manager notifies listeners of model
+        // errors asynchronously to avoid deadlocks.  However, this
+        // makes it impossible for a listener to associate a specific
+        // execution cycle with a given error."
+        return _throwableToExecutionIdentifier.get(throwable);
+    }
+
     /** Initialize the model.  This calls the preinitialize() method of
      *  the container, followed by the resolveTypes() and initialize() methods.
      *  Set the Manager's state to PREINITIALIZING and INITIALIZING as
@@ -768,6 +803,13 @@ public class Manager extends NamedObj implements Runnable {
                                         + errorMessage);
                         throwable.printStackTrace();
                     } else {
+                        
+                        // If the execution id is not null, map the
+                        // throwable to the id.
+                        if (_executionIdentifier != null) {
+                            _throwableToExecutionIdentifier.put(throwable, _executionIdentifier);
+                        }
+                        
                         ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
                                 .listIterator();
 
@@ -903,7 +945,8 @@ public class Manager extends NamedObj implements Runnable {
             _pauseRequested = false;
             _typesResolved = false;
             _iterationCount = 0;
-
+            _executionIdentifier = null;
+            
             _resumeNotifyWaiting = false;
 
             // NOTE: Used to call validateSettables() here with the following
@@ -1124,6 +1167,18 @@ public class Manager extends NamedObj implements Runnable {
         } finally {
             _thread = null;
         }
+    }
+
+    /** Set the execution identifier object. Any throwables that occur
+     * in current execution cycle are associated with this
+     * identifier. The execution identifier is reset in
+     * preinitialize().
+     *
+     * @param executionIdentifier The execution identifier object
+     * @see #getExecutionIdentifier(Throwable)
+     */
+    public void setExecutionIdentifier(Object executionIdentifier) {
+        _executionIdentifier = executionIdentifier;
     }
 
     /** Return a short description of the throwable.
@@ -1485,6 +1540,11 @@ public class Manager extends NamedObj implements Runnable {
     // The top-level CompositeActor that contains this Manager
     private CompositeActor _container = null;
 
+    /** An execution identifier.  See
+     * #getExecutionIdentifier(Throwable throwable)
+     */
+    private Object _executionIdentifier;
+
     // Listeners for execution events. This list has weak references.
     private List<WeakReference<ExecutionListener>> _executionListeners;
 
@@ -1518,6 +1578,10 @@ public class Manager extends NamedObj implements Runnable {
     // If startRun() is used, then this points to the thread that was
     // created.
     private PtolemyThread _thread;
+
+    // A map that associates throwables with execution identifiers. The map is
+    // a WeakHashMap so that execution identifiers can be garbage collected.
+    private Map<Throwable, Object> _throwableToExecutionIdentifier = new WeakHashMap<Throwable, Object>();
 
     // An indicator of whether type resolution needs to be done.
     private boolean _typesResolved = false;
