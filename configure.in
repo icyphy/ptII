@@ -5172,17 +5172,6 @@ AC_SUBST(PTGIOTTO_DIR)
 # $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
 AC_SUBST(PTQUICKTIME_DIR)
 
-# Set to vr and used in
-# $PTII/ptolemy/domains/gr/lib if Volume Rendering code was found
-AC_SUBST(PTVR_DIR)
-
-# $PTII/lib/ptvr.jar file, used to for Volume Rendering
-AC_SUBST(PTVR_JAR)
-
-# Ptolemy II packages that use the Java 3D Volume Rendering
-# PTVR_PACKAGES is used in ptII/doc/makefile
-AC_SUBST(PTVR_PACKAGES)
-
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
 AC_SUBST(PTWABA_DIR)

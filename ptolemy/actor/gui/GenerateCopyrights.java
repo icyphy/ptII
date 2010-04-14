@@ -197,7 +197,7 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.vergil.pdfrenderer.PDFAttribute",
                 "ptolemy/vergil/pdfrenderer/PDFRenderer-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "vendors.vr.Volume",
+        _addIfPresent(copyrightsMap, "ptolemy.domains.gr.lib.vr.GRTexture2D.java",
                 "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 
         _addIfPresent(copyrightsMap,
