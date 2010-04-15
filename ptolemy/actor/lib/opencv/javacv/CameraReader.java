@@ -84,7 +84,7 @@ public class CameraReader extends Source {
     */
    public void fire() throws IllegalActionException {
        _frame = cvQueryFrame (_capture);
-       
+
        // FIXME  In only OpenCV 1.0 for win, captured image is need to be flip. 
        if( Platform.isWindows() && highgui.libname.indexOf("100") > 0){
            _frame.origin = IPL_ORIGIN_TL;

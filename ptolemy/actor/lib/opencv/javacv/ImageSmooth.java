@@ -80,8 +80,8 @@ public class ImageSmooth extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The amount of of rotation in degrees.
-     *  This parameter contains an IntegerToken, initially with value 90.
+    /** The size parameters for filter.
+     *  This parameter contains an IntegerToken, initially with value 3.
      */
     public Parameter size1Param;
     public Parameter size2Param;

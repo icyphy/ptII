@@ -114,12 +114,14 @@ public class ObjectDetect extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
-        // dummy call
+         
+        //FIXME: dummy call for CvHaarClassifierCascade. 
+        //       That causes crash before calling a function of cv library.
         IplImage dummy_img = cvCreateImage(new CvSize(60,60).byValue(), IPL_DEPTH_8U, 1);
         cvEqualizeHist (dummy_img, dummy_img);
         dummy_img.release();
 
+        
         String cascade_name = pathName.getExpression();
         //String cascade_name = "C:/temp/haarcascade_frontalface_default.xml";
         _cascade = new CvHaarClassifierCascade(cvLoad (cascade_name, null, null, null));

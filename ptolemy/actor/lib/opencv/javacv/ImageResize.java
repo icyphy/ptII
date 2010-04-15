@@ -27,34 +27,37 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import com.sun.jna.Pointer;
+import name.audet.samuel.javacv.jna.cxcore.IplImage;
 
-import ptolemy.actor.TypedIOPort;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.PointerByReference;
+
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 
-import static java.lang.Math.round;
 import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-//import static name.audet.samuel.javacv.jna.highgui.v10.*;
-//import static name.audet.samuel.javacv.jna.cv.v10.*;
+import static name.audet.samuel.javacv.jna.cv.v10.*;
+import static name.audet.samuel.javacv.jna.highgui.v10.*;
+
 
 ///////////////////////////////////////////////////////////////////
-//// Draw circles for the result sequence data 
+//// ImageResize
 
 /**
- * Draw result
+ * Resize image
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
  * @version 
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class DrawResultSeq extends Transformer {
+public class ImageResize extends Transformer {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
@@ -67,29 +70,25 @@ public class DrawResultSeq extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DrawResultSeq(CompositeEntity container, String name)
+    public ImageResize(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
         
-        pathName = new StringAttribute(this, "pathName");
-        pathName.setExpression("haarcascade_frontalface_default.xml");
-        
-        seq = new TypedIOPort(this, "sequence", true, false);
-        seq.setTypeEquals(BaseType.OBJECT);      
-   }
+        widthParam = new Parameter(this, "Width", new IntToken(160)); 
+        heightParam = new Parameter(this, "Height", new IntToken(120)); 
+    }
     
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////       
-    /** The name of the file to write to. The default
-     *  value of this parameter is "haarcascade_frontalface_default.xml"
-     */
-    public StringAttribute pathName;
+    ////                     ports and parameters                  ////
 
-    /** The input sequence. */
-    public TypedIOPort seq;
+    /** The size of resized image
+     *  This parameter contains an IntegerToken, initially with value (320,240).
+     */
+    public Parameter widthParam;
+    public Parameter heightParam;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,6 +96,9 @@ public class DrawResultSeq extends Transformer {
      *  @exception IllegalActionException If thrown while writing to the port.   
      */
     public void fire() throws IllegalActionException {
+        int width = ((IntToken) (widthParam.getToken())).intValue();
+        int height = ((IntToken) (heightParam.getToken())).intValue();
+        CvSize size = new CvSize(width, height);
 
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken)input.get(0);
@@ -106,21 +108,17 @@ public class DrawResultSeq extends Transformer {
                         "Input is required to be an instance of IplImage. Got "
                         + inputObject.getClass());
             }
-            _srcFrame = (IplImage)inputObject;
+            _frame = (IplImage)inputObject;
             
-            if (seq.hasToken(0)) {
-                ObjectToken seqToken = (ObjectToken)seq.get(0);
-                Object seqObject = seqToken.getValue();
-                if (!(seqObject instanceof CvSeq)) {
-                    throw new IllegalActionException(this,
-                            "Input is required to be an instance of IplImage. Got "
-                            + seqObject.getClass());
-                }
-                _objectSeq = (CvSeq)seqObject;
-
-                draw_object_circle(_objectSeq, _srcFrame);
-                output.send(0, new ObjectToken(_srcFrame));
+            if(_resizedFrame == null){
+                _resizedFrame = cvCreateImage(size.byValue(), _frame.depth, _frame.nChannels);
+            }else if( _resizedFrame.width != width || _resizedFrame.height != height){
+                cvReleaseImage(_resizedFrame.pointerByReference());
+                _resizedFrame = cvCreateImage(size.byValue(), _frame.depth, _frame.nChannels);                
             }
+            cvResize(_frame, _resizedFrame, CV_INTER_CUBIC);
+    
+            output.send(0, new ObjectToken(_resizedFrame));
         }
     }
 
@@ -129,49 +127,21 @@ public class DrawResultSeq extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-       _dstFrame = null;
+        _resizedFrame = null;
     }
      /** Release image.
      *  @exception IllegalActionException If thrown by the super class.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if(_dstFrame != null){
-            _dstFrame.release();
-        }
+        // FIXME If releasing when the following actor using this frame, it causes fatal error.
+//        if(_copyFrame != null){
+//            _copyFrame.release();
+//        }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
-    private void draw_object_circle(CvSeq objs, IplImage _image )throws IllegalActionException {
-        int i = 0;
-        int objTotal = 0;
-        if(objs != null) objTotal = objs.total;
-
-        for (i = 0; i < objTotal; i++) {
-            Pointer r = cvGetSeqElem (objs, i);
-            CvRect rect = new CvRect(r);
-            CvPoint center = new CvPoint(0,0);
-            int radius;
-            center.x = (int)round (rect.x + rect.width * 0.5);
-            center.y = (int)round (rect.y + rect.height * 0.5);
-            radius = (int)round ((rect.width + rect.height) * 0.25);
-
-            cvCircle (_image, center.byValue(), radius, colors[i % 8], 3, 8, 0);
-            //cvCircle (_image, center.byValue(), radius, colors[0], 3, 8, 0);  
-        }
-
-    }
-    
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private IplImage _srcFrame;
-    private IplImage _dstFrame; 
-    private CvSeq _objectSeq;
-    
-    private CvScalar.ByValue[] colors = { 
-            CvScalar.RED, CvScalar.BLUE, CvScalar.GREEN, CvScalar.CYAN,
-            CvScalar.YELLOW, CvScalar.MAGENTA, CvScalar.WHITE, CvScalar.GRAY
-            };
+    private IplImage _frame;
+    private IplImage _resizedFrame; 
 }
