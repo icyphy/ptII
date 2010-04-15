@@ -4414,3 +4414,27 @@ test MoMLParser-33.3 {input statement with no source} {
     regsub -all {file:/.*/ptolemy/moml/test} $errMsg {file:/XXX/ptolemy/moml/test} result
     list $result
 } {{com.microstar.xml.XmlException: No source for element "input" in file:/XXX/ptolemy/moml/test/ at line 6 and column 10}}
+
+######################################################################
+####
+# 
+test MoMLParser-34.0 {Test parsing names that have xml chars in them} {
+    # See http://chess.eecs.berkeley.edu/ptolemy/listinfo/ptolemy/2010-April/011999.html
+    set entity [java::new ptolemy.kernel.Entity "This name has xml < = >"]
+    set moml [$entity exportMoML]
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    set r1 [$toplevel exportMoML]
+    set token [java::new ptolemy.data.XMLToken $moml]
+    list $r1 [$token toString]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="This name has xml &amp;lt; = &amp;gt;" class="ptolemy.kernel.Entity">
+</entity>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="This name has xml &amp;lt; = &amp;gt;" class="ptolemy.kernel.Entity">
+</entity>
+}}

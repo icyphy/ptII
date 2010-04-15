@@ -78,7 +78,7 @@ test StringUtilities-1.5 {substitution checks} {
     checkSubstitute "aa" "aa" "aaa"
 } {0}
 
-test StringUtilities-1.6 {escapeForXML} {
+test StringUtilities-1.6.1 {escapeForXML} {
     set xml "\"My n&me is\r\n<&rf>\""
     set escapedXML [java::call ptolemy.util.StringUtilities escapeForXML $xml]
     set unescapedXML [java::call ptolemy.util.StringUtilities unescapeForXML \
@@ -86,6 +86,13 @@ test StringUtilities-1.6 {escapeForXML} {
     list $escapedXML \
 	[expr {$unescapedXML == $xml}]
 } {{&quot;My n&amp;me is&#13;&#10;&lt;&amp;rf&gt;&quot;} 1}
+
+test StringUtilities-1.6.2 {unescapeForXML for a string with no &} {
+    # Cover the else branch in unescapeForXML
+    set noAmpersands "This string contains no ampersands"
+    set unescapedXML [java::call ptolemy.util.StringUtilities unescapeForXML 		  $noAmpersands]
+    list $unescapedXML
+} {{This string contains no ampersands}}
 
 test StringUtilities-1.7 {substitution checks} {
     java::call ptolemy.util.StringUtilities substitute "\"foo\"" "\"" "aaa"
