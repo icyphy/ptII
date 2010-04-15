@@ -40,6 +40,7 @@ import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// InstantiableNamedObj
@@ -212,6 +213,14 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+    	
+        // escape any < character in name. unescapeForXML occurs in 
+        // NamedObj.setName(String)
+        // If we don't escape the name here then we generate
+        // MoML that is not valid XML.  See MoMLParser-34.0 in
+        // moml/test/MoMLParser.tcl
+        name = StringUtilities.escapeForXML(name);
+    	
         if (!isClassDefinition()) {
             super.exportMoML(output, depth, name);
             return;

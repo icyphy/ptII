@@ -161,6 +161,11 @@ public class StringUtilities {
         // This method gets called quite a bit when parsing large
         // files, so rather than calling substitute() many times,
         // we combine all the loops in one pass.
+
+        // A different solution might be to scan the string for
+        // escaped xml characters and if any are found, then create a
+        // StringBuffer and do the conversion.  Using a profiler would
+        // help here.
         if (string == null) {
             return null;
         }
@@ -1038,12 +1043,14 @@ public class StringUtilities {
      *  @return A new string with special characters replaced.
      */
     public static String unescapeForXML(String string) {
-        string = substitute(string, "&amp;", "&");
-        string = substitute(string, "&quot;", "\"");
-        string = substitute(string, "&lt;", "<");
-        string = substitute(string, "&gt;", ">");
-        string = substitute(string, "&#10;", "\n");
-        string = substitute(string, "&#13;", "\r");
+        if (string.indexOf("&") != -1) {
+            string = substitute(string, "&amp;", "&");
+            string = substitute(string, "&quot;", "\"");
+            string = substitute(string, "&lt;", "<");
+            string = substitute(string, "&gt;", ">");
+            string = substitute(string, "&#10;", "\n");
+            string = substitute(string, "&#13;", "\r");
+        }
         return string;
     }
 

@@ -879,6 +879,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+    	
+        // Escape any < character in name. unescapeForXML occurs in 
+        // setName(String).
+        name = StringUtilities.escapeForXML(name);    	
+    	
         try {
             _workspace.getReadAccess();
 
@@ -1923,6 +1928,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             throw new IllegalActionException(this,
                     "Cannot set a name with a period: " + name);
         }
+
+        // Unescape if necessary. escapeForXML occurs in 
+        // exportMoML(Writer output, int depth, String name)
+        // See http://chess.eecs.berkeley.edu/ptolemy/listinfo/ptolemy/2010-April/011999.html
+        name = StringUtilities.unescapeForXML(name);
 
         try {
             _workspace.getWriteAccess();
