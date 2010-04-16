@@ -3,11 +3,12 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
-<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="03/31/08 13:40:44">
+<!-- Generated from latex, don't update this file, update -->
+<!-- ptIIdoc/doc/design/src/tex/expression.tex -->
+
+<meta name="LASTUPDATED" content="$Id$">
 <link href="default.css" rel="stylesheet" type="text/css">
-<title>3.10 Units</title>
+<title>11 Fixed Point Numbers</title>
 </head>
 
 <body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
@@ -30,73 +31,125 @@
 
 
 <blockquote>
-<h2>
-  <a name="175821"> </a>3.10   Units
-</h2>
 
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc11">
+11</a>&nbsp;&nbsp;Fixed Point Numbers</h2>
+<a name="52338">
+</a>
+Ptolemy II includes a preliminary  fixed
+point data type. We represent a fixed point value in the expression
+language using the following format:
 
-<a name="175825"> </a>Ptolemy II supports units systems, which are built on top of the expression language. Units systems allow parameter values to be expressed with units, such as "1.0 * cm", which is equal to "0.01 * meters". These are expressed this way (with the * for multiplication) because "cm" and "meters" are actually variables that become in scope when a units system icon is dragged in to a model. A few simple units systems are provided (mainly as examples) in the utilities library.<br>
+<pre>
+fix(value,&nbsp;totalBits,&nbsp;integerBits)
 
+</pre>
+Thus, a fixed point value of 5.375 that uses 8 bit precision of which
+4 bits are used to represent the (signed) integer part can be
+represented as:
 
-<p>
-  <a name="176062"> </a>A model using one of the simple provided units systems is shown in figure <img src="img/expressions2.gif" height="330" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="expressionsa11.htm#176062">3.8</a>. This unit system is called BasicUnits; the units it defines can be examined by double clicking on its icon, or by invoking Configure, as shown in figure <img src="img/expressions5.gif" height="382" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="expressionsa11.htm#176062">3.9</a>. In that figure, we see that "meters", "meter", and "m" are defined, and are all synonymous. Moreover, "cm" is defined, and given value "0.01*meters", and "in", "inch" and "inches" are defined, all with value "2.54*cm".
-</p>
+<pre>
+fix(5.375,&nbsp;8,&nbsp;4)
 
+</pre>
+The value can also be a matrix of doubles. The values are rounded,
+yielding the nearest value representable with the specified
+precision. If the value to represent is out of range, then it is
+saturated, meaning that the maximum or minimum fixed point value is
+returned, depending on the sign of the specified value. For example,
 
-<p>
-  <a name="176135"> </a>In the example in figure <a href="expressionsa11.htm#176062">3.8</a>, a constant with value "1.0 * meter" is fed into a Scale actor with scale factor equal to "2.0/ms". This produces a result with dimensions of length over time. If we feed this result directly into a Display actor, then it is displayed as "2000.0 meters/seconds", as shown in figure <img src="img/expressions11.gif" usemap="#expressions11_gif" height="301" width="600" align="center" border="0" hspace="0" vspace="0">
-<map name="expressions11_gif">
+<pre>
+fix(5.375,&nbsp;8,&nbsp;3)
 
-<area href="expressionsa11.htm#176062" shape=rect coords="1,275,598,300">
-</map>
-<a href="expressionsa11.htm#176135">3.10</a>, top display. The canonical units for length are meters, and for time are seconds.
-</p>
+</pre>
+will yield 3.968758, the maximum value possible with the (8/3) precision.
 
+<div class="p"><!----></div>
+In addition to the fix() function, the expression language offers a
+ quantize()
+function. The arguments are the same as those of the fix() function,
+but the return type is a DoubleToken or DoubleMatrixToken instead of a
+FixToken or FixMatrixToken. This function can therefore be used to
+quantize double-precision values without ever explicitly working with
+the fixed-point representation.
 
-<p>
-  <a name="176145"> </a>In figure <a href="expressionsa11.htm#176062">3.8</a>, we also take the result and feed it to the <i>InUnitsOf</i> actor, which performs divides its input by its argument, and checks to make sure that the result is unitless. This tells us that 2 meters/ms is equal to about 78,740 inches/second.
-</p>
+<div class="p"><!----></div>
+To make the FixToken accessible within the expression language, the
+following functions are available:
 
+<ul>
+<li>To create a single FixPoint Token using the expression language:
 
-<p>
-  <a name="176157"> </a>The <i>InUnitsOf</i> actor can be used to ensure that numbers are interpreted correctly in a model, which can be effective in catching certain kinds of critical errors. For example, if in figure <a href="expressionsa11.htm#176062">3.8</a> we had entered "seconds/inch" instead of "inches/second" in the InUnitsOf actor, we would have gotten the exception in figure <img src="img/expressions8.gif" height="149" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="expressionsa11.htm#176157">3.11</a> instead of the execution in figure <a href="expressionsa11.htm#176135">3.10</a>.
-</p>
+<pre>
+fix(5.34,&nbsp;10,&nbsp;4)
 
+</pre>
+ This will create a FixToken. In this case, we try to fit the
+number 5.34 into a 10 bit representation with 4 bits used in the
+integer part. This may lead to quantization errors. By default the
+round quantizer is used.
+<div class="p"><!----></div>
+</li>
 
-<p>
-  <a name="176191"> </a>Units systems are built entirely on the expression language infrastructure in Ptolemy II. The units system icons actually represent instances of <i>scope-extending attributes</i>, which are attributes whose parameters are in scope as if those parameters were directly contained by the container of the scope-extending attribute. That is, scope-extending attributes can define a collection of variables and constants that can be manipulated as a unit. In version 2.0 of Ptolemy II, two fairly extensive units systems are provided, CGSUnitBase and ElectronicUnitBase. Nonetheless, these are intended as examples only, and can no doubt be significantly improved and extended.
-</p>
+<li> To create a Matrix with FixPoint values using the expression
+  language:
+
+<pre>
+fix([&nbsp;-.040609,&nbsp;-.001628,&nbsp;.17853&nbsp;],&nbsp;10,&nbsp;2)&nbsp;
+
+</pre>
+ This will create a FixMatrixToken with 1 row and 3 columns, in
+which each element is a FixPoint value with precision(10/2). The
+resulting FixMatrixToken will try to fit each element of the given
+<em>double</em> matrix into a 10 bit representation with 2 bits used for
+the integer part. By default the round quantizer is used.
+<div class="p"><!----></div>
+</li>
+
+<li> To create a single DoubleToken, which is the quantized version
+  of the <em>double</em> value given, using the expression language:
+
+<pre>
+quantize(5.34,&nbsp;10,&nbsp;4)
+
+</pre>
+  This will create a DoubleToken. The resulting DoubleToken contains
+  the <em>double</em> value obtained by fitting the number 5.34 into a
+  10 bit representation with 4 bits used in the integer part. This may
+  lead to quantization errors. By default the round quantizer is used.
+<div class="p"><!----></div>
+</li>
+
+<li> To create a Matrix with doubles quantized to a particular
+  precision using the expression language:
+
+<pre>
+quantize([&nbsp;-.040609,&nbsp;-.001628,&nbsp;.17853&nbsp;],&nbsp;10,&nbsp;2)&nbsp;
+
+</pre>
+   This will create a DoubleMatrixToken with 1 row and 3
+  columns. The elements of the token are obtained by fitting the given
+  matrix elements into a 10 bit representation with 2 bits used for
+  the integer part. Instead of being a fixed point value, the values
+  are converted back to their <em>double</em> representation and by
+  default the round quantizer is used.
+<div class="p"><!----></div>
+</li>
+</ul>
+
 </blockquote>
-
-
-
-<table align="right" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td align="right"><font size="1">
-    
-
-
-
-
-
-    </td>
-  </tr>
-</table>
-
 <table width="331" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
-    alt="TOC"> </a></td>
-    <td><a href="expressionsa10.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
-    alt="PREV"> </a></td>
-    <td><a href="expressionsa12.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
-    alt="NEXT"> </a></td>
+<tr>
+  <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+  alt="TOC"> </a></td>
+  <td><a href="expressionsa10.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+  alt="PREV"> </a></td>
+  <td><a href="expressionsa12.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
+  alt="NEXT"> </a></td>
 
 
-  </tr>
+</tr>
 </table>
 
 </body>

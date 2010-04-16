@@ -3,14 +3,14 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
-<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="03/31/08 13:40:44">
-<link href="default.css" rel="stylesheet" type="text/css">
+<!-- Generated from latex, don't update this file, update -->
+<!-- ptIIdoc/doc/design/src/tex/expression.tex -->
+
+<meta name="LASTUPDATED" content="$Id$">
 <title>3.2 Simple Arithmetic Expressions</title>
 </head>
 
-<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF"
+<body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF">
 
 
 <table width="331" border="0" align="right" cellpadding="0" cellspacing="0">
@@ -25,338 +25,379 @@
     
   </tr>
 </table>
-
-
-
-
 <blockquote>
-<h2>
-  <a name="175566"> </a>3.2   Simple Arithmetic Expressions
-</h2>
+<div class="p"><!----></div>
+<h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;Simple Arithmetic Expressions</h2>
+<a name="pgfId-175566">
+</a>
 
+   <h3><a name="tth_sEc2.1">
+2.1</a>&nbsp;&nbsp;Constants and Literals</h3>
 
-<h4>
-  <a name="175529"> </a>3.2.1   Constants and Literals
-</h4>
-
-
-<p>
-  <a name="199193"> </a>The simplest expression is a constant, which can be given either by the symbolic name of the constant, or by a literal. By default, the symbolic names of constants supported are PI, pi, E, e, true, false, i, j, NaN, Infinity, PositiveInfinity, NegativeInfinity, MaxUnsignedByte, MinUnsignedByte, MaxShort, MinShort, MaxInt, MinInt, MaxLong, MinLong, MaxFloat, MinFloat, MaxDouble, MinDouble. For example,
-</p>
+<div class="p"><!----></div>
+The simplest expression is a constant, which can be given either by
+the symbolic name of the constant, or by a literal. By default, the
+symbolic names of constants supported are
+PI,
+pi,
+E,
+e,
+true,
+false,
+i,
+j,
+NaN,
+Infinity,
+PositiveInfinity,
+NegativeInfinity,
+MaxUnsignedByte,
+MinUnsignedByte,
+MaxShort,
+MinShort,
+MaxInt,
+MinInt,
+MaxLong,
+MinLong,
+MaxFloat,
+MinFloat,
+MaxDouble,
+MinDouble.
+For example,
 
 <pre>
-<a name="175540"> </a>
-PI/2.0<a name="175541"> </a>
-<a name="175542"> </a>
+PI/2.0
+
 </pre>
 
-<a name="175543"> </a>is a valid expression that refers to the symbolic name "PI" and the literal "2.0." The constants i and j are the imaginary number with value equal to the square root of -1. The constant NaN is "not a number," which for example is the result of dividing 0.0/0.0. The constant Infinity is the result of dividing 1.0/0.0. The constants that start with "Max" and "Min" are the maximum and minimum values for their corresponding types.<br>
+<div class="p"><!----></div>
+is a valid expression that refers to the symbolic name "PI" and the
+literal "2.0." The constants i and j are the imaginary number with
+value equal to the square root of -1. The constant NaN is "not a
+number," which for example is the result of dividing 0.0/0.0. The
+constant Infinity is the result of dividing 1.0/0.0. The constants
+that start with "Max" and "Min" are the maximum and minimum
+values for their corresponding types.
+
+<div class="p"><!----></div>
+Numerical values without decimal points, such as "10" or "-3" are
+integers (type <em>int</em>).
+Numerical values with decimal points, such as "10.0" or "3.14159" are of type 
+<em>double</em>.
+Numerical values followed by "f" or "F" are
+of type <em>float</em>.  Numerical values without decimal
+points followed by the character "l" (el) or "L" are of type
+<em>long</em>.  long. Numerical values without decimal
+points followed by the character "s" or "S" are of type
+<em>short</em>.  Unsigned integers followed by "ub" or
+"UB" are of type , <em>unsignedByte</em>, as in
+"5ub". An <em>unsignedByte</em> has a value between 0 and 255; note that it
+not quite the same as the Java byte, which has a value between -128
+and 127.  Numbers of type <em>int</em>, <em>long</em>, <em>short</em> or
+<em>unsignedByte</em> can be specified in decimal, octal, or
+hexadecimal. Numbers beginning with a leading "0" are octal
+numbers. Numbers beginning with a leading "0x" are hexadecimal
+numbers. For example, "012" and "0xA" are both equal to the
+integer 10.
+
+<div class="p"><!----></div>
+A  <em>complex</em> is defined by appending an "i" or a "j"
+to a double for the imaginary part. This gives a purely imaginary
+<em>complex</em> number which can then leverage the polymorphic operations in
+the Token classes to create a general <em>complex</em> number. Thus <tt>2&nbsp;+&nbsp;3i</tt> will result in the expected <em>complex</em> number. You can optionally
+write this <tt>2&nbsp;+&nbsp;3*i</tt>.
+
+<div class="p"><!----></div>
+Literal string constants are also supported. Anything between double
+quotes, "...", is interpreted as a  string
+constant. The following built-in string-valued constants are defined:
+
+<div class="p"><!----></div>
+
+<div class="p"><!----></div>
+<a name="tth_tAb1">
+</a> <center>Table 1: String-valued constants defined in the expression language</center>
+
+<table border="1">
+<tr><td width="59">Variable name </td><td width="118">Meaning </td><td width="98">Property name </td><td width="252">Example under Windows </td></tr><tr><td></td></tr>
+<tr><td width="59">PTII </td><td width="118">The directory in which Ptolemy II is installed </td><td width="98">ptolemy.ptII.dir </td><td width="252">c:\tmp </td></tr>
+<tr><td width="59">HOME </td><td width="118">The user home directory </td><td width="98">user.home </td><td width="252"><font size="+0">c:\Documents&nbsp;and&nbsp;Settings\\you</font></td></tr>
+<tr><td width="59">CWD </td><td width="118">The current working directory </td><td width="98">user.dir </td><td width="252">c:\ptII </td></tr>
+<tr><td width="59">TMPDIR </td><td width="118">The temporary directory </td><td width="98">java.io.tmpdir </td><td width="252"><font size="-3">c:\Documents&nbsp;and&nbsp;Settings\\you\Local&nbsp; Settings\Temp\</font> </td></tr></table>
 
 
-<p>
-  <a name="175682"> </a>Numerical values without decimal points, such as "10" or "-3" are integers (type <i>int</i>). Numerical values with decimal points, such as "10.0" or "3.14159" are of type <i>double</i>. Numerical values that followed by "f" or "F" are of type <i>float</i>. Numerical values without decimal points followed by the character "l" (el) or "L" are of type <i>long</i>. Numerical values without decimal points followed by the character "s" or "S" are of type <i>short</i>. Unsigned integers followed by "ub" or "UB" are of type <i>unsignedByte</i>, as in "5ub". An <i>unsignedByte</i> has a value between 0 and 255; note that it not quite the same as the Java byte, which has a value between -128 and 127.
-</p>
+<div class="p"><!----></div>
+The value of these variables is the value of the Java virtual machine
+property, such as <em>user.home</em>. The properties <tt>user.dir</tt> and
+<tt>user.home</tt> are standard in Java. Their values are platform
+dependent; see the documentation for the
+java.lang.System.getProperties() method for details. Note that
+user.dir and user.home are usually not readable in unsigned applets,
+in which case, attempts to use these variables in an expression will
+result in an exception. Vergil will display all the Java properties if
+you invoke  JVM Properties in the View menu of a
+Graph Editor. 
 
-
-<p>
-  <a name="183874"> </a>Numbers of type <i>int</i>, <i>long</i>, <i>short</i> or <i>unsignedByte</i> can be specified in decimal, octal, or hexadecimal. Numbers beginning with a leading "0" are octal numbers. Numbers beginning with a leading "0x" are hexadecimal numbers. For example, "012" and "0xA" are both equal to the integer 10. 
-</p>
-
-
-<p>
-  <a name="176526"> </a>A <i>complex</i> is defined by appending an "i" or a "j" to a double for the imaginary part. This gives a purely imaginary complex number which can then leverage the polymorphic operations in the Token classes to create a general complex number. Thus "2 + 3i</font>" will result in the expected complex number. You can optionally write this "2 + 3*i".
-</p>
-
-
-<p>
-  <a name="183893"> </a>Literal string constants are also supported. Anything between double quotes, "...", is interpreted as a string constant. The following built-in string-valued constants are defined:
-
-<table border="1" cellpadding="5" cellspacing="0">
-  <caption><b><i><a name="185430"> </a><font face="Times New Roman">TABLE 1:  String-valued constants defined in the expression language.</font></i></b></caption>
-  <tr align="center" bgcolor="#CCCCCC">
-    <th><a name="176529"> </a>Variable name</th>
-    <th><a name="176531"> </a>Meaning</th>
-    <th><a name="176533"> </a>Property name</th>
-    <th><a name="176570"> </a>Example under Windows</th>
-  </tr>
-  <tr>
-    <td><a name="176536"> </a>PTII</td>
-    <td><a name="176538"> </a>The directory in which Ptolemy II is installed</td>
-    <td><a name="176540"> </a>ptolemy.ptII.dir</td>
-    <td><a name="176572"> </a>c:\tmp</td>
-  </tr>
-  <tr>
-    <td><a name="176543"> </a>HOME</td>
-    <td><a name="176545"> </a>The user home directory</td>
-    <td><a name="176547"> </a>user.home</td>
-    <td><a name="176574"> </a>c:\Documents and Settings\you</td>
-  </tr>
-  <tr>
-    <td><a name="176550"> </a>CWD</td>
-    <td><a name="176552"> </a>The current working directory</td>
-    <td><a name="176554"> </a>user.dir</td>
-    <td><a name="176576"> </a>c:\ptII</td>
-  </tr>
-  <tr>
-    <td><a name="198289"> </a>TMPDIR</td>
-    <td><a name="198291"> </a>The temporary directory</td>
-    <td><a name="198293"> </a>java.io.tmpdir</td>
-    <td><a name="198295"> </a>c:\Documents and Settings\you\Local Settings\Temp</td>
-  </tr>
-</table>
-
-
-
-
-</p>
-
-
-<a name="176584"> </a>The value of these variables is the value of the Java virtual machine property, such as <i>user.home</i>. The properties <i>user.dir</i> and <i>user.home</i> are standard in Java. Their values are platform dependent; see the documentation for the java.lang.System.getProperties() method for details. Note that <i>user.dir</i> and <i>user.home</i> are usually not readable in unsigned applets, in which case, attempts to use these variables in an expression will result in an exception. Vergil will display all the Java properties if you invoke JVM Properties in the View menu of a Graph Editor.<br>
-
-
-<p>
-  <a name="176629"> </a>The <i>ptolemy.ptII.dir</i> property is set automatically when Vergil or any other Ptolemy II executable is started up. You can also set it when you start a Ptolemy II process using the java command by a syntax like the following:
-</p>
+<div class="p"><!----></div>
+The <tt>ptolemy.ptII.dir</tt> property is set automatically when Vergil
+or any other Ptolemy II executable is started up. You can also set it
+when you start a Ptolemy II process using the java command by a syntax
+like the following:
 
 <pre>
-<a name="176693"> </a>
-java -Dptolemy.ptII.dir=${PTII} <i>classname</i><a name="176699"> </a>
-<a name="176702"> </a>
+java&nbsp;-Dptolemy.ptII.dir=${PTII}&nbsp;classname
+
 </pre>
 
-<a name="183552"> </a>where <i>classname</i> is the full class name of a Java application.<br>
-
-
-<p>
-  <a name="183554"> </a>The constants() utility function returns a record with all the globally defined constants. If you open the expression evaluator and invoke this function, you will see that its value is something like:
-</p>
+<div class="p"><!----></div>
+where classname is the full class name of a Java application.
+The 
+constants() utility function returns a record with all the globally defined constants. If you open the expression evaluator and invoke this function, you will see that its value is something like:
 
 <pre>
-<a name="183584"> </a>
+CLASSPATH&nbsp;=&nbsp;"xxxxxxCLASSPATHxxxxxx",&nbsp;CWD&nbsp;=&nbsp;"/Users/Ptolemy/ptII",
+E&nbsp;=&nbsp;2.718281828459,&nbsp;HOME&nbsp;=&nbsp;"/Users/cxh",&nbsp;Infinity&nbsp;=&nbsp;Infinity,
+MaxDouble&nbsp;=&nbsp;1.7976931348623E308,&nbsp;MaxFloat&nbsp;=&nbsp;3.4028234663853E38,
+MaxInt&nbsp;=&nbsp;2147483647,&nbsp;MaxLong&nbsp;=&nbsp;9223372036854775807L,
+MaxShort&nbsp;=&nbsp;32767s,&nbsp;MaxUnsignedByte&nbsp;=&nbsp;255ub,&nbsp;MinDouble&nbsp;=&nbsp;4.9E-324,
+MinFloat&nbsp;=&nbsp;1.4012984643248E-45,&nbsp;MinInt&nbsp;=&nbsp;-2147483648,
+MinLong&nbsp;=&nbsp;-9223372036854775808L,&nbsp;MinShort&nbsp;=&nbsp;-32768s,
+MinUnsignedByte&nbsp;=&nbsp;0ub,&nbsp;NaN&nbsp;=&nbsp;NaN,&nbsp;NegativeInfinity&nbsp;=&nbsp;-Infinity,
+PI&nbsp;=&nbsp;3.1415926535898,&nbsp;PTII&nbsp;=&nbsp;"/Users/Ptolemy/ptII",
+PositiveInfinity&nbsp;=&nbsp;Infinity,
+TMPDIR&nbsp;=&nbsp;"/var/folders/7f/7f-o2nyjFgewH67h0keKu++++TI/-Tmp-/",
+boolean&nbsp;=&nbsp;false,&nbsp;complex&nbsp;=&nbsp;0.0&nbsp;+&nbsp;0.0i,&nbsp;double&nbsp;=&nbsp;0.0,
+e&nbsp;=&nbsp;2.718281828459,&nbsp;false&nbsp;=&nbsp;false,&nbsp;fixedpoint&nbsp;=&nbsp;fix(0,2,2),
+float&nbsp;=&nbsp;0.0f,&nbsp;general&nbsp;=&nbsp;present,&nbsp;i&nbsp;=&nbsp;0.0&nbsp;+&nbsp;1.0i,&nbsp;int&nbsp;=&nbsp;0,
+j&nbsp;=&nbsp;0.0&nbsp;+&nbsp;1.0i,&nbsp;long&nbsp;=&nbsp;0L,&nbsp;matrix&nbsp;=&nbsp;[],&nbsp;nil&nbsp;=&nbsp;nil,
+null&nbsp;=&nbsp;object(null),&nbsp;object&nbsp;=&nbsp;object(null),&nbsp;pi&nbsp;=&nbsp;3.1415926535898,
+scalar&nbsp;=&nbsp;present,&nbsp;short&nbsp;=&nbsp;0s,&nbsp;string&nbsp;=&nbsp;"",&nbsp;true&nbsp;=&nbsp;true,
+unknown&nbsp;=&nbsp;present,&nbsp;unsignedByte&nbsp;=&nbsp;0ub,&nbsp;xmltoken&nbsp;=&nbsp;null
 
-{CLASSPATH = "xxxxxxCLASSPATHxxxxxx", CWD = "C:\\ptII\\ptII7.2.devel", \
-E = 2.718281828459, HOME = "C:\\Documents and Settings\\ptI", \
-Infinity = Infinity, MaxDouble = 1.7976931348623E308, \
-MaxFloat = 3.4028234663853E38, MaxInt = 2147483647, \
-MaxLong = 9223372036854775807L, MaxShort = 32767, MaxUnsignedByte = 255ub,
-MinDouble = 4.9E-324, MinFloat = 1.4012984643248E-45, \
-MinInt = -2147483648, MinLong = -9223372036854775808L, MinShort = -32768, \
-MinUnsignedByte = 0ub, NaN = NaN, NegativeInfinity = -Infinity, \
-PI = 3.1415926535898, PTII = "c:/ptII/ptII7.2.devel", \
-PositiveInfinity = Infinity, TMPDIR = "c:\\DOCUME~1\\ptII\\LOCALS~1\\Temp\\", \
-_hideName = true, _linkBendRadius = 20.0, _relationSize = 12.0, \
-_showParameters = "None", backgroundColor = {0.9, 0.9, 0.9, 1.0}, \
-boolean = false, complex = 0.0 + 0.0i, double = 0.0, e = 2.718281828459, \
-false = false, fixedpoint = fix(0,2,2), float = 0.0f, general = present, \
-i = 0.0 + 1.0i, int = 0, j = 0.0 + 1.0i, long = 0L, matrix = [], nil = nil,
-object = object(null), pi = 3.1415926535898, scalar = present, \
-short = 0, string = "", true = true, unknown = present, unsignedByte = 0ub, \
-xmltoken = null}<a name="199177"> </a> </pre>
-
-<h4>
-  <a name="175515"> </a>3.2.2   Variables
-</h4>
-
-
-<p>
-  <a name="175517"> </a>Expressions can contain identifiers that are references to variables within the <i>scope</i> of the expression. For example,
-</p>
-
-<pre>
-<a name="175696"> </a>
-PI*x/2.0<a name="175697"> </a>
-<a name="175704"> </a>
 </pre>
 
-<a name="191833"> </a>is valid if "x" is a variable in scope. In the expression evaluator, the variables that are in scope include the built-in constants plus any assignments that have been previously made. For example,<br>
+
+     <h3><a name="tth_sEc2.2">
+2.2</a>&nbsp;&nbsp;Variables</h3>
+<a name="pgfId-175515">
+</a>
+Expressions can contain  identifiers that are
+references to variables within the <em>scope</em> of the expression. For
+example,
 
 <pre>
-<a name="191835"> </a>
-&gt;&gt; x = pi/2<a name="191853"> </a>
-1.5707963267949<a name="191854"> </a>
-&gt;&gt; sin(x)<a name="191855"> </a>
-1.0<a name="191856"> </a>
-&gt;&gt;<a name="191836"> </a>
-<a name="191837"> </a>
+PI*x/2.0
+
 </pre>
-
-<a name="191844"> </a>In the context of Ptolemy II models, the variables in scope include all parameters defined at the same level of the hierarchy or higher. So for example, if an actor has a parameter named "x" with value 1.0, then another parameter of the same actor can have an expression with value "PI*x/2.0", which will evaluate to &#960;/2.<br>
-
-
-<p>
-  <a name="175710"> </a>Consider a parameter <i>P </i>in actor <i>X</i> which is in turn contained by composite actor <i>Y</i>. The scope of an expression for <i>P </i>includes all the parameters contained by <i>X</i> and <i>Y</i>, plus those of the container of <i>Y</i>, its container, etc. That is, the scope includes any parameters defined above in the hierarchy.
-</p>
-
-
-<p>
-  <a name="175724"> </a>You can add parameters to actors (composite or not) by right clicking on the actor, selecting "Configure" and then clicking on "Add", or by dragging in a parameter from the <i>utilities</i> library. Thus, you can add variables to any scope, a capability that serves the same role as the "let" construct in many functional programming languages.
-</p>
-
-
-<p>
-  <a name="198679"> </a>Occasionally, it is desirable to access parameters that are not in scope. The expression language supports a limited syntax that permits access to certain variables out of scope. In particular, if in place of a variable name x</font> in an expression you write A::x</font>, then instead of looking for x</font> in scope, the interpreter looks for a container named A</font> in the scope and a parameter named x</font> in A. This allows reaching down one level in the hierarchy from either the current container or any of its containers.
-</p>
-
-
-<h4>
-  <a name="198680"> </a>3.2.3   Operators
-</h4>
-
-
-<p>
-  <a name="175556"> </a>The arithmetic operators are +, -, *, /, ^, and %. Most of these operators operate on most data types, including arrays, records, and matrices. The ^ operator computes "to the power of" or exponentiation where the exponent can only be an <i>int, short, </i>or an <i>unsignedByte</i>. 
-</p>
-
-
-<p>
-  <a name="183454"> </a>The <i>unsignedByte</i>, <i>short</i>, <i>int</i> and <i>long</i> types can only represent integer numbers. Operations on these types are integer operations, which can sometimes lead to unexpected results. For instance, 1/2 yields 0 if 1 and 2 are integers, whereas 1.0/2.0 yields 0.5. The exponentiation operator '^' when used with negative exponents can similarly yield unexpected results. For example, 2^-1 is 0 because the result is computed as 1/(2^1).
-</p>
-
-
-<p>
-  <a name="186979"> </a>The % operation is a <i>modulo</i> or <i>remainder</i> operation. The result is the remainder after division. The sign of the result is the same as that of the dividend (the left argument). For example,
-</p>
+is valid if "x" a variable in scope. In the expression
+evaluator, the variables that are in scope include the built-in
+constants plus any  assignments that have been
+previously made. For example,
 
 <pre>
-<a name="187558"> </a>
-&gt;&gt; 3.0 % 2.0<a name="187564"> </a>
-1.0<a name="187565"> </a>
-&gt;&gt; -3.0 % 2.0<a name="187568"> </a>
--1.0<a name="187569"> </a>
-&gt;&gt; -3.0 % -2.0<a name="187570"> </a>
--1.0<a name="187571"> </a>
-&gt;&gt; 3.0 % -2.0<a name="187572"> </a>
-1.0<a name="187562"> </a>
-<a name="187587"> </a>
-</pre>
+&#62;&#62;&nbsp;x&nbsp;=&nbsp;pi/2
+1.5707963267949
+&#62;&#62;&nbsp;sin(x)
+1.0
 
-<a name="187588"> </a>The magnitude of the result is always less than the magnitude of the divisor (the right argument). Note that when this operator is used on doubles, the result is not the same as that produced by the remainder() function (see <a href="expressionsa12.htm#194754">Table 5 on page 127</a>). For instance,<br>
+</pre>
+In the context of Ptolemy II models, the variables in scope include
+all parameters defined at the same level of the hierarchy or
+higher. So for example, if an actor has a parameter named "x" with
+value 1.0, then another parameter of the same actor can have an
+expression with value "PI*x/2.0", which will evaluate to &#960;/2.
+
+<div class="p"><!----></div>
+Consider a parameter P in actor X which is in turn contained by
+composite actor Y. The scope of an expression for P includes all the
+parameters contained by X and Y, plus those of the container of Y, its
+container, etc. That is, the scope includes any parameters defined
+above in the hierarchy.
+
+<div class="p"><!----></div>
+You can  add parameters to actors (composite
+or not) by right clicking on the actor, selecting "Configure" and
+then clicking on "Add", or by dragging in a parameter from the
+utilities library. Thus, you can add variables to any scope, a
+capability that serves the same role as the  "let"
+construct in many functional programming languages.
+
+<div class="p"><!----></div>
+Occasionally, it is desirable to access parameters that are not in
+scope. The expression language supports a limited syntax that permits
+access to certain variables out of scope. In particular, if in place
+of a variable name <tt>x</tt> in an expression you write <tt>A::x</tt>,
+then instead of looking for <tt>x</tt> in scope, the interpreter looks
+for a container named <tt>A</tt> in the scope and a parameter named
+<tt>x</tt> in <tt>A</tt>.  This allows reaching down one level in the
+hierarchy from either the current container or any of its containers.
+
+<div class="p"><!----></div>
+    <h3><a name="tth_sEc2.3">
+2.3</a>&nbsp;&nbsp;Operators</h3>
+<a name="pgfId-198680">
+</a>
+The  arithmetic operators are +, -, *, /,
+^, and %. Most of these operators operate on most data types,
+including arrays, records, and matrices. The &#244;perator computes "to
+the power of" or  exponentiation where the
+exponent can only be an <em>int</em>, <em>short</em>, or an
+<em>unsignedByte</em>.
+
+<div class="p"><!----></div>
+The <em>unsignedByte</em>, <em>short</em>, <em>int</em> and <em>long</em>
+types can only represent integer numbers. Operations on these types
+are integer operations, which can sometimes lead to unexpected
+results. For instance, 1/2 yields 0 if 1 and 2 are integers, whereas
+1.0/2.0 yields 0.5. The exponentiation operator "^" when used with
+negative exponents can similarly yield unexpected results. For
+example, 2^-1 is 0 because the result is computed as 1/(2^1).
+
+<div class="p"><!----></div>
+The % operation is a modulo or remainder operation. The result is the remainder after division. The sign of the result is the same as that of the dividend (the left argument). For example,
 
 <pre>
-<a name="187601"> </a>
-&gt;&gt; remainder(-3.0, 2.0)<a name="187607"> </a>
-1.0<a name="187605"> </a>
-<a name="187611"> </a>
-</pre>
+&#62;&#62;&nbsp;3.0&nbsp;%&nbsp;2.0
+1.0
+&#62;&#62;&nbsp;-3.0&nbsp;%&nbsp;2.0
+-1.0
+&#62;&#62;&nbsp;-3.0&nbsp;%&nbsp;-2.0
+-1.0
+&#62;&#62;&nbsp;3.0&nbsp;%&nbsp;-2.0
+1.0
 
-<a name="186986"> </a>The remainder() function calculates the IEEE 754 standard remainder operation. It uses a rounding division rather than a truncating division, and hence the sign can be positive or negative, depending on complicated rules (see <a href="expressionsa8.htm#186842">page 119</a>). For example, counter intuitively,<br>
+</pre>
+The magnitude of the result is always less than the magnitude of the
+divisor (the right argument). Note that when this operator is used on
+doubles, the result is not the same as that produced by the
+remainder() function (see Table <a href="expressionsa13.htm#tbl:matrix">10</a>). For instance,
 
 <pre>
-<a name="187628"> </a>
-&gt;&gt; remainder(3.0, 2.0)<a name="187634"> </a>
--1.0<a name="187632"> </a>
-<a name="187642"> </a>
+&#62;&#62;&nbsp;remainder(-3.0,&nbsp;2.0)
+1.0
+
 </pre>
 
-<p>
-  <a name="183724"> </a>When an operator involves two distinct types, the expression language has to make a decision about which type to use to implement the operation. If one of the two types can be converted without loss into the other, then it will be. For instance, <i>int</i> can be converted losslessly to <i>double</i>, so 1.0/2 will result in 2 being first converted to 2.0, so the result will be 0.5. Among the scalar types, <i>unsignedByte</i> can be converted to anything else, <i>short</i> can be converted to int, <i>int</i> can be converted to <i>double</i>, <i>float</i> can be converted to <i>double</i> and <i>double</i> can be converted to <i>complex</i>. Note that <i>long</i> cannot be converted to <i>double</i> without loss, nor vice versa, so an expression like 2.0/2L yields the following error message:
-</p>
+<div class="p"><!----></div>
+The remainder() function calculates the IEEE 754 standard remainder operation. It uses a rounding division rather than a truncating division, and hence the sign can be positive or negative, depending on complicated rules (see <a href="#remainder">8.0.4</a>). For example, counter intuitively,
 
 <pre>
-<a name="183725"> </a>
-Error evaluating expression "2.0/2L"<a name="183743"> </a>
- in .Expression.evaluator<a name="183726"> </a>
-Because:<a name="183727"> </a>
-divide method not supported between ptolemy.data.DoubleToken '2.0' and ptolemy.data.LongToken '2L' because the types are incomparable.<a name="183700"> </a>
-<a name="183744"> </a>
+&#62;&#62;&nbsp;remainder(3.0,&nbsp;2.0)
+-1.0
+
 </pre>
-
-<p>
-  <a name="183459"> </a>Just as <i>long</i> cannot be cast to <i>double</i>, <i>int</i> cannot be cast to <i>float</i> and vice versa.
-</p>
-
-
-<p>
-  <a name="199408"> </a>All scalar types have limited precision and magnitude. As a result of this, arithmetic operations are subject to underflow and overflow. 
-</p>
-
-
-<a name="183477"> </a>	 For <i>double</i> numbers, overflow results in the corresponding positive or negative infinity. Underflow (i.e. the precision does not suffice to represent the result) will yield zero.<br>
-
-
-<a name="183478"> </a>	 For integer types and <i>fixedpoint</i>, overflow results in wraparound. For instance, while the value of MaxInt</font> is 2147483647, the expression MaxInt + 1</font> yields -2147483648. Similarly, while MaxUnsignedByte</font> has value 255ub, MaxUnsignedByte + 1ub</font> has value 0ub. Note, however, that MaxUnsignedByte + 1</font> yields 256, which is an <i>int</i>, not an <i>unsignedByte</i>. This is because MaxUnsignedByte</font> can be losslessly converted to an <i>int</i>, so the addition is <i>int</i> addition, not <i>unsignedByte</i> addition.<br>
-
-
-<a name="183480"> </a>The bitwise operators are &amp;</font>, |</font>, #</font>, and ~</font>. They operate on <i>boolean</i>, <i>unsignedByte</i>, <i>short</i>, <i>int</i> and <i>long</i> (but not <i>fixedpoint</i>, <i>float</i>, <i>double</i> or <i>complex</i>). The operator &amp;</font> is bitwise AND, ~</font> is bitwise NOT, and |</font> is bitwise OR, and # is bitwise XOR (exclusive or, after MATLAB). <br>
-
-
-<p>
-  <a name="175559"> </a>The relational operators are &lt;</font>, &lt;=</font>, &gt;</font>, &gt;=</font>, ==</font> and !=</font>. They return type <i>boolean</i>. Note that these relational operators check the values when possible, irrespective of type. So, for example,
-</p>
+When an operator involves two distinct types, the expression language has to make a decision about which type to use to implement the operation. If one of the two types can be converted without loss into the other, then it will be. For instance, <em>int</em> can be converted losslessly to <em>double</em>, so 1.0/2 will result in 2 being first converted to 2.0, so the result will be 0.5. Among the scalar types, <em>unsignedByte</em> can be converted to anything else, <em>short</em> can be converted to <em>int</em>, <em>int</em> can be converted to <em>double</em>, <em>float</em> can be converted to <em>double</em> and <em>double</em> can be converted to <em>complex</em>. Note that <em>long</em> cannot be converted to <em>double</em> without loss, nor vice versa, so an expression like 
+<tt>2.0/2L</tt> yields the following error message:
 
 <pre>
-<a name="188798"> </a>
-1 == 1.0<a name="188802"> </a>
-<a name="188810"> </a>
-</pre>
+Error&nbsp;evaluating&nbsp;expression&nbsp;"2.0/2L"
+in&nbsp;.Expression.evaluator
+Because:
+divide&nbsp;method&nbsp;not&nbsp;supported&nbsp;between&nbsp;ptolemy.data.DoubleToken&nbsp;'2.0'
+and&nbsp;ptolemy.data.LongToken&nbsp;'2L'&nbsp;because&nbsp;the&nbsp;types&nbsp;are&nbsp;incomparable.
 
-<a name="188811"> </a>returns <i>true</i>. If you wish to check for equality of both type and value, use the equals() method, as in<br>
+</pre>
+Just as <em>long</em> cannot be cast to <em>double</em>, <em>int</em> cannot
+be cast to <em>float</em> and vice versa.
+
+<div class="p"><!----></div>
+All scalar types have limited precision and magnitude. As a result of this, arithmetic operations are subject to underflow and overflow. 
+
+<ul>
+<li> For <em>double</em> numbers, overflow results in the corresponding
+ positive or negative infinity. Underflow (i.e. the precision does
+ not suffice to represent the result) will yield zero.
+<div class="p"><!----></div>
+</li>
+
+<li> For integer types and <em>fixedpoint</em>, overflow results in
+ wraparound. For instance, while the value of <tt>MaxInt</tt> is
+ 2147483647, the expression <tt>MaxInt&nbsp;+&nbsp;1</tt> yields
+ -2147483648. Similarly, while <tt>MaxUnsignedByte</tt> has value
+ 255ub, <tt>MaxUnsignedByte&nbsp;+&nbsp;1ub</tt> has value 0ub. Note, however,
+ that <tt>MaxUnsignedByte&nbsp;+&nbsp;1</tt> yields 256, which is an <em>int</em>,
+ not an emphunsignedByte. This is because <tt>MaxUnsignedByte</tt>
+ can be losslessly converted to an <em>int</em>, so the addition is
+ <em>int</em> addition, not <em>unsignedByte</em> addition.
+<div class="p"><!----></div>
+</li>
+</ul>
+
+<div class="p"><!----></div>
+The  bitwise operators are <tt>&amp;</tt>, <tt>|</tt>, <tt>#</tt> and <tt>~</tt>.
+They operate on <em>boolean</em>, <em>unsignedByte</em>, <em>short</em>, <em>int</em> and long (but not <em>fixedpoint</em>, <em>float</em>, <em>double</em> or<em>complex</em>). The operator 
+<tt>&amp;</tt> is bitwise  AND, <tt>~</tt> is bitwise 
+NOT, and <tt>|</tt> is bitwise  OR, and <tt>#</tt> 
+is bitwise XXOR ( exclusive or, after MATLAB). 
+
+<div class="p"><!----></div>
+The  relational operators are <tt>&lt;</tt>,
+<tt>&lt;=</tt>, <tt>&gt;</tt>, <tt>&gt;=</tt>, <tt>==</tt> and <tt>!=</tt>.  They return
+type <em>boolean</em>. Note that these relational operators check the
+values when possible, irrespective of type. So, for example,
 
 <pre>
-<a name="188815"> </a>
-&gt;&gt; 1.equals(1.0)<a name="188819"> </a>
-false<a name="188820"> </a>
-<a name="188821"> </a>
-</pre>
+1&nbsp;==&nbsp;1.0
 
-<p>
-  <a name="188797"> </a>Boolean-valued expressions can be used to give conditional values. The syntax for this is 
-</p>
+</pre>
+returns <em>true</em>. If you wish to check for equality of both type
+and value, use the equals() method, as in
 
 <pre>
-<a name="175560"> </a>
-boolean ? value1 : value2<a name="195993"> </a>
-<a name="195994"> </a>
+&#62;&#62;&nbsp;1.equals(1.0)
+false
+
 </pre>
+Boolean-valued expressions can be used to give conditional values. The syntax for this is 
 
-<a name="175562"> </a>If the boolean is true, the value of the expression is value1</font>; otherwise, it is value2.<br>
+<pre>
+boolean&nbsp;?&nbsp;value1&nbsp;:&nbsp;value2
 
+</pre>
+If the boolean is true, the value of the expression is <tt>value1</tt>;
+otherwise, it is <tt>value2</tt>.  The  logical
+boolean operators are <tt>&amp;&amp;</tt>, <tt>||</tt>, <tt>!</tt>, <tt>&amp;</tt> and
+<tt>|</tt>.  They operate on type <em>boolean</em> and return type
+<em>boolean</em>. The difference between logical <tt>&amp;&amp;</tt> and and
+logical <tt>&amp;</tt> is that <tt>&amp;</tt> evaluates all the operands
+regardless of whether their value is now irrelevant. Similarly for
+logical <tt>||</tt> and <tt>|</tt>.  This approach is borrowed from
+Java. Thus, for example, the expression <tt>false&nbsp;&amp;&amp;&nbsp;x</tt> will
+evaluate to false irrespective of whether <tt>x</tt> is defined. On the
+other hand, <tt>false&nbsp;&amp;&nbsp;x</tt> will throw an exception.
 
-<p>
-  <a name="175732"> </a>The logical boolean operators are &amp;&amp;</font>, ||</font>, !</font>, &amp;</font> and |</font>. They operate on type <i>boolean</i> and return type <i>boolean</i>. The difference between logical &amp;&amp;</font> and logical &amp;</font> is that &amp;</font> evaluates all the operands regardless of whether their value is now irrelevant. Similarly for logical ||</font> and |</font>. This approach is borrowed from Java. Thus, for example, the expression "false &amp;&amp; x</font>" will evaluate to <i>false</i> irrespective of whether x</font> is defined. On the other hand, "false &amp; x" will throw an exception.
-</p>
+<div class="p"><!----></div>
+The <tt>&lt;&lt;</tt> and <tt>&gt;&gt;</tt> operators performs arithmetic left and
+right shifts respectively. The <tt>&gt;&gt;&gt;</tt> operator performs a logical
+right shift, which does not preserve the sign. They operate on
+<em>unsignedByte</em>, <em>short</em>, <em>int</em>, and <em>long</em>.
 
+<div class="p"><!----></div>
+    <h3><a name="tth_sEc2.4">
+2.4</a>&nbsp;&nbsp;Comments</h3>
+<a name="pgfId-175609">
+</a>
 
-<p>
-  <a name="175563"> </a>The &lt;&lt;</font> and &gt;&gt;</font> operators performs arithmetic left and right shifts respectively. The &gt;&gt;&gt;</font> operator performs a logical right shift, which does not preserve the sign. They operate on <i>unsignedByte</i>, <i>short</i>, <i>int</i>, and <i>long</i>.
-</p>
+<div class="p"><!----></div>
+In expressions, anything inside 
+<tt>/*...*/</tt>
+is ignored, so you can insert comments.
 
-
-<h4>
-  <a name="175609"> </a>3.2.4   Comments
-</h4>
-
-
-<a name="175611"> </a>In expressions, anything inside<b> </b></font>/*...*/ is ignored, so you can insert comments.<br>
 </blockquote>
 
-
-
-<table align="right" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td align="right"><font size="1">
-    
-
-
-
-
-
-    </td>
-  </tr>
-</table>
-
 <table width="331" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
-    alt="TOC"> </a></td>
-    <td><a href="expressionsa2.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
-    alt="PREV"> </a></td>
-    <td><a href="expressionsa4.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
-    alt="NEXT"> </a></td>
+ <tr>
+   <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+   alt="TOC"> </a></td>
+   <td><a href="expressionsa2.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+   alt="PREV"> </a></td>
+   <td><a href="expressionsa4.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
+   alt="NEXT"> </a></td>
 
 
-  </tr>
+ </tr>
 </table>
 
 </body>
 </html>
+
