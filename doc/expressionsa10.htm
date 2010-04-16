@@ -3,9 +3,10 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
-<meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="03/31/08 13:40:44">
+<!-- Generated from latex, don't update this file, update -->
+<!-- ptIIdoc/doc/design/src/tex/expression.tex -->
+
+<meta name="LASTUPDATED" content="$Id$">
 <link href="default.css" rel="stylesheet" type="text/css">
 <title>3.9 Fixed Point Numbers</title>
 </head>
@@ -30,111 +31,56 @@
 
 
 <blockquote>
-<h2>
-  <a name="199015"> </a>3.9   Fixed Point Numbers
-</h2>
+<div class="p"><!----></div>
+ <h2><a name="tth_sEc10">
+10</a>&nbsp;&nbsp;Nil Tokens</h2>
+<a name="pgfId-171756">
+</a>
 
+Null or missing tokens are common in analytical systems like R and SAS
+where they are used to handle sparsely populated data sources.  In
+database parlance, missing tokens are sometimes called null tokens.
+Since null is a Java keyword, we use the term "nil". Nil tokens are
+useful for analyzing real world data such as temperature where the
+value was not measured during every interval. In principle, an as yet
+unimplemented function such as average() method could properly handle
+nil tokens - when the average() method sees a nil token, it should be
+ignored. Note that this can lead to uncertainty. For example, if
+average() is expecting 30 values and 29 of them are nil, then the
+average will not be very accurate.
 
-<a name="184401"> </a>Ptolemy II includes a preliminary fixed point data type. We represent a fixed point value in the expression language using the following format: <br>
+<div class="p"><!----></div>
+If an operation such as add(), divide(), modulo(), multiply(), one(),
+subtract(), zero() or their corresponding "reverse" operations
+includes a nil token, then the output is nil. If one of the arguments
+for isCloseTo() or isEqualTo() is nil, then the method returns
+false. Methods that return a nil token return a nil token with a
+specific type so that type safety is preserved. The following tokens
+have NIL values defined: ArrayToken, BooleanToken, ComplexToken,
+DoubleToken, FloatToken IntToken, LongToken, ShortToken, StringToken,
+Token, UnsignedByteToken. There is no nil token for the various matrix
+tokens because the underlying matrices are java native type matrices
+that do not support nil.
 
-<pre>
-<a name="184402"> </a>
-fix(value, totalBits, integerBits)<a name="171768"> </a>
-<a name="171769"> </a>
-</pre>
+<div class="p"><!----></div>
+The expression language defines a constant named <tt>nil</tt> that
+refers to the Token.NIL field. The cast() expression language function
+can be used to generate references to the NIL fields of the other
+classes. For example, "cast(int, nil)" will return a reference to
+the IntToken.NIL field.
 
-<a name="175209"> </a>Thus, a fixed point value of 5.375 that uses 8 bit precision of which 4 bits are used to represent the (signed) integer part can be represented as:<br>
-
-<pre>
-<a name="175210"> </a>
-fix(5.375, 8, 4)<a name="171772"> </a>
-<a name="171773"> </a>
-</pre>
-
-<a name="171777"> </a>The value can also be a matrix of doubles. The values are rounded, yielding the nearest value representable with the specified precision. If the value to represent is out of range, then it is saturated, meaning that the maximum or minimum fixed point value is returned, depending on the sign of the specified value. For example,<br>
-
-<pre>
-<a name="171778"> </a>
-fix(5.375, 8, 3)<a name="171779"> </a>
-<a name="171780"> </a>
-</pre>
-
-<a name="171781"> </a>will yield 3.968758, the maximum value possible with the (8/3) precision.<br>
-
-
-<p>
-  <a name="171783"> </a>In addition to the fix() function, the expression language offers a quantize() function. The arguments are the same as those of the fix() function, but the return type is a DoubleToken or DoubleMatrixToken instead of a FixToken or FixMatrixToken. This function can therefore be used to quantize double-precision values without ever explicitly working with the fixed-point representation.
-</p>
-
-
-<p>
-  <a name="171805"> </a>To make the FixToken accessible within the expression language, the following functions are available: 
-</p>
-
-
-<a name="171806"> </a>	 To create a single FixPoint Token using the expression language:<br>
-
-<pre>
-fix(5.34, 10, 4)<a name="171807"> </a>
-</pre>
-<dl>
-  <dt> <a name="175175"> </a>This will create a FixToken. In this case, we try to fit the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. 
-</dl>
-
-<a name="175176"> </a>	 To create a Matrix with FixPoint values using the expression language:<br>
-
-<pre>
-fix([ -.040609, -.001628, .17853 ], 10, 2) <a name="175177"> </a>
-</pre>
-<dl>
-  <dt> <a name="175181"> </a>This will create a FixMatrixToken with 1 row and 3 columns, in which each element is a FixPoint value with precision(10/2). The resulting FixMatrixToken will try to fit each element of the given double matrix into a 10 bit representation with 2 bits used for the integer part. By default the round quantizer is used.
-</dl>
-
-<a name="175178"> </a>	 To create a single DoubleToken, which is the quantized version of the double value given, using the expression language:<br>
-
-<pre>
-quantize(5.34, 10, 4)<a name="171813"> </a>
-</pre>
-<dl>
-  <dt> <a name="171814"> </a>This will create a DoubleToken. The resulting DoubleToken contains the double value obtained by fitting the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. 
-</dl>
-
-<a name="171815"> </a>	 To create a Matrix with doubles quantized to a particular precision using the expression language:<br>
-
-<pre>
-quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
-</pre>
-<dl>
-  <dt> <a name="171817"> </a>This will create a DoubleMatrixToken with 1 row and 3 columns. The elements of the token are obtained by fitting the given matrix elements into a 10 bit representation with 2 bits used for the integer part. Instead of being a fixed point value, the values are converted back to their double representation and by default the round quantizer is used.
-</dl>
 </blockquote>
-
-
-
-<table align="right" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td align="right"><font size="1">
-    
-
-
-
-
-
-    </td>
-  </tr>
-</table>
-
 <table width="331" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
-    alt="TOC"> </a></td>
-    <td><a href="expressionsa9.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
-    alt="PREV"> </a></td>
-    <td><a href="expressionsa11.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
-    alt="NEXT"> </a></td>
+ <tr>
+   <td><a href="expressions.htm"><img src="img/navtoc.gif" width="84" height="23" border="0"
+   alt="TOC"> </a></td>
+   <td><a href="expressionsa9.htm"><img src="img/navprev.gif" width="81" height="23" border="0"
+   alt="PREV"> </a></td>
+   <td><a href="expressionsa11.htm"><img src="img/navnext.gif" width="81" height="23" border="0"
+   alt="NEXT"> </a></td>
 
 
-  </tr>
+ </tr>
 </table>
 
 </body>

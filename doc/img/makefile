@@ -103,78 +103,6 @@ OTHER_FILES_TO_BE_JARED = \
 	codegen8.gif \
 	codegen9.gif \
 	codegena.gif \
-	expressions10.gif \
-	expressions11.gif \
-	expressions12.gif \
-	expressions13.gif \
-	expressions14.gif \
-	expressions15.gif \
-	expressions16.gif \
-	expressions17.gif \
-	expressions18.gif \
-	expressions19.gif \
-	expressions2.gif \
-	expressions20.gif \
-	expressions21.gif \
-	expressions22.gif \
-	expressions23.gif \
-	expressions24.gif \
-	expressions25.gif \
-	expressions26.gif \
-	expressions27.gif \
-	expressions28.gif \
-	expressions29.gif \
-	expressions3.gif \
-	expressions30.gif \
-	expressions31.gif \
-	expressions32.gif \
-	expressions33.gif \
-	expressions34.gif \
-	expressions35.gif \
-	expressions36.gif \
-	expressions37.gif \
-	expressions38.gif \
-	expressions39.gif \
-	expressions4.gif \
-	expressions40.gif \
-	expressions41.gif \
-	expressions42.gif \
-	expressions43.gif \
-	expressions44.gif \
-	expressions45.gif \
-	expressions46.gif \
-	expressions47.gif \
-	expressions48.gif \
-	expressions49.gif \
-	expressions5.gif \
-	expressions50.gif \
-	expressions51.gif \
-	expressions52.gif \
-	expressions53.gif \
-	expressions54.gif \
-	expressions55.gif \
-	expressions56.gif \
-	expressions57.gif \
-	expressions58.gif \
-	expressions59.gif \
-	expressions6.gif \
-	expressions60.gif \
-	expressions61.gif \
-	expressions62.gif \
-	expressions63.gif \
-	expressions64.gif \
-	expressions65.gif \
-	expressions66.gif \
-	expressions67.gif \
-	expressions68.gif \
-	expressions69.gif \
-	expressions7.gif \
-	expressions70.gif \
-	expressions71.gif \
-	expressions72.gif \
-	expressions8.gif \
-	expressions9.gif \
-	expressionsa.gif \
 	navnext.gif \
 	navprev.gif \
 	navtoc.gif \
@@ -185,7 +113,19 @@ OTHER_FILES_TO_BE_JARED = \
 	ptIIplanet.gif \
 	ptIIplanetIcon.gif \
 	PtolemyII.jpg \
-	PtolemyIISmall.gif
+	PtolemyIISmall.gif \
+	vol1Figure3-1.png \
+	vol1Figure3-2.png \
+	vol1Figure3-3.png \
+	vol1Figure3-4.png \
+	vol1Figure3-5.png \
+	vol1Figure3-6.png \
+	vol1Figure3-7.png \
+	vol1Figure3-8.png \
+	vol1Figure3-9.png \
+	vol1Figure3-10.png \
+	vol1Figure3-11.png
+
 
 ICONS = \
 	histogram.ico \
