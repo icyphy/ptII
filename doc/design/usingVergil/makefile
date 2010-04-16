@@ -3,7 +3,7 @@
 # Author: Christopher Hylands (makefile only)
 # Version: $Id$
 #
-# Copyright (c) 2001-2009 The Regents of the University of California.
+# Copyright (c) 2001-2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -43,29 +43,15 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	usingVergil
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar 
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	images/images.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJARS =
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	index.htm \
 	index_frames.htm \
-	usingVergila2.htm \
-	usingVergila3.htm \
-	usingVergila4.htm \
-	usingVergila5.htm \
-	usingVergila6.htm \
-	usingVergila7.htm \
-	usingVergila8.htm \
-	usingVergila9.htm \
-	usingVergila10.htm \
-	usingVergila11.htm \
-	usingVergila12.htm
-
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
