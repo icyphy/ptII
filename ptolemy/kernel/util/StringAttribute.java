@@ -160,7 +160,11 @@ public class StringAttribute extends AbstractSettableAttribute {
             valueTerm = " value=\"" + StringUtilities.escapeForXML(value)
                     + "\"";
         }
-
+        
+        // Escape any < character in name. unescapeForXML occurs in 
+        // NamedObj.setName(String).
+        name = StringUtilities.escapeForXML(name);    
+        
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
                 + name + "\" class=\"" + getClassName() + "\"" + valueTerm
                 + ">\n");
