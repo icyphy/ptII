@@ -4559,7 +4559,6 @@ test MoMLParser-34.3 {Test parsing CompositeEntity with level crossing links tha
     set r6 [$e3 connect $p3 $p6 "R6 with < = >"]
 
     set moml [$e0 exportMoML]
-    puts $moml
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml]
     set r1 [$toplevel exportMoML]
@@ -4623,8 +4622,9 @@ test MoMLParser-34.3 {Test parsing CompositeEntity with level crossing links tha
 test MoMLParser-34.3 {Test parsing a FilePortParameter with have xml chars in them} {
     # See http://chess.eecs.berkeley.edu/ptolemy/listinfo/ptolemy/2010-April/011999.html
 
-    set a [java::new ptolemy.kernel.CompositeEntity]
-    set param4 [java::new ptolemy.actor.parameters.FilePortParameter $a "id1<=>&"]
+    set a [java::new ptolemy.actor.TypedCompositeActor]
+    set filePortParameter [java::new ptolemy.actor.parameters.FilePortParameter $a "id1<=>&"]
+    set parameterPort [java::new ptolemy.actor.parameters.ParameterPort $a "id2<=>&"]
 
     set moml [$a exportMoML]
     set parser [java::new ptolemy.moml.MoMLParser]
@@ -4635,19 +4635,31 @@ test MoMLParser-34.3 {Test parsing a FilePortParameter with have xml chars in th
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="" class="ptolemy.kernel.CompositeEntity">
+<entity name="" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
     </property>
+    <port name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+    </port>
+    <port name="id2&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+    </port>
 </entity>
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="" class="ptolemy.kernel.CompositeEntity">
+<entity name="" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
     </property>
+    <port name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+    </port>
+    <port name="id2&lt;=&gt;&amp;" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+    </port>
 </entity>
 }}
