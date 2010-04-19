@@ -4438,3 +4438,181 @@ test MoMLParser-34.0 {Test parsing names that have xml chars in them} {
 <entity name="This name has xml &amp;lt; = &amp;gt;" class="ptolemy.kernel.Entity">
 </entity>
 }}
+
+######################################################################
+####
+# 
+test MoMLParser-34.1 {Test parsing parameter names that have xml chars in them} {
+    # See http://chess.eecs.berkeley.edu/ptolemy/listinfo/ptolemy/2010-April/011999.html
+    set ws [java::new ptolemy.kernel.util.Workspace workspace]
+    set entity [java::new ptolemy.kernel.CompositeEntity $ws]
+    set tok [java::new  {ptolemy.data.DoubleToken double} 4.5]
+    set parameter [java::new ptolemy.data.expr.Parameter $entity "This name has xml < = >" $tok]
+    set moml [$entity exportMoML]
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    set r1 [$toplevel exportMoML]
+    set token [java::new ptolemy.data.XMLToken $moml]
+    list $r1 [$token toString]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="This name has xml &lt; = &gt;" class="ptolemy.data.expr.Parameter" value="4.5">
+    </property>
+</entity>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="This name has xml &lt; = &gt;" class="ptolemy.data.expr.Parameter" value="4.5">
+    </property>
+</entity>
+}}
+
+######################################################################
+####
+# 
+test MoMLParser-34.2 {Test parsing CompositeEntity and StringAttribute names that have xml chars in them} {
+    # See http://chess.eecs.berkeley.edu/ptolemy/listinfo/ptolemy/2010-April/011999.html
+
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName "An entity name that has xml < = >"
+    set b [java::new ptolemy.kernel.CompositeEntity $a "Another entity with < = >"]
+    set p1 [java::new ptolemy.kernel.ComponentPort $a "A port with xml < = >"]
+    set p2 [java::new ptolemy.kernel.ComponentPort $b P2]
+    $a connect $p2 $p1
+
+    set moml [$a exportMoML]
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    set r1 [$toplevel exportMoML]
+    set token [java::new ptolemy.data.XMLToken $moml]
+    list $r1 [$token toString]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="An entity name that has xml &amp;lt; = &amp;gt;" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <port name="A port with xml &lt; = &gt;" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <entity name="Another entity with &amp;lt; = &amp;gt;" class="ptolemy.kernel.CompositeEntity">
+        <port name="P2" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="_R" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="A port with xml &lt; = &gt;" relation="_R"/>
+    <link port="Another entity with &lt; = &gt;.P2" relation="_R"/>
+</entity>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="An entity name that has xml &amp;lt; = &amp;gt;" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <port name="A port with xml &lt; = &gt;" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <entity name="Another entity with &amp;lt; = &amp;gt;" class="ptolemy.kernel.CompositeEntity">
+        <port name="P2" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="_R" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="A port with xml &lt; = &gt;" relation="_R"/>
+    <link port="Another entity with &lt; = &gt;.P2" relation="_R"/>
+</entity>
+}}
+
+
+######################################################################
+####
+# 
+test MoMLParser-34.3 {Test parsing CompositeEntity with level crossing links that has port names that have xml chars in them} {
+    # See http://chess.eecs.berkeley.edu/ptolemy/listinfo/ptolemy/2010-April/011999.html
+
+    # This structure is the example in the kernel design document.
+
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
+    $e0 setName "E0<=>\"&\n\r"
+
+    set e3 [java::new ptolemy.kernel.CompositeEntity $e0 "E3<=>"]
+    set e4 [java::new ptolemy.kernel.CompositeEntity $e3 "E4<=>"]
+
+    set e1 [java::new ptolemy.kernel.ComponentEntity $e4 "E1<=>&\""]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e4 "E2<=>"]
+
+
+    set e6 [java::new ptolemy.kernel.ComponentEntity $e3 "E6<=>&"]
+
+
+    set p3 [java::cast ptolemy.kernel.ComponentPort [$e2 newPort "P3 with < = > "]]
+
+    set p6 [java::cast ptolemy.kernel.ComponentPort [$e6 newPort "P6 with < = > "]]
+
+    $e3 allowLevelCrossingConnect true
+    set r6 [$e3 connect $p3 $p6 "R6 with < = >"]
+
+    set moml [$e0 exportMoML]
+    puts $moml
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    set r1 [$toplevel exportMoML]
+    set token [java::new ptolemy.data.XMLToken $moml]
+    list $r1 [$token toString]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="E0&amp;lt;=&amp;gt;&amp;quot;&amp;amp;&amp;#10;&amp;#13;" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <entity name="E3&amp;lt;=&amp;gt;" class="ptolemy.kernel.CompositeEntity">
+        <entity name="E4&amp;lt;=&amp;gt;" class="ptolemy.kernel.CompositeEntity">
+            <entity name="E1&amp;lt;=&amp;gt;&amp;amp;&amp;quot;" class="ptolemy.kernel.ComponentEntity">
+            </entity>
+            <entity name="E2&amp;lt;=&amp;gt;" class="ptolemy.kernel.ComponentEntity">
+                <port name="P3 with &lt; = &gt; " class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+        </entity>
+        <entity name="E6&amp;lt;=&amp;gt;&amp;amp;" class="ptolemy.kernel.ComponentEntity">
+            <port name="P6 with &lt; = &gt; " class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <relation name="R6 with &lt; = &gt;" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+        <link port="E6&lt;=&gt;&amp;.P6 with &lt; = &gt; " relation="R6 with &lt; = &gt;"/>
+        <link port="E4&lt;=&gt;.E2&lt;=&gt;.P3 with &lt; = &gt; " insertAt="0" relation="R6 with &lt; = &gt;"/>
+    </entity>
+</entity>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="E0&amp;lt;=&amp;gt;&amp;quot;&amp;amp;&amp;#10;&amp;#13;" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <entity name="E3&amp;lt;=&amp;gt;" class="ptolemy.kernel.CompositeEntity">
+        <entity name="E4&amp;lt;=&amp;gt;" class="ptolemy.kernel.CompositeEntity">
+            <entity name="E1&amp;lt;=&amp;gt;&amp;amp;&amp;quot;" class="ptolemy.kernel.ComponentEntity">
+            </entity>
+            <entity name="E2&amp;lt;=&amp;gt;" class="ptolemy.kernel.ComponentEntity">
+                <port name="P3 with &lt; = &gt; " class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+        </entity>
+        <entity name="E6&amp;lt;=&amp;gt;&amp;amp;" class="ptolemy.kernel.ComponentEntity">
+            <port name="P6 with &lt; = &gt; " class="ptolemy.kernel.ComponentPort">
+            </port>
+        </entity>
+        <relation name="R6 with &lt; = &gt;" class="ptolemy.kernel.ComponentRelation">
+        </relation>
+        <link port="E6&lt;=&gt;&amp;.P6 with &lt; = &gt; " relation="R6 with &lt; = &gt;"/>
+        <link port="E4&lt;=&gt;.E2&lt;=&gt;.P3 with &lt; = &gt; " insertAt="0" relation="R6 with &lt; = &gt;"/>
+    </entity>
+</entity>
+}}
