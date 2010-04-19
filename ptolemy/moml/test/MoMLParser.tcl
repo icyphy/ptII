@@ -4616,3 +4616,38 @@ test MoMLParser-34.3 {Test parsing CompositeEntity with level crossing links tha
     </entity>
 </entity>
 }}
+
+######################################################################
+####
+# 
+test MoMLParser-34.3 {Test parsing a FilePortParameter with have xml chars in them} {
+    # See http://chess.eecs.berkeley.edu/ptolemy/listinfo/ptolemy/2010-April/011999.html
+
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    set param4 [java::new ptolemy.actor.parameters.FilePortParameter $a "id1<=>&"]
+
+    set moml [$a exportMoML]
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    set r1 [$toplevel exportMoML]
+    set token [java::new ptolemy.data.XMLToken $moml]
+    list $r1 [$token toString]
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
+    </property>
+</entity>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="id1&lt;=&gt;&amp;" class="ptolemy.actor.parameters.FilePortParameter" value="">
+    </property>
+</entity>
+}}
