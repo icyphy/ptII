@@ -32,7 +32,7 @@
 ME =		doc/design/usingVergil
 
 # Sub directories to run make in.
-DIRS =		images
+DIRS =
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -65,28 +65,5 @@ MISC_FILES = $(DIRS)
 OPTIONAL_FILES =
 
 install: jars
-
-updateimages:
-	for file in usingVergil/Output/images/usingVergil[0-9]*.gif; \
-	do \
-		cp $$file `echo $$file | sed 's@usingVergil/Output/images/usingVergil@index-@'g`; \
-	done
-
-WEBWORKSSRC=../src/webworks/usingVergil4/Output
-update:
-	cp $(WEBWORKSSRC)/*.html .
-	cp $(WEBWORKSSRC)/images/* images
-	mv usingVergil.html index.htm
-	files="index.htm"; \
-	for file in $$files; \
-	do \
-		echo "$$file"; \
-		sed -e 's@background="images/backgrnd.gif"@@g' \
-			-e 's@face="Verdana, Arial, Helvetica, sans-serif"@@g' \
-			-e 's@"Stop button@"Stop" button@g' \
-			-e 's@expressions.html@expressions.htm@g' \
-		< $$file > /tmp/usingVergil.tmp; \
-		mv /tmp/usingVergil.tmp $$file; \
-	done
 
 include $(ROOT)/mk/ptno-compile.mk
