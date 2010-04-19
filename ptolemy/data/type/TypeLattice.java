@@ -501,6 +501,11 @@ public class TypeLattice {
 
         /** Return the greatest type of a set of types, or null if the
          *  greatest one does not exist.
+         *  
+         *  Note, that this only returns an element within the subset.
+         *  To find the least upper bound of a set, see
+         *  {@link #leastUpperBound(Object[])}.
+         *  
          *  @param subset an array of Types.
          *  @return A Type or null.
          */
@@ -527,7 +532,7 @@ public class TypeLattice {
                         return subset[i];
                     }
                 }
-                // FIXME: Shouldn't this return GENERAL?
+                // Otherwise, the subset does not contain a greatest element.
                 return null;
             }
         }
@@ -541,6 +546,11 @@ public class TypeLattice {
 
         /** Return the least type of a set of types, or null if the
          *  least one does not exist.
+         *  
+         *  Note, that this only returns an element within the subset.
+         *  To find the greatest lower bound of a set, see
+         *  {@link #greatestLowerBound(Object[])}.
+         *  
          *  @param subset an array of Types.
          *  @return A Type or null.
          */
@@ -567,7 +577,7 @@ public class TypeLattice {
                         return subset[i];
                     }
                 }
-                // FIXME: Shouldn't thir return bottom?
+                // Otherwise, the subset does not contain a least element.
                 return null;
             }
         }
