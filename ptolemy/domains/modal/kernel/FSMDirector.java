@@ -364,6 +364,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             // If the current (preempted) state has a refinement, then we know
             // it cannot produce any outputs. All outputs of this state must be cleared
             // so that at least they not remain unknown in the end of the fixed point iteration.
+            // If an output port is known because this preempted transition alreay set it
+            // we do not send a clear.
             if (controller._currentState.getRefinement() != null) {
                 TypedActor[] refinements = controller._currentState.getRefinement();
                 //do the following for all refinements
@@ -371,7 +373,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                     if (refinementActor instanceof CompositeActor) {
                         CompositeActor refinement = (CompositeActor)refinementActor; 
                         for (IOPort refinementPort : ((List<IOPort>)refinement.outputPortList())) {
-                            refinementPort.sendClear(0);
+                            if (!refinementPort.isKnown()) {
+                                refinementPort.sendClear(0);
+                            }
                         }//end for all ports
                     }//end if CompositeActor
                 }//end for all refinements
