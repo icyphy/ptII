@@ -168,7 +168,7 @@ void die(char *mess) {
         //FIXME: Can this be upped to 4KHz?
         RIT128x96x4Init(2000000);
         RIT128x96x4DisplayOn();
-        RIT128x96x4StringDraw(mess, 0,90,15);
+        RIT128x96x4StringDraw(mess, 0,88,15);
         enableInterrupts();
         return;
 }
@@ -760,8 +760,8 @@ addStack
     ADD                R1, R1, #8
     MSR                MSP, R1
     PUSH        {R4-R11}
-    ;MOV                R3, #0        ; load R1 with the previous xPSR
-    LDR                R3, [R1, #28]                    ; load R1 with the previous xPSR
+    MOV                R3, #16777216        ; load R1 with the previous xPSR
+    ;LDR                R3, [R1, #28]                    ; load R1 with the previous xPSR
     STR                R3, [R1, #-36]                        ; store it for use of processEvents
     LDR                R3, =processEvents                ; find where "processEvents + 2" is
     ADD                R3, R3, #2
@@ -782,11 +782,14 @@ addStack
 ;
 ;******************************************************************************
 stackRestore
+	; we do not need to disable interrupts for this routine, because it
+    ; is triggered through a SVC call, which has higher priority than
+    ; all other external interrupts in the system.
     MRS                R0, MSP            ; move stackpointer to R0
     ADD                R0, R0, #32     ; the stack that was just pushed by the ISR is ignored
     MSR                MSP, R0            ; instead we use the stack that was saved before the first ISR
     POP                {R4-R11}
-    BX                LR                    ; branch back to end this ISR
+	BX                LR                    ; branch back to end this ISR
 
 ;******************************************************************************
 ;

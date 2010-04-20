@@ -126,10 +126,8 @@ public class PtidesBasicDirector extends Director {
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(_eol + "void execute() {" + _eol +
-                "processEvents();" + _eol + 
-                "while (1);" + _eol +
-                "}" + _eol);
+        code.append(_eol + _templateParser.getCodeStream().getCodeBlock(
+                "mainLoopBlock"));
         return code.toString();
     }
 

@@ -1,4 +1,6 @@
 /***preinitBlock***/
+int32 encoderInputInterruptStatus;
+int32 encoderInputPinStatus;
 /**/
 
 /*** sharedBlock ***/
@@ -15,6 +17,7 @@
 /**/
 
 /*** fireBlock ***/
+$put(output, encoderInputInterruptStatus);
 /**/
 
 /*** initializeGPInput($pad, $pin) ***/
@@ -46,9 +49,6 @@ IntEnable(INT_GPIO$pad);
 /**/
 
 /*** sensingBlock($sensorFireMethod, $pad, $pin) ***/
-static int32 interruptStatus;
-static int32 pinStatus;
-
 #ifdef LCD_DEBUG
     debugMessage("$pad$pin");
 #endif
@@ -65,19 +65,18 @@ if (numStackedModelTag > MAX_EVENTS) {
 getRealTime(&currentModelTime);
 currentMicrostep = 0;
 
-interruptStatus = GPIOPinIntStatus(ENCODER_BASE, 0);
+encoderInputInterruptStatus = GPIOPinIntStatus(ENCODER_BASE, 0);
 // Clear the interrupt
-GPIOPinIntClear(ENCODER_BASE, interruptStatus);
+GPIOPinIntClear(ENCODER_BASE, encoderInputInterruptStatus);
+GPIOPinIntClear(ENCODER_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7);
 
-pinStatus = GPIOPinRead(ENCODER_BASE, ENCODER_PIN_B);
+encoderInputPinStatus = GPIOPinRead(ENCODER_BASE, ENCODER_PIN_B);
 
-interruptStatus |= (pinStatus << 8);
+encoderInputInterruptStatus |= (encoderInputPinStatus << 8);
 
 // do not need to disable interrupts if all interrupts have the same priority
-//disableInterrupts();
+disableInterrupts();
 $sensorFireMethod();
 // stack manipulation here instead of later.
-$put(output, interruptStatus);
-
 addStack();
 /**/

@@ -249,7 +249,7 @@ Event* newEvent(void) {
     // counter counts the number of times we loop around the memory.
     int counter = 0;
     while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {  
-        if (counter++ == MAX_EVENTS) {  // if you've run out of memory just stop
+        if (counter++ >= MAX_EVENTS) {  // if you've run out of memory just stop
             die("ran out of memory");
         }
         locationCounter++;
@@ -369,7 +369,7 @@ void processEvents() {
                 // has passed for it to be
                 // safe to process
                 if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
-                    lastTimerInterruptTime = processTime;
+                    timeSet(processTime, &lastTimerInterruptTime);
                     setTimedInterrupt(&processTime);
                 }
                 // this event is not safe to process, we look at the next one.
@@ -401,9 +401,11 @@ void processEvents() {
 #ifdef LCD_DEBUG
     //debugMessage("ret PE()");
 #endif
-
+	// we do not need to disable interrupts for this routine, because it
+    // is triggered through a SVC call, which has higher priority than
+    // all other external interrupts in the system.
     restoreStack();
-    for(;;);
+    die("should never get here");
 }
 
 /* 
@@ -510,7 +512,11 @@ void safeToProcess(Event* thisEvent, Time* safeTimestamp) {
     // if (thisEvent->tag.timestamp = MAX_LONG_LONG) {
     //      safeTimestamp = 0; //always safe
     // } else {
-    timeSub(thisEvent->tag.timestamp, thisEvent->offsetTime, safeTimestamp);
+	int out = timeSub(thisEvent->tag.timestamp, thisEvent->offsetTime, safeTimestamp);
+	if (out == -1) {
+		safeTimestamp->secs = 0;
+		safeTimestamp->nsecs = 0;
+	}
     // }
     //      }
 
@@ -555,4 +561,89 @@ void initializePISystem() {
 
 /*** preinitPIBlock() ***/
 // This is the platform independent preinitialization code
+/**/
+
+/*** mainLoopBlock ***/
+void execute() {
+    // peekingPoint keeps track which event to peek at.
+    int peekingIndex = 0;
+    // keeps track of how many events in the event queue cannot be processed because their
+    // buffer has been blocked.
+    Event* event;
+    int whilecount = 0;
+    Time processTime;
+    Time physicalTime;
+    disableInterrupts();
+    while (true) {
+        event = peekEvent(peekingIndex);
+        if (event == NULL) {
+            break;
+        }
+        // If event queue is not empty, keep going.
+        whilecount++;
+        #ifdef LCD_DEBUG
+        //debugMessageNumber("wc = ", whilecount);
+        #endif
+        if (higherPriority(event) == TRUE) {
+            safeToProcess(event, &processTime);
+            #ifdef LCD_DEBUG
+            //debugMessageNumber("hpwc=", whilecount);
+            #endif
+            getRealTime(&physicalTime);
+            if (timeCompare(physicalTime, processTime) >= 0) {
+                // We have decided to process this event, thus we let the rest
+                // of the system know this decision by queuing the priority, and
+                // setting the tag of this event.
+                queuePriority(event);
+                removeAndPropagateSameTagEvents(peekingIndex);
+                setCurrentModelTag(event);
+                enableInterrupts();
+                // Execute the event. During
+                // this process more events may
+                // be posted to the queue.
+                fireActor(event);
+                // After an actor fires, we not sure which event is safe to process,
+                // so we start examine the queue again start from the beginning.
+                peekingIndex = 0;
+                disableInterrupts();
+            } else {
+                // Set timed interrupt to run
+                // the event at the top of the
+                // event queue when physical time
+                // has passed for it to be
+                // safe to process
+                if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
+                    timeSet(processTime, &lastTimerInterruptTime);
+                    setTimedInterrupt(&processTime);
+                }
+                // this event is not safe to process, we look at the next one.
+                peekingIndex++;
+                //break;
+            }// end !(curentPhysicalTime >= processTime)
+        } else {
+            // This is the only place for us to break out of the while loop. The only other possibility
+            // is that we have looked all all events in the queue, and none of them are safe to process.
+            #ifdef LCD_DEBUG
+            //debugMessageNumber("endwc=", peekingIndex);
+            #endif
+            break;
+        }//end EVENT_QUEUE_HEAD != NULL
+    }
+    // restore the last executing stacked model tag.
+    if (numStackedModelTag > 0) {
+        numStackedModelTag--;
+        currentMicrostep = executingModelTag[numStackedModelTag].microstep;
+        timeSet(executingModelTag[numStackedModelTag].timestamp, &currentModelTime);
+    }
+    // This implies within the while loop, if all events cannot be processed,
+    // we need to go through the entire event queue before another event can come in.
+    enableInterrupts();
+    // if all events are blocked because buffers are full
+    // if (numBufferBlocked != 0 && numBufferBlocked == peekingIndex)
+    #ifdef LCD_DEBUG
+    //debugMessage("ret PE()");
+    #endif
+
+    while (1);
+}
 /**/

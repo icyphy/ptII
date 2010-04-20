@@ -15,7 +15,6 @@ const uint32 timeToDisc[timeToDisc_size] = {
 	259590, 259664, 259733, 259798, 259860, 259918, 259972, 260022, 260069, 260112, 
 	260152, 260188, 260222, 260252, 260278, 260302, 260323, 260341, 260355, 260367, 
 	260377, 260383, 260387, 260388};
-const Disc Disc_0 = {0, DISC_SMALLEST_RATE};			// Disc with zero position and large encoder period (essentially zero rate)
 
 static volatile Time g_impactTime;			// System time that a ball will impact the disc
 
@@ -119,7 +118,7 @@ getRealTime(&currentModelTime);
 currentMicrostep = 0;
 
 // do not need to disable interrupts if all interrupts have the same priority
-//disableInterrupts();
+disableInterrupts();
 $sensorFireMethod();
 // stack manipulation here instead of later.
 addStack();

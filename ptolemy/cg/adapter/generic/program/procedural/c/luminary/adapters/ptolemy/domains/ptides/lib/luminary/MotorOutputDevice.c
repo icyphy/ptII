@@ -6,10 +6,10 @@ void pwmDisable(void){
 	PWMOutputState(PWM_BASE, MOTOR_PWM_REV_BIT, 0);
 	PWMGenDisable(PWM_BASE, MOTOR_PWM);							//disable PWM generator
 }
-
-static int32 motorOutputPower[10];
-static uint32 nextOutput = 0;
-static uint32 lastOutput = 0;
+#define NUM_OUTPUTS 10
+static int32 motorOutputPower[NUM_OUTPUTS];
+static uint32 motorNextOutput = 0;
+static uint32 motorLastOutput = 0;
 /**/
 
 /*** sharedBlock ***/
@@ -57,9 +57,9 @@ static uint32 lastOutput = 0;
 
 /*** fireBlock($actuator) ***/
 Time currentRealTime;
-motorOutputPower[lastOutput++] = $get(input#0);
-if (lastOutput > 1000) {
-	lastOutput = 0;
+motorOutputPower[motorLastOutput++] = $get(input#0);
+if (motorLastOutput >= NUM_OUTPUTS) {
+	motorLastOutput = 0;
 }
 getRealTime(&currentRealTime);
 if (timeCompare(currentRealTime, currentModelTime) <= 0) {
@@ -73,9 +73,9 @@ if (timeCompare(currentRealTime, currentModelTime) <= 0) {
 // power is a 32bit int, which is the input to this actor.
 uint32 pwmGo;			//pwm channel to enable
 uint32 pwmStop;			//pwm channel to disable
-int32 power = motorOutputPower[nextOutput++];
-if (nextOutput > 1000) {
-	nextOutput = 0;
+int32 power = motorOutputPower[motorNextOutput++];
+if (motorNextOutput >= NUM_OUTPUTS) {
+	motorNextOutput = 0;
 }
 
 //Assign PWM channel to enable (either forward or reverse)
