@@ -473,6 +473,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     }
 
                     codeGenerator._updateParameters(toplevel);
+                    codeGenerator.generatorPackage.setExpression(generatorPackageValue);
+
                     Attribute generateEmbeddedCode = codeGenerator
                             .getAttribute("generateEmbeddedCode");
                     if (generateEmbeddedCode instanceof Parameter) {
@@ -484,7 +486,11 @@ public abstract class GenericCodeGenerator extends Attribute implements
                         codeGenerator.generateCode();
                     } catch (KernelException ex) {
                         throw new Exception("Failed to generate code for \""
-                                + args[i] + "\"", ex);
+                                + args[i] + "\""
+                                + "\ncodeDirectory:       " + codeGenerator.codeDirectory.stringValue()
+                                + "\ngeneratorPackage:    " + codeGenerator.generatorPackage.stringValue()
+                                + "\ngeneratePackageList: " + codeGenerator.generatorPackageList.stringValue(),
+                                ex);
                     }
                 } finally {
                     // Destroy the top level so that we avoid
