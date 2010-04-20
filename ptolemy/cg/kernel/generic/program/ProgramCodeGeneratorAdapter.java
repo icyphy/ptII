@@ -91,7 +91,12 @@ public class ProgramCodeGeneratorAdapter extends CodeGeneratorAdapter {
      * @exception IllegalActionException If illegal macro names are found.
      */
     public final String processCode(String code) throws IllegalActionException {
-        return _templateParser.processCode(code);
+        try {
+            return _templateParser.processCode(code);
+        } catch (IllegalActionException ex) {
+            throw new IllegalActionException(null, ex, "Failed to parse \"" + code
+                    + "\"");
+        }
     }
 
     /** Set the template parser for this adapter.
