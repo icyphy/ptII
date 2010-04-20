@@ -1,7 +1,8 @@
 /*** TokenFireBlock ***/
 // FIXME: is this the proper way to free the allocated space?
-//free($put(output));
+//free(put(output));
 
+//put(output, (String)($Array_toString(get(input)).payload));
 $put(output, (String)($Array_toString($get(input)).payload));
 
 /**/
