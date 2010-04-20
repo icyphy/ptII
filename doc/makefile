@@ -191,6 +191,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib \
@@ -207,6 +208,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib \
+	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.conversions \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.gui \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.jopio \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
