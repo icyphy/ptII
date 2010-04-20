@@ -4430,12 +4430,12 @@ test MoMLParser-34.0 {Test parsing names that have xml chars in them} {
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="This name has xml &amp;lt; = &amp;gt;" class="ptolemy.kernel.Entity">
+<entity name="This name has xml &lt; = &gt;" class="ptolemy.kernel.Entity">
 </entity>
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="This name has xml &amp;lt; = &amp;gt;" class="ptolemy.kernel.Entity">
+<entity name="This name has xml &lt; = &gt;" class="ptolemy.kernel.Entity">
 </entity>
 }}
 
@@ -4496,12 +4496,12 @@ test MoMLParser-34.2 {Test parsing CompositeEntity and StringAttribute names tha
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="An entity name that has xml &amp;lt; = &amp;gt;" class="ptolemy.kernel.CompositeEntity">
+<entity name="An entity name that has xml &lt; = &gt;" class="ptolemy.kernel.CompositeEntity">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <port name="A port with xml &lt; = &gt;" class="ptolemy.kernel.ComponentPort">
     </port>
-    <entity name="Another entity with &amp;lt; = &amp;gt;" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Another entity with &lt; = &gt;" class="ptolemy.kernel.CompositeEntity">
         <port name="P2" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
@@ -4513,12 +4513,12 @@ test MoMLParser-34.2 {Test parsing CompositeEntity and StringAttribute names tha
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="An entity name that has xml &amp;lt; = &amp;gt;" class="ptolemy.kernel.CompositeEntity">
+<entity name="An entity name that has xml &lt; = &gt;" class="ptolemy.kernel.CompositeEntity">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <port name="A port with xml &lt; = &gt;" class="ptolemy.kernel.ComponentPort">
     </port>
-    <entity name="Another entity with &amp;lt; = &amp;gt;" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Another entity with &lt; = &gt;" class="ptolemy.kernel.CompositeEntity">
         <port name="P2" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
@@ -4567,19 +4567,19 @@ test MoMLParser-34.3 {Test parsing CompositeEntity with level crossing links tha
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="E0&amp;lt;=&amp;gt;&amp;quot;&amp;amp;&amp;#10;&amp;#13;" class="ptolemy.kernel.CompositeEntity">
+<entity name="E0&lt;=&gt;&quot;&amp;&#10;&#13;" class="ptolemy.kernel.CompositeEntity">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <entity name="E3&amp;lt;=&amp;gt;" class="ptolemy.kernel.CompositeEntity">
-        <entity name="E4&amp;lt;=&amp;gt;" class="ptolemy.kernel.CompositeEntity">
-            <entity name="E1&amp;lt;=&amp;gt;&amp;amp;&amp;quot;" class="ptolemy.kernel.ComponentEntity">
+    <entity name="E3&lt;=&gt;" class="ptolemy.kernel.CompositeEntity">
+        <entity name="E4&lt;=&gt;" class="ptolemy.kernel.CompositeEntity">
+            <entity name="E1&lt;=&gt;&amp;&quot;" class="ptolemy.kernel.ComponentEntity">
             </entity>
-            <entity name="E2&amp;lt;=&amp;gt;" class="ptolemy.kernel.ComponentEntity">
+            <entity name="E2&lt;=&gt;" class="ptolemy.kernel.ComponentEntity">
                 <port name="P3 with &lt; = &gt; " class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
         </entity>
-        <entity name="E6&amp;lt;=&amp;gt;&amp;amp;" class="ptolemy.kernel.ComponentEntity">
+        <entity name="E6&lt;=&gt;&amp;" class="ptolemy.kernel.ComponentEntity">
             <port name="P6 with &lt; = &gt; " class="ptolemy.kernel.ComponentPort">
             </port>
         </entity>
@@ -4592,19 +4592,19 @@ test MoMLParser-34.3 {Test parsing CompositeEntity with level crossing links tha
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="E0&amp;lt;=&amp;gt;&amp;quot;&amp;amp;&amp;#10;&amp;#13;" class="ptolemy.kernel.CompositeEntity">
+<entity name="E0&lt;=&gt;&quot;&amp;&#10;&#13;" class="ptolemy.kernel.CompositeEntity">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <entity name="E3&amp;lt;=&amp;gt;" class="ptolemy.kernel.CompositeEntity">
-        <entity name="E4&amp;lt;=&amp;gt;" class="ptolemy.kernel.CompositeEntity">
-            <entity name="E1&amp;lt;=&amp;gt;&amp;amp;&amp;quot;" class="ptolemy.kernel.ComponentEntity">
+    <entity name="E3&lt;=&gt;" class="ptolemy.kernel.CompositeEntity">
+        <entity name="E4&lt;=&gt;" class="ptolemy.kernel.CompositeEntity">
+            <entity name="E1&lt;=&gt;&amp;&quot;" class="ptolemy.kernel.ComponentEntity">
             </entity>
-            <entity name="E2&amp;lt;=&amp;gt;" class="ptolemy.kernel.ComponentEntity">
+            <entity name="E2&lt;=&gt;" class="ptolemy.kernel.ComponentEntity">
                 <port name="P3 with &lt; = &gt; " class="ptolemy.kernel.ComponentPort">
                 </port>
             </entity>
         </entity>
-        <entity name="E6&amp;lt;=&amp;gt;&amp;amp;" class="ptolemy.kernel.ComponentEntity">
+        <entity name="E6&lt;=&gt;&amp;" class="ptolemy.kernel.ComponentEntity">
             <port name="P6 with &lt; = &gt; " class="ptolemy.kernel.ComponentPort">
             </port>
         </entity>
@@ -4619,7 +4619,7 @@ test MoMLParser-34.3 {Test parsing CompositeEntity with level crossing links tha
 ######################################################################
 ####
 # 
-test MoMLParser-34.3 {Test parsing a FilePortParameter with have xml chars in them} {
+test MoMLParser-34.4 {Test parsing a FilePortParameter with have xml chars in them} {
     # See http://chess.eecs.berkeley.edu/ptolemy/listinfo/ptolemy/2010-April/011999.html
 
     set a [java::new ptolemy.actor.TypedCompositeActor]
