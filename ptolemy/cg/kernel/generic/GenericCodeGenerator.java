@@ -62,6 +62,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StreamListener;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
@@ -99,6 +100,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     public GenericCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         // Note: If you add publicly settable parameters, update
         // _commandFlags or _commandOptions.
 
@@ -475,6 +477,16 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     codeGenerator._updateParameters(toplevel);
                     codeGenerator.generatorPackage.setExpression(generatorPackageValue);
 
+                    int traceIndex = -1;
+                    if ((traceIndex = _parameterNames
+                            .indexOf("trace")) != -1) {
+                        String traceValue = _parameterValues
+                            .get(traceIndex);
+                        if (traceValue.equals("true")) {
+                            codeGenerator.addDebugListener(new StreamListener());
+                        }
+                    }
+
                     Attribute generateEmbeddedCode = codeGenerator
                             .getAttribute("generateEmbeddedCode");
                     if (generateEmbeddedCode instanceof Parameter) {
@@ -828,7 +840,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                                 + " packageName: "
                                 + packageName
                                 + " adapterClassName: "
-                                + adapterClassName
+                                + adapterClassName + " "
                                 + KernelException.stackTraceToString(ex));
 
                     }
@@ -1337,7 +1349,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
             //{ "-run", "               true|false (default: true)" },
             //{ "-sourceLineBinding", " true|false (default: false)" },
             //{ "-target", "            <target name, defaults to false>" },
-            { "-<parameter name>", "     <parameter value>" } };
+            { "-<parameter name>", "     <parameter value>" },
+            { "-trace", "            true|false (default: false)" } };
+
 
     /** The form of the command line. */
     private static final String _commandTemplate = "ptcg [ options ] [file ...]";
