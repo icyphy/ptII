@@ -213,7 +213,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
             codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
         } else if (attribute == generatorPackageList) {
             super.attributeChanged(attribute);
-            //_generatorPackageListParser._updateGeneratorPackageList();
         } else {
             super.attributeChanged(attribute);
         }
@@ -407,14 +406,47 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     List<GenericCodeGenerator> codeGenerators = toplevel
                             .attributeList(GenericCodeGenerator.class);
 
-                    // If the user called this with -generatorPackage ptolemy.codegen.java,
-                    // the process that argument.  This is a bit hacky, but works.
+                    // If the user called this with -generatorPackage
+                    // ptolemy.codegen.java, the process that
+                    // argument.  This is a bit hacky, but works.
                     String generatorPackageValue = "ptolemy.cg.kernel.generic.program.procedural.c";
                     int parameterIndex = -1;
                     if ((parameterIndex = _parameterNames
                             .indexOf("generatorPackage")) != -1) {
                         generatorPackageValue = _parameterValues
                                 .get(parameterIndex);
+                    }
+
+                    if ((parameterIndex = _parameterNames
+                            .indexOf("language")) != -1) {
+                        String languageValue = _parameterValues
+                            .get(parameterIndex);
+                        
+                        boolean foundLanguage = false;
+                        // Use a two column table to make it easy to add languages
+                        for (int l = 0; l < _languages.length; l++) {
+                            if (_languages[l][0].equals(languageValue)) {
+                                generatorPackageValue = _languages[l][1];
+                                foundLanguage = true;
+                                break;
+                            }
+                        }
+                        if (!foundLanguage) {
+                            StringBuffer languageError = new StringBuffer();
+                            for (int l = 0; l < _languages.length; l++) {        
+                                if (languageError.length() > 0) {
+                                    languageError.append(",");
+                                }
+                                languageError.append(_languages[l][0]);
+                            }
+                            generatorPackageValue = "ptolemy.cg.kernel.generic.program.procedural." + languageValue;
+                            System.out.println("Warning, -language was \""
+                                    + languageValue + "\", defaulting to setting "
+                                    + "generatorPackage to \""
+                                    + generatorPackageValue + "\".  " 
+                                    + "Acceptable languages are: "
+                                    + languageError.toString());
+                        }
                     }
                     Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue);
 
@@ -1288,11 +1320,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
             // "     <target to be run, defaults to empty string>" },
             //{ "-generateComment", "   true|false (default: true)" },
             { "-generatorPackage",
-                    " <Java package of code generator, defaults to ptolemy.c>" },
-            { "-generatorPackage",
-                    " <Semicolon or * separated list of Java packages to be searched for adapters>" },
+                    " <Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c>" },
             { "-generatorPackageList",
                     " <Semicolon or * separated list of Java packages to be searched for adapters>" },
+            { "-language", "             <c|java|html (default: c)>"},
             //{ "-inline", "            true|false (default: false)" },
             //{ "-measureTime", "       true|false (default: false)" },
             //{ "-overwriteFiles", "    true|false (default: true)" },
@@ -1305,6 +1336,11 @@ public abstract class GenericCodeGenerator extends Attribute implements
     /** The form of the command line. */
     private static final String _commandTemplate = "ptcg [ options ] [file ...]";
 
+    private static String [][] _languages = {
+        {"c", "ptolemy.cg.kernel.generic.program.procedural.c"},
+        {"html", "ptolemy.cg.kernel.generic.html"},
+        {"java", "ptolemy.cg.kernel.generic.program.procedural.java"}
+    };
     private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
 
     /** List of parameter names seen on the command line. */
