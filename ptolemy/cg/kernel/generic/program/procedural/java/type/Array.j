@@ -227,28 +227,32 @@ Token Array_print(Token thisToken, Token... tokens) {
 // of the specified array.
 Token Array_toString(Token thisToken, Token... ignored) {
     StringBuffer result = new StringBuffer("{");
-    for (int i = 0; i < ((Array)(thisToken.payload)).size; i++) {
-        if (i != 0) {
-            result.append(", ");
-        }
-        // Arrays elements could have different types?
-        if (((Array)(thisToken.payload)).elements == null) {
-            result.append("elements == null");
-        } else if (((Array)(thisToken.payload)).elements[i] == null) {
-            result.append("elements[" + i + "] == null");
-            throw new RuntimeException("elements[] is null");
-        } else {
-            short elementType = ((Array)(thisToken.payload)).elements[i].type;
-               switch(elementType) {
-                case TYPE_Array:
-                      result.append(Array_toString(((Array)(thisToken.payload)).elements[i]).payload);
-                    break;
-                case TYPE_String:
-                    result.append("\"" + ((Array)(thisToken.payload)).elements[i].payload.toString() + "\"");
-                    break;
-                  default:
-                    result.append(((Array)(thisToken.payload)).elements[i].payload.toString());
-                    break;
+    if (thisToken == null) {
+        result.append("null");
+    } else {
+        for (int i = 0; i < ((Array)(thisToken.payload)).size; i++) {
+            if (i != 0) {
+                result.append(", ");
+            }
+            // Arrays elements could have different types?
+            if (((Array)(thisToken.payload)).elements == null) {
+                result.append("elements == null");
+            } else if (((Array)(thisToken.payload)).elements[i] == null) {
+                result.append("elements[" + i + "] == null");
+                throw new RuntimeException("elements[] is null");
+            } else {
+                short elementType = ((Array)(thisToken.payload)).elements[i].type;
+                   switch(elementType) {
+                    case TYPE_Array:
+                          result.append(Array_toString(((Array)(thisToken.payload)).elements[i]).payload);
+                        break;
+                    case TYPE_String:
+                        result.append("\"" + ((Array)(thisToken.payload)).elements[i].payload.toString() + "\"");
+                        break;
+                    default:
+                        result.append(((Array)(thisToken.payload)).elements[i].payload.toString());
+                        break;
+                  }
             }
         }
     }
@@ -445,6 +449,9 @@ Token Array_zero(Token thisToken, Token... tokens) {
 
         //result.payload.Array->elements[i]
         //                = functionTable[(int)element.type][FUNC_zero](element);
+        //((Array)(result.payload)).elements[i] = element;
+        //result.payload.Array->elements[i]
+        //                = $tokenFunc(type(element)::zero("zero_Array", element)));
         //((Array)(result.payload)).elements[i] = element;
     }
     return result;
