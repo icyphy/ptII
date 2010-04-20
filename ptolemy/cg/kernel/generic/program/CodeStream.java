@@ -104,6 +104,7 @@ public class CodeStream {
      * which is currently ignored.
      */
     public CodeStream(ProgramCodeGeneratorAdapter adapter) {
+        //new Exception("CodeStream(adapter): " + adapter + " adapterClass2: " + (adapter != null? adapter.getClass(): "adapter wuz null")).printStackTrace();
         _adapter = adapter;
         this._codeGenerator = _adapter.getCodeGenerator();
     }
@@ -132,6 +133,7 @@ public class CodeStream {
      * @param generator The generator associated with this CodeStream.
      */
     public CodeStream(String path, ProgramCodeGenerator generator) {
+        //new Exception("CodeStream(): path: " + path).printStackTrace();
         _filePath = path;
         _originalFilePath = path;
         _codeGenerator = generator;
@@ -281,7 +283,7 @@ public class CodeStream {
      */
     public void appendCodeBlock(String blockName, List<String> arguments,
             boolean mayNotExist, int indentLevel) throws IllegalActionException {
-        if (!mayNotExist && arguments.size() == 0) {
+        if (!mayNotExist && (arguments == null || arguments.size() == 0)) {
             // That means this is a request by the user. This check prevents
             // user from appending duplicate code blocks that are already
             // appended by the code generator by default.
@@ -338,10 +340,17 @@ public class CodeStream {
             _constructCodeTable(mayNotExist);
         }
 
-        Signature signature = new Signature(blockName, arguments.size());
+        Signature signature = new Signature(blockName, (arguments == null ? 0 : arguments.size()));
 
-        StringBuffer codeBlock = _declarations.getCode(signature, arguments);
-
+        StringBuffer codeBlock = null;
+        try {
+            codeBlock = _declarations.getCode(signature, arguments);
+        } catch (IllegalActionException ex) {
+            throw new IllegalActionException(_adapter, ex,
+                        "Failed to get code block: \"" + signature + "\" in \""
+                                + _filePath + "\", the initial path was \""
+                                + _originalFilePath + "\".");
+        }
         // Cannot find a code block with the matching signature.
         if (codeBlock == null) {
             if (mayNotExist) {
@@ -349,8 +358,10 @@ public class CodeStream {
             } else {
                 throw new IllegalActionException(_adapter,
                         "Cannot find code block: \"" + signature + "\" in \""
-                                + _filePath + "\", the initial path was \""
-                                + _originalFilePath + "\".");
+                        + _filePath + "\", the initial path was \""
+                        + _originalFilePath + "\". Try setting debugging to true"
+                        + "on the code generator or running with ptcg "
+                        + "with \"-trace true\"");
             }
         }
 
@@ -621,6 +632,7 @@ public class CodeStream {
         // Set the new filePath.
         _filePath = filePath;
         _originalFilePath = filePath;
+        //new Exception("CodeStream().parse(): filePath: " + filePath).printStackTrace();
 
         // We do not follow the lazy-eval semantics here because the
         // user explicitly specified parsing here.
@@ -818,6 +830,7 @@ public class CodeStream {
                 // that we can have a better error message.
                 _filePath = _getPath(adapterClass);
                 if (_originalFilePath == null) {
+                    //new Exception("CodeStream()._constructCodeTable: adapterClass: " + adapterClass + " _originalFilePath: " + _filePath).printStackTrace();
                     _originalFilePath = _filePath;
                 }
 
@@ -849,9 +862,10 @@ public class CodeStream {
                 reader = FileUtilities.openForReading(_filePath, null, null);
 
                 if (reader == null) {
+                    System.out.println("CodeStream._constructCodeTableAdapter(): Could not open " + _filePath);
                     return;
                 }
-
+                //System.out.println("CodeStream._constructCodeTableAdapter(): opened " + _filePath);
                 int lineNumber = 1;
 
                 String filename = FileUtilities.nameToURL(_filePath, null,
@@ -1223,10 +1237,22 @@ public class CodeStream {
             try {
                 replaceString = _checkArgumentName(arguments.get(i));
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(null, ex, "Failed to cast "
-                        + arguments.get(i) + " which is a "
+                // Make sure that the error is actually caused by
+                // arguments.get(i)
+                String errorMessage = "";
+                try {
+                    errorMessage = "Failed to cast " + arguments.get(i)
+                        + " which is a \""
                         + arguments.get(i).getClass().getName()
-                        + " to a String.");
+                        + "\" to a String.";
+                } catch (ClassCastException ex2) {
+                    errorMessage = "ClassCastException from arguments.get(" + i
+                        + "), perhaps an element of the wrong type was added to "
+                        + "the list of arguments?  Check the actor definition and "
+                        + "make sure that the argument list is a List of Strings";
+                }
+                throw new IllegalActionException(null, ex, errorMessage);
+
             }
             String parameterName = "";
             try {
