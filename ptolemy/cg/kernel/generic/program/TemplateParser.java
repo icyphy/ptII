@@ -1314,6 +1314,11 @@ public class TemplateParser {
                             + "$param(name), or, $param(name, offset)");
         }
         Attribute attribute = adapter.getComponent().getAttribute(paramName);
+        if (attribute == null) {
+            throw new NullPointerException("Could not find attribute \""
+                    + paramName + "\", perhaps it is a port, try using $get("
+                    + paramName + ") instead of $param(" + paramName + ")");
+        }
         return directorAdapter.getParameter(adapter, attribute, offset);
     }
 
