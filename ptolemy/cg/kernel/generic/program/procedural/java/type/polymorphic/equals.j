@@ -182,7 +182,7 @@ boolean equals_Token_Token(Token a1, Token a2) {
     boolean result = false;
     if (a1.payload instanceof Number && a2.payload instanceof Number) {
         result = (((Number)(a1.payload)).doubleValue() == ((Number)(a2.payload)).doubleValue());
-    } else if (a1.payload instanceof array && a2.payload instanceof array) {
+    } else if (a1.payload instanceof Array && a2.payload instanceof Array) {
         result = $Array_equals(a1, a2);
 #ifdef PTCG_TYPE_Matrix
     } else if (a1.payload instanceof matrix && a2.payload instanceof matrix) {
