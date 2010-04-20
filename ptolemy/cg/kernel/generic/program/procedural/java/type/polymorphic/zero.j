@@ -41,7 +41,7 @@ long long zero_Long() {
 /**/
 
 /*** zero_String() ***/
-char* zero_String() {
+String zero_String() {
         return "";
 }
 /**/
