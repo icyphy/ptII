@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib
 
-DIRS =		gui jopio
+DIRS =		conversions gui jopio
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -53,6 +53,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
+	conversions/conversions.jar \
 	gui/gui.jar \
 	jopio/jopio.jar
 
@@ -60,6 +61,7 @@ PTCLASSALLJARS = \
 JSRCS = \
 	Accumulator.java \
 	AddSubtract.java \
+	Commutator.java \
 	Const.java \
 	ElementsToArray.java \
 	Expression.java \

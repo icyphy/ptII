@@ -64,6 +64,7 @@ JSRCS = \
 	BooleanSwitch.java \
 	Differential.java \
 	Discard.java \
+	Commutator.java \
 	Const.java \
 	MultiplyDivide.java \
 	Sequence.java
