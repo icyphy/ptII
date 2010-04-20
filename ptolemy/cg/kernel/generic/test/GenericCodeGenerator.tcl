@@ -191,14 +191,16 @@ test CodeGenerator-13.1 {main -help} {
 
 Options that take values:
  -codeDirectory         <directory in which to put code (default: $HOME/cg/. Other values: $CWD, $HOME, $PTII, $TMPDIR)>
- -generatorPackage  <Java package of code generator, defaults to ptolemy.c>
- -generatorPackage  <Semicolon or * separated list of Java packages to be searched for adapters>
+ -generatorPackage  <Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c>
  -generatorPackageList  <Semicolon or * separated list of Java packages to be searched for adapters>
+ -language              <c|java|html (default: c)>
  -<parameter name>      <parameter value>
+ -trace             true|false (default: false)
 
 Boolean flags:
  -help
  -version
 
 } {java.lang.Exception: Failed to parse "-version"} Version}
+
 
