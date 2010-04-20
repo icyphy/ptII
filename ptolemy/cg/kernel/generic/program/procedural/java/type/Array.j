@@ -432,7 +432,7 @@ Token Array_negate(Token thisToken, Token... tokens) {
 
 // Array_zero: Return an array like the specified
 // array but with zeros of the same type.
-Token Array_zero(Token token, Token... tokens) {
+Token Array_zero(Token thisToken, Token... tokens) {
     Token result;
     Token element;
     int i;
@@ -440,7 +440,7 @@ Token Array_zero(Token token, Token... tokens) {
     result = Array_new(((Array)(thisToken.payload)).size, 0);
 
     for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
-        element = Array_get(token, i);
+        element = Array_get(thisToken, i);
         System.out.println("Array_zero(): handle func table");
 
         //result.payload.Array->elements[i]
