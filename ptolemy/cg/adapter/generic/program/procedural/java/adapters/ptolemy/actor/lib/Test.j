@@ -7,7 +7,7 @@ $targetType(input) $actorSymbol(inputToken);
 /**/
 
 /*** TokenPreinitBlock($channel)***/
-Token $actorSymbol(ThisFiring_$channel);
+Token $actorSymbol(correctValuesThisFiring_$channel);
 /**/
 
 /*** toleranceTokenPreinitBlock***/
