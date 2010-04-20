@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/conversions
 
-DIRS =
+DIRS =		test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../..
@@ -55,6 +55,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	Round.java \
 	TokenToExpression.java
 
 OTHER_FILES_TO_BE_JARED = \

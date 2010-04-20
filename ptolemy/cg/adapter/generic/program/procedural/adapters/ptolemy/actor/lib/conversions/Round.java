@@ -77,7 +77,7 @@ public class Round extends NamedProgramCodeGeneratorAdapter {
         //code.append(getTemplateParser().generateBlockCode(codeBlockName, null));
         //return code.toString();
         CodeStream codeStream = _templateParser.getCodeStream();
-        //        codeStream.appendCodeBlock(codeBlockName);
+        codeStream.appendCodeBlock(codeBlockName);
         return processCode(codeStream.toString());
 
     }

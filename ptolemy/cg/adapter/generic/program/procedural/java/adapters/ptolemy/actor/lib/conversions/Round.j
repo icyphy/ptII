@@ -1,15 +1,15 @@
 /*** ceilBlock() ***/
-$ref(output) = (int)Math.ceil($ref(input));
+$put(output, (int)Math.ceil($get(input)));
 /**/
 
 /*** floorBlock() ***/
-$ref(output) = (int)Math.floor($ref(input));
+$put(output, (int)Math.floor($get(input)));
 /**/
 
 /*** roundBlock() ***/
-$ref(output) = (int)Math.round($ref(input));
+$put(output, (int)Math.round($get(input)));
 /**/
 
 /*** truncateBlock() ***/
-$ref(output) = (int)($ref(input));
+$put(output, (int)($get(input)));
 /**/

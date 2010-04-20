@@ -1,14 +1,18 @@
+/***preinitBlock***/
+static Token $actorSymbol(state);
+/**/
+
 /*** TokenFireBlock ***/
 // FIXME: is this the proper way to free the allocated space?
 //free(put(output));
 
-//put(output, (String)($Array_toString(get(input)).payload));
-$put(output, (String)($Array_toString($get(input)).payload));
+$put(output, (String)($Array_toString($get(input)).getPayload()));
 
 /**/
 
 /*** TokenArrayFireBlock($elementType) ***/
-$put(output, (String)($tokenFunc($typeFunc(TYPE_Array::convert($get(input), $elementType))::toString()).payload));
+$actorSymbol(state) = $typeFunc(TYPE_Array::convert($get(input), $elementType));
+$put(output, (String)($tokenFunc($actorSymbol(state)::toString()).payload));
 /**/
 
 /*** FireBlock($type) ***/
