@@ -359,8 +359,8 @@ public class CodeStream {
                 throw new IllegalActionException(_adapter,
                         "Cannot find code block: \"" + signature + "\" in \""
                         + _filePath + "\", the initial path was \""
-                        + _originalFilePath + "\". Try setting debugging to true"
-                        + "on the code generator or running with ptcg "
+                        + _originalFilePath + "\". Try setting debugging to "
+                        + "true on the code generator or running with ptcg "
                         + "with \"-trace true\"");
             }
         }
