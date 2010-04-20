@@ -1,8 +1,8 @@
-# Makefile for Ptolemy II Open CV actors that use JavaCV
+# Makefile for Java Ptolemy II Open Computer Vision (OpenCV) JavaCV demos
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 57177 2010-02-09 00:30:08Z cxh $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,55 +29,61 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/opencv/javacv
+ME =		ptolemy/actor/lib/opencv/javacv/demo
 
-DIRS = 		demo #test
+DIRS =
 
-# Root of the Java directory
-ROOT =		../../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../../..
 
-# JAVACV_JAR is set by configure if JavaCV is found.
-# JavaCV may be found at http://code.google.com/p/javacv/
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(JAVACV_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	javacv
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =	$(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+#PTCLASSALLJARS =
+#PTCLASSALLJAR = 
 
 # Keep this list alphabetized.
-JSRCS = \
-	CameraReader.java \
-	ImageFlip.java \
-	ImageSmooth.java \
-	ImageSobel.java \
-	IplImageToAWTImage.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	javacv.xml \
-	javacv-copyright.htm
+	CameraDetectView_3win.xml \
+	CameraDetectView.xml \
+	CameraFlipView.xml \
+	CameraResizedView.xml \
+	CameraSmoothView.xml \
+	CameraSobelView.xml \
+	CameraView.xml \
+	ImageConvView.xml \
+	ImageDetectView_3.xml \
+	ImageDetectView.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	$(PTCLASSJAR) \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
-install: jclass jars
+	@echo "To run the demos, run 'make demo'"
 
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
