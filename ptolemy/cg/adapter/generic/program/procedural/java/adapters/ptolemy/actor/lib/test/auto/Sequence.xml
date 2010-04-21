@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Sequence" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={186, 124, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={186, 124, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -140,8 +140,8 @@
             <doc>The filename to redirect the standard output stream of the code generator to.  This is used, for example, in the nightly build to provide easily parseable error messages.  If the value is not set, then the output will not be redirected. </doc>
         </property>
     </property>
-    <property name="JavaCodeGenerator" class="ptolemy.codegen.java.kernel.JavaCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 85.0}">
+    <property name="JavaCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 105.0]">
         </property>
     </property>
     <entity name="Sequence2" class="ptolemy.actor.lib.Sequence">
@@ -170,4 +170,12 @@
     </relation>
     <link port="Sequence2.output" relation="relation"/>
     <link port="Test.input" relation="relation"/>
+    <property name="SDF Director._Sequence_JavaCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
+        <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_decorator" class="ptolemy.kernel.util.StringAttribute" value="JavaCodeGenerator">
+        </property>
+    </property>
 </entity>

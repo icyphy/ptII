@@ -33,7 +33,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 /**
  A adapter class for ptolemy.actor.lib.Accumulator.
 
- @author Bert Rodiers
+ @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (cxh)

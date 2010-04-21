@@ -78,7 +78,18 @@ public class AddSubtract extends NamedProgramCodeGeneratorAdapter {
         ArrayList<String> args = new ArrayList<String>();
 
         CodeStream codeStream = _templateParser.getCodeStream();
-        codeStream.appendCodeBlock("initSum");
+
+        ArrayList initArgs = new ArrayList<String>();
+
+        boolean minusOnly = !actor.plus.isOutsideConnected();
+        if (minusOnly) {
+            initArgs.add(minusType);
+        } else {
+            initArgs.add(plusType);
+            initArgs.add(outputType);
+        }
+        codeStream.appendCodeBlock(minusOnly ? "minusOnlyInitSum" : "initSum",
+                initArgs);
 
         args.add("");
         args.add(outputType);

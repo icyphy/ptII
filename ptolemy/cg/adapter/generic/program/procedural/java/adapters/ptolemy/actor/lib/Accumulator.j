@@ -14,36 +14,43 @@ $actorSymbol(sum) = $val(($cgType(output)) init);
 $actorSymbol(sum) = $val(($cgType(output)) init);
 /**/
 
-/***IntegerFireBlock($channel) ***/
-$actorSymbol(sum) += $ref(($cgType(output)) input#$channel);
+/***integerFireBlock($channel) ***/
+//$actorSymbol(sum) += DOLLARref(($cgType(output)) input#$channel);
+$actorSymbol(sum) += $get(input#$channel);
 /**/
 
-/***DoubleFireBlock($channel) ***/
-$actorSymbol(sum) += $ref(($cgType(output)) input#$channel);
+/***doubleFireBlock($channel) ***/
+//$actorSymbol(sum) += DOLLARref(($cgType(output)) input#$channel);
+$actorSymbol(sum) += $get(input#$channel);
 /**/
 
-/***BooleanFireBlock($channel) ***/
-$actorSymbol(sum) |= $ref(($cgType(output)) input#$channel);
+/***booleanFireBlock($channel) ***/
+//$actorSymbol(sum) |= DOLLAR(($cgType(output)) input#$channel);
+$actorSymbol(sum) |= $get(input#$channel);
 /**/
 
 /***StringFireBlock($channel)***/
-$actorSymbol(sum) += $ref(($cgType(output)) input#$channel);
+//$actorSymbol(sum) += DOLLAR(($cgType(output)) input#$channel);
+$actorSymbol(sum) += $get(input#$channel);
 /**/
 
 /***TokenFireBlock($channel)***/
-$actorSymbol(sum) = $tokenFunc($actorSymbol(sum)::add($ref(($cgType(output)) input#$channel)));
+//$actorSymbol(sum) = $tokenFunc($actorSymbol(sum)::add(DOLLAR(($cgType(output)) input#$channel)));
+$actorSymbol(sum) = $tokenFunc($actorSymbol(sum)::add($get(input#$channel)));
 /**/
 
 /***sendBlock***/
-$ref(output) = $actorSymbol(sum);
+$put(output, $actorSymbol(sum));
 /**/
 
 /***initReset***/
-$actorSymbol(resetTemp) = $ref(reset#0);
+//$actorSymbol(resetTemp) = DOLLAR(reset#0);
+$actorSymbol(resetTemp) = $get(reset#0);
 /**/
 
 /***readReset($channel)***/
-$actorSymbol(resetTemp) |= $ref(reset#$channel);
+//$actorSymbol(resetTemp) |= DOLLAR(reset#$channel);
+$actorSymbol(resetTemp) |= $get(reset#$channel);
 /**/
 
 /***ifReset***/

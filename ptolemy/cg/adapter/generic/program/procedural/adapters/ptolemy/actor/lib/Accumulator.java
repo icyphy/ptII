@@ -70,8 +70,8 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
 
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
 
-        ArrayList args = new ArrayList();
-        args.add(Integer.valueOf(0));
+        ArrayList args = new ArrayList<String>();
+        args.add("0");
         Type type = actor.output.getType();
 
         String targetType = targetType(type);
@@ -81,7 +81,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
         if (actor.reset.isOutsideConnected()) {
             codeStream.appendCodeBlock("initReset");
             for (int i = 1; i < actor.reset.getWidth(); i++) {
-                args.set(0, Integer.valueOf(i));
+                args.set(0, Integer.valueOf(i).toString());
                 codeStream.appendCodeBlock("readReset", args);
             }
             codeStream.appendCodeBlock("ifReset");
@@ -95,7 +95,7 @@ public class Accumulator extends NamedProgramCodeGeneratorAdapter {
             targetType = "Token";
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i));
+            args.set(0, Integer.valueOf(i).toString());
             codeStream.appendCodeBlock(targetType + "FireBlock", args);
         }
         codeStream.appendCodeBlock("sendBlock");

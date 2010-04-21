@@ -33,11 +33,11 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 /**
  A adapter class for ptolemy.actor.lib.Sequence.
 
- @author Bert Rodiers
+ @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 8.0
- @Pt.ProposedRating Red (rodiers)
- @Pt.AcceptedRating Red (rodiers)
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class Sequence
         extends

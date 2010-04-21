@@ -2,8 +2,13 @@
 $type $actorSymbol(result);
 /**/
 
-/***initSum()***/
-$actorSymbol(result) = $zero_$cgType(output)();
+/***initSum($type1, $type2)***/
+$actorSymbol(result) = $zero_$cgType(output)OneArg($get(plus#0));
+/**/
+
+/***minusOnlyInitSum($minusType)***/
+//$actorSymbol(result) = $negate_$minusType($get(minus#0));
+$actorSymbol(result) = $zero_$minusTypeOneArg($get(minus#0));
 /**/
 
 /***plusBlock($channel, $type1, $type2)***/

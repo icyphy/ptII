@@ -445,14 +445,7 @@ Token Array_zero(Token thisToken, Token... tokens) {
 
     for (i = 0; i < ((Array)(thisToken.payload)).size; i++) {
         element = Array_get(thisToken, i);
-        System.out.println("Array_zero(): handle func table");
-
-        //result.payload.Array->elements[i]
-        //                = functionTable[(int)element.type][FUNC_zero](element);
-        //((Array)(result.payload)).elements[i] = element;
-        //result.payload.Array->elements[i]
-        //                = $tokenFunc(type(element)::zero("zero_Array", element)));
-        //((Array)(result.payload)).elements[i] = element;
+	Array_set(result, i, $tokenFunc(element::zero()));
     }
     return result;
 }
