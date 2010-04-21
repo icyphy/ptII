@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style CG Codegen demos
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2010 The Regents of the University of California
+# @Copyright (c) 2010 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg
+ME =		ptolemy/cg/demo
 
-DIRS =		adapter gui kernel lib demo
+DIRS =		ModularCGPubSub
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	cg
+PTPACKAGE = 	demo
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -53,32 +53,24 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	adapter/adapter.jar \
-	gui/gui.jar \
-	kernel/kernel.jar \
-	lib/lib.jar
-
-# The vhdl work is incomplete, so we don't include it in the jar
-#	vhdl/vhdl.jar
+	ModularCGPubSub/ModularCGPubSub.jar
 
 # Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	cg.xml \
-	README.html 
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = adapter gui kernel lib
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 

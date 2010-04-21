@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen ModularCGPubSub
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2010 The Regents of the University of California
+# @Copyright (c) 2010 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg
+ME =		ptolemy/cg/demo/ModularCGPubSub
 
-DIRS =		adapter gui kernel lib demo
+DIRS =
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,44 +45,36 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	cg
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	adapter/adapter.jar \
-	gui/gui.jar \
-	kernel/kernel.jar \
-	lib/lib.jar
-
-# The vhdl work is incomplete, so we don't include it in the jar
-#	vhdl/vhdl.jar
+PTPACKAGE = 	ModularCGPubSub
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	cg.xml \
-	README.html 
+	ModularCGPubSub.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
+
+#	ModularCGPubSub.htm 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = adapter gui kernel lib
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo 
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To run the demo, run 'make demo'"
+
+demo:
+	"$(PTII)/bin/vergil" ModularCGPubSub.xml
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 
