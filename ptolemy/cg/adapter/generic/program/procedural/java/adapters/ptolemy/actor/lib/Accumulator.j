@@ -14,7 +14,7 @@ $actorSymbol(sum) = $val(($cgType(output)) init);
 $actorSymbol(sum) = $val(($cgType(output)) init);
 /**/
 
-/***integerFireBlock($channel) ***/
+/***intFireBlock($channel) ***/
 //$actorSymbol(sum) += DOLLARref(($cgType(output)) input#$channel);
 $actorSymbol(sum) += $get(input#$channel);
 /**/

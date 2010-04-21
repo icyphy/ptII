@@ -14,6 +14,10 @@ $param(step) = $typeFunc(TYPE_Array::convert($param(step), $elementType)));
 $actorSymbol(state) = $val(($type)init);
 /**/
 
+/***StringInitBlock***/
+$actorSymbol(state) = $val((String)init);
+/**/
+
 /***IntegerFireBlock***/
 $put(output, $actorSymbol(state));
 if ($hasToken(step)) {
@@ -36,6 +40,11 @@ if ($hasToken(step)) {
         $param(step) = $get(step);
 }
 $actorSymbol(state) |= (Boolean)$param(step);
+/**/
+
+/***StringFireBlock***/
+$put(output, $actorSymbol(state));
+$actorSymbol(state) = $actorSymbol(state) + (String)($get(step));
 /**/
 
 /***TokenFireBlock***/
