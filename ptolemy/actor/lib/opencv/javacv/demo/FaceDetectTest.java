@@ -1,12 +1,32 @@
 package ptolemy.actor.lib.opencv.javacv.demo;
 
 
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-import static name.audet.samuel.javacv.jna.cv.v10.*;
-import static name.audet.samuel.javacv.jna.highgui.v11.*;
-import static java.lang.Math.*;
+import static java.lang.Math.round;
+import static name.audet.samuel.javacv.jna.cv.CV_BGR2GRAY;
+import static name.audet.samuel.javacv.jna.cv.cvCvtColor;
+import static name.audet.samuel.javacv.jna.cv.cvEqualizeHist;
+import static name.audet.samuel.javacv.jna.cv.cvHaarDetectObjects;
+import static name.audet.samuel.javacv.jna.cxcore.IPL_DEPTH_8U;
+import static name.audet.samuel.javacv.jna.cxcore.cvCircle;
+import static name.audet.samuel.javacv.jna.cxcore.cvClearMemStorage;
+import static name.audet.samuel.javacv.jna.cxcore.cvCreateImage;
+import static name.audet.samuel.javacv.jna.cxcore.cvCreateMemStorage;
+import static name.audet.samuel.javacv.jna.cxcore.cvGetSeqElem;
+import static name.audet.samuel.javacv.jna.cxcore.cvGetSize;
+import static name.audet.samuel.javacv.jna.cxcore.cvLoad;
+import static name.audet.samuel.javacv.jna.cxcore.cvReleaseImage;
+import static name.audet.samuel.javacv.jna.cxcore.cvReleaseMemStorage;
+import static name.audet.samuel.javacv.jna.highgui.cvLoadImage;
+import static name.audet.samuel.javacv.jna.highgui.v10or11.cvSaveImage;
 import name.audet.samuel.javacv.jna.cv;
-import name.audet.samuel.javacv.jna.highgui;
+import name.audet.samuel.javacv.jna.cv.CvHaarClassifierCascade;
+import name.audet.samuel.javacv.jna.cxcore.CvMemStorage;
+import name.audet.samuel.javacv.jna.cxcore.CvPoint;
+import name.audet.samuel.javacv.jna.cxcore.CvRect;
+import name.audet.samuel.javacv.jna.cxcore.CvScalar;
+import name.audet.samuel.javacv.jna.cxcore.CvSeq;
+import name.audet.samuel.javacv.jna.cxcore.CvSize;
+import name.audet.samuel.javacv.jna.cxcore.IplImage;
 
 import com.sun.jna.Pointer;
 

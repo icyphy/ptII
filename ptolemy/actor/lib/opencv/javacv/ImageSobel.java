@@ -27,10 +27,8 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-import static name.audet.samuel.javacv.jna.cv.v10.*;
-import static name.audet.samuel.javacv.jna.highgui.v10.*;
-
+import static name.audet.samuel.javacv.jna.cv.cvSobel;
+import name.audet.samuel.javacv.jna.cxcore.IplImage;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;

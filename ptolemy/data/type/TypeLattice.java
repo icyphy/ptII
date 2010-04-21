@@ -31,7 +31,6 @@ import ptolemy.data.ActorToken;
 import ptolemy.data.Token;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// TypeLattice

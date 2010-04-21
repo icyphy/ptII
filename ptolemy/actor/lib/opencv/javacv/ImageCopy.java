@@ -27,21 +27,15 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
+import static name.audet.samuel.javacv.jna.cxcore.cvCloneImage;
+import static name.audet.samuel.javacv.jna.cxcore.cvCopy;
 import name.audet.samuel.javacv.jna.cxcore.IplImage;
-
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.PointerByReference;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import static name.audet.samuel.javacv.jna.cxcore.cvFlip;
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-import static name.audet.samuel.javacv.jna.highgui.v10.*;
 
 
 ///////////////////////////////////////////////////////////////////

@@ -27,18 +27,18 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
+import static name.audet.samuel.javacv.jna.cv.CV_BGR2GRAY;
+import static name.audet.samuel.javacv.jna.cv.cvCvtColor;
+import static name.audet.samuel.javacv.jna.cxcore.IPL_DEPTH_8U;
+import static name.audet.samuel.javacv.jna.cxcore.cvCreateImage;
+import static name.audet.samuel.javacv.jna.cxcore.cvGetSize;
 import name.audet.samuel.javacv.jna.cxcore.IplImage;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-import static name.audet.samuel.javacv.jna.highgui.v10.*;
-import static name.audet.samuel.javacv.jna.cv.v10.*;
 
 ///////////////////////////////////////////////////////////////////
 //// Color conversion

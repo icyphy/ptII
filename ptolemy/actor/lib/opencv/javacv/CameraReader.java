@@ -27,11 +27,17 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import name.audet.samuel.javacv.jna.cv;
+import static name.audet.samuel.javacv.jna.cxcore.IPL_ORIGIN_TL;
+import static name.audet.samuel.javacv.jna.cxcore.cvFlip;
+import static name.audet.samuel.javacv.jna.highgui.CV_CAP_PROP_FRAME_HEIGHT;
+import static name.audet.samuel.javacv.jna.highgui.CV_CAP_PROP_FRAME_WIDTH;
+import static name.audet.samuel.javacv.jna.highgui.cvCreateCameraCapture;
+import static name.audet.samuel.javacv.jna.highgui.cvQueryFrame;
+import static name.audet.samuel.javacv.jna.highgui.cvReleaseCapture;
+import static name.audet.samuel.javacv.jna.highgui.cvSetCaptureProperty;
 import name.audet.samuel.javacv.jna.highgui;
-
-import com.sun.jna.Platform;
-
+import name.audet.samuel.javacv.jna.cxcore.IplImage;
+import name.audet.samuel.javacv.jna.highgui.CvCapture;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
@@ -39,8 +45,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-import static name.audet.samuel.javacv.jna.highgui.v10.*;
+import com.sun.jna.Platform;
 
 
 ///////////////////////////////////////////////////////////////////

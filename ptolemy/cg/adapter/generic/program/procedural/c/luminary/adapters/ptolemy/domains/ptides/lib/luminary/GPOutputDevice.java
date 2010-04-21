@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.ptides.lib.ActuatorOutputDevice;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.data.IntToken;

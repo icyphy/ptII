@@ -28,23 +28,13 @@ package ptolemy.domains.sr.lib;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Transformer;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.Token;
-import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-
-import java.io.*;
-import java.net.*;
-import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// SRCombine

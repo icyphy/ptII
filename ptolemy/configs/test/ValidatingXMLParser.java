@@ -28,12 +28,16 @@
 package ptolemy.configs.test;
 
 
-import org.xml.sax.*;
-import org.xml.sax.helpers.DefaultHandler;
 import java.io.File;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.ParserConfigurationException;
+
 import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.helpers.DefaultHandler;
 
 
 /**

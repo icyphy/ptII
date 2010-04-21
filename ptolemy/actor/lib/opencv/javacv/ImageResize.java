@@ -27,11 +27,12 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
+import static name.audet.samuel.javacv.jna.cv.CV_INTER_CUBIC;
+import static name.audet.samuel.javacv.jna.cv.cvResize;
+import static name.audet.samuel.javacv.jna.cxcore.cvCreateImage;
+import static name.audet.samuel.javacv.jna.cxcore.cvReleaseImage;
+import name.audet.samuel.javacv.jna.cxcore.CvSize;
 import name.audet.samuel.javacv.jna.cxcore.IplImage;
-
-import com.sun.jna.Pointer;
-import com.sun.jna.ptr.PointerByReference;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
@@ -40,10 +41,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-import static name.audet.samuel.javacv.jna.cv.v10.*;
-import static name.audet.samuel.javacv.jna.highgui.v10.*;
 
 
 ///////////////////////////////////////////////////////////////////

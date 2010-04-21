@@ -28,8 +28,6 @@
 package ptolemy.actor.lib.opencv;
 
 import hypermedia.video.OpenCV;
-import java.lang.Object;
-
 import processing.core.PImage;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ObjectToken;

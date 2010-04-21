@@ -27,8 +27,24 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import com.sun.jna.Pointer;
-
+import static java.lang.Math.round;
+import static name.audet.samuel.javacv.jna.cv.cvEqualizeHist;
+import static name.audet.samuel.javacv.jna.cv.cvHaarDetectObjects;
+import static name.audet.samuel.javacv.jna.cxcore.IPL_DEPTH_8U;
+import static name.audet.samuel.javacv.jna.cxcore.cvCircle;
+import static name.audet.samuel.javacv.jna.cxcore.cvClearMemStorage;
+import static name.audet.samuel.javacv.jna.cxcore.cvCreateImage;
+import static name.audet.samuel.javacv.jna.cxcore.cvCreateMemStorage;
+import static name.audet.samuel.javacv.jna.cxcore.cvGetSeqElem;
+import static name.audet.samuel.javacv.jna.cxcore.cvLoad;
+import name.audet.samuel.javacv.jna.cv.CvHaarClassifierCascade;
+import name.audet.samuel.javacv.jna.cxcore.CvMemStorage;
+import name.audet.samuel.javacv.jna.cxcore.CvPoint;
+import name.audet.samuel.javacv.jna.cxcore.CvRect;
+import name.audet.samuel.javacv.jna.cxcore.CvScalar;
+import name.audet.samuel.javacv.jna.cxcore.CvSeq;
+import name.audet.samuel.javacv.jna.cxcore.CvSize;
+import name.audet.samuel.javacv.jna.cxcore.IplImage;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
@@ -37,9 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-import static java.lang.Math.*;
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-import static name.audet.samuel.javacv.jna.cv.v10.*;
+import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageFlip
