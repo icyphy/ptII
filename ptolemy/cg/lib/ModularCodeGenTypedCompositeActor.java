@@ -456,6 +456,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             _generatingCode = true;
             _createCodeGenerator();
             if (_modelChanged()) {
+                super.preinitialize();  //TODO optimize this for hierarchy
+                executeChangeRequests();
                 _generateCode();
             }
             String className = NamedProgramCodeGeneratorAdapter

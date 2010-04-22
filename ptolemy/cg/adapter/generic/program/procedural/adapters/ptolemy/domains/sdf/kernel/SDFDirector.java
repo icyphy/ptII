@@ -667,7 +667,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                                     null,
                                     "Actor "
                                             + actor.getFullName()
-                                            + "does not have a firingsPerIteration attribute? "
+                                            + " does not have a firingsPerIteration attribute? "
                                             + "This can occur if a previous run created java files that "
                                             + "cannot be compiled.");
                         }
