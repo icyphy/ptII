@@ -55,10 +55,10 @@ test CUnit-1.1 {Run the CUnit tests} {
     # Use "make $makeArguments" so that commands are not printed as they
     # are executed
     if {$makeArguments == {}} {
-	set results [exec make run]
+	set results [exec make -stderrok run]
     } else {
 
-	set results [exec make $makeArguments run]
+	set results [exec -stderrok make $makeArguments run]
     }
     puts $results
     # If this test fails, run "make run"
