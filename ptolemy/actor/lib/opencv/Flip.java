@@ -28,6 +28,8 @@
 package ptolemy.actor.lib.opencv;
 
 import hypermedia.video.OpenCV;
+
+import processing.core.PImage;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
@@ -81,7 +83,10 @@ public class Flip extends Transformer {
                         "Input is required to be an instance of OpenCV. Got "
                         + inputObject.getClass());
             }
-            OpenCV openCV = (OpenCV)inputObject;
+            
+
+            OpenCV openCV = (OpenCV) inputObject;
+            openCV.copy(openCV.image(0));
             openCV.flip(OpenCV.FLIP_BOTH); 
             output.send(0, new ObjectToken(openCV));
         }

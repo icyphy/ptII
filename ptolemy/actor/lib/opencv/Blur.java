@@ -28,6 +28,8 @@
 package ptolemy.actor.lib.opencv;
 
 import hypermedia.video.OpenCV;
+
+import processing.core.PImage;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
@@ -82,6 +84,7 @@ public class Blur extends Transformer {
                         + inputObject.getClass());
             }
             OpenCV openCV = (OpenCV)inputObject;
+            openCV.copy(openCV.image(0));
             openCV.blur(OpenCV.BLUR, 13); //Does not have to be 13. Can be any odd number.
             output.send(0, new ObjectToken(openCV));
         }

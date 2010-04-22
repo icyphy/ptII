@@ -4,7 +4,7 @@
 <entity name="CameraView" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={226, 321, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={382, 99, 823, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -17,7 +17,7 @@
         </property>
     </property>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 266, 112, 48}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 266, 132, 59}, maximized=false}">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
@@ -25,11 +25,15 @@
         </property>
     </entity>
     <entity name="CameraReader" class="ptolemy.actor.lib.opencv.javacv.CameraReader">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 175.0]">
         </property>
     </entity>
     <entity name="IplImageToAWTImage" class="ptolemy.actor.lib.opencv.javacv.IplImageToAWTImage">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="ImageConvertColor" class="ptolemy.actor.lib.opencv.javacv.ImageConvertColor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 200.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -38,10 +42,14 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ImageDisplay.input" relation="relation2"/>
-    <link port="CameraReader.output" relation="relation3"/>
+    <link port="CameraReader.output" relation="relation4"/>
     <link port="IplImageToAWTImage.input" relation="relation3"/>
     <link port="IplImageToAWTImage.output" relation="relation2"/>
+    <link port="ImageConvertColor.input" relation="relation4"/>
+    <link port="ImageConvertColor.output" relation="relation3"/>
 </entity>

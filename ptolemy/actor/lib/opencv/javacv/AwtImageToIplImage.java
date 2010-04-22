@@ -1,4 +1,4 @@
-/* An actor that brightens an image
+/* An actor that reads from images using Open Computer Vision (OpenCV)
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -25,29 +25,36 @@
  COPYRIGHTENDKEY
  */
 
-package ptolemy.actor.lib.opencv;
+package ptolemy.actor.lib.opencv.javacv;
 
-import hypermedia.video.OpenCV;
+import static name.audet.samuel.javacv.jna.cxcore.v10.*;
+import static name.audet.samuel.javacv.jna.cv.v10.*;
+import static name.audet.samuel.javacv.jna.highgui.v10.*;
+
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.AWTImageToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import java.awt.Image;
+
+import com.sun.jna.Pointer;
 
 ///////////////////////////////////////////////////////////////////
-//// Brighten
+//// ImageConvertIplToAwt
 
 /**
- * Brightens an image
- * @author Edward A. Lee, Jan Reineke, Christopher Brooks
- * @version $Id: OpenCVToAWTImage.java 57204 2010-02-12 00:56:07Z eal $
+ * Convert an IplImage into an Awt image.
+ * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
+ * @version 
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class Brighten extends Transformer {
+public class AwtImageToIplImage extends Transformer {
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
@@ -60,31 +67,45 @@ public class Brighten extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Brighten(CompositeEntity container, String name)
+    public AwtImageToIplImage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
         input.setTypeEquals(BaseType.OBJECT);
-        output.setTypeEquals(BaseType.OBJECT);  
+        output.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** Output an OpenCV Object
+    /** Output an Ipl image.
      *  @exception IllegalActionException If thrown while writing to the port.   
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken)input.get(0);
-            Object inputObject = inputToken.getValue();
-            if (!(inputObject instanceof OpenCV)) {
+            Image inputObject = inputToken.getValue();
+            if (!(inputObject instanceof Image)) {
                 throw new IllegalActionException(this,
-                        "Input is required to be an instance of OpenCV. Got "
+                        "Input is required to be an instance of AWTImage. Got "
                         + inputObject.getClass());
             }
-            OpenCV openCV = (OpenCV)inputObject;
-            openCV.copy(openCV.image(0));
-            openCV.brightness(100); 
-            output.send(0, new ObjectToken(openCV));
+  
+            
+            _frame = new IplImage();
+            
+            output.send(0, new ObjectToken(_frame));
         }
-    }
+    }    
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The dummy frame, needed to create an image.
+     *  Otherwise, this actor might not work in a headless environment.
+     *  Since we are reading from a camera, this might be moot, but
+     *  a good design would not have this dependency on Frame.   If
+     *  this dependency persists, then this actor should be movedd
+     *  to actor.lib.gui.opencv.
+     */
+    private IplImage _frame;
 }

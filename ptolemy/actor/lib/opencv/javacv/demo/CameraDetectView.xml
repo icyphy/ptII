@@ -1,82 +1,35 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CameraDetectView3" class="ptolemy.actor.TypedCompositeActor">
+<entity name="CameraDetectView" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={226, 321, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 95, 823, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.2547348484848, 130.7753314393939}">
     </property>
-    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 30}">
+    <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, -35}">
         </property>
     </property>
     <entity name="DrawResultSeq" class="ptolemy.actor.lib.opencv.javacv.DrawResultSeq">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
         </property>
     </entity>
     <entity name="ImageCopy" class="ptolemy.actor.lib.opencv.javacv.ImageCopy">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 100.0]">
         </property>
     </entity>
     <entity name="CameraReader" class="ptolemy.actor.lib.opencv.javacv.CameraReader">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
         </property>
     </entity>
-    <entity name="FaceDetect" class="ptolemy.actor.TypedCompositeActor">
-        <display name="FaceDetect"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 245.0]">
-        </property>
-        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
-            </property>
-        </property>
-        <port name="port" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 125.0]">
-            </property>
-        </port>
-        <port name="port2" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 125.0]">
-            </property>
-        </port>
-        <entity name="ImageConvertColor" class="ptolemy.actor.lib.opencv.javacv.ImageConvertColor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 125.0]">
-            </property>
-        </entity>
-        <entity name="ImageEqualizeHist" class="ptolemy.actor.lib.opencv.javacv.ImageEqualizeHist">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
-            </property>
-        </entity>
-        <entity name="ObjectDetect" class="ptolemy.actor.lib.opencv.javacv.ObjectDetect">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 125.0]">
-            </property>
-        </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="port" relation="relation3"/>
-        <link port="port2" relation="relation4"/>
-        <link port="ImageConvertColor.input" relation="relation3"/>
-        <link port="ImageConvertColor.output" relation="relation"/>
-        <link port="ImageEqualizeHist.input" relation="relation"/>
-        <link port="ImageEqualizeHist.output" relation="relation2"/>
-        <link port="ObjectDetect.input" relation="relation2"/>
-        <link port="ObjectDetect.output" relation="relation4"/>
-    </entity>
     <entity name="IplImageView" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 155.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
@@ -88,7 +41,7 @@
             </property>
         </port>
         <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 266, 648, 528}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={263, 159, 656, 539}, maximized=false}">
             </property>
             <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
             </property>
@@ -108,29 +61,510 @@
         <link port="IplImageToAWTImage.input" relation="relation2"/>
         <link port="IplImageToAWTImage.output" relation="relation"/>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="{0.0, 0.0}">
-        </vertex>
-    </relation>
+    <entity name="DetectPossibleTilt" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 220.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1296, 776}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 660]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{454.3690025252524, 312.5464015151515}">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 30.0]">
+            </property>
+        </property>
+        <port name="Input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 200.0]">
+            </property>
+        </port>
+        <port name="output1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 190.0]">
+            </property>
+        </port>
+        <port name="rotation angle" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[900.0, 240.0]">
+            </property>
+        </port>
+        <entity name="FaceDetect" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[646.0, 92.5]">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 823, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 125.0]">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 125.0]">
+                </property>
+            </port>
+            <entity name="ImageConvertColor" class="ptolemy.actor.lib.opencv.javacv.ImageConvertColor">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ImageEqualizeHist" class="ptolemy.actor.lib.opencv.javacv.ImageEqualizeHist">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ObjectDetect" class="ptolemy.actor.lib.opencv.javacv.ObjectDetect">
+                <property name="pathName" class="ptolemy.kernel.util.StringAttribute" value="C:/Program Files/OpenCV/data/haarcascades/haarcascade_frontalface_alt.xml">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 125.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation3"/>
+            <link port="port2" relation="relation4"/>
+            <link port="ImageConvertColor.input" relation="relation3"/>
+            <link port="ImageConvertColor.output" relation="relation"/>
+            <link port="ImageEqualizeHist.input" relation="relation"/>
+            <link port="ImageEqualizeHist.output" relation="relation2"/>
+            <link port="ObjectDetect.input" relation="relation2"/>
+            <link port="ObjectDetect.output" relation="relation4"/>
+        </entity>
+        <entity name="FaceDetect2" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[646.0, 152.5]">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 823, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 125.0]">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 125.0]">
+                </property>
+            </port>
+            <entity name="ImageConvertColor" class="ptolemy.actor.lib.opencv.javacv.ImageConvertColor">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ImageEqualizeHist" class="ptolemy.actor.lib.opencv.javacv.ImageEqualizeHist">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ObjectDetect" class="ptolemy.actor.lib.opencv.javacv.ObjectDetect">
+                <property name="pathName" class="ptolemy.kernel.util.StringAttribute" value="C:/Program Files/OpenCV/data/haarcascades/haarcascade_frontalface_alt.xml">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 125.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation3"/>
+            <link port="port2" relation="relation4"/>
+            <link port="ImageConvertColor.input" relation="relation3"/>
+            <link port="ImageConvertColor.output" relation="relation"/>
+            <link port="ImageEqualizeHist.input" relation="relation"/>
+            <link port="ImageEqualizeHist.output" relation="relation2"/>
+            <link port="ObjectDetect.input" relation="relation2"/>
+            <link port="ObjectDetect.output" relation="relation4"/>
+        </entity>
+        <entity name="FaceDetect3" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[646.0, 212.5]">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 823, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 125.0]">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 125.0]">
+                </property>
+            </port>
+            <entity name="ImageConvertColor" class="ptolemy.actor.lib.opencv.javacv.ImageConvertColor">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ImageEqualizeHist" class="ptolemy.actor.lib.opencv.javacv.ImageEqualizeHist">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ObjectDetect" class="ptolemy.actor.lib.opencv.javacv.ObjectDetect">
+                <property name="pathName" class="ptolemy.kernel.util.StringAttribute" value="C:/Program Files/OpenCV/data/haarcascades/haarcascade_frontalface_alt.xml">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 125.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation3"/>
+            <link port="port2" relation="relation4"/>
+            <link port="ImageConvertColor.input" relation="relation3"/>
+            <link port="ImageConvertColor.output" relation="relation"/>
+            <link port="ImageEqualizeHist.input" relation="relation"/>
+            <link port="ImageEqualizeHist.output" relation="relation2"/>
+            <link port="ObjectDetect.input" relation="relation2"/>
+            <link port="ObjectDetect.output" relation="relation4"/>
+        </entity>
+        <entity name="FaceDetect4" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[646.0, 267.5]">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 823, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 125.0]">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 125.0]">
+                </property>
+            </port>
+            <entity name="ImageConvertColor" class="ptolemy.actor.lib.opencv.javacv.ImageConvertColor">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ImageEqualizeHist" class="ptolemy.actor.lib.opencv.javacv.ImageEqualizeHist">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ObjectDetect" class="ptolemy.actor.lib.opencv.javacv.ObjectDetect">
+                <property name="pathName" class="ptolemy.kernel.util.StringAttribute" value="C:/Program Files/OpenCV/data/haarcascades/haarcascade_frontalface_alt.xml">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 125.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation3"/>
+            <link port="port2" relation="relation4"/>
+            <link port="ImageConvertColor.input" relation="relation3"/>
+            <link port="ImageConvertColor.output" relation="relation"/>
+            <link port="ImageEqualizeHist.input" relation="relation"/>
+            <link port="ImageEqualizeHist.output" relation="relation2"/>
+            <link port="ObjectDetect.input" relation="relation2"/>
+            <link port="ObjectDetect.output" relation="relation4"/>
+        </entity>
+        <entity name="ChooseSeq" class="ptolemy.actor.lib.opencv.javacv.ChooseSeq">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[801.0, 192.5]">
+            </property>
+        </entity>
+        <entity name="FaceDetect5" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[646.0, 327.5]">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 823, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 125.0]">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 125.0]">
+                </property>
+            </port>
+            <entity name="ImageConvertColor" class="ptolemy.actor.lib.opencv.javacv.ImageConvertColor">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ImageEqualizeHist" class="ptolemy.actor.lib.opencv.javacv.ImageEqualizeHist">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 125.0]">
+                </property>
+            </entity>
+            <entity name="ObjectDetect" class="ptolemy.actor.lib.opencv.javacv.ObjectDetect">
+                <property name="pathName" class="ptolemy.kernel.util.StringAttribute" value="C:/Program Files/OpenCV/data/haarcascades/haarcascade_frontalface_alt.xml">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 125.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="port" relation="relation3"/>
+            <link port="port2" relation="relation4"/>
+            <link port="ImageConvertColor.input" relation="relation3"/>
+            <link port="ImageConvertColor.output" relation="relation"/>
+            <link port="ImageEqualizeHist.input" relation="relation"/>
+            <link port="ImageEqualizeHist.output" relation="relation2"/>
+            <link port="ObjectDetect.input" relation="relation2"/>
+            <link port="ObjectDetect.output" relation="relation4"/>
+        </entity>
+        <entity name="ImageRotate" class="ptolemy.actor.lib.opencv.javacv.ImageRotate">
+            <property name="angle" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+            <property name="scale" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 165.0]">
+            </property>
+        </entity>
+        <entity name="ImageRotate2" class="ptolemy.actor.lib.opencv.javacv.ImageRotate">
+            <property name="angle" class="ptolemy.data.expr.Parameter" value="70">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 240.0]">
+            </property>
+        </entity>
+        <entity name="ImageRotate3" class="ptolemy.actor.lib.opencv.javacv.ImageRotate">
+            <property name="angle" class="ptolemy.data.expr.Parameter" value="-40">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 310.0]">
+            </property>
+        </entity>
+        <entity name="ImageRotate4" class="ptolemy.actor.lib.opencv.javacv.ImageRotate">
+            <property name="angle" class="ptolemy.data.expr.Parameter" value="-70">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 390.0]">
+            </property>
+        </entity>
+        <entity name="ImageCopy" class="ptolemy.actor.lib.opencv.javacv.ImageCopy">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 135.0]">
+            </property>
+        </entity>
+        <entity name="ImageCopy2" class="ptolemy.actor.lib.opencv.javacv.ImageCopy">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 240.0]">
+            </property>
+        </entity>
+        <entity name="ImageCopy3" class="ptolemy.actor.lib.opencv.javacv.ImageCopy">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 335.0]">
+            </property>
+        </entity>
+        <entity name="ImageCopy4" class="ptolemy.actor.lib.opencv.javacv.ImageCopy">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 405.0]">
+            </property>
+        </entity>
+        <entity name="ImageCopy5" class="ptolemy.actor.lib.opencv.javacv.ImageCopy">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 185.0]">
+            </property>
+        </entity>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[60.0, 165.0]">
+            </vertex>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                </property>
+            </property>
+            <vertex name="vertex1" value="[-54.0, 101.0]">
+            </vertex>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="Input" relation="relation5"/>
+        <link port="output1" relation="relation7"/>
+        <link port="rotation angle" relation="relation8"/>
+        <link port="FaceDetect.port" relation="relation14"/>
+        <link port="FaceDetect.port2" relation="relation9"/>
+        <link port="FaceDetect2.port" relation="relation"/>
+        <link port="FaceDetect2.port2" relation="relation10"/>
+        <link port="FaceDetect3.port" relation="relation2"/>
+        <link port="FaceDetect3.port2" relation="relation11"/>
+        <link port="FaceDetect4.port" relation="relation3"/>
+        <link port="FaceDetect4.port2" relation="relation12"/>
+        <link port="ChooseSeq.output" relation="relation7"/>
+        <link port="ChooseSeq.output1" relation="relation8"/>
+        <link port="ChooseSeq.sequence1" relation="relation9"/>
+        <link port="ChooseSeq.sequence2" relation="relation10"/>
+        <link port="ChooseSeq.sequence3" relation="relation11"/>
+        <link port="ChooseSeq.sequence4" relation="relation12"/>
+        <link port="ChooseSeq.sequence5" relation="relation13"/>
+        <link port="FaceDetect5.port" relation="relation4"/>
+        <link port="FaceDetect5.port2" relation="relation13"/>
+        <link port="ImageRotate.input" relation="relation18"/>
+        <link port="ImageRotate.output" relation="relation"/>
+        <link port="ImageRotate2.input" relation="relation15"/>
+        <link port="ImageRotate2.output" relation="relation2"/>
+        <link port="ImageRotate3.input" relation="relation16"/>
+        <link port="ImageRotate3.output" relation="relation3"/>
+        <link port="ImageRotate4.input" relation="relation17"/>
+        <link port="ImageRotate4.output" relation="relation4"/>
+        <link port="ImageCopy.input" relation="relation6"/>
+        <link port="ImageCopy.output" relation="relation14"/>
+        <link port="ImageCopy2.input" relation="relation5"/>
+        <link port="ImageCopy2.output" relation="relation15"/>
+        <link port="ImageCopy3.input" relation="relation5"/>
+        <link port="ImageCopy3.output" relation="relation16"/>
+        <link port="ImageCopy4.input" relation="relation5"/>
+        <link port="ImageCopy4.output" relation="relation17"/>
+        <link port="ImageCopy5.input" relation="relation5"/>
+        <link port="ImageCopy5.output" relation="relation18"/>
+        <link relation1="relation5" relation2="relation6"/>
+    </entity>
+    <entity name="ImageRotAlternate" class="ptolemy.actor.lib.image.ImageRotAlternate">
+        <property name="scale" class="ptolemy.data.expr.Parameter" value=".5">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360, 285}">
+        </property>
+    </entity>
+    <entity name="ImageRotAlternate2" class="ptolemy.actor.lib.image.ImageRotAlternate">
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 160.0]">
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[120.0, 140.0]">
+        <vertex name="vertex1" value="[130.0, 150.0]">
         </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[260.0, 230.0]">
+        </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DrawResultSeq.input" relation="relation3"/>
     <link port="DrawResultSeq.output" relation="relation2"/>
-    <link port="DrawResultSeq.sequence" relation="relation5"/>
+    <link port="DrawResultSeq.sequence" relation="relation7"/>
     <link port="ImageCopy.input" relation="relation4"/>
-    <link port="ImageCopy.output" relation="relation3"/>
+    <link port="ImageCopy.output" relation="relation"/>
     <link port="CameraReader.output" relation="relation4"/>
-    <link port="FaceDetect.port" relation="relation4"/>
-    <link port="FaceDetect.port2" relation="relation5"/>
-    <link port="IplImageView.port" relation="relation2"/>
+    <link port="IplImageView.port" relation="relation8"/>
+    <link port="DetectPossibleTilt.Input" relation="relation4"/>
+    <link port="DetectPossibleTilt.output1" relation="relation7"/>
+    <link port="DetectPossibleTilt.rotation angle" relation="relation5"/>
+    <link port="ImageRotAlternate.input" relation="relation"/>
+    <link port="ImageRotAlternate.output" relation="relation3"/>
+    <link port="ImageRotAlternate.input1" relation="relation5"/>
+    <link port="Scale.input" relation="relation5"/>
+    <link port="Scale.output" relation="relation6"/>
+    <link port="ImageRotAlternate2.input" relation="relation2"/>
+    <link port="ImageRotAlternate2.output" relation="relation8"/>
+    <link port="ImageRotAlternate2.input1" relation="relation6"/>
 </entity>

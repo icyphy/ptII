@@ -86,21 +86,23 @@ public class Copy extends Transformer {
                         "Input is required to be an instance of OpenCV. Got "
                         + inputObject.getClass());
             }
-            // Read the next frame.
+  
+            
             OpenCV openCV = (OpenCV)inputObject;
-            output.send(0, new ObjectToken(openCV));
-            PImage image_to_copy_one = new PImage();
-            PImage image_to_copy_two = new PImage();
-            image_to_copy_one = openCV.image();
             OpenCV my_copy = new OpenCV();
-            my_copy.allocate(640,480);
-            my_copy.copy(image_to_copy_one);
-            output.send(1, new ObjectToken(my_copy));
-            image_to_copy_two = openCV.image();
-            OpenCV third_copy = new OpenCV();
-            third_copy.allocate(640,480);
-            third_copy.copy(image_to_copy_two);
-            output.send(2, new ObjectToken(third_copy));
+            
+            my_copy.allocate(openCV.width, openCV.height);
+            my_copy.copy(openCV.image());
+            
+  
+           // my_copy.setParent(openCV.getParent());
+            my_copy.width = openCV.width;
+            my_copy.height = openCV.height;
+            my_copy.setBrightness(openCV.getBrightness());
+            my_copy.setContrast(openCV.getContrast()); 
+            output.send(0, new ObjectToken(openCV));
+            output.send(1, new ObjectToken(my_copy)); 
+ 
         }
     }
    

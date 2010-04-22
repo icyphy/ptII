@@ -82,6 +82,7 @@ public class GrayScale extends Transformer {
                         + inputObject.getClass());
             }
             OpenCV openCV = (OpenCV)inputObject;
+            openCV.copy(openCV.image(0));
             openCV.convert(OpenCV.GRAY); 
             output.send(0, new ObjectToken(openCV));
         }

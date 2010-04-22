@@ -28,6 +28,7 @@
 package ptolemy.actor.lib.opencv;
 
 import hypermedia.video.OpenCV;
+import processing.core.PImage;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
@@ -77,7 +78,7 @@ public class OpenCVReader extends Source {
      */
     public void fire() throws IllegalActionException {
     	_openCV.read();
-    	_openCV.flip(OpenCV.FLIP_BOTH);
+    	//_openCV.flip(OpenCV.FLIP_BOTH);
         output.send(0, new ObjectToken(_openCV));
     }
    

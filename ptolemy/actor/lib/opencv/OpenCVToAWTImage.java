@@ -97,8 +97,9 @@ public class OpenCVToAWTImage extends Transformer {
                         "Input is required to be an instance of OpenCV. Got "
                         + inputObject.getClass());
             }
-            OpenCV openCV = (OpenCV)inputObject;
-            PImage my_image = openCV.image();     
+            OpenCV opencv = (OpenCV) inputObject;
+            PImage my_image = opencv.image();
+            
             Image output_image;
             MemoryImageSource mis = new MemoryImageSource(
 					my_image.width, my_image.height, my_image.pixels, 0, my_image.width);
