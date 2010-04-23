@@ -36,7 +36,9 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)
+# JAVACV_JAR is set by configure if JavaCV is found.
+# JavaCV may be found at http://code.google.com/p/javacv/
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(JAVACV_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -51,7 +53,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJAR = 
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	FaceDetectTest.java
 
 OTHER_FILES_TO_BE_JARED = \
 	CameraDetectView_3win.xml \
@@ -63,7 +66,8 @@ OTHER_FILES_TO_BE_JARED = \
 	CameraView.xml \
 	ImageConvView.xml \
 	ImageDetectView_3.xml \
-	ImageDetectView.xml
+	ImageDetectView.xml \
+	ImageRotateView.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \

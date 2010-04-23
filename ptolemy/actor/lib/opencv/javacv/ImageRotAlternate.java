@@ -26,7 +26,7 @@
  PT_COPYRIGHT_VERSION 2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.lib.image;
+package ptolemy.actor.lib.opencv.javacv;
 
 import hypermedia.video.OpenCV;
 

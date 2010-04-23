@@ -50,11 +50,22 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AwtImageToIplImage.java \
 	CameraReader.java \
+	ChooseSeq.java \
+	DrawResultSeq.java \
+	ImageConvertColor.java \
+	ImageCopy.java \
+	ImageEqualizeHist.java \
 	ImageFlip.java \
+	ImageReader.java \
+	ImageResize.java \
+	ImageRotAlternate.java \
+	ImageRotate.java \
 	ImageSmooth.java \
 	ImageSobel.java \
-	IplImageToAWTImage.java
+	IplImageToAWTImage.java \
+	ObjectDetect.java
 
 OTHER_FILES_TO_BE_JARED = \
 	javacv.xml \
