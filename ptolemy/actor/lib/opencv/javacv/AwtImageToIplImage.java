@@ -83,7 +83,7 @@ public class AwtImageToIplImage extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken)input.get(0);
-            Image inputObject = inputToken.getValue();
+            Image inputObject = (Image)inputToken.getValue();
             if (!(inputObject instanceof Image)) {
                 throw new IllegalActionException(this,
                         "Input is required to be an instance of AWTImage. Got "
