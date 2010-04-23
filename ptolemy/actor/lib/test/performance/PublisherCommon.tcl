@@ -84,14 +84,15 @@ proc nPubSubs {numberOfPubSubs {returnAll 1} {usePubSub 1}} {
     return [executeModel $numberOfPubSubs $e0 $returnAll]
 }
 
-proc createPubSubModel {numberOfPubSubs {returnAll 1} {usePubSub 1}} {
+proc createPubSubModel {numberOfPubSubs {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
     set e0 [sdfModel 5]
     $e0 allowLevelCrossingConnect true
     set sdfDirector [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]
     [java::field $sdfDirector allowDisconnectedGraphs] setExpression true
     for {set i 1} { $i < $numberOfPubSubs} {incr i} {
         set rec [createSubscriber $e0 "PubSub20_$i" "PS20_$i"]
-        set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 "e1-$i"]
+	set e1 [java::new $typedComposite $e0 "e1-$i"]
+
 	$e1 allowLevelCrossingConnect true
 	createPublisher $e1 "PubSub20_$i" "PS20_$i" [expr {($i + 0.0)/$numberOfPubSubs + 1.0}]
 
@@ -229,11 +230,77 @@ proc plotStats {pubSubStats {levelxingStats {}}} {
 }
 
 
-proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1}} {
+proc createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+    puts "createHierarchicalPubSubModelTop $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub  $typedComposite"
+    if {$levelNumber == 1} {
+	createHierarchichalPubSubModel $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub $typedComposite
+	return
+    }
+    global pubCount
+ 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
+            set en [java::new $typedComposite $container "en-$n"]
+	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
+		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
+		[java::field $sdfDirector iterations] setExpression 1
+	    }
+ 	    $en allowLevelCrossingConnect true
+ 	    set channel "PubSub_[$en getFullName]_[expr {$levelNumber - 1}]_$n"
+ 	    set channel2 "PubSub_[$container getFullName]_${levelNumber}_$n"
+
+	    set nameSuffix [expr {$levelNumber - 1}]
+   	    createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub $typedComposite
+	    #puts "---------[$en getFullName] $levelNumber $n\n[$en exportMoML]"
+
+	    set p1 [java::new ptolemy.actor.TypedIOPort $en "p1" false true]
+
+	    #pub_b
+	    set innerPublisher [$en getEntity "pub_${nameSuffix}_${n}"]
+	    set innerPublisherPort [$innerPublisher getPort "input"]
+	    $innerPublisherPort unlinkAll
+
+	    $innerPublisher setContainer [java::null]
+
+	    set innerSubscriber [$en getEntity "sub_${nameSuffix}_${n}"]
+	    set innerSubscriberPort [$innerSubscriber getPort "output"]
+	    $innerSubscriberPort unlinkAll
+
+	    $en connect \
+		$innerSubscriberPort \
+		$p1
+
+		#[java::field [java::cast ptolemy.actor.lib.Transformer $innerSubscriber] output]
+
+ 	    #set subscriber [java::new ptolemy.actor.lib.Subscriber $container "sub_c_${levelNumber}_$n"]
+ 	    #set channelParameter [getParameter $subscriber channel]
+ 	    #$channelParameter setExpression $channel
+ 	    #$subscriber attributeChanged $channelParameter
+
+	    #pub_c
+ 	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_${levelNumber}_$n"]
+ 	    set channelParameter [getParameter $publisher channel]
+ 	    $channelParameter setExpression $channel2
+ 	    $publisher attributeChanged $channelParameter
+
+ 	    $container connect \
+		$p1 \
+ 		[java::field $publisher input]
+
+	        #[java::field $subscriber output]
+         } 
+
+}
+
+proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+    #puts "createHierarchicalPubSubModel $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub  $typedComposite"
     global pubCount
     if {$levelNumber == 1} {
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
-            set en [java::new ptolemy.actor.TypedCompositeActor $container "en-$n"]
+            set en [java::new $typedComposite $container "en-$n"]
+	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
+		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
+		[java::field $sdfDirector iterations] setExpression 1
+	    }
+	    #puts "createHierarchicalPubSubModel 1 $typedComposite [$container getFullName] \n [$en exportMoML]"
 	    $en allowLevelCrossingConnect true
 	    #set channel "PubSub_[expr {$levelNumber - 1}]_$n"
 	    #set channel2 "PubSub_${levelNumber}_$n"
@@ -247,16 +314,35 @@ proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumb
 	    #set channel "PubSub_[expr {$levelNumber - 1}]_${n}_${pubCount}"
 	    #set channel2 "PubSub_${levelNumber}_${n}_${pubCount}"
 
-	    createPublisher $en $channel "pub_a_[expr {$levelNumber - 1}]_$n" [expr {($n + 0.0)/$numberOfPubSubsPerLevel + 1.0}]
+	    #pub_a
+	    set nameSuffix "pub_[expr {$levelNumber - 1}]_$n"
+	    createPublisher $en $channel "$nameSuffix" [expr {($n + 0.0)/$numberOfPubSubsPerLevel + 1.0}]
 
-	    # Get the upper subscriber and set the channel 
+	    # Remove the inner publisher and add a port
+# 	    set p1 [java::new ptolemy.actor.TypedIOPort $en "p1" false true]
+# 	    set innerPublisher [$en getEntity "publisher_$nameSuffix"]
+# 	    set innerPublisherPort [$innerPublisher getPort "input"]
+# 	    $innerPublisherPort unlinkAll
+
+# 	    $innerPublisher setContainer [java::null]
+
+# 	    set innerScale [$en getEntity "scale_$nameSuffix"]
+# 	    set innerScalePort [$innerScale getPort "output"]
+# 	    $innerScalePort unlinkAll
+
+# 	    $en connect \
+# 		[java::field [java::cast ptolemy.actor.lib.Transformer $innerScale] output] \
+# 		$p1
+
+	    # Create the upper subscriber and set the channel 
 	    set subscriber [java::new ptolemy.actor.lib.Subscriber $container "sub_${levelNumber}_$n"]
 	    set channelParameter [getParameter $subscriber channel]
 	    $channelParameter setExpression $channel
 	    $subscriber attributeChanged $channelParameter
 
-	    # Get the upper subscriber and set the channel 
-	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_b_${levelNumber}_$n"]
+	    # Create the upper publisher and set the channel 
+	    #pub_b
+	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_${levelNumber}_$n"]
 	    set channelParameter [getParameter $publisher channel]
 	    $channelParameter setExpression $channel2
 	    $publisher attributeChanged $channelParameter
@@ -267,45 +353,49 @@ proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumb
         } 
     } else {
  	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
-             set en [java::new ptolemy.actor.TypedCompositeActor $container "en-$n"]
+            set en [java::new $typedComposite $container "en-$n"]
+	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
+		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
+		[java::field $sdfDirector iterations] setExpression 1
+	    }
+	    #puts "createHierarchicalPubSubModel N $typedComposite [$en exportMoML]"
  	    $en allowLevelCrossingConnect true
-# 	    #set channel "PubSub_${pubCount}_[expr {$levelNumber - 1}]_$n"
- 	    #set channel2 "PubSub_${pubCount}_${levelNumber}_$n"
-# 	    incr pubCount
- 	    #set channel "PubSub_${pubCount}a"
- 	    #set channel2 "PubSub_${pubCount}b"
- 	    #set channel "PubSub_[expr {$levelNumber - 1}]_${n}"
- 	    #set channel2 "PubSub_${levelNumber}_${n}"
  	    set channel "PubSub_[$en getFullName]_[expr {$levelNumber - 1}]_$n"
  	    set channel2 "PubSub_[$container getFullName]_${levelNumber}_$n"
 
-   	    createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $returnAll $usePubSub
- 	    set subscriber [java::new ptolemy.actor.lib.Subscriber $container "sub_c_${levelNumber}_$n"]
+	    set nameSuffix [expr {$levelNumber - 1}]
+   	    createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub $typedComposite
+
+	    #sub_c
+ 	    set subscriber [java::new ptolemy.actor.lib.Subscriber $container "sub_${levelNumber}_$n"]
  	    set channelParameter [getParameter $subscriber channel]
  	    $channelParameter setExpression $channel
  	    $subscriber attributeChanged $channelParameter
 
- 	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_c_${levelNumber}_$n"]
+	    #pub_c
+ 	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_${levelNumber}_$n"]
  	    set channelParameter [getParameter $publisher channel]
  	    $channelParameter setExpression $channel2
  	    $publisher attributeChanged $channelParameter
 
  	    $container connect \
- 		[java::field $subscriber output] \
+	        [java::field $subscriber output] \
  		[java::field $publisher input]
          } 
     }
 }
 
-proc pubSubAggBase {numberOfSubsPerLevel levels} {
-
+proc pubSubAggBase {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+    #puts "pubSubAggBase $numberOfSubsPerLevel $levels $typedComposite"
     global pubCount 
     set pubCount 0
     set e0 [sdfModel 5]
     $e0 allowLevelCrossingConnect true
     set sdfDirector [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]
     [java::field $sdfDirector allowDisconnectedGraphs] setExpression true
-    createHierarchichalPubSubModel $e0 $numberOfSubsPerLevel $levels
+    set returnAll 1
+    set usePubSub 1
+    createHierarchichalPubSubModelTop $e0 $numberOfSubsPerLevel $levels $returnAll $usePubSub $typedComposite
 
     set subscriptionAggregator [java::new ptolemy.actor.lib.SubscriptionAggregator $e0 "subscriptionAggregator"]
     set recorder [java::new ptolemy.actor.lib.Recorder $e0 "recorder"]
@@ -324,9 +414,18 @@ proc pubSubAggBase {numberOfSubsPerLevel levels} {
     return $e0
 }
 
-proc pubSubAggModel {numberOfSubsPerLevel levels} {
-    set e0 [pubSubAggBase $numberOfSubsPerLevel $levels]
-    set filename "pubSubAgg_${numberOfSubsPerLevel}_${levels}.xml"
+proc pubSubAggModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+    puts "pubSubAggModel $numberOfSubsPerLevel $levels $typedComposite"
+    set e0 [pubSubAggBase $numberOfSubsPerLevel $levels $typedComposite]
+    set modelType ""
+    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
+	if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
+	    set modelType "MCG"
+	} else { 
+	    set modelType "other"
+	}
+    }
+    set filename "pubSubAgg${modelType}_${numberOfSubsPerLevel}_${levels}.xml"
     set fd [open $filename w]
     puts $fd [$e0 exportMoML]
     close $fd
@@ -386,11 +485,12 @@ proc pubSubAggLazyModel {numberOfSubsPerLevel levels} {
 
 
 
-proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber} {
+proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+    #puts "createHierarchicalModel $numberOfSubsPerLevel $levelNumber $typedComposite"
     global pubCount
     if {$levelNumber == 1} {
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
-            set en [java::new ptolemy.actor.TypedCompositeActor $container "en-$n"]
+            set en [java::new $typedComposite $container "en-$n"]
 	    #set en $container
 	    incr pubCount
 	    # createPublisher creates a ramp, scale and publisher,
@@ -441,12 +541,12 @@ proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber} {
         } 
     } else {
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
-	    set en [java::new ptolemy.actor.TypedCompositeActor $container "en-$n"]
-   	    createHierarchichalModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}]
+	    set en [java::new $typedComposite $container "en-$n"]
+   	    createHierarchichalModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $typedComposite
 
 	    set addSub [java::new ptolemy.actor.lib.AddSubtract $en addSub]
 	    for {set m 1} { $m <= $numberOfPubSubsPerLevel} {incr m} {
-		set enInner [java::cast ptolemy.actor.TypedCompositeActor [$en getEntity "en-$m"]]
+		set enInner [java::cast $typedComposite [$en getEntity "en-$m"]]
 		set port1Name "port1_[expr {${levelNumber} -1}]_$m"
 		set port1 [$enInner getPort $port1Name]
 		if {[java::isnull $port1]} {
@@ -470,18 +570,18 @@ proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber} {
     }
 }
 
-proc noPubSubAggModel {numberOfSubsPerLevel levels} {
+proc noPubSubAggModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
     global pubCount 
     global e0
     set pubCount 0
     set e0 [sdfModel 5]
-    createHierarchichalModel $e0 $numberOfSubsPerLevel $levels
+    createHierarchichalModel $e0 $numberOfSubsPerLevel $levels $typedComposite
 
     # Connect ports
     set addSub [java::new ptolemy.actor.lib.AddSubtract $e0 addSub]
     for {set n 1} { $n <= $numberOfSubsPerLevel} {incr n} {
         set nameSuffix "${levels}_$n"
-	set en [java::cast ptolemy.actor.TypedCompositeActor [$e0 getEntity "en-$n"]]
+	set en [java::cast $typedComposite [$e0 getEntity "en-$n"]]
         set port1Name "port1_[expr {${levels}}]_$n"
 	set port1 [$en getPort $port1Name]
 	if {[java::isnull $port1]} {
