@@ -3,7 +3,7 @@ rm -f opentime.plt ticks.plt runtime.plt realtime.plt memory.plt
 
 for file in $*
 do
-	size=`echo $file | sed 's/pubsub//' | sed 's/.out//'`
+	size=`echo $file | sed 's/pubsub//' | sed 's/hierarchicalModel[A-Za-z]*//' | sed 's/.out//' | awk -F _ '{print $2 "." $3}'`
 
 	egrep "^Opened" $file |
 	awk -v size="$size" '

@@ -37,3 +37,16 @@ To use Publisher2.tcl:
   ./stats pubsub*.out > pubsub.plt
   $PTII/bin/ptplot pubsub.plt 
 
+
+ModularCodeGen.tcl
+----------------
+
+ModularCodeGen.tcl constructs models that use either a
+TypedCompositeActor or a ModularCodeGeneratorTypedCompositeActor.
+
+To select between the two, edit the file
+
+To run:
+
+    $PTII/bin/ptjacl ModularCodeGen.tcl
+    

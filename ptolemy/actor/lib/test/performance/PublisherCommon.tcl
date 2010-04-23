@@ -229,8 +229,10 @@ proc plotStats {pubSubStats {levelxingStats {}}} {
 
 }
 
-
-proc createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+# Create a top level composite that uses ports instead of Publisher/Subscriber.
+# This is needed if the inner composites are opaque.
+proc createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.
+TypedCompositeActor"}} {
     puts "createHierarchicalPubSubModelTop $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub  $typedComposite"
     if {$levelNumber == 1} {
 	createHierarchichalPubSubModel $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub $typedComposite
@@ -242,13 +244,19 @@ proc createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelN
 	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
 		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
 		[java::field $sdfDirector iterations] setExpression 1
+		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+		if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
+		    [java::field $en recompileHierarchy] setExpression true
+		    [java::field $en recompileThisLevel] setExpression true
+		}
+
 	    }
  	    $en allowLevelCrossingConnect true
  	    set channel "PubSub_[$en getFullName]_[expr {$levelNumber - 1}]_$n"
  	    set channel2 "PubSub_[$container getFullName]_${levelNumber}_$n"
 
 	    set nameSuffix [expr {$levelNumber - 1}]
-   	    createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub $typedComposite
+   	    createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub ptolemy.actor.TypedCompositeActor
 	    #puts "---------[$en getFullName] $levelNumber $n\n[$en exportMoML]"
 
 	    set p1 [java::new ptolemy.actor.TypedIOPort $en "p1" false true]
@@ -264,11 +272,13 @@ proc createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelN
 	    set innerSubscriberPort [$innerSubscriber getPort "output"]
 	    $innerSubscriberPort unlinkAll
 
-	    $en connect \
-		$innerSubscriberPort \
-		$p1
+	    set relation [$en connect \
+			      $innerSubscriberPort \
+			      $p1]
 
 		#[java::field [java::cast ptolemy.actor.lib.Transformer $innerSubscriber] output]
+
+	    [java::cast ptolemy.actor.IORelation $relation] setWidth -1
 
  	    #set subscriber [java::new ptolemy.actor.lib.Subscriber $container "sub_c_${levelNumber}_$n"]
  	    #set channelParameter [getParameter $subscriber channel]
@@ -281,13 +291,13 @@ proc createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelN
  	    $channelParameter setExpression $channel2
  	    $publisher attributeChanged $channelParameter
 
- 	    $container connect \
-		$p1 \
- 		[java::field $publisher input]
+ 	    set relation [$container connect \
+			      $p1 \
+			      [java::field $publisher input]]
 
 	        #[java::field $subscriber output]
+	    [java::cast ptolemy.actor.IORelation $relation] setWidth -1
          } 
-
 }
 
 proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
@@ -299,6 +309,7 @@ proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumb
 	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
 		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
 		[java::field $sdfDirector iterations] setExpression 1
+		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
 	    }
 	    #puts "createHierarchicalPubSubModel 1 $typedComposite [$container getFullName] \n [$en exportMoML]"
 	    $en allowLevelCrossingConnect true
@@ -357,6 +368,7 @@ proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumb
 	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
 		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
 		[java::field $sdfDirector iterations] setExpression 1
+		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
 	    }
 	    #puts "createHierarchicalPubSubModel N $typedComposite [$en exportMoML]"
  	    $en allowLevelCrossingConnect true
@@ -430,9 +442,29 @@ proc pubSubAggModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.
     puts $fd [$e0 exportMoML]
     close $fd
     puts "Created $filename, containing [[$e0 deepOpaqueEntityList] size] actors"
-    
-    [$e0 getManager] execute
-    set recorder [java::cast ptolemy.actor.lib.Recorder [$e0 getEntity "recorder"]]
+    $e0 setContainer [java::null]
+
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser resetAll
+    set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $filename]]
+
+    set filename "pubSubAgg${modelType}_${numberOfSubsPerLevel}_${levels}-clean.xml"
+    set fd [open $filename w]
+    puts $fd [$toplevel exportMoML]
+    close $fd
+    $toplevel setContainer [java::null]
+
+    $parser resetAll
+    puts "Parsing $filename"
+    set toplevel2 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $filename]]
+    puts "BUG: need to expand lazy composites: [$toplevel2 deepGetEntities]"
+    set manager [java::new ptolemy.actor.Manager [$toplevel2 workspace] "manager"]
+    $toplevel2 setManager $manager
+
+    catch {$manager execute} errMsg
+    $manager execute
+
+    set recorder [java::cast ptolemy.actor.lib.Recorder [$toplevel2 getEntity "recorder"]]
     return [list [enumToTokenValues [$recorder getRecord 0]]]
 } 
 
@@ -483,111 +515,132 @@ proc pubSubAggLazyModel {numberOfSubsPerLevel levels} {
     return [list [enumToTokenValues [$recorder getRecord 0]]]
 } 
 
+##########################################################################
+
+# Below here are commands used to build composites that don't have pub/sub.
+# See README.txt
 
 
+# Create the inner composites of a model that does not use Publisher/Subscriber
+# This proc usually calls itself multiple times.
 proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
-    #puts "createHierarchicalModel $numberOfSubsPerLevel $levelNumber $typedComposite"
+    #puts "createHierarchicalModel $numberOfPubSubsPerLevel $levelNumber $typedComposite"
     global pubCount
     if {$levelNumber == 1} {
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
             set en [java::new $typedComposite $container "en-$n"]
-	    #set en $container
-	    incr pubCount
-	    # createPublisher creates a ramp, scale and publisher,
-	    # so we create a ramp, scale and another scale connected to a port
-	    #createPublisher $en $channel "pub_a_[expr {$levelNumber - 1}]_$n" [expr {($n + 0.0)/$numberOfPubSubsPerLevel + 1.0}]
+
+	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
+		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
+		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+		if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
+		    [java::field $en recompileHierarchy] setExpression false
+		    [java::field $en recompileThisLevel] setExpression false
+		}
+	    }
+
 	    set nameSuffix "[expr {$levelNumber}]_$n"
 
-	    set ramp [java::new ptolemy.actor.lib.Ramp $en "ramp_$nameSuffix"]
 	    set scale [java::new ptolemy.actor.lib.Scale $en "scale_$nameSuffix"]
 
 	    set factor  [expr {($n + 0.0)/$numberOfPubSubsPerLevel + 1.0}]
 	    set factorParameter [getParameter $scale factor]
 	    $factorParameter setExpression $factor
 
-	    $en connect \
-		[java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-		[java::field [java::cast ptolemy.actor.lib.Transformer $scale] input]
+	    set p1 [java::new ptolemy.actor.TypedIOPort $en "p1_$nameSuffix" true false]
 
-	    # scale2 is like the publisher that is created in createPublisher for pubsub
-	    set scale2 [java::new ptolemy.actor.lib.Scale $en "scale2_$nameSuffix"]
+	    #$p1 link $r1
+	    #$en connect $r1 $p1
+
+	    $en connect \
+		$p1 \
+		[java::field [java::cast ptolemy.actor.lib.Transformer $scale] input]
+	    #	[java::field [java::cast ptolemy.actor.lib.Source $ramp] output]
+
+	    set p2 [java::new ptolemy.actor.TypedIOPort $en "p2_$nameSuffix" false true]
+	    #puts "p2: levelNumber: $levelNumber, n: $n: p2: p2_$nameSuffix"
 	    $en connect \
 		[java::field [java::cast ptolemy.actor.lib.Transformer $scale] output] \
-		[java::field [java::cast ptolemy.actor.lib.Transformer $scale2] input]
-
-	    set port1 [java::new ptolemy.actor.TypedIOPort $en "port1_$nameSuffix" false true]
-	    puts "port1: levelNumber: $levelNumber, n: $n: port1: port1_$nameSuffix"
-	    $en connect \
-		[java::field [java::cast ptolemy.actor.lib.Transformer $scale2] output] \
-		$port1
-
-	    ##set r1 [java::new ptolemy.actor.TypedIORelation $en R1]
-	    ##$port1 link $r1
-	    #set port2 [java::new ptolemy.actor.TypedIOPort $container "port2_$nameSuffix" true false]
-	    #$port2 link $r1
-	    #set upperNameSuffix "${levelNumber}_$n"
-	    #set scale3 [java::new ptolemy.actor.lib.Scale $container "scale3_$upperNameSuffix"]
-	    #$container connect 
-	    #	$port2 
-	    #	[java::field [java::cast ptolemy.actor.lib.Transformer $scale3] input]
-
-	    #set pUpper [java::cast ptolemy.actor.TypedIOPort \
-	    #		    [$container getPort "port2_$upperNameSuffix"]]
-	    #set scale4 [java::new ptolemy.actor.lib.Scale $container "scale4_$upperNameSuffix"]
-	    #$container connect \
-	    #	[java::field [java::cast ptolemy.actor.lib.Transformer $scale4] output] \
-	    #	$pUpper
-
+		$p2
         } 
     } else {
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
 	    set en [java::new $typedComposite $container "en-$n"]
    	    createHierarchichalModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $typedComposite
 
+	    set upperNameSuffix "${levelNumber}_$n"
+
+	    set p1 [java::new ptolemy.actor.TypedIOPort $en "p1_$upperNameSuffix" true false]
+	    set r2 [java::new ptolemy.actor.TypedIORelation $en R2]
+	    $p1 link $r2
+
+	    # Collect all the outputs
 	    set addSub [java::new ptolemy.actor.lib.AddSubtract $en addSub]
 	    for {set m 1} { $m <= $numberOfPubSubsPerLevel} {incr m} {
 		set enInner [java::cast $typedComposite [$en getEntity "en-$m"]]
-		set port1Name "port1_[expr {${levelNumber} -1}]_$m"
-		set port1 [$enInner getPort $port1Name]
-		if {[java::isnull $port1]} {
-		    error "levelNumber=$levelNumber, n=$n, m=$m: Could not get port $port1Name from $en. [$en exportMoML]"
+
+		set p1InnerName "p1_[expr {${levelNumber} -1}]_$m"
+		set p1Inner [$enInner getPort $p1InnerName]
+		if {[java::isnull $p1Inner]} {
+		    error "levelNumber=$levelNumber, n=$n, m=$m: Could not get port $p1InnerName from $en. [$en exportMoML]"
 		}
-		$en connect $port1 [java::field $addSub plus] "R_m$m"
+		$p1Inner link $r2
+		#$en connect $p1 $p1Inner
+
+		set p2InnerName "p2_[expr {${levelNumber} -1}]_$m"
+		set p2Inner [$enInner getPort $p2InnerName]
+		if {[java::isnull $p2Inner]} {
+		    error "levelNumber=$levelNumber, n=$n, m=$m: Could not get port $p2InnerName from $en. [$en exportMoML]"
+		}
+		$en connect $p2Inner [java::field $addSub plus] "R_m$m"
 	    }
-	    set upperNameSuffix "${levelNumber}_$n"
 	    set scale3 [java::new ptolemy.actor.lib.Scale $en "scale3_$upperNameSuffix"]
 
 	    $en connect \
 		[java::field $addSub output] \
 		[java::field [java::cast ptolemy.actor.lib.Transformer $scale3] input]
 
-	    set port2 [java::new ptolemy.actor.TypedIOPort $en "port1_$upperNameSuffix" false true]
-	    puts "port2: levelNumber: $levelNumber, n: $n: port1: port1_$upperNameSuffix"
+	    set p2 [java::new ptolemy.actor.TypedIOPort $en "p2_$upperNameSuffix" false true]
+	    #puts "p2: levelNumber: $levelNumber, n: $n: p2: p2_$upperNameSuffix"
 	    $en connect \
 		[java::field [java::cast ptolemy.actor.lib.Transformer $scale3] output] \
-		$port2
+		$p2
 	}
     }
 }
 
-proc noPubSubAggModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+# Create a model that does not use publisher and subscribers
+proc modularCodeGenModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
     global pubCount 
     global e0
     set pubCount 0
     set e0 [sdfModel 5]
     createHierarchichalModel $e0 $numberOfSubsPerLevel $levels $typedComposite
 
+
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 "Ramp"]
+    set r1 [java::new ptolemy.actor.TypedIORelation $e0 R1]
+    [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] link $r1
+
     # Connect ports
     set addSub [java::new ptolemy.actor.lib.AddSubtract $e0 addSub]
     for {set n 1} { $n <= $numberOfSubsPerLevel} {incr n} {
         set nameSuffix "${levels}_$n"
 	set en [java::cast $typedComposite [$e0 getEntity "en-$n"]]
-        set port1Name "port1_[expr {${levels}}]_$n"
-	set port1 [$en getPort $port1Name]
-	if {[java::isnull $port1]} {
-	    error "Could not get port $port1Name from $en\n[$en exportMoML]" 
+
+        set p1Name "p1_[expr {${levels}}]_$n"
+	set p1 [$en getPort $p1Name]
+	if {[java::isnull $p1]} {
+	    error "Could not get port $p1Name from $en\n[$en exportMoML]" 
         }
-	$e0 connect $port1 [java::field $addSub plus] "R_$n"
+	$p1 link $r1
+
+        set p2Name "p2_[expr {${levels}}]_$n"
+	set p2 [$en getPort $p2Name]
+	if {[java::isnull $p2]} {
+	    error "Could not get port $p2Name from $en\n[$en exportMoML]" 
+        }
+	$e0 connect $p2 [java::field $addSub plus] "R_$n"
         #set port2Name "port2_[expr {${levels}}]_$n"
 	#set port2 [$en getPort $port2Name]
 	#if {[java::isnull $port2]} {
@@ -600,13 +653,26 @@ proc noPubSubAggModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.acto
     $e0 connect \
         [java::field $addSub output] \
 	[java::field [java::cast ptolemy.actor.lib.Sink $recorder] input]
-    set filename "hierarchicalModel_${numberOfSubsPerLevel}_${levels}.xml"
+
+    # Save the model
+    set modelType ""
+    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
+	if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
+	    set modelType "MCG"
+	} else { 
+	    set modelType "other"
+	}
+    }
+    
+    # This run should build
+    [$e0 getManager] execute
+
+    set filename "hierarchicalModel${modelType}_${numberOfSubsPerLevel}_${levels}.xml"
     set fd [open $filename w]
     puts $fd [$e0 exportMoML]
     close $fd
     puts "Created $filename, containing [[$e0 deepOpaqueEntityList] size] actors"
-    
-    [$e0 getManager] execute
 
     return [list [enumToTokenValues [$recorder getRecord 0]]]
 } 
+

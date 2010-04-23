@@ -43,6 +43,7 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
+	ModularCodeGen.tcl \
 	PubSubAgg.tcl \
 	PubSubLazy.tcl \
 	Publisher2.tcl \
