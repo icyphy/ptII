@@ -61,8 +61,12 @@ test CUnit-1.1 {Run the CUnit tests} {
 	set results [exec -stderrok make $makeArguments run]
     }
     puts $results
+
+    # Remove lines that are warnings about compile errors
+    regsub {^IntTest:c.*$} $results {} r2
+
     # If this test fails, run "make run"
-    string range $results [string last {--Run Summary} $results] end 
+    string range $results [string last {--Run Summary} $r2] end 
 } {--Run Summary: Type      Total     Ran  Passed  Failed
                suites        1       1     n/a       0
                tests         1       1       1       0
