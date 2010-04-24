@@ -66,7 +66,9 @@ JSRCS = \
 	Discard.java \
 	Commutator.java \
 	Const.java \
+	CurrentTime.java \
 	MultiplyDivide.java \
+	Recorder.java \
 	Sequence.java
 
 OTHER_FILES_TO_BE_JARED = 

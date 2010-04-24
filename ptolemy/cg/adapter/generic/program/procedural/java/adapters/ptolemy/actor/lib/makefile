@@ -63,11 +63,14 @@ JSRCS = \
 	AddSubtract.java \
 	Commutator.java \
 	Const.java \
+	CurrentTime.java \
+	Discard.java \
 	ElementsToArray.java \
 	Expression.java \
 	MultiplyDivide.java \
 	Publisher.java \
 	Ramp.java \
+	Recorder.java \
 	Scale.java \
 	Sequence.java \
 	Subscriber.java \
