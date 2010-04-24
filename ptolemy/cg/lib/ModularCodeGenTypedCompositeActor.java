@@ -1025,7 +1025,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         // that is exported does not depend on the presence of the
         // derived class Java definition. Thus, we force the class name
         // here to be ModularCodeGenTypedCompositeActor.
-        setClassName("ptolemy.actor.ModularCodeGenTypedCompositeActor");
+        setClassName("ptolemy.cg.lib.ModularCodeGenTypedCompositeActor");
         try {
             recompileHierarchy = new Parameter(this, "recompileHierarchy");
             recompileHierarchy.setExpression("False");
