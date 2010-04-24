@@ -37,20 +37,40 @@
     source PublisherCommon.tcl
 #} {}
 
-set composite ptolemy.cg.lib.ModularCodeGenTypedCompositeActor
-#set composite ptolemy.actor.TypedCompositeActor
+set composite ptolemy.actor.TypedCompositeActor
 
-#test ModularCodeGen-1.2.1 {$composite} {
-#    modularCodeGenModel 2 1 $composite
-#} {{0.0 3.5 7.0 10.5 14.0}}
+puts "Generating models for $composite"
 
 test ModularCodeGen-1.2.2 {Use $composite} {
     modularCodeGenModel 2 2 $composite
 } {{0.0 7.0 14.0 21.0 28.0}}
 
-#test ModularCodeGen-1.3.2 {Use $composite} {
-#    modularCodeGenModel 3 2  $composite
-#} {{0.0 5.0 10.0 15.0 20.0}}
+test ModularCodeGen-1.3.3 {Use $composite} {
+     modularCodeGenModel 3 3  $composite
+} {{0.0 45.0 90.0 135.0 180.0}}
+
+
+
+######
+set composite ptolemy.cg.lib.ModularCodeGenTypedCompositeActor
+
+puts "Generating models for $composite"
+
+test ModularCodeGen-1.2.2 {Use $composite} {
+    modularCodeGenModel 2 2 $composite
+} {{0.0 7.0 14.0 21.0 28.0}}
+
+test ModularCodeGen-1.3.3 {Use $composite} {
+     modularCodeGenModel 3 3  $composite
+} {{0.0 45.0 90.0 135.0 180.0}}
+
+#test ModularCodeGen-1.2.1 {$composite} {
+#    modularCodeGenModel 2 1 $composite
+#} {{0.0 3.5 7.0 10.5 14.0}}
+
+#test ModularCodeGen-1.2.2 {Use $composite} {
+#    modularCodeGenModel 2 2 $composite
+#} {{0.0 7.0 14.0 21.0 28.0}}
 
 # test ModularCodeGen-1.2.7 {Use $composite} {
 #     modularCodeGenModel 2 7 $composite
@@ -95,7 +115,6 @@ test ModularCodeGen-1.2.2 {Use $composite} {
 # test ModularCodeGen-1.3.7 {Use $composite} {
 #     modularCodeGenModel 3 7 $composite
 # } {{0.0 5.0 10.0 15.0 20.0}}
-
 
 #test ModularCodeGen-1.4.4 {Use $composite} {
 #    modularCodeGenModel 4 4 $composite

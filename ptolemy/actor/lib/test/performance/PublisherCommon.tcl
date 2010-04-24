@@ -530,14 +530,14 @@ proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber {ty
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
             set en [java::new $typedComposite $container "en-$n"]
 
-	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
-		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
-		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
-		if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
-		    [java::field $en recompileHierarchy] setExpression false
-		    [java::field $en recompileThisLevel] setExpression false
-		}
-	    }
+	    #if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
+		#set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
+		#[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+		#if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
+		#    [java::field $en recompileHierarchy] setExpression false
+		#    [java::field $en recompileThisLevel] setExpression false
+		#}
+	    #}
 
 	    set nameSuffix "[expr {$levelNumber}]_$n"
 
@@ -549,18 +549,30 @@ proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber {ty
 
 	    set p1 [java::new ptolemy.actor.TypedIOPort $en "p1_$nameSuffix" true false]
 
-	    #$p1 link $r1
-	    #$en connect $r1 $p1
-
 	    $en connect \
 		$p1 \
 		[java::field [java::cast ptolemy.actor.lib.Transformer $scale] input]
-	    #	[java::field [java::cast ptolemy.actor.lib.Source $ramp] output]
+
+	    # Insert 25 scales
+	    for {set m 1} { $m <= 100} {incr m} {
+		set scaleSuffix "scale_${nameSuffix}_$m"
+		set otherScale [java::new ptolemy.actor.lib.Scale $en $scaleSuffix]
+		if {$m == 1} {
+		    $en connect \
+			[java::field [java::cast ptolemy.actor.lib.Transformer $scale] output] \
+			[java::field [java::cast ptolemy.actor.lib.Transformer $otherScale] input]
+		} else {
+		    $en connect \
+			[java::field [java::cast ptolemy.actor.lib.Transformer $previousScale] output] \
+			[java::field [java::cast ptolemy.actor.lib.Transformer $otherScale] input]
+		}
+		set previousScale $otherScale
+	    }
 
 	    set p2 [java::new ptolemy.actor.TypedIOPort $en "p2_$nameSuffix" false true]
 	    #puts "p2: levelNumber: $levelNumber, n: $n: p2: p2_$nameSuffix"
 	    $en connect \
-		[java::field [java::cast ptolemy.actor.lib.Transformer $scale] output] \
+		[java::field [java::cast ptolemy.actor.lib.Transformer $otherScale] output] \
 		$p2
         } 
     } else {
@@ -628,6 +640,12 @@ proc modularCodeGenModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.a
         set nameSuffix "${levels}_$n"
 	set en [java::cast $typedComposite [$e0 getEntity "en-$n"]]
 
+	set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
+	#[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+	#if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
+	#    [java::field $en recompileHierarchy] setExpression false
+	#    [java::field $en recompileThisLevel] setExpression false
+	#}
         set p1Name "p1_[expr {${levels}}]_$n"
 	set p1 [$en getPort $p1Name]
 	if {[java::isnull $p1]} {
