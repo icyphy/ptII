@@ -1225,11 +1225,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 _commandFlags);
     }
 
-    /** Get the code generator associated with the generatePackage parameter.
+    /** Get the code generator associated with the generatorPackage parameter.
      *  @param generatorPackageValue  The value of the generatorPackage parameter.
-     *  @return The CodeGenerator class that corresponds with the generatorPackage parameter.
-     *  For example, if generatorPackage is "ptolemy.codegen.c", then the class
-     *  "ptolemy.codegen.c.kernel.CCodeGenerator" is searched for.
+     *  @return The CodeGenerator class that corresponds with the
+     *  generatorPackage parameter.  For example, if generatorPackage
+     *  is "ptolemy.cg.kernel.generic.program.procedural.c",
+     *  "ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator"
+     *  is looked for.
      *  @exception IllegalActionException If the adapter class cannot be found.
      */
     private static Class<?> _getCodeGeneratorClass(String generatorPackageValue)
@@ -1342,15 +1344,18 @@ public abstract class GenericCodeGenerator extends Attribute implements
             { "-generatorPackageList",
                     " <Semicolon or * separated list of Java packages to be searched for adapters>" },
             { "-language", "             <c|java|html (default: c)>"},
-            //{ "-inline", "            true|false (default: false)" },
-            //{ "-measureTime", "       true|false (default: false)" },
+            // FIXME: arguments like -inline etc. are defined in ProgramCodeGenerator
+            { "-inline", "            true|false (default: false)" },
+            // The measureTime code is in cg/kernel/generic/program/ProgramCodeGenerator.java
+            { "-measureTime", "       true|false (default: false)" },
             //{ "-overwriteFiles", "    true|false (default: true)" },
             //{ "-padBuffers", "        true|false (default: true)" },
-            //{ "-run", "               true|false (default: true)" },
+            { "-run", "               true|false (default: true)" },
             //{ "-sourceLineBinding", " true|false (default: false)" },
             //{ "-target", "            <target name, defaults to false>" },
             { "-<parameter name>", "     <parameter value>" },
-            { "-trace", "            true|false (default: false)" } };
+            { "-trace", "            true|false (default: false)" }, 
+            { "-verbosity", "         <an integer, try 1 or 10>, (default: 0)"}};
 
 
     /** The form of the command line. */
