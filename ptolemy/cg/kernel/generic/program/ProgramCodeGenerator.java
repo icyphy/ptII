@@ -749,14 +749,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         String code = "";
 
-        // If the container is in the top level, we are generating code
-        // for the whole model.
-        if (_isTopLevel()) {
-            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
-                code = _recordStartTime();
-            }
-        }
-
         CompositeEntity model = (CompositeEntity) getContainer();
 
         // NOTE: The cast is safe because setContainer ensures
@@ -789,16 +781,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
             code += compositeAdapter.generateFireCode();
         }
 
-        // If the container is in the top level, we are generating code
-        // for the whole model.
-        if (_isTopLevel()) {
-            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
-
-                // FIXME: wrapup code not included in time measurement.
-                //      Is this what we want?
-                code += _printExecutionTime();
-            }
-        }
         return code;
 
     }
@@ -1034,9 +1016,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         if (_isTopLevel()) {
             if (containsCode(closingEntryCode)) {
                 code.append(closingEntryCode);
-            }
-            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
-                code.append(_printExecutionTime());
             }
             if (containsCode(wrapupCode)) {
                 code.append(wrapupProcedureName);

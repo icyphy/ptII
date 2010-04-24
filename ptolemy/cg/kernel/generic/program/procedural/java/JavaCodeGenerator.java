@@ -439,14 +439,23 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             //                  + "model.run();" + _eol + "}" + _eol
             //                  + "public void run() throws Exception {" + _eol);
 
+            String recordStartTimeCode = "";
+            String printExecutionTimeCode = "";
+            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
+                recordStartTimeCode = _recordStartTime();
+                printExecutionTimeCode = _printExecutionTime();
+            }
             mainEntryCode
                     .append(_eol
                             + _eol
                             + "public static void main(String [] args) throws Exception {"
                             + _eol + _sanitizedModelName + " model = new "
                             + _sanitizedModelName + "();" + _eol
-                            + "model.initialize();" + _eol + "model.execute();"
-                            + _eol + "model.doWrapup();" + _eol
+                            + recordStartTimeCode + _eol
+                            + "model.initialize();" + _eol
+                            + "model.execute();" + _eol
+                            + "model.doWrapup();" + _eol
+                            + printExecutionTimeCode + _eol
                             + "System.exit(0);" + _eol + "}" + _eol);
 
         } else {
@@ -1256,6 +1265,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     protected String _processCode(String code) throws IllegalActionException {
         ProgramCodeGeneratorAdapter adapter = ((ProgramCodeGeneratorAdapter) getAdapter(getContainer()));
         return adapter.processCode(code);
+    }
+
+    /** Generate the code for recording the current time.
+     *  This writes current time into a timespec struct called "start".
+     *  @return Return the code for recording the current time.
+     */
+    protected String _recordStartTime() {
+        StringBuffer startCode = new StringBuffer();
+        startCode.append("long startTime = System.currentTimeMillis();");
+        return startCode.toString();
     }
 
     /** Return the class of the templateParser class. In cse
