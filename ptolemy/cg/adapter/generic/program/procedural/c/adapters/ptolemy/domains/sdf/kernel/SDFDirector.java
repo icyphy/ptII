@@ -45,9 +45,12 @@ import ptolemy.cg.kernel.generic.program.procedural.c.CCodegenUtilities;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.cg.lib.PointerToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -491,6 +494,44 @@ public class SDFDirector
         // The offset of the ports connected to the output port is
         // updated by outside director.
         _updatePortOffset(outputPort, code, rate);
+    }
+
+    /** Generate constant for the <i>period</i> parameter,
+     *  if there is one.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the adapter class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableDeclaration() throws IllegalActionException {
+        StringBuffer variableDeclarations = new StringBuffer(super
+                .generateVariableDeclaration());
+        
+        ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
+
+        Attribute period = _director.getAttribute("period");
+        if (period != null) {
+            Double periodValue = ((DoubleToken) ((Variable) period).getToken())
+                    .doubleValue();
+            // Print period only if it is the containing actor is the top level.
+            // FIXME: should this test also be applied to the other code?
+            if (director.getContainer().getContainer() == null) {
+                variableDeclarations.append(_eol
+                        + getCodeGenerator().comment(
+                                "Provide the period attribute as constant."));
+                variableDeclarations
+                        .append("double PERIOD = "
+                                + periodValue + ";" + _eol);
+            }
+
+        }
+
+        if (director.getContainer().getContainer() == null) {
+            variableDeclarations.append(_eol
+                    + getCodeGenerator().comment("Provide the iteration count."));
+            variableDeclarations.append("int _iteration = 0;"
+                    + _eol);
+        }
+        return variableDeclarations.toString();
     }
 
     /** Get the code generator associated with this adapter class.
