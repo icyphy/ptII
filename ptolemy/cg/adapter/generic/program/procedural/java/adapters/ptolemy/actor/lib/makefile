@@ -72,6 +72,7 @@ JSRCS = \
 	Expression.java \
 	Limiter.java \
 	Minimum.java \
+	MovingAverage.java \
 	MultiplyDivide.java \
 	Publisher.java \
 	Ramp.java \

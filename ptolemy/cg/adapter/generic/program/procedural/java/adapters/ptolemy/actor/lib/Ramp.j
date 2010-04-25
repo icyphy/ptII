@@ -31,7 +31,7 @@ $put(output, $actorSymbol(state));
 if ($hasToken(step)) {
         $param(step) = $get(step);
 }
-$actorSymbol(state) += (Double)$param(step);
+$actorSymbol(state) += $convert_$cgType(step)_Double($param(step));
 /**/
 
 /***BooleanFireBlock***/
@@ -43,10 +43,8 @@ $actorSymbol(state) |= (Boolean)$param(step);
 /**/
 
 /***StringFireBlock***/
-// Ramp StringFireBlock start
 $put(output, $actorSymbol(state));
 $actorSymbol(state) = $actorSymbol(state) + $param(step);
-// Ramp StringFireBlock end
 /**/
 
 /***TokenFireBlock***/
