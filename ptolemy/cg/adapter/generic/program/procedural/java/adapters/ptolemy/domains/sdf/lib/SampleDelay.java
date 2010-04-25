@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -64,28 +65,60 @@ public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    @Override
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
+//     @Override
+//     public String generatePreinitializeCode() throws IllegalActionException {
+//         super.generatePreinitializeCode();
+
+//         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
+
+//         ArrayList<String> args = new ArrayList<String>();
+
+//         Type type = actor.input.getType();
+//         args.add(targetType(type));
+
+//         CodeStream codeStream = _templateParser.getCodeStream();
+
+//         if (codeStream.isEmpty()) {
+//             codeStream.append(_eol
+//                     + getCodeGenerator().comment(
+//                             "preinitialize " + getComponent().getName()));
+//         }
+
+//         codeStream.appendCodeBlock("preinitBlock", args);
+
+//         return processCode(codeStream.toString());
+//     }
+
+    /** Generate the initialize code for the SampleDelay actor by
+     *  declaring the initial values of the sink channels of the
+     *  output port of the SampleDelay actor.
+     *  @return The generated initialize code for the SampleDelay actor.
+     *  @exception IllegalActionException If the base class throws it,
+     *   or if the initial
+     *   outputs of the SampleDelay actor is not defined.
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
 
         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
 
-        ArrayList<String> args = new ArrayList<String>();
-
-        Type type = actor.input.getType();
-        args.add(targetType(type));
+        int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
 
         CodeStream codeStream = _templateParser.getCodeStream();
+        codeStream.append(_eol
+                + getCodeGenerator().comment("initialize "
+                        + generateSimpleName(getComponent())));
 
-        if (codeStream.isEmpty()) {
-            codeStream.append(_eol
-                    + getCodeGenerator().comment(
-                            "preinitialize " + getComponent().getName()));
+        ArrayList<String> args = new ArrayList<String>();
+        args.add("");
+        for (int i = 0; i < length; i++) {
+            /* Token element =*/((ArrayToken) actor.initialOutputs.getToken())
+                    .getElement(i);
+
+            args.set(0, Integer.valueOf(i).toString());
+            codeStream.appendCodeBlock("initTokens", args);
         }
-
-        codeStream.appendCodeBlock("preinitBlock", args);
 
         return processCode(codeStream.toString());
     }
-
 }

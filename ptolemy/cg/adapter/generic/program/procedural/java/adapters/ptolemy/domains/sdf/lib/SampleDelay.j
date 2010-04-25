@@ -1,8 +1,14 @@
+/*** initTokens($offset) ***/
+// SampleDelayInitTokens
+$put(output, $offset, $val(initialOutputs, $offset));
+/**/
+
 /***preinitBlock($type)***/
-$type $actorSymbol(lastVal);
+//$type $actorSymbol(lastVal);
 /**/
 
 /***fireBlock***/
-$put(output, $actorSymbol(lastVal));
-$actorSymbol(lastVal) = $get(input);
+//DOLLARput(output, DOLLARactorSymbol(lastVal));
+//DOLLARactorSymbol(lastVal) = DOLLARget(input);
+$put(output, $get(input));
 /**/
