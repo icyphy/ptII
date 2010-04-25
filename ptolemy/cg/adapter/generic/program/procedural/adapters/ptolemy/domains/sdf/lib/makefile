@@ -56,8 +56,10 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	Repeat.java
-
+	DownSample.java \
+	Repeat.java \
+	SampleDelay.java \
+	UpSample.java
 
 OTHER_FILES_TO_BE_JARED = 
 
