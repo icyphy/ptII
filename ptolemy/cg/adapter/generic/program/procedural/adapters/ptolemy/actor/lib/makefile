@@ -70,6 +70,7 @@ JSRCS = \
 	Discard.java \
 	Distributor.java \
 	Limiter.java \
+	Minimum.java \
 	MultiplyDivide.java \
 	Recorder.java \
 	Sequence.java

@@ -71,6 +71,7 @@ JSRCS = \
 	ElementsToArray.java \
 	Expression.java \
 	Limiter.java \
+	Minimum.java \
 	MultiplyDivide.java \
 	Publisher.java \
 	Ramp.java \
