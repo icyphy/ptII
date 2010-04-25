@@ -51,7 +51,9 @@ JSRCS =
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = dummy.tcl
+JSIMPLE_TESTS = \
+	JavaCodeGenerator.tcl \
+        JavaTemplateParser.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -60,7 +62,7 @@ JSIMPLE_TESTS = dummy.tcl
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS)
 
 #$(JGRAPHICAL_TESTS)
 
