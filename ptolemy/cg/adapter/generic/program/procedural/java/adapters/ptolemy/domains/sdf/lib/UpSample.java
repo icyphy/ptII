@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class UpSample extends NamedProgramCodeGeneratorAdapter {
+public class UpSample extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.UpSample {
 
     /**
      * Construct a UpSample adapter.
@@ -51,70 +51,5 @@ public class UpSample extends NamedProgramCodeGeneratorAdapter {
      */
     public UpSample(ptolemy.domains.sdf.lib.UpSample actor) {
         super(actor);
-    }
-
-    /**
-     * Generate fire code.
-     * Read the <code>fireBlock</code> from UpSample.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    @Override
-    protected String _generateFireCode() throws IllegalActionException {
-        CodeStream codeStream = _templateParser.getCodeStream();
-
-        ptolemy.domains.sdf.lib.UpSample actor = (ptolemy.domains.sdf.lib.UpSample) getComponent();
-
-        ArrayList args = new ArrayList();
-
-        Type type = actor.input.getType();
-        if (!getCodeGenerator().isPrimitive(type)) {
-            if (type == BaseType.GENERAL) {
-                //                args.add("$typeFunc($ref(input).type::zero())");
-                args.add("$typeFunc($get(input).type::zero())");
-            } else {
-                args.add(getCodeGenerator().codeGenType(type) + "_zero()");
-            }
-        } else {
-            args.add("0");
-        }
-
-        codeStream.appendCodeBlock("fireBlock", args);
-        return codeStream.toString();
-    }
-
-    /**
-     * Generate preinitialize code.
-     * Read the <code>preinitBlock</code> from AddSubtract.c,
-     * replace macros with their values and returns the processed code
-     * block.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    @Override
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        ptolemy.domains.sdf.lib.UpSample actor = (ptolemy.domains.sdf.lib.UpSample) getComponent();
-
-        ArrayList<String> args = new ArrayList<String>();
-
-        Type type = actor.input.getType();
-        args.add(targetType(type));
-
-        CodeStream codeStream = _templateParser.getCodeStream();
-
-        if (codeStream.isEmpty()) {
-            codeStream.append(_eol
-                    + getCodeGenerator().comment(
-                            "preinitialize " + getComponent().getName()));
-        }
-
-        codeStream.appendCodeBlock("preinitBlock", args);
-
-        return processCode(codeStream.toString());
     }
 }

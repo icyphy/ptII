@@ -37,7 +37,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Repeat extends NamedProgramCodeGeneratorAdapter {
+public class Repeat extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.Repeat {
 
     /**
      * Construct a Repeat adapter.

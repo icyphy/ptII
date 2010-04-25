@@ -37,7 +37,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class DownSample extends NamedProgramCodeGeneratorAdapter {
+public class DownSample extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.DownSample {
 
     /**
      * Construct a DownSample adapter.

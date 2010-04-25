@@ -41,84 +41,18 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A adapter class for SampleDelay.
 
- @author Martin Schoeberl
+ @author Martin Schoeberl, Christopher Brooks
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (mschoebe)
  @Pt.AcceptedRating Red (mschoebe)
  */
-public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
+public class SampleDelay extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib.SampleDelay {
     /**
      *  Construct a AddSubtract adapter.
      *  @param actor The given ptolemy.actor.lib.AddSubtract actor.
      */
     public SampleDelay(ptolemy.domains.sdf.lib.SampleDelay actor) {
         super(actor);
-    }
-
-    /**
-     * Generate preinitialize code.
-     * Read the <code>preinitBlock</code> from SampleDealy.j,
-     * replace macros with their values and returns the processed code
-     * block.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-//     @Override
-//     public String generatePreinitializeCode() throws IllegalActionException {
-//         super.generatePreinitializeCode();
-
-//         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
-
-//         ArrayList<String> args = new ArrayList<String>();
-
-//         Type type = actor.input.getType();
-//         args.add(targetType(type));
-
-//         CodeStream codeStream = _templateParser.getCodeStream();
-
-//         if (codeStream.isEmpty()) {
-//             codeStream.append(_eol
-//                     + getCodeGenerator().comment(
-//                             "preinitialize " + getComponent().getName()));
-//         }
-
-//         codeStream.appendCodeBlock("preinitBlock", args);
-
-//         return processCode(codeStream.toString());
-//     }
-
-    /** Generate the initialize code for the SampleDelay actor by
-     *  declaring the initial values of the sink channels of the
-     *  output port of the SampleDelay actor.
-     *  @return The generated initialize code for the SampleDelay actor.
-     *  @exception IllegalActionException If the base class throws it,
-     *   or if the initial
-     *   outputs of the SampleDelay actor is not defined.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
-
-        int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
-
-        CodeStream codeStream = _templateParser.getCodeStream();
-        codeStream.append(_eol
-                + getCodeGenerator().comment("initialize "
-                        + generateSimpleName(getComponent())));
-
-        ArrayList<String> args = new ArrayList<String>();
-        args.add("");
-        for (int i = 0; i < length; i++) {
-            /* Token element =*/((ArrayToken) actor.initialOutputs.getToken())
-                    .getElement(i);
-
-            args.set(0, Integer.valueOf(i).toString());
-            codeStream.appendCodeBlock("initTokens", args);
-        }
-
-        return processCode(codeStream.toString());
     }
 }
