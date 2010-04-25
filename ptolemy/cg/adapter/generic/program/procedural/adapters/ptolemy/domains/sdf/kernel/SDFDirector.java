@@ -89,7 +89,6 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
 
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
                 .getContainer();
@@ -112,7 +111,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             }
 
             if (resetCode.length() > 0) {
-                resetCode.append(_eol
+                code.append(_eol
                         + getCodeGenerator().comment(
                                 1,
                                 actor.getName()
@@ -120,6 +119,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 code.append(resetCode);
             }
         }
+
 
         // Reset the offset for all of the output ports.
         String resetCode = _resetOutputPortsOffset();
@@ -130,6 +130,10 @@ public class SDFDirector extends StaticSchedulingDirector {
                                     + "'s output offset initialization"));
             code.append(resetCode);
         }
+
+        // Generate the input offset initialization first so that this test passes:
+        // cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay1.xml
+        code.append(super.generateInitializeCode());
 
         // Generate code for creating external initial production.
         Iterator<?> outputPorts = container.outputPortList().iterator();
