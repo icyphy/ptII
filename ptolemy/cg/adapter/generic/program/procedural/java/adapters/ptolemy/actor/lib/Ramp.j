@@ -43,8 +43,10 @@ $actorSymbol(state) |= (Boolean)$param(step);
 /**/
 
 /***StringFireBlock***/
+// Ramp StringFireBlock start
 $put(output, $actorSymbol(state));
-$actorSymbol(state) = $actorSymbol(state) + (String)($get(step));
+$actorSymbol(state) = $actorSymbol(state) + $param(step);
+// Ramp StringFireBlock end
 /**/
 
 /***TokenFireBlock***/
