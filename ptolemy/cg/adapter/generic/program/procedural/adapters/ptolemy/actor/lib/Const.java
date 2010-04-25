@@ -35,11 +35,10 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  *
  * @author Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */
-
 public class Const extends NamedProgramCodeGeneratorAdapter {
     /**
      * Constructor method for the Const adapter.

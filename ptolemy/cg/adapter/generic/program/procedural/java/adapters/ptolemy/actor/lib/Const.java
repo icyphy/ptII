@@ -28,13 +28,13 @@
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// AddSubtract
+//// Const
 
 /**
  A adapter class for Const.
 
  @author Bert Rodiers
- @version $Id$
+ @version Id: Const.java 57046 2010-01-27 23:35:53Z cxh $
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (rodiers)
  @Pt.AcceptedRating Red (rodiers)
@@ -43,8 +43,8 @@ public class Const
         extends
         ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Const {
     /**
-     *  Construct a AddSubtract adapter.
-     *  @param actor The given ptolemy.actor.lib.AddSubtract actor.
+     *  Construct a Const adapter.
+     *  @param actor The given ptolemy.actor.lib.Const actor.
      */
     public Const(ptolemy.actor.lib.Const actor) {
         super(actor);
