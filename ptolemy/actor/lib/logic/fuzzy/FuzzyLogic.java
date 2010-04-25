@@ -53,9 +53,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import fuzzy.FuzzyEngine;
 import fuzzy.LinguisticVariable;
-//FIXME: Have a parameter in the actor that specifies the number of inputs/outputs
-//in attributes changed you should then add corresponding input and output ports.
-//look at the network controller for the uav project for an example of how this is done.
 
 /**
 An actor that implements a fuzzy logic operation. 
@@ -162,7 +159,7 @@ public class FuzzyLogic extends TypedAtomicActor{
      * occur. The default type of this port is String. The only 
      * meaningful values are "high", "medium" and "low". 
      */
-//  public TypedIOPort risk;
+    //  public TypedIOPort risk;
 
     /** An output port that specifies the mass associated
      * with using a component or combination of components.
@@ -233,13 +230,19 @@ public class FuzzyLogic extends TypedAtomicActor{
     throws IllegalActionException {
         if (attribute == numOutputs) {
             int tempCount = 0;
-            System.out.println("the number of outputs has been changed.");
+            if(_debugging){
+                _debug("the number of outputs has been changed.");
+            }
             tempCount = Integer.parseInt(numOutputs.getExpression().trim());
-            System.out.println("Number of Outputs specified: "+tempCount);
+            if(_debugging){
+                _debug("Number of Outputs specified: "+tempCount);
+            }
             if(tempCount>_numOutputs)
             {
-                System.out.println(" need to create more output ports");
-                System.out.println("tempCount is "+tempCount+" number of Outputs is "+_numOutputs);
+                if(_debugging){
+                    _debug(" need to create more output ports");
+                    _debug("tempCount is "+tempCount+" number of Outputs is "+_numOutputs);
+                }
                 for(int i =  _numOutputs; i < tempCount; i++){
                     try{
                         tempOutputPort = new TypedIOPort(this,"output"+i,false,true);
@@ -253,13 +256,18 @@ public class FuzzyLogic extends TypedAtomicActor{
             }
         }else if(attribute == numInputs){
             int tempCount = 0;
-            System.out.println("the number of inputs has been changed.");
+            if(_debugging){
+                _debug("the number of inputs has been changed.");
+            }
             tempCount = Integer.parseInt(numInputs.getExpression().trim());
-            System.out.println("Number of Inputs specified: "+tempCount);
+            if(_debugging){
+                _debug("Number of Inputs specified: "+tempCount);
+            }
             if(tempCount>_numInputs)
             {
-
-                System.out.println(" need to create more input ports");
+                if(_debugging){
+                    _debug(" need to create more input ports");
+                }
                 for(int i =  _numInputs; i < tempCount; i++){
                     try{
                         tempInputPort = new TypedIOPort(this,"input"+i,true,false);
@@ -335,8 +343,9 @@ public class FuzzyLogic extends TypedAtomicActor{
         }
 
         double [] myOutputs = new double [_numOutputs];
-        System.out.println("number of outputs is : "+_numOutputs );
-
+        if(_debugging){
+            _debug("number of outputs is : "+_numOutputs );
+        }
         Token token = null;
 
         try {
@@ -347,6 +356,9 @@ public class FuzzyLogic extends TypedAtomicActor{
             for(int i = 0; i< _numInputs; i++){
                 if (inputPorts.get(i).isOutsideConnected()) {
                     if (inputPorts.get(i).hasToken(0)) {
+                        if(_debugging){
+                            _debug("i is "+i);
+                        }
                         token = inputPorts.get(i).get(0);
                         //FIXME:  find the right location in the linguistic variable array and set the value
                         _linguisticVariableArray.get(i).setInputValue(Double.parseDouble(token.toString())); 
@@ -472,7 +484,9 @@ public class FuzzyLogic extends TypedAtomicActor{
          * Called once when the SAX driver sees the end of a document, even if errors occurred.
          * */
         public void endDocument() {
-            System.out.println("saw the end of the document");
+            if(_debugging){
+                _debug("saw the end of the document");
+            }
         }
 
         /** Called each time the SAX parser sees the end of an element.
@@ -483,7 +497,9 @@ public class FuzzyLogic extends TypedAtomicActor{
         public void endElement(String uri, String name, String qName) {
             if ("".equals(uri)) {
                 if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
-                    System.out.println("saw end of fuzzify or defuzzify");
+                    if(_debugging){
+                        _debug("saw end of fuzzify or defuzzify");
+                    }
                     _startVar = false;
                     _currentIndex++;
                     if ("FUZZIFY".equals(qName)) {
@@ -492,11 +508,13 @@ public class FuzzyLogic extends TypedAtomicActor{
                     }
                 }
                 if ("RULEBLOCK".equals(qName)) {
-                    System.out.println("saw end of ruleblock");
+                    if(_debugging){
+                        _debug("saw end of ruleblock");
+                    }
                 }
             } else {
                 if (_debugging) {
-                    System.out.println("End element:   {" + uri + "}" + name);
+                    _debug("End element:   {" + uri + "}" + name);
                 }
             }
         }
@@ -537,7 +555,9 @@ public class FuzzyLogic extends TypedAtomicActor{
          * Called once when the SAX driver sees the beginning of a document.
          * */
         public void startDocument() {
-            System.out.println("saw the start of the document");
+            if(_debugging){
+                _debug("saw the start of the document");
+            }
         }
 
 
@@ -554,21 +574,29 @@ public class FuzzyLogic extends TypedAtomicActor{
             // DefaultHandler class 
             String tempString;
             if ("".equals(uri)) {
-                
+
                 if("VAR_INPUT".equals(qName)){
-                    System.out.print(" found an input variable");
+
                     int index = atts.getIndex("NAME");
-                    System.out.println(atts.getValue(index)); 
-                    
+                    if(_debugging){
+                        _debug(" found an input variable");
+                        _debug(atts.getValue(index));
+                    }
+
                 }
                 if("VAR_OUTPUT".equals(qName)){
-                    System.out.print(" found an output variable with name ");
+
                     int index = atts.getIndex("NAME");
-                    System.out.println(atts.getValue(index)); 
+                    if(_debugging){
+                        _debug(" found an output variable with name ");
+                        _debug(atts.getValue(index));
+                    }
                 }
-                
+
                 if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
-                    System.out.println("saw start of defuzzyfy or fuzzify");
+                    if(_debugging){
+                        _debug("saw start of defuzzyfy or fuzzify");
+                    }
                     _startVar = true;
                     if ("DEFUZZIFY".equals(qName)) {
                         _toDefuzzyify.add(_currentIndex);
@@ -609,7 +637,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                 }
             } else {
                 if (_debugging) {
-                    System.out.println("Start element: {" + uri + "}" + name);
+                    _debug("Start element: {" + uri + "}" + name);
                 }
 
             }

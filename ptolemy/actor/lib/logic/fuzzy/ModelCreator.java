@@ -203,7 +203,7 @@ public class ModelCreator extends DefaultHandler {
                 if (_debugging) {
                     System.out.print(ch[i]);
                 }
-            break;
+                break;
             }
         }
         if (_debugging) {
@@ -436,7 +436,7 @@ public class ModelCreator extends DefaultHandler {
 
         ///////////////////////////////////////////////////////////////////
         ////    public variables                                       ////
-       
+
         /**Name of the TSST architecture being modeled by this Architecture class.*/
         public String name="";
         /** List of TSST options associated with this architecture.*/
@@ -516,12 +516,13 @@ public class ModelCreator extends DefaultHandler {
                 +"kernel.attributes.VersionAttribute\" " 
                 +"value=\"8.0.beta\">"+ _eol
                 +"</property>"+ _eol
-                +"<property name=\"director\" class=\"ptolemy." 
+                +"<property name=\"SDF Director\" class=\"ptolemy."
                 +"domains.sdf.kernel.SDFDirector\">"
-                +"     <property name=\"iterations\" class=\"ptol" 
-                + "emy.data.expr.Parameter\" value=\"1\">" +_eol
+                +"<property name=\"iterations\" class=\"ptolemy."
+                +"data.expr.Parameter\" value=\"1\">"
                 +"     </property>"+_eol
                 +"</property>"+ _eol); 
+
         try {
             Option option;
             for (int i = 0; i < _architecture.myOptions.size(); i++) {
@@ -555,23 +556,17 @@ public class ModelCreator extends DefaultHandler {
                         + ((Option) (_architecture.myOptions.get(i))).
                         _name + "\">"
                         +"</property>"+_eol
-                        +"<property name=\"init\" class=\"ptolemy." 
-                        +"data.expr.Parameter\" value=\"2\">"
-                        +"</property>"+_eol
                         +"</entity>");
             }
 
-            output.append("<entity name=\"CumulativeRiskDisplay\" class=\"ptolemy." 
-                    +"actor.lib.gui.Display\">"+ _eol
-                    +"</entity>" + _eol
-                    +"<entity name=\"CumulativeCostDisplay\" class=\"ptolemy." 
+            output.append(" <entity name=\"AddSubtract\" class=\"ptolemy.actor." +
+                    "lib.AddSubtract\">"+_eol+
+            " </entity>");
+            output.append("<entity name=\"CumulativeCostDisplay\" class=\"ptolemy." 
                     +"actor.lib.gui.Display\">" + _eol
-                    +"</entity>"+_eol
-                    +"<entity name=\"CumulativeMassDisplay\" class=\"ptolemy." 
-                    +"actor.lib.gui.Display\">"+_eol
                     +"</entity>"+_eol);
 
-            int relationCount = componentNames.size()*3;
+            int relationCount = componentNames.size()+1;
             for (int i = 0; i < relationCount; i++) {
                 output.append(" <relation name=\"relation" + i
                         + "\" class=\"ptolemy.actor.TypedIORelation\">"+_eol
@@ -582,58 +577,32 @@ public class ModelCreator extends DefaultHandler {
             }
 
             int relationNumber = 0;
-            for (int i = 0; i < componentNames.size() - 1; i++) {                        
-                // Risk
-                output.append("<link port=\"" + componentNames.get(i)
-                        + ".risk\" relation=\"relation" +relationNumber
-                        + "\"/>"+_eol
-                        + "<link port=\""+ componentNames.get(i + 1)
-                        + ".riskInput\" relation=\"relation" + 
-                        relationNumber+ "\"/>"+_eol);
-                relationNumber++;
+            for (int i = 0; i < componentNames.size(); i++) {                        
+
                 // Cost
                 output.append("<link port=\"" + componentNames.get(i)
-                        + ".cost\" relation=\"relation" + relationNumber
+                        + ".output\" relation=\"relation" + relationNumber
                         +"\"/>"+_eol
-                        +"<link port=\""+componentNames.get(i + 1)
-                        + ".costInput\" relation=\"relation" + relationNumber
-                        +"\"/>"+_eol);
+                        +"<link port=\""+ "AddSubtract.plus\""  
+                        +" relation=\"relation" + relationNumber
+                        +"\"/>"
+                        +_eol);
+
                 relationNumber++;
-                // Mass
-                output.append("<link port=\"" + componentNames.get(i)
-                        + ".mass\" relation=\"relation" + relationNumber 
-                        + "\"/>"+ _eol
-                        + "<link port=\"" + componentNames.get(i + 1)
-                        + ".massInput\" relation=\"relation" + relationNumber
-                        + "\"/>"+ _eol);
-                relationNumber++;
+
             }
 
             if (componentNames.size() > 1) {
-                // Risk
-                output.append("<link port=\""
-                        + componentNames.get(componentNames.size() - 1)
-                        + ".risk\" relation=\"relation"
-                        + relationNumber + "\"/>"+_eol
-                        + "<link port=\"CumulativeRiskDisplay.input\" relation=\"" 
-                        +"relation" +relationNumber + "\"/>"+_eol);
-                relationNumber++;
+
                 // Cost
                 output.append("<link port=\""
-                        + componentNames.get(componentNames.size() - 1)
-                        + ".cost\" relation=\"relation"
+                        + "AddSubtract.output\" relation=\"relation"
                         + relationNumber + "\"/>"+ _eol
                         +"<link port=\"CumulativeCostDisplay.input\" relation=\"" 
                         +"relation" +relationNumber + "\"/>"+ _eol);
                 relationNumber++;
-                // Mass
-                output.append("<link port=\""
-                        + componentNames.get(componentNames.size() - 1)
-                        + ".mass\" relation=\"relation"
-                        + relationNumber + "\"/>"+ _eol
-                        +"<link port=\"CumulativeMassDisplay.input\" relation=\"" 
-                        +"relation" + relationNumber+ "\"/>"+ _eol
-                        +"</entity>");
+
+                output.append("</entity>");
             }
         } finally {
             if (_debugging) {
