@@ -324,13 +324,15 @@ public class SDFDirector
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer variableDeclarations = new StringBuffer(super
                 .generateVariableDeclaration());
+        
+        ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
+
         Attribute period = _director.getAttribute("period");
         if (period != null) {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())
                     .doubleValue();
             // Print period only if it is the containing actor is the top level.
             // FIXME: should this test also be applied to the other code?
-            ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
             if (director.getContainer().getContainer() == null) {
                 variableDeclarations.append(_eol
                         + getCodeGenerator().comment(
@@ -342,6 +344,12 @@ public class SDFDirector
 
         }
 
+        if (director.getContainer().getContainer() == null) {
+            variableDeclarations.append(_eol
+                    + getCodeGenerator().comment("Provide the iteration count."));
+            variableDeclarations.append("public static int _iteration = 0;"
+                    + _eol);
+        }
         return variableDeclarations.toString();
     }
 
