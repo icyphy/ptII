@@ -30,6 +30,7 @@ package ptolemy.cg.kernel.generic;
 import java.io.File;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +63,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StreamListener;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
@@ -408,48 +408,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     List<GenericCodeGenerator> codeGenerators = toplevel
                             .attributeList(GenericCodeGenerator.class);
 
-                    // If the user called this with -generatorPackage
-                    // ptolemy.codegen.java, the process that
-                    // argument.  This is a bit hacky, but works.
-                    String generatorPackageValue = "ptolemy.cg.kernel.generic.program.procedural.c";
-                    int parameterIndex = -1;
-                    if ((parameterIndex = _parameterNames
-                            .indexOf("generatorPackage")) != -1) {
-                        generatorPackageValue = _parameterValues
-                                .get(parameterIndex);
-                    }
-
-                    if ((parameterIndex = _parameterNames
-                            .indexOf("language")) != -1) {
-                        String languageValue = _parameterValues
-                            .get(parameterIndex);
-                        
-                        boolean foundLanguage = false;
-                        // Use a two column table to make it easy to add languages
-                        for (int l = 0; l < _languages.length; l++) {
-                            if (_languages[l][0].equals(languageValue)) {
-                                generatorPackageValue = _languages[l][1];
-                                foundLanguage = true;
-                                break;
-                            }
-                        }
-                        if (!foundLanguage) {
-                            StringBuffer languageError = new StringBuffer();
-                            for (int l = 0; l < _languages.length; l++) {        
-                                if (languageError.length() > 0) {
-                                    languageError.append(",");
-                                }
-                                languageError.append(_languages[l][0]);
-                            }
-                            generatorPackageValue = "ptolemy.cg.kernel.generic.program.procedural." + languageValue;
-                            System.out.println("Warning, -language was \""
-                                    + languageValue + "\", defaulting to setting "
-                                    + "generatorPackage to \""
-                                    + generatorPackageValue + "\".  " 
-                                    + "Acceptable languages are: "
-                                    + languageError.toString());
-                        }
-                    }
+                    String generatorPackageValue = _getGeneratorPackageValue();
                     Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue);
 
                     if (codeGenerators.size() != 0) {
@@ -475,17 +434,9 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     }
 
                     codeGenerator._updateParameters(toplevel);
+                    // Pick up any new command line arguments from the codeGenerator.
+                    _commandOptions = codeGenerator.updateCommandOptions();
                     codeGenerator.generatorPackage.setExpression(generatorPackageValue);
-
-                    int traceIndex = -1;
-                    if ((traceIndex = _parameterNames
-                            .indexOf("trace")) != -1) {
-                        String traceValue = _parameterValues
-                            .get(traceIndex);
-                        if (traceValue.equals("true")) {
-                            codeGenerator.addDebugListener(new StreamListener());
-                        }
-                    }
 
                     Attribute generateEmbeddedCode = codeGenerator
                             .getAttribute("generateEmbeddedCode");
@@ -711,6 +662,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
             return;
         }
         adapter.setTypesOfDecoratedVariables(decoratedAttributes);
+    }
+
+    /** Return an updated array of command line options.
+     *  @param An array of updated command line options.
+     */
+    public String[][] updateCommandOptions() {
+        return _commandOptions;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1220,9 +1178,29 @@ public abstract class GenericCodeGenerator extends Attribute implements
      *  @return A usage string.
      */
     private static String _usage() {
+            try {
+                // Instantiate a CodeGenerator so that we may get any CodeGenerator
+                // specific arguments.  This is a hack, but it beats have -help
+                // not tell you about the command line arguments.
+                String generatorPackageValue = _getGeneratorPackageValue();
+                Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue);
+                Constructor<?> codeGeneratorConstructor = generatorClass
+                    .getConstructor(new Class[] { NamedObj.class,
+                                                  String.class });
+                CompositeActor toplevel = new CompositeActor();
+                GenericCodeGenerator codeGenerator = (GenericCodeGenerator) codeGeneratorConstructor
+                    .newInstance(new Object[] { toplevel,
+                                        "CodeGenerator_help" });
+                Method updateCommandOptions = generatorClass.getMethod("updateCommandOptions");
+                _commandOptions = (String[][])updateCommandOptions.invoke(codeGenerator);
+            } catch (Throwable throwable) {
+                System.err.println("Failed to get arguments from the generatorPackage: " + throwable.getMessage());
+                throwable.printStackTrace();
+            }
+
         // Call the static method that generates the usage strings.
         return StringUtilities.usageString(_commandTemplate, _commandOptions,
-                _commandFlags);
+                _commandFlags) + "\n To get additional help, try -language java -help";
     }
 
     /** Get the code generator associated with the generatorPackage parameter.
@@ -1242,7 +1220,6 @@ public abstract class GenericCodeGenerator extends Attribute implements
                 + language.substring(2);
         String codeGeneratorClassName = generatorPackageValue + "."
                 + capitalizedLanguage + "CodeGenerator";
-        System.out.println("GCG: language: " + language);
 
         Class<?> result = null;
         try {
@@ -1272,6 +1249,56 @@ public abstract class GenericCodeGenerator extends Attribute implements
             }
         }
         return result;
+    }
+
+    /** Return the value of the -generatorPackage or -language command
+     *  line argument.
+     *  @return The value of the generatorPackage argument    
+     */
+    private static String _getGeneratorPackageValue() {
+        // If the user called this with -generatorPackage
+        // ptolemy.codegen.java, the process that
+        // argument.  This is a bit hacky, but works.
+        String generatorPackageValue = "ptolemy.cg.kernel.generic.program.procedural.c";
+        int parameterIndex = -1;
+        if ((parameterIndex = _parameterNames
+                        .indexOf("generatorPackage")) != -1) {
+            generatorPackageValue = _parameterValues
+                .get(parameterIndex);
+        }
+
+        if ((parameterIndex = _parameterNames
+                        .indexOf("language")) != -1) {
+            String languageValue = _parameterValues
+                .get(parameterIndex);
+            
+            boolean foundLanguage = false;
+            // Use a two column table to make it easy to add languages
+            for (int l = 0; l < _languages.length; l++) {
+                if (_languages[l][0].equals(languageValue)) {
+                    generatorPackageValue = _languages[l][1];
+                    foundLanguage = true;
+                    break;
+                }
+            }
+            if (!foundLanguage) {
+                StringBuffer languageError = new StringBuffer();
+                for (int l = 0; l < _languages.length; l++) {        
+                    if (languageError.length() > 0) {
+                        languageError.append(",");
+                    }
+                    languageError.append(_languages[l][0]);
+                }
+                generatorPackageValue = "ptolemy.cg.kernel.generic.program.procedural." + languageValue;
+                System.out.println("Warning, -language was \""
+                        + languageValue + "\", defaulting to setting "
+                        + "generatorPackage to \""
+                        + generatorPackageValue + "\".  " 
+                        + "Acceptable languages are: "
+                        + languageError.toString());
+            }
+        }
+        return generatorPackageValue;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1335,27 +1362,20 @@ public abstract class GenericCodeGenerator extends Attribute implements
             {
                     "-codeDirectory",
                     "        <directory in which to put code (default: $HOME/cg/. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
-            // { "-compile", "           true|false (default: true)" },
             //    { "-compileTarget",
             // "     <target to be run, defaults to empty string>" },
-            //{ "-generateComment", "   true|false (default: true)" },
             { "-generatorPackage",
                     " <Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c>" },
             { "-generatorPackageList",
                     " <Semicolon or * separated list of Java packages to be searched for adapters>" },
             { "-language", "             <c|java|html (default: c)>"},
-            // FIXME: arguments like -inline etc. are defined in ProgramCodeGenerator
-            { "-inline", "            true|false (default: false)" },
-            // The measureTime code is in cg/kernel/generic/program/ProgramCodeGenerator.java
-            { "-measureTime", "       true|false (default: false)" },
             //{ "-overwriteFiles", "    true|false (default: true)" },
             //{ "-padBuffers", "        true|false (default: true)" },
-            { "-run", "               true|false (default: true)" },
+            { "-<parameter name>", "     <parameter value>" }};
+
             //{ "-sourceLineBinding", " true|false (default: false)" },
-            //{ "-target", "            <target name, defaults to false>" },
-            { "-<parameter name>", "     <parameter value>" },
-            { "-trace", "            true|false (default: false)" }, 
-            { "-verbosity", "         <an integer, try 1 or 10>, (default: 0)"}};
+            //{ "-target", "            <target name, defaults to false>" }}
+
 
 
     /** The form of the command line. */

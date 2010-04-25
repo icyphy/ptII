@@ -195,12 +195,17 @@ Options that take values:
  -generatorPackageList  <Semicolon or * separated list of Java packages to be searched for adapters>
  -language              <c|java|html (default: c)>
  -<parameter name>      <parameter value>
- -trace             true|false (default: false)
+ -generateComment    true|false (default: true)
+ -inline             true|false (default: false)
+ -measureTime        true|false (default: false)
+ -run                true|false (default: true)
+ -verbosity          <an integer, try 1 or 10>, (default: 0)
 
 Boolean flags:
  -help
  -version
 
+ To get additional help, try -language java -help
 } {java.lang.Exception: Failed to parse "-version"} Version}
 
 

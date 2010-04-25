@@ -51,11 +51,13 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StreamListener;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
@@ -153,6 +155,23 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the attribute is the verbosity attribute, then if
+     *  its value is 1, set a debug listener on the code generator.   
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == verbosity) {
+            int verbosityLevel = ((IntToken) verbosity.getToken()).intValue();
+            if (verbosityLevel == 1) {
+                addDebugListener(new StreamListener());
+            }
+        }
+        super.attributeChanged(attribute);
+    }
 
     /**
      * Get the corresponding type in code generation from the given Ptolemy
@@ -641,6 +660,34 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
                                                 : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
                                                         : ptType == PointerToken.POINTER ? "void*"
                                                                 : "Token";
+    }
+
+    /** Return an updated array of command line options.
+     *  @param An array of updated command line options.
+     */
+    public String[][] updateCommandOptions() {
+        // This is a hack.  
+
+        // The command-line options that take arguments. 
+        String[][] options = {
+            { "-generateComment", "   true|false (default: true)" },
+            { "-inline", "            true|false (default: false)" },
+            { "-measureTime", "       true|false (default: false)" },
+            { "-run", "               true|false (default: true)" },
+            { "-verbosity", "         <an integer, try 1 or 10>, (default: 0)"}};
+
+        String[][] parentOptions = super.updateCommandOptions();
+        String[][] allOptions = new String[parentOptions.length + options.length][2];
+        int i = 0;
+        for(; i < parentOptions.length; i++) {
+            allOptions[i][0] = parentOptions[i][0];
+            allOptions[i][1] = parentOptions[i][1];
+        }
+        for(int j = 0; j < options.length; j++) {
+            allOptions[i + j ][0] = options[j][0];
+            allOptions[i + j ][1] = options[j][1];
+        }
+        return allOptions;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1132,6 +1179,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     protected void _writeMakefile() throws IllegalActionException {
     }
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1217,6 +1265,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
 
     /** The current indent level when pretty printing code. */
     private int _indent;

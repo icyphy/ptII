@@ -361,7 +361,7 @@ public class CodeStream {
                         + _filePath + "\", the initial path was \""
                         + _originalFilePath + "\". Try setting debugging to "
                         + "true on the code generator or running with ptcg "
-                        + "with \"-trace true\"");
+                        + "with \"-verbosity 1\"");
             }
         }
 
