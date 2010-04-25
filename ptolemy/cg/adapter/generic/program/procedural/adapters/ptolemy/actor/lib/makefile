@@ -73,7 +73,8 @@ JSRCS = \
 	Minimum.java \
 	MultiplyDivide.java \
 	Recorder.java \
-	Sequence.java
+	Sequence.java \
+	StringConst.java
 
 OTHER_FILES_TO_BE_JARED = 
 

@@ -79,6 +79,7 @@ JSRCS = \
 	Recorder.java \
 	Scale.java \
 	Sequence.java \
+	StringConst.java \
 	Subscriber.java \
 	Test.java
 
