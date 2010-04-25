@@ -2,7 +2,11 @@
 $type $actorSymbol(result);
 /**/
 
-/***initProduct()***/
+/***initProduct($type1, $type2)***/
+$actorSymbol(result) = $convert_$type1_$type2($get(multiply#0));
+/**/
+
+/***initProductOLD()***/
 $actorSymbol(result) = $one_$cgType(output)();
 /**/
 
