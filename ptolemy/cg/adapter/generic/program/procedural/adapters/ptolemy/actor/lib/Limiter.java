@@ -1,5 +1,5 @@
-/*
- @Copyright (c) 2009 The Regents of the University of California.
+/* Adapter for the Limiter actor
+ @Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -31,10 +31,10 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
 //////////////////////////////////////////////////////////////////////////
-//// Const
+//// Limiter
 
 /**
- * A adapter class for ptolemy.actor.lib.Const.
+ * A adapter class for ptolemy.actor.lib.Limiter.
  *
  * @author Bert Rodiers
  * @version $Id$
@@ -42,12 +42,12 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */
-public class Const extends NamedProgramCodeGeneratorAdapter {
+public class Limiter extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Constructor method for the Const adapter.
+     * Constructor method for the Limiter adapter.
      * @param actor the associated actor
      */
-    public Const(ptolemy.actor.lib.Const actor) {
+    public Limiter(ptolemy.actor.lib.Limiter actor) {
         super(actor);
     }
 }

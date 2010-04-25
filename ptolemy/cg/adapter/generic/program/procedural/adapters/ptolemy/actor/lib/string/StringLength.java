@@ -1,7 +1,7 @@
-/*
- @Copyright (c) 2009 The Regents of the University of California.
- All rights reserved.
+/* A code generation adapter class for actor.lib.string.StringLength
 
+ @Copyright (c) 2005-2010 The Regents of the University of California.
+ All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
  software and its documentation for any purpose, provided that the
@@ -17,37 +17,34 @@
  THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-
  */
-package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
+package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string;
 
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
-//////////////////////////////////////////////////////////////////////////
-//// Const
-
 /**
- * A adapter class for ptolemy.actor.lib.Const.
- *
- * @author Bert Rodiers
- * @version $Id$
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (rodiers)
- * @Pt.AcceptedRating Red (rodiers)
+ A code generation helper class for ptolemy.actor.lib.string.StringLength.
+
+ @author Christopher Brooks, based on codegen StringLength by Man-Kit Leung
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
-public class Const extends NamedProgramCodeGeneratorAdapter {
+public class StringLength extends NamedProgramCodeGeneratorAdapter {
+
     /**
-     * Constructor method for the Const adapter.
-     * @param actor the associated actor
+     * Construct the StringLength helper.
+     * @param actor The associated actor.
      */
-    public Const(ptolemy.actor.lib.Const actor) {
+    public StringLength(ptolemy.actor.lib.string.StringLength actor) {
         super(actor);
     }
 }

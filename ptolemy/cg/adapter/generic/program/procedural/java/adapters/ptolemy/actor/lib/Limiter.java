@@ -1,12 +1,12 @@
-/*
- @Copyright (c) 2009 The Regents of the University of California.
- All rights reserved.
+/* A adapter class for ptolemy.actor.lib.Limiter
 
+ Copyright (c) 2010 The Regents of the University of California.
+ All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the
- above copyright notice and the following two paragraphs appear in all
- copies of this software.
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
@@ -24,30 +24,29 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-
  */
-package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
-
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// Const
+//// Limiter
 
 /**
- * A adapter class for ptolemy.actor.lib.Const.
- *
- * @author Bert Rodiers
- * @version $Id$
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (rodiers)
- * @Pt.AcceptedRating Red (rodiers)
+ A adapter class for ptolemy.actor.lib.Limiter.
+
+ @author Christopher Brooks
+ @version $Id$
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
  */
-public class Const extends NamedProgramCodeGeneratorAdapter {
+public class Limiter
+        extends
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Limiter {
     /**
-     * Constructor method for the Const adapter.
-     * @param actor the associated actor
+     * Construct an adapter for ptlemy.actor.lib.Limiter.
+     * @param actor the associated actor.
      */
-    public Const(ptolemy.actor.lib.Const actor) {
+    public Limiter(ptolemy.actor.lib.Limiter actor) {
         super(actor);
     }
 }

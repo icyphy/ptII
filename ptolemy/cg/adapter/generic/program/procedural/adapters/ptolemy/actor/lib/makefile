@@ -63,12 +63,13 @@ JSRCS = \
 	AddSubtract.java \
 	BooleanMultiplexor.java \
 	BooleanSwitch.java \
-	Differential.java \
-	Discard.java \
-	Distributor.java \
 	Commutator.java \
 	Const.java \
 	CurrentTime.java \
+	Differential.java \
+	Discard.java \
+	Distributor.java \
+	Limiter.java \
 	MultiplyDivide.java \
 	Recorder.java \
 	Sequence.java
