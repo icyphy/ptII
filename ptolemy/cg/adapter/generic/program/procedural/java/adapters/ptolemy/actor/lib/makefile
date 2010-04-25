@@ -81,6 +81,7 @@ JSRCS = \
 	Sequence.java \
 	StringConst.java \
 	Subscriber.java \
+	SubscriptionAggregator.java \
 	Test.java
 
 OTHER_FILES_TO_BE_JARED = \

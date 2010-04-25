@@ -74,7 +74,8 @@ JSRCS = \
 	MultiplyDivide.java \
 	Recorder.java \
 	Sequence.java \
-	StringConst.java
+	StringConst.java \
+	SubscriptionAggregator.java \
 
 OTHER_FILES_TO_BE_JARED = 
 

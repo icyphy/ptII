@@ -1,4 +1,4 @@
-/* A adapter class for ptolemy.actor.lib.StringConst
+/* A adapter class for ptolemy.actor.lib.SubscriptionAggregator
 
  Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
@@ -28,25 +28,25 @@
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// StringConst
+//// SubscriptionAggregator
 
 /**
- A adapter class for StringConst.
+ A adapter class for SubscriptionAggregator.
 
  @author Christopher Brooks
- @version Id: StringConst.java 57046 2010-01-27 23:35:53Z cxh $
+ @version Id: SubscriptionAggregator.java 57046 2010-01-27 23:35:53Z cxh $
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class StringConst
+public class SubscriptionAggregator
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.StringConst {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.SubscriptionAggregator {
     /**
-     *  Construct a StringConst adapter.
-     *  @param actor The given ptolemy.actor.lib.StringConst actor.
+     *  Construct a SubscriptionAggregator adapter.
+     *  @param actor The given ptolemy.actor.lib.SubscriptionAggregator actor.
      */
-    public StringConst(ptolemy.actor.lib.StringConst actor) {
+    public SubscriptionAggregator(ptolemy.actor.lib.SubscriptionAggregator actor) {
         super(actor);
     }
 }
