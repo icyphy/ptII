@@ -61,6 +61,7 @@ PTCLASSALLJARS = \
 JSRCS = \
 	Accumulator.java \
 	AddSubtract.java \
+	BooleanMultiplexor.java \
 	Commutator.java \
 	Const.java \
 	CurrentTime.java \
