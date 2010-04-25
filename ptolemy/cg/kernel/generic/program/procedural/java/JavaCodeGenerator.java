@@ -895,6 +895,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             throws IllegalActionException {
 
         try {
+            if (_overloadedFunctions == null) {
+                throw new NullPointerException("Call _analyzeTypeConversions() "
+                        + "by calling _generateCode() or generateCode() "
+                        + "before calling markFunctionCalled().  Otherwise the "
+                        + "CodeStream of overloaded functions will not be initialized");
+            }
             String functionCode = _overloadedFunctions.getCodeBlock(name);
 
             if (!_overloadedFunctionSet.contains(name)) {

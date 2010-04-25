@@ -683,6 +683,8 @@ public class TemplateParser {
      */
     public String getFunctionInvocation(String functionString, boolean isStatic)
             throws IllegalActionException {
+        String initialFunctionString = functionString;
+
         functionString = processCode(functionString);
 
         // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
@@ -695,12 +697,32 @@ public class TemplateParser {
         int closeFuncParenIndex = functionString.lastIndexOf(')');
 
         // Syntax checking.
-        if ((commaIndex == -1) || (openFuncParenIndex == -1)
-                || (closeFuncParenIndex != (functionString.length() - 1))) {
+        if (commaIndex == -1) {
+                CGException
+                    .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
+                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                            + "The string \"::\" was not found. "
+                            + "Processed String was:\n:" + functionString
+                            + "Initial String was:\n:" + initialFunctionString);
+        }
+
+        if (openFuncParenIndex == -1) {
             CGException
                     .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
                             + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
-                            + "String was:\n:" + functionString);
+                            + "No \"(\" found after \"::\". "
+                            + "Processed String was:\n:" + functionString
+                            + "Initial String was:\n:" + initialFunctionString);
+        }
+
+        if ((closeFuncParenIndex != (functionString.length() - 1))) {
+            CGException
+                    .throwException("Bad Syntax with the $tokenFunc / $typeFunc macro. "
+                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                            + "The last \")\" was not last character? "
+                            + "The last \")\" was at " + closeFuncParenIndex
+                            + "Processed String was:\n:" + functionString
+                            + "Initial String was:\n:" + initialFunctionString);
         }
 
         String typeOrToken = functionString.substring(0, commaIndex).trim();
@@ -712,6 +734,10 @@ public class TemplateParser {
 
         if (isStatic) {
             // Record the referenced type function in the infoTable.
+            if (_codeGenerator == null) {
+                throw new NullPointerException("Call TemplateParser.setCodeGenerator() "
+                        + "before calling getFunctionInvocation()");
+            }
             _codeGenerator._typeFuncUsed.add(functionName);
 
             if (argumentList.length() == 0) {
