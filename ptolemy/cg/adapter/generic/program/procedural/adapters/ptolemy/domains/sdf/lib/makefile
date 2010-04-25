@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2010 The Regents of the University of California
+# @Copyright (c) 2010 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/lib
 
-DIRS =		test
+DIRS =		
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../../../..
+ROOT =		../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	kernel
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -56,21 +56,17 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	DownSample.java \
-	Repeat.java \
-	SampleDelay.java \
-	UpSample.java
-	
+	Repeat.java
 
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.j)
+
+OTHER_FILES_TO_BE_JARED = 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	test
+MISC_FILES =	
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
