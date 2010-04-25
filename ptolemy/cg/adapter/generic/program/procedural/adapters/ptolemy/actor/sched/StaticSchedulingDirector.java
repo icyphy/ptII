@@ -297,6 +297,9 @@ public class StaticSchedulingDirector extends Director {
 
         code.append(generatePostfireCode());
 
+        // Needed by the CurrentTime actor.
+        code.append("++_iteration;" + _eol);
+
         Attribute period = _director.getAttribute("period");
         if (period != null) {
             Double periodValue = ((DoubleToken) ((Variable) period).getToken())
