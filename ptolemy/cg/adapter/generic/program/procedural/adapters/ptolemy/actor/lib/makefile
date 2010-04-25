@@ -76,6 +76,7 @@ JSRCS = \
 	Sequence.java \
 	StringConst.java \
 	SubscriptionAggregator.java \
+	TrigFunction.java
 
 OTHER_FILES_TO_BE_JARED = 
 

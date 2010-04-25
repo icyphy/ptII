@@ -82,7 +82,8 @@ JSRCS = \
 	StringConst.java \
 	Subscriber.java \
 	SubscriptionAggregator.java \
-	Test.java
+	Test.java \
+	TrigFunction.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.j)
