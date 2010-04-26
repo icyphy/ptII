@@ -56,7 +56,8 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	Comparator.java
+	Comparator.java \
+	LogicFunction.java
 
 OTHER_FILES_TO_BE_JARED = 
 

@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen logic
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2010 The Regents of the University of California
+# @Copyright (c) 2010 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib
+ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/logic
 
-DIRS =		conversions logic string
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,54 +45,34 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =
+PTPACKAGE = 	logic
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJAR = 
 
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
-PTCLASSALLJARS = \
-	conversions/conversions.jar \
-	logic/logic.jar \
-	string/string.jar
+#PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	Accumulator.java \
-	AddSubtract.java \
-	BooleanMultiplexor.java \
-	BooleanSwitch.java \
-	Commutator.java \
-	Const.java \
-	CurrentTime.java \
-	Differential.java \
-	Discard.java \
-	Distributor.java \
-	Limiter.java \
-	Minimum.java \
-	MultiplyDivide.java \
-	Recorder.java \
-	Sequence.java \
-	StringConst.java \
-	SubscriptionAggregator.java \
-	TrigFunction.java \
-	VectorAssembler.java \
-	VectorDisassembler.java
+	Comparator.java \
+	LogicFunction.java
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS:%.java=%.j)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	conversions logic string
+MISC_FILES = 	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 

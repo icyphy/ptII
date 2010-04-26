@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.actor.lib.string.StringLength
+/* An adapter class for ptolemy.actor.lib.logic.LogicFunction
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -25,26 +25,26 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.string;
+package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.logic;
 
 //////////////////////////////////////////////////////////////////////////
-//// StringLength
+//// LogicFunction
 
 /**
- A adapter class for ptolemy.actor.lib.string.StringLength.
+ A adapter class for ptolemy.actor.lib.logic.LogicFunction.
 
 @author Christopher Brooks
 @version $Id$
 @since Ptolemy II 8.1
  */
-public class StringLength
+public class LogicFunction
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string.StringLength {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic.LogicFunction {
     /**
-     *  Construct a StringLength adapter.
-     *  @param actor The given ptolemy.actor.lib.string.StringLength actor.
+     *  Construct a LogicFunction adapter.
+     *  @param actor The given ptolemy.actor.lib.logic.LogicFunction actor.
      */
-    public StringLength(ptolemy.actor.lib.string.StringLength actor) {
+    public LogicFunction(ptolemy.actor.lib.logic.LogicFunction actor) {
         super(actor);
     }
 }

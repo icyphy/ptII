@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// AddSubtract
 
 /**
- A adapter class for ptolemy.actor.lib.AddSubtract.
+ An adapter class for ptolemy.actor.lib.AddSubtract.
 
  @author Man-Kit (Jackie) Leung, Gang Zhou, Bert Rodiers
  @version $Id$

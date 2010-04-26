@@ -1,6 +1,6 @@
-/* An adapter class for ptolemy.actor.lib.string.StringLength
+/* A adapter class for ptolemy.actor.lib.VectorDisassembler
 
- Copyright (c) 2010 The Regents of the University of California.
+ Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,26 +25,28 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.string;
+package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// StringLength
+//// VectorDisassembler
 
 /**
- A adapter class for ptolemy.actor.lib.string.StringLength.
+ A adapter class for VectorDisassembler.
 
-@author Christopher Brooks
-@version $Id$
-@since Ptolemy II 8.1
+ @author Christopher Brooks
+ @version Id: VectorDisassembler.java 57046 2010-01-27 23:35:53Z cxh $
+ @since Ptolemy II 8.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
-public class StringLength
+public class VectorDisassembler
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string.StringLength {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.VectorDisassembler {
     /**
-     *  Construct a StringLength adapter.
-     *  @param actor The given ptolemy.actor.lib.string.StringLength actor.
+     *  Construct a VectorDisassembler adapter.
+     *  @param actor The given ptolemy.actor.lib.VectorDisassembler actor.
      */
-    public StringLength(ptolemy.actor.lib.string.StringLength actor) {
+    public VectorDisassembler(ptolemy.actor.lib.VectorDisassembler actor) {
         super(actor);
     }
 }

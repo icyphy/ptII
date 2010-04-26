@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib
 
-DIRS =		conversions gui jopio string test
+DIRS =		conversions gui jopio logic string test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../..
@@ -56,6 +56,7 @@ PTCLASSALLJARS = \
 	conversions/conversions.jar \
 	gui/gui.jar \
 	jopio/jopio.jar \
+	logic/logic.jar \
 	string/string.jar
 
 # Keep this list alphabetized.
@@ -85,7 +86,9 @@ JSRCS = \
 	SubscriptionAggregator.java \
 	Test.java \
 	TrigFunction.java \
-	Uniform.java
+	Uniform.java \
+	VectorAssembler.java \
+	VectorDisassembler.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.j)
@@ -95,7 +98,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	gui jopio conversions string test 
+MISC_FILES =	gui jopio logic conversions string test 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
