@@ -665,7 +665,7 @@ public abstract class GenericCodeGenerator extends Attribute implements
     }
 
     /** Return an updated array of command line options.
-     *  @param An array of updated command line options.
+     *  @return An array of updated command line options.
      */
     public String[][] updateCommandOptions() {
         return _commandOptions;
