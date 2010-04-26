@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/string
 
-DIRS =
+DIRS =		test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../..
@@ -56,6 +56,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	StringCompare.java \
 	StringLength.java
 
 OTHER_FILES_TO_BE_JARED = \

@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.actor.lib.string.StringLength
+/* An adapter class for ptolemy.actor.lib.string.StringCompare
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -28,10 +28,10 @@
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.string;
 
 //////////////////////////////////////////////////////////////////////////
-//// StringLength
+//// StringCompare
 
 /**
- A adapter class for ptolemy.actor.lib.string.StringLength.
+ A adapter class for ptolemy.actor.lib.string.StringCompare.
 
 @author Christopher Brooks
 @version $Id$
@@ -39,14 +39,14 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 @Pt.ProposedRating Red (cxh)
 @Pt.AcceptedRating Red (cxh)
  */
-public class StringLength
+public class StringCompare
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string.StringLength {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string.StringCompare {
     /**
-     *  Construct a StringLength adapter.
-     *  @param actor The given ptolemy.actor.lib.string.StringLength actor.
+     *  Construct a StringCompare adapter.
+     *  @param actor The given ptolemy.actor.lib.string.StringCompare actor.
      */
-    public StringLength(ptolemy.actor.lib.string.StringLength actor) {
+    public StringCompare(ptolemy.actor.lib.string.StringCompare actor) {
         super(actor);
     }
 }

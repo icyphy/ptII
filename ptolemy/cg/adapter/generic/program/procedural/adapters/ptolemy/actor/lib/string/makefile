@@ -56,6 +56,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	StringCompare.java \
 	StringLength.java
 
 OTHER_FILES_TO_BE_JARED = 

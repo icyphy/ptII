@@ -8,5 +8,5 @@ $actorSymbol(_generator) = new Poisson(1.0, $actorSymbol(_randomNumberGenerator)
 /**/
 
 /*** poissonDistributionBlock ***/
-$put(output, $actorSymbol(_generator).nextInt($param(mean)));
+$put(output, $actorSymbol(_generator).nextInt($get(mean)));
 /**/
