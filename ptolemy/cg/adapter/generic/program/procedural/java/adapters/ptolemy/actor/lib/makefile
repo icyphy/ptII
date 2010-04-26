@@ -76,6 +76,7 @@ JSRCS = \
 	MultiplyDivide.java \
 	Publisher.java \
 	Ramp.java \
+	RandomSource.java \
 	Recorder.java \
 	Scale.java \
 	Sequence.java \
@@ -83,7 +84,8 @@ JSRCS = \
 	Subscriber.java \
 	SubscriptionAggregator.java \
 	Test.java \
-	TrigFunction.java
+	TrigFunction.java \
+	Uniform.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.j)
