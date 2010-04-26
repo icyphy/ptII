@@ -1,5 +1,5 @@
 /***declareBlock***/
-// java/kernel/type/Array.j
+// ptolemy/cg/kernel/generic/program/procedural/java/type/Array.j
 public class Array {
     public int size;
     public Token [] elements;

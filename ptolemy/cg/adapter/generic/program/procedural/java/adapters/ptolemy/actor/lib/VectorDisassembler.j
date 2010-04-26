@@ -7,7 +7,7 @@ int $actorSymbol(i);
 /**/
 
 /*** fireBlock($width) ***/
-$actorSymbol(rowCount) = ((matrix)($get(input)).payload).row;
+$actorSymbol(rowCount) = ((Matrix)($get(input).getPayload())).row;
 $actorSymbol(min) = $actorSymbol(rowCount) < $width ? $actorSymbol(rowCount) : $width;
 /**/
 

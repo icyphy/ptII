@@ -929,7 +929,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
                     if (_isPrimitive(valueType)) {
                         //_fireCode.insert(nextIndex, "$new(" + _codeGenType(valueType) + "(");
                         //_fireCode.append("))");
-                        result.append("$new(" + _codeGenType(valueType) + "()"
+                        result.append("$new(" + _codeGenType(valueType) + "("
                                 + _childCode + "))");
                     }
 

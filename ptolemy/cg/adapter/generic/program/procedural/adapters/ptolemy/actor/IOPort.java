@@ -97,6 +97,8 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         String typeString = getCodeGenerator().codeGenType(type);
         // The component port is not connected to anything, so get should
         // always return something trivial;
+
+        // FIXME: This is wrong, this could be a PortParameter.
         return "$convert_" + getCodeGenerator().codeGenType(BaseType.INT) + "_"
                 + typeString + "(0)";
     }

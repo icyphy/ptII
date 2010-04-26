@@ -1,6 +1,6 @@
 /***declareBlock***/
-// java/kernel/type/Matrix.j
-private class matrix {
+// ptolemy/cg/kernel/generic/program/procedural/java/type/Matrix.j
+public class Matrix {
     public int row;            // number of rows.
     public int column;         // number of columns.
     public Token []elements;            // matrix of pointers to the elements.
@@ -15,12 +15,12 @@ private class matrix {
 
 Token Matrix_get(Token token, int row, int column) {
     //return token.payload.Matrix->elements[column * token.payload.Matrix->row + row];
-    return ((matrix)(token.payload)).elements[column * ((matrix)(token.payload)).row + row];
+    return ((Matrix)(token.payload)).elements[column * ((Matrix)(token.payload)).row + row];
 }
 
 void Matrix_set(Token matrix, int row, int column, Token element) {
     //matrix.payload.Matrix->elements[column * matrix.payload.Matrix->row + row] = element;
-    ((matrix)(matrix.payload)).elements[column * ((matrix)(matrix.payload)).row + row] = element;
+    ((Matrix)(matrix.payload)).elements[column * ((Matrix)(matrix.payload)).row + row] = element;
 }
 /**/
 
@@ -31,8 +31,8 @@ Token Matrix_delete(Token token, Token... tokens) {
     Token element, emptyToken;
 
     // Delete each elements.
-    for (i = 0; i < ((matrix)(token.payload)).column; i++) {
-        for (j = 0; j < ((matrix)(token.payload)).row; j++) {
+    for (i = 0; i < ((Matrix)(token.payload)).column; i++) {
+        for (j = 0; j < ((Matrix)(token.payload)).row; j++) {
             element = Matrix_get(token, j, i);
             System.out.println("Matrix_delete: convert needs work");
             //functionTable[(int) element.type][FUNC_delete](element);
@@ -75,7 +75,7 @@ Token Matrix_new(int row, int column, int given, Object... elements) {
     Token result = new Token();
     int elementType;
 
-    matrix matrix = new matrix();
+    Matrix matrix = new Matrix();
     matrix.row = row;
     matrix.column = column;
     matrix.elements = new Token[row * column];
@@ -87,7 +87,7 @@ Token Matrix_new(int row, int column, int given, Object... elements) {
     if (row > 0 && column > 0 && given > 0) {
         // Allocate an new 2-D array of Tokens.
         //result.payload.Matrix->elements = (Token*) calloc(row * column, sizeof(Token));
-        //((matrix)(result.payload).elements = new Token[row * column];
+        //((Matrix)(result.payload).elements = new Token[row * column];
 
         for (i = 0; i < given; i++) {
             matrix.elements[i] = (Token)elements[i];
@@ -136,12 +136,12 @@ boolean Matrix_equals(Token thisToken, Token... tokens) {
     int i, j;
     Token otherToken = tokens[0];
 
-    if (((matrix)(thisToken.payload)).row != ((matrix)(otherToken.payload)).row
-        || ((matrix)(thisToken.payload)).column != ((matrix)(otherToken.payload)).column) {
+    if (((Matrix)(thisToken.payload)).row != ((Matrix)(otherToken.payload)).row
+        || ((Matrix)(thisToken.payload)).column != ((Matrix)(otherToken.payload)).column) {
         return false;
     }
-    for (i = 0; i < ((matrix)(thisToken.payload)).row; i++) {
-        for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+    for (i = 0; i < ((Matrix)(thisToken.payload)).row; i++) {
+        for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
             //if (!functionTable[(int) Matrix_get(thisToken, j, i).type][FUNC_equals](Matrix_get(thisToken, j, i), Matrix_get(otherToken, j, i)).payload.Boolean) {
             if (!equals_Token_Token(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j))) {
                 return false;
@@ -160,12 +160,12 @@ Token Matrix_isCloseTo(Token thisToken, Token... elements) {
     Token otherToken = elements[0];
     Token tolerance = elements[1];
 
-    if (((matrix)(thisToken.payload)).row != ((matrix)(otherToken.payload)).row
-        || ((matrix)(thisToken.payload)).column != ((matrix)(otherToken.payload)).column) {
+    if (((Matrix)(thisToken.payload)).row != ((Matrix)(otherToken.payload)).row
+        || ((Matrix)(thisToken.payload)).column != ((Matrix)(otherToken.payload)).column) {
         return Boolean_new(false);
     }
-    for (i = 0; i < ((matrix)(thisToken.payload)).row; i++) {
-        for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+    for (i = 0; i < ((Matrix)(thisToken.payload)).row; i++) {
+        for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
             if (!isCloseTo_Token_Token(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j), tolerance)) {
                 return Boolean_new(false);
             }
@@ -184,15 +184,15 @@ Token Matrix_print(Token thisToken, Token... tokens) {
     int i, j;
     Token element;
     printf("[");
-    for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
+    for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
         if (i != 0) {
             printf(", ");
         }
-        for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+        for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
             if (j != 0) {
                 printf("; ");
             }
-            //functionTable[((matrix)(thisToken.payload)).elements[i * ((matrix)(thisToken.payload)).row + j].type][FUNC_print](((matrix)(thisToken.payload)).elements[i]);
+            //functionTable[((Matrix)(thisToken.payload)).elements[i * ((Matrix)(thisToken.payload)).row + j].type][FUNC_print](((Matrix)(thisToken.payload)).elements[i]);
             element = element = Matrix_get(thisToken, j, i);
             $tokenFunc(element::print(element));
 
@@ -210,11 +210,11 @@ Token Matrix_toString(Token thisToken, Token... tokens) {
     Token elementString;
 
     StringBuffer result = new StringBuffer("[");
-    for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
+    for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
         if (i != 0) {
             result.append("; ");
         }
-        for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+        for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
             if (j != 0) {
                 result.append(", ");
             }
@@ -237,10 +237,10 @@ Token Matrix_add(Token thisToken, Token... tokens) {
     int i, j;
     Token otherToken = tokens[0];
 
-    result = Matrix_new(((matrix)(thisToken.payload)).row, ((matrix)(thisToken.payload)).column, 0);
+    result = Matrix_new(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).column, 0);
 
-    for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
-        for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+    for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+        for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
             //Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j).type][FUNC_add](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
             Matrix_set(result, j, i, $tokenFunc(Matrix_get(thisToken, i, j)::add(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j))));
         }
@@ -259,10 +259,10 @@ Token Matrix_subtract(Token thisToken, Token... tokens) {
     Token result;
     Token otherToken = tokens[0];
 
-    result = Matrix_new(((matrix)(thisToken.payload)).row, ((matrix)(thisToken.payload)).column, 0);
+    result = Matrix_new(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).column, 0);
 
-    for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
-        for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+    for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+        for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
             //Matrix_set(result, j, i, functionTable[(int)Matrix_get(thisToken, i, j).type][FUNC_subtract](Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j)));
             Matrix_set(result, j, i, $tokenFunc(Matrix_get(thisToken, i, j)::subtract(Matrix_get(thisToken, i, j), Matrix_get(otherToken, i, j))));
         }
@@ -285,20 +285,20 @@ Token Matrix_multiply(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
 
     if (otherToken.type == TYPE_Matrix
-        && ((matrix)(otherToken.payload)).row == 1
-            && ((matrix)(otherToken.payload)).column == 1) {
+        && ((Matrix)(otherToken.payload)).row == 1
+            && ((Matrix)(otherToken.payload)).column == 1) {
         // Handle simple scaling by a 1x1 matrix
-        result = Matrix_new(((matrix)(thisToken.payload)).row, ((matrix)(thisToken.payload)).column, 0);
+        result = Matrix_new(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).column, 0);
     } else {
-        result = Matrix_new(((matrix)(thisToken.payload)).row, ((matrix)(thisToken.payload)).row, 0);
+        result = Matrix_new(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).row, 0);
     }
     switch (otherToken.type) {
         case TYPE_Matrix:
-        for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
-            for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+        for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+            for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
                 element = Matrix_get(thisToken, j, i);
-                if (((matrix)(otherToken.payload)).row == 1
-                        && ((matrix)(otherToken.payload)).column == 1) {
+                if (((Matrix)(otherToken.payload)).row == 1
+                        && ((Matrix)(otherToken.payload)).column == 1) {
                     //Matrix_set(result, j, i, functionTable[(int)element.type][FUNC_multiply](element, Matrix_get(otherToken, 0, 0)));
                     throw new RuntimeException("Matrix_multiply(): Matrix multiplication not yet supported");
                 }
@@ -307,23 +307,23 @@ Token Matrix_multiply(Token thisToken, Token... tokens) {
         break;
         #ifdef TYPE_Array
         case TYPE_Array:
-        element = Array_new(((matrix)(thisToken.payload)).column *
-        ((matrix)(thisToken.payload)).row, 0);
-        for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
-            for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+        element = Array_new(((Matrix)(thisToken.payload)).column *
+        ((Matrix)(thisToken.payload)).row, 0);
+        for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+            for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
                 Array_set(element,
-                i + ((matrix)(thisToken.payload)).row * j,
+                i + ((Matrix)(thisToken.payload)).row * j,
                 Matrix_get(thisToken, j, i));
             }
         }
         break;
         #endif
         default:
-        for (i = 0, index = 0; i < ((matrix)(thisToken.payload)).column; i++) {
-            for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+        for (i = 0, index = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+            for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
                 element = Matrix_get(thisToken, j, i);
                 //result.payload.Matrix.elements[i] = functionTable[(int)element.type][FUNC_multiply](element, otherToken);
-                ((matrix)(result.payload)).elements[index] = $tokenFunc(element::multiply(otherToken));
+                ((Matrix)(result.payload)).elements[index] = $tokenFunc(element::multiply(otherToken));
             }
         }
     }
@@ -342,8 +342,8 @@ Token Matrix_divide(Token thisToken, Token... tokens) {
 
     switch (otherToken.type) {
         case TYPE_Matrix:
-        for (i = 0; i < ((matrix)(thisToken.payload)).column; i++) {
-            for (j = 0; j < ((matrix)(thisToken.payload)).row; j++) {
+        for (i = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+            for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++) {
                 element = Matrix_get(thisToken, j, i);
                 // FIXME: Need to program this.
                 throw new RuntimeException("Matrix_divide(): Matrix division not yet supported");
@@ -363,13 +363,13 @@ Token Matrix_divide(Token thisToken, Token... tokens) {
         break;
         #endif
         default:
-        result = Matrix_new(((matrix)(thisToken.payload)).row, ((matrix)(thisToken.payload)).column, 0);
+        result = Matrix_new(((Matrix)(thisToken.payload)).row, ((Matrix)(thisToken.payload)).column, 0);
 
-        for (i = 0, index = 0; i < ((matrix)(thisToken.payload)).column; i++) {
-            for (j = 0; j < ((matrix)(thisToken.payload)).row; j++, index++) {
+        for (i = 0, index = 0; i < ((Matrix)(thisToken.payload)).column; i++) {
+            for (j = 0; j < ((Matrix)(thisToken.payload)).row; j++, index++) {
                 element = Matrix_get(thisToken, j, i);
-                //((matrix)(result.payload)).elements[index] = functionTable[(int)element.type][FUNC_divide](element, otherToken);
-                ((matrix)(result.payload)).elements[index] = $tokenFunc(element::divide(otherToken));
+                //((Matrix)(result.payload)).elements[index] = functionTable[(int)element.type][FUNC_divide](element, otherToken);
+                ((Matrix)(result.payload)).elements[index] = $tokenFunc(element::divide(otherToken));
             }
         }
     }

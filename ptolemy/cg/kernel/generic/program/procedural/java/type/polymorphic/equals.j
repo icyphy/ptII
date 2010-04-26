@@ -185,7 +185,7 @@ boolean equals_Token_Token(Token a1, Token a2) {
     } else if (a1.payload instanceof Array && a2.payload instanceof Array) {
         result = $Array_equals(a1, a2);
 #ifdef PTCG_TYPE_Matrix
-    } else if (a1.payload instanceof matrix && a2.payload instanceof matrix) {
+    } else if (a1.payload instanceof Matrix && a2.payload instanceof Matrix) {
         result = $Matrix_equals(a1, a2);
 #endif
     } else {
