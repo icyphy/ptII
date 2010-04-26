@@ -63,7 +63,7 @@ test CUnit-1.1 {Run the CUnit tests} {
     puts $results
 
     # Remove lines that are warnings about compile errors
-    regsub {^IntTest:c.*$} $results {} r2
+    regsub {^IntTest.c:.*$} $results {} r2
 
     # If this test fails, run "make run"
     string range $results [string last {--Run Summary} $r2] end 
