@@ -72,6 +72,7 @@ JSRCS = \
 	Limiter.java \
 	Minimum.java \
 	MultiplyDivide.java \
+	Pulse.java \
 	Recorder.java \
 	Sequence.java \
 	StringConst.java \

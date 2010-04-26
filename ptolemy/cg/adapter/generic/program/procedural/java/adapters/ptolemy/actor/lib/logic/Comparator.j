@@ -1,21 +1,21 @@
 /*** GTBlock ***/
-$ref(output) = ($ref(left) + $val(tolerance)) > $ref(right);
+$put(output, ($get(left) + $val(tolerance)) > $get(right));
 /**/
 
 /*** GEBlock ***/
-$ref(output) = ($ref(left) + $val(tolerance)) >= $ref(right);
+$put(output, ($get(left) + $val(tolerance)) >= $get(right));
 /**/
 
 /*** LTBlock ***/
-$ref(output) = $ref(left) < ($ref(right) + $val(tolerance));
+$put(output, $get(left) < ($get(right) + $val(tolerance)));
 /**/
 
 /*** LEBlock ***/
-$ref(output) = $ref(left) <= ($ref(right) + $val(tolerance));
+$put(output, $get(left) <= ($get(right) + $val(tolerance)));
 /**/
 
 /*** EQBlock ***/
-$ref(output) = ($ref(left) <= ($ref(right) + $val(tolerance)))
-        && ($ref(left) >= ($ref(right) - $val(tolerance)));
+$put(output, ($get(left) <= ($get(right) + $val(tolerance)))
+        && ($get(left) >= ($get(right) - $val(tolerance))));
 /**/
 

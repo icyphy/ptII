@@ -76,6 +76,7 @@ JSRCS = \
 	MovingAverage.java \
 	MultiplyDivide.java \
 	Publisher.java \
+	Pulse.java \
 	Ramp.java \
 	RandomSource.java \
 	Recorder.java \
