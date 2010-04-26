@@ -117,8 +117,27 @@ include $(ROOT)/mk/ptcommon.mk
 # $(PTMATLAB_cC) is set to cl or gcc by configure in $PTII/mk/ptII.mk
 $(PTLIB): ptmatlab.cc Engine.class
 	if [ "`uname -s`" = "Darwin" ]; then \
-	    $(MAKE) $(MAC_UNIVERSAL_LIB); \
-	    mv $(MAC_UNIVERSAL_LIB) $@; \
+	    if [ -d "$(MATLAB_LIBDIR)" -a -d "$(MATLAB_64LIBDIR)" ]; then \
+		echo "# Making 32 and 64 bit Universal Library $(MAC_UNIVERSAL_LIB) and then copying to $(PTLIB)"; \
+	        $(MAKE) $(MAC_UNIVERSAL_LIB); \
+	        mv $(MAC_UNIVERSAL_LIB) $@; \
+            else \
+	        if [ -d "$(MATLAB_LIBDIR)" ]; then \
+		    echo "# Making $(PTLIB_32) and then copying to $(PTLIB)"; \
+		    $(MAKE) $(PTLIB_32); \
+	            mv $(PTLIB_32) $@; \
+                else \
+                    if [ -d "$(MATLAB_64LIBDIR)" ]; then \
+			echo "# Big bucks! Congrats!! making $(PTLIB_64) and copying to $(PTLIB)"; \
+	                $(MAKE)  $(PTLIB_64); \
+	                mv $(PTLIB_64) $@; \
+                    else \
+			echo "# MATLAB_LIBDIR '$(MATLAB_LIBDIR)' and/or MATLAB_64LIBDIR '$(MATLAB_64LIBDIR)' don't exist, try rerunning configure."; \
+			exit 1; \
+                    fi; \
+                fi; \
+	    fi; \
+	    echo "# The file command reports that $@ is: "; \
 	    file $@; \
         else \
 	    CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine; \
@@ -150,6 +169,7 @@ $(PTLIB_64): ptmatlab.cc Engine.class
 MAC_UNIVERSAL_LIB = $(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlabUniversal.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 mac_universal_lib: $(MAC_UNIVERSAL_LIB)
 $(MAC_UNIVERSAL_LIB): $(PTLIB_32) $(PTLIB_64)
+	@echo "# Creating $@ from $(PTLIB_32) $(PTLIB_64)"
 	lipo -create -arch i386 $(PTLIB_32) -arch x86_64 $(PTLIB_64) -o $@
 
 # Rule to build under Microsoft Visual C
