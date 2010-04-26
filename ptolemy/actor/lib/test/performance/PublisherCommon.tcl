@@ -520,6 +520,56 @@ proc pubSubAggLazyModel {numberOfSubsPerLevel levels} {
 # Below here are commands used to build composites that don't have pub/sub.
 # See README.txt
 
+# Create the second level composites that may have a ModalCodeGenTypedComposite
+proc createHierarchichalModelSecondLevel {container numberOfPubSubsPerLevel levelNumber {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+    #puts "createHierarchicalModel $numberOfPubSubsPerLevel $levelNumber $typedComposite"
+	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
+	    set en [java::new $typedComposite $container "en-$n"]
+
+	    # Only create a few ModalCodeGenTypedComposites at the top.
+	    set innerTypedComposite ptolemy.actor.TypedCompositeActor
+   	    createHierarchichalModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $innerTypedComposite
+
+	    set upperNameSuffix "${levelNumber}_$n"
+
+	    set p1 [java::new ptolemy.actor.TypedIOPort $en "p1_$upperNameSuffix" true false]
+	    set r2 [java::new ptolemy.actor.TypedIORelation $en R2]
+	    $p1 link $r2
+
+	    # Collect all the outputs
+	    set addSub [java::new ptolemy.actor.lib.AddSubtract $en addSub]
+	    for {set m 1} { $m <= $numberOfPubSubsPerLevel} {incr m} {
+		set enInner [java::cast $innerTypedComposite [$en getEntity "en-$m"]]
+
+		set p1InnerName "p1_[expr {${levelNumber} -1}]_$m"
+		set p1Inner [$enInner getPort $p1InnerName]
+		if {[java::isnull $p1Inner]} {
+		    error "levelNumber=$levelNumber, n=$n, m=$m: Could not get port $p1InnerName from $en. [$en exportMoML]"
+		}
+		$p1Inner link $r2
+		#$en connect $p1 $p1Inner
+
+		set p2InnerName "p2_[expr {${levelNumber} -1}]_$m"
+		set p2Inner [$enInner getPort $p2InnerName]
+		if {[java::isnull $p2Inner]} {
+		    error "levelNumber=$levelNumber, n=$n, m=$m: Could not get port $p2InnerName from $en. [$en exportMoML]"
+		}
+		$en connect $p2Inner [java::field $addSub plus] "R_m$m"
+	    }
+	    set scale3 [java::new ptolemy.actor.lib.Scale $en "scale3_$upperNameSuffix"]
+
+	    $en connect \
+		[java::field $addSub output] \
+		[java::field [java::cast ptolemy.actor.lib.Transformer $scale3] input]
+
+	    set p2 [java::new ptolemy.actor.TypedIOPort $en "p2_$upperNameSuffix" false true]
+	    #puts "p2: levelNumber: $levelNumber, n: $n: p2: p2_$upperNameSuffix"
+	    $en connect \
+		[java::field [java::cast ptolemy.actor.lib.Transformer $scale3] output] \
+		$p2
+	}
+    }
+
 
 # Create the inner composites of a model that does not use Publisher/Subscriber
 # This proc usually calls itself multiple times.
@@ -622,12 +672,12 @@ proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber {ty
 }
 
 # Create a model that does not use publisher and subscribers
-proc modularCodeGenModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+proc modularCodeGenModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"} {opaque true}} {
     global pubCount 
     global e0
     set pubCount 0
-    set e0 [sdfModel 5]
-    createHierarchichalModel $e0 $numberOfSubsPerLevel $levels $typedComposite
+    set e0 [sdfModel 365]
+    createHierarchichalModelSecondLevel $e0 $numberOfSubsPerLevel $levels $typedComposite
 
 
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 "Ramp"]
@@ -640,7 +690,9 @@ proc modularCodeGenModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.a
         set nameSuffix "${levels}_$n"
 	set en [java::cast $typedComposite [$e0 getEntity "en-$n"]]
 
-	set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
+	if {$opaque} {
+	    set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
+	}
 	#[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
 	#if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
 	#    [java::field $en recompileHierarchy] setExpression false
@@ -678,18 +730,43 @@ proc modularCodeGenModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.a
 	if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
 	    set modelType "MCG"
 	} else { 
-	    set modelType "other"
+	    if {$typedComposite == "ptolemy.actor.LazyTypedCompositeActor"} {
+		set modelType "Lazy"
+	    } else {
+		set modelType "Other"
+	    }
 	}
     }
-    
-    # This run should build
-    [$e0 getManager] execute
+    if {$opaque != "true"} {
+	set modelType "${modelType}Transparent"
+    }
+    # Change the name so that each model generates code with a unique name
+    set basename "hierarchicalModel${modelType}_${numberOfSubsPerLevel}_${levels}"
+    $e0 setName $basename
 
-    set filename "hierarchicalModel${modelType}_${numberOfSubsPerLevel}_${levels}.xml"
+    set manager [java::new ptolemy.actor.Manager [$e0 workspace] "manager"]
+    $e0 setManager $manager
+    # Run the model first so that the saved models don't regenerate code
+    $manager execute
+
+    set filename "${basename}.xml"
     set fd [open $filename w]
     puts $fd [$e0 exportMoML]
     close $fd
+
+
     puts "Created $filename, containing [[$e0 deepOpaqueEntityList] size] actors"
+
+
+    # Read in the model so that we generate code with the right names.
+    # Otherwise, code for different models will be shared
+    #set parser [java::new ptolemy.moml.MoMLParser]
+    #$parser resetAll
+    #set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $filename]]
+    #set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "manager"]
+    #$toplevel setManager $manager
+    #$manager execute
+    #set recorder2 [java::cast ptolemy.actor.lib.Recorder [$toplevel getEntity "recorder"]]
 
     return [list [enumToTokenValues [$recorder getRecord 0]]]
 } 

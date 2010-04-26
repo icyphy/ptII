@@ -47,6 +47,21 @@ TypedCompositeActor or a ModularCodeGeneratorTypedCompositeActor.
 To select between the two, edit the file
 
 To run:
+rm *.out *.xml *.plt
+$PTII/bin/ptjacl ModularCodeGen.tcl
+./runModels *Model_*.xml
+./runModels *Model_*.xml
+./runModels *Model_*.xml
+./runModels *Model_*.xml
+./runModels *Model_*.xml
 
-    $PTII/bin/ptjacl ModularCodeGen.tcl
+./runModels *ModelMCG*.xml
+./runModels *ModelMCG*.xml
+./runModels *ModelMCG*.xml
+./runModels *ModelMCG*.xml
+./runModels *ModelMCG*.xml
+
+./plotPerformance *Model_*.out > comp.plt
+./plotPerformance *ModelMCG*.out > m.plt
+
     
