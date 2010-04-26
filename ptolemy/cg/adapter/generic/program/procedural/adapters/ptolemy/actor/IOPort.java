@@ -104,9 +104,7 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         }
         Type type = ((TypedIOPort) getComponent()).getType();
         if (((TypedIOPort) getComponent()) instanceof ParameterPort) {
-            if (type == BaseType.STRING) {  //TODO: what about other types?
-                return "\"\"";
-            }
+            return ((ParameterPort) getComponent()).getParameter().getValueAsString();
         }
         
         String typeString = getCodeGenerator().codeGenType(type);
