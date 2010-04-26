@@ -28,18 +28,21 @@
 package ptolemy.data.ontologies;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.gui.style.TextStyle;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// ConceptFunctionDefinitionAttribute
@@ -49,7 +52,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
- *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.ProposedRating Green (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ConceptFunctionDefinitionAttribute extends Attribute {
@@ -74,33 +77,30 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
                     + " OntologySolverModel.");
         }
 
-        conceptFunctionName = new StringAttribute(this, "conceptFunctionName");
-        conceptFunctionName.setExpression("expressionConceptFunction");
-
-        numberOfArguments = new Parameter(this, "numberOfArguments");
-        numberOfArguments.setTypeEquals(BaseType.INT);
-        numberOfArguments.setExpression("1");
+        // By default the number of arguments for the concept function is fixed.
+        numberOfArgumentsIsFixed = new Parameter(this, "numberOfArgumentsIsFixed");
+        numberOfArgumentsIsFixed.setTypeEquals(BaseType.BOOLEAN);
+        numberOfArgumentsIsFixed.setExpression("true");
 
         // By default do not assume the function is monotonic.
-        functionIsMonotonic = new Parameter(this, "functionIsMonotonic");
-        functionIsMonotonic.setTypeEquals(BaseType.BOOLEAN);
-        functionIsMonotonic.setExpression("false");
+        constrainFunctionToBeMonotonic = new Parameter(this, "constrainFunctionToBeMonotonic");
+        constrainFunctionToBeMonotonic.setTypeEquals(BaseType.BOOLEAN);
+        constrainFunctionToBeMonotonic.setExpression("false");
 
         outputRangeOntologyName = new StringParameter(this,
                 "outputRangeOntologyName");
-        outputRangeOntologyName.setExpression("");
+        
+        argumentNames = new Parameter(this, "argumentNames");
+        argumentNames.setTypeEquals(new ArrayType(BaseType.STRING));
+        
+        argumentDomainOntologies = new Parameter(this, "argumentDomainOntologies");
+        argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING));
 
         conceptFunctionExpression = new StringParameter(this,
                 "conceptFunctionExpression");
-        conceptFunctionExpression.setExpression("");
         TextStyle style = new TextStyle(conceptFunctionExpression, "_style");
         style.height.setExpression("5");
         style.width.setExpression("80");
-
-        _argumentNames = new LinkedList<StringAttribute>();
-        _argumentDomainOntologies = new LinkedList<StringParameter>();
-
-        _conceptFunction = null;
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"20\" "
@@ -112,21 +112,28 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                  ports and parameters                     ////
 
+    /** The parameter that holds the array of strings that name
+     *  the domain ontologies for the arguments for the concept function.
+     */
+    public Parameter argumentDomainOntologies;
+    
+    /** The parameter that holds the array of strings that name
+     *  the arguments for the concept function.
+     */
+    public Parameter argumentNames;
+    
     /** The string that represents the boolean expression of the concept function. */
     public StringParameter conceptFunctionExpression;
-
-    /** The name to identify the expression concept function defined
-     *  by this attribute.
-     */
-    public StringAttribute conceptFunctionName;
 
     /** Parameter to select whether the concept function defined by this
      *  attribute must be monotonic.
      */
-    public Parameter functionIsMonotonic;
+    public Parameter constrainFunctionToBeMonotonic;
 
-    /** The number of arguments for the concept function. */
-    public Parameter numberOfArguments;
+    /** Parameter to select whether the number of arguments
+     *  for the concept function is fixed.
+     */
+    public Parameter numberOfArgumentsIsFixed;
 
     /** The name of the ontology that specifies the range of concepts
      *  for the concept function output.
@@ -136,98 +143,6 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the attributeChanged method so that if the number of
-     *  arguments for the concept function changes, the attribute
-     *  interface adds or removes fields for those arguments.
-     *  @param attribute The attribute that has been changed.
-     *  @exception IllegalActionException If there is a problem
-     *  changing the attribute.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == numberOfArguments) {
-            IntToken numArgsToken = (IntToken) numberOfArguments.getToken();
-            int numArgs = numArgsToken.intValue();
-
-            // Collect all the existing argument fields before checking if we need
-            // to add or remove any.  This is required for when the attribute is
-            // loaded from a MoML file.
-            _argumentNames.clear();
-            for (Object argNameAttribute : attributeList(StringAttribute.class)) {
-                if (((StringAttribute) argNameAttribute).getName().startsWith(
-                        "arg")) {
-                    _argumentNames.add((StringAttribute) argNameAttribute);
-                }
-            }
-            _argumentDomainOntologies.clear();
-            for (Object argOntologyParameter : attributeList(StringParameter.class)) {
-                if (((StringParameter) argOntologyParameter).getName()
-                        .startsWith("arg")) {
-                    _argumentDomainOntologies
-                            .add((StringParameter) argOntologyParameter);
-                }
-            }
-            int currentArgs = _argumentNames.size();
-
-            // Increase the argument fields when the number of arguments increases.
-            if (numArgs > currentArgs) {
-                try {
-                    for (int i = currentArgs; i < numArgs; i++) {
-                        StringAttribute newArg = new StringAttribute(this,
-                                "arg" + i + "Name");
-                        newArg.setExpression("arg" + i);
-
-                        StringParameter newArgDomainOntology = new StringParameter(
-                                this, "arg" + i + "DomainOntologyName");
-                        newArgDomainOntology.setExpression("");
-
-                        _argumentNames.add(newArg);
-                        _argumentDomainOntologies.add(newArgDomainOntology);
-                    }
-                } catch (NameDuplicationException nameDupEx) {
-                    throw new IllegalActionException(
-                            this,
-                            nameDupEx,
-                            "Error when trying to increase the "
-                                    + "number of arguments for "
-                                    + this
-                                    + ". A new argument parameter has the same name as "
-                                    + "an existing argument parameter.");
-                }
-
-                // Decrease the argument fields when the number of arguments Decreases.
-            } else if (numArgs < currentArgs) {
-                try {
-                    for (int i = currentArgs; i > numArgs; i--) {
-                        StringAttribute deletedArg = _argumentNames
-                                .removeLast();
-                        deletedArg.setContainer(null);
-
-                        StringParameter deletedArgDomainOntology = _argumentDomainOntologies
-                                .removeLast();
-                        deletedArgDomainOntology.setContainer(null);
-                    }
-                } catch (NameDuplicationException nameDupEx) {
-                    throw new IllegalActionException(this, nameDupEx,
-                            "Error when trying to remove "
-                                    + "argument parameters from " + this + ".");
-                }
-            }
-
-            if (_argumentNames.size() != _argumentDomainOntologies.size()) {
-                throw new IllegalActionException(
-                        this,
-                        "Error when changing the number of arguments for "
-                                + this
-                                + ". The number of argument names and the number "
-                                + "of argument domain ontologies is "
-                                + "different, and this should never happen.");
-            }
-        }
-
-        super.attributeChanged(attribute);
-    }
-
     /** Return the concept function defined by this attribute's expression.
      *  @return The concept function.
      *  @exception IllegalActionException If there is an error
@@ -235,29 +150,21 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
      */
     public ExpressionConceptFunction getConceptFunction()
             throws IllegalActionException {
-        if (_conceptFunction == null
-                || workspace().getVersion() != _functionVersion) {
-            _updateConceptFunction();
-            _functionVersion = workspace().getVersion();
+        if (((BooleanToken) numberOfArgumentsIsFixed.getToken()).booleanValue()) {
+            if (((ArrayToken) argumentDomainOntologies.getToken()).length() !=
+                ((ArrayToken) argumentNames.getToken()).length()) {
+                throw new IllegalActionException(this,
+                        "The concept function is specified to have a fixed" +
+                        " number of arguments, but the lengths of the arrays" +
+                        " for the argument names (" +
+                        ((ArrayToken) argumentNames.getToken()).length() +
+                        ") and argument domain ontologies("+
+                        ((ArrayToken) argumentDomainOntologies.getToken()).length() +
+                        ") are different.");
+            }
         }
 
-        return _conceptFunction;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Update the concept function with the most recent values of the attribute.
-     *  @exception IllegalActionException If there is an error
-     *  updating the conceptFunction.
-     */
-    protected void _updateConceptFunction() throws IllegalActionException {
-        int numArgs = 0;
         Ontology outputRangeOntology = null;
-
-        IntToken numArgsToken = (IntToken) numberOfArguments.getToken();
-        numArgs = numArgsToken.intValue();
-
         outputRangeOntology = (Ontology) ((CompositeEntity) getContainer())
                 .getEntity(outputRangeOntologyName.getExpression());
         if (outputRangeOntology == null) {
@@ -267,70 +174,43 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
                             + " could not be found in the model.");
         }
 
-        Ontology[] argDomainOntologies = new Ontology[numArgs];
-        int index = 0;
-        for (StringParameter ontologyName : _argumentDomainOntologies) {
-            argDomainOntologies[index] = (Ontology) ((CompositeEntity) getContainer())
-                    .getEntity(ontologyName.getExpression());
-            if (argDomainOntologies[index] == null) {
+        List<Ontology> argDomainOntologies = new LinkedList<Ontology>();
+        Token[] argDomainNames = ((ArrayToken) argumentDomainOntologies.
+                getToken()).arrayValue();
+        for (Token ontologyName : argDomainNames) {
+            Ontology ontology = (Ontology) ((CompositeEntity) getContainer())
+                .getEntity(((StringToken) ontologyName).stringValue());
+            if (ontology == null) {
                 throw new IllegalActionException(this,
                         "The specified domain ontology " + ontologyName
-                                + " for argument " + index
+                                + " for a function argument"
                                 + " could not be found in the model.");
-            }
-            index++;
+            } else {
+                argDomainOntologies.add(ontology);
+            }            
         }
 
-        String[] argNameArray = new String[numArgs];
-        index = 0;
-        for (StringAttribute argName : _argumentNames) {
-            argNameArray[index++] = argName.getExpression();
+        List<String> argNameList = new LinkedList<String>();
+        Token[] argNames = ((ArrayToken) argumentNames.
+                getToken()).arrayValue();
+        for (Token argName : argNames) {
+            argNameList.add(((StringToken) argName).stringValue());
         }
 
-        if (_conceptFunction == null) {
-            _conceptFunction = new ExpressionConceptFunction(
-                    conceptFunctionName.getExpression(), numArgs,
-                    argDomainOntologies, outputRangeOntology, argNameArray,
+        ExpressionConceptFunction newConceptFunction = new ExpressionConceptFunction(
+                    getName(), ((BooleanToken) numberOfArgumentsIsFixed.getToken()).booleanValue(),
+                    argDomainOntologies, outputRangeOntology, argNameList,
                     conceptFunctionExpression.getExpression(),
                     (OntologySolverModel) getContainer());
-        } else {
-            _conceptFunction.updateFunctionParameters(conceptFunctionName
-                    .getExpression(), numArgs, argDomainOntologies,
-                    outputRangeOntology, argNameArray,
-                    conceptFunctionExpression.getExpression(),
-                    (OntologySolverModel) getContainer());
-        }
 
-        if (((BooleanToken) functionIsMonotonic.getToken()).booleanValue()) {
-            if (!_conceptFunction.isMonotonic()) {
+        if (((BooleanToken) constrainFunctionToBeMonotonic.getToken()).booleanValue()) {
+            if (!newConceptFunction.isMonotonic()) {
                 throw new IllegalActionException(this,
-                        "The defined concept function is set to "
+                        "The defined concept function is constrained to "
                                 + "be monotonic but it is not.");
             }
         }
+
+        return newConceptFunction;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The list of argument names for the concept function
-     *  that are used in the function expression.
-     */
-    protected LinkedList<StringAttribute> _argumentNames;
-
-    /** The list of domain ontology names for the concept function
-     *  argument list.
-     */
-    protected LinkedList<StringParameter> _argumentDomainOntologies;
-
-    /** The concept function defined by this attribute. */
-    protected ExpressionConceptFunction _conceptFunction;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The workspace version at which the cached expression
-     *  concept function was valid.
-     */
-    private long _functionVersion = -1L;
 }

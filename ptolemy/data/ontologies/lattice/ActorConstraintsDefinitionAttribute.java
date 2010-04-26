@@ -28,10 +28,13 @@
 package ptolemy.data.ontologies.lattice;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.kernel.ComponentEntity;
@@ -53,7 +56,7 @@ import ptolemy.moml.MoMLParser;
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
- *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.ProposedRating Green (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ActorConstraintsDefinitionAttribute extends Attribute {
@@ -80,10 +83,8 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
         }
 
         actorClassName = new StringParameter(this, "actorClassName");
-        actorClassName.setExpression("");
 
         foundActorClassName = new StringParameter(this, "foundActorClassName");
-        foundActorClassName.setExpression("");
         foundActorClassName.setVisibility(Settable.NONE);
         foundActorClassName.setPersistent(true);
 
@@ -167,128 +168,113 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             // case when the attribute is loaded from a MoML file.
             _constraintTermExpressions.clear();
             for (Object constraintParameter : attributeList(StringParameter.class)) {
-                String parameterName = ((StringParameter) constraintParameter)
-                        .getName();
-                if (parameterName.endsWith(PORT_SUFFIX)
-                        || parameterName.endsWith(ATTR_SUFFIX)) {
+                if (isActorElementAnAttribute((StringParameter) constraintParameter)
+                        || isActorElementAPort((StringParameter) constraintParameter)) {
                     _constraintTermExpressions
                             .add((StringParameter) constraintParameter);
                 }
             }
+            
+            StringToken actorClassNameToken = (StringToken) actorClassName.getToken();
+            String actorClassNameString = actorClassNameToken.stringValue();
+            StringToken foundActorClassNameToken = (StringToken) foundActorClassName.getToken();
+            String foundActorClassNameString = foundActorClassNameToken.stringValue();
 
-            if (!actorClassName.getExpression().equals("")
-                    && !actorClassName.getExpression().equals(
-                            foundActorClassName.getExpression())) {
+            if (!actorClassNameString.equals("")
+                    && !actorClassNameString.equals(
+                            foundActorClassNameString)) {
+                
+                Class actorClass = null;                
                 try {
-
                     // Verify that the actorClassName correctly
                     // specifies an existing class.
-                    Class actorClass = Class.forName(actorClassName
-                            .getExpression());
-                    try {
-                        // Instantiate a temporary actor from this class in order
-                        // to get all the port and attribute information.
-                        Constructor actorConstructor = actorClass
-                                .getConstructor(new Class[] {
-                                        CompositeEntity.class, String.class });
-                        Object actorInstance = actorConstructor
-                                .newInstance(new Object[] {
-                                        (CompositeEntity) this.getContainer(),
-                                        "tempActor" });
-
-                        // Remove all the old constraint parameters
-                        // that no longer apply since the actor class
-                        // name has changed.
-                        for (StringParameter constraintParameter : _constraintTermExpressions) {
-                            constraintParameter.setContainer(null);
-                        }
-                        _constraintTermExpressions.clear();
-
-                        // Create a constraint expression parameter
-                        // for every port and attribute in the actor.
-                        if (actorInstance instanceof ComponentEntity) {
-                            for (Object actorPort : ((ComponentEntity) actorInstance)
-                                    .portList()) {
-                                StringParameter constraintExpression = new StringParameter(
-                                        this, ((Port) actorPort).getName()
-                                                + PORT_SUFFIX);
-                                _constraintTermExpressions
-                                        .add(constraintExpression);
-                            }
-
-                            for (Object actorAttribute : ((ComponentEntity) actorInstance)
-                                    .attributeList()) {
-                                if (!((Attribute) actorAttribute).getName()
-                                        .startsWith("_")) {
-                                    StringParameter constraintExpression = new StringParameter(
-                                            this, ((Attribute) actorAttribute)
-                                                    .getName()
-                                                    + ATTR_SUFFIX);
-                                    _constraintTermExpressions
-                                            .add(constraintExpression);
-                                }
-                            }
-                        }
-
-                        // Set the icon for the attribute so that it
-                        // looks like the actor for which it defines
-                        // an OntologyAdapter.
-
-                        // First look for an icon file for the actor.
-                        // If no actor icon file is found, use the _iconDescription
-                        // attribute.
-                        String iconFile = actorClassName.getExpression()
-                                .replace('.', '/')
-                                + "Icon.xml";
-                        URL xmlFile = actorClass.getClassLoader().getResource(
-                                iconFile);
-                        if (xmlFile != null) {
-                            MoMLParser parser = new MoMLParser(this.workspace());
-                            parser.setContext(this);
-                            parser.parse(xmlFile, xmlFile);
-                        }
-
-                        if (xmlFile == null) {
-                            ConfigurableAttribute actorIconAttribute = (ConfigurableAttribute) ((ComponentEntity) actorInstance)
-                                    .getAttribute("_iconDescription");
-                            if (actorIconAttribute != null) {
-                                String iconDescription = actorIconAttribute
-                                        .getConfigureText();
-                                SingletonConfigurableAttribute description = (SingletonConfigurableAttribute) this
-                                        .getAttribute("_iconDescription");
-                                description.configure(null, null,
-                                        iconDescription);
-                            }
-                        }
-
-                        ((ComponentEntity) actorInstance).setContainer(null);
-
-                        // Set the found actor name parameter so that
-                        // we know what the previous actor class was
-                        // set to the next time attributeChanged is
-                        // called.
-                        foundActorClassName.setExpression(actorClassName
-                                .getExpression());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        throw new IllegalActionException(
-                                this,
-                                ex,
-                                "Error when trying to "
-                                        + "instantiate the class "
-                                        + actorClassName.getExpression()
-                                        + " in ActorConstraintsDefinitionAttribute "
-                                        + this);
-                    }
+                    actorClass = Class.forName(actorClassNameString);
                 } catch (ClassNotFoundException classEx) {
                     throw new IllegalActionException(this, classEx,
-                            "Actor class " + actorClassName.getExpression()
+                            "Actor class " + actorClassNameString
                                     + " not found.");
                 }
+                
+                // Instantiate a temporary actor from this class in order
+                // to get all the port and attribute information.
+                ComponentEntity tempActorInstance = (ComponentEntity) _createTempActorInstance(actorClass);
+                try {
+                    // Remove all the old constraint parameters
+                    // that no longer apply since the actor class
+                    // name has changed.
+                    for (StringParameter constraintParameter : _constraintTermExpressions) {
+                        constraintParameter.setContainer(null);
+                    }
+                    _constraintTermExpressions.clear();
+
+                    // Create a constraint expression parameter
+                    // for every port and attribute in the actor.
+                    for (Object actorPort : tempActorInstance
+                            .portList()) {
+                        StringParameter constraintExpression = new StringParameter(
+                                    this, ((Port) actorPort).getName()
+                                        + PORT_SUFFIX);
+                        _constraintTermExpressions
+                                .add(constraintExpression);
+                    }
+
+                    for (Object actorAttribute : tempActorInstance
+                                .attributeList()) {
+                        if (!((Attribute) actorAttribute).getName()
+                                    .startsWith("_")) {
+                            StringParameter constraintExpression = new StringParameter(
+                                    this, ((Attribute) actorAttribute)
+                                            .getName()
+                                            + ATTR_SUFFIX);
+                            _constraintTermExpressions
+                                    .add(constraintExpression);
+                        }
+                    }                      
+                    tempActorInstance.setContainer(null);
+                } catch (NameDuplicationException ex) {
+                    throw new IllegalActionException(
+                            this,
+                            ex,
+                            "Error when trying to "
+                                    + "create a string attribute "
+                                    + "in ActorConstraintsDefinitionAttribute "
+                                    + this + " because an attribute of the same name already exisits.");
+                }
+
+                // Set the icon for the attribute so that it
+                // looks like the actor for which it defines
+                // an OntologyAdapter.
+                _setActorIcon(actorClassNameString, tempActorInstance);
+
+                // Set the found actor name parameter so that
+                // we know what the previous actor class was
+                // set to the next time attributeChanged is
+                // called.
+                foundActorClassName.setToken(actorClassNameToken);
             }
         }
 
         super.attributeChanged(attribute);
+    }
+    
+    /** Get the name of the element contained by the actor (either a
+     *  port or an attribute) for which the specified parameter
+     *  defines a constraint.
+     *  @param expressionParameter The string parameter that defines
+     *   the element's constraints.
+     *  @return The string name of the element (either a port or an attribute).
+     *  @throws IllegalActionException If the expressionParameter passed in is null.
+     */
+    public static String getActorElementName(StringParameter expressionParameter)
+        throws IllegalActionException {
+        if (expressionParameter == null) {
+            throw new IllegalActionException("The constraint expression for the actor" +
+                        " element cannot be null.");
+        }
+        String elementName = expressionParameter.getName();
+        elementName = elementName.substring(0, elementName.length()
+                - SUFFIX_LENGTH);
+        return elementName;
     }
 
     /** Get the adapter defined by this attribute.
@@ -298,11 +284,11 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      *   solver cannot be found or there is a problem initializing the
      *   adapter.
      */
-    public ActorConstraintsDefinitionAdapter getAdapter(Object component)
+    public ActorConstraintsDefinitionAdapter createAdapter(ComponentEntity component)
             throws IllegalActionException {
+        String actorClassNameString = ((StringToken) actorClassName.getToken()).stringValue();
         try {
-            if (component.getClass() != Class.forName(actorClassName
-                    .getExpression())) {
+            if (component.getClass() != Class.forName(actorClassNameString)) {
                 throw new IllegalActionException(this, "The component "
                         + component
                         + " passed in for the adapter is not of class "
@@ -310,7 +296,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             }
         } catch (ClassNotFoundException classEx) {
             throw new IllegalActionException(this, classEx, "Actor class "
-                    + actorClassName.getExpression() + " not found.");
+                    + actorClassNameString + " not found.");
         }
 
         LatticeOntologySolver solver = (LatticeOntologySolver) ((OntologySolverModel) getContainer())
@@ -327,7 +313,197 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
         return new ActorConstraintsDefinitionAdapter(solver, component,
                 _constraintTermExpressions);
     }
+    
+    /** Return the string constraint direction for the given constraint expression specified
+     *  as a string.
+     *  @param constraintExpressionString The string that specifies a single constraint
+     *   expression for an actor element.
+     *  @return The string '<=', '>=', or '==' depending on the specified constraint
+     *   direction, false otherwise.
+     */
+    public static List<String> getConstraintDirAndRHSStrings(String constraintExpressionString) {
+        if (constraintExpressionString == null) {
+            return null;
+        } else {
+            List<String> dirAndRHSStrings = new ArrayList<String>(2);
+            if (constraintExpressionString.startsWith(GTE)) {
+                dirAndRHSStrings.add(GTE);
+                dirAndRHSStrings.add(constraintExpressionString.substring(GTE.length()));
+            } else if (constraintExpressionString.startsWith(LTE)) {
+                dirAndRHSStrings.add(LTE);
+                dirAndRHSStrings.add(constraintExpressionString.substring(LTE.length()));
+            } else if (constraintExpressionString.startsWith(EQ)) {
+                dirAndRHSStrings.add(EQ);
+                dirAndRHSStrings.add(constraintExpressionString.substring(EQ.length()));
+            } else {
+                return null;
+            }
+            return dirAndRHSStrings;
+        }
+    }
+    
+    /** Return true if the actor element constraint expression is for an attribute,
+     *  false otherwise.
+     *  @param actorElementConstraintExpression The constraint expression for the actor element.
+     *  @return true if the actor element constraint expression is for an attribute,
+     *   false otherwise.
+     *  @throws IllegalActionException If the constrain expression parameter is null.
+     */
+    public static boolean isActorElementAnAttribute(StringParameter actorElementConstraintExpression)
+        throws IllegalActionException {
+        if (actorElementConstraintExpression == null) {
+            throw new IllegalActionException("The constraint expression for the actor" +
+                        " element cannot be null.");
+        }
+        return actorElementConstraintExpression.getName().endsWith(ATTR_SUFFIX);
+    }
 
+    /** Return true if the actor element constraint expression is for a port,
+     *  false otherwise.
+     *  @param actorElementConstraintExpression The constraint expression for the actor element.
+     *  @return true if the actor element constraint expression is for a port,
+     *   false otherwise.
+     *  @throws IllegalActionException If the constrain expression parameter is null.
+     */
+    public static boolean isActorElementAPort(StringParameter actorElementConstraintExpression)
+        throws IllegalActionException {
+        if (actorElementConstraintExpression == null) {
+            throw new IllegalActionException("The constraint expression for the actor" +
+                        " element cannot be null.");
+        }
+        return actorElementConstraintExpression.getName().endsWith(PORT_SUFFIX);
+    }
+
+    /** Return true if the actor element is set to be ignored by
+     *  the ontology analysis, false otherwise.
+     *  @param actorElementConstraintExpression The constraint expression
+     *   for the actor element.
+     *  @return true if the actor element is set to be ignored by
+     *   the ontology analysis, false otherwise.
+     *  @throws IllegalActionException If the constrain expression parameter is null.
+     */
+    public static boolean isActorElementIgnored(StringParameter actorElementConstraintExpression)
+        throws IllegalActionException {
+        if (actorElementConstraintExpression == null) {
+            throw new IllegalActionException("The constraint expression for the actor" +
+                        " element cannot be null.");
+        }
+        return actorElementConstraintExpression.getExpression().trim().equals(IGNORE);
+    }
+
+    /** Return true if the actor element is set to have no constraints for
+     *  the ontology analysis, false otherwise.
+     *  @param actorElementConstraintExpression The constraint expression
+     *   for the actor element.
+     *  @return true if the actor element is set to have no constraints for
+     *   the ontology analysis, false otherwise.
+     *  @throws IllegalActionException If the constrain expression parameter is null.
+     */
+    public static boolean isActorElementUnconstrained(StringParameter actorElementConstraintExpression)
+        throws IllegalActionException {
+        if (actorElementConstraintExpression == null) {
+            throw new IllegalActionException("The constraint expression for the actor" +
+                        " element cannot be null.");
+        }
+        return actorElementConstraintExpression.getExpression().trim().equals(NO_CONSTRAINTS);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Return a temporary instance of the actor class in the current container.  This
+     *  instance will be used to find all the ports and attributes for the actor which
+     *  we need to populate the fields of the ActorConstraintsDefinitionAttribute.
+     *  @param actorClass The class of the actor to be instantiated.
+     *  @return A new instance of the specified actor class.
+     *  @throws IllegalActionException If the actor class cannot be instantiated.
+     */
+    protected Object _createTempActorInstance(Class actorClass)
+        throws IllegalActionException {
+        
+        Constructor actorConstructor = null;        
+        try {
+            actorConstructor = actorClass
+                .getConstructor(new Class[] {
+                        CompositeEntity.class, String.class });
+        } catch (NoSuchMethodException ex) {
+            throw new IllegalActionException(this, ex, "Could not find the constructor" +
+            		" method for the actor class " + actorClass + ".");
+        }
+        
+        Object actorInstance = null;
+        try {
+            actorInstance = actorConstructor
+                .newInstance(new Object[] {
+                        (CompositeEntity) this.getContainer(),
+                        "tempActor" });
+        } catch (InvocationTargetException ex) {
+            throw new IllegalActionException(this, ex, "Exception thrown when trying to call" +
+            		" the constructor for the actor class " + actorClass + ".");
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalActionException(this, ex, "Invalid argument passed to" +
+                    " the constructor for the actor class " + actorClass + ".");
+        } catch (InstantiationException ex) {
+            throw new IllegalActionException(this, ex, "Unable to instantiate" +
+                    " the actor class " + actorClass + ".");
+        } catch (IllegalAccessException ex) {
+            throw new IllegalActionException(this, ex, "Do not have access " +
+                    " the constructor for the actor class " + actorClass +
+                    " within this method.");
+        }
+        
+        return actorInstance;        
+    }
+    
+    /** Set the ActorConstraintsDefinitionAttribute icon to be the same icon as that of
+     *  the actor for which it is defining constraints.  The actor icon can be found either from
+     *  an XML file that defines the actor icon, or its _iconDescription attribute.
+     *  @param actorClassNameString The fully qualified name of the class with its package prefix.
+     *  @param tempActorInstance A temporary instance of the actor from which its icon description attribute can
+     *   be taken.
+     *  @throws IllegalActionException If a problem occurs when trying to set the actor icon.
+     */
+    protected void _setActorIcon(String actorClassNameString, ComponentEntity tempActorInstance)
+        throws IllegalActionException {
+        
+        // First look for an icon file for the actor.        
+        String iconFile = actorClassNameString
+                .replace('.', '/')
+                + "Icon.xml";
+        URL xmlFile = tempActorInstance.getClass().getClassLoader().getResource(
+                iconFile);
+        if (xmlFile != null) {
+            MoMLParser parser = new MoMLParser(this.workspace());
+            parser.setContext(this);
+            try {
+                parser.parse(xmlFile, xmlFile);
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex, "Failed to parse the actor icon's XML" +
+                		" file when trying to set the actor icon.");
+            }
+        }
+
+        // If no actor icon file was found, then use the _iconDescription
+        // attribute.
+        if (xmlFile == null) {
+            ConfigurableAttribute actorIconAttribute = (ConfigurableAttribute) ((ComponentEntity) tempActorInstance)
+                    .getAttribute("_iconDescription");
+            if (actorIconAttribute != null) {
+                String iconDescription = actorIconAttribute
+                        .getConfigureText();
+                SingletonConfigurableAttribute description = (SingletonConfigurableAttribute) this
+                        .getAttribute("_iconDescription");
+                try {
+                    description.configure(null, null,
+                            iconDescription);
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex, "Failed to configure the _iconDescription" +
+                    		"attribute when trying to set the actor icon.");
+                }
+            }
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

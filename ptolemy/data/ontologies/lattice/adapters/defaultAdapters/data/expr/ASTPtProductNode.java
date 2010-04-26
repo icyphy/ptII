@@ -101,16 +101,16 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
         }
 
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();
-        Ontology[] argumentDomainOntologies = new Ontology[childNodeTerms.length];
+        List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(childNodeTerms.length);
         for (int i = 0; i < childNodeTerms.length; i++) {
-            argumentDomainOntologies[i] = getSolver().getOntology();
+            argumentDomainOntologies.add(getSolver().getOntology());
         }
 
         List operatorTokenList = ((ptolemy.data.expr.ASTPtProductNode) _getNode())
                 .getLexicalTokenList();
 
         ASTPtProductNodeFunction astProductFunction = new ASTPtProductNodeFunction(
-                childNodeTerms.length, argumentDomainOntologies, getSolver()
+                argumentDomainOntologies, getSolver()
                         .getOntology(), multiplyFunction, divideFunction,
                 operatorTokenList);
 
@@ -151,7 +151,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
             throw new AssertionError(
                     "Unable to get the children property term(s).");
         }
-        return terms.toArray(new InequalityTerm[0]);
+        return terms.toArray(new InequalityTerm[terms.size()]);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -166,8 +166,6 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
     private class ASTPtProductNodeFunction extends ConceptFunction {
 
         /** Initialize the ASTPtProductNodeFunction.
-         * @param numArgs The number of arguments for the function which
-         *  should equal the number of child nodes for this product node.
          * @param argumentDomainOntologies The array of domain ontologies
          *  for the function arguments.
          * @param outputRangeOntology The ontology range for the output.
@@ -183,12 +181,11 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
          *  expression.
          * @throws IllegalActionException If the class cannot be initialized.
          */
-        public ASTPtProductNodeFunction(int numArgs,
-                Ontology[] argumentDomainOntologies,
+        public ASTPtProductNodeFunction(List<Ontology> argumentDomainOntologies,
                 Ontology outputRangeOntology, ConceptFunction multiplyFunction,
                 ConceptFunction divideFunction, List operatorTokenList)
                 throws IllegalActionException {
-            super("defaultASTPtProductNodeFunction", numArgs,
+            super("defaultASTPtProductNodeFunction", true,
                     argumentDomainOntologies, outputRangeOntology);
 
             _multiplyFunction = multiplyFunction;
@@ -204,7 +201,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
          *  @return The concept value that is output from this function. 
          *  @throws IllegalActionException If there is a problem evaluating the function
          */
-        protected Concept _evaluateFunction(Concept[] inputConceptValues)
+        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
             // Updated by Charles Shelton 12/15/09:
             // Created a general function that covers any combination of multiplication
@@ -227,22 +224,24 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
             // get the least upper bound of the concepts.
 
             // Initialize the result to the first node in the product node
-            Concept result = inputConceptValues[0];
+            Concept result = inputConceptValues.get(0);
 
             // Iterate through the operator tokens
             Iterator lexicalTokenIterator = _operatorTokenList.iterator();
 
-            for (int i = 1; i < inputConceptValues.length; i++) {
+            for (int i = 1; i < inputConceptValues.size(); i++) {
                 if (lexicalTokenIterator.hasNext()) {
                     Token lexicalToken = (Token) lexicalTokenIterator.next();
-                    Concept nodeChildConcept = inputConceptValues[i];
+                    Concept nodeChildConcept = inputConceptValues.get(i);
+                    List<Concept> conceptInputs = new ArrayList<Concept>(2);
+                    conceptInputs.add(result);
+                    conceptInputs.add(nodeChildConcept);
 
                     // If operator token is '*' call the MultiplyMonotonicFunction
                     if (lexicalToken.kind == PtParserConstants.MULTIPLY) {
                         if (_multiplyFunction != null) {
                             result = _multiplyFunction
-                                    .evaluateFunction(new Concept[] { result,
-                                            nodeChildConcept });
+                                    .evaluateFunction(conceptInputs);
                         } else {
                             result = (Concept) _outputRangeOntology.getGraph()
                                     .leastUpperBound(result, nodeChildConcept);
@@ -252,8 +251,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                     } else {
                         if (_divideFunction != null) {
                             result = _divideFunction
-                                    .evaluateFunction(new Concept[] { result,
-                                            nodeChildConcept });
+                                    .evaluateFunction(conceptInputs);
                         } else {
                             result = (Concept) _outputRangeOntology.getGraph()
                                     .leastUpperBound(result, nodeChildConcept);

@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypeConflictException;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.Concept;
@@ -39,6 +40,7 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -205,12 +207,12 @@ public class LatticeOntologySolver extends OntologySolver {
     /** The string name of the attribute that defines the arithmetic multiply
      *  concept function for this ontology solver.
      */
-    public static final String MULTIPLY_FUNCTION_NAME = "MultiplyConceptFunctionDefinition";
+    public static final String MULTIPLY_FUNCTION_NAME = "multiplyFunction";
 
     /** The string name of the attribute that defines the arithmetic divide
      *  concept function for this ontology solver.
      */
-    public static final String DIVIDE_FUNCTION_NAME = "DivideConceptFunctionDefinition";
+    public static final String DIVIDE_FUNCTION_NAME = "divideFunction";
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -524,17 +526,15 @@ public class LatticeOntologySolver extends OntologySolver {
         // definition.
         if (_adapterStore.containsKey(component)) {
             return _adapterStore.get(component);
-        }
-
-        // Next look for the adapter in the LatticeOntologySolver model.
-        if (adapter == null) {
+        } else {
+            // Next look for the adapter in the LatticeOntologySolver model.
             List modelDefinedAdapters = ((OntologySolverModel) _model)
                     .attributeList(ActorConstraintsDefinitionAttribute.class);
             for (Object adapterDefinitionAttribute : modelDefinedAdapters) {
-                if (((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName
-                        .getExpression().equals(component.getClass().getName())) {
+                if (((StringToken) ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute).actorClassName
+                        .getToken()).stringValue().equals(component.getClass().getName())) {
                     adapter = ((ActorConstraintsDefinitionAttribute) adapterDefinitionAttribute)
-                            .getAdapter(component);
+                            .createAdapter((ComponentEntity) component);
                     break;
                 }
             }

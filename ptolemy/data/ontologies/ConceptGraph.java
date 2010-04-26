@@ -31,7 +31,7 @@ import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 
 ///////////////////////////////////////////////////////////////////
-//// ConceptLattice
+//// ConceptGraph
 
 /** A data structure defining the relationships in an ontology. An ontology is a set of concepts
  *  and the relationships between them.  In a general ontology the graph describing the relationships
@@ -52,11 +52,10 @@ import ptolemy.graph.Node;
  */
 public class ConceptGraph extends DirectedAcyclicGraph {
 
-    /** Construct a graph associated with the specified ontology.
-     *  @param ontology The associated ontology.
+    /** Construct a new empty concept graph.
      */
-    public ConceptGraph(Ontology ontology) {
-        _ontology = ontology;
+    public ConceptGraph() {
+        super();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -170,13 +169,6 @@ public class ConceptGraph extends DirectedAcyclicGraph {
         return super.compare(t1Rep, t2Rep);
     }
 
-    /** Return the ontology associated with this graph.
-     *  @return The ontology specified in the constructor.
-     */
-    public Ontology getOntology() {
-        return _ontology;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                          public fields                    ////
 
@@ -193,6 +185,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
 
     /** If the argument is a structured concept, return its representative;
      *  otherwise, return the argument.
+     *  @param p The specified concept for which to return a representative.
      *  @return The representative for the specified concept.
      */
     private Concept _toRepresentative(Concept p) {
@@ -205,10 +198,4 @@ public class ConceptGraph extends DirectedAcyclicGraph {
         */
         return p;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
-
-    /** The associated ontology. */
-    private Ontology _ontology;
 }

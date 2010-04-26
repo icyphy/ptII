@@ -91,7 +91,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
     public NamedObjController create(GraphController controller) {
         super.create(controller);
         //return new ConfigureHighlightController(controller);
-        return new HighlighterController(controller);
+        return new HighlighterController(this, controller);
     }
 
     /** The action for the clear display command to be added
@@ -251,27 +251,28 @@ public class OntologyDisplayActions extends NodeControllerFactory {
 
     /** The controller that adds commands to the context menu.
      */
-    private class HighlighterController extends MoMLModelAttributeController {
+    private static class HighlighterController extends MoMLModelAttributeController {
 
         /** Create a DependencyController that is associated with a controller.
+         *  @param displayActions The OntologyDisplayActions object reference.
          *  @param controller The controller.
          */
-        public HighlighterController(GraphController controller) {
+        public HighlighterController(OntologyDisplayActions displayActions, GraphController controller) {
             super(controller);
 
-            ClearDisplay clearDisplay = new ClearDisplay();
+            ClearDisplay clearDisplay = displayActions.new ClearDisplay();
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(clearDisplay));
 
-            ShowProperty showProperty = new ShowProperty();
+            ShowProperty showProperty = displayActions.new ShowProperty();
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(showProperty));
 
-            HighlightProperty highlightProperty = new HighlightProperty();
+            HighlightProperty highlightProperty = displayActions.new HighlightProperty();
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     highlightProperty));
 
-            ConfigureHighlightAction highlight = new ConfigureHighlightAction();
+            ConfigureHighlightAction highlight = displayActions.new ConfigureHighlightAction();
             _configureMenuFactory.addAction(highlight, "Configure");
         }
     }

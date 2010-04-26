@@ -1,5 +1,5 @@
 /* A class that creates lattice-based ontology adapter from
- * a model-based actor constraint definition attribute.
+ * a model-based actor constraints definition attribute.
  * 
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
@@ -42,23 +43,36 @@ import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.OntologySolverModel;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.Entity;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+
+// Static imports for string constants and methods defined in ActorConstraintsDefinitionAttribute.
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.EQ;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.getActorElementName;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.getConstraintDirAndRHSStrings;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.GTE;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementAnAttribute;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementAPort;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementIgnored;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementUnconstrained;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.LTE;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.SEPARATOR;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorConstraintsDefinitionAdapter.java
 
 /**
  * A class that creates lattice-based ontology adapter from
- * a model-based actor constraint definition attribute.
+ * a model-based actor constraints definition attribute.
  * 
+ * @see ActorConstraintsDefinitionAttribute
  * @author Charles Shelton
  * @version $Id$
  * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (cshelton)
+ * @Pt.ProposedRating Green (cshelton)
  * @Pt.AcceptedRating Red (cshelton)
  */
 public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
@@ -73,53 +87,12 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      *   initialized.
      */
     public ActorConstraintsDefinitionAdapter(LatticeOntologySolver solver,
-            Object component, List<StringParameter> constraintExpressions)
+            ComponentEntity component, List<StringParameter> constraintExpressions)
             throws IllegalActionException {
         // Don't use default constraints for user-defined actor constraints.
         super(solver, component, false);
         _constraintTermExpressions = constraintExpressions;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The string suffix for attribute names that represent
-     *  constraint definitions for actor attributes.
-     */
-    public static final String ATTR_SUFFIX = ActorConstraintsDefinitionAttribute.ATTR_SUFFIX;
-
-    /** String representing an equal to constraint choice. */
-    public static final String EQ = ActorConstraintsDefinitionAttribute.EQ;
-
-    /** String representing a greater than or equal to constraint choice. */
-    public static final String GTE = ActorConstraintsDefinitionAttribute.GTE;
-
-    /** String representing that the actor port or attribute should be
-     *  ignored for the ontology analysis and not have a concept
-     *  assigned to it.
-     */
-    public static final String IGNORE = ActorConstraintsDefinitionAttribute.IGNORE;
-
-    /** String representing a less than or equal to constraint choice. */
-    public static final String LTE = ActorConstraintsDefinitionAttribute.LTE;
-
-    /** String representing that the actor port or attribute has no
-     *  constraints but should have a concept assigned to it.
-     */
-    public static final String NO_CONSTRAINTS = ActorConstraintsDefinitionAttribute.NO_CONSTRAINTS;
-
-    /** The string suffix for attribute names that represent
-     *  constraint definitions for actor ports.
-     */
-    public static final String PORT_SUFFIX = ActorConstraintsDefinitionAttribute.PORT_SUFFIX;
-
-    /** String representing the separator character ";" between
-     *  constraint expressions in the constraint expression string.
-     */
-    public static final String SEPARATOR = ActorConstraintsDefinitionAttribute.SEPARATOR;
-
-    /** The length of the attribute and port suffix strings. */
-    public static final int SUFFIX_LENGTH = ActorConstraintsDefinitionAttribute.SUFFIX_LENGTH;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -136,24 +109,22 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
     public List<Inequality> constraintList() throws IllegalActionException {
 
         for (StringParameter constraintExpression : _constraintTermExpressions) {
-            if (!constraintExpression.getExpression().trim().equals(IGNORE)
-                    && !constraintExpression.getExpression().trim().equals(
-                            NO_CONSTRAINTS)) {
+            if (!isActorElementIgnored(constraintExpression)
+                    && !isActorElementUnconstrained(constraintExpression)) {
 
                 String objName = getActorElementName(constraintExpression);
-                Object actorElement = null;
+                NamedObj actorElement = null;
 
-                if (constraintExpression.getName().endsWith(PORT_SUFFIX)) {
-                    actorElement = ((Entity) getComponent()).getPort(objName);
-                } else if (constraintExpression.getName().endsWith(ATTR_SUFFIX)) {
-                    actorElement = ((Entity) getComponent())
+                if (isActorElementAPort(constraintExpression)) {
+                    actorElement = ((ComponentEntity) getComponent()).getPort(objName);
+                } else if (isActorElementAnAttribute(constraintExpression)) {
+                    actorElement = ((ComponentEntity) getComponent())
                             .getAttribute(objName);
                 }
-                _setConstraints(actorElement, constraintExpression
-                        .getExpression());
+                _setConstraints(actorElement, ((StringToken) (constraintExpression
+                        .getToken())).stringValue());
             }
         }
-
         return super.constraintList();
     }
 
@@ -168,26 +139,32 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
 
         // Add all ports that are not set to IGNORE.
         for (StringParameter constraintExpression : _constraintTermExpressions) {
-            if (!constraintExpression.getExpression().trim().equals(IGNORE)
-                    && constraintExpression.getName().endsWith(PORT_SUFFIX)) {
+            try {
+                if (!isActorElementIgnored(constraintExpression)
+                        && isActorElementAPort(constraintExpression)) {
 
-                String portName = getActorElementName(constraintExpression);
-                Port portToAdd = ((Entity) getComponent()).getPort(portName);
-                list.add(portToAdd);
+                    String portName = getActorElementName(constraintExpression);
+                    Port portToAdd = ((ComponentEntity) getComponent()).getPort(portName);
+                    list.add(portToAdd);
+                }
+            } catch (IllegalActionException e) {
+                // FIXME: Don't know what to do here since the inherited method getPropertyables()
+                // cannot throw an exception.
             }
         }
-
         // Add attributes.
         list.addAll(_getPropertyableAttributes());
 
         return list;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
     /** Return the inequality term representing the concept function
      *  defined by the specified string.
+     *  @param actorElement The actor element for which this concept function
+     *   constraint is being defined.
      *  @param functionString The string containing the expression for
      *   the concept function.
      *  @return The concept function inequality term that implements
@@ -197,14 +174,17 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      *   correctly parsed and the concept function cannot be created.
      */
     protected ConceptFunctionInequalityTerm _getConceptFunctionTerm(
-            Object actorElement, String functionString)
+            NamedObj actorElement, String functionString)
             throws IllegalActionException {
         ArrayList<String> argumentNameList = new ArrayList<String>();
         ArrayList<InequalityTerm> argumentList = new ArrayList<InequalityTerm>();
 
+        // FIXME: This method needs to be modified if we want to support
+        // wild cards for functions with variable argument list sizes in the future.
+        
         for (StringParameter constraintExpression : _constraintTermExpressions) {
-            if (!constraintExpression.getExpression().trim().equals(IGNORE)) {
-                String actorElementName = getActorElementName(constraintExpression);
+            if (!isActorElementIgnored(constraintExpression)) {
+                String actorElementInExpressionName = getActorElementName(constraintExpression);
 
                 // Have to use a Java regular expression Pattern here
                 // because the String.regex() method doesn't match
@@ -214,74 +194,61 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                 int regexOptions = Pattern.DOTALL;
                 // Note that "\\b" matches a word boundary.
                 Pattern compiledRegex = Pattern.compile(".*\\b"
-                        + actorElementName + "\\b.*", regexOptions);
+                        + actorElementInExpressionName + "\\b.*", regexOptions);
                 Matcher regexMatcher = compiledRegex.matcher(functionString);
 
                 if (regexMatcher.matches()) {
-                    argumentNameList.add(actorElementName);
+                    argumentNameList.add(actorElementInExpressionName);
                     Object argument = null;
 
-                    if (constraintExpression.getName().endsWith(PORT_SUFFIX)) {
-                        argument = ((Entity) getComponent())
-                                .getPort(actorElementName);
-                    } else if (constraintExpression.getName().endsWith(
-                            ATTR_SUFFIX)) {
-                        argument = ((Entity) getComponent())
-                                .getAttribute(actorElementName);
+                    if (isActorElementAPort(constraintExpression)) {
+                        argument = ((ComponentEntity) getComponent())
+                                .getPort(actorElementInExpressionName);
+                    } else if (isActorElementAnAttribute(constraintExpression)) {
+                        argument = ((ComponentEntity) getComponent())
+                                .getAttribute(actorElementInExpressionName);
                     }
 
                     if (argument == null) {
-                        throw new IllegalActionException(
+                        throw new IllegalActionException(actorElement,
                                 "Error parsing actor constraint function: "
                                         + "could not find the argument named "
-                                        + actorElementName + " in the actor "
+                                        + actorElementInExpressionName + " in the actor "
                                         + getComponent() + ".");
+                    }
+                    if (argument.equals(actorElement)) {
+                        throw new IllegalActionException(actorElement,
+                                "Error parsing actor constraint function in the actor "
+                                        + getComponent() + ": "
+                                        + "the constraint concept function expression for "
+                                        + actorElement.getName() + " cannot refer to itself in the "
+                                        + "concept function.");
                     }
                     argumentList.add(getPropertyTerm(argument));
                 }
             }
         }
 
-        String argumentNames[] = new String[argumentNameList.size()];
-        System.arraycopy(argumentNameList.toArray(), 0, argumentNames, 0,
-                argumentNameList.size());
-
         InequalityTerm[] argumentTerms = new InequalityTerm[argumentList.size()];
         System.arraycopy(argumentList.toArray(), 0, argumentTerms, 0,
                 argumentList.size());
 
         Ontology functionOntology = getSolver().getOntology();
-        Ontology[] domainOntologies = new Ontology[argumentTerms.length];
-        for (int i = 0; i < domainOntologies.length; i++) {
-            domainOntologies[i] = functionOntology;
+        List<Ontology> domainOntologies = new ArrayList<Ontology>(argumentTerms.length);
+        for (int i = 0; i < argumentTerms.length; i++) {
+            domainOntologies.add(functionOntology);
         }
 
-        int numArgs = argumentNames.length;
-
         ConceptFunction function = new ExpressionConceptFunction(
-                ((NamedObj) getComponent()).getName() + "_"
-                        + ((NamedObj) actorElement).getName()
-                        + "_ConstraintFunction", numArgs, domainOntologies,
-                functionOntology, argumentNames, functionString,
+                ((ComponentEntity) getComponent()).getName() + "_"
+                        + actorElement.getName()
+                        + "_ConstraintFunction", true, domainOntologies,
+                functionOntology, argumentNameList, functionString,
                 (OntologySolverModel) getSolver().getContainedModel());
 
         ConceptFunctionInequalityTerm functionTerm = new ConceptFunctionInequalityTerm(
                 function, argumentTerms);
         return functionTerm;
-    }
-
-    /** Get the name of the element contained by the actor (either a
-     *  port or an attribute) for which the specified parameter
-     *  defines a constraint.
-     *  @param expressionParameter The string parameter that defines
-     *   the element's constraints.
-     *  @return The string name of the element (either a port or an attribute).
-     */
-    protected String getActorElementName(StringParameter expressionParameter) {
-        String elementName = expressionParameter.getName();
-        elementName = elementName.substring(0, elementName.length()
-                - SUFFIX_LENGTH);
-        return elementName;
     }
 
     /** Return the list of property-able Attributes.  This list is
@@ -296,13 +263,18 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
 
         // Add all attributes that are not set to IGNORE.
         for (StringParameter constraintExpression : _constraintTermExpressions) {
-            if (!constraintExpression.getExpression().trim().equals(IGNORE)
-                    && constraintExpression.getName().endsWith(ATTR_SUFFIX)) {
+            try {
+                if (!isActorElementIgnored(constraintExpression)
+                        && isActorElementAnAttribute(constraintExpression)) {
 
-                String attributeName = getActorElementName(constraintExpression);
-                Attribute attributeToAdd = ((Entity) getComponent())
-                        .getAttribute(attributeName);
-                result.add(attributeToAdd);
+                    String attributeName = getActorElementName(constraintExpression);
+                    Attribute attributeToAdd = ((ComponentEntity) getComponent())
+                            .getAttribute(attributeName);
+                    result.add(attributeToAdd);
+                }
+            } catch (IllegalActionException e) {
+                // FIXME: Don't know what to do here since the inherited method
+                // _getPropertyableAttributes() cannot throw an exception.
             }
         }
         return result;
@@ -318,7 +290,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
      *  @exception IllegalActionException If the constraint cannot be
      *   set due to problems parsing the expression.
      */
-    protected void _setConstraints(Object actorElement,
+    protected void _setConstraints(NamedObj actorElement,
             String constraintExpressionString) throws IllegalActionException {
 
         // The expression string should contain a set of ";" separated
@@ -329,67 +301,56 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
         for (String constraintString : singleConstraintExpressions) {
             constraintString = constraintString.trim();
 
+            List<String> dirAndRHSStrings = getConstraintDirAndRHSStrings(constraintString);
             String constraintDir = null;
-            if (constraintString.startsWith(GTE)) {
-                constraintDir = GTE;
-                constraintString = constraintString.substring(GTE.length())
-                        .trim();
-            } else if (constraintString.startsWith(LTE)) {
-                constraintDir = LTE;
-                constraintString = constraintString.substring(LTE.length())
-                        .trim();
-            } else if (constraintString.startsWith(EQ)) {
-                constraintDir = EQ;
-                constraintString = constraintString.substring(EQ.length())
-                        .trim();
-            } else {
-                throw new IllegalActionException(
+            String RHSString = null;
+            if (dirAndRHSStrings == null) {
+                throw new IllegalActionException(actorElement,
                         "Cannot set a constraint for the actor "
-                                + getComponent() + ". Unrecognized direction: "
-                                + constraintDir);
+                                + getComponent() + ". Unrecognized direction in the constraint string: "
+                                + constraintString);
+            } else {
+                constraintDir = dirAndRHSStrings.get(0);
+                RHSString = dirAndRHSStrings.get(1);
             }
 
             // First see if the right term is just the name of a Concept
-            Object rightTerm = getSolver().getOntology().getEntity(
-                    constraintString);
+            Object RHSTerm = getSolver().getOntology().getEntity(
+                    RHSString);
             String objName = null;
 
             // If the right term was not a concept, see if it is another element
             // in the actor (either a port or an attribute).
-            if (rightTerm == null) {
-                rightTerm = ((Entity) getComponent()).getPort(constraintString);
-                if (rightTerm != null) {
-                    objName = ((Port) rightTerm).getName();
+            if (RHSTerm == null) {
+                RHSTerm = ((ComponentEntity) getComponent()).getPort(RHSString);
+                if (RHSTerm != null) {
+                    objName = ((Port) RHSTerm).getName();
                 }
             }
-            if (rightTerm == null) {
-                rightTerm = ((Entity) getComponent())
-                        .getAttribute(constraintString);
-                if (rightTerm != null) {
-                    objName = ((Attribute) rightTerm).getName();
+            if (RHSTerm == null) {
+                RHSTerm = ((ComponentEntity) getComponent())
+                        .getAttribute(RHSString);
+                if (RHSTerm != null) {
+                    objName = ((Attribute) RHSTerm).getName();
                 }
             }
 
             // If the right term is an attribute or port in the actor,
             // check to make sure it is not set to be ignored for the
             // ontology analysis.
-            if (rightTerm != null && !(rightTerm instanceof Concept)) {
+            if (RHSTerm != null && !(RHSTerm instanceof Concept)) {
                 for (StringParameter constraintExpression : _constraintTermExpressions) {
-                    if (constraintExpression.getName().substring(
-                            0,
-                            constraintExpression.getName().length()
-                                    - SUFFIX_LENGTH).equals(objName)) {
-                        if (constraintExpression.getExpression().trim().equals(
-                                IGNORE)) {
-                            throw new IllegalActionException(
+                    if (getActorElementName(constraintExpression).equals(objName)) {
+                        if (isActorElementIgnored(constraintExpression)) {
+                            throw new IllegalActionException(actorElement,
                                     "Cannot set up a constraint for "
                                             + actorElement
                                             + " in actor "
                                             + getComponent()
                                             + " because the actor element "
-                                            + rightTerm
+                                            + RHSTerm
                                             + " is on the RHS of the "
-                                            + "constraint  but it is set "
+                                            + "constraint but it is set "
                                             + "to be ignored by the ontology "
                                             + "analysis.");
                         }
@@ -400,27 +361,35 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             // If the right term is neither a Concept nor an attribute
             // or port in the actor, then it must be a parseable
             // concept function definition.
-            if (rightTerm == null) {
-                rightTerm = _getConceptFunctionTerm(actorElement,
-                        constraintString);
+            if (RHSTerm == null) {
+                RHSTerm = _getConceptFunctionTerm(actorElement,
+                        RHSString);
             }
 
-            if (rightTerm == null) {
-                throw new IllegalActionException(
+            if (RHSTerm == null) {
+                throw new IllegalActionException(actorElement,
                         "Could not parse constraint expression right term "
                                 + "value for the actor " + getComponent()
-                                + ". Right term string: " + constraintString);
+                                + ". Right term string: " + RHSString);
             }
 
             if (constraintDir.equals(GTE)) {
-                setAtLeast(actorElement, rightTerm);
+                setAtLeast(actorElement, RHSTerm);
             } else if (constraintDir.equals(LTE)) {
-                setAtMost(actorElement, rightTerm);
-            } else if (constraintDir.equals(EQ)) {
-                if (rightTerm instanceof Concept) {
-                    setEquals(actorElement, (Concept) rightTerm);
+                if (RHSTerm instanceof ConceptFunctionInequalityTerm) {
+                    throw new IllegalActionException(actorElement,
+                                "When the constraint is '<=' which" +
+                    		" indicates an acceptance criterion and not a consraint for the solver, the" +
+                    		" inequality cannot have a monotonic function inequality term" +
+                    		" on its RHS.");
                 } else {
-                    setSameAs(actorElement, rightTerm);
+                    setAtMost(actorElement, RHSTerm);
+                }
+            } else if (constraintDir.equals(EQ)) {
+                if (RHSTerm instanceof Concept) {
+                    setEquals(actorElement, (Concept) RHSTerm);
+                } else {
+                    setSameAs(actorElement, RHSTerm);
                 }
             }
         }

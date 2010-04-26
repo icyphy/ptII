@@ -131,7 +131,6 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * The shared parameter that links together every solver in the
      * same model.
      */
-
     public SharedParameter ontologySolverUtilitiesWrapper;
 
     ///////////////////////////////////////////////////////////////////
@@ -322,10 +321,12 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
                 .getParseTrees();
 
         if (!parseTrees.containsKey(attribute)) {
+            String expression = null;
+            if (attribute instanceof Settable) {
+                expression = ((Settable) attribute).getExpression().trim();
+            }
 
-            String expression = ((Settable) attribute).getExpression().trim();
-
-            if (expression.length() == 0) {
+            if (expression == null || expression.length() == 0) {
                 return null;
             }
 

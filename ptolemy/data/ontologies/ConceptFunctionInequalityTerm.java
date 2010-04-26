@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.ProposedRating Green (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public class ConceptFunctionInequalityTerm implements InequalityTerm {
@@ -58,7 +58,8 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
             InequalityTerm[] inputTerms) throws IllegalActionException {
         _conceptFunction = conceptFunction;
 
-        _dependentTerms = inputTerms;
+        _dependentTerms = new InequalityTerm[inputTerms.length];
+        System.arraycopy(inputTerms, 0, _dependentTerms, 0, inputTerms.length);
         if (_dependentTerms == null) {
             throw new IllegalActionException(
                     "The inputTerms array cannot be null.");
@@ -129,13 +130,9 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
             inputConcepts.add((Concept) inputTerm.getValue());
         }
 
-        Concept[] inputConceptArray = new Concept[inputConcepts.size()];
-        System.arraycopy(inputConcepts.toArray(), 0, inputConceptArray, 0,
-                inputConcepts.size());
-
         // Return the current value of the function based on the
         // current input concepts.
-        return _conceptFunction.evaluateFunction(inputConceptArray);
+        return _conceptFunction.evaluateFunction(inputConcepts);
     }
 
     /** Return the concept variables for this inequality term. This

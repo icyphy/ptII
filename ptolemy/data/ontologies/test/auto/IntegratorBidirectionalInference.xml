@@ -21,7 +21,7 @@
         </property>
         <configure>
             <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 118, 828, 649}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={504, 118, 828, 447}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -29,48 +29,20 @@
                 </property>
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
                 </property>
-                <property name="ConceptFunctionDefinitionAttribute" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
-                    <property name="numberOfArguments" class="ptolemy.data.expr.Parameter" value="3">
-                    </property>
-                    <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="dimensionSystem">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
-                    </property>
-                    <property name="arg0Name" class="ptolemy.kernel.util.StringAttribute" value="arg0">
-                    </property>
-                    <property name="arg0DomainOntologyName" class="ptolemy.data.expr.StringParameter" value="dimensionSystem">
-                    </property>
-                    <property name="arg1Name" class="ptolemy.kernel.util.StringAttribute" value="arg1">
-                    </property>
-                    <property name="arg1DomainOntologyName" class="ptolemy.data.expr.StringParameter" value="dimensionSystem">
-                    </property>
-                    <property name="arg2Name" class="ptolemy.kernel.util.StringAttribute" value="arg2">
-                    </property>
-                    <property name="arg2DomainOntologyName" class="ptolemy.data.expr.StringParameter" value="dimensionSystem">
-                    </property>
-                </property>
-                <property name="BinaryOperationMonotonicFunctionDefinition" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
-                    <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="dimensionSystem">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 135.0]">
-                    </property>
-                </property>
-                <property name="MultiplyConceptFunctionDefinition" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+                <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
                     <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == Unknown || factor2 == Unknown ? Unknown :&#10; (factor1 == Velocity &amp;&amp; factor2 == Time) || (factor1 == Time &amp;&amp; factor2 == Velocity) ? Position :&#10;  (factor1 == Acceleration &amp;&amp; factor2 == Time) || (factor1 == Time &amp;&amp; factor2 == Acceleration) ? Velocity :&#10;   factor1 == Dimensionless ? factor2 :&#10;    factor2 == Dimensionless ? factor1 :&#10;     Conflict">
                     </property>
                     <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="dimensionSystem">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 200.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 70.0]">
                     </property>
                 </property>
-                <property name="DivideConceptFunctionDefinition" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
-                    <property name="functionIsMonotonic" class="ptolemy.data.expr.Parameter" value="true">
-                    </property>
+                <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
                     <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == Unknown || divisor == Unknown ? Unknown :&#10; dividend == Velocity &amp;&amp; divisor == Time ? Acceleration :&#10;  dividend == Position &amp;&amp; divisor == Time ? Velocity :&#10;   (dividend == Position &amp;&amp; divisor == Velocity) || (dividend == Velocity &amp;&amp; divisor == Acceleration) ? Time :&#10;    divisor == Dimensionless ? dividend :&#10;     dividend == divisor ? Dimensionless :&#10;      Conflict">
                     </property>
                     <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="dimensionSystem">
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 200.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 70.0]">
                     </property>
                 </property>
                 <property name="ActorConstraintsDefinitionAttribute" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
@@ -84,7 +56,7 @@
 </svg>
 </configure>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 250.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 120.0]">
                     </property>
                     <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= value">
                     </property>
@@ -114,7 +86,7 @@ _
 </svg>
 </configure>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 335.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 205.0]">
                     </property>
                     <property name="plusPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
                     </property>
@@ -141,7 +113,7 @@ _
 </svg>
 </configure>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 265.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 135.0]">
                     </property>
                     <property name="impulsePortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
                     </property>
@@ -212,7 +184,7 @@ _
 </svg>
 </configure>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 335.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 205.0]">
                     </property>
                     <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= Time">
                     </property>
@@ -238,7 +210,7 @@ _
 </svg>
 </configure>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 405.0}">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 275.0]">
                     </property>
                     <property name="multiplyPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= multiplyFunction(output, divide)">
                     </property>
@@ -258,7 +230,7 @@ _
 </svg>
 </configure>
                     </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 410.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 280.0]">
                     </property>
                     <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= divideFunction(output, factor)">
                     </property>
@@ -270,7 +242,7 @@ _
                     </property>
                 </property>
                 <entity name="dimensionSystem" class="ptolemy.data.ontologies.lattice.adapters.dimensionSystem.dimensionSystem">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 85.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 90.0]">
                     </property>
                 </entity>
             </entity>
@@ -333,16 +305,28 @@ _
             <property name="input"/>
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration">
             </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Acceleration">
+            </property>
         </port>
         <port name="state" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Unknown">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Unknown">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -357,6 +341,10 @@ _
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Acceleration">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.6,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Acceleration">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -387,6 +375,10 @@ _
             <property name="input"/>
             <property name="multiport"/>
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Velocity">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Velocity">
             </property>
         </port>
     </entity>

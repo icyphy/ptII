@@ -27,7 +27,9 @@
  */
 package ptolemy.data.ontologies.lattice;
 
-import ptolemy.data.expr.StringParameter;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -61,18 +63,10 @@ public class MultiplyConceptFunctionDefinition extends
             NameDuplicationException {
         super(container, name);
 
-        conceptFunctionName.setExpression("multiplyFunction");
-        conceptFunctionName.setVisibility(Settable.NOT_EDITABLE);
-
-        arg0Name.setExpression("factor1");
-        arg0Name.setVisibility(Settable.NOT_EDITABLE);
-        arg1Name.setExpression("factor2");
-        arg1Name.setVisibility(Settable.NOT_EDITABLE);
-
-        outputRangeOntologyName.setVisibility(Settable.NONE);
-        for (StringParameter domainOntologyName : _argumentDomainOntologies) {
-            domainOntologyName.setVisibility(Settable.NONE);
-        }
+        Token[] argNames = new Token[]{(Token) new StringToken("factor1"),
+                (Token) new StringToken("factor2")};
+        argumentNames.setToken(new ArrayToken(argNames));
+        argumentNames.setVisibility(Settable.NOT_EDITABLE);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"60\" height=\"20\" "

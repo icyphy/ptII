@@ -24,6 +24,7 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.data.BooleanToken;
@@ -35,7 +36,6 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// ExpressionConceptFunctionParseTreeEvaluator
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.StringAttribute;
  @author Charles Shelton
  @version $Id$
  @since Ptolemy II 8.0
- @Pt.ProposedRating Red (cshelton)
+ @Pt.ProposedRating Green (cshelton)
  @Pt.AcceptedRating Red (cshelton)
  @see ptolemy.data.expr.ASTPtRootNode
  */
@@ -66,13 +66,13 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @param argumentDomainOntologies The array of ontologies that
      *   represent the concept domain for each input concept argument.
      */
-    public ExpressionConceptFunctionParseTreeEvaluator(String[] argumentNames,
-            Concept[] argumentConceptValues, OntologySolverModel solverModel,
-            Ontology[] argumentDomainOntologies) {
-        _argumentNames = argumentNames;
-        _argumentConceptValues = argumentConceptValues;
+    public ExpressionConceptFunctionParseTreeEvaluator(List<String> argumentNames,
+            List<Concept> argumentConceptValues, OntologySolverModel solverModel,
+            List<Ontology> argumentDomainOntologies) {
+        _argumentNames = new LinkedList<String>(argumentNames);
+        _argumentConceptValues = new LinkedList<Concept>(argumentConceptValues);
         _solverModel = solverModel;
-        _domainOntologies = argumentDomainOntologies;
+        _domainOntologies = new LinkedList<Ontology>(argumentDomainOntologies);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,9 +93,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
 
         ConceptFunction function = null;
         for (Object functionDef : conceptFunctionDefs) {
-            if (((StringAttribute) ((ConceptFunctionDefinitionAttribute) functionDef)
-                    .getAttribute("conceptFunctionName")).getExpression()
-                    .equals(functionName)) {
+            if (((ConceptFunctionDefinitionAttribute) functionDef)
+                    .getName().equals(functionName)) {
                 function = ((ConceptFunctionDefinitionAttribute) functionDef)
                         .getConceptFunction();
             }
@@ -111,7 +110,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
 
-        if (argCount != function.getNumberOfArguments()) {
+        if (function.isNumberOfArgumentsFixed() &&
+                argCount != function.getNumberOfArguments()) {
             throw new IllegalActionException(
                     "The concept function "
                             + functionName
@@ -121,25 +121,25 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
                             + ", actual # arguments: " + argCount);
         }
 
-        Concept[] argValues = new Concept[argCount];
+        List<Concept> argValues = new LinkedList<Concept>();
 
         // First try to find a signature using argument token values.
         for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
             _evaluateChild(node, i + 1);
 
-            argValues[i] = null;
-            ptolemy.data.Token token = _evaluatedChildToken;
+            Concept tempConcept = null;
+            ptolemy.data.StringToken token = (StringToken) _evaluatedChildToken;
             for (Ontology domainOntology : _domainOntologies) {
-                Concept tempConcept = (Concept) domainOntology
-                        .getEntity(((StringToken) token).stringValue());
+                tempConcept = (Concept) domainOntology
+                        .getEntity(token.stringValue());
                 if (tempConcept != null) {
-                    argValues[i] = tempConcept;
+                    argValues.add(tempConcept);
                     break;
                 }
             }
 
-            if (argValues[i] == null) {
+            if (tempConcept == null) {
                 throw new IllegalActionException(
                         "Cannot find Concept named "
                                 + token
@@ -226,10 +226,10 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
 
         // If the node is an argument in the function evaluate it to
         // the name of the concept it holds.
-        for (int i = 0; i < _argumentNames.length; i++) {
-            if (nodeLabel.equals(_argumentNames[i])) {
+        for (int i = 0; i < _argumentNames.size(); i++) {
+            if (nodeLabel.equals(_argumentNames.get(i))) {
                 _evaluatedChildToken = new StringToken(
-                        _argumentConceptValues[i].getName());
+                        _argumentConceptValues.get(i).getName());
                 break;
             }
         }
@@ -262,24 +262,24 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The array of ontologies that specify the domain for each input
+    /** The list of ontologies that specify the domain for each input
      *  argument to the concept function defined by the parsed
      *  expression.
      */
-    protected Ontology[] _domainOntologies;
+    protected List<Ontology> _domainOntologies;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The array of concept values to which the arguments are
+    /** The list of concept values to which the arguments are
      *  currently set.
      */
-    private Concept[] _argumentConceptValues;
+    private List<Concept> _argumentConceptValues;
 
-    /** The array of argument names that are used in the concept
+    /** The list of argument names that are used in the concept
      *  function expression.
      */
-    private String[] _argumentNames;
+    private List<String> _argumentNames;
 
     /** The ontology solver model that contains definitions of other
      *  concept functions that could be called in this expression.

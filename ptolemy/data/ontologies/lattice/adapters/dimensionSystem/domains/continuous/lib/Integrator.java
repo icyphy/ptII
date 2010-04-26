@@ -27,6 +27,7 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.dimensionSystem.domains.continuous.lib;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ptolemy.data.ontologies.Concept;
@@ -64,6 +65,8 @@ public class Integrator extends DimensionSystemAdapter {
             throws IllegalActionException {
 
         super(solver, actor, false);
+        _domainOntologiesList = new ArrayList<Ontology>(1);
+        _domainOntologiesList.add(_dimensionSystemOntology);
     }
 
     /** Return the constraint list for the adapter.
@@ -101,6 +104,11 @@ public class Integrator extends DimensionSystemAdapter {
 
         return super.constraintList();
     }
+    
+    /** The list of domain ontologies for the integrator's
+     *  concept functions.
+     */
+    private List<Ontology> _domainOntologiesList;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -116,8 +124,8 @@ public class Integrator extends DimensionSystemAdapter {
          *  @throws IllegalActionException If the ConceptMonotonicFunction class cannot be initialized.
          */
         public FunctionForStateOutput() throws IllegalActionException {
-            super("functionForStateOutput", 1,
-                    new Ontology[] { _dimensionSystemOntology },
+            super("functionForStateOutput", true,
+                    _domainOntologiesList,
                     _dimensionSystemOntology);
         }
 
@@ -129,10 +137,10 @@ public class Integrator extends DimensionSystemAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function.
          */
-        protected Concept _evaluateFunction(Concept[] inputConceptValues)
+        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
 
-            Concept derivativeProperty = inputConceptValues[0];
+            Concept derivativeProperty = inputConceptValues.get(0);
 
             if (derivativeProperty == _velocityConcept) {
                 return _positionConcept;
@@ -167,8 +175,8 @@ public class Integrator extends DimensionSystemAdapter {
          *  @throws IllegalActionException If the ConceptMonotonicFunction class cannot be initialized.
          */
         public FunctionForDerivativeInput() throws IllegalActionException {
-            super("functionForDerivativeInput", 1,
-                    new Ontology[] { _dimensionSystemOntology },
+            super("functionForDerivativeInput", true,
+                    _domainOntologiesList,
                     _dimensionSystemOntology);
         }
 
@@ -180,10 +188,10 @@ public class Integrator extends DimensionSystemAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function.
          */
-        protected Concept _evaluateFunction(Concept[] inputConceptValues)
+        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
 
-            Concept stateProperty = inputConceptValues[0];
+            Concept stateProperty = inputConceptValues.get(0);
 
             if (stateProperty == _positionConcept) {
                 return _velocityConcept;

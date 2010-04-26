@@ -85,8 +85,7 @@ public class OntologyMoMLHandler extends Attribute {
                 Concept concept = solver
                         .getResolvedConcept(propertyable, false);
                 if (concept != null
-                        || (propertyable instanceof NamedObj
-                                && (((NamedObj) propertyable)
+                        || ((((NamedObj) propertyable)
                                         .getAttribute("_showInfo") != null) || (((NamedObj) propertyable)
                                 .getAttribute("_highlightColor") != null))) {
                     String request = "<group>";

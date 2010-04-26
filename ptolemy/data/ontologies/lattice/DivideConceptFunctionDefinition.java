@@ -27,7 +27,9 @@
  */
 package ptolemy.data.ontologies.lattice;
 
-import ptolemy.data.expr.StringParameter;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -60,19 +62,11 @@ public class DivideConceptFunctionDefinition extends
             String name) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
-
-        conceptFunctionName.setExpression("divideFunction");
-        conceptFunctionName.setVisibility(Settable.NOT_EDITABLE);
-
-        arg0Name.setExpression("dividend");
-        arg0Name.setVisibility(Settable.NOT_EDITABLE);
-        arg1Name.setExpression("divisor");
-        arg1Name.setVisibility(Settable.NOT_EDITABLE);
-
-        outputRangeOntologyName.setVisibility(Settable.NONE);
-        for (StringParameter domainOntologyName : _argumentDomainOntologies) {
-            domainOntologyName.setVisibility(Settable.NONE);
-        }
+        
+        Token[] argNames = new Token[]{(Token) new StringToken("dividend"),
+                (Token) new StringToken("divisor")};
+        argumentNames.setToken(new ArrayToken(argNames));
+        argumentNames.setVisibility(Settable.NOT_EDITABLE);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"60\" height=\"20\" "

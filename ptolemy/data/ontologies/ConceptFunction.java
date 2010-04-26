@@ -1,5 +1,4 @@
-/*
- * A base class representing a concept function for ontology constraints.
+/* A base class representing a concept function for ontology constraints.
  * 
  * Copyright (c) 1998-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -23,29 +22,36 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// ConceptFunction
 
-/** This is the base class for concept functions that are used
- *  for ontology constraints. Derived classes must implement the
- *  evaluateFunction method to provide the output concept given an
- *  input array of concepts.
+/** The base class for concept functions that are used
+ *  for ontology constraints. A concept function is a function over a set of
+ *  concept values in an ontology.  It takes a list of input concepts from specified
+ *  ontologies and returns an output concept from a specified ontology. The concept
+ *  inputs and outputs need not necessarily be from the same ontology.
+ *  Derived classes must implement the protected _evaluateFunction method
+ *  to provide the output concept given an input array of concepts.
  * 
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.0
- *  @Pt.ProposedRating Red (cshelton)
+ *  @Pt.ProposedRating Green (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
 public abstract class ConceptFunction {
 
-    /** Initialize the concept function with the number of arguments it takes
+    /** Create the concept function with the number of arguments it takes
      *  and the ontologies from which input and output concepts can be taken.
      *  @param name The name of the concept function.
-     *  @param numArgs The number of arguments to be passed into this function.
-     *  @param argumentDomainOntologies The array of ontologies that
+     *  @param numArgsIsFixed True if the number of arguments for this function
+     *   is fixed and cannot change, false otherwise.
+     *  @param argumentDomainOntologies The list of ontologies that
      *   represent the concept domain for each input concept argument.
      *  @param outputRangeOntology The ontology that represents the
      *   range of output concepts for this concept function.
@@ -53,12 +59,12 @@ public abstract class ConceptFunction {
      *   or the length of the array of domain ontologies does not
      *   match the number of arguments for the function.
      */
-    public ConceptFunction(String name, int numArgs,
-            Ontology[] argumentDomainOntologies, Ontology outputRangeOntology)
+    public ConceptFunction(String name, boolean numArgsIsFixed,
+            List <Ontology> argumentDomainOntologies, Ontology outputRangeOntology)
             throws IllegalActionException {
         _name = name;
-        _numArgs = numArgs;
-        _argumentDomainOntologies = argumentDomainOntologies;
+        _numArgsIsFixed = numArgsIsFixed;
+        _argumentDomainOntologies = new LinkedList(argumentDomainOntologies);
         _outputRangeOntology = outputRangeOntology;
 
         if (_outputRangeOntology == null) {
@@ -69,14 +75,6 @@ public abstract class ConceptFunction {
         if (_argumentDomainOntologies == null) {
             throw new IllegalActionException(
                     "The argumentDomainOntologies cannot be null.");
-        } else if (_argumentDomainOntologies.length != numArgs) {
-            throw new IllegalActionException(
-                    "The size of the array of domain ontologies for the concept "
-                            + "function's argument array does not match the given "
-                            + "number of arguments for the concept "
-                            + "function " + this + ": numArgs = " + _numArgs
-                            + ", size of domain ontologies array = "
-                            + _argumentDomainOntologies.length);
         }
     }
 
@@ -84,44 +82,54 @@ public abstract class ConceptFunction {
     ////                         public methods                    ////
 
     /** Return the output of the concept function based on the concept inputs.
-     *  @param inputArgumentArray The array of concept inputs to the function.
+     *  @param inputArgumentList The list of concept inputs to the function.
      *  @return The concept output result of the function.
      *  @exception IllegalActionException If there is an error with
      *   the input argument array or evaluating the function.
      */
-    public Concept evaluateFunction(Concept[] inputArgumentArray)
+    public Concept evaluateFunction(List<Concept> inputArgumentList)
             throws IllegalActionException {
-        if (inputArgumentArray == null) {
+        if (inputArgumentList == null) {
             throw new IllegalActionException(
                     "The input array to the ConceptFunction " + this
                             + " is null.");
-        } else if (inputArgumentArray.length != _numArgs) {
-            throw new IllegalActionException(
+            
+        // If the function has a fixed number of arguments, check to make sure
+        // the input list has the right number of arguments and also check
+        // that each argument is contained by its domain ontology.
+        // If the number of arguments is not fixed, then we cannot
+        // check the domain ontologies here, and the derived class must do
+        // its own check depending on how it implements a variable argument
+        // concept function.
+        } else if (_numArgsIsFixed) {
+            if (inputArgumentList.size() != getNumberOfArguments()) {
+                throw new IllegalActionException(
                     "The input array to the ConceptFunction "
                             + this
                             + " has the "
                             + "wrong number of arguments. Expected number of arguments: "
-                            + _numArgs + ", size of the input argument array: "
-                            + inputArgumentArray.length);
-        } else {
-            // Check each concept argument value to make sure it is either null or
-            // contained in the ontology domain for that argument.
-            int index = 0;
-            for (Concept argument : inputArgumentArray) {
-                if (argument != null
-                        && !_argumentDomainOntologies[index].entityList(
+                            + getNumberOfArguments() + ", size of the input argument array: "
+                            + inputArgumentList.size());
+            } else {
+                // Check each concept argument value to make sure it is either null or
+                // contained in the ontology domain for that argument.
+                int index = 0;
+                for (Concept argument : inputArgumentList) {
+                    if (argument != null
+                        && !_argumentDomainOntologies.get(index).entityList(
                                 Concept.class).contains(argument)) {
-                    throw new IllegalActionException("The input value "
+                        throw new IllegalActionException("The input value "
                             + argument + " at argument index " + index
                             + " to the ConceptFunction " + this
                             + " is not within the expected domain ontology "
-                            + _argumentDomainOntologies[index] + ".");
+                            + _argumentDomainOntologies.get(index) + ".");
+                    }
+                    index++;
                 }
-                index++;
             }
         }
 
-        Concept outputValue = _evaluateFunction(inputArgumentArray);
+        Concept outputValue = _evaluateFunction(inputArgumentList);
 
         // Check that the output is either null or in the output range ontology
         if (outputValue != null
@@ -141,7 +149,7 @@ public abstract class ConceptFunction {
      *  @return The array of ontologies that represent the domains for
      *   the input arguments to the concept function.
      */
-    public Ontology[] getArgumentDomainOntologies() {
+    public List<Ontology> getArgumentDomainOntologies() {
         return _argumentDomainOntologies;
     }
 
@@ -156,7 +164,7 @@ public abstract class ConceptFunction {
      *  @return The number of arguments taken as input for this function.
      */
     public int getNumberOfArguments() {
-        return _numArgs;
+        return _argumentDomainOntologies.size();
     }
 
     /** Return the ontology that represents the range of concepts that can be
@@ -182,6 +190,15 @@ public abstract class ConceptFunction {
         // to validate monotonicity for a concept function.
         return true;
     }
+    
+    /** Return true if this concept function has a fixed number of
+     *  arguments, false otherwise.
+     *  @return True if the function has a fixed number of arguments,
+     *   false otherwise. 
+     */
+    public boolean isNumberOfArgumentsFixed() {
+        return _numArgsIsFixed;
+    }
 
     /** Return a string representing the name of this concept function.
      *  @return A string representing the name of this concept function.
@@ -196,26 +213,30 @@ public abstract class ConceptFunction {
     /** Return the output of the concept function based on the concept
      *  inputs. Derived classes must implement this method to provide
      *  the definition of the concept function.
-     *  @param inputConceptValues The array of concept inputs to the function.
+     *  @param inputConceptValues The list of concept inputs to the function.
      *  @return The concept output result of the function.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
-    protected abstract Concept _evaluateFunction(Concept[] inputConceptValues)
+    protected abstract Concept _evaluateFunction(List<Concept> inputConceptValues)
             throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The array of ontologies that specify the domain for
-     *  each input argument to the concept function.
+    /** The list of ontologies that specify the domain for
+     *  each input argument to the concept function. The size of this
+     *  list indicates the number of arguments for the function
+     *  if it has a fixed argument list.
      */
-    protected Ontology[] _argumentDomainOntologies;
+    protected List<Ontology> _argumentDomainOntologies;
 
     /** The name of the concept function. */
     protected String _name;
 
-    /** The number of arguments for this concept function. */
-    protected int _numArgs;
+    /** Flag that indicates whether or not the number of arguments for this
+     *  concept function is fixed or variable.
+     */
+    protected boolean _numArgsIsFixed;
 
     /** The ontology that specifies the range of concepts that can be output
      *  by this concept function.

@@ -27,8 +27,13 @@
  */
 package ptolemy.data.ontologies.lattice;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -63,35 +68,24 @@ public class BinaryOperationMonotonicFunctionDefinition extends
             CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        numberOfArguments.setExpression("2");
-        numberOfArguments.setVisibility(Settable.NONE);
+        
+        // Since a binary function always has 2 arguments, its
+        // number of arguments is fixed.
+        numberOfArgumentsIsFixed.setVisibility(Settable.NONE);
 
         // This attribute must define a monotonic concept function.
-        functionIsMonotonic.setExpression("true");
-        functionIsMonotonic.setVisibility(Settable.NOT_EDITABLE);
+        constrainFunctionToBeMonotonic.setExpression("true");
+        constrainFunctionToBeMonotonic.setVisibility(Settable.NOT_EDITABLE);
 
         functionOntologyName = new StringParameter(this, "functionOntologyName");
         functionOntologyName.setExpression("");
-
-        conceptFunctionName.setExpression("binaryOperationFunction");
-
-        _argumentNames.clear();
-        _argumentDomainOntologies.clear();
-        arg0Name = new StringAttribute(this, "arg0Name");
-        arg0Name.setExpression("arg0");
-        _argumentNames.add(0, arg0Name);
-        _argumentDomainOntologies.add(0, new StringParameter(this,
-                "arg0DomainOntology"));
-        arg1Name = new StringAttribute(this, "arg1Name");
-        arg1Name.setExpression("arg1");
-        _argumentNames.add(1, arg1Name);
-        _argumentDomainOntologies.add(1, new StringParameter(this,
-                "arg1DomainOntology"));
+        
+        // Constrain argument list to have only 2 arguments.
+        argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 2));
+        argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING, 2));
+        argumentDomainOntologies.setVisibility(Settable.NONE);
 
         outputRangeOntologyName.setVisibility(Settable.NONE);
-        for (StringParameter domainOntologyName : _argumentDomainOntologies) {
-            domainOntologyName.setVisibility(Settable.NONE);
-        }
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"60\" height=\"20\" "
@@ -125,12 +119,12 @@ public class BinaryOperationMonotonicFunctionDefinition extends
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == functionOntologyName) {
-            outputRangeOntologyName.setExpression(functionOntologyName
-                    .getExpression());
-            for (StringParameter domainOntologyName : _argumentDomainOntologies) {
-                domainOntologyName.setExpression(functionOntologyName
-                        .getExpression());
-            }
+            StringToken ontologyNameToken = (StringToken) functionOntologyName.getToken();
+            outputRangeOntologyName.setToken(ontologyNameToken);
+            
+            ArrayToken domainOntologiesToken =
+                new ArrayToken(new Token[]{(Token) ontologyNameToken, (Token) ontologyNameToken});
+            argumentDomainOntologies.setToken(domainOntologiesToken);
         }
 
         super.attributeChanged(attribute);

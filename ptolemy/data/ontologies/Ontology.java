@@ -88,7 +88,7 @@ public class Ontology extends CompositeEntity {
     public ConceptGraph getGraph() {
         if (workspace().getVersion() != _graphVersion) {
             // Construct the graph.
-            _graph = new ConceptGraph(this);
+            _graph = new ConceptGraph();
             List<Concept> concepts = entityList(Concept.class);
             for (Concept concept : concepts) {
                 _graph.addNodeWeight(concept);
