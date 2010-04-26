@@ -7,7 +7,7 @@ $actorSymbol(valueArray) = $new(Array($size(input), 0));
 /**/
 
 /*** fillArray($channel) ***/
-((Array)($actorSymbol(valueArray).payload)).elements[$channel] = $get((Token) input#$channel);
+((Array)($actorSymbol(valueArray).payload)).elements[$channel] = $convert_$cgType(input)_Token($get(input#$channel));
 /**/
 
 /*** sendOutput ***/
