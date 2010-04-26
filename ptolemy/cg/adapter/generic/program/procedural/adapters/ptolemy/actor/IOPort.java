@@ -28,6 +28,7 @@
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.data.type.BaseType;
@@ -38,50 +39,58 @@ import ptolemy.kernel.util.IllegalActionException;
 ////IOPort
 
 /**
-Code generator adapter for {@link ptolemy.actor.IOPort}.
-
-@author Man-Kit Leung
-@version $Id$
-@since Ptolemy II 8.0
-@Pt.ProposedRating Red (mankit)
-@Pt.AcceptedRating Red (mankit)
+ * Code generator adapter for {@link ptolemy.actor.IOPort}.
+ * 
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
  */
 
 public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         PortCodeGenerator {
 
-    /** Construct the code generator adapter
-     *  for the given IOPort.
-     *  @param component The IOPort.
+    /**
+     * Construct the code generator adapter for the given IOPort.
+     * 
+     * @param component
+     *            The IOPort.
      */
     public IOPort(ptolemy.actor.IOPort component) {
         super(component);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    // /////////////////////////////////////////////////////////////////
+    // // public methods ////
 
-    /** 
-     * Generate code for replacing the get() macro.
-     * This delegates to the receiver adapter for the specified
-     * channel and asks it to generate the get code.
+    /**
+     * Generate code for replacing the get() macro. This delegates to the
+     * receiver adapter for the specified channel and asks it to generate the
+     * get code.
      * 
-     * @param channel The channel for which to generate the get code.
-     * @param offset The offset in the array representation of the port.
+     * @param channel
+     *            The channel for which to generate the get code.
+     * @param offset
+     *            The offset in the array representation of the port.
      * @return The code that gets data from the specified channel.
-     * @exception IllegalActionException If the receiver adapter is
-     *  not found or it encounters an error while generating the
-     *  get code.
+     * @exception IllegalActionException
+     *                If the receiver adapter is not found or it encounters an
+     *                error while generating the get code.
      */
     public String generateGetCode(String channel, String offset)
             throws IllegalActionException {
         Receiver[][] receivers = getReceiverAdapters();
         int channelIndex = Integer.parseInt(channel);
-        // FIXME: take care of the offset, and why are we getting all the receivers all the time?
+        // FIXME: take care of the offset, and why are we getting all the
+        // receivers all the time?
         // FIXME: Don't know why would a channel have more than one relations
-        // Thus for now to make sure we don't run into such problems, have a check to ensure
-        // this is not true. IF THIS IS TRUE HOWEVER, then the generated code in the receivers would
-        // need to change to ensure no name collisions between multiple receivers within the same 
+        // Thus for now to make sure we don't run into such problems, have a
+        // check to ensure
+        // this is not true. IF THIS IS TRUE HOWEVER, then the generated code in
+        // the receivers would
+        // need to change to ensure no name collisions between multiple
+        // receivers within the same
         // channel would occur.
         if (receivers.length != 0) {
             if (receivers[channelIndex].length > 1) {
@@ -94,6 +103,12 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
             }
         }
         Type type = ((TypedIOPort) getComponent()).getType();
+        if (((TypedIOPort) getComponent()) instanceof ParameterPort) {
+            if (type == BaseType.STRING) {  //TODO: what about other types?
+                return "\"\"";
+            }
+        }
+        
         String typeString = getCodeGenerator().codeGenType(type);
         // The component port is not connected to anything, so get should
         // always return something trivial;
@@ -103,31 +118,34 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                 + typeString + "(0)";
     }
 
-    /** 
-     * Generate code to check if the receiver has a token.   
-     * This delegates to the receiver adapter for the specified
-     * channel and asks it to generate the hasToken code.
+    /**
+     * Generate code to check if the receiver has a token. This delegates to the
+     * receiver adapter for the specified channel and asks it to generate the
+     * hasToken code.
      * 
-     * @param channel The channel for which to generate the hasToken code.
-     * @param offset The offset in the array representation of the port.
-     * @return The code that checks whether there is data in the 
-     *  specified channel.
-     * @exception IllegalActionException If the receiver adapter is
-     *  not found or it encounters an error while generating the
-     *  hasToken code.
+     * @param channel
+     *            The channel for which to generate the hasToken code.
+     * @param offset
+     *            The offset in the array representation of the port.
+     * @return The code that checks whether there is data in the specified
+     *         channel.
+     * @exception IllegalActionException
+     *                If the receiver adapter is not found or it encounters an
+     *                error while generating the hasToken code.
      */
     public String generateHasTokenCode(String channel, String offset)
             throws IllegalActionException {
         Receiver[][] receivers = getReceiverAdapters();
         int channelNumber = 0;
-        //        try {
+        // try {
         channelNumber = Integer.parseInt(channel);
-        //        } catch (NumberFormatException e) {
-        //            if receivers
-        //            return Receiver.generateStaticGetCode(offset, channel, getName(), 
-        //                    getCodeGenerator().codeGenType(((TypedIOPort)getComponent()).getType()));
-        //        }
-        // FIXME: take care of the offset, and why are we getting all the receivers all the time?
+        // } catch (NumberFormatException e) {
+        // if receivers
+        // return Receiver.generateStaticGetCode(offset, channel, getName(),
+        // getCodeGenerator().codeGenType(((TypedIOPort)getComponent()).getType()));
+        // }
+        // FIXME: take care of the offset, and why are we getting all the
+        // receivers all the time?
         if (receivers.length != 0) {
             if (receivers[channelNumber].length > 1) {
                 throw new IllegalActionException(
@@ -143,25 +161,29 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         return "false";
     }
 
-    /** 
-     * Generate code for replacing the send() macro.
-     * This delegates to the receiver adapter for the specified
-     * channel and asks it to generate the send code.
+    /**
+     * Generate code for replacing the send() macro. This delegates to the
+     * receiver adapter for the specified channel and asks it to generate the
+     * send code.
      * 
-     * @param channel The channel for which to generate the send code.
-     * @param offset The offset in the array representation of the port.
-     * @param dataToken The token to be sent.
+     * @param channel
+     *            The channel for which to generate the send code.
+     * @param offset
+     *            The offset in the array representation of the port.
+     * @param dataToken
+     *            The token to be sent.
      * @return The code that sends data to the specified channel.
-     * @exception IllegalActionException If the receiver adapter is
-     *  not found or it encounters an error while generating the
-     *  send code.
+     * @exception IllegalActionException
+     *                If the receiver adapter is not found or it encounters an
+     *                error while generating the send code.
      */
     public String generatePutCode(String channel, String offset,
             String dataToken) throws IllegalActionException {
 
         Receiver[][] remoteReceivers = getRemoteReceiverAdapters();
         int channelIndex = Integer.parseInt(channel);
-        // FIXME: take care of the offset, and why are we getting all the receivers all the time?
+        // FIXME: take care of the offset, and why are we getting all the
+        // receivers all the time?
         if ((remoteReceivers == null)
                 || (remoteReceivers.length <= channelIndex)
                 || (remoteReceivers[channelIndex] == null)) {
@@ -177,14 +199,15 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         return code.toString();
     }
 
-    /** Generate the initialize code for this IOPort.
-     *  The initialize code is generated by appending the
-     *  initialize code for each receiver contained by this
-     *  IOPort.
-     *  @return The generated initialize code.
-     *  @exception IllegalActionException If an error occurs when
-     *  getting the receiver adapters or generating their initialize
-     *  code.
+    /**
+     * Generate the initialize code for this IOPort. The initialize code is
+     * generated by appending the initialize code for each receiver contained by
+     * this IOPort.
+     * 
+     * @return The generated initialize code.
+     * @exception IllegalActionException
+     *                If an error occurs when getting the receiver adapters or
+     *                generating their initialize code.
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -199,77 +222,78 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         return code.toString();
     }
 
-    //    /** Generate the preinitialize code for this IOPort.
-    //     *  The preinitialize code is generated by appending the
-    //     *  preinitialize code for each receiver contained by this
-    //     *  IOPort.
-    //     *  @return The generated preinitialize code.
-    //     *  @exception IllegalActionException If an error occurs
-    //     *  when getting the receiver adapters or 
-    //     *  generating their preinitialize code.
-    //     */
-    //    public String generatePreinitializeCode() throws IllegalActionException {
-    //        StringBuffer code = new StringBuffer();
+    // /** Generate the preinitialize code for this IOPort.
+    // * The preinitialize code is generated by appending the
+    // * preinitialize code for each receiver contained by this
+    // * IOPort.
+    // * @return The generated preinitialize code.
+    // * @exception IllegalActionException If an error occurs
+    // * when getting the receiver adapters or
+    // * generating their preinitialize code.
+    // */
+    // public String generatePreinitializeCode() throws IllegalActionException {
+    // StringBuffer code = new StringBuffer();
     //
-    //        Receiver[][] receivers = getReceiverAdapters();
+    // Receiver[][] receivers = getReceiverAdapters();
     //
-    //        for (int i = 0; i < receivers.length; i++) {
-    //            for (int j = 0; j < receivers[i].length; j++) {
-    //                code.append(receivers[i][j].generatePreinitializeCode());
-    //            }
-    //        }
-    //        return code.toString();
-    //    }
+    // for (int i = 0; i < receivers.length; i++) {
+    // for (int j = 0; j < receivers[i].length; j++) {
+    // code.append(receivers[i][j].generatePreinitializeCode());
+    // }
+    // }
+    // return code.toString();
+    // }
 
-    //    /** Generate the wrapup code for this IOPort.
-    //     *  The wrapup code is generated by appending the
-    //     *  wrapup code for each receiver contained by this
-    //     *  IOPort.
-    //     *  @return The generated wrapup code.
-    //     *  @exception IllegalActionException If an error occurs
-    //     *  when getting the receiver adapters or 
-    //     *  generating their wrapup code.
-    //     */
-    //    public String generateWrapupCode() throws IllegalActionException {
-    //        StringBuffer code = new StringBuffer();
+    // /** Generate the wrapup code for this IOPort.
+    // * The wrapup code is generated by appending the
+    // * wrapup code for each receiver contained by this
+    // * IOPort.
+    // * @return The generated wrapup code.
+    // * @exception IllegalActionException If an error occurs
+    // * when getting the receiver adapters or
+    // * generating their wrapup code.
+    // */
+    // public String generateWrapupCode() throws IllegalActionException {
+    // StringBuffer code = new StringBuffer();
     //
-    //        Receiver[][] receivers = getReceiverAdapters();
+    // Receiver[][] receivers = getReceiverAdapters();
     //
-    //        for (int i = 0; i < receivers.length; i++) {
-    //            for (int j = 0; j < receivers[i].length; j++) {
-    //                code.append(receivers[i][j].generateWrapupCode());
-    //            }
-    //        }
-    //        return code.toString();
-    //    }
+    // for (int i = 0; i < receivers.length; i++) {
+    // for (int j = 0; j < receivers[i].length; j++) {
+    // code.append(receivers[i][j].generateWrapupCode());
+    // }
+    // }
+    // return code.toString();
+    // }
 
-    //    /** Generate the shared code for this IOPort.
-    //     *  The shared code is generated by appending the
-    //     *  shared code for each receiver contained by this
-    //     *  IOPort.
-    //     *  @return The generated shared code.
-    //     *  @exception IllegalActionException If an error occurs
-    //     *  when getting the receiver adapters or 
-    //     *  generating their shared code.
-    //     */
-    //    public Set getSharedCode() throws IllegalActionException {
-    //        Set code = new HashSet();
+    // /** Generate the shared code for this IOPort.
+    // * The shared code is generated by appending the
+    // * shared code for each receiver contained by this
+    // * IOPort.
+    // * @return The generated shared code.
+    // * @exception IllegalActionException If an error occurs
+    // * when getting the receiver adapters or
+    // * generating their shared code.
+    // */
+    // public Set getSharedCode() throws IllegalActionException {
+    // Set code = new HashSet();
     //
-    //        Receiver[][] receivers = getReceiverAdapters();
+    // Receiver[][] receivers = getReceiverAdapters();
     //
-    //        for (int i = 0; i < receivers.length; i++) {
-    //            for (int j = 0; j < receivers[i].length; j++) {
-    //                code.addAll(receivers[i][j].getSharedCode());
-    //            }
-    //        }
-    //        return code;
-    //    }
+    // for (int i = 0; i < receivers.length; i++) {
+    // for (int j = 0; j < receivers[i].length; j++) {
+    // code.addAll(receivers[i][j].getSharedCode());
+    // }
+    // }
+    // return code;
+    // }
 
-    /** 
+    /**
      * Get the adapters for receiver contained in this port.
+     * 
      * @return The adapters.
-     * @exception IllegalActionException Thrown if {@link #getAdapter(Object)}
-     * throws it.
+     * @exception IllegalActionException
+     *                Thrown if {@link #getAdapter(Object)} throws it.
      */
     public Receiver[][] getReceiverAdapters() throws IllegalActionException {
         ptolemy.actor.IOPort port = (ptolemy.actor.IOPort) getComponent();
@@ -284,11 +308,12 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         return receiverAdapters;
     }
 
-    /** 
+    /**
      * Get the adapters for the remote receivers connected to this port.
+     * 
      * @return The adapters.
-     * @exception IllegalActionException Thrown if {@link #getAdapter(Object)}
-     * throws it.
+     * @exception IllegalActionException
+     *                Thrown if {@link #getAdapter(Object)} throws it.
      */
     public Receiver[][] getRemoteReceiverAdapters()
             throws IllegalActionException {
