@@ -256,15 +256,14 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             } catch (NameDuplicationException e) {
                 profile = null;
             }
-        }
-        if (!_USE_PROFILE || profile == null) {
-            populate();
-            List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
-            for (Object entity : entities) {
-                ((ModularCodeGenTypedCompositeActor) entity).populate();
-            }
         } else {
-            System.err.println("Error");
+            /* _USE_PROFILE || profile == null */
+            // Don't call populate() here, call it in preinitialize() instead.
+            // populate();
+            // List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+            // for (Object entity : entities) {
+            //        ((ModularCodeGenTypedCompositeActor) entity).populate();
+            // }
         }
         return super.portList();
 
@@ -655,6 +654,14 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
+        populate();
+        // Populate the contained entities and avoid a concurrent
+        // modification exception.
+        List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+        for (Object entity : entities) {
+            ((ModularCodeGenTypedCompositeActor) entity).populate();
+        }
+
         Profile profile = _getProfile();
         if (!_USE_PROFILE || profile == null || _modelChanged()) {
             super.preinitialize();
@@ -1028,11 +1035,11 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         setClassName("ptolemy.cg.lib.ModularCodeGenTypedCompositeActor");
         try {
             recompileHierarchy = new Parameter(this, "recompileHierarchy");
-            recompileHierarchy.setExpression("False");
+            recompileHierarchy.setExpression("true");
             recompileHierarchy.setTypeEquals(BaseType.BOOLEAN);
 
             recompileThisLevel = new Parameter(this, "recompileThisLevel");
-            recompileThisLevel.setExpression("False");
+            recompileThisLevel.setExpression("true");
             recompileThisLevel.setTypeEquals(BaseType.BOOLEAN);
         } catch (KernelException ex) {
             throw new InternalErrorException(ex);
