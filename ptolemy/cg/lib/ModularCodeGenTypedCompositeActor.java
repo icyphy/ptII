@@ -169,27 +169,29 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        super.attributeChanged(attribute);
-        if (attribute == recompileHierarchy) {
-            // We will set the recompileHierarchy of all directly contained
-            // ModularCodeGenTypedCompositeActors.
-            // These will then do the same.
-            if (((BooleanToken) recompileHierarchy.getToken()).booleanValue()) {
-                List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
-                for (Object entity : entities) {
-                    ((ModularCodeGenTypedCompositeActor) entity).recompileHierarchy
-                            .setToken(new BooleanToken(true));
-                }
-            }
-        } else if (attribute != recompileThisLevel) {
-            // We don't support this yet. Enabling results in a recompilation when
-            // opening the model since expressions are lazy, and the notification does
-            // not happen when you parse the model, but when you read the model.
-            //_setRecompileFlag();
-        }
-    }
+//     public void attributeChanged(Attribute attribute)
+//             throws IllegalActionException {
+//         super.attributeChanged(attribute);
+//         if (attribute == recompileHierarchy) {
+//             // We will set the recompileHierarchy of all directly contained
+//             // ModularCodeGenTypedCompositeActors.
+//             // These will then do the same.
+//             // FIXME: this breaks lazyness.  A better
+//             // solution would be to look up the tree for a parent
+//             //             if (((BooleanToken) recompileHierarchy.getToken()).booleanValue()) {
+//             //                 List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+//             //                 for (Object entity : entities) {
+//             //                     ((ModularCodeGenTypedCompositeActor) entity).recompileHierarchy
+//             //                             .setToken(new BooleanToken(true));
+//             //                 }
+//             //             }
+//         } else if (attribute != recompileThisLevel) {
+//             // We don't support this yet. Enabling results in a recompilation when
+//             // opening the model since expressions are lazy, and the notification does
+//             // not happen when you parse the model, but when you read the model.
+//             //_setRecompileFlag();
+//         }
+//     }
 
     /** Generate actor name from its class name.
      * @param className  The class name of the actor
@@ -505,8 +507,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
             }
-            recompileThisLevel.setToken(new BooleanToken(false));
-            recompileHierarchy.setToken(new BooleanToken(false));
+            _compiled = true;
         } catch (Throwable throwable) {
             _objectWrapper = null;
             _fireMethod = null;
@@ -918,6 +919,13 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
+        if (_compiled) {
+            // Do this last so that we _modelChanged() can
+            // traverse the hierarchy.
+            _compiled = false;
+            recompileThisLevel.setToken(new BooleanToken(false));
+            recompileHierarchy.setToken(new BooleanToken(false));
+        }
         if (_fireMethod == null) {
             super.wrapup();
         }
@@ -1104,10 +1112,28 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         return _profile;
     }
 
+    /** Return true if the model has changed.
+     *  @return true if the <i>recompileThisLevel</i> or
+     *  <i>recompileHierarchy</i> parameters are true or if
+     *  the <i>recompileHierarchy</i> parameter is true in any
+     *  of the parent ModularCodeGenTypedCompositeActors.
+     */
     private boolean _modelChanged() throws IllegalActionException {
-        return ((BooleanToken) recompileThisLevel.getToken()).booleanValue()
-                || ((BooleanToken) recompileHierarchy.getToken())
-                        .booleanValue();
+        if (((BooleanToken) recompileThisLevel.getToken()).booleanValue()
+                || ((BooleanToken) recompileHierarchy.getToken()).booleanValue()) {
+            return true;
+        }
+
+        NamedObj container = getContainer();
+        while (container != null) {
+            if (container instanceof ModularCodeGenTypedCompositeActor) {
+                if (((BooleanToken)((ModularCodeGenTypedCompositeActor) container).recompileHierarchy.getToken()).booleanValue()) {
+                    return true;
+                }
+            }
+            container = container.getContainer();
+        }
+        return false;
     }
 
     private String _pubSubChannelName(IOPort port, boolean publisher,
@@ -1266,6 +1292,8 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
     private ModularCodeGenerator _codeGenerator = null;
 
+    /** True if initialized() compiled this actor. */
+    private boolean _compiled;
     private transient Method _fireMethod;
 
     private Object _objectWrapper;
