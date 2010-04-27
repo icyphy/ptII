@@ -26,7 +26,7 @@ package ptolemy.data.ontologies;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.StringToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.util.IllegalActionException;
@@ -145,16 +145,13 @@ public class ExpressionConceptFunction extends ConceptFunction {
         ExpressionConceptFunctionParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 _argumentNames, inputConceptValues, _solverModel,
                 _argumentDomainOntologies);
-        StringToken conceptNameToken = (StringToken) evaluator
-                .evaluateParseTree(parseTree);
-        Concept output = (Concept) _outputRangeOntology
-                .getEntity(conceptNameToken.stringValue());
-
+        ObjectToken conceptObjectToken = (ObjectToken) evaluator
+                .evaluateParseTree(parseTree);        
+        Concept output = (Concept) conceptObjectToken.getValue();
+        
         if (output == null) {
-            throw new IllegalActionException("Output Concept "
-                    + conceptNameToken.stringValue()
-                    + " not found in output range ontology "
-                    + _outputRangeOntology + ".");
+            throw new IllegalActionException("Error evaluating ExpressionConceptFunction:" +
+            		" output value is null.");
         }
 
         return output;

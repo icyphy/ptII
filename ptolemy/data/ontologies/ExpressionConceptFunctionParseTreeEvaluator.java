@@ -27,15 +27,12 @@ package ptolemy.data.ontologies;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.ASTPtFunctionApplicationNode;
-import ptolemy.data.expr.ASTPtFunctionalIfNode;
 import ptolemy.data.expr.ASTPtLeafNode;
-import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// ExpressionConceptFunctionParseTreeEvaluator
@@ -65,14 +62,20 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   of other concept functions that can be called in the expression.
      *  @param argumentDomainOntologies The array of ontologies that
      *   represent the concept domain for each input concept argument.
+     *  @throws IllegalActionException If there is a problem instantiating
+     *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(List<String> argumentNames,
             List<Concept> argumentConceptValues, OntologySolverModel solverModel,
-            List<Ontology> argumentDomainOntologies) {
+            List<Ontology> argumentDomainOntologies)
+        throws IllegalActionException {
         _argumentNames = new LinkedList<String>(argumentNames);
         _argumentConceptValues = new LinkedList<Concept>(argumentConceptValues);
         _solverModel = solverModel;
         _domainOntologies = new LinkedList<Ontology>(argumentDomainOntologies);
+
+        _typeInference = new ExpressionConceptFunctionParseTreeTypeInference();
+        _addConceptConstants();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,87 +130,15 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
             _evaluateChild(node, i + 1);
-
-            Concept tempConcept = null;
-            ptolemy.data.StringToken token = (StringToken) _evaluatedChildToken;
-            for (Ontology domainOntology : _domainOntologies) {
-                tempConcept = (Concept) domainOntology
-                        .getEntity(token.stringValue());
-                if (tempConcept != null) {
-                    argValues.add(tempConcept);
-                    break;
-                }
-            }
-
-            if (tempConcept == null) {
-                throw new IllegalActionException(
-                        "Cannot find Concept named "
-                                + token
-                                + " in any of the domain ontologies for this "
-                                + "concept function.");
-            }
+            ObjectToken token = (ObjectToken) _evaluatedChildToken;
+            argValues.add((Concept) token.getValue());
         }
 
         // Evaluate the concept function and set the evaluated token
         // to the string name of the concept that is the output of the
         // function.
-        _evaluatedChildToken = new StringToken(function.evaluateFunction(
-                argValues).getName());
-    }
-
-    /** Evaluate the first child, and depending on its (boolean)
-     *  result, evaluate either the second or the third child. The
-     *  result of that evaluation becomes the result of the specified
-     *  node. We needed to override this function to remove the type
-     *  inferences in the superclass since that is not necessary for
-     *  concept functions.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
-     */
-    public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-            throws IllegalActionException {
-        if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
-            return;
-        }
-
-        int numChildren = node.jjtGetNumChildren();
-
-        if (numChildren != 3) {
-            // A functional-if node MUST have three children in the parse
-            // tree.
-            throw new InternalErrorException(
-                    "PtParser error: a functional-if node does not have "
-                            + "three children in the parse tree.");
-        }
-
-        // evaluate the first sub-expression
-        _evaluateChild(node, 0);
-
-        ptolemy.data.Token test = _evaluatedChildToken;
-
-        if (!(test instanceof BooleanToken)) {
-            throw new IllegalActionException(
-                    "Functional-if must branch on a boolean, but instead was "
-                            + test.toString() + " an instance of "
-                            + test.getClass().getName());
-        }
-
-        boolean value = ((BooleanToken) test).booleanValue();
-
-        ASTPtRootNode tokenChild;
-
-        if (value) {
-            tokenChild = (ASTPtRootNode) node.jjtGetChild(1);
-        } else {
-            tokenChild = (ASTPtRootNode) node.jjtGetChild(2);
-        }
-
-        tokenChild.visit(this);
-
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        _evaluatedChildToken = new ObjectToken(function.evaluateFunction(
+                argValues));
     }
 
     /** Evaluate each leaf node in the parse tree to a concept
@@ -221,28 +152,69 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      */
     public void visitLeafNode(ASTPtLeafNode node) 
             throws IllegalActionException {
-        String nodeLabel = _getNodeLabel(node);
-        _evaluatedChildToken = null;
+        _evaluatedChildToken = null;        
+        String nodeLabel = _getNodeLabel(node);        
 
         // If the node is an argument in the function evaluate it to
         // the name of the concept it holds.
         for (int i = 0; i < _argumentNames.size(); i++) {
             if (nodeLabel.equals(_argumentNames.get(i))) {
-                _evaluatedChildToken = new StringToken(
-                        _argumentConceptValues.get(i).getName());
+                _evaluatedChildToken = new ObjectToken(
+                        _argumentConceptValues.get(i));
                 break;
             }
         }
 
         // If the node is not an argument, it must be a name of a concept itself.
         if (_evaluatedChildToken == null) {
-            _evaluatedChildToken = new StringToken(nodeLabel);
+            _evaluatedChildToken = new ObjectToken(_getNamedConcept(nodeLabel));
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Add all the Concepts from all the domain Ontologies as constants
+     *  for the parse tree evaluator.
+     *  @throws IllegalActionException If there is a problem adding any
+     *   of the concepts to the Constants hash table.
+     */
+    protected void _addConceptConstants() throws IllegalActionException {
+        for (Ontology domainOntology : _domainOntologies) {
+            for (Object entity : domainOntology.allAtomicEntityList()) {
+                if (entity instanceof Concept) {
+                    Constants.add(((Concept) entity).getName(),
+                            new ObjectToken(entity));
+                }
+            }
+        }
+    }
+    
+    /** Return the concept with the specified name. If it cannot be
+     *  found in any of the argument domain ontologies, throw an
+     *  exception.
+     *  @param conceptName The specified name the concept should have.
+     *  @return The concept with the specified name if it is found.
+     *  @throws IllegalActionException If the concept cannot be found.
+     */
+    protected Concept _getNamedConcept(String conceptName)
+        throws IllegalActionException {
+
+        Concept outputConcept = null;
+        for (Ontology domainOntology : _domainOntologies) {
+            outputConcept = (Concept) domainOntology.getEntity(conceptName);
+            if (outputConcept != null) {
+                break;
+            }
+        }
+        if (outputConcept == null) {
+            throw new IllegalActionException("Concept named " + conceptName +
+                    " was not found in any of the domain ontologies.");
+        }
+        
+        return outputConcept;
+    }
+    
     /**
      * Return the label for the leaf node.
      * 

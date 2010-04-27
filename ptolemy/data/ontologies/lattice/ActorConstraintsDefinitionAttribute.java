@@ -267,9 +267,9 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
         if (actorElement == null) {
             return null;
         } else if (actorElement instanceof Port) {
-            return new String(actorElement.getName() + PORT_SUFFIX);
+            return actorElement.getName() + PORT_SUFFIX;
         } else if (actorElement instanceof Attribute) {
-            return new String(actorElement.getName() + ATTR_SUFFIX);
+            return actorElement.getName() + ATTR_SUFFIX;
         } else {
             return null;
         }
@@ -346,13 +346,13 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
             List<String> dirAndRHSStrings = new ArrayList<String>(2);
             if (constraintExpressionString.startsWith(GTE)) {
                 dirAndRHSStrings.add(GTE);
-                dirAndRHSStrings.add(constraintExpressionString.substring(GTE.length()));
+                dirAndRHSStrings.add(constraintExpressionString.substring(GTE.length()).trim());
             } else if (constraintExpressionString.startsWith(LTE)) {
                 dirAndRHSStrings.add(LTE);
-                dirAndRHSStrings.add(constraintExpressionString.substring(LTE.length()));
+                dirAndRHSStrings.add(constraintExpressionString.substring(LTE.length()).trim());
             } else if (constraintExpressionString.startsWith(EQ)) {
                 dirAndRHSStrings.add(EQ);
-                dirAndRHSStrings.add(constraintExpressionString.substring(EQ.length()));
+                dirAndRHSStrings.add(constraintExpressionString.substring(EQ.length()).trim());
             } else {
                 return null;
             }

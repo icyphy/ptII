@@ -117,7 +117,7 @@ _
                     </property>
                     <property name="impulsePortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
                     </property>
-                    <property name="derivativePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= state == Unknown ? Unknown :&#10;    state == Position ? Velocity :&#10;     state == Velocity ? Acceleration :&#10;      state == Time ? DimensionLess :&#10;       Conflict">
+                    <property name="derivativePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= state == Unknown ? Unknown :&#10;    state == Position ? Velocity :&#10;     state == Velocity ? Acceleration :&#10;      state == Time ? Dimensionless :&#10;       Conflict">
                         <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                             <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                             </property>

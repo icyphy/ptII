@@ -11,7 +11,7 @@
         </property>
         <configure>
             <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={334, 128, 825, 446}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={334, 128, 815, 507}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -107,7 +107,7 @@ _
                     </property>
                     <property name="impulsePortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
                     </property>
-                    <property name="derivativePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= state == Unknown ? Unknown :&#10;    state == Position ? Velocity :&#10;     state == Velocity ? Acceleration :&#10;      state == Time ? DimensionLess :&#10;       Conflict">
+                    <property name="derivativePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= state == Unknown ? Unknown :&#10;    state == Position ? Velocity :&#10;     state == Velocity ? Acceleration :&#10;      state == Time ? Dimensionless :&#10;       Conflict">
                         <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                             <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                             </property>
