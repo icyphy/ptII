@@ -39,6 +39,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -66,7 +68,6 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -517,6 +518,138 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             _generatingCode = false;
         }
     }
+    
+    /**
+     * Link the subscriberPort with a already registered "published port" coming
+     * from a publisher. The pattern represents the name being used in the
+     * matching process to match publisher and subscriber. A subscriber
+     * interested in the output of this publisher uses the name. This
+     * registration process of publisher typically happens before the model is
+     * preinitialized, for example when opening the model. The subscribers will
+     * look for publishers during the preinitialization phase.
+     * 
+     * @param pattern
+     *            The pattern is being used in the matching process to match
+     *            publisher and subscriber.
+     * @param subscriberPort
+     *            The subscribed port.
+     * @exception NameDuplicationException
+     *                If there are name conflicts as a result of the added
+     *                relations or ports.
+     * @exception IllegalActionException
+     *                If the published port cannot be found.
+     */
+    public void linkToPublishedPort(Pattern pattern, TypedIOPort subscriberPort)
+            throws IllegalActionException, NameDuplicationException {
+        try {
+            ++_creatingPubSub;
+
+            boolean matched = false;
+
+            if (_publisherRelations != null) {
+
+                for (String name : _publisherRelations.keySet()) {
+                    Matcher matcher = pattern.matcher(name);
+                    // System.out.println("Match " + name);
+                    if (matcher.matches()) {
+                        matched = true;
+                        linkToPublishedPort(name, subscriberPort);
+                    }
+                }
+
+            }
+
+            if (!matched) {
+                NamedObj container = getContainer();
+                if (!isOpaque() && container instanceof CompositeActor) {
+                    // Published ports are not propagated if this actor
+                    // is opaque.
+                    ((CompositeActor) container).linkToPublishedPort(pattern,
+                            subscriberPort);
+                } else {
+                    if (container != null) {
+                        TypedIOPort stubPort = null;
+                        matched = false;
+
+                        if (_subscriberPorts != null) {
+                            for (String name : _subscriberPorts.keySet()) {
+                                Matcher matcher = pattern.matcher(name);
+                                // System.out.println("Match " + name);
+                                if (matcher.matches()) {
+                                    matched = true;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if(_subscriberPorts == null || !matched) {  //does not find the port
+                            stubPort = new TypedIOPort(this,
+                                    uniqueName("subscriberStubPort"));
+                            stubPort.setMultiport(true);
+                            stubPort.setInput(true);
+                            stubPort.setPersistent(false);
+                            new Parameter(stubPort, "_hide",
+                                    BooleanToken.TRUE);
+
+                            if (_subscriberPorts == null) {
+                                _subscriberPorts = new HashMap<String, IOPort>();
+                            }
+                            _subscriberPorts.put(pattern.pattern(),
+                                    stubPort);
+
+                            IORelation relation = new TypedIORelation(
+                                    this,
+                                    this
+                                            .uniqueName("subscriberRelation"));
+
+                            // Prevent the relation and its links from
+                            // being
+                            // exported.
+                            relation.setPersistent(false);
+
+                            if (_subscriberRelations == null) {
+                                _subscriberRelations = new HashMap<String, IORelation>();
+                            }
+
+                            _subscriberRelations.put(pattern.pattern(),
+                                    relation);
+
+                            // Prevent the relation from showing up in
+                            // vergil.
+                            new Parameter(relation, "_hide",
+                                    BooleanToken.TRUE);
+                            stubPort.liberalLink(relation);
+                            subscriberPort.liberalLink(relation);
+
+                            Director director = getDirector();
+                            if (director != null) {
+                                director.invalidateSchedule();
+                                director.invalidateResolvedTypes();
+                            }
+                        } else {
+                            stubPort = (TypedIOPort) _subscriberPorts
+                                    .get(pattern.pattern());
+                            if (stubPort.getContainer() == null) {
+                                // The user deleted the port.
+                                stubPort.setContainer(this);
+                                stubPort.liberalLink(_subscriberRelations
+                                        .get(pattern.pattern()));
+                            }
+                        }
+
+                        if (container instanceof CompositeActor) {
+                            ((CompositeActor) container).linkToPublishedPort(
+                                    pattern, stubPort);
+                        }
+                    }
+                }
+            }
+        } finally {
+            --_creatingPubSub;
+        }
+
+    }
+
 
     /** Link the subscriberPort with a already registered "published port" coming
      *  from a publisher. The name is the name being used in the
