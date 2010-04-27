@@ -89,7 +89,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
         if (multiplyDefinition != null) {
-            multiplyFunction = multiplyDefinition.getConceptFunction();
+            multiplyFunction = multiplyDefinition.createConceptFunction();
         }
 
         ConceptFunction divideFunction = null;
@@ -97,7 +97,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
         if (divideDefinition != null) {
-            divideFunction = divideDefinition.getConceptFunction();
+            divideFunction = divideDefinition.createConceptFunction();
         }
 
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();

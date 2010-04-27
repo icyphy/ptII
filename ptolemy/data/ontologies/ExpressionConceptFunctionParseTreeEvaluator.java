@@ -96,7 +96,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             if (((ConceptFunctionDefinitionAttribute) functionDef)
                     .getName().equals(functionName)) {
                 function = ((ConceptFunctionDefinitionAttribute) functionDef)
-                        .getConceptFunction();
+                        .createConceptFunction();
             }
         }
 

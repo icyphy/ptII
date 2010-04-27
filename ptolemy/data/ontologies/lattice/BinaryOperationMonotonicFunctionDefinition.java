@@ -28,6 +28,7 @@
 package ptolemy.data.ontologies.lattice;
 
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
@@ -71,10 +72,11 @@ public class BinaryOperationMonotonicFunctionDefinition extends
         
         // Since a binary function always has 2 arguments, its
         // number of arguments is fixed.
+        numberOfArgumentsIsFixed.setToken(BooleanToken.TRUE);
         numberOfArgumentsIsFixed.setVisibility(Settable.NONE);
 
         // This attribute must define a monotonic concept function.
-        constrainFunctionToBeMonotonic.setExpression("true");
+        constrainFunctionToBeMonotonic.setToken(BooleanToken.TRUE);
         constrainFunctionToBeMonotonic.setVisibility(Settable.NOT_EDITABLE);
 
         functionOntologyName = new StringParameter(this, "functionOntologyName");

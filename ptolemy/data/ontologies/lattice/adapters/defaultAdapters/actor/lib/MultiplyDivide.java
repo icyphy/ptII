@@ -84,7 +84,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
         if (multiplyDefinition != null) {
-            multiplyFunction = multiplyDefinition.getConceptFunction();
+            multiplyFunction = multiplyDefinition.createConceptFunction();
         }
 
         ConceptFunction divideFunction = null;
@@ -92,7 +92,7 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
                 .getContainedModel())
                 .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
         if (divideDefinition != null) {
-            divideFunction = divideDefinition.getConceptFunction();
+            divideFunction = divideDefinition.createConceptFunction();
         }
 
         if (multiplyFunction == null) {

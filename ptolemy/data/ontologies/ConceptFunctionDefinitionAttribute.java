@@ -49,6 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** Attribute that defines a concept function with a boolean expression.
  *  
+ *  @see ExpressionConceptFunction
  *  @author Charles Shelton
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -80,12 +81,12 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
         // By default the number of arguments for the concept function is fixed.
         numberOfArgumentsIsFixed = new Parameter(this, "numberOfArgumentsIsFixed");
         numberOfArgumentsIsFixed.setTypeEquals(BaseType.BOOLEAN);
-        numberOfArgumentsIsFixed.setExpression("true");
+        numberOfArgumentsIsFixed.setToken(BooleanToken.TRUE);
 
         // By default do not assume the function is monotonic.
         constrainFunctionToBeMonotonic = new Parameter(this, "constrainFunctionToBeMonotonic");
         constrainFunctionToBeMonotonic.setTypeEquals(BaseType.BOOLEAN);
-        constrainFunctionToBeMonotonic.setExpression("false");
+        constrainFunctionToBeMonotonic.setToken(BooleanToken.FALSE);
 
         outputRangeOntologyName = new StringParameter(this,
                 "outputRangeOntologyName");
@@ -148,7 +149,7 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
      *  @exception IllegalActionException If there is an error
      *  updating the conceptFunction.
      */
-    public ExpressionConceptFunction getConceptFunction()
+    public ExpressionConceptFunction createConceptFunction()
             throws IllegalActionException {
         if (((BooleanToken) numberOfArgumentsIsFixed.getToken()).booleanValue()) {
             if (((ArrayToken) argumentDomainOntologies.getToken()).length() !=

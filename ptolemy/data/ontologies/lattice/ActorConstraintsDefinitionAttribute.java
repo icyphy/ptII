@@ -44,6 +44,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.moml.MoMLParser;
@@ -212,8 +213,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                     for (Object actorPort : tempActorInstance
                             .portList()) {
                         StringParameter constraintExpression = new StringParameter(
-                                    this, ((Port) actorPort).getName()
-                                        + PORT_SUFFIX);
+                                this, createConstraintParameterName((NamedObj) actorPort));
                         _constraintTermExpressions
                                 .add(constraintExpression);
                     }
@@ -223,9 +223,7 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
                         if (!((Attribute) actorAttribute).getName()
                                     .startsWith("_")) {
                             StringParameter constraintExpression = new StringParameter(
-                                    this, ((Attribute) actorAttribute)
-                                            .getName()
-                                            + ATTR_SUFFIX);
+                                    this, createConstraintParameterName((NamedObj) actorAttribute));
                             _constraintTermExpressions
                                     .add(constraintExpression);
                         }
@@ -255,6 +253,26 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
         }
 
         super.attributeChanged(attribute);
+    }
+    
+    /** Return a constraint parameter name based on the name
+     *  of the specified actor element. This method supports ports and
+     *  attributes.
+     *  @param actorElement The actor element for which to generate a
+     *   constraint parameter name.
+     *  @return The string name for the constraint parameter for this
+     *   actor element.
+     */
+    public static String createConstraintParameterName(NamedObj actorElement) {
+        if (actorElement == null) {
+            return null;
+        } else if (actorElement instanceof Port) {
+            return new String(actorElement.getName() + PORT_SUFFIX);
+        } else if (actorElement instanceof Attribute) {
+            return new String(actorElement.getName() + ATTR_SUFFIX);
+        } else {
+            return null;
+        }
     }
     
     /** Get the name of the element contained by the actor (either a
@@ -465,6 +483,8 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      */
     protected void _setActorIcon(String actorClassNameString, ComponentEntity tempActorInstance)
         throws IllegalActionException {
+        // FIXME: This code that sets the actor icon is duplicated from other code
+        // in the Ptolemy tree. Could it be factored out to somewhere else?
         
         // First look for an icon file for the actor.        
         String iconFile = actorClassNameString

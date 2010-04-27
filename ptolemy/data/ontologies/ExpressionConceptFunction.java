@@ -1,5 +1,4 @@
-/*
- * A class representing a concept function that is defined by a boolean expression
+/* A class representing a concept function that is defined by a boolean expression
  * of concepts specified in a ConceptFunctionDefinitionAttribute.
  * 
  * Copyright (c) 2010 The Regents of the University of California. All
@@ -35,10 +34,31 @@ import ptolemy.kernel.util.IllegalActionException;
 ///////////////////////////////////////////////////////////////////
 //// ExpressionConceptFunction
 
-/** This is a class for concept functions that are used
+/** <p>This is a class for concept functions that are used
  *  specified using an expression from a ConceptFunctionDefinitionAttribute. 
  *  The expression is evaluated with the input arguments to evaluate the 
  *  concept function.
+ *  
+ *  <p>An expression that represents a concept function is a boolean if-then expression
+ *  that has multiple conditional statements that specifies the output concept value
+ *  based on the input concept valuesof the arguments.  Example: consider a function
+ *  that has two arguments arg1 and arg2, and each argument can be a concept from
+ *  the DimensionSystem ontology which has the possible Concept values:
+ *  
+ *  <BR><em>{Unknown, Dimensionless, Time, Position, Velocity, Acceleration, Conflict}</em>
+ *  <p>
+ *  A valid expression concept function could be defined like this:
+ *  <BR>
+ *  <code>f(arg1, arg2) =
+ *  <BR>&nbsp;&nbsp; arg1 == Unknown || arg2 == Unknown ? Unknown :
+ *  <BR>&nbsp;&nbsp;&nbsp;&nbsp; arg1 == Position && arg2 == Time ? Velocity :
+ *  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; arg1 == Velocity && arg2 == Time ? Acceleration :
+ *  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Conflict
+ *  </code>
+ *  <p>This expression function specifies that the output of the function is <em>Unknown</em>
+ *  if either argument is <em>Unknown</em>, <em>Velocity</em> if arg1 is <em>Position</em> and arg2 is <em>Time</em>,
+ *  <em>Acceleration</em> if arg1 is <em>Velocity</em> and arg2 is <em>Time</em>, and <em>Conflict</em> if arg1 and
+ *  arg2 are any other combination of concept values.
  * 
  *  @author Charles Shelton
  *  @version $Id$
@@ -149,7 +169,7 @@ public class ExpressionConceptFunction extends ConceptFunction {
     private List<String> _argumentNames;
 
     /** The boolean expression string that when evaluated implements
-     * the concept function.
+     *  the concept function.
      */
     private String _conceptFunctionExpression;
 
