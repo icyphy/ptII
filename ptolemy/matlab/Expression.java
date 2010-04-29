@@ -216,7 +216,7 @@ public class Expression extends TypedAtomicActor {
                             + "that contain libmx.so and libptmatlab.so.\n"
                             + "* Under Mac OS X, you must have the DYLD_LIBRARY_PATH "
                             + "environment variable set to include the directories "
-                            + "that contain libmx.dylib and libptmatlab.dylib.\n"
+                            + "that contain libmx.dylib and libptmatlab.jnilib.\n"
                             + "* Under Windows, you must have your PATH set to include "
                             + "the Matlab bin/win32 or equivalent directory so that "
                             + "libmex.dll is found and the directory that contains "
