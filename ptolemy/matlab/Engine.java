@@ -287,7 +287,9 @@ public class Engine {
                         + "the Matlab C API communicates with Matlab via COM, "
                         + "and apparently the COM interface is not "
                         + "automatically registered when Matlab is "
-                        + "installed.");
+                        + "installed. "
+                        + "Under Linux and other types of UNIX, csh must be "
+                        + "installed in /bin/csh.");
             }
 
             if (needOutput) {
