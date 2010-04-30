@@ -80,6 +80,8 @@ public class ParameterPort extends TypedIOPort {
                 "tokenConsumptionRate", new IntToken(1));
         tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         tokenConsumptionRate.setPersistent(false);
+
+        new Parameter(this,"_notDraggable");
     }
 
     ///////////////////////////////////////////////////////////////////
