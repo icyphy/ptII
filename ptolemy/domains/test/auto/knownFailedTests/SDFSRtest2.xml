@@ -17,7 +17,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Teste a condição de erro onde não há produção por parte da topologia SR.&#10;This is as PNSRTest2. It works as expected. An &quot;Actor is not ready to fire&quot;&#10;exception is thrown. What happens is that the SR composite cannot be seen&#10;as an SDF atomic, since its sample rates are not valid.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test an error in SR.&#10;This is as PNSRTest2. It works as expected. An &quot;Actor is not ready to fire&quot;&#10;exception is thrown. What happens is that the SR composite cannot be seen&#10;as an SDF atomic, since its sample rates are not valid.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
         </property>
