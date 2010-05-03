@@ -52,6 +52,10 @@ typedef long long __int64;
 // version of the ptmatlab shared library to load...
 #define V5_COMPAT
 
+#ifdef HAVE_MALLOC_SIZE
+#include <malloc/malloc.h>
+#endif
+
 #include <jni.h>
 #include "ptmatlab.h"
 #include "engine.h"
@@ -156,7 +160,14 @@ extern "C"
         if (debug > 1) {
             printf("ptmatlabEngClose: freeing 0x%x\n", output_buf); fflush(stdout);
         }
+#ifdef HAVE_MALLOC_SIZE
+        // See http://mercury.nceas.ucsb.edu/kepler/pipermail/kepler-dev/2010-April/018091.html
+        if (malloc_size(output_buf) != 0) {
+            free(output_buf);
+        }
+#else
         free(output_buf);
+#endif
     }
     return retval;
   }

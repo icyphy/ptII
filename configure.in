@@ -3442,6 +3442,10 @@ changequote([, ])dnl
     \$PTII/ptolemy/matlab will not be usable.]);
 	    else
 
+
+	    AC_PATH_PROG(CC, gcc)
+	    AC_CHECK_FUNCS(malloc_size, MALLOC_SIZE_FLAG=-DHAVE_MALLOC_SIZE)
+
 	    cd "$srcdir/config"
 	    if "$JAVAC" MajorOSName.java ; then
 	        AC_MSG_CHECKING([which major type of OS we are running under])
@@ -3460,7 +3464,7 @@ changequote([, ])dnl
 	    cd "$startdir"
 		MATLAB_USE_MSVC="no"
 		# These flags work for MacOSX r2009a, Linux r2008a, Windows r2008a
-		PTMATLAB_CC_FLAGS="-DPT_NO_ENGGETARRAY -DPT_NO_ENGPUTARRAY -DPT_NO_MXGETNAME" 
+		PTMATLAB_CC_FLAGS="-DPT_NO_ENGGETARRAY -DPT_NO_ENGPUTARRAY -DPT_NO_MXGETNAME $MALLOC_SIZE_FLAG" 
 		case "`uname -s`" in
 		Linux)
 		    if test "`uname -m`" = "x86_64"; then
