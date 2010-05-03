@@ -36,7 +36,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- *  A adapter class for ptolemy.actor.lib.SubscriptionAggregator
+ *  An adapter class for ptolemy.actor.lib.SubscriptionAggregator.
  *
  * @see ptolemy.actor.lib.SubscriptionAggregator
  * @author Man-Kit Leung

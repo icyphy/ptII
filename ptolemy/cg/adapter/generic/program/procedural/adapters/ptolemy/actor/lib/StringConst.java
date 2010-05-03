@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class StringConst extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Constructor the StringConst adapter
+     * Constructor the StringConst adapter.
      * @param actor the associated actor.
      */
     public StringConst(ptolemy.actor.lib.StringConst actor) {

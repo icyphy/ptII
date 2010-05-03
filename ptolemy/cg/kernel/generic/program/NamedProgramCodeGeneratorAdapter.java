@@ -677,6 +677,8 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  FIXME: need documentation on the input string format.
      *
      *  @param name The name of the parameter or port
+     *  @param executive If true, then look for the reference in the
+     *  executive director (the director of the container).
      *  @return The reference to that parameter or port (a variable name,
      *   for example).
      *  @exception IllegalActionException If the parameter or port does not
@@ -697,6 +699,8 @@ public class NamedProgramCodeGeneratorAdapter extends
      *
      *  @param name The name of the parameter or port
      *  @param isWrite Whether to generate the write or read offset.
+     *  @param executive If true, then look for the reference in the
+     *  executive director (the director of the container).
      *  @return The reference to that parameter or port (a variable name,
      *   for example).
      *  @exception IllegalActionException If the parameter or port does not

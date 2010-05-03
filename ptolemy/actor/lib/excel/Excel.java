@@ -254,7 +254,12 @@ public class Excel extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize the actor. */
+    /** Initialize the actor.
+     * @exception IllegalActionException If three is a problem getting
+     * or setting the <i>file</i> or <i>macro</i> attribute.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     protected void _initialize() throws IllegalActionException,
             NameDuplicationException {
 //super._initialize();
