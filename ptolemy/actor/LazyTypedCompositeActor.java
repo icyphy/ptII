@@ -781,8 +781,6 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
                 }
             }
         } catch (Exception ex) {
-            MessageHandler.error("Failed to populate contents.", ex);
-
             // Oddly, under JDK1.3.1, we may see the line
             // "Exception occurred during event dispatching:"
             // in the console window, but there is no stack trace.
