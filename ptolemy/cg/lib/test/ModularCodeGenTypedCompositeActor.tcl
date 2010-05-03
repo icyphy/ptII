@@ -81,7 +81,8 @@ test ModularCodeGenTypedCompositeActor-1.1 {Run a Modular Code Generator model, 
     jdkCapture {$manager execute} secondRun
 
     if [expr {[string length $secondRun] > 80}] {
-	error "The second run produced output longer than 80 chars?\n$secondRun"
+	puts "SecondRun output:\n$secondRun"
+	error "The second run produced output longer than 80 chars? which indicates that the recompilation occurred"
     }
 
     $manager execute
@@ -101,9 +102,11 @@ test ModularCodeGenTypedCompositeActor-1.2 {change the value of a parameter in a
     set scale [java::cast ptolemy.actor.lib.Scale \
             [$toplevel getEntity "A1.A2.Scale"]]
     set factor [getParameter $scale factor]
-    $factor setExpression {2}
+    $factor setExpression {10}
     $manager execute
-    list [enumToTokenValues [$recorder getRecord 0]]]
+    set recorder [java::cast ptolemy.actor.lib.Recorder \
+            [$toplevel getEntity "Recorder"]]
+    list [enumToTokenValues [$recorder getRecord 0]]
 } {{20 20}}
 
 test ModularCodeGenTypedCompositeActor-1.2 {reparse the model and rerun} {
