@@ -1635,7 +1635,6 @@ JNLP_FILES_TO_BE_UPDATED =  $(JNLP_MODEL_FILE) $(JNLP_JAR) $(JNLP_FILE_FIXED) $(
 
 book_dist_update: $(JNLP_FILE_FIXED)
 	pwd
-	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | \
-		ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
+	tar -cf - $(JNLP_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER) "cd $(DIST_DIR); gtar -xvpf -"
 	ssh $(WEBSERVER) "cd $(DIST_DIR); mv $(JNLP_FILE_FIXED) $(JNLP_FILE)"
 	ssh $(WEBSERVER) "chmod a+x $(DIST_DIR)/$(JNLP_HTM) $(DIST_DIR)/$(JNLP_VERGIL_HTM)"

@@ -822,7 +822,18 @@ maven:
 ####################################
 # Create jnlps using copernicus.  See doc/books/design/modal/makefile
 # EXAMPLE_MODELS should contain the model files names
-jnlps:
+# This command runs "cd $PTII; make book_dist_update"
+jnlps: jnlps_index _jnlps
+_jnlps:
+	set $(EXAMPLE_MODELS); \
+	for x do \
+		(cd $(ROOT); $(MAKE) \
+			JNLP_MODEL=`basename $$x .xml` \
+			JNLP_MODEL_DIRECTORY=$(ME) \
+			book_dist_update); \
+	done
+
+jnlps_index: $(ROOT)/mk/ptcommon.mk
 	@if [ "x$(EXAMPLE_MODELS)" != "x" ]; then \
 		echo "<html>" > index.htm; \
 		echo "<head>" >> index.htm; \
@@ -840,7 +851,6 @@ jnlps:
 		echo "<h2>Demos</h2>" >> toc.htm; \
 		set $(EXAMPLE_MODELS); \
 		for x do \
-			(cd $(ROOT); $(MAKE) JNLP_MODEL=`basename $$x .xml` JNLP_MODEL_DIRECTORY=$(ME) book_dist_update); \
 			echo "<li> <a href=\"`basename $$x .xml`.htm\">`basename $$x .xml`</a></li>" >> index.htm; \
 			echo "<li> <a href=\"`basename $$x .xml`.htm\">`basename $$x .xml`</a></li>" >> toc.htm; \
 		done; \
