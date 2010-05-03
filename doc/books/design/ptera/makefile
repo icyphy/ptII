@@ -46,6 +46,9 @@ PTPACKAGE = 	ptera
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 EXAMPLE_MODELS = \
+	TwoEvents.xml
+
+Foo_EXAMPLE_MODELS = \
 	TwoEvents.xml \
 	MultipleEvents.xml \
 	ArgAndCancel.xml \
@@ -54,17 +57,11 @@ EXAMPLE_MODELS = \
 	HierarchicalCarWash.xml \
 	DEAndFSM.xml
 
+OTHER_MODELS = \
+	CarsAndServers.xml \
+	Traffic.xml
 
-CarsAndServers.xml
-
-
-
-
-Traffic.xml
-
-
-OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS) \
-	solutions.txt
+OTHER_FILES_TO_BE_JARED = $(EXAMPLE_MODELS)
 
 EXTRA_SRCS = $(OTHER_FILES_TO_BE_JARED)
 
@@ -81,8 +78,10 @@ OPTIONAL_FILES =
 
 # ptno-compile.mk has an "all" rule, so we define a default rule here
 default:
+	# The model files are copied from ptpapers/10/Ptera_Tech/models/
+	#
 	# See $PTII/mk/jnlp.mk for details, but the command to run is
-	#   make JNLP_MODEL=ExtendedFSM JNLP_MODEL_DIRECTORY=doc/books/design/ptera KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.0/ptII8.1.devel jnlps
+	#   make JNLP_MODEL=ExtendedFSM JNLP_MODEL_DIRECTORY=doc/books/design/ptera KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxxxxx" KEYPASSWORD="-keypass xxxxx" DIST_BASE=ptolemyII/ptII8.0/jnlp-books2 jnlps
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
