@@ -661,16 +661,16 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } else { 
             if (_publishedPorts == null) {
                 throw new IllegalActionException(this,
-                        "Can't find the publisher for " + name + ".");
+                        "Can't find the publisher for \"" + name + "\".");
             }
 
             List<IOPort> publishedPorts = _publishedPorts.get(name);
             if (publishedPorts == null || publishedPorts.size() == 0) {
                 throw new IllegalActionException(this,
-                        "Can't find the publisher for " + name + ".");
+                        "Can't find the publisher for \"" + name + "\".");
             } else if (publishedPorts.size() > 1) {
                 throw new NameDuplicationException(this,
-                        "We have multiple publishers with name " + name + ".");
+                        "We have multiple publishers with name \"" + name + "\".");
             }
     		
             IOPort publishedPort = publishedPorts.get(0);
@@ -1048,6 +1048,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public void linkToPublishedPort(String name, IOPort subscriberPort)
             throws IllegalActionException, NameDuplicationException {
+        System.out.println("CompositeActor: linkToPublishedPort: " + name);
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
@@ -1122,7 +1123,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 boolean matched = false;
                 for (String name : _publishedPorts.keySet()) {
                     Matcher matcher = pattern.matcher(name);
-                    //System.out.println("Match " + name);
+                    System.out.println("Match " + name);
                     if (matcher.matches()) {
                         matched = true;
                         linkToPublishedPort(name, subscriberPort);
