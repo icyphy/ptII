@@ -914,6 +914,8 @@ public class StaticSchedulingDirector extends Director {
          *  @param channelNumber The number of the channel that is being set.
          *  @return return The size of the buffer.
          *  @see #setBufferSize(int, int)
+         *  @exception IllegalActionException If thrown while getting
+         *  the channel or rate.
          */
         public int getBufferSize(int channelNumber)
                 throws IllegalActionException {
@@ -932,7 +934,7 @@ public class StaticSchedulingDirector extends Director {
 
         /**
          * Return the buffer size of the port, which is the maximum of
-         * the bufferSizes of all channels the port
+         * the bufferSizes of all channels the port.
          * @return The buffer size of the port.
          * @exception IllegalActionException If the
          * {@link #getBufferSize(int)} method throws it.
