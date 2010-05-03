@@ -308,9 +308,10 @@ public class Subscriber extends TypedAtomicActor {
             try {
                 ((CompositeActor) container).linkToPublishedPort(_channel,
                         input);
-            } catch (NameDuplicationException e) {
+            } catch (Exception e) {
                 throw new IllegalActionException(this, e,
-                        "Can't link Subscriber with Publisher.");
+                        "Can't link Subscriber with Publisher, channel was \""
+                        + channel.stringValue() + "\"");
             }
         }
     }
