@@ -1,0 +1,17 @@
+#!/bin/sh
+# $Id$
+
+# Remove configure tags so that we may validate the xml
+
+awk '{
+    if ($0 ~ /<configure>/) {
+       sawConfigure++
+    } else {
+       if (sawConfigure == 0) {
+           print $0
+       }
+    }
+    if ($0 ~ /<\/configure>/) {
+         sawConfigure--
+    }
+ }' $1

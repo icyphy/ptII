@@ -113,12 +113,14 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	p1.moml \
 	p2.moml \
 	parseMoMLConst.xml \
+        removeconfigure \
 	testClass.xml \
 	testClassIcon.xml \
 	testClass2.xml \
 	testClass2DotMoml.moml \
 	testdir.moml \
 	toplevel.xml \
+        validateDemos \
 	 #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't

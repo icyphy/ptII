@@ -45,10 +45,10 @@ if {[string compare test [info procs test]] == 1} then {
 set timeOutSeconds 12000
 
 
-    set file [open $PTII/ptolemy/configs/doc/models.txt]
-    set modelsFileContents [read $file]
-    close $file
-    set models [split $modelsFileContents "\n"]
+# See $PTII/ptolemy/moml/test/validateTests and validateDemos
+
+proc validateModels {models} {
+    global PTII
     set count 0
     foreach model $models {
 	if {[string length $model] < 1} {
@@ -87,4 +87,23 @@ set timeOutSeconds 12000
 	} {{}}
     }
     puts "Checked $count demos from configs/doc/models.txt"
+}
 
+puts "Validating the xml in /auto/ xml files after removing the configure blocks"
+set tests [exec find $PTII . -name adm -prune -o -name codeDoc -prune -o -name "*.xml"]
+set autoTests {}
+foreach test $tests {
+    if [regexp {/auto/} $test] {
+	lappend autoTests $test
+    }
+}
+validateModels $autoTests
+
+puts "Validating the xml in demo xml files after removing the configure blocks"
+set file [open $PTII/ptolemy/configs/doc/models.txt]
+set modelsFileContents [read $file]
+close $file
+set models [split $modelsFileContents "\n"]
+
+validateModels $models
+ 
