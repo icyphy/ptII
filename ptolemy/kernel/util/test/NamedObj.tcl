@@ -95,6 +95,15 @@ test NamedObj-2.3 { Check names with dots} {
 ######################################################################
 ####
 #
+test NamedObj-2.3 { Check names with xml} {
+    java::new ptolemy.kernel.util.NamedObj "This name has xml < = >"
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot set a name with a period: This.name.has.dots
+  in .<Unnamed Object>}}
+
+######################################################################
+####
+#
 test NamedObj-4.1 {Set the name to null in the constructor} {
     set n [java::new {ptolemy.kernel.util.NamedObj String} [java::null]]
     $n getName
