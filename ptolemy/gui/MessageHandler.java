@@ -61,8 +61,13 @@ public class MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Defer to the set message handler to show the specified
-     *  error message.
+    /** Defer to the set message handler to show the specified error
+     *  message.  
+     *
+     *  <p>Note that within Ptolemy, most user code should not call
+     *  this method directly.  Instead, throw an exception, which will
+     *  be caught by the system elsewhere and include information
+     *  about what object caused the error.
      *  @param info The message.
      */
     public static void error(String info) {
@@ -76,6 +81,10 @@ public class MessageHandler {
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *
+     *  <p>Note that within Ptolemy, most user code should not call
+     *  this method directly.  Instead, throw an exception, which will
+     *  be caught by the system elsewhere and include information
+     *  about what object caused the error.
      *  @param info The message.
      *  @param throwable The throwable.
      *  @see ptolemy.util.CancelException
@@ -143,6 +152,11 @@ public class MessageHandler {
      *  This gives the user the option of not continuing the
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
+     *
+     *  <p>Note that within Ptolemy, most user code should not call
+     *  this method directly.  Instead, throw an exception, which will
+     *  be caught by the system elsewhere and include information
+     *  about what object caused the warning.
      *  @param info The message.
      *  @exception ptolemy.util.CancelException If the user clicks on
      *  the "Cancel" button.
@@ -160,6 +174,11 @@ public class MessageHandler {
      *  By default, only the message of the throwable
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
+     *
+     *  <p>Note that within Ptolemy, most user code should not call
+     *  this method directly.  Instead, throw an exception, which will
+     *  be caught by the system elsewhere and include information
+     *  about what object caused the warning.
      *  @param info The message.
      *  @param throwable The throwable that will be displayed in the
      *  stack trace information window.
