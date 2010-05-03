@@ -663,7 +663,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
     /** Return an updated array of command line options.
-     *  @param An array of updated command line options.
+     *  @return An array of updated command line options.
      */
     public String[][] updateCommandOptions() {
         // This is a hack.  
