@@ -30,9 +30,9 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 import java.util.ArrayList;
 import java.util.Set;
 
-import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.LongToken;
 import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;

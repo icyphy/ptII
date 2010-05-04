@@ -30,6 +30,7 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
 
 import java.util.ArrayList;
 import java.util.Set;
+
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 

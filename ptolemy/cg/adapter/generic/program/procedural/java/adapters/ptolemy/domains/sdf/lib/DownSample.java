@@ -26,7 +26,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib;
 
-import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 
 /**
  A code generation adapter class for ptolemy.domains.sdf.lib.DownSample.

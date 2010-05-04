@@ -28,9 +28,10 @@
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
 
 import java.util.ArrayList;
+
+import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.cg.kernel.generic.program.CodeStream;
 
 /**
  A code generation helper class for ptolemy.actor.lib.BooleanMultiplexor.

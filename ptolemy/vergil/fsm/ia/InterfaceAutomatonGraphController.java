@@ -40,8 +40,8 @@ import javax.swing.JToolBar;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton;
+import ptolemy.gui.JFileChooserBugFix;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.fsm.FSMGraphController;
 

@@ -27,6 +27,17 @@
  */
 package ptolemy.data.ontologies.lattice;
 
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.EQ;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.GTE;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.LTE;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.SEPARATOR;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.getActorElementName;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.getConstraintDirAndRHSStrings;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementAPort;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementAnAttribute;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementIgnored;
+import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementUnconstrained;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,18 +59,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-
-// Static imports for string constants and methods defined in ActorConstraintsDefinitionAttribute.
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.EQ;
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.getActorElementName;
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.getConstraintDirAndRHSStrings;
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.GTE;
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementAnAttribute;
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementAPort;
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementIgnored;
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.isActorElementUnconstrained;
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.LTE;
-import static ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute.SEPARATOR;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorConstraintsDefinitionAdapter.java
