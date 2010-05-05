@@ -158,7 +158,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         return new Profile.Port(port.getName(), publisher, subscriber, port
                 .getWidth(), DFUtilities.getTokenConsumptionRate(port),
                 JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort) port)
-                        .getType()), port.isInput(), port.isOutput(),
+                        .getType()), port.isInput(), port.isOutput(), port.isMultiport(), 
                 _pubSubChannelName(port, publisher, subscriber));
     }
 
@@ -259,15 +259,18 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             } catch (NameDuplicationException e) {
                 profile = null;
             }
+        } 
+        
+        if (!_USE_PROFILE || profile == null) {
+            populate();
+            List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+            for (Object entity : entities) {
+                ((ModularCodeGenTypedCompositeActor) entity).populate();
+            }
         } else {
-            /* _USE_PROFILE || profile == null */
-            // Don't call populate() here, call it in preinitialize() instead.
-            // populate();
-            // List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
-            // for (Object entity : entities) {
-            //        ((ModularCodeGenTypedCompositeActor) entity).populate();
-            // }
+            System.err.println("Error");
         }
+        
         return super.portList();
 
     }
@@ -788,7 +791,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
-        populate();
         // Populate the contained entities and avoid a concurrent
         // modification exception.
         List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);

@@ -141,7 +141,9 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             .getTokenConsumptionRate(port) : DFUtilities
                             .getTokenProductionRate(port)) + ", "
                     + ptTypeToCodegenType(((TypedIOPort) port).getType())
-                    + ", " + port.isInput() + ", " + port.isOutput() + ", \""
+                    + ", " + port.isInput() + ", " + port.isOutput() + ", "
+                    + profilePort.multiport() 
+                    + ", \""
                     + profilePort.getPubSubChannelName() + "\"));" + _eol);
         }
         profileCode.append(INDENT2 + "return ports;" + _eol);

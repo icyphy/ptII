@@ -211,10 +211,11 @@ abstract public class Profile {
          * @param type The code type of the port that can be mapped back to ptolemy type
          * @param input A flag that specifies whether the port is an input port.
          * @param output A flag that specifies whether the port is an output port.
+         * @param multiport A flag that specifies whether the port is multiport
          * @param pubSubChannelName The name
          */
         public Port(String name, boolean publisher, boolean subscriber,
-                int width, int rate, int type, boolean input, boolean output,
+                int width, int rate, int type, boolean input, boolean output, boolean multiport,
                 String pubSubChannelName) {
             _name = name;
             _publisher = publisher;
@@ -224,6 +225,7 @@ abstract public class Profile {
             _type = type;
             _input = input;
             _output = output;
+            _multiport = multiport;
             _pubSubChannelName = pubSubChannelName;
         }
 
@@ -239,6 +241,14 @@ abstract public class Profile {
          */
         public boolean input() {
             return _input;
+        }
+        
+        /**
+         * Return whether the port is a multiport.
+         * @return
+         */
+        public boolean multiport() {
+            return _multiport;
         }
 
         /** Return the name of the port.
@@ -292,6 +302,9 @@ abstract public class Profile {
 
         /** A flag that specifies whether the port in an input port.*/
         private boolean _input;
+        
+        /** A flag that specifies whether the port in an input port */
+        private boolean _multiport;
 
         /** The name of the port.*/
         private String _name;

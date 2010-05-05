@@ -236,7 +236,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
         return new Profile.Port(port.getName(), publisher, subscriber, port
                 .getWidth(), DFUtilities.getTokenConsumptionRate(port),
                 JavaCodeGenerator.ptTypeToCodegenType(((TypedIOPort) port)
-                        .getType()), port.isInput(), port.isOutput(),
+                        .getType()), port.isInput(), port.isOutput(), port.isMultiport(), 
                 _pubSubChannelName(port, publisher, subscriber));
     }
 
