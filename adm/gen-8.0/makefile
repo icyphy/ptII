@@ -75,13 +75,13 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar clean all src.jar setup
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta PTIIADM=/tmp/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.1 PTIIADM=/tmp/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
@@ -169,66 +169,66 @@ release_newton_all:
 	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar setup REMOTE4PTIIDIST=c:/tmp/cxh/ptII/adm/gen-8.0/test/ptII$(VERSION)
 
 release_newton_setup:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar setup
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar setup
 
 release_newton_remote4_test:
-	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII8.0.beta/adm/gen-7.0/test/ptII$(VERSION)
+	$(MAKE) USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar remote4_test REMOTE4PTIIDIST=c:/tmp/cxh/ptII8.0.1/adm/gen-7.0/test/ptII$(VERSION)
 
 ####
 release_fortytwo:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar clean all src.jar
 
 release_fortytwo_update_ftp:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar update_ftp
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar update_ftp
 
 
 release_fortytwo_setup:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar L4J_DIR=$(PTII)/vendors/launch4j PTCYGPATH=`pwd`/ptcygpath setup
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar L4J_DIR=$(PTII)/vendors/launch4j PTCYGPATH=`pwd`/ptcygpath setup
 
 release_fortytwo_remote4_test:
-	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
+	make USER=cxh PTIIHOME=/tmp/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar JAR=/usr/java/default/bin/jar remote4_test
 
 ####
 # Build the release on sisyphus as cxh so that we can copy from
 # both a Linux box and a Windows box to update the web pages.
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.1 PTIIADM=/home/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup
 
 release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.1 PTIIADM=/home/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
 
 release_sisyphus_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar remote4_test
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.1 PTIIADM=/home/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar remote4_test
 
 release_sisyphus_update_ftp:
-	$(MAKE) USER=cxh PTIIHOME=/home/cxh/ptII8.0.beta PTIIADM=/home/cxh/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
+	$(MAKE) USER=cxh PTIIHOME=/home/cxh/ptII8.0.1 PTIIADM=/home/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
 
 
 ####
 # Note, you probably don't want to build releases as bldmastr, see above.
 release_bldmastr:
-	make USER=bldmastr PTIIHOME=/home/bldmastr/ptII8.0.beta PTIIADM=/home/bldmastr/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup
+	make USER=bldmastr PTIIHOME=/home/bldmastr/ptII8.0.1 PTIIADM=/home/bldmastr/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup
 release_bldmastr_update_ftp:
-	$(MAKE) USER=bldmastr PTIIHOME=/home/bldmastr/ptII8.0.beta PTIIADM=/home/bldmastr/ptII8.0.beta/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
+	$(MAKE) USER=bldmastr PTIIHOME=/home/bldmastr/ptII8.0.1 PTIIADM=/home/bldmastr/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar update_ftp
 
 ####
 release_windows:
-	make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_22/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_22/bin/jar clean all src.jar setup
 
 release_windows_setup:
-	make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_22/bin/jar setup
+	make USER=cxh PTIIHOME=/cygdrive/c/tmp/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_22/bin/jar setup
 
 ####
 
 ####
 release_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup_mac_jar
+	make USER=cxh PTIIHOME=/Users/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar JAR=/usr/bin/jar clean all src.jar setup_mac_jar
 
 release_mac_setup:
-	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar setup_mac_app
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar JAR=/usr/bin/jar setup_mac_app
 
 release_mac2:
-	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.beta COMPRESS=gzip TAR=tar JAR=/usr/bin/jar src.jar
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/ptII8.0.1 COMPRESS=gzip TAR=tar JAR=/usr/bin/jar src.jar
 
 
 ####
@@ -2502,8 +2502,8 @@ full_jars:
 ptsetup_mac: $(PTSETUP_MAC).xml
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
-	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
-	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.1/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.1/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
