@@ -1196,7 +1196,18 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
 
     private boolean _isPublishedPort(IOPort port) {
         // FIXME: this method might be slow
-        return _publishedPorts != null && _publishedPorts.containsValue(port);
+        boolean isPublishPort = false;
+
+        if (_publishedPorts != null) {
+            for (List<IOPort> ports : _publishedPorts.values()) {
+                if(ports.contains(port)) {
+                    isPublishPort = true;
+                    break;
+                }
+            }
+        }
+
+        return isPublishPort;
     }
 
     private void _generateCode() throws KernelException {
