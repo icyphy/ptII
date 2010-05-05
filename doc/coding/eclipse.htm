@@ -35,8 +35,8 @@ Other local pages:
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org#in_browser" target="_top">http://www.eclipse.org</a>.
- <br>In July, 2009, we chose
- <B>Eclipse for RCP/Plug-in Developers</B>, which is 187Mb.
+ <br>In May, 2010, we chose
+ <B>Eclipse for RCP/Plug-in Developers</B>, which is 184Mb.
 The <B>Eclipse for RCP/Plug-in Developers</B> version includes the
 plug-in development environment (PDE), which is needed by the backtrack
 facility, which is an optional part of Ptolemy II that allows models to
@@ -44,9 +44,9 @@ restore their old state.  If the version of Eclipse that you install
 does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
 <li> (<i>Mac OS X</i>):
-See <a href="http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html#in_browser" target="_top"><code>http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html</a></code> about choosing between "Mac OS X (Carbon)", "Mac OS X (Cocao)" and "Mac OS X 64 bit (Cocao)".
+See <a href="http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html#in_browser" target="_top"><code>http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html</a></code> about choosing between "Mac OS X (Carbon)", "Mac OS X (Cocoa)" and "Mac OS X 64 bit (Cocoa)".
   
-<br>Most Mac users will download "Mac OS X (Cacao)" in to <code>/Applications</code>, which will create <code>/Applications/eclipse/Eclipse.app</code>.
+<br>Most Mac users will download "Mac OS X (Cocoa)" in to <code>/Applications</code>, which will create <code>/Applications/eclipse/Eclipse.app</code>.
 
 <br> (<i>Windows</i>): 
 Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
@@ -55,9 +55,11 @@ be that the security policy on your machine is preventing the creation
 of <code>.exe</code> files.  If this is the case, then try running
 <code>unzip</code> from the command line.
 
-<li>Finish the installation by running <code>/Applications/eclipse/Eclipse.app</code> or <CODE>eclipse/eclipse.exe</CODE>.
+<li>Finish the installation by
+running <code>/Applications/eclipse/Eclipse.app</code> (<i>Mac OS X</i>)
+or <CODE>eclipse/eclipse.exe</CODE> (<i>Windows</i>).
 <br>The first time this is run it will complete the installation process.
-<br> (<i>Windows</i>): 
+<br> (<i>Windows</i>): (<i>Mac OS X</i>)
 If Eclipse fails to start with the message "Windows cannot access the specified device, path or file. You may not have the appropriate permisions to access the item", then it may be necessary to make 
 <code>eclipse.exe</code> and a dll executable:
 <pre>
@@ -343,11 +345,11 @@ Follow the <a href="http://www.eclipse.org/subversive/downloads.php#in_browser" 
 <li> To download Subversive, in Eclipse, follow these menus
 <br><i>Mac OS X</i>:
 <br>The first time software is to be added the menu will be:
- <code>Help<code> | <code>Install New Software</code> 
+ <code>Help</code> | <code>Install New Software</code> 
 <br>After a package is added, the menu will be:
- <code>Help<code> | <code>Software Updates</code> | <code>Available Software</code>.  
+ <code>Help</code> | <code>Software Updates</code> | <code>Available Software</code>.  
 <br><i>Windows</i>:
- <code>Help<code> | <code>Software Updates</code> | <code>Available Software</code>.  
+ <code>Help</code> | <code>Software Updates</code> | <code>Available Software</code>.  
 <li>In the "Work with" field, select "Galileo - http://download.eclipse.org/releases/galileo" from the drop down.
 <br>Expand the "Collaboration" tab and check the box next to
   "Subversive SVN Team Provider (Incubation)"
@@ -363,23 +365,34 @@ Follow the <a href="http://www.eclipse.org/subversive/downloads.php#in_browser" 
 http://community.polarion.com/projects/subversive/download/eclipse/2.0/galileo-site/
 </pre>
 Hit OK
-<li>In the Available Software window,
-<i>Mac OS X</i>: There is no need to install JavaHL, in fact JavaHL will likely cause problems
+<li>In the Available Software window:
+<br><i>Mac OS X</i>: There is no need to install JavaHL, in fact JavaHL will likely cause problems
 <br>Under Subversive SVN Connectors, select this package:
 <pre>
 Subversive SVN Connectors
 SVNKit 1.3.0 Implementation (Optional)
-
 </pre>
 <p><i>Windows</i>: <b>Note: select only one <code>JavaHL</code> Win32 binary</b>.  If both
-JavaHL 1.4.5 and JavaHL 1.5.0 are installed, then Eclipse will have
+JavaHL 1.5.4 and JavaHL 1.6.0 are installed, then Eclipse will have
 problems.  The version of JavaHL is dependent on the version of command line <code>svn</code> that is installed on your machine.
-<br>If <code>svn -version</code> returns 1.4, then install JavaHL 1.4.5.
-<br>If <code>svn -version</code> returns 1.5, then install JavaHL 1.5.
-<br>Select these packages:
+<br>If <code>svn --version</code> returns 1.5, then install JavaHL 1.5.4
+<br>If <code>svn --version</code> returns 1.6, then install JavaHL 1.6.0
+<p>If you will be updating the ptII svn repository, then add include
+<code>SVNKit 1.3.0 Implementation (Optional)</code>.
+
+<p>For svn 1.5 under , select these packages:
 <pre>
-JavaHL 1.4.5 Win32 Binaries(Optional)
-Native JavaHL 1.4 Implementation (Optional)
+JavaHL 1.5.4 Win32 Binaries(Optional)
+Native JavaHL 1.5 Implementation (Optional)
+SVNKit 1.3.0 Implementation (Optional)
+Subversive SVN Connectors
+</pre>
+<br><b>or</b>
+<br>For svn 1.6, select these packages:
+<pre>
+JavaHL 1.6 Win32 Binaries(Optional)
+Native JavaHL 1.6 Implementation (Optional)
+SVNKit 1.3.0 Implementation (Optional)
 Subversive SVN Connectors
 </pre>
 
@@ -642,7 +655,7 @@ settings, and have Cygwin ssh installed, then
 is called.
 
 <p>The fix is to set Subversive to use SVNKit
-<code>Window</code> | <code>Preferences</code> | <code>Team</code> | <code>SVN</code> | <code>SVN interface</code> | <code>SVNKit (Pure Java)</code>
+<code>Window</code> | <code>Preferences</code> | <code>Team</code> | <code>SVN</code> | <code>SVN interface</code> | <code>SVNKit 1.3.0 Implementation</code>
 | <code>OK</code>
 
 
