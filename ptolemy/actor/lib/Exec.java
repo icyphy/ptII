@@ -578,12 +578,11 @@ public class Exec extends LimitedFiringSource {
         List<String> retval = new LinkedList<String>();
 
         String osName = System.getProperty("os.name");
-        if (osName.equals("Windows NT") || osName.equals("Windows XP")
-                || osName.equals("Windows 2000")) {
-            retval.add("cmd.exe");
-            retval.add("/C");
-        } else if (osName.equals("Windows 95")) {
+        if (osName.equals("Windows 95")) {
             retval.add("command.com");
+            retval.add("/C");
+        } else if (osName.startsWith("Windows")) {
+            retval.add("cmd.exe");
             retval.add("/C");
         } else {
             retval.add("/bin/sh");
