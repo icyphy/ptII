@@ -4465,7 +4465,7 @@ public class IOPort extends ComponentPort {
     // Constrains on the width of this port (it has to be equal to the parameters).
     private Set<Parameter> _widthEqualToParameter = new HashSet<Parameter>();
 
-    // Constrains on the width of this port (it has to be equal to the width of the port).
+    // Constraints on the width of this port (it has to be equal to the width of the port).
     private Set<IOPort> _widthEqualToPort = new HashSet<IOPort>();
 
     // The workspace version number on the last update of the _width.
