@@ -1525,34 +1525,39 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
             
             portList.add(port);
+                
+            // Exporting ports breaks lots of tests, so temporarily disable it.
+            boolean exportPorts = false;
+            if (exportPorts) {
 
-            // In addition, if the publisher is set to perform an
-            // "export" then we should create a new port in this composite
-            // and register it with our container, and also link on the inside
-            // to the publisher relation corresponding to the port passed in.
-            // FIXME: For now, exporting everything. Check the container of
-            // port argument, which is presumably a Publisher actor, for
-            // the value of an "export" parameter. That parameter will have
-            // an integer value. If the value is GLOBAL (-1). If it is 0
-            // (the default), then don't do the following.
-            // If it is 1, then export only one level up (transparent level?
-            // opaque level?). If it is 2, export two levels up, etc.
-            // FIXME: For now, assume name collisions will not occur.
-            String portName = "_publisher_" + name;
-            IOPort publisherPort = (IOPort)getPort(portName);
-            if (publisherPort == null) {
-                publisherPort = (IOPort)newPort(portName);
-            }
-            publisherPort.setPersistent(false);
-            publisherPort.setOutput(true);
-            // FIXME: Hide the port. Note that we need to fix vergil
-            // so that when it lays out port, hidden ports do not take up
-            // space on the icon.
-            
-            // NOTE: The following will result in an _inside_ link to the port.
-            linkToPublishedPort(name, publisherPort);
-            if (container instanceof CompositeActor) {
-                ((CompositeActor)container).registerPublisherPort(name, publisherPort);
+                // In addition, if the publisher is set to perform an
+                // "export" then we should create a new port in this composite
+                // and register it with our container, and also link on the inside
+                // to the publisher relation corresponding to the port passed in.
+                // FIXME: For now, exporting everything. Check the container of
+                // port argument, which is presumably a Publisher actor, for
+                // the value of an "export" parameter. That parameter will have
+                // an integer value. If the value is GLOBAL (-1). If it is 0
+                // (the default), then don't do the following.
+                // If it is 1, then export only one level up (transparent level?
+                // opaque level?). If it is 2, export two levels up, etc.
+                // FIXME: For now, assume name collisions will not occur.
+                String portName = "_publisher_" + name;
+                IOPort publisherPort = (IOPort)getPort(portName);
+                if (publisherPort == null) {
+                    publisherPort = (IOPort)newPort(portName);
+                }
+                publisherPort.setPersistent(false);
+                publisherPort.setOutput(true);
+                // FIXME: Hide the port. Note that we need to fix vergil
+                // so that when it lays out port, hidden ports do not take up
+                // space on the icon.
+
+                // NOTE: The following will result in an _inside_ link to the port.
+                linkToPublishedPort(name, publisherPort);
+                if (container instanceof CompositeActor) {
+                    ((CompositeActor)container).registerPublisherPort(name, publisherPort);
+                }
             }
         }
     }
