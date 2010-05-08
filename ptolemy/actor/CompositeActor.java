@@ -65,6 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// CompositeActor
@@ -1063,8 +1064,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (relation == null) {
                 IOPort publishedPort = getPublishedPort(name);
                 try {
-                    relation = new TypedIORelation(this, this
-                            .uniqueName("publisherRelation"));
+                    // CompositeActor always creates an IORelation.
+                    relation = (IORelation)newRelation(uniqueName("publisherRelation"));
                 } catch (NameDuplicationException e) {
                     // Shouldn't happen.
                     throw new IllegalStateException(e);
@@ -1526,7 +1527,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             
             portList.add(port);
                 
-            // Exporting ports breaks lots of tests, so temporarily disable it.
+            // To disable exporting publisher ports, set the following to false.
             boolean exportPorts = false;
             if (exportPorts) {
 
@@ -1542,13 +1543,14 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 // If it is 1, then export only one level up (transparent level?
                 // opaque level?). If it is 2, export two levels up, etc.
                 // FIXME: For now, assume name collisions will not occur.
-                String portName = "_publisher_" + name;
+                String portName = "_publisher_" + StringUtilities.sanitizeName(name);
                 IOPort publisherPort = (IOPort)getPort(portName);
                 if (publisherPort == null) {
                     publisherPort = (IOPort)newPort(portName);
                 }
                 publisherPort.setPersistent(false);
                 publisherPort.setOutput(true);
+                publisherPort.setMultiport(true);
                 // FIXME: Hide the port. Note that we need to fix vergil
                 // so that when it lays out port, hidden ports do not take up
                 // space on the icon.
