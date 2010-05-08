@@ -6,7 +6,7 @@
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II 8.0.beta Release Notes</title>
+<title>Ptolemy II 8.0.1 Release Notes</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -14,17 +14,17 @@
 <h2><a name="limitations">Limitations</a>
 </h2>
 <ul>
-<li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/limitations.htm#in_browser" target="_top">Ptolemy II 8.0.beta Limitations Page</a> - Limitations found after release.
+<li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/limitations.htm#in_browser" target="_top">Ptolemy II 8.0.1 Limitations Page</a> - Limitations found after release.
 <li><a
 href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html" target="_top">Ptolemy II Bugzilla</a>
 </ul>
-Version 8.0.beta has the following limitations:
+Version 8.0.1 has the following limitations:
 
 <h3>Release Limitations</h3>
 <ul>
 
 <li> The gzipped tar file of Ptolemy II  source files with Unix line endings
-(<code>ptII8.0.beta.src.tar.gz</code>)
+(<code>ptII8.0.1.src.tar.gz</code>)
  <B>requires</B> GNU tar or WinZip.  Solaris tar will fail to
 untar this file with a checksum error because the pathnames are longer
 than 100 characters.
@@ -74,7 +74,7 @@ and continue with the start up.
 
 	      <li>After installing, Vergil.app is rather hard to find.  <code>Vergil.app</code>
 		is in <code>bin/</code>, the default location is
-		<code>/Applications/Ptolemy/ptII8.0.beta/bin/Vergil.app</code>
+		<code>/Applications/Ptolemy/ptII8.0.1/bin/Vergil.app</code>
 		The reason we use this path is because if the user rebuilds, then the
 		<code>Vergil.app</code> script will be generated
 		in <code>bin/</code>
@@ -151,7 +151,7 @@ Attempted to find as a moml class, but got:
 	not on the local file system, so we get a SecurityException.
 	 <br>The workaround is to run the applet by downloading it
 	from the Ptolemy Website:
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.beta/ptolemy/moml/demo/Networked/Networked.htm" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.beta/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.1/ptolemy/moml/demo/Networked/Networked.htm" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/ptII8.0.1/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
         <!-- appletviewer $PTII/ptolemy/moml/demo/Networked/NetworkedVergil.htm -->
         <!-- Confirmed on 2/23/10 -->
 
@@ -184,7 +184,7 @@ Attempted to find as a moml class, but got:
 	    When the "Match Ptolemy models in a directory" button is pressed, the a
 	    window with the title "Error" and the contents:
 	    <blockquote>
-	      Directory "/ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/jnlp-8.0.beta/signed/ptolemy/actor/gt/patterns"
+	      Directory "/ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/jnlp-8.0.1/signed/ptolemy/actor/gt/patterns"
 	      does not exist, the value of the DefaultDirectoryAttribute parameter was "$PTII/ptolemy/actor/gt/patterns"
  	    </blockquote>
 	    There is no stack trace.  This is annoying,
@@ -268,7 +268,7 @@ Attempted to find as a moml class, but got:
 	    <p>gt GameOfLife does something similar.  How do I stop it?
 
 	    <p>Maybe these need to bring up a viewer that does not have a run button.
-	      <!-- $PTII/bin/vergil ~/ptII8.0.beta/ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml -->
+	      <!-- $PTII/bin/vergil ~/ptII8.0.1/ptolemy/actor/gt/demo/ModelExecution/ModelExecution.xml -->
 	      <!-- Confirmed on 2/22/10 -->
 	</ul>
 </ul>
@@ -285,8 +285,8 @@ Attempted to find as a moml class, but got:
   <li> 1/8/07: GNU Make 3.81 no longer supports Windows style
     path names with colons in them.  The affects the Copernicus
     code generator because $PTII needs to be set to a pathname
-    with a colon in it like <code>c:/Ptolemy/ptII8.0.beta</code>.
-    A path name like <code>/cygdrive/c/Ptolemy/ptII8.0.beta</code>
+    with a colon in it like <code>c:/Ptolemy/ptII8.0.1</code>.
+    A path name like <code>/cygdrive/c/Ptolemy/ptII8.0.1</code>
     will <B>not</B> work with Java.
 
     <p>For example, if you run copernicus and copernicus runs
@@ -642,7 +642,7 @@ and $PTII/jni has some simple JNI tests.
   <li>Boolean and integer dataflow.
 </ul>
  <p>For limitations discovered after the release, see the
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/limitations.htm#in_browser" target="_top">Ptolemy II 8.0.beta website</a>
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII8.0/limitations.htm#in_browser" target="_top">Ptolemy II 8.0.1 website</a>
 
 </body>
 </html>
