@@ -58,9 +58,21 @@ import ptolemy.kernel.util.Workspace;
  new Publisher, by default, it has no channel name. You have to
  specify a channel name to use it.
  <p>
- This actor actually has a hidden output port that is connected
- to all subscribers via hidden "liberal links" (links that are
- allowed to cross levels of the hierarchy).  Consequently,
+ <b>How it works:</b>
+ This actor has a hidden output port. When the channel name
+ is specified, typically during model construction, this actor
+ causes a relation to be created in the least opaque composite
+ actor above it in the hierarchy and links to that relation.
+ In addition, if <i>export</i> is set to non-zero, it causes
+ a port to be created in that composite, and also links that
+ port to the relation.  The relation is recorded by the opaque
+ composite.  When a Subscriber is preinitialized that refers
+ to the same channel, that Subscriber finds the relation (by
+ finding the least opaque composite actor above it) and links
+ to the relation. Some of these links are "liberal links" in that
+ they cross levels of the hierarchy.
+ <p>
+ Since publishers are linked to subscribers,
  any data dependencies that the director might assume on a regular
  "wired" connection will also be assumed across Publisher-Subscriber
  pairs. Similarly, type constraints will propagate across
