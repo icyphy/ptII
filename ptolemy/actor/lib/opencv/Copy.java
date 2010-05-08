@@ -93,13 +93,8 @@ public class Copy extends Transformer {
             
             my_copy.allocate(openCV.width, openCV.height);
             my_copy.copy(openCV.image());
-            
-  
-           // my_copy.setParent(openCV.getParent());
             my_copy.width = openCV.width;
             my_copy.height = openCV.height;
-            my_copy.setBrightness(openCV.getBrightness());
-            my_copy.setContrast(openCV.getContrast()); 
             output.send(0, new ObjectToken(openCV));
             output.send(1, new ObjectToken(my_copy)); 
  

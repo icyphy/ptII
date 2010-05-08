@@ -50,7 +50,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AwtImageToIplImage.java \
 	CameraReader.java \
 	ChooseSeq.java \
 	DrawResultSeq.java \
@@ -60,8 +59,8 @@ JSRCS = \
 	ImageFlip.java \
 	ImageReader.java \
 	ImageResize.java \
-	ImageRotAlternate.java \
 	ImageRotate.java \
+	ImageRotateOpenCV.java \
 	ImageSmooth.java \
 	ImageSobel.java \
 	IplImageToAWTImage.java \

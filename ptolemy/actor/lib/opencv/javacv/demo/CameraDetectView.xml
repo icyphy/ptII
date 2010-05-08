@@ -4,32 +4,28 @@
 <entity name="CameraDetectView" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 95, 823, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1296, 760}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 644]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.2547348484848, 130.7753314393939}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.6832386363636, 67.0099431818182}">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{30, -35}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -115.0]">
         </property>
     </property>
-    <entity name="DrawResultSeq" class="ptolemy.actor.lib.opencv.javacv.DrawResultSeq">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 155.0]">
-        </property>
-    </entity>
     <entity name="ImageCopy" class="ptolemy.actor.lib.opencv.javacv.ImageCopy">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 25.0]">
         </property>
     </entity>
     <entity name="CameraReader" class="ptolemy.actor.lib.opencv.javacv.CameraReader">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 25.0]">
         </property>
     </entity>
     <entity name="IplImageView" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 100.0]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
@@ -41,7 +37,7 @@
             </property>
         </port>
         <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={263, 159, 656, 539}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 128, 656, 539}, maximized=false}">
             </property>
             <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
             </property>
@@ -62,7 +58,7 @@
         <link port="IplImageToAWTImage.output" relation="relation"/>
     </entity>
     <entity name="DetectPossibleTilt" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 95.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1296, 776}, maximized=false}">
         </property>
@@ -505,66 +501,86 @@
         <link port="ImageCopy5.output" relation="relation18"/>
         <link relation1="relation5" relation2="relation6"/>
     </entity>
-    <entity name="ImageRotAlternate" class="ptolemy.actor.lib.image.ImageRotAlternate">
-        <property name="scale" class="ptolemy.data.expr.Parameter" value=".5">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 120.0]">
+    <entity name="DrawResultSeq" class="ptolemy.actor.lib.opencv.javacv.DrawResultSeq">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 100.0]">
         </property>
     </entity>
-    <entity name="Scale" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="-1">
+    <entity name="ImageCopy2" class="ptolemy.actor.lib.opencv.javacv.ImageCopy">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 25.0]">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+    </entity>
+    <entity name="IplImageView2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 35.0]">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{360, 285}">
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 110.0]">
+            </property>
+        </port>
+        <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={599, 127, 656, 539}, maximized=false}">
+            </property>
+            <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 110.0]">
+            </property>
+        </entity>
+        <entity name="IplImageToAWTImage" class="ptolemy.actor.lib.opencv.javacv.IplImageToAWTImage">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 110.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="ImageDisplay.input" relation="relation"/>
+        <link port="IplImageToAWTImage.input" relation="relation2"/>
+        <link port="IplImageToAWTImage.output" relation="relation"/>
+    </entity>
+    <entity name="ImageRotateOpenCV" class="ptolemy.actor.lib.opencv.javacv.ImageRotateOpenCV">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 35.0]">
         </property>
     </entity>
-    <entity name="ImageRotAlternate2" class="ptolemy.actor.lib.image.ImageRotAlternate">
-        <property name="scale" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 160.0]">
-        </property>
-    </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[130.0, 150.0]">
-        </vertex>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[260.0, 230.0]">
+        <vertex name="vertex1" value="[115.0, 25.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[290.0, 25.0]">
+        </vertex>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[315.0, 60.0]">
+        </vertex>
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="DrawResultSeq.input" relation="relation3"/>
-    <link port="DrawResultSeq.output" relation="relation2"/>
-    <link port="DrawResultSeq.sequence" relation="relation7"/>
-    <link port="ImageCopy.input" relation="relation4"/>
-    <link port="ImageCopy.output" relation="relation"/>
-    <link port="CameraReader.output" relation="relation4"/>
-    <link port="IplImageView.port" relation="relation8"/>
-    <link port="DetectPossibleTilt.Input" relation="relation4"/>
-    <link port="DetectPossibleTilt.output1" relation="relation7"/>
-    <link port="DetectPossibleTilt.rotation angle" relation="relation5"/>
-    <link port="ImageRotAlternate.input" relation="relation"/>
-    <link port="ImageRotAlternate.output" relation="relation3"/>
-    <link port="ImageRotAlternate.input1" relation="relation5"/>
-    <link port="Scale.input" relation="relation5"/>
-    <link port="Scale.output" relation="relation6"/>
-    <link port="ImageRotAlternate2.input" relation="relation2"/>
-    <link port="ImageRotAlternate2.output" relation="relation8"/>
-    <link port="ImageRotAlternate2.input1" relation="relation6"/>
+    <link port="ImageCopy.input" relation="relation"/>
+    <link port="ImageCopy.output" relation="relation2"/>
+    <link port="CameraReader.output" relation="relation"/>
+    <link port="IplImageView.port" relation="relation5"/>
+    <link port="DetectPossibleTilt.Input" relation="relation"/>
+    <link port="DetectPossibleTilt.output1" relation="relation3"/>
+    <link port="DetectPossibleTilt.rotation angle" relation="relation4"/>
+    <link port="DrawResultSeq.input" relation="relation2"/>
+    <link port="DrawResultSeq.output" relation="relation5"/>
+    <link port="DrawResultSeq.rotation" relation="relation4"/>
+    <link port="DrawResultSeq.sequence" relation="relation3"/>
+    <link port="ImageCopy2.input" relation="relation2"/>
+    <link port="ImageCopy2.output" relation="relation6"/>
+    <link port="IplImageView2.port" relation="relation7"/>
+    <link port="ImageRotateOpenCV.input" relation="relation6"/>
+    <link port="ImageRotateOpenCV.output" relation="relation7"/>
+    <link port="ImageRotateOpenCV.input1" relation="relation4"/>
 </entity>

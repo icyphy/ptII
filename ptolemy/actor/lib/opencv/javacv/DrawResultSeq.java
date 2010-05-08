@@ -37,6 +37,7 @@ import name.audet.samuel.javacv.jna.cxcore.CvSeq;
 import name.audet.samuel.javacv.jna.cxcore.IplImage;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -51,9 +52,9 @@ import com.sun.jna.Pointer;
 
 /**
  * Draw result
-  * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
+  * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks, Dorsa Sadigh, Steve Bako
  * @version 
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -77,6 +78,9 @@ public class DrawResultSeq extends Transformer {
         input.setTypeEquals(BaseType.OBJECT);
         output.setTypeEquals(BaseType.OBJECT);
         
+        rot_input = new TypedIOPort(this, "rotation", true, false);
+        rot_input.setTypeEquals(BaseType.INT);
+        
         pathName = new StringAttribute(this, "pathName");
         pathName.setExpression("haarcascade_frontalface_default.xml");
         
@@ -93,6 +97,7 @@ public class DrawResultSeq extends Transformer {
 
     /** The input sequence. */
     public TypedIOPort seq;
+    public TypedIOPort rot_input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -100,7 +105,7 @@ public class DrawResultSeq extends Transformer {
      *  @exception IllegalActionException If thrown while writing to the port.   
      */
     public void fire() throws IllegalActionException {
-
+    	rotation = 0;
         if (input.hasToken(0)) {
             ObjectToken inputToken = (ObjectToken)input.get(0);
             Object inputObject = inputToken.getValue();
@@ -110,7 +115,9 @@ public class DrawResultSeq extends Transformer {
                         + inputObject.getClass());
             }
             _srcFrame = (IplImage)inputObject;
-            
+            if(rot_input.hasToken(0)) {
+            	rotation = ((IntToken)rot_input.get(0)).intValue();
+            }
             if (seq.hasToken(0)) {
                 ObjectToken seqToken = (ObjectToken)seq.get(0);
                 Object seqObject = seqToken.getValue();
@@ -156,12 +163,36 @@ public class DrawResultSeq extends Transformer {
             CvRect rect = new CvRect(r);
             CvPoint center = new CvPoint(0,0);
             int radius;
-            center.x = (int)round (rect.x + rect.width * 0.5);
-            center.y = (int)round (rect.y + rect.height * 0.5);
+            center.x = (int) round (rect.x + rect.width * 0.5);
+            center.y = (int) round (rect.y + rect.height * 0.5);
+            if(rotation != 0){
+            	double xcord = (_srcFrame.width*.5) - center.x;
+            	double ycord = (_srcFrame.height*.5) - center.y;
+            	double altx = _srcFrame.width*.5;
+            	double alty = _srcFrame.height*.5;
+            	if(xcord < 0) {
+            		if(ycord < 0){
+            		center.x = (int) (altx + Math.abs((Math.cos(rotation)*Math.abs(xcord))));
+            		center.y = (int) (alty + Math.abs((Math.sin(rotation)*Math.abs(ycord))));
+            		} else {
+            			center.x = (int) (altx + Math.abs((Math.cos(rotation)*Math.abs(xcord))));
+                		center.y = (int) (alty - Math.abs((Math.sin(rotation)*Math.abs(ycord))));
+            		}
+            		
+            	} else {
+            		if(ycord > 0){
+            			center.x = (int) (altx - Math.abs((Math.cos(rotation)*Math.abs(xcord))));
+                		center.y = (int) (alty - Math.abs((Math.sin(rotation)*Math.abs(ycord))));
+                		} else {
+                			center.x = (int) (altx - Math.abs((Math.cos(rotation)*Math.abs(xcord))));
+                    		center.y = (int) (alty + Math.abs((Math.sin(rotation)*Math.abs(ycord))));
+                		}
+            	}         
+            } 
+            
             radius = (int)round ((rect.width + rect.height) * 0.25);
-
             cvCircle (_image, center.byValue(), radius, colors[i % 8], 3, 8, 0);
-            //cvCircle (_image, center.byValue(), radius, colors[0], 3, 8, 0);  
+
         }
 
     }
@@ -172,6 +203,7 @@ public class DrawResultSeq extends Transformer {
     private IplImage _srcFrame;
     private IplImage _dstFrame; 
     private CvSeq _objectSeq;
+    private int rotation;
     
     private CvScalar.ByValue[] colors = { 
             CvScalar.RED, CvScalar.BLUE, CvScalar.GREEN, CvScalar.CYAN,

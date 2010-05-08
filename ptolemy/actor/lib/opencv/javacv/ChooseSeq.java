@@ -41,8 +41,6 @@ import ptolemy.kernel.util.StringAttribute;
 
 import static java.lang.Math.round;
 import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-//import static name.audet.samuel.javacv.jna.highgui.v10.*;
-//import static name.audet.samuel.javacv.jna.cv.v10.*;
 
 ///////////////////////////////////////////////////////////////////
 //// Draw circles for the result sequence data 
@@ -51,7 +49,7 @@ import static name.audet.samuel.javacv.jna.cxcore.v10.*;
  * Draw result
   * @author Tatsuaki Iwata, Edward A. Lee, Jan Reineke, Christopher Brooks
  * @version 
- * @since Ptolemy II 7.1
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
