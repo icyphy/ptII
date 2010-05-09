@@ -66,7 +66,7 @@ proc test_java_cg {model} {
 	set args [java::new {String[]} 3 \
 		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.java" $model]]
 
-	set timeout 60000
+	set timeout 300000
 	puts "JavaCGAuto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
