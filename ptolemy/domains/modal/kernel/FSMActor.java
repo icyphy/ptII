@@ -1695,7 +1695,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             return set;
         }
     }
-
+    
+   
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -2104,6 +2105,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
 
+  
     /** Current state. */
     protected State _currentState = null;
 
@@ -2688,5 +2690,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _tokenListArrays;
+    
     
 }
