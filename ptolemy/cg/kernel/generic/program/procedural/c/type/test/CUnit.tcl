@@ -51,6 +51,7 @@ if {[info procs jdkCapture] == "" } then {
 ####
 #
 test CUnit-1.1 {Run the CUnit tests} {
+    exec -stderrok make IntTest
     # $makeArguments is set in ptolemy/util/test/testDefs.tcl
     # Use "make $makeArguments" so that commands are not printed as they
     # are executed
@@ -60,13 +61,8 @@ test CUnit-1.1 {Run the CUnit tests} {
 
 	set results [exec -stderrok make $makeArguments run]
     }
-    puts $results
-
-    # Remove lines that are warnings about compile errors
-    regsub {^IntTest.c:.*$} $results {} r2
-
     # If this test fails, run "make run"
-    string range $r2 [string last {--Run Summary} $r2] end 
+    string range $results [string last {--Run Summary} $results] end 
 } {--Run Summary: Type      Total     Ran  Passed  Failed
                suites        1       1     n/a       0
                tests         1       1       1       0
