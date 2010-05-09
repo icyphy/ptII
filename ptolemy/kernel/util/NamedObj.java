@@ -1416,18 +1416,19 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         // reality, this code should do what BasicModelErrorHandler
         // does and throw an exception when anything falls off the top
         // of the model.
+
         if (_modelErrorHandler != null) {
-            if (_modelErrorHandler.handleModelError(context, exception)) {
+            if (_modelErrorHandler.handleModelError(context, exception)) { 
                 return true;
             }
-        }
-
+           }
+        
         ModelErrorHandler container = getContainer();
 
         if (container != null) {
-            return container.handleModelError(context, exception);
+             return container.handleModelError(context, exception);
         }
-
+        
         return false;
     }
 
