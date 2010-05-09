@@ -29,6 +29,7 @@
 //// Distributor
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
