@@ -35,6 +35,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
@@ -65,7 +66,7 @@ See DecoratedAttributes for more information.
  */
 
 public class GiottoDecoratedAttributesImplementation extends
-        DecoratedAttributes {
+DecoratedAttributes {
 
     /** Construct a DecoratedAttribute from the container and the decorator.
      *  @param container The container this object.
@@ -95,41 +96,63 @@ public class GiottoDecoratedAttributesImplementation extends
             if (_debugging) {
                 _debug("temp has name " + temp.getDisplayName());
             }
-            if (!(actor instanceof ptolemy.domains.giotto.lib.GiottoError)) {
-                try {
 
-                    //new Parameter(_decoratedDirector,"WCET")).setExpression(Double.toString(_getWCET()));
-                    dummyParam = new Parameter(temp, "WCET");
-                    dummyParam.setTypeEquals(BaseType.DOUBLE);
-                    dummyParam.setExpression(Double.toString(0.00000001));
+            try {
 
-                } catch (Exception e) {// "WCET parameter already exists so just determine the value of WCET with _getWCET and set it"
-                    //Parameter wcetPar = (Parameter) temp.getAttribute("WCET");
-                    //  wcetPar.setExpression("0.0011");//Double.toString(_getWCET()));  
-                    if (_debugging) {
-                        _debug(actor.getFullName()
-                                + " already had wcet parameter appended");
-                    }
-                }
+                dummyParam = new Parameter(temp, "WCET");
+                dummyParam.setTypeEquals(BaseType.DOUBLE);
+                dummyParam.setExpression(Double.toString(0.00000001));
 
-                try {
-                    dummyParam = new Parameter(temp, "frequency");
-                    dummyParam.setTypeEquals(BaseType.INT);
-                    dummyParam.setExpression("1");
-
-                } catch (Exception e) {// "WCET parameter already exists so just determine the value of WCET with _getWCET and set it"
-
-                    if (_debugging) {
-                        _debug(actor.getFullName()
-                                + " already had frequency parameter appended");
-                    }
+            } catch (Exception e) { 
+                if (_debugging) {
+                    _debug(actor.getFullName()
+                            + " already had wcet parameter appended");
                 }
             }
-        }// end of label all the actors with WCET
+            try {
+                dummyParam = new Parameter(temp, "grace");
+                dummyParam.setTypeEquals(BaseType.DOUBLE);
+                dummyParam.setExpression(Double.toString(0.0));
+
+            } catch (Exception e) {
+                if (_debugging) {
+                    _debug(actor.getFullName()
+                            + " already had grace parameter appended");
+                }
+            }
+
+            try {
+                dummyParam = new Parameter(temp, "ET");
+                dummyParam.setTypeEquals(BaseType.DOUBLE);
+                dummyParam.setExpression(Double.toString(0.0));
+
+            } catch (Exception e) {// "ET parameter already exists so just determine the value of WCET with _getWCET and set it"
+
+                if (_debugging) {
+                    _debug(actor.getFullName()
+                            + " already had et parameter appended");
+                }
+            }
+
+            try {
+                dummyParam = new Parameter(temp, "frequency");
+                dummyParam.setTypeEquals(BaseType.INT);
+                dummyParam.setExpression("1");
+
+            } catch (Exception e) {// "frequency parameter already exists so just determine the value of WCET with _getWCET and set it"
+
+                if (_debugging) {
+                    _debug(actor.getFullName()
+                            + " already had frequency parameter appended");
+                }
+            }
+        }
+        // end of label all the actors with WCET
 
         GiottoDirector tempDir = (GiottoDirector) decorator;
 
         double dirWCET = tempDir._getWCET();
+        NamedObj parentContainer = null;
         try {
             //add parameter to the container if it's not already there
             if (_debugging) {
@@ -137,18 +160,50 @@ public class GiottoDecoratedAttributesImplementation extends
                         + container.getContainer().getDisplayName()
                         + "it should get value " + dirWCET);
             }
-            dummyParam = new Parameter(container.getContainer(), "WCET");
+
+            parentContainer = container.getContainer();
+
+            dummyParam = new Parameter(parentContainer, "ET");
             dummyParam.setTypeEquals(BaseType.DOUBLE);
             dummyParam.setExpression(Double.toString(dirWCET));
+
+            dummyParam = new Parameter(parentContainer, "WCET");
+            dummyParam.setTypeEquals(BaseType.DOUBLE);
+            dummyParam.setExpression(Double.toString(dirWCET));
+
+            parentContainer = container.getContainer().getContainer();
+      
+            if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
+                dummyParam = new Parameter(parentContainer, "WCET");
+                dummyParam.setTypeEquals(BaseType.DOUBLE);
+                dummyParam.setExpression(Double.toString(dirWCET));
+            }
+
+
         } catch (Exception e) {
             if (_debugging) {
                 _debug("container already had wcet parameter set so updating the value to "
                         + dirWCET);
             }
-            dummyParam = (Parameter) container.getContainer().getAttribute(
-                    "WCET");
+            dummyParam = (Parameter) parentContainer.getAttribute(
+            "WCET");
             dummyParam.setTypeEquals(BaseType.DOUBLE);
             dummyParam.setExpression(Double.toString(dirWCET));
+            
+            parentContainer = container.getContainer().getContainer();
+          
+            if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
+
+                try{
+                    dummyParam = new Parameter(parentContainer, "WCET");
+                    dummyParam.setTypeEquals(BaseType.DOUBLE);
+                    dummyParam.setExpression(Double.toString(dirWCET));
+                }catch(Exception E){
+                    dummyParam = (Parameter) parentContainer.getAttribute("WCET");
+                    dummyParam.setTypeEquals(BaseType.DOUBLE);
+                    dummyParam.setExpression(Double.toString(dirWCET));
+                }
+            }
         }
 
         try {
@@ -156,9 +211,7 @@ public class GiottoDecoratedAttributesImplementation extends
             dummyParam = new Parameter(container.getContainer(), "frequency");
             dummyParam.setTypeEquals(BaseType.INT);
             dummyParam.setExpression("1");
-
         } catch (Exception e) {
-
             if (_debugging) {
                 _debug("container already had frequency parameters set");
             }
@@ -185,7 +238,7 @@ public class GiottoDecoratedAttributesImplementation extends
      */
     public GiottoDecoratedAttributesImplementation(
             NamedObj containerOfDecorator, String name)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         // FIXME: There should be a more elegant way to get this right.
         // This also only works for attributes not for entities.
         super(_getRealContainer(containerOfDecorator, name), name
@@ -206,7 +259,7 @@ public class GiottoDecoratedAttributesImplementation extends
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (_debugging) {
             _debug("attribute changed method called");
         }
@@ -225,7 +278,7 @@ public class GiottoDecoratedAttributesImplementation extends
                 _register();
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
-                        "Can't register this decorated attribute.");
+                "Can't register this decorated attribute.");
             }
         }
         super.attributeChanged(attribute);
@@ -241,7 +294,7 @@ public class GiottoDecoratedAttributesImplementation extends
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GiottoDecoratedAttributesImplementation newObject = (GiottoDecoratedAttributesImplementation) super
-                .clone(workspace);
+        .clone(workspace);
         newObject._decorator = _decorator;
         return newObject;
     }
@@ -290,7 +343,7 @@ public class GiottoDecoratedAttributesImplementation extends
      *   an instance of the expect class (in derived classes).
      */
     protected void _addAttribute(Attribute p) throws NameDuplicationException,
-            IllegalActionException {
+    IllegalActionException {
         if (_decorator == null) {
             if (p.getName().equals("_decorator")) {
                 _decoratorPath = (StringAttribute) p;
@@ -324,7 +377,7 @@ public class GiottoDecoratedAttributesImplementation extends
         if (object == null) {
             if (containerOfCodeGenerator instanceof CompositeEntity) {
                 object = ((CompositeEntity) containerOfCodeGenerator)
-                        .getEntity(elementName);
+                .getEntity(elementName);
             }
         }
         return object;
