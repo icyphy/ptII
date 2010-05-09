@@ -173,7 +173,7 @@ public class Transition extends ComponentRelation {
      *   any relation already in the container.
      */
     public Transition(FSMActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -191,7 +191,7 @@ public class Transition extends ComponentRelation {
      *   any relation already in the container.
      */
     public Transition(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -211,7 +211,7 @@ public class Transition extends ComponentRelation {
      *   does not evaluate to a boolean value.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+    throws IllegalActionException {
         if (attribute == preemptive) {
             // evaluate the parameter to make sure it is given a valid
             // expression
@@ -219,8 +219,30 @@ public class Transition extends ComponentRelation {
             workspace().incrVersion();
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
-                    .booleanValue();
-        } else if (attribute == guardExpression) {
+            .booleanValue();
+        }else if(attribute == errorTransition){
+            _errorTransition = ((BooleanToken) errorTransition.getToken())
+            .booleanValue();  
+            if(_errorTransition== true){
+                guardExpression.setExpression("modelError == true");
+                annotation.setExpression("");
+                outputActions.setExpression("");
+                setActions.setExpression("modelError=false");
+
+                reset.setToken(BooleanToken.FALSE);
+                preemptive.setToken(BooleanToken.FALSE);
+                defaultTransition.setToken(BooleanToken.FALSE);
+                nondeterministic.setToken(BooleanToken.FALSE);
+            }
+            if(_errorTransition == false){
+                // should everything be cleared here?
+                // I want the boxed to be cleared if it was initially true and then set to false
+                // however this will be called when the model is opened and I don't want to clear 
+                // the parameters set by the user then.. What if they're not at all interested in 
+                // error stuff.. ie.. they're not using transitions for timed models
+            }
+        } 
+        else if (attribute == guardExpression) {
             // The guard expression can only be evaluated at run
             // time, because the input variables it can reference are created
             // at run time. The guardExpression is a string
@@ -266,10 +288,10 @@ public class Transition extends ComponentRelation {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Transition newObject = (Transition) super.clone(workspace);
         newObject.guardExpression = (StringAttribute) newObject
-                .getAttribute("guardExpression");
+        .getAttribute("guardExpression");
         newObject.preemptive = (Parameter) newObject.getAttribute("preemptive");
         newObject.refinementName = (StringAttribute) newObject
-                .getAttribute("refinementName");
+        .getAttribute("refinementName");
         newObject._guardParseTree = null;
         newObject._guardParseTreeVersion = -1;
         newObject._actionListsVersion = -1;
@@ -422,7 +444,7 @@ public class Transition extends ComponentRelation {
 
             Nameable container = getContainer();
             TypedCompositeActor containerContainer = (TypedCompositeActor) container
-                    .getContainer();
+            .getContainer();
             int index = 0;
 
             while (tokenizer.hasMoreTokens()) {
@@ -434,7 +456,7 @@ public class Transition extends ComponentRelation {
                 }
 
                 TypedActor element = (TypedActor) containerContainer
-                        .getEntity(name);
+                .getEntity(name);
 
                 if (element == null) {
                     throw new IllegalActionException(this, "Cannot find "
@@ -544,12 +566,12 @@ public class Transition extends ComponentRelation {
      *   an relation with the name of this transition.
      */
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+    throws IllegalActionException, NameDuplicationException {
         if (container != null) {
             if (!(container instanceof FSMActor)) {
                 throw new IllegalActionException(container, this,
                         "Transition can only be contained by instances of "
-                                + "FSMActor.");
+                        + "FSMActor.");
             }
         }
 
@@ -634,6 +656,8 @@ public class Transition extends ComponentRelation {
      */
     public Parameter preemptive = null;
 
+    public Parameter errorTransition = null;
+
     /** Attribute specifying one or more names of refinements. The
      *  refinements must be instances of TypedActor and have the same
      *  container as the FSMActor containing this state, otherwise
@@ -671,7 +695,7 @@ public class Transition extends ComponentRelation {
 
         if (!(port.getContainer() instanceof State)) {
             throw new IllegalActionException(this, port.getContainer(),
-                    "Transition can only connect to instances of State.");
+            "Transition can only connect to instances of State.");
         }
 
         State st = (State) port.getContainer();
@@ -679,7 +703,7 @@ public class Transition extends ComponentRelation {
         if ((port != st.incomingPort) && (port != st.outgoingPort)) {
             throw new IllegalActionException(this, port.getContainer(),
                     "Transition can only be linked to incoming or outgoing "
-                            + "port of State.");
+                    + "port of State.");
         }
 
         if (numLinks() == 0) {
@@ -688,7 +712,7 @@ public class Transition extends ComponentRelation {
 
         if (numLinks() >= 2) {
             throw new IllegalActionException(this,
-                    "Transition can only connect two States.");
+            "Transition can only connect two States.");
         }
 
         Iterator ports = linkedPortList().iterator();
@@ -698,7 +722,7 @@ public class Transition extends ComponentRelation {
         if (((pt == s.incomingPort) && (port == st.incomingPort))
                 || ((pt == s.outgoingPort) && (port == st.outgoingPort))) {
             throw new IllegalActionException(this,
-                    "Transition can only have one source and one destination.");
+            "Transition can only have one source and one destination.");
         }
 
         return;
@@ -744,7 +768,7 @@ public class Transition extends ComponentRelation {
         if (container != null) {
             // Get the containing modal model.
             CompositeActor modalModel = (CompositeActor) container
-                    .getContainer();
+            .getContainer();
             if (modalModel != null) {
                 // Get the director for the modal model.
                 Director director = modalModel.getDirector();
@@ -758,7 +782,7 @@ public class Transition extends ComponentRelation {
 
     // Initialize the variables of this transition.
     private void _init() throws IllegalActionException,
-            NameDuplicationException {
+    NameDuplicationException {
         annotation = new StringParameter(this, "annotation");
         annotation.setExpression("");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
@@ -795,6 +819,13 @@ public class Transition extends ComponentRelation {
         reset = new Parameter(this, "reset");
         reset.setTypeEquals(BaseType.BOOLEAN);
         reset.setToken(BooleanToken.FALSE);
+
+
+        errorTransition = new Parameter(this, "errorTransiton");
+        errorTransition.setTypeEquals(BaseType.BOOLEAN);
+        errorTransition.setToken(BooleanToken.FALSE);
+
+
         preemptive = new Parameter(this, "preemptive");
         preemptive.setTypeEquals(BaseType.BOOLEAN);
         preemptive.setToken(BooleanToken.FALSE);
@@ -884,4 +915,8 @@ public class Transition extends ComponentRelation {
 
     // Version of cached source/destination state.
     private long _stateVersion = -1;
+    
+    // Set to true if the user wants the transition to be used
+    // to detect errors.
+    private boolean _errorTransition = false;
 }
