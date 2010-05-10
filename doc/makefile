@@ -792,8 +792,8 @@ $(VERGIL_DOCS): javahtml.awk
 # and the convert Ptolemy Project web page to
 #     <a href="http://ptolemy.eecs.berkeley.edu/#in_browser">Ptolemy Project web page</a>
 mainVergil.htm: main.htm
-	sed -e 's@" target="_top">@#in_browser">@' \
-	    -e 's@body.htm" target="body">@main.htm">@' \
+	sed -e 's@http://\([^"]*\)" target="_top">@http://\1#in_browser">@' \
+	    -e 's@#in_browser#in_browser@#in_browser@' \
 	    -e 's@(<a href="../ptolemy/domains/\([^/]*\)/doc/toc.htm" target="toc">@(<a href="../ptolemy/configs/doc/completeDemos.htm#\1">@' \
 		main.htm > $@
 
