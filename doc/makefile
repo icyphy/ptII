@@ -846,6 +846,7 @@ update: $(DERIVED_FILES)
 	svn commit -m "Master files changed" \
 		mainVergil.htm \
 		mainVergilPtiny.htm \
+		mainVergilPtinyKepler.htm \
 		ptII$(PTVERSION).releaseVergil.htm \
 		troubleshootingVergil.htm \
 		whatsnew.htm whatsnewVergil.htm 
