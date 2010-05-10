@@ -86,6 +86,7 @@ PTLIB=$(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # Files to remove with 'make clean'
 KRUFT = \
+	*.jnilib \
 	*.jar
 
 all: jclass

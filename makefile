@@ -125,6 +125,7 @@ MISC_FILES = \
 	$(DIRS) \
 	bin \
 	config \
+	lbnl \
 	lib \
 	mk \
 	ptKeystore.properties
