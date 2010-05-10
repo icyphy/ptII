@@ -147,6 +147,8 @@ public class HTMLAbout {
                     .append("<tr rowspan=4><center><b>Full</b></center></tr>\n"
                             + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
                             + _aboutHTML("ptolemy/configs/doc/demos.htm")
+                            + _aboutHTML("ptolemy/configs/doc/whatsNew"
+                                    + version + ".htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew8.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew7.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew6.0.htm")
@@ -175,8 +177,13 @@ public class HTMLAbout {
         if (_configurationExists("ptinyKepler")) {
             htmlBuffer
                     .append("<tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/kepler/doc-index.htm")
+                            + _aboutHTML("doc/mainVergilPtinyKepler.htm")
+                            + _aboutHTML("ptolemy/configs/doc/demosPtinyKepler.htm")
+                            + _aboutHTML("ptolemy/configs/doc/docsPtinyKepler.htm")
                             + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm")
-                            + _aboutHTML("ptolemy/configs/doc/demosPtinyKepler.htm"));
+                            );
+                            
         }
         if (_configurationExists("visualsense")) {
             htmlBuffer
