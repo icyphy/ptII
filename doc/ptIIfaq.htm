@@ -1034,11 +1034,14 @@ transform models.
   or in other MoML files.  These definitions may be overridden
   The easiest way to get all the information from a model is to parse
   the xml file and then traverse the model in Java and write out
-  information of interest.  For example, see
-  ptolemy.kernel.util.CompositeEntity.deepEntityList() and the
-  exportMoML() methods.  There may be some code at
-  <a href="https://code.kepler-project.org/code/kepler/trunk/modules/moml2graphviz/" target="_top">https://code.kepler-project.org/code/kepler/trunk/modules/moml2graphviz/</a>
-  that is of interest.
+  information of interest.  For example, see the
+  <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/kernel/CompositeEntity.html#deepEntityList()" target="_top"><code>ptolemy.kernel.CompositeEntity.deepEntityList()</code></a>
+  and
+    <a
+  href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/kernel/CompositeEntity.html#exportMoML(java.io.Writer, int, java.lang.String)" target="_top"><code>ptolemy.kernel.CompositeEntity.exportMoML()</code></a> methods.
+  There may be some code at
+ <a href="https://code.kepler-project.org/code/kepler/trunk/modules/moml2graphviz/" target="_top">https://code.kepler-project.org/code/kepler/trunk/modules/moml2graphviz/</a>
+  that is of interest.</p>
 
   <p>In addition, MoML is registered as a MIME type, see
 <a href="http://www.iana.org/assignments/media-types/model/vnd.moml+xml"><code>http://www.iana.org/assignments/media-types/model/vnd.moml+xml</code></a></p>
