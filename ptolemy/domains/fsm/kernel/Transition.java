@@ -220,27 +220,6 @@ public class Transition extends ComponentRelation {
         } else if (attribute == nondeterministic) {
             _nondeterministic = ((BooleanToken) nondeterministic.getToken())
             .booleanValue();
-        }else if(attribute == errorTransition){
-            _errorTransition = ((BooleanToken) errorTransition.getToken())
-            .booleanValue();  
-            if(_errorTransition== true){
-                guardExpression.setExpression("modelError == true");
-                annotation.setExpression("");
-                outputActions.setExpression("");
-                setActions.setExpression("modelError=false");
-
-                reset.setToken(BooleanToken.FALSE);
-                preemptive.setToken(BooleanToken.FALSE);
-                defaultTransition.setToken(BooleanToken.FALSE);
-                nondeterministic.setToken(BooleanToken.FALSE);
-            }
-            if(_errorTransition == false){
-                // should everything be cleared here?
-                // I want the boxed to be cleared if it was initially true and then set to false
-                // however this will be called when the model is opened and I don't want to clear 
-                // the parameters set by the user then.. What if they're not at all interested in 
-                // error stuff.. ie.. they're not using transitions for timed models
-            }
         } 
         else if (attribute == guardExpression) {
             // The guard expression can only be evaluated at run
@@ -656,7 +635,6 @@ public class Transition extends ComponentRelation {
      */
     public Parameter preemptive = null;
 
-    public Parameter errorTransition = null;
 
     /** Attribute specifying one or more names of refinements. The
      *  refinements must be instances of TypedActor and have the same
@@ -820,12 +798,6 @@ public class Transition extends ComponentRelation {
         reset.setTypeEquals(BaseType.BOOLEAN);
         reset.setToken(BooleanToken.FALSE);
 
-
-        errorTransition = new Parameter(this, "errorTransiton");
-        errorTransition.setTypeEquals(BaseType.BOOLEAN);
-        errorTransition.setToken(BooleanToken.FALSE);
-
-
         preemptive = new Parameter(this, "preemptive");
         preemptive.setTypeEquals(BaseType.BOOLEAN);
         preemptive.setToken(BooleanToken.FALSE);
@@ -915,8 +887,4 @@ public class Transition extends ComponentRelation {
 
     // Version of cached source/destination state.
     private long _stateVersion = -1;
-    
-    // Set to true if the user wants the transition to be used
-    // to detect errors.
-    private boolean _errorTransition = false;
 }
