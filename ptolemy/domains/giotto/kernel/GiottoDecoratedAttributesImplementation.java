@@ -35,7 +35,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
@@ -103,7 +102,7 @@ DecoratedAttributes {
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
                 dummyParam.setExpression(Double.toString(0.00000001));
 
-            } catch (Exception e) { 
+            } catch (NameDuplicationException e) { 
                 if (_debugging) {
                     _debug(actor.getFullName()
                             + " already had wcet parameter appended");
@@ -114,7 +113,7 @@ DecoratedAttributes {
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
                 dummyParam.setExpression(Double.toString(0.0));
 
-            } catch (Exception e) {
+            } catch (NameDuplicationException e) {
                 if (_debugging) {
                     _debug(actor.getFullName()
                             + " already had grace parameter appended");
@@ -126,7 +125,7 @@ DecoratedAttributes {
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
                 dummyParam.setExpression(Double.toString(0.0));
 
-            } catch (Exception e) {// "ET parameter already exists so just determine the value of WCET with _getWCET and set it"
+            } catch (NameDuplicationException e) {// "ET parameter already exists so just determine the value of WCET with _getWCET and set it"
 
                 if (_debugging) {
                     _debug(actor.getFullName()
@@ -139,7 +138,7 @@ DecoratedAttributes {
                 dummyParam.setTypeEquals(BaseType.INT);
                 dummyParam.setExpression("1");
 
-            } catch (Exception e) {// "frequency parameter already exists so just determine the value of WCET with _getWCET and set it"
+            } catch (NameDuplicationException e) {// "frequency parameter already exists so just determine the value of WCET with _getWCET and set it"
 
                 if (_debugging) {
                     _debug(actor.getFullName()
@@ -172,7 +171,7 @@ DecoratedAttributes {
             dummyParam.setExpression(Double.toString(dirWCET));
 
             parentContainer = container.getContainer().getContainer();
-      
+
             if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
                 dummyParam = new Parameter(parentContainer, "WCET");
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
@@ -180,7 +179,7 @@ DecoratedAttributes {
             }
 
 
-        } catch (Exception e) {
+        } catch (NameDuplicationException e) {
             if (_debugging) {
                 _debug("container already had wcet parameter set so updating the value to "
                         + dirWCET);
@@ -189,16 +188,16 @@ DecoratedAttributes {
             "WCET");
             dummyParam.setTypeEquals(BaseType.DOUBLE);
             dummyParam.setExpression(Double.toString(dirWCET));
-            
+
             parentContainer = container.getContainer().getContainer();
-          
+
             if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
 
                 try{
                     dummyParam = new Parameter(parentContainer, "WCET");
                     dummyParam.setTypeEquals(BaseType.DOUBLE);
                     dummyParam.setExpression(Double.toString(dirWCET));
-                }catch(Exception E){
+                }catch(NameDuplicationException E){
                     dummyParam = (Parameter) parentContainer.getAttribute("WCET");
                     dummyParam.setTypeEquals(BaseType.DOUBLE);
                     dummyParam.setExpression(Double.toString(dirWCET));
@@ -211,7 +210,7 @@ DecoratedAttributes {
             dummyParam = new Parameter(container.getContainer(), "frequency");
             dummyParam.setTypeEquals(BaseType.INT);
             dummyParam.setExpression("1");
-        } catch (Exception e) {
+        } catch (NameDuplicationException e) {
             if (_debugging) {
                 _debug("container already had frequency parameters set");
             }

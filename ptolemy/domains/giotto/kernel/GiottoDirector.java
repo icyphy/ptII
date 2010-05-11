@@ -816,8 +816,9 @@ TimedDirector, Decorator {
         if(dirWCET != null){
             wcet = ((DoubleToken) ((Variable) dirWCET).getToken()).doubleValue();
         }
-        System.out.println("the WCET time seen by the director is "+ wcet+" and the period is "+ _periodValue);
-
+        if(_debugging){
+            _debug("the WCET time seen by the director is "+ wcet+" and the period is "+ _periodValue);
+        }
         if(wcet >_periodValue) {
 
             if(_debugging){
@@ -832,29 +833,6 @@ TimedDirector, Decorator {
         if(_debugging){
             _debug("at the end of preinitialize in the giotto director.");
         }
-        //        NamedObj dummyContainer = this.getContainer();
-        //        NamedObj parentContainer = dummyContainer.getContainer();
-        //        ptolemy.domains.fsm.modal.ModalModel parentActor = null;
-        //        if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
-        //            parentActor = (ptolemy.domains.fsm.modal.ModalModel)parentContainer;
-        //            FSMActor theactor = null;
-        //
-        //            System.out.println("my container name is "+dummyContainer.getDisplayName());
-        //
-        //            if(parentContainer != null){ 
-        //                theactor = parentActor.getController();
-        //                System.out.println("the parent container is "+ parentContainer.getDisplayName());
-        //                System.out.println("parent container class name is "+  parentContainer.getClassName());
-        //                if(parentContainer.getClassName().contains("ModalModel")){  
-        //                    System.out.println("there is a modal model as the parent class");
-        //                    if(parentActor.getDirector() instanceof FSMDirector){
-        //                        System.out.println("Found an FSM Director in the parent");
-        //                        theactor.setModelError();
-        //
-        //                    }
-        //                }
-        //            }
-        //        }
     }
 
 
@@ -1054,9 +1032,13 @@ TimedDirector, Decorator {
             errorAction.addChoice("ErrorTransition");
             //IllegalActionException, NameDuplicationException 
         }catch(NameDuplicationException ne){
-            System.out.println("I should handle this error in a better way later.");
+            if(_debugging){
+                _debug("I should handle this error in a better way later.");
+            }
         }catch(IllegalActionException ie){
-            System.out.println("I should handle this error in a better way later.");
+            if(_debugging){
+                _debug("I should handle this error in a better way later.");
+            }
 
         }
     }
@@ -1084,11 +1066,15 @@ TimedDirector, Decorator {
                     + " and period value is " + periodvalue);
             return true;
         } else if (_errorAction == ErrorAction.reset) {
-            System.out.println("I should request a reset to the model");
+            if(_debugging){
+                _debug("I should request a reset to the model");
+            }
             throw exception;
 
         }else if(_errorAction == ErrorAction.errorTransition){
-            System.out.println("I should take the errorTransition");
+            if(_debugging){
+                _debug("I should take the errorTransition");
+            }
             return handleModelError(context,exception); 
         }
 
