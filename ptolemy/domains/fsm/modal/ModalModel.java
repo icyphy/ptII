@@ -363,9 +363,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                     + this.getDisplayName());
         }
         FSMActor theActor = this.getController();
-        theActor.setModelError();
+        return theActor.handleModelError(context, exception);
 
-        return true;
     }
 
     /** Get representation of dependencies between input ports and
