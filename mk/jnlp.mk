@@ -498,6 +498,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTERA_JARS) \
 	$(PDFRENDERER_JARS) \
 	ptolemy/vergil/fsm/fmv/fmv.jar \
+	ptolemy/vergil/modal/fmv/fmv.jar \
 	ptolemy/vergil/gt/gt.jar \
 	ptolemy/vergil/tdl/tdl.jar \
 	$(FULL_8_1_JARS) \
