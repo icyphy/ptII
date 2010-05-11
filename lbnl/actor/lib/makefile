@@ -59,10 +59,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Simulator.java SystemCommand.java
+	Simulator.java \
+	SystemCommand.java
 
 OTHER_FILES_TO_BE_JARED = \
-	simulator.xml
+	simulatorentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

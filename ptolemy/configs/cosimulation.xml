@@ -7,7 +7,7 @@
       <group>
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
-	    <input source="lbnl/actor/lib/simulator.xml"/>
+	    <input source="lbnl/actor/lib/simulatorentities.xml"/>
       </group>
     ?>
   </configure>
