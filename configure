@@ -679,6 +679,7 @@ ac_ct_CXX
 PTJYTHON
 PTJYTHON_BAT
 JJTREE
+PTCCJNI
 JAVAH
 MATLAB
 PTMATLAB_CC
@@ -786,7 +787,6 @@ PTJAVA_HOME
 PTJAVA3D_DIR
 PTJMF_DIR
 PTJMF_PACKAGES
-PTJNI_DIR
 PTJNI_ARCHITECTURE
 PTJNI_INCLUDE
 PTJNI_DL_LIBRARY
@@ -2908,6 +2908,7 @@ JVERSION=unknown
 startdir="$PTII"
 
 cd "$srcdir/config"
+rm -f *.class
 if "$JAVAC" confTest.java ; then
     if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: ok" >&5
@@ -9158,27 +9159,91 @@ fi
 #       Ptolemy II can interface to user provided native code using JNI
 #	Ptolemy II can interface to Matlab using JNI
 #--------------------------------------------------------------------
-# PTJNI_DIR is set to jni and used in
-# $PTII/makefile if gcc or cc is found.
 PTJNI_DIR=
 
-if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" -a ! -d "$PTII/mescal/kirika" ; then
+if test ! -d "$PTII/ptolemy/matlab" -a ! -d "$PTII/mescal/kirika" ; then
     if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
     so we need not find gcc or cc." >&5
 echo "${ECHO_T}$PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
     so we need not find gcc or cc." >&6; }; fi
 else
-    # Extract the first word of "gcc", so it can be a program name with args.
+    { echo "$as_me:$LINENO: checking for the proper JNI architecture" >&5
+echo $ECHO_N "checking for the proper JNI architecture... $ECHO_C" >&6; }
+    case "`uname -s`" in
+        CYGWIN_*) PTJNI_ARCHITECTURE=win32;;
+	Linux) PTJNI_ARCHITECTURE=linux;;
+	SunOS) PTJNI_ARCHITECTURE=solaris;;
+	Darwin) PTJNI_ARCHITECTURE=darwin;;
+	*) PTJNI_ARCHITECTURE=unknown;;
+    esac
+
+    case "`uname -s`" in
+        CYGWIN_*)
+            # Extract the first word of "mingw32-gcc", so it can be a program name with args.
+set dummy mingw32-gcc; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_PTCCJNI+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTCCJNI in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTCCJNI="$PTCCJNI" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PTCCJNI="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PTCCJNI=$ac_cv_path_PTCCJNI
+if test -n "$PTCCJNI"; then
+  { echo "$as_me:$LINENO: result: $PTCCJNI" >&5
+echo "${ECHO_T}$PTCCJNI" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+	    if test "${PTCCJNI:-none}" = "none"; then
+                { echo "$as_me:$LINENO: WARNING: Failed to find mingw32-gcc.
+    Under Windows, Mingw or VisualStudio are required to create shared
+    libraries that work with Java.
+    Cygwin gcc will compile the dll, but it will not run.  To install
+    Mingw, see http://www.mingw.org or
+    http://ptolemy.org/ptolemyII/ptIIlatest/cygwin.htm" >&5
+echo "$as_me: WARNING: Failed to find mingw32-gcc.
+    Under Windows, Mingw or VisualStudio are required to create shared
+    libraries that work with Java.
+    Cygwin gcc will compile the dll, but it will not run.  To install
+    Mingw, see http://www.mingw.org or
+    http://ptolemy.org/ptolemyII/ptIIlatest/cygwin.htm" >&2;}
+            fi;;
+        *) # Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_PTCC+set}" = set; then
+if test "${ac_cv_path_PTCCJNI+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  case $PTCC in
+  case $PTCCJNI in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
+  ac_cv_path_PTCCJNI="$PTCCJNI" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -9188,7 +9253,7 @@ do
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_PTCCJNI="$as_dir/$ac_word$ac_exec_ext"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -9199,31 +9264,27 @@ IFS=$as_save_IFS
   ;;
 esac
 fi
-PTCC=$ac_cv_path_PTCC
-if test -n "$PTCC"; then
-  { echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6; }
+PTCCJNI=$ac_cv_path_PTCCJNI
+if test -n "$PTCCJNI"; then
+  { echo "$as_me:$LINENO: result: $PTCCJNI" >&5
+echo "${ECHO_T}$PTCCJNI" >&6; }
 else
   { echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
 fi
 
 
-    if test "${PTCC:-none}" != "none"; then
-        PTJNI_DIR=jni
-    else
-        { echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
-echo "$as_me: WARNING: Failed to find gcc" >&2;}
-        # Extract the first word of "cc", so it can be a program name with args.
+	   if test "${PTCCJNI:-none}" != "none"; then
+               # Extract the first word of "cc", so it can be a program name with args.
 set dummy cc; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_PTCC+set}" = set; then
+if test "${ac_cv_path_PTCCJNI+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  case $PTCC in
+  case $PTCCJNI in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
+  ac_cv_path_PTCCJNI="$PTCCJNI" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -9233,7 +9294,7 @@ do
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_PTCCJNI="$as_dir/$ac_word$ac_exec_ext"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -9244,30 +9305,32 @@ IFS=$as_save_IFS
   ;;
 esac
 fi
-PTCC=$ac_cv_path_PTCC
-if test -n "$PTCC"; then
-  { echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6; }
+PTCCJNI=$ac_cv_path_PTCCJNI
+if test -n "$PTCCJNI"; then
+  { echo "$as_me:$LINENO: result: $PTCCJNI" >&5
+echo "${ECHO_T}$PTCCJNI" >&6; }
 else
   { echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
 fi
 
 
-        if test "${PTCC:-none}" != "none"; then
-            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6; }; fi
-            PTJNI_DIR=jni
-        else
-            { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
+           else
+               { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
     not be able to compile the JNI interface in $PTII/jni" >&5
 echo "$as_me: WARNING: Failed to find gcc or cc, so we will
     not be able to compile the JNI interface in $PTII/jni" >&2;};
-        fi
-    fi
+           fi
+           ;;
+    esac
 
-    # Extract the first word of "javah", so it can be a program name with args.
+    if test "${PTCCJNI:-none}" != "none"; then
+        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJNICC" >&5
+echo "${ECHO_T}$PTJNICC" >&6; }; fi
+        PTJNI_DIR=jni
+
+        # Extract the first word of "javah", so it can be a program name with args.
 set dummy javah; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
@@ -9307,185 +9370,164 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-    # Under MacOS X, JAVAH might be a link
-    if test ! -e "$JAVAH"; then
-        { echo "$as_me:$LINENO: WARNING:  Failed to find javah at '$JAVAH', perhaps Java is not installed?" >&5
+        # Under MacOS X, JAVAH might be a link
+        if test ! -e "$JAVAH"; then
+            { echo "$as_me:$LINENO: WARNING:  Failed to find javah at '$JAVAH', perhaps Java is not installed?" >&5
 echo "$as_me: WARNING:  Failed to find javah at '$JAVAH', perhaps Java is not installed?" >&2;}
-    fi
+        fi
 
-    { echo "$as_me:$LINENO: checking for the proper JNI architecture" >&5
-echo $ECHO_N "checking for the proper JNI architecture... $ECHO_C" >&6; }
-    case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_ARCHITECTURE=win32;;
-	CYGWIN_NT-*) PTJNI_ARCHITECTURE=win32;;
-	CYGWIN_98-*) PTJNI_ARCHITECTURE=win32;;
-	Linux) PTJNI_ARCHITECTURE=linux;;
-	SunOS) PTJNI_ARCHITECTURE=solaris;;
-	Darwin) PTJNI_ARCHITECTURE=darwin;;
-	*) PTJNI_ARCHITECTURE=unknown;;
-    esac
-
-    if test ! -z $PTJNI_DIR; then
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+        if test ! -z $PTJNI_DIR; then
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_ARCHITECTURE'" >&5
 echo "${ECHO_T}'$PTJNI_ARCHITECTURE'" >&6; }; fi
 
-        { echo "$as_me:$LINENO: checking for the proper JNI architecture include directory" >&5
+            { echo "$as_me:$LINENO: checking for the proper JNI architecture include directory" >&5
 echo $ECHO_N "checking for the proper JNI architecture include directory... $ECHO_C" >&6; }
-       	if test $PTJNI_ARCHITECTURE = "darwin"; then
+       	    if test $PTJNI_ARCHITECTURE = "darwin"; then
 		PTJNI_INCLUDE="$PTJAVA_HOME/../Headers"
-	else
+	    else
 		PTJNI_INCLUDE="$PTJAVA_HOME/../include"
-	fi
+	    fi
 
-	if test ! -d "$PTJNI_INCLUDE"; then
+	    if test ! -d "$PTJNI_INCLUDE"; then
 	    	{ echo "$as_me:$LINENO: WARNING: $PTJNI_INCLUDE was not found.  As a result, compilation of JNI actors will fail." >&5
 echo "$as_me: WARNING: $PTJNI_INCLUDE was not found.  As a result, compilation of JNI actors will fail." >&2;}
-	else
+	    else
 	    	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJNI_INCLUDE" >&5
 echo "${ECHO_T}$PTJNI_INCLUDE" >&6; }; fi
-        fi
+            fi
 
-        { echo "$as_me:$LINENO: checking for the proper JNI library architecture" >&5
+            { echo "$as_me:$LINENO: checking for the proper JNI library architecture" >&5
 echo $ECHO_N "checking for the proper JNI library architecture... $ECHO_C" >&6; }
-        case "`uname -p`" in
-	    *86) PTJNI_LIB_ARCHITECTURE=i386;;
-	    sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
-	    unknown) # Some platforms do not properly implement uname -p
+            case "`uname -p`" in
+	        *86) PTJNI_LIB_ARCHITECTURE=i386;;
+	        sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
+	        unknown) # Some platforms do not properly implement uname -p
                      if test $PTJNI_ARCHITECTURE = "win32" -o $PTJNI_ARCHITECTURE = "linux"; then
 		         PTJNI_LIB_ARCHITECTURE=i386
 		     else
 		         PTJNI_LIB_ARCHITECTURE=unknown
 		     fi
                      ;;
-	    x86_64) PTJNI_LIB_ARCHITECTURE=amd64;;
-	    *) PTJNI_LIB_ARCHITECTURE=unknown;;
-        esac
+	        x86_64) PTJNI_LIB_ARCHITECTURE=amd64;;
+	        *) PTJNI_LIB_ARCHITECTURE=unknown;;
+            esac
 
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_LIB_ARCHITECTURE'" >&5
 echo "${ECHO_T}'$PTJNI_LIB_ARCHITECTURE'" >&6; }; fi
 
-        { echo "$as_me:$LINENO: checking for the proper JNI architecture lib directory" >&5
+            { echo "$as_me:$LINENO: checking for the proper JNI architecture lib directory" >&5
 echo $ECHO_N "checking for the proper JNI architecture lib directory... $ECHO_C" >&6; }
 
-	if test $PTJNI_ARCHITECTURE = "darwin"; then
+	    if test $PTJNI_ARCHITECTURE = "darwin"; then
 		PTJNI_LIB="$PTJAVA_HOME/../Libraries"
-	else
+	    else
 		PTJNI_LIB="$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"
-	fi
+	    fi
 
-        if test ! -d "$PTJNI_LIB"; then
-	    { echo "$as_me:$LINENO: WARNING: $PTJNI_LIB was not found.
+            if test ! -d "$PTJNI_LIB"; then
+	        { echo "$as_me:$LINENO: WARNING: $PTJNI_LIB was not found.
     As a result, $PTII/jni/launcher/launcher might not work." >&5
 echo "$as_me: WARNING: $PTJNI_LIB was not found.
     As a result, $PTII/jni/launcher/launcher might not work." >&2;}
-        else
-	    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+            else
+	        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJNI_LIB" >&5
 echo "${ECHO_T}$PTJNI_LIB" >&6; }; fi
-        fi
+            fi
 
-        { echo "$as_me:$LINENO: checking for if the -mno-cygwin flag is available" >&5
+            { echo "$as_me:$LINENO: checking for if the -mno-cygwin flag is available" >&5
 echo $ECHO_N "checking for if the -mno-cygwin flag is available... $ECHO_C" >&6; }
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	    CYGWIN_NT-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	    CYGWIN_98-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	    *) PTJNI_NO_CYGWIN=;;
-        esac
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+            case "`uname -s`" in
+                CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	        CYGWIN_NT-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	        CYGWIN_98-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	        *) PTJNI_NO_CYGWIN=;;
+            esac
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_NO_CYGWIN'" >&5
 echo "${ECHO_T}'$PTJNI_NO_CYGWIN'" >&6; }; fi
 
-        { echo "$as_me:$LINENO: checking for the proper shared library gcc flag" >&5
+            { echo "$as_me:$LINENO: checking for the proper shared library gcc flag" >&5
 echo $ECHO_N "checking for the proper shared library gcc flag... $ECHO_C" >&6; }
-        case "`uname -s`" in
-	     Darwin) PTJNI_GCC_SHARED_FLAG=-dynamiclib;;
-	     *) PTJNI_GCC_SHARED_FLAG=-shared;
-        esac
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+            case "`uname -s`" in
+	        Darwin) PTJNI_GCC_SHARED_FLAG=-dynamiclib;;
+	        *) PTJNI_GCC_SHARED_FLAG=-shared;
+            esac
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_GCC_SHARED_FLAG'" >&5
 echo "${ECHO_T}'$PTJNI_GCC_SHARED_FLAG'" >&6; }; fi
 
-        { echo "$as_me:$LINENO: checking for the proper shared library cc flag" >&5
+            { echo "$as_me:$LINENO: checking for the proper shared library cc flag" >&5
 echo $ECHO_N "checking for the proper shared library cc flag... $ECHO_C" >&6; }
-	# Under Cygwin with gcc, we need -D__int64="long long"
-	# FIXME: we should have a test for this instead of setting it explictly
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
-	    Linux)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
-	    SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
-	    *) PTJNI_SHAREDLIBRARY_CFLAG=;;
-        esac
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+	    # Under Cygwin with gcc, we need -D__int64="long long"
+	    # FIXME: we should have a test for this instead of setting it explictly
+            case "`uname -s`" in
+                CYGWIN_*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
+	        Linux)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
+	        SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
+	        *) PTJNI_SHAREDLIBRARY_CFLAG=;;
+            esac
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_CFLAG'" >&5
 echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_CFLAG'" >&6; }; fi
 
-        { echo "$as_me:$LINENO: checking for the proper shared library link flag" >&5
+            { echo "$as_me:$LINENO: checking for the proper shared library link flag" >&5
 echo $ECHO_N "checking for the proper shared library link flag... $ECHO_C" >&6; }
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	    Linux)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
-	    SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
-	    *) PTJNI_SHAREDLIBRARY_LDFLAG=;;
-        esac
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+            case "`uname -s`" in
+                CYGWIN_*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+	        Linux)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
+	        SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
+	        *) PTJNI_SHAREDLIBRARY_LDFLAG=;;
+            esac
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_LDFLAG'" >&5
 echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_LDFLAG'" >&6; }; fi
 
-        { echo "$as_me:$LINENO: checking for the proper shared library prefix" >&5
+            { echo "$as_me:$LINENO: checking for the proper shared library prefix" >&5
 echo $ECHO_N "checking for the proper shared library prefix... $ECHO_C" >&6; }
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	    SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
-	    *) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
-        esac
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+            case "`uname -s`" in
+                CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	        CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	        CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	        SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+	        *) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+            esac
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_PREFIX'" >&5
 echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_PREFIX'" >&6; }; fi
 
-        { echo "$as_me:$LINENO: checking for the proper shared library suffix" >&5
+            { echo "$as_me:$LINENO: checking for the proper shared library suffix" >&5
 echo $ECHO_N "checking for the proper shared library suffix... $ECHO_C" >&6; }
-	PTJNI_SHAREDLIBRARY_SUFFIX2=""
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
-	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
-	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
-	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
-	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib
-	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dylib;;
-	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown
-        esac
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+	    PTJNI_SHAREDLIBRARY_SUFFIX2=""
+            case "`uname -s`" in
+                CYGWIN_*)    PTJNI_SHAREDLIBRARY_SUFFIX=dll
+	    		     PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
+	        SunOS)	     PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	        Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	        Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib
+	    	  	     PTJNI_SHAREDLIBRARY_SUFFIX2=dylib;;
+	        *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown
+            esac
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_SHAREDLIBRARY_SUFFIX'" >&5
 echo "${ECHO_T}'$PTJNI_SHAREDLIBRARY_SUFFIX'" >&6; }; fi
 
-        { echo "$as_me:$LINENO: checking for JNI libraries needed to link JNI" >&5
+            { echo "$as_me:$LINENO: checking for JNI libraries needed to link JNI" >&5
 echo $ECHO_N "checking for JNI libraries needed to link JNI... $ECHO_C" >&6; }
-        PTJNI_DL_LIBRARY=
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_LIBRARIES=-lcygwin;;
-	    CYGWIN_NT-*) PTJNI_LIBRARIES=-lcygwin;;
-	    CYGWIN_98-*) PTJNI_LIBRARIES=-lcygwin;;
-	    Linux) PTJNI_LIBRARIES=
-	       PTJNI_DL_LIBRARY=-ldl;;
-	    *) PTJNI_LIBRARIES=;;
-        esac
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+            PTJNI_DL_LIBRARY=
+            case "`uname -s`" in
+	        CYGWIN_*) PTJNI_LIBRARIES=-lcygwin;;
+	        Linux)    PTJNI_LIBRARIES=
+	                  PTJNI_DL_LIBRARY=-ldl;;
+	        *)        PTJNI_LIBRARIES=;;
+            esac
+            if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: '$PTJNI_LIBRARIES'" >&5
 echo "${ECHO_T}'$PTJNI_LIBRARIES'" >&6; }; fi
+        fi
     fi
 fi
 
@@ -9697,7 +9739,7 @@ else
 echo "${ECHO_T}$PTII/ptolemy/matlab is not present,
     so we need not find matlab and gcc." >&6; }; fi
 	MATLAB_DIR=/matlab
-	PTCC=gcc
+	#PTCC=gcc
     else
 	# Extract the first word of "matlab", so it can be a program name with args.
 set dummy matlab; ac_word=$2
@@ -9789,16 +9831,19 @@ echo "$as_me: WARNING: Failed to find '${MATLAB_DIR}'
 	    else
 
 
-	    # Extract the first word of "gcc", so it can be a program name with args.
-set dummy gcc; ac_word=$2
+            { echo "$as_me:$LINENO: checking for gcc" >&5
+echo $ECHO_N "checking for gcc... $ECHO_C" >&6; }
+	    case "`uname -s`" in
+	        CYGWIN_*) # Extract the first word of "mingw32-gcc", so it can be a program name with args.
+set dummy mingw32-gcc; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_CC+set}" = set; then
+if test "${ac_cv_path_PTMATLAB_CC+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  case $CC in
+  case $PTMATLAB_CC in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_CC="$CC" # Let the user override the test with a path.
+  ac_cv_path_PTMATLAB_CC="$PTMATLAB_CC" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -9808,7 +9853,7 @@ do
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_CC="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_PTMATLAB_CC="$as_dir/$ac_word$ac_exec_ext"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -9819,15 +9864,135 @@ IFS=$as_save_IFS
   ;;
 esac
 fi
-CC=$ac_cv_path_CC
-if test -n "$CC"; then
-  { echo "$as_me:$LINENO: result: $CC" >&5
-echo "${ECHO_T}$CC" >&6; }
+PTMATLAB_CC=$ac_cv_path_PTMATLAB_CC
+if test -n "$PTMATLAB_CC"; then
+  { echo "$as_me:$LINENO: result: $PTMATLAB_CC" >&5
+echo "${ECHO_T}$PTMATLAB_CC" >&6; }
 else
   { echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
 fi
 
+
+		         if test "${PTMATLAB_CC:-none}" = "none"; then
+			     { echo "$as_me:$LINENO: WARNING: Failed to find mingw32-gcc.
+    Under Windows, Mingw or VisualStudio are required to compile the
+    Ptolemy/Matlab dll.
+    Cygwin gcc will compile the dll, but it will not run.  To install
+    Mingw, see http://www.mingw.org or
+    http://ptolemy.org/ptolemyII/ptIIlatest/cygwin.htm" >&5
+echo "$as_me: WARNING: Failed to find mingw32-gcc.
+    Under Windows, Mingw or VisualStudio are required to compile the
+    Ptolemy/Matlab dll.
+    Cygwin gcc will compile the dll, but it will not run.  To install
+    Mingw, see http://www.mingw.org or
+    http://ptolemy.org/ptolemyII/ptIIlatest/cygwin.htm" >&2;}
+			  else
+                              OLDCC="$CC"
+			      CC="$PTMATLAB_CC"
+                              PTJNI_LIBC=""
+			  fi;;
+		       *) # Extract the first word of "gcc", so it can be a program name with args.
+set dummy gcc; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_PTMATLAB_CC+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTMATLAB_CC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTMATLAB_CC="$PTMATLAB_CC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PTMATLAB_CC="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PTMATLAB_CC=$ac_cv_path_PTMATLAB_CC
+if test -n "$PTMATLAB_CC"; then
+  { echo "$as_me:$LINENO: result: $PTMATLAB_CC" >&5
+echo "${ECHO_T}$PTMATLAB_CC" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+ 		          if test "${PTMATLAB_CC:-none}" != "none"; then
+                              OLDCC="$CC"
+			      CC="$PTMATLAB_CC"
+                              PTJNI_LIBC="-lc"
+			  else
+			      { echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
+echo "$as_me: WARNING: Failed to find gcc" >&2;}
+			      # Extract the first word of "cc", so it can be a program name with args.
+set dummy cc; ac_word=$2
+{ echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
+if test "${ac_cv_path_PTMATLAB_CC+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTMATLAB_CC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTMATLAB_CC="$PTMATLAB_CC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PTMATLAB_CC="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PTMATLAB_CC=$ac_cv_path_PTMATLAB_CC
+if test -n "$PTMATLAB_CC"; then
+  { echo "$as_me:$LINENO: result: $PTMATLAB_CC" >&5
+echo "${ECHO_T}$PTMATLAB_CC" >&6; }
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+fi
+
+
+			      if test "${PTMATLAB_CC:-none}" != "none"; then
+                                  OLDCC="$CC"
+			          CC="$PTMATLAB_CC"
+                                  PTJNI_LIBC="-lc"
+			      else
+			          { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
+    not be able to compile the Matlab interface in ptolemy/matlab" >&5
+echo "$as_me: WARNING: Failed to find gcc or cc, so we will
+    not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
+                               fi
+                          fi;;
+            esac
+
+            if test "${PTMATLAB_CC:-none}" != "none"; then
 
 
 for ac_func in malloc_size
@@ -9923,6 +10088,7 @@ _ACEOF
 fi
 done
 
+	    CC="$OLDCC"
 
 	    cd "$srcdir/config"
 	    if "$JAVAC" MajorOSName.java ; then
@@ -10103,7 +10269,7 @@ echo "$as_me: WARNING: Failed to find MSVC cl or GNU gcc, so we will
 		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab32.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
 		        PTMATLAB_64LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab64.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_64LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
 		    else
-		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx -lmex"
+		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} ${PTJNI_LIBC} -leng -lmx -lmex"
 		        if test "`uname -m`" = "x86_64"; then
 		            PTMATLAB_LD_ARGS="$PTMATLAB_LD_ARGS -fPIC"
 		        fi
@@ -10118,106 +10284,10 @@ echo "$as_me: WARNING: Failed to find javah at '$JAVAH',
     perhaps the JDK is not installed?
     We will not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
                     else
-		        { echo "$as_me:$LINENO: checking for gcc" >&5
-echo $ECHO_N "checking for gcc... $ECHO_C" >&6; }
-		        # Extract the first word of "gcc", so it can be a program name with args.
-set dummy gcc; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_PTCC+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $PTCC in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-PTCC=$ac_cv_path_PTCC
-if test -n "$PTCC"; then
-  { echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
-		        if test "${PTCC:-none}" != "none"; then
-		            PTMATLAB_CC=$PTCC
-		            PTMATLAB_DIR=matlab
-	                else
-			    { echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
-echo "$as_me: WARNING: Failed to find gcc" >&2;}
-			    # Extract the first word of "cc", so it can be a program name with args.
-set dummy cc; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_PTCC+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $PTCC in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-PTCC=$ac_cv_path_PTCC
-if test -n "$PTCC"; then
-  { echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
-			    if test "${PTCC:-none}" != "none"; then
-		                PTMATLAB_CC=$PTCC
-			        PTMATLAB_DIR=matlab
-			    else
-			        { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
-    not be able to compile the Matlab interface in ptolemy/matlab" >&5
-echo "$as_me: WARNING: Failed to find gcc or cc, so we will
-    not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
-                            fi
-			fi
+		        PTMATLAB_DIR=matlab
 		    fi
                 fi
+	    fi
 	    fi
 	fi
     fi
@@ -11419,6 +11489,8 @@ if test ! -d "$LIBEXPAT_USER_DIR"; then
 echo "${ECHO_T}$LIBEXPAT_USER_DIR is not present,
     so we need not find libexpat." >&6; }; fi
 else
+    # Cygwin gcc can be used to compile files that do not link
+    # with Java, so we don't need mingw here
     # Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -11840,6 +11912,9 @@ fi
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 
 
+# Set to mingw32-gcc or gcc and used in $PTII/ptolemy/matlab/makefile and jni
+
+
 # Set to chic and used in $PTII/ptolemy/makefile if chic was found.
 
 
@@ -12010,15 +12085,7 @@ fi
 # PTJMF_PACKAGES is used in ptII/doc/makefile
 
 
-# Set to jni and used in
-# $PTII/makefile if gcc or cc was found
-
-
 # JNI architecture, used to compile C files
-
-
-# Set to jni and used in
-# $PTII/makefile if gcc or cc was found
 
 
 # set to jni include directory
@@ -12982,6 +13049,7 @@ ac_ct_CXX!$ac_ct_CXX$ac_delim
 PTJYTHON!$PTJYTHON$ac_delim
 PTJYTHON_BAT!$PTJYTHON_BAT$ac_delim
 JJTREE!$JJTREE$ac_delim
+PTCCJNI!$PTCCJNI$ac_delim
 JAVAH!$JAVAH$ac_delim
 MATLAB!$MATLAB$ac_delim
 PTMATLAB_CC!$PTMATLAB_CC$ac_delim
@@ -13013,7 +13081,6 @@ JINI_PRESENT!$JINI_PRESENT$ac_delim
 JOYSTICK_JAR!$JOYSTICK_JAR$ac_delim
 JTCLSH!$JTCLSH$ac_delim
 JTREE!$JTREE$ac_delim
-JVERSION!$JVERSION$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -13055,6 +13122,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+JVERSION!$JVERSION$ac_delim
 JMF_JARS!$JMF_JARS$ac_delim
 JNA_JAR!$JNA_JAR$ac_delim
 JODE_CLASSES!$JODE_CLASSES$ac_delim
@@ -13130,7 +13198,6 @@ PTJAVA_HOME!$PTJAVA_HOME$ac_delim
 PTJAVA3D_DIR!$PTJAVA3D_DIR$ac_delim
 PTJMF_DIR!$PTJMF_DIR$ac_delim
 PTJMF_PACKAGES!$PTJMF_PACKAGES$ac_delim
-PTJNI_DIR!$PTJNI_DIR$ac_delim
 PTJNI_ARCHITECTURE!$PTJNI_ARCHITECTURE$ac_delim
 PTJNI_INCLUDE!$PTJNI_INCLUDE$ac_delim
 PTJNI_DL_LIBRARY!$PTJNI_DL_LIBRARY$ac_delim
