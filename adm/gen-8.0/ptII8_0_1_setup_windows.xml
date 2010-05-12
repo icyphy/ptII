@@ -575,7 +575,6 @@ The Ptiny pack is required.
 	    <file src="src/ptII8.0.1/copyright.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.1/diva" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.1/doc" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII8.0.1/jni" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.1/lib" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.1/makefile" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.0.1/mk" targetdir="$INSTALL_PATH"/>

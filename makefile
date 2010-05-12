@@ -34,15 +34,13 @@ ME =		.
 # Order matters here.
 # Go into util first so we get the latest version of the testsuite
 # Go into com before compiling ptolemy so we get JLex
-# PTJNI_DIR is set to jni by configure in $PTII/mk/ptII.mk
-#   if gcc or cc was found.
 # PTLBNL_DIR is set to lbnl by configure in $PTII/mk/ptII.mk
 #   if libxml2 was found.
 # PTMESCAL_DIR is set to mescal by configure in $PTII/mk/ptII.mk
 #   if $PTII/mescal was found
 PTTHALES_DIR = thales
 
-DIRS = util com diva org ptolemy $(PTJNI_DIR) $(PTLBNL_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
+DIRS = util com diva org ptolemy $(PTLBNL_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
 	contrib bin doc
 
 # Root of Ptolemy II directory
@@ -247,9 +245,6 @@ CLEAN_SHIPPING_FILES = \
 		diva/build.xml \
 		diva/canvas/tutorial/doc-files \
 		doc/img/PtolemyIICD.ec3 \
-		jni/launcher/launcher.exe \
-		jni/launcher/launcher.dSYM \
-		jni/launcher/launcher \
 		lbnl/lib/util/libbcvtb.dylib \
 		lbnl/lib/util/libbcvtb.dylib.dSYM \
 		lbnl/lib/util/libbcvtb.so \
