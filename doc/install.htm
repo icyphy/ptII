@@ -358,69 +358,39 @@ using the Matlab plotter.
 In theory, the Matlab interface might work under Solaris, but
 we have not tested it.
 
-<p>Under Windows, we compile the Matlab interface with Microsoft
-Visual C if it is available.  Matlab interface has problems work with gcc-3.3
-Under Windows, the Matlab interface has problems at runtime with gcc-3.3.
-<br>Under Windows, we recommend using gcc-3.2 or Microsoft Visual C.
-If you do not have Microsoft Visual C,
-you can try installing <CODE>cygwinDevel</CODE> with gcc-3.2 from
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/cygwin.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/cygwin.htm</CODE></a>.
+<p>Under Windows, we compile the Matlab interface with MinGW or Microsoft
+Visual C if it is available. 
 
- <p>Note that you should uninstall the previous version of cygwin
-and then install the new version.
-
-<br>Below are the instructions for compiling under gcc.
-
-<p>If you do not have <code>gcc</code> or <code>dlltool</code>
-installed, you can install them as part of the 
-<a href="#cygwin">Cygwin installation</a>
-
-
-<p>The Matlab interface is implemented using the Java Native Interface
-(JNI).  When <code>$PTII/configure</code> is run, it look in the user
-path for a binary called <code>matlab</code>, determines the location
-of the Matlab <code>extern/include/libeng.dif</code> file and then checks
-for <code>gcc</code> and <code>dlltool</code>. 
-
-<p>If these components were not found at when configure was run, then
-you can rerun configure, remake and run the demo with:
-
-<pre>
-cd $PTII
-rm config.*; ./configure
-cd $PTII/ptolemy/matlab
-make
-$PTII/bin/vergil ./demo/MatlabExpression/MatlabExpression
-</pre>
-   <br>You might need to edit jni_md.h
-   <blockquote>
-   GCC doesn't have a __int64 built-in, and this patch basically uses
-   "long long" instead.
-
-   <ol>
-   <li> Edit the file <code><i>jdk_root</i>>/include/win32/jni_md.h</code>,
-    Where <code><i>jdk_root</i></code> is the installation root (eg.,
-   <code>c:/Program Files/Java/jdk1.5.0_01</code>
-
-
-   <li> Replace the segment:
-   </ol>
-
-   <pre>
-   typedef long jint;
-   typedef __int64 jlong;
-   </pre>
-   with:
-   <pre>
-   typedef long jint;
-   #ifdef __GNUC__
-   typedef long long jlong;
-   #else
-   typedef __int64 jlong;
-   #endif
-   typedef signed char jbyte;
-   </pre>
-   </blockquote>
+<h2>Installing Mingw for Windows</h2>
+<p>The default gcc compiler shipped with Cygwin will produce .dll files that do not work properly.&nbsp; The solution is to install <a class="external-link" href="http://www.mingw.org/">Mingw</a>.</p>
+<ol><li>Install Cygwin either from <a class="external-link" href="http://www.cygwin.com">http://www.cygwin.com</a> or from the <a class="external-link" href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm">Ptolemy distribution</a>.</li><li>Start Cygwin bash, create c:\mingw</li><li>
+<pre>mkdir c:/mingw
+cd c:/mingw</pre>
+</li><li>Copy the mingwdl.sh script from <a class="external-link" href="http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite">http://www.mingw.org/wiki/HOWTO_Install_the_MinGW_GCC_Compiler_Suite</a> and paste it into an editor and create c:/mingw/mingwdl.sh</li><li>Execute mingwdl.sh, which will download the binaries into c:/mingwdl.
+<pre>bash mingwdl.sh</pre>
+</li><li>Unzip the .tar.gz files
+<pre>gunzip *.gz</pre>
+</li><li>Uncompress the .tar.lzma files:
+<pre>lzma -d *.lzma</pre>
+</li><li>untar the .tar files.&nbsp; Create a script called mingwuntar.sh:
+<pre>#!/bin/sh
+tars=`ls *.tar`
+for tar in $tars
+do
+    echo $tar
+    tar -xf $tar
+done</pre>
+</li><li>Run mingwuntar.sh
+<pre>bash mingwuntar.sh</pre>
+</li><li>Add c:\mingw\bin to your Windows path <em>Based on the Mingw instructions</em>:
+<ol>
+    <li>  Right-click on "My Computer" and select "Properties".</li>
+    <li> Click Advanced | Environment Variables.</li>
+    <li>In the box entitled "System Variables" scroll down to the line that says "PATH" and double-click the entry.</li>
+    <li>You will be presented with a dialog box with two text boxes, the bottom text box allows you to edit the PATH variable. It is very important that you do not delete the existing values in the PATH string, this will cause all sorts of problems for you!</li>
+    <li> Scroll to the end of the string and at the end add ";C:\mingw\bin". Don't forget the semicolon; this separates the entries in the PATH.</li>
+    <li>press OK | OK | OK and you are done.</li></ol>
+</li></ol>
 
 <h3>Quicktime</h3>
 The <a hreg="codedoc/ptolemy/domains/gr/lib/quicktime/package-summary.html">Quicktime</a> GR domain actors use Quicktime from Apple.
