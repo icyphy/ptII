@@ -476,6 +476,7 @@ JVERSION=unknown
 startdir="$PTII"
 
 cd "$srcdir/config"
+rm -f *.class
 if "$JAVAC" confTest.java ; then
     PT_MSG_RESULT(ok)
 
@@ -3070,172 +3071,169 @@ fi
 #       Ptolemy II can interface to user provided native code using JNI
 #	Ptolemy II can interface to Matlab using JNI
 #--------------------------------------------------------------------
-# PTJNI_DIR is set to jni and used in
-# $PTII/makefile if gcc or cc is found.
 PTJNI_DIR=
 
-if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" -a ! -d "$PTII/mescal/kirika" ; then
+if test ! -d "$PTII/ptolemy/matlab" -a ! -d "$PTII/mescal/kirika" ; then
     PT_MSG_RESULT([$PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
     so we need not find gcc or cc.])
 else
-    AC_PATH_PROG(PTCC, gcc)
-    if test "${PTCC:-none}" != "none"; then
-        PTJNI_DIR=jni
-    else    
-        AC_MSG_WARN([Failed to find gcc])
-        AC_PATH_PROG(PTCC, cc)
-        if test "${PTCC:-none}" != "none"; then
-            PT_MSG_RESULT([$PTCC])
-            PTJNI_DIR=jni
-        else    
-            AC_MSG_WARN([Failed to find gcc or cc, so we will
-    not be able to compile the JNI interface in $PTII/jni]);
-        fi
-    fi
-
-    AC_PATH_PROG(JAVAH, javah)
-    # Under MacOS X, JAVAH might be a link
-    if test ! -e "$JAVAH"; then
-        AC_MSG_WARN([ Failed to find javah at '$JAVAH', perhaps Java is not installed?])
-    fi
-
     AC_MSG_CHECKING([for the proper JNI architecture])
     case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_ARCHITECTURE=win32;;
-	CYGWIN_NT-*) PTJNI_ARCHITECTURE=win32;;
-	CYGWIN_98-*) PTJNI_ARCHITECTURE=win32;;
+        CYGWIN_*) PTJNI_ARCHITECTURE=win32;;
 	Linux) PTJNI_ARCHITECTURE=linux;;
 	SunOS) PTJNI_ARCHITECTURE=solaris;;
 	Darwin) PTJNI_ARCHITECTURE=darwin;;
 	*) PTJNI_ARCHITECTURE=unknown;;
     esac
 
-    if test ! -z $PTJNI_DIR; then 
-        PT_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
+    case "`uname -s`" in    	
+        CYGWIN_*)
+            AC_PATH_PROG(PTCCJNI, mingw32-gcc)
+	    if test "${PTCCJNI:-none}" = "none"; then
+                AC_MSG_WARN([Failed to find mingw32-gcc.
+    Under Windows, Mingw or VisualStudio are required to create shared
+    libraries that work with Java.
+    Cygwin gcc will compile the dll, but it will not run.  To install
+    Mingw, see http://www.mingw.org or 
+    http://ptolemy.org/ptolemyII/ptIIlatest/cygwin.htm])
+            fi;;
+        *) AC_PATH_PROG(PTCCJNI, gcc)
+	   if test "${PTCCJNI:-none}" != "none"; then
+               AC_PATH_PROG(PTCCJNI, cc)
+           else    
+               AC_MSG_WARN([Failed to find gcc or cc, so we will
+    not be able to compile the JNI interface in $PTII/jni]);
+           fi
+           ;;
+    esac
 
-        AC_MSG_CHECKING([for the proper JNI architecture include directory])
-       	if test $PTJNI_ARCHITECTURE = "darwin"; then
-		PTJNI_INCLUDE="$PTJAVA_HOME/../Headers"
-	else
-		PTJNI_INCLUDE="$PTJAVA_HOME/../include"
-	fi
+    if test "${PTCCJNI:-none}" != "none"; then
+        PT_MSG_RESULT([$PTJNICC])
+        PTJNI_DIR=jni
 
-	if test ! -d "$PTJNI_INCLUDE"; then 
-	    	AC_MSG_WARN([$PTJNI_INCLUDE was not found.  As a result, compilation of JNI actors will fail.])
-	else 
-	    	PT_MSG_RESULT([$PTJNI_INCLUDE])
+        AC_PATH_PROG(JAVAH, javah)
+        # Under MacOS X, JAVAH might be a link
+        if test ! -e "$JAVAH"; then
+            AC_MSG_WARN([ Failed to find javah at '$JAVAH', perhaps Java is not installed?])
         fi
 
-        AC_MSG_CHECKING([for the proper JNI library architecture])
-        case "`uname -p`" in
-	    *86) PTJNI_LIB_ARCHITECTURE=i386;;
-	    sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
-	    unknown) # Some platforms do not properly implement uname -p
+        if test ! -z $PTJNI_DIR; then 
+            PT_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
+
+            AC_MSG_CHECKING([for the proper JNI architecture include directory])
+       	    if test $PTJNI_ARCHITECTURE = "darwin"; then
+		PTJNI_INCLUDE="$PTJAVA_HOME/../Headers"
+	    else
+		PTJNI_INCLUDE="$PTJAVA_HOME/../include"
+	    fi
+
+	    if test ! -d "$PTJNI_INCLUDE"; then 
+	    	AC_MSG_WARN([$PTJNI_INCLUDE was not found.  As a result, compilation of JNI actors will fail.])
+	    else 
+	    	PT_MSG_RESULT([$PTJNI_INCLUDE])
+            fi
+
+            AC_MSG_CHECKING([for the proper JNI library architecture])
+            case "`uname -p`" in
+	        *86) PTJNI_LIB_ARCHITECTURE=i386;;
+	        sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
+	        unknown) # Some platforms do not properly implement uname -p
                      if test $PTJNI_ARCHITECTURE = "win32" -o $PTJNI_ARCHITECTURE = "linux"; then
 		         PTJNI_LIB_ARCHITECTURE=i386
 		     else    
 		         PTJNI_LIB_ARCHITECTURE=unknown
 		     fi    
                      ;;
-	    x86_64) PTJNI_LIB_ARCHITECTURE=amd64;;
-	    *) PTJNI_LIB_ARCHITECTURE=unknown;;
-        esac
+	        x86_64) PTJNI_LIB_ARCHITECTURE=amd64;;
+	        *) PTJNI_LIB_ARCHITECTURE=unknown;;
+            esac
 
-        PT_MSG_RESULT(['$PTJNI_LIB_ARCHITECTURE'])
+            PT_MSG_RESULT(['$PTJNI_LIB_ARCHITECTURE'])
 
-        AC_MSG_CHECKING([for the proper JNI architecture lib directory])
+            AC_MSG_CHECKING([for the proper JNI architecture lib directory])
 
-	if test $PTJNI_ARCHITECTURE = "darwin"; then
+	    if test $PTJNI_ARCHITECTURE = "darwin"; then
 		PTJNI_LIB="$PTJAVA_HOME/../Libraries"
-	else
+	    else
 		PTJNI_LIB="$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE"
-	fi
+	    fi
 
-        if test ! -d "$PTJNI_LIB"; then 
-	    AC_MSG_WARN([$PTJNI_LIB was not found.
+            if test ! -d "$PTJNI_LIB"; then 
+	        AC_MSG_WARN([$PTJNI_LIB was not found.
     As a result, $PTII/jni/launcher/launcher might not work.])
-        else 
-	    PT_MSG_RESULT([$PTJNI_LIB])
+            else 
+	        PT_MSG_RESULT([$PTJNI_LIB])
+            fi
+
+            AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
+            case "`uname -s`" in
+                CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	        CYGWIN_NT-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	        CYGWIN_98-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
+	        *) PTJNI_NO_CYGWIN=;;
+            esac
+            PT_MSG_RESULT(['$PTJNI_NO_CYGWIN'])
+
+            AC_MSG_CHECKING([for the proper shared library gcc flag])
+            case "`uname -s`" in
+	        Darwin) PTJNI_GCC_SHARED_FLAG=-dynamiclib;;
+	        *) PTJNI_GCC_SHARED_FLAG=-shared;
+            esac
+            PT_MSG_RESULT(['$PTJNI_GCC_SHARED_FLAG'])
+
+            AC_MSG_CHECKING([for the proper shared library cc flag])
+	    # Under Cygwin with gcc, we need -D__int64="long long"
+	    # FIXME: we should have a test for this instead of setting it explictly
+            case "`uname -s`" in
+                CYGWIN_*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
+	        Linux)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
+	        SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
+	        *) PTJNI_SHAREDLIBRARY_CFLAG=;;
+            esac
+            PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_CFLAG'])
+
+            AC_MSG_CHECKING([for the proper shared library link flag])
+            case "`uname -s`" in
+                CYGWIN_*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
+	        Linux)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
+	        SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
+	        *) PTJNI_SHAREDLIBRARY_LDFLAG=;;
+            esac
+            PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_LDFLAG'])
+
+            AC_MSG_CHECKING([for the proper shared library prefix])
+            case "`uname -s`" in
+                CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	        CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	        CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
+	        SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+	        *) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
+            esac
+            PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_PREFIX'])
+
+            AC_MSG_CHECKING([for the proper shared library suffix])
+	    PTJNI_SHAREDLIBRARY_SUFFIX2=""
+            case "`uname -s`" in
+                CYGWIN_*)    PTJNI_SHAREDLIBRARY_SUFFIX=dll
+	    		     PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
+	        SunOS)	     PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	        Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so;;
+	        Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib
+	    	  	     PTJNI_SHAREDLIBRARY_SUFFIX2=dylib;;
+	        *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown
+            esac
+            PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
+
+            AC_MSG_CHECKING([for JNI libraries needed to link JNI])
+            PTJNI_DL_LIBRARY=
+            case "`uname -s`" in
+	        CYGWIN_*) PTJNI_LIBRARIES=-lcygwin;;
+	        Linux)    PTJNI_LIBRARIES=
+	                  PTJNI_DL_LIBRARY=-ldl;;
+	        *)        PTJNI_LIBRARIES=;;
+            esac
+            PT_MSG_RESULT(['$PTJNI_LIBRARIES'])
         fi
-
-        AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	    CYGWIN_NT-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	    CYGWIN_98-*) PTJNI_NO_CYGWIN=-mno-cygwin;;
-	    *) PTJNI_NO_CYGWIN=;;
-        esac
-        PT_MSG_RESULT(['$PTJNI_NO_CYGWIN'])
-
-        AC_MSG_CHECKING([for the proper shared library gcc flag])
-        case "`uname -s`" in
-	     Darwin) PTJNI_GCC_SHARED_FLAG=-dynamiclib;;
-	     *) PTJNI_GCC_SHARED_FLAG=-shared;
-        esac
-        PT_MSG_RESULT(['$PTJNI_GCC_SHARED_FLAG'])
-
-        AC_MSG_CHECKING([for the proper shared library cc flag])
-	# Under Cygwin with gcc, we need -D__int64="long long"
-	# FIXME: we should have a test for this instead of setting it explictly
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_CFLAG="-D__int64=\"long long\"";;
-	    Linux)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
-	    SunOS)	 PTJNI_SHAREDLIBRARY_CFLAG=-fPIC;;
-	    *) PTJNI_SHAREDLIBRARY_CFLAG=;;
-        esac
-        PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_CFLAG'])
-
-        AC_MSG_CHECKING([for the proper shared library link flag])
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_LDFLAG=-Wl,--add-stdcall-alias;;
-	    Linux)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
-	    SunOS)	 PTJNI_SHAREDLIBRARY_LDFLAG=-fPIC;;
-	    *) PTJNI_SHAREDLIBRARY_LDFLAG=;;
-        esac
-        PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_LDFLAG'])
-
-        AC_MSG_CHECKING([for the proper shared library prefix])
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_PREFIX=;;
-	    SunOS)	 PTJNI_SHAREDLIBRARY_PREFIX=lib;;
-	    *) PTJNI_SHAREDLIBRARY_PREFIX=lib;;
-        esac
-        PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_PREFIX'])
-
-        AC_MSG_CHECKING([for the proper shared library suffix])
-	PTJNI_SHAREDLIBRARY_SUFFIX2=""
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
-	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
-	    CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
-	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
-	    CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll
-	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dll.a;;
-	    SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Linux)       PTJNI_SHAREDLIBRARY_SUFFIX=so;;
-	    Darwin)      PTJNI_SHAREDLIBRARY_SUFFIX=jnilib
-	    		 PTJNI_SHAREDLIBRARY_SUFFIX2=dylib;;
-	    *) PTJNI_SHAREDLIBRARY_SUFFIX=unknown
-        esac
-        PT_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
-
-        AC_MSG_CHECKING([for JNI libraries needed to link JNI])
-        PTJNI_DL_LIBRARY=
-        case "`uname -s`" in
-            CYGWIN_ME-*) PTJNI_LIBRARIES=-lcygwin;;
-	    CYGWIN_NT-*) PTJNI_LIBRARIES=-lcygwin;;
-	    CYGWIN_98-*) PTJNI_LIBRARIES=-lcygwin;;
-	    Linux) PTJNI_LIBRARIES=
-	       PTJNI_DL_LIBRARY=-ldl;;
-	    *) PTJNI_LIBRARIES=;;
-        esac
-        PT_MSG_RESULT(['$PTJNI_LIBRARIES'])
     fi
 fi
 
@@ -3402,7 +3400,7 @@ else
 	PT_MSG_STATUS([$PTII/ptolemy/matlab is not present,
     so we need not find matlab and gcc.])
 	MATLAB_DIR=/matlab
-	PTCC=gcc
+	#PTCC=gcc
     else
 	AC_PATH_PROG(MATLAB, matlab)
 	if test "${MATLAB:-none}" = "none"; then
@@ -3443,8 +3441,44 @@ changequote([, ])dnl
 	    else
 
 
-	    AC_PATH_PROG(CC, gcc)
+            AC_MSG_CHECKING([for gcc])
+	    case "`uname -s`" in    	
+	        CYGWIN_*) AC_PATH_PROG(PTMATLAB_CC, mingw32-gcc)
+		         if test "${PTMATLAB_CC:-none}" = "none"; then
+			     AC_MSG_WARN([Failed to find mingw32-gcc.
+    Under Windows, Mingw or VisualStudio are required to compile the
+    Ptolemy/Matlab dll.
+    Cygwin gcc will compile the dll, but it will not run.  To install
+    Mingw, see http://www.mingw.org or 
+    http://ptolemy.org/ptolemyII/ptIIlatest/cygwin.htm])
+			  else
+                              OLDCC="$CC"
+			      CC="$PTMATLAB_CC"
+                              PTJNI_LIBC="" 
+			  fi;;
+		       *) AC_PATH_PROG(PTMATLAB_CC, gcc)
+ 		          if test "${PTMATLAB_CC:-none}" != "none"; then
+                              OLDCC="$CC"
+			      CC="$PTMATLAB_CC"
+                              PTJNI_LIBC="-lc" 
+			  else    
+			      AC_MSG_WARN([Failed to find gcc])
+			      AC_PATH_PROG(PTMATLAB_CC, cc)
+			      if test "${PTMATLAB_CC:-none}" != "none"; then
+                                  OLDCC="$CC"
+			          CC="$PTMATLAB_CC"
+                                  PTJNI_LIBC="-lc" 
+			      else	
+			          AC_MSG_WARN([Failed to find gcc or cc, so we will
+    not be able to compile the Matlab interface in ptolemy/matlab]);
+                               fi
+                          fi;;
+            esac
+
+            if test "${PTMATLAB_CC:-none}" != "none"; then
+
 	    AC_CHECK_FUNCS(malloc_size, MALLOC_SIZE_FLAG=-DHAVE_MALLOC_SIZE)
+	    CC="$OLDCC"
 
 	    cd "$srcdir/config"
 	    if "$JAVAC" MajorOSName.java ; then
@@ -3533,7 +3567,7 @@ changequote([, ])dnl
 		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab32.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
 		        PTMATLAB_64LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab64.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_64LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
 		    else
-		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx -lmex"
+		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} ${PTJNI_LIBC} -leng -lmx -lmex"
 		        if test "`uname -m`" = "x86_64"; then
 		            PTMATLAB_LD_ARGS="$PTMATLAB_LD_ARGS -fPIC"
 		        fi
@@ -3545,24 +3579,10 @@ changequote([, ])dnl
     perhaps the JDK is not installed?
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
                     else
-		        AC_MSG_CHECKING([for gcc])
-		        AC_PATH_PROG(PTCC, gcc)
-		        if test "${PTCC:-none}" != "none"; then
-		            PTMATLAB_CC=$PTCC
-		            PTMATLAB_DIR=matlab
-	                else    
-			    AC_MSG_WARN([Failed to find gcc])
-			    AC_PATH_PROG(PTCC, cc)
-			    if test "${PTCC:-none}" != "none"; then
-		                PTMATLAB_CC=$PTCC
-			        PTMATLAB_DIR=matlab
-			    else	
-			        AC_MSG_WARN([Failed to find gcc or cc, so we will
-    not be able to compile the Matlab interface in ptolemy/matlab]);
-                            fi
-			fi
+		        PTMATLAB_DIR=matlab
 		    fi
                 fi
+	    fi
 	    fi
 	fi
     fi	
@@ -4488,6 +4508,8 @@ if test ! -d "$LIBEXPAT_USER_DIR"; then
     PT_MSG_STATUS([$LIBEXPAT_USER_DIR is not present,
     so we need not find libexpat.])
 else
+    # Cygwin gcc can be used to compile files that do not link
+    # with Java, so we don't need mingw here
     AC_PATH_PROG(PTCC, gcc)
     if test "${PTCC:-none}" = "none"; then
         AC_MSG_WARN([Failed to find gcc])
@@ -4804,6 +4826,9 @@ AC_SUBST(PTCALTROP_DIR)
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 AC_SUBST(PTCC)
 
+# Set to mingw32-gcc or gcc and used in $PTII/ptolemy/matlab/makefile and jni
+AC_SUBST(PTCCJNI)
+
 # Set to chic and used in $PTII/ptolemy/makefile if chic was found.
 AC_SUBST(PTCHIC_DIR)
 
@@ -4974,16 +4999,8 @@ AC_SUBST(PTJMF_DIR)
 # PTJMF_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJMF_PACKAGES)
 
-# Set to jni and used in 
-# $PTII/makefile if gcc or cc was found
-AC_SUBST(PTJNI_DIR)
-
 # JNI architecture, used to compile C files
 AC_SUBST(PTJNI_ARCHITECTURE)
-
-# Set to jni and used in 
-# $PTII/makefile if gcc or cc was found
-AC_SUBST(PTJNI_DIR)
 
 # set to jni include directory
 AC_SUBST(PTJNI_INCLUDE)

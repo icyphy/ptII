@@ -357,6 +357,9 @@ PTCALTROP_DIR = @PTCALTROP_DIR@
 # Set to gcc if gcc was found and used in $PTII/ptolemy/matlab/makefile.
 PTCC =	@PTCC@
 
+# Set to mingw32-gcc or gcc and used in $PTII/ptolemy/matlab/makefile and jni
+PTCCJNI = @PTCCJNI@
+
 # Set to chic and used in $PTII/ptolemy/makefile if chic was found.
 PTCHIC_DIR = @PTCHIC_DIR@
 
@@ -570,10 +573,6 @@ PTJMF_PACKAGES =	@PTJMF_PACKAGES@
 
 # JNI architecture, used to compile C files
 PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
-
-# Set to jni and used in 
-# $PTII/makefile if gcc or cc was found
-PTJNI_DIR =	@PTJNI_DIR@
 
 # set to jni include directory
 PTJNI_INCLUDE =    @PTJNI_INCLUDE@
