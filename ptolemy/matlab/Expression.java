@@ -139,15 +139,17 @@ import ptolemy.matlab.Engine.ConversionParameters;
  Then $MATLAB would be /Applications/MATLAB_R2009b.app
 
  <dl>
- <dt>32 Bit Mac (10.5?)</dt>
+ <dt>32 Bit Mac (10.5?, Edit ~/.MacOSX/environment.plist)</dt>
  <dd><code>export DYLD_LIBRARY_PATH=$MATLAB/bin/maci</core></dd>
- <dt>64 Bit Mac (10.6?)</dt>
+ <dt>64 Bit Mac (10.6?, Edit ~/.MacOSX/environment.plist)</dt>
  <dd><code>export DYLD_LIBRARY_PATH=$MATLAB/bin/maci64</core></dd>
- <dt>32 Bit Linux</dt>
+ <dt>32 Bit Linux (Edit</dt>
  <dd><code>export LD_LIBRARY_PATH=$MATLAB/bin/gnlx86</core></dd> 
  <dt>64 Bit Linux</dt>
  <dd><code>export LD_LIBRARY_PATH=$MATLAB/bin/glnxa64</core></dd>
- <dt>Windows</dt>
+ <dt>Windows (Start|My Computer|Properties|Advanced
+       Environment Variables| Add the directory that contains
+       matlab.exe to your path)</dt>
  <dd><code>Be sure that the matlab binary is in your path</core></dd>
  </dl>
  </p>
