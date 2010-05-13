@@ -9324,13 +9324,7 @@ echo "$as_me: WARNING: Failed to find gcc or cc, so we will
            ;;
     esac
 
-    if test "${PTCCJNI:-none}" != "none"; then
-        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJNICC" >&5
-echo "${ECHO_T}$PTJNICC" >&6; }; fi
-        PTJNI_DIR=jni
-
-        # Extract the first word of "javah", so it can be a program name with args.
+	# Extract the first word of "javah", so it can be a program name with args.
 set dummy javah; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
@@ -9370,11 +9364,17 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-        # Under MacOS X, JAVAH might be a link
-        if test ! -e "$JAVAH"; then
-            { echo "$as_me:$LINENO: WARNING:  Failed to find javah at '$JAVAH', perhaps Java is not installed?" >&5
+    # Under MacOS X, JAVAH might be a link
+    if test ! -e "$JAVAH"; then
+        { echo "$as_me:$LINENO: WARNING:  Failed to find javah at '$JAVAH', perhaps Java is not installed?" >&5
 echo "$as_me: WARNING:  Failed to find javah at '$JAVAH', perhaps Java is not installed?" >&2;}
-        fi
+    fi
+
+    if test "${PTCCJNI:-none}" != "none"; then
+        if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTJNICC" >&5
+echo "${ECHO_T}$PTJNICC" >&6; }; fi
+        PTJNI_DIR=jni
 
         if test ! -z $PTJNI_DIR; then
             if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
