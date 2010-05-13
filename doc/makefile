@@ -635,8 +635,6 @@ ALLPACKAGES = \
 	$(PTPTALON_PACKAGES) \
 	$(USER_PACKAGES) \
 	doc.doclets \
-	jni \
-	jni.gui \
 	ptolemy.plot \
 	ptolemy.plot.plotml \
 	ptolemy.plot.compat \
