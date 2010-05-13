@@ -291,9 +291,13 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // 11/06 FSM uses StateIcon
         _graphicalClasses.put("ptolemy.vergil.fsm.StateIcon", null);
 
+        _graphicalClasses.put("ptolemy.vergil.modal.StateIcon", null);
+
         _graphicalClasses.put("ptolemy.vergil.fsm.fmv.FmvStateIcon", null);
 
-        _graphicalClasses.put("ptolemy.vergil.modal.StateIcon", null);
+        _graphicalClasses.put("ptolemy.vergil.modal.fmv.FmvStateIcon", null);
+
+        _graphicalClasses.put("ptolemy.ontologies.ConceptIcon", null);
 
         _graphicalClasses.put(
                 "ptolemy.vergil.kernel.attributes.EllipseAttribute", null);
