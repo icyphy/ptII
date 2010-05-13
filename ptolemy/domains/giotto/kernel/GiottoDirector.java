@@ -105,8 +105,6 @@ TimedDirector, Decorator {
         _init();
     }
 
-
-
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -150,7 +148,7 @@ TimedDirector, Decorator {
      *   is <i>filename</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+    throws IllegalActionException{
         if (attribute == period) {
             _periodValue = ((DoubleToken) period.getToken()).doubleValue();
         } else if (attribute == synchronizeToRealTime) {
@@ -485,97 +483,6 @@ TimedDirector, Decorator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Return the WCET of the actors.
-     * The Worst-Case Execution Time (WCET) of an actor is the maximum length of time 
-     * the task could take to execute on a particular platform
-     * @return A double containing the WCET of the actors
-     * @throws IllegalActionException If an error occurs
-
-     */
-    public double _getWCET()throws IllegalActionException
-    {
-        double wcet=0;
-        double actorFrequency =0;
-        double actorWCET = 0;
-        int actorCount = 0;
-        //CodeGeneratorHelper  directorHelper;
-        for (Actor actor : (List<Actor>) 
-                ((TypedCompositeActor) this.getContainer()).deepEntityList()) {
-            actorCount++;
-            Attribute frequency = ((Entity)actor).getAttribute("frequency");
-            //  ptolemy.actor.Director dd =actor.getDirector();
-            Attribute WCET = ((Entity)actor).getAttribute("WCET");
-
-            if(!( actor instanceof ptolemy.domains.giotto.lib.GiottoError)){
-
-                if(actor instanceof CompositeActor)
-                {
-
-                    if(_debugging) {
-                        // _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
-                    }
-                    Director dir = actor.getDirector();
-
-                    if(_debugging){
-                        //_debug(dir.getFullName());
-                    }
-                    if(dir == null)
-                    {
-
-                        if(_debugging) {
-                            //    _debug("no director in composite actor ");
-                        }
-
-                    }
-                    else
-                    {
-                        double dummyWCET = 0.0011;
-                        Attribute dirWCET = dir.getAttribute("WCET");
-                        if(dirWCET != null){
-                            dummyWCET = ((DoubleToken) ((Variable) dirWCET).getToken()).doubleValue();
-                        }
-                        if(_debugging) {
-                            // _debug("Composite Actor:"+actor.getFullName()+" has WCET "+ dummyWCET);
-                        }
-                        wcet+= dummyWCET;
-                    }
-                }else{
-
-                    if (WCET == null) {
-                        actorWCET = 0.0;
-                    } else {
-                        try{
-
-                            actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
-                        }catch(Exception e2){ // I don't think this is the right fix.. let's see if it works for now
-                            actorWCET =  ((IntToken) ((Variable) WCET).getToken()).intValue();   
-                        }
-                    }
-                    if (frequency == null) {
-                        actorFrequency = 1;
-                    } else {
-                        actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
-                    }
-
-                    wcet+= (actorFrequency * actorWCET);
-                }
-            }
-            if(_debugging) {
-                //     _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
-
-                // _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
-
-                //_debug("actor count is "+actorCount);
-            }
-        }
-
-
-        return wcet;
-    }
-
-
-
     /** Handle a model error.
      *  @param context The object in which the error occurred.
      *  @param exception An exception that represents the error.
@@ -593,9 +500,13 @@ TimedDirector, Decorator {
 
         NamedObj dummyContainer = this.getContainer();
         NamedObj parentContainer = dummyContainer.getContainer();
-        return parentContainer.handleModelError(context,exception);
-    }
+        if(parentContainer != null){
+            return parentContainer.handleModelError(context,exception);
+        }else {
+            throw new IllegalActionException(this,"Unable to set error transition. This is the top most director ");
+        }
 
+    }
 
     /** Initialize the actors associated with this director.
      *  The order in which the actors are initialized is arbitrary.
@@ -769,7 +680,6 @@ TimedDirector, Decorator {
         return true;
     }
 
-
     /** Preinitialize the actors associated with this director.
      *  Generate the giotto schedule.
      *  @exception IllegalActionException If the preinitialize() method of
@@ -807,10 +717,9 @@ TimedDirector, Decorator {
         try{
             createDecoratedAttributes(this); 
 
-        }catch(NameDuplicationException e){
+        }catch(NameDuplicationException e) {
             e.printStackTrace();
         }
-
 
         Attribute dirWCET = this.getContainer().getAttribute("WCET");
         if(dirWCET != null){
@@ -834,7 +743,6 @@ TimedDirector, Decorator {
             _debug("at the end of preinitialize in the giotto director.");
         }
     }
-
 
     /** Return an array of suggested directors to be used with
      *  ModalModel. Each director is specified by its full class
@@ -1003,44 +911,86 @@ TimedDirector, Decorator {
         return frequencyValue;
     }
 
-    // Initialize the director by creating a scheduler and parameters.
-    private void _init()  {
-        try {
-            GiottoScheduler scheduler = new GiottoScheduler(workspace());
-            setScheduler(scheduler);
+    /**
+     * Return the WCET of the actors.
+     * The Worst-Case Execution Time (WCET) of an actor is the maximum length of time 
+     * the task could take to execute on a particular platform
+     * @return A double containing the WCET of the actors
+     * @throws IllegalActionException If an error occurs
 
-            period = new Parameter(this, "period");
-            period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
-            iterations = new Parameter(this, "iterations", new IntToken(0));
+     */
+    private double _getWCET()throws IllegalActionException
+    {
+        double wcet=0;
+        double actorFrequency =0;
+        double actorWCET = 0;
+        int actorCount = 0;
+        //CodeGeneratorHelper  directorHelper;
+        for (Actor actor : (List<Actor>) 
+                ((TypedCompositeActor) this.getContainer()).deepEntityList()) {
+            actorCount++;
+            Attribute frequency = ((Entity)actor).getAttribute("frequency");
+            //  ptolemy.actor.Director dd =actor.getDirector();
+            Attribute WCET = ((Entity)actor).getAttribute("WCET");
 
-            synchronizeToRealTime = new Parameter(this,
-                    "synchronizeToRealTime", new BooleanToken(false));
+            if(!( actor instanceof ptolemy.domains.giotto.lib.GiottoError)){
 
-            timeResolution.setVisibility(Settable.FULL);
-        } catch (KernelException ex) {
-            throw new InternalErrorException("Cannot initialize director: "
-                    + ex.getMessage());
+                if(actor instanceof CompositeActor)
+                {
+
+                    if(_debugging) {
+                        _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
+                    }
+                    Director dir = actor.getDirector();
+
+                    if(_debugging){
+                        _debug(dir.getFullName());
+                    }
+                    if(dir == null)
+                    {
+
+                        if(_debugging) {
+                            _debug("no director in composite actor ");
+                        }
+
+                    }else {
+                        double dummyWCET = 0.0011;
+                        Attribute dirWCET = dir.getAttribute("WCET");
+                        if(dirWCET != null){
+                            dummyWCET = ((DoubleToken) ((Variable) dirWCET).getToken()).doubleValue();
+                        }
+                        if(_debugging) {
+                            _debug("Composite Actor:"+actor.getFullName()+" has WCET "+ dummyWCET);
+                        }
+                        wcet+= dummyWCET;
+                    }
+                }else {
+
+                    if (WCET == null) {
+                        actorWCET = 0.0;
+                    } else {
+                        actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
+                    }
+                    if (frequency == null) {
+                        actorFrequency = 1;
+                    } else {
+                        actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
+                    }
+
+                    wcet+= (actorFrequency * actorWCET);
+                }
+            }
+            if(_debugging) {
+                _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
+
+                _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
+
+                _debug("actor count is "+actorCount);
+            }
         }
 
-        //
-        try{
-            errorAction = new StringParameter(this, "errorAction");
-            errorAction.setExpression("Warn");
-            errorAction.addChoice("Warn");
-            errorAction.addChoice("Reset");
-            errorAction.addChoice("TimedUtilityFunction");
-            errorAction.addChoice("ErrorTransition");
-            //IllegalActionException, NameDuplicationException 
-        }catch(NameDuplicationException ne){
-            if(_debugging){
-                _debug("I should handle this error in a better way later.");
-            }
-        }catch(IllegalActionException ie){
-            if(_debugging){
-                _debug("I should handle this error in a better way later.");
-            }
 
-        }
+        return wcet;
     }
 
     private boolean _handleModelError(NamedObj context,
@@ -1082,7 +1032,43 @@ TimedDirector, Decorator {
         return true;
     }
 
+    // Initialize the director by creating a scheduler and parameters.
+    private void _init()  {
+        try {
+            GiottoScheduler scheduler = new GiottoScheduler(workspace());
+            setScheduler(scheduler);
 
+            period = new Parameter(this, "period");
+            period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
+            iterations = new Parameter(this, "iterations", new IntToken(0));
+
+            synchronizeToRealTime = new Parameter(this,
+                    "synchronizeToRealTime", new BooleanToken(false));
+
+            timeResolution.setVisibility(Settable.FULL);
+        } catch (KernelException ex) {
+            throw new InternalErrorException("Cannot initialize director: "
+                    + ex.getMessage());
+        }
+
+        try{
+            errorAction = new StringParameter(this, "errorAction");
+            errorAction.setExpression("Warn");
+            errorAction.addChoice("Warn");
+            errorAction.addChoice("Reset");
+            errorAction.addChoice("TimedUtilityFunction");
+            errorAction.addChoice("ErrorTransition");
+        }catch(NameDuplicationException ne) {
+            if(_debugging){
+                _debug("I should handle this error in a better way later.");
+            }
+        }catch(IllegalActionException ie) {
+            if(_debugging){
+                _debug("I should handle this error in a better way later.");
+            }
+
+        }
+    }
 
     // Request that the container of this director be refired in the future.
     // This method is used when the director is embedded inside an opaque
@@ -1098,7 +1084,6 @@ TimedDirector, Decorator {
 
         _fireContainerAt(_expectedNextIterationTime);
     }
-
 
     /** Set the current type of the decorated attributes.
      *  The type information of the parameters are not saved in the
@@ -1124,7 +1109,6 @@ TimedDirector, Decorator {
         return new GiottoDecoratedAttributesImplementation(target, this);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
     /** The errorAction operator.  This is a string-valued attribute
@@ -1142,9 +1126,6 @@ TimedDirector, Decorator {
     //  An indicator for the error action to take.
     private ErrorAction _errorAction;
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
     // The time for next iteration.
     private Time _expectedNextIterationTime;
 
