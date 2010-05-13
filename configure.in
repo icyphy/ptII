@@ -3107,15 +3107,15 @@ else
            ;;
     esac
 
+	AC_PATH_PROG(JAVAH, javah)
+    # Under MacOS X, JAVAH might be a link
+    if test ! -e "$JAVAH"; then
+        AC_MSG_WARN([ Failed to find javah at '$JAVAH', perhaps Java is not installed?])
+    fi
+	
     if test "${PTCCJNI:-none}" != "none"; then
         PT_MSG_RESULT([$PTJNICC])
         PTJNI_DIR=jni
-
-        AC_PATH_PROG(JAVAH, javah)
-        # Under MacOS X, JAVAH might be a link
-        if test ! -e "$JAVAH"; then
-            AC_MSG_WARN([ Failed to find javah at '$JAVAH', perhaps Java is not installed?])
-        fi
 
         if test ! -z $PTJNI_DIR; then 
             PT_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
