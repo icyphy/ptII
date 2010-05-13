@@ -99,6 +99,12 @@ tag specially.
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
+    <code>ptolemy/configs/doc/whatsNew8.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew8.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
     <code>ptolemy/configs/doc/whatsNew7.0.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
     <td><a href="about:links#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
@@ -162,16 +168,34 @@ tag specially.
   </tr>
 <tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>
   <tr>
-    <code>ptolemy/configs/doc/completeDemosPtinyKepler.htm</code>
-    <td><a href="about:demos#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
-    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+    <code>ptolemy/configs/kepler/doc-index.htm</code>
+    <td><a href="about:demos#ptolemy/configs/kepler/doc-index.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/kepler/doc-index.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/kepler/doc-index.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>doc/mainVergilPtinyKepler.htm</code>
+    <td><a href="about:demos#doc/mainVergilPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#doc/mainVergilPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#doc/mainVergilPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/demosPtinyKepler.htm</code>
     <td><a href="about:demos#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
     <td><a href="about:links#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/docsPtinyKepler.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemosPtinyKepler.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosPtinyKepler.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
 <tr rowspan=4><center><b>VisualSense</b></center></tr>
   <tr>
