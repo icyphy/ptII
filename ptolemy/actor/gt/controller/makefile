@@ -68,6 +68,7 @@ JSRCS = \
 	ModelParameter.java \
 	OutputModel.java \
 	ReadModel.java \
+	TestModel.java \
 	Transform.java \
 	TransformationAttribute.java \
 	View.java \
