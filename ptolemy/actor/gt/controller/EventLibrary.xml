@@ -132,6 +132,8 @@
   </entity>
   <entity name="Match" class="ptolemy.actor.gt.controller.Match">
   </entity>
+  <entity name="TestModel" class="ptolemy.actor.gt.controller.TestModel">
+  </entity>
   <entity name="Transform" class="ptolemy.actor.gt.controller.Transform">
   </entity>
   <entity name="View" class="ptolemy.actor.gt.controller.View">

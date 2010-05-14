@@ -88,6 +88,8 @@ import ptolemy.util.StringUtilities;
 /**
  An event to compare the model in the model parameter with a known good result.
 
+ @see ptolemy.actor.lib.NonStrictTest
+
  @author Christopher Brooks, based on View by Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 8.1
@@ -95,6 +97,7 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (cxh)
  */
 public class TestModel extends GTEvent {
+    // FIXME: This is a horrible copy and paste of ptolemy.actor.lib.NonStrictTest
 
     /** Construct an event with the given name contained by the specified
      *  composite entity. The container argument must not be null, or a
@@ -124,10 +127,6 @@ public class TestModel extends GTEvent {
                 "requireAllCorrectValues", getClass(), "true");
         requireAllCorrectValues.setTypeEquals(BaseType.BOOLEAN);
 
-        tolerance = new Parameter(this, "tolerance");
-        tolerance.setExpression("1.0E-9");
-        tolerance.setTypeEquals(BaseType.DOUBLE);
-
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
                 "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
@@ -151,12 +150,6 @@ public class TestModel extends GTEvent {
      *  change it for all instances in the model.
      */
     public Parameter requireAllCorrectValues;
-
-    /** A double specifying how close the input has to be to the value
-     *  given by <i>correctValues</i>.  This is a DoubleToken, with default
-     *  value 10<sup>-9</sup>.
-     */
-    public Parameter tolerance;
 
     /** If true, then do not check inputs, but rather collect them into
      *  the <i>correctValues</i> array.  This parameter is a boolean,
@@ -197,13 +190,10 @@ public class TestModel extends GTEvent {
      *   thrown by the superclass.
      */
     public RefiringData fire(Token arguments) throws IllegalActionException {
-        RefiringData data = super.fire(arguments);
+        System.out.println("TestModel.fire()");
 
-        Effigy effigy = EventUtils.findToplevelEffigy(this);
-        if (effigy == null) {
-            // The effigy may be null if the model is closed.
-            return data;
-        }
+        _firedOnce = true;
+        RefiringData data = super.fire(arguments);
 
         CompositeEntity entity = getModelParameter().getModel();
         try {
@@ -212,98 +202,60 @@ public class TestModel extends GTEvent {
             _parser.reset();
         }
 
-
-
-
-    /** Read one token from each input channel and compare against
-     *  the value specified in <i>correctValues</i>.  If the token count
-     *  is larger than the length of <i>correctValues</i>, then return
-     *  immediately, indicating that the inputs correctly matched
-     *  the values in <i>correctValues</i> and that the test succeeded.
-     *
-     *  @exception IllegalActionException If an input does not match
-     *   the required value or if the width of the input is not 1.
-     */
-
-
-//         if (input.getWidth() != 1) {
-//             throw new IllegalActionException(this, "Width of input is "
-//                     + input.getWidth()
-//                     + " but NonStrictTest only supports a width of 1.");
-//         }
+        /* Read one token from each input channel and compare against
+           the value specified in <i>correctValues</i>.  If the token
+           count is larger than the length of <i>correctValues</i>,
+           then return immediately, indicating that the inputs
+           correctly matched the values in <i>correctValues</i> and
+           that the test succeeded. */
 
         boolean training = ((BooleanToken) trainingMode.getToken())
                 .booleanValue();
 
         if (training) {
-            System.out.println("Training!");
             if (_trainingTokens == null) {
                 _trainingTokens = new ArrayList();
             }
 
-            //if (input.hasToken(0)) {
-            XMLToken moml;
+            Token moml;
             try {
-                moml = new XMLToken(entity.exportMoML());
+                moml = new StringToken(entity.exportMoML());
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex, "Failed to parse "
                         + entity.exportMoML());
 
             }
-            System.out.println("Training: " + moml);
             _trainingTokens.add(moml);
-                //}
 
             return data;
         }
 
         if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
                 .length()) {
-            System.out.println("Read all of our correct values");
             // Consume and discard input values.  We are beyond the end
             // of the correctValues array.
-            //if (input.hasToken(0)) {
-            //    input.get(0);
-            //}
-
             return data;
         }
 
-        XMLToken referenceToken = (XMLToken)((ArrayToken) (correctValues.getToken()))
+        Token referenceToken = ((ArrayToken) (correctValues.getToken()))
                 .getElement(_numberOfInputTokensSeen);
 
-        //if (input.hasToken(0)) {
-        //    Token token = input.get(0);
-        XMLToken token;
+        Token token;
         try {
-            token = new XMLToken(entity.exportMoML());
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex, "Failed to parse "
-                        + entity.exportMoML());
+            token = new StringToken(entity.exportMoML());
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "Failed to parse "
+                    + entity.exportMoML());
+        }
+        _numberOfInputTokensSeen++;
 
-            }
-            _numberOfInputTokensSeen++;
+        if (!token.toString().equals(referenceToken.toString())) {
+            throw new IllegalActionException(this,
+                    "Test fails in iteration " + _iteration + ".\n"
+                    + "Value was: " + token
+                    + ". Should have been: " + referenceToken);
+        }
 
-            // FIXME: If we get a nil token on the input, what should we do?
-            // Here, we require that the referenceToken also be nil.
-            // If the token is an ArrayToken and two corresponding elements
-            // are nil, then we consider them "close".
-    System.out.println("Comparison between " + referenceToken + "\n and \n"
-            + token);
-    if (token.toString().equals(referenceToken.toString()) == false
-                    && !referenceToken.isNil()
-                    && !_isCloseToIfNilArrayElement(token, referenceToken,
-                            _tolerance)
-                    && !_isCloseToIfNilRecordElement(token, referenceToken,
-                            _tolerance)) {
-                throw new IllegalActionException(this,
-                        "Test fails in iteration " + _iteration + ".\n"
-                                + "Value was: " + token
-                                + ". Should have been: " + referenceToken);
-            }
-            //}
-
-    System.out.println("_iteration: " + _iteration);
         _iteration++;
         return data;
     }
@@ -434,138 +386,11 @@ public class TestModel extends GTEvent {
         }
     }
 
-    /** Test whether the value of this token is close to the first argument,
-     *  where "close" means that the distance between them is less than
-     *  or equal to the second argument.  This method only makes sense
-     *  for tokens where the distance between them is reasonably
-     *  represented as a double. It is assumed that the argument is
-     *  an ArrayToken, and the isCloseTo() method of the array elements
-     *  is used.
-     *  This method differs from
-     *  {@link ptolemy.data.ArrayToken#_isCloseTo(Token, double)}
-     *  in that if corresponding elements are both nil tokens, then
-     *  those two elements are considered "close", see
-     *  {@link ptolemy.data.Token#NIL}.
-     *  @param token1 The first array token to compare.
-     *  @param token2 The second array token to compare.
-     *  @param epsilon The value that we use to determine whether two
-     *   tokens are close.
-     *  @exception IllegalActionException If the elements do not support
-     *   this comparison.
-     *  @return True if the first argument is close
-     *  to this token.  False if the arguments are not ArrayTokens
-     */
-    protected static boolean _isCloseToIfNilArrayElement(Token token1,
-            Token token2, double epsilon) throws IllegalActionException {
-        if (!(token1 instanceof ArrayToken) || !(token2 instanceof ArrayToken)) {
-            return false;
-        }
-
-        ArrayToken array1 = (ArrayToken) token1;
-        ArrayToken array2 = (ArrayToken) token2;
-        if (array1.length() != array2.length()) {
-            return false;
-        }
-
-        for (int i = 0; i < array1.length(); i++) {
-            // Here is where isCloseTo() differs from isEqualTo().
-            // Note that we return false the first time we hit an
-            // element token that is not close to our current element token.
-            BooleanToken result = array1.getElement(i).isCloseTo(
-                    array2.getElement(i), epsilon);
-
-            // If the tokens are not close and array1[i] and is not nil, then
-            // the arrays really aren't close.
-            if (result.booleanValue() == false) {
-                if (array1.getElement(i).isNil()
-                        && array2.getElement(i).isNil()) {
-                    // They are not close, but both are nil, so for
-                    // our purposes, the are close.
-                } else {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /** Test whether the value of this token is close to the first argument,
-     *  where "close" means that the distance between them is less than
-     *  or equal to the second argument.  This method only makes sense
-     *  for tokens where the distance between them is reasonably
-     *  represented as a double. It is assumed that the argument is
-     *  a Record, and the isCloseTo() method of the record elements
-     *  is used.
-     *  This method differs from
-     *  {@link ptolemy.data.RecordToken#_isCloseTo(Token, double)}
-     *  in that if corresponding elements are both nil tokens, then
-     *  those two elements are considered "close", see
-     *  {@link ptolemy.data.Token#NIL}.
-     *  @param token1 The first array token to compare.
-     *  @param token2 The second array token to compare.
-     *  @param epsilon The value that we use to determine whether two
-     *   tokens are close.
-     *  @exception IllegalActionException If the elements do not support
-     *   this comparison.
-     *  @return True if the first argument is close
-     *  to this token.  False if the arguments are not ArrayTokens
-     */
-    protected static boolean _isCloseToIfNilRecordElement(Token token1,
-            Token token2, double epsilon) throws IllegalActionException {
-        if (!(token1 instanceof RecordToken)
-                || !(token2 instanceof RecordToken)) {
-            return false;
-        }
-        RecordToken record1 = (RecordToken) token1;
-        RecordToken record2 = (RecordToken) token2;
-
-        Set myLabelSet = record1.labelSet();
-        Set argLabelSet = record2.labelSet();
-
-        if (!myLabelSet.equals(argLabelSet)) {
-            return false;
-        }
-
-        // Loop through all of the fields, checking each one for closeness.
-        Iterator iterator = myLabelSet.iterator();
-
-        while (iterator.hasNext()) {
-            String label = (String) iterator.next();
-            Token innerToken1 = record1.get(label);
-            Token innerToken2 = record2.get(label);
-            boolean result = false;
-            if (innerToken1 instanceof ArrayToken) {
-                result = _isCloseToIfNilArrayElement(innerToken1, innerToken2,
-                        epsilon);
-            } else if (innerToken1 instanceof RecordToken) {
-                result = _isCloseToIfNilRecordElement(innerToken1, innerToken2,
-                        epsilon);
-            } else {
-                result = innerToken1.isCloseTo(innerToken2, epsilon)
-                        .booleanValue();
-            }
-
-            if (!result) {
-                if (innerToken1.isNil() && innerToken2.isNil()) {
-                    // They are not close, but both are nil, so for
-                    // our purposes, the are close.
-                } else {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** Number of input tokens seen by this actor in the fire method.*/
     protected int _numberOfInputTokensSeen = 0;
-
-    /** A double that is read from the <i>tolerance</i> parameter
-     *        specifying how close the input has to be to the value
-     *  given by <i>correctValues</i>.  This is a double, with default
-     *  value 10<sup>-9</sup>.
-     */
-    protected double _tolerance;
 
     /** Count of iterations. */
     protected int _iteration;
@@ -584,12 +409,18 @@ public class TestModel extends GTEvent {
 
 
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Create a parser for parsing models.
      */
     private void _init() {
         _workspace = new Workspace();
         _parser = new MoMLParser(_workspace);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The parser.
      */
