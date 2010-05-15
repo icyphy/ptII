@@ -411,6 +411,7 @@ jsoriginal:
 		fi; \
 	fi
 
+
 # Back out the instrumentation.
 jsrestore:
 	if [ -d jsoriginal -a "$(JSRCS)" != "" ]; then \
@@ -423,6 +424,27 @@ jsrestore:
 		echo "no jsoriginal directory, or no java sources"; \
 	fi
 
+jsrestore_all:
+	@if [ "x$(DIRS)" != "x" ]; then \
+		set $(DIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making jsrestore_all in $(ME)/$$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) jsrestore_all ;\
+			) \
+		    fi ; \
+		done ; \
+        fi;
+	if [ -d jsoriginal -a "$(JSRCS)" != "" ]; then \
+		echo "Running jsrestore in `pwd`"; \
+		$(JSRESTORE) $(JSRCS); \
+		rm -f jsoriginal/README; \
+		rmdir jsoriginal; \
+		$(MAKE) clean; \
+	else \
+		echo "no jsoriginal directory, or no java sources"; \
+	fi
 # Compile the instrumented Java classes and include JavaScope.zip
 # We run make fast first, then make all so as to avoid problems
 # if files in actor/lib do not compile.	
