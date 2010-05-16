@@ -150,60 +150,63 @@ DecoratedAttributes {
 
         GiottoDirector tempDir = (GiottoDirector) decorator;
 
-        double dirWCET = tempDir._getWCET();
-        NamedObj parentContainer = null;
-        try {
-            //add parameter to the container if it's not already there
-            if (_debugging) {
-                _debug("the container is "
-                        + container.getContainer().getDisplayName()
-                        + "it should get value " + dirWCET);
-            }
-
-            parentContainer = container.getContainer();
-
-            dummyParam = new Parameter(parentContainer, "ET");
-            dummyParam.setTypeEquals(BaseType.DOUBLE);
-            dummyParam.setExpression(Double.toString(dirWCET));
-
-            dummyParam = new Parameter(parentContainer, "WCET");
-            dummyParam.setTypeEquals(BaseType.DOUBLE);
-            dummyParam.setExpression(Double.toString(dirWCET));
-
-            parentContainer = container.getContainer().getContainer();
-
-            if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
-                dummyParam = new Parameter(parentContainer, "WCET");
-                dummyParam.setTypeEquals(BaseType.DOUBLE);
-                dummyParam.setExpression(Double.toString(dirWCET));
-            }
-
-
-        } catch (NameDuplicationException e) {
-            if (_debugging) {
-                _debug("container already had wcet parameter set so updating the value to "
-                        + dirWCET);
-            }
-            dummyParam = (Parameter) parentContainer.getAttribute(
-            "WCET");
-            dummyParam.setTypeEquals(BaseType.DOUBLE);
-            dummyParam.setExpression(Double.toString(dirWCET));
-
-            parentContainer = container.getContainer().getContainer();
-
-            if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
-
-                try{
-                    dummyParam = new Parameter(parentContainer, "WCET");
-                    dummyParam.setTypeEquals(BaseType.DOUBLE);
-                    dummyParam.setExpression(Double.toString(dirWCET));
-                }catch(NameDuplicationException E){
-                    dummyParam = (Parameter) parentContainer.getAttribute("WCET");
-                    dummyParam.setTypeEquals(BaseType.DOUBLE);
-                    dummyParam.setExpression(Double.toString(dirWCET));
-                }
-            }
+        if (1==1) {
+            throw new RuntimeException("This code did not compile");
         }
+//         double dirWCET = tempDir._getWCET();
+//         NamedObj parentContainer = null;
+//         try {
+//             //add parameter to the container if it's not already there
+//             if (_debugging) {
+//                 _debug("the container is "
+//                         + container.getContainer().getDisplayName()
+//                         + "it should get value " + dirWCET);
+//             }
+
+//             parentContainer = container.getContainer();
+
+//             dummyParam = new Parameter(parentContainer, "ET");
+//             dummyParam.setTypeEquals(BaseType.DOUBLE);
+//             dummyParam.setExpression(Double.toString(dirWCET));
+
+//             dummyParam = new Parameter(parentContainer, "WCET");
+//             dummyParam.setTypeEquals(BaseType.DOUBLE);
+//             dummyParam.setExpression(Double.toString(dirWCET));
+
+//             parentContainer = container.getContainer().getContainer();
+
+//             if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
+//                 dummyParam = new Parameter(parentContainer, "WCET");
+//                 dummyParam.setTypeEquals(BaseType.DOUBLE);
+//                 dummyParam.setExpression(Double.toString(dirWCET));
+//             }
+
+
+//         } catch (NameDuplicationException e) {
+//             if (_debugging) {
+//                 _debug("container already had wcet parameter set so updating the value to "
+//                         + dirWCET);
+//             }
+//             dummyParam = (Parameter) parentContainer.getAttribute(
+//             "WCET");
+//             dummyParam.setTypeEquals(BaseType.DOUBLE);
+//             dummyParam.setExpression(Double.toString(dirWCET));
+
+//             parentContainer = container.getContainer().getContainer();
+
+//             if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
+
+//                 try{
+//                     dummyParam = new Parameter(parentContainer, "WCET");
+//                     dummyParam.setTypeEquals(BaseType.DOUBLE);
+//                     dummyParam.setExpression(Double.toString(dirWCET));
+//                 }catch(NameDuplicationException E){
+//                     dummyParam = (Parameter) parentContainer.getAttribute("WCET");
+//                     dummyParam.setTypeEquals(BaseType.DOUBLE);
+//                     dummyParam.setExpression(Double.toString(dirWCET));
+//                 }
+//             }
+//         }
 
         try {
             //add parameter to the container if it's not already there
