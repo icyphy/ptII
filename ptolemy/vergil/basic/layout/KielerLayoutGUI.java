@@ -239,12 +239,18 @@ public class KielerLayoutGUI extends PtolemyFrame {
                         message = "findEffigy() found no Tableaux?  There should have been one "
                            + "ActorGraphFrame.";
                     } else {
-                        message = "The first frame of "
-                            + tableauxCount + " found by findEffigy() is a \""
-                            + ((Tableau) Configuration.findEffigy(model).entityList(
-                                            Tableau.class).get(0)).getFrame().getClass().getName()
-                            + "\", which is not an instance of ActorGraphFrame."
-                            + " None of the other frames were ActorGraphFrames either.";
+                        JFrame firstFrame = ((Tableau) Configuration.findEffigy(model).entityList(
+                                        Tableau.class).get(0)).getFrame();
+                        if (firstFrame instanceof KielerLayoutGUI) {
+                            message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
+                                + "please save the model before running the layout mechanism.";
+                        } else {
+                            message = "The first frame of "
+                                + tableauxCount + " found by findEffigy() is a \""
+                                + firstFrame.getClass().getName()
+                                + "\", which is not an instance of ActorGraphFrame."
+                                + " None of the other frames were ActorGraphFrames either.";
+                        }
                     }
                     throw new InternalErrorException(model, null,
                             "For now only actor oriented graphs with ports are supported by KIELER layout. "
