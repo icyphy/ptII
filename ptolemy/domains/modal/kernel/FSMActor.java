@@ -237,7 +237,7 @@ import ptolemy.kernel.util.Workspace;
  @see FSMDirector
  */
 public class FSMActor extends CompositeEntity implements TypedActor,
-ExplicitChangeContext {
+        ExplicitChangeContext {
     /** Construct an FSMActor in the default workspace with an empty string
      *  as its name. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
@@ -259,7 +259,7 @@ ExplicitChangeContext {
      *   an entity already in the container.
      */
     public FSMActor(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -317,7 +317,7 @@ ExplicitChangeContext {
      *   transition enabled and not all of them are nondeterministic.
      */
     public Transition chooseTransition(List transitionList)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         List<Transition> enabledTransitions = enabledTransitions(transitionList);
         int length = enabledTransitions.size();
@@ -330,10 +330,10 @@ ExplicitChangeContext {
                     throw new MultipleEnabledTransitionsException(
                             currentState(),
                             "Nondeterministic FSM error: "
-                            + "Multiple enabled transitions found but not all"
-                            + " of them are nondeterministic. Transition "
-                            + enabledTransition.getName()
-                            + " is deterministic.");
+                                    + "Multiple enabled transitions found but not all"
+                                    + " of them are nondeterministic. Transition "
+                                    + enabledTransition.getName()
+                                    + " is deterministic.");
                 }
             }
         }
@@ -361,7 +361,7 @@ ExplicitChangeContext {
             if (!enabledTransitions.contains(_lastChosenTransition)) {
                 throw new IllegalActionException(this, _lastChosenTransition,
                         "Transition was enabled in an earlier firing of this "
-                        + "iteration, but is no longer enabled!");
+                                + "iteration, but is no longer enabled!");
             }
             return _lastChosenTransition;
         }
@@ -473,8 +473,7 @@ ExplicitChangeContext {
             newObject._initialState = (State) newObject.getEntity(_initialState
                     .getName());
         }
-        newObject._portReferencedInTransitionMaps 
-        = new HashMap<IOPort,HashMap<Transition,Boolean>>();
+        newObject._portReferencedInTransitionMaps = new HashMap<IOPort, HashMap<Transition, Boolean>>();
 
         newObject._inputPortsVersion = -1;
         newObject._cachedInputPorts = null;
@@ -530,7 +529,7 @@ ExplicitChangeContext {
      *  transition can not be evaluated.
      */
     public List enabledTransitions(List transitionList)
-    throws IllegalActionException {
+            throws IllegalActionException {
         LinkedList enabledTransitions = new LinkedList();
         LinkedList defaultTransitions = new LinkedList();
 
@@ -545,7 +544,7 @@ ExplicitChangeContext {
                 }
             } else {
                 _foundUnknown = _foundUnknown
-                || !_referencedInputPortsByGuardKnown(transition);
+                        || !_referencedInputPortsByGuardKnown(transition);
                 // Try to evaluate the guard whether the inputs are known
                 // or not. An unknown input might be in a part of the
                 // guard expression that is not evaluated, e.g. if the
@@ -623,7 +622,7 @@ ExplicitChangeContext {
      *  @exception IOException If an I/O error occurs.
      */
     public void exportSubmodel(Writer output, int depth, String name)
-    throws IOException {
+            throws IOException {
         try {
             List<State> stateList = deepEntityList();
             for (State state : stateList) {
@@ -645,7 +644,7 @@ ExplicitChangeContext {
             for (State state : stateList) {
                 try {
                     state.saveRefinementsInConfigurer
-                    .setToken(BooleanToken.FALSE);
+                            .setToken(BooleanToken.FALSE);
                 } catch (IllegalActionException e) {
                     // Ignore.
                 }
@@ -668,7 +667,8 @@ ExplicitChangeContext {
         // right thing!  It needs to do everything that the FSMDirector's
         // fire() method does.
         readInputs();
-        List<Transition> transitionList = _currentState.outgoingPort.linkedRelationList();
+        List<Transition> transitionList = _currentState.outgoingPort
+                .linkedRelationList();
         Transition chosenTransition = chooseTransition(transitionList);
 
         // If no transition was chosen, then it still might
@@ -681,8 +681,7 @@ ExplicitChangeContext {
             // Probably because the transfer of the output from the refinement
             // to this port hasn't occurred yet, and if we assert now that the
             // output is absent, we will get an exception when do the transfer.
-            if (!foundUnknown()
-                    && _currentState.getRefinement() == null) {
+            if (!foundUnknown() && _currentState.getRefinement() == null) {
                 List<IOPort> outputs = outputPortList();
                 for (IOPort port : outputs) {
                     for (int channel = 0; channel < port.getWidth(); channel++) {
@@ -704,9 +703,8 @@ ExplicitChangeContext {
                 HashMap transitionMap;
                 if (_portReferencedInTransitionMaps.containsKey(port)) {
                     transitionMap = _portReferencedInTransitionMaps.get(port);
-                }
-                else {
-                    transitionMap = new HashMap<Transition,Boolean>();
+                } else {
+                    transitionMap = new HashMap<Transition, Boolean>();
                     _portReferencedInTransitionMaps.put(port, transitionMap);
                 }
 
@@ -720,12 +718,15 @@ ExplicitChangeContext {
                             // Use a HashMap for each port to save booleans for each transition
                             Boolean matches;
                             if (transitionMap.containsKey(transition)) {
-                                matches = (Boolean)transitionMap.get(transition);
-                            }
-                            else {
-                                String outputActionsExpression = transition.outputActions.getExpression();
-                                String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "\\s*=[^=](.|\\s)*";
-                                matches = (outputActionsExpression.trim().matches(regexp));
+                                matches = (Boolean) transitionMap
+                                        .get(transition);
+                            } else {
+                                String outputActionsExpression = transition.outputActions
+                                        .getExpression();
+                                String regexp = "(^|((.|\\s)*\\W))"
+                                        + port.getName() + "\\s*=[^=](.|\\s)*";
+                                matches = (outputActionsExpression.trim()
+                                        .matches(regexp));
                                 transitionMap.put(transition, matches);
                             }
                             if (matches) {
@@ -799,7 +800,7 @@ ExplicitChangeContext {
         boolean stateDependent = false;
         try {
             stateDependent = ((BooleanToken) stateDependentCausality.getToken())
-            .booleanValue();
+                    .booleanValue();
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -821,7 +822,7 @@ ExplicitChangeContext {
         }
         Long version = _causalityInterfacesVersions.get(_currentState);
         FSMCausalityInterface causality = _causalityInterfaces
-        .get(_currentState);
+                .get(_currentState);
         if (version == null || causality == null
                 || version.longValue() != workspace().getVersion()) {
             // Need to create or update a causality interface for the current state.
@@ -897,7 +898,7 @@ ExplicitChangeContext {
         }
         if (_initialState == null) {
             throw new IllegalActionException(this,
-            "No initial state has been specified.");
+                    "No initial state has been specified.");
         }
         return _initialState;
     }
@@ -957,7 +958,7 @@ ExplicitChangeContext {
                 for (Iterator actions = transition.choiceActionList()
                         .iterator(); actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                    .next();
+                            .next();
 
                     for (Iterator names = action.getDestinationNameList()
                             .iterator(); names.hasNext();) {
@@ -973,7 +974,7 @@ ExplicitChangeContext {
                 for (Iterator actions = transition.commitActionList()
                         .iterator(); actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                    .next();
+                            .next();
 
                     for (Iterator names = action.getDestinationNameList()
                             .iterator(); names.hasNext();) {
@@ -1008,7 +1009,7 @@ ExplicitChangeContext {
      */
     public boolean hasInput() {
         Iterator<?> inPorts = ((PteraModalModel) getContainer())
-        .inputPortList().iterator();
+                .inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             Port port = (Port) inPorts.next();
             if (hasInput(port)) {
@@ -1059,7 +1060,7 @@ ExplicitChangeContext {
         // controller. (tfeng 05/12/2009)
         if (_currentState != null) {
             List transitionList = _currentState.outgoingPort
-            .linkedRelationList();
+                    .linkedRelationList();
             try {
                 List enabledTransitions = enabledTransitions(transitionList);
                 if (enabledTransitions.size() > 0) {
@@ -1216,7 +1217,7 @@ ExplicitChangeContext {
             // This exception should not occur.
             throw new InternalErrorException(
                     "TypedAtomicActor.newPort: Internal error: "
-                    + ex.getMessage());
+                            + ex.getMessage());
         } finally {
             _workspace.doneWriting();
         }
@@ -1231,7 +1232,7 @@ ExplicitChangeContext {
 
         if (director == null) {
             throw new IllegalActionException(this,
-            "Cannot create a receiver without a director.");
+                    "Cannot create a receiver without a director.");
         }
 
         return director.newReceiver();
@@ -1247,7 +1248,7 @@ ExplicitChangeContext {
      *   of a transition already in this actor.
      */
     public ComponentRelation newRelation(String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             workspace().getWriteAccess();
 
@@ -1483,11 +1484,11 @@ ExplicitChangeContext {
             // Collect constraints from contained HasTypeConstraints
             // attributes.
             Iterator attributes = attributeList(HasTypeConstraints.class)
-            .iterator();
+                    .iterator();
 
             while (attributes.hasNext()) {
                 HasTypeConstraints typeableAttribute = (HasTypeConstraints) attributes
-                .next();
+                        .next();
                 result.addAll(typeableAttribute.typeConstraints());
             }
 
@@ -1497,11 +1498,11 @@ ExplicitChangeContext {
             while (transitionRelations.hasNext()) {
                 Relation tr = (Relation) transitionRelations.next();
                 attributes = tr.attributeList(HasTypeConstraints.class)
-                .iterator();
+                        .iterator();
 
                 while (attributes.hasNext()) {
                     HasTypeConstraints typeableAttribute = (HasTypeConstraints) attributes
-                    .next();
+                            .next();
                     result.addAll(typeableAttribute.typeConstraints());
                 }
             }
@@ -1573,7 +1574,7 @@ ExplicitChangeContext {
          *  exists with the given name, but cannot be evaluated.
          */
         public ptolemy.data.Token get(String name)
-        throws IllegalActionException {
+                throws IllegalActionException {
             // Check to see if it is something we refer to.
             Token token = (Token) _inputTokenMap.get(name);
 
@@ -1663,7 +1664,7 @@ ExplicitChangeContext {
          *  exists with the given name, but cannot be evaluated.
          */
         public InequalityTerm getTypeTerm(String name)
-        throws IllegalActionException {
+                throws IllegalActionException {
             // Check to see if this is something we refer to.
             Port port = _getPortForIdentifier(name);
 
@@ -1705,7 +1706,6 @@ ExplicitChangeContext {
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1722,11 +1722,11 @@ ExplicitChangeContext {
      *   already on the state list.
      */
     protected void _addEntity(ComponentEntity entity)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof State)) {
             throw new IllegalActionException(this, entity,
                     "FSMActor can only contain entities that "
-                    + "are instances of State.");
+                            + "are instances of State.");
         }
 
         super._addEntity(entity);
@@ -1745,10 +1745,10 @@ ExplicitChangeContext {
      *   already on the contained transitions list.
      */
     protected void _addRelation(ComponentRelation relation)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (!(relation instanceof Transition)) {
             throw new IllegalActionException(this, relation,
-            "FSMActor can only contain instances of Transition.");
+                    "FSMActor can only contain instances of Transition.");
         }
 
         super._addRelation(relation);
@@ -1780,7 +1780,7 @@ ExplicitChangeContext {
         if (_lastChosenTransition.destinationState() == null) {
             throw new IllegalActionException(this, _lastChosenTransition,
                     "The transition is enabled but does not have a "
-                    + "destination state.");
+                            + "destination state.");
         }
 
         // If the chosen transition is a reset transition, initialize the destination
@@ -1792,9 +1792,9 @@ ExplicitChangeContext {
         // the set actions may trigger attributeChanged() calls that depend on
         // the current time or index.
         BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
-        .getToken();
+                .getToken();
         Actor[] actors = _lastChosenTransition.destinationState()
-        .getRefinement();
+                .getRefinement();
         if (actors != null) {
             Director executiveDirector = getExecutiveDirector();
             for (int i = 0; i < actors.length; ++i) {
@@ -1824,7 +1824,7 @@ ExplicitChangeContext {
                             ((FSMDirector) executiveDirector)._indexOffset = 0;
                         }
                         ((FSMDirector) executiveDirector)
-                        ._enableActor(actors[i]);
+                                ._enableActor(actors[i]);
                     } else {
                         actors[i].initialize();
                     }
@@ -1869,7 +1869,7 @@ ExplicitChangeContext {
         // Commit to the new state.
         // Before committing the new state, record whether it changed.
         boolean stateChanged = _currentState != _lastChosenTransition
-        .destinationState();
+                .destinationState();
         _currentState = _lastChosenTransition.destinationState();
         if (_debugging) {
             _debug(new StateEvent(this, _currentState));
@@ -1925,7 +1925,7 @@ ExplicitChangeContext {
      *  @exception IllegalActionException If getting the width of the port fails.
      */
     protected int _getChannelForIdentifier(String identifier)
-    throws IllegalActionException {
+            throws IllegalActionException {
         Port port = _getPortForIdentifier(identifier);
         if (port != null) {
             String portName = port.getName();
@@ -1959,7 +1959,7 @@ ExplicitChangeContext {
      *  @exception IllegalActionException If getting the width of the port fails.
      */
     protected Port _getPortForIdentifier(String identifier)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (workspace().getVersion() != _identifierToPortVersion) {
             _setIdentifierToPort();
             _identifierToPortVersion = workspace().getVersion();
@@ -1978,7 +1978,7 @@ ExplicitChangeContext {
      *   one of the states is not valid.
      */
     protected boolean _isRefinementOutput(IOPort port, int channel)
-    throws IllegalActionException {
+            throws IllegalActionException {
         TypedActor[] refinements = _currentState.getRefinement();
 
         if ((refinements == null) || (refinements.length == 0)) {
@@ -2003,13 +2003,13 @@ ExplicitChangeContext {
      *   this actor.
      */
     protected void _readInputs(IOPort port, int channel)
-    throws IllegalActionException {
+            throws IllegalActionException {
         String portName = port.getName();
 
         if (port.getContainer() != this) {
             throw new IllegalActionException(this, port,
                     "Cannot read inputs from port "
-                    + "not contained by this FSMActor.");
+                            + "not contained by this FSMActor.");
         }
 
         if (!port.isInput()) {
@@ -2041,7 +2041,7 @@ ExplicitChangeContext {
 
                 // Get the list of tokens for the given port.
                 List[] tokenListArray = (LinkedList[]) _tokenListArrays
-                .get(port);
+                        .get(port);
 
                 // Update the value variable if there is/are token(s) in
                 // the channel. The HDF(SDF) schedule will guarantee there
@@ -2053,7 +2053,7 @@ ExplicitChangeContext {
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel + ") has ",
                                 token.toString() + " at time "
-                                + getDirector().getModelTime());
+                                        + getDirector().getModelTime());
                     }
 
                     tokenListArray[channel].add(0, token);
@@ -2082,7 +2082,7 @@ ExplicitChangeContext {
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel + ") has ",
                                 token.toString() + " at time "
-                                + getDirector().getModelTime());
+                                        + getDirector().getModelTime());
                     }
                     _setInputTokenMap(port, channel, token, null);
                 } else {
@@ -2114,7 +2114,6 @@ ExplicitChangeContext {
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
 
-
     /** Current state. */
     protected State _currentState = null;
 
@@ -2137,8 +2136,7 @@ ExplicitChangeContext {
      * the HashMap during the simulation for performance reasons. It is not pre-done because during a run
      * we may never traverse all nodes defined.
      */
-    protected HashMap<IOPort,HashMap<Transition,Boolean>> _portReferencedInTransitionMaps 
-    = new HashMap<IOPort,HashMap<Transition,Boolean>>();    
+    protected HashMap<IOPort, HashMap<Transition, Boolean>> _portReferencedInTransitionMaps = new HashMap<IOPort, HashMap<Transition, Boolean>>();
 
     ///////////////////////////////////////////////////////////////////
     ////                package friendly variables                 ////
@@ -2201,7 +2199,7 @@ ExplicitChangeContext {
 
                         for (int i = 0; i < actors.length; ++i) {
                             Iterator outports = actors[i].outputPortList()
-                            .iterator();
+                                    .iterator();
 
                             while (outports.hasNext()) {
                                 IOPort outport = (IOPort) outports.next();
@@ -2265,7 +2263,7 @@ ExplicitChangeContext {
 
         try {
             stateDependentCausality = new Parameter(this,
-            "stateDependentCausality");
+                    "stateDependentCausality");
             stateDependentCausality.setTypeEquals(BaseType.BOOLEAN);
             stateDependentCausality.setExpression("false");
 
@@ -2282,18 +2280,16 @@ ExplicitChangeContext {
                     + ex.getMessage());
         }
 
-
-        try{
-            modelError= new Parameter(this, "modelError");
+        try {
+            modelError = new Parameter(this, "modelError");
             modelError.setTypeEquals(BaseType.BOOLEAN);
             //modelError.setVisibililty
             modelError.setExpression("false");
             // =new TypedIOPort(this, "modelError", true, true);
             //modelError.setTypeEquals(BaseType.BOOLEAN);
-        }catch(IllegalActionException ex){
+        } catch (IllegalActionException ex) {
             ex.printStackTrace();
-        }
-        catch(NameDuplicationException ex){
+        } catch (NameDuplicationException ex) {
             ex.printStackTrace();
         }
         _identifierToPort = new HashMap<String, Port>();
@@ -2421,7 +2417,7 @@ ExplicitChangeContext {
      *   be parsed.
      */
     private boolean _referencedInputPortsByGuardKnown(Transition transition)
-    throws IllegalActionException {
+            throws IllegalActionException {
 
         String string = transition.getGuardExpression();
         if (string.trim().equals("")) {
@@ -2466,9 +2462,9 @@ ExplicitChangeContext {
      *   be parsed.
      */
     private boolean _referencedInputPortsByOutputKnown(Transition transition)
-    throws IllegalActionException {
+            throws IllegalActionException {
         String outputActionsExpression = transition.outputActions
-        .getExpression();
+                .getExpression();
         PtParser parser = new PtParser();
         ParseTreeFreeVariableCollector variableCollector = new ParseTreeFreeVariableCollector();
         ParserScope scope = getPortScope();
@@ -2477,7 +2473,7 @@ ExplicitChangeContext {
             for (Iterator names = map.entrySet().iterator(); names.hasNext();) {
                 Map.Entry entry = (Map.Entry) names.next();
                 ASTPtAssignmentNode node = (ASTPtAssignmentNode) entry
-                .getValue();
+                        .getValue();
                 ASTPtRootNode parseTree = node.getExpressionTree();
                 Set<String> nameSet = variableCollector.collectFreeVariables(
                         parseTree, scope);
@@ -2519,7 +2515,7 @@ ExplicitChangeContext {
         _identifierToPort.clear();
 
         for (Iterator inputPorts = inputPortList().iterator(); inputPorts
-        .hasNext();) {
+                .hasNext();) {
             IOPort inPort = (IOPort) inputPorts.next();
             String portName = inPort.getName();
             _identifierToPort.put(portName, inPort);
@@ -2530,7 +2526,7 @@ ExplicitChangeContext {
             for (int i = 0; i < inPort.getWidth(); i++) {
                 _identifierToPort.put(portName + "_" + i, inPort);
                 _identifierToPort
-                .put(portName + "_" + i + "_isPresent", inPort);
+                        .put(portName + "_" + i + "_isPresent", inPort);
                 _identifierToPort.put(portName + "_" + i + "Array", inPort);
             }
         }
@@ -2635,33 +2631,29 @@ ExplicitChangeContext {
         }
     }
 
-
-    public void setModelError(){
-        if(_modelError == false){
-            try{
+    public void setModelError() {
+        if (_modelError == false) {
+            try {
                 modelError.setExpression("true");
-            }catch(Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            if(_debugging){
+            if (_debugging) {
                 _debug("I've set the model error");
             }
             _modelError = true;
         }
     }
 
-    public void clearModelError(){
-        if(_modelError){
-            if(_debugging){
+    public void clearModelError() {
+        if (_modelError) {
+            if (_debugging) {
                 _debug("I've cleared the model error");
             }
 
             _modelError = false;
         }
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -2744,6 +2736,5 @@ ExplicitChangeContext {
 
     private Parameter modelError;
     private boolean _modelError = false;
-
 
 }
