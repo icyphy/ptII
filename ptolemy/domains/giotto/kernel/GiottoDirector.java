@@ -70,7 +70,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-
 ////GiottoDirector
 /**
  This class implements a director for the Giotto model of computation
@@ -95,7 +94,7 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoReceiver
  */
 public class GiottoDirector extends StaticSchedulingDirector implements
-TimedDirector, Decorator {
+        TimedDirector, Decorator {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -119,7 +118,7 @@ TimedDirector, Decorator {
      *   attribute in the container.
      */
     public GiottoDirector(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -129,7 +128,7 @@ TimedDirector, Decorator {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace for this object.
      */
-    public GiottoDirector(Workspace workspace)  {
+    public GiottoDirector(Workspace workspace) {
         super(workspace);
         _init();
     }
@@ -148,13 +147,13 @@ TimedDirector, Decorator {
      *   is <i>filename</i> and the file cannot be opened.
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException{
+            throws IllegalActionException {
         if (attribute == period) {
             _periodValue = ((DoubleToken) period.getToken()).doubleValue();
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime = ((BooleanToken) synchronizeToRealTime
                     .getToken()).booleanValue();
-        }else if (attribute == errorAction) {
+        } else if (attribute == errorAction) {
             String errorActionName = errorAction.getExpression().trim();
 
             if (errorActionName.equals("Warn")) {
@@ -165,7 +164,7 @@ TimedDirector, Decorator {
                 _errorAction = ErrorAction.timedutilityfunction;
             } else if (errorActionName.equals("ErrorTransition")) {
                 _errorAction = ErrorAction.errorTransition;
-            }else {
+            } else {
                 throw new IllegalActionException(this,
                         "Unrecognized action on error: " + errorActionName);
             }
@@ -262,16 +261,16 @@ TimedDirector, Decorator {
             // in its initialize() method.
             Iterator scheduleIterator = unitSchedule.iterator();
 
-
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
-                if(_debugging){
-                    _debug("actor to be fired in this iteration has name "+actor.getFullName());
+                if (_debugging) {
+                    _debug("actor to be fired in this iteration has name "
+                            + actor.getFullName());
                 }
                 Time thistime = getModelTime();
 
-                if(_debugging){
-                    _debug("the current time is "+thistime.toString());
+                if (_debugging) {
+                    _debug("the current time is " + thistime.toString());
                 }
                 if (_debugging) {
                     _debug("Updating destination receivers of "
@@ -283,8 +282,8 @@ TimedDirector, Decorator {
 
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort) outputPorts.next();
-                    if(_debugging){
-                        _debug("output port is "+port.getDisplayName());
+                    if (_debugging) {
+                        _debug("output port is " + port.getDisplayName());
                     }
                     Receiver[][] channelArray = port.getRemoteReceivers();
 
@@ -297,28 +296,41 @@ TimedDirector, Decorator {
                         }
                     }
                 }
-                if(_debugging){
-                    _debug("Done firing actor "+actor+" now going to check to see if it went over time.");
+                if (_debugging) {
+                    _debug("Done firing actor "
+                            + actor
+                            + " now going to check to see if it went over time.");
                 }
                 // Add in execution time stuff here.
                 //  double actorET;
                 double actorWCET;
                 double actorGrace;
-                Attribute executionTime = ((Entity)actor).getAttribute("ET");
-                Attribute WCET = ((Entity)actor).getAttribute("WCET");
-                Attribute Grace = ((Entity)actor).getAttribute("grace");
-                //  actorET = ((DoubleToken) ((Variable) executionTime).getToken()).doubleValue();
-                actorWCET = ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
-                actorGrace = ((DoubleToken) ((Variable) Grace).getToken()).doubleValue();
-                Random generator = new Random();
-                double t = generator.nextDouble()*actorWCET; // I multiply by actorWCET in an attempt to scale
-                if((t+actorGrace)>actorWCET)
-                {
+                Attribute executionTime = ((Entity) actor).getAttribute("ET");
+                Attribute WCET = ((Entity) actor).getAttribute("WCET");
+                Attribute Grace = ((Entity) actor).getAttribute("grace");
+                actorWCET = ((DoubleToken) ((Variable) WCET).getToken())
+                        .doubleValue();
+                actorGrace = ((DoubleToken) ((Variable) Grace).getToken())
+                        .doubleValue();
 
-                    _handleModelError((NamedObj)actor, new IllegalActionException(this, "total ET  of ("+t+
-                            ") is larger than WCET ("+actorWCET +") for actor "+actor.getDisplayName()));
+                double t = generator.nextDouble() * actorWCET; // I multiply by actorWCET in an attempt to scale
+                Parameter dummyP = (Parameter) executionTime;
+                if (_debugging) {
+                    _debug("in the dummy parameter the name is : "
+                            + dummyP.getName());
+                    _debug("it has the value " + t + " with wcet set to "
+                            + actorWCET + " and grace set to " + actorGrace);
+                    _debug(" and is attatched to actor "
+                            + dummyP.getContainer());
                 }
+                dummyP.setExpression(Double.toString(t));
+                if ((t + actorGrace) > actorWCET) {
 
+                    _handleModelError((NamedObj) actor,
+                            new IllegalActionException(this, "total ET  of ("
+                                    + t + ") is larger than WCET (" + actorWCET
+                                    + ") for actor " + actor.getDisplayName()));
+                }
 
             }
 
@@ -339,21 +351,20 @@ TimedDirector, Decorator {
                             + actor.getFullName() + "\"");
                 }
             }
-            if(_debugging){
-                _debug("unit index has value "+_unitIndex);
+            if (_debugging) {
+                _debug("unit index has value " + _unitIndex);
             }
             _unitIndex++;
 
-
             _expectedNextIterationTime = _expectedNextIterationTime
-            .add(_unitTimeIncrement);
+                    .add(_unitTimeIncrement);
             //this compensates for rounding errors that may occur  
-            if(_unitIndex == _lcm)
-            {
-                _expectedNextIterationTime = new Time(this,_iterationCount+(_periodValue *(_unitIndex)));
-                if(_debugging){
+            if (_unitIndex == _lcm) {
+                _expectedNextIterationTime = new Time(this, _iterationCount
+                        + (_periodValue * (_unitIndex)));
+                if (_debugging) {
                     _debug("unit index is equal to lcm");
-                    _debug("iteration count is: "+_iterationCount);
+                    _debug("iteration count is: " + _iterationCount);
                 }
 
             }
@@ -375,7 +386,7 @@ TimedDirector, Decorator {
 
             _iterationCount++;
         }
-        if(_debugging){
+        if (_debugging) {
             _debug("done firing for this time unit");
         }
     }
@@ -394,8 +405,8 @@ TimedDirector, Decorator {
      *    permissible (e.g. the given time is in the past).
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        if(_debugging){
-            _debug("fireAt method was called for actor: "+actor.getFullName());
+        if (_debugging) {
+            _debug("fireAt method was called for actor: " + actor.getFullName());
         }
         // No executive director. Return current time plus the period divided
         // by the frequency of the specified actor,
@@ -407,22 +418,20 @@ TimedDirector, Decorator {
         // that the test is worth doing.
         Time currentTime = getModelTime();
 
-
         int frequencyValue = _getActorFrequency((NamedObj) actor);
 
         double actorPeriod = _periodValue / frequencyValue;
-        if(_debugging){
-            _debug("inside fireAt the frequency value is : "+frequencyValue);
-            _debug("inside fireAt the actor period is: "+actorPeriod);
+        if (_debugging) {
+            _debug("inside fireAt the frequency value is : " + frequencyValue);
+            _debug("inside fireAt the actor period is: " + actorPeriod);
         }
-
 
         Time nextFiringTime = currentTime.add(actorPeriod);
 
-        if(_debugging){
-            _debug("current time is: "+currentTime.getDoubleValue());
-            _debug("next firing time is: "+nextFiringTime.getDoubleValue());
-            _debug("desired firing time is: "+time.getDoubleValue());
+        if (_debugging) {
+            _debug("current time is: " + currentTime.getDoubleValue());
+            _debug("next firing time is: " + nextFiringTime.getDoubleValue());
+            _debug("desired firing time is: " + time.getDoubleValue());
 
         }
         // First check to see whether we are in the initialize phase, in
@@ -480,6 +489,90 @@ TimedDirector, Decorator {
         return _periodValue;
     }
 
+    /**
+     * Return the WCET of the actors.
+     * The Worst-Case Execution Time (WCET) of an actor is the maximum length of time 
+     * the task could take to execute on a particular platform
+     * @return A double containing the WCET of the actors
+     * @throws IllegalActionException If an error occurs
+
+     */
+    public double getWCET() throws IllegalActionException {
+        double wcet = 0;
+        double actorFrequency = 0;
+        double actorWCET = 0;
+        int actorCount = 0;
+        //CodeGeneratorHelper  directorHelper;
+        for (Actor actor : (List<Actor>) ((TypedCompositeActor) this
+                .getContainer()).deepEntityList()) {
+            actorCount++;
+            Attribute frequency = ((Entity) actor).getAttribute("frequency");
+            //  ptolemy.actor.Director dd =actor.getDirector();
+            Attribute WCET = ((Entity) actor).getAttribute("WCET");
+
+            if (!(actor instanceof ptolemy.domains.giotto.lib.GiottoError)) {
+
+                if (actor instanceof CompositeActor) {
+
+                    if (_debugging) {
+                        _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
+                    }
+                    Director dir = actor.getDirector();
+
+                    if (_debugging) {
+                        _debug(dir.getFullName());
+                    }
+                    if (dir == null) {
+
+                        if (_debugging) {
+                            _debug("no director in composite actor ");
+                        }
+
+                    } else {
+                        double dummyWCET = 0.0011;
+                        Attribute dirWCET = dir.getAttribute("WCET");
+                        if (dirWCET != null) {
+                            dummyWCET = ((DoubleToken) ((Variable) dirWCET)
+                                    .getToken()).doubleValue();
+                        }
+                        if (_debugging) {
+                            _debug("Composite Actor:" + actor.getFullName()
+                                    + " has WCET " + dummyWCET);
+                        }
+                        wcet += dummyWCET;
+                    }
+                } else {
+
+                    if (WCET == null) {
+                        actorWCET = 0.0;
+                    } else {
+                        actorWCET = ((DoubleToken) ((Variable) WCET).getToken())
+                                .doubleValue();
+                    }
+                    if (frequency == null) {
+                        actorFrequency = 1;
+                    } else {
+                        actorFrequency = ((IntToken) ((Variable) frequency)
+                                .getToken()).intValue();
+                    }
+
+                    wcet += (actorFrequency * actorWCET);
+                }
+            }
+            if (_debugging) {
+                _debug("with actor " + actor.getFullName()
+                        + " wect thus far is " + wcet);
+
+                _debug("with actor " + actor.getFullName()
+                        + " wect thus far is " + wcet);
+
+                _debug("actor count is " + actorCount);
+            }
+        }
+
+        return wcet;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -494,16 +587,17 @@ TimedDirector, Decorator {
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
 
-        if(_debugging){
+        if (_debugging) {
             _debug("Handle Model Error Called for GiottoDirector");
         }
 
         NamedObj dummyContainer = this.getContainer();
         NamedObj parentContainer = dummyContainer.getContainer();
-        if(parentContainer != null){
-            return parentContainer.handleModelError(context,exception);
-        }else {
-            throw new IllegalActionException(this,"Unable to set error transition. This is the top most director ");
+        if (parentContainer != null) {
+            return parentContainer.handleModelError(context, exception);
+        } else {
+            throw new IllegalActionException(this,
+                    "Unable to set error transition. This is the top most director ");
         }
 
     }
@@ -548,7 +642,7 @@ TimedDirector, Decorator {
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
                 Parameter initialValueParameter = (Parameter) ((NamedObj) port)
-                .getAttribute("initialValue");
+                        .getAttribute("initialValue");
 
                 if (initialValueParameter != null) {
                     // Since we delay the transfer of outputs, we have to
@@ -602,7 +696,7 @@ TimedDirector, Decorator {
         }
 
         int numberOfIterations = ((IntToken) (iterations.getToken()))
-        .intValue();
+                .intValue();
 
         if ((numberOfIterations > 0) && (_iterationCount >= numberOfIterations)) {
             // iterations limit is reached
@@ -644,7 +738,7 @@ TimedDirector, Decorator {
         if (_isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
             Time outsideCurrentTime = ((Actor) container)
-            .getExecutiveDirector().getModelTime();
+                    .getExecutiveDirector().getModelTime();
 
             if (outsideCurrentTime.compareTo(_expectedNextIterationTime) < 0) {
                 // not the scheduled time to fire.
@@ -697,7 +791,7 @@ TimedDirector, Decorator {
 
             if (executiveDirector instanceof GiottoDirector) {
                 double periodValue = ((GiottoDirector) executiveDirector)
-                .getPeriod();
+                        .getPeriod();
                 int frequencyValue = _getActorFrequency(compositeActor);
 
                 _periodValue = periodValue / frequencyValue;
@@ -714,32 +808,35 @@ TimedDirector, Decorator {
 
         // Actor actor;
         double wcet = 0;
-        try{
-            createDecoratedAttributes(this); 
+        try {
+            createDecoratedAttributes(this);
 
-        }catch(NameDuplicationException e) {
+        } catch (NameDuplicationException e) {
             e.printStackTrace();
         }
 
         Attribute dirWCET = this.getContainer().getAttribute("WCET");
-        if(dirWCET != null){
-            wcet = ((DoubleToken) ((Variable) dirWCET).getToken()).doubleValue();
+        if (dirWCET != null) {
+            wcet = ((DoubleToken) ((Variable) dirWCET).getToken())
+                    .doubleValue();
         }
-        if(_debugging){
-            _debug("the WCET time seen by the director is "+ wcet+" and the period is "+ _periodValue);
+        if (_debugging) {
+            _debug("the WCET time seen by the director is " + wcet
+                    + " and the period is " + _periodValue);
         }
-        if(wcet >_periodValue) {
+        if (wcet > _periodValue) {
 
-            if(_debugging){
+            if (_debugging) {
                 _debug("throw an exception");
             }
             // this is the static check before execution
-            throw  new IllegalActionException(this, "total WCET of ("+wcet+
-                    ") is larger than period ("+_periodValue +") for actor "+
-                    ((CompositeActor) (getContainer())).getDisplayName());
+            throw new IllegalActionException(this, "total WCET of (" + wcet
+                    + ") is larger than period (" + _periodValue
+                    + ") for actor "
+                    + ((CompositeActor) (getContainer())).getDisplayName());
 
-        }  //end of if  
-        if(_debugging){
+        } //end of if  
+        if (_debugging) {
             _debug("at the end of preinitialize in the giotto director.");
         }
     }
@@ -774,7 +871,7 @@ TimedDirector, Decorator {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque"
-                    + "input port.");
+                            + "input port.");
         }
 
         boolean transfer = false;
@@ -823,7 +920,7 @@ TimedDirector, Decorator {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(port,
                     "transferOutputs: this port is not "
-                    + "an opaque output port.");
+                            + "an opaque output port.");
         }
 
         boolean wasTransferred = false;
@@ -839,12 +936,12 @@ TimedDirector, Decorator {
                                     if (_debugging) {
                                         _debug(getName(),
                                                 "transferring output from "
-                                                + port.getName()
-                                                + " to channel " + i);
+                                                        + port.getName()
+                                                        + " to channel " + i);
                                     }
 
                                     Token t = ((GiottoReceiver) insideReceivers[i][j])
-                                    .remove();
+                                            .remove();
                                     port.send(i, t);
                                     wasTransferred = true;
                                 }
@@ -899,7 +996,7 @@ TimedDirector, Decorator {
      *  return 1.
      */
     private int _getActorFrequency(NamedObj actor)
-    throws IllegalActionException {
+            throws IllegalActionException {
         int frequencyValue = 1;
         Attribute frequency = actor.getAttribute("frequency");
         if (frequency instanceof Parameter) {
@@ -911,91 +1008,8 @@ TimedDirector, Decorator {
         return frequencyValue;
     }
 
-    /**
-     * Return the WCET of the actors.
-     * The Worst-Case Execution Time (WCET) of an actor is the maximum length of time 
-     * the task could take to execute on a particular platform
-     * @return A double containing the WCET of the actors
-     * @throws IllegalActionException If an error occurs
-
-     */
-    private double _getWCET()throws IllegalActionException
-    {
-        double wcet=0;
-        double actorFrequency =0;
-        double actorWCET = 0;
-        int actorCount = 0;
-        //CodeGeneratorHelper  directorHelper;
-        for (Actor actor : (List<Actor>) 
-                ((TypedCompositeActor) this.getContainer()).deepEntityList()) {
-            actorCount++;
-            Attribute frequency = ((Entity)actor).getAttribute("frequency");
-            //  ptolemy.actor.Director dd =actor.getDirector();
-            Attribute WCET = ((Entity)actor).getAttribute("WCET");
-
-            if(!( actor instanceof ptolemy.domains.giotto.lib.GiottoError)){
-
-                if(actor instanceof CompositeActor)
-                {
-
-                    if(_debugging) {
-                        _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
-                    }
-                    Director dir = actor.getDirector();
-
-                    if(_debugging){
-                        _debug(dir.getFullName());
-                    }
-                    if(dir == null)
-                    {
-
-                        if(_debugging) {
-                            _debug("no director in composite actor ");
-                        }
-
-                    }else {
-                        double dummyWCET = 0.0011;
-                        Attribute dirWCET = dir.getAttribute("WCET");
-                        if(dirWCET != null){
-                            dummyWCET = ((DoubleToken) ((Variable) dirWCET).getToken()).doubleValue();
-                        }
-                        if(_debugging) {
-                            _debug("Composite Actor:"+actor.getFullName()+" has WCET "+ dummyWCET);
-                        }
-                        wcet+= dummyWCET;
-                    }
-                }else {
-
-                    if (WCET == null) {
-                        actorWCET = 0.0;
-                    } else {
-                        actorWCET =  ((DoubleToken) ((Variable) WCET).getToken()).doubleValue();
-                    }
-                    if (frequency == null) {
-                        actorFrequency = 1;
-                    } else {
-                        actorFrequency =  ((IntToken) ((Variable) frequency).getToken()).intValue();
-                    }
-
-                    wcet+= (actorFrequency * actorWCET);
-                }
-            }
-            if(_debugging) {
-                _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
-
-                _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
-
-                _debug("actor count is "+actorCount);
-            }
-        }
-
-
-        return wcet;
-    }
-
     private boolean _handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
-
 
         if (_errorAction == ErrorAction.warn) {
             System.out.println("an error was detected in "
@@ -1003,7 +1017,7 @@ TimedDirector, Decorator {
             return true;
         } else if (_errorAction == ErrorAction.timedutilityfunction) {
             System.out
-            .println("I should check to see if I'm within the acceptable range for the timed utility function");
+                    .println("I should check to see if I'm within the acceptable range for the timed utility function");
             String temp = exception.toString();
             int i, j, k, l = 0;
             i = temp.indexOf("(");
@@ -1016,24 +1030,23 @@ TimedDirector, Decorator {
                     + " and period value is " + periodvalue);
             return true;
         } else if (_errorAction == ErrorAction.reset) {
-            if(_debugging){
+            if (_debugging) {
                 _debug("I should request a reset to the model");
             }
             throw exception;
 
-        }else if(_errorAction == ErrorAction.errorTransition){
-            if(_debugging){
+        } else if (_errorAction == ErrorAction.errorTransition) {
+            if (_debugging) {
                 _debug("I should take the errorTransition");
             }
-            return handleModelError(context,exception); 
+            return handleModelError(context, exception);
         }
-
 
         return true;
     }
 
     // Initialize the director by creating a scheduler and parameters.
-    private void _init()  {
+    private void _init() {
         try {
             GiottoScheduler scheduler = new GiottoScheduler(workspace());
             setScheduler(scheduler);
@@ -1051,23 +1064,24 @@ TimedDirector, Decorator {
                     + ex.getMessage());
         }
 
-        try{
+        try {
             errorAction = new StringParameter(this, "errorAction");
             errorAction.setExpression("Warn");
             errorAction.addChoice("Warn");
             errorAction.addChoice("Reset");
             errorAction.addChoice("TimedUtilityFunction");
             errorAction.addChoice("ErrorTransition");
-        }catch(NameDuplicationException ne) {
-            if(_debugging){
+        } catch (NameDuplicationException ne) {
+            if (_debugging) {
                 _debug("I should handle this error in a better way later.");
             }
-        }catch(IllegalActionException ie) {
-            if(_debugging){
+        } catch (IllegalActionException ie) {
+            if (_debugging) {
                 _debug("I should handle this error in a better way later.");
             }
 
         }
+        generator = new Random();
     }
 
     // Request that the container of this director be refired in the future.
@@ -1094,7 +1108,8 @@ TimedDirector, Decorator {
      *   acceptable class for the container, or if the name contains a period.
      */
     public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes) throws IllegalActionException{
+            DecoratedAttributes decoratedAttributes)
+            throws IllegalActionException {
     }
 
     /** Return the decorated attributes for the target NamedObj.
@@ -1105,7 +1120,8 @@ TimedDirector, Decorator {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target) throws IllegalActionException, NameDuplicationException{
+    public DecoratedAttributes createDecoratedAttributes(NamedObj target)
+            throws IllegalActionException, NameDuplicationException {
         return new GiottoDecoratedAttributesImplementation(target, this);
     }
 
@@ -1118,7 +1134,7 @@ TimedDirector, Decorator {
 
     /// Enumeration of the different ways to handle errors
     private enum ErrorAction {
-        warn, reset, timedutilityfunction,errorTransition
+        warn, reset, timedutilityfunction, errorTransition
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1159,4 +1175,6 @@ TimedDirector, Decorator {
 
     //lcm of frequencies see my this director
     private int _lcm;
+
+    private Random generator;
 }

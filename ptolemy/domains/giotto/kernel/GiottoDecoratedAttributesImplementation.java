@@ -65,7 +65,7 @@ See DecoratedAttributes for more information.
  */
 
 public class GiottoDecoratedAttributesImplementation extends
-DecoratedAttributes {
+        DecoratedAttributes {
 
     /** Construct a DecoratedAttribute from the container and the decorator.
      *  @param container The container this object.
@@ -102,7 +102,7 @@ DecoratedAttributes {
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
                 dummyParam.setExpression(Double.toString(0.00000001));
 
-            } catch (NameDuplicationException e) { 
+            } catch (NameDuplicationException e) {
                 if (_debugging) {
                     _debug(actor.getFullName()
                             + " already had wcet parameter appended");
@@ -150,63 +150,59 @@ DecoratedAttributes {
 
         GiottoDirector tempDir = (GiottoDirector) decorator;
 
-        if (1==1) {
-            throw new RuntimeException("This code did not compile");
+        double dirWCET = tempDir.getWCET();
+        NamedObj parentContainer = null;
+        try {
+            //add parameter to the container if it's not already there
+            if (_debugging) {
+                _debug("the container is "
+                        + container.getContainer().getDisplayName()
+                        + "it should get value " + dirWCET);
+            }
+
+            parentContainer = container.getContainer();
+
+            dummyParam = new Parameter(parentContainer, "ET");
+            dummyParam.setTypeEquals(BaseType.DOUBLE);
+            dummyParam.setExpression(Double.toString(dirWCET));
+
+            dummyParam = new Parameter(parentContainer, "WCET");
+            dummyParam.setTypeEquals(BaseType.DOUBLE);
+            dummyParam.setExpression(Double.toString(dirWCET));
+
+            parentContainer = container.getContainer().getContainer();
+
+            if (parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel) {
+                dummyParam = new Parameter(parentContainer, "WCET");
+                dummyParam.setTypeEquals(BaseType.DOUBLE);
+                dummyParam.setExpression(Double.toString(dirWCET));
+            }
+
+        } catch (NameDuplicationException e) {
+            if (_debugging) {
+                _debug("container already had wcet parameter set so updating the value to "
+                        + dirWCET);
+            }
+            dummyParam = (Parameter) parentContainer.getAttribute("WCET");
+            dummyParam.setTypeEquals(BaseType.DOUBLE);
+            dummyParam.setExpression(Double.toString(dirWCET));
+
+            parentContainer = container.getContainer().getContainer();
+
+            if (parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel) {
+
+                try {
+                    dummyParam = new Parameter(parentContainer, "WCET");
+                    dummyParam.setTypeEquals(BaseType.DOUBLE);
+                    dummyParam.setExpression(Double.toString(dirWCET));
+                } catch (NameDuplicationException E) {
+                    dummyParam = (Parameter) parentContainer
+                            .getAttribute("WCET");
+                    dummyParam.setTypeEquals(BaseType.DOUBLE);
+                    dummyParam.setExpression(Double.toString(dirWCET));
+                }
+            }
         }
-//         double dirWCET = tempDir._getWCET();
-//         NamedObj parentContainer = null;
-//         try {
-//             //add parameter to the container if it's not already there
-//             if (_debugging) {
-//                 _debug("the container is "
-//                         + container.getContainer().getDisplayName()
-//                         + "it should get value " + dirWCET);
-//             }
-
-//             parentContainer = container.getContainer();
-
-//             dummyParam = new Parameter(parentContainer, "ET");
-//             dummyParam.setTypeEquals(BaseType.DOUBLE);
-//             dummyParam.setExpression(Double.toString(dirWCET));
-
-//             dummyParam = new Parameter(parentContainer, "WCET");
-//             dummyParam.setTypeEquals(BaseType.DOUBLE);
-//             dummyParam.setExpression(Double.toString(dirWCET));
-
-//             parentContainer = container.getContainer().getContainer();
-
-//             if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
-//                 dummyParam = new Parameter(parentContainer, "WCET");
-//                 dummyParam.setTypeEquals(BaseType.DOUBLE);
-//                 dummyParam.setExpression(Double.toString(dirWCET));
-//             }
-
-
-//         } catch (NameDuplicationException e) {
-//             if (_debugging) {
-//                 _debug("container already had wcet parameter set so updating the value to "
-//                         + dirWCET);
-//             }
-//             dummyParam = (Parameter) parentContainer.getAttribute(
-//             "WCET");
-//             dummyParam.setTypeEquals(BaseType.DOUBLE);
-//             dummyParam.setExpression(Double.toString(dirWCET));
-
-//             parentContainer = container.getContainer().getContainer();
-
-//             if(parentContainer instanceof ptolemy.domains.fsm.modal.ModalModel){
-
-//                 try{
-//                     dummyParam = new Parameter(parentContainer, "WCET");
-//                     dummyParam.setTypeEquals(BaseType.DOUBLE);
-//                     dummyParam.setExpression(Double.toString(dirWCET));
-//                 }catch(NameDuplicationException E){
-//                     dummyParam = (Parameter) parentContainer.getAttribute("WCET");
-//                     dummyParam.setTypeEquals(BaseType.DOUBLE);
-//                     dummyParam.setExpression(Double.toString(dirWCET));
-//                 }
-//             }
-//         }
 
         try {
             //add parameter to the container if it's not already there
@@ -240,7 +236,7 @@ DecoratedAttributes {
      */
     public GiottoDecoratedAttributesImplementation(
             NamedObj containerOfDecorator, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         // FIXME: There should be a more elegant way to get this right.
         // This also only works for attributes not for entities.
         super(_getRealContainer(containerOfDecorator, name), name
@@ -261,7 +257,7 @@ DecoratedAttributes {
      *   to this container (not thrown in this base class).
      */
     public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("attribute changed method called");
         }
@@ -280,7 +276,7 @@ DecoratedAttributes {
                 _register();
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
-                "Can't register this decorated attribute.");
+                        "Can't register this decorated attribute.");
             }
         }
         super.attributeChanged(attribute);
@@ -296,7 +292,7 @@ DecoratedAttributes {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         GiottoDecoratedAttributesImplementation newObject = (GiottoDecoratedAttributesImplementation) super
-        .clone(workspace);
+                .clone(workspace);
         newObject._decorator = _decorator;
         return newObject;
     }
@@ -345,7 +341,7 @@ DecoratedAttributes {
      *   an instance of the expect class (in derived classes).
      */
     protected void _addAttribute(Attribute p) throws NameDuplicationException,
-    IllegalActionException {
+            IllegalActionException {
         if (_decorator == null) {
             if (p.getName().equals("_decorator")) {
                 _decoratorPath = (StringAttribute) p;
@@ -379,7 +375,7 @@ DecoratedAttributes {
         if (object == null) {
             if (containerOfCodeGenerator instanceof CompositeEntity) {
                 object = ((CompositeEntity) containerOfCodeGenerator)
-                .getEntity(elementName);
+                        .getEntity(elementName);
             }
         }
         return object;
