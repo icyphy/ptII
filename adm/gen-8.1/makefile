@@ -122,7 +122,6 @@ PTII_TOPDIR=	.cshrc \
 		copyright.txt \
 		diva \
 		doc \
-		jni \
 		lib \
 		lbnl \
 		makefile \
@@ -609,7 +608,6 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/ptalon \
 		ptolemy/codegen \
 		ptolemy/configs/ptiny \
-		ptolemy/configs/jni \
 		ptolemy/domains/csp \
 		ptolemy/domains/pn \
 		ptolemy/domains/ptinyDomains.xml \
@@ -1466,8 +1464,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
 	$(REMOTE1PTIIDIST)/ptolemy/verification \
-	$(REMOTE1PTIIDIST)/jni \
-	$(REMOTE1PTIIDIST)/jni/gui \
 	$(REMOTE1PTIIDIST)/lbnl \
 	$(REMOTE1PTIIDIST)/lbnl/actor/lib \
 	$(REMOTE1PTIIDIST)/doc/books/design/modal \
