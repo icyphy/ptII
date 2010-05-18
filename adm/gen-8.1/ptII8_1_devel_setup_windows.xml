@@ -601,7 +601,6 @@ The Ptiny pack is required.
 	    <file src="src/ptII8.1.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/diva" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/doc" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII8.1.devel/jni" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/lbnl" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/lib" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII8.1.devel/makefile" targetdir="$INSTALL_PATH"/>
