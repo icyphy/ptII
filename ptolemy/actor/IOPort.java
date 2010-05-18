@@ -1102,7 +1102,7 @@ public class IOPort extends ComponentPort {
                     throw new IllegalActionException(this, "Channel index "
                             + channelIndex
                             + " is out of range, because inside width is only "
-                            + getWidthInside() + ".");
+                            + localReceivers.length + ".");
                 }
             }
 
