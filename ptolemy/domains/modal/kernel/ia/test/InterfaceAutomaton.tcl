@@ -196,6 +196,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     </property>
     <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
     </property>
+    <property name="modelError" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
     <property name="c" class="ptolemy.data.expr.Parameter">
     </property>
     <entity name="s0" class="ptolemy.domains.modal.kernel.State">
@@ -242,6 +244,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="errorTransiton" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
         </property>
