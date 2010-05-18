@@ -1,4 +1,4 @@
-/* An actor that iterates a contained actor over input arrays.
+/*  A composite that contain one actor and mirror the ports and parameters of that actor.
 
  Copyright (c) 2007-2010 The Regents of the University of California.
  All rights reserved.
@@ -56,9 +56,8 @@ import ptolemy.moml.HandlesInternalLinks;
 //// MirrorComposite
 
 /**
- This is a base class for actors that are simple composites that
- contain one actor and mirror the ports and parameters of that
- one actor.
+ A composite that contain one actor and mirror the ports and
+ parameters of that actor.
 
  @author Edward A. Lee
  @version $Id$
