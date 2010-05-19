@@ -156,12 +156,9 @@ public class View extends GTEvent {
             return data;
         }
 
-        CompositeEntity entity = getModelParameter().getModel();
-        try {
-            entity = (CompositeEntity) GTTools.cleanupModel(entity, _parser);
-        } finally {
-            _parser.reset();
-        }
+        _parser.reset();
+        CompositeEntity entity = (CompositeEntity) GTTools.cleanupModel(
+                getModelParameter().getModel(), _parser);
 
         try {
             // Compute size of the new frame.
