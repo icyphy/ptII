@@ -57,7 +57,8 @@ PTCLASSALLJARS = \
 	type/type.jar
 
 # Keep this list alphabetized.
-JSRCS = JavaCodeGenerator.java \
+JSRCS = AutoAdapter.java \
+	JavaCodeGenerator.java \
 	JavaParseTreeCodeGenerator.java \
 	JavaTemplateParser.java
 

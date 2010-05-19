@@ -917,7 +917,10 @@ public class TemplateParser {
      */
     protected String _replaceMacro(String macro, String parameter)
             throws IllegalActionException {
-
+        if (_codeGenerator == null) {
+            throw new NullPointerException("_codeGenerator was null,  be sure that "
+                    + "the adapter calls templateParser.setCodeGenerator(GenericCodeGenerator)");
+        }
         // $$def(abc)
         // ==> abc$def(abc)
         int indexOfDollarSign = macro.indexOf('$');
