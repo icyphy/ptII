@@ -31,13 +31,17 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -115,6 +119,11 @@ public class Publisher extends TypedAtomicActor {
         hide.setToken(BooleanToken.TRUE);
         // hide = new SingletonParameter(this, "_hideName");
         // hide.setToken(BooleanToken.TRUE);
+
+        numberExportLevels = new Parameter(this, "numberExportLevels");
+        numberExportLevels.setExpression("0");
+        numberExportLevels.setTypeEquals(BaseType.INT);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -127,6 +136,13 @@ public class Publisher extends TypedAtomicActor {
      *  the actor executes or an exception will occur.
      */
     public StringParameter channel;
+
+    /** The number of export levels of publish ports. A port in this publisher 
+     * will be exported to upper levels in hierarchy for other subscribers. This
+     * parameter specifies the number of levels the port will be exported.
+     */
+
+    public Parameter numberExportLevels;
 
     /** The input port.  This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
@@ -152,7 +168,7 @@ public class Publisher extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == channel) {
+        if (attribute == channel || attribute == numberExportLevels) {
             // We only get the value if we are not in a class definition.
             // The reason is that some of the Actor Oriented Classes
             // that use Publishers do not have the parameter defined
@@ -160,14 +176,17 @@ public class Publisher extends TypedAtomicActor {
             // ptolemy/actor/lib/test/auto/PublisherClassNoParameter.xml
             if (!isWithinClassDefinition()) {
                 String newValue = channel.stringValue();
-                if (!newValue.equals(_channel)) {
+                int newNumberExportLevels = ((IntToken) numberExportLevels.getToken()).intValue();
+                if (!newValue.equals(_channel) || newNumberExportLevels != _numberExportLevels) {
                     NamedObj container = getContainer();
                     if (container instanceof CompositeActor) {
                         try {
+                            
+                            
                             ((CompositeActor) container).registerPublisherPort(
-                                    newValue, output);
-                            if (!(_channel == null || _channel.trim()
-                                    .equals(""))) {
+                                    newValue, output, newNumberExportLevels);
+                            if (attribute == channel && (!(_channel == null || _channel.trim()
+                                    .equals("")))) {
                                 ((CompositeActor) container)
                                         .unregisterPublisherPort(_channel,
                                                 output);
@@ -178,6 +197,7 @@ public class Publisher extends TypedAtomicActor {
                         }
                     }
                     _channel = newValue;
+                    _numberExportLevels = newNumberExportLevels;
                 }
             }
         } else {
@@ -196,6 +216,7 @@ public class Publisher extends TypedAtomicActor {
         Publisher newObject = (Publisher) super.clone(workspace);
         try {
             newObject._channel = _channel;
+            newObject._numberExportLevels = _numberExportLevels;
         } catch (Throwable throwable) {
             CloneNotSupportedException exception = new CloneNotSupportedException();
             exception.initCause(throwable);
@@ -273,6 +294,9 @@ public class Publisher extends TypedAtomicActor {
 
     /** Cached channel name. */
     protected String _channel;
+    
+    /** Cached number export levels */
+    protected int _numberExportLevels;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

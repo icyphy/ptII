@@ -655,11 +655,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     final public IOPort getPublishedPort(String name)
             throws IllegalActionException, NameDuplicationException {
-    	NamedObj container = getContainer();
-    	if (!isOpaque() && container instanceof CompositeActor
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
             return ((CompositeActor) container).getPublishedPort(name);
-        } else { 
+        } else {
             if (_publishedPorts == null) {
                 throw new IllegalActionException(this,
                         "Can't find the publisher for \"" + name + "\".");
@@ -671,14 +671,15 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         "Can't find the publisher for \"" + name + "\".");
             } else if (publishedPorts.size() > 1) {
                 throw new NameDuplicationException(this,
-                        "We have multiple publishers with name \"" + name + "\".");
+                        "We have multiple publishers with name \"" + name
+                                + "\".");
             }
-    		
+
             IOPort publishedPort = publishedPorts.get(0);
             return publishedPort;
-    	}
+        }
     }
-    
+
     /** Get the published ports with names that match a regular expression.
      *  @param pattern The regular expression pattern to match.
      *  @return The ports of the publisher that match the regular expression.
@@ -688,12 +689,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     final public List<IOPort> getPublishedPorts(Pattern pattern)
             throws IllegalActionException, NameDuplicationException {
-    	List<IOPort> ports = new LinkedList<IOPort>();
-    	NamedObj container = getContainer();
-    	if (!isOpaque() && container instanceof CompositeActor
+        List<IOPort> ports = new LinkedList<IOPort>();
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
             return ((CompositeActor) container).getPublishedPorts(pattern);
-        } else { 
+        } else {
             if (_publishedPorts != null) {
                 for (String name : _publishedPorts.keySet()) {
                     Matcher matcher = pattern.matcher(name);
@@ -702,9 +703,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                 }
             }
-    	}
-    	
-    	return ports;
+        }
+
+        return ports;
     }
 
     /** Determine whether widths are currently being inferred or not.
@@ -1065,7 +1066,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 IOPort publishedPort = getPublishedPort(name);
                 try {
                     // CompositeActor always creates an IORelation.
-                    relation = (IORelation)newRelation(uniqueName("publisherRelation"));
+                    relation = (IORelation) newRelation(uniqueName("publisherRelation"));
                 } catch (NameDuplicationException e) {
                     // Shouldn't happen.
                     throw new IllegalStateException(e);
@@ -1524,11 +1525,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 portList = new LinkedList<IOPort>();
                 _publishedPorts.put(name, portList);
             }
-            
+
             portList.add(port);
-                
+
             // To disable exporting publisher ports, set the following to false.
-            boolean exportPorts = false;
+            boolean exportPorts = true;
+
             if (exportPorts) {
 
                 // In addition, if the publisher is set to perform an
@@ -1543,10 +1545,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 // If it is 1, then export only one level up (transparent level?
                 // opaque level?). If it is 2, export two levels up, etc.
                 // FIXME: For now, assume name collisions will not occur.
-                String portName = "_publisher_" + StringUtilities.sanitizeName(name);
-                IOPort publisherPort = (IOPort)getPort(portName);
+                String portName = "_publisher_"
+                        + StringUtilities.sanitizeName(name);
+                IOPort publisherPort = (IOPort) getPort(portName);
                 if (publisherPort == null) {
-                    publisherPort = (IOPort)newPort(portName);
+                    publisherPort = (IOPort) newPort(portName);
                 }
                 publisherPort.setPersistent(false);
                 publisherPort.setOutput(true);
@@ -1558,7 +1561,97 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 // NOTE: The following will result in an _inside_ link to the port.
                 linkToPublishedPort(name, publisherPort);
                 if (container instanceof CompositeActor) {
-                    ((CompositeActor)container).registerPublisherPort(name, publisherPort);
+                    ((CompositeActor) container).registerPublisherPort(name,
+                            publisherPort);
+                }
+            }
+        }
+    }
+
+    /** Register a "published port" coming from a publisher. The name
+     *  is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the same name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param port The published port. 
+     *  @param numberLevelsLeft The number of exporting levels left.
+     *  @exception NameDuplicationException If the published port
+     *          is already registered.
+     *  @exception IllegalActionException If the published port can't
+     *          be added.
+     */
+    public void registerPublisherPort(String name, IOPort port,
+            int numberLevelsLeft) throws NameDuplicationException,
+            IllegalActionException {
+        NamedObj container = getContainer();
+        // FIXME: The following strategy is fragile in that if
+        // a director is added or removed later, then things will break.
+        if (!isOpaque() && container instanceof CompositeActor
+                && !((CompositeActor) container).isClassDefinition()) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).registerPublisherPort(name, port,
+                    numberLevelsLeft);
+        } else {
+            if (_publishedPorts == null) {
+                _publishedPorts = new HashMap<String, List<IOPort>>();
+            }
+            List<IOPort> portList = _publishedPorts.get(name);
+            if (portList == null) {
+                portList = new LinkedList<IOPort>();
+                _publishedPorts.put(name, portList);
+            }
+
+            if (!portList.contains(port))
+                portList.add(port);
+
+            // To disable exporting publisher ports, set the following to false.
+            if (numberLevelsLeft != 0) {
+
+                // In addition, if the publisher is set to perform an
+                // "export" then we should create a new port in this composite
+                // and register it with our container, and also link on the inside
+                // to the publisher relation corresponding to the port passed in.
+                // Check the container of
+                // port argument, which is presumably a Publisher actor, for
+                // the value of an "export" parameter. That parameter will have
+                // an integer value. If the value is GLOBAL (-1). If it is 0
+                // (the default), then don't do the following.
+                // If it is 1, then export only one level up (transparent level?
+                // opaque level?). If it is 2, export two levels up, etc.
+                // FIXME: For now, assume name collisions will not occur.
+                String portName = "_publisher_"
+                        + StringUtilities.sanitizeName(name);
+                IOPort publisherPort = (IOPort) getPort(portName);
+                if (publisherPort == null) {
+                    publisherPort = (IOPort) newPort(portName);
+                }
+
+                new Parameter(publisherPort, "_hide", BooleanToken.TRUE);
+                publisherPort.setPersistent(false);
+                publisherPort.setOutput(true);
+                publisherPort.setMultiport(true);
+                // FIXME: Hide the port. Note that we need to fix vergil
+                // so that when it lays out port, hidden ports do not take up
+                // space on the icon.
+
+                // NOTE: The following will result in an _inside_ link to the port.
+                linkToPublishedPort(name, publisherPort);
+                
+                if (container instanceof CompositeActor) {
+                    if (numberLevelsLeft == -1)
+                        ((CompositeActor) container).registerPublisherPort(
+                                name, publisherPort, numberLevelsLeft);
+                    else {
+                        numberLevelsLeft--;
+                        ((CompositeActor) container).registerPublisherPort(
+                                name, publisherPort, numberLevelsLeft);
+                    }
                 }
             }
         }
