@@ -46,6 +46,7 @@ import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.lib.jni.PointerToken;
@@ -63,6 +64,8 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -110,7 +113,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         TemplateParser templateParser = new TemplateParser();
         setTemplateParser(templateParser);
         templateParser.setCodeGenerator(codeGenerator);
-        // FIXME: Is the next line necessary?
         setCodeGenerator(codeGenerator);
     }
 
@@ -124,40 +126,55 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * the block or processing the macros.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        ptolemy.actor.lib.string.StringFunction actor = (ptolemy.actor.lib.string.StringFunction) getComponent();
-        // FIXME: handle parameters
-        String fun = actor.function.getExpression();
-        // FIXME: handle multiports
-        String code = "try {\n"
-            // FIXME: what about MirrorComposite?
-            + "    $actorSymbol(container) = new TypedCompositeActor();\n"
-            + "    $actorSymbol(actor) = new StringFunction($actorSymbol(container), \"$actorSymbol(actor)\");\n"
-            + "    $actorSymbol(input) = new TypedIOPort($actorSymbol(container), \"input\", true, false);\n"
-            + "    $actorSymbol(input).setTypeEquals(BaseType.STRING);\n"
-            + "    $actorSymbol(output) = new TypedIOPort($actorSymbol(container), \"output\", false, true);\n"
-            + "    $actorSymbol(output).setTypeEquals(BaseType.STRING);\n"
-            + "    $actorSymbol(container).connect($actorSymbol(input), ((StringFunction)$actorSymbol(actor)).input);\n"
-            + "    $actorSymbol(container).connect($actorSymbol(output), ((StringFunction)$actorSymbol(actor)).output);\n"
+        // Use the full class name so that we don't have to import the actor.  If we import
+        // the actor, then we cannot have model names with the same name as the actor.
+        String actorClassName = getComponent().getClass().getName();
 
-            + "    new ptolemy.actor.Director($actorSymbol(container), \"director\");\n"
-    
-            + "    $actorSymbol(container).preinitialize();\n"
-            + "} catch (Exception ex) {\n"
-            + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);\n"
-            + "}\n"
-            + "try {\n"
-            + "    TypedCompositeActor.resolveTypes($actorSymbol(container));\n"
-            + "    $actorSymbol(actor).initialize();\n"
-            + "} catch (Exception ex) {\n"
-            + "    throw new RuntimeException(\"Failed to initalize $actorSymbol(actor))\", ex);\n"
-            + "}\n"
-            + "try {\n"
-            + "    ptolemy.data.expr.Parameter function = ((StringFunction)$actorSymbol(actor)).function;\n"
-            + "    function.setExpression(\"" + fun + "\");\n"
-            + "    ((StringFunction)$actorSymbol(actor)).attributeChanged(function);\n"
-            + "} catch (Exception ex) {\n"
-            + "    throw new RuntimeException(\"Failed to set function in $actorSymbol(actor) to " + fun +"\", ex);\n"
-            + "}\n";
+        StringBuffer code = new StringBuffer("try {\n"
+                + "    $actorSymbol(container) = new TypedCompositeActor();\n"
+                + "    $actorSymbol(actor) = new " + actorClassName + "($actorSymbol(container), \"$actorSymbol(actor)\");\n");
+
+        // Generate code that creates and connects each port.
+        Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
+        while (entityPorts.hasNext()) {
+            ComponentPort insidePort = (ComponentPort) entityPorts.next();
+            if (insidePort instanceof IOPort) {
+                IOPort castPort = (IOPort) insidePort;
+                String name = castPort.getName();
+                code.append("    $actorSymbol(" + name + ") = new TypedIOPort($actorSymbol(container)"
+                        + ", \"" + name + "\", "
+                        + castPort.isInput()
+                        + ", " + castPort.isOutput() + ");\n"
+                        // FIXME: handle multiports
+                        + "    $actorSymbol(container).connect($actorSymbol(" + name +"), ((" + actorClassName + ")$actorSymbol(actor))." + name + ");\n");
+                if (castPort.isMultiport()) {
+                    code.append("    $actorSymbol(" + name + ").setMultiPort(true)");
+                }
+            }
+        }
+
+        // FIXME: handle parameters
+        ptolemy.actor.lib.string.StringFunction actor = (ptolemy.actor.lib.string.StringFunction) getComponent();
+        String fun = actor.function.getExpression();
+
+        code.append("    new ptolemy.actor.Director($actorSymbol(container), \"director\");\n"
+                + "    $actorSymbol(container).preinitialize();\n"
+                + "} catch (Exception ex) {\n"
+                + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);\n"
+                + "}\n"
+                + "try {\n"
+                + "    TypedCompositeActor.resolveTypes($actorSymbol(container));\n"
+                + "    $actorSymbol(actor).initialize();\n"
+                + "} catch (Exception ex) {\n"
+                + "    throw new RuntimeException(\"Failed to initalize $actorSymbol(actor))\", ex);\n"
+                + "}\n"
+                + "try {\n"
+                + "    ptolemy.data.expr.Parameter function = ((" + actorClassName + ")$actorSymbol(actor)).function;\n"
+                + "    function.setExpression(\"" + fun + "\");\n"
+                + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(function);\n"
+                + "} catch (Exception ex) {\n"
+                + "    throw new RuntimeException(\"Failed to set function in $actorSymbol(actor) to " + fun +"\", ex);\n"
+                + "}\n");
         return processCode(code.toString());
     }
 
@@ -177,11 +194,20 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If illegal macro names are found.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        String code = "TypedCompositeActor $actorSymbol(toplevel);\n"
-            + "TypedCompositeActor $actorSymbol(container);\n"
-            + "TypedAtomicActor $actorSymbol(actor);\n"
-            + "TypedIOPort $actorSymbol(input);\n"
-            + "TypedIOPort $actorSymbol(output);\n";
+        StringBuffer code = new StringBuffer("TypedCompositeActor $actorSymbol(toplevel);\n"
+                + "TypedCompositeActor $actorSymbol(container);\n"
+                + "TypedAtomicActor $actorSymbol(actor);\n");
+
+        // Handle inputs and outputs on a per-actor basis.
+        Iterator entityPorts = ((Entity)getComponent()).portList().iterator();
+        while (entityPorts.hasNext()) {
+            ComponentPort insidePort = (ComponentPort) entityPorts.next();
+            if (insidePort instanceof IOPort) {
+                IOPort castPort = (IOPort) insidePort;
+                String name = castPort.getName();
+                code.append("TypedIOPort $actorSymbol(" + name + ");\n");
+            }
+        }
         return processCode(code.toString());
     }
 
@@ -212,8 +238,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * from TypedAtomicActor.
      */
     public static AutoAdapter getAutoAdapter(GenericCodeGenerator codeGenerator, Object object) {
-        // FIXME: I'm not sure if we need this method, but I like calliing something
-        // that returns null if the associated actor cannot be found.
+        // FIXME: I'm not sure if we need this method, but I like calling something
+        // that returns null if the associated actor cannot be found or is of the wrong type.
         try {
             Class typedAtomicActor = Class.forName("ptolemy.actor.TypedAtomicActor");
             if (!typedAtomicActor.isAssignableFrom(object.getClass())) {
@@ -235,20 +261,21 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
-        // FIXME: The types will change depending on what types are used by the actor.
-        files.add("ptolemy.data.StringToken;");
-
         files.add("ptolemy.data.type.BaseType;");
         files.add("ptolemy.actor.TypedAtomicActor;");
         files.add("ptolemy.actor.TypedCompositeActor;");
         files.add("ptolemy.actor.TypedIOPort;");
 
-        // FIXME: The actor itself will change.
-        files.add("ptolemy.actor.lib.string.StringFunction;");
+        // If the actor is imported, then we cannot have models with the same
+        // name as the actor.
+        //files.add(getComponent().getClass().getName() + ";");
         ((ProceduralCodeGenerator)getCodeGenerator()).addLibraryIfNecessary("$(PTII)");
         return files;
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Generate the fire code. 
@@ -259,31 +286,70 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     protected String _generateFireCode() throws IllegalActionException {
         // FIXME: what if the inline parameter is set?
-        return "try {\n"
+        StringBuffer code = new StringBuffer("try {\n");
+
+        // Transfer data from the codegen variables to the actor input ports.
+        Iterator inputPorts = ((Actor)getComponent()).inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+            String name = inputPort.getName();
+            Type type = inputPort.getType();
+
+            // Set the type.
+            code.append("    $actorSymbol(" + name + ").setTypeEquals(BaseType."
+                    + type.toString().toUpperCase() +");\n");
+
+            // FIXME: Don't forget about multiports.
+            // Send data to the actor.
+            code.append("    $actorSymbol(" + name + ").sendInside(0, new "
+                    // Refer to the token by the full class name and obviate the
+                    // need to manage imports.
+                    + type.getTokenClass().getName() + "($get(" + name + ")));\n");
+        }
+
+        // Fire the actor.
+        code.append("    $actorSymbol(actor).fire();\n");
+
+        // Transfer data from the actor output ports to the codegen variables.
+        Iterator outputPorts = ((Actor)getComponent()).outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+            String name = outputPort.getName();
+            Type type = outputPort.getType();
+
             // FIXME: Don't forget about multiports
-            // FIXME: get inputs depending on the actor
-            + "    $actorSymbol(input).sendInside(0, new StringToken($get(input)));\n"
-            + "    $actorSymbol(actor).fire();\n"
-            // FIXME: Don't forget about multiports
-            // FIXME: get outputs depending on the actor
-            + "    $put(output, ((StringToken)($actorSymbol(output).getInside(0))).stringValue());\n"
-            + "} catch (Exception ex) {\n"
-            + "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\" /*+ $actorSymbol(toplevel).exportMoML()*/, ex);\n"
-            + " };\n";
+            // Get data from the actor.
+            code.append("$put(" + name
+                    // Refer to the token by the full class name and obviate the
+                    // need to manage imports.
+                    + ", ((" + type.getTokenClass().getName() + ")($actorSymbol(" + name
+                    + ").getInside(0)))." + type.toString().toLowerCase() + "Value());\n");
+        }
+
+        code.append("} catch (Exception ex) {\n"
+                + "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\" /*+ $actorSymbol(toplevel).exportMoML()*/, ex);\n"
+                + " };\n");
+        return code.toString();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+
     /**
-     * Generate execution code.
+     * Generate execution code for the actor execution methods.
      * @param executionMethod One of "prefire", "postfire" or "wrapup".
      * @return The execution code for the corresponding method.
      * @exception IllegalActionException If illegal macro names are found.
      */
-    private String _generateExecutionCode(String executionMethod) throws IllegalActionException {
-        // Syntactic sugar, avoid code duplication
+    private String _generateExecutionCode(String executionMethod)
+            throws IllegalActionException {
+        // Syntactic sugar, avoid code duplication.
         String code = "try {\n"
             + "    $actorSymbol(actor)." + executionMethod + "();\n"
             + "} catch (Exception ex) {\n"
-            + "    throw new RuntimeException(\"Failed to " + executionMethod  + "() $actorSymbol(actor))\", ex);\n"
+            + "    throw new RuntimeException(\"Failed to "
+            + executionMethod  + "() $actorSymbol(actor))\", ex);\n"
             + "};\n";
         return processCode(code.toString());
     }
