@@ -37,6 +37,14 @@ transitions : ($indent( $info(transitions) ))/**/
   sort TransBody .
   op guard:_output:_set:_ : Exp AssignMap AssignMap -> TransBody [ctor] .
 
+  --- exp assignment
+  sorts VarAssignment AssignMap .
+  subsorts VarAssignment < AssignMap .
+  op _|->_ : VarId Exp -> VarAssignment [ctor prec 80] .
+  op emptyMap : -> AssignMap [ctor] .
+  op _;_ : AssignMap AssignMap -> AssignMap 
+            [ctor assoc comm id: emptyMap prec 90] .
+
 ---------------------------------------------------------------------
 --- Variable Declaration
 ---------------------------------------------------------------------
@@ -50,7 +58,7 @@ transitions : ($indent( $info(transitions) ))/**/
   vars E TG : Exp . var OL AL : AssignMap .
 
   var VI : VarId . vars V : Value . var VREC : ValueRow .
-  var VM : ValueMap .
+  var ENV : EnvMap .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
@@ -72,7 +80,7 @@ transitions : ($indent( $info(transitions) ))/**/
          status : enabled,
          currState : STATE, 
          transitions : TRANSSET,
-	 parameters : PARAMS,
+         parameters : PARAMS,
          ports : < PI : InPort | status : present > 
                  < PI' : OutPort | status : unknown > PORTS,
          computation : noComputation > 
@@ -80,7 +88,8 @@ transitions : ($indent( $info(transitions) ))/**/
   = 
      portFixPoints(
       < O : FSM-Actor | 
-         computation : #guards / k({guardExps(STATE, TRANSSET)}) penv(PARAMS) >
+         computation : #guards / k({guardExps(STATE, TRANSSET)}) 
+                            portParamEnv(< PI : InPort | > PORTS, PARAMS) >
       REST) .
 
   op #guards : -> ComputationID [ctor] .
@@ -98,7 +107,7 @@ transitions : ($indent( $info(transitions) ))/**/
   ceq portFixPoints(
        < O : FSM-Actor |
           ports : PORTS,
-          computation : #guards / k({@guard(TI) <- # true, VREC}) env(VM),
+          computation : #guards / k({@guard(TI) <- # true, VREC}) env(ENV),
           transitions : (TI : STATE --> STATE' 
                          {guard: TG output: OL set: AL}) ; TRANSSET > 
        REST)
@@ -124,7 +133,7 @@ transitions : ($indent( $info(transitions) ))/**/
   ceq portFixPoints(
        < O : FSM-Actor |
           ports :  PORTS,
-          computation : #guards / k({VREC}) env(VM) >
+          computation : #guards / k({VREC}) env(ENV) >
        REST)
   =  
       portFixPoints(
@@ -164,20 +173,21 @@ transitions : ($indent( $info(transitions) ))/**/
          status : enabled,
          currState : STATE, 
          transitions : TRANSSET,
-	 parameters : PARAMS,
+         parameters : PARAMS,
          ports : < PI : InPort | status : present > PORTS,
          computation : noComputation >)
   = 
      postfire(FSM-Actor,
       < O : FSM-Actor | 
-         computation : #guards / k({guardExps(STATE,TRANSSET)}) penv(PARAMS) >) .
+         computation : #guards / k({guardExps(STATE,TRANSSET)}) 
+                            portParamEnv(< PI : InPort | > PORTS, PARAMS) >) .
 
   --- if only one guard is true, take the transition, compute its set actions,
   --- and update the state.
   ceq postfire(FSM-Actor,
        < O : FSM-Actor |
           parameters : PARAMS,
-          computation : #guards / k({@guard(TI) <- # true, VREC}) env(VM),
+          computation : #guards / k({@guard(TI) <- # true, VREC}) env(ENV),
           transitions : (TI : STATE --> STATE' 
                          {guard: TG output: OL set: AL}) ; TRANSSET >)
   = 
@@ -190,7 +200,7 @@ transitions : ($indent( $info(transitions) ))/**/
 
   --- if no transition is applicable, just clear computation. 
   ceq postfire(FSM-Actor, 
-        < O : FSM-Actor | computation : #guards / k({VREC}) env(VM) >)
+        < O : FSM-Actor | computation : #guards / k({VREC}) env(ENV) >)
   = 
       postfire(Actor, < O : FSM-Actor | computation : noComputation >)
    if noGuardExpTrue(VREC) .
@@ -202,6 +212,21 @@ transitions : ($indent( $info(transitions) ))/**/
   eq setActions(VI |-> E ; AL, < VI : Parameter | > PARAMS) 
    = < VI : Parameter | exp : E, status : invalid > setActions(AL, PARAMS) .
   eq setActions(AL, PARAMS) = PARAMS [owise] .
+
+  ---------------------------------------------------------------------
+  --- Computation
+  ---------------------------------------------------------------------
+
+  op isPresent : PortId -> ProperExp [ctor] .   --- true if given port present
+
+  var DPS : DetPortStatus . var CI : ComputationID . var K : K .
+
+  eq < O : FSM-Actor |
+      ports : < PI : Port | status : DPS > PORTS,
+      computation : CI / k(isPresent(PI) -> K) env(ENV) > 
+  =
+   < O : FSM-Actor |
+      computation : CI / k(#(DPS == present) -> K) env(ENV) > .
 endtom)
 /**/
 

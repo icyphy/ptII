@@ -238,6 +238,8 @@
         </property>
         <property name="Safety (by state prop)" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'HierarchicalTrafficLight : ([] ~ ('TrafficLight @ 'normal /\  'TrafficLight . 'normal : ('CarLightNormal @ 'Cgrn /\  'PedestrianLightNormal @ 'Pgreen)))">
         </property>
+        <property name="Error handling" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'HierarchicalTrafficLight : (     [] ('Decision | (port 'Error is present) -&gt; (          &lt;&gt; ((this | ('Pgrn = # 0, 'Cgrn = # 0)) U ('Decision | (port 'Ok is present))))  ))">
+        </property>
     </property>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Pred">

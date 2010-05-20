@@ -54,7 +54,7 @@ parameters : ($indent(
 
   var CI : ComputationID . var VI : VarId . 
   var V V' : Value . var E : Exp . var PE : ProperExp .  
-  var K : K .  var VM : ValueMap .
+  var K : K .  var ENV : EnvMap .
 
   ---------------------------------------------------------------------
   --- Message
@@ -166,6 +166,7 @@ parameters : ($indent(
   eq postfire(Actor, < O : Actor | status : disabled > ) = < O : Actor | > .
 
   --- if enabled, update any changes in parameters
+  --- FIXME: parameters can become invalid only if there exist some modified parameters.
   ceq postfire(Actor, < O : Actor | status : enabled, parameters : PARAMS >)
    = < O : Actor | parameters : initParams(PARAMS) >
    if < O : Actor | > :: StableObject .
@@ -195,13 +196,26 @@ parameters : ($indent(
   --- Computation
   ---------------------------------------------------------------------
 
-  --- get env from parameters
-  op penv : Configuration ~> KItem .
-  eq penv(PARAMS) = env(getEnv(PARAMS)) .
+  *** 0] Environments
 
-  op getEnv : Configuration ~> ValueMap .
-  eq getEnv(< RI : Parameter | value : V > PARAMS) = getEnv(PARAMS)[RI |-> V] .
-  eq getEnv(none) = emptyMap .
+  --- get env from parameters
+  op paramEnv : Configuration ~> KItem .
+  eq paramEnv(PARAMS) = env(getParamEnv(emptyEnv, PARAMS)) .
+
+  --- get env from ports and parameters
+  op portParamEnv : Configuration Configuration ~> KItem .
+  eq portParamEnv(PORTS, PARAMS)
+   = env(getParamEnv(getPortEnv(emptyEnv, PORTS), PARAMS)) .
+
+  op getParamEnv : EnvMap Configuration ~> EnvMap .
+  eq getParamEnv(ENV, < RI : Parameter | value : V > PARAMS) 
+   = getParamEnv(ENV[RI <-| V], PARAMS) .
+  eq getParamEnv(ENV, none) = ENV .
+
+  op getPortEnv : EnvMap Configuration ~> EnvMap .
+  eq getPortEnv(ENV, < PI : InPort | status : PS, value : V > PORTS) 
+   = getPortEnv(ENV[if PS == present then PI <-| V else PI <-? fi], PORTS) .
+  eq getPortEnv(ENV, PORTS) = ENV [owise] .
 
   *** 1] Parameter computation
 
@@ -212,12 +226,12 @@ parameters : ($indent(
   =
    < O : Actor |
       parameters : < RI : Parameter | > PARAMS,
-      computation : #param(RI) / k(E) penv(< RI : Parameter | > PARAMS) > .
+      computation : #param(RI) / k(E) paramEnv(< RI : Parameter | > PARAMS) > .
 
   --- if computation is finished and we get a value, update the parameter.
   eq < O : Actor |
       parameters : < RI : Parameter | > PARAMS,
-      computation : #param(RI) / k(V) env(VM) > 
+      computation : #param(RI) / k(V) env(ENV) > 
   = 
    < O : Actor |
       parameters : < RI : Parameter | status : calculated(V) > PARAMS,
@@ -233,27 +247,23 @@ parameters : ($indent(
   = 
    < O : Actor |
       ports : < PI : OutPort | > PORTS,
-      computation : #port(PI) / k(PE) penv(PARAMS) > .
+      computation : #port(PI) / k(PE) paramEnv(PARAMS) > .
 
   --- if the value of a port is computed, then it is pluged back.
   eq < O : Actor |
       ports : < PI : OutPort | status : present > PORTS,
-      computation : #port(PI) / k(V) env(VM) >
+      computation : #port(PI) / k(V) env(ENV) >
   =  
    < O : Actor |
       ports : < PI : OutPort | value : V > PORTS,
       computation : noComputation > .
 
-  *** 3] isPresent expression
-
-  op isPresent : PortId -> ProperExp [ctor] .   --- true if given port present
-
-  eq < O : Actor |
-      ports : < PI : Port | status : DPS > PORTS,
-      computation : CI / k(isPresent(PI) -> K) env(VM) > 
-  =
-   < O : Actor |
-      computation : CI / k(#(DPS == present) -> K) env(VM) > .
+  *** 3] propagate determined port value
+  eq < O : Actor | 
+        ports : < PI : InPort | status : present, value : V > PORTS,
+        computation : CI / k(K) env(PI <-? ; ENV) >
+   = 
+     < O : Actor | computation : CI / k(K) env(PI <-| V ; ENV) > .
 endtom)
 /**/
 

@@ -47,6 +47,8 @@ import ptolemy.codegen.rtmaude.data.expr.PropertyParameter;
 import ptolemy.codegen.rtmaude.kernel.util.ListTerm;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -336,6 +338,28 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      */
     public Map<String, String> getRTMmodule() {
         return RTMmodule;
+    }
+    
+    protected String getTranslatedExpression(String expression) throws IllegalActionException {
+        ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
+        PtParser parser = new PtParser();
+        ASTPtRootNode parseTree = null;
+        try {
+            // parse the value of this variable
+            parseTree = parser.generateParseTree(expression);
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(getComponent(), throwable,
+                    "Failed to generate parse tree for \"" + getName() + "\". in \"" 
+                    + this.getContainer() + "\"");
+        }
+        try {
+            parseTreeCodeGenerator.evaluateParseTree(parseTree, null);
+        } catch (Exception ex) {
+            throw new IllegalActionException(getComponent(), ex,
+                    "Failed to evaluate parse tree for\"" + getName() + "\". in \"" 
+                    + this.getContainer() + "\"");
+        }
+        return parseTreeCodeGenerator.generateFireCode();
     }
 
     /** The default name of the block for the term template. */

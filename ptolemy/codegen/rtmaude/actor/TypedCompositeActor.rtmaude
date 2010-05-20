@@ -33,7 +33,7 @@ $info(connections)
   vars PI PI' : PortId . var EPIS : EPortIdSet . 
   var PS : PortStatus . var DPS : DetPortStatus .
 
-  var K : K .  var VM : ValueMap . 
+  var K : K .  var ENV : EnvMap . 
   var VI : VarId . var CI : ComputationID . var V V' : Value . var E : Exp .
   var T : Time . var N : Nat .
 
@@ -248,18 +248,18 @@ $info(connections)
 
   --- if a variable is not in the current actor, request it.
   ceq < O : Actor |
-         computation : CI / k(VI -> K) env(VM) >
+         computation : CI / k(VI -> K) env(ENV) >
   =
       query-var(O, VI)
       < O : Actor | 
-         computation : CI / k(requesting(VI) -> K) env(VM) > 
-  if not VI in VM .
+         computation : CI / k(requesting(VI) -> K) env(ENV) > 
+  if not VI in ENV .
 
   --- continue the computation if a value is returned.
   eq return-var(O, VI, V)
-     < O : Actor | computation : CI / k(requesting(VI) -> K) env(VM) > 
+     < O : Actor | computation : CI / k(requesting(VI) -> K) env(ENV) > 
   =
-     < O : Actor | computation : CI / k(V -> K) env(VM[VI |-> V]) > .
+     < O : Actor | computation : CI / k(V -> K) env(ENV[VI <-| V]) > .
 
   --- if the desired parameter is found, return it.
   eq < O : CompositeActor |

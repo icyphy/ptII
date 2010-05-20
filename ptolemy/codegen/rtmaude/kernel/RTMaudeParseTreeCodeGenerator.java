@@ -30,12 +30,8 @@ package ptolemy.codegen.rtmaude.kernel;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,10 +89,6 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
 
-        idTable = new HashMap<String, Set<String>>();
-        idTable.put("variable", new HashSet<String>());
-        idTable.put("port", new HashSet<String>());
-
         StringWriter writer = new StringWriter();
 
         _writer = new PrintWriter(writer);
@@ -112,13 +104,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         return result;
     }
 
-    /**
-     * Returns the id table value.
-     * @return a Map object representing the id table value
-     */
-    public Map<String, Set<String>> getIdTable() {
-        return idTable;
-    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -259,7 +245,7 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
             throws IllegalActionException {
         _writer.print("(");
         _printChild(node, 0);
-        _writer.print(" $ (");
+        _writer.print("(");
         for (int i = 1; i < node.jjtGetNumChildren(); i++) {
             _printChild(node, i);
             if (i < node.jjtGetNumChildren() - 1) {
@@ -453,13 +439,13 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
         Matcher m = Pattern.compile("(.*)_isPresent").matcher(id);
         if (m.matches()) {
             String pid = m.group(1);
-            idTable.get("port").add(pid);
             return "isPresent(" + "'" + pid + ")";
         } else {
             if (id.equals("Infinity")) {
                 return id;
             } else {
-                idTable.get("variable").add(id);
+                
+                //TODO: built-in functions should be enclosed by "builtin(...)"
                 return "'" + id;
             }
         }
@@ -478,6 +464,5 @@ public class RTMaudeParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** Used to accumulate generated strings. */
     protected PrintWriter _writer;
 
-    private Map<String, Set<String>> idTable;
     private String result = null;
 }
