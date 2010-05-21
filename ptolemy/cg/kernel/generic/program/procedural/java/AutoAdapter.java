@@ -50,6 +50,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.lib.jni.PointerToken;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -131,7 +132,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // the actor, then we cannot have model names with the same name as the actor.
         String actorClassName = getComponent().getClass().getName();
 
-        StringBuffer code = new StringBuffer("try {\n"
+        StringBuffer code = new StringBuffer(
+                getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start")
+                + "try {\n"
                 + "    $actorSymbol(container) = new TypedCompositeActor();\n"
                 + "    $actorSymbol(actor) = new " + actorClassName + "($actorSymbol(container), \"$actorSymbol(actor)\");\n");
 
@@ -192,7 +195,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 continue;
             }
             // FIXME: handle multiline values
-            String parameterValue = parameter.getExpression().replace("\n", "\\\n").replace("\"", "\\\"");
+
+            String parameterValue = parameter.getExpression(); 
 
             // FIXME: do we want one try block per parameter?  It does
             // make for better error messages.
@@ -205,6 +209,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + "\\\" in $actorSymbol(actor) to \\\"" + parameterValue + "\\\"\", ex);\n"
                 + "}\n");
         }
+        code.append(getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start"));
 
         return processCode(code.toString());
     }
@@ -337,6 +342,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // FIXME: what if the inline parameter is set?
         StringBuffer code = new StringBuffer("try {\n");
 
+        code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() start"));
         // FIXME: it is odd that we are transferring data around in the fire code.
         // Shouldn't we do this in prefire() and posfire()?
 
@@ -398,6 +404,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         code.append("} catch (Exception ex) {\n"
                 + "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\" /*+ $actorSymbol(toplevel).exportMoML()*/, ex);\n"
                 + " };\n");
+        code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() end"));
         return code.toString();
     }
 
@@ -430,16 +437,26 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      *  For multiports, codegenPortName will vary according to channel number
      *  while actorPortName will remain the same.
      *  @param port The port of the actor.
+     *  @exception IllegalActionException If there is a problem checking whether
+     *  actorPortName is a PortParameter.
      */
     private String _generatePortInstantiation(String actorPortName,
-            String codegenPortName, IOPort port) {
+            String codegenPortName, IOPort port) throws IllegalActionException {
+
+        PortParameter portParameter = (PortParameter)getComponent().getAttribute(actorPortName,
+                PortParameter.class);
+
         return "    $actorSymbol(" + codegenPortName + ") = new TypedIOPort($actorSymbol(container)"
             + ", \"" + codegenPortName + "\", "
             + port.isInput()
             + ", " + port.isOutput() + ");\n"
             + "    $actorSymbol(container).connect($actorSymbol(" + codegenPortName +"), (("
             + getComponent().getClass().getName() +
-            ")$actorSymbol(actor))." + actorPortName + ");\n";
+            ")$actorSymbol(actor))." 
+            + actorPortName
+            + ( portParameter instanceof PortParameter 
+                    ? ".getPort()" : "")
+            + ");\n";
     }
 
     /** 
