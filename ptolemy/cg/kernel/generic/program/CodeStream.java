@@ -1235,6 +1235,15 @@ public class CodeStream {
             //String replaceString = arguments.get(i).toString();
             String replaceString = "";
             try {
+                if (arguments.get(i) == null) {
+                    throw new IllegalActionException("The argument " + i
+                            + " from the list of " + arguments.size()
+                            + " arguments was null? One common cause is that the model uses"
+                            + " a type that is not supported.\nParameters:\n"
+                            + java.util.Arrays.toString(parameters.toArray()) + "\nArguments:\n"
+                            + java.util.Arrays.toString(arguments.toArray()) + "\nStringBuffer:\n"
+                            + codeBlock);
+                }
                 replaceString = _checkArgumentName(arguments.get(i));
             } catch (ClassCastException ex) {
                 // Make sure that the error is actually caused by
