@@ -142,14 +142,26 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (insidePort instanceof IOPort) {
                 IOPort castPort = (IOPort) insidePort;
                 String name = castPort.getName();
-                code.append("    $actorSymbol(" + name + ") = new TypedIOPort($actorSymbol(container)"
-                        + ", \"" + name + "\", "
-                        + castPort.isInput()
-                        + ", " + castPort.isOutput() + ");\n"
-                        // FIXME: handle multiports
-                        + "    $actorSymbol(container).connect($actorSymbol(" + name +"), ((" + actorClassName + ")$actorSymbol(actor))." + name + ");\n");
-                if (castPort.isMultiport()) {
-                    code.append("    $actorSymbol(" + name + ").setMultiPort(true)");
+                if (!castPort.isMultiport()) {
+                    code.append(_generatePortInstantiation(name, name, castPort));
+                } else {
+                    // Multiports.
+                    TypedIOPort actorPort = (TypedIOPort)(((Entity)getComponent()).getPort(name));
+
+                    // Set the type of the port of the actor
+                    code.append("    ((" + getComponent().getClass().getName()
+                            + ")$actorSymbol(actor))." + name + ".setTypeEquals(BaseType."
+                            + actorPort.getType().toString().toUpperCase() +");\n");
+
+                    int sources = actorPort.numberOfSources();
+                    for (int i = 0; i < sources; i++) {
+                        code.append(_generatePortInstantiation(name, name + "Source" + i, actorPort));
+                    }
+
+                    int sinks = actorPort.numberOfSinks();
+                    for (int i = 0; i < sinks; i++) {
+                        code.append(_generatePortInstantiation(name, name + "Sink" + i, actorPort));
+                    }
                 }
             }
         }
@@ -224,7 +236,25 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (insidePort instanceof IOPort) {
                 IOPort castPort = (IOPort) insidePort;
                 String name = castPort.getName();
-                code.append("TypedIOPort $actorSymbol(" + name + ");\n");
+                if (!castPort.isMultiport()) {
+                    code.append("TypedIOPort $actorSymbol(" + name + ");\n");
+                } else {
+                    // FIXME: We instantiate a separate external port for each channel
+                    // of the multiport.  Could we just connect directly to the channels
+                    // of the multiport?  The problem I had was that the receivers are
+                    // not created if I connect directly to the channels.
+                    IOPort actorPort = (IOPort)(((Entity)getComponent()).getPort(name));
+
+                    int sources = actorPort.numberOfSources();
+                    for (int i = 0; i < sources; i++) {
+                        code.append("TypedIOPort $actorSymbol(" + name + "Source" + i + ");\n");
+                    }
+
+                    int sinks = actorPort.numberOfSinks();
+                    for (int i = 0; i < sinks; i++) {
+                        code.append("TypedIOPort $actorSymbol(" + name + "Sink" + i + ");\n");
+                    }
+                }
             }
         }
         return processCode(code.toString());
@@ -307,6 +337,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // FIXME: what if the inline parameter is set?
         StringBuffer code = new StringBuffer("try {\n");
 
+        // FIXME: it is odd that we are transferring data around in the fire code.
+        // Shouldn't we do this in prefire() and posfire()?
+
         // Transfer data from the codegen variables to the actor input ports.
         Iterator inputPorts = ((Actor)getComponent()).inputPortList().iterator();
         while (inputPorts.hasNext()) {
@@ -314,16 +347,24 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String name = inputPort.getName();
             Type type = inputPort.getType();
 
-            // Set the type.
-            code.append("    $actorSymbol(" + name + ").setTypeEquals(BaseType."
-                    + type.toString().toUpperCase() +");\n");
+            if (!inputPort.isMultiport()) {
+                code.append(_generateSendInside(name, name, type, 0));
+            } else {
+                // Multiports.
 
-            // FIXME: Don't forget about multiports.
-            // Send data to the actor.
-            code.append("    $actorSymbol(" + name + ").sendInside(0, new "
-                    // Refer to the token by the full class name and obviate the
-                    // need to manage imports.
-                    + type.getTokenClass().getName() + "($get(" + name + ")));\n");
+                // Generate code for the sources.  We don't use getWidth() here
+                // because IOPort.getWidth() says not to.
+                int sources = inputPort.numberOfSources();
+                for (int i = 0; i < sources; i++) {
+                    code.append(_generateSendInside(name, name + "Source" + i, type, i));
+                }
+
+                // Generate code for the sinks.
+                int sinks = inputPort.numberOfSinks();
+                for (int i = 0; i < sinks; i++) {
+                    code.append(_generateSendInside(name, name + "Sink" + i, type, i));
+                }
+            }
         }
 
         // Fire the actor.
@@ -336,13 +377,22 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String name = outputPort.getName();
             Type type = outputPort.getType();
 
-            // FIXME: Don't forget about multiports
             // Get data from the actor.
-            code.append("$put(" + name
-                    // Refer to the token by the full class name and obviate the
-                    // need to manage imports.
-                    + ", ((" + type.getTokenClass().getName() + ")($actorSymbol(" + name
-                    + ").getInside(0)))." + type.toString().toLowerCase() + "Value());\n");
+            if (!outputPort.isMultiport()) {
+                code.append(_generateGetInside(name, name, type, 0));
+            } else {
+                // Multiports.
+                int sources = outputPort.numberOfSources();
+                for (int i = 0; i < sources; i++) {
+                    code.append(_generateGetInside(name, name + "Source" + i, type, i));
+                }
+
+                int sinks = outputPort.numberOfSinks();
+                for (int i = 0; i < sinks; i++) {
+                    code.append(_generateGetInside(name, name + "Sink" + i, type, i));
+                }
+            }
+
         }
 
         code.append("} catch (Exception ex) {\n"
@@ -371,5 +421,80 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             + executionMethod  + "() $actorSymbol(actor))\", ex);\n"
             + "};\n";
         return processCode(code.toString());
+    }
+
+    /** Return the code necessary to instantiate the port.
+     *  @param actorPortName The name of the Actor port to be instantiated.
+     *  @param codegenPortName The name of the port on the codegen side.
+     *  For non-multiports, actorPortName and codegenPortName are the same.
+     *  For multiports, codegenPortName will vary according to channel number
+     *  while actorPortName will remain the same.
+     *  @param port The port of the actor.
+     */
+    private String _generatePortInstantiation(String actorPortName,
+            String codegenPortName, IOPort port) {
+        return "    $actorSymbol(" + codegenPortName + ") = new TypedIOPort($actorSymbol(container)"
+            + ", \"" + codegenPortName + "\", "
+            + port.isInput()
+            + ", " + port.isOutput() + ");\n"
+            + "    $actorSymbol(container).connect($actorSymbol(" + codegenPortName +"), (("
+            + getComponent().getClass().getName() +
+            ")$actorSymbol(actor))." + actorPortName + ");\n";
+    }
+
+    /** 
+     * Return the code that gets data from the actor port and sends
+     * it to the codegen port
+     *  @param actorPortName The name of the Actor port from which
+     *  data will be read.
+     *  @param codegenPortName The name of the port on the codegen side.
+     *  For non-multiports, actorPortName and codegenPortName are the same.
+     *  For multiports, codegenPortName will vary according to channel number
+     *  while actorPortName will remain the same.
+     * @param type The type of the port.
+     * @param channel The channel number.
+     * For non-multiports, the channel number will be 0.
+     */
+    private String _generateGetInside(String actorPortName,
+            String codegenPortName, Type type, int channel) {
+        return
+            "$put(" + actorPortName
+            // Refer to the token by the full class name and obviate the
+            // need to manage imports.
+            + ", ((" + type.getTokenClass().getName() + ")($actorSymbol("
+            + codegenPortName
+            + ").getInside(0"
+            // For non-multiports "". For multiports, ", 0", ", 1" etc.
+            + (channel == 0 ? "" : ", " + channel)
+            + ")))." + type.toString().toLowerCase() + "Value());\n";
+    }
+
+    /** 
+     * Return the code that sends data from the codegen variable to
+     * the actor port.
+     *  @param actorPortName The name of the Actor port to which data
+     *  will be sent.
+     *  @param codegenPortName The name of the port on the codegen side.
+     *  For non-multiports, actorPortName and codegenPortName are the same.
+     *  For multiports, codegenPortName will vary according to channel number
+     *  while actorPortName will remain the same.
+     * @param type The type of the port.
+     * @param channel The channel number.
+     * For non-multiports, the channel number will be 0.
+     */
+    private String _generateSendInside(String actorPortName,
+            String codegenPortName, Type type, int channel) {
+        return
+            // Set the type.
+            "    $actorSymbol(" + codegenPortName + ").setTypeEquals(BaseType."
+                        + type.toString().toUpperCase() +");\n"
+            // Send data to the actor.
+            + "    $actorSymbol(" + codegenPortName + ").sendInside(0, new "
+            // Refer to the token by the full class name and obviate the
+            // need to manage imports.
+            + type.getTokenClass().getName() + "($get(" + actorPortName
+            // For non-multiports "". For multiports, #0, #1 etc.
+            + (channel == 0 ? "" : "#" + channel)
+            + ")));\n";
     }
 }
