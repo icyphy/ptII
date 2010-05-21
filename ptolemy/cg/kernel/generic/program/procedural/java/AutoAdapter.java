@@ -66,6 +66,7 @@ import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -153,10 +154,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             }
         }
 
-        // FIXME: handle parameters
-        ptolemy.actor.lib.string.StringFunction actor = (ptolemy.actor.lib.string.StringFunction) getComponent();
-        String fun = actor.function.getExpression();
-
         code.append("    new ptolemy.actor.Director($actorSymbol(container), \"director\");\n"
                 + "    $actorSymbol(container).preinitialize();\n"
                 + "} catch (Exception ex) {\n"
@@ -167,14 +164,36 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + "    $actorSymbol(actor).initialize();\n"
                 + "} catch (Exception ex) {\n"
                 + "    throw new RuntimeException(\"Failed to initalize $actorSymbol(actor))\", ex);\n"
-                + "}\n"
-                + "try {\n"
-                + "    ptolemy.data.expr.Parameter function = ((" + actorClassName + ")$actorSymbol(actor)).function;\n"
-                + "    function.setExpression(\"" + fun + "\");\n"
-                + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(function);\n"
-                + "} catch (Exception ex) {\n"
-                + "    throw new RuntimeException(\"Failed to set function in $actorSymbol(actor) to " + fun +"\", ex);\n"
                 + "}\n");
+
+
+        // Handle parameters.
+        Iterator parameters = getComponent().attributeList(Settable.class).iterator();
+        while (parameters.hasNext()) {
+            Settable parameter = (Settable) parameters.next();
+            if (!ptolemy.actor.gui.Configurer.isVisible(getComponent(), parameter)) {
+                continue;
+            }
+
+            String parameterName = parameter.getName();
+            if (parameterName.equals("firingsPerIteration")) {
+                continue;
+            }
+            // FIXME: handle multiline values
+            String parameterValue = parameter.getExpression().replace("\n", "\\\n").replace("\"", "\\\"");
+
+            // FIXME: do we want one try block per parameter?  It does
+            // make for better error messages.
+            code.append("try {\n"
+                + "    ptolemy.data.expr.Parameter " + parameterName + " = ((" + actorClassName + ")$actorSymbol(actor))." + parameterName + ";\n"
+                    + "    " + parameterName + ".setExpression(\"" + parameterValue + "\");\n"
+                + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(" + parameterName + ");\n"
+                + "} catch (Exception ex) {\n"
+                    + "    throw new RuntimeException(\"Failed to set parameter \\\"" + parameterName
+                    + "\\\" in $actorSymbol(actor) to \\\"" + parameterValue + "\\\"\", ex);\n"
+                + "}\n");
+        }
+
         return processCode(code.toString());
     }
 
