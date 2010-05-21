@@ -64,6 +64,7 @@ TCL_SRCS = \
 	tclshrc.tcl \
 	testDefs.tcl \
 	testEnums.tcl \
+	testJavaCG.tcl \
 	testParameters.tcl
 
 

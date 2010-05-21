@@ -1,10 +1,10 @@
-# Run "auto" tests
+# Test AutoAdapter
 #
-# @Author: Bert Rodiers
+# @Author: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2009-2010 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,38 +30,21 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-# Get the value of ptolemy.ptII.isRunningNightlyBuild and save it,
-# then reset the property to the empty string.
-# If we are running as the nightly build, we usually want to
-# throw an exception if the trainingMode parameter is set to true.
-# However, while testing the Test actor itself, we want to 
-# be able to set the trainingMode parameter to true
-
-set oldIsRunningNightlyBuild \
-    [java::call ptolemy.util.StringUtilities getProperty \
-     "ptolemy.ptII.isRunningNightlyBuild"]
-java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" ""
-
 if {[info procs testJavaCG] == "" } then {
     source [file join $PTII util testsuite testJavaCG.tcl]
 }
 
-foreach file [glob auto/*.xml] {
-    test_java_cg $file
+set models [list \
+		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
+		$PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml]  
+
+foreach model $models {
+    testJavaCG $model
 }
-
-# Reset the isRunningNightlyBuild property
-java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" \
-    $oldIsRunningNightlyBuild 
-
-# The list of filters is static, so we reset it
-java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
-    
-# Print out stats
-doneTests
