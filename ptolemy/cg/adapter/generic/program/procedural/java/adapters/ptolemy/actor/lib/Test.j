@@ -127,14 +127,12 @@ if ($channel == 0) {
 $actorSymbol(correctValuesThisFiring_$channel) =
 $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-    && (((!Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
-      && $actorSymbol(inputToken)))
-    || (Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
-        && !$actorSymbol(inputToken)))) {
-    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
+    && (!Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).getPayload().equals(
+       $actorSymbol(inputToken)))) {
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a token of value: %s. Should have been a token of value: %s\n",
             $actorSymbol(numberOfTokensSeen),
-            BooleantoString($actorSymbol(inputToken)),
-            BooleantoString(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean)));
+            $actorSymbol(inputToken),
+	    Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).getPayload()));
 }
 /**/
 
