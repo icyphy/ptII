@@ -324,6 +324,17 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // name as the actor.
         //files.add(getComponent().getClass().getName() + ";");
         ((ProceduralCodeGenerator)getCodeGenerator()).addLibraryIfNecessary("$(PTII)");
+
+	// Loop through the path elements in java.class.path and add
+        // them as libraries.  We need this so that we can find the
+        // JavaScope.zip code coverage file in the nightly build
+	String javaClassPath = StringUtilities.getProperty("java.class.path");
+	StringTokenizer tokenizer = new StringTokenizer(javaClassPath,
+					       File.pathSeparator);
+	while (tokenizer.hasMoreTokens()) {
+	    ((ProceduralCodeGenerator)getCodeGenerator()).addLibraryIfNecessary(tokenizer.nextToken());
+	}
+
         return files;
     }
 
