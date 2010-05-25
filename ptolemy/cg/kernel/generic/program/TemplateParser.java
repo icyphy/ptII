@@ -1370,9 +1370,9 @@ public class TemplateParser {
             dataToken = parameters.get(2);
         } else {
             CGException
-                    .throwException(
+                    .throwException("\""
                             parameter,
-                            " is not acceptable by $put(). "
+                            "\" is not acceptable by $put(). "
                                     + "$put could be used in the following ways: "
                                     + "$put(output#channel, token); or, $put(output, token); or,"
                                     + "$put(input#channel, offset, token); or, $put(input, offset, token)");
