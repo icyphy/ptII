@@ -176,6 +176,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     /**
      * Get the corresponding type in code generation from the given Ptolemy
      * type.
+     * @see #ptolemyType(String)
      * @param ptType The given Ptolemy type.
      * @return The code generation type.
      * @exception IllegalActionException Thrown if the given ptolemy cannot
@@ -587,6 +588,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /** Return the Ptolemy type that corresponds to the type named by
      *  the argument.
+     *  @see #codeGenType(Type)
      *  @param cgType A String naming a type.
      *  @return null if there is not corresponding Ptolemy type.
      */
