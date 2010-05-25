@@ -457,17 +457,31 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         PortParameter portParameter = (PortParameter)getComponent().getAttribute(actorPortName,
                 PortParameter.class);
 
-        return "    $actorSymbol(" + codegenPortName + ") = new TypedIOPort($actorSymbol(container)"
-            + ", \"" + codegenPortName + "\", "
-            + port.isInput()
-            + ", " + port.isOutput() + ");\n"
-            + "    $actorSymbol(container).connect($actorSymbol(" + codegenPortName +"), (("
+        StringBuffer code = new StringBuffer("    $actorSymbol(" + codegenPortName + ") = new TypedIOPort($actorSymbol(container)"
+                + ", \"" + codegenPortName + "\", "
+                + port.isInput()
+                + ", " + port.isOutput() + ");\n");
+
+        try {
+            // Make sure that there is a field with that name
+            // $PTII/ptolemy/actor/lib/string/test/auto/StringLength.xml
+            // has a NonStrict actor with an output that is not connected.
+            // If we don't check for the field, then the generated Java code
+            // fails.
+            getComponent().getClass().getField(actorPortName);
+
+            code.append("    $actorSymbol(container).connect($actorSymbol(" + codegenPortName +"), (("
             + getComponent().getClass().getName() +
             ")$actorSymbol(actor))." 
             + actorPortName
             + ( portParameter instanceof PortParameter 
                     ? ".getPort()" : "")
-            + ");\n";
+                    + ");\n");
+        } catch (NoSuchFieldException ex) {
+            // Ignore.
+        }
+        return code.toString();
+
     }
 
     /** 

@@ -44,7 +44,8 @@ if {[info procs testJavaCG] == "" } then {
 set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/LookupTable.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
-		$PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml]  
+		$PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml \
+		$PTII/ptolemy/actor/lib/string/test/auto/StringLength.xml]
 
 foreach model $models {
     testJavaCG $model
