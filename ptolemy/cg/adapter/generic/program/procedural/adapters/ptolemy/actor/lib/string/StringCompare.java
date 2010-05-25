@@ -27,7 +27,11 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string;
 
+import java.util.ArrayList;
+
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.BooleanToken;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.string.StringCompare.
@@ -46,5 +50,37 @@ public class StringCompare extends NamedProgramCodeGeneratorAdapter {
      */
     public StringCompare(ptolemy.actor.lib.string.StringCompare actor) {
         super(actor);
+    }
+    /**
+     * Generate fire code.
+     * The method reads in <code>sinBlock</code>, <code>cosBlock</code>,
+     * <code>tanBlock</code>, <code>asinBlock</code>, <code>acosBlock</code>,
+     * or <code>atanBlock</code> from TrigFunction.c depending on the function
+     * parameter specified, replaces macros with their values and appends
+     * the processed code block to the given code buffer.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    protected String _generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super._generateFireCode());
+
+        ptolemy.actor.lib.string.StringCompare actor = (ptolemy.actor.lib.string.StringCompare) getComponent();
+
+        String function = actor.function.getExpression();
+        String ignoreCase = (((BooleanToken) actor.ignoreCase.getToken()).booleanValue() ? "ignoreCase" : "dontIgnoreCase");
+        String codeBlockName = ignoreCase 
+            + (function.equals("equals")
+                    ? "EqualsBlock"
+                    : (function.equals("startsWith")
+                            ? "StartsWithBlock"
+                            : (function.equals("endsWith")
+                                    ? "EndsWithBlock"
+                                    : "ContainsBlock")));
+        ArrayList<String> args = new ArrayList<String>();
+        code.append(getTemplateParser().generateBlockCode(codeBlockName, args));
+
+        return code.toString();
     }
 }

@@ -202,11 +202,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // make for better error messages.
             code.append("try {\n"
                 + "    ptolemy.data.expr.Parameter " + parameterName + " = ((" + actorClassName + ")$actorSymbol(actor))." + parameterName + ";\n"
-                    + "    " + parameterName + ".setExpression(\"" + parameterValue + "\");\n"
+                    + "    " + parameterName + ".setExpression(\"" + StringUtilities.escapeString(parameterValue) + "\");\n"
                 + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(" + parameterName + ");\n"
                 + "} catch (Exception ex) {\n"
                     + "    throw new RuntimeException(\"Failed to set parameter \\\"" + parameterName
-                    + "\\\" in $actorSymbol(actor) to \\\"" + parameterValue + "\\\"\", ex);\n"
+                    + "\\\" in $actorSymbol(actor) to \\\"" + StringUtilities.escapeString(parameterValue) + "\\\"\", ex);\n"
                 + "}\n");
         }
         code.append(getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start"));
@@ -460,7 +460,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer("    $actorSymbol(" + codegenPortName + ") = new TypedIOPort($actorSymbol(container)"
                 + ", \"" + codegenPortName + "\", "
                 + port.isInput()
-                + ", " + port.isOutput() + ");\n");
+                + ", " + port.isOutput() + ");\n"
+                // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
+                + "    $actorSymbol(" + codegenPortName + ").setTypeEquals(BaseType."
+                + ((TypedIOPort)port).getType().toString().toUpperCase() +");\n");
 
         try {
             // Make sure that there is a field with that name
@@ -470,13 +473,18 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // fails.
             getComponent().getClass().getField(actorPortName);
 
-            code.append("    $actorSymbol(container).connect($actorSymbol(" + codegenPortName +"), (("
-            + getComponent().getClass().getName() +
-            ")$actorSymbol(actor))." 
-            + actorPortName
-            + ( portParameter instanceof PortParameter 
-                    ? ".getPort()" : "")
-                    + ");\n");
+            String portOrParameter = "((" + getComponent().getClass().getName()
+                + ")$actorSymbol(actor))." 
+                + actorPortName + ( portParameter instanceof PortParameter 
+                        ? ".getPort()" : "");
+            
+            code.append("    $actorSymbol(container).connect($actorSymbol(" + codegenPortName +"), "
+                    + portOrParameter
+                    + ");\n"
+                    // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
+                    + "    " + portOrParameter + ".setTypeEquals(BaseType."
+                    + ((TypedIOPort)port).getType().toString().toUpperCase() +");\n");
+
         } catch (NoSuchFieldException ex) {
             // Ignore.
         }

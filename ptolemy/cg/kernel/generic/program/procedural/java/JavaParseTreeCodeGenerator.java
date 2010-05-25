@@ -218,7 +218,7 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
     }
 
     /** Given a string, escape special characters as necessary.
-     *  For C, we do:
+     *  For Java, we do:
      *  <pre>
      *  \\ becomes \\\\
      *  which means:

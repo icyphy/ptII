@@ -365,9 +365,10 @@ public class TemplateParser {
                 ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 if (variable.isStringMode()) {
                     return generateTypeConvertMethod("\""
-                            + parseTreeCodeGenerator
+                            + StringUtilities.escapeString(parseTreeCodeGenerator
                                     .escapeForTargetLanguage(variable
-                                            .getExpression()) + "\"", castType,
+                                            .getExpression()))
+                            + "\"", castType,
                             "String");
                 }
 
@@ -1370,9 +1371,8 @@ public class TemplateParser {
             dataToken = parameters.get(2);
         } else {
             CGException
-                    .throwException("\""
-                            parameter,
-                            "\" is not acceptable by $put(). "
+                .throwException("\"" + parameter
+                            + "\" is not acceptable by $put(). "
                                     + "$put could be used in the following ways: "
                                     + "$put(output#channel, token); or, $put(output, token); or,"
                                     + "$put(input#channel, offset, token); or, $put(input, offset, token)");
