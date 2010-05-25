@@ -186,7 +186,12 @@ proc ptFilterOutVersion {answer passing_results} {
     set createdByRegularExpression 	    {[ ]*<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="[0-9][^"]*">
 [ ]*</property>
 }
-    regsub -all $createdByRegularExpression $answer2a {} answer2b
+    regsub -all $createdByRegularExpression $answer2a {} answer2b1
+
+    set createdByRegularExpression 	    {[ ]*<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"[0-9][^"]*\">
+[ ]*</property>
+}
+    regsub -all $createdByRegularExpression $answer2b1 {} answer2b
 
     # 3. NamedObj version 1.319 changed exportMoML so that exportMoML()
     #    now exports the header.
