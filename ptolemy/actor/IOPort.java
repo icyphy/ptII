@@ -4124,7 +4124,8 @@ public class IOPort extends ComponentPort {
      *  have registered with this IOPort.
      *  @param event The event.
      */
-    protected final void _notifyPortEventListeners(IOPortEvent event) {
+    protected final void _notifyPortEventListeners(IOPortEvent event)
+            throws IllegalActionException {
         if (_hasPortEventListeners) {
             for (IOPortEventListener listener : _portEventListeners) {
                 listener.portEvent(event);

@@ -27,6 +27,8 @@
  */
 package ptolemy.actor;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// PortEventListener
 
@@ -52,8 +54,8 @@ package ptolemy.actor;
 public interface IOPortEventListener {
 
     /** Report a port activity.  This method is called when a token
-     *  has been sent or recevied from one IOPort to another.
+     *  has been sent or received from one IOPort to another.
      *  @param event The event to report.
      */
-    public void portEvent(IOPortEvent event);
+    public void portEvent(IOPortEvent event) throws IllegalActionException;
 }
