@@ -35,6 +35,8 @@ ME =		ptolemy/data/ontologies/test
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
+CLASSPATH =	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
