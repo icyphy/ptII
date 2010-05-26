@@ -62,6 +62,7 @@ import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
@@ -570,8 +571,8 @@ public class TemplateParser {
              *  @return The generated code.
              */
             public String generateFireCode() {
-                return "/* ParseTreeCodeGenerator.generateFireCode() "
-                        + "not implemented in codegen.kernel.GenericCodeGenerator */";
+                throw new InternalErrorException("ParseTreeCodeGenerator.generateFireCode() "
+                        + "not implemented in ptolemy.cg.kernel.generic.program.TemplateParser.");
             }
         };
     }

@@ -1,3 +1,7 @@
 /***fireBlock***/
-$put(output, $val(($cgType(output)) value));
+{
+    $targetType(output) $actorSymbol(temp);
+    $actorSymbol(temp) = $val(($cgType(output)) value);
+    $put(output, $actorSymbol(temp));
+}
 /**/

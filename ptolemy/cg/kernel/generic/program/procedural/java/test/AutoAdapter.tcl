@@ -41,12 +41,25 @@ if {[info procs testJavaCG] == "" } then {
     source [file join $PTII util testsuite testJavaCG.tcl]
 }
 
+# ~/ptII/ptolemy/actor/lib/string/test/auto/StringMatches.xml  Runs, but gets wrong results
+# ~/ptII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml  FSM
+# ~/ptII/ptolemy/actor/lib/string/test/auto/StringParameter.xml Fails to generate
+# ~/ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml fails to generate
+# ~/ptII/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml fails to generate
+# ~/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml
+# ~/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml
 set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/LookupTable.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringCompare.xml \
+		$PTII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml \
-		$PTII/ptolemy/actor/lib/string/test/auto/StringLength.xml]
+		$PTII/ptolemy/actor/lib/string/test/auto/StringLength.xml \
+		$PTII/ptolemy/actor/lib/string/test/auto/StringMatches2.xml \
+		$PTII/ptolemy/actor/lib/string/test/auto/StringReplace.xml \
+		$PTII/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml \
+		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring.xml \
+	       ]
 
 foreach model $models {
     testJavaCG $model

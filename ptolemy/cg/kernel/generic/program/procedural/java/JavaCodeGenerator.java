@@ -828,6 +828,14 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                 NamedObj container = variable.getContainer();
                 NamedProgramCodeGeneratorAdapter containerAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(container);
+                String parameterValue = "";
+                try {
+                    parameterValue = containerAdapter.getParameterValue(
+                            variable.getName(), variable.getContainer());
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(container, throwable, "Failed to get the value of \""
+                            + variable.getName() + "\"");
+                }
                 code.append(INDENT1
                         + generateVariableName(variable)
                         + " = "
