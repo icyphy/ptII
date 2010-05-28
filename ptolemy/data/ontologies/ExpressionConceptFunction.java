@@ -26,7 +26,7 @@ package ptolemy.data.ontologies;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.ObjectToken;
+import ptolemy.data.ConceptToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.util.IllegalActionException;
@@ -145,9 +145,9 @@ public class ExpressionConceptFunction extends ConceptFunction {
         ExpressionConceptFunctionParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 _argumentNames, inputConceptValues, _solverModel,
                 _argumentDomainOntologies);
-        ObjectToken conceptObjectToken = (ObjectToken) evaluator
+        ConceptToken conceptToken = (ConceptToken) evaluator
                 .evaluateParseTree(parseTree);        
-        Concept output = (Concept) conceptObjectToken.getValue();
+        Concept output = conceptToken.conceptValue();
         
         if (output == null) {
             throw new IllegalActionException("Error evaluating ExpressionConceptFunction:" +

@@ -72,7 +72,7 @@ import ptolemy.math.FixPoint;
  @Pt.AcceptedRating Green (yuhong)
  */
 public abstract class ScalarToken extends Token implements
-        BitwiseOperationToken {
+BitwiseOperationToken, PartiallyOrderedToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -695,6 +695,28 @@ public abstract class ScalarToken extends Token implements
             throw new IllegalActionException(notSupportedIncomparableMessage(
                     "isGreaterThan", this, rightArgument));
         }
+    }
+
+    /** Check whether the value of this token is strictly less than that of the
+     *  argument token.
+     *
+     *  @param rightArgument The token to compare against.
+     *  @return A boolean token with value true if this token is strictly
+     *  less than the argument.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or have different units,
+     *  or the operation does not make sense for the given types.
+     */
+    public final BooleanToken isLessThan(PartiallyOrderedToken rightArgument)
+            throws IllegalActionException {
+        if (!(rightArgument instanceof ScalarToken)) {
+            //// FIXME: Since PartiallyOrderedToken is an interface, we cannot do:
+            //throw new IllegalActionException(null, ex, notSupportedMessage(
+            //        "isLessThan", this, rightArgument))
+            //// and must do this instead:
+            throw new IllegalActionException("Cannot compare ScalarToken with " + rightArgument);
+        }
+        return isLessThan((ScalarToken) rightArgument);
     }
 
     /** Check whether the value of this token is strictly less than that of the

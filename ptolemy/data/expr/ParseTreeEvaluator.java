@@ -44,6 +44,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.OrderedRecordToken;
+import ptolemy.data.PartiallyOrderedToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
@@ -1010,20 +1011,20 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
             result = leftToken.isEqualTo(rightToken).not();
         } else {
-            if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
+            if (!((leftToken instanceof PartiallyOrderedToken) && (rightToken instanceof PartiallyOrderedToken))) {
                 throw new IllegalActionException("The " + operator.image
-                        + " operator can only be applied between scalars.");
+                        + " operator can only be applied on partial orders.");
             }
 
-            ScalarToken leftScalar = (ScalarToken) leftToken;
-            ScalarToken rightScalar = (ScalarToken) rightToken;
+            PartiallyOrderedToken leftScalar = (PartiallyOrderedToken) leftToken;
+            PartiallyOrderedToken rightScalar = (PartiallyOrderedToken) rightToken;
 
             if (operator.kind == PtParserConstants.GTE) {
-                result = leftScalar.isLessThan(rightScalar).not();
+                result = rightScalar.isLessThan(leftScalar).or(leftToken.isEqualTo(rightToken));
             } else if (operator.kind == PtParserConstants.GT) {
                 result = rightScalar.isLessThan(leftScalar);
             } else if (operator.kind == PtParserConstants.LTE) {
-                result = rightScalar.isLessThan(leftScalar).not();
+                result = leftScalar.isLessThan(rightScalar).or(leftToken.isEqualTo(rightToken));
             } else if (operator.kind == PtParserConstants.LT) {
                 result = leftScalar.isLessThan(rightScalar);
             } else {

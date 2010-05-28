@@ -27,16 +27,11 @@ package ptolemy.data.ontologies;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.ScalarToken;
+import ptolemy.data.ConceptToken;
 import ptolemy.data.expr.ASTPtFunctionApplicationNode;
 import ptolemy.data.expr.ASTPtLeafNode;
-import ptolemy.data.expr.ASTPtRelationalNode;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.PtParserConstants;
-import ptolemy.data.expr.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -135,14 +130,14 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
             _evaluateChild(node, i + 1);
-            ObjectToken token = (ObjectToken) _evaluatedChildToken;
-            argValues.add((Concept) token.getValue());
+            ConceptToken token = (ConceptToken) _evaluatedChildToken;
+            argValues.add(token.conceptValue());
         }
 
         // Evaluate the concept function and set the evaluated token
         // to the string name of the concept that is the output of the
         // function.
-        _evaluatedChildToken = new ObjectToken(function.evaluateFunction(
+        _evaluatedChildToken = new ConceptToken(function.evaluateFunction(
                 argValues));
     }
 
@@ -164,7 +159,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         // the name of the concept it holds.
         for (int i = 0; i < _argumentNames.size(); i++) {
             if (nodeLabel.equals(_argumentNames.get(i))) {
-                _evaluatedChildToken = new ObjectToken(
+                _evaluatedChildToken = new ConceptToken(
                         _argumentConceptValues.get(i));
                 break;
             }
@@ -172,68 +167,9 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
 
         // If the node is not an argument, it must be a name of a concept itself.
         if (_evaluatedChildToken == null) {
-            _evaluatedChildToken = new ObjectToken(_getNamedConcept(nodeLabel));
+            _evaluatedChildToken = new ConceptToken(_getNamedConcept(nodeLabel));
         }
     }
-    
-    /** Evaluate a relation between two concepts.
-     * Since concepts are wrapped in ObjectTokens, which do not support inequality comparison,
-     * this method must override
-     * {@link ptolemy.data.expr.ParseTreeEvaluator#visitRelationalNode(ASTPtRelationalNode)}.
-     * A better approach may be to provide an interface for partial orders that both ScalarTokens
-     * and Concepts fulfill.  Then we would be able to use that interface in 
-     * {@link ptolemy.data.expr.ParseTreeEvaluator#visitRelationalNode(ASTPtRelationalNode)}
-     * and not override it here.
-     * 
-     * @param node The relational node.
-     * @exception IllegalActionException If an evaluation error occurs.
-     */
-    public void visitRelationalNode(ASTPtRelationalNode node)
-            throws IllegalActionException {
-
-    	ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
-
-    	int numChildren = node.jjtGetNumChildren();
-    	_assert(numChildren == 2, node, "The number of child nodes must be two");
-
-    	Token operator = node.getOperator();
-    	ptolemy.data.Token leftToken = tokens[0];
-    	ptolemy.data.Token rightToken = tokens[1];
-    	ptolemy.data.Token result;
-
-    	BooleanToken unequal = leftToken.isEqualTo(rightToken).not();
-    	if (operator.kind == PtParserConstants.EQUALS) {
-    		result = unequal.not();
-    	} else if (operator.kind == PtParserConstants.NOTEQUALS) {
-    		result = unequal;
-    	} else {
-    		ObjectToken leftObjectToken = (ObjectToken) leftToken;
-    		ObjectToken rightObjectToken = (ObjectToken) rightToken;
-    		
-    		Concept leftConcept = (Concept) leftObjectToken.getValue();
-    		Concept rightConcept = (Concept) rightObjectToken.getValue();
-
-    		if (operator.kind == PtParserConstants.GTE) {
-    			result = new BooleanToken(leftConcept.isAboveOrEqualTo(rightConcept));
-    			
-    		} else if (operator.kind == PtParserConstants.GT) {
-    			result = new BooleanToken(leftConcept.isAboveOrEqualTo(rightConcept)).and(unequal);
-    		} else if (operator.kind == PtParserConstants.LTE) {
-    			result = new BooleanToken(rightConcept.isAboveOrEqualTo(leftConcept));
-    		} else if (operator.kind == PtParserConstants.LT) {
-    			result = new BooleanToken(rightConcept.isAboveOrEqualTo(leftConcept)).and(unequal);
-    		} else {
-    			throw new IllegalActionException("Invalid operation "
-    					+ operator.image + " between "
-    					+ leftToken.getClass().getName() + " and "
-    					+ rightToken.getClass().getName());
-    		}
-    	}
-
-    	_evaluatedChildToken = (result);
-
-    }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -248,7 +184,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             for (Object entity : domainOntology.allAtomicEntityList()) {
                 if (entity instanceof Concept) {
                     Constants.add(((Concept) entity).getName(),
-                            new ObjectToken(entity));
+                            new ConceptToken((Concept)entity));
                 }
             }
         }
