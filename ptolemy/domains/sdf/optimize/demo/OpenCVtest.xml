@@ -1,0 +1,126 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="OpenCVtest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 162, 1121, 620}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[906, 503]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0927182270466">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{405.5625000000001, 221.1599751655629}">
+    </property>
+    <property name="OptimizingSDFDirector" class="ptolemy.domains.sdf.optimize.OptimizingSDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
+        </property>
+    </property>
+    <entity name="OpenCVReader" class="ptolemy.actor.lib.opencv.OpenCVReader">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="DisplayCurrentImage2" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 135.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 0, 815, 517}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.9329229797979, 95.9041982323232}">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 135.0]">
+            </property>
+        </port>
+        <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 277, 648, 535}, maximized=false}">
+            </property>
+            <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 135.0]">
+            </property>
+        </entity>
+        <entity name="OpenCVToAWTImage" class="ptolemy.actor.lib.opencv.OpenCVToAWTImage">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 135.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="ImageDisplay.input" relation="relation"/>
+        <link port="OpenCVToAWTImage.input" relation="relation2"/>
+        <link port="OpenCVToAWTImage.output" relation="relation"/>
+    </entity>
+    <entity name="DisplayCurrentImage3" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 300.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 815, 517}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{279.9329229797979, 95.9041982323232}">
+        </property>
+        <property name="OptimizingSDFDirector" class="ptolemy.domains.sdf.optimize.OptimizingSDFDirector">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -45.0]">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 135.0]">
+            </property>
+        </port>
+        <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={618, 291, 648, 535}, maximized=false}">
+            </property>
+            <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 135.0]">
+            </property>
+        </entity>
+        <entity name="OpenCVToAWTImage" class="ptolemy.actor.lib.opencv.OpenCVToAWTImage">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 135.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="ImageDisplay.input" relation="relation"/>
+        <link port="OpenCVToAWTImage.input" relation="relation2"/>
+        <link port="OpenCVToAWTImage.output" relation="relation"/>
+    </entity>
+    <entity name="GrayScale" class="ptolemy.actor.lib.opencv.optimize.GrayScale">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="Invert" class="ptolemy.actor.lib.opencv.optimize.Invert">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 135.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[250.0, 210.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="OpenCVReader.output" relation="relation2"/>
+    <link port="DisplayCurrentImage2.port" relation="relation3"/>
+    <link port="DisplayCurrentImage3.port" relation="relation"/>
+    <link port="GrayScale.input" relation="relation2"/>
+    <link port="GrayScale.output" relation="relation"/>
+    <link port="Invert.input" relation="relation2"/>
+    <link port="Invert.output" relation="relation3"/>
+</entity>
