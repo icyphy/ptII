@@ -49,12 +49,34 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.optimize.OptimizingSDFDirector.OptimizationCriteria;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.Fraction;
+
+///////////////////////////////////////////////////////////////////
+////OptimizingSDFScheduler
+
+/**
+OptimizingSDFScheduler is the scheduler companion to the OptimizingSDFDirector 
+It works with the synchronous dataflow (SDF) model of computation to find
+an optimized schedule according to a defined criterion.
+
+<h1>Class comments</h1>
+An OptimizingSDFScheduler is the class that determines an opimized static schedule.  
+<p>
+See {@link ptolemy.domains.sdf.kernel.SDFScheduler} and 
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more information.
+</p>
+@see ptolemy.domains.sdf.kernel.SDFScheduler
+@see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
+
+@author Marc Geilen
+@version $Id: $
+@since Ptolemy II 0.2
+@Pt.ProposedRating Red (mgeilen)
+@Pt.AcceptedRating Red ()
+*/
 
 public class OptimizingSDFScheduler extends SDFScheduler {
     public OptimizationCriteria optimizationCriterion;
@@ -131,10 +153,6 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         Map entityToFiringsPerIteration = _solveBalanceEquations(container,
                 allActorList, externalRates);
 
-        if (_debugging && VERBOSE) {
-            _debug("Firing Ratios: " + entityToFiringsPerIteration.toString());
-        }
-
         // Multiply the number of firings for each actor by the
         // vectorizationFactor.
         _vectorizeFirings(vectorizationFactor, entityToFiringsPerIteration,
@@ -152,11 +170,6 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         Schedule result = _scheduleConnectedActors(externalRates, allActorList,
                 container);
 
-        if (_debugging && VERBOSE) {
-            _debug("Firing Vector:");
-            _debug(entityToFiringsPerIteration.toString());
-        }
-
         // Set parameters on each actor that contain the number
         // of firings in an iteration.
         _saveFiringCounts(entityToFiringsPerIteration);
@@ -169,6 +182,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         _externalRates = externalRates;
         return result;
     }
+
     /** Create an optimal schedule for a set of actors.  
      *  FIXME: contains a lot of duplicated code from same method in SDFScheduler
      *  Would be good to factor out common code, but I do not want to touch SDFScheduler
@@ -261,11 +275,6 @@ public class OptimizingSDFScheduler extends SDFScheduler {
                     IOPort outputPort = (IOPort) outputPorts.next();
                     int count = DFUtilities.getTokenInitProduction(outputPort);
 
-                    if (_debugging && VERBOSE) {
-                        _debug("Simulating " + count
-                                + " initial tokens created on " + outputPort);
-                    }
-
                     if (count > 0) {
                         _simulateTokensCreated(outputPort, count);
                     }
@@ -353,13 +362,6 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         // FIXME: Why are the actor lists lists rather than sets?
         Receiver[][] receivers = outputPort.getRemoteReceivers();
 
-        if (_debugging && VERBOSE) {
-            _debug("Creating " + createdTokens + " tokens on "
-                    + outputPort.getFullName());
-            _debug("source channels = " + receivers.length);
-            _debug("width = " + outputPort.getWidth());
-        }
-
         for (int channel = 0; channel < receivers.length; channel++) {
             if (receivers[channel] == null) {
                 continue;
@@ -373,10 +375,6 @@ public class OptimizingSDFScheduler extends SDFScheduler {
                 }
 
                 SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
-                IOPort connectedPort = receivers[channel][copy].getContainer();
-                ComponentEntity connectedActor = (ComponentEntity) connectedPort
-                        .getContainer();
-
                 // Increment the number of waiting tokens.
                 receiver._waitingTokens += createdTokens;
 

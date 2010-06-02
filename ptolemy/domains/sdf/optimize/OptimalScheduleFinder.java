@@ -1,6 +1,32 @@
-/**
- * 
+/* OptimalScheduleFinder is a strategy object to compute an optimal scheduler
+ * for an OptimizedSDFScheduler
+
+ Copyright (c) 1997-2010 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
  */
+
+
 package ptolemy.domains.sdf.optimize;
 
 
@@ -22,14 +48,25 @@ import ptolemy.domains.sdf.optimize.OptimizingSDFDirector.OptimizationCriteria;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * @author mgeilen
- *
- * A simple state space exploration algorithm to find a minimum buffer size schedule
- * A state of the exploration is an array of integers storing for every actor the 
- * number of remaining firings within an iteration and for every channel the number of 
- * tokens in the channel.
- */
+<h1>Class comments</h1>
+An OptimalScheduleFinder encapsulates an algorithm to find an optimized schedule.
+In particular it implements a simple state space exploration algorithm to find a 
+minimum buffer size schedule.
+<p>
+See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector}, 
+{@link ptolemy.domains.sdf.optimize.optimizingSDFScheduler} and 
+{@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
+</p>
+@see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
+@see ptolemy.domains.sdf.optimize.OptimizingSDFScheduler
+@see ptolemy.domains.sdf.optimize.BufferingProfile
 
+@author Marc Geilen
+@version $Id: $
+@since Ptolemy II 0.2
+@Pt.ProposedRating Red (mgeilen)
+@Pt.AcceptedRating Red ()
+*/
 
 public class OptimalScheduleFinder {
 
@@ -97,7 +134,7 @@ public class OptimalScheduleFinder {
         // consumer
         public int channelSize(State s) {
             int result = 0;
-            for(int i=0; i<nrConsumers; i++){
+            for(int i = 0; i<nrConsumers; i++){
                 result = Math.max(result, s.channelContent[i]);
             }
             return result;
@@ -506,8 +543,8 @@ public class OptimalScheduleFinder {
         // reverse the order of the states
         LinkedList sl = new LinkedList();
         State ss = s;
-        while(ss!=null){
-            if(ss.firingActor!=null){
+        while(ss != null){
+            if(ss.firingActor != null){
                 sl.addFirst(ss);
             }
             ss = ss.previousState;

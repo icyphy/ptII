@@ -39,8 +39,22 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// DummySource
 
 /**
-* A simple actor acting as a dummy source for testing
-* @author Marc Geilen
+<h1>Class comments</h1>
+A simple actor acting as a dummy source used for testing the OptimizingSDFDirector.
+<p>
+See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector}, 
+{@link ptolemy.domains.sdf.optimize.optimizingSDFScheduler} and 
+{@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
+</p>
+@see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
+@see ptolemy.domains.sdf.optimize.OptimizingSDFScheduler
+@see ptolemy.domains.sdf.optimize.BufferingProfile
+
+@author Marc Geilen
+@version $Id: $
+@since Ptolemy II 0.2
+@Pt.ProposedRating Red (mgeilen)
+@Pt.AcceptedRating Red ()
 */
 
 public class DummySource extends Source implements BufferingProfile {
@@ -68,12 +82,12 @@ public class DummySource extends Source implements BufferingProfile {
     */
    public void fire() throws IllegalActionException {
        DummyFrame f = new DummyFrame();
-       f.value = this._counter;
+       f.value = _counter;
        output.send(0, new DummyReferenceToken(f));
    }
 
    public boolean postfire() throws IllegalActionException {
-       this._counter ++;
+       _counter ++;
        return super.postfire();
    }
 
@@ -82,7 +96,7 @@ public class DummySource extends Source implements BufferingProfile {
     */
    public void initialize() throws IllegalActionException {
        super.initialize();
-       this._counter = 0;
+       _counter = 0;
    }
 
 

@@ -66,7 +66,7 @@ selects the optimization criterion.
 @see ptolemy.domains.sdf.optimize.OptimizingSDFScheduler
 
 @author Marc Geilen
-@version $Id: SDFDirector.java 57330 2010-02-25 22:42:06Z eal $
+@version $Id: $
 @since Ptolemy II 0.2
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
@@ -136,8 +136,7 @@ public class OptimizingSDFDirector extends SDFDirector {
         if(OptimizationCriterion != null)
             _setOptimizationCriterionValue();
 
-        // FIXME: occasionally there is an error saying that the buffer is too small
-        // apparently the buffer sizes are not set according to the new schedule
+        // set the constrainBufferSizes parameter
         scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
         setScheduler(scheduler);
 
