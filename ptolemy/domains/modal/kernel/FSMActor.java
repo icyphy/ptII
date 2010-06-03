@@ -2280,18 +2280,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     + ex.getMessage());
         }
 
-        try {
-            modelError = new Parameter(this, "modelError");
-            modelError.setTypeEquals(BaseType.BOOLEAN);
-            //modelError.setVisibililty
-            modelError.setExpression("false");
-            // =new TypedIOPort(this, "modelError", true, true);
-            //modelError.setTypeEquals(BaseType.BOOLEAN);
-        } catch (IllegalActionException ex) {
-            ex.printStackTrace();
-        } catch (NameDuplicationException ex) {
-            ex.printStackTrace();
-        }
         _identifierToPort = new HashMap<String, Port>();
     }
 
@@ -2631,30 +2619,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    public void setModelError() {
-        if (_modelError == false) {
-            try {
-                modelError.setExpression("true");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (_debugging) {
-                _debug("I've set the model error");
-            }
-            _modelError = true;
-        }
-    }
-
-    public void clearModelError() {
-        if (_modelError) {
-            if (_debugging) {
-                _debug("I've cleared the model error");
-            }
-
-            _modelError = false;
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -2733,8 +2697,4 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _tokenListArrays;
-
-    private Parameter modelError;
-    private boolean _modelError = false;
-
 }
