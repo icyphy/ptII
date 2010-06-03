@@ -378,8 +378,8 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             _debug("handleModelError called for the ModalModelDirector "
                     + this.getDisplayName());
         }
-        FSMActor theActor = this.getController();
-        theActor.setModelError();
+        //FSMActor theActor = this.getController();
+        this.setModelError();
 
         return true;
     }
@@ -520,6 +520,40 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
                 + " r=\"5\" style=\"fill:white\"/>\n"
                 + "<circle cx=\"15\" cy=\"0\""
                 + " r=\"5\" style=\"fill:white\"/>\n" + "</svg>\n");
+
+        try {
+            modelError = new Parameter(this, "modelError");
+            modelError.setTypeEquals(BaseType.BOOLEAN);
+            modelError.setExpression("false");
+        } catch (IllegalActionException ex) {
+            ex.printStackTrace();
+        } catch (NameDuplicationException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void setModelError() {
+        if (_modelError == false) {
+            try {
+                modelError.setExpression("true");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (_debugging) {
+                _debug("I've set the model error");
+            }
+            _modelError = true;
+        }
+    }
+
+    public void clearModelError() {
+        if (_modelError) {
+            if (_debugging) {
+                _debug("I've cleared the model error");
+            }
+
+            _modelError = false;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -534,4 +568,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      *  where the causality interface is state dependent.
      */
     private Map<State, Long> _causalityInterfacesVersions;
+
+    private Parameter modelError;
+    private boolean _modelError = false;
 }
