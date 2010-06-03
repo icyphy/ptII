@@ -1575,6 +1575,11 @@ else
 	PTFUZZYENGINE_DIR=$withval,
 	PTFUZZYENGINE_DIR=$PTII/vendors/misc/FuzzyEngine)
 
+    if test ! -f "$PTFUZZYENGINE_DIR/fuzzy/FuzzyEngine.class"; then
+	PT_MSG_RESULT([Could not find $PTFUZZYENGINE_DIR/fuzzy/FuzzyEngine.class])
+	AC_MSG_CHECKING([compiling in $PTFUZZYENGINE_DIR/fuzzy])
+        (cd "$PTFUZZYENGINE_DIR/fuzzy"; javac -classpath .. *.java)
+    fi	
     if test -f "$PTFUZZYENGINE_DIR/fuzzy/FuzzyEngine.class"; then
 	PT_MSG_RESULT([$PTFUZZYENGINE_DIR])
 	# Set to fuzzy and used in
@@ -1599,13 +1604,23 @@ else
     fi
 fi
 
+set -x
 if test -z "$PTFUZZY_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/logic/fuzzy/"
 else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$PTFUZZYENGINE_DIR\"/>"
-fi 
+   shortdir=`echo "$PTFUZZYENGINE_DIR" | sed "s@$PTII/@@"`
+   if test -d "$shortdir"; then
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+           <classpathentry kind=\"src\" path=\"$shortdir\"/>"
+      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$shortdir/"
+   else
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+           <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
+      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$PTFUZZYENGINE_DIR/"
+   fi
 
+fi 
+set +x
 #--------------------------------------------------------------------
 #       Garbage Collector (GC)
 #       The C code generator can use the Boehm Garbage Collector
@@ -2057,7 +2072,6 @@ else
 	PTJOGL_DIR=$PTII/vendors/sun/jogl)
 
     if test -f "$PTJOGL_DIR/lib/jogl.jar"; then
-	PT_MSG_RESULT([$PTJOGL_DIR])
 	# Set to gro and used in
 	# $PTII/ptolemy/domains/makefile if jogl.jar was found.
 	PTGRO_DIR=gro
@@ -2079,6 +2093,7 @@ else
 	           <classpathentry kind=\"lib\" path=\"$PTJOGL_DIR/lib/$jar\"/>"
 	    fi 
         done
+	PT_MSG_RESULT([$PTJOGL_DIR])
     fi
 
     if test "$PTGRO_DIR" = ""; then
@@ -2154,7 +2169,6 @@ else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$JOYSTICK_JAR\"/>"
 fi 
-
 
 #--------------------------------------------------------------------
 #       JXL is the Java Excel library, which is GPL'd.
@@ -3651,6 +3665,81 @@ else
 fi 
 
 #--------------------------------------------------------------------
+#       PowerMock is used for testing and is CPL'd.
+#       PowerMock includes JUnit and EasyMock. 
+#--------------------------------------------------------------------
+
+# PTPOWERMOCK_DIR is set to test and used in
+# $PTII/ptdb/makefile
+PTPOWERMOCK_DIR= 
+
+# PowerMock, used for testing, see http://code.google.com/p/powermock/
+# Used in ptolemy/ptdb/test/makefile
+PTPOWERMOCK_JARS=
+
+# We only need to look for PowerMock if the ptdb/test directory is present
+POWERMOCK_USER_DIR="$PTII/ptdb/test"
+if test ! -d "$POWERMOCK_USER_DIR"; then
+    PT_MSG_STATUS([$POWERMOCK_USER_DIR is not present,
+    so we need not find PowerMock])
+else
+    AC_MSG_CHECKING([for PowerMock test harness])
+    AC_ARG_WITH(jxl, [  --with-powermock=DIR       use PowerMock test harness from DIR,
+                          defaults to \$PTII/vendors/misc/powermock-easymock-junit-1.3.8],
+	POWERMOCK_DIR=$withval,
+	POWERMOCK_DIR=$PTII/vendors/misc/powermock-easymock-junit-1.3.8)
+
+    if test -d "$POWERMOCK_DIR"; then
+	PT_MSG_RESULT([$POWERMOCK_DIR])
+        jars="cglib-nodep- easymock- easymockclassextension- javassist- junit- objenesis- powermock-easymock-"
+	powermockjarpath=
+	for jar in $jars
+	do
+	    if test "${PTVERBOSE:-none}" = "none"; then
+	        $PT_ECHO $ECHO_N "."
+	    else
+                $PT_ECHO $ECHO_N "$jar "
+            fi
+	    jarpath=`$FIND "$POWERMOCK_DIR" -name "*${jar}*.jar" | head -1`
+   	    if test -f "$jarpath"; then
+                # Keep track of the jars so we can use them while building
+	        # with make.
+  	        powermockjarpath="$powermockjarpath$CLASSPATHSEPARATOR$jarpath"
+
+		ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                    <classpathentry kind=\"lib\" path=\"$jarpath\"/>"
+            else   
+	        AC_MSG_WARN([Failed to find $jar in $POWERMOCK_DIR: $jarpath])
+	        powermockjarpath=
+	        break
+	   fi
+	done	
+	if test ! -z eclipsejarpath; then
+	   PTPOWERMOCK_JARS=$powermockjarpath
+	   PTPOWERMOCK_DIR=test
+        fi
+	
+    fi	
+
+    if test "$PTPOWERMOCK_DIR" = ""; then
+        AC_MSG_WARN([Failed to find PowerMock.
+    Perhaps PowerMock was not installed?
+    You need not download these packages if you would like
+    to run the tests.  To install PowerMock, go to
+    http://code.google.com/p/powermock/
+    Download PowerMock for EasyMock and JUnit and unzip it in
+    $PTII/vendors/misc so that 
+    $PTII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
+    then rerun configure])
+    fi
+fi
+
+if test -z "$PTPOWERMOCK_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptcg/test"
+fi 
+
+
+#--------------------------------------------------------------------
 #       Ptalon 
 #--------------------------------------------------------------------
 
@@ -5139,6 +5228,14 @@ AC_SUBST(PTSVG_DIR)
 
 # Jar file used by diva/util/java2d/svg/makefile
 AC_SUBST(PTSVG_JAR)
+
+# PTPOWERMOCK_DIR is set to test and used in
+# $PTII/ptdb/makefile
+AC_SUBST(PTPOWERMOCK_DIR)
+
+# PowerMock, used for testing, see http://code.google.com/p/powermock/
+# Used in ptolemy/ptdb/test/makefile
+AC_SUBST(PTPOWERMOCK_JARS)
 
 # Jar files used by the Image Processing library from http://processing.org
 AC_SUBST(PTPROCESSING_JARS)
