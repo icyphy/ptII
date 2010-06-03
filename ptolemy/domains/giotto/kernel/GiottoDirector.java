@@ -153,21 +153,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime = ((BooleanToken) synchronizeToRealTime
                     .getToken()).booleanValue();
-        } else if (attribute == errorAction) {
-            String errorActionName = errorAction.getExpression().trim();
-
-            if (errorActionName.equals("Warn")) {
-                _errorAction = ErrorAction.warn;
-            } else if (errorActionName.equals("Reset")) {
-                _errorAction = ErrorAction.reset;
-            } else if (errorActionName.equals("TimedUtilityFunction")) {
-                _errorAction = ErrorAction.timedutilityfunction;
-            } else if (errorActionName.equals("ErrorTransition")) {
-                _errorAction = ErrorAction.errorTransition;
-            } else {
-                throw new IllegalActionException(this,
-                        "Unrecognized action on error: " + errorActionName);
-            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -553,14 +538,14 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Handle a model error.
+   /* *//** Handle a model error.
      *  @param context The object in which the error occurred.
      *  @param exception An exception that represents the error.
      *  @return True if the error has been handled, or false if the
      *   error is not handled.
      *  @exception IllegalActionException If the handler handles the
      *   error by throwing an exception.///
-     */
+     *//*
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
 
@@ -577,7 +562,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     "Unable to set error transition. This is the top most director ");
         }
 
-    }
+    }*/
 
     /** Initialize the actors associated with this director.
      *  The order in which the actors are initialized is arbitrary.
@@ -997,24 +982,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     + ex.getMessage());
         }
 
-        try {
-            errorAction = new StringParameter(this, "errorAction");
-            errorAction.setExpression("Warn");
-            errorAction.addChoice("Warn");
-            errorAction.addChoice("Reset");
-            errorAction.addChoice("TimedUtilityFunction");
-            errorAction.addChoice("ErrorTransition");
-        } catch (NameDuplicationException ne) {
-            if (_debugging) {
-                _debug("I should handle this error in a better way later.");
-            }
-        } catch (IllegalActionException ie) {
-            if (_debugging) {
-                _debug("I should handle this error in a better way later.");
-            }
-
-        }
-        generator = new Random();
+        
     }
 
     // Request that the container of this director be refired in the future.
@@ -1060,21 +1028,15 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /** The errorAction operator.  This is a string-valued attribute
+   /* *//** The errorAction operator.  This is a string-valued attribute
      *  that defaults to "warn".
-     */
-    public StringParameter errorAction;
+     *//*
+    public StringParameter errorAction;*/
 
-    /// Enumeration of the different ways to handle errors
-    private enum ErrorAction {
-        warn, reset, timedutilityfunction, errorTransition
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    //  An indicator for the error action to take.
-    private ErrorAction _errorAction;
-
+    
     // The time for next iteration.
     private Time _expectedNextIterationTime;
 
@@ -1108,6 +1070,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     //lcm of frequencies see my this director
     private int _lcm;
+    
 
-    private Random generator;
+    
 }

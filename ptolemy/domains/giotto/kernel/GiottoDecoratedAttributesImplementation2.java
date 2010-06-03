@@ -101,7 +101,7 @@ public class GiottoDecoratedAttributesImplementation2 extends
 
                 dummyParam = new Parameter(temp, "WCET");
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
-                dummyParam.setExpression(Double.toString(0.00000001));
+                dummyParam.setExpression(Double.toString(0.0));
 
             } catch (NameDuplicationException e) {
                 if (_debugging) {
@@ -109,7 +109,7 @@ public class GiottoDecoratedAttributesImplementation2 extends
                             + " already had wcet parameter appended");
                 }
             }
-      /*      try {
+            try {
                 dummyParam = new Parameter(temp, "grace");
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
                 dummyParam.setExpression(Double.toString(0.0));
@@ -120,7 +120,7 @@ public class GiottoDecoratedAttributesImplementation2 extends
                             + " already had grace parameter appended");
                 }
             }
-*/
+
             try {
                 dummyParam = new Parameter(temp, "ET");
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
@@ -136,8 +136,6 @@ public class GiottoDecoratedAttributesImplementation2 extends
 
         }
         // end of label all the actors with WCET
-
-       // GiottoDirector tempDir = (GiottoDirector) decorator;
 
         double dirWCET = 0.0;//tempDir.getWCET();
         NamedObj parentContainer = null;
@@ -192,9 +190,6 @@ public class GiottoDecoratedAttributesImplementation2 extends
                 }
             }
         }
-
-  
-
         _decorator = decorator;
     }
 

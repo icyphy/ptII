@@ -36,13 +36,18 @@ import ptolemy.actor.Executable;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -50,24 +55,30 @@ import ptolemy.kernel.util.SingletonAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// MonitorReceiverContents
-///instantiate ptolemy.vergil.actor.lib.MonitorReceiverAttribute
-// This quantity manager leverages the code in ptolemy.vergil.actor.lib.MoniterReceiverContents
-// written by Edward A. Lee.
 /**
- This parameter, when inserted into a model or an opaque composite actor,
- causes all input ports to acquire an attribute that makes them display
- their contents on the screen.  This works by piggybacking on the
- initialize() method of the container to insert the relevant parameters
- into the ports. It also piggybacks on postfire() and wrapup() to issue
- a ChangeRequest, which causes a repaint of the screen in Vergil.
- To stop monitoring the queue contents, simply delete
- this attribute from the model.
-
- @author  Edward A. Lee, Contributor: Bert Rodiers
+ * This parameter, when inserted into a model or an opaque composite actor, 
+ * facilitates an aspect oriented approach to management and possible mitigation 
+ * of timing errors in a specification that uses timing but has no mechanisms 
+ * in it's specification for timing error handling. This parameter is also a 
+ * decorator pattern that allows all the actors present to be decorated with WCET, 
+ * execution time as  well as grace parameters. 
+ * In addition, the presence of the quantity manager indicates a desire to 
+ * incorporate execution timing as well as error handling into a Giotto specification.  
+ * This works by piggybacking on the  fire(), and postfire() methods of the container
+ * to determine execution times  and determine when a timing overrun occurs. 
+ * The piggybacks on postfire() and wrapup() issue a ChangeRequest, which causes 
+ * a repaint of the screen in Vergil.
+ * To remove actual execution timing and timing error management from a model, 
+ * simply delete  this attribute from the model.
+ * 
+ * The parameter can be instantinated by instantiating an attribute of type
+ * ptolemy.domains.giotto.kernel.GiottoQuantityManager
+  @author Shanna-Shaye Forbes. Based on the MonitorReceiverContents.java created by Edward A. Lee
  @version $Id$
  @since Ptolemy II 8.0
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (cxh)
+ @Pt.ProposedRating Red (sssf)
+ @Pt.AcceptedRating Red (sssf)
+ // ptolemy.domains.giotto.kernel.GiottoQuantityManager
  */
 public class GiottoQuantityManager extends SingletonAttribute implements
         Decorator {
@@ -95,13 +106,15 @@ public class GiottoQuantityManager extends SingletonAttribute implements
         SingletonParameter hideName = new SingletonParameter(this, "_hideName");
         hideName.setToken(BooleanToken.TRUE);
         hideName.setVisibility(Settable.EXPERT);
-        generator = new Random();
+
         try {
             errorAction = new StringParameter(this, "errorAction");
             errorAction.setExpression("Warn");
             errorAction.addChoice("Warn");
-            errorAction.addChoice("Reset");
-            errorAction.addChoice("TimedUtilityFunction");
+            errorAction.addChoice("TimedUtilityFunctionv1");
+            errorAction.addChoice("TimedUtilityFunctionv2");
+            errorAction.addChoice("TimedUtilityFunctionv3");
+            errorAction.addChoice("TimedUtilityFunctionv4");
             errorAction.addChoice("ErrorTransition");
         } catch (NameDuplicationException ne) {
             if (_debugging) {
@@ -113,10 +126,47 @@ public class GiottoQuantityManager extends SingletonAttribute implements
             }
 
         }
+        generator = new Random();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the specified attribute is <i>filename</i>, then close
+     *  the current file (if there is one) and open the new one.
+     *  If the specified attribute is <i>period</i> or
+     *  <i>synchronizeToRealTime</i>, then cache the new values.
+     *  If the specified attribute is <i>timeResolution</i>,
+     *  then cache the new value.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the specified attribute
+     *   is <i>filename</i> and the file cannot be opened.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == errorAction) {
+            String errorActionName = errorAction.getExpression().trim();
+
+            if (errorActionName.equals("Warn")) {
+                _errorAction = ErrorAction.warn;
+            } else if (errorActionName.equals("TimedUtilityFunctionV1")) {
+                _errorAction = ErrorAction.timedutilityfunctionv1;
+            } else if (errorActionName.equals("TimedUtilityFunctionV2")) {
+                _errorAction = ErrorAction.timedutilityfunctionv2;
+            } else if (errorActionName.equals("TimedUtilityFunctionV3")) {
+                _errorAction = ErrorAction.timedutilityfunctionv3;
+            } else if (errorActionName.equals("TimedUtilityFunctionV4")) {
+                _errorAction = ErrorAction.timedutilityfunctionv4;
+            } else if (errorActionName.equals("ErrorTransition")) {
+                _errorAction = ErrorAction.errorTransition;
+            } else {
+                throw new IllegalActionException(this,
+                        "Unrecognized action on error: " + errorActionName);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Specify the container. If the container is not the same as the
      *  previous container, then stop monitoring queue contents in the
@@ -132,7 +182,9 @@ public class GiottoQuantityManager extends SingletonAttribute implements
      */
     public void setContainer(final NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        System.out.println("set container method called");
+        if (_debugging) {
+            _debug("set container method called");
+        }
         NamedObj previousContainer = getContainer();
         if (previousContainer == container) {
             return;
@@ -145,19 +197,27 @@ public class GiottoQuantityManager extends SingletonAttribute implements
                 _piggybackContainer.removePiggyback(_executable);
             }
             _executable = null;
-
-            /*   List<Actor> entities = ((CompositeActor) previousContainer)
-               .deepEntityList();
-            for (Actor entity : entities) {
-            List<IOPort> ports = entity.inputPortList();
-            for (IOPort port : ports) {
-               List<MonitorReceiverAttribute> attributes = port
-                       .attributeList(MonitorReceiverAttribute.class);
-               for (MonitorReceiverAttribute attribute : attributes) {
-                   attribute.setContainer(null);
-               }
+            String name;
+            try {
+                workspace().getWriteAccess();
+                List<Actor> entities = ((CompositeActor) previousContainer)
+                        .deepEntityList();
+                for (Actor entity : entities) {
+                    List<Attribute> paramList = ((Entity) entity)
+                            .attributeList();
+                    for (Attribute param : paramList) {
+                        name = param.getDisplayName();
+                        if (name.equals("WCET") || name.equals("ET")
+                                || name.equals("grace")) {
+                            param.setPersistent(false);
+                        }
+                    }
+                }
+            } catch (Exception ex) { // this should later be replaced with a more specific exception
+                throw new InternalErrorException(ex);
+            } finally {
+                workspace().doneTemporaryWriting();
             }
-            }*/
             System.out
                     .println("I should remove all the attributes that were added here.");
 
@@ -176,7 +236,71 @@ public class GiottoQuantityManager extends SingletonAttribute implements
                     }
 
                     // Request repaint on postfire() and wrapup().
-                    public boolean postfire() {
+                    public boolean postfire() throws IllegalActionException {
+                        System.out
+                                .println("I should now check to see if there are cumulative overruns");
+
+                        // here check to see if there were cumulative timing overruns
+                        // cumulative execution times
+                        double actorExecutionTimes = 0;
+                        // cumulative worst case execution times
+                        double actorWorstCaseExecutionTimes = 0;
+                        // cumulative grace times
+                        double actorGraceTimes = 0;
+                        //for()
+                        List<Actor> entities = ((CompositeActor) container)
+                                .deepEntityList();
+                        for (Actor actor : entities) {
+
+                            Attribute executionTime = ((Entity) actor)
+                                    .getAttribute("ET");
+                            Attribute WCET = ((Entity) actor)
+                                    .getAttribute("WCET");
+                            Attribute Grace = ((Entity) actor)
+                                    .getAttribute("grace");
+                            try {
+                                actorWorstCaseExecutionTimes += ((DoubleToken) ((Variable) WCET)
+                                        .getToken()).doubleValue();
+                                actorGraceTimes += ((DoubleToken) ((Variable) Grace)
+                                        .getToken()).doubleValue();
+                                actorExecutionTimes += ((DoubleToken) ((Variable) executionTime)
+                                        .getToken()).doubleValue();
+                            } catch (IllegalActionException ex) {
+                                ex.printStackTrace(); // replace later with more appropriate behavior
+                            }
+
+                        }
+                        if (_debugging) {
+                            _debug("execution times are: "
+                                    + actorExecutionTimes
+                                    + " grace times are: " + actorGraceTimes
+                                    + " actor wcet times are: "
+                                    + actorWorstCaseExecutionTimes);
+                        }
+                        if ((actorExecutionTimes + actorGraceTimes) > actorWorstCaseExecutionTimes) {
+                            if (_debugging) {
+                                _debug("There was a timing overrun");
+                            }
+                            boolean bb;
+                            bb = _handleModelError(
+                                    container,
+                                    new IllegalActionException(
+                                            container,
+                                            "total ET  of ("
+                                                    + actorExecutionTimes
+                                                    + ") is larger than WCET ("
+                                                    + actorWorstCaseExecutionTimes
+                                                    + " ) and grace time of ("
+                                                    + actorGraceTimes
+                                                    + ") for actor "
+                                                    + container
+                                                            .getDisplayName()));
+                            System.out
+                                    .println("The model error was handeled successfully: "
+                                            + bb);
+
+                        }
+
                         ChangeRequest request = new ChangeRequest(this,
                                 "SetVariable change request", true /*Although this not a structural change in my point of view
                                                                    , we however for some reason need to specify it is, otherwise the GUI won't update.*/
@@ -210,49 +334,28 @@ public class GiottoQuantityManager extends SingletonAttribute implements
                         System.out
                                 .println("Fire method called in the quantity manager");
 
-                        /*workspace().getWriteAccess();
+                        // assign an execution time to each actor
+
+                        workspace().getWriteAccess();
                         List<Actor> entities = ((CompositeActor) container)
                                 .deepEntityList();
                         for (Actor actor : entities) {
 
-                            // Add in execution time stuff here.
-                            //  double actorET;
                             double actorWCET;
-                            double actorGrace;
+
                             Attribute executionTime = ((Entity) actor)
                                     .getAttribute("ET");
                             Attribute WCET = ((Entity) actor)
                                     .getAttribute("WCET");
-                            Attribute Grace = ((Entity) actor)
-                                    .getAttribute("grace");
                             actorWCET = ((DoubleToken) ((Variable) WCET)
-                                    .getToken()).doubleValue();
-                            actorGrace = ((DoubleToken) ((Variable) Grace)
                                     .getToken()).doubleValue();
 
                             double t = generator.nextDouble() * actorWCET; // I multiply by actorWCET in an attempt to scale
                             Parameter dummyP = (Parameter) executionTime;
-                            if (_debugging) {
-                                _debug("in the dummy parameter the name is : "
-                                        + dummyP.getName());
-                                _debug("it has the value " + t
-                                        + " with wcet set to " + actorWCET
-                                        + " and grace set to " + actorGrace);
-                                _debug(" and is attatched to actor "
-                                        + dummyP.getContainer());
-                            }
-                            dummyP.setExpression(Double.toString(t));
-                            if ((t + actorGrace) > actorWCET) {
-                                System.out
-                                        .println("I should now raise an error");
 
-                                   _handleModelError((NamedObj) actor,
-                                           new IllegalActionException(this, "total ET  of ("
-                                                   + t + ") is larger than WCET (" + actorWCET
-                                                   + ") for actor " + actor.getDisplayName()));
-                                                   
-                            }
-                        }*/
+                            dummyP.setExpression(Double.toString(t));
+                        }
+                        workspace().doneTemporaryWriting();
                         System.out
                                 .println("At the end of the fire method in the quantity manager");
                     }
@@ -270,6 +373,7 @@ public class GiottoQuantityManager extends SingletonAttribute implements
                     }
 
                     public boolean prefire() throws IllegalActionException {
+
                         return true;
                     }
 
@@ -358,7 +462,7 @@ public class GiottoQuantityManager extends SingletonAttribute implements
                 _debug("temp has name " + temp.getDisplayName());
             }
 
-            List<Parameter> paramList = temp.attributeList();//new Parameter(temp, "WCET");
+            List<Parameter> paramList = temp.attributeList();
 
             for (Parameter param : paramList) {
                 if (param.getDisplayName().equals("WCET")) {
@@ -386,6 +490,97 @@ public class GiottoQuantityManager extends SingletonAttribute implements
         return new GiottoDecoratedAttributesImplementation2(target, this);
     }
 
+    /** Handle a model error.
+     *  @param context The object in which the error occurred.
+     *  @param exception An exception that represents the error.
+     *  @return True if the error has been handled, or false if the
+     *   error is not handled.
+     *  @exception IllegalActionException If the handler handles the
+     *   error by throwing an exception.///
+     */
+    public boolean handleModelError(NamedObj context,
+            IllegalActionException exception) throws IllegalActionException {
+
+        if (_debugging) {
+            _debug("Handle Model Error Called for GiottoDirector");
+        }
+
+        NamedObj dummyContainer = this.getContainer();
+        NamedObj parentContainer = dummyContainer.getContainer();
+        if (parentContainer != null) {
+            return parentContainer.handleModelError(context, exception);
+        } else {
+            throw new IllegalActionException(this,
+                    "Unable to set error transition. This is the top most director ");
+        }
+
+    }
+
+    private boolean _handleModelError(NamedObj context,
+            IllegalActionException exception) throws IllegalActionException {
+
+        if (_errorAction == ErrorAction.warn) {
+            if (_debugging) {
+                _debug("an error was detected in " + context.getFullName());
+            }
+            return true;
+        } else if (_errorAction == ErrorAction.timedutilityfunctionv2) {
+            String temp = exception.toString();
+
+            if (_debugging) {
+                _debug("I should check to see if I'm within the acceptable range for the timed utility function in v2");
+                _debug("Actor name is: " + context.getName());
+                _debug("The exception string contains: " + temp);
+            }
+            int i, j, k, l = 0;
+            i = temp.indexOf("(");
+            j = temp.indexOf(")");
+            k = temp.lastIndexOf("(");
+            l = temp.lastIndexOf(")");
+            double wcet = Double.parseDouble(temp.substring(i + 1, j));
+            double periodvalue = Double.parseDouble(temp.substring(k + 1, l));
+            if (_debugging) {
+                _debug("wcet value is " + wcet + " and period value is "
+                        + periodvalue);
+                //if()
+            }
+            return false;
+        } else if (_errorAction == ErrorAction.timedutilityfunctionv1) {
+            if (_debugging) {
+                _debug("I should check to see if I'm within the acceptable range for the timed utility function");
+            }
+            String temp = exception.toString();
+            int i, j, k, l = 0;
+            i = temp.indexOf("(");
+            j = temp.indexOf(")");
+            k = temp.lastIndexOf("(");
+            l = temp.lastIndexOf(")");
+            double wcet = Double.parseDouble(temp.substring(i + 1, j));
+            double periodvalue = Double.parseDouble(temp.substring(k + 1, l));
+            if (_debugging) {
+                _debug("wcet value is " + wcet + " and period value is "
+                        + periodvalue);
+                //if()
+            }
+            return true;
+        } else if (_errorAction == ErrorAction.errorTransition) {
+            if (_debugging) {
+                _debug("I should take the errorTransition");
+            }
+            return handleModelError(context, exception);
+        }
+
+        return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The errorAction operator.  This is a string-valued attribute
+     *  that defaults to "warn".
+     */
+    public StringParameter errorAction;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -397,5 +592,11 @@ public class GiottoQuantityManager extends SingletonAttribute implements
 
     private Random generator;
 
-    public StringParameter errorAction;
+    //  An indicator for the error action to take.
+    private ErrorAction _errorAction;
+
+    /// Enumeration of the different ways to handle errors
+    private enum ErrorAction {
+        warn, timedutilityfunctionv1, timedutilityfunctionv2, timedutilityfunctionv3, timedutilityfunctionv4, errorTransition
+    }
 }
