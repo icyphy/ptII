@@ -525,6 +525,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             modelError = new Parameter(this, "modelError");
             modelError.setTypeEquals(BaseType.BOOLEAN);
             modelError.setExpression("false");
+            modelError.setVisibility(null);
         } catch (IllegalActionException ex) {
             ex.printStackTrace();
         } catch (NameDuplicationException ex) {
