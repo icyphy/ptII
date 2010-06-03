@@ -46,17 +46,15 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-////DecoratedAttributesImplementation
-// This implementation leverages the code written by Bert Rodiers in DecoratedAttributesImplementation.java
+///////////////////////////////////////////////////////////////////
+//// GiottoDecoratedAttributesImplementation
 
 /**
-A class that decorates all the actors seen by the Giotto director.
-This is a modification of Bert's DecoratedAttributesImplementation class. 
-My first attempt at this may be incorrect.
+Decorate all actors seen by the Giotto Director.
 
-The functionality is divided in two classes (DecoratedAttributes
-and this class) to solve dependency issues.
-See DecoratedAttributes for more information.
+<p>The implementation is divided betwee DecoratedAttributes and this
+class to solve dependency issues.  See {@link DecoratedAttributes} for
+more information.
 
 @author  Shanna-Shaye Forbes based on the DecoratedAttributesImplementation.java by Bert Rodiers.
 @version $Id$
@@ -64,9 +62,14 @@ See DecoratedAttributes for more information.
 @Pt.ProposedRating Red (sssf)
 @Pt.AcceptedRating Red (sssf)
  */
-
 public class GiottoDecoratedAttributesImplementation extends
         DecoratedAttributes {
+
+    // This class is a copy of Bert's DecoratedAttributesImplementation class
+    // and is experimental.
+    // FIXME: Need a description of why a copy was necessary as
+    // opposed to subclassing.
+
 
     /** Construct a DecoratedAttribute from the container and the decorator.
      *  @param container The container this object.
