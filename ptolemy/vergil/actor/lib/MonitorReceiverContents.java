@@ -56,6 +56,8 @@ import ptolemy.kernel.util.SingletonAttribute;
  a ChangeRequest, which causes a repaint of the screen in Vergil.
  To stop monitoring the queue contents, simply delete
  this attribute from the model.
+ To use this one option is to instantiate an attribute of type
+ ptolemy.vergil.actor.lib.MonitorReceiverContents
 
  @author  Edward A. Lee, Contributor: Bert Rodiers
  @version $Id$
