@@ -25,14 +25,19 @@ cd dbxml-2.5.16
 sh buildall.sh >& build.out &
 tail -f build.out
 </pre>
-Please just wait till the end to see the successfully installation message.  It only takes such a long time once for the first time installation. 
 </li>
 
 <li>
-After the build is done, go to the folder <code><i>your_installation_path<i>/dbxml-2.5.16/install/bin</code>, and execute the command <code>dbxml</code.  
+After the build is done, go to the folder
+<code><i>your_installation_path</i>/dbxml-2.5.16/install/bin</code>,
+and execute the command <code>dbxml</code. 
+<pre>
+cd $PTII/vendors/misc/dbxml-2.5.16/install/bin
+./dbxml
+</pre>
 Note: if the system cannot find this command, try to include the whole path of this command <code><i>your_installation_path</i>/dbxml-2.5.16/install/bin/dbxml</code>.
 
-<li>	Now you should see the prompt of dbxml appears.  You can test whether the XMLDB runs properly by testing with the guidance from <code><i>your_installation_path</i>/dbxml-2.5.16/dbxml/docs/intro_xml/running.html</code>.
+<li> The dbxml prompt (<code>dbxml></code>) will appear. You can test whether the XMLDB runs properly by testing with the guidance from <code><i>your_installation_path</i>/dbxml-2.5.16/dbxml/docs/intro_xml/running.html</code>.
 </li>
 
 </ol>
