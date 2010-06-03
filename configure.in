@@ -1604,7 +1604,6 @@ else
     fi
 fi
 
-set -x
 if test -z "$PTFUZZY_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/logic/fuzzy/"
 else
@@ -1620,7 +1619,7 @@ else
    fi
 
 fi 
-set +x
+
 #--------------------------------------------------------------------
 #       Garbage Collector (GC)
 #       The C code generator can use the Boehm Garbage Collector
