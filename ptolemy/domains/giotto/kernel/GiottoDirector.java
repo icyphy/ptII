@@ -195,6 +195,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *   container.
      */
     public void fire() throws IllegalActionException {
+        System.out
+                .println("the fire method for the giotto director was called");
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
         if (container == null) {
@@ -301,54 +303,25 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                             + actor
                             + " now going to check to see if it went over time.");
                 }
-                // Add in execution time stuff here.
-                //  double actorET;
-                double actorWCET;
-                double actorGrace;
-                Attribute executionTime = ((Entity) actor).getAttribute("ET");
-                Attribute WCET = ((Entity) actor).getAttribute("WCET");
-                Attribute Grace = ((Entity) actor).getAttribute("grace");
-                actorWCET = ((DoubleToken) ((Variable) WCET).getToken())
-                        .doubleValue();
-                actorGrace = ((DoubleToken) ((Variable) Grace).getToken())
-                        .doubleValue();
-
-                double t = generator.nextDouble() * actorWCET; // I multiply by actorWCET in an attempt to scale
-                Parameter dummyP = (Parameter) executionTime;
-                if (_debugging) {
-                    _debug("in the dummy parameter the name is : "
-                            + dummyP.getName());
-                    _debug("it has the value " + t + " with wcet set to "
-                            + actorWCET + " and grace set to " + actorGrace);
-                    _debug(" and is attatched to actor "
-                            + dummyP.getContainer());
-                }
-                dummyP.setExpression(Double.toString(t));
-                if ((t + actorGrace) > actorWCET) {
-
-                    _handleModelError((NamedObj) actor,
-                            new IllegalActionException(this, "total ET  of ("
-                                    + t + ") is larger than WCET (" + actorWCET
-                                    + ") for actor " + actor.getDisplayName()));
-                }
+                
 
             }
 
             scheduleIterator = unitSchedule.iterator();
 
             while (scheduleIterator.hasNext()) {
-                Actor actor = ((Firing) scheduleIterator.next()).getActor();
+                Actor actor1 = ((Firing) scheduleIterator.next()).getActor();
 
                 if (_debugging) {
-                    _debug("Iterating " + ((NamedObj) actor).getFullName());
+                    _debug("Iterating " + ((NamedObj) actor1).getFullName());
                 }
 
-                if (actor.iterate(1) == STOP_ITERATING) {
+                if (actor1.iterate(1) == STOP_ITERATING) {
                     // FIXME: How to handle this?
                     // put the actor on a no-fire hashtable?
                     System.err.println("Warning: Giotto iterate returned "
                             + "STOP_ITERATING for actor \""
-                            + actor.getFullName() + "\"");
+                            + actor1.getFullName() + "\"");
                 }
             }
             if (_debugging) {
@@ -389,7 +362,11 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         if (_debugging) {
             _debug("done firing for this time unit");
         }
+        System.out
+                .println("end of the call to the fire method for the giotto director");
     }
+
+
 
     /** Request a firing of the given actor at the given absolute
      *  time.  This method calculates the period of invocation of
@@ -808,13 +785,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
         // Actor actor;
         double wcet = 0;
-        try {
-            createDecoratedAttributes(this);
-
-        } catch (NameDuplicationException e) {
-            e.printStackTrace();
-        }
-
         Attribute dirWCET = this.getContainer().getAttribute("WCET");
         if (dirWCET != null) {
             wcet = ((DoubleToken) ((Variable) dirWCET).getToken())
@@ -1006,43 +976,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             }
         }
         return frequencyValue;
-    }
-
-    private boolean _handleModelError(NamedObj context,
-            IllegalActionException exception) throws IllegalActionException {
-
-        if (_errorAction == ErrorAction.warn) {
-            System.out.println("an error was detected in "
-                    + context.getFullName());
-            return true;
-        } else if (_errorAction == ErrorAction.timedutilityfunction) {
-            System.out
-                    .println("I should check to see if I'm within the acceptable range for the timed utility function");
-            String temp = exception.toString();
-            int i, j, k, l = 0;
-            i = temp.indexOf("(");
-            j = temp.indexOf(")");
-            k = temp.lastIndexOf("(");
-            l = temp.lastIndexOf(")");
-            double wcet = Double.parseDouble(temp.substring(i + 1, j));
-            double periodvalue = Double.parseDouble(temp.substring(k + 1, l));
-            System.out.println("wcet value is " + wcet
-                    + " and period value is " + periodvalue);
-            return true;
-        } else if (_errorAction == ErrorAction.reset) {
-            if (_debugging) {
-                _debug("I should request a reset to the model");
-            }
-            throw exception;
-
-        } else if (_errorAction == ErrorAction.errorTransition) {
-            if (_debugging) {
-                _debug("I should take the errorTransition");
-            }
-            return handleModelError(context, exception);
-        }
-
-        return true;
     }
 
     // Initialize the director by creating a scheduler and parameters.
