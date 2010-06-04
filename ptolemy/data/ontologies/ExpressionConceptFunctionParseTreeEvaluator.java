@@ -103,15 +103,31 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             }
         }
 
+        // The first child contains the function name as an id.  It is
+        // ignored, and not evaluated unless necessary.
+        int argCount = node.jjtGetNumChildren() - 1;
+        List<Concept> argValues = new LinkedList<Concept>();
+
+        // First try to find a signature using argument token values.
+        for (int i = 0; i < argCount; i++) {
+            // Save the resulting value.
+            _evaluateChild(node, i + 1);
+            ConceptToken token = (ConceptToken) _evaluatedChildToken;
+            argValues.add(token.conceptValue());
+        }
+
+        if (node.getFunctionName().compareTo("lub") == 0) {
+            ConceptGraph g = ((Ontology) argValues.get(0).getContainer()).getGraph();
+            Concept bound = (Concept) g.leastUpperBound(argValues.toArray());
+            _evaluatedChildToken = new ConceptToken(bound);
+            return;
+        }
+
         if (function == null) {
             throw new IllegalActionException(
                     "Unrecognized concept function name: " + functionName
                             + " in the concept function expression string.");
         }
-
-        // The first child contains the function name as an id.  It is
-        // ignored, and not evaluated unless necessary.
-        int argCount = node.jjtGetNumChildren() - 1;
 
         if (function.isNumberOfArgumentsFixed() &&
                 argCount != function.getNumberOfArguments()) {
@@ -124,15 +140,6 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
                             + ", actual # arguments: " + argCount);
         }
 
-        List<Concept> argValues = new LinkedList<Concept>();
-
-        // First try to find a signature using argument token values.
-        for (int i = 0; i < argCount; i++) {
-            // Save the resulting value.
-            _evaluateChild(node, i + 1);
-            ConceptToken token = (ConceptToken) _evaluatedChildToken;
-            argValues.add(token.conceptValue());
-        }
 
         // Evaluate the concept function and set the evaluated token
         // to the string name of the concept that is the output of the
