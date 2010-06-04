@@ -89,6 +89,8 @@ import ptolemy.util.StringUtilities;
 
 /**
  An event to compare the model in the model parameter with a known good result.
+ <p>If the models differ only be the VersionAttribute, then they are
+ considered to be equal.
 
  @see ptolemy.actor.lib.NonStrictTest
 
@@ -192,8 +194,6 @@ public class TestModel extends GTEvent {
      *   thrown by the superclass.
      */
     public RefiringData fire(Token arguments) throws IllegalActionException {
-        System.out.println("TestModel.fire()");
-
         _firedOnce = true;
         RefiringData data = super.fire(arguments);
 
@@ -207,7 +207,10 @@ public class TestModel extends GTEvent {
             MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
             // Filter out any graphical classes.
-            MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
+            RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
+            // Remove VersionAttributes.
+            removeGraphicalClasses.put("ptolemy.kernel.attributes.VersionAttribute", null);
+            MoMLParser.addMoMLFilter(removeGraphicalClasses);
             entity = (CompositeEntity) GTTools.cleanupModel(entity, _parser);
         } finally {
             MoMLParser.setMoMLFilters(filters);
@@ -262,10 +265,17 @@ public class TestModel extends GTEvent {
         _numberOfInputTokensSeen++;
 
         if (!token.toString().equals(referenceToken.toString())) {
-            throw new IllegalActionException(this,
-                    "Test fails in iteration " + _iteration + ".\n"
-                    + "Value was: " + token
-                    + ". Should have been: " + referenceToken);
+            String versionAttribute = "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"[^\"]\">";
+            String replacement = "<!-- VersionAttribute -->";
+            if (token.toString().replaceAll(versionAttribute, replacement).equals(referenceToken.toString().replaceAll(versionAttribute, replacement))) {
+                throw new IllegalActionException(this,
+                        "Test fails in iteration " + _iteration + ".\n"
+                        + "Value was: " + token
+                        + ".\nShould have been: " + referenceToken);
+            } else {
+                System.out.println("TestModel: results differed from known "
+                        + "good results by only the VersionAttribute");
+            }
         }
 
         _iteration++;
