@@ -711,6 +711,14 @@ PTSVG_DIR =	@PTSVG_DIR@
 # Jar file used by diva/util/java2d/svg/makefile
 PTSVG_JAR =	@PTSVG_JAR@
 
+# PTPOWERMOCK_DIR is set to test and used in
+# $PTII/ptdb/makefile
+PTPOWERMOCK_DIR=	@PTPOWERMOCK_DIR@
+
+# PowerMock, used for testing, see is used for testing has an Apache license
+# Used in ptolemy/ptdb/test/makefile
+PTPOWERMOCK_JARS=	@PTPOWERMOCK_JARS@
+
 # Jar files used by the Image Processing library from http://processing.org
 PTPROCESSING_JARS =	@PTPROCESSING_JARS@
 

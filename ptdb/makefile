@@ -31,8 +31,10 @@
 
 ME =		ptdb
 
-#DIRS =		common demo docs gui kernel sampletests
-DIRS =		sampletests
+# $PTII/configure runs and looks for PTPOWERMOCK
+# $(PTPOWERMOCK_DIR) to test
+#DIRS =		common demo docs gui kernel $(PTPOWERMOCK_DIR)
+DIRS =		$(PTPOWERMOCK_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -60,12 +62,11 @@ MISC_FILES = \
 	docs \
 	gui \
 	kernel \
-	makefile \
-	sampletests
+	makefile
 
 OPTIONAL_FILES =
 
-all: suball $(EXTRA_SRCS)
+all: jclass $(EXTRA_SRCS)
 install: subinstall jars
 
 # Include rules for directories that contain only subdirectories.
