@@ -1,8 +1,7 @@
-# Makefile for Ptolemy II Open CV actors
+# Makefile for PtolemyII SDF Domain Buffer Optimization
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
-#
-# @Version: $Id$
+# @Version: $Id: makefile 43472 2006-08-21 23:16:56Z cxh $
+# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,63 +28,64 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/opencv
+ME =		ptolemy/domains/sdf/optimize
 
-DIRS = 		jna optimize
+DIRS =		testing
 
-# Root of the Java directory
+# Root of Ptolemy II directory
 ROOT =		../../../..
 
-# OPENCV_JAR and PTPROCESSING_JARS are set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(PTPROCESSING_JARS)
-
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+
 # Used to build jar files
-PTPACKAGE = 	opencv
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	optimize
+PTCLASSJAR =
 
-# Keep this list alphabetized.
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		testing/testing.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 JSRCS = \
-	Blend.java \
-	BlendADD.java \
-	BlendSUB.java \
-	Blur.java \
-	Brighten.java \
-	Copy.java \
-	Darken.java \
-	Detect.java \
-	Filter.java \
-	Flip.java \
-	GrayScale.java \
-	HighContrast.java \
-	Invert.java \
-	LowContrast.java \
-	OpenCVReader.java \
-	OpenCVToAWTImage.java \
-	Read.java
+	BufferingProfileFiring.java \
+	BufferingProfile.java \
+	OptimalScheduleFinder.java \
+	OptimizingSDFDirector.java \
+	OptimizingSDFScheduler.java \
+	SharedBufferTransformer.java
 
-OTHER_FILES_TO_BE_JARED = \
-	opencv.xml \
-	opencv-copyright.htm
+EXTRA_SRCS =	$(JSRCS)
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	javacv jna optimize #test
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+ # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	testing
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	$(PTCLASSJAR) \
+	doc \
+	'OptimalScheduleFinder$$Actor.class' \
+	'OptimalScheduleFinder$$Channel.class' \
+	'OptimalScheduleFinder$$ListOfActors.class' \
+	'OptimalScheduleFinder$$ListOfChannels.class' \
+	'OptimalScheduleFinder$$ListOfPorts.class' \
+	'OptimalScheduleFinder$$Port.class' \
+	'OptimalScheduleFinder$$SetOfStates.class' \
+	'OptimalScheduleFinder$$SortedSetOfStates.class' \
+	'OptimalScheduleFinder$$State.class' \
+	'OptimalScheduleFinder$$StateComparator.class' \
+	'OptimalScheduleFinder$$TwoWayHashMap.class' \
+	'OptimizingSDFDirector$$OptimizationCriteria.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
-
 
 all: jclass
 install: jclass jars

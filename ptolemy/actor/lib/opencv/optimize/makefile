@@ -1,8 +1,8 @@
-# Makefile for Ptolemy II Open CV actors
+# Makefile for Ptolemy II Open CV SDF Buffer Optimization actors
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 57486 2010-03-12 22:20:53Z bldmastr $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/opencv
+ME =		ptolemy/actor/lib/opencv/optimize
 
-DIRS = 		jna optimize
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 # OPENCV_JAR and PTPROCESSING_JARS are set by configure
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(PTPROCESSING_JARS)
@@ -45,38 +45,21 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	opencv
+PTPACKAGE = 	optimize
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	Blend.java \
-	BlendADD.java \
-	BlendSUB.java \
-	Blur.java \
-	Brighten.java \
-	Copy.java \
-	Darken.java \
-	Detect.java \
-	Filter.java \
-	Flip.java \
-	GrayScale.java \
-	HighContrast.java \
-	Invert.java \
-	LowContrast.java \
-	OpenCVReader.java \
-	OpenCVToAWTImage.java \
-	Read.java
 
 OTHER_FILES_TO_BE_JARED = \
-	opencv.xml \
-	opencv-copyright.htm
+	GrayScale.java \
+	Invert.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	javacv jna optimize #test
+MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
