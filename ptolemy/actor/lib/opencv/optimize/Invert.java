@@ -29,12 +29,10 @@ package ptolemy.actor.lib.opencv.optimize;
 
 import hypermedia.video.OpenCV;
 import processing.core.PImage;
-import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.lib.opencv.OpenCVImageObject;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.optimize.SharedBufferTransformer;
-import ptolemy.domains.sdf.optimize.testing.TestImageWindow;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

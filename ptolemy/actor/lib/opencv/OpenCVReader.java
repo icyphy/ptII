@@ -79,7 +79,11 @@ public class OpenCVReader extends Source {
     public void fire() throws IllegalActionException {
     	_openCV.read();
     	//_openCV.flip(OpenCV.FLIP_BOTH);
-        output.send(0, new ObjectToken(_openCV));
+    	
+    	PImage img = _openCV.image();
+    	OpenCVImageObject oio = new OpenCVImageObject(_openCV, img);
+    	
+        output.send(0, new ObjectToken(oio));
     }
    
     /** Open the video capture device.
