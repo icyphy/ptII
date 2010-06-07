@@ -33,7 +33,7 @@ ME =		ptdb
 
 # $PTII/configure runs and looks for PTPOWERMOCK
 # $(PTPOWERMOCK_DIR) to test
-#DIRS =		common demo docs gui kernel $(PTPOWERMOCK_DIR)
+#DIRS =		common demo doc gui kernel $(PTPOWERMOCK_DIR)
 DIRS =		$(PTPOWERMOCK_DIR)
 
 # Root of Ptolemy II directory
@@ -59,7 +59,7 @@ EXTRA_SRCS =
 MISC_FILES = \
 	common \
 	demo \
-	docs \
+	doc \
 	gui \
 	kernel \
 	makefile

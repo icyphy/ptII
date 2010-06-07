@@ -4,7 +4,7 @@
 </head>
 <body>
 
-Below are the steps necessary to instal the Oracle Berkeley XML DB on Mac.  
+Below are the steps necessary to install the Oracle Berkeley XML DB on Mac.  
 
 <ol>
 <li> Go to <a href="http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html#in_browser" target="_top"><code>http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html</code></a>.</li>
@@ -20,9 +20,12 @@ tar -zxf ~/Downloads/dbxml-2.5.16.tar.gz
 
 <li> Go to the folder that was created and execute <code>buildall.sh</code>.
 <br><b>Note that the build will take 40-50 minutes.</b>
+By specifying the option <code>--enable-java</code>, the <code>dbxml.jar</code>
+and <code>db.jar</code> Java jars will be created in <code><i>your_installation_path</i>/install/lib/</code>.
+
 <pre>
 cd dbxml-2.5.16
-sh buildall.sh >& build.out &
+sh buildall.sh --enable-java >& build.out &
 tail -f build.out
 </pre>
 </li>
@@ -39,6 +42,13 @@ Note: if the system cannot find this command, try to include the whole path of t
 
 <li> The dbxml prompt (<code>dbxml></code>) will appear. You can test whether the XMLDB runs properly by testing with the guidance from <code><i>your_installation_path</i>/dbxml-2.5.16/dbxml/docs/intro_xml/running.html</code>.
 </li>
+
+<li> Add <code>dbxml.jar</code> and <code>db.jar</code> to your
+classpath.  The easiest way is to run configure:
+<pre>
+cd $PTII
+./configure
+</pre>
 
 </ol>
 Version: $Id$
