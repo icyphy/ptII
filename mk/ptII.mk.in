@@ -305,6 +305,9 @@ JNA_JAR =	@JNA_JAR@
 # see http://sourceforge.net/projects/javajoystick/
 JOYSTICK_JAR =	@JOYSTICK_JAR@
 
+# Used in many test/makefiles
+JUNIT_JAR =	@JUNIT_JAR@
+
 # Jython home directory that contains jython.jar, see http://www.jython.org
 JYTHON_DIR =    @JYTHON_DIR@
 
@@ -410,6 +413,13 @@ PTDATABASE_JNLP_JARS =	@PTDATABASE_JNLP_JARS@
 # PTDATABASE_PACKAGES is set if ojdbc6.jar was found and 
 # used in ptII/doc/makefile
 PTDATABASE_PACKAGES =	@PTDATABASE_PACKAGES@
+
+# PTDB_DIR is set to ptdb and used in
+# $PTII/makefile if dbxml is found
+PTDB_DIR =	@PTDB_DIR@
+
+# PTDB_PACKAGES is used in ptII/doc/makefile
+PTDB_PACKAGES=	@PTDB_PACKAGES@
 
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found

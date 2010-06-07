@@ -1545,7 +1545,97 @@ fi
 if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/backtrack/|ptolemy/backtrack/ast/"
 fi 
+set -x
+#--------------------------------------------------------------------
+#       dbxml is the Oracle Berkeley XML DB
+#	http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
+#	dbxml is used by the ptdb directory
+#--------------------------------------------------------------------
 
+# PTDB_DIR is set to ptdb and used in
+# $PTII/makefile if dbxml is found
+PTDB_DIR=
+
+# dbxml directory
+#	http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
+PTDBXML_DIR='${PTII}/vendors/misc/dbxml-2.5.16'
+
+PTDB_USER_DIR="$PTII/ptdb"
+# We only need to look for dbxml if $PTDB_USER_DIR
+if test ! -d "$PTDB_USER_DIR"; then
+    PT_MSG_STATUS([$PTDB_USER_DIR is not present,
+    so we need not find the dbxml interface.])
+else
+    AC_MSG_CHECKING([for dbxml directory])
+    AC_ARG_WITH(dbxml, [  --with-dbxml=DIRECTORY       use dbxml from DIRECTORY,
+                          defaults to \$PTII/vendors/misc/dbxml-2.5.16],
+	PTDBXML_DIR=$withval,
+	PTDBXML_DIR=$PTII/vendors/misc/dbxml-2.5.16)
+
+    case "`uname -s`" in
+        CYGWIN_*)    PTDBXML_SHAREDLIBRARY_SUFFIX=dll
+    		     PTDBXML_SHAREDLIBRARY_SUFFIX2=dll.a;;
+        SunOS)	     PTDBXML_SHAREDLIBRARY_SUFFIX=so;;
+        Linux)       PTDBXML_SHAREDLIBRARY_SUFFIX=so;;
+        Darwin)      PTDBXML_SHAREDLIBRARY_SUFFIX=jnilib
+    	  	     PTDBXML_SHAREDLIBRARY_SUFFIX2=dylib;;
+        *) PTDBXML_SHAREDLIBRARY_SUFFIX=unknown
+    esac
+
+    ptdblibxml=$PTDBXML_DIR/install/lib/libdbxml.${PTDBXML_SHAREDLIBRARY_SUFFIX}
+    if test ! -f "$ptdblibxml"; then
+        if test -z "$PTDBXML_SHAREDLIBRARY_SUFFIX2"; then
+	     PT_MSG_RESULT([Could not find $ptdblibxml or $])
+        else 
+             ptdblibxml2=$PTDBXML_DIR/install/lib/libdbxml.${PTDBXML_SHAREDLIBRARY_SUFFIX2}
+	     if test ! -f "$ptdblibxml2"; then
+	         PT_MSG_RESULT([Could not find $ptdblibxml or $ptdblibxml2])
+             else 
+	         ptdblibxml=$ptdblibxml2
+             fi
+        fi
+    fi
+    if test  -f "$ptdblibxml"; then
+	PT_MSG_RESULT([$PTDBXML_DIR])
+	# Set to ptdb and used in
+	# $PTII/makefile
+	PTDB_DIR=ptdb
+        # PTDB_PACKAGES is used in ptII/doc/makefile
+	PTDB_PACKAGES=ptdb.gui
+    fi	
+
+    if test "$PTDB_DIR" = ""; then
+        AC_MSG_WARN([Failed to find the Oracle Berkeley XML DB (dbxml)
+    in $PTDB_DIR.
+    Perhaps the Oracle Berkeley XML DB is not installed?
+    You need not download dbxml unless you
+    plan on using the ptdb facility which uses a database to manage actors with Ptolemy II. 
+    The dbxml interface can be downloaded from
+    http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
+    an untar'd into $PTII/vendors/misc and built
+    $ptdblibxml exists. For further instructions, see $PTII/ptdb/doc] )
+	# Note that we don't substitute in the ${PTII} here
+	PTDB_DIR='${PTII}/vendors/misc/ptdb-2.5.16'
+    fi
+fi
+
+if test -z "$PTDB_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
+else
+   shortdir=`echo "$ptdblibxml" | sed "s@$PTII/@@"`
+   if test -d "$shortdir"; then
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+           <classpathentry kind=\"src\" path=\"$shortdir\"/>"
+      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$shortdir/"
+   else
+      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+           <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
+      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$PTFUZZYENGINE_DIR/"
+   fi
+
+fi 
+
+set +x
 #--------------------------------------------------------------------
 #       FuzzyEngine is an "Open source fuzzy inference engine for Java"
 #	http://people.clarkson.edu/~esazonov/FuzzyEngine.htm
@@ -2167,6 +2257,54 @@ if test -z "$PTJOYSTICK_DIR"; then
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$JOYSTICK_JAR\"/>"
+fi 
+
+#--------------------------------------------------------------------
+#       JUnit is the Java Unit testing framework
+#--------------------------------------------------------------------
+
+# PTJUNIT_DIR is set to junit and used in
+# $PTII/util/testsuite/makefile if junit was found
+PTJUNIT_DIR=
+
+# Used in many test/makefiles
+JUNIT_JAR=
+
+# We only need to look for JUnit if this directory is present
+JUNIT_USER_DIR="$PTII/util/testsuite/junit"
+
+if test ! -d "$JUNIT_USER_DIR"; then
+    PT_MSG_STATUS([$JUNIT_USER_DIR is not present,
+    so we need not find JUnit - the Java Unit Testing Framework.])
+else
+    AC_MSG_CHECKING([for the JUnit - the Java Unit Testing Framework])
+    AC_ARG_WITH(jxl, [  --with-junit=JARFILE       use JUnit Testing Framework from JARFILE,
+                          defaults to \$PTII/lib/junit-4.8.2.jar],
+	JUNIT_JAR=$withval,
+	JUNIT_JAR=$PTII/lib/junit-4.8.2.jar)
+
+    if test -f "$JUNIT_JAR"; then
+	PT_MSG_RESULT([$PTJUNIT_JAR])
+	PTJUNIT_DIR=junit
+        # PTJUNIT_PACKAGES is used in ptII/doc/makefile
+	PTJUNIT_PACKAGES=util.testsuite.junit
+    fi	
+
+    if test "$PTJUNIT_DIR" = ""; then
+        AC_MSG_WARN([Failed to find junit-4.8.2.jar
+    as $PTJUNIT_JAR.
+    Perhaps the JUnit Java Unit Testing Framework is not installed?
+    You need not download JUnit unless you want to run the unit tests.])
+	# Note that we don't substitute in the ${PTII} here
+	PTJUNIT_JAR='${PTII}/lib/junit-4.8.2.jar'
+    fi
+fi
+
+if test -z "$PTJUNIT_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|util/testsuite/junit"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JUNIT_JAR\"/>"
 fi 
 
 #--------------------------------------------------------------------
@@ -3734,7 +3872,7 @@ else
 fi
 
 if test -z "$PTPOWERMOCK_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptcg/test"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/test"
 fi 
 
 
@@ -4817,6 +4955,9 @@ AC_SUBST(JNA_JAR)
 # jode.jar used in bin/ptinvoke to start up Jode, the .class disassembler
 AC_SUBST(JODE_CLASSES)
 
+# Used in many test/makefiles
+AC_SUBST(JUNIT_JAR)
+
 # Jython home directory that contains jython.jar, see http://www.jython.org
 AC_SUBST(JYTHON_DIR)
 
@@ -4967,6 +5108,13 @@ AC_SUBST(PTDATABASE_JNLP_JARS)
 # PTDATABASE_PACKAGES is set if ojdbc6.jar was found and 
 # used in ptII/doc/makefile
 AC_SUBST(PTDATABASE_PACKAGES)
+
+# PTDB_DIR is set to ptdb and used in
+# $PTII/makefile if dbxml is found
+AC_SUBST(PTDB_DIR)
+
+# PTDB_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTDB_PACKAGES)
 
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
@@ -5133,6 +5281,9 @@ AC_SUBST(PTJOYSTICK_DIR)
 # Ptolemy II packages that use the Java Joystick facilty
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJOYSTICK_PACKAGES)
+
+# PTJUNIT_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTJUNIT_PACKAGES)
 
 # Used in ptolemy/actor/lib/excel/makefile
 AC_SUBST(PTJXL_JAR)
