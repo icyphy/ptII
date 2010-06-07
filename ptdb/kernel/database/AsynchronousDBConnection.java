@@ -3,8 +3,10 @@ package ptdb.kernel.database;
 import java.util.ArrayList;
 
 import ptdb.common.dto.GetAttributesTask;
+import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
+import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.kernel.database.DBConnection;
@@ -94,13 +96,28 @@ public class AsynchronousDBConnection implements DBConnection {
     }
 
     /**
+     * Get Models Task is not supported by the asynchronous connection
+     * Use a synchronous connection for that
+     * @param task
+     *          The task to be completed.
+     * @return XMLDBModel
+     *          The model object containing the MoML
+     * @throws DBExecutionException
+     */
+    public XMLDBModel executeGetModelsTask(GetModelsTask task)
+            throws DBExecutionException {
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeGetModels is not supported by this type of DBConnection");
+    }
+
+    /**
      * Adds tasks to the task queue for the executor thread to execute
      * 
      * @param task - task that needs to be executed on the database
      * @throws DBConnectionException - When the executor thread fails due to an exception 
      */
     private void executeTask(Task task) throws DBExecutionException {
-        
+
         /**
          * If this is the first task, then start the executor thread 
          */

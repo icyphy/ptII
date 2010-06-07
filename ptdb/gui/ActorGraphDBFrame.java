@@ -33,7 +33,10 @@ import ptolemy.vergil.actor.ActorGraphFrame;
 * a model databse via the Database menu.
 *
 * @author Lyle Holsinger
-* @version $Id:$
+* @since Ptolemy II 8.1
+* @version $Id$
+* @Pt.ProposedRating red (lholsing)
+* @Pt.AcceptedRating red (lholsing)
 */
 
 public class ActorGraphDBFrame extends ActorGraphFrame implements

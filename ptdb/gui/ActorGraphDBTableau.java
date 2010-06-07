@@ -23,7 +23,10 @@ This adds Database interface menues
 
 @see ActorGraphDBFrame
 @author  Lyle Holsinger
-@version 
+* @since Ptolemy II 8.1
+* @version $Id$
+* @Pt.ProposedRating red (lholsing)
+* @Pt.AcceptedRating red (lholsing)
 */
 public class ActorGraphDBTableau extends Tableau {
 

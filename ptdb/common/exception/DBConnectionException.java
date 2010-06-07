@@ -6,8 +6,9 @@ package ptdb.common.exception;
  *
  */
 public class DBConnectionException extends Exception {
-    
+
     private Throwable _cause;
+
     /**
      * Constructor to create a new DBConnectionException with the given message 
      * @param errorMessage - exception message
@@ -15,7 +16,7 @@ public class DBConnectionException extends Exception {
     public DBConnectionException(String errorMessage) {
         super(errorMessage);
     }
-    
+
     /**
      * Constructor to wrap other exceptions 
      * @param errorMessage - exception message
@@ -25,6 +26,7 @@ public class DBConnectionException extends Exception {
         super(errorMessage, cause);
         this._cause = cause;
     }
+
     /**
      * Returns the underlying cause for the exception
      */
