@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.exception.DBConnectionException;
+import ptdb.common.exception.DBExecutionException;
 
 /**
  * 
@@ -30,6 +31,6 @@ public interface DBConnection {
      * @return
      * @throws DBConnectionException
      */
-    public ArrayList executeGetAttributesTask(GetAttributesTask task) throws DBConnectionException;
+    public ArrayList executeGetAttributesTask(GetAttributesTask task) throws DBExecutionException;
     
 }

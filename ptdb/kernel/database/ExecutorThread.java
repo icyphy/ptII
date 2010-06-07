@@ -110,10 +110,9 @@ public class ExecutorThread implements Runnable {
                         + e.getMessage());
                 e.printStackTrace();
                 return;
-            } //FIXME - What happens when its execution is interrupted? Is this handling appropriate?
-
+            }
         }
-        //FIXME - Do we need to use some kind of Logger?
+        
         System.out.println("DB Connection thread timed out" + this.toString());
         return;
     }
