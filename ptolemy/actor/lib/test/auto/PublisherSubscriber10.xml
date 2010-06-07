@@ -4,7 +4,7 @@
 <entity name="PublisherSubscriber10" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 507}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -89,6 +89,8 @@
         <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
             <property name="channel" class="ptolemy.data.expr.StringParameter" value="foo">
             </property>
+            <property name="numberExportLevels" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
             <doc>Publish the input values to all matching Subscribers.</doc>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="channel">
@@ -133,14 +135,6 @@
         </relation>
         <link port="port_1" relation="relation2"/>
         <link port="Subscriber2.output" relation="relation2"/>
-    </entity>
-    <entity name="TestExceptionHandler" class="ptolemy.actor.lib.TestExceptionHandler">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Can't find the publisher for foo.&#10;  in .PublisherSubscriber10">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 135.0}">
-        </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
