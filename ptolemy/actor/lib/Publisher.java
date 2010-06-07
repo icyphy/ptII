@@ -176,21 +176,37 @@ public class Publisher extends TypedAtomicActor {
             // ptolemy/actor/lib/test/auto/PublisherClassNoParameter.xml
             if (!isWithinClassDefinition()) {
                 String newValue = channel.stringValue();
-                int newNumberExportLevels = ((IntToken) numberExportLevels.getToken()).intValue();
-                if (!newValue.equals(_channel) || newNumberExportLevels != _numberExportLevels) {
+                int newNumberExportLevels = ((IntToken) numberExportLevels
+                        .getToken()).intValue();
+                if (!newValue.equals(_channel)
+                        || newNumberExportLevels != _numberExportLevels) {
                     NamedObj container = getContainer();
                     if (container instanceof CompositeActor) {
                         try {
                             
+                            if (attribute == numberExportLevels) {
+                                if (newNumberExportLevels != CompositeActor.GLOBAL
+                                        && (_numberExportLevels == CompositeActor.GLOBAL || newNumberExportLevels < _numberExportLevels)) {
+                                    ((CompositeActor) container)
+                                            .unregisterPublisherPort(_channel,
+                                                    output,
+                                                    newNumberExportLevels,
+                                                    _numberExportLevels);
+                                }
+
+                            }
                             
                             ((CompositeActor) container).registerPublisherPort(
                                     newValue, output, newNumberExportLevels);
-                            if (attribute == channel && (!(_channel == null || _channel.trim()
-                                    .equals("")))) {
+                            
+                            if (attribute == channel
+                                    && (!(_channel == null || _channel.trim()
+                                            .equals("")))) {
                                 ((CompositeActor) container)
                                         .unregisterPublisherPort(_channel,
-                                                output);
+                                                output, 0, _numberExportLevels);
                             }
+
                         } catch (NameDuplicationException e) {
                             throw new IllegalActionException(this, e,
                                     "Can't add published port.");
@@ -294,7 +310,7 @@ public class Publisher extends TypedAtomicActor {
 
     /** Cached channel name. */
     protected String _channel;
-    
+
     /** Cached number export levels */
     protected int _numberExportLevels;
 

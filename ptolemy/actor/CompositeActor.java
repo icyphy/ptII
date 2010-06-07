@@ -1610,7 +1610,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (!portList.contains(port))
                 portList.add(port);
 
-            // To disable exporting publisher ports, set the following to false.
             if (numberLevelsLeft != 0) {
 
                 // In addition, if the publisher is set to perform an
@@ -1630,21 +1629,21 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 IOPort publisherPort = (IOPort) getPort(portName);
                 if (publisherPort == null) {
                     publisherPort = (IOPort) newPort(portName);
+                    new Parameter(publisherPort, "_hide", BooleanToken.TRUE);
+                    publisherPort.setPersistent(false);
+                    publisherPort.setOutput(true);
+                    publisherPort.setMultiport(true);
                 }
 
-                new Parameter(publisherPort, "_hide", BooleanToken.TRUE);
-                publisherPort.setPersistent(false);
-                publisherPort.setOutput(true);
-                publisherPort.setMultiport(true);
                 // FIXME: Hide the port. Note that we need to fix vergil
                 // so that when it lays out port, hidden ports do not take up
                 // space on the icon.
 
                 // NOTE: The following will result in an _inside_ link to the port.
                 linkToPublishedPort(name, publisherPort);
-                
+
                 if (container instanceof CompositeActor) {
-                    if (numberLevelsLeft == -1)
+                    if (numberLevelsLeft == GLOBAL)
                         ((CompositeActor) container).registerPublisherPort(
                                 name, publisherPort, numberLevelsLeft);
                     else {
@@ -2102,6 +2101,94 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+    /** Unregister a "published port" coming
+     *  from a publisher. The name is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the same name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber. This will be the port
+     *          that should be removed
+     *  @param publisherPort The publisher port.
+     */
+    public void unregisterPublisherPort(String name, IOPort publisherPort,
+            int minLevel, int maxLevel) {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor
+                && !((CompositeActor) container).isClassDefinition()) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).unregisterPublisherPort(name,
+                    publisherPort, minLevel, maxLevel);
+        } else {
+
+            String portName = "_publisher_"
+                    + StringUtilities.sanitizeName(name);
+            IOPort port = (IOPort) getPort(portName);
+
+            if (minLevel == 0) {
+
+                if (_publishedPorts != null) {
+                    List<IOPort> ports = _publishedPorts.get(name);
+
+                    ports.remove(publisherPort);
+
+                    if (ports.isEmpty()) {
+                        _publishedPorts.remove(name);
+                    }
+                }
+                
+                if (_publisherRelations != null) {
+                    IORelation relation = _publisherRelations.get(name);
+                    if (relation != null) {
+                        try {
+                            relation.setContainer(null);
+                        } catch (IllegalActionException e) {
+                            // Should not happen.
+                            throw new IllegalStateException(e);
+                        } catch (NameDuplicationException e) {
+                            // Should not happen.
+                            throw new IllegalStateException(e);
+                        }
+
+                        _publisherRelations.remove(name);
+                    }
+                }
+
+                if (this.portList().contains(port)) {
+                    try {
+                        port.setContainer(null);
+                    } catch (IllegalActionException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (NameDuplicationException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            if (container != null && maxLevel != 0) {
+
+                if (minLevel > 0) {
+                    minLevel--;
+                }
+
+                if (maxLevel > 0) {
+                    maxLevel--;
+                }
+
+                ((CompositeActor) container).unregisterPublisherPort(name,
+                        port, minLevel, maxLevel);
+            }
+
+        }
+    }
+
     /** If this actor is opaque, then invoke the wrapup() method of the local
      *  director. This method is read-synchronized on the workspace.
      *
@@ -2357,6 +2444,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
             return _relationWidthInference;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    final static public int GLOBAL = -1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
