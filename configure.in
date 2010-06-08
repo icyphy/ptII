@@ -1556,83 +1556,77 @@ fi
 # $PTII/makefile if dbxml is found
 PTDB_DIR=
 
-# dbxml directory
-#	http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-PTDBXML_DIR='${PTII}/vendors/misc/dbxml-2.5.16'
+PTDBXML_JAR='${PTII}/ptdb/lib/dbxml.jar'
+PTDB_JAR='${PTII}/ptdb/lib/db.jar'
 
-PTDB_USER_DIR="$PTII/ptdb"
+# Jar files necessary for compilation
+PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
+
 # We only need to look for dbxml if $PTDB_USER_DIR
+PTDB_USER_DIR="$PTII/ptdb"
 if test ! -d "$PTDB_USER_DIR"; then
     PT_MSG_STATUS([$PTDB_USER_DIR is not present,
     so we need not find the dbxml interface.])
 else
-    AC_MSG_CHECKING([for dbxml directory])
-    AC_ARG_WITH(dbxml, [  --with-dbxml=DIRECTORY       use dbxml from DIRECTORY,
-                          defaults to \$PTII/vendors/misc/dbxml-2.5.16],
-	PTDBXML_DIR=$withval,
-	PTDBXML_DIR=$PTII/vendors/misc/dbxml-2.5.16)
+    AC_MSG_CHECKING([for dbxml.jar ])
+    AC_ARG_WITH(dbxml, [  --with-dbxml=JAR       use dbxml.jar from JAR,
+                          defaults to \$PTII/ptdb/lib/dbxml.jar],
+	PTDBXML_JAR=$withval,
+	PTDBXML_JAR=$PTII/ptdb/lib/dbxml.jar)
 
-    case "`uname -s`" in
-        CYGWIN_*)    PTDBXML_SHAREDLIBRARY_SUFFIX=dll
-    		     PTDBXML_SHAREDLIBRARY_SUFFIX2=dll.a;;
-        SunOS)	     PTDBXML_SHAREDLIBRARY_SUFFIX=so;;
-        Linux)       PTDBXML_SHAREDLIBRARY_SUFFIX=so;;
-        Darwin)      PTDBXML_SHAREDLIBRARY_SUFFIX=jnilib
-    	  	     PTDBXML_SHAREDLIBRARY_SUFFIX2=dylib;;
-        *) PTDBXML_SHAREDLIBRARY_SUFFIX=unknown
-    esac
+    if test  -f "$PTDBXML_JAR"; then
+	PT_MSG_RESULT([$PTDBXML_JAR])
 
-    ptdblibxml=$PTDBXML_DIR/install/lib/libdbxml.${PTDBXML_SHAREDLIBRARY_SUFFIX}
-    if test ! -f "$ptdblibxml"; then
-        if test -z "$PTDBXML_SHAREDLIBRARY_SUFFIX2"; then
-	     PT_MSG_RESULT([Could not find $ptdblibxml or $])
-        else 
-             ptdblibxml2=$PTDBXML_DIR/install/lib/libdbxml.${PTDBXML_SHAREDLIBRARY_SUFFIX2}
-	     if test ! -f "$ptdblibxml2"; then
-	         PT_MSG_RESULT([Could not find $ptdblibxml or $ptdblibxml2])
-             else 
-	         ptdblibxml=$ptdblibxml2
-             fi
-        fi
-    fi
-    if test  -f "$ptdblibxml"; then
-	PT_MSG_RESULT([$PTDBXML_DIR])
-	# Set to ptdb and used in
-	# $PTII/makefile
-	PTDB_DIR=ptdb
-        # PTDB_PACKAGES is used in ptII/doc/makefile
-	PTDB_PACKAGES=ptdb.gui
+        AC_MSG_CHECKING([for db.jar ])
+        AC_ARG_WITH(dbxml, [  --with-db=JAR       use db.jar from JAR,
+                          defaults to \$PTII/ptdb/lib/db.jar],
+	PTDB_JAR=$withval,
+	PTDB_JAR=$PTII/ptdb/lib/db.jar)
+
+        if test  -f "$PTDB_JAR"; then
+	    PT_MSG_RESULT([$PTDB_JAR])
+	    # Set to ptdb and used in
+	    # $PTII/makefile
+
+	    # Set to ptdb and used in
+	    # $PTII/makefile
+	    PTDB_DIR=ptdb
+            # PTDB_PACKAGES is used in ptII/doc/makefile
+	    PTDB_PACKAGES="ptdb.common.dto ptdb.common.exception ptdb.common.util ptdb.gui kernel.bl.load kernel.bl.search kernel.database"
+         fi
     fi	
 
     if test "$PTDB_DIR" = ""; then
-        AC_MSG_WARN([Failed to find the Oracle Berkeley XML DB (dbxml)
-    in $PTDB_DIR.
+        AC_MSG_WARN([Failed to find the Oracle Berkeley XML DB (dbxml) in
+    $PTDBXML_JAR and
+    $PTDB_JAR
     Perhaps the Oracle Berkeley XML DB is not installed?
     You need not download dbxml unless you
     plan on using the ptdb facility which uses a database to manage actors with Ptolemy II. 
     The dbxml interface can be downloaded from
     http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-    an untar'd into $PTII/vendors/misc and built
-    $ptdblibxml exists. For further instructions, see $PTII/ptdb/doc] )
-	# Note that we don't substitute in the ${PTII} here
-	PTDB_DIR='${PTII}/vendors/misc/ptdb-2.5.16'
+    an untar'd into $PTII/vendors/misc and built.
+    For further instructions, see $PTII/ptdb/doc] )
+    else
+        PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
     fi
 fi
 
-if test -z "$PTDB_DIR"; then
+if test -z "$PTDB_JARS"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
 else
-   shortdir=`echo "$ptdblibxml" | sed "s@$PTII/@@"`
-   if test -d "$shortdir"; then
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-           <classpathentry kind=\"src\" path=\"$shortdir\"/>"
-      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$shortdir/"
+   dbxmljar=`echo "$PTDBXML_JAR" | sed "s@$PTII/@@"`
+   if test -f "$dbxmljar"; then
+      dbjar=`echo "$PTDB_JAR" | sed "s@$PTII/@@"`
+      if test -f "$dbjar"; then
+          ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+              <classpathentry kind=\"src\" path=\"$dbjar\"/>"
+      else
+          ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
+      fi
    else
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-           <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
-      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$PTFUZZYENGINE_DIR/"
+      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
    fi
-
 fi 
 
 #--------------------------------------------------------------------
@@ -5114,6 +5108,9 @@ AC_SUBST(PTDB_DIR)
 
 # PTDB_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTDB_PACKAGES)
+
+# PTDBXML_JARS includes dbxml.jar and db.xml and is used by $PTII/ptdb
+AC_SUBST(PTDBXML_JARS)
 
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
