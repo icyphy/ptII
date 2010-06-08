@@ -1616,9 +1616,9 @@ if test -z "$PTDBXML_JARS"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"src\" path=\"$PTDBXML_JAR\"/>"
+       <classpathentry kind=\"lib\" path=\"$PTDBXML_JAR\"/>"
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-       <classpathentry kind=\"src\" path=\"$PTDB_JAR\"/>"
+       <classpathentry kind=\"lib\" path=\"$PTDB_JAR\"/>"
 fi 
 
 #--------------------------------------------------------------------
@@ -3857,7 +3857,11 @@ else
 fi
 
 if test -z "$PTPOWERMOCK_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/test"
+   ptdbTestDirectories=`find ptdb -name test`
+   for ptdbTestDirectory in $ptdbTestDirectories
+   do 
+      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$ptdbTestDirectory/"
+   done   
 fi 
 
 
