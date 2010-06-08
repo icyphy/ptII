@@ -1,6 +1,9 @@
 package ptdb.common.dto;
 
 import java.util.ArrayList;
+
+//////////////////////////////////////////////////////////////////////////
+////Task
 /**
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -10,15 +13,18 @@ import java.util.ArrayList;
  *
  */
 public class TaskQueue extends ArrayList<Task> {
-   
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
-     * Return true if the task queue has all the required tasks, else return false 
+     * Return true if the task queue has all the required tasks, 
+     * else return false 
      * @return
      */
     public boolean areAllTasksAdded() {
         return _allTasksAdded;
     }
-    
+
     /**
      * Return the execution error message
      * @return
@@ -26,45 +32,48 @@ public class TaskQueue extends ArrayList<Task> {
     public String getExecutionErrorMessage() {
         return _errorMessage;
     }
-    
+
     /**
-     * Return true if the execution has completed; else return false
+     * Return true if the execution has completed; 
+     * else return false
      * @return
      */
     public boolean hasExecutionCompleted() {
         return _executionCompleted;
     }
-    
+
     /**
-     * Return true if any execution error has occurred; else return false 
+     * Return true if any execution error has occurred; 
+     * else return false 
      * @return
      */
     public boolean hasExecutionError() {
         return _isExecutionError;
     }
-    
+
     /**
-     * Return true if any processing error has occurred; else return false
+     * Return true if any processing error has occurred; 
+     * else return false
      * @return
      */
     public boolean hasProcessingError() {
         return _isProcessingError;
     }
-    
+
     /**
      * Set the value for allTasksAdded to true
      */
     public void setAllTasksAdded() {
         _allTasksAdded = true;
     }
-    
+
     /**
      * Set the value for executionCompleted to true
      */
     public void setExecutionCompleted() {
         _executionCompleted = true;
     }
-    
+
     /**
      * Set the execution error to the given value
      * @param errorMessage
@@ -73,14 +82,16 @@ public class TaskQueue extends ArrayList<Task> {
         _isExecutionError = true;
         this._errorMessage = errorMessage;
     }
-    
+
     /**
      * Set the processing error to true
      */
     public void setProcessingError() {
         _isProcessingError = true;
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////   
     private boolean _executionCompleted = false;
 
     private boolean _isProcessingError = false;

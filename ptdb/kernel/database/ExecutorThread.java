@@ -5,26 +5,35 @@ import ptdb.common.dto.TaskQueue;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.util.DBConnectorFactory;
 
+//////////////////////////////////////////////////////////////////////////
+////ExecutorThread
 /**
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
  *  
- * This thread helps the AsynchronousDBConnection to execute the queries asynchronously
- * It monitors the asynchronous connection's task queue and executes tasks one by one over a synchronous connection
- * Using this thread we can achieve parallelism with respect to processing and execution of tasks over the database 
+ * This thread helps the AsynchronousDBConnection to 
+ * execute the queries asynchronously
+ * It monitors the asynchronous connection's task queue 
+ * and executes tasks one by one over a synchronous connection
+ * Using this thread we can achieve parallelism with respect 
+ * to processing and execution of tasks over the database 
  *  
  * @author abijwe
  */
 public class ExecutorThread implements Runnable {
 
-    /** Create an instance of the executor thread that performs tasks one by one from the taskQueue
+    /** Construct an instance of the executor thread that 
+     *  performs tasks one by one from the taskQueue
      * 
      * @param taskQueue List of Tasks that need to be executed
-     * @throws DBConnectionException - When we face a problem while creating a database connection. These problems could be that 
-     *                                  configured connection class does not exist, the path for the database is not found, the container name 
-     *                                  is incorrect, the connection to the database could not be established etc.
+     * @throws DBConnectionException - When we face a problem 
+     * while creating a database connection. These problems could 
+     * be that configured connection class does not exist, 
+     * the path for the database is not found, the container name
+     * is incorrect, the connection to the database 
+     * could not be established etc.
      */
     public ExecutorThread(TaskQueue taskQueue) throws DBConnectionException {
 
@@ -33,11 +42,16 @@ public class ExecutorThread implements Runnable {
         _noOfTasksExecuted = 0;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
-     * Manage the execution of tasks from the task queue. It aborts its working if it encounter an exception 
-     * or if the processing error flag in the taskQueue is set to true.
+     * Manage the execution of tasks from the task queue. 
+     * It aborts its working if it encounter an exception 
+     * or if the processing error flag in the taskQueue 
+     * is set to true.
      * 
-     * Stop execution if the taskQueue is completed and all the tasks are executed 
+     * Stop execution if the taskQueue is completed 
+     * and all the tasks are executed 
      * or if it exceeds its max wait time of 50 seconds.   
      * 
      */
@@ -46,7 +60,8 @@ public class ExecutorThread implements Runnable {
         while (maxWait != 0) {
 
             /**
-             * In case of a processing error, we abort the connection and stop the executino of this thread
+             * In case of a processing error, we abort the connection 
+             * and stop the executino of this thread
              */
             if (_taskQueue.hasProcessingError()) {
                 _abortConnection();
@@ -57,8 +72,10 @@ public class ExecutorThread implements Runnable {
 
                 if (_noOfTasksExecuted < _taskQueue.size()) {
                     /**
-                     * If there exists a task in the TaskQueue that has not been executed, then the task is executed, 
-                     * the task counter incremented and the maxWait counter is reset
+                     * If there exists a task in the TaskQueue that 
+                     * as not been executed, then the task is executed, 
+                     * the task counter incremented and the maxWait 
+                     * counter is reset
                      */
                     _executeTask();
                     _noOfTasksExecuted++;
@@ -67,8 +84,10 @@ public class ExecutorThread implements Runnable {
                 } else if ((_taskQueue.size() == _noOfTasksExecuted)
                         && (_taskQueue.areAllTasksAdded())) {
                     /**
-                     * If all the tasks are executed and the taskQueue is complete, then the processing is completed.
-                     * We then close the connection and mark execution as complete and stop the execution of this thread.
+                     * If all the tasks are executed and the taskQueue is 
+                     * complete, then the processing is completed.
+                     * We then close the connection and mark execution 
+                     * as complete and stop the execution of this thread.
                      */
                     _dbConn.closeConnection();
                     _taskQueue.setExecutionCompleted();
@@ -76,8 +95,10 @@ public class ExecutorThread implements Runnable {
 
                 } else {
                     /**
-                     * If neither a new task is present in the queue nor the processing is completed, 
-                     * the thread decrements the wait counter and goes to sleep
+                     * If neither a new task is present in the queue nor 
+                     * the processing is completed, 
+                     * the thread decrements the wait counter 
+                     * and goes to sleep
                      */
                     maxWait--;
                     Thread.sleep(500);
@@ -86,7 +107,8 @@ public class ExecutorThread implements Runnable {
 
             } catch (DBConnectionException e) {
                 /**
-                 * In case of error, we abort the connection and set the ExecutionError and stop the execution of this thread   
+                 * In case of error, we abort the connection and set the 
+                 * ExecutionError and stop the execution of this thread   
                  */
                 _abortConnection();
                 _taskQueue.setExecutionError("Database execution error - "
@@ -106,6 +128,8 @@ public class ExecutorThread implements Runnable {
         return;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
     /** 
      * Delegate the call to the abortConnection() API of DBConnection
      */
@@ -120,7 +144,8 @@ public class ExecutorThread implements Runnable {
     }
 
     /**
-     * Delegate the call to the appropriate API of DBConnection depending on the type of the task it is executing 
+     * Delegate the call to the appropriate API of DBConnection 
+     * depending on the type of the task it is executing 
      */
     private void _executeTask() {
         Task task = _taskQueue.get(_noOfTasksExecuted);
@@ -131,19 +156,28 @@ public class ExecutorThread implements Runnable {
          */
     }
 
-    /** This is the actual database connection(synchronous) over which the tasks are executed.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    /** This is the actual database connection(synchronous) 
+     * over which the tasks are executed.
      */
     private DBConnection _dbConn;
 
-    /** This is used to keep track of the number of tasks executed by the executor thread.  
+    /** This is used to keep track of the number of tasks 
+     * executed by the executor thread.  
      * 
      */
     private int _noOfTasksExecuted;
 
-    /** This is the taskQueue into which an Asynchronous connection adds the tasks for execution
-     *  The Executor thread reads tasks one by one from this queue and executes them on the database
-     *  The taskQueue is also used as a communication mechanism between the Executor thread and the Asynchronous connection
-     *  Each informs the other of an error by setting it the error flag in the taskQueue    
+    /** 
+     * This is the taskQueue into which an Asynchronous 
+     * connection adds the tasks for execution
+     * The Executor thread reads tasks one by one from this 
+     * queue and executes them on the database
+     * The taskQueue is also used as a communication mechanism 
+     * between the Executor thread and the Asynchronous connection
+     * Each informs the other of an error by setting it 
+     * the error flag in the taskQueue    
      */
     private TaskQueue _taskQueue;
 

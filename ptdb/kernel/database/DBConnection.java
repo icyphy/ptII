@@ -8,6 +8,8 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
+//////////////////////////////////////////////////////////////////////////
+////DBConnection
 /**
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -19,13 +21,13 @@ import ptdb.common.exception.DBExecutionException;
  */
 public interface DBConnection {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
      * Abort the connection to the database and rollback the transaction
      * @throws DBConnectionException
      */
     public void abortConnection() throws DBConnectionException;
-
-
 
     /**
      * Close the connection to the database and commit the transaction

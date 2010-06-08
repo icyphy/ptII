@@ -1,21 +1,28 @@
 package ptdb.common.dto;
 
+//////////////////////////////////////////////////////////////////////////
+////DBConnectionParameters
 /**
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
- * DTO to encapsulate the parameters required for creating an XML DB connection
+ * DTO to encapsulate the parameters required 
+ * for creating an XML DB connection
  * @author abijwe
  *
  */
 public class DBConnectionParameters {
 
     /**
-     * Creates a DBConnectionParameters object with the given parameters
-     * @param url - Url/Path for the location where the database file is present 
-     * @param containerName - Name of the container for the XML Database
-     * @param isTransactionRequired - boolean that specifies whether the transaction management is required for the connection that is created
+     * Construct an instance with the given parameters
+     * @param url - Url/Path for the location where the database 
+     * file is present 
+     * @param containerName - Name of the container 
+     * for the XML Database
+     * @param isTransactionRequired - boolean that specifies 
+     * whether the transaction management is required for the 
+     * connection that is created
      */
     public DBConnectionParameters(String url, String containerName,
             boolean isTransactionRequired) {
@@ -24,8 +31,11 @@ public class DBConnectionParameters {
         this._isTransactionRequired = isTransactionRequired;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
-     * Returns the set container name for the given XML database
+     * Return the set container name 
+     * for the given XML database
      * @return
      */
     public String getContainerName() {
@@ -33,7 +43,8 @@ public class DBConnectionParameters {
     }
 
     /**
-     * Returns the set URL/path of the location where the XML database file is present
+     * Return the set URL/path of the location where 
+     * the XML database file is present
      * @return
      */
     public String getUrl() {
@@ -41,7 +52,9 @@ public class DBConnectionParameters {
     }
 
     /**
-     * Returns true if the connection is to be created with transaction and false if it is to be created without transaction.
+     * Return true if the connection is to be 
+     * created with transaction 
+     * and false if it is to be created without transaction.
      * @return
      */
     public boolean isTransactionRequired() {
@@ -49,23 +62,26 @@ public class DBConnectionParameters {
     }
 
     /**
-     * Sets the container name parameter to the given value
-     * @param containerName - Name of the container for the given XML database
+     * Set the container name parameter to the given value
+     * @param containerName - Name of the container 
+     * for the given XML database
      */
     public void setContainerName(String containerName) {
         _containerName = containerName;
     }
 
     /**
-     * Sets the transaction required parameter to the given value 
-     * @param isTransactionRequired - boolean that specifies whether the transaction management is required for the connection that is created
+     * Set the transaction required parameter to the given value 
+     * @param isTransactionRequired - boolean that 
+     * specifies whether the transaction 
+     * management is required for the connection that is created
      */
     public void setIsTransactionRequired(boolean isTransactionRequired) {
         _isTransactionRequired = isTransactionRequired;
     }
 
     /**
-     * Sets the URL parameter to the given value
+     * Set the URL parameter to the given value
      * @param url - Location where the database file is present 
      */
     public void setUrl(String url) {
@@ -90,6 +106,8 @@ public class DBConnectionParameters {
     }
     */
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private String _containerName;
     private boolean _isTransactionRequired;
     private String _url;

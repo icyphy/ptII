@@ -11,6 +11,8 @@ import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.kernel.database.DBConnection;
 
+//////////////////////////////////////////////////////////////////////////
+////AsynchronousDBConnection
 /**
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -19,7 +21,8 @@ import ptdb.kernel.database.DBConnection;
 
  * This class provides an asynchronous mechanism of executing tasks over the database 
  * All the tasks are queued and executed parallel to the processing tasks
- * We plan to use this kind of connection for operations like saving a model that require a lot of processing
+ * We plan to use this kind of connection for operations like saving a model 
+ * that require a lot of processing
  *    
  * @author abijwe
  *
@@ -27,7 +30,8 @@ import ptdb.kernel.database.DBConnection;
 public class AsynchronousDBConnection implements DBConnection {
 
     /**
-     * Create the taskQueue to enqueue tasks and the executor thread that enables task execution in parallel
+     * Construct an instance that creates the taskQueue to enqueue tasks 
+     * and the executor thread that enables task execution in parallel
      * @throws DBConnectionException
      */
     public AsynchronousDBConnection() throws DBConnectionException {
@@ -35,8 +39,12 @@ public class AsynchronousDBConnection implements DBConnection {
         _executorThread = new ExecutorThread(_taskQueue);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
-     * Abort connection signifies that the execution needs to be terminated as there was some error in execution
+     * Abort connection signifies that the execution needs to be terminated 
+     * as there was some error in execution
      * Abort the execution by setting the execution flag as false 
      */
     public void abortConnection() {
@@ -51,7 +59,8 @@ public class AsynchronousDBConnection implements DBConnection {
     public void closeConnection() throws DBConnectionException {
 
         /**
-         * All tasks added denotes that the tasks have been added and processing is successfully completed 
+         * All tasks added denotes that the tasks have been added 
+         * and processing is successfully completed 
          */
         _taskQueue.setAllTasksAdded();
 
@@ -92,7 +101,8 @@ public class AsynchronousDBConnection implements DBConnection {
     public ArrayList executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
         throw new DBExecutionException(
-                "Asynchronous DB Execution error - executeGetAttributes is not supported by this type of DBConnection");
+                "Asynchronous DB Execution error - executeGetAttributes is "
+                        + "not supported by this type of DBConnection");
     }
 
     /**
@@ -107,14 +117,19 @@ public class AsynchronousDBConnection implements DBConnection {
     public XMLDBModel executeGetModelsTask(GetModelsTask task)
             throws DBExecutionException {
         throw new DBExecutionException(
-                "Asynchronous DB Execution error - executeGetModels is not supported by this type of DBConnection");
+                "Asynchronous DB Execution error - executeGetModels "
+                        + "is not supported by this type of DBConnection");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Adds tasks to the task queue for the executor thread to execute
      * 
      * @param task - task that needs to be executed on the database
-     * @throws DBConnectionException - When the executor thread fails due to an exception 
+     * @throws DBConnectionException - When the executor thread 
+     * fails due to an exception 
      */
     private void executeTask(Task task) throws DBExecutionException {
 
@@ -124,7 +139,8 @@ public class AsynchronousDBConnection implements DBConnection {
         if (_taskQueue.size() == 0)
             _executorThread.run();
         /**
-         * If the executor thread failed due to an exception; throw that exception 
+         * If the executor thread failed due to an exception; 
+         * throw that exception 
          */
         if (_taskQueue.hasExecutionError())
             throw new DBExecutionException(_taskQueue
@@ -134,6 +150,9 @@ public class AsynchronousDBConnection implements DBConnection {
          */
         _taskQueue.add(task);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
      * The executor thread that processes the tasks from the taskQueue

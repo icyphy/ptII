@@ -1,18 +1,22 @@
 package ptdb.common.exception;
 
+//////////////////////////////////////////////////////////////////////////
+////DBConnectionException
 /**
- *  @version $Id$
- *  @since Ptolemy II 8.1
- *  @Pt.ProposedRating Red (abijwe)
- *  @Pt.AcceptedRating Red (abijwe)
- * This is an exception class for all the exceptions raised during XML database connection related operations
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (abijwe)
+ * @Pt.AcceptedRating Red (abijwe)
+ * This is an exception class for all the exceptions raised 
+ * during XML database connection related operations
  * @author abijwe
  *
  */
 public class DBConnectionException extends Exception {
 
     /**
-     * Constructor to create a new DBConnectionException with the given message 
+     * Construct an instance of DBConnectionException 
+     * with the given message 
      * @param errorMessage - exception message
      */
     public DBConnectionException(String errorMessage) {
@@ -20,7 +24,7 @@ public class DBConnectionException extends Exception {
     }
 
     /**
-     * Constructor to wrap other exceptions 
+     * Constructor an instance to wrap other exceptions 
      * @param errorMessage - exception message
      * @param cause
      */
@@ -29,6 +33,8 @@ public class DBConnectionException extends Exception {
         this._cause = cause;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
      * Returns the underlying cause for the exception
      */
@@ -36,5 +42,7 @@ public class DBConnectionException extends Exception {
         return this._cause;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private Throwable _cause;
 }

@@ -5,15 +5,18 @@ package ptdb.common.exception;
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
- * This is an exception class for all the exceptions raised during XML database connection related operations
+ * This is an exception class for all the exceptions raised during XML 
+ * database connection related operations
  * @author abijwe
  *
  */
 
 public class DBExecutionException extends Exception {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     /**
-     * Constructor to create a new DBConnectionException 
+     * Construct an instance of DBConnectionException 
      * with the given message 
      * @param errorMessage - exception message
      */
@@ -22,7 +25,7 @@ public class DBExecutionException extends Exception {
     }
 
     /**
-     * Constructor to wrap other exceptions 
+     * Construct and instance to wrap other exceptions 
      * @param errorMessage - exception message
      * @param cause
      */
@@ -38,5 +41,7 @@ public class DBExecutionException extends Exception {
         return this._cause;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private Throwable _cause;
 }
