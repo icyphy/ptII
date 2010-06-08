@@ -419,7 +419,10 @@ PTDATABASE_PACKAGES =	@PTDATABASE_PACKAGES@
 PTDB_DIR =	@PTDB_DIR@
 
 # PTDB_PACKAGES is used in ptII/doc/makefile
-PTDB_PACKAGES=	@PTDB_PACKAGES@
+PTDB_PACKAGES =	@PTDB_PACKAGES@
+
+# PTDBXML_JARS includes dbxml.jar and db.xml and is used by $PTII/ptdb
+PTDBXML_JARS = @PTDBXML_JARS@
 
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
