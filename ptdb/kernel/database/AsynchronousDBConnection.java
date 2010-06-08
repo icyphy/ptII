@@ -12,6 +12,11 @@ import ptdb.common.exception.DBExecutionException;
 import ptdb.kernel.database.DBConnection;
 
 /**
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (abijwe)
+ *  @Pt.AcceptedRating Red (abijwe)
+
  * This class provides an asynchronous mechanism of executing tasks over the database 
  * All the tasks are queued and executed parallel to the processing tasks
  * We plan to use this kind of connection for operations like saving a model that require a lot of processing
@@ -22,17 +27,7 @@ import ptdb.kernel.database.DBConnection;
 public class AsynchronousDBConnection implements DBConnection {
 
     /**
-     * The executor thread that processes the tasks from the taskQueue
-     */
-    private ExecutorThread _executorThread;
-
-    /**
-     * Queue where the tasks are added one after the another  
-     */
-    private TaskQueue _taskQueue;
-
-    /**
-     * Creates the taskQueue to enqueue tasks and the executor thread that enables task execution in parallel
+     * Create the taskQueue to enqueue tasks and the executor thread that enables task execution in parallel
      * @throws DBConnectionException
      */
     public AsynchronousDBConnection() throws DBConnectionException {
@@ -42,7 +37,7 @@ public class AsynchronousDBConnection implements DBConnection {
 
     /**
      * Abort connection signifies that the execution needs to be terminated as there was some error in execution
-     * Aborts the execution by setting the execution flag as false 
+     * Abort the execution by setting the execution flag as false 
      */
     public void abortConnection() {
         _taskQueue.setProcessingError();
@@ -50,7 +45,7 @@ public class AsynchronousDBConnection implements DBConnection {
 
     /**
      * Close connection signifies that the processing is completed
-     * The connection will be closed if all tasks in the queue are executed successfully
+     * close the connection if all tasks in the queue are executed successfully
      *  
      */
     public void closeConnection() throws DBConnectionException {
@@ -88,6 +83,11 @@ public class AsynchronousDBConnection implements DBConnection {
     /**
      * Get Attributes Task is not supported by the asynchronous connection
      * Use a synchronous connection for that
+     * @param task
+     *          The task to be completed.
+     * @return XMLDBModel
+     *          The model object containing the MoML
+     * @throws DBExecutionException
      */
     public ArrayList executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
@@ -134,4 +134,15 @@ public class AsynchronousDBConnection implements DBConnection {
          */
         _taskQueue.add(task);
     }
+
+    /**
+     * The executor thread that processes the tasks from the taskQueue
+     */
+    private ExecutorThread _executorThread;
+
+    /**
+     * Queue where the tasks are added one after the another  
+     */
+    private TaskQueue _taskQueue;
+
 }

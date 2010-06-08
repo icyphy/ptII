@@ -1,54 +1,94 @@
 package ptdb.common.dto;
 
 import java.util.ArrayList;
-
+/**
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (abijwe)
+ * @Pt.AcceptedRating Red (abijwe)
+ * @author abijwe
+ *
+ */
 public class TaskQueue extends ArrayList<Task> {
-
-    private boolean m_executionCompleted = false;
-
-    private boolean m_isProcessingError = false;
-
-    private boolean m_isExecutionError = false;
-
-    private String m_errorMessage;
-
-    private boolean m_allTasksAdded = false;
-
-    public void setAllTasksAdded() {
-        m_allTasksAdded = true;
-    }
-
+   
+    /**
+     * Return true if the task queue has all the required tasks, else return false 
+     * @return
+     */
     public boolean areAllTasksAdded() {
-        return m_allTasksAdded;
+        return _allTasksAdded;
     }
-
-    public void setExecutionCompleted() {
-        m_executionCompleted = true;
-    }
-
-    public boolean hasExecutionCompleted() {
-        return m_executionCompleted;
-    }
-
-    public void setProcessingError() {
-        m_isProcessingError = true;
-    }
-
-    public boolean hasProcessingError() {
-        return m_isProcessingError;
-    }
-
-    public void setExecutionError(String errorMessage) {
-        m_isExecutionError = true;
-        this.m_errorMessage = errorMessage;
-    }
-
-    public boolean hasExecutionError() {
-        return m_isExecutionError;
-    }
-
+    
+    /**
+     * Return the execution error message
+     * @return
+     */
     public String getExecutionErrorMessage() {
-        return m_errorMessage;
+        return _errorMessage;
     }
+    
+    /**
+     * Return true if the execution has completed; else return false
+     * @return
+     */
+    public boolean hasExecutionCompleted() {
+        return _executionCompleted;
+    }
+    
+    /**
+     * Return true if any execution error has occurred; else return false 
+     * @return
+     */
+    public boolean hasExecutionError() {
+        return _isExecutionError;
+    }
+    
+    /**
+     * Return true if any processing error has occurred; else return false
+     * @return
+     */
+    public boolean hasProcessingError() {
+        return _isProcessingError;
+    }
+    
+    /**
+     * Set the value for allTasksAdded to true
+     */
+    public void setAllTasksAdded() {
+        _allTasksAdded = true;
+    }
+    
+    /**
+     * Set the value for executionCompleted to true
+     */
+    public void setExecutionCompleted() {
+        _executionCompleted = true;
+    }
+    
+    /**
+     * Set the execution error to the given value
+     * @param errorMessage
+     */
+    public void setExecutionError(String errorMessage) {
+        _isExecutionError = true;
+        this._errorMessage = errorMessage;
+    }
+    
+    /**
+     * Set the processing error to true
+     */
+    public void setProcessingError() {
+        _isProcessingError = true;
+    }
+    
+    private boolean _executionCompleted = false;
+
+    private boolean _isProcessingError = false;
+
+    private boolean _isExecutionError = false;
+
+    private String _errorMessage;
+
+    private boolean _allTasksAdded = false;
 
 }

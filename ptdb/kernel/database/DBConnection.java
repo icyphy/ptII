@@ -9,27 +9,33 @@ import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
 /**
- * 
- * @author wini
- *
+ *  @version $Id$
+ *  @since Ptolemy II 8.1
+ *  @Pt.ProposedRating Red (abijwe)
+ *  @Pt.AcceptedRating Red (abijwe)
+ *  @author abijwe
+ *  
+ *  Interface that defines 
  */
 public interface DBConnection {
 
     /**
-     * @throws DBConnectionException 
-     * 
+     * Abort the connection to the database and rollback the transaction
+     * @throws DBConnectionException
+     */
+    public void abortConnection() throws DBConnectionException;
+
+
+
+    /**
+     * Close the connection to the database and commit the transaction
+     * @throws DBConnectionException
      */
     public void closeConnection() throws DBConnectionException;
 
     /**
-     * @throws DBConnectionException 
-     * 
-     */
-    public void abortConnection() throws DBConnectionException;
-
-    /**
-     * 
-     * @param task
+     * Get the attributes defined from the database 
+     * @param task - Define the criteria to get the attribute   
      * @return
      * @throws DBConnectionException
      */
