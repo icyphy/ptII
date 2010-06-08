@@ -30,10 +30,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
-////ActorGraphDBFrame
+//// ActorGraphDBFrame
 
 /**
-* This is an extended graph editor frame containing the ability to interface with
+* An extended graph editor frame containing the ability to interface with
 * a model database via the Database menu.
 *
 * @author Lyle Holsinger

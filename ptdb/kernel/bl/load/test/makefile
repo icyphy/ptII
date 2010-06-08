@@ -43,7 +43,8 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS_TEST_DRIVERS = \
-	TestLoadManagerInterface.java
+	TestLoadManagerInterface.java \
+	TestLoadModelManager.java
 
 JSRCS = \
 	$(JSRCS_TEST_DRIVERS)
