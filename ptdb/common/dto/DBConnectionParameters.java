@@ -3,13 +3,15 @@ package ptdb.common.dto;
 //////////////////////////////////////////////////////////////////////////
 ////DBConnectionParameters
 /**
+ * Encapsulate the parameters required for creating an XML DB connection
+ * The <p> Data Trasfer Object </p> is used here
+ * @author Ashwini Bijwe
+ * 
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
- * DTO to encapsulate the parameters required 
- * for creating an XML DB connection
- * @author abijwe
+ * 
  *
  */
 public class DBConnectionParameters {

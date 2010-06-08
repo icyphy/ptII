@@ -7,20 +7,22 @@ import ptdb.common.util.DBConnectorFactory;
 
 //////////////////////////////////////////////////////////////////////////
 ////ExecutorThread
+
 /**
+ * Help the AsynchronousDBConnection to execute the queries asynchronously
+ * 
+ * Monitor the asynchronous connection's task queue 
+ * and execute tasks one by one over a synchronous connection
+ * 
+ * Help achieve parallelism with respect to processing and execution 
+ * of tasks over the database 
+ *  
+ * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
  *  
- * This thread helps the AsynchronousDBConnection to 
- * execute the queries asynchronously
- * It monitors the asynchronous connection's task queue 
- * and executes tasks one by one over a synchronous connection
- * Using this thread we can achieve parallelism with respect 
- * to processing and execution of tasks over the database 
- *  
- * @author abijwe
  */
 public class ExecutorThread implements Runnable {
 

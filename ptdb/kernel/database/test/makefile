@@ -1,6 +1,6 @@
-# Makefile for ptdb - A model database for Ptolemy, kernel/database directory
+# Makefile for ptdb tests that use EasyMock
 #
-# @Authors: Christopher Brooks (makefile only), based on a file by Thomas M. Parks
+# @Authors: Ashwini Bijwe, Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
@@ -29,46 +29,49 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME = 		ptdb/kernel/database
-
-DIRS = 		#test
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptdb/kernel/database/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
-CLASSPATH = 	$(ROOT)
+# Configure looks for PowerMock.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	database
-PTCLASSJAR = 	$(PTPACKAGE).jar
+JSRCS_TEST_DRIVERS = \
+	TestOracleXMLDBConnection.java
 
 JSRCS = \
-	AsynchronousDBConnection.java \
-	DBConnection.java \
-	ExecutorThread.java \
-	OracleXMLDBConnection.java 
+	$(JSRCS_TEST_DRIVERS)
 
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	$(PTCLASSJAR)
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS=	$(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass $(PTCLASSJAR)
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
 
+all: $(JCLASS)
+	@echo "Run 'make tests' to run the tests"
+install:
+	@echo "Nothing to be done in $(ME)"
+
+tests:: $(EXTRA_SRCS) jclass test_java
+
+test_java: jclass
+	java -classpath $(CLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestOracleXMLDBConnection
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

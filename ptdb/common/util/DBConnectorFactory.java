@@ -14,16 +14,18 @@ import ptdb.kernel.database.DBConnection;
 //////////////////////////////////////////////////////////////////////////
 ////DBConnectorFactory
 /** 
+ * This is a factory class that deals with the creation of different types of connections.
+ * This class is the interface that will be used to create connections to XML database
+ *   
+ * @author abijwe
+
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
  * @author abijwe
- * This is a factory class that deals with the creation of different types of connections.
- * This class is the interface that will be used to create connections to XML database
- *   
- * @author abijwe
- *
+ * 
+ *  
  */
 public class DBConnectorFactory {
 

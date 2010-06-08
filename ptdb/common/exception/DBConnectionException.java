@@ -3,13 +3,15 @@ package ptdb.common.exception;
 //////////////////////////////////////////////////////////////////////////
 ////DBConnectionException
 /**
+ * Exception for all the exceptions raised during XML database connection 
+ * related operations
+ * @author Ashwini Bijwe
+ * 
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
- * This is an exception class for all the exceptions raised 
- * during XML database connection related operations
- * @author abijwe
+ * 
  *
  */
 public class DBConnectionException extends Exception {
