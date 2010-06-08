@@ -6339,21 +6339,13 @@ echo "$as_me: WARNING: Failed to find the Oracle Berkeley XML DB (dbxml) in
     fi
 fi
 
-if test -z "$PTDB_JARS"; then
+if test -z "$PTDBXML_JARS"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
 else
-   dbxmljar=`echo "$PTDBXML_JAR" | sed "s@$PTII/@@"`
-   if test -f "$dbxmljar"; then
-      dbjar=`echo "$PTDB_JAR" | sed "s@$PTII/@@"`
-      if test -f "$dbjar"; then
-          ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-              <classpathentry kind=\"src\" path=\"$dbjar\"/>"
-      else
-          ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
-      fi
-   else
-      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
-   fi
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"src\" path=\"$PTDBXML_JAR\"/>"
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+       <classpathentry kind=\"src\" path=\"$PTDB_JAR\"/>"
 fi
 
 #--------------------------------------------------------------------
