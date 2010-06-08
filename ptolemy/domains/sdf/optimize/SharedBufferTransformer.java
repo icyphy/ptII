@@ -42,7 +42,7 @@ SharedBufferTrasnformer is an abstract ancestor class to be used for filters
 using references to shared data frames.
 It implements a default version of the BufferingProfile interface.
 <p>
-See {@link ptolemy.domains.sdf.kernel.OptimizingSDFDirector} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and 
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector

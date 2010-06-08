@@ -46,7 +46,7 @@ FIXME: we may want to generalize the notion of a profile to make it more generic
 more than two modes of firing.
 
 <p>
-See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector} for more information.
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFScheduler
 
@@ -58,28 +58,28 @@ See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector} for more informat
 */
 public interface BufferingProfile {
     /****
-     * @return
      * returns the number of buffers required upon calling shared fire in excess of
      * the input and output buffer.
+     * @return the number of buffers required for a shared buffer firing
      */
     int sharedBuffers();
     
     /****
-     * @return
      * returns the number of buffers required upon calling exclusive fire in excess of
      * the input and output buffer.
+     * @return the number of buffers required for an exclusive buffer firing
      */
     int exclusiveBuffers();
 
     /****
-     * @return
-     * returns the number of new buffers instantiated temporarily during copying fire.
+     * returns (an estimate of) the execution time of a shared buffer firing of the actor.
+     * @return execution time of a shared buffer firing
      */
     int sharedExecutionTime();
     
     /****
-     * @return
-     * returns the net number of new buffers instantiated temporarily during exclusive fire.
+     * returns (an estimate of) the execution time of an exclusive buffer firing of the actor.
+     * @return execution time of an exclusive buffer firing
      */
     int exclusiveExecutionTime();
 

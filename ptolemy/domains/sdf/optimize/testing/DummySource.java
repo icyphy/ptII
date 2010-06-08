@@ -42,8 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 <h1>Class comments</h1>
 A simple actor acting as a dummy source used for testing the OptimizingSDFDirector.
 <p>
-See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector}, 
-{@link ptolemy.domains.sdf.optimize.optimizingSDFScheduler} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector}, 
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and 
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector

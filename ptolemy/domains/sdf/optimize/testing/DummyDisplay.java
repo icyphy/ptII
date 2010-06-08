@@ -39,8 +39,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 A DummyDisplay is a simple sink implementing the BufferingProfile interface.
 It is used for testing the OptimizingSDFDirector.
 <p>
-See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector}, 
-{@link ptolemy.domains.sdf.optimize.optimizingSDFScheduler} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector}, 
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and 
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector

@@ -38,7 +38,7 @@ import ptolemy.data.Token;
 DummyReferenceToken is a token encapsulating a reference to a shared
 data object. It is used for testing the OptimizingSDFDirector.
 <p>
-See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and 
 {@link ptolemy.domains.sdf.optimize.testing.DummyFrame} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector

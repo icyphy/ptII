@@ -53,8 +53,8 @@ An OptimalScheduleFinder encapsulates an algorithm to find an optimized schedule
 In particular it implements a simple state space exploration algorithm to find a 
 minimum buffer size schedule.
 <p>
-See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector}, 
-{@link ptolemy.domains.sdf.optimize.optimizingSDFScheduler} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector}, 
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and 
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
@@ -308,13 +308,23 @@ public class OptimalScheduleFinder {
             }
             return true;
         }
+        public int getFiringsToCompletion() {
+            int result = 0;
+            for(int i = 0; i < actorContent.length; i++){
+                result += actorContent[i];
+            }            
+            return result;
+        }
 
     }
     
     public class SetOfStates extends HashSet {       
     }
     
-    public class StateComparator implements Comparator {
+    public abstract class StateComparator implements Comparator {
+    }
+    
+    public class StateComparatorLowestValue extends StateComparator {
 
         public int compare(Object o1, Object o2) {
             State s1 = (State) o1;
@@ -335,12 +345,37 @@ public class OptimalScheduleFinder {
             }
         }
     }
+
+    public class StateComparatorMaximumProgress extends StateComparator {
+
+        private StateComparator backupComparator;
+        
+        public StateComparatorMaximumProgress(){
+            backupComparator = new StateComparatorLowestValue();
+        }
+        
+        public int compare(Object o1, Object o2) {
+            State s1 = (State) o1;
+            State s2 = (State) o2;
+            int p1 = s1.getFiringsToCompletion();
+            int p2 = s2.getFiringsToCompletion();
+            if(p1 != p2){
+                return p1-p2; // least number of firings first
+            } else {
+               return backupComparator.compare(s1, s2);
+            }
+        }
+    }
     
     public class SortedSetOfStates  {
         private StateComparator comp;
         private TreeSet ts;
         public SortedSetOfStates(){
-            comp = new StateComparator();
+            comp = new StateComparatorLowestValue();
+            ts = new TreeSet(comp);
+        }
+        public SortedSetOfStates(StateComparator c){
+            comp = c;
             ts = new TreeSet(comp);
         }
         public State removeFirstState(){
@@ -470,6 +505,74 @@ public class OptimalScheduleFinder {
         
     }
     
+    Schedule makeScheduleGreedy(Map firingVector){
+        Schedule result = null;
+  
+        try {  
+            
+            // instantiate the model
+            instantiateAnalysisModel(firingVector);
+            
+            // determine the state vector indices
+            setStateIndices();
+            
+            // run a state-space exploration
+            // keeping toExplore sorted on memory usage ensures that the minimum memory
+            // schedule is found first.
+            SortedSetOfStates toExplore = new SortedSetOfStates(new StateComparatorMaximumProgress());
+            toExplore.add(initialState());
+            State minBufEndState = null;
+            boolean scheduleFound = false;
+            
+            while((!scheduleFound) && !toExplore.isEmpty()){
+                State s = toExplore.removeFirstState();
+                if(s.isEndState()){
+                    // found !!
+                    minBufEndState = s; 
+                    scheduleFound = true;
+                } 
+                else{
+                    // for all possible actions (actor firings)
+                    Iterator ai = _actors.iterator();
+                    while(ai.hasNext()){
+                        Actor a = (Actor) ai.next();
+                        // check first if a is exclusively enabled to give
+                        // preference to exclusive firing
+                        // (although perhaps we should not be assuming that from the sorted set)
+                        if(a.isExclusiveEnabled(s)){
+                            State ns = s.clone(s);
+                            a.fireExclusive(ns);
+                            if(_optimizationCriterion == OptimizationCriteria.BUFFERS){
+                                ns.value = Math.max(_channels.channelSize(ns) + a.exclusiveBuffers, ns.value);
+                            } else if(_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME){
+                                ns.value = s.value + a.exclusiveExecutionTime;
+                            }
+                            toExplore.add(ns);
+                        }   
+                        // try also firing non-exclusive
+                        if(a.isEnabled(s)){
+                            State ns = s.clone(s);
+                            a.fire(ns);
+                            if(_optimizationCriterion == OptimizationCriteria.BUFFERS){
+                                ns.value = Math.max(_channels.channelSize(ns) + a.sharedBuffers, ns.value);
+                            } else if(_optimizationCriterion == OptimizationCriteria.EXECUTIONTIME){
+                                ns.value = s.value + a.sharedExecutionTime;
+                            }
+                            toExplore.add(ns);
+                        }
+                    }
+                }
+            }
+            if(scheduleFound){
+                result = _buildSchedule(minBufEndState);
+            }
+        
+        } catch(IllegalActionException e){
+            
+        }
+        return result;
+    }
+
     Schedule makeSchedule(Map firingVector){
         Schedule result = null;
   
@@ -537,7 +640,8 @@ public class OptimalScheduleFinder {
         }
         return result;
     }
-
+    
+    
     private Schedule _buildSchedule(State s) {
         Schedule result = new Schedule();
         // reverse the order of the states

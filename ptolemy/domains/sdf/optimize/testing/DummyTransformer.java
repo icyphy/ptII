@@ -41,9 +41,9 @@ A DummyTransformer is a simple actor with one input port and one output port
 imitation a filter type of actor
 It is used for testing the OptimizingSDFDirector.
 <p>
-See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector}, 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector}, 
 {@link ptolemy.domains.sdf.optimize.SharedBufferTransformer}, 
-{@link ptolemy.domains.sdf.optimize.optimizingSDFScheduler} and 
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and 
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector

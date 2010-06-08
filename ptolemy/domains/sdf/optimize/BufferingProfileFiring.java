@@ -39,8 +39,8 @@ schedule of actor firings. An object of this class enable the use of different f
 It is used by the OptimizingSDFDirector and OptimizingSDFSchedule duo when generating 
 schedules
 <p>
-See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector}, 
-{@link ptolemy.domains.sdf.optimize.optimizingSDFScheduler} and 
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector}, 
+{@link ptolemy.domains.sdf.optimize.OptimizingSDFScheduler} and 
 {@link ptolemy.domains.sdf.optimize.BufferingProfile} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector

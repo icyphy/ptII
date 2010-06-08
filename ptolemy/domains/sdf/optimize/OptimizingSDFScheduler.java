@@ -63,7 +63,7 @@ It works with the synchronous dataflow (SDF) model of computation to find
 an optimized schedule according to a defined criterion.
 
 <h1>Class comments</h1>
-An OptimizingSDFScheduler is the class that determines an opimized static schedule.  
+An OptimizingSDFScheduler is the class that determines an optimized static schedule.  
 <p>
 See {@link ptolemy.domains.sdf.kernel.SDFScheduler} and 
 {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more information.
@@ -310,6 +310,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
             }
             // delegate the construction of the schedule to the OptimizedScheduleFinder
             optimizedSchedule = finder.makeSchedule(repVec);
+            // optimizedSchedule = finder.makeScheduleGreedy(repVec);
             
             
             // Iterate over the schedule once to fix the buffer sizes.
@@ -352,10 +353,6 @@ public class OptimizingSDFScheduler extends SDFScheduler {
      *  add those actors to the list of actors that are ready to schedule.
      *  @param outputPort The port that is creating the tokens.
      *  @param createdTokens The number of tokens to create.
-     *  @param actorList The list of actors that are being scheduled.
-     *  @param readyToScheduleActorList The list of actors that are ready
-     *   to be scheduled.  This will be updated if any actors that receive
-     *   tokens from outputPort are now ready to fire.
      */
     private void _simulateTokensCreated(IOPort outputPort, int createdTokens)
             throws IllegalActionException {

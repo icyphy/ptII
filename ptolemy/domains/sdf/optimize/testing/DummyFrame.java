@@ -37,7 +37,7 @@ A DummyFrame mimics a shared data object.
 It is used for testing the OptimizingSDFDirector. The shared data object holds an
 integer value. 
 <p>
-See {@link ptolemy.domains.sdf.optimize.optimizingSDFDirector} for more information.
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
 
