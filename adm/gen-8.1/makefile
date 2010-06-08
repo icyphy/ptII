@@ -1477,7 +1477,14 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/demo \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless/demo \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil
+	$(REMOTE1PTIIDIST)/ptolemy/vergil \
+	$(REMOTE1PTIIDIST)/ptdb/common/dto \
+	$(REMOTE1PTIIDIST)/ptdb/common/exception \
+	$(REMOTE1PTIIDIST)/ptdb/common/util \
+	$(REMOTE1PTIIDIST)/ptdb/gui \
+	$(REMOTE1PTIIDIST)/ptdb/kernel/database \
+	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/load \
+	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search
 
 # Directories we run make in before running make in the NONJSALLDIRS
 NONJSALLCOREDIRS = \
