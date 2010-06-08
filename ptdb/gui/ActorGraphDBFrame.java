@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -18,11 +19,14 @@ import javax.swing.JPanel;
 
 import diva.gui.GUIUtilities;
 
+import ptdb.kernel.bl.load.LoadManagerInterface;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
@@ -30,7 +34,7 @@ import ptolemy.vergil.actor.ActorGraphFrame;
 
 /**
 * This is an extended graph editor frame containing the ability to interface with
-* a model databse via the Database menu.
+* a model database via the Database menu.
 *
 * @author Lyle Holsinger
 * @since Ptolemy II 8.1
@@ -229,24 +233,32 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         /** Load selected models into new frames **/
         private void _loadModel() {
 
-            /*
-             // For now we are only passing one model name string.
-             // This will need to change when we allow loading of
-             // Multiple models.
-             LoadManagerInterface lmi = new LoadManagerInterface();
-            
-             String [] modelsToFetch = {_selectedModel};  
-            
-             ArrayList <PtolemyEffigy> effigies = lmi.loadModel (modelsToFetch);
-            
-             for (PtolemyEffigy effigy: effigies){
-              
+            // For now we are only passing one model name string.
+            // This will need to change when we allow loading of
+            // Multiple models.
+
+            try {
+
+                LoadManagerInterface lmi = new LoadManagerInterface();
+
+                String[] modelsToFetch = { _selectedModel };
+
+                ArrayList<PtolemyEffigy> effigies = lmi.loadModels(
+                        modelsToFetch, getConfiguration());
+
+                for (PtolemyEffigy effigy : effigies) {
+
                     effigy.showTableaux();
-            
-             }
-            
-             setVisible(false);
-            */
+
+                }
+
+            } catch (Exception e) {
+
+                MessageHandler.error("Cannot load the specified model. ", e);
+
+            }
+
+            setVisible(false);
 
             System.out.println(_selectedModel);
         }

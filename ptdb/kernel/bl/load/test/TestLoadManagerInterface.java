@@ -2,9 +2,11 @@ package ptdb.kernel.bl.load.test;
 
 import static org.junit.Assert.*;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.easymock.EasyMock;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -13,27 +15,95 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManagerInterface;
 import ptdb.kernel.bl.load.LoadModelManager;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
+
+///////////////////////////////////////////////////////////////////
+////TestLoadManagerInterface
+
+/**
+* This JUnit tests the translation of an XMLDBModel object into an effigy.
+* It mocks the LoadModelManager.  An XMLDBModel object is created.  The
+* loadModels method is called and then we confirm that the model name
+* in the returned effigy is as expected: "model1".
+*
+* @author Lyle Holsinger
+* @since Ptolemy II 8.1
+* @version $Id$
+* @Pt.ProposedRating red (lholsing)
+* @Pt.AcceptedRating red (lholsing)
+*/
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(LoadManagerInterface.class)
 public class TestLoadManagerInterface {
 
-    public void testloadModels() throws Exception{
-        
-        /*
-        String[] inputArray = {"model1.xml"};
-        ArrayList<XMLDBModel> effigyList = new XMLDBModel();
-        Workspace workspace = new Workspace();
-        PtolemyEffigy effigy = new PtolemyEffigy(workspace);
-        effigyList.add(effigy);
-        
-        LoadModelManager loadManagerMock = PowerMock.createMock(LoadModelManager.class);
-        
+    /**
+     * Mock the LoadModelManager.  Create a fake XMLDBModel object and specify
+     * it as the return from load().  Then verify that, given an XMLDBModelObject, 
+     * the loadModels() method will return a valid effigy.
+     * @throws Exception
+     */
+    @Test
+    public void testloadModels() throws Exception {
+
+        LoadManagerInterface tested = new LoadManagerInterface();
+
+        String[] inputArray = { "model1" };
+
+        MoMLParser parser = new MoMLParser();
+        parser.reset();
+        String configPath = "ptolemy/configs/ptdb/configuration.xml";
+
+        URL configURL = ConfigurationApplication.specToURL(configPath);
+        Configuration configuration = (Configuration) parser.parse(configURL,
+                configURL);
+
+        ArrayList<XMLDBModel> modelList = new ArrayList();
+        ArrayList<PtolemyEffigy> effigyList = new ArrayList();
+        XMLDBModel dbModel = new XMLDBModel();
+        dbModel.setIsNew(false);
+        dbModel
+                .setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
+                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                        + "<entity name=\"model1\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                        + "</property>"
+                        + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
+                        + "</property>"
+                        + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                        + "</property>"
+                        + "<property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                        + "</property>"
+                        + "<property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                        + "</property>"
+                        + "<entity name=\"Const\" class=\"ptolemy.actor.lib.Const\">"
+                        + "<doc>Create a constant sequence.</doc>"
+                        + "<property name=\"_icon\" class=\"ptolemy.vergil.icon.BoxedValueIcon\">"
+                        + "<property name=\"attributeName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"value\">"
+                        + "</property>"
+                        + "<property name=\"displayWidth\" class=\"ptolemy.data.expr.Parameter\" value=\"60\">"
+                        + "</property>"
+                        + "</property>"
+                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
+                        + "</property>" + "</entity>" + "</entity>");
+        //Demonstrate that the name is taken from the MoML.
+        dbModel.setModelName("model2");
+        modelList.add(dbModel);
+
+        //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
+        LoadModelManager loadManagerMock = PowerMock
+                .createMock(LoadModelManager.class);
         PowerMock.expectNew(LoadModelManager.class).andReturn(loadManagerMock);
-        
-        EasyMock.expect(loadManagerMock.load(inputArray)).andReturn(effigyList);
-        */
+        EasyMock.expect(loadManagerMock.load(inputArray)).andReturn(modelList);
+
+        //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
+        PowerMock.replayAll();
+        effigyList = tested.loadModels(inputArray, configuration);
+        assertEquals(effigyList.get(0).getModel().getName(), "model1");
+        PowerMock.verifyAll();
+
     }
 }

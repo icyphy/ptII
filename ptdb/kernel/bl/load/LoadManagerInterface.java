@@ -41,15 +41,14 @@ public class LoadManagerInterface {
      * @throws Exception
      */
     public ArrayList<PtolemyEffigy> loadModels(String[] names,
-            Configuration configuration, ModelDirectory directory)
-            throws Exception {
+            Configuration configuration) throws Exception {
 
         //We instantiate a LoadModelManager then pass the names array.
         LoadModelManager lmm = new LoadModelManager();
         ArrayList<XMLDBModel> dbModels = lmm.load(names);
 
         //Convert ArrayList of XMLDBModels into an ArrayList of effigies.
-        return getEffigies(dbModels, configuration, directory);
+        return getEffigies(dbModels, configuration);
 
     }
 
@@ -66,8 +65,8 @@ public class LoadManagerInterface {
      * @throws Exception
      */
     private ArrayList<PtolemyEffigy> getEffigies(
-            ArrayList<XMLDBModel> dbModels, Configuration configuration,
-            ModelDirectory directory) throws Exception {
+            ArrayList<XMLDBModel> dbModels, Configuration configuration)
+            throws Exception {
 
         ArrayList<PtolemyEffigy> effigyList = new ArrayList<PtolemyEffigy>();
 
@@ -78,12 +77,7 @@ public class LoadManagerInterface {
             Entity entity = new Entity();
             parser.reset();
 
-            //Need to be sure there is a getModel Method for the
-            //XMLDBModel class.
             entity = (Entity) parser.parse(dbModels.get(i).getModel());
-
-            String name = "model";
-            entity.setName(name);
 
             effigyList.add(new PtolemyEffigy(configuration.workspace()));
 
@@ -104,8 +98,9 @@ public class LoadManagerInterface {
 
                 // Put the effigy into the directory
                 effigyList.get(i).setName(
-                        directory.uniqueName(entity.getName()));
-                effigyList.get(i).setContainer(directory);
+                        configuration.getDirectory().uniqueName(
+                                entity.getName()));
+                effigyList.get(i).setContainer(configuration.getDirectory());
 
             }
 
