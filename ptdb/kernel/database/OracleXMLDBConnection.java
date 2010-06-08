@@ -20,16 +20,16 @@ import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
 //////////////////////////////////////////////////////////////////////////
-////OracleXMLDBConnection
+//// OracleXMLDBConnection
 /**
  * Create and manage the actual connection to the Oracle XML database. 
  * Manage the transactions for the database.
  * 
- * This is a wrapper class that acts as a <p> Facade </p> to the <p> Oracle Berkeley XML 
- * Database </p> interface.
- *  
+ * <p>This is a wrapper class that acts as a  Facade to the Oracle Berkeley XML 
+ * Database interface.</p>
  *     
  * @author Ashwini Bijwe
+ *
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)

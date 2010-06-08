@@ -1,10 +1,11 @@
 package ptdb.common.exception;
 
 //////////////////////////////////////////////////////////////////////////
-////DBConnectionException
+//// DBConnectionException
 /**
  * Exception for all the exceptions raised during XML database connection 
- * related operations
+ * related operations.
+ * 
  * @author Ashwini Bijwe
  * 
  * @version $Id$

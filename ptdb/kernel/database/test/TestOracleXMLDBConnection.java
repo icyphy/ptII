@@ -23,9 +23,10 @@ import ptdb.kernel.database.OracleXMLDBConnection;
 //// TestOracleXMLDBConnection
 
 /**
- * Unit Test the OracleXMLDBConnection class 
+ * Unit Test the OracleXMLDBConnection class.
  * 
  * @author Ashwini Bijwe
+ *
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
@@ -335,6 +336,6 @@ public class TestOracleXMLDBConnection {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		private variables				//////
+    ////		private variables			   //////
 
 }

@@ -1,10 +1,12 @@
 package ptdb.common.dto;
 
 //////////////////////////////////////////////////////////////////////////
-////DBConnectionParameters
+//// DBConnectionParameters
 /**
- * Encapsulate the parameters required for creating an XML DB connection
- * The <p> Data Trasfer Object </p> is used here
+ * Encapsulate the parameters required for creating an XML DB connection.
+ *
+ * The <p> Data Transfer Object pattern is used here </p>
+ *
  * @author Ashwini Bijwe
  * 
  * @version $Id$

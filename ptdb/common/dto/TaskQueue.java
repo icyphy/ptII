@@ -3,14 +3,17 @@ package ptdb.common.dto;
 import java.util.ArrayList;
 
 //////////////////////////////////////////////////////////////////////////
-////Task
+//// TaskQueue
 /**
+ * Enqueue tasks before executing them.
+ * 
+ * @author Ashwini Bijwe
+ * 
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
- * @author abijwe
- *
+ * 
  */
 public class TaskQueue extends ArrayList<Task> {
 

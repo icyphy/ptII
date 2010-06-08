@@ -9,15 +9,17 @@ import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
 //////////////////////////////////////////////////////////////////////////
-////DBConnection
+//// DBConnection
 /**
+ *  Interface for XML Database connections.
+ *  
+ *  @author Ashwini Bijwe
+ *  
  *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (abijwe)
  *  @Pt.AcceptedRating Red (abijwe)
- *  @author abijwe
- *  
- *  Interface that defines 
+ *   
  */
 public interface DBConnection {
 

@@ -6,18 +6,16 @@ import ptdb.common.exception.DBConnectionException;
 import ptdb.common.util.DBConnectorFactory;
 
 //////////////////////////////////////////////////////////////////////////
-////ExecutorThread
+//// ExecutorThread
 
 /**
- * Help the AsynchronousDBConnection to execute the queries asynchronously
+ * Execute the queries asynchronously.
  * 
- * Monitor the asynchronous connection's task queue 
- * and execute tasks one by one over a synchronous connection
- * 
- * Help achieve parallelism with respect to processing and execution 
- * of tasks over the database 
+ * <p>Monitor the asynchronous connection's task queue 
+ * and execute tasks one by one over a synchronous connection.</p>
  *  
  * @author Ashwini Bijwe
+ *
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
@@ -27,9 +25,10 @@ import ptdb.common.util.DBConnectorFactory;
 public class ExecutorThread implements Runnable {
 
     /** Construct an instance of the executor thread that 
-     *  performs tasks one by one from the taskQueue
+     *  performs tasks one by one from the taskQueue.
      * 
      * @param taskQueue List of Tasks that need to be executed
+     * 
      * @throws DBConnectionException - When we face a problem 
      * while creating a database connection. These problems could 
      * be that configured connection class does not exist, 
@@ -48,13 +47,14 @@ public class ExecutorThread implements Runnable {
     ////                         public methods                    ////
     /**
      * Manage the execution of tasks from the task queue. 
-     * It aborts its working if it encounter an exception 
-     * or if the processing error flag in the taskQueue 
-     * is set to true.
      * 
-     * Stop execution if the taskQueue is completed 
+     * <p> It aborts its working if it encounter an exception 
+     * or if the processing error flag in the taskQueue 
+     * is set to true. </p>
+     * 
+     * <p> Stop execution if the taskQueue is completed 
      * and all the tasks are executed 
-     * or if it exceeds its max wait time of 50 seconds.   
+     * or if it exceeds its max wait time of 50 seconds. </p>   
      * 
      */
     public void run() {

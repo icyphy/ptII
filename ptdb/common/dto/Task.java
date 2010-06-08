@@ -1,16 +1,16 @@
 package ptdb.common.dto;
 
 //////////////////////////////////////////////////////////////////////////
-////Task
+//// Task
 /**
+ *  Abstract class that defines a task that can be executed over the database.
+ *  
+ *  @author Ashwini Bijwe
+ *  
  *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (abijwe)
  *  @Pt.AcceptedRating Red (abijwe)
- *  This is an abstract class that defines an abstract 
- *  task that can be executed over the database
- * 
- * @author abijwe
  */
 public abstract class Task {
 
