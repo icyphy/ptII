@@ -758,6 +758,7 @@ PTDATABASE_JNLP_JARS
 PTDATABASE_PACKAGES
 PTDB_DIR
 PTDB_PACKAGES
+PTDBXML_JARS
 PTDISTRIBUTED_DIR
 PTDISTRIBUTED_JARS
 PTDISTRIBUTED_PACKAGES
@@ -1474,8 +1475,10 @@ Optional Packages:
                           defaults to \$PTJAVA_HOME/../lib/tools.jar
   --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
                          defaults to $TMP_ECLIPSE_DIR
-  --with-dbxml=DIRECTORY       use dbxml from DIRECTORY,
-                          defaults to \$PTII/vendors/misc/dbxml-2.5.16
+  --with-dbxml=JAR       use dbxml.jar from JAR,
+                          defaults to \$PTII/ptdb/lib/dbxml.jar
+  --with-db=JAR       use db.jar from JAR,
+                          defaults to \$PTII/ptdb/lib/db.jar
   --with-fuzzyengine=DIRECTORY       use FuzzyEngine from DIRECTORY,
                           defaults to \$PTII/vendors/misc/FuzzyEngine
   --with-gc-include=DIR       use gc.h from DIR
@@ -6254,105 +6257,103 @@ fi
 # $PTII/makefile if dbxml is found
 PTDB_DIR=
 
-# dbxml directory
-#	http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-PTDBXML_DIR='${PTII}/vendors/misc/dbxml-2.5.16'
+PTDBXML_JAR='${PTII}/ptdb/lib/dbxml.jar'
+PTDB_JAR='${PTII}/ptdb/lib/db.jar'
 
-PTDB_USER_DIR="$PTII/ptdb"
+# Jar files necessary for compilation
+PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
+
 # We only need to look for dbxml if $PTDB_USER_DIR
+PTDB_USER_DIR="$PTII/ptdb"
 if test ! -d "$PTDB_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $PTDB_USER_DIR is not present,
     so we need not find the dbxml interface." >&5
 echo "${ECHO_T}$PTDB_USER_DIR is not present,
     so we need not find the dbxml interface." >&6; }; fi
 else
-    { echo "$as_me:$LINENO: checking for dbxml directory" >&5
-echo $ECHO_N "checking for dbxml directory... $ECHO_C" >&6; }
+    { echo "$as_me:$LINENO: checking for dbxml.jar " >&5
+echo $ECHO_N "checking for dbxml.jar ... $ECHO_C" >&6; }
 
 # Check whether --with-dbxml was given.
 if test "${with_dbxml+set}" = set; then
-  withval=$with_dbxml; PTDBXML_DIR=$withval
+  withval=$with_dbxml; PTDBXML_JAR=$withval
 else
-  PTDBXML_DIR=$PTII/vendors/misc/dbxml-2.5.16
+  PTDBXML_JAR=$PTII/ptdb/lib/dbxml.jar
 fi
 
 
-    case "`uname -s`" in
-        CYGWIN_*)    PTDBXML_SHAREDLIBRARY_SUFFIX=dll
-    		     PTDBXML_SHAREDLIBRARY_SUFFIX2=dll.a;;
-        SunOS)	     PTDBXML_SHAREDLIBRARY_SUFFIX=so;;
-        Linux)       PTDBXML_SHAREDLIBRARY_SUFFIX=so;;
-        Darwin)      PTDBXML_SHAREDLIBRARY_SUFFIX=jnilib
-    	  	     PTDBXML_SHAREDLIBRARY_SUFFIX2=dylib;;
-        *) PTDBXML_SHAREDLIBRARY_SUFFIX=unknown
-    esac
-
-    ptdblibxml=$PTDBXML_DIR/install/lib/libdbxml.${PTDBXML_SHAREDLIBRARY_SUFFIX}
-    if test ! -f "$ptdblibxml"; then
-        if test -z "$PTDBXML_SHAREDLIBRARY_SUFFIX2"; then
-	     if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: Could not find $ptdblibxml or $" >&5
-echo "${ECHO_T}Could not find $ptdblibxml or $" >&6; }; fi
-        else
-             ptdblibxml2=$PTDBXML_DIR/install/lib/libdbxml.${PTDBXML_SHAREDLIBRARY_SUFFIX2}
-	     if test ! -f "$ptdblibxml2"; then
-	         if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: Could not find $ptdblibxml or $ptdblibxml2" >&5
-echo "${ECHO_T}Could not find $ptdblibxml or $ptdblibxml2" >&6; }; fi
-             else
-	         ptdblibxml=$ptdblibxml2
-             fi
-        fi
-    fi
-    if test  -f "$ptdblibxml"; then
+    if test  -f "$PTDBXML_JAR"; then
 	if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTDBXML_DIR" >&5
-echo "${ECHO_T}$PTDBXML_DIR" >&6; }; fi
-	# Set to ptdb and used in
-	# $PTII/makefile
-	PTDB_DIR=ptdb
-        # PTDB_PACKAGES is used in ptII/doc/makefile
-	PTDB_PACKAGES=ptdb.gui
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTDBXML_JAR" >&5
+echo "${ECHO_T}$PTDBXML_JAR" >&6; }; fi
+
+        { echo "$as_me:$LINENO: checking for db.jar " >&5
+echo $ECHO_N "checking for db.jar ... $ECHO_C" >&6; }
+
+# Check whether --with-dbxml was given.
+if test "${with_dbxml+set}" = set; then
+  withval=$with_dbxml; PTDB_JAR=$withval
+else
+  PTDB_JAR=$PTII/ptdb/lib/db.jar
+fi
+
+
+        if test  -f "$PTDB_JAR"; then
+	    if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: $PTDB_JAR" >&5
+echo "${ECHO_T}$PTDB_JAR" >&6; }; fi
+	    # Set to ptdb and used in
+	    # $PTII/makefile
+
+	    # Set to ptdb and used in
+	    # $PTII/makefile
+	    PTDB_DIR=ptdb
+            # PTDB_PACKAGES is used in ptII/doc/makefile
+	    PTDB_PACKAGES="ptdb.common.dto ptdb.common.exception ptdb.common.util ptdb.gui kernel.bl.load kernel.bl.search kernel.database"
+         fi
     fi
 
     if test "$PTDB_DIR" = ""; then
-        { echo "$as_me:$LINENO: WARNING: Failed to find the Oracle Berkeley XML DB (dbxml)
-    in $PTDB_DIR.
+        { echo "$as_me:$LINENO: WARNING: Failed to find the Oracle Berkeley XML DB (dbxml) in
+    $PTDBXML_JAR and
+    $PTDB_JAR
     Perhaps the Oracle Berkeley XML DB is not installed?
     You need not download dbxml unless you
     plan on using the ptdb facility which uses a database to manage actors with Ptolemy II.
     The dbxml interface can be downloaded from
     http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-    an untar'd into $PTII/vendors/misc and built
-    $ptdblibxml exists. For further instructions, see $PTII/ptdb/doc " >&5
-echo "$as_me: WARNING: Failed to find the Oracle Berkeley XML DB (dbxml)
-    in $PTDB_DIR.
+    an untar'd into $PTII/vendors/misc and built.
+    For further instructions, see $PTII/ptdb/doc " >&5
+echo "$as_me: WARNING: Failed to find the Oracle Berkeley XML DB (dbxml) in
+    $PTDBXML_JAR and
+    $PTDB_JAR
     Perhaps the Oracle Berkeley XML DB is not installed?
     You need not download dbxml unless you
     plan on using the ptdb facility which uses a database to manage actors with Ptolemy II.
     The dbxml interface can be downloaded from
     http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-    an untar'd into $PTII/vendors/misc and built
-    $ptdblibxml exists. For further instructions, see $PTII/ptdb/doc " >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	PTDB_DIR='${PTII}/vendors/misc/ptdb-2.5.16'
+    an untar'd into $PTII/vendors/misc and built.
+    For further instructions, see $PTII/ptdb/doc " >&2;}
+    else
+        PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
     fi
 fi
 
-if test -z "$PTDB_DIR"; then
+if test -z "$PTDB_JARS"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
 else
-   shortdir=`echo "$ptdblibxml" | sed "s@$PTII/@@"`
-   if test -d "$shortdir"; then
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-           <classpathentry kind=\"src\" path=\"$shortdir\"/>"
-      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$shortdir/"
+   dbxmljar=`echo "$PTDBXML_JAR" | sed "s@$PTII/@@"`
+   if test -f "$dbxmljar"; then
+      dbjar=`echo "$PTDB_JAR" | sed "s@$PTII/@@"`
+      if test -f "$dbjar"; then
+          ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+              <classpathentry kind=\"src\" path=\"$dbjar\"/>"
+      else
+          ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
+      fi
    else
-      ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-           <classpathentry kind=\"src\" path=\"$PTFUZZYENGINE_DIR\"/>"
-      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$PTFUZZYENGINE_DIR/"
+      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptdb/"
    fi
-
 fi
 
 #--------------------------------------------------------------------
@@ -12270,6 +12271,9 @@ fi
 # PTDB_PACKAGES is used in ptII/doc/makefile
 
 
+# PTDBXML_JARS includes dbxml.jar and db.xml and is used by $PTII/ptdb
+
+
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
 
@@ -13484,6 +13488,7 @@ PTDATABASE_JNLP_JARS!$PTDATABASE_JNLP_JARS$ac_delim
 PTDATABASE_PACKAGES!$PTDATABASE_PACKAGES$ac_delim
 PTDB_DIR!$PTDB_DIR$ac_delim
 PTDB_PACKAGES!$PTDB_PACKAGES$ac_delim
+PTDBXML_JARS!$PTDBXML_JARS$ac_delim
 PTDISTRIBUTED_DIR!$PTDISTRIBUTED_DIR$ac_delim
 PTDISTRIBUTED_JARS!$PTDISTRIBUTED_JARS$ac_delim
 PTDISTRIBUTED_PACKAGES!$PTDISTRIBUTED_PACKAGES$ac_delim
@@ -13533,7 +13538,6 @@ PTJOYSTICK_DIR!$PTJOYSTICK_DIR$ac_delim
 PTJOYSTICK_PACKAGES!$PTJOYSTICK_PACKAGES$ac_delim
 PTJUNIT_PACKAGES!$PTJUNIT_PACKAGES$ac_delim
 PTJXL_JAR!$PTJXL_JAR$ac_delim
-PTJYTHON_DIR!$PTJYTHON_DIR$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -13575,6 +13579,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+PTJYTHON_DIR!$PTJYTHON_DIR$ac_delim
 PTJYTHON_PACKAGES!$PTJYTHON_PACKAGES$ac_delim
 PTJXTA_DIR!$PTJXTA_DIR$ac_delim
 PTOPENCV_DIR!$PTOPENCV_DIR$ac_delim
@@ -13636,7 +13641,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 59; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 60; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
