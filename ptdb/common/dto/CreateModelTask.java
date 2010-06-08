@@ -1,12 +1,10 @@
 package ptdb.common.dto;
 
-import java.util.ArrayList;
-
 
 /**
  * 
  * @author Yousef
- * @version 1.0
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yousef)
  * @Pt.AcceptedRating Red (yousef)
@@ -28,7 +26,7 @@ public class CreateModelTask extends Task {
      * set the model to be created
      * @param p_XMLDBModel the model to be created to the database.
      */
-    public void setModelName(XMLDBModel p_XMLDBModel){
+    public void setXMLDBModel(XMLDBModel p_XMLDBModel){
 	_m_Model = p_XMLDBModel;
     }
     

@@ -2,7 +2,7 @@ package ptdb.common.dto;
 
 /**
  * @author Yousef
- * @version 1.0
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (Yousef)
  * @Pt.AcceptedRating Red (Yousef)
@@ -24,7 +24,7 @@ public class SaveModelTask extends Task {
      * set the model to be saved
      * @param p_XMLDBModel the model to be saved to the database.
      */
-    public void setModelName(XMLDBModel p_XMLDBModel){
+    public void setXMLDBModel(XMLDBModel p_XMLDBModel){
 	_m_Model = p_XMLDBModel;
     }
     
