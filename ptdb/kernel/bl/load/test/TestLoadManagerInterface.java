@@ -1,4 +1,4 @@
-package ptdb.kernel.bl.load.tests;
+package ptdb.kernel.bl.load.test;
 
 import static org.junit.Assert.*;
 

@@ -59,7 +59,6 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
      *  will be called to notify.  
      * 
      */
-    @Override
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException {
 

@@ -1,7 +1,8 @@
-# Makefile for ptdb - A model database for Ptolemy
+# Makefile for ptdb - A model database for Ptolemy, load directory
+#
+# @Authors: Christopher Brooks (makefile only), based on a file by Thomas M. Parks
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -27,49 +28,45 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptdb
+ME = 		ptdb/kernel/bl/load/
 
-# $PTII/configure runs and looks for PTPOWERMOCK
-# $(PTPOWERMOCK_DIR) to test
-DIRS =		common gui kernel $(PTPOWERMOCK_DIR)
+DIRS =		test
 
-# Root of Ptolemy II directory
-ROOT =		..
+# Root of the Ptolemy II directory
+ROOT =		../../../..
+
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptdb
-PTCLASSJAR =
+PTPACKAGE = 	load
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	common/common.jar \
-	gui/gui.jar \
-	kernel/kernel.jar
+JSRCS = \
+	LoadManagerInterface.java \
+	LoadModelManager.java
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-EXTRA_SRCS =
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	common \
-	demo \
+MISC_FILES =	$(DIRS)
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
 	doc \
-	gui \
-	kernel \
-	makefile
+	$(PTCLASSJAR)
 
-OPTIONAL_FILES =
+JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass $(EXTRA_SRCS)
-install: subinstall jars
+all: jclass
+install: jclass $(PTCLASSJAR)
 
-# Include rules for directories that contain only subdirectories.
+
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1,7 +1,8 @@
-# Makefile for ptdb - A model database for Ptolemy
+# Makefile for ptdb tests that use EasyMock
+#
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -27,49 +28,50 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptdb
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptdb/kernel/bl/load/test
 
-# $PTII/configure runs and looks for PTPOWERMOCK
-# $(PTPOWERMOCK_DIR) to test
-DIRS =		common gui kernel $(PTPOWERMOCK_DIR)
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		..
+# Configure looks for PowerMock.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	ptdb
-PTCLASSJAR =
+JSRCS_TEST_DRIVERS = \
+	TestLoadManagerInterface.java
 
-# All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	common/common.jar \
-	gui/gui.jar \
-	kernel/kernel.jar
+JSRCS = \
+	$(JSRCS_TEST_DRIVERS)
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-EXTRA_SRCS =
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	common \
-	demo \
-	doc \
-	gui \
-	kernel \
-	makefile
+MISC_FILES =
 
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-all: jclass $(EXTRA_SRCS)
-install: subinstall jars
+JCLASS=	$(JSRCS:%.java=%.class)
 
-# Include rules for directories that contain only subdirectories.
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
+
+all: $(JCLASS)
+	@echo "Run 'make tests' to run the tests"
+install:
+	@echo "Nothing to be done in $(ME)"
+
+tests:: $(EXTRA_SRCS) jclass test_java
+
+test_java: jclass
+	java -classpath $(CLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestLoadManagerInterface
+
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

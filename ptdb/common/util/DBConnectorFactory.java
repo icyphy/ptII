@@ -80,6 +80,9 @@ public class DBConnectorFactory {
         
         try {
             
+            if (props == null) {
+                throw new ExceptionInInitializerError("Did not find ptdb-params property.");
+            }
             props.load(url.openStream());
             
             _dbClassName = props.getProperty(_DB_CLASS_NAME);

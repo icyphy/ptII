@@ -66,6 +66,8 @@ JCLASS=	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 all: $(JCLASS)
+install:
+	@echo "Nothing to be done in $(ME)"
 
 tests:: $(EXTRA_SRCS) jclass test_java
 

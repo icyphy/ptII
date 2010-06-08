@@ -1,4 +1,4 @@
-# Makefile for ptdb - A model database for Ptolemy
+# Makefile for ptdb - A model database for Ptolemy, common directory
 #
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
@@ -29,28 +29,26 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptdb
+ME =		ptdb/common
 
-# $PTII/configure runs and looks for PTPOWERMOCK
-# $(PTPOWERMOCK_DIR) to test
-DIRS =		common gui kernel $(PTPOWERMOCK_DIR)
+DIRS =		dto exception util
 
 # Root of Ptolemy II directory
-ROOT =		..
+ROOT =		../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ptdb
+PTPACKAGE = 	common
 PTCLASSJAR =
 
 # All the .class files necessary to run a Ptolemy II domain applet
 PTCLASSALLJARS = \
-	common/common.jar \
-	gui/gui.jar \
-	kernel/kernel.jar
+	dto/dto.jar \
+	exception/exception.jar \
+	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -59,12 +57,9 @@ EXTRA_SRCS =
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = \
-	common \
-	demo \
-	doc \
-	gui \
-	kernel \
-	makefile
+	dto \
+	exception \
+	util
 
 OPTIONAL_FILES =
 

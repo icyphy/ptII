@@ -36,7 +36,6 @@ public abstract class AbstractSearcher implements ResultHandler {
      * @param modelResults - the results to be handled in this searcher
      * @throws DBExecutionException 
      */
-    @Override
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException {
 

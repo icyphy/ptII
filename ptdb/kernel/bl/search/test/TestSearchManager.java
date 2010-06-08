@@ -1,7 +1,7 @@
 /*
  * 
  */
-package ptdb.kernel.bl.search.tests;
+package ptdb.kernel.bl.search.test;
 
 import java.util.ArrayList;
 import static org.easymock.EasyMock.expect;
