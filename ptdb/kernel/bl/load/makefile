@@ -31,7 +31,9 @@
 
 ME = 		ptdb/kernel/bl/load/
 
-DIRS =		test
+# $PTII/configure runs and looks for PTPOWERMOCK
+# $(PTPOWERMOCK_DIR) to test
+DIRS =		$(PTPOWERMOCK_DIR)
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
