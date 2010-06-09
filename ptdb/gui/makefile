@@ -31,7 +31,9 @@
 
 ME = 		ptdb/gui
 
-DIRS =
+# $PTII/configure runs and looks for PTPOWERMOCK
+# $(PTPOWERMOCK_DIR) to test
+DIRS =		$(PTPOWERMOCK_DIR)
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -60,7 +62,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES =	test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

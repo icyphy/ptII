@@ -36,7 +36,8 @@ ME =		ptdb/kernel/database/test
 ROOT =		../../../..
 
 # Configure looks for PowerMock.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)
+# PTDBXML_JARS is set by configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)$(CLASSPATHSEPARATOR)$(PTDBXML_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -72,6 +73,9 @@ tests:: $(EXTRA_SRCS) jclass test_java
 
 test_java: jclass
 	java -classpath $(CLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestOracleXMLDBConnection
+
+# These tests do not require a graphics terminal, but do use Java
+test_jsimple: $(EXTRA_SRCS) jclass test_java
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

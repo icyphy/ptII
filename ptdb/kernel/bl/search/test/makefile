@@ -73,5 +73,8 @@ tests:: $(EXTRA_SRCS) jclass test_java
 test_java: jclass
 	java -classpath $(CLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.search.test.TestSearchManager
 
+# These tests do not require a graphics terminal, but do use Java
+test_jsimple: $(EXTRA_SRCS) jclass test_java
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

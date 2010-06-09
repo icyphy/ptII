@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: $Id: makefile 57974 2010-06-08 00:33:09Z cxh $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -30,10 +30,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptdb/kernel/bl/load/test
+ME =		ptdb/gui/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../..
 
 # Configure looks for PowerMock.
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)
@@ -43,8 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS_TEST_DRIVERS = \
-	TestLoadManagerInterface.java \
-	TestLoadModelManager.java
+	TestActorGraphDBFrame.java
 
 JSRCS = \
 	$(JSRCS_TEST_DRIVERS)
@@ -72,7 +71,7 @@ install:
 tests:: $(EXTRA_SRCS) jclass test_java
 
 test_java: jclass
-	java -classpath $(CLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestLoadManagerInterface
+	java -classpath $(CLASSPATH) org.junit.runner.JUnitCore ptdb.gui.test.TestActorGraphDBFrame
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java
