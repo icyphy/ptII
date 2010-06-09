@@ -1484,7 +1484,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptdb/gui \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/database \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/load \
-	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search
+	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil
 
 
