@@ -1,27 +1,28 @@
 package ptdb.gui;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManagerInterface;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
-//// ModelPanel
+//// ParentPanel
 
 /**
- * An extended JPanel displaying a single model result.  
- * Multiple ModelPanel objects will be displayed as search results.
+ * An extended JPanel displaying a parent of a model result.  
+ * Parents are models somewhere in the database that include the search 
+ * result as a submodel. Multiple ParentPanel objects will be displayed as 
+ * a hierarchy beneath the ModelPanel which contains the search result model itself. 
  * This class is simply for uniform layout and behavior.
  * 
  * @author Lyle Holsinger
@@ -29,39 +30,42 @@ import ptolemy.util.MessageHandler;
  * @version $Id$
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
- *
- */
+ * 
+*/
 
-public class ModelPanel extends JPanel {
+public class ParentPanel extends JPanel {
 
     /**
-     * Construct a panel associated with the search result.  The panel layout
-     * is taken care of in the constructor.  A listener is added for _modelLink, 
+     * Construct a panel associated with a parent model of the search result.  
+     * The panel layout is taken care of in the constructor.  
+     * A listener is added for _parentModelLink, 
      * which is a button used to open the model in a new editing frame.
      *
-     * @param dbModel
-     *        The model returned as a search result.
+     * @param parentModelName
+     *        The parent model name.
      * @param configuration
-     *        The configuration under which an effigy of this model would be generated.
+     *        The configuration under which an effigy of the parent model 
+     *        would be generated.
      */
-    public ModelPanel(XMLDBModel dbModel, Configuration configuration) {
+    public ParentPanel(String parentModelName, Configuration configuration) {
 
         setLayout(new FlowLayout());
 
-        _modelName = dbModel.getModelName();
+        _parentModelName = parentModelName;
         _configuration = configuration;
 
-        JLabel modelLabel = new JLabel("Model Name:");
-        add(modelLabel);
-
-        JCheckBox _loadCheck = new JCheckBox();
+        _loadCheck = new JCheckBox();
         add(_loadCheck);
 
-        _modelLink = new JButton("<html><u>" + _modelName + "</html></u>");
-        _modelLink.setForeground(Color.BLUE);
-        add(_modelLink);
+        _parentModelLink = new JButton("<html><u>" + _parentModelName
+                + "</html></u>");
+        add(_parentModelLink);
 
-        _modelLink.addActionListener(new ActionListener() {
+        ImageIcon icon = new ImageIcon("arrow.gif");
+        JLabel arrowImage = new JLabel(icon);
+        add(arrowImage);
+
+        _parentModelLink.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent event) {
 
@@ -77,11 +81,11 @@ public class ModelPanel extends JPanel {
     ////                         public methods                    ////
 
     /** 
-     * @return The model name.
+     * @return The parent model name.
      */
-    public String getModelName() {
+    public String getParentModelName() {
 
-        return _modelName;
+        return _parentModelName;
 
     }
 
@@ -95,7 +99,7 @@ public class ModelPanel extends JPanel {
     }
 
     /**
-     * Create an effigy of the model and open it in a new editing frame.
+     * Create an effigy of the parent model and open it in a new editing frame.
      */
     private void _loadModel() {
 
@@ -103,8 +107,8 @@ public class ModelPanel extends JPanel {
 
             LoadManagerInterface loadManagerInterface = new LoadManagerInterface();
 
-            PtolemyEffigy effigy = loadManagerInterface.loadModel(_modelName,
-                    _configuration);
+            PtolemyEffigy effigy = loadManagerInterface.loadModel(
+                    _parentModelName, _configuration);
 
             effigy.showTableaux();
 
@@ -120,8 +124,8 @@ public class ModelPanel extends JPanel {
     //                    private variables                        ////
 
     private JCheckBox _loadCheck;
-    private JButton _modelLink;
-    private String _modelName;
+    private JButton _parentModelLink;
+    private String _parentModelName;
     private Configuration _configuration;
 
 }

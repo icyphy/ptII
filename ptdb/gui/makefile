@@ -49,7 +49,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ActorGraphDBFrame.java \
 	ActorGraphDBTableau.java \
-	ModelPanel.java
+	ModelPanel.java \
+	CancelObservable.java \
+	ParentPanel.java \
+	ParentHierarchyPanel.java \
+	SearchResultPanel.java \
+	SearchResultsFrame.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -6,8 +6,8 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 
 import static org.junit.Assert.assertNotNull;
-import static org.powermock.api.easymock.PowerMock.mockStatic;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ptdb.common.dto.GetModelsTask;
@@ -31,7 +31,8 @@ import ptdb.kernel.database.DBConnection;
 */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(LoadModelManager.class)
+@PrepareForTest({LoadModelManager.class, DBConnectorFactory.class, GetModelsTask.class})
+@SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory")
 public class TestLoadModelManager {
 
     /**
@@ -41,7 +42,7 @@ public class TestLoadModelManager {
     @Test
     public void testLoad() throws Exception {
         
-        /*
+        
         String loadModel = "model1";
         LoadModelManager tested = new LoadModelManager();
         
@@ -51,9 +52,12 @@ public class TestLoadModelManager {
         DBConnection dBConnectionMock = PowerMock.createMock(DBConnection.class);
 
         XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
-        
-        EasyMock.expect(DBConnectorFactory.getSyncConnection(false) ).andReturn(dBConnectionMock);
+
+        PowerMock.expectNew(GetModelsTask.class).andReturn(getModelsTaskMock);
+        EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(dBConnectionMock);
+        getModelsTaskMock.setModelName(loadModel);
         EasyMock.expect(dBConnectionMock.executeGetModelsTask(getModelsTaskMock)).andReturn(modelMock);
+        dBConnectionMock.closeConnection();
         
         //Execute the test.  Verify that, load does not return null if the database layer is mocked.
         PowerMock.replayAll();
@@ -63,7 +67,6 @@ public class TestLoadModelManager {
         assertNotNull(dbModel);
         
         PowerMock.verifyAll();  
-        */
         
     }
 
