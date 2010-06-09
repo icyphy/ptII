@@ -11,9 +11,15 @@ import ptolemy.kernel.util.Attribute;
 
 /**
  * <p>DTO (Data Transfer Object) which contains all the search criteria input by 
- * the user.<br>
+ * the user.  It is constructed by the GUI layer class to pass the search 
+ * criteria. <br>
  * 
- * It is constructed by the GUI layer class to pass the search criteria.</p>
+ * There are three categories of criteria in this class:<br>
+ * 1. Some attributes information of the Ptolemy model that the user wants to 
+ * search on.<br>
+ * 2. The XQuery command to be executed directly in the XML database for 
+ * searching. <br>
+ * 3. The pattern to be matched to search the model. </p>
  * 
  * @author Alek Wang
  * @version $Id$
@@ -28,7 +34,7 @@ public class SearchCriteria {
     ////////    public methods                                        ////////
 
     /**
-     * Getter method to get the attributes criteria from the search criteria. 
+     * Get the attributes criteria from the search criteria. 
      * 
      * @return All the attributes input by the user as the search criteria. 
      */
@@ -37,8 +43,7 @@ public class SearchCriteria {
     }
 
     /**
-     * Getter method to get the search command criteria from the search 
-     * criteria. 
+     * Get the search command criteria from the search criteria. 
      * 
      * @return The XQuery search command input by the user. 
      */
@@ -47,7 +52,7 @@ public class SearchCriteria {
     }
 
     /**
-     * Setter method to set the attribute criteria for the search criteria. 
+     * Set the attribute criteria for the search criteria. 
      * 
      * @param attributes The attributes input by the user to set in the 
      * search criteria. 
@@ -57,7 +62,7 @@ public class SearchCriteria {
     }
 
     /**
-     * Setter method to set the XQuery search command for the search criteria. 
+     * Set the XQuery search command for the search criteria. 
      * 
      * @param searchCommand The XQuery search command to set in the search
      * criteria. 
