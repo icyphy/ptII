@@ -789,7 +789,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     "Run-time type checking failed. Token " + token
                             + " with type " + token.getType()
                             + " is incompatible with port type: "
-                            + getType().toString());
+                            + _resolvedType.toString());
         }
     }
 
