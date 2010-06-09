@@ -22,7 +22,7 @@ public class TaskQueue extends ArrayList<Task> {
     /**
      * Return true if the task queue has all the required tasks, 
      * else return false 
-     * @return
+     * @return True if all tasks are added, false otherwise
      */
     public boolean areAllTasksAdded() {
         return _allTasksAdded;
@@ -30,7 +30,7 @@ public class TaskQueue extends ArrayList<Task> {
 
     /**
      * Return the execution error message
-     * @return
+     * @return The execution error message 
      */
     public String getExecutionErrorMessage() {
         return _errorMessage;
@@ -39,7 +39,7 @@ public class TaskQueue extends ArrayList<Task> {
     /**
      * Return true if the execution has completed; 
      * else return false
-     * @return
+     * @return True if execution is complete, false otherwise
      */
     public boolean hasExecutionCompleted() {
         return _executionCompleted;
@@ -48,7 +48,7 @@ public class TaskQueue extends ArrayList<Task> {
     /**
      * Return true if any execution error has occurred; 
      * else return false 
-     * @return
+     * @return True if execution error present, false otherwise
      */
     public boolean hasExecutionError() {
         return _isExecutionError;
@@ -57,7 +57,7 @@ public class TaskQueue extends ArrayList<Task> {
     /**
      * Return true if any processing error has occurred; 
      * else return false
-     * @return
+     * @return True if processing error is present, false otherwise
      */
     public boolean hasProcessingError() {
         return _isProcessingError;

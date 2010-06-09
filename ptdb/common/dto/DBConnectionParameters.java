@@ -5,7 +5,7 @@ package ptdb.common.dto;
 /**
  * Encapsulate the parameters required for creating an XML DB connection.
  *
- * The <p> Data Transfer Object pattern is used here </p>
+ * <p> The Data Transfer Object pattern is used here </p>
  *
  * @author Ashwini Bijwe
  * 
@@ -40,7 +40,7 @@ public class DBConnectionParameters {
     /**
      * Return the set container name 
      * for the given XML database
-     * @return
+     * @return The container name
      */
     public String getContainerName() {
         return _containerName;
@@ -49,7 +49,7 @@ public class DBConnectionParameters {
     /**
      * Return the set URL/path of the location where 
      * the XML database file is present
-     * @return
+     * @return The database url
      */
     public String getUrl() {
         return _url;
@@ -59,7 +59,7 @@ public class DBConnectionParameters {
      * Return true if the connection is to be 
      * created with transaction 
      * and false if it is to be created without transaction.
-     * @return
+     * @return True if transaction is required, false otherwise
      */
     public boolean isTransactionRequired() {
         return _isTransactionRequired;

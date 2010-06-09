@@ -19,7 +19,7 @@ public abstract class Task {
     /**
      * Return true if the given task is an update task or 
      * false if it is a select task
-     * @return
+     * @return True if task is an update task, false otherwise
      */
     public boolean isUpdateTask() {
         return _isUpdateTask;

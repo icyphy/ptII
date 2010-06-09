@@ -12,19 +12,16 @@ import ptdb.kernel.database.AsynchronousDBConnection;
 import ptdb.kernel.database.DBConnection;
 
 //////////////////////////////////////////////////////////////////////////
-////DBConnectorFactory
+//// DBConnectorFactory
 /** 
- * This is a factory class that deals with the creation of different types of connections.
- * This class is the interface that will be used to create connections to XML database
+ * A factory class that creates different types of XML database connections.
  *   
- * @author abijwe
+ * @author Ashwini Bijwe
 
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
- * @Pt.AcceptedRating Red (abijwe)
- * @author abijwe
- * 
+ * @Pt.AcceptedRating Red (abijwe) 
  *  
  */
 public class DBConnectorFactory {
@@ -54,7 +51,7 @@ public class DBConnectorFactory {
      * name in the config/ptdb-properties file
      */
     public final static String _CACHE_CONTAINER_NAME = "Cache_Container_Name";
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                   ////
     /** 
@@ -123,14 +120,14 @@ public class DBConnectorFactory {
             throws DBConnectionException {
         return _createConnection(_cacheContainerName, isTransactionRequired);
     }
-    
-     ///////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /** 
      * 
      * @param containerName
      * @param isTransactionRequired
-     * @return
+     * @return Required connection object
      * @throws DBConnectionException
      */
     private static DBConnection _createConnection(String containerName,
@@ -210,7 +207,92 @@ public class DBConnectorFactory {
 
     }
     
-     ///////////////////////////////////////////////////////////////////
+    /**
+     * Return true if the database setup is completed    
+     * @return - true if setup is completed; false otherwise
+     */
+    public static boolean isSetupDone()
+    {
+        return _isDBSetupDone;
+    }
+    
+    /** 
+     * Load the properties from config/ptdb.properties 
+     * and set them for use during creating connections 
+     * to the XML database.  
+     *  
+     * <p> Ascertain if the database setup has been done 
+     * and if the properties for the database have been set. </p>
+     *  
+     * <p> Throw an exception if the config/ptdb.properties 
+     * file is not found. </p>
+     * .
+     */
+    public static void loadDBProperties() {
+        
+        Properties props = new Properties();
+        URL url = ClassLoader.getSystemResource("ptdb-params.properties");
+
+        try {
+            if (url == null) {
+                throw new ExceptionInInitializerError(
+                        "Did not find ptdb-params property.");
+            }
+            
+            props.load(url.openStream());
+            clearParameters();
+            _dbClassName = props.getProperty(_DB_CLASS_NAME);
+            _dbUrl = props.getProperty(_DB_URL);
+
+            if (_dbUrl != null && !"".equals(_dbUrl)) {
+
+                _dbContainerName = props.getProperty(_XMLDB_CONTAINER_NAME);
+                _cacheContainerName = props.getProperty(_CACHE_CONTAINER_NAME);
+                _isDBSetupDone = true;
+                
+            }
+
+        } catch (IOException e) {
+
+            throw new ExceptionInInitializerError(
+                    "Did not find ptdb-params property file.");
+        }
+    }
+
+    /**
+     * Return the parameters set as a concatenated string.
+     * @return - Concatenated String of database parameters -
+     * class name, URL, container name
+     */
+    public static String getParametersString() {
+        StringBuffer strBuf = new StringBuffer();
+        
+        strBuf.append("_isDBSetupDone = ").append(_isDBSetupDone).append(";");
+        strBuf.append("_dbClassName = ").append(_dbClassName).append(";");
+        strBuf.append("_dbUrl = ").append(_dbUrl).append(";");
+        strBuf.append("_dbContainerName = ").append(_dbContainerName).append(
+                ";");
+        strBuf.append("_cacheContainerName = ").append(_cacheContainerName)
+                .append(";");
+
+        return strBuf.toString();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    /**
+     * Clear Parameters to maintain consistency.
+     */
+    private static void clearParameters()
+    {
+        _dbUrl = null;
+        _dbClassName = null;
+        _dbContainerName = null;
+        _cacheContainerName = null;
+        _isDBSetupDone = false;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /** 
      * Container name for XML database cache for Ptolemy DB.
@@ -264,35 +346,7 @@ public class DBConnectorFactory {
      * throw an exception.
      */
     static {
-        Properties props = new Properties();
-        URL url = ClassLoader.getSystemResource("ptdb-params");
-
-        try {
-            if (url == null) {
-                throw new ExceptionInInitializerError(
-                        "Did not find ptdb-params property.");
-            }
-
-            props.load(url.openStream());
-
-            _dbClassName = props.getProperty(_DB_CLASS_NAME);
-            _dbUrl = props.getProperty(_DB_URL);
-
-            if (_dbUrl != null && !"".equals(_dbUrl)) {
-
-                _dbContainerName = props.getProperty(_XMLDB_CONTAINER_NAME);
-                _cacheContainerName = props.getProperty(_CACHE_CONTAINER_NAME);
-
-            } else {
-                _isDBSetupDone = false;
-            }
-
-        } catch (IOException e) {
-
-            _isDBSetupDone = false;
-            throw new ExceptionInInitializerError(
-                    "Did not find ptdb-params property file.");
-        }
+        loadDBProperties();
 
     }
 }
