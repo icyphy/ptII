@@ -265,6 +265,7 @@ proc test {test_name test_description contents_of_test passing_results {testtype
 	}
 	incr PASSED
     } else {
+
 	if {$testtype == "NORMAL"} {
 	    # See if the results are different only in version number
 	    if {[ptFilterOutVersion $answer $passing_results] == 0} then {
@@ -288,6 +289,10 @@ proc test {test_name test_description contents_of_test passing_results {testtype
 
 		puts "---- $test_name FAILED"
 		incr FAILED
+		# java::call org.junit.Assert assertTrue "--- Results should have been:\n$passing_results@@@@@ known results is more than 7 lines long, so we run diff\n[diffText $passing_results $answer]\n@@@@@ Done running diffText" [string match $answer $passing_results]
+
+
+
 	    }
 	} else {
 	    if {"$isRunningNightlyBuild" == "true"} {
@@ -676,4 +681,26 @@ set whichMake [exec which make]
 if {![regexp /usr/ccs/bin/make $whichMake]} { 
     # Probably GNU Make 
     set makeArguments [list {--no-print-directory}]
+}
+
+proc doAllTests {} {
+    uplevel #0 {
+	set savedir "[pwd]"
+	foreach i [glob *.tcl] {
+	    if {$i == "alljtests.tcl"} {
+		continue
+	    }
+	    puts $i
+	    cd "$savedir"
+	    if [ file exists $i ] {
+		if [ catch {source $i} msg] {
+		    puts "WARNING: Sourcing $i resulted in an error,so we are incrementing the error count. The error was: $msg"
+		    incr FAILED
+		    jdkPrintStackTrace
+		}
+	    }
+	    cd "$savedir"
+	}
+    }
+    doneTests
 }
