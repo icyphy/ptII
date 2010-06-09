@@ -633,6 +633,9 @@ PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 PTJOYSTICK_PACKAGES =	@PTJOYSTICK_PACKAGES@
 
+# Packages that have JUnit files.
+PTJUNIT_PACKAGES =	@PTJUNIT_PACKAGES@
+
 # Used in ptolemy/actor/lib/excel/makefile
 PTJXL_JAR=	@PTJXL_JAR@
 
