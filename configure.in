@@ -3813,6 +3813,7 @@ else
 
     if test -d "$POWERMOCK_DIR"; then
 	PT_MSG_RESULT([$POWERMOCK_DIR])
+	AC_MSG_CHECKING([for PowerMock jars])
         jars="cglib-nodep- easymock- easymockclassextension- javassist- junit- objenesis- powermock-easymock-"
 	powermockjarpath=
 	for jar in $jars
@@ -3837,6 +3838,7 @@ else
 	   fi
 	done	
 	if test ! -z eclipsejarpath; then
+	   PT_MSG_RESULT( ok)
 	   PTPOWERMOCK_JARS=$powermockjarpath
 	   PTPOWERMOCK_DIR=test
         fi
@@ -3857,11 +3859,13 @@ else
 fi
 
 if test -z "$PTPOWERMOCK_DIR"; then
-   ptdbTestDirectories=`find ptdb -name test`
-   for ptdbTestDirectory in $ptdbTestDirectories
-   do 
-      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$ptdbTestDirectory/"
-   done   
+    if test -d ptdb; then
+        ptdbTestDirectories=`find ptdb -name test`
+        for ptdbTestDirectory in $ptdbTestDirectories
+        do 
+            ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|$ptdbTestDirectory/"
+        done   
+    fi
 fi 
 
 
