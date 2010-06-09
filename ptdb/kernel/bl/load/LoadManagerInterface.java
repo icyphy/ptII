@@ -2,11 +2,9 @@ package ptdb.kernel.bl.load;
 
 import java.net.URI;
 import java.util.List;
-import java.util.ArrayList;
 
 import ptdb.common.dto.XMLDBModel;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -25,88 +23,80 @@ import ptolemy.moml.MoMLParser;
 
 public class LoadManagerInterface {
 
-    /** Use a given list of models to generate PtolemyEffigy objects 
+    /** Use a model to generate a PtolemyEffigy object 
      *  returned to the GUI.
      *  
-     * @param names
-     *          List of model names.
+     * @param name
+     *          The model name.
      * @param configuration
-     *          The configuration used to create the effigies.
-     * @param directory
-     *          The directory used to create the effigies.
+     *          The configuration used to create the effigy.
      * @return
-     *          An ArrayList of PtolemyEffigy objects that the
+     *          A PtolemyEffigy object that the
      *          GUI can display.
      * @throws DBConnectionException
      * @throws Exception
      */
-    public ArrayList<PtolemyEffigy> loadModels(String[] names,
+    public PtolemyEffigy loadModel(String name,
             Configuration configuration) throws Exception {
 
-        //We instantiate a LoadModelManager then pass the names array.
+        //Instantiate a LoadModelManager then pass the names array.
         LoadModelManager lmm = new LoadModelManager();
-        ArrayList<XMLDBModel> dbModels = lmm.load(names);
+        XMLDBModel dbModel = lmm.load(name);
 
-        //Convert ArrayList of XMLDBModels into an ArrayList of effigies.
-        return getEffigies(dbModels, configuration);
+        //Convert the XMLDBModel into an effigy.
+        return getEffigy(dbModel, configuration);
 
     }
 
-    /** Generate effigies from XMLDBModel objects.
+    /** Generate an effigy from an XMLDBModel object.
      * 
-     * @param dbModels
-     *          ArayList of XMLDBModel objects containing their MoML.
+     * @param dbModel
+     *          XMLDBModel object containing the model's MoML.
      * @param configuration
-     *          Configuration used to create the effigies.
-     * @param directory
-     *          Directory used to create the effigies.
+     *          Configuration used to create the effigy.
      * @return
-     *          ArrayList of PtolemyEffigies.
+     *         PtolemyEffigy.
      * @throws Exception
      */
-    private ArrayList<PtolemyEffigy> getEffigies(
-            ArrayList<XMLDBModel> dbModels, Configuration configuration)
+    private PtolemyEffigy getEffigy(
+            XMLDBModel dbModel, Configuration configuration)
             throws Exception {
 
-        ArrayList<PtolemyEffigy> effigyList = new ArrayList<PtolemyEffigy>();
+        PtolemyEffigy returnEffigy = null; 
 
         MoMLParser parser = new MoMLParser();
 
-        for (int i = 0; i < dbModels.size(); i++) {
+        Entity entity = new Entity();
+        parser.reset();
 
-            Entity entity = new Entity();
-            parser.reset();
+        entity = (Entity) parser.parse(dbModel.getModel());
 
-            entity = (Entity) parser.parse(dbModels.get(i).getModel());
+        returnEffigy = new PtolemyEffigy(configuration.workspace());
+        returnEffigy.setModel(entity);
 
-            effigyList.add(new PtolemyEffigy(configuration.workspace()));
+        // Look to see whether the model has a URIAttribute.
+        List attributes = entity.attributeList(URIAttribute.class);
 
-            effigyList.get(i).setModel(entity);
+        if (attributes.size() > 0) {
 
-            // Look to see whether the model has a URIAttribute.
-            List attributes = entity.attributeList(URIAttribute.class);
+            // The entity has a URI, which was probably
+            // inserted by MoMLParser.
+            URI uri = ((URIAttribute) attributes.get(0)).getURI();
 
-            if (attributes.size() > 0) {
+            // Set the URI and identifier of the effigy.
+            returnEffigy.uri.setURI(uri);
+            returnEffigy.identifier.setExpression(uri.toString());
 
-                // The entity has a URI, which was probably
-                // inserted by MoMLParser.
-                URI uri = ((URIAttribute) attributes.get(0)).getURI();
+            // Put the effigy into the directory
+            returnEffigy.setName(
+                    configuration.getDirectory().uniqueName(
+                            entity.getName()));
+            returnEffigy.setContainer(configuration.getDirectory());
 
-                // Set the URI and identifier of the effigy.
-                effigyList.get(i).uri.setURI(uri);
-                effigyList.get(i).identifier.setExpression(uri.toString());
-
-                // Put the effigy into the directory
-                effigyList.get(i).setName(
-                        configuration.getDirectory().uniqueName(
-                                entity.getName()));
-                effigyList.get(i).setContainer(configuration.getDirectory());
-
-            }
 
         }
 
-        return effigyList;
+        return returnEffigy;
 
     }
 

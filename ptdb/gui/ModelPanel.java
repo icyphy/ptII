@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -15,7 +14,6 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManagerInterface;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.Tableau;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -105,16 +103,12 @@ public class ModelPanel extends JPanel {
 
             LoadManagerInterface loadManagerInterface = new LoadManagerInterface();
 
-            String[] modelsToFetch = { _modelName };
+            String modelToFetch = _modelName;
 
-            ArrayList<PtolemyEffigy> effigies = loadManagerInterface.loadModels(
-                    modelsToFetch, _configuration);
+            PtolemyEffigy effigy = loadManagerInterface.loadModel(
+                    modelToFetch, _configuration);
 
-            for (PtolemyEffigy effigy : effigies) {
-
-                effigy.showTableaux();
-
-            }
+            effigy.showTableaux();
 
         } catch (Exception e) {
 

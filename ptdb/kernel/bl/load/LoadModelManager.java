@@ -1,7 +1,5 @@
 package ptdb.kernel.bl.load;
 
-import java.util.ArrayList;
-
 import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -28,40 +26,37 @@ public class LoadModelManager {
     ///////////////////////////////////////////////////////////////////
     ////                   public methods                         ////
 
-    /**Give an array of names representing models to load, return
-     * an array of XMLDBModel objects that contains the MoML.
+    /** Give a model name representing the model to load, return
+     *  an XMLDBModel object that contains the MoML.
      * 
-     * @param names
-     * @return An array of XMLDBModel objects from the Database, 
-     *          each containing their MoML string.
-     * @throws DBConnectionException
+     * @param name
+     * @return An XMLDBModel object from the Database, 
+     *         containing its MoML string.
+     * @exception DBConnectionException
+     * @exception DBExecutionException
      */
-    public ArrayList<XMLDBModel> load(String[] names)
-            throws DBConnectionException {
+    public XMLDBModel load(String name)
+            throws DBConnectionException, DBExecutionException {
 
-        ArrayList<XMLDBModel> modelList = new ArrayList<XMLDBModel>();
+        XMLDBModel returnModel = null;
 
         DBConnection conn = DBConnectorFactory.getSyncConnection(false);
 
         try {
 
-            for (int i = 0; i < names.length; i++) {
-
-                GetModelsTask gmt = new GetModelsTask();
-                gmt.setModelName(names[i]);
-                modelList.add(conn.executeGetModelsTask(gmt));
-
-            }
-
+            GetModelsTask gmt = new GetModelsTask();
+            gmt.setModelName(name);
+            returnModel = conn.executeGetModelsTask(gmt);
             conn.closeConnection();
 
         } catch (DBExecutionException dbEx) {
 
             conn.abortConnection();
-
+            throw dbEx;
+            
         }
 
-        return modelList;
+        return returnModel;
 
     }
 }

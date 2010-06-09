@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -14,7 +13,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import diva.gui.GUIUtilities;
@@ -241,26 +239,21 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
                 LoadManagerInterface lmi = new LoadManagerInterface();
 
-                String[] modelsToFetch = { _selectedModel };
+                String modelToFetch = _selectedModel;
 
-                ArrayList<PtolemyEffigy> effigies = lmi.loadModels(
-                        modelsToFetch, getConfiguration());
+                PtolemyEffigy effigy = lmi.loadModel(
+                        modelToFetch, getConfiguration());
 
-                for (PtolemyEffigy effigy : effigies) {
-
-                    effigy.showTableaux();
-
-                }
+                effigy.showTableaux();
 
             } catch (Exception e) {
-
+                
                 MessageHandler.error("Cannot load the specified model. ", e);
 
             }
 
             setVisible(false);
 
-            System.out.println(_selectedModel);
         }
     }
 

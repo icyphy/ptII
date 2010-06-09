@@ -3,7 +3,6 @@ package ptdb.kernel.bl.load.test;
 import static org.junit.Assert.*;
 
 import java.net.URL;
-import java.util.ArrayList;
 
 import org.easymock.EasyMock;
 import org.junit.Test;
@@ -26,7 +25,7 @@ import ptolemy.moml.MoMLParser;
 /**
 * This JUnit tests the translation of an XMLDBModel object into an effigy.
 * It mocks the LoadModelManager.  An XMLDBModel object is created.  The
-* loadModels method is called and then we confirm that the model name
+* loadModel method is called and then we confirm that the model name
 * in the returned effigy is as expected: "model1".
 *
 * @author Lyle Holsinger
@@ -43,15 +42,15 @@ public class TestLoadManagerInterface {
     /**
      * Mock the LoadModelManager.  Create a fake XMLDBModel object and specify
      * it as the return from load().  Then verify that, given an XMLDBModelObject, 
-     * the loadModels() method will return a valid effigy.
+     * the loadModel() method will return a valid effigy.
      * @throws Exception
      */
     @Test
-    public void testloadModels() throws Exception {
+    public void testloadModel() throws Exception {
 
         LoadManagerInterface tested = new LoadManagerInterface();
 
-        String[] inputArray = { "model1" };
+        String inputString="model1";
 
         MoMLParser parser = new MoMLParser();
         parser.reset();
@@ -61,12 +60,11 @@ public class TestLoadManagerInterface {
         Configuration configuration = (Configuration) parser.parse(configURL,
                 configURL);
 
-        ArrayList<XMLDBModel> modelList = new ArrayList();
-        ArrayList<PtolemyEffigy> effigyList = new ArrayList();
+        PtolemyEffigy effigy = null;
+        
         XMLDBModel dbModel = new XMLDBModel();
         dbModel.setIsNew(false);
-        dbModel
-                .setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
+        dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
                         + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
                         + "<entity name=\"model1\" class=\"ptolemy.actor.TypedCompositeActor\">"
                         + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
@@ -91,18 +89,17 @@ public class TestLoadManagerInterface {
                         + "</property>" + "</entity>" + "</entity>");
         //Demonstrate that the name is taken from the MoML.
         dbModel.setModelName("model2");
-        modelList.add(dbModel);
 
         //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
         LoadModelManager loadManagerMock = PowerMock
                 .createMock(LoadModelManager.class);
         PowerMock.expectNew(LoadModelManager.class).andReturn(loadManagerMock);
-        EasyMock.expect(loadManagerMock.load(inputArray)).andReturn(modelList);
+        EasyMock.expect(loadManagerMock.load(inputString)).andReturn(dbModel);
 
         //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
         PowerMock.replayAll();
-        effigyList = tested.loadModels(inputArray, configuration);
-        assertEquals(effigyList.get(0).getModel().getName(), "model1");
+        effigy = tested.loadModel(inputString, configuration);
+        assertEquals(effigy.getName(), "model1");
         PowerMock.verifyAll();
 
     }
