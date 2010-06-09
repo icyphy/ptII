@@ -4,8 +4,9 @@ package ptdb.kernel.bl.search;
 //// AbstractDBSearcher
 
 /**
- * Indicate whether a searcher is perform the 
- * searching through the XQuery, or through Ptolemy existing functionality.
+ * Indicate whether a searcher is performing the searching through the XML DB 
+ * XQuery, or through Ptolemy existing functionality.  The classes implement 
+ * this interface will be querying the database. 
  * 
  * @author Alek Wang
  * @version $Id$
