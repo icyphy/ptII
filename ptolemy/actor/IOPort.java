@@ -1681,7 +1681,9 @@ public class IOPort extends ComponentPort {
                         // FIXME: calling createReceivers() here breaks many tests.
                         // However, we need this for Publisher/Subscriber and Opaques.  
                         // See below for a similar piece of code.
-                        //createReceivers();
+                        //if (isOpaque()) {
+                        //    createReceivers();
+                        //}
                     }
                 }
                 _widthVersion = version;
@@ -1775,7 +1777,9 @@ public class IOPort extends ComponentPort {
                     // FIXME: calling createReceivers() here breaks many tests.
                     // However, we need this for Publisher/Subscriber and Opaques.  
                     // See above for a similar piece of code.
-                    //createReceivers();
+                    //if (isOpaque()) {
+                    //    createReceivers();
+                    //}
                 }
             }
 
