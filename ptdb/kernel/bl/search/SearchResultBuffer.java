@@ -54,7 +54,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
      * to this buffer.  
      * 
      * When the results are written to the buffer in this method,
-     * the buffer will call its registered observer¡¯s update() method. 
+     * the buffer will call its registered observer's update() method. 
      * The SearchResultListener, which should have registered in this buffer
      *  will be called to notify.  
      * 

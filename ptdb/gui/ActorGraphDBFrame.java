@@ -290,7 +290,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             // When search is implemented, it will open the search dialog.  
             // For now, we are directly opening a temporary form 
             // with a prefilled model result.
-            // We're using JDialog in case we later decide we want a Wizard–based
+            // We're using JDialog in case we later decide we want a Wizard based
             // search.
 
             JDialog dialog = new ModelSearchResults();
