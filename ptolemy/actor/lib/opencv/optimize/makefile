@@ -37,7 +37,7 @@ DIRS =
 ROOT =		../../../../..
 
 # OPENCV_JAR and PTPROCESSING_JARS are set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(OPENCV_JAR)$(CLASSPATHSEPARATOR)$(PTPROCESSING_JARS)
+CLASSPATH =	$(ROOT)
 
 
 # Get configuration info
@@ -50,10 +50,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-
-OTHER_FILES_TO_BE_JARED = \
 	GrayScale.java \
 	Invert.java
+
+OTHER_FILES_TO_BE_JARED = \
+
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
