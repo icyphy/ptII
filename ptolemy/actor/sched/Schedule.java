@@ -134,8 +134,7 @@ public class Schedule extends ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the actor invocation sequence of the schedule in the
-     *  form of a sequence of instances of Firing.
+    /** Return the actor sequence in the schedule.
      *  A runtime exception is thrown if the
      *  underlying schedule structure is modified while the iterator
      *  is active.
