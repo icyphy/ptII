@@ -1675,7 +1675,11 @@ public class IOPort extends ComponentPort {
                         _width = 0;
                     }
                 } else {
-                    _width = sum;
+                    if (_width != sum) {
+                        _width = sum;
+                        // Need to re-create receivers.
+                        createReceivers();
+                    }
                 }
                 _widthVersion = version;
             }
@@ -1761,9 +1765,12 @@ public class IOPort extends ComponentPort {
                         sum += relation.getWidth();
                     }
                 }
-
-                _insideWidth = sum;
-                _insideWidthVersion = version;
+                if (_insideWidth != sum) {
+                    _insideWidth = sum;
+                    _insideWidthVersion = version;
+                    // Need to re-create receivers.
+                    createReceivers();
+                }
             }
 
             return _insideWidth;
@@ -4325,7 +4332,11 @@ public class IOPort extends ComponentPort {
                     throw new InvalidStateException(this,
                             "getReceivers(IORelation, int): "
                                     + "Invalid receivers. "
-                                    + "Need to call createReceivers().");
+                                    + "result.length = "
+                                    + result.length
+                                    + " width = "
+                                    + width
+                                    + ". Need to call createReceivers()?");
                 }
             }
 
