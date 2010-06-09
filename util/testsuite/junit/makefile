@@ -1,10 +1,10 @@
-# Makefile the Ptolemy II test suite that uses Tcl Blend
+# Makefile the Ptolemy II test suite that uses Tcl Blend and JUnit
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2009 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,13 +30,11 @@
 # 						COPYRIGHTENDKEY
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
-ME =		util/testsuite
+ME =		util/testsuite/junit
 
-DIRS =		junit
-
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -44,78 +42,25 @@ include $(CONFIG)
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	PrintThreads.java \
-	WatchDog.java
+	JUnitTclTest.java
 
 TCL_SRCS = \
-	CGC.tcl \
-	CCGAuto.tcl \
-	JavaCGAuto.tcl \
-	auto.tcl \
-	codegen.tcl \
-	description.tcl \
-	enums.tcl \
-	fields.tcl \
-	init.tcl \
-	jdktools.tcl \
-	lcompare.tcl \
-	JavaGC.tcl \
-	models.tcl \
-	properties.tcl \
-	removeGraphicalClasses.tcl \
-	tclshrc.tcl \
-	testDefs.tcl \
-	testEnums.tcl \
-	testJavaCG.tcl \
-	testParameters.tcl
-
 
 
 # Shell scripts that should be made executable
 SCRIPTS = \
-	GenerateConciseLog.py \
-	cgstats \
-	chkdemosize \
-	chkeol \
-	chkextra \
-	chkjava \
-	chksize \
-	controlm \
-	deprecated \
-	gcstats \
-	gnuify-changelog.pl \
-	html2ps \
-	jindent \
-	memorystats \
-	mkreview \
-	ptChangeLogs \
-	ptIIbuildfast \
-	ptIIbuildtest \
-	ptIIdirs \
-	ptspell \
-	gnuify-changelog.pl \
-	rmtabs \
-	rmtrailingline \
-	rmtrailingspace \
-	treeshake
+	updateJUnitTclTest
 
-EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS) \
-	aspell.en.prepl \
-	memory.xml \
-	ptlocaldict \
+EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = \
-	README.jindent \
-	svn2cl-0.10 \
-	test
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'WatchDog$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -124,20 +69,6 @@ all:  jclass sources $(MISC_SRCS)
 	-chmod a+x $(SCRIPTS)
 
 install: all
-
-# Make a distribution of jindent
-JINDENT_VERSION=jindent1.0
-JINDENT_DIST=$(JINDENT_VERSION).tar.gz
-JINDENT_TMP=/tmp/$(JINDENT_VERSION)
-jindent_dist:
-	rm -rf $(JINDENT_TMP)
-	mkdir -p $(JINDENT_TMP)/util/testsuite
-	mkdir -p $(JINDENT_TMP)/util/lisp
-	cp README.jindent $(JINDENT_TMP)
-	cp jindent $(JINDENT_TMP)/util/testsuite
-	cp jindent.el ptjavastyle.el $(JINDENT_TMP)/util/lisp
-	chmod a+x $(JINDENT_TMP)/util/testsuite/jindent
-	(cd /tmp; gtar -zcf $(JINDENT_DIST) $(JINDENT_VERSION))
 
 
 # Get the rest of the rules
