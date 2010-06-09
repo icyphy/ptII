@@ -245,7 +245,7 @@ abstract public class Profile {
         
         /**
          * Return whether the port is a multiport.
-         * @return
+         * @return True if the port is a multiport.
          */
         public boolean multiport() {
             return _multiport;
