@@ -127,6 +127,7 @@ PTII_TOPDIR=	.cshrc \
 		makefile \
 		mk \
 		org \
+		ptdb \
 		ptKeystore.properties \
 		ptolemy \
 		thales \
