@@ -219,6 +219,10 @@ public class GenerateCopyrights {
                 "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
 
+        _addIfPresent(copyrightsMap,
+                "org.junit.runner.JUnitCore",
+                "lib/junit-license.htm");
+
         // Check for the _applicationCopyrights parameter
         try {
             Parameter applicationCopyrights = (Parameter) configuration
