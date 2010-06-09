@@ -43,6 +43,11 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (cxh)
  */
 public interface IconLoader {
+
+    // This interface is used by Kepler so that the createHierarchy
+    // command brings up the proper icon.
+    // See kepler/gui/src/org/kepler/gui/KeplerGraphFrame.java   
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -53,6 +58,8 @@ public interface IconLoader {
      *  @return true if the icon was successfully loaded.
      *  @exception Exception If there is a problem adding
      *  the icon.
+     *  @see ptolemy.moml.MoMLParser#getIconLoader()
+     *  @see ptolemy.moml.MoMLParser#setIconLoader(IconLoader)
      */
     public boolean loadIconForClass(String className, NamedObj context)
             throws Exception;
