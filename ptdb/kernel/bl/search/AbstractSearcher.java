@@ -4,7 +4,6 @@
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
-
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
@@ -12,16 +11,16 @@ import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.DBConnection;
 
 ////////////////////////////////////////////////////////////////////////////
-////AbstractSearcher
+//// AbstractSearcher
 
 /**
- *  This class is the abstract parent class for all the concrete searcher 
- *  classes. 
- * 
- * It contains the common functionality of the searcher. 
+ * The abstract parent class for all the concrete searcher classes. 
  * 
  * @author Alek Wang
  * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating
+ * @Pt.AcceptedRating
  *
  */
 public abstract class AbstractSearcher implements ResultHandler {
@@ -30,28 +29,28 @@ public abstract class AbstractSearcher implements ResultHandler {
     ////        public methods                                          /////
 
     /**
-     * This method is used to handle the model results passed to this class, 
-     * and handle the results according to the certain search criteria. 
+     * <p>Handle the model results passed to this class, 
+     * and handle the results according to the certain search criteria. </p>
      * 
-     * @param modelResults - the results to be handled in this searcher
-     * @throws DBExecutionException 
+     * @param modelResults The results to be handled in this searcher
+     * @exception DBExecutionException Exception happens in the execution 
+     *          of DB tasks. 
      */
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException {
 
-        while (!(_isSearchDone())) {
+        // check whether the search criteria has been set
+        // skip the current searcher if it is not set with the search criteria
+        if (this._isSearchCriteriaSet()) {
 
-            // check whether the search criteria has been set
-            // skip the current searcher if it is not set with the search criteria
-            if (this._isSearchCriteriaSet()) {
-
+            while (!_isSearchDone()) {
                 if (this instanceof AbstractDBSearcher) {
 
                     //get the DB connection
                     this._dbConnection = DBConnectorFactory
                             .getSyncConnection(false);
 
-                    this._search();
+                    _search();
 
                     // close the DB connection
                     this._dbConnection.closeConnection();
@@ -62,20 +61,20 @@ public abstract class AbstractSearcher implements ResultHandler {
                     this._search();
                 }
 
-            }
+                // send the results to the next result handler 
+                _nextResultHandler.handleResults(_currentResults);
 
-            // send the results to the next result handler 
-            _nextResultHandler.handleResults(_currentResults);
+            }
 
         }
 
     }
 
     /**
-     * This method is used to check whether the searching process has been 
-     * cancelled by the user. 
-     * @return true - The search has been canceled by the user;
-     *             false - The search hasn't been canceled. 
+     * Check whether the searching process has been canceled by the user. 
+     * 
+     * @return true - The search has been canceled by the user<br>
+     *         false - The search hasn't been canceled. 
      */
     public boolean isSearchCancelled() {
 
@@ -83,11 +82,11 @@ public abstract class AbstractSearcher implements ResultHandler {
     }
 
     /**
-     * This method is used to set the next result handler object to this searcher. 
+     * <p>Set the next result handler object to this searcher. 
      * This searcher will use the next handler to pass the results from this 
-     * searcher. 
+     * searcher. </p>
      * 
-     * @param nextResultHandler the nextResultHandler to set to this handler 
+     * @param nextResultHandler The nextResultHandler to set to this handler.
      */
     public void setNextResultHandler(ResultHandler nextResultHandler) {
 
@@ -98,42 +97,38 @@ public abstract class AbstractSearcher implements ResultHandler {
     ////        protected methods                                       /////
 
     /**
-     * This method checks whether the search criteria has been set in this
-     *  particular searcher 
+     * <p>Checks whether the search criteria has been set in this
+     *  particular searcher. </p>
      *  
-     * @return true - if the search criteria has been set
-     *         false - if the search criteria has not been set
+     * @return true - if the search criteria has been set. <br>
+     *         false - if the search criteria has not been set.
      */
     protected abstract boolean _isSearchCriteriaSet();
 
-    /**
-     * @return the _searchDone
-     */
     protected boolean _isSearchDone() {
         return _searchDone;
     }
 
     /**
-     * Implemented by the concrete searchers to perform the actual search
+     * Implemented by the concrete searchers to perform the actual search. 
      */
     protected abstract void _search() throws DBExecutionException;
 
     protected void _setSearchDone() {
+
         this._searchDone = true;
     }
-    
+
     /////////////////////////////////////////////////////////////////////////
     ////       protected variables                                     /////
-    
+
     /**
-     * The arraylist instance which contains the currently found results. 
+     * Contains the currently found results. 
      */
     protected ArrayList<XMLDBModel> _currentResults;
-    
-    
+
     protected DBConnection _dbConnection;
 
-    
     /////////////////////////////////////////////////////////////////////////
     ////       private variables                                        /////
 
