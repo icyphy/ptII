@@ -483,8 +483,9 @@ public class ActorConstraintsDefinitionAttribute extends Attribute {
      */
     protected void _setActorIcon(String actorClassNameString, ComponentEntity tempActorInstance)
         throws IllegalActionException {
-        // FIXME: This code that sets the actor icon is duplicated from other code
-        // in the Ptolemy tree. Could it be factored out to somewhere else?
+        // FIXME: This code that sets the actor icon is duplicated from code in
+        // ptolemy.vergil.gt.TransformationEditor in the _importActorLibrary
+        // method on lines 1383-1392. Could it be factored out to somewhere else?
         
         // First look for an icon file for the actor.        
         String iconFile = actorClassNameString
