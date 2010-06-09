@@ -45,7 +45,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 @see ptolemy.domains.sdf.optimize.testing.DummyFrame
 
 @author Marc Geilen
-@version $Id: $
+@version $Id$
 @since Ptolemy II 0.2
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()

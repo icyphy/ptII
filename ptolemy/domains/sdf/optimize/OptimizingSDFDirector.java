@@ -66,7 +66,7 @@ selects the optimization criterion.
 @see ptolemy.domains.sdf.optimize.OptimizingSDFScheduler
 
 @author Marc Geilen
-@version $Id: $
+@version $Id$
 @since Ptolemy II 0.2
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
