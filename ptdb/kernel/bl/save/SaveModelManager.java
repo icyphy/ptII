@@ -58,7 +58,7 @@ public class SaveModelManager {
 	try {
 	    
 	    //if the p_xmlDBModel is null, throw an exception
-	    if(p_xmlDBModel== null) {
+	    if(p_xmlDBModel == null) {
 		throw new IllegalArgumentException("Failed while attempting to save." +
 			" The XMLDBModel to be saved is null");
 	    }
@@ -136,6 +136,15 @@ public class SaveModelManager {
             //throw an exception to notify the caller of what went wrong
             throw new DBExecutionException("Failed to save the model - " +
         	    e.getMessage(), e);
+        } finally {
+            
+            //if the db connection is not null, close it.
+            if(dbConn != null) {
+        	
+        	//close the connection
+        	dbConn.closeConnection();
+        	
+            }
         }
 
 	//return the success flag to the caller 
