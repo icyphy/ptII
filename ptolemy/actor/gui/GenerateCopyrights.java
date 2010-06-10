@@ -223,6 +223,10 @@ public class GenerateCopyrights {
                 "org.junit.runner.JUnitCore",
                 "lib/junit-license.htm");
 
+        _addIfPresent(copyrightsMap,
+                "com.github.ojdcheck.OpenJavaDocCheck",
+                "lib/ojdcheck-license.htm");
+
         // Check for the _applicationCopyrights parameter
         try {
             Parameter applicationCopyrights = (Parameter) configuration

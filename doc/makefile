@@ -1227,6 +1227,26 @@ doccheck/index.html:
 			$(JDOCCHECKFLAGS) \
 			$(JDOCCHECKDOCLET) \
 			-d doc/doccheck `echo $(ALLPACKAGES)| awk '{for(i=1;i<NF;i++) print $$i}' | sort` )
+######
+# OJDCHECK
+# An updated version of DocCheck.  See
+# http://github.com/egonw/ojdcheck
+# We have a local copy at
+# svn co svn+ssh://source.eecs.berkeley.edu/chess/ojdcheck 
+# The primary difference is that ojdcheck handles enums
+
+OJDCHECKJAR =	lib/ojdcheck.jar
+OJDCHECKDOCLET = -doclet com.github.ojdcheck.OpenJavaDocCheck -docletpath $(OJDCHECKJAR)
+
+ojdcheck: ojdcheck/index.html
+ojdcheck/index.html:
+	if [ ! -d ojdcheck ]; then mkdir -p ojdcheck; fi
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" \
+			$(JDOCCHECKFLAGS) \
+			$(OJDCHECKDOCLET) \
+			-xhtml \
+			-file doc/ojdcheck.htm `echo $(ALLPACKAGES)| awk '{for(i=1;i<NF;i++) print $$i}' | sort` )
 
 #############
 # FindBugs : http://findbugs.sourceforge.net
