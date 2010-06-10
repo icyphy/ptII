@@ -1,8 +1,11 @@
 package ptdb.kernel.database;
 
+import ptdb.common.dto.CreateModelTask;
+import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
 import ptdb.common.exception.DBConnectionException;
+import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;
 
 //////////////////////////////////////////////////////////////////////////
@@ -14,7 +17,7 @@ import ptdb.common.util.DBConnectorFactory;
  * <p>Monitor the asynchronous connection's task queue 
  * and execute tasks one by one over a synchronous connection.</p>
  *  
- * @author Ashwini Bijwe
+ * @author Ashwini Bijwe, Yousef Alsaeed
  *
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -123,6 +126,12 @@ public class ExecutorThread implements Runnable {
                         + e.getMessage());
                 e.printStackTrace();
                 return;
+            }catch (DBExecutionException e) {
+                _abortConnection();
+                _taskQueue.setExecutionError("Database execution error - "
+                        + e.getMessage());
+                e.printStackTrace();
+                return;
             }
         }
 
@@ -146,16 +155,25 @@ public class ExecutorThread implements Runnable {
     }
 
     /**
-     * Delegate the call to the appropriate API of DBConnection 
+     * Delegate the call to the appropriate API of DBConnection
      * depending on the type of the task it is executing 
+     * @throws DBExecutionException 
      */
-    private void _executeTask() {
+    private void _executeTask() throws DBExecutionException {
         Task task = _taskQueue.get(_noOfTasksExecuted);
-
-        /*
-         * if (task instanceOf DeleteModelTask)
-         *      executeDeleteModelTask((DeleteModelTask) task);
-         */
+       
+        
+        //if the task is of type save model task, then execute the proper method from the connection
+        if(task instanceof SaveModelTask)
+        {
+	        _dbConn.executeSaveModelTask((SaveModelTask)task);  
+        }
+        
+        //if the task is of type CreateModelTask then execute the proper method from the connection
+        if(task instanceof CreateModelTask)
+        {
+	        _dbConn.executeCreateModelTask((CreateModelTask)task);  
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

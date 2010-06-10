@@ -2,8 +2,10 @@ package ptdb.kernel.database;
 
 import java.util.ArrayList;
 
+import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
 import ptdb.common.dto.XMLDBModel;
@@ -24,7 +26,7 @@ import ptdb.kernel.database.DBConnection;
  * We plan to use this kind of connection for operations like saving a model 
  * that require a lot of processing
  *    
- * @author abijwe
+ * @author Ashwini Bijwe, Yousef Alsaeed
  *
  */
 public class AsynchronousDBConnection implements DBConnection {
@@ -88,6 +90,24 @@ public class AsynchronousDBConnection implements DBConnection {
             }
         }
     }
+    
+    /**
+     * Execute the necessary commands to create a new model in the database according
+     * to the model specification given in the task parameter
+     * 
+     * @param task
+     *          The task to be completed.  In this case, CreateModelTask. 
+     *          This will tell the DB layer to create a new model in the database.
+     * @throws DBExecutionException
+     */
+    public void executeCreateModelTask(CreateModelTask task)
+            throws DBExecutionException {
+	
+	//call the execueTask method to execute the given task
+	executeTask(task);
+	
+    }
+    
 
     /**
      * Get Attributes Task is not supported by the asynchronous connection
@@ -120,6 +140,24 @@ public class AsynchronousDBConnection implements DBConnection {
                 "Asynchronous DB Execution error - executeGetModels "
                         + "is not supported by this type of DBConnection");
     }
+    
+    /**
+     * Execute the necessary commands to save/update a model in the database according
+     * to the model specification given in the task parameter
+     * 
+     * @param task
+     *          The task to be completed.  In this case, SaveModelTask. 
+     *          This will tell the DB layer to save/update a model already existing in the database.
+     * @throws DBExecutionException
+     */
+    public void executeSaveModelTask(SaveModelTask task)
+            throws DBExecutionException {
+	
+	//call the execueTask method to execute the given task
+	executeTask(task);
+    }
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
