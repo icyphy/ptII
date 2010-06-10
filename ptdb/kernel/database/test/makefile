@@ -49,7 +49,9 @@ JSRCS_TEST_DRIVERS = \
 JSRCS = \
 	$(JSRCS_TEST_DRIVERS)
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	ptdb-test1.properties \
+	ptdb-test2.properties
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -72,7 +74,7 @@ install:
 tests:: $(EXTRA_SRCS) jclass test_java
 
 test_java: jclass
-	java -classpath $(CLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestOracleXMLDBConnection
+	java -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestOracleXMLDBConnection
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java

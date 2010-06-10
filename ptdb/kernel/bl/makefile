@@ -31,7 +31,7 @@
 
 ME =		ptdb/kernel/bl
 
-DIRS =		load search #save setup
+DIRS =		load search save #setup
 
 # Root of Ptolemy II directory
 ROOT =		../../..

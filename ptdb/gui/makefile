@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	ActorGraphDBFrame.java \
 	ActorGraphDBTableau.java \
+	DbSearchFrame.java \
 	ModelPanel.java \
 	CancelObservable.java \
 	ParentPanel.java \
@@ -58,7 +59,10 @@ JSRCS = \
 	SearchResultPanel.java \
 	SearchResultsFrame.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	arrow.GIF
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -68,7 +72,19 @@ MISC_FILES =	test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'ActorGraphDBFrame$$LoadModelFromDBAction.class' \
+	'ActorGraphDBFrame$$ModelSearchResults$$1.class' \
+	'ActorGraphDBFrame$$ModelSearchResults$$2.class' \
+	'ActorGraphDBFrame$$ModelSearchResults.class' \
+	'ActorGraphDBFrame$$OpenSearchFrameAction.class' \
+	'ActorGraphDBTableau$$Factory.class' \
+	'DbSearchFrame$$DBMatchAction.class' \
+	'ModelPanel$$1.class' \
+	'ParentPanel$$1.class' \
+	'SearchResultsFrame$$1.class' \
+	'SearchResultsFrame$$2.class' \
+	'SearchResultsFrame$$3.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

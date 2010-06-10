@@ -51,6 +51,7 @@ JSRCS = \
 	DBConnectionParameters.java \
 	GetAttributesTask.java \
 	GetModelsTask.java \
+	PTDBSearchAttribute.java \
 	SaveModelTask.java \
 	SearchCriteria.java \
 	Task.java \

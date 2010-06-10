@@ -72,7 +72,7 @@ install:
 tests:: $(EXTRA_SRCS) jclass test_java
 
 test_java: jclass
-	java -classpath $(CLASSPATH) org.junit.runner.JUnitCore ptdb.test.TestClassA
+	java -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.test.TestClassA
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java

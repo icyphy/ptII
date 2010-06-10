@@ -328,7 +328,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         ///////////////////////////////////////////////////////////////
         ////            public methods                          //////
         
-        @Override
         public void actionPerformed(ActionEvent e) {
 
             URL toRead = getClass().getClassLoader().getResource(

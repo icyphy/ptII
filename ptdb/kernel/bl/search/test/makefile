@@ -43,7 +43,9 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS_TEST_DRIVERS = \
-	TestSearchManager.java
+	TestAttributeSearcher.java \
+	TestSearchManager.java \
+	TestSearchResultBuffer.java
 
 JSRCS = \
 	$(JSRCS_TEST_DRIVERS)

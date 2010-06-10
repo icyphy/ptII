@@ -59,12 +59,16 @@ EXTRA_SRCS =
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = \
+	build \
 	common \
+	config \
 	demo \
 	doc \
 	gui \
 	kernel \
-	makefile
+	lib \
+	makefile \
+	test
 
 OPTIONAL_FILES =
 
