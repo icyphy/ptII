@@ -4,14 +4,13 @@ package ptolemy.domains.sequence.kernel;
 import java.awt.Frame;
 import java.util.Iterator;
 
-import javax.swing.JList;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -52,21 +51,25 @@ public class VisualSequenceDirector extends SequenceDirector {
     public VisualSequenceDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // The following attribute (an instance of an inner class)
         // provides a customized dialog when you double click on the
         // icon.
         new SequenceConfigureFactory(this, "factory");
-        
-        Parameter schedule = new Parameter(this, "schedule");
-        schedule.setExpression("{{sequenceNumber=1, actor=\"ActorA\"}, {sequenceNumber=2, actor=\"ActorB\"}}");
+
+        scheduleText = new Parameter(this, "scheduleText");
+        scheduleText
+                .setExpression("{{actor=\"(double-click to\n edit schedule)\"}}");
 
         // The following attribute provides a custom icon that
         // displays the current schedule information.
-        TableIcon icon = new TableIcon(this, "_icon");
-        icon.variableName.setExpression("schedule");
-        icon.fields.setExpression("{\"sequenceNumber\", \"actor\"}");
+        icon = new TableIcon(this, "_icon");
+        icon.variableName.setExpression("scheduleText");
+        icon.fields.setExpression("{\"actor\"}"); //, \"sequenceNumber\"}");
     }
+
+    public Parameter scheduleText;
+    public TableIcon icon;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -100,28 +103,23 @@ public class VisualSequenceDirector extends SequenceDirector {
                 // FIXME: The following is probably not right because we might be running already!!!!!
                 preinitialize();
                 Schedule schedule = _scheduler.getSchedule(_sequencedList);
-                
-                int size = schedule.size();
-                // FIXME: SequenceSchedule in the sequence package does not implement size() correctly!!!
-                // Take a guess for now.
-                size = 3;
-                String[] actors = new String[size];
-                Iterator firings = schedule.actorIterator();
-                int i = 0;
-                while (firings.hasNext()) {
-                    Actor actor = (Actor)firings.next();
-                    actors[i++] = actor.getName();
-                }
-                String[] buttons = { "Close", "FIXME" };
-                JList pane = new JList(actors);
+
+                String[] buttons = { "Cancel", "Done" };
+                SequentialScheduleEditorPane pane = new SequentialScheduleEditorPane(
+                        schedule);
+
                 ComponentDialog dialog = new ComponentDialog(parent, object
                         .getFullName(), pane, buttons, null, true);
 
                 String response = dialog.buttonPressed();
+
                 // If the window is closed by clicking on the X or by typing ESC,
                 // the response is "".
-                if ("Close".equals(response) || "".equals(response)) {
+                if ("Cancel".equals(response) || "".equals(response)) {
                     throw new CancelException();
+                } else if ("Done".equals(response)) {
+                    // update the displayed as well as the "real" schedule
+                    _updateSchedule(pane);
                 }
 
             } catch (Throwable e) {
@@ -129,5 +127,28 @@ public class VisualSequenceDirector extends SequenceDirector {
                 MessageHandler.error("Failed to get schedule.", e);
             }
         }
+
+        private void _updateSchedule(SequentialScheduleEditorPane pane) {
+            Iterator oActors = pane.getOrderedActors().iterator();
+            int i = 1;
+            String newScheduleText = new String("{");
+            // FIXME: Currently all previous values of sequence numbers are 
+            // ignored. Probably this is not desired.
+            while (oActors.hasNext()) {
+                if (i > 1) {
+                    newScheduleText += ",";
+                }
+                Actor oActor = (Actor) oActors.next();
+                SequenceAttribute seqAttribute = (SequenceAttribute) ((Entity) oActor)
+                        .attributeList(SequenceAttribute.class).get(0);
+                seqAttribute.setExpression(Integer.toString(i));
+                newScheduleText += "{actor=\"" + oActor.getDisplayName()
+                        + "\"}"; // , sequenceNumber=\"" + i + "\"}";
+                i++;
+            }
+            newScheduleText += "}";
+            scheduleText.setExpression(newScheduleText);
+        }
+
     }
 }
