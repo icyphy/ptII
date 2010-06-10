@@ -351,7 +351,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                         effigy, "transformation rule");
 
                 ExtendedGraphFrame frame = new DbSearchFrame(compositeEntity,
-                        new Tableau(effigy, "okok "));
+                        new Tableau(effigy, "DBSearchframe"));
 
                 frame.setBackground(BACKGROUND_COLOR);
                 frame.pack();
