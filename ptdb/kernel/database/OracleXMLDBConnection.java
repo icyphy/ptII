@@ -262,6 +262,13 @@ public class OracleXMLDBConnection implements DBConnection {
 	
 	try {
 	  
+	  //check if the task passed was created properly.
+	    if (task == null) {
+		throw new DBExecutionException(
+		        "Failed to execute GetModelsTask"
+		                + " - the GetModelsTask object passed was null");
+	    }
+	    
 	    //get the model from the database based on the name using the container method that returns 
 	    //the document from the database.
 	    //this is a document fetched from the database using the xml container with transaction enabled
@@ -436,21 +443,24 @@ public class OracleXMLDBConnection implements DBConnection {
 	//variable to hold the model name.
 	String strCurrentModelName = "";
 
-	//loop through the attributes to get the name.
-	for (int i = 0; i < attributes.getLength(); i++) {
-	    //get the node that represents the attribute in that list.
-	    Node node = attributes.item(i);
+	//if the attributes are not null
+	if (attributes != null) {
+	    //loop through the attributes to get the name.
+	    for (int i = 0; i < attributes.getLength(); i++) {
+	        //get the node that represents the attribute in that list.
+	        Node node = attributes.item(i);
 
-	    //check if the node name is "name"
-	    if (node.getNodeName().equalsIgnoreCase("name")) {
-		//get the value of the node.
-		strCurrentModelName = node.getNodeValue();
+	        //check if the node name is "name"
+	        if (node.getNodeName().equalsIgnoreCase("name")) {
+		    //get the value of the node.
+		    strCurrentModelName = node.getNodeValue();
 
-		//break the loop since we found what we are looking for.
-		break;
+		    //break the loop since we found what we are looking for.
+		    break;
+	        }
 	    }
-	}
-
+        }
+	
 	//if a model name was extracted from the node, then proceed
 	if (strCurrentModelName != null && strCurrentModelName.length() > 0) {
 
@@ -467,7 +477,7 @@ public class OracleXMLDBConnection implements DBConnection {
 		                + " - the XmlContainer object was not instantiated properly");
 	    }
 
-	    //use the container to get a handle on the document that represents the model. 
+	    //variable to hold the current model fetched from the database.
 	    XmlDocument currentDbModel;
 
 	    //variable to store the model content.
@@ -475,8 +485,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
 	    try {
 
-		//get the model content.
-		//this is done to replace the content before returning the model.
+		
+		//use the container to get a handle on the document that represents the model. 
 		currentDbModel = _xmlContainer.getDocument(strCurrentModelName);
 
 		//if the model is not in the database, throw an exception.
@@ -523,18 +533,23 @@ public class OracleXMLDBConnection implements DBConnection {
 			//get the string representation of the parent entity in the child.
 			String strChildNode = _getParentEntityNodeAsString(strChildContent);
 
-			//replace the nodes that references the child in the content of the parent with the child model
-			strCurrentModelContent = strCurrentModelContent
-			        .replaceAll(strChildNode, strChildContent);
+			//if the child node was returned properly
+			if(strChildNode != null && strChildNode.length() > 0) {
+			
+			    //replace the nodes that references the child in the content of the parent with the child model
+			    strCurrentModelContent = strCurrentModelContent
+			    	.replaceAll(strChildNode, strChildContent);
+			}
 
 			//make sure that each xml tag is in one line.
+			//Ptolemy will not recognize the xml file if the tags are in the same line.
 			strCurrentModelContent = strCurrentModelContent
 			        .replaceAll(">", ">\n");
 		    }
 
 		}
 
-		//add the current model to the hash map (name, content
+		//add the current model to the hash map (name, content)
 		_xmlModelHerarichyMap.put(strCurrentModelName,
 		        strCurrentModelContent);
 
@@ -631,7 +646,7 @@ public class OracleXMLDBConnection implements DBConnection {
 	    XmlQueryExpression queryExpression = _xmlManager.prepare(strQuery,
 		    xmlContext);
 
-	    //check if the xml context was created properly
+	    //check if the xml expression was created properly
 	    if (queryExpression == null) {
 		throw new DBExecutionException(
 		        "Failed to execute GetModelsTask"
@@ -730,6 +745,12 @@ public class OracleXMLDBConnection implements DBConnection {
 	DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 	        .newInstance();
 
+	//check if the document builder factory was created properly.
+	if(docBuilderFactory == null) {
+	    throw new DBExecutionException(
+		    "Faild to parse the xml - "
+		    + "could not create a new instance of DocumentBuilderFactory.");
+	}
 	//configure the builder factory to ignore the element content whites paces.
 	docBuilderFactory.setIgnoringElementContentWhitespace(true);
 
@@ -737,10 +758,18 @@ public class OracleXMLDBConnection implements DBConnection {
 
 	    //get an instance of document builder using the factory.
 	    docBuilder = docBuilderFactory.newDocumentBuilder();
+	    
+	    //check if the document builder was created properly.
+	    if(docBuilder == null) {
+		    throw new DBExecutionException(
+			    "Faild to parse the xml - "
+			    + "could not create a new instance of DocumentBuilder.");
+		}
 
 	    //create an input source object. This is done because the document builder does not accept string as an input
 	    //The input source will be as a wrapper to the string.
 	    InputSource is = new InputSource();
+	    
 	    //set the character stream for the input source to the xml string 
 	    is.setCharacterStream(new StringReader(p_strXML));
 
