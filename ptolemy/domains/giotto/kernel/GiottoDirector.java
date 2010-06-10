@@ -180,8 +180,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *   container.
      */
     public void fire() throws IllegalActionException {
-        System.out
-                .println("the fire method for the giotto director was called");
+        //System.out
+        //        .println("the fire method for the giotto director was called");
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
         if (container == null) {
@@ -347,8 +347,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         if (_debugging) {
             _debug("done firing for this time unit");
         }
-        System.out
-                .println("end of the call to the fire method for the giotto director");
+        //System.out
+        //        .println("end of the call to the fire method for the giotto director");
     }
 
 
