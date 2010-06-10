@@ -1,4 +1,30 @@
-/* A pane that let's you display and play around with a sequential schedule.*/
+/* A pane that displays and edits a sequential schedule. 
+
+ Copyright (c) 2010 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
 package ptolemy.domains.sequence.kernel;
 
 import java.awt.BorderLayout;
@@ -24,16 +50,16 @@ import ptolemy.actor.sched.Schedule;
 //// SequentialScheduleEditorPane
 
 /**
-* A pane that let's you display and play around with a sequential 
-* schedule. Changes are not commited. Order ist passed to the owning 
-* instance via getOrderedActors(). 
-*
-* @author Bastian Ristau
-* @version $Id$
-* @since Ptolemy II 8.0
-* @Pt.ProposedRating Red (ristau)
-* @Pt.AcceptedRating Red (ristau)
-*/
+ * A pane that displays and edits a sequential schedule.
+ * Changes are not commited. Order is passed to the owning 
+ * instance via getOrderedActors(). 
+ *
+ * @author Bastian Ristau
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @Pt.ProposedRating Red (ristau)
+ * @Pt.AcceptedRating Red (ristau)
+ */
 public class SequentialScheduleEditorPane extends JPanel implements
         ListSelectionListener {
 
@@ -87,8 +113,7 @@ public class SequentialScheduleEditorPane extends JPanel implements
         return result;
     }
 
-    @Override
-    //Listener method for list selection changes.
+    /** Listener method for list selection changes. */
     public void valueChanged(ListSelectionEvent e) {
         // do nothing
     }
@@ -96,7 +121,7 @@ public class SequentialScheduleEditorPane extends JPanel implements
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    //Listen for clicks on the up and down arrow buttons.
+    // Listen for clicks on the up and down arrow buttons.
     class UpDownListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             //This method can be called only when
