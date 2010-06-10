@@ -7,25 +7,27 @@ import java.util.ArrayList;
 
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.SearchCriteria;
-import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptolemy.kernel.util.Attribute;
 
 ////////////////////////////////////////////////////////////////////////////
-////AttributeSearcher
+//// AttributeSearcher
 
 /**
- * This class is the concrete searcher to handle the search by attributes
- *  criteria. 
+ * The concrete searcher to handle the search by attributes criteria. 
  * 
  * @author Alek Wang
  * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class AttributeSearcher extends AbstractSearcher {
+public class AttributeSearcher extends AbstractSearcher implements
+        AbstractDBSearcher {
 
     /**
-     * The constructor of this Searcher. 
+     * Construct the AttributeSearcher according to the input search criteria. 
      * 
      * @param searchCriteria The search criteria that input by the user. 
      */
@@ -38,10 +40,10 @@ public class AttributeSearcher extends AbstractSearcher {
     ////        protected methods                                       /////
 
     /**
-     * This method checks whether the attribute search criteria has been set in
+     * Checks whether the attribute search criteria has been set in
      *  this attribute searcher instance. 
      *  
-     * @return true - if the search criteria has been set
+     * @return true - if the search criteria has been set<br>
      *         false - if the search criteria has not been set
      */
     @Override
@@ -56,21 +58,23 @@ public class AttributeSearcher extends AbstractSearcher {
     }
 
     /**
-     * The method to perform the actual search for the attributes. 
-     * @throws DBExecutionException
-     * problem happens. 
+     * Perform the actual search for the attributes. 
+     * 
+     * @exception DBExecutionException Thrown by the DBConnection when 
+     * unexpected problem happens during the execution of DB query tasks.  
      */
     @Override
-    protected void _search() throws DBExecutionException  {
+    protected void _search() throws DBExecutionException {
 
         //create the AttributeSearchTask
+        // TODO change to attributeSearchTask later
         GetAttributesTask attributeSearchTask = new GetAttributesTask();
 
         // TODO set the attribute task value
-
+        
         // call the executeAttributeTask() method from the DBConnection class
         // set the returned results
-        this._currentResults = this._dbConnection
+        _currentResults = _dbConnection
                 .executeGetAttributesTask(attributeSearchTask);
 
         // set the search done 

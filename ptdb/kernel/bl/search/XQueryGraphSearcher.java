@@ -4,17 +4,21 @@
 package ptdb.kernel.bl.search;
 
 ////////////////////////////////////////////////////////////////////////////
-////XQueryGraphSearcher
+//// XQueryGraphSearcher
 
 /**
- * This class is the searcher for searching the models according to graph 
+ * Searcher for searching the models according to graph 
  * pattern matching in the database. 
  * 
  * @author Alek Wang
  * @version $Id$
- * 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
+ *
  */
-public class XQueryGraphSearcher extends GraphSearcher {
+public class XQueryGraphSearcher extends GraphSearcher implements
+        AbstractDBSearcher {
 
     /////////////////////////////////////////////////////////////////////////
     ////        protected methods                                       /////

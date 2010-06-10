@@ -6,20 +6,24 @@ package ptdb.kernel.bl.search;
 import ptdb.common.dto.SearchCriteria;
 
 ////////////////////////////////////////////////////////////////////////////
-////CommandSearcher
+//// CommandSearcher
+
 
 /**
- * This class is the concrete searcher class which handles the search according
- * to the XQuery command. 
+ * The concrete searcher class which handles the search according to the
+ *  XQuery command input by the user. 
  * 
  * @author Alek Wang
  * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class CommandSearcher extends AbstractSearcher {
+public class CommandSearcher extends AbstractSearcher implements AbstractDBSearcher {
 
     /**
-     * The constructor for this command searcher. 
+     * Construct the command searcher. 
      * 
      * @param searchCriteria The search criteria input by the user. 
      */
@@ -39,9 +43,7 @@ public class CommandSearcher extends AbstractSearcher {
         return false;
     }
 
-    /**
-     * This method performs the actual search for command search. 
-     */
+    
     @Override
     protected void _search() {
         // to be implemented in the next requirement 
@@ -54,7 +56,7 @@ public class CommandSearcher extends AbstractSearcher {
     ////       private variables                                        /////
 
     /**
-     * This field stores the XQuery command string input by the user. 
+     * Stores the XQuery command string input by the user. 
      */
     private String _commandSearchCriteria;
 

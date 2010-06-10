@@ -1,4 +1,4 @@
-/**
+/*
  * 
  */
 package ptdb.kernel.bl.search;
@@ -9,18 +9,20 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
-
 ////////////////////////////////////////////////////////////////////////////
-////SearchManager
+//// SearchManager
 
 /**
- * This class is the Business layer interface class which mainly handles the
- * search models function. It constructs the actual searcher classes according
- * to the search criteria.
+ * <p>Business layer interface class that mainly handles the search models 
+ * function. It constructs and configures the actual searcher classes according
+ * to the search criteria, and triggers the searching.</p>
  * 
  * @author Alek Wang
  * @version $Id$
- * 
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
+ *
  */
 public class SearchManager {
 
@@ -28,35 +30,36 @@ public class SearchManager {
     ////        public methods                                       /////
 
     /**
-     * This method is used to be called by the GUI layer class to pass the
-     * search criteria. It is invoked by the Search GUI frame.
+     * <p>This method is used to be called by the GUI layer class to pass the
+     * search criteria. It is invoked by the Search GUI frame.<br>
      * 
      * Algorithm: The search manager first creates all the searchers needed in
-     * the search, and configure them in the order of attribute searcher ->
-     * command searcher -> graph searcher.
+     * the search, and configures them in the order of attribute searcher ->
+     * command searcher -> graph searcher.<br>
      * 
      * Once all the results are searched and found, the results will be passed
-     * to the hierarchy fetcher to fetch the referencing information.
+     * to the hierarchy fetcher to fetch the referencing information.<br>
      * 
-     * After the hierarchy of the results are fetched, the results with
-     * hierarchy will be writtent to the result buffer.
+     * After the hierarchy of the results are fetched, the results will be 
+     * written to the result buffer together with the hierarchy. </p>
      * 
      * 
-     * @param searchCriteria
-     *            The SearchCriteria object which contains the search criterias
-     *            input by the user.
-     * @param searchResultBuffer
-     *            The buffer which is used to store the search results. The
-     *            search result buffer extends from the class Observable. The
-     *            GUI layer has registered the listener for search result
-     *            listener before passing the buffer to this method.
-     * @throws DBExecutionException 
+     * @param searchCriteria The search criteria input by the user.
+     * @param searchResultBuffer The buffer that is used to store the search 
+     *  results. The search result buffer extends  the class Observable. The
+     *            GUI layer has registered some listener for checking search 
+     *            result before passing the buffer to this method.
+     * @exception DBConnectionException Thrown from the database layer when the
+     *  database layer fails to create a connection to the database. 
+     * @exception DBExecutionException Thrown from the database layer when the 
+     *  database layer fails to execute the searching in the database.  
      */
     public void search(SearchCriteria searchCriteria,
-            ResultHandler searchResultBuffer) throws DBConnectionException, DBExecutionException {
+            ResultHandler searchResultBuffer) throws DBConnectionException,
+            DBExecutionException {
 
         // The search Manager will create all the searcher, and pass the search
-        // criteria to them
+        // criteria to them.
         AttributeSearcher attributeSearcher = new AttributeSearcher(
                 searchCriteria);
 

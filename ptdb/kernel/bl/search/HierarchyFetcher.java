@@ -4,13 +4,16 @@
 package ptdb.kernel.bl.search;
 
 ////////////////////////////////////////////////////////////////////////////
-////HierarchyFetcher
+//// HierarchyFetcher
 
 /**
- * This class is used to fetch the referencing hierarchy for the models.  
+ * Fetch the referencing hierarchy for the models.
  * 
  * @author Alek Wang
  * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
 public class HierarchyFetcher extends AbstractSearcher implements
@@ -26,11 +29,9 @@ public class HierarchyFetcher extends AbstractSearcher implements
     }
 
     /**
-     * This method is used to handle the model results passed to this class. 
-     * This method will go to the database to fetch all the referencing hierarchy 
-     * for the passed results
-     * 
-     *
+     * Handle the model results passed to this class. 
+     * Go to the database to fetch all the referencing hierarchy 
+     * for the passed results. 
      */
     @Override
     protected void _search() {

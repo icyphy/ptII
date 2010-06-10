@@ -9,16 +9,18 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
-
 ////////////////////////////////////////////////////////////////////////////
-////ResultHandler
+//// ResultHandler
 
 /**
- * This class is the interface that indicates the implementing classes are 
- * the handlers for dealing with searched models results. 
+ * <p>Indicates the implementing classes are 
+ * the handlers for dealing with searched models results. </p>
  * 
  * @author Alek Wang
  * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
 public interface ResultHandler {
@@ -27,19 +29,20 @@ public interface ResultHandler {
     ////        public methods                                       /////
 
     /**
-     * This method is implemented by the concrete classes to implement the 
+     * To be implemented by the concrete classes to implement the 
      * function to handle the results of searched models.
      * 
-     * @param modelResults The results to be handled
-     * @throws DBConnectionException Database connection problem occurs
+     * @param modelResults The searched model results to be handled. 
+     * @exception DBConnectionException Database connection problem occurs 
+     *  during handling the results through searching in the database. 
      */
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException;
 
     /**
-     * This method is used to check whether the searching process has been 
-     * cancelled by the user. 
-     * @return true - The search has been canceled by the user;
+     * Check whether the searching process has been canceled by the user. 
+     * 
+     * @return true - The search has been canceled by the user.<br>
      *             false - The search hasn't been canceled. 
      */
     public boolean isSearchCancelled();

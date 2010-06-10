@@ -19,8 +19,8 @@ import ptdb.kernel.database.DBConnection;
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
- * @Pt.ProposedRating
- * @Pt.AcceptedRating
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
 public abstract class AbstractSearcher implements ResultHandler {
@@ -32,9 +32,13 @@ public abstract class AbstractSearcher implements ResultHandler {
      * <p>Handle the model results passed to this class, 
      * and handle the results according to the certain search criteria. </p>
      * 
-     * @param modelResults The results to be handled in this searcher
-     * @exception DBExecutionException Exception happens in the execution 
-     *          of DB tasks. 
+     * @param modelResults The results to be handled in this searcher. 
+     * @exception DBConnectionException Thrown by the DBConnectorFactory
+     *           when getting the DBConnection from it, which
+     *          indicates that the DBConnection cannot be obtained. 
+     * @exception DBExecutionException Happens in the execution 
+     *          of DB tasks, and is thrown by the concrete searcher when they
+     *          are performing the actual searching in the database. 
      */
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException {
@@ -65,9 +69,7 @@ public abstract class AbstractSearcher implements ResultHandler {
                 _nextResultHandler.handleResults(_currentResults);
 
             }
-
         }
-
     }
 
     /**
@@ -86,7 +88,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      * This searcher will use the next handler to pass the results from this 
      * searcher. </p>
      * 
-     * @param nextResultHandler The nextResultHandler to set to this handler.
+     * @param nextResultHandler The next ResultHandler to set to this handler.
      */
     public void setNextResultHandler(ResultHandler nextResultHandler) {
 

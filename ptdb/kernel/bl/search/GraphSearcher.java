@@ -7,14 +7,17 @@ import java.util.ArrayList;
 import ptdb.common.dto.SearchCriteria;
 
 ////////////////////////////////////////////////////////////////////////////
-////GraphSearcher
+//// GraphSearcher
 
 /**
- * This class inherits from the AbstractSearch, and it contains the common
- * functions used in the graph search. 
+ * Inherits from the AbstractSearch, and contains the common
+ * functions used in the graph search.
  * 
  * @author Alek Wang
  * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
 public abstract class GraphSearcher extends AbstractSearcher {
@@ -23,13 +26,13 @@ public abstract class GraphSearcher extends AbstractSearcher {
     ////        public methods                                       /////
 
     /**
-     * This is a factory which returns the concrete GraphSearcher objects 
-     * according to the search criteria from the user. 
+     * <p>A factory which returns the concrete GraphSearcher objects 
+     * according to the complexity of the search criteria from the user. </p>
      * 
-     * @param searchCriteria The search criteria input by the user
+     * @param searchCriteria The search criteria input by the user. 
      * @return The list that contains the required graph searchers, created 
-     *  according to the search criteria.  The searcher in the returned list 
-     *  should be used in their returned order. 
+     *  according to the search criteria.  The searchers in the returned list 
+     *  should be used in their order in the list. 
      */
     public static ArrayList<GraphSearcher> getGraphSearcher(
             SearchCriteria searchCriteria) {
