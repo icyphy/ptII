@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
  * An instance of this attribute may wish to override the default
  * "Look Inside" behavior by including an instance of
  * ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory
- * as attribute contained by this instance.  Instead of
+ * as an attribute contained by this instance.  Instead of
  * having an explicit compile-time dependency between this class and
  * MoMLModelAttributeControllerFactory, derived classes should use MoML
  * to set up the containment relationship.  For example,      

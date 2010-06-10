@@ -22,7 +22,7 @@
  * 
  */
 
-package ptolemy.vergil.properties;
+package ptolemy.vergil.basic;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;

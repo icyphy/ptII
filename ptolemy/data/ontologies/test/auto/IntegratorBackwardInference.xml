@@ -17,7 +17,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 80.0]">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.properties.MoMLModelAttributeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
         <configure>
             <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">

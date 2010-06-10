@@ -1,88 +1,69 @@
-/* A tableau factory for modal models.
-
- Copyright (c) 2003-2009 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
-
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
-
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+/* A controller that provides binding of an attribute and a refinement model.
+ * 
+ * Copyright (c) 2009 The Regents of the University of California. All
+ * rights reserved. Permission is hereby granted, without written agreement and
+ * without license or royalty fees, to use, copy, modify, and distribute this
+ * software and its documentation for any purpose, provided that the above
+ * copyright notice and the following two paragraphs appear in all copies of
+ * this software.
+ * 
+ * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
+ * DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT
+ * OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+ * CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ * FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN
+ * "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE
+ * MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ * 
+ * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
+ * 
  */
+
 package ptolemy.vergil.toolbox;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLModelAttribute;
-
-///////////////////////////////////////////////////////////////////
-//// MoMLModelAttributeControllerFactory
+import ptolemy.vergil.basic.MoMLModelAttributeController;
+import ptolemy.vergil.basic.NamedObjController;
+import ptolemy.vergil.basic.NodeControllerFactory;
+import diva.graph.GraphController;
 
 /**
- A tableau factory that opens an editor on the contained model of
- an instance of {@link MoMLModelAttribute}. Put this attribute
- inside such an instance to get the behavior that looking inside
- the attribute opens the contained model.
- 
- @author Edward A. Lee
- @version $Id$
- @since Ptolemy II 8.0
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (reviewmoderator)
- */
-public class MoMLModelAttributeControllerFactory extends TableauFactory {
-    /** Create a factory with the given name and container.
-     *  @param container The container.
-     *  @param name The name.
-     *  @exception IllegalActionException If the container is incompatible
-     *   with this entity.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an entity already in the container.
+  * A factory attribute that creates MoMLModelAttributeControllers.
+  * @see ptolemy.vergil.properties.ModelAttributeController
+  * @author Dai Bui.  Based on code by Man-Kit Leung
+  * @version $Id$
+  * @since Ptolemy II 8.0
+  * @Pt.ProposedRating Red (cxh)
+  * @Pt.AcceptedRating Red (cxh)
+  */
+public class MoMLModelAttributeControllerFactory extends NodeControllerFactory {
+
+    /**
+     * Create a new factory with the specified name and container.
+     * @param container The specified container.
+     * @param name The specified name.
+     * @exception IllegalActionException If the attribute cannot be
+     * contained by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     * attribute with this name.
      */
     public MoMLModelAttributeControllerFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Create a tableau for the specified effigy, which is assumed to
-     *  be an effigy for an instance of ModalModel.  This class
-     *  defers to the configuration containing the specified effigy
-     *  to open a tableau for the embedded controller.
-     *  @param effigy The model effigy.
-     *  @return A tableau for the effigy, or null if one cannot be created.
-     *  @exception Exception If the factory should be able to create a
-     *   Tableau for the effigy, but something goes wrong.
+    /**
+     * Create a new ModelAttributeController with the specified graph
+     * controller.
+     * @param controller The specified graph controller.
+     * @return A new ModelAttributeController.
      */
-    public Tableau createTableau(Effigy effigy) throws Exception {
-        Configuration configuration = (Configuration) effigy.toplevel();
-        MoMLModelAttribute model = (MoMLModelAttribute) ((PtolemyEffigy) effigy)
-                .getModel();
-        Tableau tableau = configuration.openModel(model.getContainedModel());
-        tableau.setContainer(effigy);
-        return tableau;
+    public NamedObjController create(GraphController controller) {
+        return new MoMLModelAttributeController(controller);
     }
 }
