@@ -74,24 +74,33 @@ selects the optimization criterion.
 
 public class OptimizingSDFDirector extends SDFDirector {
 
-    /** Enumeration type to define the supported optimization criteria
+    /** 
+     * Enumeration type to define the supported optimization criteria.
      */
     public enum OptimizationCriteria {
-        BUFFERS, EXECUTIONTIME
+        /**
+         * Optimize for minimum number of frame buffers
+         */
+        BUFFERS, 
+        /**
+         * Optimize execution time (estimate)
+         */
+        EXECUTIONTIME
     }
     
     /** 
-     * parameter defining the optimization criterion
+     * Parameter defining the optimization criterion.
      */
     public Parameter OptimizationCriterion;
     
-    /** Construct on OptimizingSDFDirector in the given container with the given name.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
-     *  The OptimizingSDFDirector will have a default scheduler of type
-     *  OptimizingSDFScheduler.
+    /** 
+     * Construct on OptimizingSDFDirector in the given container with the given name.
+     * The container argument must not be null, or a
+     * NullPointerException will be thrown.
+     * If the name argument is null, then the name is set to the
+     * empty string. Increment the version number of the workspace.
+     * The OptimizingSDFDirector will have a default scheduler of type
+     * OptimizingSDFScheduler.
      *
      *  @param container Container of the director.
      *  @param name Name of this director.

@@ -79,8 +79,20 @@ See {@link ptolemy.domains.sdf.kernel.SDFScheduler} and
 */
 
 public class OptimizingSDFScheduler extends SDFScheduler {
+    
+    /**
+     * The optimization criterion to use.
+     */
     public OptimizationCriteria optimizationCriterion;
 
+    /**
+     * Constructor
+     * @param container container
+     * @param name name
+     * @param crit optimization criterion
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
     public OptimizingSDFScheduler(OptimizingSDFDirector container, String name, OptimizationCriteria crit)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -391,6 +403,10 @@ public class OptimizingSDFScheduler extends SDFScheduler {
         }
     }
 
+    /**
+     * Print a debug message 
+     * @param message
+     */
     public void showDebug(String message){
         if (_debugging) {
             _debug(message);

@@ -55,17 +55,24 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 */
 public class BufferingProfileFiring extends Firing {
 
+    /**
+     * Indicates whether this firing is to be performed exclusively (true)
+     * or shared (false).
+     */
     public boolean fireExclusive;
     
     /**
-     * 
+     * Constructor
+     * @param exclusive indicates firing is to be exclusive
      */
     public BufferingProfileFiring(boolean exclusive) {
         fireExclusive = exclusive;
     }
 
     /**
-     * @param actor
+     * Constructor
+     * @param actor the actor which is to fire
+     * @param exclusive indicates firing is to be exclusive
      */
     public BufferingProfileFiring(Actor actor, boolean exclusive) {
         super(actor);

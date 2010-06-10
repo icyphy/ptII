@@ -83,6 +83,16 @@ public interface BufferingProfile {
      */
     int exclusiveExecutionTime();
 
+    /** 
+     * Invoke a specified number of iterations of the actor in either shared or 
+     * exclusive mode as indicated by the fireExclusive argument.
+     * 
+     * @param iterationCount The number of iterations to perform.
+     * @param fireExclusive whether to fire exclusive or not.
+     * @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     * @exception IllegalActionException If iterating is not
+     *  permitted, or if prefire(), fire(), or postfire() throw it.
+     **/
     int iterate(int iterationCount, boolean fireExclusive) throws IllegalActionException;
 
 }

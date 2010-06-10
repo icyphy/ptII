@@ -57,20 +57,31 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 
 public abstract class SharedBufferTransformer extends Transformer implements BufferingProfile {
 
-    private boolean _nextIterationExclusive;
-
-    @Override
+    /**
+     * Constructor 
+     * @param container container
+     * @param name name
+     * @throws NameDuplicationException
+     * @throws IllegalActionException
+     */
+    public SharedBufferTransformer(CompositeEntity container, String name)
+            throws NameDuplicationException, IllegalActionException {
+        super(container, name);
+    }
+    
+    /**
+     * initialize. Set the default firing to non exclusive.
+     */
     public void initialize() throws IllegalActionException {
         // default to copying firing
         _nextIterationExclusive = false;
         super.initialize();
     }
 
-    public SharedBufferTransformer(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-    }
-    
+    /**
+     * Fire according to the value _nextIterationExclusive in shared or exclusive 
+     * firing mode
+     */
     public void fire() throws IllegalActionException {
         if(_nextIterationExclusive){
             fireExclusive();
@@ -79,26 +90,55 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
         }
     }
 
+    /**
+     * Default value for number of frame buffers required for shared firing.
+     */
     public int sharedBuffers() {
         return 1;
     }
 
+    /**
+     * Default value for number of frame buffers required for exclusive firing.
+     */
     public int exclusiveBuffers() {
         return 0;
     }
 
+    /**
+     * Default value for execution time for shared firing.
+     */
     public int sharedExecutionTime() {
         return 1;
     }
 
+    /**
+     * Default value for execution time for exclusive firing.
+     */
     public int exclusiveExecutionTime() {
         return 2;
     }
 
+    /**
+     * exclusive firing method to be implemented in subclasses
+     * @throws IllegalActionException
+     */
     protected abstract void fireExclusive() throws IllegalActionException;
 
+    /**
+     * shared firing method to be implemented in subclasses
+     * @throws IllegalActionException
+     */
     protected abstract void fireCopying() throws IllegalActionException;
  
+    /** 
+     * Invoke a specified number of iterations of the actor in either shared or 
+     * exclusive mode as indicated by the fireExclusive argument.
+     * @param iterationCount The number of iterations to perform.
+     * @param fireExclusive whether to fire exclusive or not.
+     * @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     * @exception IllegalActionException If iterating is not
+     *  permitted, or if prefire(), fire(), or postfire() throw it.
+     **/
     public int iterate(int iterationCount, boolean fireExclusive)
         throws IllegalActionException {
         _nextIterationExclusive  = fireExclusive;
@@ -107,4 +147,11 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
         _nextIterationExclusive = false;
         return result;
     }
+    
+    //// private fields
+    /**
+     * determines whether the next firing will be exclusive or shared
+     */
+    private boolean _nextIterationExclusive;
+    
 }
