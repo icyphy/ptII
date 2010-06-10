@@ -1239,7 +1239,7 @@ OJDCHECKJAR =	lib/ojdcheck.jar
 OJDCHECKDOCLET = -doclet com.github.ojdcheck.OpenJavaDocCheck -docletpath $(OJDCHECKJAR)
 
 ojdcheck: ojdcheck.htm
-ojdcheck.htm
+ojdcheck.htm:
 	if [ ! -d ojdcheck ]; then mkdir -p ojdcheck; fi
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" \
