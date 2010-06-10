@@ -56,6 +56,7 @@ JSIMPLE_TESTS = \
 	BitsToInt.tcl \
 	DelayLine.tcl \
 	IntToBits.tcl \
+	MaximumEntropySpectrum.tcl \
 	Repeat.tcl \
 	SampleDelay.tcl \
 	SequenceToArray.tcl
