@@ -1240,7 +1240,6 @@ OJDCHECKDOCLET = -doclet com.github.ojdcheck.OpenJavaDocCheck -docletpath $(OJDC
 
 ojdcheck: ojdcheck.htm
 ojdcheck.htm:
-	if [ ! -d ojdcheck ]; then mkdir -p ojdcheck; fi
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" \
 			$(JDOCCHECKFLAGS) \
