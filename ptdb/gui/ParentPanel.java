@@ -1,5 +1,6 @@
 package ptdb.gui;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,18 +52,24 @@ public class ParentPanel extends JPanel {
 
         setLayout(new FlowLayout());
 
+        setAlignmentX(LEFT_ALIGNMENT);
+
         _parentModelName = parentModelName;
         _configuration = configuration;
 
         _loadCheck = new JCheckBox();
+        _loadCheck.setMaximumSize(getMinimumSize());
         add(_loadCheck);
 
         _parentModelLink = new JButton("<html><u>" + _parentModelName
                 + "</html></u>");
+        _parentModelLink.setForeground(Color.BLUE);
+        _parentModelLink.setMaximumSize(getMinimumSize());
         add(_parentModelLink);
 
-        ImageIcon icon = new ImageIcon("arrow.gif");
+        ImageIcon icon = createImageIcon("arrow.gif", "Contains");
         JLabel arrowImage = new JLabel(icon);
+        arrowImage.setMaximumSize(getMinimumSize());
         add(arrowImage);
 
         _parentModelLink.addActionListener(new ActionListener() {
@@ -75,6 +82,18 @@ public class ParentPanel extends JPanel {
 
         });
 
+    }
+
+    /** Taken from java.sun.com 
+     * Returns an ImageIcon, or null if the path was invalid. */
+    protected ImageIcon createImageIcon(String path, String description) {
+        java.net.URL imgURL = getClass().getResource(path);
+        if (imgURL != null) {
+            return new ImageIcon(imgURL, description);
+        } else {
+            System.err.println("Couldn't find file: " + path);
+            return null;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

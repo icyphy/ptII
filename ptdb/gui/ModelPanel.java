@@ -1,14 +1,16 @@
 package ptdb.gui;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManagerInterface;
@@ -46,7 +48,11 @@ public class ModelPanel extends JPanel {
      */
     public ModelPanel(XMLDBModel dbModel, Configuration configuration) {
 
-        setLayout(new FlowLayout());
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setAlignmentX(LEFT_ALIGNMENT);
+
+        Border border = BorderFactory.createEmptyBorder(0, 3, 0, 0);
+        setBorder(border);
 
         _modelName = dbModel.getModelName();
         _configuration = configuration;
@@ -59,6 +65,8 @@ public class ModelPanel extends JPanel {
 
         _modelLink = new JButton("<html><u>" + _modelName + "</html></u>");
         _modelLink.setForeground(Color.BLUE);
+        _modelLink.setMaximumSize(getMinimumSize());
+
         add(_modelLink);
 
         _modelLink.addActionListener(new ActionListener() {

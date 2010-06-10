@@ -1,11 +1,13 @@
 package ptdb.gui;
 
-import java.awt.FlowLayout;
+import java.awt.Color;
 import java.util.ArrayList;
-import java.util.ListIterator;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import ptdb.common.dto.XMLDBModel;
 import ptolemy.actor.gui.Configuration;
@@ -43,23 +45,21 @@ public class ParentHierarchyPanel extends JPanel {
     public ParentHierarchyPanel(ArrayList<XMLDBModel> hierarchy,
             String searchResultModel, Configuration configuration) {
 
-        setLayout(new FlowLayout());
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setAlignmentX(LEFT_ALIGNMENT);
+        Border border = BorderFactory.createLineBorder(Color.black);
+        setBorder(border);
 
         _configuration = configuration;
         _parentList = new ArrayList();
 
         for (XMLDBModel parent : hierarchy) {
 
-            _parentList.add(new ParentPanel(parent.getModelName(),
-                    _configuration));
-
-        }
-
-        ListIterator listIterator = _parentList.listIterator();
-
-        while (listIterator.hasNext()) {
-
-            add((ParentPanel) listIterator.next());
+            ParentPanel panelToAdd;
+            panelToAdd = new ParentPanel(parent.getModelName(), _configuration);
+            panelToAdd.setAlignmentX(LEFT_ALIGNMENT);
+            _parentList.add(panelToAdd);
+            add(panelToAdd);
 
         }
 

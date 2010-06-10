@@ -1,13 +1,20 @@
 package ptdb.gui;
 
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import ptdb.common.dto.XMLDBModel;
@@ -50,19 +57,42 @@ public class SearchResultsFrame extends JFrame implements Observer {
         _configuration = configuration;
         _cancelObservable = new CancelObservable();
 
-        _scrollPane = new JScrollPane();
-        add(_scrollPane);
+        String title = "Search Results";
+
+        setTitle(title);
+
+        JPanel outerPanel = new JPanel();
+        LayoutManager layout = new BoxLayout(outerPanel, BoxLayout.Y_AXIS);
+        outerPanel.setLayout(layout);
+        outerPanel.setAlignmentX(LEFT_ALIGNMENT);
+        add(outerPanel);
+
+        JLabel _label = new JLabel(title + ":");
+        _label.setFont(new Font("Title", Font.BOLD, 24));
+        _label.setAlignmentX(LEFT_ALIGNMENT);
+        outerPanel.add(_label);
+
+        _scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        _scrollPane.setPreferredSize(new Dimension(800, 200));
+        _scrollPane.setAlignmentX(LEFT_ALIGNMENT);
+        outerPanel.add(_scrollPane);
 
         _resultPanelList = new ArrayList();
 
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.setPreferredSize(new Dimension(600, 50));
+        buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
+        outerPanel.add(buttonPanel);
+
         _loadByRefButton = new JButton("Import By Reference");
-        add(_loadByRefButton);
+        buttonPanel.add(_loadByRefButton);
 
         _loadByValButton = new JButton("Import By Value");
-        add(_loadByValButton);
+        buttonPanel.add(_loadByValButton);
 
         _cancelButton = new JButton("Cancel Search");
-        add(_cancelButton);
+        buttonPanel.add(_cancelButton);
 
         _loadByRefButton.addActionListener(new ActionListener() {
 
@@ -99,6 +129,22 @@ public class SearchResultsFrame extends JFrame implements Observer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add new search result in the scroll pane.
+     * 
+     * @param model
+     *        The model that will be displayed as search results.
+     */
+    public void addSearchResult(XMLDBModel model) {
+
+        SearchResultPanel newResultPanel = new SearchResultPanel(model,
+                _configuration);
+        _resultPanelList.add(newResultPanel);
+        _scrollPane.getViewport().add(newResultPanel);
+
+        repaint();
+
+    }
+
     /** Display new search results in the scroll pane.
      * 
      * @param modelList
@@ -108,14 +154,9 @@ public class SearchResultsFrame extends JFrame implements Observer {
 
         for (XMLDBModel model : modelList) {
 
-            SearchResultPanel newResultPanel = new SearchResultPanel(model,
-                    _configuration);
-            _resultPanelList.add(newResultPanel);
-            _scrollPane.add(newResultPanel);
+            addSearchResult(model);
 
         }
-
-        repaint();
 
     }
 
