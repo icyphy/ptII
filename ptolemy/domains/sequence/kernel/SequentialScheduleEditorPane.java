@@ -29,7 +29,7 @@ import ptolemy.actor.sched.Schedule;
 * instance via getOrderedActors(). 
 *
 * @author Bastian Ristau
-* @version $Id: VisualSequenceDirector.java 58040 2010-06-10 00:03:05Z eal $
+* @version $Id$
 * @since Ptolemy II 8.0
 * @Pt.ProposedRating Red (ristau)
 * @Pt.AcceptedRating Red (ristau)
