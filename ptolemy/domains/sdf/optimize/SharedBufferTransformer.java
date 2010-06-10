@@ -58,7 +58,9 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 public abstract class SharedBufferTransformer extends Transformer implements BufferingProfile {
 
     /**
-     * Constructor 
+     * Construct an instance of a SharedBufferTransformer. Should not be used
+     * because this in an abstract class.
+     * TODO Is there a way to avoid defining a constructor for this abstract class?
      * @param container container
      * @param name name
      * @throws NameDuplicationException
@@ -80,7 +82,7 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
 
     /**
      * Fire according to the value _nextIterationExclusive in shared or exclusive 
-     * firing mode
+     * firing mode.
      */
     public void fire() throws IllegalActionException {
         if(_nextIterationExclusive){
@@ -119,13 +121,15 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
     }
 
     /**
-     * exclusive firing method to be implemented in subclasses
+     * Fire the actor in exclusive firing mode.
+     * Exclusive firing method to be implemented in subclasses.
      * @throws IllegalActionException
      */
     protected abstract void fireExclusive() throws IllegalActionException;
 
     /**
-     * shared firing method to be implemented in subclasses
+     * Fire the actor in shared firing mode.
+     * Shared firing method to be implemented in subclasses.
      * @throws IllegalActionException
      */
     protected abstract void fireCopying() throws IllegalActionException;

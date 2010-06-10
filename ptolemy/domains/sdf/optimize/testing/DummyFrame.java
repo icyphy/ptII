@@ -47,7 +47,7 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more informat
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
 */
-public class DummyFrame {
+public class DummyFrame implements Cloneable {
     public int value;
 
     @Override
@@ -55,8 +55,15 @@ public class DummyFrame {
         return "Frame(" + Integer.toString(value) + ")";
     }
     
-    public DummyFrame clone(){
-        DummyFrame f = new DummyFrame();
+    public DummyFrame clone() {
+        DummyFrame f;
+        // TODO: below seems a silly solution, but I don't want expose callers
+        // of this method to the exception...
+        try {
+            f = (DummyFrame) super.clone();
+        } catch (CloneNotSupportedException e) {
+            f = new DummyFrame();
+        }
         f.value = value;
         return f;
     }

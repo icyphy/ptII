@@ -86,7 +86,8 @@ public class OptimizingSDFScheduler extends SDFScheduler {
     public OptimizationCriteria optimizationCriterion;
 
     /**
-     * Constructor
+     * Construct an instance of an OptimizingSDFScheduler. Provide container and name as 
+     * usual and an optimization criterion <i>crit</i>.
      * @param container container
      * @param name name
      * @param crit optimization criterion
@@ -404,8 +405,8 @@ public class OptimizingSDFScheduler extends SDFScheduler {
     }
 
     /**
-     * Print a debug message 
-     * @param message
+     * Print a debug message.
+     * @param message message to display
      */
     public void showDebug(String message){
         if (_debugging) {

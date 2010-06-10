@@ -79,11 +79,11 @@ public class OptimizingSDFDirector extends SDFDirector {
      */
     public enum OptimizationCriteria {
         /**
-         * Optimize for minimum number of frame buffers
+         * Optimize for minimum number of frame buffers.
          */
         BUFFERS, 
         /**
-         * Optimize execution time (estimate)
+         * Optimize execution time (estimate).
          */
         EXECUTIONTIME
     }
@@ -142,8 +142,7 @@ public class OptimizingSDFDirector extends SDFDirector {
         OptimizationCriterion.setExpression("\"Buffers\"");
 
         // if necessary, copy the string parameter to the enumerated value
-        if(OptimizationCriterion != null)
-            _setOptimizationCriterionValue();
+        _setOptimizationCriterionValue();
 
         // set the constrainBufferSizes parameter
         scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");

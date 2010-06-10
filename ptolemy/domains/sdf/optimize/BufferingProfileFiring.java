@@ -26,11 +26,13 @@
 
  */
 
-
 package ptolemy.domains.sdf.optimize;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.sched.Firing;
+
+////////////////////////////////////////////////////////////////////////
+//// BufferingProfileFiring
 
 /**
 <h1>Class comments</h1>
@@ -56,21 +58,8 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 public class BufferingProfileFiring extends Firing {
 
     /**
-     * Indicates whether this firing is to be performed exclusively (true)
-     * or shared (false).
-     */
-    public boolean fireExclusive;
-    
-    /**
-     * Constructor
-     * @param exclusive indicates firing is to be exclusive
-     */
-    public BufferingProfileFiring(boolean exclusive) {
-        fireExclusive = exclusive;
-    }
-
-    /**
-     * Constructor
+     * Construct an instance representing a firing of the given actor
+     * in the given mode, shared or exclusive.
      * @param actor the actor which is to fire
      * @param exclusive indicates firing is to be exclusive
      */
@@ -79,4 +68,14 @@ public class BufferingProfileFiring extends Firing {
         fireExclusive = exclusive;
     }
 
+
+///////////////////////////////////////////////////////////////
+////                  public variables                     ////
+    
+    /**
+     * Indicates whether this firing is to be performed exclusively (true)
+     * or shared (false).
+     */
+    public boolean fireExclusive;
+    
 }
