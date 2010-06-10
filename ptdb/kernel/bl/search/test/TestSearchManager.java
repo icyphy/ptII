@@ -11,96 +11,91 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.dto.XMLDBModel;
-import ptdb.common.exception.DBConnectionException;
 import ptdb.common.util.DBConnectorFactory;
+import ptdb.kernel.bl.search.AttributeSearcher;
+import ptdb.kernel.bl.search.CommandSearcher;
+import ptdb.kernel.bl.search.HierarchyFetcher;
+import ptdb.kernel.bl.search.PatternMatchGraphSearcher;
 import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
+import ptdb.kernel.bl.search.XQueryGraphSearcher;
 import ptdb.kernel.database.DBConnection;
-
+import ptolemy.kernel.util.Attribute;
 
 ///////////////////////////////////////////////////////////////
 //// TestSearchManager
 
 /**
- * This class is the JUnit test case for class TestSearchManager.
+ * JUnit test case for class TestSearchManager.
  * 
  * @author Alek Wang
  * @version $Id$
- * @since
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(SearchManager.class)
+@PrepareForTest( { SearchManager.class, AttributeSearcher.class,
+        CommandSearcher.class, XQueryGraphSearcher.class,
+        PatternMatchGraphSearcher.class, HierarchyFetcher.class,
+        SearchResultBuffer.class })
+@SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory")
 public class TestSearchManager {
 
     //////////////////////////////////////////////////////////////////////
     ////                public methods                                  //////
 
-        
-        /**
-         * Test method for {@link ptdb.kernel.bl.search.SearchManager#search(ptdb.common.dto.SearchCriteria, ptdb.kernel.bl.search.ResultHandler)}.
-         * @throws Exception 
-         */
-        @Test
-        public void testSearch() throws Exception {
-            
-            
-            
-            SearchManager searchManager = new SearchManager();
-            
-            SearchCriteria searchCriteria = new SearchCriteria();
-            SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
-            
-            DBConnection dbConnectionMock = PowerMock.createMock(DBConnection.class);
-    
-    
-            mockStatic(DBConnectorFactory.class);
-            
-            expect(DBConnectorFactory.getSyncConnection(false)).andReturn(dbConnectionMock);
-    
-            
-            GetAttributesTask getAttributesTaskMock = PowerMock.createMock(GetAttributesTask.class);
-            PowerMock.expectNew(GetAttributesTask.class).andReturn(getAttributesTaskMock);
-            
-            expect(dbConnectionMock.executeGetAttributesTask(getAttributesTaskMock)).andReturn(new ArrayList<XMLDBModel>());
-            
-            dbConnectionMock.closeConnection();
-    
-    //        PowerMock.replay(DBConnectorFactory.class);
-            PowerMock.replayAll();
-            
-            
-            searchManager.search(searchCriteria, searchResultBuffer);
-    
-            
-            PowerMock.verifyAll();
-            
-        }
+    /**
+     * Test the search() method.
+     * 
+     * @exception Exception Thrown by PowerMock during the execution of test 
+     *  cases. 
+     */
+    @Test
+    public void testSearch() throws Exception {
 
-//    /**
-//     * Test method for {@link ptdb.kernel.bl.search.SearchManager#search(ptdb.common.dto.SearchCriteria, ptdb.kernel.bl.search.ResultHandler)}.
-//     * @throws Exception 
-//     */
-//    @Test
-//    public void testSearch() throws Exception {
-//
-//        DBConnection dbConnectionMock = PowerMock.createMock(DBConnection.class);
-//        
-//        mockStatic(DBConnectorFactory.class);
-//
-//        expect(DBConnectorFactory.getSyncConnection(false)).andReturn(dbConnectionMock);
-//
-//        PowerMock.replay(DBConnectorFactory.class);
-//
-//        DBConnectorFactory.getSyncConnection(false);
-//
-//        PowerMock.verify(DBConnectorFactory.class);
-//
-//    }
+        SearchManager searchManager = new SearchManager();
+
+        SearchCriteria searchCriteria = new SearchCriteria();
+        ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+
+        Attribute attribute = new Attribute();
+        attribute.setName("test name");
+        attributes.add(attribute);
+
+        searchCriteria.setAttributes(attributes);
+
+        SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
+
+        DBConnection dbConnectionMock = PowerMock
+                .createMock(DBConnection.class);
+
+        GetAttributesTask getAttributesTaskMock = PowerMock
+                .createMockAndExpectNew(GetAttributesTask.class);
+        
+        mockStatic(DBConnectorFactory.class);
+
+        expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
+                dbConnectionMock);
+
+        expect(dbConnectionMock.executeGetAttributesTask(getAttributesTaskMock))
+                .andReturn(new ArrayList<XMLDBModel>());
+
+        dbConnectionMock.closeConnection();
+
+        PowerMock.replayAll();
+
+        searchManager.search(searchCriteria, searchResultBuffer);
+
+        PowerMock.verifyAll();
+
+    }
 
 }

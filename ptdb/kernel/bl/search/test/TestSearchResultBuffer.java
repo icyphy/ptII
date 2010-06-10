@@ -11,21 +11,20 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import ptdb.common.dto.XMLDBModel;
-import ptdb.common.exception.DBConnectionException;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 
 ///////////////////////////////////////////////////////////////
 //// TestSearchResultBuffer
 
 /**
- * The JUnit test case class for testing class SearchResutlBuffer.
+ * The JUnit test case for testing class SearchResutlBuffer.
  * 
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
  * @see SearchResultBuffer
- * @Pt.ProposedRating
- * @Pt.AcceptedRating
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
 @RunWith(PowerMockRunner.class)
@@ -36,25 +35,20 @@ public class TestSearchResultBuffer {
     ////                public methods                                //////
 
     /**
-     * @throws java.lang.Exception
+     * Set up the test by creating a new SearchResultBuffer.
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         _searchResultBufferTest = new SearchResultBuffer();
 
     }
 
     /**
-     * Test method for {@link ptdb.kernel.bl.search.SearchResultBuffer#
-     * handleResults(java.util.ArrayList)}.
-     * 
-     * Test the initial write to the buffer. 
-     * 
-     * @exception DBConnectionException Exception from the database connection.
+     * Test the handleResults() method. 
      */
     @Test
-    public void testHandleResultsInitial() throws DBConnectionException {
+    public void testHandleResults() {
 
         ArrayList<XMLDBModel> modelResults = new ArrayList();
         _modelResults2 = new ArrayList<XMLDBModel>();
@@ -71,9 +65,7 @@ public class TestSearchResultBuffer {
     }
 
     /**
-     * Test method for {@link ptdb.kernel.bl.search.SearchResultBuffer
-     * #getResults()}.
-     *
+     * Test the getResults() method. 
      */
     @Test
     public void testGetResults() {
@@ -84,8 +76,7 @@ public class TestSearchResultBuffer {
     }
 
     /**
-     * Test method for {@link ptdb.kernel.bl.search.SearchResultBuffer#
-     * isSearchCancelled()}.
+     * Test the isSearchCancelled() method. 
      */
     @Test
     public void testIsSearchCancelled() {
