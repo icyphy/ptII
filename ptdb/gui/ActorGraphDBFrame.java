@@ -98,7 +98,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// protected methods ////
+    ////                protected methods                          ////
 
     /**
      * Initialize this class. Various actions are instantiated.
@@ -145,7 +145,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////          protected variables ////
+    ////          protected variables                              ////
 
     /** The database menu. */
     protected JMenu _dbMenu;
@@ -156,7 +156,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     protected Action _openSearchFrameAction;
 
     ///////////////////////////////////////////////////////////////////
-    //// public inner classes ////
+    ////         public inner classes                           ////
 
     /** Search dialog. */
     public class ModelSearchResults extends JDialog implements QueryListener {
@@ -226,7 +226,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
         ///////////////////////////////////////////////////////////////////
-        //// public methods ////
+        ////                    public methods                          ////
 
         /**
          * Called to notify that one of the entries has changed. The name of the
@@ -275,7 +275,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// private inner classes ////
+    ////                private inner classes                    ////
 
     ///////////////////////////////////////////////////////////////////
     //// LoadModelFromDB
@@ -366,7 +366,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
         ///////////////////////////////////////////////////////////////
-        ////     private variables                       //////
+        ////            private variables                       //////
 
         private Tableau _taTableau;
     }
