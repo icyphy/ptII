@@ -1,7 +1,8 @@
-# Makefile for PtolemyII Sequence domain
+# Makefile for the sequence domain gui
+#
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
 # @Copyright (c) 2009-2010 The Regents of the University of California.
 # All rights reserved.
@@ -28,44 +29,43 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sequence
+ME =		ptolemy/domains/sequence/gui
 
-DIRS =		kernel gui lib test
+DIRS = 		#test
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Root of the Java directory
+ROOT =		../../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-
 # Used to build jar files
-PTPACKAGE = 	sequence
-PTCLASSJAR =
+PTPACKAGE = 	kernel
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	kernel/kernel.jar \
-	gui/gui.jar \
-	lib/lib.jar
+JSRCS = \
+	ActorCellRenderer.java \
+	SequentialScheduleEditorPane.java \
+	VisualSequenceDirector.java
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+EXTRA_SRCS =	$(JSRCS)
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel gui lib test #doc test
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
-all: jclass
-install: jclass jars
+JCLASS = $(JSRCS:%.java=%.class)
 
+all: jclass
+install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

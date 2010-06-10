@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.sequence.kernel;
+package ptolemy.domains.sequence.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -56,7 +56,7 @@ import ptolemy.actor.sched.Schedule;
  *
  * @author Bastian Ristau
  * @version $Id$
- * @since Ptolemy II 8.0
+ * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (ristau)
  * @Pt.AcceptedRating Red (ristau)
  */

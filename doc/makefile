@@ -685,6 +685,7 @@ ALLPACKAGES = \
 	ptolemy.domains.rendezvous.kernel \
 	ptolemy.domains.rendezvous.lib \
 	ptolemy.domains.sequence.kernel \
+	ptolemy.domains.sequence.gui \
 	ptolemy.domains.sequence.lib \
 	ptolemy.domains.sr.kernel \
 	ptolemy.domains.sr.lib \
