@@ -670,8 +670,10 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
         _removeUnusedToolbarButtons();
 
-        GUIUtilities.addToolBarButton(_toolbar, singleMatchAction);
-        GUIUtilities.addToolBarButton(_toolbar, batchMatchAction);
+        if (!this.getClass().getName().equals("ptdb.gui.DbSearchFrame")) {
+            GUIUtilities.addToolBarButton(_toolbar, singleMatchAction);
+            GUIUtilities.addToolBarButton(_toolbar, batchMatchAction);
+        }
     }
 
     protected RunnableGraphController _createActorGraphController() {
