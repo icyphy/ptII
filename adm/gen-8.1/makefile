@@ -1143,6 +1143,7 @@ bldmastrcoverage:
 		remote1distnonjsall \
 		remote1ChangeLog \
 		remote1doc \
+		remote1odjcheck \
 		remote1doccheck \
 		remote1findbugs \
 		remote1jnlp \
@@ -1713,6 +1714,15 @@ remote1ChangeLog:
 	(cd $(REMOTE1PTIIDIST);	rm -f ChangeLog; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k ChangeLog; \
 		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
+
+remote1ojdcheck:
+	@echo "#"
+	@echo "# Now generating ojdcheck files in $(REMOTE1PTIIDIST)/doc"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	(cd $(REMOTE1PTIIDIST)/doc; rm -rf ojdcheck.htm; \
+		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k ojdcheck.htm)
 
 remote1doccheck:
 	@echo "#"
