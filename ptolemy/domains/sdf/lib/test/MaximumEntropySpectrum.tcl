@@ -69,7 +69,9 @@ test MaximumEntrySpectrum-1.2 {test clone} {
 test MaximumEntrySpectrum-2.1 {test description} {
     set mes2_1 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile ../MaximumEntropySpectrum.xml]]
     $mes2_1 description
-} {}
+    # Success is not having the above line crash.  See IOPort.java
+    list {}
+} {{}}
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

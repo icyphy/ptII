@@ -530,6 +530,7 @@ public class IOPort extends ComponentPort {
      *   an opaque input port or if there is no director.
      */
     public void createReceivers() throws IllegalActionException {
+        //System.out.println("IOPort.createReceivers() " + getFullName());
         if (!isOpaque()) {
             throw new IllegalActionException(this,
                     "createReceivers: Can only create "
@@ -560,7 +561,9 @@ public class IOPort extends ComponentPort {
         if (input) {
             Iterator<?> outsideRelations = linkedRelationList().iterator();
 
-            int myWidth = getWidth();
+            // Avoid an infinite loop because getWidth() calls createReceivers().
+            boolean createReceivers = false;
+            int myWidth = _getWidth(createReceivers);
             boolean madeOne = false;
 
             while (outsideRelations.hasNext()) {
@@ -1630,6 +1633,7 @@ public class IOPort extends ComponentPort {
         }
     }
 
+
     /** Return the width of the port.  The width is the sum of the
      *  widths of the relations that the port is linked to (on the outside).
      *  Note that this method cannot be used to determine whether a port
@@ -1644,6 +1648,27 @@ public class IOPort extends ComponentPort {
      * @exception IllegalActionException
      */
     public int getWidth() throws IllegalActionException {
+        boolean createReceivers = true;
+        return _getWidth(createReceivers);
+    }
+
+    /** Return the width of the port.  The width is the sum of the
+     *  widths of the relations that the port is linked to (on the outside).
+     *  Note that this method cannot be used to determine whether a port
+     *  is connected (deeply) to another port that can either supply it with
+     *  data or consume data it produces.  The correct methods to use to
+     *  determine that are numberOfSinks() and numberOfSources().
+     *  This method is read-synchronized on the workspace.
+     *  This method will trigger the width inference algorithm if necessary.
+     *  @param createReceivers True if {@link #getReceivers()} should be called
+     *  if the cached width of the port is not the same as the sum of the width
+     *  of the linked relations.
+     *  @return The width of the port.
+     *  @exception IllegalActionException
+     *  @see #numberOfSinks()
+     *  @see #numberOfSources()
+     */
+    private int _getWidth(boolean createReceivers) throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -1676,14 +1701,18 @@ public class IOPort extends ComponentPort {
                     }
                 } else {
                     if (_width != sum) {
+                        // Need to re-create receivers for Pub/Sub in Opaques
+                        // See getWidthInside() for a similar piece of code.
+                        // Need to check to see if there is a director, otherwise
+                        // _description will fail on MaximumEntropySpectrum, see
+                        // ptolemy/domains/sdf/lib/test/MaximumEntropySpectrum.tcl
+                        if (createReceivers && isOpaque()
+                                && ((Actor)getContainer()).getDirector() != null) {
+                            // FIXME: maybe we should only call createReceivers()
+                            // if the sum is less than the _width (see below).
+                            createReceivers();
+                        }
                         _width = sum;
-                        // Need to re-create receivers.
-                        // FIXME: calling createReceivers() here breaks many tests.
-                        // However, we need this for Publisher/Subscriber and Opaques.  
-                        // See below for a similar piece of code.
-                        //if (isOpaque()) {
-                        //    createReceivers();
-                        //}
                     }
                 }
                 _widthVersion = version;
@@ -1771,15 +1800,17 @@ public class IOPort extends ComponentPort {
                     }
                 }
                 if (_insideWidth != sum) {
+                    // Need to re-create receivers for Pub/Sub in Opaques.
+                    // See _getWidth() for a similar piece of code.
+                    // If we don't check to see that sum < _insideWidth,
+                    // then actor/process/test/Branch.tcl has tests that 
+                    // fail because we end up creating new receivers that
+                    // are not producer receivers.
+                    if (sum < _insideWidth && isOpaque()) {
+                        createReceivers();
+                    }
                     _insideWidth = sum;
                     _insideWidthVersion = version;
-                    // Need to re-create receivers.
-                    // FIXME: calling createReceivers() here breaks many tests.
-                    // However, we need this for Publisher/Subscriber and Opaques.  
-                    // See above for a similar piece of code.
-                    //if (isOpaque()) {
-                    //    createReceivers();
-                    //}
                 }
             }
 
@@ -2086,7 +2117,7 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getReadAccess();
 
-            Nameable container = getContainer();
+            Nameable container = getContainer(); 
 
             if (!(container instanceof CompositeActor && isInput() && isOpaque())) {
                 // Return an empty list, since this port cannot send data
