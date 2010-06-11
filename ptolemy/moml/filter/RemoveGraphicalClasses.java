@@ -425,6 +425,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put(
                 "ptolemy.vergil.actor.lib.MonitorReceiverContents", null);
 
+        _graphicalClasses.put(
+                "ptolemy.vergil.ontologies.ConceptIcon", null);
     }
 
     /** True if we should remove the GR domain. */
