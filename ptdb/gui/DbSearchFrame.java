@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
+import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.PTDBSearchAttribute;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.kernel.bl.search.SearchResultBuffer;
@@ -24,7 +25,11 @@ import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -139,7 +144,6 @@ public class DbSearchFrame extends TransformationEditor {
             TransformationRule rule = getFrameController()
                     .getTransformationRule();
             Pattern pattern = rule.getPattern();
-//            System.out.println(pattern);
 
             // create a new arraylist to contain all the attributes 
             ArrayList<Attribute> attributesList = new ArrayList<Attribute>();
@@ -195,9 +199,45 @@ public class DbSearchFrame extends TransformationEditor {
             // set the attributes to the search criteria accordingly
             searchCriteria.setAttributes(attributesList);
 
+            // Create the graph pattern search criteria 
+            DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
+
+            // get the ports specified by the user
+            List<Port> portsList = pattern.portList();
+            ArrayList<Port> ports = new ArrayList<Port>();
+
+            for (Iterator iterator = portsList.iterator(); iterator.hasNext();) {
+                Port port = (Port) iterator.next();
+                ports.add(port);
+            }
+
+            dbGraphSearchCriteria.setPortsList(ports);
+
+            // get the relations specified by the user
+            List<Relation> relationsList = pattern.relationList();
+            ArrayList<Relation> relations = new ArrayList<Relation>();
+
+            for (Iterator iterator = relationsList.iterator(); iterator
+                    .hasNext();) {
+                Relation relation = (Relation) iterator.next();
+                relations.add(relation);
+            }
+
+            dbGraphSearchCriteria.setRelationsList(relations);
+
+            // get the component entities specified by the user
+            ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
+
+            _getAtomicEntities(pattern, componentEntities);
+
+            dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
+
+            // set the DBGraph search criteria to the whole search criteria 
+            searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
+
             // TODO show the search result frame
             // searchResultFrame.setVisible(true);
-            
+
             // TODO call the Search Manager to trigger the search
             //  SearchManager searchManager = new SearchManager();
             //            try {
@@ -211,13 +251,75 @@ public class DbSearchFrame extends TransformationEditor {
             //                e1.printStackTrace();
             //            }
 
+            //            // TODO This is just for testing
+            //            for (Iterator iterator = searchCriteria.getAttributes().iterator(); iterator.hasNext();) {
+            //                NamedObj namedObj = (NamedObj) iterator.next();
+            //                if (namedObj instanceof Variable) {
+            //                    System.out.println(namedObj.getClassName());
+            //                    try {
+            //                        System.out.println(((Variable) namedObj).getToken().getClass());
+            //                    } catch (IllegalActionException e1) {
+            //                        // TODO Auto-generated catch block
+            //                        e1.printStackTrace();
+            //                    }
+            //                }
+            //                
+            //            }
+            //            
 
-//            // TODO This is just for testing
-//            for (Iterator iterator = searchCriteria.getAttributes().iterator(); iterator.hasNext();) {
-//                NamedObj namedObj = (NamedObj) iterator.next();
-//                System.out.println(namedObj);
+//            // TODO this is just for testing the Graph part, delete later
+//            System.out.println("search criteira: "
+//                    + searchCriteria.getDBGraphSearchCriteria());
+//            System.out.println("components :"
+//                    + searchCriteria.getDBGraphSearchCriteria()
+//                            .getComponentEntitiesList());
+//
+//            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
+//                    .getComponentEntitiesList().iterator(); iterator.hasNext();) {
+//                ComponentEntity componentEntity = (ComponentEntity) iterator
+//                        .next();
+//                System.out.println(componentEntity);
 //            }
-//            
+//
+//            System.out.println("ports: "
+//                    + searchCriteria.getDBGraphSearchCriteria().getPortsList());
+//            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
+//                    .getPortsList().iterator(); iterator.hasNext();) {
+//                Port port = (Port) iterator.next();
+//                System.out.println(port);
+//            }
+//
+//            System.out.println("relations: "
+//                    + searchCriteria.getDBGraphSearchCriteria()
+//                            .getRelationsList());
+//            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
+//                    .getRelationsList().iterator(); iterator.hasNext();) {
+//                Relation relation = (Relation) iterator.next();
+//                System.out.println(relation);
+//            }
+//
+//            System.out.println("done testing");
+//            // TODO done and delete later 
+        }
+
+        private void _getAtomicEntities(CompositeEntity compositeEntity,
+                ArrayList<ComponentEntity> componentEntities) {
+
+            if (compositeEntity != null) {
+                List<Entity> entities = compositeEntity.entityList();
+
+                for (Iterator iterator = entities.iterator(); iterator
+                        .hasNext();) {
+                    Entity entity = (Entity) iterator.next();
+                    if (entity instanceof CompositeEntity) {
+                        _getAtomicEntities((CompositeEntity) entity,
+                                componentEntities);
+
+                    } else if (entity instanceof ComponentEntity) {
+                        componentEntities.add((ComponentEntity) entity);
+                    }
+                }
+            }
         }
 
     }
