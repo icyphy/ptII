@@ -13,11 +13,11 @@ import ptolemy.kernel.Relation;
 //// DBGraphSearchCriteria
 
 /**
- * <p>The DTO (data transfer object) that all the search criteria input by the 
- * user, for the graph searching through the XML database.<br>
+ * The DTO (data transfer object) that all the search criteria input by the 
+ * user, for the graph searching through the XML database.
  * 
- * It is constructed by the GUI layer class to pass the search criteria for 
- * graph DB search.</p>
+ * <p>It is constructed by the GUI layer class to pass the search criteria for 
+ * graph DB search to the database layer.</p>
  * 
  * @author Alek Wang
  * @version $Id$
@@ -29,7 +29,7 @@ import ptolemy.kernel.Relation;
 public class DBGraphSearchCriteria {
 
     //////////////////////////////////////////////////////////////////////
-    ////                public methods                                  //////
+    ////                public methods                                ////
 
     /**
      * Get the component entities from the Graph search pattern. 
@@ -88,7 +88,7 @@ public class DBGraphSearchCriteria {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		private variables				//////
+    ////                private variables                             ////
 
     private ArrayList<Port> _portsList;
 
