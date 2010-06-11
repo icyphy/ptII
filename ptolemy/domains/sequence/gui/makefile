@@ -60,7 +60,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'SequentialScheduleEditorPane$$UpDownListener.class' \
+	'VisualSequenceDirector$$SequenceConfigureFactory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

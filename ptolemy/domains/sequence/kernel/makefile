@@ -54,10 +54,7 @@ JSRCS = \
 	SequenceDirector.java \
 	SequencedModelDirector.java \
 	SequenceSchedule.java \
-	SequenceScheduler.java \
-	VisualSequenceDirector.java \
-	SequentialEditorPane.java \
-	ActorCellRenderer.java \
+	SequenceScheduler.java
 
 EXTRA_SRCS =	$(JSRCS)
 
