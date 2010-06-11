@@ -42,6 +42,8 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
@@ -167,9 +169,16 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (parameterName.equals("firingsPerIteration")) {
                 continue;
             }
-            // FIXME: handle multiline values
 
-            String parameterValue = parameter.getExpression(); 
+            // FIXME: handle multiline values
+            String parameterValue = "";
+            if (parameter instanceof Variable) {
+                // Evaluate things like $PTII
+                parameterValue = ((Variable)parameter).getToken().toString();
+                System.out.println("AutoAdapter: " + parameter + " " + parameterValue);
+            } else {
+                parameterValue = parameter.getExpression();
+            }
 
             // FIXME: do we want one try block per parameter?  It does
             // make for better error messages.
