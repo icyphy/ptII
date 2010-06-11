@@ -4,7 +4,7 @@
 <entity name="Visual" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 156, 994, 704}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={204, 90, 1004, 710}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[781, 594]">
     </property>
@@ -18,10 +18,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 40.0]">
         </property>
     </property>
-    <property name="VisualSequenceDirector" class="ptolemy.domains.sequence.kernel.VisualSequenceDirector">
+    <property name="VisualSequenceDirector" class="ptolemy.domains.sequence.gui.VisualSequenceDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -60,8 +60,6 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 165.0]">
-        </property>
-        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="3">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

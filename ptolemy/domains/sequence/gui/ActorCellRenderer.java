@@ -27,11 +27,14 @@
 package ptolemy.domains.sequence.gui;
 
 import java.awt.Component;
+import java.util.List;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 
 import ptolemy.actor.Actor;
+import ptolemy.domains.sequence.kernel.SequenceAttribute;
+import ptolemy.kernel.Entity;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorCellRenderer
@@ -64,7 +67,13 @@ public class ActorCellRenderer extends DefaultListCellRenderer {
             actor = (Actor) value;
         }
         if (actor != null) {
-            this.setText(actor.getDisplayName());
+            String name = actor.getDisplayName();
+            List<SequenceAttribute> seqAttributes = ((Entity) actor)
+                    .attributeList(SequenceAttribute.class);
+            if(seqAttributes.size() > 0) {
+                name += " (" + seqAttributes.get(0).getSequenceNumber() + ")";
+            }
+            this.setText(name);
         }
         return this;
     }

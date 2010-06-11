@@ -30,11 +30,15 @@ package ptolemy.domains.sequence.gui;
 
 import java.awt.Frame;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.sequence.kernel.PartialSequenceScheduler;
 import ptolemy.domains.sequence.kernel.SequenceAttribute;
 import ptolemy.domains.sequence.kernel.SequenceDirector;
 import ptolemy.gui.ComponentDialog;
@@ -81,6 +85,10 @@ public class VisualSequenceDirector extends SequenceDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        _scheduler = new PartialSequenceScheduler(this,
+                uniqueName("SequenceScheduler"));
+        setScheduler(_scheduler);
+
         // The following attribute (an instance of an inner class)
         // provides a customized dialog when you double click on the
         // icon.
@@ -88,13 +96,13 @@ public class VisualSequenceDirector extends SequenceDirector {
 
         scheduleText = new Parameter(this, "scheduleText");
         scheduleText
-                .setExpression("{{actor=\"(double-click to\n edit schedule)\"}}");
+                .setExpression("{{actor=\"(double-click to\n edit schedule)\",sequenceNumber=\"\"}}");
 
         // The following attribute provides a custom icon that
         // displays the current schedule information.
         icon = new TableIcon(this, "_icon");
         icon.variableName.setExpression("scheduleText");
-        icon.fields.setExpression("{\"actor\"}"); //, \"sequenceNumber\"}");
+        icon.fields.setExpression("{\"actor\", \"sequenceNumber\"}");
     }
 
     public Parameter scheduleText;
@@ -128,32 +136,45 @@ public class VisualSequenceDirector extends SequenceDirector {
          *   instance of TableauFrame.
          */
         public void createEditor(NamedObj object, Frame parent) {
+            Schedule schedule = null;
+            SequentialScheduleEditorPane pane = null;
             try {
                 // FIXME: The following is probably not right because we might be running already!!!!!
                 preinitialize();
-                Schedule schedule = _scheduler.getSchedule(_sequencedList);
 
-                String[] buttons = { "Cancel", "Done" };
-                SequentialScheduleEditorPane pane = new SequentialScheduleEditorPane(
-                        schedule);
-
-                ComponentDialog dialog = new ComponentDialog(parent, object
-                        .getFullName(), pane, buttons, null, true);
-
-                String response = dialog.buttonPressed();
-
-                // If the window is closed by clicking on the X or by typing ESC,
-                // the response is "".
-                if ("Cancel".equals(response) || "".equals(response)) {
-                    throw new CancelException();
-                } else if ("Done".equals(response)) {
-                    // update the displayed as well as the "real" schedule
-                    _updateSchedule(pane);
+                schedule = _scheduler.getSchedule(_sequencedList);
+                pane = new SequentialScheduleEditorPane(schedule);
+            } catch (Throwable e) {
+                try {
+                    Vector<Actor> orderedActors = ((PartialSequenceScheduler) _scheduler)
+                            .estimateSequencedSchedule(_sequencedList);
+                    pane = new SequentialScheduleEditorPane(orderedActors);
+                } catch (NotSchedulableException e2) {
+                    MessageHandler.error("Failed to order actors.", e2);
                 }
 
-            } catch (Throwable e) {
-                // FIXME: It would be better here to come up a viable schedule.
-                MessageHandler.error("Failed to get schedule.", e);
+            }
+            if (pane != null) {
+                try {
+                    String[] buttons = { "Cancel", "Done" };
+
+                    ComponentDialog dialog = new ComponentDialog(parent, object
+                            .getFullName(), pane, buttons, null, true);
+
+                    String response = dialog.buttonPressed();
+
+                    // If the window is closed by clicking on the X or by typing ESC,
+                    // the response is "".
+                    if ("Cancel".equals(response) || "".equals(response)) {
+                        throw new CancelException();
+                    } else if ("Done".equals(response)) {
+                        // update the displayed as well as the "real" schedule
+                        _updateSchedule(pane);
+                    }
+
+                } catch (Throwable e) {
+//                    MessageHandler.error("Failed to get schedule.", e);
+                }
             }
         }
 
@@ -168,11 +189,23 @@ public class VisualSequenceDirector extends SequenceDirector {
                     newScheduleText += ",";
                 }
                 Actor oActor = (Actor) oActors.next();
-                SequenceAttribute seqAttribute = (SequenceAttribute) ((Entity) oActor)
-                        .attributeList(SequenceAttribute.class).get(0);
-                seqAttribute.setExpression(Integer.toString(i));
+                List<SequenceAttribute> seqAttributes = ((Entity) oActor)
+                        .attributeList(SequenceAttribute.class);//
+                if(seqAttributes.size() > 0) {
+                    SequenceAttribute seqAttribute = seqAttributes.get(0);
+                    seqAttribute.setExpression(Integer.toString(i));
+                } else {
+                    try {
+                        SequenceAttribute seqAttribute = new SequenceAttribute( (NamedObj) oActor, uniqueName("sequenceNumber"));
+                        seqAttribute.setExpression(Integer.toString(i));
+                    } catch (IllegalActionException e) {
+                        e.printStackTrace();
+                    } catch (NameDuplicationException e) {
+                        e.printStackTrace();
+                    }
+                }
                 newScheduleText += "{actor=\"" + oActor.getDisplayName()
-                        + "\"}"; // , sequenceNumber=\"" + i + "\"}";
+                        + "\", sequenceNumber=\"" + i + "\"}";
                 i++;
             }
             newScheduleText += "}";
