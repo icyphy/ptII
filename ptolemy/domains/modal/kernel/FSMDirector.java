@@ -1512,23 +1512,23 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Search the current state (controller level) for any outgoing transition that could possibly
-     * output a token on the port. Return true if there is any such transition, i.e., a transition
-     * with a guard that cannot be evaluated to false (yet) and an output action writing to the
-     * specific port. Return false iff it safe to send a clear for this port (according to the
-     * current hierarchy level). Note that refinements could possibly have to be evaluated also.
+     * Search the current state (controller level) for any outgoing
+     * transition that could possibly output a token on the
+     * port. Return true if there is any such transition, i.e., a
+     * transition with a guard that cannot be evaluated to false (yet)
+     * and an output action writing to the specific port. Return false
+     * iff it safe to send a clear for this port (according to the
+     * current hierarchy level). Note that refinements could possibly
+     * have to be evaluated also.
      * 
-     * ATTENTION: This method should only be called if there are NO enabled transitions
+     * <p>ATTENTION: This method should only be called if there are NO
+     * enabled transitions.</p>
      * 
-     * FIXME: The implementation should not re-parse the output actions and get the information from
-     * the parsed AST.
+     * <p>FIXME: The implementation should not re-parse the output
+     * actions and get the information from the parsed AST.</p>
      * 
-     * @param port
-     *            the IOPort in question
-     * @param controller
-     *            the controller for considering the current state
-     * @param preemptive
-     *            consider preemptive transitions only
+     * @param port the IOPort in question
+     * @param controller the controller for considering the current state
      * @return true, if successful
      */
     protected boolean _isSafeToClear(IOPort port, FSMActor controller) {
@@ -1543,8 +1543,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         List<Transition> transitionList = controller._currentState.outgoingPort
                 .linkedRelationList();
         for (Transition transition : transitionList) {
-            // Determine whether the transition includes an assignment to this port.
-            // Use a HashMap for each port to save booleans for each transition
+            // Determine whether the transition includes an assignment
+            // to this port.  Use a HashMap for each port to save
+            // booleans for each transition
             Boolean matches;
             if (false && transitionMap.containsKey(transition)) {
                 matches = (Boolean) transitionMap.get(transition);
@@ -1558,21 +1559,24 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 // Next check to see whether the guard evaluates to false.
                 try {
                     if (!transition.isEnabled()) {
-                        // if the transition is not enabled and NO unknown-variable-error occurs
-                        // this means
-                        // the transition guard could (already) be evaluated to false
-                        // => from this perspective it is okay to clear outputs (so don't prevent
-                        // that)
-                        // guardsEvaluable = false;
+                        // if the transition is not enabled and NO
+                        // unknown-variable-error occurs this means
+                        // the transition guard could (already) be
+                        // evaluated to false => from this perspective
+                        // it is okay to clear outputs (so don't
+                        // prevent that) guardsEvaluable = false;
                         // break;
                     } else if (transition.isEnabled()) {
-                        // in this case the transition is for sure evaluable BUT not "possibly".
-                        // because the trigger is true, we must not set port to absent
+                        // in this case the transition is for sure
+                        // evaluable BUT not "possibly".  because the
+                        // trigger is true, we must not set port to
+                        // absent
                         isSafeToClear = false;
                         break;
                     }
                 } catch (IllegalActionException ex) {
-                    // Guard cannot be evaluated. Cannot set this port to absent (yet).
+                    // Guard cannot be evaluated. Cannot set this port
+                    // to absent (yet).
                     isSafeToClear = false;
                     break;
                 }
