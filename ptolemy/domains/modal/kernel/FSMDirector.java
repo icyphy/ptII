@@ -373,13 +373,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         // inputs, then return now. It is not correct to execute the refinements until
         // we know that all preemptive transitions are not enabled.
         if (controller.foundUnknown()) {
-            // inputs, then try to assert some absent outputs.
-            //_assertPreemptiveOutputsAbsent(controller);
-            // ATTENTION: It seems we canNOT do this because we don't know anything
-            // about the relation of input and output ports. 
+            // ATTENTION: It seems we canNOT assume anything about absent outputs yet.
+            // This is because we don't know anything about the relation of input and output ports.
             return;
         }
-        
 
         Actor[] stateRefinements = currentState.getRefinement();
 
@@ -433,7 +430,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         } else {
             // If no transition was chosen, then it still might be
             // possible to assert that certain outputs are absent.
-            _assertAbsentOutputs(controller, false);
+            _assertAbsentOutputs(controller, true);
         }
     }
 
@@ -443,57 +440,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * 
      * @param controller
      *            the controller
-     * @param !preemptive the refinement should be checked for weak aborts but not for strong ones
+     * @param checkRefinement
+     *            the check refinement
      * @return true, if successful
      * @throws IllegalActionException
      *             the illegal action exception
      */
-    private boolean _assertPreemptiveOutputsAbsent(FSMActor controller)
-            throws IllegalActionException {
-        List<IOPort> outputs = controller.outputPortList();
-
-        boolean foundAbsentOutputs = false;
-
-        for (IOPort port : outputs) {
-
-            for (int channel = 0; channel < port.getWidth(); channel++) {
-                if (!port.isKnown(channel)) {
-
-                    List<Transition> transitionList = controller._currentState.outgoingPort
-                            .linkedRelationList();
-
-                    boolean matches = false;
-                    for (Transition transition : transitionList) {
-                        String guardExpression = transition.guardExpression.getExpression();
-                        String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "(_isPresent|^|\\W)";
-                        matches = (guardExpression.trim().matches(regexp));
-                    }
-                    if (matches) {
-                        // This port is part of the guardExpression of a preemptive transition.
-                        // We know that by constructiveness this cannot be triggered by this
-                        // actor (concurrent region) itself so we should assert it being absent.
-                        foundAbsentOutputs = true;
-                        port.send(channel, null);
-                        _debug("Asserting absence and clearing port " + port.getName());
-                    }
-                }
-            }
-        }
-        return foundAbsentOutputs;
-    }
-
-    /**
-     * It might be possible to assert that certain outputs are absent. This methods helps finding
-     * these outputs and clears them.
-     * 
-     * @param controller
-     *            the controller
-     * @param !preemptive the refinement should be checked for weak aborts but not for strong ones
-     * @return true, if successful
-     * @throws IllegalActionException
-     *             the illegal action exception
-     */
-    private boolean _assertAbsentOutputs(FSMActor controller, boolean preemptive)
+    private boolean _assertAbsentOutputs(FSMActor controller, boolean checkRefinement)
             throws IllegalActionException {
         // Next, for each output port, we need to check whether
         // it is possible for an output to be produced on that port.
@@ -505,9 +458,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         boolean foundAbsentOutputs = false;
 
         for (IOPort port : outputs) {
-            // grab the HashMap for all transitions where this port is referenced
-            // in the output actions
-            HashMap transitionMap = _getTransitionMap(port);
 
             for (int channel = 0; channel < port.getWidth(); channel++) {
                 if (!port.isKnown(channel)) {
@@ -517,7 +467,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
                     // Only check refinements iff non-preemptive transition (weak abort).
                     // For strong aborts this method should be called w/ checkRefinement==false!
-                    if (!preemptive && controller._currentState.getRefinement() != null) {
+                    if (checkRefinement && controller._currentState.getRefinement() != null) {
                         // this states has a refinement
                         // in addition to the check below it is required that the refinement
                         // has also cleared a port
