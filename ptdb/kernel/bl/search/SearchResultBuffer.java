@@ -5,6 +5,7 @@ package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
 import java.util.Observable;
+
 import ptdb.common.dto.XMLDBModel;
 
 ////////////////////////////////////////////////////////////////////////////

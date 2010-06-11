@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import diva.gui.GUIUtilities;
 import ptdb.common.dto.PTDBSearchAttribute;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.kernel.bl.search.SearchResultBuffer;
@@ -33,6 +32,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.gt.TransformationEditor;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////
 //// DbSearchFrame

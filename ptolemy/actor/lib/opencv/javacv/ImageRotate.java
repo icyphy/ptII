@@ -27,11 +27,19 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-import static name.audet.samuel.javacv.jna.cv.v10.*;
-import static name.audet.samuel.javacv.jna.highgui.v10.*;
+import static name.audet.samuel.javacv.jna.cv.CV_INTER_LINEAR;
+import static name.audet.samuel.javacv.jna.cv.CV_WARP_FILL_OUTLIERS;
+import static name.audet.samuel.javacv.jna.cv.cv2DRotationMatrix;
+import static name.audet.samuel.javacv.jna.cv.cvWarpAffine;
+import static name.audet.samuel.javacv.jna.cxcore.CV_32FC1;
+import static name.audet.samuel.javacv.jna.cxcore.cvCloneImage;
+import static name.audet.samuel.javacv.jna.cxcore.cvCreateMat;
+import static name.audet.samuel.javacv.jna.cxcore.cvPoint2D32f;
+import static name.audet.samuel.javacv.jna.cxcore.cvScalarAll;
+import name.audet.samuel.javacv.jna.cxcore.CvMat;
+import name.audet.samuel.javacv.jna.cxcore.CvPoint2D32f;
+import name.audet.samuel.javacv.jna.cxcore.CvScalar;
 import name.audet.samuel.javacv.jna.cxcore.IplImage;
-
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;

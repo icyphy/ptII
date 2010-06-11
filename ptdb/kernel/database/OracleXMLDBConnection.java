@@ -7,6 +7,25 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import ptdb.common.dto.CreateModelTask;
+import ptdb.common.dto.DBConnectionParameters;
+import ptdb.common.dto.GetAttributesTask;
+import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.SaveModelTask;
+import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.DBConnectionException;
+import ptdb.common.exception.DBExecutionException;
+
 import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.Environment;
 import com.sleepycat.db.EnvironmentConfig;
@@ -19,21 +38,6 @@ import com.sleepycat.dbxml.XmlQueryExpression;
 import com.sleepycat.dbxml.XmlResults;
 import com.sleepycat.dbxml.XmlTransaction;
 import com.sleepycat.dbxml.XmlValue;
-
-import ptdb.common.dto.CreateModelTask;
-import ptdb.common.dto.DBConnectionParameters;
-import ptdb.common.dto.GetAttributesTask;
-import ptdb.common.dto.GetModelsTask;
-import ptdb.common.dto.SaveModelTask;
-import ptdb.common.dto.XMLDBModel;
-import ptdb.common.exception.DBConnectionException;
-import ptdb.common.exception.DBExecutionException;
-
-
-import org.w3c.dom.*;
-import org.xml.sax.*;
-
-import javax.xml.parsers.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// OracleXMLDBConnection

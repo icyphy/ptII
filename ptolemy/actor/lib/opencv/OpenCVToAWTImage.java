@@ -27,8 +27,6 @@
 
 package ptolemy.actor.lib.opencv;
 
-import hypermedia.video.OpenCV;
-
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.image.MemoryImageSource;

@@ -16,11 +16,8 @@ import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 
-import diva.gui.GUIUtilities;
-
 import ptdb.kernel.bl.load.LoadManagerInterface;
 import ptolemy.actor.gt.TransformationRule;
-
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -28,11 +25,11 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.CompositeEntity;
-
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorGraphDBFrame

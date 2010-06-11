@@ -28,19 +28,21 @@
  */
 package ptolemy.actor.lib.opencv.javacv;
 
-import hypermedia.video.OpenCV;
-
-import java.awt.Image;
-
+import static name.audet.samuel.javacv.jna.cv.CV_INTER_LINEAR;
+import static name.audet.samuel.javacv.jna.cv.CV_WARP_FILL_OUTLIERS;
+import static name.audet.samuel.javacv.jna.cv.cv2DRotationMatrix;
+import static name.audet.samuel.javacv.jna.cv.cvWarpAffine;
+import static name.audet.samuel.javacv.jna.cxcore.CV_32FC1;
+import static name.audet.samuel.javacv.jna.cxcore.cvCloneImage;
+import static name.audet.samuel.javacv.jna.cxcore.cvCreateMat;
+import static name.audet.samuel.javacv.jna.cxcore.cvScalarAll;
+import name.audet.samuel.javacv.jna.cxcore.CvMat;
 import name.audet.samuel.javacv.jna.cxcore.CvPoint2D32f;
 import name.audet.samuel.javacv.jna.cxcore.CvScalar;
 import name.audet.samuel.javacv.jna.cxcore.IplImage;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.AWTImageToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.ImageToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
@@ -48,12 +50,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import static name.audet.samuel.javacv.jna.cxcore.cvScalarAll;
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
-import static name.audet.samuel.javacv.jna.highgui.v10.*;
-import static name.audet.samuel.javacv.jna.cv.CV_INTER_LINEAR;
-import static name.audet.samuel.javacv.jna.cv.CV_WARP_FILL_OUTLIERS;
-import static name.audet.samuel.javacv.jna.cv.v10.*;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageRotate

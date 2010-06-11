@@ -28,6 +28,7 @@
 package ptolemy.domains.sdf.optimize;
 
 import java.util.Iterator;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.sched.Firing;

@@ -30,10 +30,10 @@ package ptolemy.data;
 
 import org.w3c.dom.Document;
 
-import ptolemy.data.type.TypeLattice;
 import ptolemy.data.expr.XMLParser;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 

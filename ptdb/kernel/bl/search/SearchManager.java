@@ -4,6 +4,7 @@
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
+
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;

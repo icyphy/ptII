@@ -11,7 +11,6 @@ import ptdb.common.dto.TaskQueue;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
-import ptdb.kernel.database.DBConnection;
 
 //////////////////////////////////////////////////////////////////////////
 ////AsynchronousDBConnection

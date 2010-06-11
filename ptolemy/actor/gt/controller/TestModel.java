@@ -27,61 +27,25 @@
 */
 package ptolemy.actor.gt.controller;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.net.URI;
-
-import javax.swing.JFrame;
+import java.util.ArrayList;
+import java.util.List;
 
 import ptolemy.actor.gt.GTTools;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.XMLToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.ptera.lib.EventUtils;
-import ptolemy.domains.ptera.lib.TableauParameter;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.basic.ExtendedGraphFrame;
-import ptolemy.vergil.gt.GTFrameTools;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////

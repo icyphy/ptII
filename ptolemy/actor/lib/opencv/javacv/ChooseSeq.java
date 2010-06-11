@@ -27,8 +27,7 @@
 
 package ptolemy.actor.lib.opencv.javacv;
 
-import com.sun.jna.Pointer;
-
+import name.audet.samuel.javacv.jna.cxcore.CvSeq;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntToken;
@@ -38,9 +37,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
-
-import static java.lang.Math.round;
-import static name.audet.samuel.javacv.jna.cxcore.v10.*;
 
 ///////////////////////////////////////////////////////////////////
 //// Draw circles for the result sequence data 

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.DBConnectionException;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.Entity;
