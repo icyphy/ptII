@@ -595,68 +595,118 @@ public class TemplateParser {
         }
 
         result.append(code.substring(0, currentPos));
+        int closeParenIndex = -1;
+        int nextPos = -1;
 
+        // Loop through, looking for (
         while (currentPos < code.length()) {
-            int openParenIndex = code.indexOf("(", currentPos + 1);
-            if (openParenIndex == -1) {
-                CGException.throwException(_component,
-                        "Failed to find open paren in \"" + code + "\".");
-            }
-            int closeParenIndex = _findClosedParen(code, openParenIndex);
-
-            if (closeParenIndex < 0) {
-                // No matching close parenthesis is found.
-                result.append(code.substring(currentPos));
-                return result.toString();
-            }
-
-            int nextPos = _getMacroStartIndex(code, closeParenIndex + 1);
-
-            if (nextPos < 0) {
-                //currentPos is the last "$"
-                nextPos = code.length();
-            }
-
-            String subcode = code.substring(currentPos, nextPos);
-
-            if ((currentPos > 0) && (code.charAt(currentPos - 1) == '\\')) {
-                // found "\$", do not make replacement.
-                // FIXME: This is wrong. subcode may contain other macros
-                // to be processed.
-                // Should be result.append(processCode(subcode.substring(1)));
-                result.append(subcode);
+            if (code.charAt(currentPos) == '$'
+                    && currentPos < code.length() - 1 && code.charAt(currentPos + 1) == '$') {
+                // Skip $$, which appears in ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
+                nextPos = _getMacroStartIndex(code, currentPos + 2);                
+                if (nextPos < 0) {
+                    nextPos = code.length();
+                }
+                result.append(code.substring(currentPos, nextPos));
                 currentPos = nextPos;
                 continue;
             }
 
-            String macro = code.substring(currentPos + 1, openParenIndex);
-            macro = macro.trim();
-
-            //if (!_codeGenerator.getMacros().contains(macro)) {
-            //    result.append(subcode.substring(0, 1));
-            //    result.append(processCode(subcode.substring(1)));
-            //} else {
-            String name = code.substring(openParenIndex + 1, closeParenIndex);
-
-            name = processCode(name.trim());
-
-            //List arguments = parseArgumentList(name);
-
-            try {
-                result.append(_replaceMacro(macro, name));
-            } catch (Throwable throwable) {
-                CGException.throwException(this, throwable,
-                        "Failed to replace the parameter \"" + name
-                                + "\" in the macro \"" + macro
-                                + "\".\nInitial code was:\n" + code);
+            int openParenIndex = code.indexOf("(", currentPos + 1);
+            // Check for ${foo}, which is used in Parameters that are in string mode.
+            int openCurlyBracketIndex = code.indexOf("{", currentPos + 1);
+            if (openParenIndex == -1 && openCurlyBracketIndex == -1) {
+                CGException.throwException(_component,
+                        "Failed to find open paren or open curly bracket in \"" + code + "\".");
             }
+            if (openCurlyBracketIndex != -1 
+                    && ((openParenIndex != -1 && openCurlyBracketIndex < openParenIndex)
+                            || (openParenIndex == -1))) {
+                // Houston, we might have ${foo}
+                int closeCurlyBracketIndex = code.indexOf("}", currentPos + 1);
+                if (closeCurlyBracketIndex == -1) {
+                    CGException.throwException(_component,
+                            "Failed to find '}' in \"" + code + "\".");
+                }
+                String attributeName = code.substring(openCurlyBracketIndex + 1,
+                        closeCurlyBracketIndex);
+                Attribute attribute = ModelScope.getScopedVariable(null,
+                        ((NamedObj)_component).getContainer(),
+                        attributeName);
+                if (attribute == null) {
+                    CGException.throwException(_component,
+                            "Failed to find '" + attributeName + "' variable in scope, "
+                            + "code was \"" + code + "\".");
+                }
+                Variable variable = (Variable) attribute;
+                result.append(variable.getExpression());
+                currentPos = closeCurlyBracketIndex;
+                nextPos = _getMacroStartIndex(code, closeCurlyBracketIndex + 1);
 
-            String string = code.substring(closeParenIndex + 1, nextPos);
-            result.append(string);
-            //}
-            currentPos = nextPos;
+                if (nextPos < 0) {
+                    //currentPos is the last "$"
+                    nextPos = code.length();
+                }
+                currentPos = nextPos;
+                result.append(code.substring(closeCurlyBracketIndex + 1, nextPos));
+            }
+            if (openParenIndex != -1 
+                    && ((openCurlyBracketIndex != -1 && openParenIndex < openCurlyBracketIndex)
+                            || (openCurlyBracketIndex == -1))) {
+                closeParenIndex = _findClosedParen(code, openParenIndex);
+
+                if (closeParenIndex < 0) {
+                    // No matching close parenthesis is found.
+                    result.append(code.substring(currentPos));
+                    //return result.toString();
+                }
+
+                nextPos = _getMacroStartIndex(code, closeParenIndex + 1);
+
+                if (nextPos < 0) {
+                    //currentPos is the last "$"
+                    nextPos = code.length();
+                }
+
+                String subcode = code.substring(currentPos, nextPos);
+
+                if ((currentPos > 0) && code.charAt(currentPos - 1) == '\\') {
+                    // found "\$", do not make replacement.
+                    // FIXME: This is wrong. subcode may contain other macros
+                    // to be processed.
+                    // Should be result.append(processCode(subcode.substring(1)));
+                    result.append(subcode);
+                    currentPos = nextPos;
+                    continue;
+                }
+
+                String macro = code.substring(currentPos + 1, openParenIndex);
+                macro = macro.trim();
+
+                //if (!_codeGenerator.getMacros().contains(macro)) {
+                //    result.append(subcode.substring(0, 1));
+                //    result.append(processCode(subcode.substring(1)));
+                //} else {
+                String name = code.substring(openParenIndex + 1, closeParenIndex);
+
+                name = processCode(name.trim());
+
+                //List arguments = parseArgumentList(name);
+
+                try {
+                    result.append(_replaceMacro(macro, name));
+                } catch (Throwable throwable) {
+                    CGException.throwException(this, throwable,
+                            "Failed to replace the parameter \"" + name
+                            + "\" in the macro \"" + macro
+                            + "\".\nInitial code was:\n" + code);
+                }
+
+                result.append(code.substring(closeParenIndex + 1, nextPos));
+                //}
+                currentPos = nextPos;
+            }
         }
-
         return result.toString();
     }
 
@@ -1167,12 +1217,12 @@ public class TemplateParser {
     ////                         private methods                   ////
 
     /**
-     * Return the position of the first occurence of the "&" sign in
+     * Return the position of the first occurence of the "$" sign in
      * the given code string, starting from the given from position.
-     * If the "&" sign found is escaped by "\\", it will be ignored.
+     * If the "$" sign found is escaped by "\\", it will be ignored.
      * @param code The given code string.
      * @param from The given position to start searching from.
-     * @return The next position of the "&" sign.
+     * @return The next position of the "$" sign.
      */
     static private int _getMacroStartIndex(String code, int from) {
         int position = from - 1;

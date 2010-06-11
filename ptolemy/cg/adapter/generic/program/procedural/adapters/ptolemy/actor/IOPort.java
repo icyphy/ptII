@@ -31,9 +31,11 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.cg.kernel.generic.PortCodeGenerator;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 ////IOPort
@@ -104,7 +106,16 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         }
         Type type = ((TypedIOPort) getComponent()).getType();
         if (((TypedIOPort) getComponent()) instanceof ParameterPort) {
-            return ((ParameterPort) getComponent()).getParameter().getValueAsString();
+            Parameter parameter = ((ParameterPort)getComponent()).getParameter();
+            if (parameter.isStringMode()) {
+                // FIXME: we need to escape other characters here.
+                // Escape \d for ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
+                return "\""  
+                    + StringUtilities.substitute(parameter.getExpression(), "\\d", "\\\\d")
+                    + "\"";
+            } else {
+                return parameter.getValueAsString();
+            }
         }
         
         String typeString = getCodeGenerator().codeGenType(type);

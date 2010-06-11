@@ -42,15 +42,13 @@ if {[info procs testJavaCG] == "" } then {
 }
 
 # ~/ptII/ptolemy/actor/lib/string/test/auto/StringMatches.xml   Runs, but gets wrong results
+     Won't fix right now, the problem is backslash hell.
 # ~/ptII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml   FSM, won't fix right now
 # ~/ptII/ptolemy/actor/lib/string/test/auto/StringParameter.xml Fails to generate:
-#  Failed to find open paren in ""${i}...""
+#    Failed to find open paren in ""${i}...""
+#    Won't fix right now, we don't support $i, which is a complex number. 
 # ~/ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml  Fails to generate:
-#  Cannot find code block: "null.attributeChanged()" in "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/String.j", the initial path was "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/String.j". Try setting debugging to true on the code generator or running with ptcg with "-verbosity 1"
-# ~/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml Fails to generate: 
-#   ParseTreeCodeGenerator.generateFireCode() not implemented in ptolemy.cg.kernel.generic.program.TemplateParser.
-# ~/ptII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml Fails to generate:
-#   ParseTreeCodeGenerator.generateFireCode() not implemented in ptolemy.cg.kernel.generic.program.TemplateParser.
+#    Won't fix right now, the problem is that one of the expressions is "a$$0b", which causes trouble.
 set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/LookupTable.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
@@ -63,6 +61,7 @@ set models [list \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSimpleReplace.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml \
+		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml \
 	       ]
 
 foreach model $models {
