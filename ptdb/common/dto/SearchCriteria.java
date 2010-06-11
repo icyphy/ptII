@@ -44,6 +44,15 @@ public class SearchCriteria {
     }
 
     /**
+     * Get the graph search criteria from the search criteria. 
+     * 
+     * @return The graph search criteria input by the user. 
+     */
+    public DBGraphSearchCriteria getDBGraphSearchCriteria() {
+        return _dbGraphSearchCriteria;
+    }
+
+    /**
      * Get the search command criteria from the search criteria. 
      * 
      * @return The XQuery search command input by the user. 
@@ -63,6 +72,17 @@ public class SearchCriteria {
     }
 
     /**
+     * Set the graph search criteria for the search criteria. 
+     * 
+     * @param dbGraphSearchCriteria The graph search criteria input by the user 
+     * to set in the search criteria. 
+     */
+    public void setDBGraphSearchCriteria(
+            DBGraphSearchCriteria dbGraphSearchCriteria) {
+        _dbGraphSearchCriteria = dbGraphSearchCriteria;
+    }
+
+    /**
      * Set the XQuery search command for the search criteria. 
      * 
      * @param searchCommand The XQuery search command to set in the search
@@ -79,6 +99,8 @@ public class SearchCriteria {
      * Contains all the specified searching attributes.  
      */
     private ArrayList<Attribute> _attributes;
+
+    private DBGraphSearchCriteria _dbGraphSearchCriteria;
 
     /**
      * Represents the XQuery search command input by the user. 
