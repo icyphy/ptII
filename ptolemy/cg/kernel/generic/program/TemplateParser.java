@@ -572,7 +572,10 @@ public class TemplateParser {
              */
             public String generateFireCode() {
                 throw new InternalErrorException("ParseTreeCodeGenerator.generateFireCode() "
-                        + "not implemented in ptolemy.cg.kernel.generic.program.TemplateParser.");
+                        + "not implemented in ptolemy.cg.kernel.generic.program.TemplateParser "
+                        + "for " + _component + ". If this occurs, then the problem is that "
+                        + "this a TemplateParser is being instantiated instead of a JavaTemplateParser "
+                        + "or some other subclass of TemplateParser.");
             }
         };
     }

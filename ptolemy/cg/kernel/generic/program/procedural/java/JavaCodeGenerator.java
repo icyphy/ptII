@@ -834,7 +834,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             variable.getName(), variable.getContainer());
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(container, throwable, "Failed to get the value of \""
-                            + variable.getName() + "\"");
+                            + variable.getName() + "\", the container Adapter was: "
+                            + containerAdapter + " which is a "
+                            + containerAdapter.getClass().getName());
                 }
                 code.append(INDENT1
                         + generateVariableName(variable)

@@ -85,7 +85,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     public AutoAdapter(ProgramCodeGenerator codeGenerator, TypedAtomicActor component) {
         super(component);
-        TemplateParser templateParser = new TemplateParser();
+        TemplateParser templateParser = new JavaTemplateParser();
         setTemplateParser(templateParser);
         templateParser.setCodeGenerator(codeGenerator);
         setCodeGenerator(codeGenerator);
