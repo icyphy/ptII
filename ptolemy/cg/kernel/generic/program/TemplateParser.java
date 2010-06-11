@@ -658,7 +658,9 @@ public class TemplateParser {
                 if (closeParenIndex < 0) {
                     // No matching close parenthesis is found.
                     result.append(code.substring(currentPos));
-                    //return result.toString();
+                    // Running $PTII/bin/vergil $PTII/ptolemy/cg/lib/test/auto/ModularCodeGen3.xml
+                    // needs the next line
+                    return result.toString();
                 }
 
                 nextPos = _getMacroStartIndex(code, closeParenIndex + 1);
@@ -687,8 +689,14 @@ public class TemplateParser {
                 //    result.append(subcode.substring(0, 1));
                 //    result.append(processCode(subcode.substring(1)));
                 //} else {
-                String name = code.substring(openParenIndex + 1, closeParenIndex);
-
+                String name = "";
+                try {
+                    name = code.substring(openParenIndex + 1, closeParenIndex);
+                } catch (StringIndexOutOfBoundsException ex) {
+                    throw new IllegalActionException((NamedObj)_component,
+                            "Index " + (openParenIndex + 1) + " or Index "
+                            + closeParenIndex + " is out of bounds in \n" + code);
+                }
                 name = processCode(name.trim());
 
                 //List arguments = parseArgumentList(name);
