@@ -56,7 +56,9 @@ JSRCS = \
 	SearchCriteria.java \
 	Task.java \
 	TaskQueue.java \
-	XMLDBModel.java
+	XMLDBModel.java \
+	AttributeSearchTask.java \
+	FetchHierarchyTask.java
 
 EXTRA_SRCS =	$(JSRCS)
 
