@@ -1143,7 +1143,7 @@ bldmastrcoverage:
 		remote1distnonjsall \
 		remote1ChangeLog \
 		remote1doc \
-		remote1odjcheck \
+		remote1ojdcheck \
 		remote1doccheck \
 		remote1findbugs \
 		remote1jnlp \
