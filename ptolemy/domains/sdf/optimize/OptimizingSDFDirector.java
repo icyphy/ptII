@@ -129,50 +129,6 @@ public class OptimizingSDFDirector extends SDFDirector {
         _init();
         
     }
-    /** Initialize the object.   In this case, we give the OptimizingSDFDirector a
-     *  default scheduler of the class OptimizingSDFScheduler, an iterations
-     *  parameter and a vectorizationFactor parameter.
-     */
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
-
-        // set the schedule to an instance of OptimizingSDFScheduler
-        OptimizingSDFScheduler scheduler = new OptimizingSDFScheduler(this, uniqueName("OptimizingSDFScheduler"), _optimizationCriterionValue);
-
-        // set the default value of the parameter 
-        OptimizationCriterion.setExpression("\"Buffers\"");
-
-        // if necessary, copy the string parameter to the enumerated value
-        _setOptimizationCriterionValue();
-
-        // set the constrainBufferSizes parameter
-        scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
-        setScheduler(scheduler);
-
-        // Subclasses may set this to null and handle this themselves.
-        _periodicDirectorHelper = new PeriodicDirectorHelper(this);
-    }
-
-    /**
-     * Set the _optimizationCriterionValue to the proper value corresponding to the
-     * OptimizationCriterion string parameter
-     * @exception IllegalActionException if the criterion used is unknown 
-     */
-    private void _setOptimizationCriterionValue() throws IllegalActionException {
-        OptimizingSDFScheduler os = (OptimizingSDFScheduler) getScheduler();
-        if(OptimizationCriterion.getValueAsString().equals("\"Buffers\"")){
-            _optimizationCriterionValue = OptimizationCriteria.BUFFERS;
-        } else if (OptimizationCriterion.getValueAsString().equals("\"Execution Time\"")){
-            _optimizationCriterionValue = OptimizationCriteria.EXECUTIONTIME;
-        } else {
-            throw new IllegalActionException("Unknown optimization criterion");
-        }
-        if(os != null){
-            os.optimizationCriterion = _optimizationCriterionValue;
-        }
-        // invalidate the schedule, because the criterion has changed
-        invalidateSchedule();
-    }
     
     /** Calculate the current schedule, if necessary, and iterate the
      *  contained actors in the order given by the schedule.
@@ -256,7 +212,56 @@ public class OptimizingSDFDirector extends SDFDirector {
         }
         super.attributeChanged(attribute);
     }    
+    
+    
+///////////////////////////////////////////////////////////////////////////
+////                   private fields                                  ////    
+    
+    /** Initialize the object.   In this case, we give the OptimizingSDFDirector a
+     *  default scheduler of the class OptimizingSDFScheduler, an iterations
+     *  parameter and a vectorizationFactor parameter.
+     */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
 
+        // set the schedule to an instance of OptimizingSDFScheduler
+        OptimizingSDFScheduler scheduler = new OptimizingSDFScheduler(this, uniqueName("OptimizingSDFScheduler"), _optimizationCriterionValue);
+
+        // set the default value of the parameter 
+        OptimizationCriterion.setExpression("\"Buffers\"");
+
+        // if necessary, copy the string parameter to the enumerated value
+        _setOptimizationCriterionValue();
+
+        // set the constrainBufferSizes parameter
+        scheduler.constrainBufferSizes.setExpression("constrainBufferSizes");
+        setScheduler(scheduler);
+
+        // Subclasses may set this to null and handle this themselves.
+        _periodicDirectorHelper = new PeriodicDirectorHelper(this);
+    }
+
+    /**
+     * Set the _optimizationCriterionValue to the proper value corresponding to the
+     * OptimizationCriterion string parameter
+     * @exception IllegalActionException if the criterion used is unknown 
+     */
+    private void _setOptimizationCriterionValue() throws IllegalActionException {
+        OptimizingSDFScheduler os = (OptimizingSDFScheduler) getScheduler();
+        if(OptimizationCriterion.getValueAsString().equals("\"Buffers\"")){
+            _optimizationCriterionValue = OptimizationCriteria.BUFFERS;
+        } else if (OptimizationCriterion.getValueAsString().equals("\"Execution Time\"")){
+            _optimizationCriterionValue = OptimizationCriteria.EXECUTIONTIME;
+        } else {
+            throw new IllegalActionException("Unknown optimization criterion");
+        }
+        if(os != null){
+            os.optimizationCriterion = _optimizationCriterionValue;
+        }
+        // invalidate the schedule, because the criterion has changed
+        invalidateSchedule();
+    }
+    
     private OptimizationCriteria _optimizationCriterionValue = OptimizationCriteria.BUFFERS;
 
 }
