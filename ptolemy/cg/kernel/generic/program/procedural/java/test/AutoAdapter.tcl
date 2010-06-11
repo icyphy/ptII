@@ -41,8 +41,19 @@ if {[info procs testJavaCG] == "" } then {
     source [file join $PTII util testsuite testJavaCG.tcl]
 }
 
+# $PTII/ptolemy/actor/lib/comm/test/auto/HammingCodec.xml   Runs, but "Attempt to get data from an empty mailbox."
+# $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml  Runs, but "Attempt to get data from an empty mailbox."
+#    The problem here is that we create an Opaque composite for an auto generated actor
+#    that has an output connected to a relation that is connected to two inputs.  The
+#    code does a getInside() on the output port of the Opaque twice, hence the empty mailbox.    
+
+# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Fails to compile:
+# HadamardCode.java:2180: ';' expected
+#            HadamardCode_DotProduct_input2=32)Value();
+
+
 # ~/ptII/ptolemy/actor/lib/string/test/auto/StringMatches.xml   Runs, but gets wrong results
-     Won't fix right now, the problem is backslash hell.
+#     Won't fix right now, the problem is backslash hell.
 # ~/ptII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml   FSM, won't fix right now
 # ~/ptII/ptolemy/actor/lib/string/test/auto/StringParameter.xml Fails to generate:
 #    Failed to find open paren in ""${i}...""
@@ -52,6 +63,7 @@ if {[info procs testJavaCG] == "" } then {
 set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/LookupTable.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
+		$PTII/ptolemy/actor/lib/comm/test/auto/Scrambler1.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringCompare.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml \

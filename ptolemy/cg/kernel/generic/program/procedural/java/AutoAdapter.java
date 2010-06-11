@@ -44,6 +44,7 @@ import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
@@ -126,10 +127,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     // Multiports.
                     TypedIOPort actorPort = (TypedIOPort)(((Entity)getComponent()).getPort(name));
 
-                    // Set the type of the port of the actor
                     code.append("    ((" + getComponent().getClass().getName()
-                            + ")$actorSymbol(actor))." + name + ".setTypeEquals(BaseType."
-                            + actorPort.getType().toString().toUpperCase() +");\n");
+                            + ")$actorSymbol(actor))." + name + ".setTypeEquals("
+                            + _typeToBaseType(actorPort.getType()) + ");\n");
 
                     int sources = actorPort.numberOfSources();
                     for (int i = 0; i < sources; i++) {
@@ -145,6 +145,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         }
 
         code.append("    new ptolemy.actor.Director($actorSymbol(container), \"director\");\n"
+                + "    $actorSymbol(container).setManager(new ptolemy.actor.Manager(\"manager\"));\n"
                 + "    $actorSymbol(container).preinitialize();\n"
                 + "} catch (Exception ex) {\n"
                 + "    throw new RuntimeException(\"Failed to create $actorSymbol(actor))\", ex);\n"
@@ -175,7 +176,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (parameter instanceof Variable) {
                 // Evaluate things like $PTII
                 parameterValue = ((Variable)parameter).getToken().toString();
-                System.out.println("AutoAdapter: " + parameter + " " + parameterValue);
             } else {
                 parameterValue = parameter.getExpression();
             }
@@ -297,6 +297,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
+        files.add("ptolemy.data.type.ArrayType;");
+        // Need IntToken etc.
+        files.add("ptolemy.data.*;");
         files.add("ptolemy.data.type.BaseType;");
         files.add("ptolemy.actor.TypedAtomicActor;");
         files.add("ptolemy.actor.TypedCompositeActor;");
@@ -378,18 +381,26 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
             // Get data from the actor.
             if (!outputPort.isMultiport()) {
+                code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() not MultiPort name " + name + " type: " + type));
                 code.append(_generateGetInside(name, name, type, 0));
+                code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() not MultiPort end"));
             } else {
+                code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort"));
                 // Multiports.
                 int sources = outputPort.numberOfSources();
                 for (int i = 0; i < sources; i++) {
+                    code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort Source " + i + " name: " + name + " type: " + type));
                     code.append(_generateGetInside(name, name + "Source" + i, type, i));
                 }
 
                 int sinks = outputPort.numberOfSinks();
                 for (int i = 0; i < sinks; i++) {
+                    code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort Sink " + i + " type: " + type + " name: " + name));
+
+                    System.out.println("AutoAdapter: xxxx" +  _generateGetInside(name, name + "Sink" + i, type, i));
                     code.append(_generateGetInside(name, name + "Sink" + i, type, i));
                 }
+                code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort Done"));
             }
 
         }
@@ -444,8 +455,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + port.isInput()
                 + ", " + port.isOutput() + ");\n"
                 // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
-                + "    $actorSymbol(" + codegenPortName + ").setTypeEquals(BaseType."
-                + ((TypedIOPort)port).getType().toString().toUpperCase() +");\n");
+                + "    $actorSymbol(" + codegenPortName + ").setTypeEquals("
+                + _typeToBaseType(((TypedIOPort)port).getType())
+                +");\n");
 
         try {
             // Make sure that there is a field with that name
@@ -462,10 +474,13 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             
             code.append("    $actorSymbol(container).connect($actorSymbol(" + codegenPortName +"), "
                     + portOrParameter
-                    + ");\n"
-                    // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
-                    + "    " + portOrParameter + ".setTypeEquals(BaseType."
-                    + ((TypedIOPort)port).getType().toString().toUpperCase() +");\n");
+                    + ");\n");
+            if (port.isOutput()) {
+                // Need to set the type for ptII/ptolemy/actor/lib/string/test/auto/StringCompare.xml
+                code.append("    " + portOrParameter + ".setTypeEquals("
+                    + _typeToBaseType(((TypedIOPort)port).getType())
+                    +");\n");
+            }
 
         } catch (NoSuchFieldException ex) {
             // Ignore.
@@ -489,16 +504,52 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateGetInside(String actorPortName,
             String codegenPortName, Type type, int channel) {
-        return
-            "$put(" + actorPortName
-            // Refer to the token by the full class name and obviate the
-            // need to manage imports.
-            + ", ((" + type.getTokenClass().getName() + ")($actorSymbol("
-            + codegenPortName
-            + ").getInside(0"
-            // For non-multiports "". For multiports, ", 0", ", 1" etc.
-            + (channel == 0 ? "" : ", " + channel)
-            + ")))." + type.toString().toLowerCase() + "Value());\n";
+        if (type instanceof ArrayType) {
+            
+            ArrayType array = (ArrayType)type;
+
+            String codeGenElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType()).replace("Integer", "Int");
+            String targetElementType = getCodeGenerator().targetType(array.getDeclaredElementType());
+            return
+                "{\n"
+                // Get the data from the Ptolemy port
+                + type.getTokenClass().getName() + " ptolemyData = (("
+                + type.getTokenClass().getName() + ")($actorSymbol("
+                + codegenPortName + ").getInside(0"
+                // For non-multiports "". For multiports, ", 0", ", 1" etc.
+                + (channel == 0 ? "" : ", " + channel)
+                + ")));\n"
+
+                // Create an array for the codegen data.
+                + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
+                + " Token codeGenData = $Array_new("
+                + array.length() + ", 0);\n"
+
+                // Copy from the Ptolemy data to the codegen data.
+                + " for (int i = 0; i < " + array.length() +"; i++) {\n"
+                + "   Array_set(codeGenData, i, "
+                + getCodeGenerator().codeGenType(array.getDeclaredElementType())
+                + "_new(((("
+                + codeGenElementType + "Token)(ptolemyData.getElement(i)))."
+                + targetElementType + "Value())));\n"
+                + "  }\n"
+
+                // Output our newly constructed token
+                + " $put(" + actorPortName
+                + ", codeGenData);\n"
+                + "}\n;";
+        } else {
+            return
+                "$put(" + actorPortName
+                // Refer to the token by the full class name and obviate the
+                // need to manage imports.
+                + ", ((" + type.getTokenClass().getName() + ")($actorSymbol("
+                + codegenPortName
+                + ").getInside(0"
+                // For non-multiports "". For multiports, ", 0", ", 1" etc.
+                + (channel == 0 ? "" : ", " + channel)
+                + ")))." + type.toString().toLowerCase() + "Value());\n";
+        }
     }
 
     /** 
@@ -516,17 +567,68 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateSendInside(String actorPortName,
             String codegenPortName, Type type, int channel) {
-        return
-            // Set the type.
-            "    $actorSymbol(" + codegenPortName + ").setTypeEquals(BaseType."
-                        + type.toString().toUpperCase() +");\n"
-            // Send data to the actor.
-            + "    $actorSymbol(" + codegenPortName + ").sendInside(0, new "
-            // Refer to the token by the full class name and obviate the
-            // need to manage imports.
-            + type.getTokenClass().getName() + "($get(" + actorPortName
-            // For non-multiports "". For multiports, #0, #1 etc.
-            + (channel == 0 ? "" : "#" + channel)
-            + ")));\n";
+        if (type instanceof ArrayType) {
+            
+            ArrayType array = (ArrayType)type;
+
+            String javaElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType());
+            String codeGenElementType = javaElementType.replace("Integer", "Int");
+            String targetElementType = getCodeGenerator().targetType(array.getDeclaredElementType());
+            return
+                "{\n"
+                // Create a token to send
+                + codeGenElementType + "Token [] ptolemyData = new "
+                + codeGenElementType + "Token [" + array.length() + "];\n"
+
+                // Get the codegen data
+                + " Token codeGenData = $get(" + actorPortName
+                // For non-multiports "". For multiports, #0, #1 etc.
+                + (channel == 0 ? "" : "#" + channel)
+                + ");\n"
+
+                // Copy from the codegen data to the Ptolemy data
+                + " for (int i = 0; i < " + array.length() +"; i++) {\n"
+                + "   ptolemyData[i] = new " + codeGenElementType + "Token((("
+                + javaElementType
+                + ")(Array_get(codeGenData, i).getPayload()))." + targetElementType + "Value());\n"
+                + " }\n"
+                
+
+                // Set the type.
+                + "    $actorSymbol(" + codegenPortName + ").setTypeEquals("
+                + _typeToBaseType(type) +");\n"
+                // Output our newly constructed token
+                + " $actorSymbol(" + codegenPortName + ").sendInside(0, new ArrayToken(ptolemyData));\n"
+                + "}\n;";
+        } else {
+            return
+                // Set the type.
+                "    $actorSymbol(" + codegenPortName + ").setTypeEquals("
+                + _typeToBaseType(type) +");\n"
+                // Send data to the actor.
+                + "    $actorSymbol(" + codegenPortName + ").sendInside(0, new "
+                // Refer to the token by the full class name and obviate the
+                // need to manage imports.
+                + type.getTokenClass().getName() + "($get(" + actorPortName
+                // For non-multiports "". For multiports, #0, #1 etc.
+                + (channel == 0 ? "" : "#" + channel)
+                + ")));\n";
+        }
     }
+
+    /** 
+     * Given a type, generate the Java code that represents that type.   
+     * Arrays of ints are converted into new ArrayType(BaseType.INT).
+     * Convert a simple type (int) into the corresponding BaseType
+     * static variable (INT)
+     */
+    private String _typeToBaseType(Type type) {
+        if (type instanceof ArrayType) {
+            return "new ArrayType("
+                + _typeToBaseType(((ArrayType)type).getDeclaredElementType())
+                + ")";
+        }
+        return "BaseType." + type.toString().toUpperCase();
+    }
+
 }
