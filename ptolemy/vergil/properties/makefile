@@ -54,9 +54,7 @@ JSRCS = \
 	LatticeGraphFrameController.java \
 	LatticeGraphTableau.java \
 	ModelAttributeController.java \
-	ModelAttributeControllerFactory.java \
-	MoMLModelAttributeController.java \
-	MoMLModelAttributeControllerFactory.java
+	ModelAttributeControllerFactory.java
 
 OTHER_FILES_TO_BE_JARED = 
 
