@@ -20,6 +20,7 @@ import org.xml.sax.SAXException;
 import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
+import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.GraphSearchTask;
@@ -273,7 +274,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBExecutionException - When the database encounters 
      * error while searching.
      */
-    public ArrayList<XMLDBModel> executeFetchHierarchyTask(GraphSearchTask task)
+    public ArrayList<XMLDBModel> executeFetchHierarchyTask(FetchHierarchyTask task)
             throws DBExecutionException {
         // TODO Auto-generated method stub
         return null;
