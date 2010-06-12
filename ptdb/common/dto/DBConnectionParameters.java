@@ -5,7 +5,7 @@ package ptdb.common.dto;
 /**
  * Encapsulate the parameters required for creating an XML DB connection.
  *
- * <p> The Data Transfer Object pattern is used here </p>
+ * <p>The Data Transfer Object pattern is used here.</p>
  *
  * @author Ashwini Bijwe
  * 
@@ -19,14 +19,14 @@ package ptdb.common.dto;
 public class DBConnectionParameters {
 
     /**
-     * Construct an instance with the given parameters
+     * Construct an instance with the given parameters.
      * @param url - Url/Path for the location where the database 
-     * file is present 
+     * file is present
      * @param containerName - Name of the container 
-     * for the XML Database
+     * for the XML Database.
      * @param isTransactionRequired - boolean that specifies 
      * whether the transaction management is required for the 
-     * connection that is created
+     * connection that is created.
      */
     public DBConnectionParameters(String url, String containerName,
             boolean isTransactionRequired) {
@@ -38,18 +38,18 @@ public class DBConnectionParameters {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
-     * Return the set container name 
-     * for the given XML database
-     * @return The container name
+     * Return the container name 
+     * for the given XML database.
+     * @return The container name.
      */
     public String getContainerName() {
         return _containerName;
     }
 
     /**
-     * Return the set URL/path of the location where 
-     * the XML database file is present
-     * @return The database url
+     * Return the URL/path of the location where 
+     * the XML database file is present.
+     * @return The database url.
      */
     public String getUrl() {
         return _url;
@@ -59,34 +59,34 @@ public class DBConnectionParameters {
      * Return true if the connection is to be 
      * created with transaction 
      * and false if it is to be created without transaction.
-     * @return True if transaction is required, false otherwise
+     * @return True if transaction is required, false otherwise.
      */
     public boolean isTransactionRequired() {
         return _isTransactionRequired;
     }
 
     /**
-     * Set the container name parameter to the given value
-     * @param containerName - Name of the container 
-     * for the given XML database
+     * Set the container name parameter to the given value.
+     * @param containerName - Name of the container
+     * for the given XML database.
      */
     public void setContainerName(String containerName) {
         _containerName = containerName;
     }
 
     /**
-     * Set the transaction required parameter to the given value 
+     * Set the transaction required parameter to the given value. 
      * @param isTransactionRequired - boolean that 
      * specifies whether the transaction 
-     * management is required for the connection that is created
+     * management is required for the connection that is created.
      */
     public void setIsTransactionRequired(boolean isTransactionRequired) {
         _isTransactionRequired = isTransactionRequired;
     }
 
     /**
-     * Set the URL parameter to the given value
-     * @param url - Location where the database file is present 
+     * Set the URL parameter to the given value.
+     * @param url - Location where the database file is present. 
      */
     public void setUrl(String url) {
         _url = url;

@@ -21,16 +21,16 @@ public class TaskQueue extends ArrayList<Task> {
     ////                         public methods                    ////
     /**
      * Return true if the task queue has all the required tasks, 
-     * else return false 
-     * @return True if all tasks are added, false otherwise
+     * else return false. 
+     * @return True if all tasks are added, false otherwise.
      */
     public boolean areAllTasksAdded() {
         return _allTasksAdded;
     }
 
     /**
-     * Return the execution error message
-     * @return The execution error message 
+     * Return the execution error message.
+     * @return The execution error message. 
      */
     public String getExecutionErrorMessage() {
         return _errorMessage;
@@ -38,8 +38,8 @@ public class TaskQueue extends ArrayList<Task> {
 
     /**
      * Return true if the execution has completed; 
-     * else return false
-     * @return True if execution is complete, false otherwise
+     * else return false.
+     * @return True if execution is complete, false otherwise.
      */
     public boolean hasExecutionCompleted() {
         return _executionCompleted;
@@ -47,8 +47,8 @@ public class TaskQueue extends ArrayList<Task> {
 
     /**
      * Return true if any execution error has occurred; 
-     * else return false 
-     * @return True if execution error present, false otherwise
+     * else return false. 
+     * @return True if execution error present, false otherwise.
      */
     public boolean hasExecutionError() {
         return _isExecutionError;
@@ -56,30 +56,31 @@ public class TaskQueue extends ArrayList<Task> {
 
     /**
      * Return true if any processing error has occurred; 
-     * else return false
-     * @return True if processing error is present, false otherwise
+     * else return false.
+     * @return True if processing error is present, false otherwise.
      */
     public boolean hasProcessingError() {
         return _isProcessingError;
     }
 
     /**
-     * Set the value for allTasksAdded to true
+     * Set the value for allTasksAdded to true.
      */
     public void setAllTasksAdded() {
         _allTasksAdded = true;
     }
 
     /**
-     * Set the value for executionCompleted to true
+     * Set the value for executionCompleted to true.
      */
     public void setExecutionCompleted() {
         _executionCompleted = true;
     }
 
     /**
-     * Set the execution error to the given value
-     * @param errorMessage
+     * Set the execution error to the given value.
+     * @param errorMessage - Error message for the 
+     * execution error.
      */
     public void setExecutionError(String errorMessage) {
         _isExecutionError = true;
@@ -87,7 +88,7 @@ public class TaskQueue extends ArrayList<Task> {
     }
 
     /**
-     * Set the processing error to true
+     * Set the processing error to true.
      */
     public void setProcessingError() {
         _isProcessingError = true;

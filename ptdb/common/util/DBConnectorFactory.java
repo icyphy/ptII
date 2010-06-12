@@ -30,25 +30,25 @@ public class DBConnectorFactory {
     ////                         public variables                  ////
     /** 
      * Name for the property for XML database class 
-     * in the config/ptdb-properties file
+     * in the config/ptdb-properties file.
      */
     public final static String _DB_CLASS_NAME = "DB_Class_Name";
 
     /** 
      * Name for the property for XML database URL/Location 
-     * in the config/ptdb-properties file
+     * in the config/ptdb-properties file.
      */
     public final static String _DB_URL = "DB_Url";
 
     /** 
      * Name for the property for XML database container name 
-     * in the config/ptdb-properties file
+     * in the config/ptdb-properties file.
      */
     public final static String _XMLDB_CONTAINER_NAME = "DB_Container_Name";
 
     /** 
      * Name for the property for PtolemyDB cache container 
-     * name in the config/ptdb-properties file
+     * name in the config/ptdb-properties file.
      */
     public final static String _CACHE_CONTAINER_NAME = "Cache_Container_Name";
 
@@ -88,7 +88,8 @@ public class DBConnectorFactory {
      * data from the database.  
      * 
      * @return DBConnection - That enqueues queries as and when 
-     * the execute query is called and executes them asynchronously
+     * the execute query is called and executes them asynchronously.
+     * 
      * @throws DBConnectionException - Whenever we face a problem while creating 
      * a database connection. These problems could be that configured connection 
      * class does not exist, the path for the database is not found, the container name 
@@ -108,8 +109,10 @@ public class DBConnectorFactory {
      *  
      * @param isTransactionRequired - Boolean to specify whether this connection 
      * needs a transaction or not.
+     * 
      * @return DBConnection - That executes queries as and 
      * when the execute query is called.
+     * 
      * @throws DBConnectionException - Whenever we face a problem while creating 
      * a database connection. These problems could be that configured connection 
      * class does not exist, the path for the database is not found, 
@@ -124,11 +127,12 @@ public class DBConnectorFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /** 
-     * 
-     * @param containerName
-     * @param isTransactionRequired
+     *
+     * Create a connection based on given parameters.
+     * @param containerName - Container to connect to.
+     * @param isTransactionRequired - True if transaction is needed, false otherwise.
      * @return Required connection object
-     * @throws DBConnectionException
+     * @throws DBConnectionException - When there is an error in connecting to the databse.
      */
     private static DBConnection _createConnection(String containerName,
             boolean isTransactionRequired) throws DBConnectionException {
@@ -208,8 +212,8 @@ public class DBConnectorFactory {
     }
     
     /**
-     * Return true if the database setup is completed    
-     * @return - true if setup is completed; false otherwise
+     * Return true if the database setup is completed.    
+     * @return - true if setup is completed; false otherwise.
      */
     public static boolean isSetupDone()
     {
@@ -221,12 +225,12 @@ public class DBConnectorFactory {
      * and set them for use during creating connections 
      * to the XML database.  
      *  
-     * <p> Ascertain if the database setup has been done 
-     * and if the properties for the database have been set. </p>
+     * <p>Ascertain if the database setup has been done 
+     * and if the properties for the database have been set.</p>
      *  
-     * <p> Throw an exception if the config/ptdb.properties 
-     * file is not found. </p>
-     * .
+     * <p>Throw an exception if the config/ptdb.properties 
+     * file is not found.</p>
+     * 
      */
     public static void loadDBProperties() {
         
@@ -262,7 +266,7 @@ public class DBConnectorFactory {
     /**
      * Return the parameters set as a concatenated string.
      * @return - Concatenated String of database parameters -
-     * class name, URL, container name
+     * class name, URL, container name.
      */
     public static String getParametersString() {
         StringBuffer strBuf = new StringBuffer();
@@ -297,28 +301,28 @@ public class DBConnectorFactory {
     /** 
      * Container name for XML database cache for Ptolemy DB.
      * The name is stored in config/ptdb.properties 
-     * file as Cache_Container_Name Property
+     * file as Cache_Container_Name Property.
      */
     private static String _cacheContainerName;
 
     /** 
      * Class name for the class that will be used by the 
      * database framework to manage connections and transaction 
-     * to the actual XML database
-     * The name is stored in config/ptdb.properties file as DB_Class_Name Property 
-     * This class should be of type DBConnection
+     * to the actual XML database.
+     * The name is stored in config/ptdb.properties file as DB_Class_Name Property. 
+     * This class should be of type DBConnection.
      */
     private static String _dbClassName;
 
     /** 
      * Container name for XML database Ptolemy DB.
      * The name is stored in config/ptdb.properties file 
-     * as DB_Container_Name Property
+     * as DB_Container_Name Property.
      */
     private static String _dbContainerName;
 
     /** Path for the location where the XML database file is located.
-     *  The name is stored in config/ptdb.properties file as DB_Url Property
+     *  The name is stored in config/ptdb.properties file as DB_Url Property.
      */
     private static String _dbUrl;
 
@@ -328,8 +332,8 @@ public class DBConnectorFactory {
      * This signifies if the database setup for Ptolemy XML 
      * Database is done or not. 
      *  
-     * Set to true if the setup is done
-     * Set to false if the setup is incomplete
+     * Set to true if the setup is done.
+     * Set to false if the setup is incomplete.
      * 
      */
     private static boolean _isDBSetupDone;
