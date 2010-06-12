@@ -33,27 +33,25 @@ public class AttributeSearchTask extends Task {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		public variables 		           //////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 				   //////
+    ////		public methods 				   ////
 
     /**
      * Add the given attribute to the search attribute list.
      *
-     * @param attribute - Attribute to add to the
+     * @param attribute Attribute to add to the
      * search attribute list.
      */
     public void addAttribute(Attribute attribute) {
-        if (_attributesList == null)
+        if (_attributesList == null) {
             _attributesList = new ArrayList<Attribute>();
+        }
 
         _attributesList.add(attribute);
     }
 
     /**
      * Return the search attribute list.
-     * @return - The search attribute list.
+     * @return The search attribute list.
      */
     public ArrayList<Attribute> getAttributesList() {
         return _attributesList;
@@ -61,23 +59,14 @@ public class AttributeSearchTask extends Task {
 
     /**
      * Set the search attribute list to the given list.
-     * @param attributesList - List of attributes for search.
+     * @param attributesList List of attributes for search.
      */
     public void setAttributesList(ArrayList<Attribute> attributesList) {
         _attributesList = attributesList;
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		protected methods 			   //////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		protected variables 			   //////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		private methods 			   //////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables			   //////
+    ////		private variables			   ////
     /**
      * The search attribute list.
      */

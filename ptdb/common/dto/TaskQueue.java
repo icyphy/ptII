@@ -79,7 +79,7 @@ public class TaskQueue extends ArrayList<Task> {
 
     /**
      * Set the execution error to the given value.
-     * @param errorMessage - Error message for the 
+     * @param errorMessage Error message for the 
      * execution error.
      */
     public void setExecutionError(String errorMessage) {

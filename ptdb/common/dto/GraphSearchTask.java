@@ -20,14 +20,11 @@ package ptdb.common.dto;
 public class GraphSearchTask extends Task {
 
     //////////////////////////////////////////////////////////////////////
-    ////		public variables 				//////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					//////
+    ////		public methods 					////
     
     /**
      * Return the graphical search criteria.
-     * @return - The graph search criteria.
+     * @return The graph search criteria.
      */
     public DBGraphSearchCriteria getGraphSearchCriteria() {
         return _graphSearchCriteria;
@@ -35,23 +32,14 @@ public class GraphSearchTask extends Task {
 
     /**
      * Set the graph search criteria.
-     * @param graphSearchCriteria - The graph search criteria. 
+     * @param graphSearchCriteria The graph search criteria. 
      */
     public void setGraphSearchCriteria(DBGraphSearchCriteria graphSearchCriteria) {
         this._graphSearchCriteria = graphSearchCriteria;
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		protected methods 				//////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		protected variables 				//////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		private methods 				//////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables				//////
+    ////		private variables				////
     private DBGraphSearchCriteria _graphSearchCriteria;
 
     }

@@ -22,17 +22,17 @@ public class DBExecutionException extends Exception {
     ////                         public methods                    ////
     /**
      * Construct an instance of DBConnectionException 
-     * with the given message 
-     * @param errorMessage - exception message
+     * with the given message. 
+     * @param errorMessage Exception message.
      */
     public DBExecutionException(String errorMessage) {
         super(errorMessage);
     }
 
     /**
-     * Construct and instance to wrap other exceptions 
-     * @param errorMessage - exception message
-     * @param cause
+     * Construct and instance to wrap other exceptions. 
+     * @param errorMessage The exception message.
+     * @param cause The underlying cause for the exception.
      */
     public DBExecutionException(String errorMessage, Throwable cause) {
         super(errorMessage, cause);
@@ -40,7 +40,7 @@ public class DBExecutionException extends Exception {
     }
 
     /**
-     * Return the underlying cause for the exception
+     * Return the underlying cause for the exception.
      */
     public Throwable getCause() {
         return this._cause;

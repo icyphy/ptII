@@ -28,7 +28,7 @@ public abstract class Task {
     /**
      * Set the given task as an update task or select task 
      * depending on the value of isUpdateTask. 
-     * @param isUpdateTask - Boolean that specifies if the 
+     * @param isUpdateTask Boolean that specifies if the 
      *                       given task is an update task.
      */
     public void setIsUpdateTask(boolean isUpdateTask) {

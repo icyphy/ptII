@@ -29,16 +29,13 @@ public class FetchHierarchyTask extends Task {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		public variables 				//////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					//////
+    ////		public methods 					////
 
     /**
      * Return the list of models for which we need 
      * to fetch parent hierarchy. 
      * 
-     * @return - List of models for which we need to 
+     * @return List of models for which we need to 
      * fetch hierarchy.
      */
     public ArrayList<XMLDBModel> getModelsList() {
@@ -49,7 +46,7 @@ public class FetchHierarchyTask extends Task {
      * Set the list of models for which we need 
      * to fetch parent hierarchy.
      *  
-     * @param modelsList- List of models for which we need to 
+     * @param modelsList List of models for which we need to 
      * fetch hierarchy.
      */
     public void setModelsList(ArrayList<XMLDBModel> modelsList) {
@@ -57,16 +54,7 @@ public class FetchHierarchyTask extends Task {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		protected methods 				//////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		protected variables 				//////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		private methods 				//////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables				//////
+    ////		private variables				////
     /**
      * List of models for which we need to 
      * fetch hierarchy.

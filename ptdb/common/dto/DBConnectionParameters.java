@@ -20,11 +20,12 @@ public class DBConnectionParameters {
 
     /**
      * Construct an instance with the given parameters.
-     * @param url - Url/Path for the location where the database 
+     * @param url Url/Path for the location where the database 
      * file is present
-     * @param containerName - Name of the container 
+     * @param containerName Name of the container 
      * for the XML Database.
-     * @param isTransactionRequired - boolean that specifies 
+     * 
+     * @param isTransactionRequired To specify 
      * whether the transaction management is required for the 
      * connection that is created.
      */
@@ -49,6 +50,7 @@ public class DBConnectionParameters {
     /**
      * Return the URL/path of the location where 
      * the XML database file is present.
+     * 
      * @return The database url.
      */
     public String getUrl() {
@@ -59,6 +61,7 @@ public class DBConnectionParameters {
      * Return true if the connection is to be 
      * created with transaction 
      * and false if it is to be created without transaction.
+     * 
      * @return True if transaction is required, false otherwise.
      */
     public boolean isTransactionRequired() {
@@ -67,7 +70,7 @@ public class DBConnectionParameters {
 
     /**
      * Set the container name parameter to the given value.
-     * @param containerName - Name of the container
+     * @param containerName Name of the container
      * for the given XML database.
      */
     public void setContainerName(String containerName) {
@@ -76,8 +79,7 @@ public class DBConnectionParameters {
 
     /**
      * Set the transaction required parameter to the given value. 
-     * @param isTransactionRequired - boolean that 
-     * specifies whether the transaction 
+     * @param isTransactionRequired To specify whether the transaction 
      * management is required for the connection that is created.
      */
     public void setIsTransactionRequired(boolean isTransactionRequired) {
@@ -86,29 +88,11 @@ public class DBConnectionParameters {
 
     /**
      * Set the URL parameter to the given value.
-     * @param url - Location where the database file is present. 
+     * @param url Location where the database file is present. 
      */
     public void setUrl(String url) {
         _url = url;
     }
-
-    /*
-     public String getUserName() {
-        return _userName;
-    }
-
-    public void setUserName(String userName) {
-        this._userName = userName;
-    }
-
-    public String getPassword() {
-        return _password;
-    }
-
-    public void setPassword(String password) {
-        this._password = password;
-    }
-    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
