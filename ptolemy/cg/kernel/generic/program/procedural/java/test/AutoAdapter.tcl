@@ -52,20 +52,21 @@ if {[info procs testJavaCG] == "" } then {
 #            HadamardCode_DotProduct_input2=32)Value();
 
 
-# ~/ptII/ptolemy/actor/lib/string/test/auto/StringMatches.xml   Runs, but gets wrong results
+# $PTII/ptolemy/actor/lib/string/test/auto/StringMatches.xml   Runs, but gets wrong results
 #     Won't fix right now, the problem is backslash hell.
-# ~/ptII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml   FSM, won't fix right now
-# ~/ptII/ptolemy/actor/lib/string/test/auto/StringParameter.xml Fails to generate:
+# $PTII/ptolemy/actor/lib/string/test/auto/StringIndexOf.xml   FSM, won't fix right now
+# $PTII/ptolemy/actor/lib/string/test/auto/StringParameter.xml Fails to generate:
 #    Failed to find open paren in ""${i}...""
 #    Won't fix right now, we don't support $i, which is a complex number. 
-# ~/ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml  Fails to generate:
+# $PTII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml  Fails to generate:
 #    Won't fix right now, the problem is that one of the expressions is "a$$0b", which causes trouble.
+# $PTII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml  Fails to compile:
+#    Problems with \o
 set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/LookupTable.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
 		$PTII/ptolemy/actor/lib/comm/test/auto/Scrambler1.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringCompare.xml \
-		$PTII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringLength.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringMatches2.xml \

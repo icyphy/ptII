@@ -111,7 +111,10 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
                 // FIXME: we need to escape other characters here.
                 // Escape \d for ptII/ptolemy/actor/lib/string/test/auto/StringReplace2.xml
                 return "\""  
-                    + StringUtilities.substitute(parameter.getExpression(), "\\d", "\\\\d")
+                    + parameter.getExpression().replace("\\d", "\\\\d")
+                    .replace("\\D", "\\\\D")
+                    .replace("\"", "\\\"")
+                    .replace("\\b", "\\\\b")
                     + "\"";
             } else {
                 return parameter.getValueAsString();

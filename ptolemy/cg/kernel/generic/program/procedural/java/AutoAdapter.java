@@ -176,15 +176,25 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             if (parameter instanceof Variable) {
                 // Evaluate things like $PTII
                 parameterValue = ((Variable)parameter).getToken().toString();
+                if (((Variable)parameter).isStringMode()) {
+                    if (parameterValue.startsWith("\"") && parameterValue.endsWith("\"")) {
+                        # This is needed by
+                        # $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml 
+                        parameterValue = parameterValue.substring(1, parameterValue.length() - 1);
+                    }
+                }
             } else {
                 parameterValue = parameter.getExpression();
             }
 
+            parameterValue = StringUtilities.escapeString(parameterValue);
             // FIXME: do we want one try block per parameter?  It does
             // make for better error messages.
             code.append("try {\n"
                 + "    ptolemy.data.expr.Parameter " + parameterName + " = ((" + actorClassName + ")$actorSymbol(actor))." + parameterName + ";\n"
-                    + "    " + parameterName + ".setExpression(\"" + StringUtilities.escapeString(parameterValue) + "\");\n"
+                    + "    " + parameterName + ".setExpression(\""
+                    + parameterValue
+                    + "\");\n"
                 + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(" + parameterName + ");\n"
                 + "} catch (Exception ex) {\n"
                     + "    throw new RuntimeException(\"Failed to set parameter \\\"" + parameterName
