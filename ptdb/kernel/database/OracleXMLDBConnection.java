@@ -17,6 +17,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
 import ptdb.common.dto.GetAttributesTask;
@@ -25,6 +26,9 @@ import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 
 import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.Environment;
@@ -59,58 +63,63 @@ import com.sleepycat.dbxml.XmlValue;
 public class OracleXMLDBConnection implements DBConnection {
 
     /**
-    *  Construct an instance that initializes the environment 
-    *  and creates a database connection 
-    *  based on the given parameters.
-    *   
-    * @param dbConnParams - Encapsulate the parameters required to 
-    *                       create a database connection  
-    * @throws DBConnectionException - When the XML DB encounters 
-    *                                 an error while creating a 
-    *                                 connection
-    */
+     *  Construct an instance that initializes the environment 
+     *  and creates a database connection 
+     *  based on the given parameters.
+     *   
+     * @param dbConnParams - Encapsulate the parameters required to 
+     *                       create a database connection  
+     * @throws DBConnectionException - When the XML DB encounters 
+     *                                 an error while creating a 
+     *                                 connection
+     */
     public OracleXMLDBConnection(DBConnectionParameters dbConnParams)
-	    throws DBConnectionException {
+            throws DBConnectionException {
 
-	try {
+        try {
 
-	    _params = dbConnParams;
+            _params = dbConnParams;
 
-	    EnvironmentConfig config = new EnvironmentConfig();
-	    config.setCacheSize(100 * 1024 * 1024); // 50MB
-	    config.setAllowCreate(true);
-	    config.setInitializeCache(true);
-	    config.setTransactional(true);
-	    config.setInitializeLocking(true);
-	    config.setInitializeLogging(true);
-	    config.setErrorStream(System.err);
-	    File dbFile = new File(_params.getUrl());
+            EnvironmentConfig config = new EnvironmentConfig();
+            config.setRunRecovery(true);
+            config.setCacheSize(100 * 1024 * 1024); // 50MB
+            config.setAllowCreate(true);
+            config.setInitializeCache(true);
+            config.setTransactional(true);
+            config.setInitializeLocking(true);
+            config.setInitializeLogging(true);
+            config.setErrorStream(System.err);
+            config.setMaxLockers(2000);
+            config.setMaxLocks(2000);
+            config.setMaxLockObjects(2000);
 
-	    _environment = new Environment(dbFile, config);
+            File dbFile = new File(_params.getUrl());
 
-	    _xmlManager = new XmlManager(_environment, null);
+            _environment = new Environment(dbFile, config);
 
-	    _xmlContainer = _xmlManager.openContainer(_params
-		    .getContainerName());
+            _xmlManager = new XmlManager(_environment, null);
 
-	    if (_params.isTransactionRequired())
-		_xmlTransaction = _xmlManager.createTransaction();
+            _xmlContainer = _xmlManager.openContainer(_params
+                    .getContainerName());
 
-	    isConnectionAlive = true;
+            if (_params.isTransactionRequired())
+                _xmlTransaction = _xmlManager.createTransaction();
 
-	} catch (FileNotFoundException e) {
+            isConnectionAlive = true;
 
-	    throw new DBConnectionException(
-		    "Exception while connecting to the database : "
-		            + "Database not found at the given location : "
-		            + _params.getUrl(), e);
+        } catch (FileNotFoundException e) {
 
-	} catch (DatabaseException e) {
+            throw new DBConnectionException(
+                    "Exception while connecting to the database : "
+                            + "Database not found at the given location : "
+                            + _params.getUrl(), e);
 
-	    throw new DBConnectionException(
-		    "Exception while connecting to the database : "
-		            + e.getMessage(), e);
-	}
+        } catch (DatabaseException e) {
+
+            throw new DBConnectionException(
+                    "Exception while connecting to the database : "
+                            + e.getMessage(), e);
+        }
 
     }
 
@@ -122,23 +131,25 @@ public class OracleXMLDBConnection implements DBConnection {
      * Invoke in case of errors.
      */
     public void abortConnection() throws DBConnectionException {
-	try {
-	    checkConnectionAlive();
-	    if (_xmlTransaction != null)
-		_xmlTransaction.abort();
+        try {
+            _checkConnectionAlive();
+            if (_xmlTransaction != null) {
+                _xmlTransaction.abort();
+                _xmlTransaction.delete();
+            }
 
-	    _cleanUp();
+            _cleanUp();
 
-	} catch (XmlException e) {
+        } catch (XmlException e) {
 
-	    _cleanUp();
-	    throw new DBConnectionException(
-		    "Database transaction could not be aborted - "
-		            + e.getMessage(), e);
+            _cleanUp();
+            throw new DBConnectionException(
+                    "Database transaction could not be aborted - "
+                            + e.getMessage(), e);
 
-	} finally {
-	    isConnectionAlive = false;
-	}
+        } finally {
+            isConnectionAlive = false;
+        }
 
     }
 
@@ -148,23 +159,23 @@ public class OracleXMLDBConnection implements DBConnection {
      * Invoke in case of successful completion of processing.
      */
     public void closeConnection() throws DBConnectionException {
-	try {
-	    checkConnectionAlive();
-	    if (_xmlTransaction != null)
-		_xmlTransaction.commit();
+        try {
+            _checkConnectionAlive();
+            if (_xmlTransaction != null)
+                _xmlTransaction.commit();
 
-	    _cleanUp();
+            _cleanUp();
 
-	} catch (XmlException e) {
+        } catch (XmlException e) {
 
-	    _cleanUp();
-	    throw new DBConnectionException(
-		    "Database transaction could not be committed - "
-		            + e.getMessage(), e);
+            _cleanUp();
+            throw new DBConnectionException(
+                    "Database transaction could not be committed - "
+                            + e.getMessage(), e);
 
-	} finally {
-	    isConnectionAlive = false;
-	}
+        } finally {
+            isConnectionAlive = false;
+        }
     }
 
     /**
@@ -177,70 +188,70 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBExecutionException Thrown if there is a problem executing the task.
      */
     public void executeCreateModelTask(CreateModelTask task)
-	    throws DBExecutionException {
+            throws DBExecutionException {
 
-	try {
+        try {
 
-	    //check if the xml container was instantiated properly
-	    if (_xmlContainer == null) {
-		throw new DBExecutionException(
-		        "Failed to execute CreateModelTask"
-		                + " - the XmlContainer object was not instantiated properly");
-	    }
+            //check if the xml container was instantiated properly
+            if (_xmlContainer == null) {
+                throw new DBExecutionException(
+                        "Failed to execute CreateModelTask"
+                                + " - the XmlContainer object was not instantiated properly");
+            }
 
-	    //check if the xml transaction was instantiated properly 
-	    if (_xmlTransaction == null) {
-		throw new DBExecutionException(
-		        "Failed to execute CreateModelTask"
-		                + " - the XmlTransaction object was not instantiated properly");
-	    }
+            //check if the xml transaction was instantiated properly 
+            if (_xmlTransaction == null) {
+                throw new DBExecutionException(
+                        "Failed to execute CreateModelTask"
+                                + " - the XmlTransaction object was not instantiated properly");
+            }
 
-	    //check if the task passed was created properly.
-	    if (task == null) {
-		throw new DBExecutionException(
-		        "Failed to execute CreateModelTask"
-		                + " - the CreateModelTask object passed was null");
-	    }
+            //check if the task passed was created properly.
+            if (task == null) {
+                throw new DBExecutionException(
+                        "Failed to execute CreateModelTask"
+                                + " - the CreateModelTask object passed was null");
+            }
 
-	    //get the XMLDBModel object from the task.
-	    XMLDBModel model = task.getXMLDBModel();
+            //get the XMLDBModel object from the task.
+            XMLDBModel model = task.getXMLDBModel();
 
-	    //check if the model inside the CreateModelTask was created properly.
-	    if (model == null) {
-		throw new DBExecutionException(
-		        "Failed to execute CreateModelTask"
-		                + " - the XMLDBModel object passed in the CreateModelTask was null");
-	    }
+            //check if the model inside the CreateModelTask was created properly.
+            if (model == null) {
+                throw new DBExecutionException(
+                        "Failed to execute CreateModelTask"
+                                + " - the XMLDBModel object passed in the CreateModelTask was null");
+            }
 
-	    //==================================================
-	    //try to see if the document exists in the database.
-	    //==================================================
+            //==================================================
+            //try to see if the document exists in the database.
+            //==================================================
 
-	    //get the document from the database
-	    XmlDocument doc = _xmlContainer.getDocument(model.getModelName());
+            //get the document from the database
+            XmlDocument doc = _xmlContainer.getDocument(model.getModelName());
 
-	    //if the document was retrieved from the database, throw an exception
-	    if (doc != null) {
-		throw new DBExecutionException(
-		        "Failed to execute CreateModelTask"
-		                + " - The model already exist in the database. Please use the executeSaveModelTask to update the model.");
-	    }
-	    // if the document was not found in the database
-	    else {
+            //if the document was retrieved from the database, throw an exception
+            if (doc != null) {
+                throw new DBExecutionException(
+                        "Failed to execute CreateModelTask"
+                                + " - The model already exist in the database. Please use the executeSaveModelTask to update the model.");
+            }
+            // if the document was not found in the database
+            else {
 
-		//use the container to store the model by retrieving the model name and model body 
-		//from the XMLDBModel object and setting that in the container. 
-		//The container uses the function putDocument with transaction enabled 
-		//to store the document in the database. 
-		//This method expects the document name and the content
-		_xmlContainer.putDocument(_xmlTransaction,
-		        model.getModelName(), model.getModel());
+                //use the container to store the model by retrieving the model name and model body 
+                //from the XMLDBModel object and setting that in the container. 
+                //The container uses the function putDocument with transaction enabled 
+                //to store the document in the database. 
+                //This method expects the document name and the content
+                _xmlContainer.putDocument(_xmlTransaction,
+                        model.getModelName(), model.getModel());
 
-	    }
-	} catch (XmlException e) {
-	    throw new DBExecutionException("Failed to execute GetModelsTask - "
-		    + e.getMessage(), e);
-	}
+            }
+        } catch (XmlException e) {
+            throw new DBExecutionException("Failed to execute GetModelsTask - "
+                    + e.getMessage(), e);
+        }
 
     }
 
@@ -248,9 +259,9 @@ public class OracleXMLDBConnection implements DBConnection {
      * 
      */
     public ArrayList executeGetAttributesTask(GetAttributesTask task)
-	    throws DBExecutionException {
-	// TODO Auto-generated method stub
-	return null;
+            throws DBExecutionException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**
@@ -261,80 +272,143 @@ public class OracleXMLDBConnection implements DBConnection {
      * @return XMLDBModel this is the model fetched from the database	
      */
     public XMLDBModel executeGetModelsTask(GetModelsTask task)
-	    throws DBExecutionException {
+            throws DBExecutionException {
 
-	
-	try {
-	  
-	  //check if the task passed was created properly.
-	    if (task == null) {
-		throw new DBExecutionException(
-		        "Failed to execute GetModelsTask"
-		                + " - the GetModelsTask object passed was null");
-	    }
-	    
-	    //get the model from the database based on the name using the container method that returns 
-	    //the document from the database.
-	    //this is a document fetched from the database using the xml container with transaction enabled
-	    XmlDocument dbModel = _xmlContainer.getDocument(_xmlTransaction,
-		    task.getModelName());
+        try {
 
-	    //this is the model that should be returned.
-	    XMLDBModel completeXMLDBModel = null;
+            //check if the task passed was created properly.
+            if (task == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetModelsTask"
+                                + " - the GetModelsTask object passed was null");
+            }
 
-	    //if the dbModel is not null, meaning the model exist do some operations on it.
-	    //if the dbModel is null, simply return null.
-	    if (dbModel != null) {
+            //get the model from the database based on the name using the container method that returns 
+            //the document from the database.
+            //this is a document fetched from the database using the xml container with transaction enabled
+            XmlDocument dbModel = _xmlContainer.getDocument(_xmlTransaction,
+                    task.getModelName());
 
-		//instantiate the XMLDBModel.
-		completeXMLDBModel = new XMLDBModel();
+            //this is the model that should be returned.
+            XMLDBModel completeXMLDBModel = null;
 
-		//get the name from the result and store it in the model
-		completeXMLDBModel.setModelName(dbModel.getName());
+            //if the dbModel is not null, meaning the model exist do some operations on it.
+            //if the dbModel is null, simply return null.
+            if (dbModel != null) {
 
-		//variable to hold the complete model body.
-		String strCompleteModelBody = "";
+                //instantiate the XMLDBModel.
+                completeXMLDBModel = new XMLDBModel();
 
-		//get a list of all models referenced in this model from the reference file.
-		String strReferences = _getModelReferences(dbModel.getName());
+                //get the name from the result and store it in the model
+                completeXMLDBModel.setModelName(dbModel.getName());
 
-		//if a reference list was retrieved
-		if (strReferences != null && strReferences.length() > 0) {
+                //variable to hold the complete model body.
+                String strCompleteModelBody = "";
 
-		    //parse the reference string to get a node representation of it.
-		    Node modelNode = _parseXML(strReferences);
+                //get a list of all models referenced in this model from the reference file.
+                String strReferences = _getModelReferences(dbModel.getName());
 
-		    //call the _buildCompleteModel to build the model with all of its references.
-		    strCompleteModelBody = _buildCompleteModel(modelNode);
-		    
-		}
-		
-		//if there are no references to the model
-		else {
-		    //set the complete model body to the model fetched from the database.
-		    strCompleteModelBody = dbModel.getContentAsString();
-		}
+                //if a reference list was retrieved
+                if (strReferences != null && strReferences.length() > 0) {
 
-		//set the model body in the model object
-		completeXMLDBModel.setModel(strCompleteModelBody);
+                    //parse the reference string to get a node representation of it.
+                    Node modelNode = _parseXML(strReferences);
 
-		//indicate that the model is not a new model and it exists in the database
-		completeXMLDBModel.setIsNew(false);
+                    //call the _buildCompleteModel to build the model with all of its references.
+                    strCompleteModelBody = _buildCompleteModel(modelNode);
 
-		//parents are not needed thus the model  parents will be set to null	    
-		completeXMLDBModel.setParents(null);
+                }
 
-	    }
+                //if there are no references to the model
+                else {
+                    //set the complete model body to the model fetched from the database.
+                    strCompleteModelBody = dbModel.getContentAsString();
+                }
 
-	    //return the list of models.
-	    return completeXMLDBModel;
+                //set the model body in the model object
+                completeXMLDBModel.setModel(strCompleteModelBody);
 
-	} catch (XmlException e) {
+                //indicate that the model is not a new model and it exists in the database
+                completeXMLDBModel.setIsNew(false);
 
-	    throw new DBExecutionException("Failed to execute GetModelsTask - "
-		    + e.getMessage(), e);
-	}
+                //parents are not needed thus the model  parents will be set to null	    
+                completeXMLDBModel.setParents(null);
 
+            }
+
+            //return the list of models.
+            return completeXMLDBModel;
+
+        } catch (XmlException e) {
+
+            throw new DBExecutionException("Failed to execute GetModelsTask - "
+                    + e.getMessage(), e);
+        }
+
+    }
+    
+    /**
+     * Search models that contain the given attributes in the database.
+     * 
+     * @param task Task that contains a list of attributes that 
+     * need to be searched in the database.
+     * 
+     * @return List of models that contain the attributes.
+     * 
+     * @throws DBExecutionException - When the database encounters error while searching.
+     */
+    public ArrayList<XMLDBModel> executeAttributeSearchTask(
+            AttributeSearchTask task) throws DBExecutionException {
+
+        ArrayList<XMLDBModel> finalModelsList = new ArrayList<XMLDBModel>();
+        ArrayList<String> matchingModelNamesList = null;
+        ArrayList<Attribute> attributesList = task.getAttributesList();
+
+        if (attributesList != null && attributesList.size() > 0) {
+            for (Attribute attribute : attributesList) {
+                if (attribute instanceof Variable) {
+                    try {
+
+                        String attributeClause = _createAttributeClause((Variable) attribute);
+                        ArrayList<String> modelNamesList = _executeSingleAttributeMatch(attributeClause);
+                        if (matchingModelNamesList == null) {
+                            matchingModelNamesList = new ArrayList<String>();
+                            matchingModelNamesList.addAll(modelNamesList);
+                        } else
+                            matchingModelNamesList.retainAll(modelNamesList);
+
+                    } catch (IllegalActionException e) {
+
+                        System.out
+                                .println("Exception while retriving value for attribute - "
+                                        + attribute.getName()
+                                        + " - "
+                                        + attribute.getClassName());
+
+                    } catch (XmlException e) {
+
+                        throw new DBExecutionException(
+                                "Error while executing GetAttributesSearch - "
+                                        + e.getMessage(), e);
+                    }
+                }
+            }
+
+            if (matchingModelNamesList != null
+                    && matchingModelNamesList.size() > 0) {
+
+                XMLDBModel model;
+                for (String modelName : matchingModelNamesList) {
+                    model = new XMLDBModel();
+                    model.setModelName(modelName.substring(modelName
+                            .lastIndexOf("/") + 1));
+                    finalModelsList.add(model);
+
+                    return finalModelsList;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -347,85 +421,96 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBExecutionException Thrown if there is a problem executing the task.
      */
     public void executeSaveModelTask(SaveModelTask task)
-	    throws DBExecutionException {
+            throws DBExecutionException {
 
-	try {
+        try {
 
-	    //check if the xml container was instantiated properly
-	    if (_xmlContainer == null) {
-		throw new DBExecutionException(
-		        "Failed to execute SaveModelTask"
-		                + " - the XmlContainer object was not instantiated properly");
-	    }
+            //check if the xml container was instantiated properly
+            if (_xmlContainer == null) {
+                throw new DBExecutionException(
+                        "Failed to execute SaveModelTask"
+                                + " - the XmlContainer object was not instantiated properly");
+            }
 
-	    //check if the xml transaction was instantiated properly 
-	    if (_xmlTransaction == null) {
-		throw new DBExecutionException(
-		        "Failed to execute SaveModelTask"
-		                + " - the XmlTransaction object was not instantiated properly");
-	    }
+            //check if the xml transaction was instantiated properly 
+            if (_xmlTransaction == null) {
+                throw new DBExecutionException(
+                        "Failed to execute SaveModelTask"
+                                + " - the XmlTransaction object was not instantiated properly");
+            }
 
-	    //check if task passed was created properly.
-	    if (task == null) {
-		throw new DBExecutionException(
-		        "Failed to execute SaveModelTask"
-		                + " - the SaveModelTask object passed was null");
-	    }
+            //check if task passed was created properly.
+            if (task == null) {
+                throw new DBExecutionException(
+                        "Failed to execute SaveModelTask"
+                                + " - the SaveModelTask object passed was null");
+            }
 
-	    //get the XMLDBModel object from the task.
-	    XMLDBModel model = task.getXMLDBModel();
+            //get the XMLDBModel object from the task.
+            XMLDBModel model = task.getXMLDBModel();
 
-	    //check if the model inside the CreateModelTask was created properly.
-	    if (model == null) {
-		throw new DBExecutionException(
-		        "Failed to execute SaveModelTask"
-		                + " - the XMLDBModel object passed in the CreateModelTask was null");
-	    }
+            //check if the model inside the CreateModelTask was created properly.
+            if (model == null) {
+                throw new DBExecutionException(
+                        "Failed to execute SaveModelTask"
+                                + " - the XMLDBModel object passed in the CreateModelTask was null");
+            }
 
-	    //use the container to get a handle on the document that represents the model. 
-	    XmlDocument currentDbModel = _xmlContainer.getDocument(model
-		    .getModelName());
+            //use the container to get a handle on the document that represents the model. 
+            XmlDocument currentDbModel = _xmlContainer.getDocument(model
+                    .getModelName());
 
-	    //check if the model is not in the database, throw an exception
-	    if (currentDbModel == null) {
+            //check if the model is not in the database, throw an exception
+            if (currentDbModel == null) {
 
-		throw new DBExecutionException(
-		        "Failed to execute SaveModelTask"
-		                + " - the model does not exist in the database. Please use executeCreateModelTask instead.");
-	    }
-	    //if the model is in the database update it.
-	    else {
-		//set the new content of the model to the document fetched from the database.
-		currentDbModel.setContent(model.getModel());
+                throw new DBExecutionException(
+                        "Failed to execute SaveModelTask"
+                                + " - the model does not exist in the database. Please use executeCreateModelTask instead.");
+            }
+            //if the model is in the database update it.
+            else {
+                //set the new content of the model to the document fetched from the database.
+                currentDbModel.setContent(model.getModel());
 
-		//update the database with the new changes to the model using the container object. 
-		//using the updateDocument method with transaction enabled
-		//This method expects the document to be updated.
-		_xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
-	    }
+                //update the database with the new changes to the model using the container object. 
+                //using the updateDocument method with transaction enabled
+                //This method expects the document to be updated.
+                _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
+            }
 
-	} catch (XmlException e) {
-	    throw new DBExecutionException("Failed to execute SaveModelTask - "
-		    + e.getMessage(), e);
-	}
+        } catch (XmlException e) {
+            throw new DBExecutionException("Failed to execute SaveModelTask - "
+                    + e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * Provide information regarding the state of the internal variables
+     * useful for unit testing purposes. 
+     * @return String representation for state of internal variables. 
+     */
+    public String toString() {
+
+        StringBuffer classState = new StringBuffer();
+        if (_xmlManager != null)
+            classState.append("_xmlManager:Initialized");
+        else
+            classState.append("_xmlManager:Not Initialized");
+
+        if (_xmlTransaction != null)
+            classState.append("_xmlTransaction:Initialized");
+        else
+            classState.append("_xmlTransaction:Not Initialized");
+
+        return classState.toString();
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**
-     * Check if the connection is alive 
-     * @throws DBConnectionException - when the connection is not alive
-     * 
-     */
-    private void checkConnectionAlive() throws DBConnectionException {
-	if (!isConnectionAlive)
-	    throw new DBConnectionException(
-		    "This connection is not alive anymore. It has been closed or aborted.");
-    }
-
-    /**
+    /*
      * Build the complete model by resolving all the references in it.
      * 
      * @param p_currentNode the node in the reference file that points to the model
@@ -433,176 +518,185 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBExecutionException Thrown if there is a problem executing the task.
      */
     private String _buildCompleteModel(Node p_currentNode)
-	    throws DBExecutionException {
+            throws DBExecutionException {
 
-	//if the hash map is null, instantiate it.
-	//this step is done only for the first call to this method.
-	if (_xmlModelHerarichyMap == null) {
-	    _xmlModelHerarichyMap = new HashMap<String, String>();
-	}
-
-	//get a list of all the attributes in this current node.
-	NamedNodeMap attributes = p_currentNode.getAttributes();
-
-	//variable to hold the model name.
-	String strCurrentModelName = "";
-
-	//if the attributes are not null
-	if (attributes != null) {
-	    //loop through the attributes to get the name.
-	    for (int i = 0; i < attributes.getLength(); i++) {
-	        //get the node that represents the attribute in that list.
-	        Node node = attributes.item(i);
-
-	        //check if the node name is "name"
-	        if (node.getNodeName().equalsIgnoreCase("name")) {
-		    //get the value of the node.
-		    strCurrentModelName = node.getNodeValue();
-
-		    //break the loop since we found what we are looking for.
-		    break;
-	        }
-	    }
+        //if the hash map is null, instantiate it.
+        //this step is done only for the first call to this method.
+        if (_xmlModelHerarichyMap == null) {
+            _xmlModelHerarichyMap = new HashMap<String, String>();
         }
-	
-	//if a model name was extracted from the node, then proceed
-	if (strCurrentModelName != null && strCurrentModelName.length() > 0) {
 
-	    //check if the model is in the hash map
-	    if (_xmlModelHerarichyMap.containsKey(strCurrentModelName)) {
-		//return modelContent from the hash map.
-		return (String) _xmlModelHerarichyMap.get(strCurrentModelName);
-	    }
+        //get a list of all the attributes in this current node.
+        NamedNodeMap attributes = p_currentNode.getAttributes();
 
-	    //check if the xml container was instantiated properly
-	    if (_xmlContainer == null) {
-		throw new DBExecutionException(
-		        "Failed to execute GetModelsTask"
-		                + " - the XmlContainer object was not instantiated properly");
-	    }
+        //variable to hold the model name.
+        String strCurrentModelName = "";
 
-	    //variable to hold the current model fetched from the database.
-	    XmlDocument currentDbModel;
+        //if the attributes are not null
+        if (attributes != null) {
+            //loop through the attributes to get the name.
+            for (int i = 0; i < attributes.getLength(); i++) {
+                //get the node that represents the attribute in that list.
+                Node node = attributes.item(i);
 
-	    //variable to store the model content.
-	    String strCurrentModelContent = "";
+                //check if the node name is "name"
+                if (node.getNodeName().equalsIgnoreCase("name")) {
+                    //get the value of the node.
+                    strCurrentModelName = node.getNodeValue();
 
-	    try {
+                    //break the loop since we found what we are looking for.
+                    break;
+                }
+            }
+        }
 
-		
-		//use the container to get a handle on the document that represents the model. 
-		currentDbModel = _xmlContainer.getDocument(strCurrentModelName);
+        //if a model name was extracted from the node, then proceed
+        if (strCurrentModelName != null && strCurrentModelName.length() > 0) {
 
-		//if the model is not in the database, throw an exception.
-		if (currentDbModel == null) {
-		    throw new DBExecutionException(
-			    "Failed to execute GetModelsTask"
-			            + " - Could not find a model with the name "
-			            + strCurrentModelName
-			            + " in the database when trying to get the references.");
+            //check if the model is in the hash map
+            if (_xmlModelHerarichyMap.containsKey(strCurrentModelName)) {
+                //return modelContent from the hash map.
+                return (String) _xmlModelHerarichyMap.get(strCurrentModelName);
+            }
 
-		}
+            //check if the xml container was instantiated properly
+            if (_xmlContainer == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetModelsTask"
+                                + " - the XmlContainer object was not instantiated properly");
+            }
 
-		//set the content of the current model to the content of the model fetched from the database
-		strCurrentModelContent = currentDbModel.getContentAsString();
+            //variable to hold the current model fetched from the database.
+            XmlDocument currentDbModel;
 
-	    } catch (XmlException e) {
-		throw new DBExecutionException(
-		        "Failed to execute GetModelsTask - " + e.getMessage(),
-		        e);
-	    }
+            //variable to store the model content.
+            String strCurrentModelContent = "";
 
-	    //check if the current node has children
-	    if (p_currentNode.hasChildNodes()) {
+            try {
 
-		//get the list of children.
-		NodeList children = p_currentNode.getChildNodes();
+                //use the container to get a handle on the document that represents the model. 
+                currentDbModel = _xmlContainer.getDocument(strCurrentModelName);
 
-		//loop through the children and get the element nodes
-		for (int i = 0; i < children.getLength(); i++) {
+                //if the model is not in the database, throw an exception.
+                if (currentDbModel == null) {
+                    throw new DBExecutionException(
+                            "Failed to execute GetModelsTask"
+                                    + " - Could not find a model with the name "
+                                    + strCurrentModelName
+                                    + " in the database when trying to get the references.");
 
-		    //check if the child node at this index is an element node
-		    if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                }
 
-			//get the node from the list
-			Node child = children.item(i);
+                //set the content of the current model to the content of the model fetched from the database
+                strCurrentModelContent = currentDbModel.getContentAsString();
 
-			//call this method recursively to get the content of the child node
-			String strChildContent = _buildCompleteModel(child);
+            } catch (XmlException e) {
+                throw new DBExecutionException(
+                        "Failed to execute GetModelsTask - " + e.getMessage(),
+                        e);
+            }
 
-			//remove the unnecessary xml headers.
-			strChildContent = strChildContent
-			        .substring(strChildContent.indexOf("<entity"));
+            //check if the current node has children
+            if (p_currentNode.hasChildNodes()) {
 
-			//get the string representation of the parent entity in the child.
-			String strChildNode = _getParentEntityNodeAsString(strChildContent);
+                //get the list of children.
+                NodeList children = p_currentNode.getChildNodes();
 
-			//if the child node was returned properly
-			if(strChildNode != null && strChildNode.length() > 0) {
-			
-			    //replace the nodes that references the child in the content of the parent with the child model
-			    strCurrentModelContent = strCurrentModelContent
-			    	.replaceAll(strChildNode, strChildContent);
-			}
+                //loop through the children and get the element nodes
+                for (int i = 0; i < children.getLength(); i++) {
 
-			//make sure that each xml tag is in one line.
-			//Ptolemy will not recognize the xml file if the tags are in the same line.
-			strCurrentModelContent = strCurrentModelContent
-			        .replaceAll(">", ">\n");
-		    }
+                    //check if the child node at this index is an element node
+                    if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
 
-		}
+                        //get the node from the list
+                        Node child = children.item(i);
 
-		//add the current model to the hash map (name, content)
-		_xmlModelHerarichyMap.put(strCurrentModelName,
-		        strCurrentModelContent);
+                        //call this method recursively to get the content of the child node
+                        String strChildContent = _buildCompleteModel(child);
 
-		//return the model content
-		return strCurrentModelContent;
-	    }
+                        //remove the unnecessary xml headers.
+                        strChildContent = strChildContent
+                                .substring(strChildContent.indexOf("<entity"));
 
-	    // if there are no children
-	    else {
+                        //get the string representation of the parent entity in the child.
+                        String strChildNode = _getParentEntityNodeAsString(strChildContent);
 
-		//add the current model to the hash map (name, content)
-		_xmlModelHerarichyMap.put(strCurrentModelName,
-		        strCurrentModelContent);
+                        //if the child node was returned properly
+                        if (strChildNode != null && strChildNode.length() > 0) {
 
-		//return the model content
-		return strCurrentModelContent;
-	    }
-	}
-	//if the name was not extracted from the node, then return empty string.
-	else {
-	    return "";
-	}
+                            //replace the nodes that references the child in the content of the parent with the child model
+                            strCurrentModelContent = strCurrentModelContent
+                                    .replaceAll(strChildNode, strChildContent);
+                        }
+
+                        //make sure that each xml tag is in one line.
+                        //Ptolemy will not recognize the xml file if the tags are in the same line.
+                        strCurrentModelContent = strCurrentModelContent
+                                .replaceAll(">", ">\n");
+                    }
+
+                }
+
+                //add the current model to the hash map (name, content)
+                _xmlModelHerarichyMap.put(strCurrentModelName,
+                        strCurrentModelContent);
+
+                //return the model content
+                return strCurrentModelContent;
+            }
+
+            // if there are no children
+            else {
+
+                //add the current model to the hash map (name, content)
+                _xmlModelHerarichyMap.put(strCurrentModelName,
+                        strCurrentModelContent);
+
+                //return the model content
+                return strCurrentModelContent;
+            }
+        }
+        //if the name was not extracted from the node, then return empty string.
+        else {
+            return "";
+        }
     }
 
-
+    /**
+     * Check if the connection is alive 
+     * @throws DBConnectionException - when the connection is not alive
+     * 
+     */
+    private void _checkConnectionAlive() throws DBConnectionException {
+        if (!isConnectionAlive)
+            throw new DBConnectionException(
+                    "This connection is not alive anymore. It has been closed or aborted.");
+    }
 
     /**
      * Close the environment and invoke delete on the container 
-     * that closes the connection and releases the resources 
+     * that closes the connection and releases the resources. 
      * @throws DBConnectionException
      */
     private void _cleanUp() throws DBConnectionException {
-	try {
-	    if (_xmlContainer != null)
-		_xmlContainer.delete();
+        try {
+            if (_xmlContainer != null) {
+                _xmlContainer.close();
+                _xmlContainer.delete();
+            }
+            if (_xmlTransaction != null)
+                _xmlTransaction.delete();
 
-	    if (_xmlTransaction != null)
-		_xmlTransaction.delete();
+            if (_environment != null)
+                _environment.close();
 
-	    if (_environment != null)
-		_environment.close();
+        } catch (DatabaseException e) {
 
-	} catch (DatabaseException e) {
+            throw new DBConnectionException(
+                    "Database transaction could not be committed - "
+                            + e.getMessage(), e);
 
-	    throw new DBConnectionException(
-		    "Database transaction could not be committed - "
-		            + e.getMessage(), e);
-
-	}
+        }
     }
 
     /**
@@ -613,74 +707,73 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBExecutionException thrown if there is an execution exception.
      */
     private String _getModelReferences(String p_strModelName)
-	    throws DBExecutionException {
-	String strReference = "";
+            throws DBExecutionException {
+        String strReference = "";
 
-	try {
+        try {
 
-	    //check if the xml container was instantiated properly
-	    if (_xmlContainer == null) {
-		throw new DBExecutionException(
-		        "Failed to execute GetModelsTask"
-		                + " - the XmlContainer object was not instantiated properly");
-	    }
+            //check if the xml container was instantiated properly
+            if (_xmlContainer == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetModelsTask"
+                                + " - the XmlContainer object was not instantiated properly");
+            }
 
-	    //check if the xml manager was instantiated properly
-	    if (_xmlManager == null) {
-		throw new DBExecutionException(
-		        "Failed to execute GetModelsTask"
-		                + " - the XmlManager object was not instantiated properly");
-	    }
+            //check if the xml manager was instantiated properly
+            if (_xmlManager == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetModelsTask"
+                                + " - the XmlManager object was not instantiated properly");
+            }
 
-	    //get a query context.
-	    XmlQueryContext xmlContext = _xmlManager.createQueryContext();
+            //get a query context.
+            XmlQueryContext xmlContext = _xmlManager.createQueryContext();
 
-	    //check if the xml context was created properly
-	    if (xmlContext == null) {
-		throw new DBExecutionException(
-		        "Failed to execute GetModelsTask"
-		                + " - could not create an xml query context from the xml manager.");
-	    }
+            //check if the xml context was created properly
+            if (xmlContext == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetModelsTask"
+                                + " - could not create an xml query context from the xml manager.");
+            }
 
-	    //generate the query.
-	    String strQuery = "collection('" + _xmlContainer.getName()
-		    + "')/Reference/entity[@name='" + p_strModelName + "']";
+            //generate the query.
+            String strQuery = "collection('" + _xmlContainer.getName()
+                    + "')/Reference/entity[@name='" + p_strModelName + "']";
 
-	    // prepare the query for execution.
-	    XmlQueryExpression queryExpression = _xmlManager.prepare(strQuery,
-		    xmlContext);
+            // prepare the query for execution.
+            XmlQueryExpression queryExpression = _xmlManager.prepare(strQuery,
+                    xmlContext);
 
-	    //check if the xml expression was created properly
-	    if (queryExpression == null) {
-		throw new DBExecutionException(
-		        "Failed to execute GetModelsTask"
-		                + " - could not create an xml query expression from the xml manager.");
-	    }
+            //check if the xml expression was created properly
+            if (queryExpression == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetModelsTask"
+                                + " - could not create an xml query expression from the xml manager.");
+            }
 
-	    //execute the query and return the results.
-	    XmlResults results = queryExpression.execute(xmlContext);
+            //execute the query and return the results.
+            XmlResults results = queryExpression.execute(xmlContext);
 
-	    //if the results are not null and not empty
-	    if (results != null && results.size() > 0) {
-		//get the first item in the results.
-		XmlValue result = results.next();
+            //if the results are not null and not empty
+            if (results != null && results.size() > 0) {
+                //get the first item in the results.
+                XmlValue result = results.next();
 
-		//get the value of the first item in string format.
-		strReference = result.asString();
-	    }
+                //get the value of the first item in string format.
+                strReference = result.asString();
+            }
 
-	    //return the result.
-	    return strReference;
+            //return the result.
+            return strReference;
 
-	} catch (XmlException e) {
-	    throw new DBExecutionException(
-		    "Failed to retrieve the references for the given model - "
-		            + e.getMessage(), e);
-	}
+        } catch (XmlException e) {
+            throw new DBExecutionException(
+                    "Failed to retrieve the references for the given model - "
+                            + e.getMessage(), e);
+        }
 
     }
-    
-    
+
     /**
      * return the upper level entity node in a model content that is being passed to it as a string.
      * 
@@ -689,38 +782,36 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception DBExecutionException Thrown if there is a problem executing the task.
      */
     private static String _getParentEntityNodeAsString(String strModelContent)
-	    throws DBExecutionException {
-	
-	//the string result of the node.
-	String strNode = null;
+            throws DBExecutionException {
 
-	try {
+        //the string result of the node.
+        String strNode = null;
 
-	    //if the model content is null or empty
-	    if (strModelContent == null || strModelContent.length() == 0) {
-		throw new DBExecutionException(
-		        "Faild to extract entity node from the xml content - "
-		                + "content sent is empty or null");
-	    }
+        try {
 
-	    //extract the first entity node in the content and set it to the strNode variable
-	    strNode = strModelContent.substring(strModelContent
-		    .indexOf("<entity"), strModelContent.indexOf(">") + 1);
+            //if the model content is null or empty
+            if (strModelContent == null || strModelContent.length() == 0) {
+                throw new DBExecutionException(
+                        "Faild to extract entity node from the xml content - "
+                                + "content sent is empty or null");
+            }
 
-	    //replace the closing of the entity with the proper closing.
-	    strNode = strNode.replace(">", "/>");
+            //extract the first entity node in the content and set it to the strNode variable
+            strNode = strModelContent.substring(strModelContent
+                    .indexOf("<entity"), strModelContent.indexOf(">") + 1);
 
-	} catch (IndexOutOfBoundsException e) {
-	    throw new DBExecutionException(
-		    "Faild to extract entity node from the xml content - "
-		            + e.getMessage(), e);
-	}
-	//return the result.
-	return strNode;
+            //replace the closing of the entity with the proper closing.
+            strNode = strNode.replace(">", "/>");
+
+        } catch (IndexOutOfBoundsException e) {
+            throw new DBExecutionException(
+                    "Faild to extract entity node from the xml content - "
+                            + e.getMessage(), e);
+        }
+        //return the result.
+        return strNode;
     }
-    
-    
-    
+
     /**
      * Parse the xml string that is passed to it and returns the upper node of that xml.
      * 
@@ -729,71 +820,134 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBExecutionException used as wrapper to the parser exceptions
      */
     private Node _parseXML(String p_strXML) throws DBExecutionException {
-	
-	
-	//if the xml to be parsed is null or empty throw an exception
-	if (p_strXML == null || p_strXML.length() == 0) {
-	    throw new DBExecutionException(
-		    "Faild to parse the xml - "
-		    + "content sent is empty or null");
-	    }
-	    
-	
-	//document builder object used to construct parse the string.
-	DocumentBuilder docBuilder;
 
-	//the top most node in the parsed string.
-	Node firstNode = null;
+        //if the xml to be parsed is null or empty throw an exception
+        if (p_strXML == null || p_strXML.length() == 0) {
+            throw new DBExecutionException("Faild to parse the xml - "
+                    + "content sent is empty or null");
+        }
 
-	//a factory document used to create an instance of document builder.
-	DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
-	        .newInstance();
+        //document builder object used to construct parse the string.
+        DocumentBuilder docBuilder;
 
-	//check if the document builder factory was created properly.
-	if(docBuilderFactory == null) {
-	    throw new DBExecutionException(
-		    "Faild to parse the xml - "
-		    + "could not create a new instance of DocumentBuilderFactory.");
-	}
-	//configure the builder factory to ignore the element content whites paces.
-	docBuilderFactory.setIgnoringElementContentWhitespace(true);
+        //the top most node in the parsed string.
+        Node firstNode = null;
 
-	try {
+        //a factory document used to create an instance of document builder.
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
+                .newInstance();
 
-	    //get an instance of document builder using the factory.
-	    docBuilder = docBuilderFactory.newDocumentBuilder();
-	    
-	    //check if the document builder was created properly.
-	    if(docBuilder == null) {
-		    throw new DBExecutionException(
-			    "Faild to parse the xml - "
-			    + "could not create a new instance of DocumentBuilder.");
-		}
+        //check if the document builder factory was created properly.
+        if (docBuilderFactory == null) {
+            throw new DBExecutionException(
+                    "Faild to parse the xml - "
+                            + "could not create a new instance of DocumentBuilderFactory.");
+        }
+        //configure the builder factory to ignore the element content whites paces.
+        docBuilderFactory.setIgnoringElementContentWhitespace(true);
 
-	    //create an input source object. This is done because the document builder does not accept string as an input
-	    //The input source will be as a wrapper to the string.
-	    InputSource is = new InputSource();
-	    
-	    //set the character stream for the input source to the xml string 
-	    is.setCharacterStream(new StringReader(p_strXML));
+        try {
 
-	    //parse the input source and get the first node in the xml.
-	    firstNode = docBuilder.parse(is);
+            //get an instance of document builder using the factory.
+            docBuilder = docBuilderFactory.newDocumentBuilder();
 
-	} catch (ParserConfigurationException e) {
+            //check if the document builder was created properly.
+            if (docBuilder == null) {
+                throw new DBExecutionException("Faild to parse the xml - "
+                        + "could not create a new instance of DocumentBuilder.");
+            }
 
-	    throw new DBExecutionException("Failed to parse the model - "
-		    + e.getMessage(), e);
+            //create an input source object. This is done because the document builder does not accept string as an input
+            //The input source will be as a wrapper to the string.
+            InputSource is = new InputSource();
 
-	} catch (SAXException e) {
-	    throw new DBExecutionException("Failed to parse the model - "
-		    + e.getMessage(), e);
-	} catch (IOException e) {
-	    throw new DBExecutionException("Failed to parse the model - "
-		    + e.getMessage(), e);
-	}
+            //set the character stream for the input source to the xml string 
+            is.setCharacterStream(new StringReader(p_strXML));
 
-	return firstNode;
+            //parse the input source and get the first node in the xml.
+            firstNode = docBuilder.parse(is);
+
+        } catch (ParserConfigurationException e) {
+
+            throw new DBExecutionException("Failed to parse the model - "
+                    + e.getMessage(), e);
+
+        } catch (SAXException e) {
+            throw new DBExecutionException("Failed to parse the model - "
+                    + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new DBExecutionException("Failed to parse the model - "
+                    + e.getMessage(), e);
+        }
+
+        return firstNode;
+    }
+
+    /**
+     * Create the attribute sub-query for the given attribute.
+     *
+     * @param attribute - Attribute for which the sub-query
+     * needs to be created.
+     *
+     * @return - Sub-query for the given attribute.
+     * @throws IllegalActionException
+     */
+    private String _createAttributeClause(Variable attribute)
+            throws IllegalActionException {
+
+        StringBuffer attributesQuery = new StringBuffer();
+
+        attributesQuery.append("$const/@name=\"").append(attribute.getName())
+                .append("\"");
+
+        attributesQuery.append(" and ");
+
+        attributesQuery.append("$const/@value[contains(.,").append(
+                attribute.getToken().toString()).append(")]");
+
+        attributesQuery.append(" and ");
+
+        attributesQuery.append("$const/@class=\"").append(
+                attribute.getClassName()).append("\"");
+
+        return attributesQuery.toString();
+
+    }
+
+    /**
+     * Execute the attribute search on the database for
+     * the given attribute clause.
+     *
+     * @param attributeClause - Attribute sub-query for which
+     * search needs to be done.
+     *
+     * @return - List of models matching the attribute search.
+     *
+     * @throws XmlException - When there is an error while executing query.
+     */
+    private ArrayList<String> _executeSingleAttributeMatch(
+            String attributeClause) throws XmlException {
+
+        ArrayList<String> modelsList = new ArrayList<String>();
+
+        String attributeSearchQuery = "for $const in collection(\""
+                + _params.getContainerName() + "\")/entity/property where "
+                + attributeClause + " " + " return base-uri($const)";
+
+        //System.out.println("attributeSearchQuery - " + attributeSearchQuery);
+
+        XmlQueryContext context = _xmlManager.createQueryContext();
+        context.setEvaluationType(XmlQueryContext.Lazy);
+
+        XmlResults results = _xmlManager.query(attributeSearchQuery, context,
+                null);
+
+        XmlValue value = results.next();
+        while (value != null) {
+            modelsList.add(value.asString());
+            value = results.next();
+        }
+        return modelsList;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -840,4 +994,5 @@ public class OracleXMLDBConnection implements DBConnection {
      * Denote whether the database connection is active or not
      */
     private boolean isConnectionAlive;
+
 }

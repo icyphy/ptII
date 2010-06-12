@@ -2,6 +2,7 @@ package ptdb.kernel.database;
 
 import java.util.ArrayList;
 
+import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
@@ -28,13 +29,13 @@ public interface DBConnection {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
-     * Abort the connection to the database and rollback the transaction
+     * Abort the connection to the database and roll back the transaction.
      * @throws DBConnectionException
      */
     public void abortConnection() throws DBConnectionException;
 
     /**
-     * Close the connection to the database and commit the transaction
+     * Close the connection to the database and commit the transaction.
      * @throws DBConnectionException
      */
     public void closeConnection() throws DBConnectionException;
@@ -52,11 +53,23 @@ public interface DBConnection {
     public void executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException;
     
+    /**
+     * Search models that contain the given attributes in the database.
+     * 
+     * @param task Task that contains a list of attributes that 
+     * need to be searched in the database.
+     * 
+     * @return List of models that contain the attributes.
+     * 
+     * @throws DBExecutionException - When the database encounters error while searching.
+     */
+    public ArrayList<XMLDBModel> executeAttributeSearchTask(AttributeSearchTask task)
+    throws DBExecutionException;
     
     /**
-     * Get the attributes defined from the database 
-     * @param task - Define the criteria to get the attribute   
-     * @return
+     * Get the attributes defined from the database. 
+     * @param task The criteria to get the attribute.   
+     * @return List of attributes stored in the database.
      * @throws DBExecutionException
      */
     public ArrayList executeGetAttributesTask(GetAttributesTask task)
@@ -69,7 +82,7 @@ public interface DBConnection {
      *          The task to be completed.  In this case, GetModelsTask. 
      *          This will tell the DB layer to return the specified model.
      * @return XMLDBModel
-     *          This object will be populated with the model's MoML string
+     *          This object will be populated with the model's MoML string.
      * @throws DBConnectionException
      */
     public XMLDBModel executeGetModelsTask(GetModelsTask task)
