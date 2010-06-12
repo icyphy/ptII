@@ -22,6 +22,7 @@ import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -102,8 +103,7 @@ public class OracleXMLDBConnection implements DBConnection {
             _xmlContainer = _xmlManager.openContainer(_params
                     .getContainerName());
 
-            if (_params.isTransactionRequired())
-            {
+            if (_params.isTransactionRequired()) {
                 _xmlTransaction = _xmlManager.createTransaction();
                 _isTransactionActive = true;
             }
@@ -266,6 +266,20 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
+     * Fetch the parent model hierarchies for the given models.
+     * 
+     * @param task - Task that contains the list of models.
+     * @return - List of models that contain the parent hierarchies.
+     * @throws DBExecutionException - When the database encounters 
+     * error while searching.
+     */
+    public ArrayList<XMLDBModel> executeFetchHierarchyTask(GraphSearchTask task)
+            throws DBExecutionException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /**
      * 
      */
     public ArrayList executeGetAttributesTask(GetAttributesTask task)
@@ -363,9 +377,13 @@ public class OracleXMLDBConnection implements DBConnection {
      * @param task Task that contains a list of attributes that 
      * need to be searched in the database.
      * 
-     * @return List of models that contain the attributes.
+     * @return List of models that contain the attributes; 
+     * Empty list if the search returns zero results; and 
+     * Null list if the search is not performed due to empty 
+     * or invalid search criteria.
      * 
-     * @throws DBExecutionException - When the database encounters error while searching.
+     * @throws DBExecutionException - When the database encounters 
+     * error while searching.
      */
     public ArrayList<XMLDBModel> executeAttributeSearchTask(
             AttributeSearchTask task) throws DBExecutionException {
@@ -401,6 +419,9 @@ public class OracleXMLDBConnection implements DBConnection {
                                 "Error while executing GetAttributesSearch - "
                                         + e.getMessage(), e);
                     }
+                    if (matchingModelNamesList != null
+                            && matchingModelNamesList.size() == 0)
+                        return finalModelsList;
                 }
             }
 
@@ -418,6 +439,20 @@ public class OracleXMLDBConnection implements DBConnection {
                 }
             }
         }
+        return null;
+    }
+
+    /**
+     * Search models that contain given graphical pattern in the database.
+     * 
+     * @param task - Task that contains the graph search criteria
+     * @return - List of models that match the given search criteria.
+     * @throws DBExecutionException - When the database encounters 
+     * error while searching.
+     */
+    public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
+            throws DBExecutionException {
+        // TODO Auto-generated method stub
         return null;
     }
 
@@ -680,8 +715,8 @@ public class OracleXMLDBConnection implements DBConnection {
     private void _checkConnectionAlive() throws DBConnectionException {
         if (!_isConnectionAlive)
             throw new DBConnectionException(
-                    "This connection is not alive anymore. " +
-                    "It has been closed.");
+                    "This connection is not alive anymore. "
+                            + "It has been closed.");
     }
 
     /**
@@ -692,8 +727,8 @@ public class OracleXMLDBConnection implements DBConnection {
     private void _checkTransactionActive() throws DBConnectionException {
         if (!_isTransactionActive)
             throw new DBConnectionException(
-                    "The transaction is no longer active. " +
-                    "It has already been committed or aborted.");
+                    "The transaction is no longer active. "
+                            + "It has already been committed or aborted.");
     }
 
     /**

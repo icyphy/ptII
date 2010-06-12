@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateModelTask;
+import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -28,7 +30,7 @@ public interface DBConnection {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Abort the connection to the database and roll back the transaction.
      * @throws DBConnectionException
@@ -47,7 +49,7 @@ public interface DBConnection {
      * transaction in the database.
      */
     public void commitConnection() throws DBConnectionException;
-    
+
     /**
      * Execute the necessary commands to create a new model in the database according
      * to the model specification given in the task parameter
@@ -59,7 +61,18 @@ public interface DBConnection {
      */
     public void executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException;
-    
+
+    /**
+     * Fetch the parent model hierarchies for the given models.
+     * 
+     * @param task - Task that contains the list of models.
+     * @return - List of models that contain the parent hierarchies.
+     * @throws DBExecutionException - When the database encounters 
+     * error while searching.
+     */
+    public ArrayList<XMLDBModel> executeFetchHierarchyTask(
+            FetchHierarchyTask task) throws DBExecutionException;
+
     /**
      * Search models that contain the given attributes in the database.
      * 
@@ -70,9 +83,9 @@ public interface DBConnection {
      * 
      * @throws DBExecutionException - When the database encounters error while searching.
      */
-    public ArrayList<XMLDBModel> executeAttributeSearchTask(AttributeSearchTask task)
-    throws DBExecutionException;
-    
+    public ArrayList<XMLDBModel> executeAttributeSearchTask(
+            AttributeSearchTask task) throws DBExecutionException;
+
     /**
      * Get the attributes defined from the database. 
      * @param task The criteria to get the attribute.   
@@ -94,7 +107,18 @@ public interface DBConnection {
      */
     public XMLDBModel executeGetModelsTask(GetModelsTask task)
             throws DBExecutionException;
-    
+
+    /**
+     * Search models that contain given graphical pattern in the database.
+     * 
+     * @param task - Task that contains the graph search criteria.
+     * @return - List of models that match the given search criteria.
+     * @throws DBExecutionException - When the database encounters 
+     * error while searching.
+     */
+    public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
+            throws DBExecutionException;
+
     /**
      * Execute the necessary commands to save/update a model in the database according
      * to the model specification given in the task parameter

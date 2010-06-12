@@ -6,6 +6,7 @@ import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
@@ -85,7 +86,7 @@ public class AsynchronousDBConnection implements DBConnection {
             }
         }
     }
-    
+
     /**
      * Commit the transaction running over the connection.
      * @throws DBConnectionException - When there is a problem while committing 
@@ -135,6 +136,23 @@ public class AsynchronousDBConnection implements DBConnection {
     }
 
     /**
+     * Fetch the parent model hierarchies is 
+     * not supported by the asynchronous connection.
+     * Use a synchronous connection for that.
+     * 
+     * @param task - Task that contains the list of models.
+     * @return - List of models that contain the parent hierarchies.
+     * @throws DBExecutionException - When the database encounters 
+     * error while searching.
+     */
+    public ArrayList<XMLDBModel> executeFetchHierarchyTask(GraphSearchTask task)
+            throws DBExecutionException {
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeFetchHierarchyTask is "
+                        + "not supported by this type of DBConnection");
+    }
+
+    /**
      * Get Attributes Task is not supported by the asynchronous connection.
      * Use a synchronous connection for that.
      * @param task
@@ -163,6 +181,22 @@ public class AsynchronousDBConnection implements DBConnection {
             throws DBExecutionException {
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeGetModels "
+                        + "is not supported by this type of DBConnection");
+    }
+
+    /**
+     * Search for graph is not supported by the asynchronous connection.
+     * Use a synchronous connection for that.
+     * 
+     * @param task - Task that contains the graph search criteria.
+     * @return - List of models that match the given search criteria.
+     * @throws DBExecutionException - When the database encounters 
+     * error while searching.
+     */
+    public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
+            throws DBExecutionException {
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeGraphSearchTask "
                         + "is not supported by this type of DBConnection");
     }
 
