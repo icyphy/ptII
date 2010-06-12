@@ -326,8 +326,10 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
                     name = name + '#' + i;
                 }
 
-                code.append(_compositeActorAdapter.getReference(name, false) + " = ");
-                code.append(_compositeActorAdapter.getReference("@" + name, false));
+                code.append(_compositeActorAdapter.getReference(name, false)
+                        + " = ");
+                code.append(_compositeActorAdapter.getReference("@" + name,
+                        false));
                 code.append(";" + _eol);
             }
         }
@@ -356,7 +358,11 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
             Actor actor = (Actor) actors.next();
             NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter(actor);
-            code.append(_generateVariableDeclaration(adapterObject));
+            if (actor instanceof CompositeActor
+                    && ((CompositeActor) actor).isOpaque())
+                code.append(adapterObject.generateVariableDeclaration());
+            else
+                code.append(_generateVariableDeclaration(adapterObject));
         }
 
         return code.toString();
@@ -386,6 +392,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
             Actor actor = (Actor) actors.next();
             NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter(actor);
+            code.append(adapterObject.generateVariableInitialization());
             code.append(_generateVariableInitialization(adapterObject));
         }
 
