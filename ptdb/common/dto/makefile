@@ -58,7 +58,8 @@ JSRCS = \
 	TaskQueue.java \
 	XMLDBModel.java \
 	AttributeSearchTask.java \
-	FetchHierarchyTask.java
+	FetchHierarchyTask.java \
+	GraphSearchTask.java
 
 EXTRA_SRCS =	$(JSRCS)
 
