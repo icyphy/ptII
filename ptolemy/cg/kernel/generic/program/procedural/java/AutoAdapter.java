@@ -178,8 +178,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 parameterValue = ((Variable)parameter).getToken().toString();
                 if (((Variable)parameter).isStringMode()) {
                     if (parameterValue.startsWith("\"") && parameterValue.endsWith("\"")) {
-                        # This is needed by
-                        # $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml 
+                        // This is needed by
+                        // $PTII/bin/ptcg -language java $PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml 
                         parameterValue = parameterValue.substring(1, parameterValue.length() - 1);
                     }
                 }
@@ -406,8 +406,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 int sinks = outputPort.numberOfSinks();
                 for (int i = 0; i < sinks; i++) {
                     code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort Sink " + i + " type: " + type + " name: " + name));
-
-                    System.out.println("AutoAdapter: xxxx" +  _generateGetInside(name, name + "Sink" + i, type, i));
                     code.append(_generateGetInside(name, name + "Sink" + i, type, i));
                 }
                 code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort Done"));
