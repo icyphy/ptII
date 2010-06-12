@@ -112,7 +112,7 @@ public class TestOracleXMLDBConnection {
             assertTrue(
                     "Test1 - _xmlTransaction not initialized when transaction required was true",
                     conn.toString().contains("_xmlTransaction:Initialized"));
-
+            conn.abortConnection();
             conn.closeConnection();
         } catch (DBConnectionException e) {
 
@@ -164,7 +164,7 @@ public class TestOracleXMLDBConnection {
             OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
 
             fail("Test 3 - No exception thrown when there was an error in path");
-
+            conn.abortConnection();
             conn.closeConnection();
         } catch (DBConnectionException e) {
 
@@ -189,7 +189,7 @@ public class TestOracleXMLDBConnection {
             OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
 
             fail("Test 4 - No exception thrown when there was an error in path");
-
+            conn.abortConnection();
             conn.closeConnection();
         } catch (DBConnectionException e) {
 
@@ -214,7 +214,7 @@ public class TestOracleXMLDBConnection {
             OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
 
             fail("Test 5 - No exception thrown when there was an error in path");
-
+            conn.abortConnection();
             conn.closeConnection();
         } catch (DBConnectionException e) {
 
@@ -296,6 +296,7 @@ public class TestOracleXMLDBConnection {
         }
 
         try {
+            conn.abortConnection();
             conn.closeConnection();
 
         } catch (DBConnectionException e) {
@@ -409,7 +410,7 @@ public class TestOracleXMLDBConnection {
             assertTrue("Search was performed without attributes list.",
                     modelsList == null);
 
-            //conn.closeConnection();
+            conn.closeConnection();
         } catch (DBExecutionException e) {
             fail("Unexpected Exception - " + e.getMessage());
             e.printStackTrace();

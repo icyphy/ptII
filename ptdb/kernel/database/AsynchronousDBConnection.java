@@ -61,12 +61,6 @@ public class AsynchronousDBConnection implements DBConnection {
      */
     public void closeConnection() throws DBConnectionException {
 
-        /**
-         * All tasks added denotes that the tasks have been added 
-         * and processing is successfully completed. 
-         */
-        _taskQueue.setAllTasksAdded();
-
         boolean hasExecutionCompleted = false;
         int maxWait = 1200;
         /**
@@ -90,6 +84,19 @@ public class AsynchronousDBConnection implements DBConnection {
                 e.printStackTrace();
             }
         }
+    }
+    
+    /**
+     * Commit the transaction running over the connection.
+     * @throws DBConnectionException - When there is a problem while committing 
+     * transaction in the database.
+     */
+    public void commitConnection() throws DBConnectionException {
+        /**
+         * All tasks added denotes that the tasks have been added 
+         * and processing is successfully completed. 
+         */
+        _taskQueue.setAllTasksAdded();
     }
 
     /**

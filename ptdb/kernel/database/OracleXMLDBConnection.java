@@ -103,9 +103,12 @@ public class OracleXMLDBConnection implements DBConnection {
                     .getContainerName());
 
             if (_params.isTransactionRequired())
+            {
                 _xmlTransaction = _xmlManager.createTransaction();
+                _isTransactionActive = true;
+            }
 
-            isConnectionAlive = true;
+            _isConnectionAlive = true;
 
         } catch (FileNotFoundException e) {
 
@@ -133,24 +136,41 @@ public class OracleXMLDBConnection implements DBConnection {
     public void abortConnection() throws DBConnectionException {
         try {
             _checkConnectionAlive();
+
             if (_xmlTransaction != null) {
+                _checkTransactionActive();
                 _xmlTransaction.abort();
-                _xmlTransaction.delete();
+                _isTransactionActive = false;
             }
-
-            _cleanUp();
-
         } catch (XmlException e) {
 
-            _cleanUp();
             throw new DBConnectionException(
                     "Database transaction could not be aborted - "
                             + e.getMessage(), e);
 
-        } finally {
-            isConnectionAlive = false;
         }
+    }
 
+    /**
+     * Commit the transaction running over the connection.
+     * @throws DBConnectionException - When there is a problem while committing 
+     * transaction in the database.
+     */
+    public void commitConnection() throws DBConnectionException {
+        try {
+
+            _checkConnectionAlive();
+            if (_xmlTransaction != null) {
+                _checkTransactionActive();
+                _xmlTransaction.commit();
+                _isTransactionActive = false;
+            }
+
+        } catch (XmlException e) {
+            throw new DBConnectionException(
+                    "Database transaction could not be committed - "
+                            + e.getMessage(), e);
+        }
     }
 
     /** 
@@ -161,20 +181,10 @@ public class OracleXMLDBConnection implements DBConnection {
     public void closeConnection() throws DBConnectionException {
         try {
             _checkConnectionAlive();
-            if (_xmlTransaction != null)
-                _xmlTransaction.commit();
-
             _cleanUp();
-
-        } catch (XmlException e) {
-
-            _cleanUp();
-            throw new DBConnectionException(
-                    "Database transaction could not be committed - "
-                            + e.getMessage(), e);
 
         } finally {
-            isConnectionAlive = false;
+            _isConnectionAlive = false;
         }
     }
 
@@ -346,7 +356,7 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
     }
-    
+
     /**
      * Search models that contain the given attributes in the database.
      * 
@@ -664,13 +674,26 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Check if the connection is alive 
-     * @throws DBConnectionException - when the connection is not alive
+     * @throws DBConnectionException - When the connection is not alive
      * 
      */
     private void _checkConnectionAlive() throws DBConnectionException {
-        if (!isConnectionAlive)
+        if (!_isConnectionAlive)
             throw new DBConnectionException(
-                    "This connection is not alive anymore. It has been closed or aborted.");
+                    "This connection is not alive anymore. " +
+                    "It has been closed.");
+    }
+
+    /**
+     * Check if the transaction is active 
+     * @throws DBConnectionException - When the connection is not alive
+     * 
+     */
+    private void _checkTransactionActive() throws DBConnectionException {
+        if (!_isTransactionActive)
+            throw new DBConnectionException(
+                    "The transaction is no longer active. " +
+                    "It has already been committed or aborted.");
     }
 
     /**
@@ -680,18 +703,20 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     private void _cleanUp() throws DBConnectionException {
         try {
+
+            if (_xmlTransaction != null)
+                _xmlTransaction.delete();
+
             if (_xmlContainer != null) {
                 _xmlContainer.close();
                 _xmlContainer.delete();
             }
-            if (_xmlTransaction != null)
-                _xmlTransaction.delete();
 
-            if (_environment != null)
+            /*if (_environment != null)
                 _environment.close();
-
+            */
         } catch (DatabaseException e) {
-
+            e.printStackTrace();
             throw new DBConnectionException(
                     "Database transaction could not be committed - "
                             + e.getMessage(), e);
@@ -958,6 +983,15 @@ public class OracleXMLDBConnection implements DBConnection {
      *  required for creating a database connection. 
      */
     private Environment _environment;
+    /**
+     * Denote whether the database connection is active or not
+     */
+    private boolean _isConnectionAlive;
+
+    /**
+     * Denote whether the database connection is active or not
+     */
+    private boolean _isTransactionActive;
 
     /**
      * This object contains the parameters like path, container name etc. 
@@ -989,10 +1023,5 @@ public class OracleXMLDBConnection implements DBConnection {
      * connection is requested. 
      */
     private XmlTransaction _xmlTransaction;
-
-    /**
-     * Denote whether the database connection is active or not
-     */
-    private boolean isConnectionAlive;
 
 }

@@ -28,6 +28,7 @@ public interface DBConnection {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
     /**
      * Abort the connection to the database and roll back the transaction.
      * @throws DBConnectionException
@@ -40,6 +41,12 @@ public interface DBConnection {
      */
     public void closeConnection() throws DBConnectionException;
 
+    /**
+     * Commit the transaction running over the connection.
+     * @throws DBConnectionException - When there is a problem while committing 
+     * transaction in the database.
+     */
+    public void commitConnection() throws DBConnectionException;
     
     /**
      * Execute the necessary commands to create a new model in the database according
