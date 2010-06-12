@@ -5,7 +5,7 @@ package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
 
-import ptdb.common.dto.GetAttributesTask;
+import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.DBExecutionException;
 import ptolemy.kernel.util.Attribute;
@@ -43,7 +43,7 @@ public class AttributeSearcher extends AbstractSearcher implements
      * Checks whether the attribute search criteria has been set in
      *  this attribute searcher instance. 
      *  
-     * @return true - if the search criteria has been set<br>
+     * @return true - if the search criteria has been set.<br>
      *         false - if the search criteria has not been set
      */
     @Override
@@ -66,16 +66,13 @@ public class AttributeSearcher extends AbstractSearcher implements
     @Override
     protected void _search() throws DBExecutionException {
 
-        //create the AttributeSearchTask
-        // TODO change to attributeSearchTask later
-        GetAttributesTask attributeSearchTask = new GetAttributesTask();
+        AttributeSearchTask attributeSearchTask = new AttributeSearchTask();
 
-        // TODO set the attribute task value
+        attributeSearchTask.setAttributesList(_attributesCriteria);
         
         // call the executeAttributeTask() method from the DBConnection class
         // set the returned results
-        _currentResults = _dbConnection
-                .executeGetAttributesTask(attributeSearchTask);
+        _currentResults = _dbConnection.executeAttributeSearchTask(attributeSearchTask);
 
         // set the search done 
         _setSearchDone();

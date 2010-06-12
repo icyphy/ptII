@@ -12,9 +12,9 @@ import ptdb.common.dto.XMLDBModel;
 //// SearchResultBuffer
 
 /**
- * <p>The buffer for caching the search results from the previous searchers.<br>
+ * The buffer for caching the search results from the previous searchers.
  * 
- * This class extends class Observable, to implement the Observer pattern.<br>
+ * <p>This class extends class Observable, to implement the Observer pattern.
  * 
  * It requires the SearchResultListener from the GUI layer to implement the 
  * Observer interface, and register in this class to get notified when there are
@@ -29,7 +29,7 @@ import ptdb.common.dto.XMLDBModel;
  */
 public class SearchResultBuffer extends Observable implements ResultHandler {
 
-    /////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
     ////        public methods                                       /////
 
     /**
@@ -50,10 +50,10 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
     }
 
     /**
-     * <p>Called by the other searcher to write the searched results 
-     * to this buffer.<br>
+     * Called by the other searcher to write the searched results 
+     * to this buffer.
      * 
-     * When the results are written to the buffer in this method,
+     * <p>When the results are written to the buffer in this method,
      * the buffer will notify its registered observers. 
      * The SearchResultListener, which should have registered in this buffer
      *  will be called to notify.</p>
@@ -62,19 +62,21 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
      */
     public void handleResults(ArrayList<XMLDBModel> modelResults) {
 
-        // The results are added to the arraylist
+        // only write and notify when the passed results contain results
+        if (modelResults != null && modelResults.size() > 0) {
+            // The results are added to the arraylist
 
-        if (_storedResults == null) {
+            if (_storedResults == null) {
 
-            _storedResults = modelResults;
+                _storedResults = modelResults;
 
-        } else {
-            _storedResults.addAll(modelResults);
+            } else {
+                _storedResults.addAll(modelResults);
+            }
+
+            // notify the observers
+            this.notifyObservers();
         }
-
-        // notify the observers
-        this.notifyObservers();
-
     }
 
     /**
@@ -88,6 +90,27 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
         return _isSearchCancelled;
     }
 
+    /**
+     * Check whether the whole searching is done. 
+     * 
+     * @return true - the searching is done.<br>
+     *          false - the searching is not done yet. 
+     */
+    public boolean isWholeSearchDone() {
+        return _isSearchDone;
+    }
+
+    /**
+     * Notify the search result buffer that the searching is done. 
+     */
+    public void wholeSearchDone() {
+
+        _isSearchDone = true;
+
+        // tell all the registered observers that the searching is done
+        this.notifyObservers();
+    }
+
     /////////////////////////////////////////////////////////////////////////
     ////        private variables                                       /////
 
@@ -98,4 +121,5 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
 
     private boolean _isSearchCancelled = false;
 
+    private boolean _isSearchDone = false;
 }

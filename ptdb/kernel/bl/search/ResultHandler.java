@@ -13,8 +13,8 @@ import ptdb.common.exception.DBExecutionException;
 //// ResultHandler
 
 /**
- * <p>Indicates the implementing classes are 
- * the handlers for dealing with searched models results. </p>
+ * Indicates the implementing classes are 
+ * the handlers for dealing with searched models results.
  * 
  * @author Alek Wang
  * @version $Id$
@@ -46,5 +46,10 @@ public interface ResultHandler {
      *             false - The search hasn't been canceled. 
      */
     public boolean isSearchCancelled();
+
+    /**
+     * Notify the search result buffer that the searching is done. 
+     */
+    public void wholeSearchDone();
 
 }

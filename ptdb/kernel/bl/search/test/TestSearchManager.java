@@ -14,7 +14,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import ptdb.common.dto.GetAttributesTask;
+import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.util.DBConnectorFactory;
@@ -77,15 +77,15 @@ public class TestSearchManager {
         DBConnection dbConnectionMock = PowerMock
                 .createMock(DBConnection.class);
 
-        GetAttributesTask getAttributesTaskMock = PowerMock
-                .createMockAndExpectNew(GetAttributesTask.class);
+        AttributeSearchTask attributeSearchTaskMock = PowerMock
+                .createMockAndExpectNew(AttributeSearchTask.class);
         
         mockStatic(DBConnectorFactory.class);
 
         expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
                 dbConnectionMock);
 
-        expect(dbConnectionMock.executeGetAttributesTask(getAttributesTaskMock))
+        expect(dbConnectionMock.executeAttributeSearchTask(attributeSearchTaskMock))
                 .andReturn(new ArrayList<XMLDBModel>());
 
         dbConnectionMock.closeConnection();

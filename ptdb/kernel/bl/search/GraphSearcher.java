@@ -5,6 +5,7 @@ package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
 
+import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.SearchCriteria;
 
 ////////////////////////////////////////////////////////////////////////////
@@ -24,11 +25,11 @@ import ptdb.common.dto.SearchCriteria;
 public abstract class GraphSearcher extends AbstractSearcher {
 
     /////////////////////////////////////////////////////////////////////////
-    ////        public methods                                       /////
+    ////           public methods                                        ////
 
     /**
-     * <p>A factory which returns the concrete GraphSearcher objects 
-     * according to the complexity of the search criteria from the user. </p>
+     * A factory which returns the concrete GraphSearcher objects 
+     * according to the complexity of the search criteria from the user.
      * 
      * @param searchCriteria The search criteria input by the user. 
      * @return The list that contains the required graph searchers, created 
@@ -42,7 +43,8 @@ public abstract class GraphSearcher extends AbstractSearcher {
 
         // this method will be implemented to add more logic in the 
         // later release 
-        XQueryGraphSearcher xQueryGraphSearcher = new XQueryGraphSearcher();
+        XQueryGraphSearcher xQueryGraphSearcher = new XQueryGraphSearcher(
+                searchCriteria.getDBGraphSearchCriteria());
 
         graphSearchers.add(xQueryGraphSearcher);
 
@@ -54,9 +56,17 @@ public abstract class GraphSearcher extends AbstractSearcher {
 
     @Override
     protected boolean _isSearchCriteriaSet() {
-        // To be implemented in the next release 
+
+        if (_dbGraphSearchCriteria != null) {
+            return true;
+        }
 
         return false;
     }
+
+    /////////////////////////////////////////////////////////////////////////
+    ////        protected variables                                       /////
+
+    protected DBGraphSearchCriteria _dbGraphSearchCriteria;
 
 }
