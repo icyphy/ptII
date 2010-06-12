@@ -3,27 +3,42 @@
  */
 package ptdb.kernel.database.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import ptdb.common.dto.AttributeSearchTask;
+import ptdb.common.dto.DBConnectionParameters;
+import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.DBConnectionException;
+import ptdb.common.exception.DBExecutionException;
+import ptdb.common.util.DBConnectorFactory;
+import ptdb.kernel.database.OracleXMLDBConnection;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 
 import com.sleepycat.dbxml.XmlException;
-
-import ptdb.common.dto.DBConnectionParameters;
-import ptdb.common.exception.DBConnectionException;
-import ptdb.kernel.database.OracleXMLDBConnection;
 
 ///////////////////////////////////////////////////////////////
 //// TestOracleXMLDBConnection
 
 /**
- * Unit Test the OracleXMLDBConnection class.
+ * Unit tests for OracleXMLDBConnection.
  * 
  * @author Ashwini Bijwe
  *
@@ -33,6 +48,8 @@ import ptdb.kernel.database.OracleXMLDBConnection;
  * @Pt.AcceptedRating Red (abijwe)
  *
  */
+@PrepareForTest( { OracleXMLDBConnection.class, TestOracleXMLDBConnection.class })
+@RunWith(PowerMockRunner.class)
 public class TestOracleXMLDBConnection {
 
     //////////////////////////////////////////////////////////////////////
@@ -71,13 +88,15 @@ public class TestOracleXMLDBConnection {
     /**
      * Test method for {@link ptdb.kernel.database.OracleXMLDBConnection#OracleXMLDBConnection(ptdb.common.dto.DBConnectionParameters)}.
      */
+
     @Test
     public void testOracleXMLDBConnection() {
 
         //////////////////////////////////////////////////////////////////////////////////////////
         /**
-         * Correct url, container name and transaction required = true
+         * Correct url, container name and transaction required = true.
          */
+
         String url = "c:\\users\\wini";
         String containerName = "temp.dbxml";
         boolean isTransactionRequired = true;
@@ -98,12 +117,14 @@ public class TestOracleXMLDBConnection {
         } catch (DBConnectionException e) {
 
             fail("Test 1 - " + e.getMessage());
+            e.printStackTrace();
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////        
         /**
-         * Correct url, container name and transaction required = false
+         * Correct url, container name and transaction required = false.
          */
+
         url = "c:\\users\\wini";
         containerName = "temp.dbxml";
         isTransactionRequired = false;
@@ -129,8 +150,9 @@ public class TestOracleXMLDBConnection {
 
         //////////////////////////////////////////////////////////////////////////////////////////
         /**
-         * Incorrect url, correct container name and transaction required = true
+         * Incorrect url, correct container name and transaction required = true.
          */
+
         url = "c:\\users\\error";
         containerName = "temp.dbxml";
         isTransactionRequired = true;
@@ -153,8 +175,9 @@ public class TestOracleXMLDBConnection {
 
         //////////////////////////////////////////////////////////////////////////////////////////
         /**
-         * Correct URL, incorrect container name and transaction required = true
+         * Correct URL, incorrect container name and transaction required = true.
          */
+
         url = "c:\\users\\wini";
         containerName = "nosuchcontainer.dbxml";
         isTransactionRequired = true;
@@ -177,8 +200,9 @@ public class TestOracleXMLDBConnection {
 
         //////////////////////////////////////////////////////////////////////////////////////////
         /**
-         * Incorrect url, container name and transaction required = true
+         * Incorrect url, container name and transaction required = true.
          */
+
         url = "c:\\users\\error";
         containerName = "nosuchcontainer.dbxml";
         isTransactionRequired = true;
@@ -204,6 +228,7 @@ public class TestOracleXMLDBConnection {
     /**
      * Test method for {@link ptdb.kernel.database.OracleXMLDBConnection#abortConnection()}.
      */
+
     @Test
     public void testAbortConnection() {
 
@@ -212,12 +237,12 @@ public class TestOracleXMLDBConnection {
         try {
             conn = createConnWithoutTransaction();
         } catch (DBConnectionException e1) {
-            fail("Faile while creting a connection without transaction");
+            fail("Failed while creting a connection without transaction");
         }
 
         try {
             conn.abortConnection();
-            
+
         } catch (DBConnectionException e) {
             fail("Test 1 - Exception while aborting an open connection without transaction");
         }
@@ -225,27 +250,28 @@ public class TestOracleXMLDBConnection {
         try {
             conn = createConnWithTransaction();
         } catch (DBConnectionException e1) {
-            fail("Faile while creting a connection without transaction");
+            fail("Faile while creating a connection without transaction");
         }
 
         try {
             conn.abortConnection();
-            
+
         } catch (DBConnectionException e) {
             fail("Test 2 - Exception while aborting an open connection without transaction");
         }
-        
+
         try {
             conn.abortConnection();
             fail("Test 3 - Failed to throw an exception while aborting an already aborted connection");
         } catch (DBConnectionException e) {
-            
+
         }
     }
 
     /**
      * Test method for {@link ptdb.kernel.database.OracleXMLDBConnection#closeConnection()}.
      */
+
     @Test
     public void testCloseConnection() {
         OracleXMLDBConnection conn = null;
@@ -258,7 +284,7 @@ public class TestOracleXMLDBConnection {
 
         try {
             conn.closeConnection();
-            
+
         } catch (DBConnectionException e) {
             fail("Test 1 - Exception while closing an open connection without transaction");
         }
@@ -271,16 +297,16 @@ public class TestOracleXMLDBConnection {
 
         try {
             conn.closeConnection();
-            
+
         } catch (DBConnectionException e) {
             fail("Test 2 - Exception while closing an open connection without transaction");
         }
-        
+
         try {
             conn.closeConnection();
             fail("Test 3 - Failed to throw an exception while closing an already closed connection");
         } catch (DBConnectionException e) {
-            
+
         }
     }
 
@@ -300,11 +326,97 @@ public class TestOracleXMLDBConnection {
         //fail("Not yet implemented");
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		protected methods 				//////
+    /**
+     * Test method for {@link ptdb.kernel.database.OracleXMLDBConnection#executeAttributeSearchTask(ptdb.common.dto.AttributeSearchTask)}.
+     * @throws Exception 
+     */
+    @Test
+    public void testExecuteAttributesSearchTask() throws Exception {
 
-    //////////////////////////////////////////////////////////////////////
-    ////		protected variables 				//////
+        OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(false);
+
+        AttributeSearchTask task = new AttributeSearchTask();
+        Attribute attribute = PowerMock.createMock(Attribute.class);
+
+        Variable variableCreatedBy = new Variable();
+        variableCreatedBy.setClassName("ptolemy.data.expr.StringParameter");
+        variableCreatedBy.setName("CreatedBy");
+        Token tokenCreatedBy = new StringToken("Ashwini Bijwe");
+        variableCreatedBy.setToken(tokenCreatedBy);
+
+        Variable variableModelId = new Variable();
+        variableModelId.setClassName("ptolemy.data.expr.Parameter");
+        variableModelId.setName("ModelId");
+        Token tokenModelId = new StringToken("13781");
+        variableModelId.setToken(tokenModelId);
+
+        task.addAttribute(attribute);
+        task.addAttribute(variableCreatedBy);
+        task.addAttribute(variableModelId);
+        task.addAttribute(attribute);
+
+        try {
+
+            ArrayList<XMLDBModel> modelsList = conn
+                    .executeAttributeSearchTask(task);
+            assertTrue("More than one results returned.",
+                    modelsList.size() == 1);
+            String modelName = modelsList.get(0).getModelName();
+            assertTrue(modelName + " - Wrong model returned.",
+                    "ModelContainsBothAttributes.xml".equals(modelName));
+
+            ///////////////////////////////////////////////////////////////////////////////////////
+            //IllegalActionException
+            try {
+                OracleXMLDBConnection mockConn = PowerMock.createPartialMock(
+                        OracleXMLDBConnection.class, "_createAttributeClause",
+                        "_executeSingleAttributeMatch");
+
+                PowerMock.expectPrivate(mockConn, "_createAttributeClause",
+                        OracleXMLDBConnection.class, variableCreatedBy)
+                        .andThrow(new IllegalActionException("Test Exception"));
+
+                PowerMock.expectPrivate(mockConn, "_createAttributeClause",
+                        OracleXMLDBConnection.class, variableModelId)
+                        .andReturn("Test String");
+
+                PowerMock.expectPrivate(mockConn,
+                        "_executeSingleAttributeMatch",
+                        OracleXMLDBConnection.class, "Test String").andThrow(
+                        new XmlException(1, "Mock Exception"));
+
+                PowerMock.replay(mockConn);
+
+                mockConn.executeAttributeSearchTask(task);
+
+                fail("No Exception thrown");
+            } catch (DBExecutionException e) {
+
+            }
+            ///////////////////////////////////////////////////////////////////////////////////////
+            //null attribute list
+
+            task.setAttributesList(null);
+            modelsList = conn.executeAttributeSearchTask(task);
+            assertTrue("Search was performed without attributes list.",
+                    modelsList == null);
+
+            ///////////////////////////////////////////////////////////////////////////////////////
+            //0-size attribute list
+            task.setAttributesList(new ArrayList<Attribute>());
+            modelsList = conn.executeAttributeSearchTask(task);
+            assertTrue("Search was performed without attributes list.",
+                    modelsList == null);
+
+            //conn.closeConnection();
+        } catch (DBExecutionException e) {
+            fail("Unexpected Exception - " + e.getMessage());
+            e.printStackTrace();
+            conn.closeConnection();
+        }
+
+    }
 
     //////////////////////////////////////////////////////////////////////
     ////		private methods 				//////
@@ -330,7 +442,7 @@ public class TestOracleXMLDBConnection {
         dbConnParams.setUrl(url);
         dbConnParams.setContainerName(containerName);
         dbConnParams.setIsTransactionRequired(isTransactionRequired);
-        
+
         OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
         return conn;
     }
