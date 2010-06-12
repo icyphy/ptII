@@ -12,7 +12,7 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.moml.MoMLParser;
 
 /**
-* This is the business layer is used by the GUI to pass models to load.
+* The business layer is used by the GUI to pass models to load.
 * It uses the LoadManager to interface with the database to get MoML strings. 
 *
 * @author Lyle Holsinger
@@ -24,8 +24,7 @@ import ptolemy.moml.MoMLParser;
 
 public class LoadManagerInterface {
 
-    /** Use a model to generate a PtolemyEffigy object 
-     *  returned to the GUI.
+    /** Given a model name, return a PtolemyEffigy objects.
      *  
      * @param name
      *          The model name.
@@ -37,8 +36,8 @@ public class LoadManagerInterface {
      * @throws DBConnectionException
      * @throws Exception
      */
-    public PtolemyEffigy loadModel(String name,
-            Configuration configuration) throws Exception {
+    public PtolemyEffigy loadModel(String name, Configuration configuration)
+            throws Exception {
 
         //Instantiate a LoadModelManager then pass the names array.
         LoadModelManager lmm = new LoadModelManager();
@@ -59,11 +58,10 @@ public class LoadManagerInterface {
      *         PtolemyEffigy.
      * @throws Exception
      */
-    private PtolemyEffigy getEffigy(
-            XMLDBModel dbModel, Configuration configuration)
-            throws Exception {
+    private PtolemyEffigy getEffigy(XMLDBModel dbModel,
+            Configuration configuration) throws Exception {
 
-        PtolemyEffigy returnEffigy = null; 
+        PtolemyEffigy returnEffigy = null;
 
         MoMLParser parser = new MoMLParser();
 
@@ -89,11 +87,9 @@ public class LoadManagerInterface {
             returnEffigy.identifier.setExpression(uri.toString());
 
             // Put the effigy into the directory
-            returnEffigy.setName(
-                    configuration.getDirectory().uniqueName(
-                            entity.getName()));
+            returnEffigy.setName(configuration.getDirectory().uniqueName(
+                    entity.getName()));
             returnEffigy.setContainer(configuration.getDirectory());
-
 
         }
 

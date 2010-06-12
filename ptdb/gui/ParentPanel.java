@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,6 +17,7 @@ import javax.swing.JPanel;
 import ptdb.kernel.bl.load.LoadManagerInterface;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -67,7 +71,7 @@ public class ParentPanel extends JPanel {
         _parentModelLink.setMaximumSize(getMinimumSize());
         add(_parentModelLink);
 
-        ImageIcon icon = createImageIcon("arrow.gif", "Contains");
+        ImageIcon icon = createImageIcon("$CLASSPATH/ptdb/gui/arrow.gif", "Contains");
         JLabel arrowImage = new JLabel(icon);
         arrowImage.setMaximumSize(getMinimumSize());
         add(arrowImage);
@@ -84,7 +88,10 @@ public class ParentPanel extends JPanel {
 
     }
 
-    /** Returns an ImageIcon, or null if the path was invalid. 
+    /** Based on code from 
+     * http://java.sun.com/docs/books/tutorial/uiswing/components/icon.html.
+     * 
+     * Returns an ImageIcon, or null if the path was invalid. 
      * 
      * @param path - The path to the image file.
      * 
@@ -95,14 +102,25 @@ public class ParentPanel extends JPanel {
      * */
     protected ImageIcon createImageIcon(String path, String description) {
 
-        java.net.URL imgURL = getClass().getResource(path);
+        URL imgURL;
+        
+        try {
+
+            imgURL = FileUtilities.nameToURL(path, null, getClass().getClassLoader());
+        
+        } catch (Exception e) {
+        
+            imgURL = null;
+        
+        }
+        
         if (imgURL != null) {
 
             return new ImageIcon(imgURL, description);
 
         } else {
 
-            System.err.println("Couldn't find file: " + path);
+            //System.err.println("Couldn't find file: " + path);
             return null;
 
         }
@@ -112,7 +130,7 @@ public class ParentPanel extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the parent model nam.
+    /** Get the parent model name.
      * 
      * @return The parent model name.
      */

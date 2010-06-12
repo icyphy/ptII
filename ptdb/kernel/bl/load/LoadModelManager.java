@@ -35,32 +35,32 @@ public class LoadModelManager {
      * @exception DBConnectionException
      * @exception DBExecutionException
      */
-    public XMLDBModel load(String name)
-            throws DBConnectionException, DBExecutionException {
+    public XMLDBModel load(String name) throws DBConnectionException,
+            DBExecutionException {
 
         XMLDBModel returnModel = null;
 
-        DBConnection conn = DBConnectorFactory.getSyncConnection(false);
+        DBConnection connection = DBConnectorFactory.getSyncConnection(false);
 
         try {
 
-            GetModelsTask gmt = new GetModelsTask();
-            gmt.setModelName(name);
-            returnModel = conn.executeGetModelsTask(gmt);
-            
-            conn.commitConnection();
+            GetModelsTask getModelsTask = new GetModelsTask();
+            getModelsTask.setModelName(name);
+            returnModel = connection.executeGetModelsTask(getModelsTask);
+
+            connection.commitConnection();
 
         } catch (DBExecutionException dbEx) {
 
-            conn.abortConnection();
+            connection.abortConnection();
             throw dbEx;
-            
+
         } finally {
 
-            if (conn != null) {
-                
-                conn.closeConnection();
-            
+            if (connection != null) {
+
+                connection.closeConnection();
+
             }
 
         }
@@ -68,4 +68,5 @@ public class LoadModelManager {
         return returnModel;
 
     }
+
 }

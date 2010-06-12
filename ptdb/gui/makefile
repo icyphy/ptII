@@ -57,7 +57,9 @@ JSRCS = \
 	ParentPanel.java \
 	ParentHierarchyPanel.java \
 	SearchResultPanel.java \
-	SearchResultsFrame.java
+	SearchResultsFrame.java \
+	ModelAttributePanel.java \
+	SaveModelToDBFrame.java
 
 OTHER_FILES_TO_BE_JARED = \
 	arrow.GIF

@@ -14,7 +14,10 @@ package ptdb.common.dto;
 public class GetModelsTask extends Task {
 
     /**
-     * return the model name that is needed to to fetch the model from the database
+     * Return the model name that is needed to to fetch the model from the database.\
+     * 
+     * @return 
+     *          The model name.
      */
     public String getModelName() {
         return _m_strModelName;
@@ -22,7 +25,8 @@ public class GetModelsTask extends Task {
     }
 
     /**
-     * set the model name
+     * Set the model name.
+     * 
      * @param p_strModelName the name of the model that need to be fetched from the database
      */
     public void setModelName(String p_strModelName) {
@@ -30,7 +34,7 @@ public class GetModelsTask extends Task {
     }
 
     /**
-     * variable to hold the model name
+     * Variable to hold the model name.
      */
     private String _m_strModelName = null;
 

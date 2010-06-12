@@ -2,6 +2,7 @@ package ptdb.common.exception;
 
 //////////////////////////////////////////////////////////////////////////
 //// DBConnectionException
+
 /**
  * Exception for all the exceptions raised during XML database connection 
  * related operations.
@@ -18,28 +19,32 @@ package ptdb.common.exception;
 public class DBConnectionException extends Exception {
 
     /**
-     * Construct an instance of DBConnectionException 
-     * with the given message. 
-     * @param errorMessage - The exception message.
+     * Create a new DBConnectionException with the given message.
+     * @param message The given message.
      */
-    public DBConnectionException(String errorMessage) {
-        super(errorMessage);
+    public DBConnectionException(String message) {
+        
+        super(message);
+    
     }
 
     /**
-     * Constructor an instance to wrap other exceptions. 
-     * @param errorMessage - The exception message.
-     * @param cause - The original exception.
+     * Create an instance to wrap other exceptions. 
+     * @param message The exception message.
+     * @param cause The original exception.
      */
-    public DBConnectionException(String errorMessage, Throwable cause) {
-        super(errorMessage, cause);
+    public DBConnectionException(String message, Throwable cause) {
+        super(message, cause);
         this._cause = cause;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
     /**
-     * Returns the underlying cause for the exception.
+     * Return the underlying cause for the exception.
+     * 
+     * @return The cause of the exception.
      */
     public Throwable getCause() {
         return this._cause;
@@ -47,5 +52,6 @@ public class DBConnectionException extends Exception {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     private Throwable _cause;
 }
