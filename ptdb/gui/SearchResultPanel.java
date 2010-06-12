@@ -76,7 +76,8 @@ public class SearchResultPanel extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /** Get the model name.
+     * 
      * @return The model name.
      */
     public String getModelName() {

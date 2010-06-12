@@ -84,7 +84,8 @@ public class ModelPanel extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /** Get the model name.
+     * 
      * @return The model name.
      */
     public String getModelName() {
@@ -93,7 +94,9 @@ public class ModelPanel extends JPanel {
 
     }
 
-    /** 
+    /** Get the value of the _loadCheck checkbox.  
+     * The method, isSelected(), returns true of false.
+     * 
      * @return The value of the _loadCheck checkbox.
      */
     public Boolean getValue() {

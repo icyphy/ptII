@@ -47,13 +47,22 @@ public class LoadModelManager {
             GetModelsTask gmt = new GetModelsTask();
             gmt.setModelName(name);
             returnModel = conn.executeGetModelsTask(gmt);
-            conn.closeConnection();
+            
+            conn.commitConnection();
 
         } catch (DBExecutionException dbEx) {
 
             conn.abortConnection();
             throw dbEx;
             
+        } finally {
+
+            if (conn != null) {
+                
+                conn.closeConnection();
+            
+            }
+
         }
 
         return returnModel;

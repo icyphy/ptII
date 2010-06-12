@@ -84,22 +84,36 @@ public class ParentPanel extends JPanel {
 
     }
 
-    /** Taken from java.sun.com 
-     * Returns an ImageIcon, or null if the path was invalid. */
+    /** Returns an ImageIcon, or null if the path was invalid. 
+     * 
+     * @param path - The path to the image file.
+     * 
+     * @param description - A description of the image.
+     * 
+     * @return An ImageIcon object if the path could be converted
+     *          into a URL.  Otherwise, returns null.
+     * */
     protected ImageIcon createImageIcon(String path, String description) {
+
         java.net.URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
+
             return new ImageIcon(imgURL, description);
+
         } else {
+
             System.err.println("Couldn't find file: " + path);
             return null;
+
         }
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /** Get the parent model nam.
+     * 
      * @return The parent model name.
      */
     public String getParentModelName() {
@@ -108,7 +122,9 @@ public class ParentPanel extends JPanel {
 
     }
 
-    /** 
+    /** Get the value of the _loadCheck checkbox.  
+     *  The method, isSelected(), will return true or false.
+     *  
      * @return The value of the _loadCheck checkbox.
      */
     public Boolean getValue() {
