@@ -347,7 +347,6 @@ public class TestSaveModelManager {
     }
     
     
-    
     /**
      * test the SaveManager.save() method with DBConnection being null.
      * 
