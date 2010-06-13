@@ -45,10 +45,10 @@ public class SaveModelManager {
     public boolean save(XMLDBModel p_xmlDBModel) throws DBConnectionException,
 	    DBExecutionException, IllegalArgumentException {
 	//variable to indicate if the operation was successful or not
-	boolean bIsSuccessful = false;
+	boolean isSuccessful = false;
 
 	//database connection object
-	DBConnection dbConn = null;
+	DBConnection dbConnection = null;
 
 	try {
 
@@ -60,10 +60,10 @@ public class SaveModelManager {
 	    }
 
 	    //get sync connection with transaction enabled using the DBConnectorFactory.
-	    dbConn = DBConnectorFactory.getSyncConnection(true);
+	    dbConnection = DBConnectorFactory.getSyncConnection(true);
 
-	    //if the dbConn is null, throw an exception
-	    if (dbConn == null) {
+	    //if the dbConnection is null, throw an exception
+	    if (dbConnection == null) {
 		throw new DBConnectionException(
 		        "Unable to get synchronous connection from the database");
 	    }
@@ -79,17 +79,16 @@ public class SaveModelManager {
 		createModelTask.setXMLDBModel(p_xmlDBModel);
 
 		//use the dbConn object to execute the model creation task
-		dbConn.executeCreateModelTask(createModelTask);
+		dbConnection.executeCreateModelTask(createModelTask);
 
 		//if no exception was thrown, then the operation was successful
-		//set the success flag to true
-		bIsSuccessful = true;
+		isSuccessful = true;
 		
 		//commit the transaction
-		dbConn.commitConnection();
+		dbConnection.commitConnection();
 
 	    }
-	    //if the model is already in the database, save the modification made on it.
+	    //if the model is already in the database, save the modification made on the model.
 	    else {
 
 		//create a SaveModelTask
@@ -99,25 +98,24 @@ public class SaveModelManager {
 		saveModelTask.setXMLDBModel(p_xmlDBModel);
 
 		//use the dbConn object to execute the save model task
-		dbConn.executeSaveModelTask(saveModelTask);
+		dbConnection.executeSaveModelTask(saveModelTask);
 
 		//if no exception was thrown, then the operation was successful
-		//set the success flag to true
-		bIsSuccessful = true;
+		isSuccessful = true;
 		
 		//commit the transaction.
-		dbConn.commitConnection();
+		dbConnection.commitConnection();
 
 	    }
 
 	} catch (DBExecutionException e) {
 
 	    //if the connection object is not null, abort the connection
-	    if (dbConn != null) {
+	    if (dbConnection != null) {
 
 		//abort the connection to rollback any changes happened to the database
 		//and clean up 
-		dbConn.abortConnection();
+		dbConnection.abortConnection();
 	    }
 
 	    //throw an exception to notify the caller of what went wrong
@@ -126,16 +124,16 @@ public class SaveModelManager {
 	} finally {
 
 	    //if the db connection is not null, close it.
-	    if (dbConn != null) {
+	    if (dbConnection != null) {
 
 		//close the connection
-		dbConn.closeConnection();
+		dbConnection.closeConnection();
 
 	    }
 	}
 
 	//return the success flag to the caller 
-	return bIsSuccessful;
+	return isSuccessful;
 
     }
 }
