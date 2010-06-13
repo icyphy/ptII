@@ -80,7 +80,7 @@ public class DbSearchFrame extends TransformationEditor {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		protected methods 				//////
+    ////                protected methods                             ////
 
     @Override
     protected void _addMenus() {
@@ -96,7 +96,7 @@ public class DbSearchFrame extends TransformationEditor {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		private classes				//////
+    ////                private classes                               ////
 
     private class DBMatchAction extends FigureAction {
 
@@ -121,20 +121,22 @@ public class DbSearchFrame extends TransformationEditor {
         }
 
         //////////////////////////////////////////////////////////////////////
-        ////                public  methods                          //////
+        ////                public  methods                               ////
 
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
             // TODO create the new SearchResultFrame
-            // SearchResultFrame searchResultFrame = new SearchResultFrame();
+            //            SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
+            //                    new NamedObj(), DbSearchFrame.this, DbSearchFrame.this
+            //                            .getConfiguration());
 
             // create the new search result buffer 
             SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
             // TODO register the result listener from the search result frame 
             // to the search result buffer
-            // searchResultBuffer.register(searchResultFrame.getResultListener);
+            //            searchResultBuffer.addObserver(searchResultsFrame);
 
             // get the search criteria
             // for this requirement, only the attributes part
@@ -236,7 +238,8 @@ public class DbSearchFrame extends TransformationEditor {
             searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
 
             // TODO show the search result frame
-            // searchResultFrame.setVisible(true);
+            //            searchResultsFrame.pack();
+            //            searchResultsFrame.setVisible(true);
 
             // TODO call the Search Manager to trigger the search
             //  SearchManager searchManager = new SearchManager();
@@ -267,39 +270,39 @@ public class DbSearchFrame extends TransformationEditor {
             //            }
             //            
 
-//            // TODO this is just for testing the Graph part, delete later
-//            System.out.println("search criteira: "
-//                    + searchCriteria.getDBGraphSearchCriteria());
-//            System.out.println("components :"
-//                    + searchCriteria.getDBGraphSearchCriteria()
-//                            .getComponentEntitiesList());
-//
-//            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
-//                    .getComponentEntitiesList().iterator(); iterator.hasNext();) {
-//                ComponentEntity componentEntity = (ComponentEntity) iterator
-//                        .next();
-//                System.out.println(componentEntity);
-//            }
-//
-//            System.out.println("ports: "
-//                    + searchCriteria.getDBGraphSearchCriteria().getPortsList());
-//            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
-//                    .getPortsList().iterator(); iterator.hasNext();) {
-//                Port port = (Port) iterator.next();
-//                System.out.println(port);
-//            }
-//
-//            System.out.println("relations: "
-//                    + searchCriteria.getDBGraphSearchCriteria()
-//                            .getRelationsList());
-//            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
-//                    .getRelationsList().iterator(); iterator.hasNext();) {
-//                Relation relation = (Relation) iterator.next();
-//                System.out.println(relation);
-//            }
-//
-//            System.out.println("done testing");
-//            // TODO done and delete later 
+            //            // TODO this is just for testing the Graph part, delete later
+            //            System.out.println("search criteira: "
+            //                    + searchCriteria.getDBGraphSearchCriteria());
+            //            System.out.println("components :"
+            //                    + searchCriteria.getDBGraphSearchCriteria()
+            //                            .getComponentEntitiesList());
+            //
+            //            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
+            //                    .getComponentEntitiesList().iterator(); iterator.hasNext();) {
+            //                ComponentEntity componentEntity = (ComponentEntity) iterator
+            //                        .next();
+            //                System.out.println(componentEntity);
+            //            }
+            //
+            //            System.out.println("ports: "
+            //                    + searchCriteria.getDBGraphSearchCriteria().getPortsList());
+            //            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
+            //                    .getPortsList().iterator(); iterator.hasNext();) {
+            //                Port port = (Port) iterator.next();
+            //                System.out.println(port);
+            //            }
+            //
+            //            System.out.println("relations: "
+            //                    + searchCriteria.getDBGraphSearchCriteria()
+            //                            .getRelationsList());
+            //            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
+            //                    .getRelationsList().iterator(); iterator.hasNext();) {
+            //                Relation relation = (Relation) iterator.next();
+            //                System.out.println(relation);
+            //            }
+            //
+            //            System.out.println("done testing");
+            //            // TODO done and delete later 
         }
 
         private void _getAtomicEntities(CompositeEntity compositeEntity,
