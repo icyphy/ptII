@@ -357,6 +357,9 @@ public class OracleXMLDBConnection implements DBConnection {
 
                     //parse the reference string to get a node representation of it.
                     Node modelNode = _parseXML(strReferences);
+                    
+                    //get the actual model node inside the parsed document.
+                    modelNode = modelNode.getChildNodes().item(0);
 
                     //call the _buildCompleteModel to build the model with all of its references.
                     strCompleteModelBody = _buildCompleteModel(modelNode);
@@ -943,8 +946,6 @@ public class OracleXMLDBConnection implements DBConnection {
             //parse the input source and get the first node in the xml.
             firstNode = docBuilder.parse(is);
             
-            //get the first node in the parsed document.
-            firstNode = firstNode.getChildNodes().item(0);
 
         } catch (ParserConfigurationException e) {
 
