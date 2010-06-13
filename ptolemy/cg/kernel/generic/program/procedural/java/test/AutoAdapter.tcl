@@ -43,13 +43,28 @@ if {[info procs testJavaCG] == "" } then {
 
 # $PTII/ptolemy/actor/lib/comm/test/auto/HammingCodec.xml   Runs, but "Attempt to get data from an empty mailbox."
 # $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml  Runs, but "Attempt to get data from an empty mailbox."
+# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Runs, but "Attempt to get data from an empty mailbox."
+# $PTII/ptolemy/actor/lib/comm/test/auto/Scrambler.xml  Runs, but "Attempt to get data from an empty mailbox."
+# $PTII/ptolemy/actor/lib/comm/test/auto/ViterbiDecoderHard.xml  Runs, but "Attempt to get data from an empty mailbox."
+# $PTII/ptolemy/actor/lib/comm/test/auto/ViterbiDecoderSoft.xml  Runs, but "Attempt to get data from an empty mailbox."
 #    The problem here is that we create an Opaque composite for an auto generated actor
 #    that has an output connected to a relation that is connected to two inputs.  The
 #    code does a getInside() on the output port of the Opaque twice, hence the empty mailbox.    
+# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Fails to compile, uses matrices
+# $PTII/ptolemy/actor/lib/comm/test/auto/HuffmanCoder.xml  Fails to compile, uses DDF
+# $PTII/ptolemy/actor/lib/comm/test/auto/HuffmanDecoder.xml  Fails to compile, uses DDF
+# $PTII/ptolemy/actor/lib/comm/test/auto/LempelZivCoder.xml  Fails to compile, uses DDF
+# $PTII/ptolemy/actor/lib/comm/test/auto/Slicer.xml  Fails to compile, uses Complex
+# $PTII/ptolemy/actor/lib/comm/test/auto/TrellisDecoder.xml  Fails to compile, uses Complex
 
-# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Fails to compile:
-# HadamardCode.java:2180: ';' expected
-#            HadamardCode_DotProduct_input2=32)Value();
+# $PTII/ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml   Fails to compile, needs function types
+# $PTII/ptolemy/actor/lib/hoc/test/auto/BackgroundExecution.xml  Fails to compile, uses DE
+# $PTII/ptolemy/actor/lib/hoc/test/auto/Case.xml  Fails to compile, uses DE
+# $PTII/ptolemy/actor/lib/hoc/test/auto/Case1.xml  Fails to compile:
+#  Case1.java:487: cannot find symbol
+#   symbol  : variable Case1_Case_true_output
+# $PTII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml:  Fails to compile, missing symbols
+
 
 
 # $PTII/ptolemy/actor/lib/string/test/auto/StringMatches.xml   Runs, but gets wrong results
@@ -62,6 +77,12 @@ if {[info procs testJavaCG] == "" } then {
 #    Won't fix right now, the problem is that one of the expressions is "a$$0b", which causes trouble.
 # $PTII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml  Fails to compile:
 #    Problems with \o
+
+# $PTII/ptolemy/domains/sdf/lib/test/auto/ArrayToSequence.xml: Attempt to get data from an empty mailbox.
+# $PTII/ptolemy/domains/sdf/lib/test/auto/AutoCorrelation.xml: Attempt to get data from an empty mailbox.
+# $PTII/ptolemy/domains/sdf/lib/test/auto/VariableFIR.xml: Attempt to get data from an empty mailbox.
+
+
 set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/LookupTable.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
