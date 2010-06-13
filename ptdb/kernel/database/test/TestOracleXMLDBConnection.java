@@ -20,7 +20,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ptdb.common.dto.AttributeSearchTask;
+import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
+import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
@@ -418,7 +420,315 @@ public class TestOracleXMLDBConnection {
         }
 
     }
+    
+    /**
+     * Test method for testing the executCreateTask method.
+     * Conditions for the test:
+     * the model being saved is a new model.
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteCreateTask_NewModel() throws Exception {
+	
+	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
+	
+	CreateModelTask task = new CreateModelTask();
+	XMLDBModel xmlModel = new XMLDBModel();
+	
+	xmlModel.setIsNew(true);
+	//please change the file name when you run the test for the second time.
+	xmlModel.setModelName("test2");
+	xmlModel.setModel("<entity name=\"test2\" class=\"test.class\"></entity>");
+	
+	task.setXMLDBModel(xmlModel);
+	
+	try {
+	    conn.executeCreateModelTask(task);
+	    
+	    assertTrue("Model was created", true);
+	    
+	    
+	} catch(DBExecutionException e) {
+	    fail("Exception thrown");
+	    e.printStackTrace();
+	    conn.closeConnection();
+	} finally {
+	    conn.closeConnection();
+	}
+	
+    }
+    
+    
+    /**
+     * Test method for testing the executCreateTask method.
+     * Conditions for the test:
+     * The model to be created already exist in the database.
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteCreateTask_ExistingModel() throws Exception {
+	
+	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
+	
+	CreateModelTask task = new CreateModelTask();
+	XMLDBModel xmlModel = new XMLDBModel();
+	
+	xmlModel.setIsNew(true);
+	//make sure the file exists in the database.
+	xmlModel.setModelName("test");
+	xmlModel.setModel("<entity name=\"test\" class=\"test.class\"></entity>");
+	
+	task.setXMLDBModel(xmlModel);
+	
+	try {
+	    conn.executeCreateModelTask(task);
+	    
+	    fail("Model was created when it should be already there.");
+	    
+	    
+	} catch(DBExecutionException e) {
+	    
+	    if(e.getMessage().contains("The model already exist"))
+	    {
+		assertTrue("model was not created because it already exists", true);
+	    }
+	} finally {
+	    conn.closeConnection();
+	}
+	
+    }
+    
+    
+    /**
+     * Test method for testing the executCreateTask method.
+     * Conditions for the test:
+     * The create model task is null.
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteCreateTask_NullTask() throws Exception {
+	
+	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
+	
+	CreateModelTask task = null;
+	
+	
+	try {
+	    conn.executeCreateModelTask(task);
+	    
+	    fail("Model was created when it should not be.");
+	    
+	    
+	} catch(DBExecutionException e) {
+	    
+	    if(e.getMessage().contains("the CreateModelTask object passed was null"))
+	    {
+		assertTrue("model was not created because the task is null", true);
+	    }
+	} finally {
+	    conn.closeConnection();
+	}
+	
+    }
+    
+    
 
+    /**
+     * Test method for testing the executCreateTask method.
+     * Conditions for the test:
+     * The model in the task is null.
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteCreateTask_NullModelInTask() throws Exception {
+	
+	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
+	
+	CreateModelTask task = new CreateModelTask();
+	
+	task.setXMLDBModel(null);
+	
+	
+	try {
+	    conn.executeCreateModelTask(task);
+	    
+	    fail("Model was created when it should not be.");
+	    
+	    
+	} catch(DBExecutionException e) {
+	    
+	    if(e.getMessage().contains("the XMLDBModel object passed in the CreateModelTask was null"))
+	    {
+		assertTrue("model was not created because the model in the task was null.", true);
+	    }
+	} finally {
+	    conn.closeConnection();
+	}
+	
+    }
+
+    
+    
+    
+    
+    
+    /**
+     * Test method for testing the executSaveTask method.
+     * Conditions for the test:
+     * the model being saved is a new model.
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteSaveTask_NewModel() throws Exception {
+	
+	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
+	
+	SaveModelTask task = new SaveModelTask();
+	XMLDBModel xmlModel = new XMLDBModel();
+	
+	xmlModel.setIsNew(true);
+	//please change the file name when you run the test for the second time.
+	xmlModel.setModelName("test5");
+	xmlModel.setModel("<entity name=\"test5\" class=\"test.class\"></entity>");
+	
+	task.setXMLDBModel(xmlModel);
+	
+	try {
+	    conn.executeSaveModelTask(task);
+	    
+	    fail("Model should not be saved");
+	    
+	    
+	} catch(DBExecutionException e) {
+	    
+	    if(e.getMessage().contains("the model does not exist in the database."))
+	    {
+		assertTrue("model was not updated since it does not exist in the database.", true);
+	    }
+	} finally {
+	    conn.closeConnection();
+	}
+	
+    }
+    
+    
+    /**
+     * Test method for testing the executSaveTask method.
+     * Conditions for the test:
+     * The model to be saved already exist in the database.
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteSaveTask_ExistingModel() throws Exception {
+	
+	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
+	
+	SaveModelTask task = new SaveModelTask();
+	XMLDBModel xmlModel = new XMLDBModel();
+	
+	xmlModel.setIsNew(true);
+	//make sure the file exists in the database.
+	xmlModel.setModelName("test2");
+	xmlModel.setModel("<entity name=\"test2\" class=\"test1.class\"></entity>");
+	
+	task.setXMLDBModel(xmlModel);
+	
+	try {
+	    conn.executeSaveModelTask(task);
+	    
+	    assertTrue("Model was updated...", true);
+	    
+	    
+	} catch(DBExecutionException e) {
+	    
+	    fail("Exception thrown");
+	    e.printStackTrace();
+	} finally {
+	    conn.closeConnection();
+	}
+	
+    }
+    
+    
+    /**
+     * Test method for testing the executSaveTask method.
+     * Conditions for the test:
+     * The save model task is null.
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteSaveTask_NullTask() throws Exception {
+	
+	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
+	
+	SaveModelTask task = null;
+	
+	
+	try {
+	    conn.executeSaveModelTask(task);
+	    
+	    fail("Model was saved when it should not be.");
+	    
+	    
+	} catch(DBExecutionException e) {
+	    
+	    if(e.getMessage().contains("the SaveModelTask object passed was null"))
+	    {
+		assertTrue("model was not saved because the task is null", true);
+	    }
+	} finally {
+	    conn.closeConnection();
+	}
+	
+    }
+    
+    
+
+    /**
+     * Test method for testing the executSaveTask method.
+     * Conditions for the test:
+     * The model in the task is null.
+     * @throws Exception
+     */
+    @Test
+    public void testExecuteSaveTask_NullModelInTask() throws Exception {
+	
+	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
+	
+	SaveModelTask task = new SaveModelTask();
+	
+	task.setXMLDBModel(null);
+	
+	
+	try {
+	    conn.executeSaveModelTask(task);
+	    
+	    fail("Model was created when it should not be.");
+	    
+	    
+	} catch(DBExecutionException e) {
+	    
+	    if(e.getMessage().contains("the XMLDBModel object passed in the SaveModelTask was null"))
+	    {
+		assertTrue("model was not saved because the model in the task was null.", true);
+	    }
+	} finally {
+	    conn.closeConnection();
+	}
+	
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     //////////////////////////////////////////////////////////////////////
     ////		private methods 				//////
 
