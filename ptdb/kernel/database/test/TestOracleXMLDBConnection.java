@@ -94,136 +94,136 @@ public class TestOracleXMLDBConnection {
     @Test
     public void testOracleXMLDBConnection() {
 
-        //////////////////////////////////////////////////////////////////////////////////////////
-        /**
-         * Correct url, container name and transaction required = true.
-         */
+	//////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Correct url, container name and transaction required = true.
+	 */
 
-        String url = "c:\\users\\wini";
-        String containerName = "temp.dbxml";
-        boolean isTransactionRequired = true;
+	String url = "c:\\users\\wini";
+	String containerName = "temp.dbxml";
+	boolean isTransactionRequired = true;
 
-        DBConnectionParameters dbConnParams = new DBConnectionParameters(url,
-                containerName, isTransactionRequired);
-        try {
-            OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
+	DBConnectionParameters dbConnParams = new DBConnectionParameters(url,
+	        containerName, isTransactionRequired);
+	try {
+	    OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
 
-            assertTrue("Test1 - _xmlManager not initialized", conn.toString()
-                    .contains("_xmlManager:Initialized"));
+	    assertTrue("Test1 - _xmlManager not initialized", conn.toString()
+		    .contains("_xmlManager:Initialized"));
 
-            assertTrue(
-                    "Test1 - _xmlTransaction not initialized when transaction required was true",
-                    conn.toString().contains("_xmlTransaction:Initialized"));
-            conn.abortConnection();
-            conn.closeConnection();
-        } catch (DBConnectionException e) {
+	    assertTrue(
+		    "Test1 - _xmlTransaction not initialized when transaction required was true",
+		    conn.toString().contains("_xmlTransaction:Initialized"));
+	    conn.abortConnection();
+	    conn.closeConnection();
+	} catch (DBConnectionException e) {
 
-            fail("Test 1 - " + e.getMessage());
-            e.printStackTrace();
-        }
+	    fail("Test 1 - " + e.getMessage());
+	    e.printStackTrace();
+	}
 
-        //////////////////////////////////////////////////////////////////////////////////////////        
-        /**
-         * Correct url, container name and transaction required = false.
-         */
+	//////////////////////////////////////////////////////////////////////////////////////////        
+	/**
+	 * Correct url, container name and transaction required = false.
+	 */
 
-        url = "c:\\users\\wini";
-        containerName = "temp.dbxml";
-        isTransactionRequired = false;
+	url = "c:\\users\\wini";
+	containerName = "temp.dbxml";
+	isTransactionRequired = false;
 
-        dbConnParams = new DBConnectionParameters(url, containerName,
-                isTransactionRequired);
+	dbConnParams = new DBConnectionParameters(url, containerName,
+	        isTransactionRequired);
 
-        try {
-            OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
+	try {
+	    OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
 
-            assertTrue("Test2 - _xmlManager not initialized", conn.toString()
-                    .contains("_xmlManager:Initialized"));
+	    assertTrue("Test2 - _xmlManager not initialized", conn.toString()
+		    .contains("_xmlManager:Initialized"));
 
-            assertTrue(
-                    "Test2 - _xmlTransaction initialized when transaction required was false",
-                    conn.toString().contains("_xmlTransaction:Not Initialized"));
+	    assertTrue(
+		    "Test2 - _xmlTransaction initialized when transaction required was false",
+		    conn.toString().contains("_xmlTransaction:Not Initialized"));
 
-            conn.closeConnection();
-        } catch (DBConnectionException e) {
+	    conn.closeConnection();
+	} catch (DBConnectionException e) {
 
-            fail("Test 2 - " + e.getMessage());
-        }
+	    fail("Test 2 - " + e.getMessage());
+	}
 
-        //////////////////////////////////////////////////////////////////////////////////////////
-        /**
-         * Incorrect url, correct container name and transaction required = true.
-         */
+	//////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Incorrect url, correct container name and transaction required = true.
+	 */
 
-        url = "c:\\users\\error";
-        containerName = "temp.dbxml";
-        isTransactionRequired = true;
+	url = "c:\\users\\error";
+	containerName = "temp.dbxml";
+	isTransactionRequired = true;
 
-        dbConnParams = new DBConnectionParameters(url, containerName,
-                isTransactionRequired);
+	dbConnParams = new DBConnectionParameters(url, containerName,
+	        isTransactionRequired);
 
-        try {
-            OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
+	try {
+	    OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
 
-            fail("Test 3 - No exception thrown when there was an error in path");
-            conn.abortConnection();
-            conn.closeConnection();
-        } catch (DBConnectionException e) {
+	    fail("Test 3 - No exception thrown when there was an error in path");
+	    conn.abortConnection();
+	    conn.closeConnection();
+	} catch (DBConnectionException e) {
 
-            assertTrue("Test 3 - Incorrect exception thrown -"
-                    + e.getClass().getName(),
-                    e.getCause() instanceof FileNotFoundException);
-        }
+	    assertTrue("Test 3 - Incorrect exception thrown -"
+		    + e.getClass().getName(),
+		    e.getCause() instanceof FileNotFoundException);
+	}
 
-        //////////////////////////////////////////////////////////////////////////////////////////
-        /**
-         * Correct URL, incorrect container name and transaction required = true.
-         */
+	//////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Correct URL, incorrect container name and transaction required = true.
+	 */
 
-        url = "c:\\users\\wini";
-        containerName = "nosuchcontainer.dbxml";
-        isTransactionRequired = true;
+	url = "c:\\users\\wini";
+	containerName = "nosuchcontainer.dbxml";
+	isTransactionRequired = true;
 
-        dbConnParams = new DBConnectionParameters(url, containerName,
-                isTransactionRequired);
+	dbConnParams = new DBConnectionParameters(url, containerName,
+	        isTransactionRequired);
 
-        try {
-            OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
+	try {
+	    OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
 
-            fail("Test 4 - No exception thrown when there was an error in path");
-            conn.abortConnection();
-            conn.closeConnection();
-        } catch (DBConnectionException e) {
+	    fail("Test 4 - No exception thrown when there was an error in path");
+	    conn.abortConnection();
+	    conn.closeConnection();
+	} catch (DBConnectionException e) {
 
-            assertTrue("Test 4 - Incorrect exception thrown - "
-                    + e.getClass().getName(),
-                    e.getCause() instanceof XmlException);
-        }
+	    assertTrue("Test 4 - Incorrect exception thrown - "
+		    + e.getClass().getName(),
+		    e.getCause() instanceof XmlException);
+	}
 
-        //////////////////////////////////////////////////////////////////////////////////////////
-        /**
-         * Incorrect url, container name and transaction required = true.
-         */
+	//////////////////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Incorrect url, container name and transaction required = true.
+	 */
 
-        url = "c:\\users\\error";
-        containerName = "nosuchcontainer.dbxml";
-        isTransactionRequired = true;
+	url = "c:\\users\\error";
+	containerName = "nosuchcontainer.dbxml";
+	isTransactionRequired = true;
 
-        dbConnParams = new DBConnectionParameters(url, containerName,
-                isTransactionRequired);
+	dbConnParams = new DBConnectionParameters(url, containerName,
+	        isTransactionRequired);
 
-        try {
-            OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
+	try {
+	    OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
 
-            fail("Test 5 - No exception thrown when there was an error in path");
-            conn.abortConnection();
-            conn.closeConnection();
-        } catch (DBConnectionException e) {
+	    fail("Test 5 - No exception thrown when there was an error in path");
+	    conn.abortConnection();
+	    conn.closeConnection();
+	} catch (DBConnectionException e) {
 
-            assertTrue("Test 5 - Incorrect exception thrown - "
-                    + e.getClass().getName(),
-                    e.getCause() instanceof FileNotFoundException);
-        }
+	    assertTrue("Test 5 - Incorrect exception thrown - "
+		    + e.getClass().getName(),
+		    e.getCause() instanceof FileNotFoundException);
+	}
 
     }
 
@@ -234,40 +234,40 @@ public class TestOracleXMLDBConnection {
     @Test
     public void testAbortConnection() {
 
-        OracleXMLDBConnection conn = null;
+	OracleXMLDBConnection conn = null;
 
-        try {
-            conn = createConnWithoutTransaction();
-        } catch (DBConnectionException e1) {
-            fail("Failed while creting a connection without transaction");
-        }
+	try {
+	    conn = createConnWithoutTransaction();
+	} catch (DBConnectionException e1) {
+	    fail("Failed while creting a connection without transaction");
+	}
 
-        try {
-            conn.abortConnection();
+	try {
+	    conn.abortConnection();
 
-        } catch (DBConnectionException e) {
-            fail("Test 1 - Exception while aborting an open connection without transaction");
-        }
+	} catch (DBConnectionException e) {
+	    fail("Test 1 - Exception while aborting an open connection without transaction");
+	}
 
-        try {
-            conn = createConnWithTransaction();
-        } catch (DBConnectionException e1) {
-            fail("Faile while creating a connection without transaction");
-        }
+	try {
+	    conn = createConnWithTransaction();
+	} catch (DBConnectionException e1) {
+	    fail("Faile while creating a connection without transaction");
+	}
 
-        try {
-            conn.abortConnection();
+	try {
+	    conn.abortConnection();
 
-        } catch (DBConnectionException e) {
-            fail("Test 2 - Exception while aborting an open connection without transaction");
-        }
+	} catch (DBConnectionException e) {
+	    fail("Test 2 - Exception while aborting an open connection without transaction");
+	}
 
-        try {
-            conn.abortConnection();
-            fail("Test 3 - Failed to throw an exception while aborting an already aborted connection");
-        } catch (DBConnectionException e) {
+	try {
+	    conn.abortConnection();
+	    fail("Test 3 - Failed to throw an exception while aborting an already aborted connection");
+	} catch (DBConnectionException e) {
 
-        }
+	}
     }
 
     /**
@@ -276,41 +276,41 @@ public class TestOracleXMLDBConnection {
 
     @Test
     public void testCloseConnection() {
-        OracleXMLDBConnection conn = null;
+	OracleXMLDBConnection conn = null;
 
-        try {
-            conn = createConnWithoutTransaction();
-        } catch (DBConnectionException e1) {
-            fail("Faile while creating a connection without transaction");
-        }
+	try {
+	    conn = createConnWithoutTransaction();
+	} catch (DBConnectionException e1) {
+	    fail("Faile while creating a connection without transaction");
+	}
 
-        try {
-            conn.closeConnection();
+	try {
+	    conn.closeConnection();
 
-        } catch (DBConnectionException e) {
-            fail("Test 1 - Exception while closing an open connection without transaction");
-        }
+	} catch (DBConnectionException e) {
+	    fail("Test 1 - Exception while closing an open connection without transaction");
+	}
 
-        try {
-            conn = createConnWithTransaction();
-        } catch (DBConnectionException e1) {
-            fail("Faile while creating a connection without transaction");
-        }
+	try {
+	    conn = createConnWithTransaction();
+	} catch (DBConnectionException e1) {
+	    fail("Faile while creating a connection without transaction");
+	}
 
-        try {
-            conn.abortConnection();
-            conn.closeConnection();
+	try {
+	    conn.abortConnection();
+	    conn.closeConnection();
 
-        } catch (DBConnectionException e) {
-            fail("Test 2 - Exception while closing an open connection without transaction");
-        }
+	} catch (DBConnectionException e) {
+	    fail("Test 2 - Exception while closing an open connection without transaction");
+	}
 
-        try {
-            conn.closeConnection();
-            fail("Test 3 - Failed to throw an exception while closing an already closed connection");
-        } catch (DBConnectionException e) {
+	try {
+	    conn.closeConnection();
+	    fail("Test 3 - Failed to throw an exception while closing an already closed connection");
+	} catch (DBConnectionException e) {
 
-        }
+	}
     }
 
     /**
@@ -318,7 +318,7 @@ public class TestOracleXMLDBConnection {
      */
     @Test
     public void testExecuteGetAttributesTask() {
-        //fail("Not yet implemented");
+	//fail("Not yet implemented");
     }
 
     /**
@@ -326,7 +326,7 @@ public class TestOracleXMLDBConnection {
      */
     @Test
     public void testExecuteGetModelsTask() {
-        //fail("Not yet implemented");
+	//fail("Not yet implemented");
     }
 
     /**
@@ -336,426 +336,418 @@ public class TestOracleXMLDBConnection {
     @Test
     public void testExecuteAttributesSearchTask() throws Exception {
 
-        OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory
-                .getSyncConnection(false);
+	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory
+	        .getSyncConnection(false);
 
-        AttributeSearchTask task = new AttributeSearchTask();
-        Attribute attribute = PowerMock.createMock(Attribute.class);
+	AttributeSearchTask task = new AttributeSearchTask();
+	Attribute attribute = PowerMock.createMock(Attribute.class);
 
-        Variable variableCreatedBy = new Variable();
-        variableCreatedBy.setClassName("ptolemy.data.expr.StringParameter");
-        variableCreatedBy.setName("CreatedBy");
-        Token tokenCreatedBy = new StringToken("Ashwini Bijwe");
-        variableCreatedBy.setToken(tokenCreatedBy);
+	Variable variableCreatedBy = new Variable();
+	variableCreatedBy.setClassName("ptolemy.data.expr.StringParameter");
+	variableCreatedBy.setName("CreatedBy");
+	Token tokenCreatedBy = new StringToken("Ashwini Bijwe");
+	variableCreatedBy.setToken(tokenCreatedBy);
 
-        Variable variableModelId = new Variable();
-        variableModelId.setClassName("ptolemy.data.expr.Parameter");
-        variableModelId.setName("ModelId");
-        Token tokenModelId = new StringToken("13781");
-        variableModelId.setToken(tokenModelId);
+	Variable variableModelId = new Variable();
+	variableModelId.setClassName("ptolemy.data.expr.Parameter");
+	variableModelId.setName("ModelId");
+	Token tokenModelId = new StringToken("13781");
+	variableModelId.setToken(tokenModelId);
 
-        task.addAttribute(attribute);
-        task.addAttribute(variableCreatedBy);
-        task.addAttribute(variableModelId);
-        task.addAttribute(attribute);
+	task.addAttribute(attribute);
+	task.addAttribute(variableCreatedBy);
+	task.addAttribute(variableModelId);
+	task.addAttribute(attribute);
 
-        try {
+	try {
 
-            ArrayList<XMLDBModel> modelsList = conn
-                    .executeAttributeSearchTask(task);
-            assertTrue("More than one results returned.",
-                    modelsList.size() == 1);
-            String modelName = modelsList.get(0).getModelName();
-            assertTrue(modelName + " - Wrong model returned.",
-                    "ModelContainsBothAttributes.xml".equals(modelName));
+	    ArrayList<XMLDBModel> modelsList = conn
+		    .executeAttributeSearchTask(task);
+	    assertTrue("More than one results returned.",
+		    modelsList.size() == 1);
+	    String modelName = modelsList.get(0).getModelName();
+	    assertTrue(modelName + " - Wrong model returned.",
+		    "ModelContainsBothAttributes.xml".equals(modelName));
 
-            ///////////////////////////////////////////////////////////////////////////////////////
-            //IllegalActionException
-            try {
-                OracleXMLDBConnection mockConn = PowerMock.createPartialMock(
-                        OracleXMLDBConnection.class, "_createAttributeClause",
-                        "_executeSingleAttributeMatch");
+	    ///////////////////////////////////////////////////////////////////////////////////////
+	    //IllegalActionException
+	    try {
+		OracleXMLDBConnection mockConn = PowerMock.createPartialMock(
+		        OracleXMLDBConnection.class, "_createAttributeClause",
+		        "_executeSingleAttributeMatch");
 
-                PowerMock.expectPrivate(mockConn, "_createAttributeClause",
-                        OracleXMLDBConnection.class, variableCreatedBy)
-                        .andThrow(new IllegalActionException("Test Exception"));
+		PowerMock.expectPrivate(mockConn, "_createAttributeClause",
+		        OracleXMLDBConnection.class, variableCreatedBy)
+		        .andThrow(new IllegalActionException("Test Exception"));
 
-                PowerMock.expectPrivate(mockConn, "_createAttributeClause",
-                        OracleXMLDBConnection.class, variableModelId)
-                        .andReturn("Test String");
+		PowerMock.expectPrivate(mockConn, "_createAttributeClause",
+		        OracleXMLDBConnection.class, variableModelId)
+		        .andReturn("Test String");
 
-                PowerMock.expectPrivate(mockConn,
-                        "_executeSingleAttributeMatch",
-                        OracleXMLDBConnection.class, "Test String").andThrow(
-                        new XmlException(1, "Mock Exception"));
+		PowerMock.expectPrivate(mockConn,
+		        "_executeSingleAttributeMatch",
+		        OracleXMLDBConnection.class, "Test String").andThrow(
+		        new XmlException(1, "Mock Exception"));
 
-                PowerMock.replay(mockConn);
+		PowerMock.replay(mockConn);
 
-                mockConn.executeAttributeSearchTask(task);
+		mockConn.executeAttributeSearchTask(task);
 
-                fail("No Exception thrown");
-            } catch (DBExecutionException e) {
+		fail("No Exception thrown");
+	    } catch (DBExecutionException e) {
 
-            }
-            ///////////////////////////////////////////////////////////////////////////////////////
-            //null attribute list
+	    }
+	    ///////////////////////////////////////////////////////////////////////////////////////
+	    //null attribute list
 
-            task.setAttributesList(null);
-            modelsList = conn.executeAttributeSearchTask(task);
-            assertTrue("Search was performed without attributes list.",
-                    modelsList == null);
+	    task.setAttributesList(null);
+	    modelsList = conn.executeAttributeSearchTask(task);
+	    assertTrue("Search was performed without attributes list.",
+		    modelsList == null);
 
-            ///////////////////////////////////////////////////////////////////////////////////////
-            //0-size attribute list
-            task.setAttributesList(new ArrayList<Attribute>());
-            modelsList = conn.executeAttributeSearchTask(task);
-            assertTrue("Search was performed without attributes list.",
-                    modelsList == null);
+	    ///////////////////////////////////////////////////////////////////////////////////////
+	    //0-size attribute list
+	    task.setAttributesList(new ArrayList<Attribute>());
+	    modelsList = conn.executeAttributeSearchTask(task);
+	    assertTrue("Search was performed without attributes list.",
+		    modelsList == null);
 
-            conn.closeConnection();
-        } catch (DBExecutionException e) {
-            fail("Unexpected Exception - " + e.getMessage());
-            e.printStackTrace();
-            conn.closeConnection();
-        }
+	    conn.closeConnection();
+	} catch (DBExecutionException e) {
+	    fail("Unexpected Exception - " + e.getMessage());
+	    e.printStackTrace();
+	    conn.closeConnection();
+	}
 
     }
-    
+
     /**
-     * Test method for testing the executCreateTask method.
+     * Test the executCreateTask method.
      * Conditions for the test:
-     * the model being saved is a new model.
-     * @throws Exception
+     * The model being saved is a new model.
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteCreateTask_NewModel() throws Exception {
-	
-	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
-	
+
+	OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+	        .getSyncConnection(true);
+
 	CreateModelTask task = new CreateModelTask();
 	XMLDBModel xmlModel = new XMLDBModel();
-	
+
 	xmlModel.setIsNew(true);
-	//please change the file name when you run the test for the second time.
+	// Change the name of the model with each test to ensure it is treated as a new model.
 	xmlModel.setModelName("test2");
-	xmlModel.setModel("<entity name=\"test2\" class=\"test.class\"></entity>");
-	
+	xmlModel
+	        .setModel("<entity name=\"test2\" class=\"test.class\"></entity>");
+
 	task.setXMLDBModel(xmlModel);
-	
+
 	try {
-	    conn.executeCreateModelTask(task);
-	    
+	    oracleXMLDBConnection.executeCreateModelTask(task);
+
 	    assertTrue("Model was created", true);
-	    
-	    
-	} catch(DBExecutionException e) {
-	    fail("Exception thrown");
-	    e.printStackTrace();
-	    conn.closeConnection();
+
+	} catch (DBExecutionException e) {
+	    fail("Exception thrown - " + e.getMessage());
 	} finally {
-	    conn.closeConnection();
+	    if (oracleXMLDBConnection != null) {
+		oracleXMLDBConnection.closeConnection();
+	    }
 	}
-	
+
     }
-    
-    
+
     /**
-     * Test method for testing the executCreateTask method.
+     * Test the executCreateTask method.
      * Conditions for the test:
      * The model to be created already exist in the database.
-     * @throws Exception
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteCreateTask_ExistingModel() throws Exception {
-	
-	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
-	
+
+	OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+	        .getSyncConnection(true);
+
 	CreateModelTask task = new CreateModelTask();
 	XMLDBModel xmlModel = new XMLDBModel();
-	
+
 	xmlModel.setIsNew(true);
-	//make sure the file exists in the database.
+	// make sure the file exists in the database.
 	xmlModel.setModelName("test");
-	xmlModel.setModel("<entity name=\"test\" class=\"test.class\"></entity>");
-	
+	xmlModel
+	        .setModel("<entity name=\"test\" class=\"test.class\"></entity>");
+
 	task.setXMLDBModel(xmlModel);
-	
+
 	try {
-	    conn.executeCreateModelTask(task);
-	    
+	    oracleXMLDBConnection.executeCreateModelTask(task);
+
 	    fail("Model was created when it should be already there.");
-	    
-	    
-	} catch(DBExecutionException e) {
-	    
-	    if(e.getMessage().contains("The model already exist"))
-	    {
-		assertTrue("model was not created because it already exists", true);
+
+	} catch (DBExecutionException e) {
+
+	    if (e.getMessage().contains("The model already exist")) {
+		assertTrue("model was not created because it already exists",
+		        true);
 	    }
 	} finally {
-	    conn.closeConnection();
+	    if (oracleXMLDBConnection != null) {
+		oracleXMLDBConnection.closeConnection();
+	    }
 	}
-	
+
     }
-    
-    
+
     /**
-     * Test method for testing the executCreateTask method.
+     * Test the executCreateTask method.
      * Conditions for the test:
      * The create model task is null.
-     * @throws Exception
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteCreateTask_NullTask() throws Exception {
-	
-	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
-	
+
+	OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+	        .getSyncConnection(true);
+
 	CreateModelTask task = null;
-	
-	
+
 	try {
-	    conn.executeCreateModelTask(task);
-	    
+	    oracleXMLDBConnection.executeCreateModelTask(task);
+
 	    fail("Model was created when it should not be.");
-	    
-	    
-	} catch(DBExecutionException e) {
-	    
-	    if(e.getMessage().contains("the CreateModelTask object passed was null"))
-	    {
-		assertTrue("model was not created because the task is null", true);
+
+	} catch (DBExecutionException e) {
+
+	    if (e.getMessage().contains(
+		    "the CreateModelTask object passed was null")) {
+		assertTrue("model was not created because the task is null",
+		        true);
 	    }
 	} finally {
-	    conn.closeConnection();
+	    if (oracleXMLDBConnection != null) {
+	        oracleXMLDBConnection.closeConnection();
+            }
 	}
-	
+
     }
-    
-    
 
     /**
-     * Test method for testing the executCreateTask method.
+     * Test the executCreateTask method.
      * Conditions for the test:
      * The model in the task is null.
-     * @throws Exception
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteCreateTask_NullModelInTask() throws Exception {
-	
-	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
-	
+
+	OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+	        .getSyncConnection(true);
+
 	CreateModelTask task = new CreateModelTask();
-	
+
 	task.setXMLDBModel(null);
-	
-	
+
 	try {
-	    conn.executeCreateModelTask(task);
-	    
+	    oracleXMLDBConnection.executeCreateModelTask(task);
+
 	    fail("Model was created when it should not be.");
-	    
-	    
-	} catch(DBExecutionException e) {
-	    
-	    if(e.getMessage().contains("the XMLDBModel object passed in the CreateModelTask was null"))
-	    {
-		assertTrue("model was not created because the model in the task was null.", true);
+
+	} catch (DBExecutionException e) {
+
+	    if (e.getMessage().contains("the XMLDBModel object passed in the CreateModelTask was null")) {
+		assertTrue("model was not created because the model in the task was null.",
+		        true);
 	    }
 	} finally {
-	    conn.closeConnection();
+	    if (oracleXMLDBConnection != null) {
+	        oracleXMLDBConnection.closeConnection();
+            }
 	}
-	
+
     }
 
-    
-    
-    
-    
-    
     /**
-     * Test method for testing the executSaveTask method.
+     * Test the executSaveTask method.
      * Conditions for the test:
      * the model being saved is a new model.
-     * @throws Exception
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteSaveTask_NewModel() throws Exception {
-	
-	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
-	
+
+	OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+	        .getSyncConnection(true);
+
 	SaveModelTask task = new SaveModelTask();
 	XMLDBModel xmlModel = new XMLDBModel();
-	
+
 	xmlModel.setIsNew(true);
-	//please change the file name when you run the test for the second time.
+	// Make sure the file does not exist in the database when running the test.
 	xmlModel.setModelName("test5");
 	xmlModel.setModel("<entity name=\"test5\" class=\"test.class\"></entity>");
-	
+
 	task.setXMLDBModel(xmlModel);
-	
+
 	try {
-	    conn.executeSaveModelTask(task);
-	    
+	    oracleXMLDBConnection.executeSaveModelTask(task);
+
 	    fail("Model should not be saved");
-	    
-	    
-	} catch(DBExecutionException e) {
-	    
-	    if(e.getMessage().contains("the model does not exist in the database."))
-	    {
-		assertTrue("model was not updated since it does not exist in the database.", true);
+
+	} catch (DBExecutionException e) {
+
+	    if (e.getMessage().contains(
+		    "the model does not exist in the database.")) {
+		assertTrue(
+		        "model was not updated since it does not exist in the database.",
+		        true);
 	    }
 	} finally {
-	    conn.closeConnection();
+	    if (oracleXMLDBConnection != null) {
+	        oracleXMLDBConnection.closeConnection();
+            }
 	}
-	
+
     }
-    
-    
+
     /**
-     * Test method for testing the executSaveTask method.
+     * Test the executSaveTask method.
      * Conditions for the test:
      * The model to be saved already exist in the database.
-     * @throws Exception
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteSaveTask_ExistingModel() throws Exception {
-	
-	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
-	
+
+	OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+	        .getSyncConnection(true);
+
 	SaveModelTask task = new SaveModelTask();
 	XMLDBModel xmlModel = new XMLDBModel();
-	
+
 	xmlModel.setIsNew(true);
-	//make sure the file exists in the database.
+	// Make sure the file exists in the database when running the test.
 	xmlModel.setModelName("test2");
-	xmlModel.setModel("<entity name=\"test2\" class=\"test1.class\"></entity>");
-	
+	xmlModel
+	        .setModel("<entity name=\"test2\" class=\"test1.class\"></entity>");
+
 	task.setXMLDBModel(xmlModel);
-	
+
 	try {
-	    conn.executeSaveModelTask(task);
-	    
+	    oracleXMLDBConnection.executeSaveModelTask(task);
+
 	    assertTrue("Model was updated...", true);
-	    
-	    
-	} catch(DBExecutionException e) {
-	    
-	    fail("Exception thrown");
-	    e.printStackTrace();
+
+	} catch (DBExecutionException e) {
+
+	    fail("Exception thrown - " + e.getMessage());
 	} finally {
-	    conn.closeConnection();
+	    if (oracleXMLDBConnection != null) {
+	        oracleXMLDBConnection.closeConnection();
+            }
 	}
-	
+
     }
-    
-    
+
     /**
-     * Test method for testing the executSaveTask method.
+     * Test the executSaveTask method.
      * Conditions for the test:
      * The save model task is null.
-     * @throws Exception
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteSaveTask_NullTask() throws Exception {
-	
-	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
-	
+
+	OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+	        .getSyncConnection(true);
+
 	SaveModelTask task = null;
-	
-	
+
 	try {
-	    conn.executeSaveModelTask(task);
-	    
+	    oracleXMLDBConnection.executeSaveModelTask(task);
+
 	    fail("Model was saved when it should not be.");
-	    
-	    
-	} catch(DBExecutionException e) {
-	    
-	    if(e.getMessage().contains("the SaveModelTask object passed was null"))
-	    {
+
+	} catch (DBExecutionException e) {
+
+	    if (e.getMessage().contains(
+		    "the SaveModelTask object passed was null")) {
 		assertTrue("model was not saved because the task is null", true);
 	    }
 	} finally {
-	    conn.closeConnection();
+	    if (oracleXMLDBConnection != null) {
+	        oracleXMLDBConnection.closeConnection();
+            }
 	}
-	
+
     }
-    
-    
 
     /**
-     * Test method for testing the executSaveTask method.
+     * Test the executSaveTask method.
      * Conditions for the test:
      * The model in the task is null.
-     * @throws Exception
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteSaveTask_NullModelInTask() throws Exception {
-	
-	OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory.getSyncConnection(true);
-	
+
+	OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+	        .getSyncConnection(true);
+
 	SaveModelTask task = new SaveModelTask();
-	
+
 	task.setXMLDBModel(null);
-	
-	
+
 	try {
-	    conn.executeSaveModelTask(task);
-	    
+	    oracleXMLDBConnection.executeSaveModelTask(task);
+
 	    fail("Model was created when it should not be.");
-	    
-	    
-	} catch(DBExecutionException e) {
-	    
-	    if(e.getMessage().contains("the XMLDBModel object passed in the SaveModelTask was null"))
-	    {
-		assertTrue("model was not saved because the model in the task was null.", true);
+
+	} catch (DBExecutionException e) {
+
+	    if (e.getMessage().contains(
+		    "the XMLDBModel object passed in the SaveModelTask was null")) {
+		assertTrue("model was not saved because the model in the task was null.",
+		        true);
 	    }
 	} finally {
-	    conn.closeConnection();
+	    if (oracleXMLDBConnection != null) {
+	        oracleXMLDBConnection.closeConnection();
+            }
 	}
-	
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     //////////////////////////////////////////////////////////////////////
     ////		private methods 				//////
 
     private OracleXMLDBConnection createConnWithoutTransaction()
-            throws DBConnectionException {
-        return createConn(false);
+	    throws DBConnectionException {
+	return createConn(false);
     }
 
     private OracleXMLDBConnection createConnWithTransaction()
-            throws DBConnectionException {
-        return createConn(true);
+	    throws DBConnectionException {
+	return createConn(true);
     }
 
     private OracleXMLDBConnection createConn(boolean tranReqd)
-            throws DBConnectionException {
-        String url = "c:\\users\\wini";
-        String containerName = "temp.dbxml";
-        boolean isTransactionRequired = tranReqd;
+	    throws DBConnectionException {
+	String url = "c:\\users\\wini";
+	String containerName = "temp.dbxml";
+	boolean isTransactionRequired = tranReqd;
 
-        DBConnectionParameters dbConnParams = new DBConnectionParameters(url,
-                containerName, isTransactionRequired);
-        dbConnParams.setUrl(url);
-        dbConnParams.setContainerName(containerName);
-        dbConnParams.setIsTransactionRequired(isTransactionRequired);
+	DBConnectionParameters dbConnParams = new DBConnectionParameters(url,
+	        containerName, isTransactionRequired);
+	dbConnParams.setUrl(url);
+	dbConnParams.setContainerName(containerName);
+	dbConnParams.setIsTransactionRequired(isTransactionRequired);
 
-        OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
-        return conn;
+	OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
+	return conn;
     }
 
     //////////////////////////////////////////////////////////////////////
