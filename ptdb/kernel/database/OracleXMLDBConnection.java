@@ -239,7 +239,14 @@ public class OracleXMLDBConnection implements DBConnection {
             //==================================================
 
             //get the document from the database
-            XmlDocument doc = _xmlContainer.getDocument(model.getModelName());
+            XmlDocument doc = null;
+            
+            try {
+        	doc = _xmlContainer.getDocument(model.getModelName());
+            } catch(XmlException e) {
+        	//do nothing
+            }
+            
 
             //if the document was retrieved from the database, throw an exception
             if (doc != null) {
@@ -281,7 +288,10 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
-     * 
+     * Get the attributes defined from the database. 
+     * @param task The criteria to get the attribute.   
+     * @return List of attributes stored in the database.
+     * @throws DBExecutionException
      */
     public ArrayList executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
@@ -311,8 +321,17 @@ public class OracleXMLDBConnection implements DBConnection {
             //get the model from the database based on the name using the container method that returns 
             //the document from the database.
             //this is a document fetched from the database using the xml container with transaction enabled
-            XmlDocument dbModel = _xmlContainer.getDocument(_xmlTransaction,
-                    task.getModelName());
+            XmlDocument dbModel;
+            try {
+	        dbModel = _xmlContainer.getDocument(_xmlTransaction,
+	                task.getModelName());
+            } catch (XmlException e) {
+        	
+        	throw new DBExecutionException(
+                        "Failed to execute GetModelsTask"
+                                + " - Could not find the model in the database");
+	        
+            }
 
             //this is the model that should be returned.
             XMLDBModel completeXMLDBModel = null;
@@ -499,13 +518,19 @@ public class OracleXMLDBConnection implements DBConnection {
             if (model == null) {
                 throw new DBExecutionException(
                         "Failed to execute SaveModelTask"
-                                + " - the XMLDBModel object passed in the CreateModelTask was null");
+                                + " - the XMLDBModel object passed in the SaveModelTask was null");
             }
 
             //use the container to get a handle on the document that represents the model. 
-            XmlDocument currentDbModel = _xmlContainer.getDocument(model
-                    .getModelName());
-
+            XmlDocument currentDbModel = null;
+            
+            try {
+        	currentDbModel = _xmlContainer.getDocument(model.getModelName());
+            } catch(XmlException e) {
+        	//do nothing
+            }
+            
+            
             //check if the model is not in the database, throw an exception
             if (currentDbModel == null) {
 
@@ -517,7 +542,8 @@ public class OracleXMLDBConnection implements DBConnection {
             else {
                 //set the new content of the model to the document fetched from the database.
                 currentDbModel.setContent(model.getModel());
-
+                
+                
                 //update the database with the new changes to the model using the container object. 
                 //using the updateDocument method with transaction enabled
                 //This method expects the document to be updated.
@@ -556,7 +582,7 @@ public class OracleXMLDBConnection implements DBConnection {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /*
+    /**
      * Build the complete model by resolving all the references in it.
      * 
      * @param p_currentNode the node in the reference file that points to the model
@@ -680,27 +706,16 @@ public class OracleXMLDBConnection implements DBConnection {
                         strCurrentModelContent = strCurrentModelContent
                                 .replaceAll(">", ">\n");
                     }
-
                 }
-
-                //add the current model to the hash map (name, content)
-                _xmlModelHerarichyMap.put(strCurrentModelName,
-                        strCurrentModelContent);
-
-                //return the model content
-                return strCurrentModelContent;
             }
 
-            // if there are no children
-            else {
+          //add the current model to the hash map (name, content)
+            _xmlModelHerarichyMap.put(strCurrentModelName,
+                    strCurrentModelContent);
 
-                //add the current model to the hash map (name, content)
-                _xmlModelHerarichyMap.put(strCurrentModelName,
-                        strCurrentModelContent);
-
-                //return the model content
-                return strCurrentModelContent;
-            }
+            //return the model content
+            return strCurrentModelContent;
+            
         }
         //if the name was not extracted from the node, then return empty string.
         else {
@@ -798,8 +813,8 @@ public class OracleXMLDBConnection implements DBConnection {
             }
 
             //generate the query.
-            String strQuery = "collection('" + _xmlContainer.getName()
-                    + "')/Reference/entity[@name='" + p_strModelName + "']";
+            String strQuery = "doc('dbxml:/" + _xmlContainer.getName() + "/ReferenceFile.ptdbxml')"
+            + "/reference/entity[@name='" + p_strModelName + "']";
 
             // prepare the query for execution.
             XmlQueryExpression queryExpression = _xmlManager.prepare(strQuery,
@@ -927,6 +942,9 @@ public class OracleXMLDBConnection implements DBConnection {
 
             //parse the input source and get the first node in the xml.
             firstNode = docBuilder.parse(is);
+            
+            //get the first node in the parsed document.
+            firstNode = firstNode.getChildNodes().item(0);
 
         } catch (ParserConfigurationException e) {
 
