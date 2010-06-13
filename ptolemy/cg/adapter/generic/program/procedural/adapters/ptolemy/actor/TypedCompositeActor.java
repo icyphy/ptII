@@ -136,7 +136,14 @@ public class TypedCompositeActor extends
                         .generateVariableName(portParameter)));
                 // FIXME: The = sign is language specific.
                 tempCode.append(" = ");
-                tempCode.append(getReference(inputPort.getName(), false));
+                String reference = getReference(inputPort.getName(), false);
+                if (reference != "") {
+                    tempCode.append(reference);
+                } else {
+                    // Look for the reference in the exeuctive director.  Needed for
+                    // $PTII/bin/ptcg -language java /Users/cxh/ptII/ptolemy/actor/lib/hoc/test/auto/Case1.xml
+                    tempCode.append(getReference(inputPort.getName(), true));
+                }
                 tempCode.append(";" + _eol);
             }
         }
