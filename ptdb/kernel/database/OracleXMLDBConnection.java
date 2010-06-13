@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -69,11 +71,11 @@ public class OracleXMLDBConnection implements DBConnection {
      *  and creates a database connection 
      *  based on the given parameters.
      *   
-     * @param dbConnParams - Encapsulate the parameters required to 
-     *                       create a database connection  
-     * @throws DBConnectionException - When the XML DB encounters 
-     *                                 an error while creating a 
-     *                                 connection
+     * @param dbConnParams Encapsulate the parameters required to 
+     *                       create a database connection.
+     *                         
+     * @exception DBConnectionException If thrown  while creating a 
+     *                                 connection.
      */
     public OracleXMLDBConnection(DBConnectionParameters dbConnParams)
             throws DBConnectionException {
@@ -107,6 +109,8 @@ public class OracleXMLDBConnection implements DBConnection {
             if (_params.isTransactionRequired()) {
                 _xmlTransaction = _xmlManager.createTransaction();
                 _isTransactionActive = true;
+            } else {
+                _isTransactionActive = false;
             }
 
             _isConnectionAlive = true;
@@ -119,6 +123,9 @@ public class OracleXMLDBConnection implements DBConnection {
                             + _params.getUrl(), e);
 
         } catch (DatabaseException e) {
+
+            System.out.println("Exception while connecting to the database : "
+                    + e.getMessage());
 
             throw new DBConnectionException(
                     "Exception while connecting to the database : "
@@ -133,6 +140,9 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Abort the connection and roll back the transaction
      * Invoke in case of errors.
+     * 
+     * @exception DBConnectionException If thrown while aborting 
+     * transaction in the database.
      */
     public void abortConnection() throws DBConnectionException {
         try {
@@ -154,7 +164,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Commit the transaction running over the connection.
-     * @throws DBConnectionException - When there is a problem while committing 
+     * @exception DBConnectionException If thrown while committing 
      * transaction in the database.
      */
     public void commitConnection() throws DBConnectionException {
@@ -177,11 +187,23 @@ public class OracleXMLDBConnection implements DBConnection {
     /** 
      * Commit the transaction and close the connection to 
      * the database.
-     * Invoke in case of successful completion of processing.
+     * 
+     * <p>If the transaction on this connection is alive/open
+     * while closing the connection, the transaction will be aborted.</p>
+     * 
+     * @exception DBConnectionException If thrown while closing 
+     * database connection.
      */
     public void closeConnection() throws DBConnectionException {
         try {
             _checkConnectionAlive();
+            if (_isTransactionActive == true) {
+                System.out.println("The transaction was alive "
+                        + "while closing the connection. "
+                        + "So aborting the transaction "
+                        + "before closing the connection.");
+                abortConnection();
+            }
             _cleanUp();
 
         } finally {
@@ -191,7 +213,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Execute the necessary commands to create a new model in the database according
-     * to the model specification given in the task parameter
+     * to the model specification given in the task parameter.
      * 
      * @param task
      *          The task to be completed.  In this case, CreateModelTask. 
@@ -276,15 +298,19 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Fetch the parent model hierarchies for the given models.
      * 
-     * @param task - Task that contains the list of models.
-     * @return - List of models that contain the parent hierarchies.
-     * @throws DBExecutionException - When the database encounters 
-     * error while searching.
+     * @param task Task that contains the list of models.
+     * @return List of models that contain the parent hierarchies.
+     * @exception DBExecutionException If thrown while searching
+     * in the database.
      */
-    public ArrayList<XMLDBModel> executeFetchHierarchyTask(FetchHierarchyTask task)
-            throws DBExecutionException {
-        // TODO Auto-generated method stub
-        return null;
+    public ArrayList<XMLDBModel> executeFetchHierarchyTask(
+            FetchHierarchyTask task) throws DBExecutionException {
+        ArrayList<XMLDBModel> modelsList = task.getModelsList();
+        for (XMLDBModel model : modelsList) {
+            _fetchHierarchyForModel(model);
+        }
+
+        return modelsList;
     }
 
     /**
@@ -405,8 +431,8 @@ public class OracleXMLDBConnection implements DBConnection {
      * Null list if the search is not performed due to empty 
      * or invalid search criteria.
      * 
-     * @throws DBExecutionException - When the database encounters 
-     * error while searching.
+     * @exception DBExecutionException If thrown while searching
+     * in the database.
      */
     public ArrayList<XMLDBModel> executeAttributeSearchTask(
             AttributeSearchTask task) throws DBExecutionException {
@@ -425,8 +451,9 @@ public class OracleXMLDBConnection implements DBConnection {
                         if (matchingModelNamesList == null) {
                             matchingModelNamesList = new ArrayList<String>();
                             matchingModelNamesList.addAll(modelNamesList);
-                        } else
+                        } else {
                             matchingModelNamesList.retainAll(modelNamesList);
+                        }
 
                     } catch (IllegalActionException e) {
 
@@ -443,8 +470,9 @@ public class OracleXMLDBConnection implements DBConnection {
                                         + e.getMessage(), e);
                     }
                     if (matchingModelNamesList != null
-                            && matchingModelNamesList.size() == 0)
+                            && matchingModelNamesList.size() == 0) {
                         return finalModelsList;
+                    }
                 }
             }
 
@@ -468,10 +496,11 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Search models that contain given graphical pattern in the database.
      * 
-     * @param task - Task that contains the graph search criteria
-     * @return - List of models that match the given search criteria.
-     * @throws DBExecutionException - When the database encounters 
-     * error while searching.
+     * @param task Task that contains the graph search criteria.
+     * 
+     * @return List of models that match the given search criteria.
+     * @exception DBExecutionException If thrown while searching 
+     * in the database.
      */
     public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
             throws DBExecutionException {
@@ -481,12 +510,12 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Execute the necessary commands to save/update a model in the database according
-     * to the model specification given in the task parameter
+     * to the model specification given in the task parameter.
      * 
      * @param task
      *          The task to be completed.  In this case, SaveModelTask. 
      *          This will tell the DB layer to save/update a model already existing in the database.
-     * @throws DBExecutionException Thrown if there is a problem executing the task.
+     * @exception DBExecutionException Thrown if there is a problem executing the task.
      */
     public void executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException {
@@ -590,7 +619,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * 
      * @param p_currentNode the node in the reference file that points to the model
      * @return String that represents the model body without references
-     * @throws DBExecutionException Thrown if there is a problem executing the task.
+     * @exception DBExecutionException Thrown if there is a problem executing the task.
      */
     private String _buildCompleteModel(Node p_currentNode)
             throws DBExecutionException {
@@ -727,39 +756,43 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
-     * Check if the connection is alive 
-     * @throws DBConnectionException - When the connection is not alive
-     * 
+     * Check if the connection is alive/open. 
+     * @exception DBConnectionException If the connection is not alive/open.
      */
     private void _checkConnectionAlive() throws DBConnectionException {
-        if (!_isConnectionAlive)
+        if (!_isConnectionAlive) {
             throw new DBConnectionException(
                     "This connection is not alive anymore. "
                             + "It has been closed.");
+        }
     }
 
     /**
-     * Check if the transaction is active 
-     * @throws DBConnectionException - When the connection is not alive
+     * Check if the transaction is active. 
+     * @exception DBConnectionException If the connection is not alive
      * 
      */
     private void _checkTransactionActive() throws DBConnectionException {
-        if (!_isTransactionActive)
+        if (!_isTransactionActive) {
             throw new DBConnectionException(
                     "The transaction is no longer active. "
                             + "It has already been committed or aborted.");
+        }
     }
 
     /**
      * Close the environment and invoke delete on the container 
      * that closes the connection and releases the resources. 
-     * @throws DBConnectionException
+     * 
+     * @exception DBConnectionException If thrown while 
+     * closing the environment.
      */
     private void _cleanUp() throws DBConnectionException {
         try {
 
-            if (_xmlTransaction != null)
+            if (_xmlTransaction != null) {
                 _xmlTransaction.delete();
+            }
 
             if (_xmlContainer != null) {
                 _xmlContainer.close();
@@ -776,6 +809,221 @@ public class OracleXMLDBConnection implements DBConnection {
                             + e.getMessage(), e);
 
         }
+    }
+
+    /**
+     * Create the attribute sub-query for the given attribute.
+     *
+     * @param attribute Attribute for which the sub-query
+     * needs to be created.
+     *
+     * @return Sub-query for the given attribute.
+     * @exception IllegalActionException If thrown whie retrieving
+     * attribute data.
+     */
+    private String _createAttributeClause(Variable attribute)
+            throws IllegalActionException {
+
+        StringBuffer attributesQuery = new StringBuffer();
+
+        attributesQuery.append("$const/@name=\"").append(attribute.getName())
+                .append("\"");
+
+        attributesQuery.append(" and ");
+
+        attributesQuery.append("$const/@value[contains(.,").append(
+                attribute.getToken().toString()).append(")]");
+
+        attributesQuery.append(" and ");
+
+        attributesQuery.append("$const/@class=\"").append(
+                attribute.getClassName()).append("\"");
+
+        return attributesQuery.toString();
+
+    }
+
+    /**
+     * Create the parent hierarchy for the given base model.
+     * 
+     * @param currentNode Current node for which processing needs to be done.
+     * @param parentNodeName Parent node for the current node.
+     * @param dBModelsMap Map that contains all the DBModels 
+     * as they are created so that their parent lists can be populated.
+     * @param baseModel Base model for which the hierarchy is being created.
+     */
+    private void _createParentHierarchy(Node currentNode,
+            String parentNodeName, HashMap<String, DBModel> dBModelsMap,
+            XMLDBModel baseModel) {
+        /*
+         * If the currentNode is not already visited 
+         * and it is not the base model,
+         * then visit all its children and call
+         * _createParentHierarchy over them.
+         * 
+         * If the current model is already visited,
+         * then add the current model to the parent list.
+         */
+        String currentNodeName = _getValueForAttribute(currentNode, "name");
+
+        if (currentNodeName != null) {
+
+            if (!dBModelsMap.containsKey(currentNodeName)
+                    && currentNode.hasChildNodes()) {
+                NodeList children = currentNode.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                        Node child = children.item(i);
+                        _createParentHierarchy(child, currentNodeName,
+                                dBModelsMap, baseModel);
+                    }
+                }
+            }
+            if (parentNodeName != null
+                    && dBModelsMap.containsKey(currentNodeName)) {
+                DBModel currentDBModel = dBModelsMap.get(currentNodeName);
+                DBModel parentDBModel = new DBModel(parentNodeName);
+
+                currentDBModel.addParent(parentDBModel);
+                dBModelsMap.put(parentNodeName, parentDBModel);
+            }
+        }
+    }
+
+    /**
+     * Execute the attribute search on the database for
+     * the given attribute clause.
+     *
+     * @param attributeClause Attribute sub-query for which
+     * search needs to be done.
+     *
+     * @return List of models matching the attribute search.
+     *
+     * @exception XmlException If thrown while executing query.
+     */
+    private ArrayList<String> _executeSingleAttributeMatch(
+            String attributeClause) throws XmlException {
+
+        ArrayList<String> modelsList = new ArrayList<String>();
+
+        String attributeSearchQuery = "for $const in collection(\""
+                + _params.getContainerName() + "\")/entity/property where "
+                + attributeClause + " " + " return base-uri($const)";
+
+        //System.out.println("attributeSearchQuery - " + attributeSearchQuery);
+
+        XmlQueryContext context = _xmlManager.createQueryContext();
+        context.setEvaluationType(XmlQueryContext.Lazy);
+
+        XmlResults results = _xmlManager.query(attributeSearchQuery, context,
+                null);
+        if (results != null && results.hasNext()) {
+            XmlValue value = results.next();
+            while (value != null) {
+                modelsList.add(value.asString());
+                value = results.next();
+            }
+        }
+
+        return modelsList;
+    }
+
+    /** 
+     * Fetch the parent hierarchies for the given model.
+     * 
+     * @param model The model for which the parent 
+     * hierarchies are required.
+     *  
+     * @exception DBExecutionException If thrown while 
+     * fetching model hierarchy. 
+     */
+    private XMLDBModel _fetchHierarchyForModel(XMLDBModel model)
+            throws DBExecutionException {
+        /*
+         * Fetch references from database reference file.
+         */
+        String referencesXML = _getParentHierarchiesForModelFromDB(model);
+        if (referencesXML != null) {
+            /*
+             * Create document for the given references XML.
+             */
+            Document document = (Document) _parseXML(referencesXML);
+            /*
+             * "entities" is the root tag which contains entity tags.
+             * For every child entity tag populate the dbModelsMap 
+             * with parent hierarchy.  
+             */
+            Node firstNode = document.getElementsByTagName("entities").item(0);
+            if (firstNode != null) {
+                HashMap<String, DBModel> dBModelsMap = new HashMap<String, DBModel>();
+                String modelName = model.getModelName();
+                dBModelsMap.put(modelName, new DBModel(modelName));
+                NodeList children = firstNode.getChildNodes();
+
+                for (int i = 0; i < children.getLength(); i++) {
+                    if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                        Node child = children.item(i);
+                        _createParentHierarchy(child, null, dBModelsMap, model);
+                    }
+                }
+
+                DBModel baseDBModel = dBModelsMap.get(model.getModelName());
+                /*
+                 * Get unique and maximal hierarchies from the baseDBModel 
+                 */
+                _populateParentList(model, baseDBModel,
+                        new LinkedList<XMLDBModel>(), model);
+            }
+        }
+        return model;
+    }
+
+    /**
+     * Get all the parent entries in the reference file 
+     * where the given model is a child entity.
+     * 
+     * @param model Model for which the parent references are to be fetched.
+     * 
+     * @return String representation of the matching reference XML entities.
+     * 
+     * @throws DBExecutionException If thrown while fetching parent hierarchies 
+     * from database.
+     */
+    private String _getParentHierarchiesForModelFromDB(XMLDBModel model)
+            throws DBExecutionException {
+        StringBuffer referencesXML = null;
+
+        String fetchHierarchyQuery = "doc(\""
+                + _params.getContainerName()
+                + "/ReferenceFile.ptdbxml\")/reference/*[descendant::entity[attribute::name=\""
+                + model.getModelName() + "\"]]";
+
+        try {
+            XmlQueryContext context = _xmlManager.createQueryContext();
+            XmlResults results = _xmlManager.query(fetchHierarchyQuery,
+                    context, null);
+            /*
+             * Create well formed XML for document parser to parse.
+             */
+            if (results != null && results.hasNext()) {
+
+                referencesXML = new StringBuffer(
+                        "<?xml version=\"1.0\" standalone=\"no\"?><entities>");
+
+                XmlValue value = results.next();
+                while (value != null) {
+                    referencesXML.append(value.asString());
+                    value = results.next();
+                }
+
+                referencesXML.append("</entities>");
+            }
+        } catch (Exception e) {
+            throw new DBExecutionException(
+                    "Error while fetching model hierachy - "
+                            + model.getModelName(), e);
+        }
+        return referencesXML != null ? referencesXML.toString() : null;
     }
 
     /**
@@ -892,6 +1140,33 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
+     * Get the value for the given attribute.
+     *   
+     * @param currentNode Node for which attribute value 
+     * needs to be determined.
+     * @param attributeName Name of the attribute.
+     * @return Return the value for the given attribute. 
+     * Return null if attribute not present for the given node.
+     */
+    private String _getValueForAttribute(Node currentNode, String attributeName) {
+
+        NamedNodeMap attributes = currentNode.getAttributes();
+        String strCurrentModelName = null;
+
+        if (attributes != null) {
+            for (int i = 0; i < attributes.getLength(); i++) {
+
+                Node node = attributes.item(i);
+                if (node.getNodeName().equalsIgnoreCase("name")) {
+                    strCurrentModelName = node.getNodeValue();
+                    break;
+                }
+            }
+        }
+        return strCurrentModelName;
+    }
+
+    /**
      * Parse the xml string that is passed to it and returns the upper node of that xml.
      * 
      * @param p_strXML the xml string that needs to be parsed
@@ -964,70 +1239,50 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
-     * Create the attribute sub-query for the given attribute.
-     *
-     * @param attribute - Attribute for which the sub-query
-     * needs to be created.
-     *
-     * @return - Sub-query for the given attribute.
-     * @throws IllegalActionException
+     * Populate the base model with the maximal parent hierarchies.
+     *  
+     * @param model XMLDBModel in the hierarchy. 
+     * @param dbModel DBModel for the above XMLDBModel.
+     * @param childHierarchy List that contains the list if previous models visited 
+     * in the hierarchy.
+     * @param baseModel Base model for which the parent hierarchies 
+     * need to be populated.
      */
-    private String _createAttributeClause(Variable attribute)
-            throws IllegalActionException {
 
-        StringBuffer attributesQuery = new StringBuffer();
+    private void _populateParentList(XMLDBModel model, DBModel dbModel,
+            LinkedList<XMLDBModel> childHierarchy, XMLDBModel baseModel) {
 
-        attributesQuery.append("$const/@name=\"").append(attribute.getName())
-                .append("\"");
+        /*
+         * If the current model has parents, then 
+         * add the current model to the list, and for every child 
+         * call _populateParentList. Remove the current model 
+         * from the list after all children have been visited.
+         *  
+         *  If the current model has no parents, then 
+         *  add the current model to the linked list and
+         *  add the linked list to the list of parents 
+         *  in the base model.
+         */
+        ArrayList<DBModel> parentsList = dbModel._parentsList;
+        if (parentsList != null && parentsList.size() > 0) {
 
-        attributesQuery.append(" and ");
+            childHierarchy.addFirst(model);
+            for (DBModel parentDBModel : parentsList) {
 
-        attributesQuery.append("$const/@value[contains(.,").append(
-                attribute.getToken().toString()).append(")]");
+                XMLDBModel parentXMLDBModel = new XMLDBModel(
+                        parentDBModel._modelName);
 
-        attributesQuery.append(" and ");
-
-        attributesQuery.append("$const/@class=\"").append(
-                attribute.getClassName()).append("\"");
-
-        return attributesQuery.toString();
-
-    }
-
-    /**
-     * Execute the attribute search on the database for
-     * the given attribute clause.
-     *
-     * @param attributeClause - Attribute sub-query for which
-     * search needs to be done.
-     *
-     * @return - List of models matching the attribute search.
-     *
-     * @throws XmlException - When there is an error while executing query.
-     */
-    private ArrayList<String> _executeSingleAttributeMatch(
-            String attributeClause) throws XmlException {
-
-        ArrayList<String> modelsList = new ArrayList<String>();
-
-        String attributeSearchQuery = "for $const in collection(\""
-                + _params.getContainerName() + "\")/entity/property where "
-                + attributeClause + " " + " return base-uri($const)";
-
-        //System.out.println("attributeSearchQuery - " + attributeSearchQuery);
-
-        XmlQueryContext context = _xmlManager.createQueryContext();
-        context.setEvaluationType(XmlQueryContext.Lazy);
-
-        XmlResults results = _xmlManager.query(attributeSearchQuery, context,
-                null);
-
-        XmlValue value = results.next();
-        while (value != null) {
-            modelsList.add(value.asString());
-            value = results.next();
+                _populateParentList(parentXMLDBModel, parentDBModel,
+                        childHierarchy, baseModel);
+            }
+            childHierarchy.removeFirst();
+        } else {
+            LinkedList<XMLDBModel> xmlDBModelParentsList = new LinkedList<XMLDBModel>();
+            xmlDBModelParentsList.addAll(childHierarchy);
+            xmlDBModelParentsList.addFirst(model);
+            baseModel.addParentList(xmlDBModelParentsList);
         }
-        return modelsList;
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1079,4 +1334,53 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     private XmlTransaction _xmlTransaction;
 
+    /**
+     * Contain the parents list for a model. 
+     */
+    private class DBModel {
+        /**
+         * Construct an instance with 
+         * the given model name. 
+         */
+        DBModel(String modelName) {
+            _modelName = modelName;
+        }
+
+        /**
+         * Add parent to model if the parent 
+         * is not already present.
+         * @param model Parent model to be added to parentslist.
+         */
+        public void addParent(DBModel model) {
+            if (_parentsList == null) {
+                _parentsList = new ArrayList<DBModel>();
+            }
+            if (!_parentsList.contains(model)) {
+                _parentsList.add(model);
+            }
+        }
+
+        /**
+         * Name of the model
+         */
+        String _modelName;
+        /**
+         * Parents list for the model.
+         */
+        ArrayList<DBModel> _parentsList;
+
+        /**
+         * Match the given DBModel to the current model 
+         * based on name.
+         * @param model Model to be compared.
+         * @return True if the names are same, false otherwise.
+         */
+        public boolean equals(DBModel model) {
+            if (model._modelName.equals(_modelName)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }

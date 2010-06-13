@@ -37,7 +37,9 @@ public class AsynchronousDBConnection implements DBConnection {
     /**
      * Construct an instance that creates the taskQueue to enqueue tasks 
      * and the executor thread that enables task execution in parallel.
-     * @throws DBConnectionException
+     * 
+     * @exception DBConnectionException If thrown while 
+     * creating a connection.
      */
     public AsynchronousDBConnection() throws DBConnectionException {
         _taskQueue = new TaskQueue();
@@ -60,12 +62,15 @@ public class AsynchronousDBConnection implements DBConnection {
      * Close the connection if all tasks in the queue 
      * are executed successfully.
      * Close connection signifies that the processing is completed.
+     * 
+     * @exception DBConnectionException If thrown while 
+     * closing a connection.
      */
     public void closeConnection() throws DBConnectionException {
 
         boolean hasExecutionCompleted = false;
-        int maxWait = 1200;
-        /**
+        int maxWait = _getMaxTurns();
+        /*
          * The thread waits for one of the three things to happen 
          *  - task execution to complete successfully  
          *  - task execution to generate an error
@@ -90,11 +95,12 @@ public class AsynchronousDBConnection implements DBConnection {
 
     /**
      * Commit the transaction running over the connection.
-     * @throws DBConnectionException - When there is a problem while committing 
+     * 
+     * @exception DBConnectionException If thrown while committing a 
      * transaction in the database.
      */
     public void commitConnection() throws DBConnectionException {
-        /**
+        /*
          * All tasks added denotes that the tasks have been added 
          * and processing is successfully completed. 
          */
@@ -110,7 +116,7 @@ public class AsynchronousDBConnection implements DBConnection {
      * 
      * @return List of models that contain the attributes.
      * 
-     * @throws DBExecutionException - When the database encounters error while searching.
+     * @exception DBExecutionException If thrown while searching.
      */
     public ArrayList<XMLDBModel> executeAttributeSearchTask(
             AttributeSearchTask task) throws DBExecutionException {
@@ -126,28 +132,29 @@ public class AsynchronousDBConnection implements DBConnection {
      * @param task
      *          The task to be completed.  In this case, CreateModelTask. 
      *          This will tell the DB layer to create a new model in the database.
-     * @throws DBExecutionException
+     * @exception DBExecutionException If thrown while creating a model.
      */
     public void executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException {
 
         //call the execueTask method to execute the given task
-        executeTask(task);
+        _executeTask(task);
 
     }
 
     /**
-     * Fetch the parent model hierarchies is 
+     * Execute Fetch Hierarchy task.
+     *  
+     * <p>Fetch the parent model hierarchies is 
      * not supported by the asynchronous connection.
-     * Use a synchronous connection for that.
+     * Use a synchronous connection for that.</p>
      * 
-     * @param task - Task that contains the list of models.
-     * @return - List of models that contain the parent hierarchies.
-     * @throws DBExecutionException - When the database encounters 
-     * error while searching.
+     * @param task Task that contains the list of models.
+     * @return List of models that contain the parent hierarchies.
+     * @exception DBExecutionException If thrown while searching.
      */
-    public ArrayList<XMLDBModel> executeFetchHierarchyTask(FetchHierarchyTask task)
-            throws DBExecutionException {
+    public ArrayList<XMLDBModel> executeFetchHierarchyTask(
+            FetchHierarchyTask task) throws DBExecutionException {
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeFetchHierarchyTask is "
                         + "not supported by this type of DBConnection");
@@ -160,7 +167,8 @@ public class AsynchronousDBConnection implements DBConnection {
      *          The task to be completed.
      * @return XMLDBModel
      *          The model object containing the MoML.
-     * @throws DBExecutionException
+     * @exception DBExecutionException If thrown while getting attributes from the
+     * database.
      */
     public ArrayList executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
@@ -191,8 +199,8 @@ public class AsynchronousDBConnection implements DBConnection {
      * 
      * @param task - Task that contains the graph search criteria.
      * @return - List of models that match the given search criteria.
-     * @throws DBExecutionException - When the database encounters 
-     * error while searching.
+     * @exception DBExecutionException If thrown while searching
+     * in the database.
      */
     public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
             throws DBExecutionException {
@@ -207,14 +215,34 @@ public class AsynchronousDBConnection implements DBConnection {
      * 
      * @param task
      *          The task to be completed.  In this case, SaveModelTask. 
-     *          This will tell the DB layer to save/update a model already existing in the database.
-     * @throws DBExecutionException
+     *          This will tell the DB layer to save/update a model
+     *          already existing in the database.
+     * @exception DBExecutionException If thrown while saving model
+     * in the database.
      */
     public void executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException {
 
         //call the execueTask method to execute the given task
-        executeTask(task);
+        _executeTask(task);
+    }
+
+    /**
+     * Return a string representation for the 
+     * internal parameters of the class.
+     * Used for verifying during unit testing.
+     * 
+     * @return String representation of the 
+     * internal parameters of the class.
+     */
+    public String toString() {
+
+        StringBuffer connState = new StringBuffer();
+        connState.append(":Processing Error-").append(
+                _taskQueue.hasProcessingError()).append(":");
+        connState.append(":All Tasks Added-").append(
+                _taskQueue.areAllTasksAdded()).append(":");
+        return connState.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -223,28 +251,38 @@ public class AsynchronousDBConnection implements DBConnection {
     /**
      * Adds tasks to the task queue for the executor thread to execute.
      * 
-     * @param task - Task that needs to be executed on the database.
-     * @throws DBConnectionException - When the executor thread 
-     * fails due to an exception.
+     * @param task Task that needs to be executed on the database.
+     * @exception DBConnectionException If thrown by executor thread 
+     * while executing tasks on the database.
      */
-    private void executeTask(Task task) throws DBExecutionException {
+    private void _executeTask(Task task) throws DBExecutionException {
 
-        /**
+        /*
          * If this is the first task, then start the executor thread 
          */
         if (_taskQueue.size() == 0)
             _executorThread.run();
-        /**
+        /*
          * If the executor thread failed due to an exception; 
          * throw that exception 
          */
         if (_taskQueue.hasExecutionError())
             throw new DBExecutionException(_taskQueue
                     .getExecutionErrorMessage());
-        /**
+        /*
          * Add the task to the queue
          */
         _taskQueue.add(task);
+    }
+
+    /**
+     * Provide maximum turns for waiting for 
+     * database processing to finish.
+     * @return 1200 (Maximum) turns to wait for 
+     * the processing to finish.
+     */
+    private int _getMaxTurns() {
+        return 1200;
     }
 
     ///////////////////////////////////////////////////////////////////

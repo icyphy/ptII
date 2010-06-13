@@ -1,7 +1,7 @@
 package ptdb.common.dto;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * @author Yousef
@@ -22,14 +22,43 @@ import java.util.List;
 public class XMLDBModel {
     
     /**
-     * Return the is new 
-     *@return boolean - true or false based on if the model is new or it exists in the database
+     * Construct a XMLDBModel instance.
      */
-    public boolean getIsNew(){
-	return _m_bIsNew;
+    public XMLDBModel() {
+
     }
-    
-    
+
+    /**
+     * Construct a XMLDBModel instance 
+     * with the given model name.
+     * 
+     * @param modelName Name for the given model.
+     */
+    public XMLDBModel(String modelName) {
+        this._m_strModelName = modelName;
+    }
+
+    /**
+     * Add the given parent list to the model's 
+     * parent list.
+     * @param list List of parents to be added.
+     */
+    public void addParentList(List<XMLDBModel> list) {
+        if (_m_listParents == null) {
+            _m_listParents = new ArrayList<List<XMLDBModel>>();
+        }
+
+        _m_listParents.add(list);
+    }
+
+    /**
+     * Return the is new. 
+     *@return boolean True or false based on if the model is new or it exists in the database.
+     */
+    public boolean getIsNew() {
+        return _m_bIsNew;
+    }
+
     /**
      * Return the model content.
      * @return String - string representation of the model content
