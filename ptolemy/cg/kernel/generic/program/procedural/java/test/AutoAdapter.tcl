@@ -41,6 +41,9 @@ if {[info procs testJavaCG] == "" } then {
     source [file join $PTII util testsuite testJavaCG.tcl]
 }
 
+# $PTII/ptolemy/actor/lib/test/auto/Sinewave3.xml Runs, but gets different output?
+#   Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 2.
+#   Value was: 0.9092974268257. Should have been: 0.908970305448
 # $PTII/ptolemy/actor/lib/comm/test/auto/HammingCodec.xml   Runs, but "Attempt to get data from an empty mailbox."
 # $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml  Runs, but "Attempt to get data from an empty mailbox."
 # $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Runs, but "Attempt to get data from an empty mailbox."
@@ -63,9 +66,6 @@ if {[info procs testJavaCG] == "" } then {
 # $PTII/ptolemy/actor/lib/hoc/test/auto/Case1.xml  Fails to compile:
 #  Case1.java:487: cannot find symbol
 #   symbol  : variable Case1_Case_true_output
-# $PTII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml:  Fails to compile, missing symbols
-
-
 
 # $PTII/ptolemy/actor/lib/string/test/auto/StringMatches.xml   Runs, but gets wrong results
 #     Won't fix right now, the problem is backslash hell.
@@ -86,7 +86,10 @@ if {[info procs testJavaCG] == "" } then {
 set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/LookupTable.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
+		$PTII/ptolemy/actor/lib/test/auto/Sinewave.xml \
+		$PTII/ptolemy/actor/lib/test/auto/Sinewave2.xml \
 		$PTII/ptolemy/actor/lib/comm/test/auto/Scrambler1.xml \
+		$PTII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringCompare.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringFunction.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringLength.xml \
