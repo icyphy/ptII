@@ -46,11 +46,13 @@ public class TestSaveModelManager {
     ////		public methods 				    //////
     
     /**
-     * method to test the SaveManager.save() method.
+     * test the SaveManager.save() method.
      * 
      * The condition for this test case:
      * 
      * 1- The model being saved is a new model and should be created in the database.
+     * 
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSave_CreateModel() throws Exception {
@@ -111,12 +113,14 @@ public class TestSaveModelManager {
 
     
     /**
-     * method to test the SaveManager.save() method.
+     * test SaveManager.save() method.
      * 
      * The condition for this test case:
      * 
      * 1- The model being saved is a new model and should be created in the database.
      * 2- The executeCreateModelTask method throws exception.
+     * 
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSave_CreateModelNotSuccessful() throws Exception {
@@ -199,11 +203,13 @@ public class TestSaveModelManager {
     
     
     /**
-     * method to test the SaveManager.save() method.
+     * test the SaveManager.save() method.
      * 
      * The condition for this test case:
      * 
      * 1- The model being saved is an existing model and should be updated in the database.
+     *
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSave_SaveModel() throws Exception {
@@ -262,12 +268,13 @@ public class TestSaveModelManager {
     
     
     /**
-     * method to test the SaveManager.save() method.
+     * test the SaveManager.save() method.
      * 
      * The condition for this test case:
      * 
      * 1- The model being saved is an existing model and should be updated in the database.
      * 2- The executeSaveModelTask method throws exception.
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSave_SaveModelNotSuccessful() throws Exception {
@@ -353,6 +360,7 @@ public class TestSaveModelManager {
      * The condition for this test case:
      * 
      * 1- Fail to get a DBConnection from the DBConnectionFactory.
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSave_NullDBConn() throws Exception {
@@ -405,6 +413,7 @@ public class TestSaveModelManager {
      * 1- The model passed as a parameter is null.
      * 
      * the test result should throw an exception.
+     * @exception Exception thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testSave_NullModelParam() throws Exception {
