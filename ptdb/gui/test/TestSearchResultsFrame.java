@@ -49,9 +49,9 @@ public class TestSearchResultsFrame {
             frame.pack();
             frame.setVisible(true);
 
-            ArrayList<ArrayList<XMLDBModel>> parentHierarchy = new ArrayList();
+            List<List<XMLDBModel>> parentHierarchy = new ArrayList();
 
-            ArrayList<XMLDBModel> parentBranch;// = new ArrayList();
+            List<XMLDBModel> parentBranch;// = new ArrayList();
 
             for (int i = 0; i < 5; i++) {
 
@@ -70,7 +70,7 @@ public class TestSearchResultsFrame {
             }
 
             XMLDBModel searchResult = new XMLDBModel();
-            ArrayList<XMLDBModel> searchResultList = new ArrayList();
+            List<XMLDBModel> searchResultList = new ArrayList();
 
             searchResult.setIsNew(false);
             searchResult.setModelName("model1");

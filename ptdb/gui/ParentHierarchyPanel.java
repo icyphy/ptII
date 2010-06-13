@@ -2,6 +2,7 @@ package ptdb.gui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -42,7 +43,7 @@ public class ParentHierarchyPanel extends JPanel {
      * @param configuration
      *        The configuration under which an effigy of this model would be generated.
      */
-    public ParentHierarchyPanel(ArrayList<XMLDBModel> hierarchy,
+    public ParentHierarchyPanel(List<XMLDBModel> hierarchy,
             String searchResultModel, Configuration configuration) {
 
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));

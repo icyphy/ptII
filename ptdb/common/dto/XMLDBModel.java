@@ -1,6 +1,6 @@
 package ptdb.common.dto;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -51,7 +51,7 @@ public class XMLDBModel {
      * Return the parents for the current model
      * @return ArrayList<ArrayList<XMLDBModel>> - list of parents models for the current model
      */
-    public ArrayList<ArrayList<XMLDBModel>> getParents(){
+    public List<List<XMLDBModel>> getParents(){
 	return _m_listParents;
     }
     
@@ -85,7 +85,7 @@ public class XMLDBModel {
      * Set the parents for the current model
      * @param ArrayList<ArrayList<XMLDBModel>> p_listParents - list of parents for that need to be set as parents for the current model.
      */
-    public void setParents(ArrayList<ArrayList<XMLDBModel>> p_listParents){
+    public void setParents(List<List<XMLDBModel>> p_listParents){
 	_m_listParents = p_listParents;
     }
     
@@ -99,7 +99,7 @@ public class XMLDBModel {
     /**
      * variable to hold a list of all the parents for the current model
      */
-    private ArrayList<ArrayList<XMLDBModel>> _m_listParents = null;  
+    private List<List<XMLDBModel>> _m_listParents = null;  
     
     /**
      * variable to hold the content of the model in a string.

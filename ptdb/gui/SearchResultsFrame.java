@@ -7,6 +7,7 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -150,7 +151,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
      * @param modelList
      *        The list of models that will be displayed as search results.
      */
-    public void display(ArrayList<XMLDBModel> modelList) {
+    public void display(List<XMLDBModel> modelList) {
 
         for (XMLDBModel model : modelList) {
 

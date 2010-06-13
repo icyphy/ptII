@@ -2,6 +2,7 @@ package ptdb.gui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -60,7 +61,7 @@ public class SearchResultPanel extends JPanel {
 
         _parentPanelList = new ArrayList();
 
-        for (ArrayList<XMLDBModel> hierarchy : dbModel.getParents()) {
+        for (List<XMLDBModel> hierarchy : dbModel.getParents()) {
 
             ParentHierarchyPanel panelToAdd;
             panelToAdd = new ParentHierarchyPanel(hierarchy, _modelName,
