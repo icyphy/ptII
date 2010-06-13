@@ -3,14 +3,9 @@
  */
 package ptdb.kernel.bl.search.test;
 
-import java.util.ArrayList;
-
 import org.junit.Test;
 
 import ptdb.common.dto.SearchCriteria;
-import ptdb.common.dto.XMLDBModel;
-import ptdb.common.exception.DBConnectionException;
-import ptdb.common.exception.DBExecutionException;
 import ptdb.kernel.bl.search.AttributeSearcher;
 
 ///////////////////////////////////////////////////////////////
@@ -29,29 +24,20 @@ import ptdb.kernel.bl.search.AttributeSearcher;
 public class TestAttributeSearcher {
 
     //////////////////////////////////////////////////////////////////////
-    ////                public methods                                  //////
-
+    ////                public methods                                ////
+    
     /**
-     * Test the handleResults() method. Test the case when search criteria
-     *  is not set. 
+     * The the wholeSearchDone() method. 
      * 
-     * @exception DBExecutionException Happens in the execution 
-     *          of DB tasks, and is thrown by the concrete searcher when they
-     *          are performing the actual searching in the database. 
-     * @exception DBConnectionException Thrown by the DBConnectorFactory
-     *           when getting the DBConnection from it, which
-     *          indicates that the DBConnection cannot be obtained.
-     * 
+     * <p>Test the case when there is no next result handler set in the 
+     * searcher. </p>
      */
     @Test
-    public void testHandleResults() throws DBConnectionException,
-            DBExecutionException {
-
+    public void testWholeSearchDoneWithoutNextHandler() {
         AttributeSearcher attributeSearcher = new AttributeSearcher(
                 new SearchCriteria());
 
-        attributeSearcher.handleResults(new ArrayList<XMLDBModel>());
-
+        attributeSearcher.wholeSearchDone();
     }
 
 }

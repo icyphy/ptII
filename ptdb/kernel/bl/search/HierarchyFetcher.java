@@ -23,7 +23,7 @@ public class HierarchyFetcher extends AbstractSearcher implements
         ResultHandler, AbstractDBSearcher {
 
     /////////////////////////////////////////////////////////////////////////
-    ////        protected methods                                       /////
+    ////        protected methods                                        ////
 
     @Override
     protected boolean _isSearchCriteriaSet() {
@@ -46,7 +46,7 @@ public class HierarchyFetcher extends AbstractSearcher implements
 
         // create the FetchHierarchyTask
         FetchHierarchyTask fetchHierarchyTask = new FetchHierarchyTask();
-
+        
         fetchHierarchyTask.setModelsList(_previousResults);
 
         // call the executeFetchHierarchyTask() method from the DBConnection class

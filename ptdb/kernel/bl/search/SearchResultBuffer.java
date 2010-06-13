@@ -30,7 +30,7 @@ import ptdb.common.dto.XMLDBModel;
 public class SearchResultBuffer extends Observable implements ResultHandler {
 
     //////////////////////////////////////////////////////////////////////
-    ////        public methods                                       /////
+    ////        public methods                                        ////
 
     /**
      * Get the results stored in the buffer.
@@ -74,6 +74,8 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
                 _storedResults.addAll(modelResults);
             }
 
+            setChanged();
+
             // notify the observers
             this.notifyObservers();
         }
@@ -107,19 +109,21 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
 
         _isSearchDone = true;
 
+        setChanged();
+
         // tell all the registered observers that the searching is done
         this.notifyObservers();
     }
 
     /////////////////////////////////////////////////////////////////////////
-    ////        private variables                                       /////
+    ////        private variables                                        ////
+
+    private boolean _isSearchCancelled = false;
+
+    private boolean _isSearchDone = false;
 
     /**
      * The field that stores the buffered results. 
      */
     private ArrayList<XMLDBModel> _storedResults;
-
-    private boolean _isSearchCancelled = false;
-
-    private boolean _isSearchDone = false;
 }
