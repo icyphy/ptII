@@ -84,6 +84,9 @@ public class SaveModelManager {
 		//if no exception was thrown, then the operation was successful
 		//set the success flag to true
 		bIsSuccessful = true;
+		
+		//commit the transaction
+		dbConn.commitConnection();
 
 	    }
 	    //if the model is already in the database, save the modification made on it.
@@ -101,6 +104,9 @@ public class SaveModelManager {
 		//if no exception was thrown, then the operation was successful
 		//set the success flag to true
 		bIsSuccessful = true;
+		
+		//commit the transaction.
+		dbConn.commitConnection();
 
 	    }
 
