@@ -267,6 +267,26 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         }
     }
 
+    /** Clear the model error parameter is this modal model.
+     * This method should be called when the user deselects a 
+     * previously selected transition as an error transition.
+     * */
+
+    public void clearModelError() {
+        if (_modelError) {
+            try {
+                modelError.setExpression("false");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (_debugging) {
+                _debug("I've cleared the model error");
+            }
+
+            _modelError = false;
+        }
+    }
+
     /** React to a change request has been successfully executed.
      *  This method is called after a change request
      *  has been executed successfully.
@@ -438,6 +458,23 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
         }
     }
 
+    /** Set the model error parameter is this modal model to true.
+     * This method is called when the user selects a transition as
+     * an error transition.*/
+    public void setModelError() {
+        if (_modelError == false) {
+            try {
+                modelError.setExpression("true");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (_debugging) {
+                _debug("I've set the model error");
+            }
+            _modelError = true;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -530,30 +567,6 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
             ex.printStackTrace();
         } catch (NameDuplicationException ex) {
             ex.printStackTrace();
-        }
-    }
-
-    public void setModelError() {
-        if (_modelError == false) {
-            try {
-                modelError.setExpression("true");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (_debugging) {
-                _debug("I've set the model error");
-            }
-            _modelError = true;
-        }
-    }
-
-    public void clearModelError() {
-        if (_modelError) {
-            if (_debugging) {
-                _debug("I've cleared the model error");
-            }
-
-            _modelError = false;
         }
     }
 
