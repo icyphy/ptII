@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.domains.pthales.JNI;
 
 /**
- * TestJNI class.
+ * Test float arrays in JNI
  *
  * @author rbarrere
  * @version $Id$
@@ -36,8 +36,8 @@ package ptolemy.domains.pthales.JNI;
  */
 public class TestJNI {
 
-    /** Just a function to test float arrays in JNI 
-     * @param args The command line arguments, not used.
+    /** Test float arrays in JNI.
+     * @param args Not used.
      */
     public static void main(String[] args) {
         System.loadLibrary("ABF");

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh)
  */
 public class LogicFunction extends NamedProgramCodeGeneratorAdapter {
-    /** Construct a LogicFunction adapter
+    /** Construct a LogicFunction adapter.
      *  @param actor the associated actor.
      */
     public LogicFunction(ptolemy.actor.lib.logic.LogicFunction actor) {

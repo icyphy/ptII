@@ -184,7 +184,7 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         }
     }
 
-    /** Create the deterministic SDF with sharing buffers graph for a composite actor
+    /** Create the deterministic SDF with sharing buffers graph for a composite actor.
      * @return The generated profile of the composite actor.
      * @exception IllegalActionException
      */

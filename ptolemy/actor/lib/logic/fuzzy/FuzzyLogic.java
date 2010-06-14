@@ -103,6 +103,7 @@ public class FuzzyLogic extends TypedAtomicActor{
         rulesFileName = new FileParameter(this, "rulesFileName");
         rulesFileName.setExpression("rules.xml");
 
+        // FIXME: This should be numberOfOutputs.
         numOutputs = new Parameter(this, "numOutputs");
         numOutputs.setExpression("1");
 
@@ -211,10 +212,14 @@ public class FuzzyLogic extends TypedAtomicActor{
      */
     public Parameter componentType;
 
-    // recently added
-    public Parameter numOutputs;
-    public Parameter numInputs;
 
+    /** The number of Inputs, which defaults to an integer with value 1. */
+    public Parameter numInputs;
+    // FIXME: This should be numberOfInputs
+
+    /** The number of outputs, which defaults to an integer with value 1. */
+    public Parameter numOutputs;
+    // FIXME: This should be numberOfOutputs.
 
 
     ///////////////////////////////////////////////////////////////////

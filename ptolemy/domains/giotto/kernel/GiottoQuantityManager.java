@@ -1,6 +1,6 @@
 /*  This parameter, when inserted into a port, causes the port to display its unconsumed inputs.
 
- @Copyright (c) 2007-2010 The Regents of the University of California.
+ @Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -56,29 +56,30 @@ import ptolemy.kernel.util.SingletonAttribute;
 ///////////////////////////////////////////////////////////////////
 //// MonitorReceiverContents
 /**
- * This parameter, when inserted into a model or an opaque composite actor, 
- * facilitates an aspect oriented approach to management and possible mitigation 
- * of timing errors in a specification that uses timing but has no mechanisms 
- * in it's specification for timing error handling. This parameter is also a 
- * decorator pattern that allows all the actors present to be decorated with WCET, 
- * execution time as  well as grace parameters. 
- * In addition, the presence of the quantity manager indicates a desire to 
- * incorporate execution timing as well as error handling into a Giotto specification.  
- * This works by piggybacking on the  fire(), and postfire() methods of the container
- * to determine execution times  and determine when a timing overrun occurs. 
- * The piggybacks on postfire() and wrapup() issue a ChangeRequest, which causes 
- * a repaint of the screen in Vergil.
- * To remove actual execution timing and timing error management from a model, 
- * simply delete  this attribute from the model.
+ * A Parameter that acilitates an aspect oriented approach to
+ * management and possible mitigation of timing errors in a
+ * specification that uses timing but has no mechanisms in it's
+ * specification for timing error handling. This parameter is also a
+ * decorator pattern that allows all the actors present to be
+ * decorated with WCET, execution time as well as grace parameters.
+ * In addition, the presence of the quantity manager indicates a
+ * desire to incorporate execution timing as well as error handling
+ * into a Giotto specification.  This works by piggybacking on the
+ * fire(), and postfire() methods of the container to determine
+ * execution times and determine when a timing overrun occurs.  The
+ * piggybacks on postfire() and wrapup() issue a ChangeRequest, which
+ * causes a repaint of the screen in Vergil.  To remove actual
+ * execution timing and timing error management from a model, simply
+ * delete this attribute from the model.
  * 
- * The parameter can be instantinated by instantiating an attribute of type
- * ptolemy.domains.giotto.kernel.GiottoQuantityManager
-  @author Shanna-Shaye Forbes. Based on the MonitorReceiverContents.java created by Edward A. Lee
- @version $Id$
- @since Ptolemy II 8.0
- @Pt.ProposedRating Red (sssf)
- @Pt.AcceptedRating Red (sssf)
- // ptolemy.domains.giotto.kernel.GiottoQuantityManager
+ * <p>The parameter can be instantinated by instantiating an attribute of type
+ * {@link ptolemy.domains.giotto.kernel.GiottoQuantityManager}.</p>
+ *
+ * @author Shanna-Shaye Forbes. Based on the MonitorReceiverContents.java created by Edward A. Lee
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (sssf)
+ *  @Pt.AcceptedRating Red (sssf)
  */
 public class GiottoQuantityManager extends SingletonAttribute implements
         Decorator {
@@ -449,10 +450,10 @@ public class GiottoQuantityManager extends SingletonAttribute implements
             throws IllegalActionException {
     }
 
-    /** Remove the decorated attributes
+    /** Remove the decorated attributes.
+     *  @param target The decorated attribute to remove   
      */
-    public void removeDecoratedAttributes(NamedObj target)
-            throws IllegalActionException, NameDuplicationException {
+    public void removeDecoratedAttributes(NamedObj target) {
         System.out
                 .println("create decorated attributes to be called for Giotto quantityManager");
         for (Actor actor : (List<Actor>) ((TypedCompositeActor) target
@@ -468,11 +469,8 @@ public class GiottoQuantityManager extends SingletonAttribute implements
                 if (param.getDisplayName().equals("WCET")) {
                     param.setPersistent(false);
                 }
-
             }
-
         }
-
     }
 
     /** Return the decorated attributes for the target NamedObj.

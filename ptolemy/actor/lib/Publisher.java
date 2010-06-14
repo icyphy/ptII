@@ -301,15 +301,12 @@ public class Publisher extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected method                    ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** Cached channel name. */
     protected String _channel;
 
-    /** Cached number export levels */
+    /** Cached number export levels. */
     protected int _numberExportLevels;
 
     ///////////////////////////////////////////////////////////////////

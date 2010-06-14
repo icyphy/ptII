@@ -628,7 +628,7 @@ public class ModularCompiledSDFTypedCompositeActor extends
         }
     }
 
-    /** Always return true (opaque)
+    /** Always return true (opaque).
      * @return true if the composite actor is set to opaque, return false otherwise.
      */
 

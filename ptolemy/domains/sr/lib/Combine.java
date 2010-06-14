@@ -201,9 +201,9 @@ public class Combine extends TypedAtomicActor {
     /** This should reset the value according to the current combine function. 
      */
     private void resetValue() {
-    	if (_function == _MIN)
+    	if (_function == _MINIMUM)
     		_value = 10000000;
-    	else if ((_function == _MULT)||(_function == _AND))
+    	else if ((_function == _MULTIPLY)||(_function == _AND))
     		_value = 1;
     	else
     		_value = 0;
@@ -236,20 +236,20 @@ public class Combine extends TypedAtomicActor {
         }
         	
         switch (_function) {
-        	case _CONST:
+        	case _CONSTANT:
         		result = _constValue;
         		break;
         	case _ADD:
         		result = old + in;
         		break;
-        	case _MULT:
+        	case _MULTIPLY:
         		result = old * in;
         		break;
-        	case _MAX:
+        	case _MAXIMUM:
         		if (in > old) result = in;
         		else          result = old; 
         		break;
-        	case _MIN:
+        	case _MINIMUM:
         		if (in < old) result = in;
         		else          result = old; 
         		break;
@@ -287,11 +287,11 @@ public class Combine extends TypedAtomicActor {
             if (functionName.equals("add")) {
                 _function = _ADD;
             } else if (functionName.equals("mult")) {
-                _function = _MULT;
+                _function = _MULTIPLY;
             } else if (functionName.equals("max")) {
-                _function = _MAX;
+                _function = _MAXIMUM;
             } else if (functionName.equals("min")) {
-                _function = _MIN;
+                _function = _MINIMUM;
             } else if (functionName.equals("and")) {
                 _function = _AND;
             } else if (functionName.equals("or")) {
@@ -299,7 +299,7 @@ public class Combine extends TypedAtomicActor {
             } else {
             	try {
             		_constValue = Integer.parseInt(function.getValueAsString());
-            		_function = _CONST;
+            		_function = _CONSTANT;
             	} catch(Exception e){
                     throw new IllegalActionException(this,
                             "Unrecognized synchronous signal combine function: " + functionName
@@ -313,29 +313,40 @@ public class Combine extends TypedAtomicActor {
     }    
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Noop. */
+    protected final int _NONE  = 0;
+    /** Add. */
+    protected final int _ADD   = 1;
+    /** Multiply. */
+    protected final int _MULTIPLY  = 2;
+    /** Maximum. */
+    protected final int _MAXIMUM   = 3;
+    /** Minimum. */
+    protected final int _MINIMUM   = 4;
+    /** Logical Or. */
+    protected final int _OR    = 5;
+    /** Logical And. */
+    protected final int _AND   = 6;
+    /** Constant. */
+    protected final int _CONSTANT = 8;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    //const function value
+    /** Const function value. */
     private int _constValue;
     
-    //active combine function
+    /** Active combine function. */
     private int _function;
-    
-    protected final int _NONE  = 0;
-    protected final int _ADD   = 1;
-    protected final int _MULT  = 2;
-    protected final int _MAX   = 3;
-    protected final int _MIN   = 4;
-    protected final int _OR    = 5;
-    protected final int _AND   = 6;
-    protected final int _CONST = 8;
-    
-    //indicates that the signal is present
+        
+    /** True if the signal is present. */
     private boolean _present;
     
     private int _countDownRegions;
     
-    //current (combined) signal value
+    /** Current (combined) signal value. */
     private int _value;
 
 }

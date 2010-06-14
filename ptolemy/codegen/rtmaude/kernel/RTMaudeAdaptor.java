@@ -94,35 +94,6 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         return rl;
     }
 
-    /**
-     * Given a block name, generate code for that block.
-     * @param blockName The name of the block.
-     * @param args      The arguments for the block.
-     * @return The block code
-     * @exception IllegalActionException
-     */
-    protected String _generateBlockCode(String blockName, String... args)
-            throws IllegalActionException {
-        return super._generateBlockCode(blockName, Arrays.asList(args));
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.codegen.kernel.CodeGeneratorHelper#_generateTypeConvertMethod(java.lang.String, java.lang.String, java.lang.String)
-     */
-    protected String _generateTypeConvertMethod(String ref, String castType,
-            String refType) throws IllegalActionException {
-
-        //FIXME: too specific.
-        if (refType != null && refType.equals("String")) {
-            return "# " + ref;
-        }
-        if (castType != null && castType.equals("time")) {
-            return "toTime(" + ref + ")";
-        } else {
-            return super._generateTypeConvertMethod(ref, castType, refType);
-        }
-    }
-
     /* (non-Javadoc)
      * @see ptolemy.codegen.kernel.CodeGeneratorHelper#generateFireCode()
      */
@@ -220,6 +191,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         return modNames;
     }
 
+
     /**
      * Generates the entry code for RTMaude model, whose template is defined
      * in "mainEntry" block.
@@ -279,6 +251,26 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
                         check_inc_set).generateCode()), commands.toString());
     }
 
+    /** 
+     * Return a new parse tree code generator to use with expressions.
+     * @return the parse tree code generator to use with expressions.
+     */
+    public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
+        _parseTreeCodeGenerator = new RTMaudeParseTreeCodeGenerator(); //FIXME: _codeGenerator
+        return _parseTreeCodeGenerator;
+    }
+
+    /**
+     * Returns the RTMmodule value.
+     * @return a Map object representing the RTMmodule value
+     */
+    public Map<String, String> getRTMmodule() {
+        return RTMmodule;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /**
      * Returns some information of the component. Subclasses may
      * override this method to define more specific information.
@@ -289,10 +281,40 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
      */
     protected String getInfo(String name, List<String> parameters)
             throws IllegalActionException {
+        // FIXME: Rename to _getInfo()
         if (name.equals("name")) {
             return getComponent().getName();
         }
         throw new IllegalActionException("Unknown RTMaudeObj Information");
+    }
+
+    /**
+     * Given a block name, generate code for that block.
+     * @param blockName The name of the block.
+     * @param args      The arguments for the block.
+     * @return The block code
+     * @exception IllegalActionException
+     */
+    protected String _generateBlockCode(String blockName, String... args)
+            throws IllegalActionException {
+        return super._generateBlockCode(blockName, Arrays.asList(args));
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.kernel.CodeGeneratorHelper#_generateTypeConvertMethod(java.lang.String, java.lang.String, java.lang.String)
+     */
+    protected String _generateTypeConvertMethod(String ref, String castType,
+            String refType) throws IllegalActionException {
+
+        //FIXME: too specific.
+        if (refType != null && refType.equals("String")) {
+            return "# " + ref;
+        }
+        if (castType != null && castType.equals("time")) {
+            return "toTime(" + ref + ")";
+        } else {
+            return super._generateTypeConvertMethod(ref, castType, refType);
+        }
     }
 
     /* (non-Javadoc)
@@ -323,24 +345,12 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
         return super._replaceMacro(macro, parameter);
     }
 
-    /** 
-     * Return a new parse tree code generator to use with expressions.
-     * @return the parse tree code generator to use with expressions.
-     */
-    public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
-        _parseTreeCodeGenerator = new RTMaudeParseTreeCodeGenerator(); //FIXME: _codeGenerator
-        return _parseTreeCodeGenerator;
-    }
-
-    /**
-     * Returns the RTMmodule value.
-     * @return a Map object representing the RTMmodule value
-     */
-    public Map<String, String> getRTMmodule() {
-        return RTMmodule;
-    }
-    
+    /** Get the translanted expression.
+     *  @param expression The expression to be parsed and translated.   
+     *  @return the translated expression.
+     */   
     protected String getTranslatedExpression(String expression) throws IllegalActionException {
+        // FIXME: Rename to _getTranslatedExpression
         ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
         PtParser parser = new PtParser();
         ASTPtRootNode parseTree = null;
@@ -364,6 +374,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
 
     /** The default name of the block for the term template. */
     protected String defaultTermBlock = "termBlock";
+    // FIXME: rename to _defaultTermBlock.
 
     Map<String, String> RTMmodule;
     List<String> semanticsIncludes;

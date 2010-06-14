@@ -255,9 +255,10 @@ public class PthalesAtomicActor extends TypedAtomicActor {
     }
 
     /** Compute iteration numbers of the actor,
-     * where external means the number of times C function is called 
-     * @param totalRepetitions 
-     * @param internalRepetitions
+     * where external means the number of times C function is called.
+     * @param totalRepetitions The array of total repetitions.
+     * @param internalRepetitions The array of internal repetitions,
+     * where an internal repetition is the loop inside the C function. 
      * @return external iteration numbers 
      */
     protected static int[] _computeIterations(Integer[] totalRepetitions,

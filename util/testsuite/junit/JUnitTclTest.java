@@ -31,6 +31,7 @@ package util.testsuite.junit;
 import java.io.File;
 
 import tcl.lang.Interp;
+import tcl.lang.TclException;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest
@@ -72,9 +73,10 @@ public class JUnitTclTest {
      *  is sourced and the doallTests Tcl proc that is defined
      *  in $PTII/util/testsuite/testDefs.tcl is invoked and then
      *  any models in the auto/ directory are invoked.
+     *  @exception TclException If thrown while evaluating the Tcl test code.
      */ 
     @org.junit.Test 
-    public void run() throws Exception {
+    public void run() throws TclException {
         String fileName = System.getProperty("fileName");
         Interp interp = new Interp();
         if (fileName != null) {
