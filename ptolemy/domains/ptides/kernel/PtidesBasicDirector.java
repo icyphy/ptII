@@ -176,12 +176,12 @@ public class PtidesBasicDirector extends DEDirector {
         return new Tag(_currentTime, _microstep);
     }
 
-    /** Return the model time of the enclosing director, which is our model
+    /** Return the model microstep of the enclosing director, which is our model
      *  of physical time.
      *  @return Physical time.
      *  @exception IllegalActionException 
      */
-    public Time getPhysicalTime() throws IllegalActionException {
+    /*public Time getPhysicalTime() throws IllegalActionException {
         Director director = this;
         while (director instanceof PtidesBasicDirector) {
             director = ((Actor) director.getContainer().getContainer())
@@ -204,6 +204,40 @@ public class PtidesBasicDirector extends DEDirector {
             }
             return director.getModelTime();
         }
+    }*/
+
+    /** Return the model time of the enclosing director, which is our model
+     *  of physical time.
+     *  @return Physical time.
+     *  @exception IllegalActionException 
+     */
+    public Tag getPhysicalTag() throws IllegalActionException {
+        Tag tag = new Tag();
+        Director director = this;
+        while (director instanceof PtidesBasicDirector) {
+            director = ((Actor) director.getContainer().getContainer())
+                    .getDirector();
+        }
+        if (!(director instanceof DEDirector)) {
+            throw new IllegalActionException(
+                    director,
+                    "The enclosing director of the Ptides "
+                            + "director is not a DE Director or a PtidesTopLevelDirector.");
+        }
+        if (director instanceof PtidesTopLevelDirector) {
+            tag.timestamp = ((PtidesTopLevelDirector) director)
+                    .getSimulatedPhysicalTime((Actor) getContainer());
+            tag.microstep = ((PtidesTopLevelDirector) director).getMicrostep();
+        } else {
+            if (getSyncError() != 0.0) {
+                throw new IllegalActionException(this,
+                        "The synchronization error is non-zero, the top level"
+                                + "needs to be a PtidesTopLevelDirector.");
+            }
+            tag.timestamp = director.getModelTime();
+            tag.microstep = ((DEDirector)director).getMicrostep();
+        }
+        return tag;
     }
 
     /** Get the synchronization error of this platform.
@@ -1330,7 +1364,7 @@ public class PtidesBasicDirector extends DEDirector {
         // This means that this director cannot be used inside a director that
         // does a fixed point iteration, which includes (currently), Continuous
         // and CT and SR, but in the future may also include DE.
-        Time physicalTime = getPhysicalTime();
+        Tag physicalTag = getPhysicalTag();
         Actor container = (Actor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
 
@@ -1342,7 +1376,7 @@ public class PtidesBasicDirector extends DEDirector {
             Time remainingExecutionTime = currentEventList.remainingExecutionTime;
             Time finishTime = _physicalTimeExecutionStarted
                     .add(remainingExecutionTime);
-            int comparison = finishTime.compareTo(physicalTime);
+            int comparison = finishTime.compareTo(physicalTag.timestamp);
             if (comparison < 0) {
                 // NOTE: This should not happen, so if it does, throw an exception.
                 throw new IllegalActionException(
@@ -1356,7 +1390,7 @@ public class PtidesBasicDirector extends DEDirector {
                 _currentlyExecutingStack.pop();
                 // If there is now something on _currentlyExecutingStack,
                 // then we are resuming its execution now.
-                _physicalTimeExecutionStarted = physicalTime;
+                _physicalTimeExecutionStarted = physicalTag.timestamp;
 
                 if (_debugging) {
                     _debug("Actor "
@@ -1364,7 +1398,7 @@ public class PtidesBasicDirector extends DEDirector {
                                     (List<PtidesEvent>) currentEventList.contents)
                                     .getName(getContainer())
                             + " finishes executing at physical time "
-                            + physicalTime);
+                            + physicalTag.timestamp);
                 }
 
                 // Animate, if appropriate.
@@ -1474,7 +1508,7 @@ public class PtidesBasicDirector extends DEDirector {
             // the stack, call fireAt() on the enclosing director,
             // and return null.
 
-            Time expectedCompletionTime = physicalTime.add(executionTime);
+            Time expectedCompletionTime = physicalTag.timestamp.add(executionTime);
             Time fireAtTime = executiveDirector.fireAt(container,
                     expectedCompletionTime);
 
@@ -1494,7 +1528,7 @@ public class PtidesBasicDirector extends DEDirector {
                 // We are preempting a current execution.
                 DoubleTimedEvent currentEventList = _currentlyExecutingStack
                         .peek();
-                Time elapsedTime = physicalTime
+                Time elapsedTime = physicalTag.timestamp
                         .subtract(_physicalTimeExecutionStarted);
                 currentEventList.remainingExecutionTime = currentEventList.remainingExecutionTime
                         .subtract(elapsedTime);
@@ -1510,7 +1544,7 @@ public class PtidesBasicDirector extends DEDirector {
                             + _getActorFromEventList(
                                     (List<PtidesEvent>) currentEventList.contents)
                                     .getName((NamedObj) container)
-                            + " at physical time " + physicalTime
+                            + " at physical time " + physicalTag.timestamp
                             + ", which has remaining execution time "
                             + currentEventList.remainingExecutionTime);
                 }
@@ -1518,7 +1552,7 @@ public class PtidesBasicDirector extends DEDirector {
             _currentlyExecutingStack.push(new DoubleTimedEvent(
                     timeStampOfEventFromQueue, microstepOfEventFromQueue,
                     eventsToProcess, executionTime));
-            _physicalTimeExecutionStarted = physicalTime;
+            _physicalTimeExecutionStarted = physicalTag.timestamp;
 
             // Animate if appropriate.
             _setIcon(_getExecutingIcon(actorToFire), false);
@@ -1670,7 +1704,8 @@ public class PtidesBasicDirector extends DEDirector {
         double minDelay = _getMinDelay(port, ((PtidesEvent) event).channel(),
                 event.isPureEvent());
         Time waitUntilPhysicalTime = event.timeStamp().subtract(minDelay);
-        if (getPhysicalTime().subtract(waitUntilPhysicalTime).compareTo(_zero) >= 0) {
+        if (getPhysicalTag().timestamp.subtract(waitUntilPhysicalTime).compareTo(_zero) >= 0
+                &&  (getPhysicalTag().microstep - event.microstep() >= 0)) {
             return true;
         } else {
             _setTimedInterrupt(waitUntilPhysicalTime);
@@ -1858,7 +1893,7 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         boolean result = false;
-        Time physicalTime = getPhysicalTime();
+        Tag physicalTag = getPhysicalTag();
         // First transfer all tokens that are already in the event queue for the sensor.
         // FIXME: notice this is done NOT for the specific port
         // in question. Instead, we do it for ALL events that can be transferred out of
@@ -1874,7 +1909,7 @@ public class PtidesBasicDirector extends DEDirector {
 
             RealTimeEvent realTimeEvent = (RealTimeEvent) _realTimeInputEventQueue
                     .peek();
-            int compare = realTimeEvent.deliveryTime.compareTo(physicalTime);
+            int compare = realTimeEvent.deliveryTag.compareTo(physicalTag);
 
             if (compare > 0) {
                 break;
@@ -1903,11 +1938,8 @@ public class PtidesBasicDirector extends DEDirector {
                             realTimeEvent.token);
                 } else {
                     int lastMicrostep = _microstep;
-                    // Since the event comes from a sensor, and we assume no sensor
-                    // will produce two events of the same timestamp, the microstep
-                    // of the new event is set to 0.
-                    setTag(realTimeEvent.deliveryTime.subtract(realTimeDelay),
-                            0);
+                    setTag(realTimeEvent.deliveryTag.timestamp.subtract(realTimeDelay),
+                            realTimeEvent.deliveryTag.microstep);
                     _realTimeInputEventQueue.poll();
                     realTimeEvent.port.sendInside(realTimeEvent.channel,
                             realTimeEvent.token);
@@ -1924,9 +1956,11 @@ public class PtidesBasicDirector extends DEDirector {
                 throw new IllegalActionException(realTimeEvent.port,
                         "missed transferring at the sensor. "
                                 + "Should transfer input at time = "
-                                + realTimeEvent.deliveryTime
+                                + realTimeEvent.deliveryTag.timestamp
+                                + "." + realTimeEvent.deliveryTag.microstep
                                 + ", and current physical time = "
-                                + physicalTime);
+                                + physicalTag.timestamp + "."
+                                + physicalTag.microstep);
             }
         }
 
@@ -1953,19 +1987,20 @@ public class PtidesBasicDirector extends DEDirector {
         }
         if (realTimeDelay == 0.0) {
             Time lastModelTime = _currentTime;
-            setTag(physicalTime, 0);
+            int lastMicrostep = _microstep;
+            setTag(physicalTag.timestamp, physicalTag.microstep);
             result = result || super._transferInputs(port);
-            setTag(lastModelTime, 0);
+            setTag(lastModelTime, lastMicrostep);
         } else {
             for (int i = 0; i < port.getWidth(); i++) {
                 try {
                     if (i < port.getWidthInside()) {
                         if (port.hasToken(i)) {
                             Token t = port.get(i);
-                            Time waitUntilTime = physicalTime
+                            Time waitUntilTime = physicalTag.timestamp
                                     .add(realTimeDelay);
                             RealTimeEvent realTimeEvent = new RealTimeEvent(
-                                    port, i, t, waitUntilTime);
+                                    port, i, t, new Tag(waitUntilTime, physicalTag.microstep));
                             _realTimeInputEventQueue.add(realTimeEvent);
                             result = true;
 
@@ -2015,7 +2050,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         // first check for current time, and transfer any tokens that are already ready to output.
         boolean result = false;
-        Time physicalTime = getPhysicalTime();
+        Tag physicalTag = getPhysicalTag();
         int compare = 0;
         // FIXME: notice this is done NOT for the specific port
         // in question. Instead, we do it for ALL events that can be transferred out of
@@ -2030,7 +2065,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
             RealTimeEvent tokenEvent = (RealTimeEvent) _realTimeOutputEventQueue
                     .peek();
-            compare = tokenEvent.deliveryTime.compareTo(physicalTime);
+            compare = tokenEvent.deliveryTag.compareTo(physicalTag);
 
             if (compare > 0) {
                 break;
@@ -2051,9 +2086,10 @@ public class PtidesBasicDirector extends DEDirector {
                 // FIXME: we should probably do something else here.
                 throw new IllegalActionException(tokenEvent.port,
                         "missed deadline at the actuator. Deadline = "
-                                + tokenEvent.deliveryTime
+                                + tokenEvent.deliveryTag.timestamp + "."
+                                + tokenEvent.deliveryTag.microstep
                                 + ", and current physical time = "
-                                + physicalTime);
+                                + physicalTag.timestamp);
             }
         }
 
@@ -2069,7 +2105,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
         }
 
-        compare = _currentTime.compareTo(physicalTime);
+        compare = _currentTime.compareTo(physicalTag.timestamp);
         // if physical time has reached the timestamp of the last event, transmit data to the output
         // now. Notice this does not guarantee tokens are transmitted, simply because there might
         // not be any tokens to transmit.
@@ -2083,7 +2119,7 @@ public class PtidesBasicDirector extends DEDirector {
                             "missed deadline at the actuator." + "Deadline = "
                                     + _currentTime
                                     + ", and current physical time = "
-                                    + physicalTime);
+                                    + physicalTag.timestamp);
                 }
             }
         } else {
@@ -2092,7 +2128,7 @@ public class PtidesBasicDirector extends DEDirector {
                     if (port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
                         RealTimeEvent tokenEvent = new RealTimeEvent(port, i,
-                                t, _currentTime);
+                                t, new Tag(_currentTime, _microstep));
                         _realTimeOutputEventQueue.add(tokenEvent);
                         // wait until physical time to transfer the output to the actuator
                         Actor container = (Actor) getContainer();
@@ -2703,11 +2739,11 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param timestamp The time of delivery of this token.
          */
         public RealTimeEvent(IOPort port, int channel, Token token,
-                Time timestamp) {
+                Tag tag) {
             this.port = port;
             this.channel = channel;
             this.token = token;
-            this.deliveryTime = timestamp;
+            this.deliveryTag = tag;
         }
 
         /** The port. */
@@ -2720,14 +2756,14 @@ public class PtidesBasicDirector extends DEDirector {
         public Token token;
 
         /** The time of delivery. */
-        public Time deliveryTime;
+        public Tag deliveryTag;
 
         /** Compares this RealTimeEvent with another. Compares the delivery
          *  times of these two events.
          *  @param other The object comparing to.
          */
         public int compareTo(Object other) {
-            return deliveryTime.compareTo(((RealTimeEvent) other).deliveryTime);
+            return deliveryTag.compareTo(((RealTimeEvent) other).deliveryTag);
         }
     }
 }
