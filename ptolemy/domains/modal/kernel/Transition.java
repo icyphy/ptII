@@ -144,6 +144,10 @@ import ptolemy.kernel.util.Workspace;
  The <i>defaultTransition</i> parameter, if given a value true, specifies
  that this transition is enabled if and only if no other non-default
  transition is enabled.
+ <p>
+ The <i>errorTransition</i> parameter, if given a value true, specifies
+ that this transition is enabled if and only if an error is detected in 
+ the model. The default value is a boolean token with value false.
 
  @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
  @version $Id$
@@ -669,6 +673,8 @@ public class Transition extends ComponentRelation {
      */
     public Parameter preemptive = null;
 
+    /** Parameter specifying whether this transition should be treated as an error transition
+     */
     public Parameter errorTransition = null;
 
     /** Attribute specifying one or more names of refinements. The
