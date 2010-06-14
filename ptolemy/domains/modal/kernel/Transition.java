@@ -146,8 +146,9 @@ import ptolemy.kernel.util.Workspace;
  transition is enabled.
  <p>
  The <i>errorTransition</i> parameter, if given a value true, specifies
- that this transition is enabled if and only if an error is detected in 
- the model. The default value is a boolean token with value false.
+ that this transition is enabled if and only if the refinement of the source state of
+ the transition throws a model error while executing. The default value is a boolean
+ token with value false.
 
  @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
  @version $Id$
