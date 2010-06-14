@@ -5,6 +5,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Properties;
+import ptolemy.util.FileUtilities;
 
 import ptdb.common.dto.DBConnectionParameters;
 import ptdb.common.exception.DBConnectionException;
@@ -233,13 +234,15 @@ public class DBConnectorFactory {
      */
     public static void loadDBProperties() {
 
+        String ptdbParams = "$CLASSPATH/ptdb/config/ptdb-params.properties";
         Properties props = new Properties();
-        URL url = ClassLoader.getSystemResource("ptdb-params.properties");
 
         try {
+            // Use FileUtilities.nameToURL() because it handles jar urls from Web Start.
+            URL url = FileUtilities.nameToURL(ptdbParams, null, null);
             if (url == null) {
                 throw new ExceptionInInitializerError(
-                        "Did not find ptdb-params property.");
+                    "Did not find the " + ptdbParams + " file.");
             }
 
             props.load(url.openStream());
@@ -254,11 +257,12 @@ public class DBConnectorFactory {
                 _isDBSetupDone = true;
 
             }
-
-        } catch (IOException e) {
-
-            throw new ExceptionInInitializerError(
-                    "Did not find ptdb-params property file.");
+        } catch (IOException ex) {
+            //ExceptionInInitializerError exception = new ExceptionInInitializerError(
+            //        "Did not find " + ptdbParams + " file.");
+            throw new ExceptionInInitializerError(ex);
+            //exception.initCause(ex);
+            //throw exception;
         }
     }
 
