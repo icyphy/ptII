@@ -300,7 +300,7 @@ public class Simulator extends SDFTransformer {
         output.send(0, outTok);
     }
     
-    /** Output the first token during initialize
+    /** Output the first token during initialize.
      *  @throws IllegalActionException 
      */
     protected void _outputInitToken() throws IllegalActionException {
@@ -878,10 +878,10 @@ public class Simulator extends SDFTransformer {
      */
     protected boolean isHeadless;
 
-    /** Flag that is true during the first firing of this actor */
+    /** Flag that is true during the first firing of this actor/. */
     protected boolean firstFire;
 
-    /** System dependent line separator */
+    /** System dependent line separator. */
     protected final static String LS = System.getProperty("line.separator");
     
     /** Time of token that will be written to the client.
