@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,7 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
+import javax.swing.SwingConstants;
 
 import ptolemy.kernel.util.NamedObj;
 
@@ -27,7 +28,7 @@ import ptolemy.kernel.util.NamedObj;
 * Additionally, the user can manage model attributes prior to saving.
 * This associates saved attributes to those that the user selects for
 * model searches.
-* 
+*
 * @author Lyle Holsinger
 * @since Ptolemy II 8.1
 * @version $Id$
@@ -40,14 +41,14 @@ public class SaveModelToDBFrame extends JFrame {
 
     /** Construct a SaveModelToDBFrame.  Add swing Components
      * to the frame.  Add a listener for the "+" button, which
-     * adds a ModelAttributePanel to the tabbed pane.  Add a 
+     * adds a ModelAttributePanel to the tabbed pane.  Add a
      * listener for the Save button to call _saveModel().
-     * 
+     *
      * @param model
      *          The model that is being saved to the database.
      * @param frame
      *          The frame from which the save form was opened.
-     *          Passed to the object to allow repainting if 
+     *          Passed to the object to allow repainting if
      *          attribute modifications occur.
      */
     public SaveModelToDBFrame(NamedObj model, JFrame frame) {
@@ -64,8 +65,8 @@ public class SaveModelToDBFrame extends JFrame {
         _tabbedPane = new JTabbedPane();
         _attListPanel = new JPanel(false);
         _scrollPane = new JScrollPane(_attListPanel,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         _modelAttPanelArray = new ArrayList();
         _deleteButtons = new ArrayList();
@@ -94,7 +95,7 @@ public class SaveModelToDBFrame extends JFrame {
             _deleteButtons.get(i).setMnemonic(KeyEvent.VK_D);
             _deleteButtons.get(i).setActionCommand("Delete");
             _deleteButtons.get(i).setHorizontalTextPosition(
-                    AbstractButton.CENTER);
+                    SwingConstants.CENTER);
 
             _attListPanel.add(_modelAttPanelArray.get(i));
             _attListPanel.add(_deleteButtons.get(i));
@@ -104,8 +105,8 @@ public class SaveModelToDBFrame extends JFrame {
             _deleteButtons.get(i).addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
 
-                    _attListPanel.remove((JPanel) _AttDelete
-                            .get((JButton) event.getSource()));
+                    _attListPanel.remove((JPanel) _AttDelete.get(event
+                            .getSource()));
                     _attListPanel.remove((JButton) event.getSource());
                     repaint();
                 }
@@ -119,7 +120,7 @@ public class SaveModelToDBFrame extends JFrame {
         add_Button.setActionCommand("Save");
 
         bottomPanel.add(add_Button);
-        add_Button.setHorizontalTextPosition(AbstractButton.CENTER);
+        add_Button.setHorizontalTextPosition(SwingConstants.CENTER);
 
         add_Button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -131,8 +132,8 @@ public class SaveModelToDBFrame extends JFrame {
             }
         });
 
-        /*TODO Address layout of the frame.  
-         * GridLayout is probably a bad choice. 
+        /*TODO Address layout of the frame.
+         * GridLayout is probably a bad choice.
          * The labels below serve as spacers.
          * This is very ugly, but very temporary.
          */
@@ -149,7 +150,7 @@ public class SaveModelToDBFrame extends JFrame {
         save_Button.setMnemonic(KeyEvent.VK_ENTER);
         save_Button.setActionCommand("Save");
         bottomPanel.add(save_Button);
-        save_Button.setHorizontalTextPosition(AbstractButton.CENTER);
+        save_Button.setHorizontalTextPosition(SwingConstants.CENTER);
 
         save_Button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {

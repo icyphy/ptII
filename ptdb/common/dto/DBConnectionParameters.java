@@ -1,6 +1,6 @@
 package ptdb.common.dto;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DBConnectionParameters
 /**
  * Encapsulate the parameters required for creating an XML DB connection.
@@ -8,25 +8,25 @@ package ptdb.common.dto;
  * <p>The Data Transfer Object pattern is used here.</p>
  *
  * @author Ashwini Bijwe
- * 
+ *
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
- * 
+ *
  *
  */
 public class DBConnectionParameters {
 
     /**
      * Construct an instance with the given parameters.
-     * @param url Url/Path for the location where the database 
+     * @param url Url/Path for the location where the database
      * file is present
-     * @param containerName Name of the container 
+     * @param containerName Name of the container
      * for the XML Database.
-     * 
-     * @param isTransactionRequired To specify 
-     * whether the transaction management is required for the 
+     *
+     * @param isTransactionRequired To specify
+     * whether the transaction management is required for the
      * connection that is created.
      */
     public DBConnectionParameters(String url, String containerName,
@@ -39,7 +39,7 @@ public class DBConnectionParameters {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /**
-     * Return the container name 
+     * Return the container name
      * for the given XML database.
      * @return The container name.
      */
@@ -48,9 +48,9 @@ public class DBConnectionParameters {
     }
 
     /**
-     * Return the URL/path of the location where 
+     * Return the URL/path of the location where
      * the XML database file is present.
-     * 
+     *
      * @return The database url.
      */
     public String getUrl() {
@@ -58,10 +58,10 @@ public class DBConnectionParameters {
     }
 
     /**
-     * Return true if the connection is to be 
-     * created with transaction 
+     * Return true if the connection is to be
+     * created with transaction
      * and false if it is to be created without transaction.
-     * 
+     *
      * @return True if transaction is required, false otherwise.
      */
     public boolean isTransactionRequired() {
@@ -78,8 +78,8 @@ public class DBConnectionParameters {
     }
 
     /**
-     * Set the transaction required parameter to the given value. 
-     * @param isTransactionRequired To specify whether the transaction 
+     * Set the transaction required parameter to the given value.
+     * @param isTransactionRequired To specify whether the transaction
      * management is required for the connection that is created.
      */
     public void setIsTransactionRequired(boolean isTransactionRequired) {
@@ -88,7 +88,7 @@ public class DBConnectionParameters {
 
     /**
      * Set the URL parameter to the given value.
-     * @param url Location where the database file is present. 
+     * @param url Location where the database file is present.
      */
     public void setUrl(String url) {
         _url = url;

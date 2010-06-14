@@ -41,9 +41,9 @@ public class TestLoadManagerInterface {
 
     /**
      * Mock the LoadModelManager.  Create a fake XMLDBModel object and specify
-     * it as the return from load().  Then verify that, given an XMLDBModelObject, 
+     * it as the return from load().  Then verify that, given an XMLDBModelObject,
      * the loadModel() method will return a valid effigy.
-     * @throws Exception
+     * @exception Exception
      */
     @Test
     public void testloadModel() throws Exception {
@@ -61,7 +61,7 @@ public class TestLoadManagerInterface {
                 configURL);
 
         PtolemyEffigy effigy = null;
-        
+
         XMLDBModel dbModel = new XMLDBModel();
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"

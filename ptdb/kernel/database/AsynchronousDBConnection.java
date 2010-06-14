@@ -15,17 +15,17 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////AsynchronousDBConnection
 /**
- * Provide an asynchronous mechanism of executing tasks over the database. 
- * 
+ * Provide an asynchronous mechanism of executing tasks over the database.
+ *
  * <p>All the tasks are queued and executed parallel to the processing tasks.
- * We plan to use this kind of connection for operations like saving a model 
+ * We plan to use this kind of connection for operations like saving a model
  * that require a lot of processing.</p>
- * 
+ *
  * @author Ashwini Bijwe, Yousef Alsaeed
- * 
+ *
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
@@ -35,10 +35,10 @@ import ptdb.common.exception.DBExecutionException;
 public class AsynchronousDBConnection implements DBConnection {
 
     /**
-     * Construct an instance that creates the taskQueue to enqueue tasks 
+     * Construct an instance that creates the taskQueue to enqueue tasks
      * and the executor thread that enables task execution in parallel.
-     * 
-     * @exception DBConnectionException If thrown while 
+     *
+     * @exception DBConnectionException If thrown while
      * creating a connection.
      */
     public AsynchronousDBConnection() throws DBConnectionException {
@@ -51,7 +51,7 @@ public class AsynchronousDBConnection implements DBConnection {
 
     /**
      * Abort the execution by setting the execution flag as false.
-     * Abort connection signifies that the execution needs to be terminated 
+     * Abort connection signifies that the execution needs to be terminated
      * as there was some error in execution.
      */
     public void abortConnection() {
@@ -59,11 +59,11 @@ public class AsynchronousDBConnection implements DBConnection {
     }
 
     /**
-     * Close the connection if all tasks in the queue 
+     * Close the connection if all tasks in the queue
      * are executed successfully.
      * Close connection signifies that the processing is completed.
-     * 
-     * @exception DBConnectionException If thrown while 
+     *
+     * @exception DBConnectionException If thrown while
      * closing a connection.
      */
     public void closeConnection() throws DBConnectionException {
@@ -71,10 +71,10 @@ public class AsynchronousDBConnection implements DBConnection {
         boolean hasExecutionCompleted = false;
         int maxWait = _getMaxTurns();
         /*
-         * The thread waits for one of the three things to happen 
-         *  - task execution to complete successfully  
+         * The thread waits for one of the three things to happen
+         *  - task execution to complete successfully
          *  - task execution to generate an error
-         *  - maximum wait time is over (120000 milliseconds = 2 minutes)   
+         *  - maximum wait time is over (120000 milliseconds = 2 minutes)
          */
         while (!hasExecutionCompleted && maxWait != 0) {
 
@@ -95,14 +95,14 @@ public class AsynchronousDBConnection implements DBConnection {
 
     /**
      * Commit the transaction running over the connection.
-     * 
-     * @exception DBConnectionException If thrown while committing a 
+     *
+     * @exception DBConnectionException If thrown while committing a
      * transaction in the database.
      */
     public void commitConnection() throws DBConnectionException {
         /*
-         * All tasks added denotes that the tasks have been added 
-         * and processing is successfully completed. 
+         * All tasks added denotes that the tasks have been added
+         * and processing is successfully completed.
          */
         _taskQueue.setAllTasksAdded();
     }
@@ -110,12 +110,12 @@ public class AsynchronousDBConnection implements DBConnection {
     /**
      * Search models that contain the given attributes in the database.
      * Not supported by this type of connection.
-     * 
-     * @param task Task that contains a list of attributes that 
+     *
+     * @param task Task that contains a list of attributes that
      * need to be searched in the database.
-     * 
+     *
      * @return List of models that contain the attributes.
-     * 
+     *
      * @exception DBExecutionException If thrown while searching.
      */
     public ArrayList<XMLDBModel> executeAttributeSearchTask(
@@ -128,9 +128,9 @@ public class AsynchronousDBConnection implements DBConnection {
     /**
      * Execute the necessary commands to create a new model in the database according
      * to the model specification given in the task parameter.
-     * 
+     *
      * @param task
-     *          The task to be completed.  In this case, CreateModelTask. 
+     *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
      * @exception DBExecutionException If thrown while creating a model.
      */
@@ -144,11 +144,11 @@ public class AsynchronousDBConnection implements DBConnection {
 
     /**
      * Execute Fetch Hierarchy task.
-     *  
-     * <p>Fetch the parent model hierarchies is 
+     *
+     * <p>Fetch the parent model hierarchies is
      * not supported by the asynchronous connection.
      * Use a synchronous connection for that.</p>
-     * 
+     *
      * @param task Task that contains the list of models.
      * @return List of models that contain the parent hierarchies.
      * @exception DBExecutionException If thrown while searching.
@@ -184,7 +184,7 @@ public class AsynchronousDBConnection implements DBConnection {
      *          The task to be completed.
      * @return XMLDBModel
      *          The model object containing the MoML.
-     * @throws DBExecutionException
+     * @exception DBExecutionException
      */
     public XMLDBModel executeGetModelsTask(GetModelsTask task)
             throws DBExecutionException {
@@ -196,7 +196,7 @@ public class AsynchronousDBConnection implements DBConnection {
     /**
      * Search for graph is not supported by the asynchronous connection.
      * Use a synchronous connection for that.
-     * 
+     *
      * @param task - Task that contains the graph search criteria.
      * @return - List of models that match the given search criteria.
      * @exception DBExecutionException If thrown while searching
@@ -212,9 +212,9 @@ public class AsynchronousDBConnection implements DBConnection {
     /**
      * Execute the necessary commands to save/update a model in the database according
      * to the model specification given in the task parameter
-     * 
+     *
      * @param task
-     *          The task to be completed.  In this case, SaveModelTask. 
+     *          The task to be completed.  In this case, SaveModelTask.
      *          This will tell the DB layer to save/update a model
      *          already existing in the database.
      * @exception DBExecutionException If thrown while saving model
@@ -228,11 +228,11 @@ public class AsynchronousDBConnection implements DBConnection {
     }
 
     /**
-     * Return a string representation for the 
+     * Return a string representation for the
      * internal parameters of the class.
      * Used for verifying during unit testing.
-     * 
-     * @return String representation of the 
+     *
+     * @return String representation of the
      * internal parameters of the class.
      */
     public String toString() {
@@ -250,21 +250,21 @@ public class AsynchronousDBConnection implements DBConnection {
 
     /**
      * Adds tasks to the task queue for the executor thread to execute.
-     * 
+     *
      * @param task Task that needs to be executed on the database.
-     * @exception DBConnectionException If thrown by executor thread 
+     * @exception DBConnectionException If thrown by executor thread
      * while executing tasks on the database.
      */
     private void _executeTask(Task task) throws DBExecutionException {
 
         /*
-         * If this is the first task, then start the executor thread 
+         * If this is the first task, then start the executor thread
          */
         if (_taskQueue.size() == 0)
             _executorThread.run();
         /*
-         * If the executor thread failed due to an exception; 
-         * throw that exception 
+         * If the executor thread failed due to an exception;
+         * throw that exception
          */
         if (_taskQueue.hasExecutionError())
             throw new DBExecutionException(_taskQueue
@@ -276,9 +276,9 @@ public class AsynchronousDBConnection implements DBConnection {
     }
 
     /**
-     * Provide maximum turns for waiting for 
+     * Provide maximum turns for waiting for
      * database processing to finish.
-     * @return 1200 (Maximum) turns to wait for 
+     * @return 1200 (Maximum) turns to wait for
      * the processing to finish.
      */
     private int _getMaxTurns() {
@@ -294,7 +294,7 @@ public class AsynchronousDBConnection implements DBConnection {
     private ExecutorThread _executorThread;
 
     /**
-     * Queue where the tasks are added one after the another.  
+     * Queue where the tasks are added one after the another.
      */
     private TaskQueue _taskQueue;
 

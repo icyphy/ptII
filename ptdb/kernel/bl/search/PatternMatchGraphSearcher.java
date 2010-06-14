@@ -1,14 +1,14 @@
 /*
- * 
+ *
  */
 package ptdb.kernel.bl.search;
 
-////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PatternMatchGraphSearcher
 
 /**
- * Searcher for using the pattern match function in the Ptolemy. 
- * 
+ * Searcher for using the pattern match function in the Ptolemy.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -18,14 +18,14 @@ package ptdb.kernel.bl.search;
  */
 public class PatternMatchGraphSearcher extends GraphSearcher {
 
-    /////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////        protected methods                                       /////
 
     @Override
     protected void _search() {
-        // To be implemented in the next release 
+        // To be implemented in the next release
 
-        // set the search done 
+        // set the search done
         _setSearchDone();
 
     }

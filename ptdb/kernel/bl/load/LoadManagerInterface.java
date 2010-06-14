@@ -13,7 +13,7 @@ import ptolemy.moml.MoMLParser;
 
 /**
 * The business layer is used by the GUI to pass models to load.
-* It uses the LoadManager to interface with the database to get MoML strings. 
+* It uses the LoadManager to interface with the database to get MoML strings.
 *
 * @author Lyle Holsinger
 * @since Ptolemy II 8.1
@@ -25,7 +25,7 @@ import ptolemy.moml.MoMLParser;
 public class LoadManagerInterface {
 
     /** Given a model name, return a PtolemyEffigy objects.
-     *  
+     *
      * @param name
      *          The model name.
      * @param configuration
@@ -33,8 +33,8 @@ public class LoadManagerInterface {
      * @return
      *          A PtolemyEffigy object that the
      *          GUI can display.
-     * @throws DBConnectionException
-     * @throws Exception
+     * @exception DBConnectionException
+     * @exception Exception
      */
     public PtolemyEffigy loadModel(String name, Configuration configuration)
             throws Exception {
@@ -49,14 +49,14 @@ public class LoadManagerInterface {
     }
 
     /** Generate an effigy from an XMLDBModel object.
-     * 
+     *
      * @param dbModel
      *          XMLDBModel object containing the model's MoML.
      * @param configuration
      *          Configuration used to create the effigy.
      * @return
      *         PtolemyEffigy.
-     * @throws Exception
+     * @exception Exception
      */
     private PtolemyEffigy getEffigy(XMLDBModel dbModel,
             Configuration configuration) throws Exception {

@@ -65,7 +65,9 @@ MISC_FILES =	test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'OracleXMLDBConnection$$DBModel.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -47,16 +47,16 @@ import com.sleepycat.dbxml.XmlResults;
 import com.sleepycat.dbxml.XmlTransaction;
 import com.sleepycat.dbxml.XmlValue;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// OracleXMLDBConnection
 /**
 
- * Create and manage the actual connection to the Oracle XML database. 
+ * Create and manage the actual connection to the Oracle XML database.
  * Manage the transactions for the database.
- * 
- * <p>This is a wrapper class that acts as a  Facade to the Oracle Berkeley XML 
+ *
+ * <p>This is a wrapper class that acts as a  Facade to the Oracle Berkeley XML
  * Database interface.</p>
- *     
+ *
  * @author Ashwini Bijwe, Yousef Alsaeed
  *
  * @version $Id$
@@ -67,14 +67,14 @@ import com.sleepycat.dbxml.XmlValue;
 public class OracleXMLDBConnection implements DBConnection {
 
     /**
-     *  Construct an instance that initializes the environment 
-     *  and creates a database connection 
+     *  Construct an instance that initializes the environment
+     *  and creates a database connection
      *  based on the given parameters.
-     *   
-     * @param dbConnParams Encapsulate the parameters required to 
+     *
+     * @param dbConnParams Encapsulate the parameters required to
      *                       create a database connection.
-     *                         
-     * @exception DBConnectionException If thrown  while creating a 
+     *
+     * @exception DBConnectionException If thrown  while creating a
      *                                 connection.
      */
     public OracleXMLDBConnection(DBConnectionParameters dbConnParams)
@@ -140,8 +140,8 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Abort the connection and roll back the transaction
      * Invoke in case of errors.
-     * 
-     * @exception DBConnectionException If thrown while aborting 
+     *
+     * @exception DBConnectionException If thrown while aborting
      * transaction in the database.
      */
     public void abortConnection() throws DBConnectionException {
@@ -164,7 +164,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Commit the transaction running over the connection.
-     * @exception DBConnectionException If thrown while committing 
+     * @exception DBConnectionException If thrown while committing
      * transaction in the database.
      */
     public void commitConnection() throws DBConnectionException {
@@ -184,14 +184,14 @@ public class OracleXMLDBConnection implements DBConnection {
         }
     }
 
-    /** 
-     * Commit the transaction and close the connection to 
+    /**
+     * Commit the transaction and close the connection to
      * the database.
-     * 
+     *
      * <p>If the transaction on this connection is alive/open
      * while closing the connection, the transaction will be aborted.</p>
-     * 
-     * @exception DBConnectionException If thrown while closing 
+     *
+     * @exception DBConnectionException If thrown while closing
      * database connection.
      */
     public void closeConnection() throws DBConnectionException {
@@ -214,11 +214,11 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Execute the necessary commands to create a new model in the database according
      * to the model specification given in the task parameter.
-     * 
+     *
      * @param task
-     *          The task to be completed.  In this case, CreateModelTask. 
+     *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
-     * @throws DBExecutionException Thrown if there is a problem executing the task.
+     * @exception DBExecutionException Thrown if there is a problem executing the task.
      */
     public void executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException {
@@ -232,7 +232,7 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + " - the XmlContainer object was not instantiated properly");
             }
 
-            //check if the xml transaction was instantiated properly 
+            //check if the xml transaction was instantiated properly
             if (_xmlTransaction == null) {
                 throw new DBExecutionException(
                         "Failed to execute CreateModelTask"
@@ -262,13 +262,12 @@ public class OracleXMLDBConnection implements DBConnection {
 
             //get the document from the database
             XmlDocument doc = null;
-            
+
             try {
-        	doc = _xmlContainer.getDocument(model.getModelName());
-            } catch(XmlException e) {
-        	//do nothing
+                doc = _xmlContainer.getDocument(model.getModelName());
+            } catch (XmlException e) {
+                //do nothing
             }
-            
 
             //if the document was retrieved from the database, throw an exception
             if (doc != null) {
@@ -279,10 +278,10 @@ public class OracleXMLDBConnection implements DBConnection {
             // if the document was not found in the database
             else {
 
-                //use the container to store the model by retrieving the model name and model body 
-                //from the XMLDBModel object and setting that in the container. 
-                //The container uses the function putDocument with transaction enabled 
-                //to store the document in the database. 
+                //use the container to store the model by retrieving the model name and model body
+                //from the XMLDBModel object and setting that in the container.
+                //The container uses the function putDocument with transaction enabled
+                //to store the document in the database.
                 //This method expects the document name and the content
                 _xmlContainer.putDocument(_xmlTransaction,
                         model.getModelName(), model.getModel());
@@ -297,7 +296,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Fetch the parent model hierarchies for the given models.
-     * 
+     *
      * @param task Task that contains the list of models.
      * @return List of models that contain the parent hierarchies.
      * @exception DBExecutionException If thrown while searching
@@ -314,10 +313,10 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
-     * Get the attributes defined from the database. 
-     * @param task The criteria to get the attribute.   
+     * Get the attributes defined from the database.
+     * @param task The criteria to get the attribute.
      * @return List of attributes stored in the database.
-     * @throws DBExecutionException
+     * @exception DBExecutionException
      */
     public ArrayList executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
@@ -328,9 +327,9 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Execute the get models task which basically accesses the  database and returns the model requested
      * as XMLDBModel object
-     * @throws DBExecutionException Thrown if there is a problem executing the task.
+     * @exception DBExecutionException Thrown if there is a problem executing the task.
      * @param task this is the get models task that contain the model name
-     * @return XMLDBModel this is the model fetched from the database	
+     * @return XMLDBModel this is the model fetched from the database
      */
     public XMLDBModel executeGetModelsTask(GetModelsTask task)
             throws DBExecutionException {
@@ -344,19 +343,19 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + " - the GetModelsTask object passed was null");
             }
 
-            //get the model from the database based on the name using the container method that returns 
+            //get the model from the database based on the name using the container method that returns
             //the document from the database.
             //this is a document fetched from the database using the xml container with transaction enabled
             XmlDocument dbModel;
             try {
-	        dbModel = _xmlContainer.getDocument(_xmlTransaction,
-	                task.getModelName());
+                dbModel = _xmlContainer.getDocument(_xmlTransaction, task
+                        .getModelName());
             } catch (XmlException e) {
-        	
-        	throw new DBExecutionException(
+
+                throw new DBExecutionException(
                         "Failed to execute GetModelsTask"
                                 + " - Could not find the model in the database");
-	        
+
             }
 
             //this is the model that should be returned.
@@ -383,7 +382,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
                     //parse the reference string to get a node representation of it.
                     Node modelNode = _parseXML(strReferences);
-                    
+
                     //get the actual model node inside the parsed document.
                     modelNode = modelNode.getChildNodes().item(0);
 
@@ -404,7 +403,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 //indicate that the model is not a new model and it exists in the database
                 completeXMLDBModel.setIsNew(false);
 
-                //parents are not needed thus the model  parents will be set to null	    
+                //parents are not needed thus the model  parents will be set to null
                 completeXMLDBModel.setParents(null);
 
             }
@@ -422,15 +421,15 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Search models that contain the given attributes in the database.
-     * 
-     * @param task Task that contains a list of attributes that 
+     *
+     * @param task Task that contains a list of attributes that
      * need to be searched in the database.
-     * 
-     * @return List of models that contain the attributes; 
-     * Empty list if the search returns zero results; and 
-     * Null list if the search is not performed due to empty 
+     *
+     * @return List of models that contain the attributes;
+     * Empty list if the search returns zero results; and
+     * Null list if the search is not performed due to empty
      * or invalid search criteria.
-     * 
+     *
      * @exception DBExecutionException If thrown while searching
      * in the database.
      */
@@ -495,11 +494,11 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Search models that contain given graphical pattern in the database.
-     * 
+     *
      * @param task Task that contains the graph search criteria.
-     * 
+     *
      * @return List of models that match the given search criteria.
-     * @exception DBExecutionException If thrown while searching 
+     * @exception DBExecutionException If thrown while searching
      * in the database.
      */
     public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
@@ -511,9 +510,9 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Execute the necessary commands to save/update a model in the database according
      * to the model specification given in the task parameter.
-     * 
+     *
      * @param task
-     *          The task to be completed.  In this case, SaveModelTask. 
+     *          The task to be completed.  In this case, SaveModelTask.
      *          This will tell the DB layer to save/update a model already existing in the database.
      * @exception DBExecutionException Thrown if there is a problem executing the task.
      */
@@ -529,7 +528,7 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + " - the XmlContainer object was not instantiated properly");
             }
 
-            //check if the xml transaction was instantiated properly 
+            //check if the xml transaction was instantiated properly
             if (_xmlTransaction == null) {
                 throw new DBExecutionException(
                         "Failed to execute SaveModelTask"
@@ -553,16 +552,16 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + " - the XMLDBModel object passed in the SaveModelTask was null");
             }
 
-            //use the container to get a handle on the document that represents the model. 
+            //use the container to get a handle on the document that represents the model.
             XmlDocument currentDbModel = null;
-            
+
             try {
-        	currentDbModel = _xmlContainer.getDocument(model.getModelName());
-            } catch(XmlException e) {
-        	//do nothing
+                currentDbModel = _xmlContainer
+                        .getDocument(model.getModelName());
+            } catch (XmlException e) {
+                //do nothing
             }
-            
-            
+
             //check if the model is not in the database, throw an exception
             if (currentDbModel == null) {
 
@@ -574,9 +573,8 @@ public class OracleXMLDBConnection implements DBConnection {
             else {
                 //set the new content of the model to the document fetched from the database.
                 currentDbModel.setContent(model.getModel());
-                
-                
-                //update the database with the new changes to the model using the container object. 
+
+                //update the database with the new changes to the model using the container object.
                 //using the updateDocument method with transaction enabled
                 //This method expects the document to be updated.
                 _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
@@ -591,8 +589,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Provide information regarding the state of the internal variables
-     * useful for unit testing purposes. 
-     * @return String representation for state of internal variables. 
+     * useful for unit testing purposes.
+     * @return String representation for state of internal variables.
      */
     public String toString() {
 
@@ -616,7 +614,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Build the complete model by resolving all the references in it.
-     * 
+     *
      * @param p_currentNode the node in the reference file that points to the model
      * @return String that represents the model body without references
      * @exception DBExecutionException Thrown if there is a problem executing the task.
@@ -678,7 +676,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
             try {
 
-                //use the container to get a handle on the document that represents the model. 
+                //use the container to get a handle on the document that represents the model.
                 currentDbModel = _xmlContainer.getDocument(strCurrentModelName);
 
                 //if the model is not in the database, throw an exception.
@@ -741,13 +739,13 @@ public class OracleXMLDBConnection implements DBConnection {
                 }
             }
 
-          //add the current model to the hash map (name, content)
+            //add the current model to the hash map (name, content)
             _xmlModelHerarichyMap.put(strCurrentModelName,
                     strCurrentModelContent);
 
             //return the model content
             return strCurrentModelContent;
-            
+
         }
         //if the name was not extracted from the node, then return empty string.
         else {
@@ -756,7 +754,7 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
-     * Check if the connection is alive/open. 
+     * Check if the connection is alive/open.
      * @exception DBConnectionException If the connection is not alive/open.
      */
     private void _checkConnectionAlive() throws DBConnectionException {
@@ -768,9 +766,9 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
-     * Check if the transaction is active. 
+     * Check if the transaction is active.
      * @exception DBConnectionException If the connection is not alive
-     * 
+     *
      */
     private void _checkTransactionActive() throws DBConnectionException {
         if (!_isTransactionActive) {
@@ -781,10 +779,10 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
-     * Close the environment and invoke delete on the container 
-     * that closes the connection and releases the resources. 
-     * 
-     * @exception DBConnectionException If thrown while 
+     * Close the environment and invoke delete on the container
+     * that closes the connection and releases the resources.
+     *
+     * @exception DBConnectionException If thrown while
      * closing the environment.
      */
     private void _cleanUp() throws DBConnectionException {
@@ -845,10 +843,10 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Create the parent hierarchy for the given base model.
-     * 
+     *
      * @param currentNode Current node for which processing needs to be done.
      * @param parentNodeName Parent node for the current node.
-     * @param dBModelsMap Map that contains all the DBModels 
+     * @param dBModelsMap Map that contains all the DBModels
      * as they are created so that their parent lists can be populated.
      * @param baseModel Base model for which the hierarchy is being created.
      */
@@ -856,11 +854,11 @@ public class OracleXMLDBConnection implements DBConnection {
             String parentNodeName, HashMap<String, DBModel> dBModelsMap,
             XMLDBModel baseModel) {
         /*
-         * If the currentNode is not already visited 
+         * If the currentNode is not already visited
          * and it is not the base model,
          * then visit all its children and call
          * _createParentHierarchy over them.
-         * 
+         *
          * If the current model is already visited,
          * then add the current model to the parent list.
          */
@@ -928,14 +926,14 @@ public class OracleXMLDBConnection implements DBConnection {
         return modelsList;
     }
 
-    /** 
+    /**
      * Fetch the parent hierarchies for the given model.
-     * 
-     * @param model The model for which the parent 
+     *
+     * @param model The model for which the parent
      * hierarchies are required.
-     *  
-     * @exception DBExecutionException If thrown while 
-     * fetching model hierarchy. 
+     *
+     * @exception DBExecutionException If thrown while
+     * fetching model hierarchy.
      */
     private XMLDBModel _fetchHierarchyForModel(XMLDBModel model)
             throws DBExecutionException {
@@ -950,8 +948,8 @@ public class OracleXMLDBConnection implements DBConnection {
             Document document = (Document) _parseXML(referencesXML);
             /*
              * "entities" is the root tag which contains entity tags.
-             * For every child entity tag populate the dbModelsMap 
-             * with parent hierarchy.  
+             * For every child entity tag populate the dbModelsMap
+             * with parent hierarchy.
              */
             Node firstNode = document.getElementsByTagName("entities").item(0);
             if (firstNode != null) {
@@ -969,7 +967,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 DBModel baseDBModel = dBModelsMap.get(model.getModelName());
                 /*
-                 * Get unique and maximal hierarchies from the baseDBModel 
+                 * Get unique and maximal hierarchies from the baseDBModel
                  */
                 _populateParentList(model, baseDBModel,
                         new LinkedList<XMLDBModel>(), model);
@@ -979,14 +977,14 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
-     * Get all the parent entries in the reference file 
+     * Get all the parent entries in the reference file
      * where the given model is a child entity.
-     * 
+     *
      * @param model Model for which the parent references are to be fetched.
-     * 
+     *
      * @return String representation of the matching reference XML entities.
-     * 
-     * @throws DBExecutionException If thrown while fetching parent hierarchies 
+     *
+     * @exception DBExecutionException If thrown while fetching parent hierarchies
      * from database.
      */
     private String _getParentHierarchiesForModelFromDB(XMLDBModel model)
@@ -1028,10 +1026,10 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * retrieve the references inside a model from the reference file in the database.
-     * 
+     *
      * @param p_strModelName - the model name for which the references are required.
      * @return String representation of all the references in the given model in xml format.
-     * @throws DBExecutionException thrown if there is an execution exception.
+     * @exception DBExecutionException thrown if there is an execution exception.
      */
     private String _getModelReferences(String p_strModelName)
             throws DBExecutionException {
@@ -1064,8 +1062,9 @@ public class OracleXMLDBConnection implements DBConnection {
             }
 
             //generate the query.
-            String strQuery = "doc('dbxml:/" + _xmlContainer.getName() + "/ReferenceFile.ptdbxml')"
-            + "/reference/entity[@name='" + p_strModelName + "']";
+            String strQuery = "doc('dbxml:/" + _xmlContainer.getName()
+                    + "/ReferenceFile.ptdbxml')" + "/reference/entity[@name='"
+                    + p_strModelName + "']";
 
             // prepare the query for execution.
             XmlQueryExpression queryExpression = _xmlManager.prepare(strQuery,
@@ -1103,7 +1102,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * return the upper level entity node in a model content that is being passed to it as a string.
-     * 
+     *
      * @param strModelContent the model content in string fromat.
      * @return String representation of the upper level node.
      * @exception DBExecutionException Thrown if there is a problem executing the task.
@@ -1141,11 +1140,11 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Get the value for the given attribute.
-     *   
-     * @param currentNode Node for which attribute value 
+     *
+     * @param currentNode Node for which attribute value
      * needs to be determined.
      * @param attributeName Name of the attribute.
-     * @return Return the value for the given attribute. 
+     * @return Return the value for the given attribute.
      * Return null if attribute not present for the given node.
      */
     private String _getValueForAttribute(Node currentNode, String attributeName) {
@@ -1168,10 +1167,10 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Parse the xml string that is passed to it and returns the upper node of that xml.
-     * 
+     *
      * @param p_strXML the xml string that needs to be parsed
      * @return Node - the upper node for the xml string after parsing it.
-     * @throws DBExecutionException used as wrapper to the parser exceptions
+     * @exception DBExecutionException used as wrapper to the parser exceptions
      */
     private Node _parseXML(String p_strXML) throws DBExecutionException {
 
@@ -1215,12 +1214,11 @@ public class OracleXMLDBConnection implements DBConnection {
             //The input source will be as a wrapper to the string.
             InputSource is = new InputSource();
 
-            //set the character stream for the input source to the xml string 
+            //set the character stream for the input source to the xml string
             is.setCharacterStream(new StringReader(p_strXML));
 
             //parse the input source and get the first node in the xml.
             firstNode = docBuilder.parse(is);
-            
 
         } catch (ParserConfigurationException e) {
 
@@ -1240,12 +1238,12 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * Populate the base model with the maximal parent hierarchies.
-     *  
-     * @param model XMLDBModel in the hierarchy. 
+     *
+     * @param model XMLDBModel in the hierarchy.
      * @param dbModel DBModel for the above XMLDBModel.
-     * @param childHierarchy List that contains the list if previous models visited 
+     * @param childHierarchy List that contains the list if previous models visited
      * in the hierarchy.
-     * @param baseModel Base model for which the parent hierarchies 
+     * @param baseModel Base model for which the parent hierarchies
      * need to be populated.
      */
 
@@ -1253,14 +1251,14 @@ public class OracleXMLDBConnection implements DBConnection {
             LinkedList<XMLDBModel> childHierarchy, XMLDBModel baseModel) {
 
         /*
-         * If the current model has parents, then 
-         * add the current model to the list, and for every child 
-         * call _populateParentList. Remove the current model 
+         * If the current model has parents, then
+         * add the current model to the list, and for every child
+         * call _populateParentList. Remove the current model
          * from the list after all children have been visited.
-         *  
-         *  If the current model has no parents, then 
+         *
+         *  If the current model has no parents, then
          *  add the current model to the linked list and
-         *  add the linked list to the list of parents 
+         *  add the linked list to the list of parents
          *  in the base model.
          */
         ArrayList<DBModel> parentsList = dbModel._parentsList;
@@ -1288,9 +1286,9 @@ public class OracleXMLDBConnection implements DBConnection {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
-     *  The environment for the Oracle Berkeley XMLDatabase that defines the 
-     *  parameters like cache size, locking mechanism, storing mechanism etc. 
-     *  required for creating a database connection. 
+     *  The environment for the Oracle Berkeley XMLDatabase that defines the
+     *  parameters like cache size, locking mechanism, storing mechanism etc.
+     *  required for creating a database connection.
      */
     private Environment _environment;
     /**
@@ -1304,20 +1302,20 @@ public class OracleXMLDBConnection implements DBConnection {
     private boolean _isTransactionActive;
 
     /**
-     * This object contains the parameters like path, container name etc. 
-     * required to connect with the database 
+     * This object contains the parameters like path, container name etc.
+     * required to connect with the database
      */
     private DBConnectionParameters _params;
 
     /**
-     * This is the Oracle Berkeley XML DB Container that is used to 
-     * add and remove documents. 
+     * This is the Oracle Berkeley XML DB Container that is used to
+     * add and remove documents.
      */
     private XmlContainer _xmlContainer;
 
     /**
-     * This is the Oracle BerkeleyXML DB manager that is used to execute 
-     * queries over the opened container 
+     * This is the Oracle BerkeleyXML DB manager that is used to execute
+     * queries over the opened container
      */
     private XmlManager _xmlManager;
 
@@ -1327,27 +1325,27 @@ public class OracleXMLDBConnection implements DBConnection {
     private HashMap<String, String> _xmlModelHerarichyMap;
 
     /**
-     * This is the Oracle Berkeley XML DB Transaction that is used 
+     * This is the Oracle Berkeley XML DB Transaction that is used
      * to commit or abort certain transactions.
-     * This will be set only if a transaction enabled 
-     * connection is requested. 
+     * This will be set only if a transaction enabled
+     * connection is requested.
      */
     private XmlTransaction _xmlTransaction;
 
     /**
-     * Contain the parents list for a model. 
+     * Contain the parents list for a model.
      */
     private class DBModel {
         /**
-         * Construct an instance with 
-         * the given model name. 
+         * Construct an instance with
+         * the given model name.
          */
         DBModel(String modelName) {
             _modelName = modelName;
         }
 
         /**
-         * Add parent to model if the parent 
+         * Add parent to model if the parent
          * is not already present.
          * @param model Parent model to be added to parentslist.
          */
@@ -1369,18 +1367,18 @@ public class OracleXMLDBConnection implements DBConnection {
          */
         ArrayList<DBModel> _parentsList;
 
-        /**
-         * Match the given DBModel to the current model 
-         * based on name.
-         * @param model Model to be compared.
-         * @return True if the names are same, false otherwise.
-         */
-        public boolean equals(DBModel model) {
-            if (model._modelName.equals(_modelName)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+//        /**
+//         * Match the given DBModel to the current model
+//         * based on name.
+//         * @param model Model to be compared.
+//         * @return True if the names are same, false otherwise.
+//         */
+//        public boolean equals(DBModel model) {
+//            if (model._modelName.equals(_modelName)) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }
     }
 }

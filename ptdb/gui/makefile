@@ -82,11 +82,16 @@ OPTIONAL_FILES = \
 	'ActorGraphDBFrame$$OpenSearchFrameAction.class' \
 	'ActorGraphDBTableau$$Factory.class' \
 	'DbSearchFrame$$DBMatchAction.class' \
+	'ModelAttributePanel$$1.class' \
 	'ModelPanel$$1.class' \
 	'ParentPanel$$1.class' \
+	'SaveModelToDBFrame$$1.class' \
+	'SaveModelToDBFrame$$2.class' \
+	'SaveModelToDBFrame$$3.class' \
 	'SearchResultsFrame$$1.class' \
 	'SearchResultsFrame$$2.class' \
 	'SearchResultsFrame$$3.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

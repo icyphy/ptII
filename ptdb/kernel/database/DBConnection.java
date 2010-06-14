@@ -13,18 +13,18 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DBConnection
 /**
  *  Interface for XML Database connections.
- *  
+ *
  *  @author Ashwini Bijwe, Yousef Alsaeed
- *  
+ *
  *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (abijwe)
  *  @Pt.AcceptedRating Red (abijwe)
- *   
+ *
  */
 public interface DBConnection {
 
@@ -33,19 +33,19 @@ public interface DBConnection {
 
     /**
      * Abort the connection to the database and roll back the transaction.
-     * @throws DBConnectionException
+     * @exception DBConnectionException
      */
     public void abortConnection() throws DBConnectionException;
 
     /**
      * Close the connection to the database and commit the transaction.
-     * @throws DBConnectionException
+     * @exception DBConnectionException
      */
     public void closeConnection() throws DBConnectionException;
 
     /**
      * Commit the transaction running over the connection.
-     * @throws DBConnectionException - When there is a problem while committing 
+     * @exception DBConnectionException - When there is a problem while committing
      * transaction in the database.
      */
     public void commitConnection() throws DBConnectionException;
@@ -53,21 +53,21 @@ public interface DBConnection {
     /**
      * Execute the necessary commands to create a new model in the database according
      * to the model specification given in the task parameter
-     * 
+     *
      * @param task
-     *          The task to be completed.  In this case, CreateModelTask. 
+     *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
-     * @throws DBExecutionException
+     * @exception DBExecutionException
      */
     public void executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException;
 
     /**
      * Fetch the parent model hierarchies for the given models.
-     * 
+     *
      * @param task - Task that contains the list of models.
      * @return - List of models that contain the parent hierarchies.
-     * @throws DBExecutionException - When the database encounters 
+     * @exception DBExecutionException - When the database encounters
      * error while searching.
      */
     public ArrayList<XMLDBModel> executeFetchHierarchyTask(
@@ -75,45 +75,45 @@ public interface DBConnection {
 
     /**
      * Search models that contain the given attributes in the database.
-     * 
-     * @param task Task that contains a list of attributes that 
+     *
+     * @param task Task that contains a list of attributes that
      * need to be searched in the database.
-     * 
+     *
      * @return List of models that contain the attributes.
-     * 
-     * @throws DBExecutionException - When the database encounters error while searching.
+     *
+     * @exception DBExecutionException - When the database encounters error while searching.
      */
     public ArrayList<XMLDBModel> executeAttributeSearchTask(
             AttributeSearchTask task) throws DBExecutionException;
 
     /**
-     * Get the attributes defined from the database. 
-     * @param task The criteria to get the attribute.   
+     * Get the attributes defined from the database.
+     * @param task The criteria to get the attribute.
      * @return List of attributes stored in the database.
-     * @throws DBExecutionException
+     * @exception DBExecutionException
      */
     public ArrayList executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException;
 
     /**
      * Execute the necessary commands to retrieve a model from the database.
-     * 
+     *
      * @param task
-     *          The task to be completed.  In this case, GetModelsTask. 
+     *          The task to be completed.  In this case, GetModelsTask.
      *          This will tell the DB layer to return the specified model.
      * @return XMLDBModel
      *          This object will be populated with the model's MoML string.
-     * @throws DBConnectionException
+     * @exception DBConnectionException
      */
     public XMLDBModel executeGetModelsTask(GetModelsTask task)
             throws DBExecutionException;
 
     /**
      * Search models that contain given graphical pattern in the database.
-     * 
+     *
      * @param task - Task that contains the graph search criteria.
      * @return - List of models that match the given search criteria.
-     * @throws DBExecutionException - When the database encounters 
+     * @exception DBExecutionException - When the database encounters
      * error while searching.
      */
     public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
@@ -122,11 +122,11 @@ public interface DBConnection {
     /**
      * Execute the necessary commands to save/update a model in the database according
      * to the model specification given in the task parameter
-     * 
+     *
      * @param task
-     *          The task to be completed.  In this case, SaveModelTask. 
+     *          The task to be completed.  In this case, SaveModelTask.
      *          This will tell the DB layer to save/update a model already existing in the database.
-     * @throws DBExecutionException
+     * @exception DBExecutionException
      */
     public void executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException;

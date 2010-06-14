@@ -43,7 +43,8 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS_TEST_DRIVERS = \
-	TestActorGraphDBFrame.java
+	TestActorGraphDBFrame.java \
+	TestSearchResultsFrame.java
 
 JSRCS = \
 	$(JSRCS_TEST_DRIVERS)
@@ -72,6 +73,7 @@ tests:: $(EXTRA_SRCS) jclass test_java
 
 test_java: jclass
 	java -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.gui.test.TestActorGraphDBFrame
+	java -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.gui.test.TestSearchResultsFrame
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java

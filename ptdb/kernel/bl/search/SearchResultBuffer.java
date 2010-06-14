@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.kernel.bl.search;
 
@@ -8,34 +8,33 @@ import java.util.Observable;
 
 import ptdb.common.dto.XMLDBModel;
 
-////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// SearchResultBuffer
 
 /**
  * The buffer for caching the search results from the previous searchers.
- * 
- * <p>This class extends class Observable, to implement the Observer pattern.
- * 
- * It requires the SearchResultListener from the GUI layer to implement the 
+ *
+ * <p>This class extends class Observable, to implement the Observer pattern.</p>
+ *
+ * <p>It requires the SearchResultListener from the GUI layer to implement the
  * Observer interface, and register in this class to get notified when there are
  * results being added into the buffer.</p>
- * 
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating red (wenjiaow)
  * @Pt.AcceptedRating red (wenjiaow)
- *
  */
 public class SearchResultBuffer extends Observable implements ResultHandler {
 
-    //////////////////////////////////////////////////////////////////////
-    ////        public methods                                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Get the results stored in the buffer.
-     * 
-     * @return All the searched model results in this buffer. 
+     *
+     * @return All the searched model results in this buffer.
      */
     public ArrayList<XMLDBModel> getResults() {
 
@@ -45,19 +44,19 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
         // reset the stored results to null
         _storedResults = null;
 
-        // return the stored results 
+        // return the stored results
         return returnedResults;
     }
 
     /**
-     * Called by the other searcher to write the searched results 
+     * Called by the other searcher to write the searched results
      * to this buffer.
-     * 
+     *
      * <p>When the results are written to the buffer in this method,
-     * the buffer will notify its registered observers. 
+     * the buffer will notify its registered observers.
      * The SearchResultListener, which should have registered in this buffer
      *  will be called to notify.</p>
-     * 
+     *
      * @param modelResults The models results to be stored in this buffer.
      */
     public void handleResults(ArrayList<XMLDBModel> modelResults) {
@@ -82,10 +81,10 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
     }
 
     /**
-     * Check whether the searching process has been canceled by the user. 
-     * 
+     * Check whether the searching process has been canceled by the user.
+     *
      * @return true - The search has been canceled by the user.<br>
-     *             false - The search hasn't been canceled. 
+     *             false - The search hasn't been canceled.
      */
     public boolean isSearchCancelled() {
 
@@ -93,17 +92,17 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
     }
 
     /**
-     * Check whether the whole searching is done. 
-     * 
+     * Check whether the whole searching is done.
+     *
      * @return true - the searching is done.<br>
-     *          false - the searching is not done yet. 
+     *          false - the searching is not done yet.
      */
     public boolean isWholeSearchDone() {
         return _isSearchDone;
     }
 
     /**
-     * Notify the search result buffer that the searching is done. 
+     * Notify the search result buffer that the searching is done.
      */
     public void wholeSearchDone() {
 
@@ -115,15 +114,15 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
         this.notifyObservers();
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////        private variables                                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private boolean _isSearchCancelled = false;
 
     private boolean _isSearchDone = false;
 
     /**
-     * The field that stores the buffered results. 
+     * The field that stores the buffered results.
      */
     private ArrayList<XMLDBModel> _storedResults;
 }

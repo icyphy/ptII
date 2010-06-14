@@ -1,19 +1,19 @@
 package ptdb.common.exception;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DBConnectionException
 
 /**
- * Exception for all the exceptions raised during XML database connection 
+ * Exception for all the exceptions raised during XML database connection
  * related operations.
- * 
+ *
  * @author Ashwini Bijwe
- * 
+ *
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
- * 
+ *
  *
  */
 public class DBConnectionException extends Exception {
@@ -23,13 +23,13 @@ public class DBConnectionException extends Exception {
      * @param message The given message.
      */
     public DBConnectionException(String message) {
-        
+
         super(message);
-    
+
     }
 
     /**
-     * Create an instance to wrap other exceptions. 
+     * Create an instance to wrap other exceptions.
      * @param message The exception message.
      * @param cause The original exception.
      */
@@ -40,10 +40,10 @@ public class DBConnectionException extends Exception {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Return the underlying cause for the exception.
-     * 
+     *
      * @return The cause of the exception.
      */
     public Throwable getCause() {
@@ -52,6 +52,6 @@ public class DBConnectionException extends Exception {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private Throwable _cause;
 }

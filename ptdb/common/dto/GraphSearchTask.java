@@ -1,15 +1,14 @@
 /*
- * 
+ *
  */
 package ptdb.common.dto;
 
-
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// GraphSearchTask
 
 /**
  * Task to search graphical patterns on database.
- * 
+ *
  * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -19,9 +18,9 @@ package ptdb.common.dto;
  */
 public class GraphSearchTask extends Task {
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 					////
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                public methods                                         ////
+
     /**
      * Return the graphical search criteria.
      * @return The graph search criteria.
@@ -32,14 +31,14 @@ public class GraphSearchTask extends Task {
 
     /**
      * Set the graph search criteria.
-     * @param graphSearchCriteria The graph search criteria. 
+     * @param graphSearchCriteria The graph search criteria.
      */
     public void setGraphSearchCriteria(DBGraphSearchCriteria graphSearchCriteria) {
         this._graphSearchCriteria = graphSearchCriteria;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables				////
+    ///////////////////////////////////////////////////////////////////
+    ////                private variables                                ////
     private DBGraphSearchCriteria _graphSearchCriteria;
 
-    }
+}

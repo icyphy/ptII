@@ -18,11 +18,11 @@ import javax.swing.JTextField;
 //// ModelAttributePanel
 
 /**
- * An extended JPanel displaying an attribute.  Multiple ModelAttributePanel objects 
+ * An extended JPanel displaying an attribute.  Multiple ModelAttributePanel objects
  * may be displayed on the SaveModelToDBFrame.  The _attMap indicates the type of
  * attribute.  For a selected attribute name, a different Component may be displayed
  * on the panel.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -38,7 +38,7 @@ public class ModelAttributePanel extends JPanel {
      * the _attributeName ComboBox.  When the value changes,
      * updateDisplay() is called to display the proper form
      * Component.
-     * 
+     *
      * @param attMap
      *          Associates attributes with their type to
      *          allow display of proper form Components.
@@ -85,8 +85,8 @@ public class ModelAttributePanel extends JPanel {
     }
 
     /** Get the value of this attribute.
-     * 
-     * @return 
+     *
+     * @return
      *          The string value of the attribute,
      *          It is obtained from the applicable form Component based on
      *          the type mapped to the selected attribute.
@@ -133,8 +133,8 @@ public class ModelAttributePanel extends JPanel {
     //                    public methods                          ////
 
     /** Get the selected attribute's name.
-     * 
-     * @return 
+     *
+     * @return
      *          This attribute's name.
      */
     public String getAttributeName() {

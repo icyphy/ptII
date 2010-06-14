@@ -22,8 +22,8 @@ import ptolemy.moml.MoMLParser;
 
 /**
  * Class for testing SearchResultsFrame.  This is a complicated
- * GUI.  The display is somewhat difficult to troubleshoot.  
- * 
+ * GUI.  The display is somewhat difficult to troubleshoot.
+ *
  * @author Lyle Holsinger
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -34,7 +34,7 @@ import ptolemy.moml.MoMLParser;
 public class TestSearchResultsFrame {
 
     /** Main class for running SearchResultsFrame in a test capacity.
-     * 
+     *
      * @param args
      *          Command line arguments.
      */

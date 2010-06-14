@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.kernel.bl.search.test;
 
@@ -17,12 +17,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestSearchResultBuffer
 
 /**
  * The JUnit test case for testing class SearchResutlBuffer.
- * 
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -35,8 +35,8 @@ import ptdb.kernel.bl.search.SearchResultBuffer;
 @PrepareForTest( { SearchResultBuffer.class, Observable.class })
 public class TestSearchResultBuffer {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public methods                                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Set up the test by creating a new SearchResultBuffer.
@@ -49,8 +49,8 @@ public class TestSearchResultBuffer {
     }
 
     /**
-     * Test the handleResults() method. Test the case when null is sent to 
-     * the buffer as the results. 
+     * Test the handleResults() method. Test the case when null is sent to
+     * the buffer as the results.
      */
     @Test
     public void testHandleResultsNull() {
@@ -59,7 +59,7 @@ public class TestSearchResultBuffer {
     }
 
     /**
-     * Test the handleResults() and getResults() methods. 
+     * Test the handleResults() and getResults() methods.
      */
     @Test
     public void testHandleResultsWithResults() {
@@ -101,7 +101,7 @@ public class TestSearchResultBuffer {
     }
 
     /**
-     * Test the isSearchCancelled() method. 
+     * Test the isSearchCancelled() method.
      */
     @Test
     public void testIsSearchCancelled() {
@@ -110,13 +110,13 @@ public class TestSearchResultBuffer {
 
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                private variables                             ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private ArrayList<XMLDBModel> _modelResults2;
 
     private ArrayList<XMLDBModel> _modelResults3;
-    
+
     private SearchResultBuffer _searchResultBufferTest;
 
 }

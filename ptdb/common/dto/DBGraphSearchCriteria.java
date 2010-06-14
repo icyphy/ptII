@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.common.dto;
 
@@ -9,16 +9,16 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DBGraphSearchCriteria
 
 /**
- * The DTO (data transfer object) that all the search criteria input by the 
+ * The DTO (data transfer object) that all the search criteria input by the
  * user, for the graph searching through the XML database.
- * 
- * <p>It is constructed by the GUI layer class to pass the search criteria for 
+ *
+ * <p>It is constructed by the GUI layer class to pass the search criteria for
  * graph DB search to the database layer.</p>
- * 
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -28,13 +28,13 @@ import ptolemy.kernel.Relation;
  */
 public class DBGraphSearchCriteria {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public methods                                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
-     * Get the component entities from the Graph search pattern. 
-     * 
-     * @return The component entities from the graph search pattern. 
+     * Get the component entities from the Graph search pattern.
+     *
+     * @return The component entities from the graph search pattern.
      */
     public ArrayList<ComponentEntity> getComponentEntitiesList() {
         return _componentEntitiesList;
@@ -42,8 +42,8 @@ public class DBGraphSearchCriteria {
 
     /**
      * Get the ports from the Graph search pattern.
-     * 
-     * @return The ports from the graph search pattern. 
+     *
+     * @return The ports from the graph search pattern.
      */
     public ArrayList<Port> getPortsList() {
         return _portsList;
@@ -51,18 +51,18 @@ public class DBGraphSearchCriteria {
 
     /**
      * Get the relations from the Graph search pattern.
-     * 
-     * @return The relations from the graph search pattern. 
+     *
+     * @return The relations from the graph search pattern.
      */
     public ArrayList<Relation> getRelationsList() {
         return _relationsList;
     }
 
     /**
-     * Set the component entities from the Graph search pattern. 
-     * 
-     * @param componentEntitiesList The component entities from the graph 
-     *  search pattern. 
+     * Set the component entities from the Graph search pattern.
+     *
+     * @param componentEntitiesList The component entities from the graph
+     *  search pattern.
      */
     public void setComponentEntitiesList(
             ArrayList<ComponentEntity> componentEntitiesList) {
@@ -71,8 +71,8 @@ public class DBGraphSearchCriteria {
 
     /**
      * Set the ports from the Graph search pattern.
-     * 
-     * @param portsList The ports from the graph search pattern. 
+     *
+     * @param portsList The ports from the graph search pattern.
      */
     public void setPortsList(ArrayList<Port> portsList) {
         _portsList = portsList;
@@ -80,15 +80,15 @@ public class DBGraphSearchCriteria {
 
     /**
      * Set the relations from the Graph search pattern.
-     * 
-     * @param relationsList The relations from the graph search pattern. 
+     *
+     * @param relationsList The relations from the graph search pattern.
      */
     public void setRelationsList(ArrayList<Relation> relationsList) {
         _relationsList = relationsList;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                private variables                             ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private ArrayList<Port> _portsList;
 

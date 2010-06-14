@@ -17,11 +17,11 @@ import ptolemy.actor.gui.Configuration;
 ////SearchResultPanel
 
 /**
-* An extended JPanel displaying a search result model and all of the branches of its 
+* An extended JPanel displaying a search result model and all of the branches of its
 * parent hierarchy.  The panel layout is taken care of in the constructor.  A public method getSelections()
 * is available for getting the list of all model names for models that have been selected for
 * loading.
-* 
+*
 * @author Lyle Holsinger
 * @since Ptolemy II 8.1
 * @version $Id$
@@ -32,10 +32,10 @@ import ptolemy.actor.gui.Configuration;
 public class SearchResultPanel extends JPanel {
 
     /**
-     * Construct a panel associated with a search result. 
+     * Construct a panel associated with a search result.
      *
      * @param dbModel
-     *        The model returned as a search result.      
+     *        The model returned as a search result.
      * @param configuration
      *        The configuration under which an effigy of this model would be generated.
      */
@@ -78,7 +78,7 @@ public class SearchResultPanel extends JPanel {
     ////                         public methods                    ////
 
     /** Get the model name.
-     * 
+     *
      * @return The model name.
      */
     public String getModelName() {
@@ -90,9 +90,9 @@ public class SearchResultPanel extends JPanel {
     /** Traverse the list of ParentHierarchyPanels.  Call the getSelections() of
      * each ParentHierarchyPanel and add all model names to the list.  Finally,
      * Call getValue() for the ModelPanel.  If it returns true (checkbox is checked),
-     * Add the model name to the ArrayList.  
-     * 
-     * @return ArrayList<String> 
+     * Add the model name to the ArrayList.
+     *
+     * @return ArrayList<String>
      *         A list of models that have been selected for loading.
      */
     public ArrayList<String> getSelections() {

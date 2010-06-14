@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -15,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import ptdb.kernel.bl.load.LoadManagerInterface;
 import ptolemy.actor.gt.TransformationRule;
@@ -37,7 +37,7 @@ import diva.gui.GUIUtilities;
 /**
  * An extended graph editor frame containing the ability to interface with a
  * model database via the Database menu.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -55,7 +55,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * tableau. This constructor results in a graph frame that obtains its
      * library either from the model (if it has one) or the default library
      * defined in the configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity
      *            The model to put in this frame.
@@ -76,7 +76,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * library either from the model (if it has one), or the
      * <i>defaultLibrary</i> argument (if it is non-null), or the default
      * library defined in the configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity
      *            The model to put in this frame.
@@ -95,7 +95,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                protected methods                          ////
+    ////                         protected methods                 ////
 
     /**
      * Initialize this class. Various actions are instantiated.
@@ -142,7 +142,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////          protected variables                              ////
+    ////                         protected variables               ////
 
     /** The database menu. */
     protected JMenu _dbMenu;
@@ -188,7 +188,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                     Color.white, Color.black, 1, 8);
 
             contentPane.add(_Load_Button);
-            _Load_Button.setHorizontalTextPosition(AbstractButton.CENTER);
+            _Load_Button.setHorizontalTextPosition(SwingConstants.CENTER);
 
             _Load_Button.addActionListener(new ActionListener() {
 
@@ -205,7 +205,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             _Cancel_Button.setActionCommand("Cancel");
 
             contentPane.add(_Cancel_Button);
-            _Cancel_Button.setHorizontalTextPosition(AbstractButton.CENTER);
+            _Cancel_Button.setHorizontalTextPosition(SwingConstants.CENTER);
 
             _Cancel_Button.addActionListener(new ActionListener() {
 
@@ -228,7 +228,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         /**
          * Called to notify that one of the entries has changed. The name of the
          * entry is passed as an argument.
-         * 
+         *
          * @param name
          *            The name of the entry.
          */
@@ -316,15 +316,13 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         public OpenSearchFrameAction(Tableau tableau) {
             super("Search Model in Database");
 
-            this._taTableau = tableau;
-
             putValue("tooltip", "Search Model in Database");
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
         }
 
         ///////////////////////////////////////////////////////////////
         ////            public methods                          //////
-        
+
         public void actionPerformed(ActionEvent e) {
 
             URL toRead = getClass().getClassLoader().getResource(
@@ -335,8 +333,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                 EffigyFactory effigyFactory = new EffigyFactory(
                         ActorGraphDBFrame.this.getConfiguration().workspace());
 
-                PtolemyEffigy.Factory ptolemyEffigyFactory = 
-                    new PtolemyEffigy.Factory(
+                PtolemyEffigy.Factory ptolemyEffigyFactory = new PtolemyEffigy.Factory(
                         effigyFactory, "new effigy factory");
 
                 Effigy effigy = ptolemyEffigyFactory.createEffigy(
@@ -360,11 +357,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             }
 
         }
-
-        ///////////////////////////////////////////////////////////////
-        ////            private variables                       //////
-
-        private Tableau _taTableau;
     }
 
 }

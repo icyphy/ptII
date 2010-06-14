@@ -17,12 +17,12 @@ import ptolemy.actor.gui.Configuration;
 //// ParentHierarchyPanel
 
 /**
- * An extended JPanel displaying a single branch of parents for the search result. 
- * A parent hierarchy is one branch of parents that contain the model matched by the model search. 
+ * An extended JPanel displaying a single branch of parents for the search result.
+ * A parent hierarchy is one branch of parents that contain the model matched by the model search.
  * The panel layout is taken care of in the constructor.  A public method getSelections()
  * is available for getting the list of parent model names for models that have been selected for
  * loading.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -33,13 +33,13 @@ import ptolemy.actor.gui.Configuration;
 public class ParentHierarchyPanel extends JPanel {
 
     /**
-     * Construct a panel associated with a parent hierarchy. 
+     * Construct a panel associated with a parent hierarchy.
      *
      * @param hierarchy
      *        The model returned as a search result.
      * @param searchResultModel
-     *        The name of the model that was matched by the search.  
-     *        Displayed at the end of the hierarchy.        
+     *        The name of the model that was matched by the search.
+     *        Displayed at the end of the hierarchy.
      * @param configuration
      *        The configuration under which an effigy of this model would be generated.
      */
@@ -74,8 +74,8 @@ public class ParentHierarchyPanel extends JPanel {
 
     /** Traverse the list of ParentPanels.  If a ParentPanel's checkbox is
      * checked, add the model name to the returned list of model names (strings).
-     * 
-     * @return ArrayList<String> 
+     *
+     * @return ArrayList<String>
      *         A list of parent models that have been selected for loading.
      */
     public ArrayList<String> getSelections() {

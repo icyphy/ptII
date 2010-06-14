@@ -47,19 +47,21 @@ PTPACKAGE = 	dto
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AttributeSearchTask.java \
 	CreateModelTask.java \
 	DBConnectionParameters.java \
+	DBGraphSearchCriteria.java \
+	FetchHierarchyTask.java \
 	GetAttributesTask.java \
 	GetModelsTask.java \
+	GraphSearchTask.java \
 	PTDBSearchAttribute.java \
 	SaveModelTask.java \
 	SearchCriteria.java \
 	Task.java \
 	TaskQueue.java \
-	XMLDBModel.java \
-	AttributeSearchTask.java \
-	FetchHierarchyTask.java \
-	GraphSearchTask.java
+	XMLDBAttribute.java \
+	XMLDBModel.java
 
 EXTRA_SRCS =	$(JSRCS)
 

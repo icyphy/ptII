@@ -12,7 +12,7 @@ import ptdb.kernel.database.DBConnection;
 
 /**
 * This is the business layer that interfaces with the database for retrieving
-* Models. 
+* Models.
 *
 * @author Lyle Holsinger
 * @since Ptolemy II 8.1
@@ -24,13 +24,13 @@ import ptdb.kernel.database.DBConnection;
 public class LoadModelManager {
 
     ///////////////////////////////////////////////////////////////////
-    ////                   public methods                         ////
+    ////                         public methods                    ////
 
     /** Give a model name representing the model to load, return
      *  an XMLDBModel object that contains the MoML.
-     * 
+     *
      * @param name
-     * @return An XMLDBModel object from the Database, 
+     * @return An XMLDBModel object from the Database,
      *         containing its MoML string.
      * @exception DBConnectionException
      * @exception DBExecutionException

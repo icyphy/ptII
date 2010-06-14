@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.gui;
 
@@ -39,25 +39,25 @@ import ptolemy.vergil.gt.TransformationEditor;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.gui.GUIUtilities;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// DbSearchFrame
 
 /**
  * The UI frame for the advanced DB search window. It has the specific searching
  * features for PTDB.
- * 
+ *
  * @author Alek Wang
  * @since Ptolemy II 8.1
  * @version $Id$
  * @Pt.ProposedRating
  * @Pt.AcceptedRating
- * 
+ *
  */
 public class DbSearchFrame extends TransformationEditor {
 
     /**
      * Construct the DbSearchFrame.
-     * 
+     *
      * @param entity  The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
      */
@@ -67,7 +67,7 @@ public class DbSearchFrame extends TransformationEditor {
 
     /**
      * Construct the DbSearchFrame.
-     * 
+     *
      * @param entity The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
      * @param defaultLibrary An attribute specifying the default library to
@@ -79,8 +79,8 @@ public class DbSearchFrame extends TransformationEditor {
 
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                protected methods                             ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     @Override
     protected void _addMenus() {
@@ -95,7 +95,7 @@ public class DbSearchFrame extends TransformationEditor {
 
     }
 
-    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                private classes                               ////
 
     private class DBMatchAction extends FigureAction {
@@ -131,10 +131,9 @@ public class DbSearchFrame extends TransformationEditor {
             //                    new NamedObj(), DbSearchFrame.this, DbSearchFrame.this
             //                            .getConfiguration());
 
-            // create the new search result buffer 
-            SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
+            new SearchResultBuffer();
 
-            // TODO register the result listener from the search result frame 
+            // TODO register the result listener from the search result frame
             // to the search result buffer
             //            searchResultBuffer.addObserver(searchResultsFrame);
 
@@ -147,7 +146,7 @@ public class DbSearchFrame extends TransformationEditor {
                     .getTransformationRule();
             Pattern pattern = rule.getPattern();
 
-            // create a new arraylist to contain all the attributes 
+            // create a new arraylist to contain all the attributes
             ArrayList<Attribute> attributesList = new ArrayList<Attribute>();
 
             try {
@@ -159,7 +158,7 @@ public class DbSearchFrame extends TransformationEditor {
                         .hasNext();) {
                     GTIngredient gtIngredient = (GTIngredient) iterator.next();
 
-                    // only check the criteria related to attributes here. 
+                    // only check the criteria related to attributes here.
                     if (!(gtIngredient instanceof PortCriterion)
                             && !(gtIngredient instanceof SubclassCriterion)) {
 
@@ -201,7 +200,7 @@ public class DbSearchFrame extends TransformationEditor {
             // set the attributes to the search criteria accordingly
             searchCriteria.setAttributes(attributesList);
 
-            // Create the graph pattern search criteria 
+            // Create the graph pattern search criteria
             DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
 
             // get the ports specified by the user
@@ -234,7 +233,7 @@ public class DbSearchFrame extends TransformationEditor {
 
             dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
 
-            // set the DBGraph search criteria to the whole search criteria 
+            // set the DBGraph search criteria to the whole search criteria
             searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
 
             // TODO show the search result frame
@@ -245,12 +244,12 @@ public class DbSearchFrame extends TransformationEditor {
             //  SearchManager searchManager = new SearchManager();
             //            try {
             //                searchManager.search(searchCriteria, searchResultBuffer);
-            //                
+            //
             //            } catch (DBConnectionException e1) {
-            //               
+            //
             //                e1.printStackTrace();
             //            } catch (DBExecutionException e1) {
-            //         
+            //
             //                e1.printStackTrace();
             //            }
 
@@ -266,9 +265,9 @@ public class DbSearchFrame extends TransformationEditor {
             //                        e1.printStackTrace();
             //                    }
             //                }
-            //                
+            //
             //            }
-            //            
+            //
 
             //            // TODO this is just for testing the Graph part, delete later
             //            System.out.println("search criteira: "
@@ -302,7 +301,7 @@ public class DbSearchFrame extends TransformationEditor {
             //            }
             //
             //            System.out.println("done testing");
-            //            // TODO done and delete later 
+            //            // TODO done and delete later
         }
 
         private void _getAtomicEntities(CompositeEntity compositeEntity,

@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.kernel.bl.search.test;
 
@@ -37,12 +37,12 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestSearchManager
 
 /**
  * JUnit test case for class TestSearchManager.
- * 
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -58,17 +58,17 @@ import ptolemy.kernel.util.Attribute;
 @SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory")
 public class TestSearchManager {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public methods                                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Test the search() method.
-     * 
-     * <p>Test the case when all the search criteria are set, and results 
+     *
+     * <p>Test the case when all the search criteria are set, and results
      * returned smoothly.</p>
-     * 
-     * @exception Exception Thrown by PowerMock during the execution of test 
-     *  cases. 
+     *
+     * @exception Exception Thrown by PowerMock during the execution of test
+     *  cases.
      */
     @Test
     public void testSearch() throws Exception {
@@ -207,12 +207,12 @@ public class TestSearchManager {
 
     /**
      * Test the search() method.
-     * 
-     * <p>Test the case when DBConnectionException is thrown during the 
+     *
+     * <p>Test the case when DBConnectionException is thrown during the
      * searching.</p>
-     * 
-     * @exception Exception Thrown by PowerMock during the execution of test 
-     *  cases. 
+     *
+     * @exception Exception Thrown by PowerMock during the execution of test
+     *  cases.
      */
     @Test
     public void testSearchDBConnectionExecution() throws Exception {
@@ -263,12 +263,12 @@ public class TestSearchManager {
 
     /**
      * Test the search() method.
-     * 
-     * <p>Test the case when DBExecutionException is thrown during the 
+     *
+     * <p>Test the case when DBExecutionException is thrown during the
      * searching.</p>
-     * 
-     * @exception Exception Thrown by PowerMock during the execution of test 
-     *  cases. 
+     *
+     * @exception Exception Thrown by PowerMock during the execution of test
+     *  cases.
      */
     @Test
     public void testSearchDBExecutionExecution() throws Exception {
@@ -335,11 +335,11 @@ public class TestSearchManager {
 
     /**
      * Test the search() method.
-     * 
+     *
      * <p>Test the case when there is no attribute search criteria.</p>
-     * 
-     * @exception Exception Thrown by PowerMock during the execution of test 
-     *  cases. 
+     *
+     * @exception Exception Thrown by PowerMock during the execution of test
+     *  cases.
      */
     @Test
     public void testSearchNoAttributeCriteria() throws Exception {
@@ -436,12 +436,12 @@ public class TestSearchManager {
 
     /**
      * Test the search() method.
-     * 
-     * <p>Test the case when there is no result returned in the attribute 
+     *
+     * <p>Test the case when there is no result returned in the attribute
      * searching.</p>
-     * 
-     * @exception Exception Thrown by PowerMock during the execution of test 
-     *  cases. 
+     *
+     * @exception Exception Thrown by PowerMock during the execution of test
+     *  cases.
      */
     @Test
     public void testSearchNoAttributeResult() throws Exception {
@@ -512,11 +512,11 @@ public class TestSearchManager {
 
     /**
      * Test the search() method.
-     * 
+     *
      * <p>Test the case there is no criteria for graph search.</p>
-     * 
-     * @exception Exception Thrown by PowerMock during the execution of test 
-     *  cases. 
+     *
+     * @exception Exception Thrown by PowerMock during the execution of test
+     *  cases.
      */
     @Test
     public void testSearchNoXQueryGraphCriteria() throws Exception {
@@ -611,12 +611,12 @@ public class TestSearchManager {
 
     /**
      * Test the search() method.
-     * 
-     * <p>Test the case there is no result found in the XQuery graph 
+     *
+     * <p>Test the case there is no result found in the XQuery graph
      * searcher.</p>
-     * 
-     * @exception Exception Thrown by PowerMock during the execution of test 
-     *  cases. 
+     *
+     * @exception Exception Thrown by PowerMock during the execution of test
+     *  cases.
      */
     @Test
     public void testSearchNoXQueryGraphResult() throws Exception {

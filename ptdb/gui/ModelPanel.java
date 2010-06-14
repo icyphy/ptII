@@ -22,10 +22,10 @@ import ptolemy.util.MessageHandler;
 //// ModelPanel
 
 /**
- * An extended JPanel displaying a single model result.  
+ * An extended JPanel displaying a single model result.
  * Multiple ModelPanel objects will be displayed as search results.
  * This class is simply for uniform layout and behavior.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -38,7 +38,7 @@ public class ModelPanel extends JPanel {
 
     /**
      * Construct a panel associated with the search result.  The panel layout
-     * is taken care of in the constructor.  A listener is added for _modelLink, 
+     * is taken care of in the constructor.  A listener is added for _modelLink,
      * which is a button used to open the model in a new editing frame.
      *
      * @param dbModel
@@ -85,7 +85,7 @@ public class ModelPanel extends JPanel {
     ////                         public methods                    ////
 
     /** Get the model name.
-     * 
+     *
      * @return The model name.
      */
     public String getModelName() {
@@ -94,9 +94,9 @@ public class ModelPanel extends JPanel {
 
     }
 
-    /** Get the value of the _loadCheck checkbox.  
+    /** Get the value of the _loadCheck checkbox.
      * The method, isSelected(), returns true of false.
-     * 
+     *
      * @return The value of the _loadCheck checkbox.
      */
     public Boolean getValue() {

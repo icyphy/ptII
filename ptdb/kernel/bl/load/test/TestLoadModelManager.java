@@ -37,17 +37,17 @@ public class TestLoadModelManager {
 
     /**
      * Verify that given a model name, null is not returned.
-     * @throws Exception
+     * @exception Exception
      */
     @Test
     public void testLoad() throws Exception {
-        
-        
+
+
         String loadModel = "model1";
         LoadModelManager tested = new LoadModelManager();
-        
+
         PowerMock.mockStatic(DBConnectorFactory.class);
-        
+
         GetModelsTask getModelsTaskMock = PowerMock.createMock(GetModelsTask.class);
         DBConnection dBConnectionMock = PowerMock.createMock(DBConnection.class);
 
@@ -58,16 +58,16 @@ public class TestLoadModelManager {
         getModelsTaskMock.setModelName(loadModel);
         EasyMock.expect(dBConnectionMock.executeGetModelsTask(getModelsTaskMock)).andReturn(modelMock);
         dBConnectionMock.closeConnection();
-        
+
         //Execute the test.  Verify that, load does not return null if the database layer is mocked.
         PowerMock.replayAll();
-        
+
         XMLDBModel dbModel = null;
         dbModel = tested.load(loadModel);
         assertNotNull(dbModel);
-        
-        PowerMock.verifyAll();  
-        
+
+        PowerMock.verifyAll();
+
     }
 
 }

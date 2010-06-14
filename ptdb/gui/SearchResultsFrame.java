@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.search.SearchResultBuffer;
@@ -27,11 +28,11 @@ import ptolemy.kernel.util.NamedObj;
 //// SearchResultsFrame
 
 /**
- * An extended JFrame displaying all search results in a scroll panel.  
- * Each search result is contained in a SearchResultPanel.  This is also an observer of 
+ * An extended JFrame displaying all search results in a scroll panel.
+ * Each search result is contained in a SearchResultPanel.  This is also an observer of
  * the SearchResultsBuffer, where it can get search results on the fly by calling getResults().
- * The _cancelButton will notify the search classes that the search has been canceled.  
- * 
+ * The _cancelButton will notify the search classes that the search has been canceled.
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -42,13 +43,13 @@ import ptolemy.kernel.util.NamedObj;
 public class SearchResultsFrame extends JFrame implements Observer {
 
     /**
-     * Construct a panel associated with a search result. 
+     * Construct a panel associated with a search result.
      *
      * @param model
-     *        The model into which search results would be imported.      
+     *        The model into which search results would be imported.
      * @param frame
      *        The frame from which this frame was opened.  It is here to allow repainting.
-     * 
+     *
      * @param configuration
      *        The configuration under which an effigy of models would be generated.
      */
@@ -73,8 +74,9 @@ public class SearchResultsFrame extends JFrame implements Observer {
         _label.setAlignmentX(LEFT_ALIGNMENT);
         outerPanel.add(_label);
 
-        _scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        _scrollPane = new JScrollPane(
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         _scrollPane.setPreferredSize(new Dimension(800, 200));
         _scrollPane.setAlignmentX(LEFT_ALIGNMENT);
         outerPanel.add(_scrollPane);
@@ -131,7 +133,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
     ////                         public methods                    ////
 
     /** Add new search result in the scroll pane.
-     * 
+     *
      * @param model
      *        The model that will be displayed as search results.
      */
@@ -147,7 +149,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
     }
 
     /** Display new search results in the scroll pane.
-     * 
+     *
      * @param modelList
      *        The list of models that will be displayed as search results.
      */
@@ -162,7 +164,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
     }
 
     /** Register an observer to allow notification upon canceling by the user.
-     * 
+     *
      * @param buffer
      *        The observer.  Only added if it is an instance of SearchResultBuffer.
      */
@@ -178,7 +180,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
 
     /** Implement the update method for Observer interface.
      *  Call display to display search results.
-     * 
+     *
      * @param buffer
      *        The observer.  Only handled if it is an instance of SearchResultBuffer.
      * @param arg

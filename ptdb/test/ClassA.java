@@ -4,18 +4,18 @@ package ptdb.test;
 import java.io.File;
 
 public class ClassA {
-    
+
     public String getSunSign(int date, String monthS)
     {
         ClassB classC = new ClassB();
         boolean isValidDate = ClassB.isValidBDate(date, monthS);
-        if(isValidDate)
+        if (isValidDate)
         {
             int month = classC.getMonth(monthS);
-            
+
             switch(month)
             {
-            case 1 :  if (date < 22) 
+            case 1 :  if (date < 22)
                         return "Capricorn";
                       else
                           return "Aquarius";
@@ -24,7 +24,7 @@ public class ClassA {
         }
         return "Aries";
     }
-    
+
     public boolean createDirectoryStructure(String directoryPath) {
         File directory = new File(directoryPath);
 

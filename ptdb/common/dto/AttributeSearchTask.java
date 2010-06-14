@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.common.dto;
 
@@ -7,15 +7,15 @@ import java.util.ArrayList;
 
 import ptolemy.kernel.util.Attribute;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// AttributeSearchTask
 
 /**
- * Contain the attribute search criteria to 
- * execute attribute search task. 
- * 
+ * Contain the attribute search criteria to
+ * execute attribute search task.
+ *
  * @author Ashwini Bijwe
- * 
+ *
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
@@ -26,14 +26,14 @@ public class AttributeSearchTask extends Task {
 
     /**
      *  Construct an instance of AttributeSearchTask
-     *  and set it as a select task.  
+     *  and set it as a select task.
      */
     public AttributeSearchTask() {
         _isUpdateTask = false;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		public methods 				   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                public methods                                    ////
 
     /**
      * Add the given attribute to the search attribute list.
@@ -65,8 +65,8 @@ public class AttributeSearchTask extends Task {
         _attributesList = attributesList;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables			   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                private variables                           ////
     /**
      * The search attribute list.
      */

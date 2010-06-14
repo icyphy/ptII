@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.kernel.bl.search.test;
 
@@ -8,12 +8,12 @@ import org.junit.Test;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.kernel.bl.search.AttributeSearcher;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestAttributeSearcher
 
 /**
- * JUnit test case for testing AttributeSearcher. 
- * 
+ * JUnit test case for testing AttributeSearcher.
+ *
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -23,13 +23,13 @@ import ptdb.kernel.bl.search.AttributeSearcher;
  */
 public class TestAttributeSearcher {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public methods                                ////
-    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
-     * The the wholeSearchDone() method. 
-     * 
-     * <p>Test the case when there is no next result handler set in the 
+     * The the wholeSearchDone() method.
+     *
+     * <p>Test the case when there is no next result handler set in the
      * searcher. </p>
      */
     @Test

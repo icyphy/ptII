@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package ptdb.common.util.test;
 
@@ -37,7 +37,7 @@ import ptdb.kernel.database.OracleXMLDBConnection;
 
 /**
  * Unit tests DBConnectorFactory.
- * 
+ *
  * @author Ashwini Bijwe
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -54,21 +54,21 @@ public class TestDBConnectorFactory {
     String _testPath;
 
     /**
-     * @throws java.lang.Exception
+     * @exception java.lang.Exception
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
 
     /**
-     * @throws java.lang.Exception
+     * @exception java.lang.Exception
      */
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
     }
 
     /**
-     * @throws java.lang.Exception
+     * @exception java.lang.Exception
      */
     @Before
     public void setUp() throws Exception {
@@ -86,7 +86,7 @@ public class TestDBConnectorFactory {
     }
 
     /**
-     * @throws java.lang.Exception
+     * @exception java.lang.Exception
      */
     @After
     public void tearDown() throws Exception {
@@ -112,7 +112,7 @@ public class TestDBConnectorFactory {
         assertTrue("Cache Conatainer Name is incorrect.", parameters
                 .contains("_cacheContainerName = temp_cache.dbxml"));
 
-        //////////////////////////////////////////////////////////////////////////////////////////        
+        //////////////////////////////////////////////////////////////////////////////////////////
         //Incorrect URL
         boolean isSetupDone = DBConnectorFactory.isSetupDone();
         try {
@@ -158,7 +158,7 @@ public class TestDBConnectorFactory {
             e.printStackTrace();
         }
 
-        //////////////////////////////////////////////////////////////////////////////////////////       
+        //////////////////////////////////////////////////////////////////////////////////////////
         //URL is null
         try {
 
@@ -299,7 +299,7 @@ public class TestDBConnectorFactory {
                     .andThrow(new ClassNotFoundException());
             PowerMock.replay(Class.class);
 
-            DBConnection conn = DBConnectorFactory.getSyncConnection(true);
+            /*DBConnection conn = */ DBConnectorFactory.getSyncConnection(true);
 
             PowerMock.verify(Class.class);
 
@@ -329,7 +329,7 @@ public class TestDBConnectorFactory {
 
             PowerMock.replay(Class.class, mockXmlDBClass);
 
-            DBConnection conn = DBConnectorFactory.getSyncConnection(true);
+            /*DBConnection conn =*/ DBConnectorFactory.getSyncConnection(true);
 
             PowerMock.verify(Class.class, mockXmlDBClass);
 
@@ -363,7 +363,7 @@ public class TestDBConnectorFactory {
 
             PowerMock.replay(Class.class, mockXmlDBClass);
 
-            DBConnection conn = DBConnectorFactory.getSyncConnection(true);
+            /*DBConnection conn =*/ DBConnectorFactory.getSyncConnection(true);
 
             PowerMock.verify(Class.class, mockXmlDBClass);
 
