@@ -77,9 +77,11 @@ public class SimulatedPhysicalTime extends TimedSource {
     public void fire() throws IllegalActionException {
         PtidesBasicDirector director = (PtidesBasicDirector) getDirector();
 
-        output.send(0, new DoubleToken(director.getPhysicalTime()
-                .getDoubleValue()));
-
+        if (1==1) {
+        throw new IllegalActionException("Fails to compile, there is no director.getPhysicalTime()");
+        //        output.send(0, new DoubleToken(director.getPhysicalTime()
+        //.getDoubleValue()));
+        }
         super.fire();
     }
 
