@@ -348,6 +348,7 @@ public class RTMaudeAdaptor extends CodeGeneratorHelper {
     /** Get the translanted expression.
      *  @param expression The expression to be parsed and translated.   
      *  @return the translated expression.
+     *  @exception IllegalActionException If thrown by the parser.
      */   
     protected String getTranslatedExpression(String expression) throws IllegalActionException {
         // FIXME: Rename to _getTranslatedExpression
