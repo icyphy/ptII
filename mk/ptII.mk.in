@@ -424,6 +424,9 @@ PTDB_PACKAGES =	@PTDB_PACKAGES@
 # PTDBXML_JARS includes dbxml.jar and db.xml and is used by $PTII/ptdb
 PTDBXML_JARS = @PTDBXML_JARS@
 
+# Directory that contains libdbxml-X.Y.{so,dll,dylib}.  Used in $PTII/ptdb
+PTDBXML_LIB = @PTDBXML_LIB@
+
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
 PTDISTRIBUTED_DIR = @PTDISTRIBUTED_DIR@

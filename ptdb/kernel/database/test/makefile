@@ -73,8 +73,10 @@ install:
 
 tests:: $(EXTRA_SRCS) jclass test_java
 
+# Include PTDBXML_LIB so that we 
+# avoid "java.lang.UnsatisfiedLinkError: no db_java-4.8 in java.library.path"
 test_java: jclass
-	java -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestOracleXMLDBConnection
+	LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} java -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestOracleXMLDBConnection
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java
