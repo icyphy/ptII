@@ -611,7 +611,8 @@ public class LatticeOntologySolver extends OntologySolver {
         toplevelAdapter._setConnectionConstraintType(
                 _getConstraintType(connectionConstraintType.stringValue()),
                 _getConstraintType(compositeConnectionConstraintType
-                        .stringValue()), _getConstraintType(fsmConstraintType
+                        .stringValue()),
+                _getConstraintType(fsmConstraintType
                         .stringValue()),
                 _getConstraintType(expressionASTNodeConstraintType
                         .stringValue()));
