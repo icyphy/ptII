@@ -1,41 +1,70 @@
 package ptdb.common.dto;
 
 /**
- * @author Yousef
+ * 
+ * A task request to fetch a model from the database.
+ * 
+ * <p>It is used as a data transfer object and hold the model name 
+ * with its getter and setter method.</p>
+ * 
+ * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (Yousef)
- * @Pt.AcceptedRating Red (Yousef)
+ * @Pt.ProposedRating Red (yalsaeed)
+ * @Pt.AcceptedRating Red (yalsaeed)
  *
- * This class represent the get models task that represent a request to fetch a model from the database
- * It is used as a data transfer object and hold the model name with its getter and setter method
  *
-*/
+ */
 public class GetModelsTask extends Task {
+    
+    /**
+     * Default constructor and should be removed once the pointing to it is fixed
+     * to use the constructor below.
+     */
+    public GetModelsTask() {
+        //TODO: Remove this method as soon as the code pointing to it is modified.
+    }
+    
+    /**
+     * Construct an instance of the object and set the model name to be fetched
+     * from the database.
+     * 
+     * @param The model name to be fetched from the database.
+     */
+    public GetModelsTask(String modelName) { 
+        _modelName = modelName;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    
 
     /**
-     * Return the model name that is needed to to fetch the model from the database.\
+     * Return the model name that is needed to be fetched from the database.
      *
-     * @return
-     *          The model name.
+     * @return The model name.
      */
     public String getModelName() {
-        return _m_strModelName;
+        return _modelName;
 
     }
 
     /**
-     * Set the model name.
+     * Set the model name to be fetched from the database.
      *
-     * @param p_strModelName the name of the model that need to be fetched from the database
+     * @param The name of the model to be fetched from the database.
      */
-    public void setModelName(String p_strModelName) {
-        _m_strModelName = p_strModelName;
+    public void setModelName(String modelName) {
+        _modelName = modelName;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
-     * Variable to hold the model name.
+     * The model name.
      */
-    private String _m_strModelName = null;
+    private String _modelName;
 
 }
