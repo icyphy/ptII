@@ -4,135 +4,151 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Yousef
+ * 
+ * The Model that need to be stored or retrieved from the database.
+ * 
+ * <p>
+ * It is used as a data transfer object and hold 4 information about the model:
+ * <br>- Model name.
+ * <br>- Model content in xml format.
+ * <br>- Does the model exist in the database or it is a new model.
+ * <br>- List of parents for the current model.
+ * <br>Each of the 4 information has its own getter and setter methods.
+ * </p>
+ * 
+ * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (Yousef)
- * @Pt.AcceptedRating Red (Yousef)
- *
- * This class represent the model that need to be stored or retrieved from the database.
- * It is used as a data transfer object and hold 4 information about the model
- * 1- Model name
- * 2- Model content
- * 3- Does the model exist in the database or it is a new model
- * 4- List of parents for the current model
- * Each of the 4 information has its own getter and setter methods.
+ * @Pt.ProposedRating Red (yalsaeed)
+ * @Pt.AcceptedRating Red (yalsaeed)
  *
  */
 public class XMLDBModel {
 
+    
     /**
-     * Construct a XMLDBModel instance.
+     * Default constructor and should be removed once the pointing to it is fixed
+     * to use the constructor below.
      */
     public XMLDBModel() {
-
+        //TODO: Remove this method as soon as the code pointing to it is modified.
     }
-
+    
+    
     /**
      * Construct a XMLDBModel instance
      * with the given model name.
      *
-     * @param modelName Name for the given model.
+     * @param Name for the given model.
      */
     public XMLDBModel(String modelName) {
-        this._m_strModelName = modelName;
+        this._modelName = modelName;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     /**
      * Add the given parent list to the model's
      * parent list.
-     * @param list List of parents to be added.
+     * @param List of parents to be added.
      */
     public void addParentList(List<XMLDBModel> list) {
-        if (_m_listParents == null) {
-            _m_listParents = new ArrayList<List<XMLDBModel>>();
+        if (_listParents == null) {
+            _listParents = new ArrayList<List<XMLDBModel>>();
         }
 
-        _m_listParents.add(list);
+        _listParents.add(list);
     }
 
     /**
-     * Return the is new.
-     *@return boolean True or false based on if the model is new or it exists in the database.
+     * Return True or false based on if the model is new or it exists in the database.
+     *@return True or false based on if the model is new or it exists in the database.
      */
     public boolean getIsNew() {
-        return _m_bIsNew;
+        return _isNew;
     }
 
     /**
      * Return the model content.
-     * @return String - string representation of the model content
+     * @return A string representation of the model content.
      */
     public String getModel() {
-        return _m_strModel;
+        return _modelContent;
     }
 
     /**
-     * Return the model name
-     * @return string - the model name
+     * Return the model name.
+     * @return The model name.
      */
     public String getModelName() {
-        return _m_strModelName;
+        return _modelName;
     }
 
     /**
-     * Return the parents for the current model
-     * @return ArrayList<ArrayList<XMLDBModel>> - list of parents models for the current model
+     * Return the parents for the current model.
+     * @return List of parents models for the current model.
      */
     public List<List<XMLDBModel>> getParents() {
-        return _m_listParents;
+        return _listParents;
     }
 
     /**
-     * Set the isNew variable
-     * @param boolean p_bIsNew - variable that holds true or false to set the isNew member variable
+     * Set the isNew variable which indicates if the model is in the database or
+     * it is new model.
+     * @param True or false value to set the isNew member variable.
      */
-    public void setIsNew(boolean p_bIsNew) {
-        _m_bIsNew = p_bIsNew;
+    public void setIsNew(boolean isNew) {
+        _isNew = isNew;
     }
 
     /**
-     * Set the model name
-     * @param String p_strModelName - the model name to be set.
+     * Set the model name.
+     * @param The model name.
      */
-    public void setModelName(String p_strModelName) {
-        _m_strModelName = p_strModelName;
+    public void setModelName(String modelName) {
+        _modelName = modelName;
     }
 
     /**
-     * Set the model content
-     * @param String p_strModel - this is the model content to be set.
+     * Set the model content.
+     * @param The model content in xml format.
      */
-    public void setModel(String p_strModel) {
-        _m_strModel = p_strModel;
+    public void setModel(String modelContent) {
+        _modelContent = modelContent;
     }
 
     /**
      * Set the parents for the current model
-     * @param ArrayList<ArrayList<XMLDBModel>> p_listParents - list of parents for that need to be set as parents for the current model.
+     * @param List of parents for this model.
      */
-    public void setParents(List<List<XMLDBModel>> p_listParents) {
-        _m_listParents = p_listParents;
+    public void setParents(List<List<XMLDBModel>> listParents) {
+        _listParents = listParents;
     }
 
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
     /**
-     * variable to hold the check if the model is from the database or it is a new model
+     * True or false value to indicate whether the model is in the database or
+     * a new model.
      */
-    private boolean _m_bIsNew = false;
+    private boolean _isNew;
 
     /**
-     * variable to hold a list of all the parents for the current model
+     * List of all the parents for the current model.
      */
-    private List<List<XMLDBModel>> _m_listParents = null;
+    private List<List<XMLDBModel>> _listParents;
 
     /**
-     * variable to hold the content of the model in a string.
+     * The content of the model in a string.
      */
-    private String _m_strModel = null;
+    private String _modelContent;
 
     /**
-     * variable to hold the model name.
+     * Model name.
      */
-    private String _m_strModelName = null;
+    private String _modelName;
 
 }
