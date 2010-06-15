@@ -164,12 +164,22 @@ echo "Test Failures during code coverage." >> $mailmsg
 echo "" >> $mailmsg
 egrep 'Total Tests' $ptbuildlog |
     egrep -v '^Failed: 0' >> $mailmsg
+
+# Get the tests from ptdb
+cat $ptbuildlog |
+    awk ' $0 ~ /make.*: Entering/ {entering=$NF}
+          $0 ~ /^Tests run: [0-9]*,  Failures: [0-9]*/ { print $0, entering}' >> $mailmsg
+
 echo "------------------------------------------------" >> $mailmsg
 echo "Tests without Failures during code coverage." >> $mailmsg
 echo "" >> $mailmsg
 egrep 'Total Tests' $ptbuildlog |
     egrep '^Failed: 0' >> $mailmsg
 
+# Get the tests from ptdb
+cat $ptbuildlog |
+    awk ' $0 ~ /make.*: Entering/ {entering=$NF}
+          $0 ~ /^OK ([0-9]* tests)/ { print $0, entering}' >> $mailmsg
 
 
 if [ "`hostname`" = "gigasource.eecs.berkeley.edu" -o "`hostname`" = "source.EECS.Berkeley.EDU" -o "`hostname`" = "sisyphus.eecs.berkeley.edu" ]; then
