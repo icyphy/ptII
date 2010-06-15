@@ -55,6 +55,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.TypedCompositeActor;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
@@ -435,7 +436,23 @@ public class SDFDirector
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(super.generateVariableDeclaration());
+        CompositeActor container = (CompositeActor) _director.getContainer();
+        GenericCodeGenerator codeGenerator = getCodeGenerator();
+        {
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(container);
+            code.append(_generateVariableDeclaration(adapterObject));
+        }
+
+        Iterator<?> actors = container.deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(actor);
+            code.append(_generateVariableDeclaration(adapterObject));
+        }
+
 
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
         Schedule schedule = director.getScheduler().getSchedule();
@@ -468,8 +485,24 @@ public class SDFDirector
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(super.generateVariableInitialization());
 
+        CompositeActor container = (CompositeActor) _director.getContainer();
+        GenericCodeGenerator codeGenerator = getCodeGenerator();
+        {
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(container);
+            code.append(_generateVariableInitialization(adapterObject));
+        }
+
+        Iterator<?> actors = container.deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(actor);
+            code.append(_generateVariableInitialization(adapterObject));
+        }
+        
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
         Schedule schedule = director.getScheduler().getSchedule();
 
