@@ -17,122 +17,109 @@ import ptdb.kernel.database.DBConnection;
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (Yousef)
  * @Pt.AcceptedRating Red (Yousef)
- *
- *  This class represent the business layer of the save function.
- *
- *  It is responsible for:
- *
- *  1- Get the XMLDBModel which is the Ptolemy model wrapped in a special Data Transfer Object (dto).
- *
- *  2- Wrap the model object in another dto (SaveModelTask or CreateModelTask) to either create it in
- *  the database or save the modification made on it.
- *
- *  3- Get a database connection and run the execute method on the database connection object to
- *  perform the saving or creation of the model.
+ * 
+ * The business layer of the save to database function.
+ * 
+ * <p> 
+ * It is responsible for:
+ * 
+ * <br>- Get the XMLDBModel which is the Ptolemy model wrapped in a special Data
+ * Transfer Object (dto).
+ * 
+ * <br>- Wrap the model object in another dto (SaveModelTask or CreateModelTask)
+ * to either create it in the database or save the modification made on it.
+ * 
+ * <br>- Get a database connection and run the execute method on the database
+ * connection object to perform the saving or creation of the model. 
+ * </p>
  */
 public class SaveModelManager {
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                                     //////
+    ////                public methods                            ////
 
     /**
-     * Save the changes of an existing model in the database or create a new model in the database.
-     *
-     * @param p_xmlDBModel the model object that is required to be saved or created in the database.
-     * @exception DBConnectionException, DBExecutionException, IllegalArgumentException.
-     * @return boolean an indicator of weather the operation was successful or not.
+     * Save the changes of an existing model in the database or create a new
+     * model in the database.
+     * 
+     * @param xmlDBModel The model object that is required to be saved or
+     * created in the database.
+     * 
+     * @exception DBConnectionException Thrown if there is a database connection error.
+     * @exception DBExecutionException Thrown if the execution failed.
+     * @exception IllegalArgumentException Thrown if the parameters were not right.
+     * 
+     * @return boolean An indicator of weather the operation was successful or
+     * not.
      */
-    public boolean save(XMLDBModel p_xmlDBModel) throws DBConnectionException,
+    public boolean save(XMLDBModel xmlDBModel) throws DBConnectionException,
             DBExecutionException, IllegalArgumentException {
-        //variable to indicate if the operation was successful or not
+        
         boolean isSuccessful = false;
 
-        //database connection object
+        
         DBConnection dbConnection = null;
 
         try {
 
-            //if the p_xmlDBModel is null, throw an exception
-            if (p_xmlDBModel == null) {
+            if (xmlDBModel == null) {
                 throw new IllegalArgumentException(
                         "Failed while attempting to save."
                                 + " The XMLDBModel to be saved is null");
             }
 
-            //get sync connection with transaction enabled using the DBConnectorFactory.
+            
             dbConnection = DBConnectorFactory.getSyncConnection(true);
 
-            //if the dbConnection is null, throw an exception
             if (dbConnection == null) {
                 throw new DBConnectionException(
                         "Unable to get synchronous connection from the database");
             }
 
-            //if the model to be saved is a new model (i.e. not in the database),
-            //create the model in the database
-            if (p_xmlDBModel.getIsNew()) {
+            if (xmlDBModel.getIsNew()) {
 
-                //create a new CreateModelTask
                 CreateModelTask createModelTask = new CreateModelTask();
 
-                //set the model to be created in the database to the model passed to this method
-                createModelTask.setXMLDBModel(p_xmlDBModel);
+                createModelTask.setXMLDBModel(xmlDBModel);
 
-                //use the dbConn object to execute the model creation task
                 dbConnection.executeCreateModelTask(createModelTask);
 
-                //if no exception was thrown, then the operation was successful
                 isSuccessful = true;
 
-                //commit the transaction
                 dbConnection.commitConnection();
 
-            }
-            //if the model is already in the database, save the modification made on the model.
-            else {
+            } else {
 
-                //create a SaveModelTask
                 SaveModelTask saveModelTask = new SaveModelTask();
 
-                //set the XMLDBModel to be saved to the model passed to this method
-                saveModelTask.setXMLDBModel(p_xmlDBModel);
+                saveModelTask.setXMLDBModel(xmlDBModel);
 
-                //use the dbConn object to execute the save model task
                 dbConnection.executeSaveModelTask(saveModelTask);
 
-                //if no exception was thrown, then the operation was successful
                 isSuccessful = true;
 
-                //commit the transaction.
                 dbConnection.commitConnection();
 
             }
 
         } catch (DBExecutionException e) {
 
-            //if the connection object is not null, abort the connection
             if (dbConnection != null) {
 
-                //abort the connection to rollback any changes happened to the database
-                //and clean up
                 dbConnection.abortConnection();
             }
 
-            //throw an exception to notify the caller of what went wrong
             throw new DBExecutionException("Failed to save the model - "
                     + e.getMessage(), e);
         } finally {
 
-            //if the db connection is not null, close it.
             if (dbConnection != null) {
 
-                //close the connection
                 dbConnection.closeConnection();
 
             }
         }
-
-        //return the success flag to the caller
+        
         return isSuccessful;
 
     }
