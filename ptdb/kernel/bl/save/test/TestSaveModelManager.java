@@ -93,10 +93,10 @@ public class TestSaveModelManager {
         PowerMock.replayAll();
 
 
-        boolean bIsSuccess = saveManager.save(modelMock);
+        boolean isSuccess = saveManager.save(modelMock);
 
 
-        assertTrue(bIsSuccess);
+        assertTrue(isSuccess);
 
         PowerMock.verifyAll();
 
@@ -166,7 +166,7 @@ public class TestSaveModelManager {
         PowerMock.replayAll();
 
 
-        boolean bIsSuccess = false;
+        boolean isSuccess = false;
 
         try {
 
@@ -174,11 +174,11 @@ public class TestSaveModelManager {
 
         } catch (DBExecutionException e) {
 
-            bIsSuccess = true;
+            isSuccess = true;
         }
 
 
-        assertTrue(bIsSuccess);
+        assertTrue(isSuccess);
 
 
         PowerMock.verifyAll();
@@ -239,10 +239,10 @@ public class TestSaveModelManager {
         PowerMock.replayAll();
 
 
-        boolean bIsSuccess = saveManager.save(modelMock);
+        boolean isSuccess = saveManager.save(modelMock);
 
 
-        assertTrue(bIsSuccess);
+        assertTrue(isSuccess);
 
 
         PowerMock.verifyAll();
@@ -316,7 +316,7 @@ public class TestSaveModelManager {
         PowerMock.replayAll();
 
 
-        boolean bIsSuccess = false;
+        boolean isSuccess = false;
 
         try {
 
@@ -324,11 +324,11 @@ public class TestSaveModelManager {
 
         } catch (DBExecutionException e) {
 
-            bIsSuccess = true;
+            isSuccess = true;
         }
 
 
-        assertTrue(bIsSuccess);
+        assertTrue(isSuccess);
 
 
         PowerMock.verifyAll();
@@ -367,7 +367,7 @@ public class TestSaveModelManager {
         PowerMock.replayAll();
 
 
-        boolean bIsSuccess = false;
+        boolean isSuccess = false;
 
         try {
 
@@ -375,11 +375,11 @@ public class TestSaveModelManager {
 
         } catch (DBConnectionException e) {
 
-            bIsSuccess = true;
+            isSuccess = true;
         }
 
 
-        assertTrue(bIsSuccess);
+        assertTrue(isSuccess);
 
 
         PowerMock.verifyAll();
@@ -408,18 +408,18 @@ public class TestSaveModelManager {
         PowerMock.replayAll();
 
 
-        boolean bIsSuccess = false;
+        boolean isSuccess = false;
 
         try {
 
             saveManager.save(null);
         } catch (IllegalArgumentException e) {
 
-            bIsSuccess = true;
+            isSuccess = true;
         }
 
 
-        assertTrue(bIsSuccess);
+        assertTrue(isSuccess);
 
         PowerMock.verifyAll();
 
