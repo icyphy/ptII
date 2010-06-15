@@ -27,11 +27,12 @@ public class XMLDBModel {
 
     
     /**
-     * Default constructor and should be removed once the pointing to it is fixed
-     * to use the constructor below.
+     * Default nullary constructor.
+     * <p>Should be removed once the code using it is fixed to use the 
+     * constructor with the model name parameter. </p>
      */
     public XMLDBModel() {
-        //TODO: Remove this method as soon as the code pointing to it is modified.
+        //FIXME: Remove this method as soon as the code pointing to it is modified.
     }
     
     
@@ -136,19 +137,13 @@ public class XMLDBModel {
      */
     private boolean _isNew;
 
-    /**
-     * List of all the parents for the current model.
-     */
+    /** List of all the parents for the current model. */
     private List<List<XMLDBModel>> _listParents;
 
-    /**
-     * The content of the model in a string.
-     */
+    /** The content of the model in a string. */
     private String _modelContent;
 
-    /**
-     * Model name.
-     */
+    /** Model name. */
     private String _modelName;
 
 }

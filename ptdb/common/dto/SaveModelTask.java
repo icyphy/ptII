@@ -18,11 +18,12 @@ public class SaveModelTask extends Task {
 
     
     /**
-     * Default constructor and should be removed once the pointing to it is fixed
-     * to use the constructor below.
+     * Default nullary constructor.
+     * <p>Should be removed once the code using it
+     * is fixed to use the constructor with the XMLDBModel parameter.</p>
      */
     public SaveModelTask() {
-        //TODO: Remove this method as soon as the code pointing to it is modified.
+        //FIXME: Remove this method as soon as the code pointing to it is modified.
     }
     
     /**
@@ -59,9 +60,7 @@ public class SaveModelTask extends Task {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /**
-     * The model in XMLDBModel object format.
-     */
+    /** The model in XMLDBModel object format. */
     private XMLDBModel _xmlDBModel;
 
 }

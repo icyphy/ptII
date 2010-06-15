@@ -18,11 +18,12 @@ package ptdb.common.dto;
 public class GetModelsTask extends Task {
     
     /**
-     * Default constructor and should be removed once the pointing to it is fixed
-     * to use the constructor below.
+     * Default nullary constructor.
+     * <p>Should be removed once the code using it
+     * is fixed to use the constructor with the model name parameter.</p>
      */
     public GetModelsTask() {
-        //TODO: Remove this method as soon as the code pointing to it is modified.
+        //FIXME: Remove this method as soon as the code pointing to it is modified.
     }
     
     /**
@@ -62,9 +63,7 @@ public class GetModelsTask extends Task {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /**
-     * The model name.
-     */
+    /** The model name. */
     private String _modelName;
 
 }
