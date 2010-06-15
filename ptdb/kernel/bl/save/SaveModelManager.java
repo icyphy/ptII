@@ -42,15 +42,16 @@ public class SaveModelManager {
      * Save the changes of an existing model in the database or create a new
      * model in the database.
      * 
-     * @param xmlDBModel The model object that is required to be saved or
+     * @param The model object that is required to be saved or
      * created in the database.
+     * 
+     * @return A boolean indicator of weather the operation was successful or
+     * not.
      * 
      * @exception DBConnectionException Thrown if there is a database connection error.
      * @exception DBExecutionException Thrown if the execution failed.
      * @exception IllegalArgumentException Thrown if the parameters were not right.
      * 
-     * @return boolean An indicator of weather the operation was successful or
-     * not.
      */
     public boolean save(XMLDBModel xmlDBModel) throws DBConnectionException,
             DBExecutionException, IllegalArgumentException {
@@ -78,9 +79,7 @@ public class SaveModelManager {
 
             if (xmlDBModel.getIsNew()) {
 
-                CreateModelTask createModelTask = new CreateModelTask();
-
-                createModelTask.setXMLDBModel(xmlDBModel);
+                CreateModelTask createModelTask = new CreateModelTask(xmlDBModel);
 
                 dbConnection.executeCreateModelTask(createModelTask);
 
@@ -90,9 +89,7 @@ public class SaveModelManager {
 
             } else {
 
-                SaveModelTask saveModelTask = new SaveModelTask();
-
-                saveModelTask.setXMLDBModel(xmlDBModel);
+                SaveModelTask saveModelTask = new SaveModelTask(xmlDBModel);
 
                 dbConnection.executeSaveModelTask(saveModelTask);
 
