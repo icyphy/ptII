@@ -73,6 +73,7 @@ JSIMPLE_TESTS = \
 	Exit.tcl \
 	Expression.tcl \
 	Gaussian.tcl \
+	IIR.xml \
 	Interpolator.tcl \
 	MathFunction.tcl \
 	Maximum.tcl \
