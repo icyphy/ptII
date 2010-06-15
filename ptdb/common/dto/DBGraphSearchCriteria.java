@@ -6,6 +6,7 @@ package ptdb.common.dto;
 import java.util.ArrayList;
 
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 
@@ -41,6 +42,15 @@ public class DBGraphSearchCriteria {
     }
 
     /**
+     * Get the composite entities form the graph search pattern. 
+     * 
+     * @return The composite entities from the graph search pattern. 
+     */
+    public ArrayList<CompositeEntity> getCompositeEntities() {
+        return _compositeEntitiesList;
+    }
+
+    /**
      * Get the ports from the Graph search pattern.
      *
      * @return The ports from the graph search pattern.
@@ -70,6 +80,17 @@ public class DBGraphSearchCriteria {
     }
 
     /**
+     * Set the composite entities from the graph search pattern. 
+     * 
+     * @param compositeEntitiesList The composite entities from the graph search
+     *   pattern.
+     */
+    public void setCompositeEntities(
+            ArrayList<CompositeEntity> compositeEntitiesList) {
+        _compositeEntitiesList = compositeEntitiesList;
+    }
+
+    /**
      * Set the ports from the Graph search pattern.
      *
      * @param portsList The ports from the graph search pattern.
@@ -90,9 +111,12 @@ public class DBGraphSearchCriteria {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private ArrayList<ComponentEntity> _componentEntitiesList;
+
+    private ArrayList<CompositeEntity> _compositeEntitiesList;
+
     private ArrayList<Port> _portsList;
 
     private ArrayList<Relation> _relationsList;
 
-    private ArrayList<ComponentEntity> _componentEntitiesList;
 }
