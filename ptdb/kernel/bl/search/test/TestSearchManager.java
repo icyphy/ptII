@@ -62,10 +62,8 @@ public class TestSearchManager {
     ////                         public methods                    ////
 
     /**
-     * Test the search() method.
-     *
-     * <p>Test the case when all the search criteria are set, and results
-     * returned smoothly.</p>
+     * Test the search() method in the case when all the search criteria are 
+     * set, and results returned smoothly.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
      *  cases.
@@ -95,7 +93,7 @@ public class TestSearchManager {
 
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        // in attribute searcher
+        // Testing in attribute searcher.
         DBConnection dbConnectionAttributeMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -113,8 +111,7 @@ public class TestSearchManager {
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
         for (int i = 0; i < 10; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel();
-            xmldbModel.setModelName("model" + i);
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
             resultsFromAttributes.add(xmldbModel);
         }
 
@@ -127,9 +124,9 @@ public class TestSearchManager {
 
         dbConnectionAttributeMock.closeConnection();
 
-        // command searcher
+        // Testing in command searcher. 
 
-        //in XQuery searcher
+        // Testing in XQuery searcher. 
         DBConnection dbConnectionXQueryMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -145,8 +142,7 @@ public class TestSearchManager {
         ArrayList<XMLDBModel> resultsFromXQuery = new ArrayList<XMLDBModel>();
 
         for (int i = 5; i < 15; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel();
-            xmldbModel.setModelName("model" + i);
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
             resultsFromXQuery.add(xmldbModel);
         }
 
@@ -159,7 +155,7 @@ public class TestSearchManager {
 
         dbConnectionXQueryMock.closeConnection();
 
-        // in hierarchy fetcher
+        // Testing in hierarchy fetcher. 
         DBConnection dbConnectionHierarcyMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -181,8 +177,7 @@ public class TestSearchManager {
         ArrayList<XMLDBModel> resultsFromHierarchy = new ArrayList<XMLDBModel>();
 
         for (int i = 15; i < 25; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel();
-            xmldbModel.setModelName("model" + i);
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
             resultsFromHierarchy.add(xmldbModel);
         }
 
@@ -194,7 +189,7 @@ public class TestSearchManager {
         dbConnectionHierarcyMock.commitConnection();
         dbConnectionHierarcyMock.closeConnection();
 
-        // start testing
+        // Start the testing.
         PowerMock.replayAll();
 
         searchManager.search(searchCriteria, searchResultBuffer);
@@ -206,10 +201,8 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method.
-     *
-     * <p>Test the case when DBConnectionException is thrown during the
-     * searching.</p>
+     * Test the search() method in the case when DBConnectionException 
+     * is thrown during the searching.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
      *  cases.
@@ -239,14 +232,14 @@ public class TestSearchManager {
 
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        // in attribute searcher
+        // Testing in attribute searcher.
         mockStatic(DBConnectorFactory.class);
 
-        // DBConnectionException is thrown
+        // DBConnectionException is thrown. 
         expect(DBConnectorFactory.getSyncConnection(false)).andThrow(
                 new DBConnectionException("testing"));
 
-        // start testing
+        // Start the testing.
         PowerMock.replayAll();
 
         try {
@@ -262,10 +255,8 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method.
-     *
-     * <p>Test the case when DBExecutionException is thrown during the
-     * searching.</p>
+     * Test the search() method in the case when DBExecutionException 
+     * is thrown during the searching.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
      *  cases.
@@ -295,7 +286,7 @@ public class TestSearchManager {
 
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        // in attribute searcher
+        // Testing in attribute searcher.
         DBConnection dbConnectionAttributeMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -310,7 +301,7 @@ public class TestSearchManager {
         attributeSearchTaskMock.setAttributesList(searchCriteria
                 .getAttributes());
 
-        // DBExecutionException is thrown
+        // DBExecutionException is thrown.
         expect(
                 dbConnectionAttributeMock
                         .executeAttributeSearchTask(attributeSearchTaskMock))
@@ -318,7 +309,7 @@ public class TestSearchManager {
 
         dbConnectionAttributeMock.closeConnection();
 
-        // start testing
+        // Start the testing.
         PowerMock.replayAll();
 
         try {
@@ -334,9 +325,8 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method.
-     *
-     * <p>Test the case when there is no attribute search criteria.</p>
+     * Test the search() method in the case when there is no attribute 
+     * search criteria.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
      *  cases.
@@ -361,11 +351,7 @@ public class TestSearchManager {
 
         mockStatic(DBConnectorFactory.class);
 
-        // in attribute searcher
-
-        // command searcher
-
-        //in XQuery searcher
+        //Testing in XQuery searcher. 
         DBConnection dbConnectionXQueryMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -381,8 +367,8 @@ public class TestSearchManager {
         ArrayList<XMLDBModel> resultsFromXQuery = new ArrayList<XMLDBModel>();
 
         for (int i = 5; i < 15; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel();
-            xmldbModel.setModelName("model" + i);
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
+
             resultsFromXQuery.add(xmldbModel);
         }
 
@@ -395,7 +381,7 @@ public class TestSearchManager {
 
         dbConnectionXQueryMock.closeConnection();
 
-        // in hierarchy fetcher
+        // Testing in hierarchy fetcher. 
         DBConnection dbConnectionHierarcyMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -410,8 +396,7 @@ public class TestSearchManager {
         ArrayList<XMLDBModel> resultsFromHierarchy = new ArrayList<XMLDBModel>();
 
         for (int i = 15; i < 25; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel();
-            xmldbModel.setModelName("model" + i);
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
             resultsFromHierarchy.add(xmldbModel);
         }
 
@@ -423,7 +408,7 @@ public class TestSearchManager {
         dbConnectionHierarcyMock.commitConnection();
         dbConnectionHierarcyMock.closeConnection();
 
-        // start testing
+        // Start testing. 
         PowerMock.replayAll();
 
         searchManager.search(searchCriteria, searchResultBuffer);
@@ -435,10 +420,8 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method.
-     *
-     * <p>Test the case when there is no result returned in the attribute
-     * searching.</p>
+     * Test the search() method in the case when there is no result returned
+     *  in the attribute searching.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
      *  cases.
@@ -468,7 +451,7 @@ public class TestSearchManager {
 
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        // in attribute searcher
+        // Testing in attribute searcher. 
         DBConnection dbConnectionAttributeMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -485,7 +468,7 @@ public class TestSearchManager {
 
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
-        // no result returned
+        // No result returned. 
         expect(
                 dbConnectionAttributeMock
                         .executeAttributeSearchTask(attributeSearchTaskMock))
@@ -495,9 +478,9 @@ public class TestSearchManager {
 
         dbConnectionAttributeMock.closeConnection();
 
-        // command searcher, no match called
+        // In command searcher, no match is called. 
 
-        // start testing
+        // Start the testing. 
         PowerMock.replayAll();
 
         searchManager.search(searchCriteria, searchResultBuffer);
@@ -511,9 +494,8 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method.
-     *
-     * <p>Test the case there is no criteria for graph search.</p>
+     * Test the search() method in the case there is no criteria for
+     *  graph search.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
      *  cases.
@@ -534,7 +516,7 @@ public class TestSearchManager {
 
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        // in attribute searcher
+        // Testing in attribute searcher. 
         DBConnection dbConnectionAttributeMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -552,8 +534,7 @@ public class TestSearchManager {
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
         for (int i = 0; i < 10; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel();
-            xmldbModel.setModelName("model" + i);
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
             resultsFromAttributes.add(xmldbModel);
         }
 
@@ -566,11 +547,7 @@ public class TestSearchManager {
 
         dbConnectionAttributeMock.closeConnection();
 
-        // command searcher
-
-        //in XQuery searcher
-
-        // in hierarchy fetcher
+        // Testing in hierarchy fetcher.
         DBConnection dbConnectionHierarcyMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -585,8 +562,7 @@ public class TestSearchManager {
         ArrayList<XMLDBModel> resultsFromHierarchy = new ArrayList<XMLDBModel>();
 
         for (int i = 15; i < 25; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel();
-            xmldbModel.setModelName("model" + i);
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
             resultsFromHierarchy.add(xmldbModel);
         }
 
@@ -598,7 +574,7 @@ public class TestSearchManager {
         dbConnectionHierarcyMock.commitConnection();
         dbConnectionHierarcyMock.closeConnection();
 
-        // start testing
+        // Start testing. 
         PowerMock.replayAll();
 
         searchManager.search(searchCriteria, searchResultBuffer);
@@ -610,10 +586,8 @@ public class TestSearchManager {
     }
 
     /**
-     * Test the search() method.
-     *
-     * <p>Test the case there is no result found in the XQuery graph
-     * searcher.</p>
+     * Test the search() method in the case there is no result found in 
+     * the XQuery graph searcher.
      *
      * @exception Exception Thrown by PowerMock during the execution of test
      *  cases.
@@ -643,7 +617,7 @@ public class TestSearchManager {
 
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        // in attribute searcher
+        // Testing in attribute searcher.
         DBConnection dbConnectionAttributeMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -661,8 +635,7 @@ public class TestSearchManager {
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
         for (int i = 0; i < 10; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel();
-            xmldbModel.setModelName("model" + i);
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
             resultsFromAttributes.add(xmldbModel);
         }
 
@@ -675,9 +648,7 @@ public class TestSearchManager {
 
         dbConnectionAttributeMock.closeConnection();
 
-        // command searcher
-
-        //in XQuery searcher
+        // Testing in XQuery searcher.
         DBConnection dbConnectionXQueryMock = PowerMock
                 .createMock(DBConnection.class);
 
@@ -701,9 +672,9 @@ public class TestSearchManager {
 
         dbConnectionXQueryMock.closeConnection();
 
-        // in hierarchy fetcher, found no match
+        // Testing in hierarchy fetcher, found no match returned. 
 
-        // start testing
+        // Start testing.
         PowerMock.replayAll();
 
         searchManager.search(searchCriteria, searchResultBuffer);
