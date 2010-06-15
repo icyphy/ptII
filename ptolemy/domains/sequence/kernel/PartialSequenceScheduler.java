@@ -70,7 +70,7 @@ public class PartialSequenceScheduler extends SequenceScheduler {
         _estimator = new DijkstraSequenceEstimator(container);
     }
 
-    /* Estimate a sequenced schedule. Currently only supports basic Dijkstra 
+    /** Estimate a sequenced schedule. Currently only supports basic Dijkstra 
      * algorithm for getting the maximal distances. Thus, it cannot deal with
      * cyclic graphs.
      * 

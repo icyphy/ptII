@@ -49,8 +49,7 @@ import ptolemy.actor.sched.Schedule;
 ///////////////////////////////////////////////////////////////////
 //// SequentialScheduleEditorPane
 
-/**
- * A pane that displays and edits a sequential schedule.
+/** A pane that displays and edits a sequential schedule.
  * Changes are not committed. Order is passed to the owning 
  * instance via getOrderedActors(). 
  *
@@ -63,6 +62,11 @@ import ptolemy.actor.sched.Schedule;
 public class SequentialScheduleEditorPane extends JPanel implements
         ListSelectionListener {
 
+    /** Construct a SequentialScheduleEditorPane displaying the given actors
+     * in the order given by the vector containing the actors. 
+     *
+     * @param actors The actors to be displayed in the pane.
+     */
     public SequentialScheduleEditorPane(Vector<Actor> actors) {
         super(new BorderLayout());
         _init();
@@ -73,6 +77,11 @@ public class SequentialScheduleEditorPane extends JPanel implements
         }
     }
 
+    /** Construct a SequentialScheduleEditorPane displaying the actors 
+     * contained in the given schedule and in the order given by the schedule. 
+     *
+     * @param schedule The schedule for the actors to be displayed in the pane.
+     */
     public SequentialScheduleEditorPane(Schedule schedule) {
         super(new BorderLayout());
         _init();

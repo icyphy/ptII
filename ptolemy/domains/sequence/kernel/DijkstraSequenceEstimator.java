@@ -69,7 +69,7 @@ public class DijkstraSequenceEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /* Estimate a sequenced schedule. This uses a basic Dijkstra algorithm
+    /** Estimate a sequenced schedule. This uses a basic Dijkstra algorithm
      * for getting the maximal distances.
      * 
      * FIXME: If the graph is cyclic, this method runs forever! Currently this
@@ -237,7 +237,7 @@ public class DijkstraSequenceEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         private classes                   ////
 
-    private class SeqInfo {
+    private static class SeqInfo {
 
         public SeqInfo(int d, boolean f, boolean c) {
             distance = d;

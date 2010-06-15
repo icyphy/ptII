@@ -105,7 +105,10 @@ public class VisualSequenceDirector extends SequenceDirector {
         icon.fields.setExpression("{\"actor\", \"sequenceNumber\"}");
     }
 
+    /** Specifies the sequential schedule as an array of records.*/
     public Parameter scheduleText;
+    
+    /** Displays the sequential schedule in the icon of this director. */
     public TableIcon icon;
 
     ///////////////////////////////////////////////////////////////////
@@ -181,12 +184,16 @@ public class VisualSequenceDirector extends SequenceDirector {
         private void _updateSchedule(SequentialScheduleEditorPane pane) {
             Iterator oActors = pane.getOrderedActors().iterator();
             int i = 1;
-            String newScheduleText = new String("{");
+            StringBuffer newScheduleText = new StringBuffer();
+            newScheduleText.append("{");
+            //String newScheduleText = new String("{");
             // FIXME: Currently all previous values of sequence numbers are 
             // ignored. Probably this is not desired.
+            // FIXME: Also SequenceNumbers of non-opaque actors are not taken into
+            // account during renumbering, so duplicates may occur.
             while (oActors.hasNext()) {
                 if (i > 1) {
-                    newScheduleText += ",";
+                    newScheduleText.append(",");
                 }
                 Actor oActor = (Actor) oActors.next();
                 List<SequenceAttribute> seqAttributes = ((Entity) oActor)
@@ -204,12 +211,15 @@ public class VisualSequenceDirector extends SequenceDirector {
                         e.printStackTrace();
                     }
                 }
-                newScheduleText += "{actor=\"" + oActor.getDisplayName()
-                        + "\", sequenceNumber=\"" + i + "\"}";
+                newScheduleText.append("{actor=\"");
+                newScheduleText.append(oActor.getDisplayName());
+                newScheduleText.append("\", sequenceNumber=\"");
+                newScheduleText.append(i);
+                newScheduleText.append("\"}");
                 i++;
             }
-            newScheduleText += "}";
-            scheduleText.setExpression(newScheduleText);
+            newScheduleText.append("}");
+            scheduleText.setExpression(newScheduleText.toString());
         }
 
     }
