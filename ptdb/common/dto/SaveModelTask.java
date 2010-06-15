@@ -1,36 +1,67 @@
 package ptdb.common.dto;
 
 /**
- * @author Yousef
+ *
+ * A task request to save/update the model in the database.
+ * 
+ * <p>It is used as a data transfer object that hold the model as XMLDBModel 
+ * object with its getter and setter methods.</p>
+ * 
+ * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (Yousef)
- * @Pt.AcceptedRating Red (Yousef)
+ * @Pt.ProposedRating Red (yalsaeed)
+ * @Pt.AcceptedRating Red (yalsaeed)
  *
- * This class represent the save model task that represent a request to save/update the model in the database
- * It is used as a data transfer object and hold the model as XMLDBModel object with its getter and setter methods
  */
 public class SaveModelTask extends Task {
 
+    
     /**
-     * return the model that is to be saved in the database
+     * Default constructor and should be removed once the pointing to it is fixed
+     * to use the constructor below.
+     */
+    public SaveModelTask() {
+        //TODO: Remove this method as soon as the code pointing to it is modified.
+    }
+    
+    /**
+     * Construct an instance of this class and set the model to be saved in the 
+     * database.
+     * @param The model to be saved in the database.
+     */
+    public SaveModelTask(XMLDBModel xmlDBModel) {
+        _xmlDBModel = xmlDBModel;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    
+    /**
+     * Return the model to be saved in the database.
+     * @return The model to be saved in the database.
      */
     public XMLDBModel getXMLDBModel() {
-        return _m_Model;
+        return _xmlDBModel;
 
     }
 
     /**
-     * set the model to be saved
-     * @param p_XMLDBModel the model to be saved to the database.
+     * Set the model to be saved in the database.
+     * @param The model to be saved to the database.
      */
-    public void setXMLDBModel(XMLDBModel p_XMLDBModel) {
-        _m_Model = p_XMLDBModel;
+    public void setXMLDBModel(XMLDBModel xmlDBModel) {
+        _xmlDBModel = xmlDBModel;
     }
 
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
     /**
-     * variable to hold the model in XMLDBModel object
+     * The model in XMLDBModel object format.
      */
-    private XMLDBModel _m_Model = null;
+    private XMLDBModel _xmlDBModel;
 
 }
