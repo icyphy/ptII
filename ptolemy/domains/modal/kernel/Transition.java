@@ -674,7 +674,12 @@ public class Transition extends ComponentRelation {
      */
     public Parameter preemptive = null;
 
-    /** Parameter specifying whether this transition should be treated as an error transition
+    /** Parameter specifying whether this transition should be treated
+     *  as an error transition.  The default value is a boolean with
+     *  the value false, which indicates that this transition is not
+     *  an error transition.  If the value is true, that this transition
+     *  is enabled if and only if the refinement of the source state of
+     *  the transition throws a model error while executing.
      */
     public Parameter errorTransition = null;
 
