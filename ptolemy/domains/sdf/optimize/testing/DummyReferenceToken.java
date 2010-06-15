@@ -52,17 +52,17 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 */
 public class DummyReferenceToken extends Token {
 
-    private Object _ref;
     
     /**
-     * Create the token
+     * Create an instance of a reference token.
+     * @param r the object the token shall refer to
      */
     public DummyReferenceToken(Object r) {
         _ref = r;
     }
     
     /**
-     * Get the reference
+     * Gets the reference.
      * @return referenced object
      */
     public Object getReference(){
@@ -70,11 +70,18 @@ public class DummyReferenceToken extends Token {
     }
 
     /**
-     * convert to string
+     * Provide a string representation of the token.
+     * @return string representation of the token
      */
-    @Override
     public String toString() {
         return _ref.toString();
     }
-    
+
+////////////////////////////////////////////////
+////           private fields               ////
+
+    /**
+     * Holds the reference to some object.
+     */
+    private Object _ref;
 }

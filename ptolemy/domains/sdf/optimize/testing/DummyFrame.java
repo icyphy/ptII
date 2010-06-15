@@ -48,13 +48,24 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more informat
 @Pt.AcceptedRating Red ()
 */
 public class DummyFrame implements Cloneable {
+
+    /**
+     * Represents the value encapsulated by the shared data frame.
+     */
     public int value;
 
-    @Override
+    /**
+     * Provides a string representation of the object.
+     * @return string representation of the object
+     */
     public String toString() {
         return "Frame(" + Integer.toString(value) + ")";
     }
     
+    /**
+     * Clone the DummyFrame.
+     * @return the cloned frame
+     */
     public DummyFrame clone() {
         DummyFrame f;
         // TODO: below seems a silly solution, but I don't want expose callers

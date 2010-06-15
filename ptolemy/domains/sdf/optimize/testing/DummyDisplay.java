@@ -56,26 +56,61 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 
 public class DummyDisplay extends Sink implements BufferingProfile {
 
+    /**
+     * Create an instance of a testing actor to mimic a display sink actor.
+     * 
+     * @param container The container.
+     * @param name The name of this actor.
+     * @exception IllegalActionException If the entity cannot be contained
+     *  by the proposed container.
+     * @exception NameDuplicationException If the container already has an
+     *  actor with this name.
+     */
     public DummyDisplay(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
+    /**
+     *  Iterates the dummy display actor. 
+     *  @param count The number of iterations to perform.
+     *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     *  @exception IllegalActionException If iterating is not
+     *   permitted, or if prefire(), fire(), or postfire() throw it.
+     */
     public int iterate(int iterationCount, boolean fireExclusive) throws IllegalActionException {
         return super.iterate(iterationCount);
     }
 
+    /**
+     * Provides the buffering profile, number of buffers required for a shared firing.
+     * @return number of buffers for shared firing
+     */
     public int sharedBuffers() {
         return 0;
     }
 
+    /**
+     * Provides the buffering profile, number of buffers required for an exclusive firing.
+     * @return number of buffers for exclusive firing
+     */
     public int exclusiveBuffers() {
         return 0;
     }
 
+    /**
+     * Provides the buffering profile, execution time estimate required for a shared firing.
+     * @return execution time for shared firing
+     */
     public int sharedExecutionTime() {
         return 1;
     }
+
+    /**
+     * Provides the buffering profile, execution time estimate required for an exclusive
+     * firing.
+     * @return execution time for exclusive firing
+     */
     public int exclusiveExecutionTime() {
         return 1;
     }

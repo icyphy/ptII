@@ -61,10 +61,12 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
      * Construct an instance of a SharedBufferTransformer. Should not be used
      * because this in an abstract class.
      * TODO Is there a way to avoid defining a constructor for this abstract class?
-     * @param container container
-     * @param name name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public SharedBufferTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -86,9 +88,9 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
      */
     public void fire() throws IllegalActionException {
         if(_nextIterationExclusive){
-            fireExclusive();
+            _fireExclusive();
         } else {
-            fireCopying();
+            _fireCopying();
         }
     }
 
@@ -125,14 +127,14 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
      * Exclusive firing method to be implemented in subclasses.
      * @throws IllegalActionException
      */
-    protected abstract void fireExclusive() throws IllegalActionException;
+    protected abstract void _fireExclusive() throws IllegalActionException;
 
     /**
      * Fire the actor in shared firing mode.
      * Shared firing method to be implemented in subclasses.
      * @throws IllegalActionException
      */
-    protected abstract void fireCopying() throws IllegalActionException;
+    protected abstract void _fireCopying() throws IllegalActionException;
  
     /** 
      * Invoke a specified number of iterations of the actor in either shared or 

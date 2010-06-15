@@ -60,12 +60,33 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector},
 
 public class DummyTransformer extends SharedBufferTransformer {
 
+    /**
+     * Constructs an instance of a dummy transformer actor for testing purposes.
+     * It mimics a typical image processing operation on a shared frame buffer,
+     * where it can perform the operation in-place, modifying the frame buffer,
+     * or operate in a copying mode where it produces a new frame buffer, leaving
+     * the original intact for other operations. 
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public DummyTransformer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
+    
+/////////////////////////////////////////////////////////////////////
+////                    protected fields                         ////    
 
-    protected void fireCopying() throws IllegalActionException {
+    /**
+     * Fire the actor in shared firing mode.
+     * It makes a copy of the frame buffer referred to by the reference token.
+     * @throws IllegalActionException
+     */
+    protected void _fireCopying() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token t = input.get(0);
             if(!(t instanceof DummyReferenceToken)){
@@ -80,7 +101,12 @@ public class DummyTransformer extends SharedBufferTransformer {
         }
     }
 
-    protected void fireExclusive() throws IllegalActionException {
+    /**
+     * Fire the actor in exclusive firing mode.
+     * It directly modifies the frame buffer referred to by the reference token.
+     * @throws IllegalActionException
+     */
+    protected void _fireExclusive() throws IllegalActionException {
         if (input.hasToken(0)) {
             Token t = input.get(0);
             DummyReferenceToken rt = (DummyReferenceToken)t;
