@@ -44,20 +44,26 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// MCApplication
 
-/** An application for testing the component domain.
- //FIXME:
- @author  Yang Zhao
-@version $Id$
-@since Ptolemy II 8.0
- @version $Id$
+/**
+ * An application for testing the component domain.
+ * <p>To run this, do
+ * cd $PTII/ptolemy/component/test
+ * java -classpath $PTII ptolemy.component.test.MCApplication
+ *
+ * @author  Yang Zhao
+ * @version $Id$
+ * @since Ptolemy II 8.0
+ * @version $Id$
  */
 public class MCApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Build the model.
+     *  <p>Read the model "NCApplication.xml" from the current directory.
+     *  @param args Ignored
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         CompositeEntity _toplevel;
 
         try {
@@ -69,11 +75,11 @@ public class MCApplication {
             Leds leds = new Leds(_toplevel, "Leds");
             _toplevel.connect(counter.output, leds.display, "R1");
 
-            //generate moml file to be tested in vergil
+            // Generate moml file to be tested in vergil.
             StringWriter buffer = new StringWriter();
             _toplevel.exportMoML(buffer);
 
-            String fileName = "c:/NCApplication.xml";
+            String fileName = "NCApplication.xml";
             FileOutputStream file = null;
 
             try {
@@ -94,7 +100,7 @@ public class MCApplication {
                 }
             }
 
-            //execute the model.
+            // Execute the model.
             counter.initialize();
 
             IntToken[] t = new IntToken[1];
@@ -105,15 +111,9 @@ public class MCApplication {
             for (int i = 0; i < 10; i++) {
                 counter.increment.call(arg);
             }
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException("NameDuplication");
-        } catch (IOException ex) {
-            throw new InternalErrorException("IOException");
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException("IllegalAction:" + ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 }

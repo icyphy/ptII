@@ -79,5 +79,8 @@ all: jclass
 
 install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
 
+tests::
+	"$(JAVA)" -classpath "$(CLASSPATH)" ptolemy.component.test.MCApplication
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
