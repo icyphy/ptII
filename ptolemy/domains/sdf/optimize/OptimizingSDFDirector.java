@@ -92,7 +92,7 @@ public class OptimizingSDFDirector extends SDFDirector {
     /** 
      * Parameter defining the optimization criterion.
      */
-    public Parameter OptimizationCriterion;
+    public Parameter optimizationCriterion;
     
     /** 
      * Construct on OptimizingSDFDirector in the given container with the given name.
@@ -120,10 +120,10 @@ public class OptimizingSDFDirector extends SDFDirector {
         // touch the SDFDirector code. 
         
         // initialize the parameter
-        OptimizationCriterion = new Parameter(this, "OptimizationCriterion");
-        OptimizationCriterion.setTypeEquals(BaseType.STRING);
-        OptimizationCriterion.addChoice("\"Buffers\"");
-        OptimizationCriterion.addChoice("\"Execution Time\"");
+        optimizationCriterion = new Parameter(this, "OptimizationCriterion");
+        optimizationCriterion.setTypeEquals(BaseType.STRING);
+        optimizationCriterion.addChoice("\"Buffers\"");
+        optimizationCriterion.addChoice("\"Execution Time\"");
 
         // initialize
         _init();
@@ -207,7 +207,7 @@ public class OptimizingSDFDirector extends SDFDirector {
             throws IllegalActionException {
         // NOTE: Invalidate the schedules only if the values of these
         // parameters have changed.
-        if (attribute == OptimizationCriterion) {
+        if (attribute == optimizationCriterion) {
             _setOptimizationCriterionValue();
         }
         super.attributeChanged(attribute);
@@ -228,7 +228,7 @@ public class OptimizingSDFDirector extends SDFDirector {
         OptimizingSDFScheduler scheduler = new OptimizingSDFScheduler(this, uniqueName("OptimizingSDFScheduler"), _optimizationCriterionValue);
 
         // set the default value of the parameter 
-        OptimizationCriterion.setExpression("\"Buffers\"");
+        optimizationCriterion.setExpression("\"Buffers\"");
 
         // if necessary, copy the string parameter to the enumerated value
         _setOptimizationCriterionValue();
@@ -248,9 +248,9 @@ public class OptimizingSDFDirector extends SDFDirector {
      */
     private void _setOptimizationCriterionValue() throws IllegalActionException {
         OptimizingSDFScheduler os = (OptimizingSDFScheduler) getScheduler();
-        if(OptimizationCriterion.getValueAsString().equals("\"Buffers\"")){
+        if(optimizationCriterion.getValueAsString().equals("\"Buffers\"")){
             _optimizationCriterionValue = OptimizationCriteria.BUFFERS;
-        } else if (OptimizationCriterion.getValueAsString().equals("\"Execution Time\"")){
+        } else if (optimizationCriterion.getValueAsString().equals("\"Execution Time\"")){
             _optimizationCriterionValue = OptimizationCriteria.EXECUTIONTIME;
         } else {
             throw new IllegalActionException("Unknown optimization criterion");
