@@ -1534,17 +1534,20 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (exportPorts) {
 
                 // In addition, if the publisher is set to perform an
-                // "export" then we should create a new port in this composite
-                // and register it with our container, and also link on the inside
-                // to the publisher relation corresponding to the port passed in.
-                // FIXME: For now, exporting everything. Check the container of
-                // port argument, which is presumably a Publisher actor, for
-                // the value of an "export" parameter. That parameter will have
-                // an integer value. If the value is GLOBAL (-1). If it is 0
-                // (the default), then don't do the following.
-                // If it is 1, then export only one level up (transparent level?
-                // opaque level?). If it is 2, export two levels up, etc.
-                // FIXME: For now, assume name collisions will not occur.
+                // "export" then we should create a new port in this
+                // composite and register it with our container, and
+                // also link on the inside to the publisher relation
+                // corresponding to the port passed in.  FIXME: For
+                // now, exporting everything. Check the container of
+                // port argument, which is presumably a Publisher
+                // actor, for the value of an "export" parameter. That
+                // parameter will have an integer value. If the value
+                // is GLOBAL_EXPORT_LEVEL (-1). If it is 0 (the
+                // default), then don't do the following.  If it is 1,
+                // then export only one level up (transparent level?
+                // opaque level?). If it is 2, export two levels up,
+                // etc.  FIXME: For now, assume name collisions will
+                // not occur.
                 String portName = "_publisher_"
                         + StringUtilities.sanitizeName(name);
                 IOPort publisherPort = (IOPort) getPort(portName);
@@ -1613,17 +1616,19 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (numberLevelsLeft != 0) {
 
                 // In addition, if the publisher is set to perform an
-                // "export" then we should create a new port in this composite
-                // and register it with our container, and also link on the inside
-                // to the publisher relation corresponding to the port passed in.
-                // Check the container of
-                // port argument, which is presumably a Publisher actor, for
-                // the value of an "export" parameter. That parameter will have
-                // an integer value. If the value is GLOBAL (-1). If it is 0
-                // (the default), then don't do the following.
-                // If it is 1, then export only one level up (transparent level?
-                // opaque level?). If it is 2, export two levels up, etc.
-                // FIXME: For now, assume name collisions will not occur.
+                // "export" then we should create a new port in this
+                // composite and register it with our container, and
+                // also link on the inside to the publisher relation
+                // corresponding to the port passed in.  Check the
+                // container of port argument, which is presumably a
+                // Publisher actor, for the value of an "export"
+                // parameter. That parameter will have an integer
+                // value. If the value is GLOBAL_EXPORT_LEVEL (-1). If
+                // it is 0 (the default), then don't do the following.
+                // If it is 1, then export only one level up
+                // (transparent level?  opaque level?). If it is 2,
+                // export two levels up, etc.  FIXME: For now, assume
+                // name collisions will not occur.
                 String portName = "_publisher_"
                         + StringUtilities.sanitizeName(name);
                 IOPort publisherPort = (IOPort) getPort(portName);
@@ -1643,7 +1648,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 linkToPublishedPort(name, publisherPort);
 
                 if (container instanceof CompositeActor) {
-                    if (numberLevelsLeft == GLOBAL)
+                    if (numberLevelsLeft == GLOBAL_EXPORT_LEVEL)
                         ((CompositeActor) container).registerPublisherPort(
                                 name, publisherPort, numberLevelsLeft);
                     else {
@@ -2113,23 +2118,30 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *          to match publisher and subscriber. This will be the port
      *          that should be removed
      *  @param publisherPort The publisher port.
+     *  @param minimumLevel The minimum level in which the published
+     *  port should be unregistered.  The toplevel is level 0.
+     *  If the minimum level is 0, then the published ports are removed.
+     *  @param maximumLevel The maximum level in which the published
+     *  port should be unregistered.  The toplevel is level 0.
+     *  If the maximum level is not equal to 0, then this method
+     *  is called on the container.
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort,
-            int minLevel, int maxLevel) {
+            int minimumLevel, int maximumLevel) {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
             // Published ports are not propagated if this actor
             // is opaque.
             ((CompositeActor) container).unregisterPublisherPort(name,
-                    publisherPort, minLevel, maxLevel);
+                    publisherPort, minimumLevel, maximumLevel);
         } else {
 
             String portName = "_publisher_"
                     + StringUtilities.sanitizeName(name);
             IOPort port = (IOPort) getPort(portName);
 
-            if (minLevel == 0) {
+            if (minimumLevel == 0) {
 
                 if (_publishedPorts != null) {
                     List<IOPort> ports = _publishedPorts.get(name);
@@ -2172,18 +2184,18 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
             }
 
-            if (container != null && maxLevel != 0) {
+            if (container != null && maximumLevel != 0) {
 
-                if (minLevel > 0) {
-                    minLevel--;
+                if (minimumLevel > 0) {
+                    minimumLevel--;
                 }
 
-                if (maxLevel > 0) {
-                    maxLevel--;
+                if (maximumLevel > 0) {
+                    maximumLevel--;
                 }
 
                 ((CompositeActor) container).unregisterPublisherPort(name,
-                        port, minLevel, maxLevel);
+                        port, minimumLevel, maximumLevel);
             }
 
         }
@@ -2445,9 +2457,14 @@ public class CompositeActor extends CompositeEntity implements Actor,
         }
     }
 
+
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-    final static public int GLOBAL = -1;
+    ////                         public variables               ////
+
+    /** The level of the global, or top, level.  Used for level crossing
+     *  links in an opaque context, such as Publisher/Subscriber.
+     */
+    final static public int GLOBAL_EXPORT_LEVEL = -1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

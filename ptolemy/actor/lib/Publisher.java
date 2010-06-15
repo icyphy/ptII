@@ -183,8 +183,9 @@ public class Publisher extends TypedAtomicActor {
                         try {
                             
                             if (attribute == numberExportLevels) {
-                                if (newNumberExportLevels != CompositeActor.GLOBAL
-                                        && (_numberExportLevels == CompositeActor.GLOBAL || newNumberExportLevels < _numberExportLevels)) {
+                                if (newNumberExportLevels != CompositeActor.GLOBAL_EXPORT_LEVEL
+                                        && (_numberExportLevels == CompositeActor.GLOBAL_EXPORT_LEVEL
+                                                || newNumberExportLevels < _numberExportLevels)) {
                                     ((CompositeActor) container)
                                             .unregisterPublisherPort(_channel,
                                                     output,
