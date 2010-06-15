@@ -96,6 +96,7 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
 
     /**
      * Default value for number of frame buffers required for shared firing.
+     * @return the number of buffers required for a shared buffer firing
      */
     public int sharedBuffers() {
         return 1;
@@ -103,6 +104,7 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
 
     /**
      * Default value for number of frame buffers required for exclusive firing.
+     * @return the number of buffers required for an exclusive buffer firing
      */
     public int exclusiveBuffers() {
         return 0;
@@ -110,6 +112,7 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
 
     /**
      * Default value for execution time for shared firing.
+     * @return execution time of a shared buffer firing
      */
     public int sharedExecutionTime() {
         return 1;
@@ -117,6 +120,7 @@ public abstract class SharedBufferTransformer extends Transformer implements Buf
 
     /**
      * Default value for execution time for exclusive firing.
+     * @return execution time of an exclusive buffer firing
      */
     public int exclusiveExecutionTime() {
         return 2;

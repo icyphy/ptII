@@ -73,7 +73,8 @@ public class DummyDisplay extends Sink implements BufferingProfile {
 
     /**
      *  Iterates the dummy display actor. 
-     *  @param count The number of iterations to perform.
+     *  @param iterationCount The number of iterations to perform.
+     *  @param fireExclusive Indicates whether firing is exclusive.
      *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
      *  @exception IllegalActionException If iterating is not
      *   permitted, or if prefire(), fire(), or postfire() throw it.
