@@ -455,7 +455,14 @@ public class LatticeOntologySolver extends OntologySolver {
                 // cause the test to fail.
                 continue;
             }
-            String inferred = getResolvedProperty(conceptable).toString();
+            Concept inferredConcept = getResolvedProperty(conceptable);
+            if (inferredConcept == null) {
+                throw new IllegalActionException(conceptable,
+                        "Testing failure at " + conceptable.toString() + '\n'
+                                + "Expected '" + trained.stringValue()
+                                + "' but did not infer anything.");
+            }
+            String inferred = inferredConcept.toString();
             if (!inferred.equals(trained.stringValue())) {
                 throw new IllegalActionException(conceptable,
                         "Testing failure at " + conceptable.toString() + '\n'
