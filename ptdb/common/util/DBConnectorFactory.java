@@ -125,6 +125,16 @@ public class DBConnectorFactory {
         return _createConnection(_cacheContainerName, isTransactionRequired);
     }
 
+    /**
+     * Return the database connection parameters.
+     * @return Database connection parameters like URL and container name.
+     */
+    public static DBConnectionParameters getDBConnectionParameters() {
+        DBConnectionParameters connectionParameters = new DBConnectionParameters(
+                _dbUrl, _dbContainerName, false);
+        return connectionParameters;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /**
@@ -214,7 +224,7 @@ public class DBConnectorFactory {
 
     /**
      * Return true if the database setup is completed.
-     * @return - true if setup is completed; false otherwise.
+     * @return True if setup is completed; false otherwise.
      */
     public static boolean isSetupDone() {
         return _isDBSetupDone;
@@ -268,7 +278,7 @@ public class DBConnectorFactory {
 
     /**
      * Return the parameters set as a concatenated string.
-     * @return - Concatenated String of database parameters -
+     * @return Concatenated String of database parameters -
      * class name, URL, container name.
      */
     public static String getParametersString() {
