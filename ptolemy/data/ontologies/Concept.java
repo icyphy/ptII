@@ -106,6 +106,14 @@ public class Concept extends ComponentEntity implements InequalityTerm,
         return null;
     }
 
+    /** Return the ontology that contains this concept.
+     *
+     *  @return The containing ontology.
+     */
+    public Ontology getOntology() {
+        return (Ontology)getContainer();
+    }
+
     /** Return the outgoing port.
      *  @return The outgoing port.
      */
