@@ -1596,6 +1596,20 @@ else
          fi
     fi	
 
+    # Look for shared libraries necessary at runtime.
+    AC_MSG_CHECKING([for dbxml runtime shared libraries])
+    AC_ARG_WITH(dbxmllib, [  --with-dbxmllib=DIR    use libdbxml from DIR,
+                          defaults to \$PTII/vendors/misc/dbxml-2.5.16/install/lib],
+	PTDBXML_LIB=$withval,
+	PTDBXML_LIB=$PTII/vendors/misc/dbxml-2.5.16/install/lib)
+    if test  -d "$PTDBXML_LIB"; then
+	PT_MSG_RESULT([$PTDBXML_LIB])
+	libdbxml=`$FIND "$PTDBXML_LIB" -name "*dbxml-*"`
+	if test ! -f "$libdbxml"; then
+	    AC_MSG_WARN([Failed to find dbxml-X.Y shared library in $PTDBXML_LIB])
+        fi
+    fi
+
     if test "$PTDB_DIR" = ""; then
         AC_MSG_WARN([Failed to find the Oracle Berkeley XML DB (dbxml) in
     $PTDBXML_JAR and
@@ -5111,6 +5125,9 @@ AC_SUBST(PTDB_PACKAGES)
 
 # PTDBXML_JARS includes dbxml.jar and db.xml and is used by $PTII/ptdb
 AC_SUBST(PTDBXML_JARS)
+
+# Directory that contains libdbxml-X.Y.{so,dll,dylib}.  Used in $PTII/ptdb
+AC_SUBST(PTDBXML_LIB)
 
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
