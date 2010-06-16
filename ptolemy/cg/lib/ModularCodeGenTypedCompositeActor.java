@@ -39,11 +39,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.LazyTypedCompositeActor;
@@ -68,6 +65,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -170,29 +168,29 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container.
      */
-//     public void attributeChanged(Attribute attribute)
-//             throws IllegalActionException {
-//         super.attributeChanged(attribute);
-//         if (attribute == recompileHierarchy) {
-//             // We will set the recompileHierarchy of all directly contained
-//             // ModularCodeGenTypedCompositeActors.
-//             // These will then do the same.
-//             // FIXME: this breaks lazyness.  A better
-//             // solution would be to look up the tree for a parent
-//             //             if (((BooleanToken) recompileHierarchy.getToken()).booleanValue()) {
-//             //                 List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
-//             //                 for (Object entity : entities) {
-//             //                     ((ModularCodeGenTypedCompositeActor) entity).recompileHierarchy
-//             //                             .setToken(new BooleanToken(true));
-//             //                 }
-//             //             }
-//         } else if (attribute != recompileThisLevel) {
-//             // We don't support this yet. Enabling results in a recompilation when
-//             // opening the model since expressions are lazy, and the notification does
-//             // not happen when you parse the model, but when you read the model.
-//             //_setRecompileFlag();
-//         }
-//     }
+     public void attributeChanged(Attribute attribute)
+             throws IllegalActionException {
+         super.attributeChanged(attribute);
+         if (attribute == recompileHierarchy) {
+             // We will set the recompileHierarchy of all directly contained
+             // ModularCodeGenTypedCompositeActors.
+             // These will then do the same.
+             // FIXME: this breaks lazyness.  A better
+             // solution would be to look up the tree for a parent
+            if (((BooleanToken) recompileHierarchy.getToken()).booleanValue()) {
+                List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+                for (Object entity : entities) {
+                    ((ModularCodeGenTypedCompositeActor) entity).recompileHierarchy
+                            .setToken(new BooleanToken(true));
+                }
+            }
+         } else if (attribute != recompileThisLevel) {
+             // We don't support this yet. Enabling results in a recompilation when
+             // opening the model since expressions are lazy, and the notification does
+             // not happen when you parse the model, but when you read the model.
+//             _setRecompileFlag();
+         }
+     }
 
     /** Generate actor name from its class name.
      * @param className  The class name of the actor
@@ -256,6 +254,10 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 return ports;
             } catch (IllegalActionException e) {
                 profile = null;
+                List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
+                for (Object entity : entities) {
+                    ((ModularCodeGenTypedCompositeActor) entity).populate();
+                }
             } catch (NameDuplicationException e) {
                 profile = null;
             }
@@ -263,10 +265,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         
         if (!_USE_PROFILE || profile == null) {
             populate();
-            List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
-            for (Object entity : entities) {
-                ((ModularCodeGenTypedCompositeActor) entity).populate();
-            }
         } else {
             System.err.println("Error");
         }
@@ -511,6 +509,10 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             if (_debugging) {
                 _debug("ModularCodeGenerator: Done calling initilize method for generated code.");
             }
+            
+            recompileThisLevel.setToken(new BooleanToken(false));
+            recompileHierarchy.setToken(new BooleanToken(false));
+            
             _compiled = true;
         } catch (Throwable throwable) {
             _objectWrapper = null;
@@ -522,234 +524,14 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         }
     }
     
-    /**
-     * Link the subscriberPort with a already registered "published port" coming
-     * from a publisher. The pattern represents the name being used in the
-     * matching process to match publisher and subscriber. A subscriber
-     * interested in the output of this publisher uses the name. This
-     * registration process of publisher typically happens before the model is
-     * preinitialized, for example when opening the model. The subscribers will
-     * look for publishers during the preinitialization phase.
-     * 
-     * @param pattern
-     *            The pattern is being used in the matching process to match
-     *            publisher and subscriber.
-     * @param subscriberPort
-     *            The subscribed port.
-     * @exception NameDuplicationException
-     *                If there are name conflicts as a result of the added
-     *                relations or ports.
-     * @exception IllegalActionException
-     *                If the published port cannot be found.
+    /** Return true if this actor contains a local director.
+     *  Otherwise, return false.  This method is <i>not</i>
+     *  synchronized on the workspace, so the caller should be.
      */
-    public void linkToPublishedPort(Pattern pattern, TypedIOPort subscriberPort)
-            throws IllegalActionException, NameDuplicationException {
-        try {
-            ++_creatingPubSub;
-
-            boolean matched = false;
-
-            if (_publisherRelations != null) {
-
-                for (String name : _publisherRelations.keySet()) {
-                    Matcher matcher = pattern.matcher(name);
-                    // System.out.println("Match " + name);
-                    if (matcher.matches()) {
-                        matched = true;
-                        linkToPublishedPort(name, subscriberPort);
-                    }
-                }
-
-            }
-
-            if (!matched) {
-                NamedObj container = getContainer();
-                if (!isOpaque() && container instanceof CompositeActor) {
-                    // Published ports are not propagated if this actor
-                    // is opaque.
-                    ((CompositeActor) container).linkToPublishedPort(pattern,
-                            subscriberPort);
-                } else {
-                    if (container != null) {
-                        TypedIOPort stubPort = null;
-                        matched = false;
-
-                        if (_subscriberPorts != null) {
-                            for (String name : _subscriberPorts.keySet()) {
-                                Matcher matcher = pattern.matcher(name);
-                                // System.out.println("Match " + name);
-                                if (matcher.matches()) {
-                                    matched = true;
-                                    break;
-                                }
-                            }
-                        }
-                        
-                        if(_subscriberPorts == null || !matched) {  //does not find the port
-                            stubPort = new TypedIOPort(this,
-                                    uniqueName("subscriberStubPort"));
-                            stubPort.setMultiport(true);
-                            stubPort.setInput(true);
-                            stubPort.setPersistent(false);
-                            new Parameter(stubPort, "_hide",
-                                    BooleanToken.TRUE);
-
-                            if (_subscriberPorts == null) {
-                                _subscriberPorts = new HashMap<String, IOPort>();
-                            }
-                            _subscriberPorts.put(pattern.pattern(),
-                                    stubPort);
-
-                            IORelation relation = new TypedIORelation(
-                                    this,
-                                    this
-                                            .uniqueName("subscriberRelation"));
-
-                            // Prevent the relation and its links from
-                            // being
-                            // exported.
-                            relation.setPersistent(false);
-
-                            if (_subscriberRelations == null) {
-                                _subscriberRelations = new HashMap<String, IORelation>();
-                            }
-
-                            _subscriberRelations.put(pattern.pattern(),
-                                    relation);
-
-                            // Prevent the relation from showing up in
-                            // vergil.
-                            new Parameter(relation, "_hide",
-                                    BooleanToken.TRUE);
-                            stubPort.liberalLink(relation);
-                            subscriberPort.liberalLink(relation);
-
-                            Director director = getDirector();
-                            if (director != null) {
-                                director.invalidateSchedule();
-                                director.invalidateResolvedTypes();
-                            }
-                        } else {
-                            stubPort = (TypedIOPort) _subscriberPorts
-                                    .get(pattern.pattern());
-                            if (stubPort.getContainer() == null) {
-                                // The user deleted the port.
-                                stubPort.setContainer(this);
-                                stubPort.liberalLink(_subscriberRelations
-                                        .get(pattern.pattern()));
-                            }
-                        }
-
-                        if (container instanceof CompositeActor) {
-                            ((CompositeActor) container).linkToPublishedPort(
-                                    pattern, stubPort);
-                        }
-                    }
-                }
-            }
-        } finally {
-            --_creatingPubSub;
-        }
-
+    public boolean isOpaque() {
+        return (_USE_PROFILE && _getProfile() != null) || super.isOpaque();
     }
-
-
-    /** Link the subscriberPort with a already registered "published port" coming
-     *  from a publisher. The name is the name being used in the
-     *  matching process to match publisher and subscriber. A
-     *  subscriber interested in the output of this publisher uses
-     *  the  name. This registration process of publisher
-     *  typically happens before the model is preinitialized,
-     *  for example when opening the model. The subscribers
-     *  will look for publishers during the preinitialization phase.
-     *  @param name The name is being used in the matching process
-     *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
-     *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
-     *  @exception IllegalActionException If the published port cannot be found.
-     */
-    public void linkToPublishedPort(String name, IOPort subscriberPort)
-            throws IllegalActionException, NameDuplicationException {
-        try {
-            ++_creatingPubSub;
-
-            if (_publisherRelations != null
-                    && _publisherRelations.containsKey(name)) {
-                IOPort port = getPublishedPort(name);
-                if (port != null && port.getContainer() == null) {
-                    // The user deleted the port.
-                    port.setContainer(this);
-                    port.liberalLink(_publisherRelations.get(name));
-                }
-
-                super.linkToPublishedPort(name, subscriberPort);
-            } else {
-                NamedObj container = getContainer();
-                if (!isOpaque() && container instanceof CompositeActor) {
-                    // Published ports are not propagated if this actor
-                    // is opaque.
-                    ((CompositeActor) container).linkToPublishedPort(name,
-                            subscriberPort);
-                } else {
-                    if (container != null) {
-                        IOPort stubPort;
-                        if (!(_subscriberPorts != null && _subscriberPorts
-                                .containsKey(name))) {
-                            stubPort = new TypedIOPort(this,
-                                    uniqueName("subscriberStubPort"));
-                            stubPort.setMultiport(true);
-                            stubPort.setInput(true);
-                            stubPort.setPersistent(false);
-                            new Parameter(stubPort, "_hide", BooleanToken.TRUE);
-
-                            if (_subscriberPorts == null) {
-                                _subscriberPorts = new HashMap<String, IOPort>();
-                            }
-                            _subscriberPorts.put(name, stubPort);
-
-                            IORelation relation = new TypedIORelation(this,
-                                    this.uniqueName("subscriberRelation"));
-
-                            // Prevent the relation and its links from being exported.
-                            relation.setPersistent(false);
-
-                            if (_subscriberRelations == null) {
-                                _subscriberRelations = new HashMap<String, IORelation>();
-                            }
-
-                            _subscriberRelations.put(name, relation);
-
-                            // Prevent the relation from showing up in vergil.
-                            new Parameter(relation, "_hide", BooleanToken.TRUE);
-                            stubPort.liberalLink(relation);
-                            subscriberPort.liberalLink(relation);
-
-                            Director director = getDirector();
-                            if (director != null) {
-                                director.invalidateSchedule();
-                                director.invalidateResolvedTypes();
-                            }
-                        } else {
-                            stubPort = _subscriberPorts.get(name);
-                            if (stubPort.getContainer() == null) {
-                                // The user deleted the port.
-                                stubPort.setContainer(this);
-                                stubPort.liberalLink(_subscriberRelations
-                                        .get(name));
-                            }
-                        }
-                        if (container instanceof CompositeActor) {
-                            ((CompositeActor) container).linkToPublishedPort(
-                                    name, stubPort);
-                        }
-                    }
-                }
-            }
-        } finally {
-            --_creatingPubSub;
-        }
-    }
+    
 
     /** Create a new relation with the specified name, add it to the
      *  relation list, and return it. Derived classes can override
@@ -791,13 +573,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
      *   is not opaque.
      */
     public void preinitialize() throws IllegalActionException {
-        // Populate the contained entities and avoid a concurrent
-        // modification exception.
-        List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
-        for (Object entity : entities) {
-            ((ModularCodeGenTypedCompositeActor) entity).populate();
-        }
-
         Profile profile = _getProfile();
         if (!_USE_PROFILE || profile == null || _modelChanged()) {
             super.preinitialize();
@@ -936,109 +711,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         }
     }
 
-    /** Unlink the subscriberPort with a already registered "published port" coming
-     *  from a publisher. The name is the name being used in the
-     *  matching process to match publisher and subscriber. A
-     *  subscriber interested in the output of this publisher uses
-     *  the  name. This registration process of publisher
-     *  typically happens before the model is preinitialized,
-     *  for example when opening the model. The subscribers
-     *  will look for publishers during the preinitialization phase.
-     *  @param name The name is being used in the matching process
-     *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
-     *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
-     *  @exception IllegalActionException If the published port cannot be found.
-     */
-    public void unlinkToPublishedPort(String name, IOPort subscriberPort)
-            throws IllegalActionException {
-        try {
-            ++_creatingPubSub;
-            if (_subscriberRelations != null) {
-                IORelation relation = _subscriberRelations.get(name);
-                if (relation != null) {
-                    relation.setContainer(null);
-                    _subscriberRelations.remove(name);
-                }
-            }
-            if (_subscriberPorts != null) {
-                IOPort port = _subscriberPorts.get(name);
-                if (port != null) {
-                    port.setContainer(null);
-                    NamedObj container = getContainer();
-                    if (container instanceof CompositeActor) {
-                        ((CompositeActor) container).unlinkToPublishedPort(
-                                name, port);
-                    }
-                    _subscriberPorts.remove(name);
-                }
-            }
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateSchedule();
-                director.invalidateResolvedTypes();
-            }
-
-            if (_publisherRelations != null
-                    && _publisherRelations.containsKey(name)) {
-                super.unlinkToPublishedPort(name, subscriberPort);
-            } else {
-                NamedObj container = getContainer();
-                if (!isOpaque() && container instanceof CompositeActor) {
-                    // Published ports are not propagated if this actor
-                    // is opaque.
-                    ((CompositeActor) container).unlinkToPublishedPort(name,
-                            subscriberPort);
-                }
-            }
-        } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e,
-                    "Can't unlink the container");
-        } finally {
-            --_creatingPubSub;
-        }
-    }
-
-    /** Unregister a "published port" coming
-     *  from a publisher. The name is the name being used in the
-     *  matching process to match publisher and subscriber. A
-     *  subscriber interested in the output of this publisher uses
-     *  the same name. This registration process of publisher
-     *  typically happens before the model is preinitialized,
-     *  for example when opening the model. The subscribers
-     *  will look for publishers during the preinitialization phase.
-     *  @param name The name is being used in the matching process
-     *          to match publisher and subscriber. This will be the port
-     *          that should be removed
-     *  @param publisherPort The publisher port.          
-     */
-    public void unregisterPublisherPort(String name, IOPort publisherPort) {
-        try {
-            ++_creatingPubSub;
-            NamedObj container = getContainer();
-            if (container != null) {
-                if (_publishedPorts != null) {
-                    try {
-                        getPublishedPort(name).setContainer(null); // Remove stubPort
-                    } catch (IllegalActionException e) {
-                        // Should not happen.
-                        throw new IllegalStateException(e);
-                    } catch (NameDuplicationException e) {
-                        // Should not happen.
-                        throw new IllegalStateException(e);
-                    }
-                }
-                super.unregisterPublisherPort(name, publisherPort);
-                if (container instanceof CompositeActor) {
-                    ((CompositeActor) container).unregisterPublisherPort(name,
-                            publisherPort);
-                }
-            }
-        } finally {
-            --_creatingPubSub;
-        }
-    }
 
     /** Invoke the wrapup() method of all the actors contained in the
      *  director's container.   In this base class wrapup() is called on the
@@ -1449,8 +1121,6 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     private Profile _profile = null;
 
     private Map<String, IOPort> _subscriberPorts;
-
-    private Map<String, IORelation> _subscriberRelations;
 
     static private boolean _USE_PROFILE = true;
 
