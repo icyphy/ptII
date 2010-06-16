@@ -53,7 +53,7 @@ if {[info procs testJavaCG] == "" } then {
 }
 
 foreach file [glob auto/*.xml] {
-    test_java_cg $file
+    testJavaCG $file
 }
 
 # Reset the isRunningNightlyBuild property
