@@ -31,7 +31,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
@@ -118,9 +117,9 @@ public class Publisher extends TypedAtomicActor {
         // hide = new SingletonParameter(this, "_hideName");
         // hide.setToken(BooleanToken.TRUE);
 
-        numberExportLevels = new Parameter(this, "numberExportLevels");
-        numberExportLevels.setExpression("0");
-        numberExportLevels.setTypeEquals(BaseType.INT);
+        global = new Parameter(this, "global");
+        global.setExpression("false");
+        global.setTypeEquals(BaseType.BOOLEAN);
 
     }
 
@@ -135,12 +134,14 @@ public class Publisher extends TypedAtomicActor {
      */
     public StringParameter channel;
 
-    /** The number of export levels of publish ports. A port in this publisher 
-     * will be exported to upper levels in hierarchy for other subscribers. This
-     * parameter specifies the number of levels the port will be exported.
+    /** Specification of whether the published data is global.
+     *  If this is set to true, then a subscriber anywhere in the model that
+     *  references the same channel by name will see values published by
+     *  this publisher. If this is set to false (the default), then only
+     *  those subscribers that are fired by the same director will see
+     *  values published on this channel. 
      */
-
-    public Parameter numberExportLevels;
+    public Parameter global;
 
     /** The input port.  This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
@@ -166,7 +167,7 @@ public class Publisher extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == channel || attribute == numberExportLevels) {
+        if (attribute == channel || attribute == global) {
             // We only get the value if we are not in a class definition.
             // The reason is that some of the Actor Oriented Classes
             // that use Publishers do not have the parameter defined
@@ -174,36 +175,29 @@ public class Publisher extends TypedAtomicActor {
             // ptolemy/actor/lib/test/auto/PublisherClassNoParameter.xml
             if (!isWithinClassDefinition()) {
                 String newValue = channel.stringValue();
-                int newNumberExportLevels = ((IntToken) numberExportLevels
-                        .getToken()).intValue();
+                boolean globalValue = ((BooleanToken) global
+                        .getToken()).booleanValue();
                 if (!newValue.equals(_channel)
-                        || newNumberExportLevels != _numberExportLevels) {
+                        || globalValue != _global) {
                     NamedObj container = getContainer();
                     if (container instanceof CompositeActor) {
                         try {
-                            
-                            if (attribute == numberExportLevels) {
-                                if (newNumberExportLevels != CompositeActor.GLOBAL_EXPORT_LEVEL
-                                        && (_numberExportLevels == CompositeActor.GLOBAL_EXPORT_LEVEL
-                                                || newNumberExportLevels < _numberExportLevels)) {
+                            if (attribute == global) {
+                                if (_global && !globalValue) {
                                     ((CompositeActor) container)
-                                            .unregisterPublisherPort(_channel,
-                                                    output,
-                                                    newNumberExportLevels,
-                                                    _numberExportLevels);
+                                            .unregisterPublisherPort(_channel, output, true);
                                 }
-
                             }
                             
                             ((CompositeActor) container).registerPublisherPort(
-                                    newValue, output, newNumberExportLevels);
+                                    newValue, output, globalValue);
                             
                             if (attribute == channel
                                     && (!(_channel == null || _channel.trim()
                                             .equals("")))) {
                                 ((CompositeActor) container)
                                         .unregisterPublisherPort(_channel,
-                                                output, 0, _numberExportLevels);
+                                                output, _global);
                             }
 
                         } catch (NameDuplicationException e) {
@@ -212,7 +206,7 @@ public class Publisher extends TypedAtomicActor {
                         }
                     }
                     _channel = newValue;
-                    _numberExportLevels = newNumberExportLevels;
+                    _global = globalValue;
                 }
             }
         } else {
@@ -231,7 +225,7 @@ public class Publisher extends TypedAtomicActor {
         Publisher newObject = (Publisher) super.clone(workspace);
         try {
             newObject._channel = _channel;
-            newObject._numberExportLevels = _numberExportLevels;
+            newObject._global = _global;
         } catch (Throwable throwable) {
             CloneNotSupportedException exception = new CloneNotSupportedException();
             exception.initCause(throwable);
@@ -307,8 +301,8 @@ public class Publisher extends TypedAtomicActor {
     /** Cached channel name. */
     protected String _channel;
 
-    /** Cached number export levels. */
-    protected int _numberExportLevels;
+    /** Cached variable indicating whether publishing is global. */
+    protected boolean _global;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
