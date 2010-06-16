@@ -69,7 +69,7 @@ public class ParentPanel extends JPanel {
         _parentModelLink.setMaximumSize(getMinimumSize());
         add(_parentModelLink);
 
-        ImageIcon icon = createImageIcon("$CLASSPATH/ptdb/gui/arrow.gif",
+        ImageIcon icon = createImageIcon("$CLASSPATH/ptdb/gui/img/arrow.gif",
                 "Contains");
         JLabel arrowImage = new JLabel(icon);
         arrowImage.setMaximumSize(getMinimumSize());
