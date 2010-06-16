@@ -30,6 +30,7 @@ import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.ModelAlreadyExistException;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -220,9 +221,10 @@ public class OracleXMLDBConnection implements DBConnection {
      *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
      * @exception DBExecutionException Thrown if there is a problem executing the task.
+     * @exception ModelAlreadyExistException Thrown if the model being created already exists.
      */
     public void executeCreateModelTask(CreateModelTask task)
-            throws DBExecutionException {
+            throws DBExecutionException, ModelAlreadyExistException {
 
         try {
 
@@ -265,7 +267,7 @@ public class OracleXMLDBConnection implements DBConnection {
             }
 
             if (doc != null) {
-                throw new DBExecutionException(
+                throw new ModelAlreadyExistException(
                         "Failed to execute CreateModelTask"
                                 + " - The model already exist in the database. "
                                 + "Please use the executeSaveModelTask to " 
@@ -341,7 +343,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 throw new DBExecutionException(
                         "Failed to execute GetModelsTask"
-                                + " - Could not find the model in the database");
+                                + " - Could not find the model in the database"
+                                + e.getMessage(), e);
             }
 
             XMLDBModel completeXMLDBModel = null;

@@ -14,6 +14,7 @@ import ptdb.common.dto.TaskQueue;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.ModelAlreadyExistException;
 
 ///////////////////////////////////////////////////////////////////
 ////AsynchronousDBConnection
@@ -133,9 +134,10 @@ public class AsynchronousDBConnection implements DBConnection {
      *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
      * @exception DBExecutionException If thrown while creating a model.
+     * @exception ModelAlreadyExistException Thrown if the model being created already exists.
      */
     public void executeCreateModelTask(CreateModelTask task)
-            throws DBExecutionException {
+            throws DBExecutionException, ModelAlreadyExistException {
 
         //call the execueTask method to execute the given task
         _executeTask(task);

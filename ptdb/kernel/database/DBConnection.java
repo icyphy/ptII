@@ -12,6 +12,7 @@ import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.ModelAlreadyExistException;
 
 ///////////////////////////////////////////////////////////////////
 //// DBConnection
@@ -58,9 +59,10 @@ public interface DBConnection {
      *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
      * @exception DBExecutionException
+     * @exception ModelAlreadyExistException Thrown if the model being created already exists.
      */
     public void executeCreateModelTask(CreateModelTask task)
-            throws DBExecutionException;
+            throws DBExecutionException, ModelAlreadyExistException;
 
     /**
      * Fetch the parent model hierarchies for the given models.
