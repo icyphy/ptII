@@ -471,7 +471,7 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executCreateTask method.
+     * Test the executCreateTask() method.
      * <p>Conditions for the test:
      * <br>The model being saved is a new model.</p>
      * @exception Exception Thrown if the test fails and the exception was not handled.
@@ -513,7 +513,7 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executCreateTask method.
+     * Test the executCreateTask() method.
      * <p>Conditions for the test:
      * <br>The model to be created already exist in the database.</p>
      * @exception Exception Thrown if the test fails and the exception was not handled.
@@ -556,7 +556,7 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executCreateTask method.
+     * Test the executCreateTask() method.
      * <p>Conditions for the test:
      * <br>The create model task is null.</p>
      * @exception Exception Thrown if the test fails and the exception was not handled.
@@ -590,7 +590,7 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executCreateTask method.
+     * Test the executCreateTask() method.
      * <p>Conditions for the test:
      * <br>The model in the task is null.</p>
      * @exception Exception Thrown if the test fails and the exception was not handled.
@@ -625,7 +625,7 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executSaveTask method.
+     * Test the executSaveTask() method.
      * <p>Conditions for the test:
      * <br>The model being saved is a new model.</p>
      * @exception Exception Thrown if the test fails and the exception was not handled.
@@ -669,7 +669,7 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executSaveTask method.
+     * Test the executSaveTask() method.
      * <p>Conditions for the test:
      * <br>The model to be saved already exist in the database.</p>
      * @exception Exception Thrown if the test fails and the exception was not handled.
@@ -708,7 +708,7 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executSaveTask method.
+     * Test the executSaveTask() method.
      * <p>Conditions for the test:
      * <br>The save model task is null.</p>
      * @exception Exception Thrown if the test fails and the exception was not handled.
@@ -742,7 +742,7 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executSaveTask method.
+     * Test the executSaveTask() method.
      * <p>Conditions for the test:
      * <br>The model in the task is null.</p>
      * @exception Exception Thrown if the test fails and the exception was not handled.
