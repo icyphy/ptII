@@ -44,7 +44,7 @@ import com.sleepycat.dbxml.XmlException;
 /**
  * Unit tests for OracleXMLDBConnection.
  * 
- * @author Ashwini Bijwe
+ * @author Ashwini Bijwe, Yousef Alsaeed
  * 
  * @version $Id$
  * @since Ptolemy II 8.1
@@ -57,7 +57,7 @@ import com.sleepycat.dbxml.XmlException;
 public class TestOracleXMLDBConnection {
 
     ///////////////////////////////////////////////////////////////////
-    ////                public methods                                    //////
+    ////                public methods                             ////
     /**
      * @exception java.lang.Exception
      */
@@ -471,10 +471,10 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executCreateTask method. Conditions for the test: The model
-     * being saved is a new model.
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executCreateTask method.
+     * <p>Conditions for the test:
+     * <br>The model being saved is a new model.</p>
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteCreateTask_NewModel() throws Exception {
@@ -482,16 +482,17 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(true);
 
-        CreateModelTask task = new CreateModelTask();
-        XMLDBModel xmlModel = new XMLDBModel();
+        
+        XMLDBModel xmlModel = new XMLDBModel("test2");
 
         xmlModel.setIsNew(true);
-        // Change the name of the model with each test to ensure it is treated as a new model.
-        xmlModel.setModelName("test2");
-        xmlModel
-                .setModel("<entity name=\"test2\" class=\"test.class\"></entity>");
 
-        task.setXMLDBModel(xmlModel);
+        
+
+        xmlModel.setModel("<entity name=\"test2\" "
+                        + "class=\"test.class\"></entity>");
+
+        CreateModelTask task = new CreateModelTask(xmlModel);
 
         try {
             oracleXMLDBConnection.executeCreateModelTask(task);
@@ -502,7 +503,9 @@ public class TestOracleXMLDBConnection {
             oracleXMLDBConnection.abortConnection();
             fail("Exception thrown - " + e.getMessage());
         } finally {
+            
             if (oracleXMLDBConnection != null) {
+                
                 oracleXMLDBConnection.closeConnection();
             }
         }
@@ -510,10 +513,10 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executCreateTask method. Conditions for the test: The model to
-     * be created already exist in the database.
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executCreateTask method.
+     * <p>Conditions for the test:
+     * <br>The model to be created already exist in the database.</p>
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteCreateTask_ExistingModel() throws Exception {
@@ -521,16 +524,16 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(true);
 
-        CreateModelTask task = new CreateModelTask();
-        XMLDBModel xmlModel = new XMLDBModel();
+        
+        XMLDBModel xmlModel = new XMLDBModel("test");
 
         xmlModel.setIsNew(true);
-        // make sure the file exists in the database.
+       
         xmlModel.setModelName("test");
-        xmlModel
-                .setModel("<entity name=\"test\" class=\"test.class\"></entity>");
+        xmlModel.setModel("<entity name=\"test\" " 
+                + "class=\"test.class\"></entity>");
 
-        task.setXMLDBModel(xmlModel);
+        CreateModelTask task = new CreateModelTask(xmlModel);
 
         try {
             oracleXMLDBConnection.executeCreateModelTask(task);
@@ -553,10 +556,10 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executCreateTask method. Conditions for the test: The create
-     * model task is null.
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executCreateTask method.
+     * <p>Conditions for the test:
+     * <br>The create model task is null.</p>
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteCreateTask_NullTask() throws Exception {
@@ -587,10 +590,10 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executCreateTask method. Conditions for the test: The model in
-     * the task is null.
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executCreateTask method.
+     * <p>Conditions for the test:
+     * <br>The model in the task is null.</p>
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteCreateTask_NullModelInTask() throws Exception {
@@ -598,9 +601,7 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(false);
 
-        CreateModelTask task = new CreateModelTask();
-
-        task.setXMLDBModel(null);
+        CreateModelTask task = new CreateModelTask(null);
 
         try {
             oracleXMLDBConnection.executeCreateModelTask(task);
@@ -609,13 +610,11 @@ public class TestOracleXMLDBConnection {
 
         } catch (DBExecutionException e) {
 
-            if (e
-                    .getMessage()
-                    .contains(
-                            "the XMLDBModel object passed in the CreateModelTask was null")) {
-                assertTrue(
-                        "model was not created because the model in the task was null.",
-                        true);
+            if (e.getMessage().contains("the XMLDBModel object passed in the "
+                    + "CreateModelTask was null")) {
+                
+                assertTrue("model was not created because the model in the "
+                        + "task was null.", true);
             }
         } finally {
             if (oracleXMLDBConnection != null) {
@@ -626,10 +625,10 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executSaveTask method. Conditions for the test: the model being
-     * saved is a new model.
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executSaveTask method.
+     * <p>Conditions for the test:
+     * <br>The model being saved is a new model.</p>
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteSaveTask_NewModel() throws Exception {
@@ -637,16 +636,16 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(false);
 
-        SaveModelTask task = new SaveModelTask();
-        XMLDBModel xmlModel = new XMLDBModel();
+        
+        XMLDBModel xmlModel = new XMLDBModel("test5");
 
         xmlModel.setIsNew(true);
-        // Make sure the file does not exist in the database when running the test.
-        xmlModel.setModelName("test5");
-        xmlModel
-                .setModel("<entity name=\"test5\" class=\"test.class\"></entity>");
+        
 
-        task.setXMLDBModel(xmlModel);
+        xmlModel.setModel("<entity name=\"test5\" "
+                + "class=\"test.class\"></entity>");
+
+        SaveModelTask task = new SaveModelTask(xmlModel);
 
         try {
             oracleXMLDBConnection.executeSaveModelTask(task);
@@ -655,11 +654,11 @@ public class TestOracleXMLDBConnection {
 
         } catch (DBExecutionException e) {
 
-            if (e.getMessage().contains(
-                    "the model does not exist in the database.")) {
-                assertTrue(
-                        "model was not updated since it does not exist in the database.",
-                        true);
+            if (e.getMessage().contains("the model does not exist in "
+                    + "the database.")) {
+                
+                assertTrue("model was not updated since it does not exist "
+                        + "in the database.", true);
             }
         } finally {
             if (oracleXMLDBConnection != null) {
@@ -670,10 +669,10 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executSaveTask method. Conditions for the test: The model to be
-     * saved already exist in the database.
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executSaveTask method.
+     * <p>Conditions for the test:
+     * <br>The model to be saved already exist in the database.</p>
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteSaveTask_ExistingModel() throws Exception {
@@ -681,16 +680,15 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(true);
 
-        SaveModelTask task = new SaveModelTask();
-        XMLDBModel xmlModel = new XMLDBModel();
+        
+        XMLDBModel xmlModel = new XMLDBModel("test2");
 
         xmlModel.setIsNew(true);
-        // Make sure the file exists in the database when running the test.
-        xmlModel.setModelName("test2");
-        xmlModel
-                .setModel("<entity name=\"test2\" class=\"test1.class\"></entity>");
 
-        task.setXMLDBModel(xmlModel);
+        xmlModel.setModel("<entity name=\"test2\" "
+                        + "class=\"test1.class\"></entity>");
+
+        SaveModelTask task = new SaveModelTask(xmlModel);
 
         try {
             oracleXMLDBConnection.executeSaveModelTask(task);
@@ -700,6 +698,7 @@ public class TestOracleXMLDBConnection {
         } catch (DBExecutionException e) {
             oracleXMLDBConnection.abortConnection();
             fail("Exception thrown - " + e.getMessage());
+            
         } finally {
             if (oracleXMLDBConnection != null) {
                 oracleXMLDBConnection.closeConnection();
@@ -709,10 +708,10 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executSaveTask method. Conditions for the test: The save model
-     * task is null.
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executSaveTask method.
+     * <p>Conditions for the test:
+     * <br>The save model task is null.</p>
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteSaveTask_NullTask() throws Exception {
@@ -729,8 +728,9 @@ public class TestOracleXMLDBConnection {
 
         } catch (DBExecutionException e) {
 
-            if (e.getMessage().contains(
-                    "the SaveModelTask object passed was null")) {
+            if (e.getMessage().contains("the SaveModelTask object passed "
+                    + "was null")) {
+                
                 assertTrue("model was not saved because the task is null", true);
             }
         } finally {
@@ -742,10 +742,10 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test the executSaveTask method. Conditions for the test: The model in the
-     * task is null.
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executSaveTask method.
+     * <p>Conditions for the test:
+     * <br>The model in the task is null.</p>
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteSaveTask_NullModelInTask() throws Exception {
@@ -753,9 +753,8 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(false);
 
-        SaveModelTask task = new SaveModelTask();
+        SaveModelTask task = new SaveModelTask(null);
 
-        task.setXMLDBModel(null);
 
         try {
             oracleXMLDBConnection.executeSaveModelTask(task);
@@ -764,13 +763,11 @@ public class TestOracleXMLDBConnection {
 
         } catch (DBExecutionException e) {
 
-            if (e
-                    .getMessage()
-                    .contains(
-                            "the XMLDBModel object passed in the SaveModelTask was null")) {
-                assertTrue(
-                        "model was not saved because the model in the task was null.",
-                        true);
+            if (e.getMessage().contains("the XMLDBModel object passed in the " 
+                    + "SaveModelTask was null")) {
+                
+                assertTrue("model was not saved because the model in " 
+                        + "the task was null.", true);
             }
         } finally {
             if (oracleXMLDBConnection != null) {
@@ -780,16 +777,14 @@ public class TestOracleXMLDBConnection {
 
     }
 
-    ///////////////////////////////////////////////////////////////////
 
     /**
-     * Test executeGetModelsTask() method.
-     * 
-     * Test conditions: The model exist in the database and does not have
-     * references.
-     * 
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executeGetModelsTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The model exist in the database and does not have references.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteGetModels_ModelWithNoReferences() throws Exception {
@@ -797,24 +792,28 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(false);
 
-        GetModelsTask task = new GetModelsTask();
+        
 
-        String strModelName = "NoReferences";
+        String modelName = "NoReferences";
 
-        task.setModelName(strModelName);
+        GetModelsTask task = new GetModelsTask(modelName);
+
 
         try {
 
             XMLDBModel model = oracleXMLDBConnection.executeGetModelsTask(task);
 
-            if (model != null && model.getModelName().equals(strModelName)) {
-
+            if (model != null && model.getModelName().equals(modelName)) {
+                
                 System.out.println(model.getModel());
                 assertTrue("Model was retrieved successfully.", true);
-            } else if (model != null
-                    && !model.getModelName().equals(strModelName)) {
+                
+            } else if (model != null && !model.getModelName().equals(modelName)) {
+                
                 fail("Different model was retrieved. " + model.getModelName());
+                
             } else {
+                
                 fail("no model was returned");
             }
 
@@ -831,13 +830,12 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test executeGetModelsTask() method.
-     * 
-     * Test conditions: The model exist in the database and has references in
-     * it.
-     * 
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executeGetModelsTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The model exist in the database and has references in it.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteGetModels_ModelWithReferences() throws Exception {
@@ -845,24 +843,27 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(false);
 
-        GetModelsTask task = new GetModelsTask();
+        
 
-        String strModelName = "modeltt";
+        String modelName = "modeltt";
 
-        task.setModelName(strModelName);
+        GetModelsTask task = new GetModelsTask(modelName);
 
         try {
 
             XMLDBModel model = oracleXMLDBConnection.executeGetModelsTask(task);
 
-            if (model != null && model.getModelName().equals(strModelName)) {
+            if (model != null && model.getModelName().equals(modelName)) {
 
                 System.out.println(model.getModel());
                 assertTrue("Model was retrieved successfully.", true);
-            } else if (model != null
-                    && !model.getModelName().equals(strModelName)) {
+                
+            } else if (model != null && !model.getModelName().equals(modelName)) {
+                
                 fail("Different model was retrieved. " + model.getModelName());
+                
             } else {
+                
                 fail("no model was returned");
             }
 
@@ -879,12 +880,12 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test executeGetModelsTask() method.
-     * 
-     * Test conditions: The GetModelsTask passed to the method is null.
-     * 
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executeGetModelsTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The GetModelsTask passed to the method is null.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteGetModels_NullTask() throws Exception {
@@ -918,13 +919,12 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test executeGetModelsTask() method.
-     * 
-     * Test conditions: The GetModelsTask passed to the method has no model name
-     * in it.
-     * 
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executeGetModelsTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The GetModelsTask passed to the method has no model name in it.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteGetModels_TaskWithNoModelName() throws Exception {
@@ -932,7 +932,7 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(false);
 
-        GetModelsTask task = new GetModelsTask();
+        GetModelsTask task = new GetModelsTask(null);
 
         try {
 
@@ -958,12 +958,12 @@ public class TestOracleXMLDBConnection {
     }
 
     /**
-     * Test executeGetModelsTask() method.
-     * 
-     * Test conditions: The model does not exist in the database.
-     * 
-     * @exception Exception thrown if the test fails and the exception was not
-     * handled.
+     * Test the executeGetModelsTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The model does not exist in the database.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
     public void testExecuteGetModels_ModelNotInDatabase() throws Exception {
@@ -971,16 +971,16 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(false);
 
-        GetModelsTask task = new GetModelsTask();
-
-        task.setModelName("model not in database");
+        
+        GetModelsTask task = new GetModelsTask("model not in database");
 
         try {
 
             /*XMLDBModel model =*/oracleXMLDBConnection
                     .executeGetModelsTask(task);
 
-            fail("Method should throw an exception since the model does not exist in database.");
+            fail("Method should throw an exception since the model does not "
+                    + "exist in database.");
 
         } catch (DBExecutionException e) {
 
@@ -999,7 +999,7 @@ public class TestOracleXMLDBConnection {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private methods                                 //////
+    ////                private methods                            ////
 
     private OracleXMLDBConnection _createConnWithoutTransaction()
             throws DBConnectionException {
@@ -1030,6 +1030,6 @@ public class TestOracleXMLDBConnection {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private variables                           //////
+    ////                private variables                          ////
 
 }
