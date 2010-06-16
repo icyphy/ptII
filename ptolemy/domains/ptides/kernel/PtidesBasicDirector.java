@@ -2659,9 +2659,9 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** A structure that stores a PortChannel and a dependency associated with
-     *  that port. This structure is comparable, and it compares using
-     *  the dependency information.
+    /** A structure that stores a PortChannel and a dependency
+     *  associated with that port. This structure is comparable, and
+     *  it compares using the dependency information.
      */
     public class PortDependency implements Comparable {
 
@@ -2680,8 +2680,8 @@ public class PtidesBasicDirector extends DEDirector {
         /** The dependency. */
         public Dependency dependency;
 
-        /** Compares this PortDependency with another. Compares the dependencies
-         *  of these two objects.
+        /** Compares this PortDependency with another. Compares the
+         *  dependencies of these two objects.
          *  @param arg0 The object comparing to.
          */
         public int compareTo(Object arg0) {
@@ -2724,19 +2724,21 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
-    /** A structure that holds a token with the port and channel it's connected to,
-     *  as well as the timestamp associated with this token.
-     *  This object is used to hold sensor and actuation events.
+    /** A structure that holds a token with the port and channel it's
+     *  connected to, as well as the timestamp associated with this
+     *  token.  This object is used to hold sensor and actuation
+     *  events.
      */
     public class RealTimeEvent implements Comparable {
 
-        /** Construct a structure that holds a real-time event. This event saves
-         *  the token to be transmitted, the port and channel this token should be deliverd
-         *  to, and the time this token should be delivered at.
+        /** Construct a structure that holds a real-time event. This
+         *  event saves the token to be transmitted, the port and
+         *  channel this token should be deliverd to, and the time
+         *  this token should be delivered at.
          *  @param port The destination port.
          *  @param channel The destination channel.
          *  @param token The token to be delivered.
-         *  @param timestamp The time of delivery of this token.
+         *  @param tag The time of delivery of this token.
          */
         public RealTimeEvent(IOPort port, int channel, Token token,
                 Tag tag) {
