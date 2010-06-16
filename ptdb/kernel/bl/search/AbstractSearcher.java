@@ -245,7 +245,6 @@ public abstract class AbstractSearcher implements ResultHandler {
      *          false - this searcher is not done.
      */
     private boolean _noMatch() {
-
         if (_previousSearcher == null) {
             // this is the first searcher
             return false;
@@ -262,6 +261,11 @@ public abstract class AbstractSearcher implements ResultHandler {
                 return true;
 
             } else {
+
+                if (this instanceof HierarchyFetcher) {
+                    return true;
+                }
+
                 // in the case that the previous searcher is not set,
                 // then the searching should continue.
                 return false;

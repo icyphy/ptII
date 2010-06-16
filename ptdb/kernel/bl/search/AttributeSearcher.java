@@ -37,7 +37,7 @@ public class AttributeSearcher extends AbstractSearcher implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////        protected methods                                       /////
+    ////        protected methods                                  ////
 
     /**
      * Checks whether the attribute search criteria has been set in
@@ -49,7 +49,7 @@ public class AttributeSearcher extends AbstractSearcher implements
     @Override
     protected boolean _isSearchCriteriaSet() {
 
-        if (_attributesCriteria == null) {
+        if (_attributesCriteria == null || _attributesCriteria.size() == 0) {
             return false;
         }
 
@@ -74,6 +74,12 @@ public class AttributeSearcher extends AbstractSearcher implements
         // set the returned results
         _currentResults = _dbConnection
                 .executeAttributeSearchTask(attributeSearchTask);
+        
+        if (_currentResults == null) {
+            // The db layer cannot perform the searching, so make the search 
+            // criteria not set. 
+            _attributesCriteria = null;
+        }
 
         // set the search done
         _setSearchDone();
@@ -81,7 +87,7 @@ public class AttributeSearcher extends AbstractSearcher implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////       private variables                                        /////
+    ////       private variables                                   ////
 
     /**
      * This field contains the search criteria of attributes.

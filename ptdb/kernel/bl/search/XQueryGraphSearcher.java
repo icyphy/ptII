@@ -38,7 +38,7 @@ public class XQueryGraphSearcher extends GraphSearcher implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////        protected methods                                       /////
+    ////        protected methods                                  ////
 
     @Override
     protected void _search() throws DBExecutionException {
@@ -54,6 +54,12 @@ public class XQueryGraphSearcher extends GraphSearcher implements
 
         // set the returned results to the _currentResults field
         _currentResults = models;
+
+        if (_currentResults == null) {
+            // The db layer cannot perform the searching, so make the search 
+            // criteria not set. 
+            _dbGraphSearchCriteria = null;
+        }
 
         // set the search done
         _setSearchDone();
