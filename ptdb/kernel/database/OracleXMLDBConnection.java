@@ -218,7 +218,8 @@ public class OracleXMLDBConnection implements DBConnection {
      * will tell the DB layer to create a new model in the database.
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
-     * @exception ModelAlreadyExistException Thrown if the model being created already exists.
+     * @exception ModelAlreadyExistException Thrown if the model being created
+     * already exists.
      */
     public void executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException, ModelAlreadyExistException {
@@ -269,9 +270,9 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + "Please use the executeSaveModelTask to "
                                 + "update the model.");
             } else {
-                
+
                 String modelBody = model.getModel();
-                
+
                 modelBody = modelBody.substring(modelBody.indexOf("<entity"));
 
                 _xmlContainer.putDocument(_xmlTransaction,
@@ -452,7 +453,7 @@ public class OracleXMLDBConnection implements DBConnection {
                     finalModelsList.add(model);
                 }
                 return finalModelsList;
-                
+
             }
         }
         return null;
@@ -531,12 +532,11 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + " - the model does not exist in the database."
                                 + " Please use executeCreateModelTask instead.");
             } else {
-                
- 
+
                 String modelBody = xmlDBModel.getModel();
-                
+
                 modelBody = modelBody.substring(modelBody.indexOf("<entity"));
-                
+
                 currentDbModel.setContent(modelBody);
                 _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
             }
@@ -923,7 +923,7 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     private String _getParentHierarchiesForModelFromDB(XMLDBModel model)
             throws DBExecutionException {
-        StringBuffer referencesXML = null;
+        StringBuffer referencesXMLBuf = null;
 
         String fetchHierarchyQuery = "doc(\""
                 + _params.getContainerName()
@@ -942,24 +942,24 @@ public class OracleXMLDBConnection implements DBConnection {
              * Create well formed XML for document parser to parse.
              */
             if (results != null) {
-
-                referencesXML = new StringBuffer("<entities>");
-
                 XmlValue value;
                 while (results.hasNext()) {
                     value = results.next();
-                    referencesXML.append(value.asString());
-
+                    if(referencesXMLBuf == null) {
+                        referencesXMLBuf = new StringBuffer();
+                    }   
+                    referencesXMLBuf.append(value.asString());
                 }
-
-                referencesXML.append("</entities>");
             }
         } catch (Exception e) {
             throw new DBExecutionException(
                     "Error while fetching model hierachy - "
                             + model.getModelName(), e);
         }
-        return referencesXML != null ? referencesXML.toString() : null;
+        
+        String referencesXML = referencesXMLBuf != null ? "<entities>"
+                + referencesXMLBuf.toString() + "</entities>" : null;
+        return referencesXML;
     }
 
     /**
