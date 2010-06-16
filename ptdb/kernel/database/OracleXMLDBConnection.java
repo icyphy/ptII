@@ -943,7 +943,7 @@ public class OracleXMLDBConnection implements DBConnection {
              */
             if (results != null) {
 
-                referencesXML = new StringBuffer();
+                referencesXML = new StringBuffer("<entities>");
 
                 XmlValue value;
                 while (results.hasNext()) {
