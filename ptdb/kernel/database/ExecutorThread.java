@@ -1,11 +1,14 @@
 package ptdb.kernel.database;
 
+import org.python.core.exceptions;
+
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.DBConnectorFactory;
 
 ///////////////////////////////////////////////////////////////////
@@ -132,6 +135,12 @@ public class ExecutorThread implements Runnable {
                         + e.getMessage());
                 e.printStackTrace();
                 return;
+            } catch (ModelAlreadyExistException e) {
+                _abortConnection();
+                _taskQueue.setExecutionError("Database execution error - "
+                        + e.getMessage());
+                e.printStackTrace();
+                return;
             }
         }
 
@@ -158,8 +167,9 @@ public class ExecutorThread implements Runnable {
      * Delegate the call to the appropriate API of DBConnection
      * depending on the type of the task it is executing
      * @exception DBExecutionException
+     * @exception ModelAlreadyExistException Thrown when the model being created is already in the database.
      */
-    private void _executeTask() throws DBExecutionException {
+    private void _executeTask() throws DBExecutionException, ModelAlreadyExistException {
         Task task = _taskQueue.get(_noOfTasksExecuted);
 
         //if the task is of type save model task, then execute the proper method from the connection

@@ -5,6 +5,7 @@ import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.DBConnection;
 
@@ -51,10 +52,11 @@ public class SaveModelManager {
      * @exception DBConnectionException Thrown if there is a database connection error.
      * @exception DBExecutionException Thrown if the execution failed.
      * @exception IllegalArgumentException Thrown if the parameters were not right.
+     * @exception ModelAlreadyExistException Thrown if the model being created already exists.
      * 
      */
     public boolean save(XMLDBModel xmlDBModel) throws DBConnectionException,
-            DBExecutionException, IllegalArgumentException {
+            DBExecutionException, IllegalArgumentException, ModelAlreadyExistException {
         
         boolean isSuccessful = false;
 
