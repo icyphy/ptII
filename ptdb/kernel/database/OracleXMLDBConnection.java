@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.Environment;
 import com.sleepycat.db.EnvironmentConfig;
+import com.sleepycat.db.LockDetectMode;
 import com.sleepycat.dbxml.XmlContainer;
 import com.sleepycat.dbxml.XmlDocument;
 import com.sleepycat.dbxml.XmlException;
@@ -92,9 +93,10 @@ public class OracleXMLDBConnection implements DBConnection {
             config.setInitializeLocking(true);
             config.setInitializeLogging(true);
             config.setErrorStream(System.err);
-            config.setMaxLockers(2000);
-            config.setMaxLocks(2000);
-            config.setMaxLockObjects(2000);
+            /*config.setMaxLockers(1000);
+            config.setMaxLocks(1000);
+            config.setMaxLockObjects(1000);*/
+            config.setLockDetectMode(LockDetectMode.DEFAULT);
 
             File dbFile = new File(_params.getUrl());
 
@@ -1298,18 +1300,30 @@ public class OracleXMLDBConnection implements DBConnection {
          */
         ArrayList<DBModel> _parentsList;
 
-//        /**
-//         * Match the given DBModel to the current model
-//         * based on name.
-//         * @param model Model to be compared.
-//         * @return True if the names are same, false otherwise.
-//         */
-//        public boolean equals(DBModel model) {
-//            if (model._modelName.equals(_modelName)) {
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        }
+        /**
+         * Match the given DBModel to the current model
+         * @param model Model to be compared.
+         * @return True if the names are same, false otherwise.
+         */
+        public boolean equals(Object model) {
+            if (model instanceof DBModel) {
+                if (((DBModel) model)._modelName.equals(_modelName)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Return the hash code of the modelName as two models are equal if
+         * their model names are equal. So their has codes are also derived from
+         * model name.
+         * @return Hash code of the model name.
+         */
+        public int hashCode() {
+            return _modelName.hashCode();
+        }
     }
 }
