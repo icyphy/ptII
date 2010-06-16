@@ -111,11 +111,11 @@ public class DijkstraSequenceEstimator {
         Vector<Actor> result = new Vector<Actor>();
         int i = 0;
         while (i <= _maxDistance) {
-            Iterator it = _seqInfo.entrySet().iterator();
-            while (it.hasNext()) {
-                Entry<Actor, SeqInfo> elem = (Entry<Actor, SeqInfo>) it.next();
-                Actor actor = elem.getKey();
-                SeqInfo info = elem.getValue();
+            Iterator sequenceEntries = _sequenceInfos.entrySet().iterator();
+            while (sequenceEntries.hasNext()) {
+                Entry<Actor, _SequenceInfo> sequenceEntry = (Entry<Actor, _SequenceInfo>) sequenceEntries.next();
+                Actor actor = sequenceEntry.getKey();
+                _SequenceInfo info = sequenceEntry.getValue();
                 if (info.distance == i) {
                     result.add(actor);
                 }
@@ -127,38 +127,39 @@ public class DijkstraSequenceEstimator {
     }
 
     private void _init() {
-        _seqInfo = new HashMap<Actor, SeqInfo>();
+        _sequenceInfos = new HashMap<Actor, _SequenceInfo>();
         _unsettled = new HashSet<Actor>();
         _maxDistance = 0;
     }
 
     private void _initSequencedActors(List<SequenceAttribute> independentList) {
-        Iterator seqAttribute = independentList.iterator();
-        while (seqAttribute.hasNext()) {
-            SequenceAttribute seq = (SequenceAttribute) seqAttribute.next();
-            int seqNum = seq.getSequenceNumber();
-            SeqInfo si = new SeqInfo(seqNum, true, false);
-            si.original = seqNum;
-            Actor actor = (Actor) seq.getContainer();
-            _seqInfo.put(actor, si);
+        Iterator sequenceAttributes = independentList.iterator();
+        while (sequenceAttributes.hasNext()) {
+            SequenceAttribute attribute = (SequenceAttribute) sequenceAttributes.next();
+            int sequenceNumber = attribute.getSequenceNumber();
+            _SequenceInfo info = new _SequenceInfo(sequenceNumber, true, false);
+            info.original = sequenceNumber;
+            Actor actor = (Actor) attribute.getContainer();
+            _sequenceInfos.put(actor, info);
             _unsettled.add(actor);
         }
 
     }
 
     private void _initSources() {
+        NamedObj container = _director.getContainer();
         Iterator actors = ((CompositeEntity) _director.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            NamedObj container = actor.getContainer();
+            //NamedObj container = actor.getContainer();
             boolean isSource = true;
             Iterator inputs = actor.inputPortList().iterator();
             while (inputs.hasNext() && isSource) {
                 IOPort input = (IOPort) inputs.next();
-                Iterator conList = input.deepConnectedOutPortList().iterator();
-                while (conList.hasNext() && isSource) {
-                    IOPort connected = (IOPort) conList.next();
+                Iterator connectedPorts = input.deepConnectedOutPortList().iterator();
+                while (connectedPorts.hasNext() && isSource) {
+                    IOPort connected = (IOPort) connectedPorts.next();
                     if (container != ((NamedObj) connected).getContainer()) {
                         isSource = false;
                     }
@@ -166,8 +167,8 @@ public class DijkstraSequenceEstimator {
             }
             if (isSource) {
                 //if (sources.contains(_actorGraphNodeList.get(actor))) {
-                SeqInfo si = new SeqInfo(0, false, false);
-                _seqInfo.put(actor, si);
+                _SequenceInfo si = new _SequenceInfo(0, false, false);
+                _sequenceInfos.put(actor, si);
                 _unsettled.add(actor);
             }
         }
@@ -181,7 +182,7 @@ public class DijkstraSequenceEstimator {
         Actor result = null;
         while (it.hasNext()) {
             Actor actor = (Actor) it.next();
-            SeqInfo info = _seqInfo.get(actor);
+            _SequenceInfo info = _sequenceInfos.get(actor);
             int dist = info.distance;
             if (actor == null || dist > max) {
                 result = actor;
@@ -193,7 +194,7 @@ public class DijkstraSequenceEstimator {
 
     private void _update(Actor actor) throws NotSchedulableException {
 
-        SeqInfo actorSeqInfo = _seqInfo.get(actor);
+        _SequenceInfo actorSeqInfo = _sequenceInfos.get(actor);
         int actorDistance = actorSeqInfo.distance;
         Iterator ports = actor.outputPortList().iterator();
 
@@ -211,19 +212,19 @@ public class DijkstraSequenceEstimator {
             while (deepConnectedInPortList.hasNext()) {
                 Port deepConnectedPort = (Port) deepConnectedInPortList.next();
                 Actor connectedActor = (Actor) deepConnectedPort.getContainer();
-                SeqInfo seqInfo = _seqInfo.get(connectedActor);
+                _SequenceInfo _SequenceInfo = _sequenceInfos.get(connectedActor);
 
-                if (seqInfo == null) {
+                if (_SequenceInfo == null) {
                     // put actor in the map, if not visited
-                    _seqInfo.put(connectedActor, new SeqInfo(actorDistance + 1,
+                    _sequenceInfos.put(connectedActor, new _SequenceInfo(actorDistance + 1,
                             false, true));
                     _unsettled.add(connectedActor);
-                } else if (seqInfo.distance < actorDistance + 1) {
+                } else if (_SequenceInfo.distance < actorDistance + 1) {
                     // update distance, if a longer way is found.
                     _unsettled.add(connectedActor);
-                    seqInfo.distance = actorDistance + 1;
-                    if(seqInfo.isFixed) {
-                        seqInfo.changed = true;
+                    _SequenceInfo.distance = actorDistance + 1;
+                    if(_SequenceInfo.isFixed) {
+                        _SequenceInfo.changed = true;
                     }
                 }
             }
@@ -237,9 +238,9 @@ public class DijkstraSequenceEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         private classes                   ////
 
-    private static class SeqInfo {
+    private static class _SequenceInfo {
 
-        public SeqInfo(int d, boolean f, boolean c) {
+        public _SequenceInfo(int d, boolean f, boolean c) {
             distance = d;
             isFixed = f;
             changed = c;
@@ -257,7 +258,7 @@ public class DijkstraSequenceEstimator {
 
     private Director _director;
     private int _maxDistance;
-    private HashMap<Actor, SeqInfo> _seqInfo;
+    private HashMap<Actor, _SequenceInfo> _sequenceInfos;
     private Set<Actor> _unsettled;
 
 }

@@ -107,7 +107,7 @@ public class VisualSequenceDirector extends SequenceDirector {
 
     /** Specifies the sequential schedule as an array of records.*/
     public Parameter scheduleText;
-    
+
     /** Displays the sequential schedule in the icon of this director. */
     public TableIcon icon;
 
@@ -176,13 +176,13 @@ public class VisualSequenceDirector extends SequenceDirector {
                     }
 
                 } catch (Throwable e) {
-//                    MessageHandler.error("Failed to get schedule.", e);
+                    //                    MessageHandler.error("Failed to get schedule.", e);
                 }
             }
         }
 
         private void _updateSchedule(SequentialScheduleEditorPane pane) {
-            Iterator oActors = pane.getOrderedActors().iterator();
+            Iterator orderedActors = pane.getOrderedActors().iterator();
             int i = 1;
             StringBuffer newScheduleText = new StringBuffer();
             newScheduleText.append("{");
@@ -191,19 +191,20 @@ public class VisualSequenceDirector extends SequenceDirector {
             // ignored. Probably this is not desired.
             // FIXME: Also SequenceNumbers of non-opaque actors are not taken into
             // account during renumbering, so duplicates may occur.
-            while (oActors.hasNext()) {
+            while (orderedActors.hasNext()) {
                 if (i > 1) {
                     newScheduleText.append(",");
                 }
-                Actor oActor = (Actor) oActors.next();
-                List<SequenceAttribute> seqAttributes = ((Entity) oActor)
+                Actor actor = (Actor) orderedActors.next();
+                List<SequenceAttribute> seqAttributes = ((Entity) actor)
                         .attributeList(SequenceAttribute.class);//
-                if(seqAttributes.size() > 0) {
+                if (seqAttributes.size() > 0) {
                     SequenceAttribute seqAttribute = seqAttributes.get(0);
                     seqAttribute.setExpression(Integer.toString(i));
                 } else {
                     try {
-                        SequenceAttribute seqAttribute = new SequenceAttribute( (NamedObj) oActor, uniqueName("sequenceNumber"));
+                        SequenceAttribute seqAttribute = new SequenceAttribute(
+                                (NamedObj) actor, uniqueName("sequenceNumber"));
                         seqAttribute.setExpression(Integer.toString(i));
                     } catch (IllegalActionException e) {
                         e.printStackTrace();
@@ -211,11 +212,8 @@ public class VisualSequenceDirector extends SequenceDirector {
                         e.printStackTrace();
                     }
                 }
-                newScheduleText.append("{actor=\"");
-                newScheduleText.append(oActor.getDisplayName());
-                newScheduleText.append("\", sequenceNumber=\"");
-                newScheduleText.append(i);
-                newScheduleText.append("\"}");
+                newScheduleText.append("{actor=\"" + actor.getDisplayName()
+                        + "\", sequenceNumber=\"" + i + "\"}");
                 i++;
             }
             newScheduleText.append("}");
