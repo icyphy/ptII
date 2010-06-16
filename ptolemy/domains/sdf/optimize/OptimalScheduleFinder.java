@@ -95,7 +95,7 @@ public class OptimalScheduleFinder {
         try {              
             // instantiate the model
             _instantiateAnalysisModel(firingVector);
-            
+
             // determine the state vector indices
             _setStateIndices();
             
@@ -352,12 +352,11 @@ public class OptimalScheduleFinder {
                 int rate = DFUtilities.getRate(port);
                 // get the producing IOPort
                 List sourcePortList = port.sourcePortList();
-                // input port should not have more than one source
-                assert sourcePortList.size() <= 1; 
-                // only make a port in this model if the input port is connected
-                if(sourcePortList.size() > 0){
+                // input port may have more than one source if it is a multiport
+                // make a port in this model for every input port connected
+                for(int i = 0; i<sourcePortList.size(); i++){
                     // get the channel of the producing port
-                    _Channel channel = (_Channel) _channelMap.getFW(sourcePortList.get(0));   
+                    _Channel channel = (_Channel) _channelMap.getFW(sourcePortList.get(i));   
                     // if the source port is not related to a channel, then it is an external port
                     // and we do not care about it.
                     if(channel != null){
