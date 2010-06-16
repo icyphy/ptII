@@ -10,11 +10,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.PTDBSearchAttribute;
 import ptdb.common.dto.SearchCriteria;
+import ptdb.common.exception.DBConnectionException;
+import ptdb.common.exception.DBExecutionException;
+import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 import ptolemy.actor.gt.GTIngredient;
 import ptolemy.actor.gt.GTIngredientList;
@@ -25,6 +29,7 @@ import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -32,6 +37,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
@@ -43,14 +49,14 @@ import diva.gui.GUIUtilities;
 //// DbSearchFrame
 
 /**
- * The UI frame for the advanced DB search window. It has the specific searching
- * features for PTDB.
+ * The UI frame for the advanced DB search window. It has the specific 
+ * searching features for PTDB.
  *
  * @author Alek Wang
  * @since Ptolemy II 8.1
  * @version $Id$
- * @Pt.ProposedRating
- * @Pt.AcceptedRating
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
 public class DbSearchFrame extends TransformationEditor {
@@ -89,29 +95,33 @@ public class DbSearchFrame extends TransformationEditor {
 
         // add the menu of searching in the database
         DBMatchAction dbMatchAction = new DBMatchAction();
-        GUIUtilities.addMenuItem(_ruleMenu, dbMatchAction);
 
         GUIUtilities.addToolBarButton(_toolbar, dbMatchAction);
 
+        // remove the replacement and correspondence tabs 
+        JTabbedPane tabbedPane = getFrameController().getTabbedPane();
+        tabbedPane.remove(1);
+        tabbedPane.remove(1);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private classes                               ////
+    ////                private classes                            ////
 
     private class DBMatchAction extends FigureAction {
 
         public DBMatchAction() {
             super("Match Model");
 
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/match.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/match_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/match_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/match_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
+            GUIUtilities.addIcons(this,
+                    new String[][] {
+                            { "/ptdb/gui/img/database.gif",
+                                    GUIUtilities.LARGE_ICON },
+                            { "/ptdb/gui/img/database.gif",
+                                    GUIUtilities.ROLLOVER_ICON },
+                            { "/ptdb/gui/img/database.gif",
+                                    GUIUtilities.ROLLOVER_SELECTED_ICON },
+                            { "/ptdb/gui/img/database.gif",
+                                    GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", "Search Ptolemy models in Database"
                     + "(Ctrl+1)");
@@ -126,16 +136,16 @@ public class DbSearchFrame extends TransformationEditor {
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
-            // TODO create the new SearchResultFrame
-            //            SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
-            //                    new NamedObj(), DbSearchFrame.this, DbSearchFrame.this
-            //                            .getConfiguration());
+            // create the new SearchResultFrame
+            SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
+                    new NamedObj(), DbSearchFrame.this, DbSearchFrame.this
+                            .getConfiguration());
 
-            new SearchResultBuffer();
+            SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-            // TODO register the result listener from the search result frame
+            // register the result listener from the search result frame
             // to the search result buffer
-            //            searchResultBuffer.addObserver(searchResultsFrame);
+            searchResultBuffer.addObserver(searchResultsFrame);
 
             // get the search criteria
             // for this requirement, only the attributes part
@@ -177,13 +187,13 @@ public class DbSearchFrame extends TransformationEditor {
                 }
             } catch (MalformedStringException e1) {
 
-                e1.printStackTrace();
+                // ignore
             } catch (IllegalActionException e2) {
 
-                e2.printStackTrace();
+                // ignore
             } catch (NameDuplicationException e3) {
 
-                e3.printStackTrace();
+                // ignore
             }
 
             // get the attributes from the pattern and add to the list
@@ -200,66 +210,87 @@ public class DbSearchFrame extends TransformationEditor {
             // set the attributes to the search criteria accordingly
             searchCriteria.setAttributes(attributesList);
 
-            // Create the graph pattern search criteria
-            DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
-
-            // get the ports specified by the user
-            List<Port> portsList = pattern.portList();
-            ArrayList<Port> ports = new ArrayList<Port>();
-
-            for (Iterator iterator = portsList.iterator(); iterator.hasNext();) {
-                Port port = (Port) iterator.next();
-                ports.add(port);
-            }
-
-            dbGraphSearchCriteria.setPortsList(ports);
-
-            // get the relations specified by the user
-            List<Relation> relationsList = pattern.relationList();
-            ArrayList<Relation> relations = new ArrayList<Relation>();
-
-            for (Iterator iterator = relationsList.iterator(); iterator
-                    .hasNext();) {
-                Relation relation = (Relation) iterator.next();
-                relations.add(relation);
-            }
-
-            dbGraphSearchCriteria.setRelationsList(relations);
-
-            // get the component entities specified by the user
-            ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
-
-            _getAtomicEntities(pattern, componentEntities);
-
-            dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
-
-            // set the DBGraph search criteria to the whole search criteria
-            searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
-
-            // TODO show the search result frame
-            //            searchResultsFrame.pack();
-            //            searchResultsFrame.setVisible(true);
-
-            // TODO call the Search Manager to trigger the search
-            //  SearchManager searchManager = new SearchManager();
-            //            try {
-            //                searchManager.search(searchCriteria, searchResultBuffer);
+            // TODO comment for the first release, un-comment later. 
+            //            // Create the graph pattern search criteria
+            //            DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
             //
-            //            } catch (DBConnectionException e1) {
+            //            // get the ports specified by the user
+            //            List<Port> portsList = pattern.portList();
+            //            ArrayList<Port> ports = new ArrayList<Port>();
             //
-            //                e1.printStackTrace();
-            //            } catch (DBExecutionException e1) {
-            //
-            //                e1.printStackTrace();
+            //            for (Iterator iterator = portsList.iterator(); iterator.hasNext();) {
+            //                Port port = (Port) iterator.next();
+            //                ports.add(port);
             //            }
+            //
+            //            dbGraphSearchCriteria.setPortsList(ports);
+            //
+            //            // get the relations specified by the user
+            //            List<Relation> relationsList = pattern.relationList();
+            //            ArrayList<Relation> relations = new ArrayList<Relation>();
+            //
+            //            for (Iterator iterator = relationsList.iterator(); iterator
+            //                    .hasNext();) {
+            //                Relation relation = (Relation) iterator.next();
+            //                relations.add(relation);
+            //            }
+            //
+            //            dbGraphSearchCriteria.setRelationsList(relations);
+            //
+            //            // get the component entities specified by the user
+            //            ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
+            //
+            //            ArrayList<CompositeEntity> compositeEntities = new ArrayList<CompositeEntity>();
+            //
+            //            for (Iterator iterator = pattern.entityList().iterator(); iterator
+            //                    .hasNext();) {
+            //                Entity entity = (Entity) iterator.next();
+            //
+            //                if (entity instanceof CompositeEntity) {
+            //                    compositeEntities.add((CompositeEntity) entity);
+            //                } else if (entity instanceof ComponentEntity) {
+            //                    componentEntities.add((ComponentEntity) entity);
+            //                }
+            //
+            //            }
+            //
+            //            //            _getAtomicEntities(pattern, componentEntities);
+            //
+            //            dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
+            //            dbGraphSearchCriteria.setCompositeEntities(compositeEntities);
+            //
+            //            // set the DBGraph search criteria to the whole search criteria
+            //            searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
+            // TODO end of graph pattern criteria
+
+            // Show the search result frame.
+            searchResultsFrame.pack();
+            searchResultsFrame.setVisible(true);
+
+            // Call the Search Manager to trigger the search.
+            SearchManager searchManager = new SearchManager();
+            try {
+                searchManager.search(searchCriteria, searchResultBuffer);
+
+            } catch (DBConnectionException e1) {
+
+                throw new KernelRuntimeException(e1,
+                        "Cannot perform search now.");
+            } catch (DBExecutionException e2) {
+
+                throw new KernelRuntimeException(e2,
+                        "Cannot perform search now.");
+            }
 
             //            // TODO This is just for testing
-            //            for (Iterator iterator = searchCriteria.getAttributes().iterator(); iterator.hasNext();) {
+            //            for (Iterator iterator = searchCriteria.getAttributes().iterator(); iterator
+            //                    .hasNext();) {
             //                NamedObj namedObj = (NamedObj) iterator.next();
             //                if (namedObj instanceof Variable) {
             //                    System.out.println(namedObj.getClassName());
             //                    try {
-            //                        System.out.println(((Variable) namedObj).getToken().getClass());
+            //                        System.out.println(((Variable) namedObj).getToken()
+            //                                .getClass());
             //                    } catch (IllegalActionException e1) {
             //                        // TODO Auto-generated catch block
             //                        e1.printStackTrace();
@@ -267,7 +298,6 @@ public class DbSearchFrame extends TransformationEditor {
             //                }
             //
             //            }
-            //
 
             //            // TODO this is just for testing the Graph part, delete later
             //            System.out.println("search criteira: "
@@ -283,6 +313,18 @@ public class DbSearchFrame extends TransformationEditor {
             //                System.out.println(componentEntity);
             //            }
             //
+            //            System.out.println("composite entities: "
+            //                    + searchCriteria.getDBGraphSearchCriteria()
+            //                            .getCompositeEntities());
+            //
+            //            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
+            //                    .getCompositeEntities().iterator(); iterator.hasNext();) {
+            //                CompositeEntity compositeEntity = (CompositeEntity) iterator
+            //                        .next();
+            //                System.out.println(compositeEntity);
+            //            }
+            //
+            //            
             //            System.out.println("ports: "
             //                    + searchCriteria.getDBGraphSearchCriteria().getPortsList());
             //            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
@@ -304,25 +346,26 @@ public class DbSearchFrame extends TransformationEditor {
             //            // TODO done and delete later
         }
 
-        private void _getAtomicEntities(CompositeEntity compositeEntity,
-                ArrayList<ComponentEntity> componentEntities) {
-
-            if (compositeEntity != null) {
-                List<Entity> entities = compositeEntity.entityList();
-
-                for (Iterator iterator = entities.iterator(); iterator
-                        .hasNext();) {
-                    Entity entity = (Entity) iterator.next();
-                    if (entity instanceof CompositeEntity) {
-                        _getAtomicEntities((CompositeEntity) entity,
-                                componentEntities);
-
-                    } else if (entity instanceof ComponentEntity) {
-                        componentEntities.add((ComponentEntity) entity);
-                    }
-                }
-            }
-        }
+        // TODO to be deleted later 
+        //        private void _getAtomicEntities(CompositeEntity compositeEntity,
+        //                ArrayList<ComponentEntity> componentEntities) {
+        //
+        //            if (compositeEntity != null) {
+        //                List<Entity> entities = compositeEntity.entityList();
+        //
+        //                for (Iterator iterator = entities.iterator(); iterator
+        //                        .hasNext();) {
+        //                    Entity entity = (Entity) iterator.next();
+        //                    if (entity instanceof CompositeEntity) {
+        //                        _getAtomicEntities((CompositeEntity) entity,
+        //                                componentEntities);
+        //
+        //                    } else if (entity instanceof ComponentEntity) {
+        //                        componentEntities.add((ComponentEntity) entity);
+        //                    }
+        //                }
+        //            }
+        //        }
 
     }
 
