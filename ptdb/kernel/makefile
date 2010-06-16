@@ -36,13 +36,15 @@ DIRS =		bl database
 # Root of Ptolemy II directory
 ROOT =		../..
 
+CLASSPATH = 	$(ROOT)
+
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
+
 
 JSRCS = \
 	DBAttribute.java 
@@ -53,15 +55,20 @@ PTCLASSALLJARS = \
 	database/database.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
+JSRCS = \
+	DBAttribute.java
 
-EXTRA_SRCS =
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = \
 	bl \
         database
+
 OPTIONAL_FILES =
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass $(EXTRA_SRCS)
 install: subinstall jars
