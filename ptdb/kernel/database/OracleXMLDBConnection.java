@@ -271,9 +271,13 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + "Please use the executeSaveModelTask to " 
                                 + "update the model.");
             } else {
+                
+                String modelBody = model.getModel();
+                
+                modelBody = modelBody.substring(modelBody.indexOf("<entity"));
 
                 _xmlContainer.putDocument(_xmlTransaction,
-                        model.getModelName(), model.getModel());
+                        model.getModelName(), modelBody);
 
             }
         } catch (XmlException e) {
@@ -533,7 +537,13 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + " - the model does not exist in the database."
                                 + " Please use executeCreateModelTask instead.");
             } else {
-                currentDbModel.setContent(xmlDBModel.getModel());
+                
+ 
+                String modelBody = xmlDBModel.getModel();
+                
+                modelBody = modelBody.substring(modelBody.indexOf("<entity"));
+                
+                currentDbModel.setContent(modelBody);
                 _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
             }
 
