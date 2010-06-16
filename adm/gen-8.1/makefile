@@ -1414,7 +1414,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/html \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/c/type \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/c \
-	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/lib \
@@ -1487,7 +1486,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/load \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/save \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil
+	$(REMOTE1PTIIDIST)/ptolemy/vergil \
+	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java
 
 
 # Directories we run make in before running make in the NONJSALLDIRS
