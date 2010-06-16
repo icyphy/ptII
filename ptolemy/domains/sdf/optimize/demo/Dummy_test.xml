@@ -42,7 +42,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
             </property>
         </entity>
-        <entity name="DummyTransformer" class="ptolemy.domains.sdf.optimize.testing.DummyTransformer">
+        <entity name="DummyTransformer" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 70.0]">
             </property>
         </entity>
@@ -55,15 +55,15 @@
         <link port="DummyTransformer.input" relation="relation2"/>
         <link port="DummyTransformer.output" relation="relation"/>
     </entity>
-    <entity name="DummySource" class="ptolemy.domains.sdf.optimize.testing.DummySource">
+    <entity name="DummySource" class="ptolemy.domains.sdf.optimize.lib.DummySource">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 240.0]">
         </property>
     </entity>
-    <entity name="DummyTransformer1" class="ptolemy.domains.sdf.optimize.testing.DummyTransformer">
+    <entity name="DummyTransformer1" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 155.0]">
         </property>
     </entity>
-    <entity name="DummyTransformer2" class="ptolemy.domains.sdf.optimize.testing.DummyTransformer">
+    <entity name="DummyTransformer2" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 325.0]">
         </property>
     </entity>
@@ -91,7 +91,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
             </property>
         </entity>
-        <entity name="DummyTransformer" class="ptolemy.domains.sdf.optimize.testing.DummyTransformer">
+        <entity name="DummyTransformer" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 70.0]">
             </property>
         </entity>
@@ -132,7 +132,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 70.0]">
             </property>
         </entity>
-        <entity name="DummyTransformer" class="ptolemy.domains.sdf.optimize.testing.DummyTransformer">
+        <entity name="DummyTransformer" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 70.0]">
             </property>
         </entity>
@@ -145,7 +145,7 @@
         <link port="DummyTransformer.input" relation="relation2"/>
         <link port="DummyTransformer.output" relation="relation"/>
     </entity>
-    <entity name="DummyTransformer3" class="ptolemy.domains.sdf.optimize.testing.DummyTransformer">
+    <entity name="DummyTransformer3" class="ptolemy.domains.sdf.optimize.lib.DummyTransformer">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 410.0]">
         </property>
     </entity>

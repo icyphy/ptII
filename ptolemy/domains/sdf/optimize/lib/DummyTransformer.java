@@ -27,7 +27,7 @@
 
  */
 
-package ptolemy.domains.sdf.optimize.testing;
+package ptolemy.domains.sdf.optimize.lib;
 
 import ptolemy.data.Token;
 import ptolemy.domains.sdf.optimize.SharedBufferTransformer;

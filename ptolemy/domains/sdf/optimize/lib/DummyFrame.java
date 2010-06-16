@@ -1,5 +1,5 @@
-/* DummyReferenceToken is a token encapsulating a reference to a shared
-   data object. It is used for testing the OptimizingSDFDirector.
+/* DummyFrame mimics a shared data object.
+ * It is used for testing the OptimizingSDFDirector
 
  Copyright (c) 1997-2010 The Regents of the University of California.
  All rights reserved.
@@ -29,20 +29,17 @@
 /**
  * 
  */
-package ptolemy.domains.sdf.optimize.testing;
-
-import ptolemy.data.Token;
+package ptolemy.domains.sdf.optimize.lib;
 
 /**
 <h1>Class comments</h1>
-DummyReferenceToken is a token encapsulating a reference to a shared
-data object. It is used for testing the OptimizingSDFDirector.
+A DummyFrame mimics a shared data object.
+It is used for testing the OptimizingSDFDirector. The shared data object holds an
+integer value. 
 <p>
-See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and 
-{@link ptolemy.domains.sdf.optimize.testing.DummyFrame} for more information.
+See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} for more information.
 </p>
 @see ptolemy.domains.sdf.optimize.OptimizingSDFDirector
-@see ptolemy.domains.sdf.optimize.testing.DummyFrame
 
 @author Marc Geilen
 @version $Id$
@@ -50,38 +47,36 @@ See {@link ptolemy.domains.sdf.optimize.OptimizingSDFDirector} and
 @Pt.ProposedRating Red (mgeilen)
 @Pt.AcceptedRating Red ()
 */
-public class DummyReferenceToken extends Token {
-
-    
-    /**
-     * Create an instance of a reference token.
-     * @param r the object the token shall refer to
-     */
-    public DummyReferenceToken(Object r) {
-        _ref = r;
-    }
-    
-    /**
-     * Gets the reference.
-     * @return referenced object
-     */
-    public Object getReference(){
-        return _ref;
-    }
+public class DummyFrame implements Cloneable {
 
     /**
-     * Provide a string representation of the token.
-     * @return string representation of the token
+     * Represents the value encapsulated by the shared data frame.
+     */
+    public int value;
+
+    /**
+     * Provides a string representation of the object.
+     * @return string representation of the object
      */
     public String toString() {
-        return _ref.toString();
+        return "Frame(" + Integer.toString(value) + ")";
+    }
+    
+    /**
+     * Clone the DummyFrame.
+     * @return the cloned frame
+     */
+    public DummyFrame clone() {
+        DummyFrame f;
+        // TODO: below seems a silly solution, but I don't want expose callers
+        // of this method to the exception...
+        try {
+            f = (DummyFrame) super.clone();
+        } catch (CloneNotSupportedException e) {
+            f = new DummyFrame();
+        }
+        f.value = value;
+        return f;
     }
 
-////////////////////////////////////////////////
-////           private fields               ////
-
-    /**
-     * Holds the reference to some object.
-     */
-    private Object _ref;
 }

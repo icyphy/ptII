@@ -323,7 +323,7 @@ public class OptimizingSDFScheduler extends SDFScheduler {
             }
             // delegate the construction of the schedule to the OptimizedScheduleFinder
             optimizedSchedule = finder.makeSchedule(repVec);
-            // optimizedSchedule = finder.makeScheduleGreedy(repVec);
+            //optimizedSchedule = finder.makeScheduleGreedy(repVec);
             
             
             // Iterate over the schedule once to fix the buffer sizes.

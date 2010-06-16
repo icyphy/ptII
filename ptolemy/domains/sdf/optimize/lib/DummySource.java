@@ -25,7 +25,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
 
-package ptolemy.domains.sdf.optimize.testing;
+package ptolemy.domains.sdf.optimize.lib;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.data.type.BaseType;

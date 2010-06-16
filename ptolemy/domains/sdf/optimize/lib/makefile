@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/optimize/testing
+ME =		ptolemy/domains/sdf/optimize/lib
 
 DIRS =
 
@@ -43,7 +43,7 @@ include $(CONFIG)
 
 
 # Used to build jar files
-PTPACKAGE = 	testing
+PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR

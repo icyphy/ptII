@@ -26,7 +26,7 @@ It is used for testing the OptimizingSDFDirector.
 
  */
 
-package ptolemy.domains.sdf.optimize.testing;
+package ptolemy.domains.sdf.optimize.lib;
 
 import ptolemy.actor.lib.Sink;
 import ptolemy.domains.sdf.optimize.BufferingProfile;
