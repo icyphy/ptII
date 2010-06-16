@@ -1,4 +1,4 @@
-# Makefile for ptdb - A model database for Ptolemy, gui directory
+# Makefile for ptdb - A model database for Ptolemy, images for the gui
 #
 # @Authors: Christopher Brooks (makefile only), based on a file by Thomas M. Parks
 #
@@ -29,14 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME = 		ptdb/gui
+ME = 		ptdb/gui/img
 
-# $PTII/configure runs and looks for PTPOWERMOCK
-# $(PTPOWERMOCK_DIR) to test
-DIRS =		img $(PTPOWERMOCK_DIR)
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH = 	$(ROOT)
 
@@ -45,64 +43,30 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	gui
-PTCLASSJAR =
+PTPACKAGE = 	img
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	img/img.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS = \
-	ActorGraphDBFrame.java \
-	ActorGraphDBTableau.java \
-	DbSearchFrame.java \
-	ModelPanel.java \
-	CancelObservable.java \
-	ParentPanel.java \
-	ParentHierarchyPanel.java \
-	SearchResultPanel.java \
-	SearchResultsFrame.java \
-	ModelAttributePanel.java \
-	SaveModelToDBFrame.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	arrow.GIF
+	database.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test img
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	'ActorGraphDBFrame$$LoadModelFromDBAction.class' \
-	'ActorGraphDBFrame$$ModelSearchResults$$1.class' \
-	'ActorGraphDBFrame$$ModelSearchResults$$2.class' \
-	'ActorGraphDBFrame$$ModelSearchResults.class' \
-	'ActorGraphDBFrame$$OpenSearchFrameAction.class' \
-	'ActorGraphDBTableau$$Factory.class' \
-	'DbSearchFrame$$DBMatchAction.class' \
-	'ModelAttributePanel$$1.class' \
-	'ModelPanel$$1.class' \
-	'ParentPanel$$1.class' \
-	'SaveModelToDBFrame$$1.class' \
-	'SaveModelToDBFrame$$2.class' \
-	'SaveModelToDBFrame$$3.class' \
-	'SearchResultsFrame$$1.class' \
-	'SearchResultsFrame$$2.class' \
-	'SearchResultsFrame$$3.class'
-
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 
 # Get the rest of the rules
