@@ -15,6 +15,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -189,8 +190,20 @@ public class SearchResultsFrame extends JFrame implements Observer {
     public void update(Observable buffer, Object arg) {
 
         if (buffer instanceof SearchResultBuffer) {
+            ArrayList<XMLDBModel> results = ((SearchResultBuffer) buffer)
+                    .getResults();
 
-            display(((SearchResultBuffer) buffer).getResults());
+            if (results != null && results.size() > 0) {
+                display(results);
+            } else {
+                if (_resultPanelList.size() == 0) {
+                    // No result found. 
+                    JOptionPane.showMessageDialog(this, "No result found.");
+                } else {
+                    // Searching is done. 
+                    JOptionPane.showMessageDialog(this, "Search is done.");
+                }
+            }
 
         }
 

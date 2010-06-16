@@ -60,16 +60,17 @@ public class SearchResultPanel extends JPanel {
         add(hierarchyLabel);
 
         _parentPanelList = new ArrayList();
+        if (dbModel.getParents() != null) {
+            for (List<XMLDBModel> hierarchy : dbModel.getParents()) {
 
-        for (List<XMLDBModel> hierarchy : dbModel.getParents()) {
+                ParentHierarchyPanel panelToAdd;
+                panelToAdd = new ParentHierarchyPanel(hierarchy, _modelName,
+                        _configuration);
+                _parentPanelList.add(panelToAdd);
+                panelToAdd.setAlignmentX(LEFT_ALIGNMENT);
+                add(panelToAdd);
 
-            ParentHierarchyPanel panelToAdd;
-            panelToAdd = new ParentHierarchyPanel(hierarchy, _modelName,
-                    _configuration);
-            _parentPanelList.add(panelToAdd);
-            panelToAdd.setAlignmentX(LEFT_ALIGNMENT);
-            add(panelToAdd);
-
+            }
         }
 
     }
