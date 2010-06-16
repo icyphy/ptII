@@ -44,7 +44,8 @@ include $(CONFIG)
 
 JSRCS_TEST_DRIVERS = \
 	TestLoadManagerInterface.java \
-	TestLoadModelManager.java
+	TestLoadModelManager.java \
+	TestLoadRequirementsIntegration.java
 
 JSRCS = \
 	$(JSRCS_TEST_DRIVERS)
