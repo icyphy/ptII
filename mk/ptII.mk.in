@@ -90,6 +90,11 @@ JFCHOME = 	/opt/swing
 # CLASSPATH necessary to find the swing.jar file for JFC
 JFCCLASSPATH = $(JFCHOME)/swing.jar
 
+# Java OpenGL (Jogl) directory.  Jogl is from
+# https://jogl.dev.java.net/
+JOGL_DIR =	@JOGL_DIR@
+
+
 # The variables below are for the SunTest JavaScope code coverage tool
 # See http://www.suntest.com/JavaScope
 # The 'jsinstr' command, which instruments Java code.
@@ -524,13 +529,6 @@ PTGRDOMAIN_JAR =	@PTGRDOMAIN_JAR@
 # PTGR_PACKAGES is used in ptII/doc/makefile
 PTGR_PACKAGES =		@PTGR_PACKAGES@
 
-# Set to gro and used in
-# $PTII/ptolemy/domains/makefile if the Java OpenGL (Jogl) interface was found.
-PTGRO_DIR =		@PTGRO_DIR@
-
-# PTGRO_PACKAGES is used in ptII/doc/makefile if Jogl was found.
-PTGRO_PACKAGES =	@PTGRO_PACKAGES@
-
 # Set to itextpdf and used in
 # $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
 PTITEXTPDF_DIR = 	@PTITEXTPDF_DIR@
@@ -622,15 +620,18 @@ PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
 PTJNI_LIBRARIES = @PTJNI_LIBRARIES@
 
-# Java OpenGL (Jogl) directory.  Jogl is from
-# https://jogl.dev.java.net/
-PTJOGL_DIR =			@PTJOGL_DIR@
+# Set to jogl and used in
+# $PTII/ptolemy/domains/makefile if the Java OpenGL (Jogl) interface was found.
+PTJOGL_DIR =		@PTJOGL_DIR@
 
-# Java OpenGL (Jogl) jar files used by the gro domain.
-PTJOGL_JARS=			@PTJOGL_JARS@
+# Java OpenGL (Jogl) jar files used by the jogl domain.
+PTJOGL_JARS=		@PTJOGL_JARS@
+
+# PTJOGL_PACKAGES is used in ptII/doc/makefile if Jogl was found.
+PTJOGL_PACKAGES =	@PTJOGL_PACKAGES@
 
 # Set to joystick if Joystick.jar was found.
-PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
+PTJOYSTICK_DIR =     	@PTJOYSTICK_DIR@
 
 # Ptolemy II packages that use the Java Joystick facilty
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile

@@ -56,11 +56,11 @@ JSRCS = \
 	Display3D.java \
 	Line3D.java \
 	Point3D.java \
-	RandonPoints.java \
+	RandomPoints.java \
 	Rotate3D.java \
 	Translate3D.java \
 	ViewScene3D.java 
-		
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -70,7 +70,7 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-
+	'ViewScene3D$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

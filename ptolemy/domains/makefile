@@ -37,19 +37,19 @@ EXPERIMENTAL_DOMAINS =
 # Domains, in alphabetical order.  If you change this, change
 # PTCLASSALLJARS below
 # DT has to come after SDF, sorry.
-# PTGRO_DIR is set by configure in $PTII/mk/ptII.mk to gro if
-#   the Java OpenGL (Jogl) interface was found
 # PTPSDF_DIR is set by configure in $PTII/mk/ptII.mk to psdf if
 #   $PTII/lib/mapss.jar was found
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
+# PTJOGL_DIR is set by configure in $PTII/mk/ptII.mk to jogl if
+#   Jogl (Java bindings for OpenGL) was found.
 # PTSPACE_DIR is set to space by configure in $PTII/mk/ptII.mk if
 #   ojdbc6.jar was found.
 DOMAINS =	ci continuous csp ct curriculum \
 	        dde ddf de fsm hdf modal pn sdf dt \
-	        giotto petrinet rendezvous properties \
+	        giotto $(PTJOGL_DIR) petrinet rendezvous properties \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos $(PTSPACE_DIR) \
-		sequence sr tdl tester tm $(PTJAVA3D_DIR) $(PTGRO_DIR) wireless
+		sequence sr tdl tester tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
 

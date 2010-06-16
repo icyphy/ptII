@@ -55,7 +55,7 @@ PTCLASSALLJARS =
 JSRCS = \
 	GraphicsDirector.java \
 	GraphicsScheduler.java 
-	
+
 EXTRA_SRCS =    $(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -67,8 +67,8 @@ MISC_FILES =    $(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'GraphicsDirector$$PopMatrix.class' \
-	'Graphics$$PushMatrix.class' \
-	
+	'GraphicsDirector$$PushMatrix.class' \
+	'Graphics$$PushMatrix.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

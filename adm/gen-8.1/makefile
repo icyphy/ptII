@@ -1272,6 +1272,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/fmv \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/jogl/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/jogl/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/modal/kernel/fmv \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \

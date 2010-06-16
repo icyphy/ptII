@@ -359,10 +359,10 @@ JODE_JFLAG=
 
 
 #### Jogl
-# PTGRO_DIR is set to gro if configure found the Java OpenGL (Jogl) interface
-PTGRO_DIR=@PTGRO_DIR@
+# PTJOGL_DIR is set to jogl if configure found the Java OpenGL (Jogl) interface
+PTJOGL_DIR=@PTJOGL_DIR@
 JOGL_JARS=""
-if [ "$PTGRO_DIR" = "gro" ]; then
+if [ "$PTJOGL_DIR" = "jogl" ]; then
     JOGL_JARS="@PTJOGL_JARS@"
 fi
 
