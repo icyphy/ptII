@@ -97,7 +97,7 @@ public class XMLDBModel {
     /**
      * Set the isNew variable which indicates if the model is in the database or
      * it is new model.
-     * @param True or false value to set the isNew member variable.
+     * @param boolean True or false value to set the isNew member variable.
      */
     public void setIsNew(boolean isNew) {
         _isNew = isNew;
@@ -105,7 +105,7 @@ public class XMLDBModel {
 
     /**
      * Set the model name.
-     * @param The model name.
+     * @param modelName The model name.
      */
     public void setModelName(String modelName) {
         _modelName = modelName;
@@ -113,7 +113,7 @@ public class XMLDBModel {
 
     /**
      * Set the model content.
-     * @param The model content in xml format.
+     * @param modelContent The model content in xml format.
      */
     public void setModel(String modelContent) {
         _modelContent = modelContent;
@@ -121,7 +121,7 @@ public class XMLDBModel {
 
     /**
      * Set the parents for the current model
-     * @param List of parents for this model.
+     * @param listParents List of parents for this model.
      */
     public void setParents(List<List<XMLDBModel>> listParents) {
         _listParents = listParents;
