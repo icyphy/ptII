@@ -48,7 +48,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	DBConnectionException.java \
-	DBExecutionException.java
+	DBExecutionException.java \
+	ModelAlreadyExistException.java
 
 EXTRA_SRCS =	$(JSRCS)
 
