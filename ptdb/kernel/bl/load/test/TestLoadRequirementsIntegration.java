@@ -35,7 +35,7 @@ public class TestLoadRequirementsIntegration {
 
 
     /**
-     * Test the loadModel method in LoadManagerInterface class. 
+     * Test the loadModel() method in LoadManagerInterface class. 
      * <p> Conditions for this test: 
      * <br>- The model is in the database and does not have
      * references in it. </p>
@@ -74,7 +74,7 @@ public class TestLoadRequirementsIntegration {
     }
 
     /**
-     * Test the loadModel method in LoadManagerInterface class. 
+     * Test the loadModel() method in LoadManagerInterface class. 
      * <p> Conditions for this test: 
      * <br>- The model is in the database and has references in
      * it. </p>
@@ -113,7 +113,7 @@ public class TestLoadRequirementsIntegration {
     }
 
     /**
-     * Test the loadModel method in LoadManagerInterface class. 
+     * Test the loadModel() method in LoadManagerInterface class. 
      * <p> Conditions for this test: 
      * <br>- The model is not in the database. </p>
      * 
@@ -150,7 +150,7 @@ public class TestLoadRequirementsIntegration {
     }
 
     /**
-     * Test the loadModel method in LoadManagerInterface class. 
+     * Test the loadModel() method in LoadManagerInterface class. 
      * <p> Conditions for this test: 
      * <br>- The name of the model is null. </p>
      * 
@@ -187,7 +187,7 @@ public class TestLoadRequirementsIntegration {
     }
 
     /**
-     * Test the loadModel method in LoadManagerInterface class. 
+     * Test the loadModel() method in LoadManagerInterface class. 
      * <p> Conditions for this test: 
      * <br>- The name of the model is empty. </p>
      * 
