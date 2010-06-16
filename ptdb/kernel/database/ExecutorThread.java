@@ -1,7 +1,5 @@
 package ptdb.kernel.database;
 
-import org.python.core.exceptions;
-
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
