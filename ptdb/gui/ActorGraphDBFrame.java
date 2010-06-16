@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -103,8 +104,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     protected void _initActorGraphDBFrame() {
 
         _loadModelFromDBAction = new LoadModelFromDBAction();
-
         _openSearchFrameAction = new OpenSearchFrameAction(this.getTableau());
+        _saveModelToDBAction = new SaveModelToDBAction(this);
 
     }
 
@@ -136,6 +137,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                     .addHotKey(_getRightComponent(), _openSearchFrameAction);
             GUIUtilities.addMenuItem(_dbMenu, _openSearchFrameAction);
 
+            GUIUtilities
+                .addHotKey(_getRightComponent(), _saveModelToDBAction);
+            GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
+            
             // TODO: }
         }
 
@@ -151,6 +156,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     protected Action _loadModelFromDBAction;
 
     protected Action _openSearchFrameAction;
+    
+    protected Action _saveModelToDBAction;
 
     ///////////////////////////////////////////////////////////////////
     ////         public inner classes                           ////
@@ -272,7 +279,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                private inner classes                    ////
+    ////                private inner classes                      ////
 
     ///////////////////////////////////////////////////////////////////
     //// LoadModelFromDB
@@ -317,7 +324,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             super("Search Model in Database");
 
             putValue("tooltip", "Search Model in Database");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
         }
 
         ///////////////////////////////////////////////////////////////
@@ -357,6 +364,47 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             }
 
         }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    //// SaveModelToDBAction
+
+    /**
+     * Save the model to database.
+     */
+    private class SaveModelToDBAction extends AbstractAction {
+        /**
+         * Create a new action to save a model to the database.
+         * 
+         * @param frame
+         *      The frame from which the SaveModelToDBFrame is opened.
+         */
+        public SaveModelToDBAction(JFrame frame) {
+
+            super("Save Model to Database");
+            
+            _sourceFrame = frame;
+            
+            putValue("tooltip", "Save Model to Database");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_A));
+
+        }
+
+        public void actionPerformed(ActionEvent e) {
+
+            JFrame frame = new SaveModelToDBFrame(getModel(), _sourceFrame);
+            frame.pack();
+            frame.setVisible(true);
+
+        }
+        
+        ///////////////////////////////////////////////////////////////////
+        ////                private variables                         ////
+        
+        private JFrame _sourceFrame;
+        
+        private Boolean isNewModel;
+        
     }
 
 }

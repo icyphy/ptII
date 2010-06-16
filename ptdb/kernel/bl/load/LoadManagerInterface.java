@@ -34,17 +34,21 @@ public class LoadManagerInterface {
      *          A PtolemyEffigy object that the
      *          GUI can display.
      * @exception DBConnectionException
+     *          Thrown by LoadModelManager if a problem occurs with the
+     *          database connection.
      * @exception Exception
+     *          Thrown if a problem occurs creating an effigy from the MoML.
      */
     public PtolemyEffigy loadModel(String name, Configuration configuration)
             throws Exception {
 
         //Instantiate a LoadModelManager then pass the names array.
-        LoadModelManager lmm = new LoadModelManager();
-        XMLDBModel dbModel = lmm.load(name);
-
-        //Convert the XMLDBModel into an effigy.
-        return getEffigy(dbModel, configuration);
+        LoadModelManager loadModelManager = new LoadModelManager();
+        XMLDBModel dbModel = loadModelManager.load(name);
+        
+        PtolemyEffigy returnEffigy = getEffigy(dbModel, configuration);
+        
+        return returnEffigy;
 
     }
 

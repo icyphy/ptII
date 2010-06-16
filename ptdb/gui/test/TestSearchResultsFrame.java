@@ -68,7 +68,7 @@ public class TestSearchResultsFrame {
                 parentHierarchy.add(parentBranch);
 
             }
-
+            
             XMLDBModel searchResult = new XMLDBModel();
             List<XMLDBModel> searchResultList = new ArrayList();
 
@@ -76,9 +76,17 @@ public class TestSearchResultsFrame {
             searchResult.setModelName("model1");
             searchResult.setParents(parentHierarchy);
 
-            searchResultList.add(searchResult);
+            
+            XMLDBModel searchResult2 = new XMLDBModel();
+            searchResult2.setIsNew(false);
+            searchResult2.setModelName("model2");
+            searchResult2.setParents(null);
+            
+            searchResultList.add(searchResult);            
+            searchResultList.add(searchResult2);
 
             frame.display(searchResultList);
+            
 
         } catch (Exception e) {
 
@@ -99,8 +107,7 @@ public class TestSearchResultsFrame {
         dbModel
                 .setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
                         + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
-                        + "<entity name=\"model1\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                        + "<entity name=\"model1\" class=\"ptolemy.actor.TypedCompositeActor\">"                        + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                         + "</property>"
                         + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
                         + "</property>"

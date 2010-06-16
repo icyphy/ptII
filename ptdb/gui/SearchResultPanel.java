@@ -41,8 +41,9 @@ public class SearchResultPanel extends JPanel {
      */
     public SearchResultPanel(XMLDBModel dbModel, Configuration configuration) {
 
-        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(LEFT_ALIGNMENT);
+        setMinimumSize(getMaximumSize());
         Border border = BorderFactory.createLineBorder(Color.black, 3);
         setBorder(border);
 
@@ -53,24 +54,31 @@ public class SearchResultPanel extends JPanel {
         _modelPanel.setAlignmentX(LEFT_ALIGNMENT);
         add(_modelPanel);
 
-        JLabel hierarchyLabel = new JLabel("Model Hierarchy:");
-        hierarchyLabel.setAlignmentX(LEFT_ALIGNMENT);
-        Border labelBorder = BorderFactory.createEmptyBorder(0, 3, 0, 0);
-        hierarchyLabel.setBorder(labelBorder);
-        add(hierarchyLabel);
-
-        _parentPanelList = new ArrayList();
         if (dbModel.getParents() != null) {
-            for (List<XMLDBModel> hierarchy : dbModel.getParents()) {
-
-                ParentHierarchyPanel panelToAdd;
-                panelToAdd = new ParentHierarchyPanel(hierarchy, _modelName,
-                        _configuration);
-                _parentPanelList.add(panelToAdd);
-                panelToAdd.setAlignmentX(LEFT_ALIGNMENT);
-                add(panelToAdd);
-
+            
+            if(dbModel.getParents().size()>0){
+                
+                JLabel hierarchyLabel = new JLabel("Model Hierarchy:");
+                hierarchyLabel.setAlignmentX(LEFT_ALIGNMENT);
+                Border labelBorder = BorderFactory.createEmptyBorder(0, 3, 0, 0);
+                hierarchyLabel.setBorder(labelBorder);
+                add(hierarchyLabel);
+    
+                _parentPanelList = new ArrayList();
+                
+                for (List<XMLDBModel> hierarchy : dbModel.getParents()) {
+    
+                    ParentHierarchyPanel panelToAdd;
+                    panelToAdd = new ParentHierarchyPanel(hierarchy, _modelName,
+                            _configuration);
+                    _parentPanelList.add(panelToAdd);
+                    panelToAdd.setAlignmentX(LEFT_ALIGNMENT);
+                    add(panelToAdd);
+    
+                }
+                
             }
+            
         }
 
     }

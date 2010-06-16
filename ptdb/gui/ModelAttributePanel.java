@@ -1,7 +1,6 @@
 package ptdb.gui;
 
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -48,27 +47,41 @@ public class ModelAttributePanel extends JPanel {
         super();
 
         _attMap = attMap;
-
-        setMaximumSize(new Dimension(0, 30));
-        setLayout(new GridLayout(1, 4));
+        
         setBorder(BorderFactory.createEtchedBorder());
-
+        
+        setMaximumSize(new Dimension(400, 30));
+        setPreferredSize(new Dimension(400, 30));
+        setAlignmentY(LEFT_ALIGNMENT);
+        
         JLabel nameLabel = new JLabel("Attribute");
+        nameLabel.setPreferredSize(new Dimension(50, 20));
+        nameLabel.setAlignmentY(LEFT_ALIGNMENT);
+        
         _attributeName = new JComboBox(getAttributeList(_attMap));
-
+        _attributeName.setPreferredSize(new Dimension(80, 20));
+        _attributeName.setAlignmentY(LEFT_ALIGNMENT);
+        
         JLabel valueLabel = new JLabel("Value");
+        valueLabel.setPreferredSize(new Dimension(40, 20));
+        valueLabel.setAlignmentY(LEFT_ALIGNMENT);
 
         _textValue = new JTextField();
+        _textValue.setPreferredSize(new Dimension(80, 20));
+        _textValue.setAlignmentY(LEFT_ALIGNMENT);
+        
         _booleanValue = new JCheckBox();
+        _booleanValue.setAlignmentY(LEFT_ALIGNMENT);
+        
         _listValue = new JComboBox();
+        _listValue.setPreferredSize(new Dimension(80, 20));
+        _listValue.setAlignmentY(LEFT_ALIGNMENT);
 
         _attributeName.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
 
-                JComboBox cb = (JComboBox) e.getSource();
-                String att = (String) cb.getSelectedItem();
-                updateDisplay(att);
+                updateDisplay();
             }
 
         });
@@ -80,7 +93,7 @@ public class ModelAttributePanel extends JPanel {
         add(_booleanValue);
         add(_listValue);
 
-        updateDisplay(_attributeName.getSelectedItem().toString());
+        updateDisplay();
 
     }
 
@@ -142,46 +155,102 @@ public class ModelAttributePanel extends JPanel {
         return _attributeName.getSelectedItem().toString();
 
     }
+    
+    /** Set the attribute name.
+     * 
+     * @param name 
+     *          The attribute name.
+     */
+   public void setAttributeName(String name) {
+
+       _attributeName.setSelectedItem(name);
+       updateDisplay();
+
+   }
+    
+    /** Set the value of this attribute.
+     * 
+     * @param type 
+     *          The type of the attribute.
+     * @param value 
+     *          The value of the attribute.
+     */
+   public void setValue(String value) {
+
+       if (_attMap.get((String) _attributeName.getSelectedItem()) == "Text") {
+
+           _textValue.setText(value);
+
+       } else if (_attMap.get((String) _attributeName.getSelectedItem())  == "List") {
+
+           _listValue.setSelectedItem(value);
+
+       } else if (_attMap.get((String) _attributeName.getSelectedItem())  == "Boolean") {
+
+           if (value == "TRUE") {
+
+               _booleanValue.setSelected(true);
+
+           } else if (value == "FALSE"){
+
+               _booleanValue.setSelected(false);
+               
+           }
+           
+       }
+
+   }
 
     ///////////////////////////////////////////////////////////////////
     //                    private methods                          ////
 
-    private void updateDisplay(String att) {
+    private void updateDisplay() {
 
-        if (_attMap.get(att) == "Boolean") {
+        if (_attMap.get((String) _attributeName.getSelectedItem())  == "Boolean") {
 
-            _booleanValue.setVisible(true);
-            _listValue.setVisible(false);
+            _booleanValue.setEnabled(true);
+            _listValue.setEnabled(false);
             _listValue.setSelectedItem(null);
-            _textValue.setVisible(false);
+            _textValue.setEnabled(false);
             _textValue.setText("");
-        } else if (_attMap.get(att) == "Text") {
+        } else if (_attMap.get((String) _attributeName.getSelectedItem())  == "Text") {
 
-            _textValue.setVisible(true);
-            _booleanValue.setVisible(false);
+            _textValue.setEnabled(true);
+            _booleanValue.setEnabled(false);
             _booleanValue.setSelected(false);
-            _listValue.setVisible(false);
+            _listValue.setEnabled(false);
             _listValue.setSelectedItem(null);
 
-        } else if (_attMap.get(att) == "List") {
+        } else if (_attMap.get((String) _attributeName.getSelectedItem())  == "List") {
 
-            _listValue.setVisible(true);
-            _textValue.setVisible(false);
+            _listValue.setEnabled(true);
+            _textValue.setEnabled(false);
             _textValue.setText("");
-            _booleanValue.setVisible(false);
+            _booleanValue.setEnabled(false);
             _booleanValue.setSelected(false);
-
+        
+        } else {
+            
+            _listValue.setEnabled(false);
+            _textValue.setEnabled(false);
+            _booleanValue.setEnabled(false);
+            
+            _textValue.setText("");
+            _booleanValue.setSelected(false);
+            _listValue.setSelectedItem(null);
+                
         }
 
     }
 
     private String[] getAttributeList(HashMap attMap) {
 
-        String[] returnList = new String[attMap.size()];
+        String[] returnList = new String[attMap.size() + 1];
 
         Iterator iterator = (attMap.keySet()).iterator();
 
         int i = 0;
+        returnList[i++] = "";
         while (iterator.hasNext()) {
 
             returnList[i] = iterator.next().toString();

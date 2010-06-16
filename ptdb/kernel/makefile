@@ -42,7 +42,10 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
+
+JSRCS = \
+	DBAttribute.java 
 
 # All the .class files necessary to run a Ptolemy II domain applet
 PTCLASSALLJARS = \

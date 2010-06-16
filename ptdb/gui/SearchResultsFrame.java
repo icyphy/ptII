@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.ScrollPaneLayout;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.search.SearchResultBuffer;
@@ -70,16 +71,24 @@ public class SearchResultsFrame extends JFrame implements Observer {
         outerPanel.setAlignmentX(LEFT_ALIGNMENT);
         add(outerPanel);
 
+        _innerPanel = new JPanel();
+        _innerPanel.setLayout(new BoxLayout(_innerPanel, BoxLayout.Y_AXIS));
+        _innerPanel.setAlignmentX(LEFT_ALIGNMENT);
+        _innerPanel.setMinimumSize(getMaximumSize());
+        
         JLabel _label = new JLabel(title + ":");
         _label.setFont(new Font("Title", Font.BOLD, 24));
         _label.setAlignmentX(LEFT_ALIGNMENT);
         outerPanel.add(_label);
 
-        _scrollPane = new JScrollPane(
+        _scrollPane = new JScrollPane(_innerPanel,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        
+        _scrollPane.setLayout(new ScrollPaneLayout());
         _scrollPane.setPreferredSize(new Dimension(800, 200));
         _scrollPane.setAlignmentX(LEFT_ALIGNMENT);
+        
         outerPanel.add(_scrollPane);
 
         _resultPanelList = new ArrayList();
@@ -143,8 +152,9 @@ public class SearchResultsFrame extends JFrame implements Observer {
         SearchResultPanel newResultPanel = new SearchResultPanel(model,
                 _configuration);
         _resultPanelList.add(newResultPanel);
-        _scrollPane.getViewport().add(newResultPanel);
-
+        _innerPanel.add(newResultPanel);
+        _innerPanel.validate();
+        _scrollPane.validate();
         repaint();
 
     }
@@ -219,5 +229,6 @@ public class SearchResultsFrame extends JFrame implements Observer {
     private ArrayList<SearchResultPanel> _resultPanelList;
     private CancelObservable _cancelObservable;
     private Configuration _configuration;
+   JPanel _innerPanel;
 
 }
