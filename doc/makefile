@@ -499,7 +499,7 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.sdf.lib \
 	ptolemy.domains.sdf.lib.vq \
 	ptolemy.domains.sdf.optimize \
-	ptolemy.domains.sdf.optimize.testing \
+	ptolemy.domains.sdf.optimize.lib \
 	ptolemy.hsif \
 	ptolemy.matlab \
 	ptolemy.media.javasound \
