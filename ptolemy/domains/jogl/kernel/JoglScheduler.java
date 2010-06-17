@@ -1,4 +1,4 @@
-/* A Scheduler for the GRO domain
+/* A Scheduler for the Jogl domain
 
  Copyright (c) 2000-2006 The Regents of the University of California.
  All rights reserved.
@@ -249,7 +249,6 @@ public class JoglScheduler extends Scheduler {
      */
     private void _constructDepthFirstSchedule(Schedule schedule, 
             DirectedAcyclicGraph dag, Object actorToAdd) {
-        JoglDirector director = (JoglDirector) getContainer();
         
         if (actorToAdd == null) {
             return;

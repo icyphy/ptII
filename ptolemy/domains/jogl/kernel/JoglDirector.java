@@ -1,4 +1,4 @@
-/* A director for the Graphics OpenGL (Graphics) Domain.
+/* A director for the Jogl Domain.
 
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
 //// GRODirector
 
 /**
- * A director for the Graphics OpenGL (Graphics) Domain.
+ * A director for the Jogl Domain.
  * 
  * <p>
  * The Graphics domain uses JOGL to display three-dimensional graphics in Ptolemy
@@ -84,7 +84,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating yellow (vogel)
  */
 
-public class GraphicsDirector extends StaticSchedulingDirector implements
+public class JoglDirector extends StaticSchedulingDirector implements
         GLEventListener {
 
     /**
@@ -94,7 +94,7 @@ public class GraphicsDirector extends StaticSchedulingDirector implements
      */
     
     //FIXME: Container and a name
-    public GraphicsDirector(GLCapabilities capabilities, int width, int height) {        
+    public JoglDirector(GLCapabilities capabilities, int width, int height) {        
             // FIXME: The next line does not compile
             // addGLEventListener(this);
     }
@@ -107,7 +107,7 @@ public class GraphicsDirector extends StaticSchedulingDirector implements
      * @param workspace
      *            The workspace of this object.
      */
-    public GraphicsDirector(Workspace workspace) {
+    public JoglDirector(Workspace workspace) {
         super(workspace);
         _init();
     }
@@ -129,7 +129,7 @@ public class GraphicsDirector extends StaticSchedulingDirector implements
      *                If the container is not a CompositeActor and the name
      *                collides with an entity in the container.
      */
-    public GraphicsDirector(CompositeEntity container, String name)
+    public JoglDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
@@ -178,7 +178,7 @@ public class GraphicsDirector extends StaticSchedulingDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         _reset();
 
-        GraphicsDirector newObject = (GraphicsDirector) (super.clone(workspace));
+        JoglDirector newObject = (JoglDirector) (super.clone(workspace));
         return newObject;
     }
 
@@ -587,18 +587,7 @@ public class GraphicsDirector extends StaticSchedulingDirector implements
             _pseudoTimeEnabled = false;
         }
     }
-    
-    /**
-     * @return Some standard GL capabilities (with alpha).
-     */
-    private static GLCapabilities createGLCapabilities() {
-        GLCapabilities capabilities = new GLCapabilities();
-        capabilities.setRedBits(8);
-        capabilities.setBlueBits(8);
-        capabilities.setGreenBits(8);
-        capabilities.setAlphaBits(8);
-        return capabilities;
-    }
+ 
     /**
      * Most of the constructor initialization is relegated to this method.
      * Initialization process includes : - create a new actor table to cache all
@@ -608,7 +597,7 @@ public class GraphicsDirector extends StaticSchedulingDirector implements
     private void _init() {
         try {
             // Scheduler scheduler = new Scheduler(workspace());
-            Scheduler scheduler = new GraphicsScheduler(workspace());
+            Scheduler scheduler = new JoglScheduler(workspace());
             setScheduler(scheduler);
         } catch (Exception ex) {
             // if setScheduler fails, then we should just set it to Null.
@@ -672,11 +661,11 @@ public class GraphicsDirector extends StaticSchedulingDirector implements
     
     private class PopMatrix extends TypedAtomicActor {
 
-        public PopMatrix(GraphicsDirector director) {
+        public PopMatrix(JoglDirector director) {
             _director = director;
         }
 
-        GraphicsDirector _director;
+        JoglDirector _director;
 
         public void fire() throws IllegalActionException {
             GL gl = _director.getGL();
@@ -686,11 +675,11 @@ public class GraphicsDirector extends StaticSchedulingDirector implements
     }
 
     private class PushMatrix extends TypedAtomicActor {
-        public PushMatrix(GraphicsDirector director) {
+        public PushMatrix(JoglDirector director) {
             _director = director;
         }
 
-        GraphicsDirector _director;
+        JoglDirector _director;
 
         public void fire() throws IllegalActionException {
             GL gl = _director.getGL();
