@@ -99,7 +99,7 @@ public class TestLoadManagerInterface {
         //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
         PowerMock.replayAll();
         effigy = tested.loadModel(inputString, configuration);
-        assertEquals(effigy.getName(), "model1");
+        assertEquals(effigy.getModel().getName(), "model1");
         PowerMock.verifyAll();
 
     }

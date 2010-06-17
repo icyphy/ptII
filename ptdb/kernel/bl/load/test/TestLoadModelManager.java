@@ -57,6 +57,7 @@ public class TestLoadModelManager {
         EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(dBConnectionMock);
         getModelsTaskMock.setModelName(loadModel);
         EasyMock.expect(dBConnectionMock.executeGetModelsTask(getModelsTaskMock)).andReturn(modelMock);
+        dBConnectionMock.commitConnection();
         dBConnectionMock.closeConnection();
 
         //Execute the test.  Verify that, load does not return null if the database layer is mocked.
