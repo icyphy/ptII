@@ -44,8 +44,7 @@ include $(CONFIG)
 
 # If you add a file, be sure to add a line to test_java
 JSRCS_TEST_DRIVERS = \
-	TestActorGraphDBFrame.java \
-	TestSearchResultsFrame.java
+	TestActorGraphDBFrame.java
 
 JSRCS = \
 	$(JSRCS_TEST_DRIVERS)
@@ -54,7 +53,8 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES = \
+	TestSearchResultsFrame.java
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

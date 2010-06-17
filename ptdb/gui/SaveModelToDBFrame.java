@@ -32,6 +32,7 @@ import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.kernel.DBAttribute;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
@@ -582,9 +583,8 @@ public class SaveModelToDBFrame extends JFrame {
             
             if (_modelToSave.getAttribute("DBModel") == null) {
                 
-                Variable dbModel = new Variable(_modelToSave.workspace());
-                dbModel.setContainer(_modelToSave);
-                dbModel.setName("DBModel");
+                StringParameter dbModelParam = new StringParameter(_modelToSave, "DBModel");
+                dbModelParam.setExpression("TRUE");
             
             }
             
