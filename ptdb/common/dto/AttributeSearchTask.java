@@ -51,6 +51,7 @@ public class AttributeSearchTask extends Task {
 
     /**
      * Return the search attribute list.
+     * @see #setAttributesList
      * @return The search attribute list.
      */
     public ArrayList<Attribute> getAttributesList() {
@@ -59,6 +60,7 @@ public class AttributeSearchTask extends Task {
 
     /**
      * Set the search attribute list to the given list.
+     * @see #getAttributesList
      * @param attributesList List of attributes for search.
      */
     public void setAttributesList(ArrayList<Attribute> attributesList) {

@@ -41,6 +41,7 @@ public class DBConnectionParameters {
     /**
      * Return the container name
      * for the given XML database.
+     * @see #setContainerName
      * @return The container name.
      */
     public String getContainerName() {
@@ -50,7 +51,7 @@ public class DBConnectionParameters {
     /**
      * Return the URL/path of the location where
      * the XML database file is present.
-     *
+     * @see #setUrl
      * @return The database url.
      */
     public String getUrl() {
@@ -70,6 +71,7 @@ public class DBConnectionParameters {
 
     /**
      * Set the container name parameter to the given value.
+     * @see #getContainerName
      * @param containerName Name of the container
      * for the given XML database.
      */
@@ -88,6 +90,7 @@ public class DBConnectionParameters {
 
     /**
      * Set the URL parameter to the given value.
+     * @see #getUrl
      * @param url Location where the database file is present.
      */
     public void setUrl(String url) {

@@ -34,7 +34,7 @@ public class FetchHierarchyTask extends Task {
     /**
      * Return the list of models for which we need
      * to fetch parent hierarchy.
-     *
+     * @see #setModelsList
      * @return List of models for which we need to
      * fetch hierarchy.
      */
@@ -45,7 +45,7 @@ public class FetchHierarchyTask extends Task {
     /**
      * Set the list of models for which we need
      * to fetch parent hierarchy.
-     *
+     * @see #getModelsList
      * @param modelsList List of models for which we need to
      * fetch hierarchy.
      */
