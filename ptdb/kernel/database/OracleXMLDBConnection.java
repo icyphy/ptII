@@ -7,6 +7,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,6 +28,7 @@ import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
+import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
@@ -308,12 +310,34 @@ public class OracleXMLDBConnection implements DBConnection {
      * Get the attributes defined from the database.
      * @param task The criteria to get the attribute.
      * @return List of attributes stored in the database.
-     * @exception DBExecutionException
+     * @exception DBExecutionException Thrown if there is a problem in executing the operation.
      */
-    public ArrayList executeGetAttributesTask(GetAttributesTask task)
+    public List<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
-        // TODO Auto-generated method stub
-        return null;
+        //FIXME: this is a dummy data and should be replaced by the real attributes from the database once they are available.
+        List<XMLDBAttribute>  attributeList = new ArrayList<XMLDBAttribute>();
+        
+        XMLDBAttribute xmlAttributeString = new XMLDBAttribute("Author", XMLDBAttribute.ATTRIBUTE_TYPE_STRING);
+        
+        XMLDBAttribute xmlAttributeBoolean = new XMLDBAttribute("isNew", XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN);
+        
+        XMLDBAttribute xmlAttributeList = new XMLDBAttribute("Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST);
+        
+        List<String> countryAttributeValues = new ArrayList<String>();
+        
+        countryAttributeValues.add("China");
+        countryAttributeValues.add("India");
+        countryAttributeValues.add("Saudi Arabia");
+        countryAttributeValues.add("United States of America");
+        
+        xmlAttributeList.setAttributeValue(countryAttributeValues);
+        
+        attributeList.add(xmlAttributeBoolean);
+        attributeList.add(xmlAttributeString);
+        attributeList.add(xmlAttributeList);
+
+        
+        return attributeList;
     }
 
     /**
@@ -538,6 +562,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 modelBody = modelBody.substring(modelBody.indexOf("<entity"));
 
                 currentDbModel.setContent(modelBody);
+                
                 _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
             }
 

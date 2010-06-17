@@ -1,6 +1,7 @@
 package ptdb.kernel.database;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateModelTask;
@@ -9,6 +10,7 @@ import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
+import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
@@ -94,7 +96,7 @@ public interface DBConnection {
      * @return List of attributes stored in the database.
      * @exception DBExecutionException
      */
-    public ArrayList executeGetAttributesTask(GetAttributesTask task)
+    public List<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException;
 
     /**

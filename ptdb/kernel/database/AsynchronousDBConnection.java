@@ -1,6 +1,7 @@
 package ptdb.kernel.database;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateModelTask;
@@ -11,6 +12,7 @@ import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
+import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
@@ -167,12 +169,12 @@ public class AsynchronousDBConnection implements DBConnection {
      * Use a synchronous connection for that.
      * @param task
      *          The task to be completed.
-     * @return XMLDBModel
-     *          The model object containing the MoML.
+     * @return List
+     *          The list of attributes in database.
      * @exception DBExecutionException If thrown while getting attributes from the
      * database.
      */
-    public ArrayList executeGetAttributesTask(GetAttributesTask task)
+    public List<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeGetAttributes is "

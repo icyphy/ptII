@@ -49,7 +49,8 @@ PTPACKAGE = 	database
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	SaveModelManager.java 
+	SaveModelManager.java \
+	AttributesManager
 
 EXTRA_SRCS =	$(JSRCS)
 
