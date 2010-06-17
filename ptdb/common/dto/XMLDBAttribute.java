@@ -48,7 +48,6 @@ public class XMLDBAttribute {
      * Return the attribute name.
      * @return The attribute name.
      * 
-     * @see #setAttributeName
      */
     public String getAttributeName() {
         return _attributeName;
@@ -58,8 +57,6 @@ public class XMLDBAttribute {
     /**
      * Return the attribute type.
      * @return A string representation of the attribute type.
-     * 
-     * @see #setAttributeType
      */
     public String getAttributeType() {
         return _attributeType;
