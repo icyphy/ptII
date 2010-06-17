@@ -330,7 +330,7 @@ public class SaveModelToDBFrame extends JFrame {
 
     private boolean _isValid() {
 
-        if (_nameText.getText().isEmpty()) {
+        if (_nameText.getText().length() == 0) {
 
             JOptionPane.showMessageDialog(this, "You must enter a Model Name.",
                     "Save Error", JOptionPane.INFORMATION_MESSAGE, null);
