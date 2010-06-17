@@ -67,8 +67,7 @@ JSRCS = \
 	ModelAttributePanel.java \
 	SaveModelToDBFrame.java
 
-OTHER_FILES_TO_BE_JARED = \
-	arrow.GIF
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
