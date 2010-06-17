@@ -13,12 +13,6 @@ import ptdb.kernel.database.DBConnection;
 //// SaveModelManager
 
 /**
- * @author Yousef Alsaeed
- * @version $Id$
- * @since Ptolemy II 8.1
- * @Pt.ProposedRating Red (Yousef)
- * @Pt.AcceptedRating Red (Yousef)
- * 
  * The business layer of the save to database function.
  * 
  * <p> 
@@ -33,6 +27,13 @@ import ptdb.kernel.database.DBConnection;
  * <br>- Get a database connection and run the execute method on the database
  * connection object to perform the saving or creation of the model. 
  * </p>
+ * 
+ * @author Yousef Alsaeed
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating Red (Yousef)
+ * @Pt.AcceptedRating Red (Yousef)
+ * 
  */
 public class SaveModelManager {
 
@@ -43,7 +44,7 @@ public class SaveModelManager {
      * Save the changes of an existing model in the database or create a new
      * model in the database.
      * 
-     * @param The model object that is required to be saved or
+     * @param xmlDBModel The model object that is required to be saved or
      * created in the database.
      * 
      * @return A boolean indicator of weather the operation was successful or
