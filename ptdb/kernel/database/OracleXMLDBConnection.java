@@ -85,16 +85,16 @@ public class OracleXMLDBConnection implements DBConnection {
 
             EnvironmentConfig config = new EnvironmentConfig();
             config.setRunRecovery(true);
-            config.setCacheSize(100 * 1024 * 1024); // 50MB
+            config.setCacheSize(50 * 1024 * 1024); // 50MB
             config.setAllowCreate(true);
             config.setInitializeCache(true);
             config.setTransactional(true);
             config.setInitializeLocking(true);
             config.setInitializeLogging(true);
             config.setErrorStream(System.err);
-            /*config.setMaxLockers(1000);
+            config.setMaxLockers(1000);
             config.setMaxLocks(1000);
-            config.setMaxLockObjects(1000);*/
+            config.setMaxLockObjects(1000);
             config.setLockDetectMode(LockDetectMode.DEFAULT);
 
             File dbFile = new File(_params.getUrl());
@@ -753,16 +753,19 @@ public class OracleXMLDBConnection implements DBConnection {
             throws IllegalActionException {
 
         StringBuffer attributesQuery = new StringBuffer();
+        if (attribute.getName() != null && !"".equals(attribute.getName().trim())) {
+            attributesQuery.append("$const/@name=\"").append(
+                    attribute.getName()).append("\"");
 
-        attributesQuery.append("$const/@name=\"").append(attribute.getName())
-                .append("\"");
+            attributesQuery.append(" and ");
+        }
 
-        attributesQuery.append(" and ");
+        if (attribute.getToken() != null) {
+            attributesQuery.append("$const/@value[contains(.,").append(
+                    attribute.getToken().toString()).append(")]");
 
-        attributesQuery.append("$const/@value[contains(.,").append(
-                attribute.getToken().toString()).append(")]");
-
-        attributesQuery.append(" and ");
+            attributesQuery.append(" and ");
+        }
 
         attributesQuery.append("$const/@class=\"").append(
                 attribute.getClassName()).append("\"");
@@ -793,7 +796,7 @@ public class OracleXMLDBConnection implements DBConnection {
          * then add the current model to the parent list.
          */
         String currentNodeName = _getValueForAttribute(currentNode, "name");
-
+        //System.out.println(parentNodeName + " - " + currentNodeName);
         if (currentNodeName != null) {
 
             if (!dBModelsMap.containsKey(currentNodeName)
@@ -811,7 +814,8 @@ public class OracleXMLDBConnection implements DBConnection {
                     && dBModelsMap.containsKey(currentNodeName)) {
                 DBModel currentDBModel = dBModelsMap.get(currentNodeName);
                 DBModel parentDBModel = new DBModel(parentNodeName);
-
+                //System.out.println("Adding parent " + parentNodeName
+                //        + " for child " + currentNodeName);
                 currentDBModel.addParent(parentDBModel);
                 dBModelsMap.put(parentNodeName, parentDBModel);
             }
@@ -895,6 +899,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 for (int i = 0; i < children.getLength(); i++) {
                     if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
                         Node child = children.item(i);
+ //                       System.out.println("Start of New Entity");
                         _createParentHierarchy(child, null, dBModelsMap, model);
                     }
                 }
@@ -945,9 +950,9 @@ public class OracleXMLDBConnection implements DBConnection {
                 XmlValue value;
                 while (results.hasNext()) {
                     value = results.next();
-                    if(referencesXMLBuf == null) {
+                    if (referencesXMLBuf == null) {
                         referencesXMLBuf = new StringBuffer();
-                    }   
+                    }
                     referencesXMLBuf.append(value.asString());
                 }
             }
@@ -956,7 +961,7 @@ public class OracleXMLDBConnection implements DBConnection {
                     "Error while fetching model hierachy - "
                             + model.getModelName(), e);
         }
-        
+
         String referencesXML = referencesXMLBuf != null ? "<entities>"
                 + referencesXMLBuf.toString() + "</entities>" : null;
         return referencesXML;
@@ -1279,30 +1284,32 @@ public class OracleXMLDBConnection implements DBConnection {
          */
         ArrayList<DBModel> _parentsList;
 
-        /**
+        /* *//**
          * Match the given DBModel to the current model
          * @param model Model to be compared.
          * @return True if the names are same, false otherwise.
          */
-        public boolean equals(Object model) {
-            if (model instanceof DBModel) {
-                if (((DBModel) model)._modelName.equals(_modelName)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return false;
+        /*
+        public boolean equals(DBModel model) {
+         if (model instanceof DBModel) {
+             if (((DBModel) model)._modelName.equals(_modelName)) {
+                 return true;
+             } else {
+                 return false;
+             }
+         }
+         return false;
         }
 
-        /**
+        *//**
          * Return the hash code of the modelName as two models are equal if
          * their model names are equal. So their has codes are also derived from
          * model name.
          * @return Hash code of the model name.
          */
+        /*
         public int hashCode() {
-            return _modelName.hashCode();
-        }
+         return _modelName.hashCode();
+        }*/
     }
 }
