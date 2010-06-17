@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
@@ -82,6 +83,7 @@ public class DbSearchFrame extends TransformationEditor {
     public DbSearchFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
+        
 
     }
 
@@ -102,6 +104,7 @@ public class DbSearchFrame extends TransformationEditor {
         JTabbedPane tabbedPane = getFrameController().getTabbedPane();
         tabbedPane.remove(1);
         tabbedPane.remove(1);
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -273,11 +276,11 @@ public class DbSearchFrame extends TransformationEditor {
                 searchManager.search(searchCriteria, searchResultBuffer);
 
             } catch (DBConnectionException e1) {
-
+                JOptionPane.showMessageDialog(DbSearchFrame.this, "Cannot perform search now.");
                 throw new KernelRuntimeException(e1,
                         "Cannot perform search now.");
             } catch (DBExecutionException e2) {
-
+                JOptionPane.showMessageDialog(DbSearchFrame.this, "Cannot perform search now.");
                 throw new KernelRuntimeException(e2,
                         "Cannot perform search now.");
             }
