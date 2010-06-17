@@ -30,10 +30,17 @@ public class LoadModelManager {
      *  an XMLDBModel object that contains the MoML.
      *
      * @param name
+     *          The name of the model to be loaded.
+     *          
      * @return An XMLDBModel object from the Database,
      *         containing its MoML string.
+     *         
      * @exception DBConnectionException
+     *          Thrown if there a problem with the database connection.
+     *          
      * @exception DBExecutionException
+     *          Thrown if there is a problem executing the database task.
+     *          
      */
     public XMLDBModel load(String name) throws DBConnectionException,
             DBExecutionException {

@@ -155,8 +155,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     /** The action for loading a model from the database. */
     protected Action _loadModelFromDBAction;
 
+    /** The action for opening the search frame. */
     protected Action _openSearchFrameAction;
-    
+
+    /** The action for saving a model to the database. */
     protected Action _saveModelToDBAction;
 
     ///////////////////////////////////////////////////////////////////

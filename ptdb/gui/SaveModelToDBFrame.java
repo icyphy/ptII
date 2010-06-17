@@ -23,10 +23,12 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.kernel.DBAttribute;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.actor.gui.ColorAttribute;
@@ -72,9 +74,10 @@ public class SaveModelToDBFrame extends JFrame {
 
         super("Save Model to Database");
 
-        setBounds(100, 100, 500, 300);
-        setResizable(false);
-
+       // setBounds(100, 100, 500, 300);
+       // setResizable(false);
+        setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+      
         _modelToSave = model;
         _initialModelName = model.getName();
         _rollbackModel = model.exportMoML();
@@ -108,14 +111,18 @@ public class SaveModelToDBFrame extends JFrame {
         innerPanel.setAlignmentX(LEFT_ALIGNMENT);
         _nameText.setAlignmentX(LEFT_ALIGNMENT);
         _tabbedPane.setAlignmentX(LEFT_ALIGNMENT);
-
+        topPanel.setAlignmentX(LEFT_ALIGNMENT);
+        outerPanel.setAlignmentX(LEFT_ALIGNMENT);
+        _attListPanel.setAlignmentX(LEFT_ALIGNMENT);
+        _scrollPane.setAlignmentX(LEFT_ALIGNMENT);
+        bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
+        
         outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.Y_AXIS));
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
-        modelNamePanel
-                .setLayout(new BoxLayout(modelNamePanel, BoxLayout.X_AXIS));
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
         _tabbedPane.setLayout(new BoxLayout(_tabbedPane, BoxLayout.Y_AXIS));
+        modelNamePanel
+            .setLayout(new BoxLayout(modelNamePanel, BoxLayout.X_AXIS));
+        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
         _attListPanel.setLayout(new BoxLayout(_attListPanel, BoxLayout.Y_AXIS));
         _scrollPane.setLayout(new ScrollPaneLayout());
         _scrollPane.setPreferredSize(new Dimension(500, 300));
@@ -256,8 +263,7 @@ public class SaveModelToDBFrame extends JFrame {
 
                 try {
 
-                    if (_saveModel())
-                        setVisible(false);
+                    _saveModel();
 
                 } catch (NameDuplicationException e) {
 
@@ -266,7 +272,8 @@ public class SaveModelToDBFrame extends JFrame {
                                     (Component) event.getSource(),
                                     "The entered name will result in a "
                                             + "duplicate "
-                                            + "model name.  Please enter a different name.",
+                                            + "model name.  " 
+                                            + "Please enter a different name.",
                                     "Save Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
 
@@ -322,6 +329,8 @@ public class SaveModelToDBFrame extends JFrame {
         outerPanel.add(topPanel);
         outerPanel.add(bottomPanel);
         add(outerPanel);
+        validate();
+        repaint();
 
     }
 
@@ -404,89 +413,239 @@ public class SaveModelToDBFrame extends JFrame {
 
     }
 
-    private boolean _saveModel() throws Exception {
+    private void _saveModel() throws Exception {
+        
+        try{
+
+            _modelToSave.setName(_nameText.getText());
+            
+            if(_initialModelName != null && _initialModelName.length() > 0){
+                
+                if(!_modelToSave.getName().equals(_initialModelName)){
+                    
+                    Object[] options = {"Yes",
+                            "No",
+                            "Cancel"};
+                    int n = JOptionPane.showOptionDialog(this,
+                        "You have given the model a new name.  " +
+                        "Do you want to save a new copy?",
+                        "Model Name Changed",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        options,
+                        options[2]);
+                    
+                    if(n != JOptionPane.YES_OPTION){
+
+                        return;
+                        
+                    }
+                }
+            }
+            
+            _commitSave(_isNew());
+
+
+        } catch (DBConnectionException exception) {
+
+            throw exception;
+
+        } catch (DBExecutionException exception) {
+
+            throw exception;
+
+        } catch (IllegalArgumentException exception) {
+
+            throw exception;
+
+        } 
+
+    }
+
+    private void _commitSave(boolean isNew) throws Exception {
+
+        _updateDisplayedModel();
+        
+        xmlModel = new XMLDBModel(_modelToSave.getName());
+        xmlModel.setModel(_modelToSave.exportMoML());
+        xmlModel.setIsNew(isNew);
+        
+        SaveModelManager saveModelManager = new SaveModelManager();
 
         try {
 
-            _modelToSave.setName(_nameText.getText());
+            if (saveModelManager.save(xmlModel)) {
 
-            if (_modelToSave.getAttribute("DBModel") == null) {
+                System.out.println("Success");
+                
+                JOptionPane.showMessageDialog(this,
+                        "The model was successfully saved.", "Success",
+                        JOptionPane.INFORMATION_MESSAGE, null);
 
-                _isNew = true;
-
-                Variable dbModel = new Variable(_modelToSave.workspace());
-                dbModel.setContainer(_modelToSave);
-                dbModel.setName("DBModel");
-
-            } else if (_modelToSave.getName().equals(_initialModelName)) {
-
-                _isNew = true;
+                setVisible(false);
 
             } else {
 
-                _isNew = false;
+                System.out.println("Fail");
+                
+                JOptionPane.showMessageDialog(this,
+                        "A problem occurred while saving.", "Save Error",
+                        JOptionPane.INFORMATION_MESSAGE, null);
 
             }
+            
+        } catch (DBConnectionException exception) {
 
+            _rollbackModel();
+            exception.printStackTrace();
+            throw exception;
+
+        } catch (DBExecutionException exception) {
+
+            _rollbackModel();
+            exception.printStackTrace();
+            throw exception;
+
+        } catch (IllegalArgumentException exception) {
+
+            _rollbackModel();
+            exception.printStackTrace();
+            throw exception;
+
+        } catch (ModelAlreadyExistException exception) {
+
+            Object[] options = {"Yes",
+                            "No",
+                            "Cancel"};
+            int n = JOptionPane.showOptionDialog(this,
+                "A model with the given name already exists in the database.  " 
+                    + "Would you like to overwrite it? ",
+                "Model Exists",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[2]);
+        
+            if(n == JOptionPane.YES_OPTION){
+                
+                saveModelManager = null;
+                _commitSave(false);
+                
+            } else {
+
+                _rollbackModel();
+                
+            }
+            
+        }
+        
+    }
+    
+    private boolean _isNew() throws NameDuplicationException,
+                                    IllegalActionException{
+        
+        boolean isNew = true;
+        
+        
+        if (_modelToSave.getAttribute("DBModel") == null) {
+
+            isNew = true;
+
+        } else if (_modelToSave.getName().equals(_initialModelName)) {
+
+            isNew = false;
+
+        } else {
+
+            isNew = true;
+           
+        }
+        
+        
+        if(_initialModelName != null && _initialModelName.length() > 0){
+            
+            if(!_modelToSave.getName().equals(_initialModelName)){
+                
+                isNew = true;
+                
+            }
+        }
+        
+        return isNew;
+    }
+    
+    private void _updateDisplayedModel() throws Exception {
+        
+        try {
+            
+            if (_modelToSave.getAttribute("DBModel") == null) {
+                
+                Variable dbModel = new Variable(_modelToSave.workspace());
+                dbModel.setContainer(_modelToSave);
+                dbModel.setName("DBModel");
+            
+            }
+            
             ArrayList<DBAttribute> attributesList = new ArrayList();
 
             for (Object a : _modelToSave.attributeList()) {
-
+    
                 if (a instanceof DBAttribute) {
-
+    
                     attributesList.add((DBAttribute) a);
-
+    
                 }
-
+    
             }
 
             // Delete all existing DBAttributes.
             for (DBAttribute attribute : attributesList) {
-
+    
                 attribute.setContainer(null);
-
+    
             }
 
             // Get all attributes we have displayed.
             Component[] componentArray1 = _attListPanel.getComponents();
-
+    
             for (int i = 0; i < componentArray1.length; i++) {
-
+    
                 if (componentArray1[i] instanceof JPanel) {
-
+    
                     Component[] componentArray2 = ((JPanel) componentArray1[i])
                             .getComponents();
-
+    
                     for (int j = 0; j < componentArray2.length; j++) {
-
+    
                         if (componentArray2[j] instanceof ModelAttributePanel) {
-
-                            //System.out.println(((ModelAttributePanel) componentArray2[j]).getAttributeName());
-                            //System.out.println(((ModelAttributePanel) componentArray2[j]).getValue());
-
+    
                             DBAttribute attributeToAdd = new DBAttribute(
                                     _modelToSave,
                                     ((ModelAttributePanel) componentArray2[j])
                                             .getAttributeName());
                             attributeToAdd
-                                    .setExpression(((ModelAttributePanel) componentArray2[j])
-                                            .getValue());
+                                    .setExpression(((ModelAttributePanel) 
+                                            componentArray2[j]).getValue());
                             attributeToAdd.setContainer(_modelToSave);
-
+    
                             SingletonAttribute sa = new SingletonAttribute(
                                     attributeToAdd.workspace());
                             sa.setContainer(attributeToAdd);
                             sa.setName("_hideName");
-
+    
                             ValueIcon vi = new ValueIcon(attributeToAdd,
                                     "_icon");
                             vi.setContainer(attributeToAdd);
-
-                            ColorAttribute ca = new ColorAttribute(vi, "_color");
+    
+                            ColorAttribute ca = new 
+                                ColorAttribute(vi, "_color");
                             ca.setContainer(vi);
                             ca.setExpression("{1.0, 0.0, 0.0, 1.0}");
-
-                            SingletonConfigurableAttribute sca = new SingletonConfigurableAttribute(
+    
+                            SingletonConfigurableAttribute sca = new 
+                                SingletonConfigurableAttribute(
                                     attributeToAdd.workspace());
                             sca.setContainer(attributeToAdd);
                             sca.configure(null, attributeToAdd.getSource(),
@@ -495,89 +654,48 @@ public class SaveModelToDBFrame extends JFrame {
                                             + "font-family:SansSerif; "
                                             + "fill:blue\" " + "y=\"20\">Hello"
                                             + "</text></svg>");
-
-                            VisibleParameterEditorFactory vpef = new VisibleParameterEditorFactory(
+    
+                            VisibleParameterEditorFactory vpef = 
+                                new VisibleParameterEditorFactory(
                                     attributeToAdd, "_editorFactory");
                             vpef.setContainer(attributeToAdd);
-
+    
                             double[] xy = { 250, 170 };
-
+    
                             Location l = new Location(attributeToAdd,
                                     "_location");
                             l.setLocation(xy);
-
+    
                             try {
-
-                                MoMLChangeRequest change = new MoMLChangeRequest(
+    
+                                MoMLChangeRequest change = 
+                                    new MoMLChangeRequest(
                                         this, null, _modelToSave.exportMoML());
                                 change.setUndoable(true);
                                 _modelToSave.requestChange(change);
                             } catch (Exception e) {
                                 throw e;
                             }
-
+    
                         }
-
+    
                     }
-
+    
                 }
-
+    
             }
-
-        } catch (NameDuplicationException e) {
-
-            throw e;
-
-        } catch (IllegalActionException e) {
-
-            throw e;
-
+    
+        } catch (NameDuplicationException exception) {
+    
+            throw exception;
+    
+        } catch (IllegalActionException exception) {
+    
+            throw exception;
+    
         }
-
-        XMLDBModel xmlModel = new XMLDBModel(_modelToSave.getName());
-        xmlModel.setModel(_modelToSave.exportMoML());
-        xmlModel.setIsNew(_isNew);
-
-        SaveModelManager saveModelManager = new SaveModelManager();
-
-        try {
-
-            if (saveModelManager.save(xmlModel)) {
-
-                JOptionPane.showMessageDialog(this,
-                        "The model was successfully saved.", "Success",
-                        JOptionPane.INFORMATION_MESSAGE, null);
-                return true;
-
-            } else {
-
-                JOptionPane.showMessageDialog(this,
-                        "A problem occurred while saving.", "Save Error",
-                        JOptionPane.INFORMATION_MESSAGE, null);
-
-            }
-
-        } catch (DBConnectionException e1) {
-
-            _rollbackModel();
-            throw e1;
-
-        } catch (DBExecutionException e1) {
-
-            _rollbackModel();
-            throw e1;
-
-        } catch (IllegalArgumentException e1) {
-
-            _rollbackModel();
-            throw e1;
-
-        }
-
-        return false;
-
+        
     }
-
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
 
@@ -592,5 +710,6 @@ public class SaveModelToDBFrame extends JFrame {
     private boolean _isNew = true;
     private String _rollbackModel;
     private NamedObj _modelClone;
+    private XMLDBModel xmlModel;
 
 }

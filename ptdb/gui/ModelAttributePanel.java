@@ -52,30 +52,30 @@ public class ModelAttributePanel extends JPanel {
         
         setMaximumSize(new Dimension(400, 30));
         setPreferredSize(new Dimension(400, 30));
-        setAlignmentY(LEFT_ALIGNMENT);
+        setAlignmentX(LEFT_ALIGNMENT);
         
         JLabel nameLabel = new JLabel("Attribute");
         nameLabel.setPreferredSize(new Dimension(50, 20));
-        nameLabel.setAlignmentY(LEFT_ALIGNMENT);
+        nameLabel.setAlignmentX(LEFT_ALIGNMENT);
         
         _attributeName = new JComboBox(getAttributeList(_attMap));
         _attributeName.setPreferredSize(new Dimension(80, 20));
-        _attributeName.setAlignmentY(LEFT_ALIGNMENT);
+        _attributeName.setAlignmentX(LEFT_ALIGNMENT);
         
         JLabel valueLabel = new JLabel("Value");
         valueLabel.setPreferredSize(new Dimension(40, 20));
-        valueLabel.setAlignmentY(LEFT_ALIGNMENT);
+        valueLabel.setAlignmentX(LEFT_ALIGNMENT);
 
         _textValue = new JTextField();
         _textValue.setPreferredSize(new Dimension(80, 20));
-        _textValue.setAlignmentY(LEFT_ALIGNMENT);
+        _textValue.setAlignmentX(LEFT_ALIGNMENT);
         
         _booleanValue = new JCheckBox();
-        _booleanValue.setAlignmentY(LEFT_ALIGNMENT);
+        _booleanValue.setAlignmentX(LEFT_ALIGNMENT);
         
         _listValue = new JComboBox();
         _listValue.setPreferredSize(new Dimension(80, 20));
-        _listValue.setAlignmentY(LEFT_ALIGNMENT);
+        _listValue.setAlignmentX(LEFT_ALIGNMENT);
 
         _attributeName.addActionListener(new ActionListener() {
 
@@ -103,6 +103,9 @@ public class ModelAttributePanel extends JPanel {
      *          The string value of the attribute,
      *          It is obtained from the applicable form Component based on
      *          the type mapped to the selected attribute.
+     * 
+     * @see #setValue
+     * 
      */
     public String getValue() {
 
@@ -149,6 +152,9 @@ public class ModelAttributePanel extends JPanel {
      *
      * @return
      *          This attribute's name.
+     * 
+     * @see #setAttributeName
+     * 
      */
     public String getAttributeName() {
 
@@ -160,6 +166,9 @@ public class ModelAttributePanel extends JPanel {
      * 
      * @param name 
      *          The attribute name.
+     * 
+     * @see #getAttributeName
+     * 
      */
    public void setAttributeName(String name) {
 
@@ -170,10 +179,11 @@ public class ModelAttributePanel extends JPanel {
     
     /** Set the value of this attribute.
      * 
-     * @param type 
-     *          The type of the attribute.
      * @param value 
      *          The value of the attribute.
+     * 
+     * @see #getValue
+     * 
      */
    public void setValue(String value) {
 
