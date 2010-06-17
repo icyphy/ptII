@@ -1,6 +1,3 @@
-/*
- *
- */
 package ptdb.common.util.test;
 
 import static org.easymock.EasyMock.expect;
@@ -36,7 +33,7 @@ import ptdb.kernel.database.OracleXMLDBConnection;
 //// TestDBConnectorFactory
 
 /**
- * Unit tests DBConnectorFactory.
+ * Unit tests for DBConnectorFactory.
  *
  * @author Ashwini Bijwe
  * @version $Id$
@@ -107,9 +104,9 @@ public class TestDBConnectorFactory {
                         .contains("_dbClassName = ptdb.kernel.database.OracleXMLDBConnection"));
         assertTrue("DB URL is incorrect.", parameters
                 .contains("_dbUrl = C:/users/wini"));
-        assertTrue("DB Conatainer Name is incorrect.", parameters
+        assertTrue("DB Container Name is incorrect.", parameters
                 .contains("_dbContainerName = test.dbxml"));
-        assertTrue("Cache Conatainer Name is incorrect.", parameters
+        assertTrue("Cache Container Name is incorrect.", parameters
                 .contains("_cacheContainerName = temp_cache.dbxml"));
 
         //////////////////////////////////////////////////////////////////////////////////////////

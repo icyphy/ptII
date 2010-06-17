@@ -42,8 +42,9 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# If you add a file, be sure to add a line to test_java
 JSRCS_TEST_DRIVERS = \
-	TestSaveModelManager.java \
+	TestSaveModelManager.java
 
 JSRCS = \
 	$(JSRCS_TEST_DRIVERS)
@@ -73,7 +74,7 @@ install:
 tests:: $(EXTRA_SRCS) jclass test_java
 
 test_java: jclass
-	java -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.save.test.TestSaveModelManager
+	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.save.test.TestSaveModelManager
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java

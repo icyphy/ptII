@@ -42,6 +42,7 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# If you add a file, be sure to add a line to test_java
 JSRCS_TEST_DRIVERS = \
 	TestActorGraphDBFrame.java \
 	TestSearchResultsFrame.java
@@ -72,8 +73,8 @@ install:
 tests:: $(EXTRA_SRCS) jclass test_java
 
 test_java: jclass
-	java -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.gui.test.TestActorGraphDBFrame
-	java -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.gui.test.TestSearchResultsFrame
+	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.gui.test.TestActorGraphDBFrame
+	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.gui.test.TestSearchResultsFrame
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java
