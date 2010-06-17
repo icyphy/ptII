@@ -31,7 +31,7 @@
 
 ME =        ptolemy/domains/jogl/lib
 
-DIRS =      test
+DIRS =      #test
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../..
