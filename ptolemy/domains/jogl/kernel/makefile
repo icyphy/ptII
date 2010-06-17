@@ -1,6 +1,6 @@
 # Makefile for Java OpenGL (Jogl) domain kernel
 #
-# @Authors: Man-Kit Leung, based on a file by Christopher Brooks
+# @Authors: Yasemin Demir, based on a file by Christopher Brooks
 #
 # $Id: makefile,v 1.2 2008/01/30 01:45:00 cxh Exp $
 #
@@ -53,8 +53,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
-	GraphicsDirector.java \
-	GraphicsScheduler.java 
+	JoglDirector.java \
+	JoglScheduler.java 
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -66,9 +66,7 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'GraphicsDirector$$PopMatrix.class' \
-	'GraphicsDirector$$PushMatrix.class' \
-	'Graphics$$PushMatrix.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 
