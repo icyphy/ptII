@@ -3,16 +3,20 @@ package ptdb.gui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import ptdb.common.dto.XMLDBAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// ModelAttributePanel
@@ -113,11 +117,15 @@ public class ModelAttributePanel extends JPanel {
      */
     public String getValue() {
 
-        if (_attMap.get(_attributeName.getSelectedItem().toString()) == "Text") {
+        if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType() == 
+                    XMLDBAttribute.ATTRIBUTE_TYPE_STRING) {
 
             return _textValue.getText();
 
-        } else if (_attMap.get(_attributeName.getSelectedItem().toString()) == "List") {
+        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType() == 
+                    XMLDBAttribute.ATTRIBUTE_TYPE_LIST) {
 
             if (_listValue.getSelectedItem() != null) {
 
@@ -129,7 +137,9 @@ public class ModelAttributePanel extends JPanel {
 
             }
 
-        } else if (_attMap.get(_attributeName.getSelectedItem().toString()) == "Boolean") {
+        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType() == 
+                    XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN) {
 
             if (_booleanValue.isSelected()) {
 
@@ -191,15 +201,27 @@ public class ModelAttributePanel extends JPanel {
      */
    public void setValue(String value) {
 
-       if (_attMap.get((String) _attributeName.getSelectedItem()) == "Text") {
+       if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+               .toString())) == null ){
+           
+           return;
+       
+       }
+       else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+               .toString())).getAttributeType() == 
+           XMLDBAttribute.ATTRIBUTE_TYPE_STRING) {
 
            _textValue.setText(value);
 
-       } else if (_attMap.get((String) _attributeName.getSelectedItem())  == "List") {
+       } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+               .toString())).getAttributeType()  == 
+           XMLDBAttribute.ATTRIBUTE_TYPE_LIST) {
 
            _listValue.setSelectedItem(value);
 
-       } else if (_attMap.get((String) _attributeName.getSelectedItem())  == "Boolean") {
+       } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+               .toString())).getAttributeType()  == 
+           XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN) {
 
            if (value == "TRUE") {
 
@@ -220,14 +242,29 @@ public class ModelAttributePanel extends JPanel {
 
     private void updateDisplay() {
 
-        if (_attMap.get((String) _attributeName.getSelectedItem())  == "Boolean") {
+        if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+                .toString())) == null ){   
+            
+            _listValue.setEnabled(false);
+            _textValue.setEnabled(false);
+            _booleanValue.setEnabled(false);
+            
+            _textValue.setText("");
+            _booleanValue.setSelected(false);
+            _listValue.setSelectedItem(null);
+        
+        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType()  == 
+                    XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN) {
 
             _booleanValue.setEnabled(true);
             _listValue.setEnabled(false);
             _listValue.setSelectedItem(null);
             _textValue.setEnabled(false);
             _textValue.setText("");
-        } else if (_attMap.get((String) _attributeName.getSelectedItem())  == "Text") {
+        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType()  == 
+                    XMLDBAttribute.ATTRIBUTE_TYPE_STRING) {
 
             _textValue.setEnabled(true);
             _booleanValue.setEnabled(false);
@@ -235,13 +272,30 @@ public class ModelAttributePanel extends JPanel {
             _listValue.setEnabled(false);
             _listValue.setSelectedItem(null);
 
-        } else if (_attMap.get((String) _attributeName.getSelectedItem())  == "List") {
+        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType()  == 
+                    XMLDBAttribute.ATTRIBUTE_TYPE_LIST) {
 
             _listValue.setEnabled(true);
             _textValue.setEnabled(false);
             _textValue.setText("");
             _booleanValue.setEnabled(false);
             _booleanValue.setSelected(false);
+            
+            DefaultComboBoxModel theModel = (DefaultComboBoxModel)_listValue.getModel();
+            theModel.removeAllElements();
+            
+            ArrayList<String> choiceList = (ArrayList)
+                ((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+                    .toString())).getAttributeValues();
+
+            _listValue.addItem("");
+            for(String choice : choiceList){
+                
+                _listValue.addItem(choice);
+                
+            }
+            
         
         } else {
             

@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -24,11 +25,13 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.kernel.DBAttribute;
+import ptdb.kernel.bl.save.AttributesManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.expr.StringParameter;
@@ -143,10 +146,37 @@ public class SaveModelToDBFrame extends JFrame {
         _tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         _tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        //TODO Populate list of possible attributes.
-        _aList.put("DBAttribute1", "Text");
-        _aList.put("DBAttribute2", "Boolean");
-        _aList.put("DBAttribute3", "List");
+        try {
+            
+            AttributesManager attributeManager = new AttributesManager();
+            List <XMLDBAttribute> xmlAttList = new ArrayList();
+            xmlAttList = attributeManager.getDBAttributes();
+            
+            for(XMLDBAttribute a : xmlAttList){
+                
+                _aList.put(a.getAttributeName(), a);
+                
+            }
+        
+        } catch(DBExecutionException e){
+            
+            JOptionPane
+            .showMessageDialog((Component) this,
+                    "Could not retrieve attributes from the database.",
+                    "Save Error",
+                    JOptionPane.INFORMATION_MESSAGE, null);
+            
+        } catch(DBConnectionException e){
+         
+            JOptionPane
+            .showMessageDialog((Component) this,
+                    "Could not retrieve attributes from the database.",
+                    "Save Error",
+                    JOptionPane.INFORMATION_MESSAGE, null);
+            
+        }
+        
+
 
         // Add existing attributes.
         for (Object a : model.attributeList()) {
@@ -165,6 +195,7 @@ public class SaveModelToDBFrame extends JFrame {
                     
                     ModelAttributePanel modelAttPanel = new ModelAttributePanel(
                             _aList);
+                    modelAttPanel.setValue(((DBAttribute) a).getExpression());
                     JButton deleteButton = new JButton("Delete");
                     deleteButton.setAlignmentY(TOP_ALIGNMENT);
 
