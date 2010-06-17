@@ -93,6 +93,7 @@ public class DummySource extends Source implements BufferingProfile {
     * Post-fire the source actor and update the counter to give
     * next token a unique sequence number.
     *  @return True if execution can continue into the next iteration.
+    *  @exception IllegalActionException Not thrown in this class or it base class.
     */
    public boolean postfire() throws IllegalActionException {
        _counter ++;
