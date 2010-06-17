@@ -29,7 +29,7 @@ public class SaveModelTask extends Task {
     /**
      * Construct an instance of this class and set the model to be saved in the 
      * database.
-     * @param The model to be saved in the database.
+     * @param xmlDBModel the model to be saved in the database.
      */
     public SaveModelTask(XMLDBModel xmlDBModel) {
         _xmlDBModel = xmlDBModel;
@@ -42,6 +42,8 @@ public class SaveModelTask extends Task {
     /**
      * Return the model to be saved in the database.
      * @return The model to be saved in the database.
+     * 
+     * @see #setXMLDBModel
      */
     public XMLDBModel getXMLDBModel() {
         return _xmlDBModel;
@@ -50,7 +52,9 @@ public class SaveModelTask extends Task {
 
     /**
      * Set the model to be saved in the database.
-     * @param The model to be saved to the database.
+     * @param xmlDBModel the model to be saved to the database.
+     * 
+     * @see #getXMLDBModel
      */
     public void setXMLDBModel(XMLDBModel xmlDBModel) {
         _xmlDBModel = xmlDBModel;

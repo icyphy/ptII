@@ -29,7 +29,7 @@ public class CreateModelTask extends Task {
     /**
      * Construct an instance of the class and set the model to be created.
      * 
-     * @param The model to be created in the database.
+     * @param xmlDBModel the model to be created in the database.
      */
     public CreateModelTask(XMLDBModel xmlDBModel) {
         
@@ -43,6 +43,7 @@ public class CreateModelTask extends Task {
     /**
      * Return the model to be created in the database.
      * @return The model to be created in the database. 
+     * @see #setXMLDBModel
      */
     public XMLDBModel getXMLDBModel() {
         return _xmlDBModel;
@@ -50,7 +51,8 @@ public class CreateModelTask extends Task {
 
     /**
      * Set the model to be created in the database.
-     * @param The model to be created to the database.
+     * @param xmlDBModel the model to be created to the database.
+     * @see #getXMLDBModel
      */
     public void setXMLDBModel(XMLDBModel xmlDBModel) {
         _xmlDBModel = xmlDBModel;
