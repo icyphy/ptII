@@ -77,7 +77,10 @@ test IIR-1.3 {test clone with numerator set to a parameter} {
     set parser [java::new ptolemy.moml.MoMLParser]
     set top [java::cast ptolemy.actor.TypedCompositeActor [$parser parse $model]]
     set base [$top getEntity "CompositeClassDefinition"]
-    set clone [$base instantiate $top "myClone"]
-} {0L}
+    set clone [java::cast ptolemy.kernel.util.NamedObj [$base instantiate $top "myClone"]]
+    list [$clone exportMoML]
+} {{<entity name="myClone" class=".cannotInstantiate.CompositeClassDefinition">
+</entity>
+}}
 
 
