@@ -33,13 +33,16 @@ public class XMLDBAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         public variables                  ////
     
     public static final String ATTRIBUTE_TYPE_STRING = "String";
     public static final String ATTRIBUTE_TYPE_BOOLEAN = "Boolean";
     public static final String ATTRIBUTE_TYPE_LIST = "List";
     
-   
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
 
     /**
      * Return the attribute name.
@@ -64,7 +67,7 @@ public class XMLDBAttribute {
     
     
     /**
-     * Return the attribute value only when the attribute type is List
+     * Return the attribute value.
      * @return A string representation of the attribute value.
      * 
      * @see #setAttributeValue
