@@ -52,7 +52,7 @@ public class ParentPanel extends JPanel {
      */
     public ParentPanel(String parentModelName, Configuration configuration) {
 
-        setLayout(new FlowLayout());
+        setLayout(new FlowLayout(FlowLayout.LEADING));
 
         setAlignmentX(LEFT_ALIGNMENT);
 

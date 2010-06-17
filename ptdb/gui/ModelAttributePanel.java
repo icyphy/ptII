@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -51,8 +52,11 @@ public class ModelAttributePanel extends JPanel {
         setBorder(BorderFactory.createEtchedBorder());
         
         setMaximumSize(new Dimension(400, 30));
-        setPreferredSize(new Dimension(400, 30));
+        setMinimumSize(getMaximumSize());
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        
         setAlignmentX(LEFT_ALIGNMENT);
+        setAlignmentY(TOP_ALIGNMENT);
         
         JLabel nameLabel = new JLabel("Attribute");
         nameLabel.setPreferredSize(new Dimension(50, 20));

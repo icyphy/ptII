@@ -68,6 +68,12 @@ public class TestSearchResultsFrame {
                 parentHierarchy.add(parentBranch);
 
             }
+
+            parentBranch = new ArrayList();
+            parentBranch.add(new XMLDBModel());
+            parentBranch.get(0).setIsNew(false);
+            parentBranch.get(0).setModelName("LonelyModel");
+            parentHierarchy.add(parentBranch);
             
             XMLDBModel searchResult = new XMLDBModel();
             List<XMLDBModel> searchResultList = new ArrayList();

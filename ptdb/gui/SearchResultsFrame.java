@@ -66,8 +66,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
         setTitle(title);
 
         JPanel outerPanel = new JPanel();
-        LayoutManager layout = new BoxLayout(outerPanel, BoxLayout.Y_AXIS);
-        outerPanel.setLayout(layout);
+        outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.Y_AXIS));
         outerPanel.setAlignmentX(LEFT_ALIGNMENT);
         add(outerPanel);
 

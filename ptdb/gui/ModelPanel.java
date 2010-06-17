@@ -1,11 +1,11 @@
 package ptdb.gui;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -47,9 +47,10 @@ public class ModelPanel extends JPanel {
      *        The configuration under which an effigy of this model would be generated.
      */
     public ModelPanel(XMLDBModel dbModel, Configuration configuration) {
-
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+     
+        setLayout(new FlowLayout(FlowLayout.LEADING));
         setAlignmentX(LEFT_ALIGNMENT);
+        setMinimumSize(getMaximumSize());
 
         Border border = BorderFactory.createEmptyBorder(0, 3, 0, 0);
         setBorder(border);

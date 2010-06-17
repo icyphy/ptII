@@ -105,7 +105,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         _loadModelFromDBAction = new LoadModelFromDBAction();
         _openSearchFrameAction = new OpenSearchFrameAction(this.getTableau());
-        _saveModelToDBAction = new SaveModelToDBAction(this);
+        _saveModelToDBAction = new SaveModelToDBAction();
 
     }
 
@@ -381,11 +381,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
          * @param frame
          *      The frame from which the SaveModelToDBFrame is opened.
          */
-        public SaveModelToDBAction(JFrame frame) {
+        public SaveModelToDBAction() {
 
             super("Save Model to Database");
-            
-            _sourceFrame = frame;
             
             putValue("tooltip", "Save Model to Database");
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_A));
@@ -394,18 +392,11 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         public void actionPerformed(ActionEvent e) {
 
-            JFrame frame = new SaveModelToDBFrame(getModel(), _sourceFrame);
+            JFrame frame = new SaveModelToDBFrame(getModel());
             frame.pack();
             frame.setVisible(true);
 
         }
-        
-        ///////////////////////////////////////////////////////////////////
-        ////                private variables                         ////
-        
-        private JFrame _sourceFrame;
-        
-        private Boolean isNewModel;
         
     }
 

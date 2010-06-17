@@ -1,6 +1,7 @@
 package ptdb.gui;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +47,8 @@ public class ParentHierarchyPanel extends JPanel {
     public ParentHierarchyPanel(List<XMLDBModel> hierarchy,
             String searchResultModel, Configuration configuration) {
 
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        //setLayout(new BoxLayout(this, BoxLayout.X_AXIS));setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new FlowLayout(FlowLayout.LEADING));
         setAlignmentX(LEFT_ALIGNMENT);
         Border border = BorderFactory.createLineBorder(Color.black);
         setBorder(border);
