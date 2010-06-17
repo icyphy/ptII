@@ -213,7 +213,7 @@ public class AsynchronousDBConnection implements DBConnection {
 
     /**
      * Execute the necessary commands to save/update a model in the database according
-     * to the model specification given in the task parameter
+     * to the model specification given in the task parameter.
      *
      * @param task
      *          The task to be completed.  In this case, SaveModelTask.

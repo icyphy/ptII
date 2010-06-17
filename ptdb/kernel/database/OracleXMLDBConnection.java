@@ -478,7 +478,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * Execute the necessary commands to save/update a model in the database
      * according to the model specification given in the task parameter.
      * 
-     * @param Task to be completed. In this case SaveModelTask.
+     * @param task a SaveModelTask to be completed.
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
      */

@@ -53,7 +53,7 @@ public interface DBConnection {
 
     /**
      * Execute the necessary commands to create a new model in the database according
-     * to the model specification given in the task parameter
+     * to the model specification given in the task parameter.
      *
      * @param task
      *          The task to be completed.  In this case, CreateModelTask.
@@ -123,12 +123,12 @@ public interface DBConnection {
 
     /**
      * Execute the necessary commands to save/update a model in the database according
-     * to the model specification given in the task parameter
+     * to the model specification given in the task parameter.
      *
      * @param task
      *          The task to be completed.  In this case, SaveModelTask.
      *          This will tell the DB layer to save/update a model already existing in the database.
-     * @exception DBExecutionException
+     * @exception DBExecutionException Thrown when there is a problem in executing the task.
      */
     public void executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException;
