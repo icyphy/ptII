@@ -175,8 +175,8 @@ public class IIR extends Transformer {
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
 
-            ArrayToken numeratorValue = (ArrayToken) newObject.numerator
-                    .getToken();
+            ArrayToken numeratorValue = (ArrayToken) numerator
+                .getToken();
             newObject._numerator = numeratorValue.arrayValue();
 
             ArrayToken denominatorValue = (ArrayToken) denominator.getToken();
