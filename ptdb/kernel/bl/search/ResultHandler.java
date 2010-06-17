@@ -26,7 +26,7 @@ import ptdb.common.exception.DBExecutionException;
 public interface ResultHandler {
 
     ///////////////////////////////////////////////////////////////////
-    ////        public methods                                       /////
+    ////        public methods                                     ////
 
     /**
      * To be implemented by the concrete classes to implement the
@@ -35,7 +35,10 @@ public interface ResultHandler {
      * @param modelResults The searched model results to be handled.
      * @exception DBConnectionException Database connection problem occurs
      *  during handling the results through searching in the database.
+     * @exception DBExecutionException Thrown from the database layer when 
+     * there is error occurring in the execution. 
      */
+
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException;
 

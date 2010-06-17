@@ -52,7 +52,7 @@ public abstract class GraphSearcher extends AbstractSearcher {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////        protected methods                                       /////
+    ////        protected methods                                  ////
 
     @Override
     protected boolean _isSearchCriteriaSet() {
@@ -65,8 +65,12 @@ public abstract class GraphSearcher extends AbstractSearcher {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////        protected variables                                       /////
+    ////        protected variables                                ////
 
+    /**
+     * The search criteria from graph pattern matching that input by the 
+     * user. 
+     */
     protected DBGraphSearchCriteria _dbGraphSearchCriteria;
 
 }

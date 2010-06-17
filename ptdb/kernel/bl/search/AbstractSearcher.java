@@ -173,15 +173,27 @@ public abstract class AbstractSearcher implements ResultHandler {
      */
     protected abstract boolean _isSearchCriteriaSet();
 
+    /**
+     * Check whether the searching is done in this searcher. 
+     * 
+     * @return true - the searching is done in this searcher.<br>
+     *          false - the searching is not done in this searcher.
+     */
     protected boolean _isSearchDone() {
         return _searchDone;
     }
 
     /**
      * Implemented by the concrete searchers to perform the actual search.
+     * 
+     * @exception DBExecutionException Thrown from the database layer when 
+     * there is error occurring during the searching. 
      */
     protected abstract void _search() throws DBExecutionException;
 
+    /**
+     * Set the searching done for this searcher. 
+     */
     protected void _setSearchDone() {
 
         this._searchDone = true;
@@ -195,6 +207,9 @@ public abstract class AbstractSearcher implements ResultHandler {
      */
     protected ArrayList<XMLDBModel> _currentResults;
 
+    /**
+     * Connection to the xml database. 
+     */
     protected DBConnection _dbConnection;
 
     /**
