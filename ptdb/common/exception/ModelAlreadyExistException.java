@@ -21,7 +21,7 @@ public class ModelAlreadyExistException extends Exception {
     /**
      * Construct an instance of ModelAlreadyExistException
      * with the given message.
-     * @param Exception message.
+     * @param errorMessage A String message that represents the exception.
      */
     public ModelAlreadyExistException(String errorMessage) {
         super(errorMessage);
@@ -29,8 +29,8 @@ public class ModelAlreadyExistException extends Exception {
 
     /**
      * Construct an instance to wrap other exceptions.
-     * @param The exception message.
-     * @param The underlying cause for the exception.
+     * @param errorMessage A String message that represents the exception.
+     * @param cause A Throwable object that represents the cause for the exception.
      */
     public ModelAlreadyExistException(String errorMessage, Throwable cause) {
         super(errorMessage, cause);
