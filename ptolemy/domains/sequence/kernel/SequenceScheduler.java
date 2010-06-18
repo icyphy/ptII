@@ -45,19 +45,20 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TestExceptionHandler;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Scheduler;
-import ptolemy.domains.sequence.lib.ControlActor;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -220,18 +221,21 @@ public class SequenceScheduler extends Scheduler {
      *  The validity of the current schedule is set by the setValid()
      *  method.  This method is read-synchronized on the workspace.
      *  @param independentList List of independent and dependent
-     *  sequence attributes (and, associated actors, found by calling
-     *  getContainer() on a SequenceAttribute) There must be at least
-     *  one sequence attribute in the _independentList.
-     *  @return The Schedule returned by the _getSchedule() method.
+     *   sequence attributes (and, associated actors, found by calling
+     *   getContainer() on a SequenceAttribute) There must be at least
+     *   one sequence attribute in the _independentList.
+     *  @param validSequence true if the schedule being returned is
+     *   for a valid sequence schedule and not for a list of unexecuted actors,
+     *   false otherwise.
+     *  @return The sequence schedule for the given sequence attributes.
      *  @exception IllegalActionException If the scheduler has no container
-     *  (a director), or the director has no container (a CompositeActor),
-     *  or the scheduling algorithm throws it.
+     *   (a director), or the director has no container (a CompositeActor),
+     *   or the scheduling algorithm throws it.
      *  @exception NotSchedulableException If the _getSchedule() method
-     *  throws it. Not thrown in this base class, but may be needed
-     *  by the derived schedulers.
+     *   throws it. Not thrown in this base class, but may be needed
+     *   by the derived schedulers.
      */
-    public SequenceSchedule getSchedule(List<SequenceAttribute> independentList)
+    public SequenceSchedule getSchedule(List<SequenceAttribute> independentList, boolean validSequence)
             throws IllegalActionException, NotSchedulableException {
 
         // Check the list of sequence attributes
@@ -267,7 +271,7 @@ public class SequenceScheduler extends Scheduler {
             }
 
             if (!isValid() || (_cachedGetSchedule == null)) {
-                _cachedGetSchedule = _getSchedule();
+                _cachedGetSchedule = _getSchedule(validSequence);
             }
 
             return _cachedGetSchedule;
@@ -275,6 +279,27 @@ public class SequenceScheduler extends Scheduler {
             workspace().doneReading();
         }
 
+    }    
+    
+    /** Return the schedule assuming that list of sequence numbers is for a valid
+     *  schedule and not for a list of unexecuted actors after a valid schedule
+     *  has been executed.
+     * 
+     *  @param independentList List of independent and dependent
+     *   sequence attributes (and, associated actors, found by calling
+     *   getContainer() on a SequenceAttribute) There must be at least
+     *   one sequence attribute in the _independentList.
+     *  @return The Schedule returned by the _getSchedule() method.
+     *  @throws IllegalActionException If the scheduler has no container
+     *   (a director), or the director has no container (a CompositeActor),
+     *   or the scheduling algorithm throws it.
+     *  @throws NotSchedulableException If the _getSchedule() method
+     *   throws it.
+     */
+    public SequenceSchedule getSchedule(List<SequenceAttribute> independentList)
+        throws IllegalActionException, NotSchedulableException {
+        
+        return getSchedule(independentList, true);
     }
 
     /** Returns a list of unreachable actors found in the most recent call to
@@ -299,7 +324,7 @@ public class SequenceScheduler extends Scheduler {
         for (Node key : _visitedNodes.keySet()) {
             boolean visited = _visitedNodes.get(key);
             if (!visited) {
-                unreachables.add((Actor) key.getWeight());
+                unreachables.add((Actor) ((NamedObj) key.getWeight()).getContainer());
             }
         }
         return unreachables;
@@ -395,9 +420,11 @@ public class SequenceScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The default name.
-     */
+    /** The default name. */
     protected static final String _DEFAULT_SCHEDULER_NAME = "SequenceScheduler";
+    
+    /** Flag for appending all the unexecuted actors that are not sequenced at the end of the schedule. */
+    protected boolean _scheduleUnexecutedActors = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -422,18 +449,20 @@ public class SequenceScheduler extends Scheduler {
      *  method.  This method is not synchronized on the workspace, because
      *  the getSchedule() method is.
      *
+     *  @param validSequence true if the schedule being returned is
+     *   for a valid sequence schedule and not for a list of unexecuted actors,
+     *   false otherwise.
      *  @return A Schedule of the deeply contained opaque entities
-     *  in the firing order.
+     *   in the firing order.
      *  @exception IllegalActionException If the scheduling algorithm
-     *  throws it. Not thrown in this base class, but may be thrown
-     *  by derived classes.
+     *   throws it. Not thrown in this base class, but may be thrown
+     *   by derived classes.
      *  @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. Not thrown in this base class, but may be thrown
-     *  by derived classes.
+     *   schedulable. Not thrown in this base class, but may be thrown
+     *   by derived classes.
      *  @see ptolemy.kernel.CompositeEntity#deepEntityList()
      */
-
-    protected SequenceSchedule _getSchedule() throws IllegalActionException,
+    protected SequenceSchedule _getSchedule(boolean validSequence) throws IllegalActionException,
             NotSchedulableException {
 
         // Sequenced actors should all share the same opaque container
@@ -460,7 +489,7 @@ public class SequenceScheduler extends Scheduler {
 
         // Create a new table to store the subgraphs
         // Hashtable <Actor, DirectedAcyclicGraph>
-        _sequencedActorNodesToSubgraph = new Hashtable<Actor, DirectedAcyclicGraph>();
+        _sequencedActorNodesToSubgraph = new Hashtable<SequenceAttribute, DirectedAcyclicGraph>();
 
         Iterator seqAttribute = _independentList.iterator();
 
@@ -475,102 +504,12 @@ public class SequenceScheduler extends Scheduler {
             SequenceAttribute seq = (SequenceAttribute) seqAttribute.next();
 
             // If it is a control actor, add information to the control table
-            if (seq.getContainer() instanceof ControlActor)
-
-            {
-                // Get actor
-                ControlActor act = (ControlActor) seq.getContainer();
-
-                // Create a new hashtable to store the outgoing port names
-                // and connected actors
-                // Hashtable <String portName, ArrayList<SequenceAttribute> connected actors>
-                Hashtable portToActors = new Hashtable();
-
-                // Find the actors connected to its output ports
-                // (if any actors and if any output ports)
-                Iterator outPorts = act.outputPortList().iterator();
-
-                while (outPorts.hasNext()) {
-                    // Create an arraylist for actors connected to this port
-                    // This list may be empty
-                    List connectedActorSeqNums = new ArrayList();
-
-                    // Get port and name
-                    IOPort out = (IOPort) outPorts.next();
-                    String outName = out.getName();
-
-                    // Get connected actors
-                    // FIXME: Do I need the deep connected port list?
-                    List connectedPorts = out.connectedPortList();
-
-                    if (connectedPorts != null) {
-                        Iterator conPorts = connectedPorts.iterator();
-                        while (conPorts.hasNext()) {
-                            // Get the sequence numbers for the actors
-                            // corresponding to the connected actors
-                            // Each connected actor must have a sequence number
-                            IOPort con = (IOPort) conPorts.next();
-
-                            // Get the first sequence attribute (there should be only one)
-                            // Make sure there is one; otherwise, throw an exception
-                            if (((Entity) con.getContainer()).attributeList(
-                                    SequenceAttribute.class).isEmpty()) {
-                                throw new IllegalActionException(
-                                        this,
-                                        "Error:  downstream actor: "
-                                                + ((Actor) con.getContainer())
-                                                        .getName()
-                                                + " from control actor: "
-                                                + act.getName()
-                                                + " does not have a sequence or process attribute.");
-                            }
-
-                            else {
-                                SequenceAttribute conAttribute = (SequenceAttribute) ((Entity) con
-                                        .getContainer()).attributeList(
-                                        SequenceAttribute.class).get(0);
-
-                                // Otherwise, add this sequence attribute to the list
-                                connectedActorSeqNums.add(conAttribute);
-
-                                // Beth added 01/26/09
-                                // Check to make sure 
-                                // For the process director, if the process name for this is "None",
-                                // (which it should be), the actor will not be in the original list
-                                // Add it so that its upstream actors will be calculated
-                                if (!_independentList.contains(conAttribute)
-                                        && !moreActors.contains(conAttribute)) {
-                                    moreActors.add(conAttribute);
-                                }
-
-                                // Also, add these sequence attributes to the _dependentList
-                                // so that they can later be removed from the _independentList
-                                // after the control table has completely assembled
-                                _dependentList.add(conAttribute);
-                            }
-                        }
-                    } // End list of actors connected to this port
-
-                    // If the connected actor list is not null and not empty, sort it
-                    if (connectedActorSeqNums != null
-                            && !connectedActorSeqNums.isEmpty()) {
-                        Collections.sort(connectedActorSeqNums);
-
-                        // Check for duplicates in these lists
-                        _identifyDuplicateSequences(connectedActorSeqNums);
-                    }
-
-                    // Add the list to the hashtable of port to actors
-                    portToActors.put(outName, connectedActorSeqNums);
-
-                } // End while there are more output ports
-
-                // Add the port to actors hashtable to the control table
-                // The key here is the sequence attribute for the control actor
-                _controlTable.put(seq, portToActors);
-
-            } // End if control actor
-        } // End while more sequence attributes
+            // The addControlActorOutputs() method is recursive so that we can
+            // handle nested control actors.
+            if (seq.getContainer() instanceof ControlActor) {
+                _addControlActorOutputs(seq, moreActors);
+            }
+        }
 
         // Beth added 01/26/09 
         // Add everything in the moreActors list to the independentList
@@ -605,8 +544,13 @@ public class SequenceScheduler extends Scheduler {
             }
         }
 
-        // Check the remaining sequence actors in the _independentList for duplicates
-        _identifyDuplicateSequences(_independentList);
+        // Check the remaining sequence actors in the _independentList for duplicates 
+        // But only check for a valid sequence schedule.
+        // Do not check this when we are executing all the unexecuted actors after
+        // a valid schedule has finished.
+        if (validSequence) {
+            _identifyDuplicateSequences(_independentList);
+        }
 
         // Return a new schedule based on these data structures
         return new SequenceSchedule(_independentList, _controlTable,
@@ -617,7 +561,253 @@ public class SequenceScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Create a graph of all the actors.
+    /** Add control actor output information to the _controlTable hash table to be used
+     *  when the sequence schedule is instantiated.  This method is recursive so
+     *  it can handle models with nested control actor connections.
+     *  
+     *  @param seq The sequence attribute for the control actor which will be processed.
+     *  @param moreActors List of actors that keeps track of additional actors found
+     *   when walking through the nested control actor outputs.
+     *  @throws IllegalActionException If a downstream actor from the control actor
+     *   does not have a sequence or process attribute.
+     */
+    private void _addControlActorOutputs(SequenceAttribute seq, ArrayList moreActors)
+        throws IllegalActionException {
+        
+        // Get actor
+        ControlActor act = (ControlActor) seq.getContainer();
+
+        // Create a new hashtable to store the outgoing port names
+        // and connected actors
+        // Hashtable <String portName, ArrayList<SequenceAttribute> connected actors>
+        Hashtable portToActors = new Hashtable();
+
+        // Find the actors connected to its output ports
+        // (if any actors and if any output ports)
+        Iterator outPorts = act.outputPortList().iterator();
+
+        while (outPorts.hasNext()) {
+            // Create an arraylist for actors connected to this port
+            // This list may be empty
+            List connectedActorSeqNums = new ArrayList();
+
+            // Get port and name
+            IOPort out = (IOPort) outPorts.next();
+            String outName = out.getName();
+
+            // Get connected actors
+            // 06/09/10 Charles Shelton make sure we get all the sink ports
+            // from this output port.
+            List connectedPorts = out.sinkPortList();
+
+            if (connectedPorts != null) {
+                Iterator conPorts = connectedPorts.iterator();
+                while (conPorts.hasNext()) {
+                    // Get the sequence numbers for the actors
+                    // corresponding to the connected actors
+                    // Each connected actor must have a sequence number
+                    IOPort con = (IOPort) conPorts.next();
+
+                    // Get the first sequence attribute (there should be only one)
+                    // Make sure there is one; otherwise, throw an exception
+                    // Beth added 03/03/10 - Ignore input ports on non-opaque composite actors
+                    
+                    // Charles added 05/12/10 - We should not ignore the input ports on non-opaque
+                    // actors, but rather we should follow the input port inside the composite actor
+                    // to the atomic actor that should be scheduled.
+                    // In ASCET, a non-opaque composite actor is a hierarchy block, and control actor
+                    // sequence numbers can travel inside the hierarchy block.
+                    Entity connectedActor = (Entity) con.getContainer();
+                    
+                    // Check if the connectedActor is a composite and non-opaque
+                    // If so, recursively find all the sequence numbers for actors inside the connectedActor
+                    if (connectedActor instanceof CompositeEntity && !((CompositeEntity) connectedActor).isOpaque()) {
+                        List<IOPort> insideConnectedActors = _getInsideConnectedPorts(con);
+                        for (IOPort insidePort : insideConnectedActors) {
+                            _addConnectedSeqNum(connectedActorSeqNums, insidePort, moreActors, act);
+                        }
+                    } else {
+                        _addConnectedSeqNum(connectedActorSeqNums, con, moreActors, act);
+                    }                    
+                }
+            } // End list of actors connected to this port
+
+            // If the connected actor list is not null and not empty, sort it
+            if (connectedActorSeqNums != null
+                    && !connectedActorSeqNums.isEmpty()) {
+                Collections.sort(connectedActorSeqNums);
+
+                // Check for duplicates in these lists
+                _identifyDuplicateSequences(connectedActorSeqNums);
+            }
+
+            // Add the list to the hashtable of port to actors
+            portToActors.put(outName, connectedActorSeqNums);
+
+        } // End while there are more output ports
+
+        // Add the port to actors hashtable to the control table
+        // The key here is the sequence attribute for the control actor
+        _controlTable.put(seq, portToActors);
+    }    
+    
+    /** Return a list of all the ports connected to the specified port
+     *  that are contained by entities inside the composite entity that contains this port.
+     *  @param actorPort The specified port for which we will find connected entities.
+     *  @return The list of ports from entities inside the composite entity that are connected to the specified port.
+     *  @throws IllegalActionException If the actorPort's container is not a CompositeEntity.
+     */
+    private List<IOPort> _getInsideConnectedPorts(IOPort actorPort)
+        throws IllegalActionException {
+        List<IOPort> insideActors = new LinkedList<IOPort>();
+        
+        if (!(actorPort.getContainer() instanceof CompositeEntity)) {
+            throw new IllegalActionException(actorPort, "The entity " +
+                    actorPort.getContainer().getName() +
+                    " that contains the port " + actorPort.getName() +
+                    " must be a CompositeEntity.");
+        }
+        
+        CompositeEntity compositeActor = (CompositeEntity) actorPort.getContainer();
+        
+        // Look through all the ports connected to the actorPort
+        List portList = actorPort.insidePortList();
+        for (Object port : portList) {
+            Entity connectedActor = (Entity) ((IOPort) port).getContainer();
+            
+            // Check to see if the actor that contains the port is contained by the compositeActor
+            if (connectedActor != compositeActor && connectedActor.getContainer() == compositeActor) {
+                
+                // If the connectedActor is a composite actor and it is not opaque, then
+                // recursively add all the actors inside that actor.
+                if (connectedActor instanceof CompositeEntity && !((CompositeEntity) connectedActor).isOpaque()) {
+                    insideActors.addAll(_getInsideConnectedPorts((IOPort) port));
+                } else {
+                    insideActors.add((IOPort) port);
+                }
+            }
+        }
+        
+        return insideActors;
+    }
+    
+    /** Add the sequence attribute from the actor that contains the specified
+     *  port to the specified connectedActorSeqNums list.
+     * @param connectedActorSeqNums The specified list of sequence attribute to which the
+     *  new attribute will be added.
+     * @param connectedPort The trigger port for the actor that will trigger its sequence call.
+     * @param moreActors List of actors that keeps track of additional actors found
+     *   when walking through the nested control actor outputs.
+     * @param sourceControlActor The original control actor which is connected to the trigger
+     *  port.
+     * @throws IllegalActionException If the actor that contains connectedPort does not
+     *  have a sequence attribute, or if it is a MultipleMethodsActor and the process
+     *  attribute is not correctly specified.
+     */
+    private void _addConnectedSeqNum(List connectedActorSeqNums, IOPort connectedPort,
+            ArrayList moreActors, ControlActor sourceControlActor)
+        throws IllegalActionException {
+        SequenceAttribute conAttribute = null;
+        Entity connectedActor = (Entity) connectedPort.getContainer();
+        
+        // Actor must have at least one sequence or process attribute.
+        if (connectedActor.attributeList(SequenceAttribute.class).isEmpty()) {
+            throw new IllegalActionException(
+                    this,
+                    "Error: downstream actor: "
+                            + connectedActor.getName()
+                            + " from control actor: "
+                            + sourceControlActor.getName()
+                            + " does not have a sequence or process attribute.");
+        }
+        
+        // Check to see if the actor is a MultipleFireMethodsActor with more than one fire method
+        // and if there is a specific method being triggered for this actor.
+        if (connectedActor instanceof MultipleFireMethodsActor &&
+                ((MultipleFireMethodsActor) connectedActor).numFireMethods() > 1 &&
+                    !connectedActor.attributeList(ProcessAttribute.class).isEmpty()) {
+            StringAttribute methodNameAttribute = (StringAttribute) connectedPort.getAttribute("methodName");
+            String methodName = null;                            
+            if (methodNameAttribute != null) {
+                methodName = methodNameAttribute.getValueAsString();
+            }
+            for (Object processAttribute : connectedActor.attributeList(ProcessAttribute.class)) {
+                if (((ProcessAttribute) processAttribute).getMethodName().equals(methodName) &&
+                        ((ProcessAttribute) processAttribute).getProcessName().equals("None")) {
+                    conAttribute = (ProcessAttribute) processAttribute;
+                    break;
+                }
+            }                            
+            if (conAttribute == null) {
+                if (methodName != null) {
+                    throw new IllegalActionException(connectedPort, "The MultipleFireMethodsActor " +
+                            connectedActor.getName() +
+                            " has more than one fire method, but the trigger input specifies the " +
+                            " fire method " + methodName + ", and the actor has no ProcessAttribute" +
+                            " with a Process Name of 'None' specified that fires that method.");
+                } else {
+                    throw new IllegalActionException(connectedPort, "The MultipleFireMethodsActor " +
+                            connectedActor.getName() +
+                            " has more than one fire method, but the trigger input does not specify a " +
+                            " fire method.");
+                }
+            }
+        }
+        
+        // If the actor is not a MultipleFireMethodsActor, then it should
+        // only have one sequence or process attribute.
+        if (conAttribute == null) {
+            if (connectedActor.attributeList(SequenceAttribute.class).size() > 1) {
+                throw new IllegalActionException(
+                        this,
+                        "Error: downstream actor: "
+                                + connectedActor.getName()
+                                + " from control actor: "
+                                + sourceControlActor.getName()
+                                + " should only have one sequence or process attribute.");
+            }
+            
+            conAttribute = (SequenceAttribute)
+                connectedActor.attributeList(SequenceAttribute.class).get(0);
+            
+            if (conAttribute instanceof ProcessAttribute &&
+                    !((ProcessAttribute) conAttribute).getProcessName().equals("None")) {
+                throw new IllegalActionException(conAttribute, "The actor " +
+                        connectedActor + " is dependent on a control actor, but its" +
+                        " ProcessAttribute's process name is not 'None'.");
+            }
+        }
+        
+        connectedActorSeqNums.add(conAttribute);
+
+        // Beth added 01/26/09
+        // Check to make sure 
+        // For the process director, if the process name for this is "None",
+        // (which it should be), the actor will not be in the original list
+        // Add it so that its upstream actors will be calculated
+        if (!_independentList.contains(conAttribute)
+                && !moreActors.contains(conAttribute)) {
+            moreActors.add(conAttribute);
+        }
+
+        // Also, add these sequence attributes to the _dependentList
+        // so that they can later be removed from the _independentList
+        // after the control table has completely assembled
+        if (!_dependentList.contains(conAttribute)) {
+            _dependentList.add(conAttribute);
+        }
+        
+        // If the actor for this sequence or process attribute
+        // is a control actor then make a recursive call to add its
+        // output ports to the _controlTable.
+        if (conAttribute.getContainer() instanceof ControlActor) {
+            _addControlActorOutputs(conAttribute, moreActors);
+        }
+    }
+    
+    
+    /** Create a graph of all the actor output ports and
+     *  sequence/process attributes.
      *  The reachable nodes do not include the argument unless
      *  there is a loop from the specified node back to itself.
      *  
@@ -625,50 +815,148 @@ public class SequenceScheduler extends Scheduler {
      *  that are re-used potentially over multiple processes
      *  (could be moved to a separate function)
      *  @param actorList  The list of actors.
-     * 
+     *  @throws IllegalActionException If there is a problem with
+     *   building the graph for multiple methods for a JniLibraryActor.
      */
-    private void _createActorGraph(List<Entity> actorList) {
+    private void _createActorGraph(List<Entity> actorList)
+        throws IllegalActionException {
 
         _actorGraph = new DirectedGraph();
 
         // Create also additional data structures
         // FIXME: Optimize in the future?
-        _actorGraphNodeList = new Hashtable<Actor, Node>();
+        _actorGraphNodeList = new Hashtable<Actor, List<Node>>();
         _visitedNodes = new Hashtable<Node, Boolean>();
 
         // Create the edges.
         Iterator actors = actorList.iterator();
         while (actors.hasNext()) {
             Actor sa = (Actor) actors.next();
-            if (!_actorGraph.containsNodeWeight(sa)) {
-                _actorGraph.addNodeWeight(sa);
+            List nodeWeights = new ArrayList();
+            
+            // Add all the sequence attributes for each actor.
+            // If the actor is a MultipleFireMethodsActor, check to make sure
+            // a sequence attribute does not invoke a fire method with an output port.
+            List sequenceAttributes = ((Entity) sa).attributeList(SequenceAttribute.class);
+            if (!sequenceAttributes.isEmpty()) {
+                if (sa instanceof MultipleFireMethodsActor &&
+                        ((MultipleFireMethodsActor) sa).numFireMethods() > 1) {
+                    for (Object sequenceAttribute : sequenceAttributes) {
+                        String methodName = null;
+                        if (sequenceAttribute instanceof ProcessAttribute) {
+                            methodName = ((ProcessAttribute) sequenceAttribute).getMethodName();
+                        } else {
+                            methodName = ((MultipleFireMethodsActor) sa).getDefaultFireMethodName();
+                        }
+                        if (((MultipleFireMethodsActor) sa).getMethodOutputPort(methodName) != null) {
+                            throw new IllegalActionException(sa, "Error: A sequence or process attribute " +
+                                    "in the MultipleFireMethodsActor actor: " + sa.getName() +
+                                    " cannot invoke the fire method: " +
+                                    methodName + " that has an explicit output port.");
+                        }
+                    }
+                }
+                nodeWeights.addAll(sequenceAttributes);
             }
-
-            // Add also an entry in the hashtable to easily look
-            // up the node that goes with this actor
-            // Get the node that was just added
-            Iterator nodeIterator = _actorGraph.nodes(sa).iterator();
-            if (nodeIterator.hasNext()) {
-                Node n = (Node) nodeIterator.next();
-                _actorGraphNodeList.put(sa, n);
-                // Also, mark this node as not yet visited
-                // Don't add TestExceptionHandler actors
-                // These are typically not connected in the model, 
-                // but this isn't an error
-                if (!(sa instanceof TestExceptionHandler)) {
-                    _visitedNodes.put(n, false);
+            
+            // If the actor is MultipleFireMethodsActor, or it has no sequence attributes,
+            // also add all its connected output ports to the graph.            
+            if ((sa instanceof MultipleFireMethodsActor &&
+                    ((MultipleFireMethodsActor) sa).numFireMethods() > 1) ||
+                        sequenceAttributes.isEmpty()) {   
+                for (Object outputPort : sa.outputPortList()) {
+                    if (!((Port) outputPort).connectedPortList().isEmpty()) {
+                        nodeWeights.add(outputPort);
+                    }
                 }
             }
-
-            // Find all the predecessors of actor
-            Iterator predecessors = _predecessorList(sa).iterator();
-
-            while (predecessors.hasNext()) {
-                Actor ps = (Actor) predecessors.next();
-                if (!_actorGraph.containsNodeWeight(ps)) {
-                    _actorGraph.addNodeWeight(ps);
+            
+            for (Object nodeWeight : nodeWeights) {
+                if (!_actorGraph.containsNodeWeight(nodeWeight)) {
+                    _actorGraph.addNodeWeight(nodeWeight);
                 }
-                _actorGraph.addEdge(ps, sa);
+                
+                // Add also an entry in the hashtable to easily look
+                // up the node that goes with this actor
+                // Get the node that was just added
+                Iterator nodeIterator = _actorGraph.nodes(nodeWeight).iterator();
+                if (nodeIterator.hasNext()) {
+                    Node n = (Node) nodeIterator.next();
+                    List<Node> nodeList = _actorGraphNodeList.get(sa);
+                    if (nodeList == null) {
+                        nodeList = new ArrayList<Node>(1);
+                    }
+                    nodeList.add(n);
+                    _actorGraphNodeList.put(sa, nodeList);
+                    // Also, mark this node as not yet visited
+                    // Don't add TestExceptionHandler actors
+                    // These are typically not connected in the model, 
+                    // but this isn't an error
+                    if (!(sa instanceof TestExceptionHandler)) {
+                        _visitedNodes.put(n, false);
+                    }
+                } 
+                
+                // Find all the predecessors of actor
+                List predecessors = _predecessorList(sa);
+                
+                // If the actor is a MultipleFireMethodsActor, then restrict the predecessor ports to only those relevant for
+                // the method on this output port.
+                if (sa instanceof MultipleFireMethodsActor &&
+                        ((MultipleFireMethodsActor) sa).numFireMethods() > 1) {
+                    String methodName = null;
+                    
+                    if (nodeWeight instanceof SequenceAttribute) {
+                        if (nodeWeight instanceof ProcessAttribute) {
+                            methodName = ((ProcessAttribute) nodeWeight).getMethodName();
+                        } else {
+                            methodName = ((MultipleFireMethodsActor) sa).getDefaultFireMethodName();
+                        }
+                    } else {
+                        StringAttribute methodNameAttribute = (StringAttribute) ((Port) nodeWeight).getAttribute("methodName");
+                        if (methodNameAttribute != null) {
+                            methodName = methodNameAttribute.getValueAsString();
+                        } else {
+                            throw new IllegalActionException(sa, "The MultipleFireMethodsActor " +
+                                    sa.getName() +
+                                    " has more than one method but no method name set on its output port " +
+                                    ((Port) nodeWeight).getName() + ".");
+                        }
+                    }
+                    
+                    // Restrict the predecessor inputs to those that are inputs for
+                    // the fire method being called.                    
+                    List<IOPort> methodInputPorts = ((MultipleFireMethodsActor) sa).
+                                                        getMethodInputPortList(methodName);                        
+                    List newPredecessors = new LinkedList();
+                    
+                    if (!methodInputPorts.isEmpty()) {
+                        for (Object predecessor : predecessors) {
+                            for (IOPort methodInputPort : methodInputPorts) {
+                                if (predecessor instanceof Port && methodInputPort.sourcePortList().contains(predecessor)) {
+                                    newPredecessors.add(predecessor);
+                                } else if (predecessor instanceof SequenceAttribute) {
+                                    for (Object upstreamActorOutputPort : ((Actor) ((SequenceAttribute) predecessor).getContainer()).outputPortList()) {
+                                        if (methodInputPort.sourcePortList().contains(upstreamActorOutputPort)) {
+                                            newPredecessors.add(predecessor);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    predecessors = newPredecessors;
+                }
+          
+                for (Object predecessor : predecessors) {
+                    if (!_actorGraph.containsNodeWeight(predecessor)) {
+                        _actorGraph.addNodeWeight(predecessor);
+                    }
+                    
+                    _actorGraph.addEdge(predecessor, nodeWeight);                    
+                }
             }
         }
     }
@@ -681,13 +969,16 @@ public class SequenceScheduler extends Scheduler {
      *  model when deciding where to stop backtracking (done by checking if the actor
      *  has a SequenceAttribute (which will also match a ProcessAttribute).  
      *  
-     * @exception IllegalActionException
+     * @exception IllegalActionException If there is a problem creating the schedule list.
      */
     private void _createSubGraphFiringScheduleList()
             throws IllegalActionException {
 
         // This should still be OK
-        List<Object[]> subGraphList = new ArrayList<Object[]>();
+        
+        // 04/08/10 Charles Shelton - This subGraphList is never used so I removed it.
+        //List<Object[]> subGraphList = new ArrayList<Object[]>();
+        
         //FIXME:  Sort or change to e.g. hashtable for O(1) access
         // Could reuse hashtable for our 'visited' metric?
         // Could further improve by only storing e.g. name instead of whole actor
@@ -711,14 +1002,21 @@ public class SequenceScheduler extends Scheduler {
         // matter (for example an actor with a sequence attribute value zero)
 
         for (SequenceAttribute sequenceAtt : _independentList) {
+            
+            // Add all the graph nodes that have the sequence attribute as their weight.
+            // This should be only one node per sequence actor.
+            sequencedActorGraphNodes.addAll(_actorGraph.nodes(sequenceAtt));
+            
+            /*
             Actor sequenceActorNode = (Actor) sequenceAtt.getContainer();
 
             // Find node in the hash table
-            Node graphNode = _actorGraphNodeList.get(sequenceActorNode);
+            List<Node> nodeList = _actorGraphNodeList.get(sequenceActorNode);
 
-            if (graphNode != null) {
-                sequencedActorGraphNodes.add(graphNode);
+            if (nodeList != null) {
+                sequencedActorGraphNodes.addAll(nodeList);
             }
+            */
         }
 
         // Process the list of sequence attributes to determine which actors
@@ -726,34 +1024,54 @@ public class SequenceScheduler extends Scheduler {
         // This list must contain ALL nodes with sequence numbers in the whole model
         // since the backtrack function checks to see if a node has a sequence number
         // so as not to include it in a list of upstream actors
-        _processGraph(subGraphList, sequencedActorGraphNodes);
+        _processGraph(sequencedActorGraphNodes);
 
         // Return from this method
         // A SequenceSchedule will determine its own set of firings (since they are
         // dynamically determined)
     }
 
-    /** Return the predecessors of the given actor in the same level of
-     *  hierarchy. If the argument is null, return null. If the actor is
+    /** Return the predecessor output ports or sequence attributes of the given actor in the same level of
+     *  hierarchy. We use the output ports and sequence attributes because they may contain the method names
+     *  for actors with multiple methods. If the argument is null, return null. If the actor is
      *  a source, return an empty list.
      *  @param actor The given actor.
-     *  @return The list of predecessors, unordered.
+     *  @return The list of predecessor output ports, unordered.
+     *  @throws IllegalActionException If a Non-JniLibraryActor has multiple sequence or process attributes.
      */
-    private List<Actor> _predecessorList(Actor actor) {
+    private List _predecessorList(Actor actor) throws IllegalActionException {
         if (actor == null) {
             return null;
         }
 
-        LinkedList<Actor> predecessors = new LinkedList<Actor>();
+        LinkedList predecessors = new LinkedList();
         Iterator inPorts = (actor).inputPortList().iterator();
 
         while (inPorts.hasNext()) {
             IOPort port = (IOPort) inPorts.next();
-            Iterator outPorts = port.deepConnectedOutPortList().iterator();
+            Iterator outPorts = port.sourcePortList().iterator();
 
             while (outPorts.hasNext()) {
                 IOPort outPort = (IOPort) outPorts.next();
                 Actor pre = (Actor) outPort.getContainer();
+                
+                Object predecessor = null;
+                
+                if ((pre instanceof MultipleFireMethodsActor && ((MultipleFireMethodsActor) pre).numFireMethods() > 1)
+                        || ((Entity) pre).attributeList(SequenceAttribute.class).isEmpty()) {
+                    predecessor = outPort;
+                } else {
+                    // If the actor is not a MultipleFireMethodsActor with more than one fire method
+                    // and has a sequence attribute, it should only have one.
+                    if (((Entity) pre).attributeList(SequenceAttribute.class).size() > 1) {
+                        throw new IllegalActionException(pre, "The actor " + pre.getName() +
+                                " has multiple sequence or process attributes. " +
+                                "Only MultipleFireMethodsActors with more than one " +
+                                "fire method can have more than one sequence or process attribute.");
+                    } else {
+                        predecessor = ((Entity) pre).attributeList(SequenceAttribute.class).get(0);
+                    }
+                }
 
                 // NOTE: This could be done by using
                 // NamedObj.depthInHierarchy() instead of comparing the
@@ -761,8 +1079,8 @@ public class SequenceScheduler extends Scheduler {
                 // leave it alone.
                 if ((actor.getExecutiveDirector() == (pre)
                         .getExecutiveDirector())
-                        && !predecessors.contains(pre)) {
-                    predecessors.addLast(pre);
+                        && !predecessors.contains(predecessor)) {
+                    predecessors.addLast(predecessor);
                 }
             }
         }
@@ -770,16 +1088,14 @@ public class SequenceScheduler extends Scheduler {
         return predecessors;
     }
 
-    /**
-     * Process the actor graph to find out cycles and create a subGraphList of 
-     * subGraphs containing SequencedActor with directed upstream actors. 
-     * @param subGraphList
-     * @param sequencedActorGraphNodes
-     * @exception IllegalActionException
+    /** Process the actor graph to find out cycles and create a subGraphList of 
+     *  subGraphs containing SequencedActor with directed upstream actors. 
+     *  @param sequencedActorGraphNodes The list nodes that represent the sequenced actors in the model.
+     *  @exception IllegalActionException If there is a cycle in the actor graph
      */
-    private void _processGraph(List<Object[]> subGraphList,
-            List<Node> sequencedActorGraphNodes) throws IllegalActionException {
-
+    private void _processGraph(List<Node> sequencedActorGraphNodes)
+        throws IllegalActionException {
+        
         // From original SequenceDirector 
 
         // Added: Create a hash table
@@ -847,7 +1163,7 @@ public class SequenceScheduler extends Scheduler {
             // The subgraph will need to be sorted later
             // Table is <Actor, DirectedAcyclicGraph>
             if (subGraph != null) {
-                _sequencedActorNodesToSubgraph.put((Actor) seqActorNode
+                _sequencedActorNodesToSubgraph.put((SequenceAttribute) seqActorNode
                         .getWeight(), subGraph);
                 // Mark all nodes in the subgraph as visited.  
                 // The subgraph should always include at least one node, 
@@ -873,9 +1189,8 @@ public class SequenceScheduler extends Scheduler {
      *  are any more schedules remaining.  So, the director can call this function,
      *  once all schedules have been handled.
      *
-     * @return True if there is an unreachable actor
+     *  @return True if there is an unreachable actor
      */
-
     public boolean unreachableActorExists() {
         if (_visitedNodes.containsValue(false)) {
             return true;
@@ -885,7 +1200,7 @@ public class SequenceScheduler extends Scheduler {
     }
 
     /** Print the subGraph edges and nodes.
-     * @param subGraph  The directed acyclic graph to print.
+     *  @param subGraph  The directed acyclic graph to print.
      */
     public void printSubGraph(DirectedAcyclicGraph subGraph) {
         // From original SequenceDirector - copied directly 
@@ -911,14 +1226,16 @@ public class SequenceScheduler extends Scheduler {
      *  specified node.
      *  The reachable nodes do not include the argument unless
      *  there is a loop from the specified node back to itself.
-     * @param node
-     * @param sequencedActorGraphNodes
-     * @return subGraph of Sequenced Actor alongwith the upstream actor List directed to it. 
+     *  @param node The node for the sequenced actor for which we want to find the
+     *   backward reachable nodes.
+     *  @param sequencedActorGraphNodes The full list of sequenced actor graph nodes.
+     *  @return subGraph of Sequenced Actor along with the upstream actor List directed to it. 
      */
     private DirectedAcyclicGraph _backwardReachableNodes(Node node,
             List<Node> sequencedActorGraphNodes) {
 
         DirectedAcyclicGraph subGraph = new DirectedAcyclicGraph();
+        
         // In Java the graph is altered by reference through methods
         _connectedSubGraph(node, subGraph, sequencedActorGraphNodes);
         return subGraph;
@@ -927,13 +1244,15 @@ public class SequenceScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**  From original SequenceDirector - copied directly; slightly modified
+    /** From original SequenceDirector - copied directly; slightly modified
      *  Given a node, get all the edges and nodes that are connected
      *  to it directly and/or indirectly. Add them in the given graph.
      *  Remove the nodes from the remaining nodes.
-     * @param node
-     * @param graph
-     * @param sequencedActorGraphNodes
+     *  @param node The node for the sequenced actor for which we want to find the
+     *   connected subgraph.
+     *  @param graph A referenced to an empty subgraph which will be populated in
+     *   this method.
+     *  @param sequencedActorGraphNodes The full list of sequenced actor graph nodes.
      */
     private void _connectedSubGraph(Node node, DirectedAcyclicGraph graph,
             List<Node> sequencedActorGraphNodes) {
@@ -954,58 +1273,36 @@ public class SequenceScheduler extends Scheduler {
                     Node sourceNode = inputEdge.source();
 
                     // Added to check actor for sequence attributes/process attributes
-                    Actor a = (Actor) sourceNode.getWeight();
+                    Object nodeWeight = sourceNode.getWeight();
 
                     // if new subgraph does not contain the node and it is not a sequenced Actor node
                     // if (!graph.containsNode(sourceNode) && !( isSequencedGraphNode(sequencedActorGraphNodes,sourceNode) )) {
 
                     // Beth re-arranged 11/24/08
                     // If the connected node is not a sequenced actor
-                    if (((Entity) a).attributeList(SequenceAttribute.class)
-                            .isEmpty()) {
+                    if (nodeWeight instanceof Port &&
+                            ((((Port) nodeWeight).getContainer() instanceof MultipleFireMethodsActor &&
+                                ((MultipleFireMethodsActor) ((Port) nodeWeight).getContainer()).numFireMethods() > 1) ||
+                                    ((Entity) ((Port) nodeWeight).getContainer()).attributeList(SequenceAttribute.class).isEmpty())) {
                         // Check if the source node is already in the graph.  If not, add it, and 
                         // process source node's connected nodes.
                         if (!graph.containsNode(sourceNode)) {
                             graph.addNode(sourceNode);// then add node to new graph
                             _connectedSubGraph(sourceNode, graph,
                                     sequencedActorGraphNodes);
-
-                            // Must add the edge after we add the node
-                            if (!graph.containsEdge(inputEdge)) {
-
-                                graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
-
-                                if (_debugging) {
-                                    _debug("Adding Edge node to SubGraph : sourceNode"
-                                            + sourceNode.getWeight()
-                                            + " sinkNode" + node.getWeight());
-                                }
-                            }
                         }
 
-                        // Else, if the graph contains the node, but not the edge, add just the edge
-                        else {
+                        // 04/08/10 Charles Shelton - Removed duplicate code since adding this edge
+                        // must be done regardless of whether we add the actor node.
+                        if (!graph.containsEdge(inputEdge)) {                            
+                            graph.addEdge(sourceNode, node);
 
-                            // Beth added this 11/25/08 as a bug fix 
-                            // New functional regression test case added under sequence director folder
-                            // If the subgraph already contains the source node, just add the edge
-                            // This would occur for a graph with edges:
-                            // A -> B; A -> C; B -> D; C -> D
-                            // so node A would be processed as a predecessor of either B or C
-                            // Otherwise, without this edge, it is possible that the topological 
-                            // sort will be incorrect, and that B or C would be fired before A
-                            if (!graph.containsEdge(inputEdge)) {
-
-                                graph.addEdge(sourceNode, node); // Else add nodes and edges to new graph
-
-                                if (_debugging) {
-                                    _debug("Adding Edge node to SubGraph : sourceNode"
-                                            + sourceNode.getWeight()
-                                            + " sinkNode" + node.getWeight());
-                                }
+                            if (_debugging) {
+                                _debug("Adding Edge node to SubGraph : sourceNode"
+                                        + sourceNode.getWeight()
+                                        + " sinkNode" + node.getWeight());
                             }
                         }
-
                     }
                 }
             }
@@ -1014,8 +1311,8 @@ public class SequenceScheduler extends Scheduler {
 
     /** From original SequenceDirector - copied directly
      *  Remove duplicate sequence numbers
-     * @param sequenceList
-     * @exception IllegalActionException
+     *  @param sequenceList The full list of sequence attributes for the model.
+     *  @exception IllegalActionException If a duplicate sequence number is found.
      */
     private void _identifyDuplicateSequences(List sequenceList)
             throws IllegalActionException {
@@ -1043,11 +1340,10 @@ public class SequenceScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**
-     * Return the initialValueParameter name for each of the port .
-     * @param port The port.
-     * @param channel The channel of the port.
-     * @return THe initialValueParameter name.
+    /** Return the initialValueParameter name for each of the port .
+     *  @param port The port.
+     *  @param channel The channel of the port.
+     *  @return THe initialValueParameter name.
      */
     protected static String _getInitialValueParameterName(TypedIOPort port,
             int channel) {
@@ -1074,20 +1370,25 @@ public class SequenceScheduler extends Scheduler {
     // Beth - this is in superclass - use accessor functions
     // private boolean _valid = false;
 
-    // The cached schedule for getSchedule().
-    // Need to have own here, instead of using superclass, because we
-    // want to save a SequenceSchedule and not just a Schedule
+    /** The cached schedule for getSchedule().
+     *  Need to have own here, instead of using superclass, because we
+     *  want to save a SequenceSchedule and not just a Schedule
+     */
     private SequenceSchedule _cachedGetSchedule = null;
 
     /** The DirectedGraph for the model. */
     public DirectedGraph _actorGraph;
 
     /** List of independent and dependent sequence attributes 
-     * (and, associated actors, found by calling .getContainer 
+     *  (and, associated actors, found by calling .getContainer 
      *  on a SequenceAttribute)  
      *  There must be at least one sequence attribute in the _independentList 
      *  The _dependentList may be empty */
     private List<SequenceAttribute> _independentList;
+    
+    /** List of dependent sequence attributes. The _dependentList may be empty
+     *  if there are no control actors in the model.
+     */
     private List<SequenceAttribute> _dependentList;
 
     /** A hash table mapping a sequence actor name to a hash table of 
@@ -1104,12 +1405,12 @@ public class SequenceScheduler extends Scheduler {
      *  FIXME:  Check for null graphs?  There should not be any null graphs in the table.
      *  A graph should always include the sequenced actor itself.
      */
-    private Hashtable<Actor, DirectedAcyclicGraph> _sequencedActorNodesToSubgraph;
+    private Hashtable<SequenceAttribute, DirectedAcyclicGraph> _sequencedActorNodesToSubgraph;
 
     /** Hashtable of actors to graph nodes
      *  FIXME:  Is there a better way to do this?
      */
-    Hashtable<Actor, Node> _actorGraphNodeList;
+    Hashtable<Actor, List<Node>> _actorGraphNodeList;
 
     /** Hashtable of graph nodes to a boolean value
      *  Keeps track of which nodes in the graph have been visited
@@ -1121,5 +1422,4 @@ public class SequenceScheduler extends Scheduler {
      *  each node and make sure it's not a TestExceptionHandler
      */
     Hashtable<Node, Boolean> _visitedNodes;
-
 }

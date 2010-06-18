@@ -35,6 +35,8 @@ import javax.swing.JList;
 import ptolemy.actor.Actor;
 import ptolemy.domains.sequence.kernel.SequenceAttribute;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorCellRenderer
@@ -71,7 +73,12 @@ public class ActorCellRenderer extends DefaultListCellRenderer {
             List<SequenceAttribute> seqAttributes = ((Entity) actor)
                     .attributeList(SequenceAttribute.class);
             if(seqAttributes.size() > 0) {
-                name += " (" + seqAttributes.get(0).getSequenceNumber() + ")";
+                try {
+                    name += " (" + seqAttributes.get(0).getSequenceNumber() + ")";
+                } catch (IllegalActionException e) {
+                    MessageHandler.error("Actor " + actor.getName() +
+                            "'s SequenceAttribute does not have a valid sequence number.", e);
+                }
             }
             this.setText(name);
         }

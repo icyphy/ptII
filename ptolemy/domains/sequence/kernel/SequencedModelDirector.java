@@ -37,13 +37,11 @@ import ptolemy.actor.FiringEvent;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.sched.Firing;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sequence.lib.ControlActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -143,10 +141,15 @@ public abstract class SequencedModelDirector extends Director {
      */
     public Parameter userDefinedDefaultOutputInitialValue;
 
-    /** If true, enable default output initial vaues.  The default value
+    /** If true, enable default output initial values.  The default value
      *  is a boolean true.
      */
     public Parameter defaultOutputInitialValue;
+    
+    /** If true, fire any unexecuted actors that were not fired during
+     *  the sequence schedule.
+     */
+    public Parameter fireUnexecutedActors;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -432,7 +435,7 @@ public abstract class SequencedModelDirector extends Director {
 
         // There must be at least one actor with a sequence or process attribute
         // If not, throw an exception
-        if (_sequencedList == null) {
+        if (_sequencedList == null || _sequencedList.isEmpty()) {
             throw new IllegalActionException(this,
                     "There are no actors in the models with sequence numbers.");
         }
@@ -602,8 +605,12 @@ public abstract class SequencedModelDirector extends Director {
             */
         // Note that a ProcessAttribute is also a SequenceAttribute
 
+        // MultipleFireMethodsActor can potentially have more than one Sequence or Process Attribute,
+        // but other actors cannot.
         if (!sequenceAttributes.isEmpty()) {
-            if (sequenceAttributes.size() > 1) {
+            if (sequenceAttributes.size() > 1 &&
+                    !(actor instanceof MultipleFireMethodsActor &&
+                            ((MultipleFireMethodsActor) actor).numFireMethods() > 1)) {
                 throw new IllegalActionException(
                         this,
                         " Actor "
@@ -761,7 +768,7 @@ public abstract class SequencedModelDirector extends Director {
      *  @exception IllegalActionException  From actor.iterate()
      */
 
-    void fireSchedule(SequenceSchedule seqSchedule)
+    protected void fireSchedule(SequenceSchedule seqSchedule)
             throws IllegalActionException {
         // Get a firing iterator for this schedule
         Iterator firings = seqSchedule.firingIterator();
@@ -774,8 +781,16 @@ public abstract class SequencedModelDirector extends Director {
         }
 
         while (firings.hasNext() && !_stopRequested) {
-            Firing firing = (Firing) firings.next();
+            SequenceFiring firing = (SequenceFiring) firings.next();
             Actor actor = firing.getActor();
+            
+            // If the actor is a MultipleFireMethodsActor, set
+            // its fire method before firing it.
+            if (actor instanceof MultipleFireMethodsActor &&
+                    ((MultipleFireMethodsActor) actor).numFireMethods() > 1) {
+                String methodName = firing.getMethodName();
+                ((MultipleFireMethodsActor) actor).setFireMethod(methodName);
+            }
 
             int iterationCount = firing.getIterationCount();
 
@@ -806,8 +821,13 @@ public abstract class SequencedModelDirector extends Director {
     /** Initialize the object.   In this case, we give the SequencedModelDirector a
      *  default scheduler of the class SequenceScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
+     *  
+     *  @throws IllegalActionException If there is a problem instantiating
+     *   the director's parameters.
+     *  @throws NameDuplicationException If there is a problem instantiating
+     *   the director's parameters.
      */
-    private void _init() throws IllegalActionException,
+    protected void _init() throws IllegalActionException,
             NameDuplicationException {
         // Create a new SequenceScheduler object
         // This sets the container at the same time
@@ -830,6 +850,10 @@ public abstract class SequencedModelDirector extends Director {
         defaultOutputInitialValue = new Parameter(this,
                 "Enable Default Output Initial Value", BooleanToken.TRUE);
         defaultOutputInitialValue.setTypeEquals(BaseType.BOOLEAN);
+        
+        fireUnexecutedActors = new Parameter(this,
+                "fireUnexecutedActors", BooleanToken.FALSE);
+        fireUnexecutedActors.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////

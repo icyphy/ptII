@@ -4,7 +4,7 @@
 <entity name="SeqMoC_ProcessTestIfElse" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={201, 149, 942, 744}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={201, 149, 944, 751}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[729, 634]">
     </property>
@@ -33,7 +33,7 @@
         </property>
         <property name="Else_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P1',1}">
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P1', 1}">
         </property>
     </entity>
     <entity name="If Then Else2" class="ptolemy.domains.sequence.lib.IfThenElse">
@@ -43,7 +43,7 @@
         </property>
         <property name="False_InitialValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P2',1}">
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P2', 1}">
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
@@ -63,47 +63,47 @@
         </property>
         <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 320.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={885, 67, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={951, 88, 492, 219}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 215.0]">
         </property>
-        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P1',2}">
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'None', 1}">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={881, 279, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={962, 329, 492, 219}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 285.0]">
         </property>
-        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P1',3}">
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'None', 2}">
         </property>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={880, 487, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={984, 566, 492, 219}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 415.0]">
         </property>
-        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P2',2}">
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'None', 1}">
         </property>
     </entity>
     <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={879, 695, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 819, 492, 219}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{510.0, 490.0}">
         </property>
-        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'P2',3}">
+        <property name="ProcessAttribute" class="ptolemy.domains.sequence.kernel.ProcessAttribute" value="{'None', 2}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

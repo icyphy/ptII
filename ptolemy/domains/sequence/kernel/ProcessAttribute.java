@@ -26,6 +26,8 @@
  */
 package ptolemy.domains.sequence.kernel;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -38,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
 /**
 ProcessAttribute is a subclass of Parameter with support for strings
 
-   A ProcessAttribute is a tuple (string processName, int sequenceNumber)
+   A ProcessAttribute is a tuple (string processName, int sequenceNumber, (optionally) string methodName)
 
    The ProcessDirector collects the ProcessAttributes to determine the order
    in which order the actors in the model are fired. 
@@ -89,7 +91,7 @@ public class ProcessAttribute extends SequenceAttribute {
     public ProcessAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setTypeEquals(new ArrayType(BaseType.STRING, 2));
+        setTypeEquals(new ArrayType(BaseType.STRING));
 
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"-30\" y=\"-2\" "
                 + "width=\"60\" height=\"4\" " + "style=\"fill:blue\"/>\n"
@@ -121,48 +123,53 @@ public class ProcessAttribute extends SequenceAttribute {
         int seq1 = 0;
         int seq2 = 0;
 
-        // Check for either a SequenceAttribute or ProcessAttribute (which is a SequenceAttribute)
-        if (obj instanceof SequenceAttribute) {
+        try {
+            // Check for either a SequenceAttribute or ProcessAttribute (which is a SequenceAttribute)
+            if (obj instanceof SequenceAttribute) {
 
-            // If the second object is a ProcessAttribute, compare the process names
-            if (obj instanceof ProcessAttribute) {
-                String proc1 = this.getProcessName();
-                String proc2 = ((ProcessAttribute) obj).getProcessName();
+                // If the second object is a ProcessAttribute, compare the process names
+                if (obj instanceof ProcessAttribute) {
+                    String proc1 = this.getProcessName();
+                    String proc2 = ((ProcessAttribute) obj).getProcessName();
 
-                int procCompare = proc1.compareTo(proc2);
+                    int procCompare = proc1.compareTo(proc2);
 
-                // If not equal, return result
-                if (procCompare != 0) {
-                    return procCompare;
+                    // If not equal, return result
+                    if (procCompare != 0) {
+                        return procCompare;
+                    }
+
+                    // If process names are the same, compare the sequence numbers
+                    seq1 = this.getSequenceNumber();
+                    seq2 = ((ProcessAttribute) obj).getSequenceNumber();
+
+                    if (seq1 < seq2) {
+                        return -1;
+                    } else if (seq1 > seq2) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
                 }
 
-                // If process names are the same, compare the sequence numbers
-                seq1 = this.getSequenceNumber();
-                seq2 = ((ProcessAttribute) obj).getSequenceNumber();
+                else {
+                    // For process name and sequence number, just compare sequence numbers
+                    // Need to call getSequenceNumber from SequenceAttribute
+                    seq1 = this.getSequenceNumber();
+                    seq2 = ((SequenceAttribute) obj).getSequenceNumber();
 
-                if (seq1 < seq2) {
-                    return -1;
-                } else if (seq1 > seq2) {
-                    return 1;
-                } else {
-                    return 0;
+                    if (seq1 < seq2) {
+                        return -1;
+                    } else if (seq1 > seq2) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
                 }
             }
-
-            else {
-                // For process name and sequence number, just compare sequence numbers
-                // Need to call getSequenceNumber from SequenceAttribute
-                seq1 = this.getSequenceNumber();
-                seq2 = ((SequenceAttribute) obj).getSequenceNumber();
-
-                if (seq1 < seq2) {
-                    return -1;
-                } else if (seq1 > seq2) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
+        } catch (IllegalActionException e) {
+            throw new IllegalArgumentException(
+                    "Invalid ProcessAttribute passed to compareTo method.", e);
         }
 
         // FIXME:  Throw exception?  Otherwise we can not compare them, if the second object
@@ -173,43 +180,83 @@ public class ProcessAttribute extends SequenceAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Returns the process name, or an empty string if there is none.
+    /** Return the method name to be called on the actor, or an empty
+     *  string if there is none.
+     * 
+     *  @return String method name.
+     *  @throws IllegalActionException If there is a problem getting the token
+     *   from the ProcessAttribute.
+     */
+    public String getMethodName() throws IllegalActionException {
+        String methodName = "";
+        
+        ArrayToken processArrayToken = (ArrayToken) getToken();
+        if (processArrayToken.length() > 2) {
+            methodName = ((StringToken) processArrayToken.getElement(2)).stringValue();
+        }        
+        
+        return methodName;
+    }    
+    
+    /** Returns the process name, or throws an exception if there is none.
      * 
      * @return String process name
+     * @throws IllegalActionException If there is a problem getting the token
+     *   from the ProcessAttribute.
      */
-
-    public String getProcessName() {
+    public String getProcessName() throws IllegalActionException {
         String processName = "";
-        String expr = this.getExpression();
 
-        if (expr.contains("{")) {
-
-            processName = expr.substring(expr.indexOf("{") + 1,
-                    expr.indexOf(",")).replace("\'", "");
+        ArrayToken processArrayToken = (ArrayToken) getToken();
+        
+        if (processArrayToken.length() > 0) {
+            StringToken processNameToken = (StringToken) (processArrayToken).getElement(0);
+            processName = processNameToken.stringValue();
+        } else {
+            throw new IllegalActionException(this, "ProcessAttribute " +
+                    getName() + " has no process name.");
         }
 
         return processName;
     }
 
-    /** Returns the sequence number as an int, or 0 if there is none.
+    /** Returns the sequence number as an int, or throws an exception if there is none.
      * 
      * @return int sequence number
+     * @throws IllegalActionException If there is a problem getting the token
+     *   from the ProcessAttribute.
      */
-
-    // FIXME:  0 is actually a valid sequence number - want different default return?
-
-    public int getSequenceNumber() {
+    public int getSequenceNumber() throws IllegalActionException {
+        // FIXME:  0 is actually a valid sequence number - want different default return?
         int seqNumber = 0;
-        String expr = this.getExpression();
-
-        if (expr.contains("{")) {
-            seqNumber = Integer.parseInt(expr.substring(expr.indexOf(",") + 1,
-                    expr.indexOf("}")).replace("\'", ""));
+        
+        ArrayToken processArrayToken = (ArrayToken) getToken();
+        
+        if (processArrayToken.length() > 1) {
+            StringToken sequenceNumToken = (StringToken) (processArrayToken).getElement(1);            
+            try {
+                seqNumber = Integer.parseInt(sequenceNumToken.stringValue());
+                
+                // Check to make sure sequence number is positive or zero.
+                if (seqNumber < 0) {
+                    throw new IllegalActionException(this, "In ProcessAttribute " +
+                            getName() + " the sequence number must be a positive integer. " +
+                            "It cannot be zero or negative.");
+                }
+            } catch (NumberFormatException e) {
+                throw new IllegalActionException(this, e, "ProcessAttribute " +
+                        getName() + " has an incorrectly formatted sequence number: " +
+                        sequenceNumToken.stringValue() + " - The sequence number must " +
+                        " be a positive integer.");
+            }
+        } else {
+            throw new IllegalActionException(this, "ProcessAttribute " +
+                    getName() + " has no sequence number.");
         }
 
         return seqNumber;
-
     }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

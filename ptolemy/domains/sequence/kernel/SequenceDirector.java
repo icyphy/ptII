@@ -27,8 +27,10 @@
 package ptolemy.domains.sequence.kernel;
 
 import java.util.Collections;
+import java.util.List;
 
 import ptolemy.actor.Actor;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -145,6 +147,22 @@ public class SequenceDirector extends SequencedModelDirector {
         // schedule will not be set
         // Call superclass function with _schedule as argument to handle firing 
         fireSchedule(_schedule);
+        
+        // If the fireUnexectedActors parameter is true,
+        // fire all the unexecuted actors on branches that are not taken
+        // after the full schedule is completed.
+        if (((BooleanToken) fireUnexecutedActors.getToken()).booleanValue()) {
+            
+            List<SequenceAttribute> unexecutedList = _schedule.getUnexecutedList();
+            SequenceSchedule unexecutedSchedule = null;
+            
+            while (!unexecutedList.isEmpty()) {
+                unexecutedSchedule = _scheduler.getSchedule(unexecutedList, false);
+                
+                fireSchedule(unexecutedSchedule);
+                unexecutedList = unexecutedSchedule.getUnexecutedList();
+            }
+        }
     }
 
     /** Preinitialize the actors associated with this director and

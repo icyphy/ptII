@@ -155,7 +155,6 @@ public class VisualSequenceDirector extends SequenceDirector {
                 } catch (NotSchedulableException e2) {
                     MessageHandler.error("Failed to order actors.", e2);
                 }
-
             }
             if (pane != null) {
                 try {

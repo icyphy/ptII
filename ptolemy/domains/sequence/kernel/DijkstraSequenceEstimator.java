@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.sequence.kernel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,6 +42,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
@@ -84,7 +86,7 @@ public class DijkstraSequenceEstimator {
      * @exception NotSchedulableException If the schedule is acyclic.
      */
     public Vector<Actor> estimateSequencedSchedule(
-            List<SequenceAttribute> independentList) {
+            List<SequenceAttribute> independentList) throws NotSchedulableException {
 
         _init();
 
@@ -133,19 +135,28 @@ public class DijkstraSequenceEstimator {
         _maxDistance = 0;
     }
 
-    private void _initSequencedActors(List<SequenceAttribute> independentList) {
+    private void _initSequencedActors(List<SequenceAttribute> independentList) throws NotSchedulableException {
         if (independentList != null) {
             Iterator sequenceAttributes = independentList.iterator();
             while (sequenceAttributes.hasNext()) {
                 SequenceAttribute attribute = (SequenceAttribute) sequenceAttributes
                         .next();
-                int sequenceNumber = attribute.getSequenceNumber();
-                _SequenceInfo info = new _SequenceInfo(sequenceNumber, true,
-                        false);
-                info.original = sequenceNumber;
-                Actor actor = (Actor) attribute.getContainer();
-                _sequenceInfos.put(actor, info);
-                _unsettled.add(actor);
+                try {
+                    int sequenceNumber = attribute.getSequenceNumber();                
+                    _SequenceInfo info = new _SequenceInfo(sequenceNumber, true,
+                            false);
+                    info.original = sequenceNumber;
+                    Actor actor = (Actor) attribute.getContainer();
+                    _sequenceInfos.put(actor, info);
+                    _unsettled.add(actor);
+                } catch (IllegalActionException e) {
+                    List unschedulableActorList = new ArrayList(1);
+                    unschedulableActorList.add(attribute.getContainer());
+                    throw new NotSchedulableException(unschedulableActorList, e,
+                            "The actor " + attribute.getContainer().getName() + " cannot be scheduled because " +
+                            		"its SequenceAttribute " + attribute +
+                            		" does not contain a valid sequence number.");
+                }
             }
         }
 

@@ -88,6 +88,7 @@ public class PartialSequenceScheduler extends SequenceScheduler {
         // FIXME: It may occur that the _actorGraph is null.
         // If this is the case and the graph is not acyclic, this
         // method will hang in an infinite while loop.
+        
         if (_actorGraph == null) {
             return _estimator.estimateSequencedSchedule(independentList);
         } else if (_actorGraph.isAcyclic()) {

@@ -35,7 +35,7 @@ import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.domains.sequence.gui.VisualSequenceDirector;
 import ptolemy.domains.sequence.kernel.SequenceAttribute;
-import ptolemy.domains.sequence.lib.ControlActor;
+import ptolemy.domains.sequence.kernel.ControlActor;
 import ptolemy.domains.taskpt.lib.Memory;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -82,7 +82,6 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
     public TaskPtDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -173,7 +172,9 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
         }
     }
 
-    private void _init() {
+    protected void _init() throws IllegalActionException,
+        NameDuplicationException {
+        super._init();
         if (_memory == null) {
             _memory = new Memory();
         }

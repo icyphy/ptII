@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -114,30 +115,36 @@ public class SequenceAttribute extends Parameter implements Comparable {
      *  @return 0 if the sequence numbers are the same.
      */
     public int compareTo(Object obj) {
+        
+        try {
+            int seq1 = this.getSequenceNumber();
+            int seq2 = 0;
 
-        int seq1 = this.getSequenceNumber();
-        int seq2 = 0;
+            // Check for either a SequenceAttribute or ProcessAttribute (which is a SequenceAttribute)
+            if (obj instanceof SequenceAttribute) {
+                // If the second object is a ProcessAttribute, use the correct getSequenceNumber()
+                // FIXME:  Is this needed, or is it OK just to use (SequenceAttribute) x.getSequenceNumber()?
+                // FIXME:  This is bad coding style, because SequenceAtribute should not know about 
+                // its subclass ProcessAttribute - refactor?
+                if (obj instanceof ProcessAttribute) {
+                    seq2 = ((ProcessAttribute) obj).getSequenceNumber();
+                } else {
+                    seq2 = ((SequenceAttribute) obj).getSequenceNumber();
+                }
 
-        // Check for either a SequenceAttribute or ProcessAttribute (which is a SequenceAttribute)
-        if (obj instanceof SequenceAttribute) {
-            // If the second object is a ProcessAttribute, use the correct getSequenceNumber()
-            // FIXME:  Is this needed, or is it OK just to use (SequenceAttribute) x.getSequenceNumber()?
-            // FIXME:  This is bad coding style, because SequenceAtribute should not know about 
-            // its subclass ProcessAttribute - refactor?
-            if (obj instanceof ProcessAttribute) {
-                seq2 = ((ProcessAttribute) obj).getSequenceNumber();
-            } else {
-                seq2 = ((SequenceAttribute) obj).getSequenceNumber();
+                if (seq1 < seq2) {
+                    return -1;
+                } else if (seq1 > seq2) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             }
-
-            if (seq1 < seq2) {
-                return -1;
-            } else if (seq1 > seq2) {
-                return 1;
-            } else {
-                return 0;
-            }
+        } catch (IllegalActionException e) {
+            throw new IllegalArgumentException(
+                    "Invalid SequenceAttribute passed to compareTo method.", e);
         }
+        
         throw new IllegalArgumentException(
                 "SequenceAttribute can only be compared to other"
                         + " instances of SequenceAttribute.");
@@ -146,18 +153,23 @@ public class SequenceAttribute extends Parameter implements Comparable {
     /** Returns the sequence number as an int, or 0 if there is none.
      * 
      * @return int sequence number
+     * @throws IllegalActionException If there is a problem getting the token value.
      */
-
-    // FIXME:  0 is actually a valid sequence number - want different default return?
-
-    public int getSequenceNumber() {
+    public int getSequenceNumber() throws IllegalActionException{
+        // FIXME:  0 is actually a valid sequence number - want different default return?
         int seqNumber = 0;
 
-        // Return the expression as an integer
-        seqNumber = Integer.parseInt(this.getExpression());
+        // Return the attribute token value as an integer        
+        seqNumber = ((IntToken) getToken()).intValue();
+        
+        // Check to make sure sequence number is positive or zero.
+        if (seqNumber < 0) {
+            throw new IllegalActionException(this, "In SequenceAttribute " +
+                    getName() + " the sequence number must be a positive integer. " +
+                    "It cannot be zero or negative.");
+        }
 
         return seqNumber;
-
     }
 
     /** Implement validate method to validate the SequenceAttribute and ProcessAttributes .

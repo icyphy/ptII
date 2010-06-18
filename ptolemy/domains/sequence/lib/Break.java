@@ -28,6 +28,7 @@ package ptolemy.domains.sequence.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.sequence.kernel.ControlActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
