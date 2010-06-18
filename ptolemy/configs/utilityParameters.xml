@@ -8,6 +8,7 @@
   <doc>Parameters</doc>
 <input source="ptolemy/configs/utilityParameter.xml"/>
 <input source="ptolemy/configs/utilityStringParameter.xml"/>
+<input source="ptolemy/configs/utilityDBAttribute.xml"/>
 <input source="ptolemy/configs/utilityNameParameter.xml"/>
 <input source="ptolemy/configs/utilityFileParameter.xml"/>
 <input source="ptolemy/configs/utilityColorAttribute.xml"/>
