@@ -13,7 +13,6 @@ import ptdb.kernel.database.DBConnection;
 ///////////////////////////////////////////////////////////////
 //// AttributesManager
 
-public class AttributesManager {
 /**
  * Manage the attributes and work as a link between the GUI and the database
  * layer.
