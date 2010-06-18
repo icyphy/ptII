@@ -25,7 +25,8 @@ public class XMLDBAttribute {
      * Construct a XMLDBAttribute instance
      * with the given attribute name.
      *
-     * @param attributeName the name for the given attribute.
+     * @param attributeName The name for the given attribute.
+     * @param attributeType The type for the given attribute.
      */
     public XMLDBAttribute(String attributeName, String attributeType) {
         this._attributeName = attributeName;
@@ -34,9 +35,13 @@ public class XMLDBAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+    /** String Type. */
     public static final String ATTRIBUTE_TYPE_STRING = "String";
+    
+    /** Boolean Type. */
     public static final String ATTRIBUTE_TYPE_BOOLEAN = "Boolean";
+    
+    /** List Type. */
     public static final String ATTRIBUTE_TYPE_LIST = "List";
     
     
@@ -81,7 +86,7 @@ public class XMLDBAttribute {
 
 
     /**
-     * Set the attribute list value only when the attribute type is list
+     * Set the attribute list value only when the attribute type is list.
      * @param attributeValues The list of attribute values.
      * 
      * @see #getAttributeValue

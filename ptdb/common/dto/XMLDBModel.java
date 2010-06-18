@@ -134,7 +134,7 @@ public class XMLDBModel {
     }
 
     /**
-     * Set the parents for the current model
+     * Set the parents for the current model.
      * @param listParents List of parents for this model.
      * 
      * @see #getParents
