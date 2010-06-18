@@ -82,9 +82,15 @@ public class PartialSequenceScheduler extends SequenceScheduler {
      * 
      * @exception NotSchedulableException If the schedule is acyclic.
      */
-     public Vector<Actor> estimateSequencedSchedule(
-            List<SequenceAttribute> independentList) throws NotSchedulableException {
-        if (_actorGraph.isAcyclic()) {
+    public Vector<Actor> estimateSequencedSchedule(
+            List<SequenceAttribute> independentList)
+            throws NotSchedulableException {
+        // FIXME: It may occur that the _actorGraph is null.
+        // If this is the case and the graph is not acyclic, this
+        // method will hang in an infinite while loop.
+        if (_actorGraph == null) {
+            return _estimator.estimateSequencedSchedule(independentList);
+        } else if (_actorGraph.isAcyclic()) {
             return _estimator.estimateSequencedSchedule(independentList);
         } else {
             throw new NotSchedulableException(

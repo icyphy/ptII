@@ -85,9 +85,9 @@ public class DijkstraSequenceEstimator {
      */
     public Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList) {
-        
+
         _init();
-        
+
         // initialize Dijkstra with sources and the actors that already
         // have sequence numbers
         _initSources();
@@ -113,7 +113,8 @@ public class DijkstraSequenceEstimator {
         while (i <= _maxDistance) {
             Iterator sequenceEntries = _sequenceInfos.entrySet().iterator();
             while (sequenceEntries.hasNext()) {
-                Entry<Actor, _SequenceInfo> sequenceEntry = (Entry<Actor, _SequenceInfo>) sequenceEntries.next();
+                Entry<Actor, _SequenceInfo> sequenceEntry = (Entry<Actor, _SequenceInfo>) sequenceEntries
+                        .next();
                 Actor actor = sequenceEntry.getKey();
                 _SequenceInfo info = sequenceEntry.getValue();
                 if (info.distance == i) {
@@ -133,15 +134,19 @@ public class DijkstraSequenceEstimator {
     }
 
     private void _initSequencedActors(List<SequenceAttribute> independentList) {
-        Iterator sequenceAttributes = independentList.iterator();
-        while (sequenceAttributes.hasNext()) {
-            SequenceAttribute attribute = (SequenceAttribute) sequenceAttributes.next();
-            int sequenceNumber = attribute.getSequenceNumber();
-            _SequenceInfo info = new _SequenceInfo(sequenceNumber, true, false);
-            info.original = sequenceNumber;
-            Actor actor = (Actor) attribute.getContainer();
-            _sequenceInfos.put(actor, info);
-            _unsettled.add(actor);
+        if (independentList != null) {
+            Iterator sequenceAttributes = independentList.iterator();
+            while (sequenceAttributes.hasNext()) {
+                SequenceAttribute attribute = (SequenceAttribute) sequenceAttributes
+                        .next();
+                int sequenceNumber = attribute.getSequenceNumber();
+                _SequenceInfo info = new _SequenceInfo(sequenceNumber, true,
+                        false);
+                info.original = sequenceNumber;
+                Actor actor = (Actor) attribute.getContainer();
+                _sequenceInfos.put(actor, info);
+                _unsettled.add(actor);
+            }
         }
 
     }
@@ -157,7 +162,8 @@ public class DijkstraSequenceEstimator {
             Iterator inputs = actor.inputPortList().iterator();
             while (inputs.hasNext() && isSource) {
                 IOPort input = (IOPort) inputs.next();
-                Iterator connectedPorts = input.deepConnectedOutPortList().iterator();
+                Iterator connectedPorts = input.deepConnectedOutPortList()
+                        .iterator();
                 while (connectedPorts.hasNext() && isSource) {
                     IOPort connected = (IOPort) connectedPorts.next();
                     if (container != ((NamedObj) connected).getContainer()) {
@@ -178,9 +184,9 @@ public class DijkstraSequenceEstimator {
 
     private Actor _selectActor() {
         Iterator it = _unsettled.iterator();
-        int max = 0;
+        int max = -1;
         Actor result = null;
-        while (it.hasNext()) {
+        while(it.hasNext()) {
             Actor actor = (Actor) it.next();
             _SequenceInfo info = _sequenceInfos.get(actor);
             int dist = info.distance;
@@ -196,35 +202,41 @@ public class DijkstraSequenceEstimator {
 
         _SequenceInfo actorSeqInfo = _sequenceInfos.get(actor);
         int actorDistance = actorSeqInfo.distance;
-        Iterator ports = actor.outputPortList().iterator();
+        List portList = actor.outputPortList();
+        if (portList != null) {
+            Iterator ports = portList.iterator();
 
-        // update _maxDistance
-        if (ports.hasNext() && _maxDistance <= actorDistance) {
-            _maxDistance = actorDistance + 1;
-        }
+            // update _maxDistance
+            if (ports.hasNext() && _maxDistance <= actorDistance) {
+                _maxDistance = actorDistance + 1;
+            }
 
-        // update distances and unsettled
-        while (ports.hasNext()) {
-            IOPort port = (IOPort) ports.next();
-            Iterator deepConnectedInPortList = port.deepConnectedInPortList()
-                    .iterator();
+            // update distances and unsettled
+            while (ports.hasNext()) {
+                IOPort port = (IOPort) ports.next();
+                Iterator deepConnectedInPortList = port
+                        .deepConnectedInPortList().iterator();
 
-            while (deepConnectedInPortList.hasNext()) {
-                Port deepConnectedPort = (Port) deepConnectedInPortList.next();
-                Actor connectedActor = (Actor) deepConnectedPort.getContainer();
-                _SequenceInfo _SequenceInfo = _sequenceInfos.get(connectedActor);
+                while (deepConnectedInPortList.hasNext()) {
+                    Port deepConnectedPort = (Port) deepConnectedInPortList
+                            .next();
+                    Actor connectedActor = (Actor) deepConnectedPort
+                            .getContainer();
+                    _SequenceInfo _SequenceInfo = _sequenceInfos
+                            .get(connectedActor);
 
-                if (_SequenceInfo == null) {
-                    // put actor in the map, if not visited
-                    _sequenceInfos.put(connectedActor, new _SequenceInfo(actorDistance + 1,
-                            false, true));
-                    _unsettled.add(connectedActor);
-                } else if (_SequenceInfo.distance < actorDistance + 1) {
-                    // update distance, if a longer way is found.
-                    _unsettled.add(connectedActor);
-                    _SequenceInfo.distance = actorDistance + 1;
-                    if(_SequenceInfo.isFixed) {
-                        _SequenceInfo.changed = true;
+                    if (_SequenceInfo == null) {
+                        // put actor in the map, if not visited
+                        _sequenceInfos.put(connectedActor, new _SequenceInfo(
+                                actorDistance + 1, false, true));
+                        _unsettled.add(connectedActor);
+                    } else if (_SequenceInfo.distance < actorDistance + 1) {
+                        // update distance, if a longer way is found.
+                        _unsettled.add(connectedActor);
+                        _SequenceInfo.distance = actorDistance + 1;
+                        if (_SequenceInfo.isFixed) {
+                            _SequenceInfo.changed = true;
+                        }
                     }
                 }
             }
