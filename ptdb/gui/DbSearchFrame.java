@@ -3,6 +3,7 @@
  */
 package ptdb.gui;
 
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -10,25 +11,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import ptdb.common.dto.DBGraphSearchCriteria;
-import ptdb.common.dto.PTDBSearchAttribute;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
-import ptolemy.actor.gt.GTIngredient;
-import ptolemy.actor.gt.GTIngredientList;
-import ptolemy.actor.gt.MalformedStringException;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.TransformationRule;
-import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
-import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
-import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
@@ -42,7 +38,13 @@ import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.LinkController;
+import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.gt.TransformationEditor;
+
+import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.gui.GUIUtilities;
 
@@ -83,7 +85,6 @@ public class DbSearchFrame extends TransformationEditor {
     public DbSearchFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
-        
 
     }
 
@@ -104,7 +105,34 @@ public class DbSearchFrame extends TransformationEditor {
         JTabbedPane tabbedPane = getFrameController().getTabbedPane();
         tabbedPane.remove(1);
         tabbedPane.remove(1);
-        
+
+    }
+
+    @Override
+    protected RunnableGraphController _createActorGraphController() {
+        return new DBSearchFrameController();
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected classes                 ////
+
+    protected class DBSearchFrameController extends
+            TransformationActorGraphController {
+
+        protected DBSearchFrameController() {
+            super();
+        }
+
+        protected void initializeInteraction() {
+            super.initializeInteraction();
+            Action oldConfigureAction = _configureAction;
+            _configureAction = new DBSearchConfigureAction("Configure");
+            _configureMenuFactory.substitute(oldConfigureAction,
+                    _configureAction);
+            _configureMenuFactory.addMenuItemListener(DbSearchFrame.this);
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -162,42 +190,44 @@ public class DbSearchFrame extends TransformationEditor {
             // create a new arraylist to contain all the attributes
             ArrayList<Attribute> attributesList = new ArrayList<Attribute>();
 
-            try {
-                // get the criteria information from the model configuration
-                GTIngredientList ingredientAttributesList = pattern
-                        .getCriteriaAttribute().getIngredientList();
-
-                for (Iterator iterator = ingredientAttributesList.iterator(); iterator
-                        .hasNext();) {
-                    GTIngredient gtIngredient = (GTIngredient) iterator.next();
-
-                    // only check the criteria related to attributes here.
-                    if (!(gtIngredient instanceof PortCriterion)
-                            && !(gtIngredient instanceof SubclassCriterion)) {
-
-                        PTDBSearchAttribute attribute = new PTDBSearchAttribute();
-
-                        attribute.setName(gtIngredient.getValue(0).toString());
-
-                        if (gtIngredient instanceof AttributeCriterion) {
-                            attribute.setToken(gtIngredient.getValue(2)
-                                    .toString());
-                        }
-
-                        attributesList.add(attribute);
-                    }
-
-                }
-            } catch (MalformedStringException e1) {
-
-                // ignore
-            } catch (IllegalActionException e2) {
-
-                // ignore
-            } catch (NameDuplicationException e3) {
-
-                // ignore
-            }
+            // TODO to delete later 
+            //            try {
+            //                // get the criteria information from the model configuration
+            //                GTIngredientList ingredientAttributesList = pattern
+            //                        .getCriteriaAttribute().getIngredientList();
+            //
+            //                for (Iterator iterator = ingredientAttributesList.iterator(); iterator
+            //                        .hasNext();) {
+            //                    GTIngredient gtIngredient = (GTIngredient) iterator.next();
+            //
+            //                    // only check the criteria related to attributes here.
+            //                    if (!(gtIngredient instanceof PortCriterion)
+            //                            && !(gtIngredient instanceof SubclassCriterion)) {
+            //
+            //                        PTDBSearchAttribute attribute = new PTDBSearchAttribute();
+            //
+            //                        attribute.setName(gtIngredient.getValue(0).toString());
+            //
+            //                        if (gtIngredient instanceof AttributeCriterion) {
+            //                            attribute.setToken(gtIngredient.getValue(2)
+            //                                    .toString());
+            //                        }
+            //
+            //                        attributesList.add(attribute);
+            //                    }
+            //
+            //                }
+            //            } catch (MalformedStringException e1) {
+            //
+            //                // ignore
+            //            } catch (IllegalActionException e2) {
+            //
+            //                // ignore
+            //            } catch (NameDuplicationException e3) {
+            //
+            //                // ignore
+            //            }
+            // TODO to delete later 
 
             // get the attributes from the pattern and add to the list
             List<NamedObj> attributes = pattern.attributeList();
@@ -205,8 +235,8 @@ public class DbSearchFrame extends TransformationEditor {
             for (Iterator iterator = attributes.iterator(); iterator.hasNext();) {
                 NamedObj attribute = (NamedObj) iterator.next();
 
-                if (attribute instanceof Attribute) {
-                    attributesList.add((Attribute) attribute);
+                if (attribute instanceof Variable) {
+                    attributesList.add((Variable) attribute);
                 }
             }
 
@@ -214,7 +244,7 @@ public class DbSearchFrame extends TransformationEditor {
             searchCriteria.setAttributes(attributesList);
 
             // TODO comment for the first release, un-comment later. 
-            //            // Create the graph pattern search criteria
+            // Create the graph pattern search criteria
             //            DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
             //
             //            // get the ports specified by the user
@@ -266,87 +296,103 @@ public class DbSearchFrame extends TransformationEditor {
             //            searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
             // TODO end of graph pattern criteria
 
-            // Show the search result frame.
-            searchResultsFrame.pack();
-            searchResultsFrame.setVisible(true);
+            // Check whether any search criteria has been set. 
+            // TODO add the pattern criteria checking here later. 
+            if (attributesList.size() == 0) {
+                JOptionPane.showMessageDialog(DbSearchFrame.this,
+                        "Please specify search criteria.");
+            } else {
 
-            // Call the Search Manager to trigger the search.
-            SearchManager searchManager = new SearchManager();
-            try {
-                searchManager.search(searchCriteria, searchResultBuffer);
+                // Show the search result frame.
+                searchResultsFrame.pack();
+                searchResultsFrame.setVisible(true);
 
-            } catch (DBConnectionException e1) {
-                JOptionPane.showMessageDialog(DbSearchFrame.this, "Cannot perform search now.");
-                throw new KernelRuntimeException(e1,
-                        "Cannot perform search now.");
-            } catch (DBExecutionException e2) {
-                JOptionPane.showMessageDialog(DbSearchFrame.this, "Cannot perform search now.");
-                throw new KernelRuntimeException(e2,
-                        "Cannot perform search now.");
+                // Call the Search Manager to trigger the search.
+                SearchManager searchManager = new SearchManager();
+                try {
+                    searchManager.search(searchCriteria, searchResultBuffer);
+
+                } catch (DBConnectionException e1) {
+                    searchResultsFrame.setVisible(false);
+                    searchResultsFrame.dispose();
+                    MessageHandler.error("Cannot perform the search now.", e1);
+
+                } catch (DBExecutionException e2) {
+                    searchResultsFrame.setVisible(false);
+                    searchResultsFrame.dispose();
+                    MessageHandler.error("Cannot perform the search now.", e2);
+                }
+
+                //            // TODO This is just for testing
+                //                for (Iterator iterator = searchCriteria.getAttributes()
+                //                        .iterator(); iterator.hasNext();) {
+                //                    NamedObj namedObj = (NamedObj) iterator.next();
+                //                    System.out.println("attribute: " + namedObj);
+                //                    if (namedObj instanceof Variable) {
+                //                        System.out.println("variable: "
+                //                                + namedObj.getClassName());
+                //                        try {
+                //                            System.out.println(((Variable) namedObj).getToken()
+                //                                    .getClass());
+                //                        } catch (IllegalActionException e1) {
+                //                            // TODO Auto-generated catch block
+                //                            e1.printStackTrace();
+                //                        }
+                //                    }
+                //
+                //                }
+
+                //            // TODO this is just for testing the Graph part, delete later
+                //                System.out.println("search criteira: "
+                //                        + searchCriteria.getDBGraphSearchCriteria());
+                //                System.out.println("components :"
+                //                        + searchCriteria.getDBGraphSearchCriteria()
+                //                                .getComponentEntitiesList());
+                //
+                //                for (Iterator iterator = searchCriteria
+                //                        .getDBGraphSearchCriteria().getComponentEntitiesList()
+                //                        .iterator(); iterator.hasNext();) {
+                //                    ComponentEntity componentEntity = (ComponentEntity) iterator
+                //                            .next();
+                //                    System.out.println(componentEntity);
+                //                }
+                //
+                //                System.out.println("composite entities: "
+                //                        + searchCriteria.getDBGraphSearchCriteria()
+                //                                .getCompositeEntities());
+                //
+                //                for (Iterator iterator = searchCriteria
+                //                        .getDBGraphSearchCriteria().getCompositeEntities()
+                //                        .iterator(); iterator.hasNext();) {
+                //                    CompositeEntity compositeEntity = (CompositeEntity) iterator
+                //                            .next();
+                //                    System.out.println(compositeEntity);
+                //                }
+                //
+                //                System.out.println("ports: "
+                //                        + searchCriteria.getDBGraphSearchCriteria()
+                //                                .getPortsList());
+                //                for (Iterator iterator = searchCriteria
+                //                        .getDBGraphSearchCriteria().getPortsList().iterator(); iterator
+                //                        .hasNext();) {
+                //                    Port port = (Port) iterator.next();
+                //                    System.out.println(port);
+                //                }
+                //
+                //                System.out.println("relations: "
+                //                        + searchCriteria.getDBGraphSearchCriteria()
+                //                                .getRelationsList());
+                //                for (Iterator iterator = searchCriteria
+                //                        .getDBGraphSearchCriteria().getRelationsList()
+                //                        .iterator(); iterator.hasNext();) {
+                //                    Relation relation = (Relation) iterator.next();
+                //                    System.out.println(relation);
+                //                }
+                //
+                //                System.out.println("done testing");
+                //            // TODO done and delete later
             }
 
-            //            // TODO This is just for testing
-            //            for (Iterator iterator = searchCriteria.getAttributes().iterator(); iterator
-            //                    .hasNext();) {
-            //                NamedObj namedObj = (NamedObj) iterator.next();
-            //                if (namedObj instanceof Variable) {
-            //                    System.out.println(namedObj.getClassName());
-            //                    try {
-            //                        System.out.println(((Variable) namedObj).getToken()
-            //                                .getClass());
-            //                    } catch (IllegalActionException e1) {
-            //                        // TODO Auto-generated catch block
-            //                        e1.printStackTrace();
-            //                    }
-            //                }
-            //
-            //            }
-
-            //            // TODO this is just for testing the Graph part, delete later
-            //            System.out.println("search criteira: "
-            //                    + searchCriteria.getDBGraphSearchCriteria());
-            //            System.out.println("components :"
-            //                    + searchCriteria.getDBGraphSearchCriteria()
-            //                            .getComponentEntitiesList());
-            //
-            //            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
-            //                    .getComponentEntitiesList().iterator(); iterator.hasNext();) {
-            //                ComponentEntity componentEntity = (ComponentEntity) iterator
-            //                        .next();
-            //                System.out.println(componentEntity);
-            //            }
-            //
-            //            System.out.println("composite entities: "
-            //                    + searchCriteria.getDBGraphSearchCriteria()
-            //                            .getCompositeEntities());
-            //
-            //            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
-            //                    .getCompositeEntities().iterator(); iterator.hasNext();) {
-            //                CompositeEntity compositeEntity = (CompositeEntity) iterator
-            //                        .next();
-            //                System.out.println(compositeEntity);
-            //            }
-            //
-            //            
-            //            System.out.println("ports: "
-            //                    + searchCriteria.getDBGraphSearchCriteria().getPortsList());
-            //            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
-            //                    .getPortsList().iterator(); iterator.hasNext();) {
-            //                Port port = (Port) iterator.next();
-            //                System.out.println(port);
-            //            }
-            //
-            //            System.out.println("relations: "
-            //                    + searchCriteria.getDBGraphSearchCriteria()
-            //                            .getRelationsList());
-            //            for (Iterator iterator = searchCriteria.getDBGraphSearchCriteria()
-            //                    .getRelationsList().iterator(); iterator.hasNext();) {
-            //                Relation relation = (Relation) iterator.next();
-            //                System.out.println(relation);
-            //            }
-            //
-            //            System.out.println("done testing");
-            //            // TODO done and delete later
         }
 
         // TODO to be deleted later 
@@ -370,6 +416,18 @@ public class DbSearchFrame extends TransformationEditor {
         //            }
         //        }
 
+    }
+
+    private static class DBSearchConfigureAction extends ConfigureAction {
+
+        public DBSearchConfigureAction(String description) {
+            super(description);
+        }
+
+        protected void _openDialog(Frame parent, NamedObj target,
+                ActionEvent event) {
+            JOptionPane.showMessageDialog(new Frame(), "Under construction.");
+        }
     }
 
 }
