@@ -64,21 +64,21 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// GRODirector
+//// JoglDirector
 
 /**
  * A director for the Jogl Domain.
  * 
  * <p>
- * The Graphics domain uses JOGL to display three-dimensional graphics in Ptolemy
+ * The Jogl domain uses JOGL to display three-dimensional graphics in Ptolemy
  * II. JOGL has a working principle that starts a thread that repeatedly calls a 
  * display() method at your fps (frames per second) rate. Everytime this method 
- * is called, it clears and rebuilds the entire scene. GraphicsDirector uses the 
- * {@link ptolemy.actor.lib.graphics.GraphicsScheduler}, which implements the 
+ * is called, it clears and rebuilds the entire scene. JoglDirector uses the 
+ * {@link ptolemy.domains.jogl.kernel.JoglScheduler}, which implements the 
  * GLEventListener interface that is needed for lifecycle callbacks.
  *
  * @author Yasemin Demir
- * @version $Id: GRODirector.java 57401 2010-03-03 23:11:41Z ydemir $
+ * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  * @since Ptolemy II 1.0
  * @Pt.ProposedRating yellow (chf)
  * @Pt.AcceptedRating yellow (vogel)
@@ -227,7 +227,7 @@ public class JoglDirector extends StaticSchedulingDirector implements
      * Schedule a firing of the given actor at the given time. If there is an
      * executive director, this method delegates to it. Otherwise, it sets its
      * own notion of current time to that specified in the argument. The reason
-     * for this is to enable GRODirector to be a top-level director and to
+     * for this is to enable JoglDirector to be a top-level director and to
      * support the design pattern where a director requests a refiring at the
      * next time it wishes to be awakened, just prior to returning from fire().
      * DEDirector, for example, does that, as does the SDFDirector if the period
@@ -326,7 +326,7 @@ public class JoglDirector extends StaticSchedulingDirector implements
 
         // Have to transfer outputs! Presumably outputs are only
         // instances of GLPipelineObjectToken going to a higher-level
-        // GRODirector, so producing those outputs in postfire()
+        // JoglDirector, so producing those outputs in postfire()
         // is OK.
         Iterator outports = ((Actor) getContainer()).outputPortList()
                 .iterator();
@@ -381,7 +381,7 @@ public class JoglDirector extends StaticSchedulingDirector implements
 
         if (scheduler == null) {
             throw new IllegalActionException("Attempted to initialize "
-                    + "GRO system with no scheduler");
+                    + "Jogl system with no scheduler");
         }
 
         // force the schedule to be computed.
