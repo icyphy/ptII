@@ -275,7 +275,11 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 String modelBody = model.getModel();
 
-                modelBody = modelBody.substring(modelBody.indexOf("<entity"));
+                if (modelBody.indexOf("<!DOCTYPE") >= 0) {
+                    
+                    modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
+                    modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
+                }
 
                 _xmlContainer.putDocument(_xmlTransaction,
                         model.getModelName(), modelBody);
@@ -559,11 +563,19 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 String modelBody = xmlDBModel.getModel();
 
-                modelBody = modelBody.substring(modelBody.indexOf("<entity"));
+                if (modelBody.indexOf("<!DOCTYPE") >= 0) {
+                    
+                    modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
+                    modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
+                }
 
-                currentDbModel.setContent(modelBody);
+//                currentDbModel.setContent(modelBody);
                 
-                _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
+                _xmlContainer.deleteDocument(_xmlTransaction, currentDbModel);
+                
+                _xmlContainer.putDocument(_xmlTransaction, xmlDBModel.getModelName(), modelBody);
+                
+//                _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
             }
 
         } catch (XmlException e) {
