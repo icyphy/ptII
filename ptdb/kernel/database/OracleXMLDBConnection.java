@@ -786,8 +786,8 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
         if (attribute.getToken() != null) {
-            attributesQuery.append("$const/@value[contains(.,").append(
-                    attribute.getToken().toString()).append(")]");
+            attributesQuery.append("$const/@value[contains(.,\"").append(
+                    _removeQuotes(attribute.getToken().toString())).append("\")]");
 
             attributesQuery.append(" and ");
         }
@@ -1227,7 +1227,16 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
     }
-
+    
+    /**
+     * Remove the double quotes from the given value.
+     * @param originalString String from which we want to
+     * remove double quotes.
+     * @return OriginalString without double quotes.
+     */
+    private String _removeQuotes(String originalString) {
+        return originalString.replaceAll("\"", "");
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
