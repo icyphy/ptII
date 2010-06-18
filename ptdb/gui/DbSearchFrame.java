@@ -117,6 +117,9 @@ public class DbSearchFrame extends TransformationEditor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected classes                 ////
 
+    /**
+     * Controller for this frame.
+     */
     protected class DBSearchFrameController extends
             TransformationActorGraphController {
 

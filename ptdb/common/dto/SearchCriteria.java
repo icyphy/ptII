@@ -36,7 +36,8 @@ public class SearchCriteria {
 
     /**
      * Get the attributes criteria from the search criteria.
-     *
+     * 
+     * @see #setAttributes
      * @return All the attributes input by the user as the search criteria.
      */
     public ArrayList<Attribute> getAttributes() {
@@ -45,7 +46,8 @@ public class SearchCriteria {
 
     /**
      * Get the graph search criteria from the search criteria.
-     *
+     * 
+     * @see #setDBGraphSearchCriteria
      * @return The graph search criteria input by the user.
      */
     public DBGraphSearchCriteria getDBGraphSearchCriteria() {
@@ -55,6 +57,7 @@ public class SearchCriteria {
     /**
      * Get the search command criteria from the search criteria.
      *
+     * @see #setSearchCommand
      * @return The XQuery search command input by the user.
      */
     public String getSearchCommand() {
@@ -63,7 +66,8 @@ public class SearchCriteria {
 
     /**
      * Set the attribute criteria for the search criteria.
-     *
+     * 
+     * @see #getAttributes
      * @param attributes The attributes input by the user to set in the
      * search criteria.
      */
@@ -73,7 +77,8 @@ public class SearchCriteria {
 
     /**
      * Set the graph search criteria for the search criteria.
-     *
+     * 
+     * @see #getDBGraphSearchCriteria
      * @param dbGraphSearchCriteria The graph search criteria input by the user
      * to set in the search criteria.
      */
@@ -84,7 +89,8 @@ public class SearchCriteria {
 
     /**
      * Set the XQuery search command for the search criteria.
-     *
+     * 
+     * @see #getSearchCommand
      * @param searchCommand The XQuery search command to set in the search
      * criteria.
      */

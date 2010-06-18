@@ -34,7 +34,8 @@ public class DBGraphSearchCriteria {
 
     /**
      * Get the component entities from the Graph search pattern.
-     *
+     * 
+     * @see #setComponentEntitiesList
      * @return The component entities from the graph search pattern.
      */
     public ArrayList<ComponentEntity> getComponentEntitiesList() {
@@ -44,6 +45,7 @@ public class DBGraphSearchCriteria {
     /**
      * Get the composite entities form the graph search pattern. 
      * 
+     * @see #setCompositeEntities
      * @return The composite entities from the graph search pattern. 
      */
     public ArrayList<CompositeEntity> getCompositeEntities() {
@@ -52,7 +54,8 @@ public class DBGraphSearchCriteria {
 
     /**
      * Get the ports from the Graph search pattern.
-     *
+     * 
+     * @see #setPortsList
      * @return The ports from the graph search pattern.
      */
     public ArrayList<Port> getPortsList() {
@@ -61,7 +64,8 @@ public class DBGraphSearchCriteria {
 
     /**
      * Get the relations from the Graph search pattern.
-     *
+     * 
+     * @see #setRelationsList
      * @return The relations from the graph search pattern.
      */
     public ArrayList<Relation> getRelationsList() {
@@ -70,7 +74,8 @@ public class DBGraphSearchCriteria {
 
     /**
      * Set the component entities from the Graph search pattern.
-     *
+     * 
+     * @see #getComponentEntitiesList
      * @param componentEntitiesList The component entities from the graph
      *  search pattern.
      */
@@ -82,6 +87,7 @@ public class DBGraphSearchCriteria {
     /**
      * Set the composite entities from the graph search pattern. 
      * 
+     * @see #getCompositeEntities
      * @param compositeEntitiesList The composite entities from the graph search
      *   pattern.
      */
@@ -92,7 +98,8 @@ public class DBGraphSearchCriteria {
 
     /**
      * Set the ports from the Graph search pattern.
-     *
+     * 
+     * @see #getPortsList
      * @param portsList The ports from the graph search pattern.
      */
     public void setPortsList(ArrayList<Port> portsList) {
@@ -101,7 +108,8 @@ public class DBGraphSearchCriteria {
 
     /**
      * Set the relations from the Graph search pattern.
-     *
+     * 
+     * @see #getRelationsList
      * @param relationsList The relations from the graph search pattern.
      */
     public void setRelationsList(ArrayList<Relation> relationsList) {
