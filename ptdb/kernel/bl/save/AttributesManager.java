@@ -2,8 +2,6 @@ package ptdb.kernel.bl.save;
 
 import java.util.List;
 
-import org.python.core.exceptions;
-
 import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.SaveModelTask;
@@ -12,6 +10,10 @@ import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.DBConnection;
 
+///////////////////////////////////////////////////////////////
+//// AttributesManager
+
+public class AttributesManager {
 /**
  * Manage the attributes and work as a link between the GUI and the database
  * layer.
@@ -23,16 +25,13 @@ import ptdb.kernel.database.DBConnection;
  * @Pt.AcceptedRating Red (yalsaeed)
  * 
  */
-///////////////////////////////////////////////////////////////
-//// AttributesManager
-
 public class AttributesManager {
 
     //////////////////////////////////////////////////////////////////////
     ////		public methods 				      ////
 
     /**
-     * Make a call to the database to retrieve the list attributes stored there.
+     * Call to the database and retrieve the list attributes stored there.
      * 
      * @return The list of attributes stored in the database.
      * 
@@ -47,12 +46,11 @@ public class AttributesManager {
         List<XMLDBAttribute> attributesList = null;
 
         try {
-
             dbConnection = DBConnectorFactory.getSyncConnection(false);
 
             if (dbConnection == null) {
                 throw new DBConnectionException(
-                        "Unable to get synchronous connection from the database");
+                        "Unable to get synchronous connection from the database.");
             }
 
             GetAttributesTask task = new GetAttributesTask();
@@ -60,24 +58,17 @@ public class AttributesManager {
             attributesList = dbConnection.executeGetAttributesTask(task);
 
         } catch (DBExecutionException e) {
-
             if (dbConnection != null) {
-
                 dbConnection.abortConnection();
             }
-
             throw new DBExecutionException("Failed to save the model - "
                     + e.getMessage(), e);
 
         } finally {
-
             if (dbConnection != null) {
-
                 dbConnection.closeConnection();
-
             }
         }
-
         return attributesList;
     }
 
