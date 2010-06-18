@@ -222,6 +222,12 @@ public class DijkstraSequenceEstimator {
                             .next();
                     Actor connectedActor = (Actor) deepConnectedPort
                             .getContainer();
+                    
+                    // do nothing, if container of actor is reached
+                    // --> actor is sink
+                    if(actor.getContainer() == connectedActor) {
+                        continue;
+                    }
                     _SequenceInfo _SequenceInfo = _sequenceInfos
                             .get(connectedActor);
 
