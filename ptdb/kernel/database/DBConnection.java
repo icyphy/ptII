@@ -107,7 +107,7 @@ public interface DBConnection {
      *          This will tell the DB layer to return the specified model.
      * @return XMLDBModel
      *          This object will be populated with the model's MoML string.
-     * @exception DBConnectionException
+     * @exception DBConnectionException Thrown if the operations fails.
      */
     public XMLDBModel executeGetModelsTask(GetModelsTask task)
             throws DBExecutionException;
