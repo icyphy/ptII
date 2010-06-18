@@ -46,8 +46,7 @@ include $(CONFIG)
 PTPACKAGE = 	kernel
 
 
-JSRCS = \
-	DBAttribute.java 
+JSRCS = 
 
 # All the .class files necessary to run a Ptolemy II domain applet
 PTCLASSALLJARS = \

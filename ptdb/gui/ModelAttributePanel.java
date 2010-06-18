@@ -23,7 +23,7 @@ import ptdb.common.dto.XMLDBAttribute;
 
 /**
  * An extended JPanel displaying an attribute.  Multiple ModelAttributePanel objects
- * may be displayed on the SaveModelToDBFrame.  The _attMap indicates the type of
+ * may be displayed on the SaveModelToDBFrame.  The _attributeMap indicates the type of
  * attribute.  For a selected attribute name, a different Component may be displayed
  * on the panel.
  *
@@ -51,7 +51,7 @@ public class ModelAttributePanel extends JPanel {
 
         super();
 
-        _attMap = attMap;
+        _attributeMap = attMap;
         
         setBorder(BorderFactory.createEtchedBorder());
         
@@ -66,7 +66,7 @@ public class ModelAttributePanel extends JPanel {
         nameLabel.setPreferredSize(new Dimension(50, 20));
         nameLabel.setAlignmentX(LEFT_ALIGNMENT);
         
-        _attributeName = new JComboBox(getAttributeList(_attMap));
+        _attributeName = new JComboBox(getAttributeList(_attributeMap));
         _attributeName.setPreferredSize(new Dimension(80, 20));
         _attributeName.setAlignmentX(LEFT_ALIGNMENT);
         
@@ -117,13 +117,13 @@ public class ModelAttributePanel extends JPanel {
      */
     public String getValue() {
 
-        if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+        if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                 .toString())).getAttributeType() == 
                     XMLDBAttribute.ATTRIBUTE_TYPE_STRING) {
 
             return _textValue.getText();
 
-        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                 .toString())).getAttributeType() == 
                     XMLDBAttribute.ATTRIBUTE_TYPE_LIST) {
 
@@ -137,7 +137,7 @@ public class ModelAttributePanel extends JPanel {
 
             }
 
-        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                 .toString())).getAttributeType() == 
                     XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN) {
 
@@ -201,33 +201,33 @@ public class ModelAttributePanel extends JPanel {
      */
    public void setValue(String value) {
 
-       if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+       if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                .toString())) == null ){
            
            return;
        
        }
-       else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+       else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                .toString())).getAttributeType() == 
            XMLDBAttribute.ATTRIBUTE_TYPE_STRING) {
 
            _textValue.setText(value);
 
-       } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+       } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                .toString())).getAttributeType()  == 
            XMLDBAttribute.ATTRIBUTE_TYPE_LIST) {
 
            _listValue.setSelectedItem(value);
 
-       } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+       } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                .toString())).getAttributeType()  == 
            XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN) {
 
-           if (value == "TRUE") {
+           if (value.equals("TRUE")) {
 
                _booleanValue.setSelected(true);
 
-           } else if (value == "FALSE"){
+           } else if (value.equals("FALSE")){
 
                _booleanValue.setSelected(false);
                
@@ -242,7 +242,7 @@ public class ModelAttributePanel extends JPanel {
 
     private void updateDisplay() {
 
-        if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+        if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                 .toString())) == null ){   
             
             _listValue.setEnabled(false);
@@ -253,7 +253,7 @@ public class ModelAttributePanel extends JPanel {
             _booleanValue.setSelected(false);
             _listValue.setSelectedItem(null);
         
-        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                 .toString())).getAttributeType()  == 
                     XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN) {
 
@@ -262,7 +262,7 @@ public class ModelAttributePanel extends JPanel {
             _listValue.setSelectedItem(null);
             _textValue.setEnabled(false);
             _textValue.setText("");
-        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                 .toString())).getAttributeType()  == 
                     XMLDBAttribute.ATTRIBUTE_TYPE_STRING) {
 
@@ -272,7 +272,7 @@ public class ModelAttributePanel extends JPanel {
             _listValue.setEnabled(false);
             _listValue.setSelectedItem(null);
 
-        } else if (((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                 .toString())).getAttributeType()  == 
                     XMLDBAttribute.ATTRIBUTE_TYPE_LIST) {
 
@@ -286,7 +286,7 @@ public class ModelAttributePanel extends JPanel {
             theModel.removeAllElements();
             
             ArrayList<String> choiceList = (ArrayList)
-                ((XMLDBAttribute)_attMap.get(_attributeName.getSelectedItem()
+                ((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
                     .toString())).getAttributeValues();
 
             _listValue.addItem("");
@@ -335,6 +335,6 @@ public class ModelAttributePanel extends JPanel {
     private JTextField _textValue;
     private JCheckBox _booleanValue;
     private JComboBox _listValue;
-    private HashMap _attMap;
+    private HashMap _attributeMap;
 
 }

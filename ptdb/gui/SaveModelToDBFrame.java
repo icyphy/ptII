@@ -30,7 +30,6 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
-import ptdb.kernel.DBAttribute;
 import ptdb.kernel.bl.save.AttributesManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.actor.gui.ColorAttribute;
@@ -181,11 +180,11 @@ public class SaveModelToDBFrame extends JFrame {
         // Add existing attributes.
         for (Object a : model.attributeList()) {
 
-            if (a instanceof DBAttribute) {
+            if (a instanceof StringParameter) {
 
                 // We only show the Attribute if it is in the list returned
                 // from the DB.
-                if (_aList.containsKey(((DBAttribute) a).getName())) {
+                if (_aList.containsKey(((StringParameter) a).getName())) {
 
                     JPanel modelDeletePanel = new JPanel();
                     modelDeletePanel
@@ -195,12 +194,12 @@ public class SaveModelToDBFrame extends JFrame {
                     
                     ModelAttributePanel modelAttPanel = new ModelAttributePanel(
                             _aList);
-                    modelAttPanel.setValue(((DBAttribute) a).getExpression());
+                    modelAttPanel.setValue(((StringParameter) a).getExpression());
                     JButton deleteButton = new JButton("Delete");
                     deleteButton.setAlignmentY(TOP_ALIGNMENT);
 
-                    modelAttPanel.setAttributeName(((DBAttribute) a).getName());
-                    modelAttPanel.setValue(((DBAttribute) a).getExpression());
+                    modelAttPanel.setAttributeName(((StringParameter) a).getName());
+                    modelAttPanel.setValue(((StringParameter) a).getExpression());
 
                     deleteButton.setActionCommand("Delete");
                     deleteButton
@@ -606,20 +605,20 @@ public class SaveModelToDBFrame extends JFrame {
 
             }
 
-            ArrayList<DBAttribute> attributesList = new ArrayList();
+            ArrayList<StringParameter> attributesList = new ArrayList();
 
             for (Object a : _modelToSave.attributeList()) {
 
-                if (a instanceof DBAttribute) {
+                if (a instanceof StringParameter) {
 
-                    attributesList.add((DBAttribute) a);
+                    attributesList.add((StringParameter) a);
 
                 }
 
             }
 
             // Delete all existing DBAttributes.
-            for (DBAttribute attribute : attributesList) {
+            for (StringParameter attribute : attributesList) {
 
                 attribute.setContainer(null);
 
@@ -639,7 +638,7 @@ public class SaveModelToDBFrame extends JFrame {
 
                         if (componentArray2[j] instanceof ModelAttributePanel) {
 
-                            DBAttribute attributeToAdd = new DBAttribute(
+                            StringParameter attributeToAdd = new StringParameter(
                                     _modelToSave,
                                     ((ModelAttributePanel) componentArray2[j])
                                             .getAttributeName());
