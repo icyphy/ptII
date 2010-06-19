@@ -465,7 +465,9 @@ See $PTII/doc/coding/maven.htm
       <version>2.0b4</version>
     </dependency>
 
-    <!-- dependencies that need to be added manually -->
+    <!-- Dependencies that need to be added manually -->
+    <!-- See ptII/doc/coding/maven.htm for the commands 
+	 to run to install these dependencies -->
     <dependency> <!-- $PTII/vendors/jython/jython.jar -->
       <groupId>jython</groupId>
       <artifactId>jython</artifactId>
@@ -516,6 +518,29 @@ See $PTII/doc/coding/maven.htm
       <artifactId>jacl</artifactId>
       <version>ptII</version>
     </dependency>
+    <dependency> <!-- $PTII/ptdb/lib/dbxml.jar -->
+      <groupId>dbxml</groupId>
+      <artifactId>dbxml</artifactId>
+      <version>ptII</version>
+    </dependency>
+    <dependency> <!-- $PTII/ptdb/lib/db.jar -->
+      <groupId>dbxml</groupId>
+      <artifactId>db</artifactId>
+      <version>ptII</version>
+    </dependency>
+
+    <dependency> <!-- $PTII/vendors/sun/jogl/lib/jogl.jar -->
+      <groupId>jogl</groupId>
+      <artifactId>jogl</artifactId>
+      <version>ptII</version>
+    </dependency>
+
+    <dependency> <!-- $PTII/vendors/sun/jogl/lib/gluegen-rt.jar -->
+      <groupId>jogl</groupId>
+      <artifactId>gluegen-rt</artifactId>
+      <version>ptII</version>
+    </dependency>
+
   </dependencies>
   <repositories>
     <repository>

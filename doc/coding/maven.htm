@@ -90,6 +90,14 @@ mvn install:install-file -DgroupId=chic -DartifactId=chic -Dversion=ptII \
 -Dpackaging=jar -Dfile=$PTII/lib/chic.jar
 mvn install:install-file -DgroupId=jacl -DartifactId=jacl -Dversion=ptII \
 -Dpackaging=jar -Dfile=$PTII/lib/ptjacl.jar
+mvn install:install-file -DgroupId=dbxml -DartifactId=db -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/ptdb/lib/db.jar
+mvn install:install-file -DgroupId=dbxml -DartifactId=dbxml -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/ptdb/lib/dbxml.jar
+mvn install:install-file -DgroupId=jogl -DartifactId=jogl -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/vendors/sun/jogl/lib/jogl.jar
+mvn install:install-file -DgroupId=jogl -DartifactId=gluegen-rt -Dversion=ptII \
+-Dpackaging=jar -Dfile=$PTII/vendors/sun/jogl/lib/gluegen-rt.jar
 </pre>
 
 
