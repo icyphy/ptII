@@ -45,8 +45,8 @@ include $(CONFIG)
 
 # If you add a file, be sure to add a line to test_java
 JSRCS_TEST_DRIVERS = \
-	TestLoadManagerInterface.java \
-	TestLoadModelManager.java \
+	TestLoadManager.java \
+	TestDBModelFetcher.java \
 	TestLoadRequirementsIntegration.java
 
 JSRCS = \

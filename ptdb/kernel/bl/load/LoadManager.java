@@ -5,11 +5,15 @@ import java.util.List;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
+import ptdb.common.exception.DBExecutionException;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.moml.MoMLParser;
+
+///////////////////////////////////////////////////////////////////
+//// LoadManager
 
 /**
 * The business layer is used by the GUI to pass models to load.
@@ -22,31 +26,36 @@ import ptolemy.moml.MoMLParser;
 * @Pt.AcceptedRating red (lholsing)
 */
 
-public class LoadManagerInterface {
+public class LoadManager {
 
     /** Given a model name, return a PtolemyEffigy objects.
      *
      * @param name
-     *          The model name.
+     *          The model name.  An alphanumeric
+     *          string without special characters.
+     *          If no model with the given name is found, return null.
      * @param configuration
      *          The configuration used to create the effigy.
      * @return
      *          A PtolemyEffigy object that the
      *          GUI can display.
      * @exception DBConnectionException
-     *          Thrown by LoadModelManager if a problem occurs with the
+     *          Thrown by DBModelFetcher if a problem occurs with the
      *          database connection.
+     * @exception DBExecutionException 
+     *          Thrown by DBModelFetcher if a problem while executing a 
+     *          command.
      * @exception Exception
      *          Thrown if a problem occurs creating an effigy from the MoML.
      */
-    public PtolemyEffigy loadModel(String name, Configuration configuration)
-            throws Exception {
+    public  static PtolemyEffigy loadModel(String name, Configuration configuration)
+            throws DBConnectionException, DBExecutionException, Exception {
 
-        //Instantiate a LoadModelManager then pass the names array.
-        LoadModelManager loadModelManager = new LoadModelManager();
-        XMLDBModel dbModel = loadModelManager.load(name);
+        XMLDBModel dbModel = DBModelFetcher.load(name);
         
-        PtolemyEffigy returnEffigy = getEffigy(dbModel, configuration);
+        if(dbModel == null) return null;
+        
+        PtolemyEffigy returnEffigy = _getEffigy(dbModel, configuration);
         
         return returnEffigy;
 
@@ -61,18 +70,14 @@ public class LoadManagerInterface {
      * @return
      *         PtolemyEffigy.
      * @exception Exception
+     *          Thrown if a problem occurs parsing MoML
      */
-    private PtolemyEffigy getEffigy(XMLDBModel dbModel,
+    private static PtolemyEffigy _getEffigy(XMLDBModel dbModel,
             Configuration configuration) throws Exception {
 
         PtolemyEffigy returnEffigy = null;
 
-        MoMLParser parser = new MoMLParser();
-
-        Entity entity = new Entity();
-        parser.reset();
-
-        entity = (Entity) parser.parse(dbModel.getModel());
+        Entity entity = _getEntity(dbModel);
 
         returnEffigy = new PtolemyEffigy(configuration.workspace());
         returnEffigy.setModel(entity);
@@ -100,5 +105,28 @@ public class LoadManagerInterface {
         return returnEffigy;
 
     }
+    
+    /** Generate an entity from an XMLDBModel object.
+     *
+     * @param dbModel
+     *          XMLDBModel object containing the model's MoML.
+     * @return
+     *         Entity.
+     * @exception Exception
+     *          Thrown if a problem occurs parsing MoML
+     * 
+     */
+    private static Entity _getEntity(XMLDBModel dbModel) throws Exception {
 
+        MoMLParser parser = new MoMLParser();
+    
+        Entity entity = new Entity();
+        parser.reset();
+    
+        entity = (Entity) parser.parse(dbModel.getModel());
+    
+        return entity;
+
+    }
+    
 }

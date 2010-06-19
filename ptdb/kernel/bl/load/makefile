@@ -49,8 +49,8 @@ PTPACKAGE = 	load
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	LoadManagerInterface.java \
-	LoadModelManager.java
+	LoadManager.java \
+	DBModelFetcher.java
 
 EXTRA_SRCS =	$(JSRCS)
 

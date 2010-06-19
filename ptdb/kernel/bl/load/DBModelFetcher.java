@@ -8,25 +8,25 @@ import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.DBConnection;
 
 ///////////////////////////////////////////////////////////////////
-////LoadModelManager
+//// DBModelFetcher
 
 /**
-* This is the business layer that interfaces with the database for retrieving
-* Models.
-*
-* @author Lyle Holsinger
-* @since Ptolemy II 8.1
-* @version $Id$
-* @Pt.ProposedRating red (lholsing)
-* @Pt.AcceptedRating red (lholsing)
-*/
+ * This is the business layer that interfaces with the database for retrieving
+ * models.
+ *
+ * @author Lyle Holsinger
+ * @since Ptolemy II 8.1
+ * @version $Id$
+ * @Pt.ProposedRating red (lholsing)
+ * @Pt.AcceptedRating red (lholsing)
+ */
 
-public class LoadModelManager {
+public class DBModelFetcher {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Give a model name representing the model to load, return
+    /** Given a model name representing the model to load, return
      *  an XMLDBModel object that contains the MoML.
      *
      * @param name
@@ -42,7 +42,7 @@ public class LoadModelManager {
      *          Thrown if there is a problem executing the database task.
      *          
      */
-    public XMLDBModel load(String name) throws DBConnectionException,
+    public static XMLDBModel load(String name) throws DBConnectionException,
             DBExecutionException {
 
         XMLDBModel returnModel = null;
@@ -55,25 +55,13 @@ public class LoadModelManager {
             getModelsTask.setModelName(name);
             returnModel = connection.executeGetModelsTask(getModelsTask);
 
-            connection.commitConnection();
-
-        } catch (DBExecutionException dbEx) {
-
-            connection.abortConnection();
+        } catch (DBExecutionException dbEx) {            
             throw dbEx;
-
         } finally {
-
             if (connection != null) {
-
                 connection.closeConnection();
-
             }
-
         }
-
         return returnModel;
-
     }
-
 }

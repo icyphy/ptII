@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import java.net.URL;
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
-import ptdb.kernel.bl.load.LoadManagerInterface;
+import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -46,8 +46,6 @@ public class TestLoadRequirementsIntegration {
     @Test
     public void testloadModelWithoutReferences() throws Exception {
 
-        LoadManagerInterface tested = new LoadManagerInterface();
-
         String inputString = "CompositeActor";
 
         MoMLParser parser = new MoMLParser();
@@ -60,7 +58,7 @@ public class TestLoadRequirementsIntegration {
 
         PtolemyEffigy effigy = null;
 
-        effigy = tested.loadModel(inputString, configuration);
+        effigy = LoadManager.loadModel(inputString, configuration);
 
         if (effigy == null) {
             fail("failed to return an effigy.");
@@ -85,8 +83,6 @@ public class TestLoadRequirementsIntegration {
     @Test
     public void testloadModelWithReferences() throws Exception {
 
-        LoadManagerInterface tested = new LoadManagerInterface();
-
         String inputString = "modeltt";
 
         MoMLParser parser = new MoMLParser();
@@ -99,7 +95,7 @@ public class TestLoadRequirementsIntegration {
 
         PtolemyEffigy effigy = null;
 
-        effigy = tested.loadModel(inputString, configuration);
+        effigy = LoadManager.loadModel(inputString, configuration);
 
         if (effigy == null) {
             fail("failed to return an effigy.");
@@ -123,8 +119,6 @@ public class TestLoadRequirementsIntegration {
     @Test
     public void testloadModel_NotInDatabase() throws Exception {
 
-        LoadManagerInterface tested = new LoadManagerInterface();
-
         String inputString = "not in database";
 
         MoMLParser parser = new MoMLParser();
@@ -138,7 +132,7 @@ public class TestLoadRequirementsIntegration {
         PtolemyEffigy effigy = null;
 
         try {
-            effigy = tested.loadModel(inputString, configuration);
+            effigy = LoadManager.loadModel(inputString, configuration);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,8 +154,6 @@ public class TestLoadRequirementsIntegration {
     @Test
     public void testloadModel_NullModelName() throws Exception {
 
-        LoadManagerInterface tested = new LoadManagerInterface();
-
         String inputString = null;
 
         MoMLParser parser = new MoMLParser();
@@ -175,7 +167,7 @@ public class TestLoadRequirementsIntegration {
         PtolemyEffigy effigy = null;
 
         try {
-            effigy = tested.loadModel(inputString, configuration);
+            effigy = LoadManager.loadModel(inputString, configuration);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,8 +189,6 @@ public class TestLoadRequirementsIntegration {
     @Test
     public void testloadModel_EmptyModelName() throws Exception {
 
-        LoadManagerInterface tested = new LoadManagerInterface();
-
         String inputString = "";
 
         MoMLParser parser = new MoMLParser();
@@ -212,7 +202,7 @@ public class TestLoadRequirementsIntegration {
         PtolemyEffigy effigy = null;
 
         try {
-            effigy = tested.loadModel(inputString, configuration);
+            effigy = LoadManager.loadModel(inputString, configuration);
 
         } catch (Exception e) {
             e.printStackTrace();

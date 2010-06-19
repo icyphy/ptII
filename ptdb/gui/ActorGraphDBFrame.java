@@ -1,6 +1,7 @@
 package ptdb.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,10 +15,11 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import ptdb.kernel.bl.load.LoadManagerInterface;
+import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
@@ -260,14 +262,25 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             try {
 
-                LoadManagerInterface lmi = new LoadManagerInterface();
-
                 String modelToFetch = _selectedModel;
 
-                PtolemyEffigy effigy = lmi.loadModel(modelToFetch,
+                PtolemyEffigy effigy = LoadManager.loadModel(modelToFetch,
                         getConfiguration());
 
-                effigy.showTableaux();
+                if(effigy != null){
+                    
+                    effigy.showTableaux();
+                    
+                } else {
+                    
+                    JOptionPane
+                    .showMessageDialog((Component) this,
+                            "The specified model could " +
+                            "not be found in the database.",
+                            "Load Error",
+                            JOptionPane.INFORMATION_MESSAGE, null);
+                    
+                }
 
             } catch (Exception e) {
 

@@ -13,11 +13,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.util.DBConnectorFactory;
-import ptdb.kernel.bl.load.LoadModelManager;
+import ptdb.kernel.bl.load.DBModelFetcher;
 import ptdb.kernel.database.DBConnection;
 
 ///////////////////////////////////////////////////////////////////
-////TestLoadModelManager
+//// TestDBModelFetcher
 
 /**
 * This JUnit tests that, assuming the Database layer is correct,
@@ -31,9 +31,9 @@ import ptdb.kernel.database.DBConnection;
 */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({LoadModelManager.class, DBConnectorFactory.class, GetModelsTask.class})
+@PrepareForTest({DBModelFetcher.class, DBConnectorFactory.class, GetModelsTask.class})
 @SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory")
-public class TestLoadModelManager {
+public class TestDBModelFetcher {
 
     /**
      * Verify that given a model name, null is not returned.
@@ -42,9 +42,7 @@ public class TestLoadModelManager {
     @Test
     public void testLoad() throws Exception {
 
-
         String loadModel = "model1";
-        LoadModelManager tested = new LoadModelManager();
 
         PowerMock.mockStatic(DBConnectorFactory.class);
 
@@ -64,7 +62,7 @@ public class TestLoadModelManager {
         PowerMock.replayAll();
 
         XMLDBModel dbModel = null;
-        dbModel = tested.load(loadModel);
+        dbModel = DBModelFetcher.load(loadModel);
         assertNotNull(dbModel);
 
         PowerMock.verifyAll();

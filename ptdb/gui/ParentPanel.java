@@ -1,6 +1,7 @@
 package ptdb.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,9 +11,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import ptdb.kernel.bl.load.LoadManagerInterface;
+import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.util.FileUtilities;
@@ -158,12 +160,23 @@ public class ParentPanel extends JPanel {
 
         try {
 
-            LoadManagerInterface loadManagerInterface = new LoadManagerInterface();
-
-            PtolemyEffigy effigy = loadManagerInterface.loadModel(
+            PtolemyEffigy effigy = LoadManager.loadModel(
                     _parentModelName, _configuration);
 
-            effigy.showTableaux();
+            if(effigy != null){
+                
+                effigy.showTableaux();
+                
+            } else {
+                
+                JOptionPane
+                .showMessageDialog((Component) this,
+                        "The specified model could " +
+                        "not be found in the database.",
+                        "Load Error",
+                        JOptionPane.INFORMATION_MESSAGE, null);
+                
+            }
 
         } catch (Exception e) {
 
