@@ -336,6 +336,8 @@ $CLASSPATH/ptolemy/domains/sr/demo/GuardedCount/GuardedCountTimed.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TokenRing/TokenRing.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml
 $CLASSPATH/ptolemy/domains/sr/demo/TrafficLight/WirelessDeployment.xml
+$CLASSPATH/ptolemy/domains/taskpt/demo/SharedMemory/SharedMemory.xml
+$CLASSPATH/ptolemy/domains/taskpt/demo/Task/Task.xml
 $CLASSPATH/ptolemy/domains/tm/demo/Controllers/Controllers.xml
 $CLASSPATH/ptolemy/domains/tm/demo/FFT/FFT.xml
 $CLASSPATH/ptolemy/domains/tm/demo/MergedEvents/MergedEvents.xml
