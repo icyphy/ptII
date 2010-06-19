@@ -16,16 +16,7 @@ package ptdb.common.dto;
  *
  */
 public class GetModelsTask extends Task {
-    
-    /**
-     * Default nullary constructor.
-     * <p>Should be removed once the code using it
-     * is fixed to use the constructor with the model name parameter.</p>
-     */
-    public GetModelsTask() {
-        //FIXME: Remove this method as soon as the code pointing to it is modified.
-    }
-    
+
     /**
      * Construct an instance of the object and set the model name to be fetched
      * from the database.

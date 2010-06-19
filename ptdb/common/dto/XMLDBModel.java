@@ -23,18 +23,7 @@ import java.util.List;
  * @Pt.AcceptedRating Red (yalsaeed)
  *
  */
-public class XMLDBModel {
-
-    
-    /**
-     * Default nullary constructor.
-     * <p>Should be removed once the code using it is fixed to use the 
-     * constructor with the model name parameter. </p>
-     */
-    public XMLDBModel() {
-        //FIXME: Remove this method as soon as the code pointing to it is modified.
-    }
-    
+public class XMLDBModel {    
     
     /**
      * Construct a XMLDBModel instance

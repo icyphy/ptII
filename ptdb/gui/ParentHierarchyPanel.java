@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -18,11 +17,14 @@ import ptolemy.actor.gui.Configuration;
 //// ParentHierarchyPanel
 
 /**
- * An extended JPanel displaying a single branch of parents for the search result.
- * A parent hierarchy is one branch of parents that contain the model matched by the model search.
- * The panel layout is taken care of in the constructor.  A public method getSelections()
- * is available for getting the list of parent model names for models that have been selected for
- * loading.
+ * An extended JPanel displaying a single branch of 
+ * parents for the search result.  A parent hierarchy 
+ * is one branch of parents that contain the model 
+ * matched by the model search.  The panel layout is 
+ * taken care of in the constructor.  A public method 
+ * getSelections() is available for getting the list 
+ * of parent model names for models that have been 
+ * selected for loading.
  *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1

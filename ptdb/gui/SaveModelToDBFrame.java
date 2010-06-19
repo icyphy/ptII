@@ -83,6 +83,8 @@ public class SaveModelToDBFrame extends JFrame {
         _aList = new HashMap();
         _AttDelete = new HashMap();
 
+        setPreferredSize(new Dimension(760, 400));
+        
         JPanel outerPanel = new JPanel();
         JPanel topPanel = new JPanel();
         JPanel bottomPanel = new JPanel();

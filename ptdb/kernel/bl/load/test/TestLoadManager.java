@@ -61,8 +61,10 @@ public class TestLoadManager {
                 configURL);
 
         PtolemyEffigy effigy = null;
-
-        XMLDBModel dbModel = new XMLDBModel();
+        
+        // Use a different model name to 
+        // demonstrate that the name is taken from the MoML.
+        XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
         dbModel.setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
                         + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
@@ -87,9 +89,6 @@ public class TestLoadManager {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        //Demonstrate that the name is taken from the MoML.
-        dbModel.setModelName("model2");
-
         
         //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 

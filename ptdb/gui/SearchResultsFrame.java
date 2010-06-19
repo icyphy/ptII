@@ -3,7 +3,6 @@ package ptdb.gui;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -98,12 +97,15 @@ public class SearchResultsFrame extends JFrame implements Observer {
         outerPanel.add(buttonPanel);
 
         _loadByRefButton = new JButton("Import By Reference");
+        _loadByRefButton.setEnabled(false);
         buttonPanel.add(_loadByRefButton);
 
         _loadByValButton = new JButton("Import By Value");
+        _loadByValButton.setEnabled(false);
         buttonPanel.add(_loadByValButton);
 
-        _cancelButton = new JButton("Cancel Search");
+        _cancelButton = new JButton("Stop Search");
+        _cancelButton.setEnabled(false);
         buttonPanel.add(_cancelButton);
 
         _loadByRefButton.addActionListener(new ActionListener() {

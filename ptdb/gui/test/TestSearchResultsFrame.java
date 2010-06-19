@@ -59,9 +59,8 @@ public class TestSearchResultsFrame {
 
                 for (int j = 0; j < 10; j++) {
 
-                    parentBranch.add(new XMLDBModel());
+                    parentBranch.add(new XMLDBModel("model" + j * i));
                     parentBranch.get(j).setIsNew(false);
-                    parentBranch.get(j).setModelName("model" + j * i);
 
                 }
 
@@ -70,22 +69,18 @@ public class TestSearchResultsFrame {
             }
 
             parentBranch = new ArrayList();
-            parentBranch.add(new XMLDBModel());
+            parentBranch.add(new XMLDBModel("LonelyModel"));
             parentBranch.get(0).setIsNew(false);
-            parentBranch.get(0).setModelName("LonelyModel");
             parentHierarchy.add(parentBranch);
             
-            XMLDBModel searchResult = new XMLDBModel();
+            XMLDBModel searchResult = new XMLDBModel("model1");
             List<XMLDBModel> searchResultList = new ArrayList();
-
             searchResult.setIsNew(false);
-            searchResult.setModelName("model1");
             searchResult.setParents(parentHierarchy);
 
             
-            XMLDBModel searchResult2 = new XMLDBModel();
+            XMLDBModel searchResult2 = new XMLDBModel("model2");
             searchResult2.setIsNew(false);
-            searchResult2.setModelName("model2");
             searchResult2.setParents(null);
             
             searchResultList.add(searchResult);            
@@ -108,7 +103,9 @@ public class TestSearchResultsFrame {
 
         Configuration configuration = getConfiguration();
 
-        XMLDBModel dbModel = new XMLDBModel();
+        // Use a different model name to 
+        // demonstrate that the name is taken from the MoML.
+        XMLDBModel dbModel = new XMLDBModel("model2");
         dbModel.setIsNew(false);
         dbModel
                 .setModel("<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -133,8 +130,6 @@ public class TestSearchResultsFrame {
                         + "</property>"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{150, 150}\">"
                         + "</property>" + "</entity>" + "</entity>");
-        //Demonstrate that the name is taken from the MoML.
-        dbModel.setModelName("model2");
 
         PtolemyEffigy returnEffigy = null;
 

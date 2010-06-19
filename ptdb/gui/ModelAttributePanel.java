@@ -55,34 +55,34 @@ public class ModelAttributePanel extends JPanel {
         
         setBorder(BorderFactory.createEtchedBorder());
         
-        setMaximumSize(new Dimension(400, 30));
+        setMaximumSize(new Dimension(650, 30));
         setMinimumSize(getMaximumSize());
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
         setAlignmentX(LEFT_ALIGNMENT);
         setAlignmentY(TOP_ALIGNMENT);
         
-        JLabel nameLabel = new JLabel("Attribute");
+        JLabel nameLabel = new JLabel(" Attribute ");
         nameLabel.setPreferredSize(new Dimension(50, 20));
         nameLabel.setAlignmentX(LEFT_ALIGNMENT);
         
         _attributeName = new JComboBox(getAttributeList(_attributeMap));
-        _attributeName.setPreferredSize(new Dimension(80, 20));
+        _attributeName.setPreferredSize(new Dimension(180, 20));
         _attributeName.setAlignmentX(LEFT_ALIGNMENT);
         
-        JLabel valueLabel = new JLabel("Value");
+        JLabel valueLabel = new JLabel(" Value ");
         valueLabel.setPreferredSize(new Dimension(40, 20));
         valueLabel.setAlignmentX(LEFT_ALIGNMENT);
 
         _textValue = new JTextField();
-        _textValue.setPreferredSize(new Dimension(80, 20));
+        _textValue.setPreferredSize(new Dimension(180, 20));
         _textValue.setAlignmentX(LEFT_ALIGNMENT);
         
         _booleanValue = new JCheckBox();
         _booleanValue.setAlignmentX(LEFT_ALIGNMENT);
         
         _listValue = new JComboBox();
-        _listValue.setPreferredSize(new Dimension(80, 20));
+        _listValue.setPreferredSize(new Dimension(180, 20));
         _listValue.setAlignmentX(LEFT_ALIGNMENT);
 
         _attributeName.addActionListener(new ActionListener() {
@@ -117,15 +117,17 @@ public class ModelAttributePanel extends JPanel {
      */
     public String getValue() {
 
-        if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-                .toString())).getAttributeType() == 
-                    XMLDBAttribute.ATTRIBUTE_TYPE_STRING) {
+        if (((XMLDBAttribute)_attributeMap
+                .get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType()
+                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
 
             return _textValue.getText();
 
-        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-                .toString())).getAttributeType() == 
-                    XMLDBAttribute.ATTRIBUTE_TYPE_LIST) {
+        } else if (((XMLDBAttribute)_attributeMap
+                .get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType()
+                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
 
             if (_listValue.getSelectedItem() != null) {
 
@@ -137,9 +139,10 @@ public class ModelAttributePanel extends JPanel {
 
             }
 
-        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-                .toString())).getAttributeType() == 
-                    XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN) {
+        } else if (((XMLDBAttribute)_attributeMap
+                .get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType()
+                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
 
             if (_booleanValue.isSelected()) {
 
@@ -202,26 +205,29 @@ public class ModelAttributePanel extends JPanel {
    public void setValue(String value) {
 
        if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-               .toString())) == null ){
+               .toString())) == null){
            
            return;
        
        }
-       else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-               .toString())).getAttributeType() == 
-           XMLDBAttribute.ATTRIBUTE_TYPE_STRING) {
+       else if (((XMLDBAttribute)_attributeMap
+               .get(_attributeName.getSelectedItem()
+               .toString())).getAttributeType()
+               .equals(XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
 
            _textValue.setText(value);
 
-       } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-               .toString())).getAttributeType()  == 
-           XMLDBAttribute.ATTRIBUTE_TYPE_LIST) {
+       } else if (((XMLDBAttribute)_attributeMap
+               .get(_attributeName.getSelectedItem()
+               .toString())).getAttributeType()
+               .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
 
            _listValue.setSelectedItem(value);
 
-       } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-               .toString())).getAttributeType()  == 
-           XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN) {
+       } else if (((XMLDBAttribute)_attributeMap
+               .get(_attributeName.getSelectedItem()
+               .toString())).getAttributeType()
+               .equals(XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
 
            if (value.equals("TRUE")) {
 
@@ -243,7 +249,7 @@ public class ModelAttributePanel extends JPanel {
     private void updateDisplay() {
 
         if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-                .toString())) == null ){   
+                .toString())) == null){   
             
             _listValue.setEnabled(false);
             _textValue.setEnabled(false);
@@ -253,18 +259,20 @@ public class ModelAttributePanel extends JPanel {
             _booleanValue.setSelected(false);
             _listValue.setSelectedItem(null);
         
-        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-                .toString())).getAttributeType()  == 
-                    XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN) {
+        } else if (((XMLDBAttribute)_attributeMap
+                .get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType()
+                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
 
             _booleanValue.setEnabled(true);
             _listValue.setEnabled(false);
             _listValue.setSelectedItem(null);
             _textValue.setEnabled(false);
             _textValue.setText("");
-        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-                .toString())).getAttributeType()  == 
-                    XMLDBAttribute.ATTRIBUTE_TYPE_STRING) {
+        } else if (((XMLDBAttribute)_attributeMap
+                .get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType()
+                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
 
             _textValue.setEnabled(true);
             _booleanValue.setEnabled(false);
@@ -272,9 +280,10 @@ public class ModelAttributePanel extends JPanel {
             _listValue.setEnabled(false);
             _listValue.setSelectedItem(null);
 
-        } else if (((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
-                .toString())).getAttributeType()  == 
-                    XMLDBAttribute.ATTRIBUTE_TYPE_LIST) {
+        } else if (((XMLDBAttribute)_attributeMap
+                .get(_attributeName.getSelectedItem()
+                .toString())).getAttributeType()
+                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
 
             _listValue.setEnabled(true);
             _textValue.setEnabled(false);
@@ -282,11 +291,13 @@ public class ModelAttributePanel extends JPanel {
             _booleanValue.setEnabled(false);
             _booleanValue.setSelected(false);
             
-            DefaultComboBoxModel theModel = (DefaultComboBoxModel)_listValue.getModel();
+            DefaultComboBoxModel theModel = 
+                (DefaultComboBoxModel)_listValue.getModel();
             theModel.removeAllElements();
             
             ArrayList<String> choiceList = (ArrayList)
-                ((XMLDBAttribute)_attributeMap.get(_attributeName.getSelectedItem()
+                ((XMLDBAttribute)_attributeMap
+                    .get(_attributeName.getSelectedItem()
                     .toString())).getAttributeValues();
 
             _listValue.addItem("");

@@ -475,8 +475,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 XMLDBModel model;
                 for (String modelName : matchingModelNamesList) {
-                    model = new XMLDBModel();
-                    model.setModelName(modelName.substring(modelName
+                    model = new XMLDBModel(modelName.substring(modelName
                             .lastIndexOf("/") + 1));
                     finalModelsList.add(model);
                 }

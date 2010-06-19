@@ -51,8 +51,7 @@ public class DBModelFetcher {
 
         try {
 
-            GetModelsTask getModelsTask = new GetModelsTask();
-            getModelsTask.setModelName(name);
+            GetModelsTask getModelsTask = new GetModelsTask(name);
             returnModel = connection.executeGetModelsTask(getModelsTask);
 
         } catch (DBExecutionException dbEx) {            

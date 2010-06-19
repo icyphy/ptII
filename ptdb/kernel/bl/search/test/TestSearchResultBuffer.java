@@ -76,14 +76,14 @@ public class TestSearchResultBuffer {
 
         for (int i = 0; i < 20; i++) {
 
-            _modelResults2.add(new XMLDBModel());
+            _modelResults2.add(new XMLDBModel(String.valueOf(i)));
 
         }
 
         _modelResults3 = new ArrayList<XMLDBModel>();
         for (int i = 20; i < 30; i++) {
 
-            _modelResults3.add(new XMLDBModel());
+            _modelResults3.add(new XMLDBModel(String.valueOf(i)));
 
         }
 
