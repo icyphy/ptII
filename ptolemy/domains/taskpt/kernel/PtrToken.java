@@ -67,6 +67,8 @@ public class PtrToken extends Token {
     /** Get the address in memory this token is pointing to. Do 
      * not check, if there actually is something at that memory address.
      * 
+     * @see #setAddress(int)
+     * 
      * @return The address in memory this token is pointing to.
      */
     public int getAddress() {
@@ -75,6 +77,8 @@ public class PtrToken extends Token {
 
     /** Get the size of the array in memory this token is pointing to. Do 
      * not check, if the array in the memory is of that size.
+     * 
+     * @see #setSize(int)
      * 
      * @return The size of the array in memory this token is pointing to.
      */
@@ -85,6 +89,8 @@ public class PtrToken extends Token {
     /** Set the address in memory this token should point to. Do not
      * change the position of the array in the memory.
      * 
+     * @see #getAddress()
+     * 
      * @param addr The address in memory this token should point to.
      */
     public void setAddress(int addr) {
@@ -94,6 +100,8 @@ public class PtrToken extends Token {
     /** Set the size of the array in memory this token is pointing to. Do not 
      * change the actual content or size of the memory nor the array
      * in the memory.
+     * 
+     * @see #getSize()
      * 
      * @param size The size of the array in memory this token is pointing to.
      */

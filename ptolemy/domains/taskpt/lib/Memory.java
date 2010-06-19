@@ -56,7 +56,7 @@ public class Memory extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Allocate a slot in the memory (currently at the end)
+    /** Allocate a slot in the memory (currently at the end).
      * 
      * @param size The size of the slot to be allocated.
      * @return A pointer to the address allocated in the memory.
@@ -68,7 +68,7 @@ public class Memory extends NamedObj {
         return result;
     }
 
-    /** Remove all entries from the memory */
+    /** Remove all entries from the memory. */
     public void clear() {
         _buffer.clear();
     }

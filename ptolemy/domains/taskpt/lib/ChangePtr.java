@@ -126,7 +126,7 @@ public class ChangePtr extends TypedAtomicActor {
             int sz = in.getSize()
                     + +((IntToken) sizeOffset.getToken()).intValue();
             if (sz < 1) {
-                new IllegalActionException("new size is smaller than 1.");
+                throw new IllegalActionException("new size is smaller than 1.");
             }
             PtrToken result = new PtrToken(addr, sz);
             output.broadcast(result);

@@ -137,6 +137,29 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Initialize the shared memory for the actors and set the 
+     * iterations for this director to one.
+     * 
+     *  @throws IllegalActionException If there is a problem instantiating
+     *   the director's parameters.
+     *  @throws NameDuplicationException If there is a problem instantiating
+     *   the director's parameters.
+     */
+    protected void _init() throws IllegalActionException,
+            NameDuplicationException {
+        super._init();
+        if (_memory == null) {
+            _memory = new Memory();
+        }
+        iterations.setExpression("1");
+    }
+
+    /** Set the initial Tokens present on the inputs of the actors. In
+     * this case do not set any initial tokens. Remove already present tokens.
+     * 
+     * @throws IllegalActionException If already present tokens cannot be
+     * removed.
+     */
     protected void _setInitialValues() throws IllegalActionException {
         // remove initial values
         // FIXME: Currently the values are set in SequencedModelDirector
@@ -170,15 +193,6 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
                 }
             }
         }
-    }
-
-    protected void _init() throws IllegalActionException,
-        NameDuplicationException {
-        super._init();
-        if (_memory == null) {
-            _memory = new Memory();
-        }
-        iterations.setExpression("1");
     }
 
     ///////////////////////////////////////////////////////////////////
