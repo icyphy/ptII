@@ -462,11 +462,16 @@ public class SaveModelToDBFrame extends JFrame {
 
         boolean isNew = true;
 
+        if(_modelToSave.getAttribute("DBModel") != null){
+            System.out.println("had it.");
+        }else{
+            System.out.println("didn't have it.");
+        }
         // It is not new if the model has the DBModel tag 
         // and the model name is still the same.
         if (_modelToSave.getAttribute("DBModel") != null
                 && _modelToSave.getName().equals(_initialModelName)) {
-
+            
             isNew = false;
 
         }
@@ -604,6 +609,10 @@ public class SaveModelToDBFrame extends JFrame {
                 StringParameter dbModelParam = new StringParameter(
                         _modelToSave, "DBModel");
                 dbModelParam.setExpression("TRUE");
+                dbModelParam.setContainer(_modelToSave);
+                
+                
+                System.out.println("trying to add it.");
 
             }
 
@@ -622,7 +631,8 @@ public class SaveModelToDBFrame extends JFrame {
             // Delete all existing DBAttributes.
             for (StringParameter attribute : attributesList) {
 
-                attribute.setContainer(null);
+                if (attribute.getName()!="DBModel")
+                    attribute.setContainer(null);
 
             }
 
@@ -682,22 +692,29 @@ public class SaveModelToDBFrame extends JFrame {
                                     "_location");
                             l.setLocation(xy);
 
-                            try {
-
-                                MoMLChangeRequest change = new MoMLChangeRequest(
-                                        this, null, _modelToSave.exportMoML());
-                                change.setUndoable(true);
-                                _modelToSave.requestChange(change);
-                            } catch (Exception e) {
-                                throw e;
-                            }
-
                         }
 
                     }
 
                 }
 
+            }
+            
+            try {
+
+                MoMLChangeRequest change = new MoMLChangeRequest(
+                        this, null, _modelToSave.exportMoML());
+                change.setUndoable(true);
+                
+                System.out.println(_modelToSave.exportMoML());
+                
+                _modelToSave.requestChange(change);
+                System.out.println("tried to add it.");
+                
+
+                System.out.println(_modelToSave.exportMoML());
+            } catch (Exception e) {
+                throw e;
             }
 
         } catch (NameDuplicationException exception) {

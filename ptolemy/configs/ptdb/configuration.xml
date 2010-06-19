@@ -56,7 +56,7 @@
     <input source="ptolemy/configs/ptdb/graphTableauFactoryPtdb.xml"/>
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
-
+  
   <!-- Main default library. -->
   <input source="ptolemy/configs/basicLibrary.xml"/>
 </entity>
