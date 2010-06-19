@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * For more details on this MoC see 
  * Torsten Limberg, Bastian Ristau, and Gerhard Fettweis. 
  * <a href="http://dx.doi.org/10.1007/978-3-540-70550-5_9">
- * A Real-Time Programming Model for Heterogeneous MPSoCs</a>. 
+ * A Real-Time Programming Model for Heterogeneous MPSoCs</a>, Proc. of SAMOS VIII. 
  *  
  * @author Bastian Ristau
  * @version $Id$

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** A director for controlling a task in the taskpt domain.
  * 
- * @see The documentation of ptolemy.domains.taskpt.kernel.TaskPtDirector 
+ * See also the documentation of {@link ptolemy.domains.taskpt.kernel.TaskPtDirector} 
  *  
  * @author Bastian Ristau
  * @version $Id$
@@ -78,7 +78,7 @@ public class TaskDirector extends TaskPtDirector {
     ////                         protected methods                 ////
 
     /** Read data from the shared memory from the location specified by the
-     * incoming token and broadcast the data to the actors inside
+     * incoming token and broadcast the data to the actors inside.
      * 
      * @param port The port to be inspected.
      * @return True, if input is transferred or it is also an output port that
@@ -161,7 +161,7 @@ public class TaskDirector extends TaskPtDirector {
      * present outside.
      * 
      * @param port The port to be inspected.
-     * @return True, if output is transferred.
+     * @return True, if an output is transferred.
      * 
      * @throws IllegalActionException If the port is not an input/output port,
      * there is no PtrToken present specifying the address where to write data,

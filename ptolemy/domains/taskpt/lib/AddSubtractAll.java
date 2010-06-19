@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** Add/subtract the values of all tokens present on the input channels 
 * (in contrast to one token per channel in the AddSubtract class). For further
-* documentation see AddSubtract.
+* documentation see {@link ptolemy.actor.lib.AddSubtract}.
 * 
 * @author Bastian Ristau
 * @version $Id$

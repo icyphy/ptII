@@ -1,4 +1,4 @@
-/* An actor that loads tokens from memory. 
+/* An actor that displays all tokens present on the inputs on screen. 
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -35,9 +35,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// DisplayAll
 
-/** Display the values of all tokens present on the input channels on screen 
- * (in contrast to one token per channel in the Display class). For further
- * documentation see Display.
+/** An actor that displays the values of all tokens present on the input channels on screen 
+ * (in contrast to one token per channel in the base class). For further
+ * documentation see {@link ptolemy.actor.lib.Display}.
  * 
  * @author Bastian Ristau
  * @version $Id$
@@ -69,13 +69,13 @@ public class DisplayAll extends Display {
      *  with a newline character. Order display of tokens by position in channel
      *  first, then by channel.
      *  
-     *  TODO: Order by channel first and then by position in channel will be nicer,
-     *  but this requires to override the Display.postfire() method completely and
-     *  will result in some code copying.
-     *  
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
+        //  TODO: Order by channel first and then by position in channel will be nicer,
+        //  but this requires to override the Display.postfire() method completely and
+        //  will result in some code copying.
+          
         boolean result = true;
         boolean hasTokensSomewhere = true;
         int width = input.getWidth();
