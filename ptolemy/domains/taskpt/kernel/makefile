@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -50,7 +50,7 @@ JSRCS = \
 	PtrToken.java \
 	TaskPtDirector.java \
 	TaskDirector.java \
-	ThreadDirector.java \
+	ThreadDirector.java
 
 EXTRA_SRCS =	$(JSRCS)
 

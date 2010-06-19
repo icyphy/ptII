@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2009 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -48,15 +48,15 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
 	AddSubtractAll.java \
-	DisplayAll.java \
+	Alloc.java \
 	ChangePtr.java \
+	DisplayAll.java \
+	Load.java \
+	LoadStore.java \
 	Memory.java \
 	MemoryAccess.java \
-	LoadStore.java \
-	Alloc.java \
-	Load.java \
 	Store.java \
-	Task.java \
+	Task.java
 
 OTHER_FILES_TO_BE_JARED = 
 
