@@ -1,0 +1,4 @@
+createcontainer Testing.dbxml
+open Testing.dbxml
+run create_reference_file.txt
+run create_models.txt
