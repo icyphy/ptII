@@ -32,13 +32,13 @@ import ptolemy.kernel.util.Attribute;
 public class SearchCriteria {
 
     ///////////////////////////////////////////////////////////////////
-    ////////    public methods                                        ////////
+    ////        public methods                                     ////
 
     /**
      * Get the attributes criteria from the search criteria.
      * 
-     * @see #setAttributes
      * @return All the attributes input by the user as the search criteria.
+     * @see #setAttributes
      */
     public ArrayList<Attribute> getAttributes() {
         return _attributes;
@@ -47,8 +47,8 @@ public class SearchCriteria {
     /**
      * Get the graph search criteria from the search criteria.
      * 
-     * @see #setDBGraphSearchCriteria
      * @return The graph search criteria input by the user.
+     * @see #setDBGraphSearchCriteria
      */
     public DBGraphSearchCriteria getDBGraphSearchCriteria() {
         return _dbGraphSearchCriteria;
@@ -57,8 +57,8 @@ public class SearchCriteria {
     /**
      * Get the search command criteria from the search criteria.
      *
-     * @see #setSearchCommand
      * @return The XQuery search command input by the user.
+     * @see #setSearchCommand
      */
     public String getSearchCommand() {
         return _searchCommand;
@@ -67,9 +67,9 @@ public class SearchCriteria {
     /**
      * Set the attribute criteria for the search criteria.
      * 
-     * @see #getAttributes
      * @param attributes The attributes input by the user to set in the
      * search criteria.
+     * @see #getAttributes
      */
     public void setAttributes(ArrayList<Attribute> attributes) {
         this._attributes = attributes;
@@ -78,9 +78,9 @@ public class SearchCriteria {
     /**
      * Set the graph search criteria for the search criteria.
      * 
-     * @see #getDBGraphSearchCriteria
      * @param dbGraphSearchCriteria The graph search criteria input by the user
      * to set in the search criteria.
+     * @see #getDBGraphSearchCriteria
      */
     public void setDBGraphSearchCriteria(
             DBGraphSearchCriteria dbGraphSearchCriteria) {
@@ -90,16 +90,16 @@ public class SearchCriteria {
     /**
      * Set the XQuery search command for the search criteria.
      * 
-     * @see #getSearchCommand
      * @param searchCommand The XQuery search command to set in the search
      * criteria.
+     * @see #getSearchCommand
      */
     public void setSearchCommand(String searchCommand) {
         this._searchCommand = searchCommand;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////////    private variables                                     ////////
+    ////    private variables                                      ////
 
     /**
      * Contains all the specified searching attributes.

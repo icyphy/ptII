@@ -35,8 +35,8 @@ public class DBGraphSearchCriteria {
     /**
      * Get the component entities from the Graph search pattern.
      * 
-     * @see #setComponentEntitiesList
      * @return The component entities from the graph search pattern.
+     * @see #setComponentEntitiesList
      */
     public ArrayList<ComponentEntity> getComponentEntitiesList() {
         return _componentEntitiesList;
@@ -45,8 +45,8 @@ public class DBGraphSearchCriteria {
     /**
      * Get the composite entities form the graph search pattern. 
      * 
-     * @see #setCompositeEntities
      * @return The composite entities from the graph search pattern. 
+     * @see #setCompositeEntities
      */
     public ArrayList<CompositeEntity> getCompositeEntities() {
         return _compositeEntitiesList;
@@ -54,9 +54,9 @@ public class DBGraphSearchCriteria {
 
     /**
      * Get the ports from the Graph search pattern.
-     * 
-     * @see #setPortsList
+     *
      * @return The ports from the graph search pattern.
+     * @see #setPortsList
      */
     public ArrayList<Port> getPortsList() {
         return _portsList;
@@ -65,8 +65,8 @@ public class DBGraphSearchCriteria {
     /**
      * Get the relations from the Graph search pattern.
      * 
-     * @see #setRelationsList
      * @return The relations from the graph search pattern.
+     * @see #setRelationsList
      */
     public ArrayList<Relation> getRelationsList() {
         return _relationsList;
@@ -75,9 +75,9 @@ public class DBGraphSearchCriteria {
     /**
      * Set the component entities from the Graph search pattern.
      * 
-     * @see #getComponentEntitiesList
      * @param componentEntitiesList The component entities from the graph
      *  search pattern.
+     * @see #getComponentEntitiesList
      */
     public void setComponentEntitiesList(
             ArrayList<ComponentEntity> componentEntitiesList) {
@@ -87,9 +87,9 @@ public class DBGraphSearchCriteria {
     /**
      * Set the composite entities from the graph search pattern. 
      * 
-     * @see #getCompositeEntities
      * @param compositeEntitiesList The composite entities from the graph search
      *   pattern.
+     * @see #getCompositeEntities
      */
     public void setCompositeEntities(
             ArrayList<CompositeEntity> compositeEntitiesList) {
@@ -99,8 +99,8 @@ public class DBGraphSearchCriteria {
     /**
      * Set the ports from the Graph search pattern.
      * 
-     * @see #getPortsList
      * @param portsList The ports from the graph search pattern.
+     * @see #getPortsList
      */
     public void setPortsList(ArrayList<Port> portsList) {
         _portsList = portsList;
@@ -109,8 +109,8 @@ public class DBGraphSearchCriteria {
     /**
      * Set the relations from the Graph search pattern.
      * 
-     * @see #getRelationsList
      * @param relationsList The relations from the graph search pattern.
+     * @see #getRelationsList
      */
     public void setRelationsList(ArrayList<Relation> relationsList) {
         _relationsList = relationsList;
