@@ -66,6 +66,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveClasses;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
@@ -352,6 +353,13 @@ public abstract class GenericCodeGenerator extends Attribute implements
             // we can't generate code for plotters etc using $PTII/bin/ptcg
             //MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
+            // Add DocViewerFactory so that ptolemy/actor/lib/test/auto/Sinewave.xml,
+            // ptolemy/actor/lib/test/auto/Sinewave2.xml,
+            // ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml all work.
+            RemoveClasses removeClasses = new RemoveClasses();
+            removeClasses.put("ptolemy.vergil.basic.DocViewerFactory", null);
+            MoMLParser.addMoMLFilter(removeClasses);
+            
             // Reset the list each time we parse a parameter set.
             // Otherwise two calls to this method will share params!
             _parameterNames = new LinkedList<String>();
