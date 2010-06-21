@@ -391,8 +391,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         /**
          * Create a new action to save a model to the database.
          * 
-         * @param frame
-         *      The frame from which the SaveModelToDBFrame is opened.
          */
         public SaveModelToDBAction() {
 

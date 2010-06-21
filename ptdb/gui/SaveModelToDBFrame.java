@@ -68,8 +68,7 @@ public class SaveModelToDBFrame extends JFrame {
      * tabbed pane. Add a listener for the Save button to call _saveModel().
      * 
      * @param model The model that is being saved to the database.
-     * @param frame The frame from which the save form was opened. Passed to the
-     * object to allow repainting if attribute modifications occur.
+     * 
      */
     public SaveModelToDBFrame(NamedObj model) {
 
@@ -462,11 +461,6 @@ public class SaveModelToDBFrame extends JFrame {
 
         boolean isNew = true;
 
-        if(_modelToSave.getAttribute("DBModel") != null){
-            System.out.println("had it.");
-        }else{
-            System.out.println("didn't have it.");
-        }
         // It is not new if the model has the DBModel tag 
         // and the model name is still the same.
         if (_modelToSave.getAttribute("DBModel") != null
@@ -489,17 +483,18 @@ public class SaveModelToDBFrame extends JFrame {
             return false;
 
         }
-
-        if (_nameText.getText().contains(".")) {
-
+        
+        if (!_nameText.getText().matches("^[A-Za-z0-9]+$")){
+            
             JOptionPane.showMessageDialog(this,
-                    "The model name should not contain '.'.", "Save Error",
+                    "The model name should only contain letters and numbers.", 
+                    "Save Error",
                     JOptionPane.INFORMATION_MESSAGE, null);
 
             return false;
-
+            
         }
-
+        
         ArrayList<String> attributes = new ArrayList();
 
         // Get a list of all attributes we have displayed.
@@ -611,9 +606,6 @@ public class SaveModelToDBFrame extends JFrame {
                 dbModelParam.setExpression("TRUE");
                 dbModelParam.setContainer(_modelToSave);
                 
-                
-                System.out.println("trying to add it.");
-
             }
 
             ArrayList<StringParameter> attributesList = new ArrayList();
@@ -628,11 +620,16 @@ public class SaveModelToDBFrame extends JFrame {
 
             }
 
-            // Delete all existing DBAttributes.
+            // Delete all existing attributes that are in the
+            // set of attributes obtained from the DB.
             for (StringParameter attribute : attributesList) {
 
-                if (attribute.getName()!="DBModel")
+                if (attribute.getName()!="DBModel" && 
+                        _aList.containsKey(attribute.getName())){
+                    
                     attribute.setContainer(null);
+                    
+                }
 
             }
 
@@ -679,7 +676,7 @@ public class SaveModelToDBFrame extends JFrame {
                                     "<svg><text x=\"20\" "
                                             + "style=\"font-size:14; "
                                             + "font-family:SansSerif; "
-                                            + "fill:blue\" " + "y=\"20\">Hello"
+                                            + "fill:blue\" " + "y=\"20\">"
                                             + "</text></svg>");
 
                             VisibleParameterEditorFactory vpef = new VisibleParameterEditorFactory(
@@ -705,14 +702,9 @@ public class SaveModelToDBFrame extends JFrame {
                 MoMLChangeRequest change = new MoMLChangeRequest(
                         this, null, _modelToSave.exportMoML());
                 change.setUndoable(true);
-                
-                System.out.println(_modelToSave.exportMoML());
-                
+                                
                 _modelToSave.requestChange(change);
-                System.out.println("tried to add it.");
                 
-
-                System.out.println(_modelToSave.exportMoML());
             } catch (Exception e) {
                 throw e;
             }
