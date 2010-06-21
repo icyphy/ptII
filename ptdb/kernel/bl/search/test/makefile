@@ -46,6 +46,7 @@ include $(CONFIG)
 # If you add a file, be sure to add a line to test_java
 JSRCS_TEST_DRIVERS = \
 	TestAttributeSearcher.java \
+	TestSearchByAttributeIntegration.java \
 	TestSearchManager.java \
 	TestSearchResultBuffer.java
 
@@ -76,6 +77,7 @@ tests:: $(EXTRA_SRCS) jclass test_java
 
 test_java: jclass
 	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.search.test.TestAttributeSearcher
+	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.search.test.TestSearchByAttributeIntegration
 	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.search.test.TestSearchManager
 	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.search.test.TestSearchResultBuffer
 

@@ -54,8 +54,8 @@ PTCLASSALLJARS = \
 	database/database.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
-JSRCS = \
-	DBAttribute.java
+
+JSRCS =
 
 EXTRA_SRCS =	$(JSRCS)
 

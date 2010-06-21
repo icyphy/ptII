@@ -80,6 +80,7 @@ MISC_FILES =	test img
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
+	'ActorGraphDBFrame$$SaveModelToDBAction.class' \
 	'ActorGraphDBFrame$$LoadModelFromDBAction.class' \
 	'ActorGraphDBFrame$$ModelSearchResults$$1.class' \
 	'ActorGraphDBFrame$$ModelSearchResults$$2.class' \
@@ -87,12 +88,16 @@ OPTIONAL_FILES = \
 	'ActorGraphDBFrame$$OpenSearchFrameAction.class' \
 	'ActorGraphDBTableau$$Factory.class' \
 	'DbSearchFrame$$DBMatchAction.class' \
+	'DbSearchFrame$$DBSearchConfigureAction.class' \
+	'DbSearchFrame$$DBSearchFrameController.class' \
 	'ModelAttributePanel$$1.class' \
 	'ModelPanel$$1.class' \
 	'ParentPanel$$1.class' \
 	'SaveModelToDBFrame$$1.class' \
 	'SaveModelToDBFrame$$2.class' \
+	'SaveModelToDBFrame$$2$$1.class' \
 	'SaveModelToDBFrame$$3.class' \
+	'SaveModelToDBFrame$$4.class' \
 	'SearchResultsFrame$$1.class' \
 	'SearchResultsFrame$$2.class' \
 	'SearchResultsFrame$$3.class'
