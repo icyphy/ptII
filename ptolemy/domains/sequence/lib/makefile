@@ -48,9 +48,9 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
 	Break.java \
-	ControlActor.java \
+	IfThenElse.java \
 	IfThen.java \
-	IfThenElse.java
+	While.java
 
 OTHER_FILES_TO_BE_JARED = \
 	break.gif \
