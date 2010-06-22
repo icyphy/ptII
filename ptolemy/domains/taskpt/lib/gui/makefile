@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sequence/lib/gui
+ME =		ptolemy/domains/taskpt/lib/gui
 
 DIRS = 		gui
 

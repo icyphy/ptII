@@ -1448,6 +1448,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/taskpt/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/taskpt/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/taskpt/lib/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/taskpt \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/thales \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \

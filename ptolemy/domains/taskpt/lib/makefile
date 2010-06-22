@@ -29,9 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sequence/lib
+ME =		ptolemy/domains/taskpt/lib
 
-DIRS = 		
+DIRS = 		gui
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -44,7 +44,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	lib
-PTCLASSJAR =    $(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	gui/gui.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AddSubtractAll.java \
