@@ -34,6 +34,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -99,6 +100,10 @@ public class Subscriber extends TypedAtomicActor {
         output.setWidthEquals(input, false);
 
         new Parameter(input, "_hide", BooleanToken.TRUE);
+
+        global = new Parameter(this, "global");
+        global.setExpression("false");
+        global.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,6 +114,15 @@ public class Subscriber extends TypedAtomicActor {
      *  This is a string that defaults to "channel1".
      */
     public StringParameter channel;
+
+    /** Specification of whether the data is subscribed globally.
+     *  If this is set to true, then this subscriber will see values 
+     *  published by a publisher anywhere in the model references the same 
+     *  channel by name . If this is set to false (the default), then only
+     *  values published by the publisher that are fired by the same
+     *  director are seen by this subscriber.
+     */
+    public Parameter global;
 
     /** The input port.  This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
@@ -170,6 +184,8 @@ public class Subscriber extends TypedAtomicActor {
                 }
                 */
             }
+        } else if (attribute == global) {
+            _global = ((BooleanToken) global.getToken()).booleanValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -307,11 +323,11 @@ public class Subscriber extends TypedAtomicActor {
         if (container instanceof CompositeActor) {
             try {
                 ((CompositeActor) container).linkToPublishedPort(_channel,
-                        input);
+                        input, _global);
             } catch (Exception e) {
                 throw new IllegalActionException(this, e,
                         "Can't link Subscriber with Publisher, channel was \""
-                        + channel.stringValue() + "\"");
+                                + channel.stringValue() + "\"");
             }
         }
     }
@@ -321,6 +337,9 @@ public class Subscriber extends TypedAtomicActor {
 
     /** Cached channel name. */
     protected String _channel;
+
+    /** Cached global parameter. */
+    protected boolean _global;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

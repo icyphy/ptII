@@ -60,6 +60,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -1091,6 +1092,82 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     director.invalidateSchedule();
                     director.invalidateResolvedTypes();
                 }
+
+            }
+        }
+    }
+
+    /** Link the subscriberPort with a already registered "published port" coming
+     *  from a publisher. The name is the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the  name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param name The name is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param subscriberPort The subscribed port. 
+     *  @param global The global parameter of the subscriber.
+     *  @exception NameDuplicationException If there are name conflicts
+     *          as a result of the added relations or ports. 
+     *  @exception IllegalActionException If the published port cannot be found.
+     */
+    public void linkToPublishedPort(String name, IOPort subscriberPort,
+            boolean global) throws IllegalActionException,
+            NameDuplicationException {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor
+                && !((CompositeActor) container).isClassDefinition()) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).linkToPublishedPort(name,
+                    subscriberPort, global);
+        } else {
+            try {
+                linkToPublishedPort(name, subscriberPort);
+            } catch (IllegalActionException e) {
+                if (_debugging) {
+                    _debug("Does not find any publisher at this level" + e);
+                }
+            }
+
+            if (global) {
+                String portName = "_subscriber_"
+                        + StringUtilities.sanitizeName(name);
+                IOPort port = (IOPort) getPort(portName);
+                if (port == null) {
+                    port = (IOPort) newPort(portName);
+                    new Parameter(port, "_hide", BooleanToken.TRUE);
+                    port.setPersistent(false);
+                    port.setInput(true);
+                    port.setMultiport(true);
+                    port.setDefaultWidth(0);
+
+                    IORelation relation = null;
+                    //connect the newly created port to the subscriber port
+                    try {
+                        // CompositeActor always creates an IORelation.
+                        relation = (IORelation) newRelation(uniqueName("subscriberExternalRelation"));
+                    } catch (NameDuplicationException e) {
+                        // Shouldn't happen.
+                        throw new IllegalStateException(e);
+                    }
+                    // Prevent the relation and its links from being exported.
+                    relation.setPersistent(false);
+                    // Prevent the relation from showing up in vergil.
+                    new Parameter(relation, "_hide", BooleanToken.TRUE);
+                    port.liberalLink(relation);
+
+                    if (!subscriberPort.isLinked(relation)) {
+                        subscriberPort.liberalLink(relation);
+                    }
+                }
+
+                if (container instanceof CompositeActor) {
+                    ((CompositeActor) container).linkToPublishedPort(name,
+                            port, global);
+                }
             }
         }
     }
@@ -1128,6 +1205,55 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     if (matcher.matches()) {
                         matched = true;
                         linkToPublishedPort(name, subscriberPort);
+                    }
+                }
+                if (!matched) {
+                    throw new IllegalActionException(this,
+                            "Failed to find a publisher to match \"" + pattern
+                                    + "\"");
+                }
+            } else {
+                throw new IllegalActionException(this,
+                        "No Publishers were found adjacent to or " + "below "
+                                + subscriberPort.getContainer().getFullName());
+            }
+        }
+    }
+
+    /** Link the subscriberPort with a already registered "published port" coming
+     *  from a publisher. The pattern represents the name being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the  name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param pattern The pattern is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param subscriberPort The subscribed port. 
+     *  @exception NameDuplicationException If there are name conflicts
+     *          as a result of the added relations or ports. 
+     *  @exception IllegalActionException If the published port cannot be found.
+     */
+    public void linkToPublishedPort(Pattern pattern,
+            TypedIOPort subscriberPort, boolean global)
+            throws IllegalActionException, NameDuplicationException {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor
+                && !((CompositeActor) container).isClassDefinition()) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).linkToPublishedPort(pattern,
+                    subscriberPort, global);
+        } else {
+            if (_publishedPorts != null) {
+                boolean matched = false;
+                for (String name : _publishedPorts.keySet()) {
+                    Matcher matcher = pattern.matcher(name);
+                    //System.out.println("Match " + name);
+                    if (matcher.matches()) {
+                        matched = true;
+                        linkToPublishedPort(name, subscriberPort, global);
                     }
                 }
                 if (!matched) {
@@ -1529,9 +1655,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @exception IllegalActionException If the published port can't
      *          be added.
      */
-    public void registerPublisherPort(String name, IOPort port,
-            boolean global) throws NameDuplicationException,
-            IllegalActionException {
+    public void registerPublisherPort(String name, IOPort port, boolean global)
+            throws NameDuplicationException, IllegalActionException {
         NamedObj container = getContainer();
         // FIXME: The following strategy is fragile in that if
         // a director is added or removed later, then things will break.
@@ -1589,8 +1714,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 linkToPublishedPort(name, publisherPort);
 
                 if (container instanceof CompositeActor) {
-                    ((CompositeActor) container).registerPublisherPort(
-                            name, publisherPort, global);
+                    ((CompositeActor) container).registerPublisherPort(name,
+                            publisherPort, global);
                 }
             }
         }
@@ -2024,7 +2149,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @param publisherPort The publisher port.
      *  @param global If true, unregister the port all the way up the hierarchy.
      */
-    public void unregisterPublisherPort(String name, IOPort publisherPort, boolean global) {
+    public void unregisterPublisherPort(String name, IOPort publisherPort,
+            boolean global) {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
@@ -2057,7 +2183,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 }
             }
             if (global && container instanceof CompositeActor) {
-                ((CompositeActor)container).unregisterPublisherPort(name, publisherPort, global);
+                ((CompositeActor) container).unregisterPublisherPort(name,
+                        publisherPort, global);
             }
         }
     }
@@ -2317,7 +2444,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
             return _relationWidthInference;
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables               ////
