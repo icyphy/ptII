@@ -73,23 +73,13 @@ public class SetupManager {
             DBConnection mainConnection = new OracleXMLDBConnection(
                     dbMainConnParams);
 
-            if (mainConnection == null) {
-                throw new DBConnectionException(
-                        "Unable to create connection with the given parameters."
-                        + " Connection Parameters tested are: \n"
-                        + "URL: " + url + "\nContainer: " + containerName);
-            }
+            mainConnection.closeConnection();
 
             DBConnection cacheConnection = new OracleXMLDBConnection(
                     dbCacheConnParams);
+            
+            cacheConnection.closeConnection();
 
-            if (cacheConnection == null) {
-
-                throw new DBConnectionException(
-                        "Unable to create connection with the given parameters."
-                        + " Connection Parameters tested are: \n"
-                        + "URL: " + url + "\nCache Container: " + cacheContainerName);
-            }
 
         } catch (DBConnectionException e) {
             throw new DBConnectionException(
@@ -103,8 +93,8 @@ public class SetupManager {
      * parameters.
      * 
      * @param params The new database connection parameters.
-     * @Exception DBConnectionException Thrown if the connection fails.
-     * @Exception IOException Thrown if an error occurs while writing the new
+     * @exception DBConnectionException Thrown if the connection fails.
+     * @exception IOException Thrown if an error occurs while writing the new
      * parameters.
      */
     public void updateConnection(SetupParameters params)
@@ -135,7 +125,7 @@ public class SetupManager {
         }
         
         if(url == null) {
-            throw new IOException("Could not fine or create the properties file " 
+            throw new IOException("Could not find or create the properties file " 
                     + ptdbParams);
         }
 
