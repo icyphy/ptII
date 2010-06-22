@@ -43,8 +43,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////GrayScale
 
 /**
-* Produces a grayscaled version of an image
-* @author Edward A. Lee, Jan Reineke, Christopher Brooks
+* Produce a grayscaled version of an image.
+* @author Marc Geilen, based on code by Edward A. Lee, Jan Reineke, Christopher Brooks
 * @version $Id$
 * @since Ptolemy II 7.1
 * @Pt.ProposedRating Red (cxh)
@@ -72,37 +72,12 @@ public class GrayScale extends SharedBufferTransformer{
    }
 
    ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
+   ////                         protected methods                 ////
 
-   
-   public void fireExclusive() throws IllegalActionException {
-       if (input.hasToken(0)) {
-           ObjectToken inputToken = (ObjectToken)input.get(0);
-           Object inputObject = inputToken.getValue();
-           if (!(inputObject instanceof OpenCVImageObject)) {
-               throw new IllegalActionException(this,
-                       "Input is required to be an instance of OpenCVImageObject. Got "
-                       + inputObject.getClass());
-           }
-
-           OpenCVImageObject oio = (OpenCVImageObject) inputObject;
-           OpenCV openCV = oio.openCV;
-           openCV.copy(oio.img, 0, 0, oio.img.width, oio.img.height, 0,0, oio.img.width, oio.img.height);
-           openCV.convert(OpenCV.GRAY);
-           PImage buf = openCV.image(OpenCV.BUFFER);
-           oio.img.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);           
-           // restore mode to RGB
-           openCV.convert(OpenCV.RGB);
-           output.send(0, new ObjectToken(oio));
-           }
-   }
-
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
-   /** Output an OpenCV Object
+   /** Output an OpenCV Object.
     *  @exception IllegalActionException If thrown while writing to the port.   
     */
-   public void fireCopying() throws IllegalActionException {
+   protected void _fireCopying() throws IllegalActionException {
        if (input.hasToken(0)) {
            ObjectToken inputToken = (ObjectToken)input.get(0);
            Object inputObject = inputToken.getValue();
@@ -125,5 +100,25 @@ public class GrayScale extends SharedBufferTransformer{
        }
    }
 
+   protected void _fireExclusive() throws IllegalActionException {
+       if (input.hasToken(0)) {
+           ObjectToken inputToken = (ObjectToken)input.get(0);
+           Object inputObject = inputToken.getValue();
+           if (!(inputObject instanceof OpenCVImageObject)) {
+               throw new IllegalActionException(this,
+                       "Input is required to be an instance of OpenCVImageObject. Got "
+                       + inputObject.getClass());
+           }
 
+           OpenCVImageObject oio = (OpenCVImageObject) inputObject;
+           OpenCV openCV = oio.openCV;
+           openCV.copy(oio.img, 0, 0, oio.img.width, oio.img.height, 0,0, oio.img.width, oio.img.height);
+           openCV.convert(OpenCV.GRAY);
+           PImage buf = openCV.image(OpenCV.BUFFER);
+           oio.img.copy(buf, 0, 0, buf.width, buf.height, 0, 0, buf.width, buf.height);           
+           // restore mode to RGB
+           openCV.convert(OpenCV.RGB);
+           output.send(0, new ObjectToken(oio));
+           }
+   }
 }

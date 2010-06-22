@@ -42,13 +42,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////Invert
 
 /**
-* Produces a inverted version of an image
-* @author Edward A. Lee, Jan Reineke, Christopher Brooks
-* @version $Id$
-* @since Ptolemy II 7.1
-* @Pt.ProposedRating Red (cxh)
-* @Pt.AcceptedRating Red (cxh)
-*/
+ * Produce a inverted version of an image.
+ * @author Marc Geilen, based on code byEdward A. Lee, Jan Reineke, Christopher Brooks
+ * @version $Id$
+ * @since Ptolemy II 7.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class Invert extends SharedBufferTransformer {
    /** Construct an actor with the given container and name.
     *  In addition to invoking the base class constructors, construct
@@ -70,8 +70,10 @@ public class Invert extends SharedBufferTransformer {
    }
 
    
-   @Override
-   protected void fireExclusive() throws IllegalActionException {
+   ///////////////////////////////////////////////////////////////////
+   ////                         protected methods                 ////
+
+   protected void _fireExclusive() throws IllegalActionException {
        if (input.hasToken(0)) {
            ObjectToken inputToken = (ObjectToken)input.get(0);
            Object inputObject = inputToken.getValue();
@@ -90,13 +92,11 @@ public class Invert extends SharedBufferTransformer {
        }
    }   
 
-   ///////////////////////////////////////////////////////////////////
-   ////                         public methods                    ////
-   /** Output an OpenCV Object
+
+   /** Output an OpenCV Object.
     *  @exception IllegalActionException If thrown while writing to the port.   
     */
-   @Override
-   protected void fireCopying() throws IllegalActionException {
+   protected void _fireCopying() throws IllegalActionException {
        if (input.hasToken(0)) {
            ObjectToken inputToken = (ObjectToken)input.get(0);
            Object inputObject = inputToken.getValue();
