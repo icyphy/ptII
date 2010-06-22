@@ -587,6 +587,7 @@ public class TemplateParser {
      */
     final public String processCode(String code) throws IllegalActionException {
         StringBuffer result = new StringBuffer();
+
         int currentPos = _getMacroStartIndex(code, 0);
 
         if (currentPos < 0) {
@@ -715,6 +716,22 @@ public class TemplateParser {
                 currentPos = nextPos;
             }
         }
+//         // Print debugging information about who called this method.
+//         if (result.toString().endsWith("\n")) {
+//             StackTraceElement [] stackTrace = new Throwable().fillInStackTrace().getStackTrace();
+//             for (int i = 0; i < stackTrace.length; i++) {
+//                 if (!stackTrace[i].getMethodName().equals("processCode")) {
+//                     result.append("/* TemplateParser: " 
+//                             + stackTrace[i].getClassName()
+//                             + "."
+//                             + stackTrace[i].getMethodName()
+//                             + " "
+//                             + stackTrace[i].getLineNumber()
+//                             + " */\n");
+//                     break;
+//                 }
+//             }
+//         }
         return result.toString();
     }
 
