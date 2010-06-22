@@ -52,14 +52,15 @@ import ptolemy.kernel.util.IllegalActionException;
 *  @Pt.AcceptedRating Red (jiazou)
 */
 public class SDFReceiver extends Receiver {
-
-    /** Construct an adapther for an SDF receiver.
-     *  @param receiver The SDFReceiver for which an adapther is constructed.
+    private ptolemy.domains.sdf.kernel.SDFReceiver _receiver;
+    /** Construct an adapter for an SDF receiver.
+     *  @param receiver The SDFReceiver for which an adapter is constructed.
      *  @exception IllegalActionException If thrown by the superclass.
      */
     public SDFReceiver(ptolemy.domains.sdf.kernel.SDFReceiver receiver)
             throws IllegalActionException {
         super(receiver);
+        _receiver = receiver;
         // FIXME: not sure if this is totally correct.
         if (receiver.getContainer().getContainer() instanceof CompositeActor) {
             _forComposite = true;
@@ -132,17 +133,22 @@ public class SDFReceiver extends Receiver {
             // which has nested ModularCodegen.
             forComposite = false;
         }
+        if (port.isInput() && ((Actor)(sourcePort.getContainer())).getDirector() 
+                != ((Actor)(port.getContainer())).getDirector()) {
+            // Needed for $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/test/auto/hierarchicalModel_2_2e.xml
+            forComposite = false;
+        }
         String result = null;
         try {
             result = _getDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
                     forComposite, true, containingActorAdapter)
-                    + "=" + token + ";" + _eol;
+                + "=" + token + ";" + _eol;
         } catch (Exception ex) {
             result = _getExecutiveDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
                     forComposite, true, containingActorAdapter)
-                    + "=" + token + ";" + _eol;
+                + "=" + token + ";" + _eol;
         }
         return result;
         //        adapter.processCode("$ref(" + port.getName() + "#" + channel
