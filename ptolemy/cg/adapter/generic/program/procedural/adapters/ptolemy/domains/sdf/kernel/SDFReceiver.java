@@ -143,12 +143,12 @@ public class SDFReceiver extends Receiver {
             result = _getDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
                     forComposite, true, containingActorAdapter)
-                + "=" + token + ";" + _eol;
+                + " = " + token + ";" + _eol;
         } catch (Exception ex) {
             result = _getExecutiveDirectorForReceiver().getReference(port,
                     new String[] { Integer.toString(channel), offset },
                     forComposite, true, containingActorAdapter)
-                + "=" + token + ";" + _eol;
+                + " = " + token + ";" + _eol;
         }
         return result;
         //        adapter.processCode("$ref(" + port.getName() + "#" + channel
