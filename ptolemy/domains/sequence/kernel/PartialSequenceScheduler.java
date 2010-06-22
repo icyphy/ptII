@@ -67,7 +67,7 @@ public class PartialSequenceScheduler extends SequenceScheduler {
     public PartialSequenceScheduler(Director container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _estimator = new DijkstraSequenceEstimator(container);
+        _estimator = new ListSchedulingSequenceEstimator(container);
     }
 
     /** Estimate a sequenced schedule. Currently only supports basic Dijkstra 
@@ -102,6 +102,6 @@ public class PartialSequenceScheduler extends SequenceScheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private DijkstraSequenceEstimator _estimator;
+    private SequenceEstimator _estimator;
 
 }

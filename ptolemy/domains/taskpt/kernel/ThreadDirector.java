@@ -36,13 +36,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** A director for controlling a thread in the taskpt domain.
  * 
- * @see The documentation of ptolemy.domains.taskpt.kernel.TaskPtDirector 
- *  
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating red (ristau)
  * @Pt.AcceptedRating red (ristau)
+ * @see ptolemy.domains.taskpt.kernel.TaskPtDirector 
  */
 public class ThreadDirector extends TaskPtDirector {
 

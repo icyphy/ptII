@@ -48,8 +48,7 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 //// DijkstraSequenceEstimator
 
-/**
-* A class that estimates a sequential schedule based on a modified version 
+/** A class that estimates a sequential schedule based on a modified version 
 * of Dijkstra's algorithm to compute longest paths.
 *
 * @author Bastian Ristau
@@ -58,21 +57,21 @@ import ptolemy.kernel.util.NamedObj;
 * @Pt.ProposedRating Red (ristau)
 * @Pt.AcceptedRating Red (ristau)
 */
-public class DijkstraSequenceEstimator {
+public class DijkstraSequenceEstimator extends SequenceEstimator {
 
     /** Construct an estimator for the given director.
      * 
      *  @param director The director that needs to guess a schedule.
      */
     public DijkstraSequenceEstimator(Director director) {
-        _director = director;
+        super(director);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Estimate a sequenced schedule. This uses a basic Dijkstra algorithm
-     * for getting the maximal distances.
+    /** Estimate a sequenced schedule. Do not care much about ordering
+     * constraints given by sequence numbers.
      * 
      * FIXME: If the graph is cyclic, this method runs forever! Currently this
      * has to (or at least should) be checked before.
@@ -83,7 +82,8 @@ public class DijkstraSequenceEstimator {
      * @return A vector with the ordered actors. Note that the sequence numbers
      * are not changed. This has to be done somewhere else.
      * 
-     * @exception NotSchedulableException If the schedule is acyclic.
+     * @exception NotSchedulableException If the underlying graph of the actors 
+     * is not acyclic.
      */
     public Vector<Actor> estimateSequencedSchedule(
             List<SequenceAttribute> independentList) throws NotSchedulableException {
@@ -285,7 +285,6 @@ public class DijkstraSequenceEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Director _director;
     private int _maxDistance;
     private HashMap<Actor, _SequenceInfo> _sequenceInfos;
     private Set<Actor> _unsettled;

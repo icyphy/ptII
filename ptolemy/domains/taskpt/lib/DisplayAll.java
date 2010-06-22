@@ -36,14 +36,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// DisplayAll
 
 /** An actor that displays the values of all tokens present on the input channels on screen 
- * (in contrast to one token per channel in the base class). For further
- * documentation see {@link ptolemy.actor.lib.Display}.
+ * (in contrast to one token per channel in the base class).
  * 
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating red (ristau)
  * @Pt.AcceptedRating red (ristau)
+ * @see ptolemy.actor.lib.gui.Display
  */
 public class DisplayAll extends Display {
 
