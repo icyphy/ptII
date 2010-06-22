@@ -1,5 +1,6 @@
 package ptdb.kernel.bl.setup;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
@@ -35,8 +36,8 @@ public class SetupManager {
 
     /**
      * Return the existing database setup parameters.
-     * <p>Delegates this task to DBConnectionFactory to perform it and return
-     * the value as it gets it.</p>
+     * <p>Delegate this task to DBConnectionFactory to perform it and return
+     * the value without any modifications.</p>
      * 
      * @return The existing database setup parameters.
      */
@@ -115,15 +116,29 @@ public class SetupManager {
                     + " The setup parameters object sent was null.");
         }
 
+        
         String ptdbParams = "$CLASSPATH/ptdb/config/ptdb-params.properties";
         Properties props = new Properties();
         
-        URL url = FileUtilities.nameToURL(ptdbParams, null, null);
+        File propertiesFile = new File(ptdbParams);
         
-        if (url == null) {
-            throw new IOException("Did not find the "
-                    + ptdbParams + " file.");
+        URL url = null;
+        
+        if(propertiesFile.exists() == false) {
+            
+            propertiesFile.createNewFile();
+            url = FileUtilities.nameToURL(ptdbParams, null, null);
+            
+        } else {
+            
+            url = FileUtilities.nameToURL(ptdbParams, null, null);
         }
+        
+        if(url == null) {
+            throw new IOException("Could not fine or create the properties file " 
+                    + ptdbParams);
+        }
+
         
         props.setProperty("DB_Url", params.getUrl());
         props.setProperty("DB_Container_Name", params.getContainerName());
@@ -131,7 +146,7 @@ public class SetupManager {
                 .getCacheContainerName());
 
         props.store(url.openConnection().getOutputStream(), null);
-        
+                
         DBConnectorFactory.loadDBProperties();
 
     }
