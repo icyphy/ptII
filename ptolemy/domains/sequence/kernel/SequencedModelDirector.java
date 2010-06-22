@@ -605,12 +605,12 @@ public abstract class SequencedModelDirector extends Director {
             */
         // Note that a ProcessAttribute is also a SequenceAttribute
 
-        // MultipleFireMethodsActor can potentially have more than one Sequence or Process Attribute,
+        // MultipleFireMethodsInterface can potentially have more than one Sequence or Process Attribute,
         // but other actors cannot.
         if (!sequenceAttributes.isEmpty()) {
             if (sequenceAttributes.size() > 1 &&
-                    !(actor instanceof MultipleFireMethodsActor &&
-                            ((MultipleFireMethodsActor) actor).numFireMethods() > 1)) {
+                    !(actor instanceof MultipleFireMethodsInterface &&
+                            ((MultipleFireMethodsInterface) actor).numFireMethods() > 1)) {
                 throw new IllegalActionException(
                         this,
                         " Actor "
@@ -746,10 +746,6 @@ public abstract class SequencedModelDirector extends Director {
      *  so that this composite does not need to search its attributes each
      *  time the scheduler is accessed.
      *  @param scheduler The Scheduler responsible for execution.
-     *  @exception IllegalActionException Not thrown in this base class,
-     *   but derived classes may throw it if the scheduler is not compatible.
-     *  @exception NameDuplicationException Not thrown in this base class,
-     *   but derived classes may throw it if the scheduler is not compatible.
      */
     protected void _setScheduler(SequenceScheduler scheduler) {
         // If the scheduler is not changed, do nothing.
@@ -759,8 +755,7 @@ public abstract class SequencedModelDirector extends Director {
         }
     }
 
-    /** Fire the given SequenceSchedule
-     * 
+    /** Fire the given SequenceSchedule.
      *  This is the same for the ProcessDirector and SequenceDirector
      *  (although how the schedule is determined is different)
      *  
@@ -784,12 +779,12 @@ public abstract class SequencedModelDirector extends Director {
             SequenceFiring firing = (SequenceFiring) firings.next();
             Actor actor = firing.getActor();
             
-            // If the actor is a MultipleFireMethodsActor, set
+            // If the actor is a MultipleFireMethodsInterface, set
             // its fire method before firing it.
-            if (actor instanceof MultipleFireMethodsActor &&
-                    ((MultipleFireMethodsActor) actor).numFireMethods() > 1) {
+            if (actor instanceof MultipleFireMethodsInterface &&
+                    ((MultipleFireMethodsInterface) actor).numFireMethods() > 1) {
                 String methodName = firing.getMethodName();
-                ((MultipleFireMethodsActor) actor).setFireMethod(methodName);
+                ((MultipleFireMethodsInterface) actor).setFireMethod(methodName);
             }
 
             int iterationCount = firing.getIterationCount();

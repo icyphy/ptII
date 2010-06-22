@@ -721,10 +721,10 @@ public class SequenceScheduler extends Scheduler {
                             + " does not have a sequence or process attribute.");
         }
         
-        // Check to see if the actor is a MultipleFireMethodsActor with more than one fire method
+        // Check to see if the actor is a MultipleFireMethodsInterface with more than one fire method
         // and if there is a specific method being triggered for this actor.
-        if (connectedActor instanceof MultipleFireMethodsActor &&
-                ((MultipleFireMethodsActor) connectedActor).numFireMethods() > 1 &&
+        if (connectedActor instanceof MultipleFireMethodsInterface &&
+                ((MultipleFireMethodsInterface) connectedActor).numFireMethods() > 1 &&
                     !connectedActor.attributeList(ProcessAttribute.class).isEmpty()) {
             StringAttribute methodNameAttribute = (StringAttribute) connectedPort.getAttribute("methodName");
             String methodName = null;                            
@@ -740,13 +740,13 @@ public class SequenceScheduler extends Scheduler {
             }                            
             if (conAttribute == null) {
                 if (methodName != null) {
-                    throw new IllegalActionException(connectedPort, "The MultipleFireMethodsActor " +
+                    throw new IllegalActionException(connectedPort, "The MultipleFireMethodsInterface " +
                             connectedActor.getName() +
                             " has more than one fire method, but the trigger input specifies the " +
                             " fire method " + methodName + ", and the actor has no ProcessAttribute" +
                             " with a Process Name of 'None' specified that fires that method.");
                 } else {
-                    throw new IllegalActionException(connectedPort, "The MultipleFireMethodsActor " +
+                    throw new IllegalActionException(connectedPort, "The MultipleFireMethodsInterface " +
                             connectedActor.getName() +
                             " has more than one fire method, but the trigger input does not specify a " +
                             " fire method.");
@@ -754,7 +754,7 @@ public class SequenceScheduler extends Scheduler {
             }
         }
         
-        // If the actor is not a MultipleFireMethodsActor, then it should
+        // If the actor is not a MultipleFireMethodsInterface, then it should
         // only have one sequence or process attribute.
         if (conAttribute == null) {
             if (connectedActor.attributeList(SequenceAttribute.class).size() > 1) {
@@ -835,22 +835,22 @@ public class SequenceScheduler extends Scheduler {
             List nodeWeights = new ArrayList();
             
             // Add all the sequence attributes for each actor.
-            // If the actor is a MultipleFireMethodsActor, check to make sure
+            // If the actor is a MultipleFireMethodsInterface, check to make sure
             // a sequence attribute does not invoke a fire method with an output port.
             List sequenceAttributes = ((Entity) sa).attributeList(SequenceAttribute.class);
             if (!sequenceAttributes.isEmpty()) {
-                if (sa instanceof MultipleFireMethodsActor &&
-                        ((MultipleFireMethodsActor) sa).numFireMethods() > 1) {
+                if (sa instanceof MultipleFireMethodsInterface &&
+                        ((MultipleFireMethodsInterface) sa).numFireMethods() > 1) {
                     for (Object sequenceAttribute : sequenceAttributes) {
                         String methodName = null;
                         if (sequenceAttribute instanceof ProcessAttribute) {
                             methodName = ((ProcessAttribute) sequenceAttribute).getMethodName();
                         } else {
-                            methodName = ((MultipleFireMethodsActor) sa).getDefaultFireMethodName();
+                            methodName = ((MultipleFireMethodsInterface) sa).getDefaultFireMethodName();
                         }
-                        if (((MultipleFireMethodsActor) sa).getMethodOutputPort(methodName) != null) {
+                        if (((MultipleFireMethodsInterface) sa).getMethodOutputPort(methodName) != null) {
                             throw new IllegalActionException(sa, "Error: A sequence or process attribute " +
-                                    "in the MultipleFireMethodsActor actor: " + sa.getName() +
+                                    "in the MultipleFireMethodsInterface actor: " + sa.getName() +
                                     " cannot invoke the fire method: " +
                                     methodName + " that has an explicit output port.");
                         }
@@ -859,10 +859,10 @@ public class SequenceScheduler extends Scheduler {
                 nodeWeights.addAll(sequenceAttributes);
             }
             
-            // If the actor is MultipleFireMethodsActor, or it has no sequence attributes,
+            // If the actor is MultipleFireMethodsInterface, or it has no sequence attributes,
             // also add all its connected output ports to the graph.            
-            if ((sa instanceof MultipleFireMethodsActor &&
-                    ((MultipleFireMethodsActor) sa).numFireMethods() > 1) ||
+            if ((sa instanceof MultipleFireMethodsInterface &&
+                    ((MultipleFireMethodsInterface) sa).numFireMethods() > 1) ||
                         sequenceAttributes.isEmpty()) {   
                 for (Object outputPort : sa.outputPortList()) {
                     if (!((Port) outputPort).connectedPortList().isEmpty()) {
@@ -900,24 +900,24 @@ public class SequenceScheduler extends Scheduler {
                 // Find all the predecessors of actor
                 List predecessors = _predecessorList(sa);
                 
-                // If the actor is a MultipleFireMethodsActor, then restrict the predecessor ports to only those relevant for
+                // If the actor is a MultipleFireMethodsInterface, then restrict the predecessor ports to only those relevant for
                 // the method on this output port.
-                if (sa instanceof MultipleFireMethodsActor &&
-                        ((MultipleFireMethodsActor) sa).numFireMethods() > 1) {
+                if (sa instanceof MultipleFireMethodsInterface &&
+                        ((MultipleFireMethodsInterface) sa).numFireMethods() > 1) {
                     String methodName = null;
                     
                     if (nodeWeight instanceof SequenceAttribute) {
                         if (nodeWeight instanceof ProcessAttribute) {
                             methodName = ((ProcessAttribute) nodeWeight).getMethodName();
                         } else {
-                            methodName = ((MultipleFireMethodsActor) sa).getDefaultFireMethodName();
+                            methodName = ((MultipleFireMethodsInterface) sa).getDefaultFireMethodName();
                         }
                     } else {
                         StringAttribute methodNameAttribute = (StringAttribute) ((Port) nodeWeight).getAttribute("methodName");
                         if (methodNameAttribute != null) {
                             methodName = methodNameAttribute.getValueAsString();
                         } else {
-                            throw new IllegalActionException(sa, "The MultipleFireMethodsActor " +
+                            throw new IllegalActionException(sa, "The MultipleFireMethodsInterface " +
                                     sa.getName() +
                                     " has more than one method but no method name set on its output port " +
                                     ((Port) nodeWeight).getName() + ".");
@@ -926,7 +926,7 @@ public class SequenceScheduler extends Scheduler {
                     
                     // Restrict the predecessor inputs to those that are inputs for
                     // the fire method being called.                    
-                    List<IOPort> methodInputPorts = ((MultipleFireMethodsActor) sa).
+                    List<IOPort> methodInputPorts = ((MultipleFireMethodsInterface) sa).
                                                         getMethodInputPortList(methodName);                        
                     List newPredecessors = new LinkedList();
                     
@@ -1057,16 +1057,16 @@ public class SequenceScheduler extends Scheduler {
                 
                 Object predecessor = null;
                 
-                if ((pre instanceof MultipleFireMethodsActor && ((MultipleFireMethodsActor) pre).numFireMethods() > 1)
+                if ((pre instanceof MultipleFireMethodsInterface && ((MultipleFireMethodsInterface) pre).numFireMethods() > 1)
                         || ((Entity) pre).attributeList(SequenceAttribute.class).isEmpty()) {
                     predecessor = outPort;
                 } else {
-                    // If the actor is not a MultipleFireMethodsActor with more than one fire method
+                    // If the actor is not a MultipleFireMethodsInterface with more than one fire method
                     // and has a sequence attribute, it should only have one.
                     if (((Entity) pre).attributeList(SequenceAttribute.class).size() > 1) {
                         throw new IllegalActionException(pre, "The actor " + pre.getName() +
                                 " has multiple sequence or process attributes. " +
-                                "Only MultipleFireMethodsActors with more than one " +
+                                "Only MultipleFireMethodsInterfaces with more than one " +
                                 "fire method can have more than one sequence or process attribute.");
                     } else {
                         predecessor = ((Entity) pre).attributeList(SequenceAttribute.class).get(0);
@@ -1281,8 +1281,8 @@ public class SequenceScheduler extends Scheduler {
                     // Beth re-arranged 11/24/08
                     // If the connected node is not a sequenced actor
                     if (nodeWeight instanceof Port &&
-                            ((((Port) nodeWeight).getContainer() instanceof MultipleFireMethodsActor &&
-                                ((MultipleFireMethodsActor) ((Port) nodeWeight).getContainer()).numFireMethods() > 1) ||
+                            ((((Port) nodeWeight).getContainer() instanceof MultipleFireMethodsInterface &&
+                                ((MultipleFireMethodsInterface) ((Port) nodeWeight).getContainer()).numFireMethods() > 1) ||
                                     ((Entity) ((Port) nodeWeight).getContainer()).attributeList(SequenceAttribute.class).isEmpty())) {
                         // Check if the source node is already in the graph.  If not, add it, and 
                         // process source node's connected nodes.

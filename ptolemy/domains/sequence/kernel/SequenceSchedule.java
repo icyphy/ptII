@@ -819,19 +819,19 @@ public class SequenceSchedule extends Schedule {
                                     for (int i = 0; i < nodes.length; i++) {
                                         Actor act = (Actor) ((NamedObj) nodes[i]).getContainer();
                                         
-                                        // If the actor to be fired is a MultipleFireMethodsActor, then set the fire method name
+                                        // If the actor to be fired is a MultipleFireMethodsInterface, then set the fire method name
                                         // for the actor. Check to see if the node in the graph is a process attribute or an output port.
                                         // If it is an output port, get the method name from the attribute contained by the output port.
                                         // If it is a ProcessAttribute, get the method name from the ProcessAttribute.
                                         // Otherwise, use the default fire method for the actor.
                                         String methodName = null;
-                                        if (act instanceof MultipleFireMethodsActor && ((MultipleFireMethodsActor) act).numFireMethods() > 1) {
+                                        if (act instanceof MultipleFireMethodsInterface && ((MultipleFireMethodsInterface) act).numFireMethods() > 1) {
                                             if (nodes[i] instanceof ProcessAttribute) {
                                                 try {
                                                     methodName = ((ProcessAttribute) nodes[i]).getMethodName();
                                                 } catch (IllegalActionException e) {
                                                     throw new NoSuchElementException("Problem scheduling the next actor to fire in the sequence schedule " +
-                                                            "because the ProcessAttribute for a MultipleFireMethodsActor " + act.getName() +
+                                                            "because the ProcessAttribute for a MultipleFireMethodsInterface " + act.getName() +
                                                             " with more than one fire method has an invalid fire method setting: " + e.getMessage());
                                                 }
                                             } else if (nodes[i] instanceof IOPort) {
@@ -840,12 +840,12 @@ public class SequenceSchedule extends Schedule {
                                                     methodName = methodNameAttribute.getValueAsString();
                                                 } else {
                                                     throw new NoSuchElementException("Problem scheduling the next actor to fire in the sequence schedule " +
-                                                            "because the output port " + ((IOPort) nodes[i]).getName() + " for a MultipleFireMethodsActor " +
+                                                            "because the output port " + ((IOPort) nodes[i]).getName() + " for a MultipleFireMethodsInterface " +
                                                             act.getName() +
                                                             " with more than one fire method has no fire method name attribute.");
                                                 }
                                             } else {
-                                                methodName = ((MultipleFireMethodsActor) act).getDefaultFireMethodName();
+                                                methodName = ((MultipleFireMethodsInterface) act).getDefaultFireMethodName();
                                             }
                                         }
 
@@ -912,8 +912,8 @@ public class SequenceSchedule extends Schedule {
          *  @return true If the actor has already been scheduled, false otherwise.
          */
         private boolean alreadyScheduled(Actor act, String methodName) {
-            boolean checkMethodName = act instanceof MultipleFireMethodsActor &&
-                                        ((MultipleFireMethodsActor) act).numFireMethods() > 1;
+            boolean checkMethodName = act instanceof MultipleFireMethodsInterface &&
+                                        ((MultipleFireMethodsInterface) act).numFireMethods() > 1;
             for (int i = 0; i < _schedule.size(); i++) {
                 SequenceFiring f = (SequenceFiring) _schedule.get(i);
                 if (f.getActor().equals(act) &&

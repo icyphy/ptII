@@ -33,13 +33,13 @@ import ptolemy.actor.IOPort;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// MultipleFireMethodsActor
+//// MultipleFireMethodsInterface
 
 /** The interface for actors with multiple fire methods that can be separately scheduled
  *  in the Sequence and Process Directors.
  *  
  *  @author Charles Shelton
- *  @version $Id: MultipleFireMethodsActor.java 57040 2010-01-27 20:52:32Z cshelton $
+ *  @version $Id: MultipleFireMethodsInterface.java 57040 2010-01-27 20:52:32Z cshelton $
  *  @see SequencedModelDirector
  *  @see SequenceScheduler
  *  @see SequenceSchedule
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public interface MultipleFireMethodsActor {
+public interface MultipleFireMethodsInterface {
 
     /** Return the name of the default fire method for this actor.
      * 

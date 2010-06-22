@@ -50,6 +50,7 @@ public class SequenceFiring extends Firing {
      *  the actor fires, or null if there is none.
      * 
      *  @return The method name, or null.
+     *  @see #setMethodName(String)
      */
     public String getMethodName() {
         return _methodName;
@@ -58,6 +59,7 @@ public class SequenceFiring extends Firing {
     /** Set the method name to be executed when the actor fires.
      * 
      *  @param methodName The specified methodName.
+     *  @see #getMethodName()
      */
     public void setMethodName(String methodName) {
         _methodName = methodName;
