@@ -89,7 +89,7 @@ public class XMLDBAttribute {
      * Set the attribute list value only when the attribute type is list.
      * @param attributeValues The list of attribute values.
      * 
-     * @see #getAttributeValue
+     * @see #getAttributeValues
      */
     public void setAttributeValue(List<String> attributeValues) {
         
