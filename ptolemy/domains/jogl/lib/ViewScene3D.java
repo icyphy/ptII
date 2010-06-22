@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 import javax.media.opengl.GLCanvas;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.AbstractPlaceableActor;
-import ptolemy.domains.jogl.kernel.GraphicsDirector;
+import ptolemy.domains.jogl.kernel.JoglDirector;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -77,7 +77,7 @@ public class ViewScene3D extends AbstractPlaceableActor{
       
         ArrayToken positionToken = ((ArrayToken) position.getToken());
         
-        _canvas.addGLEventListener((GraphicsDirector)getDirector());
+        _canvas.addGLEventListener((JoglDirector)getDirector());
         _canvas.setLocation(((DoubleToken) positionToken.getElement(0)).intValue(), 
                 ((DoubleToken) positionToken.getElement(1)).intValue());
         
