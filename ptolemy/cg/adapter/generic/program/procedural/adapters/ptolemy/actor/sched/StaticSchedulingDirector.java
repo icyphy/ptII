@@ -771,9 +771,9 @@ public class StaticSchedulingDirector extends Director {
             channelString = "0";
         }
 
-        String channelOffset = generateName(port);
-        channelOffset += (isWrite) ? "_writeOffset" : "_readOffset";
-        channelOffset += "[" + channelString + "]";
+        String channelOffset = generateName(port)
+            + ((isWrite) ? "_writeOffset" : "_readOffset")
+            + "[" + channelString + "]";
 
         return channelOffset;
     }
@@ -1120,8 +1120,7 @@ public class StaticSchedulingDirector extends Director {
 
             StringBuffer code = new StringBuffer();
             code.append(getCodeGenerator().comment(
-                    _eol
-                            + "....Begin updateConnectedPortsOffset...."
+                            "Begin updateConnectedPortsOffset "
                             + NamedProgramCodeGeneratorAdapter
                                     .generateName(_port)));
 
@@ -1186,8 +1185,7 @@ public class StaticSchedulingDirector extends Director {
                 }
             }
             code.append(getCodeGenerator().comment(
-                    _eol
-                            + "....End updateConnectedPortsOffset...."
+                            "End updateConnectedPortsOffset "
                             + NamedProgramCodeGeneratorAdapter
                                     .generateName(_port)));
             return code.toString();
@@ -1203,22 +1201,19 @@ public class StaticSchedulingDirector extends Director {
 
             //Receiver receiver = _getReceiver(null, 0, _port);
 
-            String code = getCodeGenerator().comment(
-                    _eol
-                            + "....Begin updateOffset...."
+            StringBuffer code = new StringBuffer(getCodeGenerator().comment(
+                            "Begin updateOffset "
                             + NamedProgramCodeGeneratorAdapter
-                                    .generateName(_port));
+                            .generateName(_port)));
 
             for (int i = 0; i < _port.getWidth(); i++) {
-
-                code += _updateOffset(i, rate);
-                code += getCodeGenerator().comment(
-                        _eol
-                                + "\n....End updateOffset...."
+                code.append(_updateOffset(i, rate)
+                        + _eol + getCodeGenerator().comment(
+                                "End updateOffset "
                                 + NamedProgramCodeGeneratorAdapter
-                                        .generateName(_port));
+                                .generateName(_port)));
             }
-            return code;
+            return code.toString();
         }
 
         private ProgramCodeGeneratorAdapter.Channel _getChannel(
