@@ -1,7 +1,10 @@
 package ptdb.kernel.bl.setup;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 
@@ -35,9 +38,9 @@ public class SetupManager {
     ////		public methods 				      ////
 
     /**
-     * Return the existing database setup parameters.
-     * <p>Delegate this task to DBConnectionFactory to perform it and return
-     * the value without any modifications.</p>
+     * Return the existing database setup parameters. <p>Delegate this task to
+     * DBConnectionFactory to perform it and return the value without any
+     * modifications.</p>
      * 
      * @return The existing database setup parameters.
      */
@@ -48,17 +51,17 @@ public class SetupManager {
 
     /**
      * Test the database connection with the parameters given.
-     * @param params The parameters for the database connection. 
+     * @param params The parameters for the database connection.
      * @exception DBConnectionException Thrown if the connection fails.
      */
     public void testConnection(SetupParameters params)
             throws DBConnectionException {
 
-        if(params == null) {
-            throw new DBConnectionException("Failed to test the connection - " 
+        if (params == null) {
+            throw new DBConnectionException("Failed to test the connection - "
                     + "The connection parameters passed is null");
         }
-        
+
         String url = params.getUrl();
         String containerName = params.getContainerName();
         String cacheContainerName = params.getCacheContainerName();
@@ -73,30 +76,12 @@ public class SetupManager {
             DBConnection mainConnection = new OracleXMLDBConnection(
                     dbMainConnParams);
 
-            if(mainConnection == null) {
-                
-                throw new DBConnectionException("Failed to create a connection for " 
-                        + "\nURL: " + url
-                        + "\nContainer Name: " + containerName);
-                
-            } else {
-                mainConnection.closeConnection();
-            }
+            mainConnection.closeConnection();
 
             DBConnection cacheConnection = new OracleXMLDBConnection(
                     dbCacheConnParams);
-            
 
-            if(cacheConnection == null) {
-                
-                throw new DBConnectionException("Failed to create a connection for " 
-                        + "\nURL: " + url
-                        + "\nCache Container Name: " + cacheContainerName);
-                
-            } else {
-                cacheConnection.closeConnection();
-            }
-            
+            cacheConnection.closeConnection();
 
         } catch (DBConnectionException e) {
             throw new DBConnectionException(
@@ -119,41 +104,52 @@ public class SetupManager {
 
         if (params == null) {
             throw new DBConnectionException(
-                    "Failed to update the connection parameters." 
-                    + " The setup parameters object sent was null.");
+                    "Failed to update the connection parameters."
+                            + " The setup parameters object sent was null.");
         }
 
-        
-        String ptdbParams = "$CLASSPATH/ptdb/config/ptdb-params.properties";
+        String ptdbParams = DBConnectorFactory._PROPERTIES_FILE_PATH;
         Properties props = new Properties();
-        
-        File propertiesFile = new File(ptdbParams);
-        
-        URL url = null;
-        
-        if(propertiesFile.exists() == false) {
-            
-            propertiesFile.createNewFile();
-            url = FileUtilities.nameToURL(ptdbParams, null, null);
-            
-        } else {
-            
-            url = FileUtilities.nameToURL(ptdbParams, null, null);
-        }
-        
-        if(url == null) {
-            throw new IOException("Could not find or create the properties file " 
-                    + ptdbParams);
-        }
 
         
-        props.setProperty("DB_Url", params.getUrl());
-        props.setProperty("DB_Container_Name", params.getContainerName());
-        props.setProperty("Cache_Container_Name", params
+        File file = FileUtilities.nameToFile(ptdbParams, null);
+        
+        // if the file does not exist, then create it.
+        if(file.exists() == false) {
+            file.createNewFile();
+        }
+
+
+        URL url = FileUtilities.nameToURL(ptdbParams, null, null);
+        
+        if (url == null) {
+            throw new IOException(
+                    "Could not find or create the properties file "
+                            + ptdbParams);
+        }
+
+        String defaultDBClassName = "ptdb.kernel.database.OracleXMLDBConnection";
+
+        props.load(url.openStream());
+        
+        String DBClassName = (String) props
+                .getProperty(DBConnectorFactory._DB_CLASS_NAME);
+
+        if (DBClassName == null || DBClassName.length() == 0) {
+            DBClassName = defaultDBClassName;
+        }
+
+
+        props.setProperty(DBConnectorFactory._DB_CLASS_NAME, DBClassName);
+        props.setProperty(DBConnectorFactory._DB_URL, params.getUrl());
+        props.setProperty(DBConnectorFactory._XMLDB_CONTAINER_NAME, params
+                .getContainerName());
+        props.setProperty(DBConnectorFactory._CACHE_CONTAINER_NAME, params
                 .getCacheContainerName());
 
-        props.store(url.openConnection().getOutputStream(), null);
-                
+        
+        props.store(new FileOutputStream(url.getPath()), null);
+
         DBConnectorFactory.loadDBProperties();
 
     }
