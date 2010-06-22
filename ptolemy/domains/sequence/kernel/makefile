@@ -57,6 +57,8 @@ JSRCS = \
 	SequenceScheduler.java \
 	DijkstraSequenceEstimator.java \
 	PartialSequenceScheduler.java \
+	SequenceEstimator.java \
+	ListSchedulingSequenceEstimator.java
 
 EXTRA_SRCS =	$(JSRCS)
 
