@@ -103,7 +103,8 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
     /** Create a graph with dependencies caused by sequence numbers and data
      * flow constraints.
      * 
-     * @param All sequence attributes to be considered when building the graph.
+     * @param independentList All sequence attributes to be considered when 
+     * building the graph.
      */
     private void _createGraph(List<SequenceAttribute> independentList) {
         _initSequenceEstimation();
@@ -132,7 +133,7 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
 
             // initialize the number of unscheduled predecessors with
             // the number of predecessors
-            _unscheduledPredecessors.put(actorNode, new Integer(numPreds));
+            _unscheduledPredecessors.put(actorNode, Integer.valueOf(numPreds));
 
             // put actor in ready list, if it has no predecessors
             if (numPreds == 0) {

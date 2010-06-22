@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.taskpt.lib;
+package ptolemy.domains.taskpt.lib.gui;
 
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.kernel.CompositeEntity;

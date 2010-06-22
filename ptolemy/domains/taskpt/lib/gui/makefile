@@ -1,4 +1,4 @@
-# Makefile for taskpt domain actors library
+# Makefile for taskpt domain gui actors library
 #
 # @Author: Christopher Brooks, Bastian Ristau
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sequence/lib
+ME =		ptolemy/domains/sequence/lib/gui
 
-DIRS = 		
+DIRS = 		gui
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,19 +43,11 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	gui
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
-	AddSubtractAll.java \
-	Alloc.java \
-	ChangePtr.java \
-	Load.java \
-	LoadStore.java \
-	Memory.java \
-	MemoryAccess.java \
-	Store.java \
-	Task.java
+	DisplayAll.java
 
 OTHER_FILES_TO_BE_JARED = 
 
