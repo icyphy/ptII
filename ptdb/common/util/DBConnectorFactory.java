@@ -8,6 +8,7 @@ import java.util.Properties;
 import ptolemy.util.FileUtilities;
 
 import ptdb.common.dto.DBConnectionParameters;
+import ptdb.common.dto.SetupParameters;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.kernel.database.AsynchronousDBConnection;
 import ptdb.kernel.database.DBConnection;
@@ -55,6 +56,27 @@ public class DBConnectorFactory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /**
+     * create a setup parameter object that contains the database setup parameters
+     * and return that setup parameter object to the caller.
+     * 
+     * @return The setup parameter object.
+     */
+    public static SetupParameters getSetupParameters() {
+        
+        if(_isDBSetupDone == true) {
+            
+            SetupParameters setupParameters = new SetupParameters(_DB_URL, 
+                    _dbContainerName, _cacheContainerName);
+            
+            return setupParameters;
+            
+        } else {
+            return null;
+        }
+    }
+    
     /**
      * This API is used to get a synchronous connection to the database.
      * A synchronous connection is a connection that
