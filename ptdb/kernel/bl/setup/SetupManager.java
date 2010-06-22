@@ -49,7 +49,7 @@ public class SetupManager {
     /**
      * Test the database connection with the parameters given.
      * @param params The parameters for the database connection. 
-     * @Exception DBConnectionException Thrown if the connection fails.
+     * @exception DBConnectionException Thrown if the connection fails.
      */
     public void testConnection(SetupParameters params)
             throws DBConnectionException {
@@ -73,13 +73,30 @@ public class SetupManager {
             DBConnection mainConnection = new OracleXMLDBConnection(
                     dbMainConnParams);
 
-            mainConnection.closeConnection();
+            if(mainConnection == null) {
+                
+                throw new DBConnectionException("Failed to create a connection for " 
+                        + "\nURL: " + url
+                        + "\nContainer Name: " + containerName);
+                
+            } else {
+                mainConnection.closeConnection();
+            }
 
             DBConnection cacheConnection = new OracleXMLDBConnection(
                     dbCacheConnParams);
             
-            cacheConnection.closeConnection();
 
+            if(cacheConnection == null) {
+                
+                throw new DBConnectionException("Failed to create a connection for " 
+                        + "\nURL: " + url
+                        + "\nCache Container Name: " + cacheContainerName);
+                
+            } else {
+                cacheConnection.closeConnection();
+            }
+            
 
         } catch (DBConnectionException e) {
             throw new DBConnectionException(
