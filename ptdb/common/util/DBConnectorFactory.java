@@ -53,6 +53,12 @@ public class DBConnectorFactory {
      * name in the config/ptdb-properties file.
      */
     public final static String _CACHE_CONTAINER_NAME = "Cache_Container_Name";
+    
+    
+    /**
+     * Path to the configuration file.
+     */
+    public final static String _PROPERTIES_FILE_PATH = "$CLASSPATH/ptdb/config/ptdb-params.properties";
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
