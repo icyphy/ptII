@@ -612,7 +612,7 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Build the complete model by resolving all the references in it.
      * 
-     * @param The node in the reference file that points to the model.
+     * @param currentNode The node in the reference file that points to the model.
      * @return Model body without references in xml format.
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
@@ -1007,7 +1007,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * Retrieve the references inside a model from the reference file in the
      * database.
      * 
-     * @param The model name for which the references are required.
+     * @param modelName The model name for which the references are required.
      * @return A string representation of all the references in the given model
      * in xml format.
      * @exception DBExecutionException Thrown if there is an execution
@@ -1074,7 +1074,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * Return the upper level entity node in a model content that is being
      * passed to it as a string.
      * 
-     * @param The model content as a string in xml format.
+     * @param strModelContent The model content as a string in xml format.
      * @return A string representation of the upper level node.
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
@@ -1135,7 +1135,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * Parse the xml string that is passed to it and return the upper node of
      * that xml.
      * 
-     * @param The xml string that needs to be parsed
+     * @param xmlString The xml string that needs to be parsed
      * @return The upper node for the xml string after parsing it.
      * @exception DBExecutionException Thrown if a parser exceptions was thrown
      */
