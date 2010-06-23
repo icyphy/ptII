@@ -1,4 +1,4 @@
-/* A polymorphic While actor.
+/* A While actor for the sequence domain.
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -33,7 +33,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// While
 
 /**
- <p>A type polymorphic While actor. 
+ <p>A While actor for the sequence domain. 
  In an iteration, if an input token is available at the <i>If</i> input,
  that token is read.
  The <i>Then</i> output is set to true, if then <i>If</i> input is true.
@@ -54,6 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cshelton)
  */
 public class While extends IfThen {
+    
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.

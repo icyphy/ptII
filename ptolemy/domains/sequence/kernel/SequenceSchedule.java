@@ -33,7 +33,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.TreeSet;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;

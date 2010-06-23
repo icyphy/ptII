@@ -1,5 +1,6 @@
 /* An integrator actor that can be sequenced and share state across multiple
  * instances.
+
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -57,7 +58,7 @@ import ptolemy.kernel.util.StringAttribute;
  */
 public class SequencedIntegrator extends BaseMultipleMethodsActor {
 
-    /** Create a new instance of the Srv_Debounce actor with the given
+    /** Create a new instance of the SequencedIntegrator actor with the given
      *  name and container.
      * 
      *  @param container The model in which the new actor will be contained.
@@ -125,36 +126,35 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
     ///////////////////////////////////////////////////////////////////
     ////                     public variables                      ////
 
-    /** The sample time input port. */
-    public TypedIOPort sampleTime;
+    /** The trigger port for the setState() method. */
+    public TypedIOPort callSetStateMethod;
     
-    /** The debounce output port */
-    public TypedIOPort output;
-    
+    /** The current state of the integrator output port. */
     public TypedIOPort currentState;
     
-    /** The debounce time parameters input port.
-     *  This parameter contains the THighLow and TLowHigh
-     *  time values used to determine when the signal has been
-     *  held long enough to determine if it has been debounced.
-     */
-    public TypedIOPort sampleFactor;
-
-    /** The debounce boolean signal input port. */
+    /** The integrator input port. */
     public TypedIOPort input;
 
-    /** The initialization input signal input port.
-     *  Used for the init() fire method.
+    /** The integrator output port */
+    public TypedIOPort output;
+
+    /** The sample factor input port. */
+    public TypedIOPort sampleFactor;
+
+    /** The sample time input port. */
+    public TypedIOPort sampleTime;
+
+    /** The integrator initialization input port.
+     *  Used for the setState() fire method.
      */
     public TypedIOPort setStateValue;
-    
-    public TypedIOPort callSetStateMethod;
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
     
-    /** Execute the Srv_Debounce actor. call either the initMethod
-     *  or the outMethod depending on which current fire method is set.
+    /** Execute the SequencedIntegrator actor. call either the setState method,
+     *  the integrate method, or the currentState method depending on which
+     *  current fire method is set.
      *  @throws IllegalActionException If the fire method name is invalid.
      */
     public void fire() throws IllegalActionException {
@@ -177,7 +177,7 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
      *  and the variable (setTypeAtLeast) and the variable and the output port.
      *  Also, preinitialize() in ASCETSharedMemoryActor will create a new variable if none exists.
      *
-     *  @throws IllegalActionException If the Srv_Debouince actor's state variable is not a record type.
+     *  @throws IllegalActionException If the SequencedIntegrator actor's state variable is not a scalar type.
      */    
     public void preinitialize() throws IllegalActionException {         
         super.preinitialize();
@@ -202,37 +202,26 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
      *  @throws IllegalActionException  Subclasses should throw an exception if
      *   an explicit initial value is required.   
      */    
-    protected Token getDefaultValue() throws IllegalActionException {
+    protected Token _getDefaultValue() throws IllegalActionException {
         return new DoubleToken(0.0);
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
     
-    /** Execute the init fire method for the Srv_Debounce actor. Initialize
-     *  the internal state of the boolean signal with the value from the
-     *  X_Init input port and reset the internal timer
-     *  state to 0.0.
-     *  @param stateVar The shared state variable for the Srv_Debounce actor.
-     *  @throws IllegalActionException If there is a problem using the state variable value.
+    /** Execute the currentState method for the SequencedIntegrator actor.
+     *  Output the current value of the integrator state on the currentState
+     *  output port.
+     * 
+     * @param stateVar The shared state variable for the SequencedIntegrator actor.
+     * @throws IllegalActionException If there is a problem using the state variable value.
      */
-    private void _setStateMethod(Variable stateVar) throws IllegalActionException {
-        ScalarToken integratorState = null;
-        if (setStateValue.hasToken(0)) {
-            integratorState = (ScalarToken) setStateValue.get(0); 
-        } else {
-            throw new IllegalActionException(this,
-                    "Attempt to call the setStateMethod on a SequencedIntegrator, " +
-                    "but there is no input token available on the setStateValue input.");
-        }
-        
-        stateVar.setToken(integratorState);
-    }
+    private void _currentStateMethod(Variable stateVar) throws IllegalActionException {
+        currentState.send(0, stateVar.getToken());
+    }    
     
-    /** Execute the out fire method for the Srv_Debounce actor. Check to see if the
-     *  internal timer state has reached the threshold value (either THighLow or TLowHigh)
-     *  which means the signal state should be transitioned.
-     *  @param stateVar The shared state variable for the Srv_Debounce actor.
+    /** Execute the integrate fire method for the SequencedIntegrator actor.
+     *  @param stateVar The shared state variable for the SequencedIntegrator actor.
      *  @throws IllegalActionException If there is a problem using the state variable value.
      */
     private void _integrateMethod(Variable stateVar) throws IllegalActionException {        
@@ -246,25 +235,43 @@ public class SequencedIntegrator extends BaseMultipleMethodsActor {
             integratorState = (ScalarToken) integratorState.add(inputToken.multiply(sampleFactorToken.multiply(sampleTimeToken)));
             
             stateVar.setToken(integratorState);
-            output.send(0, integratorState);
-                
+            output.send(0, integratorState);                
         } else {
+            throw new IllegalActionException(this,
+                    "Attempt to call the integrate method on a SequencedIntegrator, " +
+                    "but there is not an input token available on each of the input, " +
+                    "sampleFactor, and sampleTime input ports.");
         }
     }
     
-    private void _currentStateMethod(Variable stateVar) throws IllegalActionException {
-        currentState.send(0, stateVar.getToken());
+    /** Execute the setState fire method for the SequencedIntegrator actor. Initialize
+     *  the internal state of the integrator with the value from the
+     *  setStateValue input port.
+     *  @param stateVar The shared state variable for the SequencedIntegrator actor.
+     *  @throws IllegalActionException If there is a problem using the state variable value.
+     */
+    private void _setStateMethod(Variable stateVar) throws IllegalActionException {
+        ScalarToken integratorState = null;
+        if (setStateValue.hasToken(0)) {
+            integratorState = (ScalarToken) setStateValue.get(0); 
+        } else {
+            throw new IllegalActionException(this,
+                    "Attempt to call the setState method on a SequencedIntegrator, " +
+                    "but there is no input token available on the setStateValue input.");
+        }
+        
+        stateVar.setToken(integratorState);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
 
-    /** The init method name string. */
-    private static final String _setStateMethodName = "setState";
-
+    /** The outState method name string. */
+    private static final String _currentStateMethodName = "currentState";
+    
     /** The out method name string. */
     private static final String _integrateMethodName = "integrate";
     
-    /** The outState method name string. */
-    private static final String _currentStateMethodName = "currentState";
+    /** The init method name string. */
+    private static final String _setStateMethodName = "setState";
 }
