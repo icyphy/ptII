@@ -41,11 +41,12 @@ if {[info procs testJavaCG] == "" } then {
     source [file join $PTII util testsuite testJavaCG.tcl]
 }
 
-# $PTII/ptolemy/actor/lib/test/auto/Sinewave3.xml Runs, but gets different output?
+# $PTII/ptolemy/actor/lib/test/auto/Sinewave3.xml Now fails to compile.  
+#   Was Runs, but gets different output?
 #   Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 2.
 #   Value was: 0.9092974268257. Should have been: 0.908970305448
-# $PTII/ptolemy/actor/lib/comm/test/auto/HammingCodec.xml   Runs, but "Attempt to get data from an empty mailbox."
-# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Runs, but "Attempt to get data from an empty mailbox."
+# $PTII/ptolemy/actor/lib/comm/test/auto/HammingCodec.xml   Runs, but "Attempt to get data from an empty mailbox." from fire()
+# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Runs, but "Attempt to get data from an empty mailbox."  Uses arrays
 # $PTII/ptolemy/actor/lib/comm/test/auto/Scrambler.xml  Runs, but "Attempt to get data from an empty mailbox."
 # $PTII/ptolemy/actor/lib/comm/test/auto/ViterbiDecoderHard.xml  Runs, but "Attempt to get data from an empty mailbox."
 # $PTII/ptolemy/actor/lib/comm/test/auto/ViterbiDecoderSoft.xml  Runs, but "Attempt to get data from an empty mailbox."

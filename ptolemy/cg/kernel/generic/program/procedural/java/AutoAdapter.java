@@ -545,19 +545,46 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateGetInsideDeclarations(String actorPortName,
             String codegenPortName, Type type, int channel) {
-        // This code is needed by $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
+        // This method is needed by $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
+        String portData = actorPortName + "_portData"
+            + (channel == 0 ? "" : channel);
         if (type instanceof ArrayType) {
-            throw new RuntimeException("Can't generate code for arrays here yet.");
+            ArrayType array = (ArrayType)type;
+
+            String codeGenElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType()).replace("Integer", "Int");
+            String targetElementType = getCodeGenerator().targetType(array.getDeclaredElementType());
+
+            String ptolemyData = "$actorSymbol(" + actorPortName + "_ptolemyData)";
+            return
+                // Get the data from the Ptolemy port
+                type.getTokenClass().getName() + " " + ptolemyData + " = (("
+                + type.getTokenClass().getName() + ")($actorSymbol("
+                + codegenPortName + ").getInside(0"
+                // For non-multiports "". For multiports, ", 0", ", 1" etc.
+                + (channel == 0 ? "" : ", " + channel)
+                + ")));\n"
+                // Create an array for the codegen data.
+                + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
+                + " Token $actorSymbol(" + portData + ") = $Array_new("
+                + array.length() + ", 0);\n"
+
+                // Copy from the Ptolemy data to the codegen data.
+                + " for (int i = 0; i < " + array.length() +"; i++) {\n"
+                + "   Array_set($actorSymbol(" + portData + "), i, "
+                + getCodeGenerator().codeGenType(array.getDeclaredElementType())
+                + "_new(((("
+                + codeGenElementType + "Token)(" + ptolemyData + ".getElement(i)))."
+                + targetElementType + "Value())));\n"
+                + "  }\n";
         } else {
-            String portData = actorPortName + "_portData"
-                + (channel == 0 ? "" : channel);
             return "$targetType(" + actorPortName + ") $actorSymbol(" + portData + ");" + _eol
                 + "$actorSymbol(" + portData + ") = "
                 +  "((" + type.getTokenClass().getName() + ")"
                 + "($actorSymbol(" + codegenPortName + ").getInside(0"
-                // For non-multiports "". For multiports, ", 0", ", 1" etc.
-                + (channel == 0 ? "" : ", " + channel)
                 + ")))." + type.toString().toLowerCase() + "Value();" + _eol;
+
+                // For non-multiports "". For multiports, ", 0", ", 1" etc.
+                //+ (channel == 0 ? "" : ", " + channel)
         }
     }
 
@@ -582,15 +609,16 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
             String codeGenElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType()).replace("Integer", "Int");
             String targetElementType = getCodeGenerator().targetType(array.getDeclaredElementType());
+            String ptolemyData = "$actorSymbol(" + actorPortName + "_ptolemyData)";
             return
                 "{\n"
-                // Get the data from the Ptolemy port
-                + type.getTokenClass().getName() + " ptolemyData = (("
-                + type.getTokenClass().getName() + ")($actorSymbol("
-                + codegenPortName + ").getInside(0"
-                // For non-multiports "". For multiports, ", 0", ", 1" etc.
-                + (channel == 0 ? "" : ", " + channel)
-                + ")));\n"
+//                 // Get the data from the Ptolemy port
+//                 + type.getTokenClass().getName() + " " + ptolemyData + "= (("
+//                 + type.getTokenClass().getName() + ")($actorSymbol("
+//                 + codegenPortName + ").getInside(0"
+//                 // For non-multiports "". For multiports, ", 0", ", 1" etc.
+//                 + (channel == 0 ? "" : ", " + channel)
+//                 + ")));\n"
 
                 // Create an array for the codegen data.
                 + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
@@ -602,7 +630,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + "   Array_set(codeGenData, i, "
                 + getCodeGenerator().codeGenType(array.getDeclaredElementType())
                 + "_new(((("
-                + codeGenElementType + "Token)(ptolemyData.getElement(i)))."
+                + codeGenElementType + "Token)(" + ptolemyData + ".getElement(i)))."
                 + targetElementType + "Value())));\n"
                 + "  }\n"
 
@@ -645,10 +673,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String javaElementType = getCodeGenerator().codeGenType(array.getDeclaredElementType());
             String codeGenElementType = javaElementType.replace("Integer", "Int");
             String targetElementType = getCodeGenerator().targetType(array.getDeclaredElementType());
+            String ptolemyData = "$actorSymbol(" + actorPortName + "_ptolemyData)";
             return
                 "{\n"
                 // Create a token to send
-                + codeGenElementType + "Token [] ptolemyData = new "
+                + codeGenElementType + "Token [] " + ptolemyData + " = new "
                 + codeGenElementType + "Token [" + array.length() + "];\n"
 
                 // Get the codegen data
@@ -659,7 +688,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
                 // Copy from the codegen data to the Ptolemy data
                 + " for (int i = 0; i < " + array.length() +"; i++) {\n"
-                + "   ptolemyData[i] = new " + codeGenElementType + "Token((("
+                + "   " + ptolemyData+ "[i] = new " + codeGenElementType + "Token((("
                 + javaElementType
                 + ")(Array_get(codeGenData, i).getPayload()))." + targetElementType + "Value());\n"
                 + " }\n"
@@ -669,7 +698,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + "    $actorSymbol(" + codegenPortName + ").setTypeEquals("
                 + _typeToBaseType(type) +");\n"
                 // Output our newly constructed token
-                + " $actorSymbol(" + codegenPortName + ").sendInside(0, new ArrayToken(ptolemyData));\n"
+                + " $actorSymbol(" + codegenPortName + ").sendInside(0, new ArrayToken("
+                + ptolemyData + "));\n"
                 + "}\n;";
         } else {
             return
