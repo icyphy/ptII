@@ -204,9 +204,11 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         StringBuffer code = new StringBuffer();
 
         for (int i = 0; i < remoteReceivers[channelIndex].length; i++) {
+            //code.append("/* IOPort.generatePutCode start. " + dataToken + " */" + _eol);
             code.append(remoteReceivers[channelIndex][i].generatePutCode(
                     (ptolemy.actor.IOPort) this.getComponent(), offset,
                     dataToken));
+            //code.append("/* IOPort.generatePutCode end. */" + _eol);
         }
         return code.toString();
     }

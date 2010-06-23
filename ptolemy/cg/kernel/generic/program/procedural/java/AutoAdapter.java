@@ -382,8 +382,36 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         // Fire the actor.
         code.append("    $actorSymbol(actor).fire();\n");
 
-        // Transfer data from the actor output ports to the codegen variables.
+        // Create temporary variables for each port so that we don't
+        // read from empty mailbox.
         Iterator outputPorts = ((Actor)getComponent()).outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+            String name = outputPort.getName();
+            Type type = outputPort.getType();
+            if (!outputPort.isMultiport()) {
+                // Generate a temporary variable for a single port. 
+                // Check to see that the output is connected.  For example
+                // NonStrictTest has an output port that is not usually connected.
+                if (outputPort.isOutsideConnected()) {
+                    code.append(_generateGetInsideDeclarations(name, name, type, 0));
+                }
+            } else {
+                // Generate a temporary variable for each source and sink.
+                int sources = outputPort.numberOfSources();
+                for (int i = 0; i < sources; i++) {
+                    code.append(_generateGetInsideDeclarations(name, name + "Source" + i, type, i));
+                }
+                int sinks = outputPort.numberOfSinks();
+                for (int i = 0; i < sinks; i++) {
+                    code.append(_generateGetInsideDeclarations(name, name + "Sink" + i, type, i));
+                }
+            }
+
+        }
+
+        // Transfer data from the actor output ports to the codegen variables.
+        outputPorts = ((Actor)getComponent()).outputPortList().iterator();
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
             String name = outputPort.getName();
@@ -392,7 +420,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             // Get data from the actor.
             if (!outputPort.isMultiport()) {
                 code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() not MultiPort name " + name + " type: " + type));
-                code.append(_generateGetInside(name, name, type, 0));
+                if (outputPort.isOutsideConnected()) {
+                    code.append(_generateGetInside(name, name, type, 0));
+                }
                 code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() not MultiPort end"));
             } else {
                 code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort"));
@@ -498,6 +528,40 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** 
+     *  Return the code that creates temporary variables that hold the
+     *  values to be read.  We need to do this so as to avoid
+     *  reading from the same Ptolemy receiver twice, which would happen
+     *  if we have an automatically generated actor with a regular
+     *  non-multiport that feeds its output to two actors.
+     *  @param actorPortName The name of the Actor port from which
+     *  data will be read.
+     *  @param codegenPortName The name of the port on the codegen side.
+     *  For non-multiports, actorPortName and codegenPortName are the same.
+     *  For multiports, codegenPortName will vary according to channel number
+     *  while actorPortName will remain the same.
+     * @param type The type of the port.
+     * @param channel The channel number.
+     * For non-multiports, the channel number will be 0.
+     */
+    private String _generateGetInsideDeclarations(String actorPortName,
+            String codegenPortName, Type type, int channel) {
+        // This code is needed by $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
+        if (type instanceof ArrayType) {
+            throw new RuntimeException("Can't generate code for arrays here yet.");
+        } else {
+            String portData = actorPortName + "_portData"
+                + (channel == 0 ? "" : channel);
+            return "$targetType(" + actorPortName + ") $actorSymbol(" + portData + ");" + _eol
+                + "$actorSymbol(" + portData + ") = "
+                +  "((" + type.getTokenClass().getName() + ")"
+                + "($actorSymbol(" + codegenPortName + ").getInside(0"
+                // For non-multiports "". For multiports, ", 0", ", 1" etc.
+                + (channel == 0 ? "" : ", " + channel)
+                + ")))." + type.toString().toLowerCase() + "Value();" + _eol;
+        }
+    }
+
+    /** 
      * Return the code that gets data from the actor port and sends
      * it to the codegen port
      *  @param actorPortName The name of the Actor port from which
@@ -547,16 +611,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 + ", codeGenData);\n"
                 + "}\n;";
         } else {
+            String portData = actorPortName + "_portData"
+                + (channel == 0 ? "" : channel);
             return
                 "$put(" + actorPortName
                 // Refer to the token by the full class name and obviate the
                 // need to manage imports.
-                + ", ((" + type.getTokenClass().getName() + ")($actorSymbol("
-                + codegenPortName
-                + ").getInside(0"
-                // For non-multiports "". For multiports, ", 0", ", 1" etc.
-                + (channel == 0 ? "" : ", " + channel)
-                + ")))." + type.toString().toLowerCase() + "Value());\n";
+                // + ", ((" + type.getTokenClass().getName() + ")($actorSymbol("
+                + ", ($actorSymbol("
+                + portData + ")))";
         }
     }
 

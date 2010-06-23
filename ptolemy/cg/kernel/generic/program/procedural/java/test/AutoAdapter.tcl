@@ -45,7 +45,6 @@ if {[info procs testJavaCG] == "" } then {
 #   Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 2.
 #   Value was: 0.9092974268257. Should have been: 0.908970305448
 # $PTII/ptolemy/actor/lib/comm/test/auto/HammingCodec.xml   Runs, but "Attempt to get data from an empty mailbox."
-# $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml  Runs, but "Attempt to get data from an empty mailbox."
 # $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Runs, but "Attempt to get data from an empty mailbox."
 # $PTII/ptolemy/actor/lib/comm/test/auto/Scrambler.xml  Runs, but "Attempt to get data from an empty mailbox."
 # $PTII/ptolemy/actor/lib/comm/test/auto/ViterbiDecoderHard.xml  Runs, but "Attempt to get data from an empty mailbox."
@@ -88,6 +87,7 @@ set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Sinewave.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Sinewave2.xml \
+		$PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml \
 		$PTII/ptolemy/actor/lib/comm/test/auto/Scrambler1.xml \
 		$PTII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringCompare.xml \
