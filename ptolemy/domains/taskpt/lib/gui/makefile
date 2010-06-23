@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/taskpt/lib/gui
 
-DIRS = 		gui
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../../..
