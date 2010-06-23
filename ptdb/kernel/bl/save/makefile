@@ -1,4 +1,4 @@
-# Makefile for ptdb - A model database for Ptolemy, kernel/database directory
+# Makefile for ptdb - A model database for Ptolemy, business logic for save.
 #
 # @Authors: Christopher Brooks (makefile only), based on a file by Thomas M. Parks
 #
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	database
+PTPACKAGE = 	save
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
