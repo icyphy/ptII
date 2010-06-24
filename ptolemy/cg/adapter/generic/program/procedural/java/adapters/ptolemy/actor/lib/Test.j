@@ -86,20 +86,21 @@ if ($channel == 0) {
 }
 
 /* DBMC $channel of $actorSymbol() */
-$actorSymbol(correctValuesThisFiring_$channel) =
-$param(correctValues, $actorSymbol(numberOfTokensSeen));
-if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && Math.abs($actorSymbol(inputToken)
-                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
+if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
+   $actorSymbol(correctValuesThisFiring_$channel) =
+       $param(correctValues, $actorSymbol(numberOfTokensSeen));
+   if (Math.abs($actorSymbol(inputToken)
+                   - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
 
     /*- Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))*/
-        > $param(tolerance)) {
-    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been within %10.30g of: %10.30g\n",
+           > $param(tolerance)) {
+       throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been within %10.30g of: %10.30g\n",
             $actorSymbol(numberOfTokensSeen),
             $actorSymbol(inputToken),
             $param(tolerance),
              (Number)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)));
     /*Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input)));*/
+   }
 }
 /**/
 
