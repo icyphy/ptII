@@ -41,18 +41,30 @@ if {[info procs testJavaCG] == "" } then {
     source [file join $PTII util testsuite testJavaCG.tcl]
 }
 
-# $PTII/ptolemy/actor/lib/test/auto/Sinewave3.xml Now fails to compile.  
-#   Was Runs, but gets different output?
+# Currently, we can only generate code for models that have SDFDirectors:
+#   find . -name auto > /tmp/a
+#   awk '{print "ls " $1 "/*.xml"}' /tmp/a > /tmp/d
+#   sh /tmp/d > /tmp/models
+#   grep SDFDirector `cat /tmp/models` | awk -F : '{print "$PTII/bin/ptcg -language java", $1}' | grep -v /cg/ | grep -v /codegen/ | grep -v /jai/ | grep -v /jmf/ > /tmp/doit
+#  grep domains/sdf /tmp/doit > /tmp/doit.sdf
+#  grep -v domains /tmp/doit > /tmp/doit.2
+#  rm ~/cg/*
+#  sh /tmp/doit.2 >& /tmp/doit.2.out &
+#  grep AutoAdapter ~/cg/*.java | awk -F : '{print $1}' | sort | uniq
+
+
+# $PTII/ptolemy/actor/lib/test/auto/Sinewave3.xml Runs, but gets different output?
 #   Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 2.
 #   Value was: 0.9092974268257. Should have been: 0.908970305448
 # $PTII/ptolemy/actor/lib/comm/test/auto/HammingCodec.xml   Runs, but "Attempt to get data from an empty mailbox." from fire()
-# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Runs, but "Attempt to get data from an empty mailbox."  Uses arrays
-# $PTII/ptolemy/actor/lib/comm/test/auto/Scrambler.xml  Runs, but "Attempt to get data from an empty mailbox."
-# $PTII/ptolemy/actor/lib/comm/test/auto/ViterbiDecoderHard.xml  Runs, but "Attempt to get data from an empty mailbox."
-# $PTII/ptolemy/actor/lib/comm/test/auto/ViterbiDecoderSoft.xml  Runs, but "Attempt to get data from an empty mailbox."
+# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Runs, but "Attempt to get data from an empty mailbox."  Uses arrays, fails in SequenceToArray.fire()
+# $PTII/ptolemy/actor/lib/comm/test/auto/Scrambler.xml  Runs, but "Attempt to get data from an empty mailbox." fails in SequenceToArray.fire()
+# $PTII/ptolemy/actor/lib/comm/test/auto/ViterbiDecoderHard.xml  Runs, but "Attempt to get data from an empty mailbox." Fails in ConvolutionalCoder.fire()
+# $PTII/ptolemy/actor/lib/comm/test/auto/ViterbiDecoderSoft.xml  Runs, but "Attempt to get data from an empty mailbox." 
 #    The problem here is that we create an Opaque composite for an auto generated actor
 #    that has an output connected to a relation that is connected to two inputs.  The
 #    code does a getInside() on the output port of the Opaque twice, hence the empty mailbox.    
+#    Fails in ConvolutionalCoder.fire()
 # $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Fails to compile, uses matrices
 # $PTII/ptolemy/actor/lib/comm/test/auto/HuffmanCoder.xml  Fails to compile, uses DDF
 # $PTII/ptolemy/actor/lib/comm/test/auto/HuffmanDecoder.xml  Fails to compile, uses DDF
@@ -78,16 +90,29 @@ if {[info procs testJavaCG] == "" } then {
 # $PTII/ptolemy/actor/lib/string/test/auto/StringCompare2.xml  Fails to compile:
 #    Problems with \o
 
-# $PTII/ptolemy/domains/sdf/lib/test/auto/ArrayToSequence.xml: Attempt to get data from an empty mailbox.
-# $PTII/ptolemy/domains/sdf/lib/test/auto/AutoCorrelation.xml: Attempt to get data from an empty mailbox.
-# $PTII/ptolemy/domains/sdf/lib/test/auto/VariableFIR.xml: Attempt to get data from an empty mailbox.
+# $PTII/ptolemy/domains/sdf/lib/test/auto/ArrayToSequence.xml: Attempt to get data from an empty mailbox. Fails in SequenceToArray.fire().
+# $PTII/ptolemy/domains/sdf/lib/test/auto/AutoCorrelation.xml: Attempt to get data from an empty mailbox. Fails in Autocorrelation.fire()
+# $PTII/ptolemy/domains/sdf/lib/test/auto/VariableFIR.xml: Attempt to get data from an empty mailbox. Fails in SequenceToArray.fire();
 
 
 set models [list \
+		$PTII/ptolemy/actor/lib/test/auto/AbsoluteValue.xml \
+		$PTII/ptolemy/actor/lib/test/auto/DelayTime.xml \
+		$PTII/ptolemy/actor/lib/test/auto/FileWriter1.xml \
+		$PTII/ptolemy/actor/lib/test/auto/Gaussian1.xml \
+		$PTII/ptolemy/actor/lib/test/auto/Gaussian2.xml \
+		$PTII/ptolemy/actor/lib/test/auto/Lattice.xml \
 		$PTII/ptolemy/actor/lib/test/auto/LookupTable.xml \
+		$PTII/ptolemy/actor/lib/test/auto/MaxIndex.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Maximum.xml \
+		$PTII/ptolemy/actor/lib/test/auto/Multiplexor.xml \
+		$PTII/ptolemy/actor/lib/test/auto/PhaseUnwrap.xml \
+		$PTII/ptolemy/actor/lib/test/auto/ReadFile1.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Sinewave.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Sinewave2.xml \
+		$PTII/ptolemy/actor/lib/test/auto/UnaryMathFunction.xml \
+		$PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml \
+		$PTII/ptolemy/actor/lib/test/auto/sizedArray1.xml \
 		$PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml \
 		$PTII/ptolemy/actor/lib/comm/test/auto/Scrambler1.xml \
 		$PTII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml \
@@ -100,6 +125,8 @@ set models [list \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring2.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml \
+		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml \
+		$PTII/ptolemy/domains/sdf/lib/test/auto/DotProduct.xml \
 	       ]
 
 foreach model $models {
