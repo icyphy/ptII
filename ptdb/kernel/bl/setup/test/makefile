@@ -44,7 +44,9 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # If you add a file, be sure to add a line to test_java
-JSRCS_TEST_DRIVERS =
+JSRCS_TEST_DRIVERS = \
+	TestSetupManager.java
+	
 
 
 JSRCS = \
