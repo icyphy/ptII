@@ -1,5 +1,6 @@
 /***preinitBlock***/
 static $targetType(output) $actorSymbol(state);
+int $actorSymbol(LimitedFiringSource_iterationCount) = 0;
 /**/
 
 /*** ArrayConvertInitBlock($elementType) ***/
@@ -53,4 +54,12 @@ if ($hasToken(step)) {
         $param(step) = $get(step);
 }
 $actorSymbol(state) = $add_Token_Token($actorSymbol(state), $param(step));
+/**/
+
+/*** postfireBlock() ***/
+$actorSymbol(LimitedFiringSource_iterationCount)++;
+if ($val(firingCountLimit) == $actorSymbol(LimitedFiringSource_iterationCount)) {
+   // Return from run()
+   return false;
+}
 /**/
