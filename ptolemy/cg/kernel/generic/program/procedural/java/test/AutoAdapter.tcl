@@ -127,6 +127,7 @@ set models [list \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml \
 		$PTII/ptolemy/domains/sdf/lib/test/auto/DotProduct.xml \
+		$PTII/ptolemy/domains/sdf/test/auto/time5.xml \
 		$PTII/ptolemy/moml/filter/test/auto/modulation2.xml \
 	       ]
 

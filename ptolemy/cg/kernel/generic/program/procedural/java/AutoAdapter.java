@@ -676,18 +676,20 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             String ptolemyData = "$actorSymbol(" + actorPortName + "_ptolemyData)";
             return
                 "{\n"
-                // Create a token to send
-                + codeGenElementType + "Token [] " + ptolemyData + " = new "
-                + codeGenElementType + "Token [" + array.length() + "];\n"
-
                 // Get the codegen data
-                + " Token codeGenData = $get(" + actorPortName
+                + " Token codeGenData = $get("
+                + actorPortName
                 // For non-multiports "". For multiports, #0, #1 etc.
                 + (channel == 0 ? "" : "#" + channel)
                 + ");\n"
 
+                // Create a token to send
+                + codeGenElementType + "Token [] " + ptolemyData + " = new "
+                + codeGenElementType + "Token [((Array)codeGenData.getPayload()).size];\n"
+
+
                 // Copy from the codegen data to the Ptolemy data
-                + " for (int i = 0; i < " + array.length() +"; i++) {\n"
+                + " for (int i = 0; i < ((Array)codeGenData.getPayload()).size; i++) {\n"
                 + "   " + ptolemyData+ "[i] = new " + codeGenElementType + "Token((("
                 + javaElementType
                 + ")(Array_get(codeGenData, i).getPayload()))." + targetElementType + "Value());\n"
