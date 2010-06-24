@@ -42,7 +42,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */
-public class Const extends NamedProgramCodeGeneratorAdapter {
+public class Const extends LimitedFiringSource {
     /**
      * Constructor method for the Const adapter.
      * @param actor the associated actor

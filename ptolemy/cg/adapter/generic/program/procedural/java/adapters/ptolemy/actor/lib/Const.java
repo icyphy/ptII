@@ -41,7 +41,8 @@ package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.acto
  */
 public class Const
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Const {
+            LimitedFiringSource {
+            //ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.LimitedFiringSource {
     /**
      *  Construct a Const adapter.
      *  @param actor The given ptolemy.actor.lib.Const actor.

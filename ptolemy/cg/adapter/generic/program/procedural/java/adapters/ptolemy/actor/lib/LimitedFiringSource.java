@@ -1,4 +1,4 @@
-/* A adapter class for ptolemy.actor.lib.StringConst
+/* A adapter class for ptolemy.actor.lib.LimitedFiringSource
 
  Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
@@ -28,26 +28,25 @@
 package ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// StringConst
+//// LimitedFiringSource
 
 /**
- A adapter class for StringConst.
+ A adapter class for LimitedFiringSource.
 
  @author Christopher Brooks
- @version Id: StringConst.java 57046 2010-01-27 23:35:53Z cxh $
+ @version Id: LimitedFiringSource.java 57046 2010-01-27 23:35:53Z cxh $
  @since Ptolemy II 8.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class StringConst
+public class LimitedFiringSource
         extends
-            ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.StringConst {
-
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.LimitedFiringSource {
     /**
-     *  Construct a StringConst adapter.
-     *  @param actor The given ptolemy.actor.lib.StringConst actor.
+     *  Construct a LimitedFiringSource adapter.
+     *  @param actor The given ptolemy.actor.lib.LimitedFiringSource actor.
      */
-    public StringConst(ptolemy.actor.lib.StringConst actor) {
+    public LimitedFiringSource(ptolemy.actor.lib.LimitedFiringSource actor) {
         super(actor);
     }
 }

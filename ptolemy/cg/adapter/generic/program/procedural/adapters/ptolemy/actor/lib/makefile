@@ -69,6 +69,7 @@ JSRCS = \
 	Differential.java \
 	Discard.java \
 	Distributor.java \
+	LimitedFiringSource.java \
 	Limiter.java \
 	Minimum.java \
 	MultiplyDivide.java \

@@ -270,7 +270,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // for the whole model.
         if (_isTopLevel()) {
             // add some function declarations
-            mainEntryCode.append("void run();" + _eol + "void execute();"
+            mainEntryCode.append("boolean run();" + _eol + "void execute();"
                     + _eol + "void doWrapup();" + _eol);
 
             mainEntryCode.append(_eol + _eol
