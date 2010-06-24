@@ -3,6 +3,8 @@ int $actorSymbol(iterationCount) = 0;
 int $actorSymbol(indexColCount) = 0;
 boolean $actorSymbol(match) = false;
 $type $actorSymbol(_zero);
+
+int $actorSymbol(LimitedFiringSource_iterationCount) = 0;
 /**/
 
 /*** initBlock($zero) ***/
@@ -37,4 +39,10 @@ if ($actorSymbol(indexColCount) >= $size(indexes) && $val(repeat)) {
 }
 /**/
 
-
+/*** postfireBlock() ***/
+$actorSymbol(LimitedFiringSource_iterationCount)++;
+if ($val(firingCountLimit) == $actorSymbol(LimitedFiringSource_iterationCount)) {
+   // Return from run()
+   return false;
+}
+/**/

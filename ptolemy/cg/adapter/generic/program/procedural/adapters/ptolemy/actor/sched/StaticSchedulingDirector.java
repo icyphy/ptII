@@ -274,9 +274,13 @@ public class StaticSchedulingDirector extends Director {
             }
         }
 
-        code.append("run();" + _eol + "}" + _eol + "}" + _eol + _eol
+        code.append("if (!run()) {" + _eol
+                + "break;" + _eol
+                + "}" + _eol
+                + "}" + _eol
+                + "}" + _eol + _eol
                 + getCodeGenerator().getMethodVisibiliyString()
-                + " void run() "
+                + " boolean run() "
                 + getCodeGenerator().getMethodExceptionString() + " {" + _eol);
 
         code.append(generateFireCode());
@@ -308,7 +312,7 @@ public class StaticSchedulingDirector extends Director {
             }
         }
 
-        code.append("}" + _eol);
+        code.append("return true;" + _eol + "}" + _eol);
         return code.toString();
     }
 
