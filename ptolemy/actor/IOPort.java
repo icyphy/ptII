@@ -621,29 +621,31 @@ public class IOPort extends ComponentPort {
                 IORelation relation = (IORelation) insideRelations.next();
                 int width = relation.getWidth();
 
-                Receiver[][] result = new Receiver[width][1];
+                if (width > 0) {
+                    Receiver[][] result = new Receiver[width][1];
 
-                // Inside links need to have receivers compatible
-                // with the local director.  We need to create those
-                // receivers here.
-                for (int i = 0; i < width; i++) {
-                    // This throws an exception if there is no director.
-                    result[i][0] = _newInsideReceiver();
-                }
+                    // Inside links need to have receivers compatible
+                    // with the local director.  We need to create those
+                    // receivers here.
+                    for (int i = 0; i < width; i++) {
+                        // This throws an exception if there is no director.
+                        result[i][0] = _newInsideReceiver();
+                    }
 
-                // Save it.  If we have previously seen this relation,
-                // then we simply add the new array to the list
-                // of occurrences for this relation.  Otherwise,
-                // we create a new list with one element.
-                // EAL 7/30/99.
-                if (_localReceiversTable.containsKey(relation)) {
-                    List<Receiver[][]> occurrences = _localReceiversTable
-                            .get(relation);
-                    occurrences.add(result);
-                } else {
-                    List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
-                    occurrences.add(result);
-                    _localReceiversTable.put(relation, occurrences);
+                    // Save it.  If we have previously seen this relation,
+                    // then we simply add the new array to the list
+                    // of occurrences for this relation.  Otherwise,
+                    // we create a new list with one element.
+                    // EAL 7/30/99.
+                    if (_localReceiversTable.containsKey(relation)) {
+                        List<Receiver[][]> occurrences = _localReceiversTable
+                                .get(relation);
+                        occurrences.add(result);
+                    } else {
+                        List<Receiver[][]> occurrences = new LinkedList<Receiver[][]>();
+                        occurrences.add(result);
+                        _localReceiversTable.put(relation, occurrences);
+                    }
                 }
             }
         }
@@ -1633,7 +1635,6 @@ public class IOPort extends ComponentPort {
         }
     }
 
-
     /** Return the width of the port.  The width is the sum of the
      *  widths of the relations that the port is linked to (on the outside).
      *  Note that this method cannot be used to determine whether a port
@@ -1668,7 +1669,8 @@ public class IOPort extends ComponentPort {
      *  @see #numberOfSinks()
      *  @see #numberOfSources()
      */
-    private int _getWidth(boolean createReceivers) throws IllegalActionException {
+    private int _getWidth(boolean createReceivers)
+            throws IllegalActionException {
         try {
             _workspace.getReadAccess();
 
@@ -1706,8 +1708,9 @@ public class IOPort extends ComponentPort {
                         // Need to check to see if there is a director, otherwise
                         // _description will fail on MaximumEntropySpectrum, see
                         // ptolemy/domains/sdf/lib/test/MaximumEntropySpectrum.tcl
-                        if (createReceivers && isOpaque()
-                                && ((Actor)getContainer()).getDirector() != null) {
+                        if (createReceivers
+                                && isOpaque()
+                                && ((Actor) getContainer()).getDirector() != null) {
                             // FIXME: maybe we should only call createReceivers()
                             // if the sum is less than the _width (see below).
                             createReceivers();
@@ -2117,7 +2120,7 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getReadAccess();
 
-            Nameable container = getContainer(); 
+            Nameable container = getContainer();
 
             if (!(container instanceof CompositeActor && isInput() && isOpaque())) {
                 // Return an empty list, since this port cannot send data
@@ -4374,10 +4377,8 @@ public class IOPort extends ComponentPort {
                     throw new InvalidStateException(this,
                             "getReceivers(IORelation, int): "
                                     + "Invalid receivers. "
-                                    + "result.length = "
-                                    + result.length
-                                    + " width = "
-                                    + width
+                                    + "result.length = " + result.length
+                                    + " width = " + width
                                     + ". Need to call createReceivers()?");
                 }
             }

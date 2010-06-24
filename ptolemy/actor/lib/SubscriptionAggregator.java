@@ -227,7 +227,7 @@ public class SubscriptionAggregator extends Subscriber {
         if (container instanceof CompositeActor) {
             try {
                 ((CompositeActor) container).linkToPublishedPort(
-                        _channelPattern, input);
+                        _channelPattern, input, _global);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
                         "Can't link Subscriber with Publisher.");

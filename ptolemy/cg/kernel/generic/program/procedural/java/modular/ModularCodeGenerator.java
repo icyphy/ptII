@@ -125,26 +125,27 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         for (Object object : model.portList()) {
 
             IOPort port = (IOPort) object;
-            Profile.Port profilePort = model.convertProfilePort(port);
+            if (port.getWidth() > 0) {
+                Profile.Port profilePort = model.convertProfilePort(port);
 
-            profileCode.append(INDENT2
-                    + "ports.add(new Profile.Port(\""
-                    + profilePort.name()
-                    + "\", "
-                    + profilePort.publisher()
-                    + ", "
-                    + profilePort.subscriber()
-                    + ", "
-                    + profilePort.width()
-                    + ", "
-                    + (port.isInput() ? DFUtilities
-                            .getTokenConsumptionRate(port) : DFUtilities
-                            .getTokenProductionRate(port)) + ", "
-                    + ptTypeToCodegenType(((TypedIOPort) port).getType())
-                    + ", " + port.isInput() + ", " + port.isOutput() + ", "
-                    + profilePort.multiport() 
-                    + ", \""
-                    + profilePort.getPubSubChannelName() + "\"));" + _eol);
+                profileCode.append(INDENT2
+                        + "ports.add(new Profile.Port(\""
+                        + profilePort.name()
+                        + "\", "
+                        + profilePort.publisher()
+                        + ", "
+                        + profilePort.subscriber()
+                        + ", "
+                        + profilePort.width()
+                        + ", "
+                        + (port.isInput() ? DFUtilities
+                                .getTokenConsumptionRate(port) : DFUtilities
+                                .getTokenProductionRate(port)) + ", "
+                        + ptTypeToCodegenType(((TypedIOPort) port).getType())
+                        + ", " + port.isInput() + ", " + port.isOutput() + ", "
+                        + profilePort.multiport() + ", \""
+                        + profilePort.getPubSubChannelName() + "\"));" + _eol);
+            }
         }
         profileCode.append(INDENT2 + "return ports;" + _eol);
         profileCode.append(INDENT1 + "}" + _eol);
@@ -362,24 +363,26 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
             boolean addComma = false;
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+                if (inputPort.getWidth() > 0) {
 
-                String type = codeGenType2(inputPort.getType());
-                if (!type.equals("Token")
-                        && !isPrimitive(codeGenType(inputPort.getType()))) {
-                    type = "Token";
-                }
-                for (int i = 0; i < inputPort.getWidth(); i++) {
-                    if (addComma) {
-                        mainEntryCode.append(", ");
+                    String type = codeGenType2(inputPort.getType());
+                    if (!type.equals("Token")
+                            && !isPrimitive(codeGenType(inputPort.getType()))) {
+                        type = "Token";
                     }
-                    if (DFUtilities.getTokenConsumptionRate(inputPort) > 1) {
-                        mainEntryCode.append(type + "[] " + inputPort.getName()
-                                + "_" + i);
-                    } else {
-                        mainEntryCode.append(type + " " + inputPort.getName()
-                                + "_" + i);
+                    for (int i = 0; i < inputPort.getWidth(); i++) {
+                        if (addComma) {
+                            mainEntryCode.append(", ");
+                        }
+                        if (DFUtilities.getTokenConsumptionRate(inputPort) > 1) {
+                            mainEntryCode.append(type + "[] "
+                                    + inputPort.getName() + "_" + i);
+                        } else {
+                            mainEntryCode.append(type + " "
+                                    + inputPort.getName() + "_" + i);
+                        }
+                        addComma = true;
                     }
-                    addComma = true;
                 }
             }
             /*

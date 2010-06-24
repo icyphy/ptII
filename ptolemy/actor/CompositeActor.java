@@ -490,7 +490,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
     public void createReceivers() throws IllegalActionException {
 
         if (workspace().getVersion() != _receiversVersion) {
-            Iterator<?> ports = portList().iterator();
+            List portList = new LinkedList(portList());
+            Iterator<?> ports = portList.iterator();
 
             try {
                 workspace().getWriteAccess();
@@ -1132,7 +1133,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 }
             }
 
-            if (global) {
+            if (global && this != toplevel()) {
                 String portName = "_subscriber_"
                         + StringUtilities.sanitizeName(name);
                 IOPort port = (IOPort) getPort(portName);
@@ -1247,19 +1248,58 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     subscriberPort, global);
         } else {
             if (_publishedPorts != null) {
-                boolean matched = false;
+//                boolean matched = false;
                 for (String name : _publishedPorts.keySet()) {
                     Matcher matcher = pattern.matcher(name);
                     //System.out.println("Match " + name);
                     if (matcher.matches()) {
-                        matched = true;
-                        linkToPublishedPort(name, subscriberPort, global);
+//                        matched = true;
+                        linkToPublishedPort(name, subscriberPort);
                     }
                 }
-                if (!matched) {
-                    throw new IllegalActionException(this,
-                            "Failed to find a publisher to match \"" + pattern
-                                    + "\"");
+                
+//                if (!matched) {
+//                    throw new IllegalActionException(this,
+//                            "Failed to find a publisher to match \"" + pattern
+//                                    + "\"");
+//                }
+                
+                if (global && this != toplevel()) {
+                    String portName = "_subscriber_"
+                            + StringUtilities.sanitizeName(pattern.toString());
+                    IOPort port = (IOPort) getPort(portName);
+                    if (port == null) {
+                        port = (IOPort) newPort(portName);
+                        new Parameter(port, "_hide", BooleanToken.TRUE);
+                        port.setPersistent(false);
+                        port.setInput(true);
+                        port.setMultiport(true);
+                        port.setDefaultWidth(0);
+
+                        IORelation relation = null;
+                        //connect the newly created port to the subscriber port
+                        try {
+                            // CompositeActor always creates an IORelation.
+                            relation = (IORelation) newRelation(uniqueName("subscriberExternalRelation"));
+                        } catch (NameDuplicationException e) {
+                            // Shouldn't happen.
+                            throw new IllegalStateException(e);
+                        }
+                        // Prevent the relation and its links from being exported.
+                        relation.setPersistent(false);
+                        // Prevent the relation from showing up in vergil.
+                        new Parameter(relation, "_hide", BooleanToken.TRUE);
+                        port.liberalLink(relation);
+
+                        if (!subscriberPort.isLinked(relation)) {
+                            subscriberPort.liberalLink(relation);
+                        }
+                    }
+
+                    if (container instanceof CompositeActor) {
+                        ((CompositeActor) container).linkToPublishedPort(pattern,
+                                subscriberPort, global);
+                    }
                 }
             } else {
                 throw new IllegalActionException(this,
@@ -1679,7 +1719,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             if (!portList.contains(port))
                 portList.add(port);
 
-            if (global) {
+            if (global && this != toplevel()) {
 
                 // In addition, if the publisher is set to perform an
                 // "export" then we should create a new port in this
