@@ -666,9 +666,9 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
      ///////////////////////////////////////////////////////////////////
      ////                         protected variables               ////
      
-     /** The name shared by a set of messages
+     /** The name shared by a set of messages.
          This is not directly settable by the user; rather, it is derived from 
-         the actor name */
+         the actor name. */
      protected String _sharedName;
      
      /** The scope of the actor.  See enumeration above.  Global by default. */
