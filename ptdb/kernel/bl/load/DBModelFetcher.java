@@ -1,5 +1,7 @@
 package ptdb.kernel.bl.load;
 
+import java.util.ArrayList;
+
 import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -62,5 +64,59 @@ public class DBModelFetcher {
             }
         }
         return returnModel;
+    }
+
+    /** Given an ArrayList of XMLDBModel objects that are not populated with
+     * MoML strings, query the database to obtain the MoML and then return
+     * the revised ArrayList.
+     *
+     * @param modelList
+     *          An ArrayList of XMLDBModel objects 
+     *          without associated MoML strings.
+     *          
+     * @return An ArrayList of XMLDBModel objects 
+     *         populated with their respective MoML strings.
+     *         An empty list is returned if no objects could be added.
+     *         
+     * @exception DBConnectionException
+     *          Thrown if there a problem with the database connection.
+     *          
+     * @exception DBExecutionException
+     *          Thrown if there is a problem executing the database task.
+     *          
+     */
+    public static ArrayList<XMLDBModel> load(ArrayList<XMLDBModel> modelList) 
+        throws DBConnectionException, DBExecutionException {
+
+        ArrayList<XMLDBModel> returnList = new ArrayList();
+
+        DBConnection connection = DBConnectorFactory.getSyncConnection(false);
+
+        try {
+
+            for(XMLDBModel model: modelList){
+                
+                XMLDBModel resultModel;
+                GetModelsTask getModelsTask = 
+                    new GetModelsTask(model.getModelName());
+                resultModel = connection.executeGetModelsTask(getModelsTask);
+                
+                if(resultModel != null){
+                    
+                    returnList.add(resultModel);
+                    
+                }
+            
+            }
+
+        } catch (DBExecutionException dbEx) {            
+            throw dbEx;
+        } finally {
+            if (connection != null) {
+                connection.closeConnection();
+            }
+        }
+        
+        return returnList;
     }
 }
