@@ -150,3 +150,15 @@ Token zero_Token_TokenOneArg(Token a, Token... b) {
       return zero_Token_Token(a, b);
 }
 /**/
+
+/*** zero_UnsignedByte() ***/
+int zero_UnsignedByte() {
+        return 0;
+}
+/**/
+
+/*** zero_UnsignedByteOneArg() ***/
+int zero_UnsignedByte(int a) {
+        return 0;
+}
+/**/

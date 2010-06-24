@@ -228,6 +228,46 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)) {
 }
 /**/
 
+/***UnsignedByteBlock($channel)***/
+$actorSymbol(inputToken) = $get(input#$channel);
+$actorSymbol(numberOfTokensSeen)++;
+
+/* UB $actorSymbol(), UnsignedByteBlock($channel) which has only one channel */
+if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
+        && Math.abs($actorSymbol(inputToken)
+                - $param(correctValues, $actorSymbol(numberOfTokensSeen)))
+                > $param(tolerance)) {
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been between: %10.30g and %10.30g\n",
+            $actorSymbol(numberOfTokensSeen),
+            $actorSymbol(inputToken),
+            $param(correctValues, $actorSymbol(numberOfTokensSeen)) -
+                    $param(tolerance),
+            $param(correctValues, $actorSymbol(numberOfTokensSeen)) +
+                    $param(tolerance)));
+}
+/**/
+
+/***UnsignedByteBlockMultiChannel($channel)***/
+$actorSymbol(inputToken) = $get(input#$channel);
+if ($channel == 0) {
+        $actorSymbol(numberOfTokensSeen)++;
+}
+
+/* UBMC $channel of $actorSymbol() */
+$actorSymbol(correctValuesThisFiring_$channel) =
+ $param(correctValues, $actorSymbol(numberOfTokensSeen));
+if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
+        && Math.abs($actorSymbol(inputToken)
+                - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
+        > $param(tolerance)) {
+    throw new RuntimeException(String.format("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
+            $actorSymbol(numberOfTokensSeen),
+            $actorSymbol(inputToken),
+            $param(tolerance),
+            (Integer)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)));
+}
+/**/
+
 /*** wrapupBlock ***/
 if (($actorSymbol(numberOfTokensSeen) + 1) < $size(correctValues)) {
     throw new RuntimeException(String.format("\nTest produced only %d tokens, yet the correctValues parameter was expecting %d tokens.\n", $actorSymbol(numberOfTokensSeen), $size(correctValues)));

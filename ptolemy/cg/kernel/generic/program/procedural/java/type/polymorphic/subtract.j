@@ -229,3 +229,34 @@ void print_Token3(Token token) {
 }
 /**/
 
+
+/*** subtract_UnsignedByte_Array() ***/
+Token subtract_UnsignedByte_Array(int a1, Token a2) {
+    int i;
+    Token result = $new(Array(((Array)(a2.payload)).size, 0));
+
+    for (i = 0; i < ((Array)(a2.payload)).size; i++) {
+        Array_set(result, i, $subtract_UnsignedByte_Token(a1, Array_get(a2, i)));
+    }
+    return result;
+}
+/**/
+
+/*** subtract_UnsignedByte_UnsignedByte() ***/
+int subtract_UnsignedByte_UnsignedByte(int a1, int a2) {
+    return a1 - a2;
+}
+/**/
+
+/*** subtract_UnsignedByte_Integer() ***/
+int subtract_UnsignedByte_Integer(int a1, int a2) {
+    return a1 - a2;
+}
+/**/
+
+/*** subtract_UnsignedByte_Token() ***/
+Token subtract_UnsignedByte_Token(int a1, Token a2) {
+    Token token = $new(UnsignedByte(a1));
+    return $subtract_Token_Token(token, a2);
+}
+/**/

@@ -252,3 +252,35 @@ void print_Token2(Token token) {
 /**/
 
 
+/*** add_UnsignedByte_Double() ***/
+int add_UnsignedByte_Integer(int a1, double a2) {
+    return a1 + a2;
+}
+/**/
+
+/*** add_UnsignedByte_Integer() ***/
+int add_UnsignedByte_Integer(int a1, int a2) {
+    return a1 + a2;
+}
+/**/
+
+/*** add_UnsignedByte_String() ***/
+char* add_UnsignedByte_String(int a1, char* a2) {
+    return $add_String_UnsignedByte(a2, a1);
+}
+/**/
+
+/*** add_UnsignedByte_Token() ***/
+Token add_UnsignedByte_Token(int a1, Token a2) {
+    Token token = $new(UnsignedByte(a1));
+    return $add_Token_Token(token, a2);
+}
+/**/
+
+/*** add_UnsignedByte_UnsignedByte() ***/
+int add_UnsignedByte_UnsignedByte(int a1, int a2) {
+    return a1 + a2;
+}
+/**/
+
+
