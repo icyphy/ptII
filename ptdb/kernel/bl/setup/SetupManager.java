@@ -71,22 +71,46 @@ public class SetupManager {
 
         DBConnectionParameters dbCacheConnParams = new DBConnectionParameters(
                 url, cacheContainerName, false);
+        
+        DBConnection mainConnection = null;
+        DBConnection cacheConnection = null;
+        
 
         try {
-            DBConnection mainConnection = new OracleXMLDBConnection(
+            
+            mainConnection = DBConnectorFactory.getSyncConnection(
                     dbMainConnParams);
-
-            mainConnection.closeConnection();
-
-            DBConnection cacheConnection = new OracleXMLDBConnection(
+            
+            if (mainConnection == null) {
+                throw new DBConnectionException(
+                        "Failed to create connection with the following parameters: " 
+                        + "\nURL: " + url
+                        + "\nContainer Name: " + containerName);
+            }
+           
+            cacheConnection = DBConnectorFactory.getSyncConnection(
                     dbCacheConnParams);
+            
 
-            cacheConnection.closeConnection();
-
+            if (cacheConnection == null) {
+                throw new DBConnectionException(
+                        "Failed to create connection with the following parameters: " 
+                        + "\nURL: " + url
+                        + "\nCache Container Name: " + cacheContainerName);
+            }
+           
         } catch (DBConnectionException e) {
             throw new DBConnectionException(
                     "Unable to create connection with the given parameters."
                             + " - " + e.getMessage(), e);
+        } finally {
+            if (mainConnection != null) {
+                mainConnection.closeConnection();
+            }
+            
+            if (cacheConnection != null) {
+                cacheConnection.closeConnection();
+            }
         }
     }
 
@@ -99,7 +123,7 @@ public class SetupManager {
      * @exception IOException Thrown if an error occurs while writing the new
      * parameters.
      */
-    public void updateConnection(SetupParameters params)
+    public void updateDBConnectionSetupParameters(SetupParameters params)
             throws DBConnectionException, IOException {
 
         if (params == null) {
@@ -128,19 +152,19 @@ public class SetupManager {
                             + ptdbParams);
         }
 
-        String defaultDBClassName = "ptdb.kernel.database.OracleXMLDBConnection";
+        String defaultDBClassName = "";
 
         props.load(url.openStream());
         
-        String DBClassName = (String) props
+        String dbClassName = (String) props
                 .getProperty(DBConnectorFactory._DB_CLASS_NAME);
 
-        if (DBClassName == null || DBClassName.length() == 0) {
-            DBClassName = defaultDBClassName;
+        if (dbClassName == null || dbClassName.length() == 0) {
+            dbClassName = defaultDBClassName;
         }
 
 
-        props.setProperty(DBConnectorFactory._DB_CLASS_NAME, DBClassName);
+        props.setProperty(DBConnectorFactory._DB_CLASS_NAME, dbClassName);
         props.setProperty(DBConnectorFactory._DB_URL, params.getUrl());
         props.setProperty(DBConnectorFactory._XMLDB_CONTAINER_NAME, params
                 .getContainerName());
