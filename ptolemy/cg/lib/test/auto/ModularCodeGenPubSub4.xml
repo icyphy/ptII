@@ -12,7 +12,7 @@
     </property>
     <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 53, 817, 612}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 53, 815, 615}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[602, 505]">
     </property>
@@ -23,7 +23,7 @@
     <entity name="A1" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
         <property name="recompileHierarchy" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="recompileThisLevel" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 195.0]">
         </property>
@@ -33,7 +33,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 507}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -61,7 +61,7 @@
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 65.0]">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 815, 507}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 813, 510}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
@@ -78,6 +78,8 @@
                         <group>
                             <entity name="Subscriber" class="ptolemy.actor.lib.Subscriber">
                                 <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel">
+                                </property>
+                                <property name="global" class="ptolemy.data.expr.Parameter" value="true">
                                 </property>
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 125.0]">
                                 </property>
