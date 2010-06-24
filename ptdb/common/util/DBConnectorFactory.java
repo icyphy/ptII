@@ -106,6 +106,29 @@ public class DBConnectorFactory {
     }
 
     /**
+     * This API is used to get a synchronous connection to the database. A
+     * synchronous connection is a connection that executes the query as soon as
+     * the executeQuery is called on the connection. A synchronous connection
+     * supports both execution of queries with transaction and without
+     * transactions.
+     * 
+     * @param dbConnectionParameters Connection parameters for creating the
+     * connection.
+     * @return DBConnection To execute queries as and when the execute query
+     * is called.
+     * @exception DBConnectionException Whenever we face a problem while
+     * creating a database connection. These problems could be that configured
+     * connection class does not exist, the path for the database is not found,
+     * the container name is incorrect, the connection to the database could not
+     * be established etc.
+     */
+    public static DBConnection getSyncConnection(
+            DBConnectionParameters dbConnectionParameters)
+            throws DBConnectionException {
+        return _createConnection(dbConnectionParameters);
+    }
+
+    /**
      * Get an asynchronous connection to the database.
      *
      * An asynchronous connection is a connection that
@@ -168,33 +191,42 @@ public class DBConnectorFactory {
     /**
      *
      * Create a connection based on given parameters.
-     * @param containerName - Container to connect to.
-     * @param isTransactionRequired - True if transaction is needed, false otherwise.
+     * @param containerName Container to connect to.
+     * @param isTransactionRequired True if transaction is needed, false otherwise.
      * @return Required connection object
-     * @exception DBConnectionException - When there is an error in connecting to the databse.
+     * @exception DBConnectionException When there is an error in connecting to the databse.
      */
     private static DBConnection _createConnection(String containerName,
             boolean isTransactionRequired) throws DBConnectionException {
-        /**
-         *
-         */
-        if (_dbClassName == null)
-            throw new DBConnectionException(
-                    "DBConnection class for ptdb is undefined. "
-                            + "Please provide valid classname in ptdb-params.properties");
 
         if (!_isDBSetupDone)
             throw new DBConnectionException(
                     "XML Database Connection is not configured. "
                             + "Please provide details in ptdb-params.properties");
 
-        DBConnection xmlDBConnection = null;
         DBConnectionParameters dbConnParams = new DBConnectionParameters(
                 _dbUrl, containerName, isTransactionRequired);
 
-        /**
-         *
-         */
+        return _createConnection(dbConnParams);
+
+    }
+
+    /**
+     * Create a connection based on given parameters.
+     * @param dbConnectionParameters Connection parameters for creating the connection.
+     * @return Required connection object
+     * @exception DBConnectionException When there is an error in connecting
+     * to the database.
+     */
+    private static DBConnection _createConnection(
+            DBConnectionParameters dbConnectionParameters) throws DBConnectionException {
+
+        if (_dbClassName == null)
+            throw new DBConnectionException(
+                    "DBConnection class for ptdb is undefined. "
+                            + "Please provide valid classname in ptdb-params.properties");
+
+        DBConnection xmlDBConnection = null;
         try {
 
             Class xmlDBClass = Class.forName(_dbClassName);
@@ -203,7 +235,7 @@ public class DBConnectorFactory {
             Constructor<DBConnection> xmlDBConstructor = xmlDBClass
                     .getConstructor(parameterTypes);
 
-            xmlDBConnection = xmlDBConstructor.newInstance(dbConnParams);
+            xmlDBConnection = xmlDBConstructor.newInstance(dbConnectionParameters);
 
         } catch (ClassNotFoundException e) {
 
