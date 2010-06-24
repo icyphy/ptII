@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies
 
-DIRS = 		CarTracking #MonotonicityAnalysis
+DIRS = 		CarTracking MonotonicityAnalysis
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -46,7 +46,8 @@ include $(CONFIG)
 PTPACKAGE = 	demo
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	CarTracking/CarTracking.jar
+	CarTracking/CarTracking.jar \
+	MonotonicityAnalysis/MonotonicityAnalysis.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
