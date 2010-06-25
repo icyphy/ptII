@@ -96,6 +96,7 @@ if {[info procs testJavaCG] == "" } then {
 
 
 set models [list \
+		$PTII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml \
 		$PTII/ptolemy/actor/lib/test/auto/AbsoluteValue.xml \
 		$PTII/ptolemy/actor/lib/test/auto/DelayTime.xml \
 		$PTII/ptolemy/actor/lib/test/auto/FileWriter1.xml \
@@ -127,6 +128,8 @@ set models [list \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml \
 		$PTII/ptolemy/actor/lib/string/test/auto/StringSubstring3.xml \
 		$PTII/ptolemy/domains/sdf/lib/test/auto/DotProduct.xml \
+		$PTII/ptolemy/domains/sdf/test/auto/time1.xml \
+		$PTII/ptolemy/domains/sdf/test/auto/time2.xml \
 		$PTII/ptolemy/domains/sdf/test/auto/time5.xml \
 		$PTII/ptolemy/moml/filter/test/auto/modulation2.xml \
 	       ]

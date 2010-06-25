@@ -566,10 +566,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // Create an array for the codegen data.
                 + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
                 + " Token $actorSymbol(" + portData + ") = $Array_new("
-                + array.length() + ", 0);\n"
+                + "((ptolemy.data.ArrayToken)" + ptolemyData + ").length(), 0);\n"
 
                 // Copy from the Ptolemy data to the codegen data.
-                + " for (int i = 0; i < " + array.length() +"; i++) {\n"
+                + " for (int i = 0; i < ((ptolemy.data.ArrayToken)" + ptolemyData + ").length(); i++) {\n"
                 + "   Array_set($actorSymbol(" + portData + "), i, "
                 + getCodeGenerator().codeGenType(array.getDeclaredElementType())
                 + "_new(((("
@@ -623,10 +623,10 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // Create an array for the codegen data.
                 + _eol + getCodeGenerator().comment("AutoAdapter: FIXME: This will leak. We should check to see if the token already has been allocated")
                 + " Token codeGenData = $Array_new("
-                + array.length() + ", 0);\n"
+                + "((ptolemy.data.ArrayToken)" + ptolemyData + ").length() , 0);\n"
 
                 // Copy from the Ptolemy data to the codegen data.
-                + " for (int i = 0; i < " + array.length() +"; i++) {\n"
+                + " for (int i = 0; i < ((ptolemy.data.ArrayToken)" + ptolemyData +").length(); i++) {\n"
                 + "   Array_set(codeGenData, i, "
                 + getCodeGenerator().codeGenType(array.getDeclaredElementType())
                 + "_new(((("
