@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import org.xml.sax.SAXException;
 import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
+import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
@@ -33,7 +35,10 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
+import ptolemy.actor.IOPort;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -87,7 +92,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
             EnvironmentConfig config = new EnvironmentConfig();
             config.setRunRecovery(true);
-            config.setCacheSize(50 * 1024 * 1024); // 50MB
+            config.setCacheSize(5 * 1024 * 1024); // 50MB
             config.setAllowCreate(true);
             config.setInitializeCache(true);
             config.setTransactional(true);
@@ -175,7 +180,7 @@ public class OracleXMLDBConnection implements DBConnection {
             _checkConnectionAlive();
             if (_xmlTransaction != null) {
                 _checkTransactionActive();
-                _xmlTransaction.commit();
+                _xmlTransaction.commitSync();
                 _isTransactionActive = false;
             }
 
@@ -473,14 +478,7 @@ public class OracleXMLDBConnection implements DBConnection {
             if (matchingModelNamesList != null
                     && matchingModelNamesList.size() > 0) {
 
-                XMLDBModel model;
-                for (String modelName : matchingModelNamesList) {
-                    model = new XMLDBModel(modelName.substring(modelName
-                            .lastIndexOf("/") + 1));
-                    finalModelsList.add(model);
-                }
-                return finalModelsList;
-
+				return _getDistinctModelsList(matchingModelNamesList);
             }
         }
         return null;
@@ -497,8 +495,92 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
             throws DBExecutionException {
-        // TODO Auto-generated method stub
-        return null;
+
+        ArrayList<XMLDBModel> modelList = null;
+        ArrayList<String> modelFilesList = null;
+        DBGraphSearchCriteria criteria = task.getGraphSearchCriteria();
+        ArrayList<Port> portsList = criteria.getPortsList();
+        ArrayList<ComponentEntity> actorsList = criteria
+                .getComponentEntitiesList();
+
+        for (Port port : portsList) {
+
+            String portQuery = _createPortSearchQuery(port);
+
+            if (portQuery != null && portQuery.length() > 0) {
+
+                modelFilesList = _executeGraphSearchQuery(portQuery,
+                        modelFilesList);
+
+                if (modelFilesList.size() == 0) {
+                    return new ArrayList<XMLDBModel>();
+                }
+            }
+        }
+
+        if (modelFilesList == null || modelFilesList.size() > 0) {
+
+            HashSet<String> evaluatedPairs = new HashSet();
+            HashSet<String> actorsAlreadySearched = new HashSet();
+            boolean isSearched;
+
+            for (ComponentEntity actor : actorsList) {
+
+                isSearched = false;
+
+                for (Object object : actor.portList()) {
+                    Port portAttached = (Port) object;
+
+                    for (Object object1 : portAttached.connectedPortList()) {
+                        Port portConnected = (Port) object1;
+
+                        if (portConnected.getContainer() instanceof ComponentEntity) {
+
+                            String componentQuery = _createComponentSearchQuery(
+                                    actor, portAttached, portConnected,
+                                    (ComponentEntity) portConnected
+                                            .getContainer(), evaluatedPairs);
+
+                            if (componentQuery != null) {
+                                modelFilesList = _executeGraphSearchQuery(
+                                        componentQuery, modelFilesList);
+
+                                if (modelFilesList.size() == 0) {
+                                    return new ArrayList<XMLDBModel>();
+                                }
+
+                                isSearched = true;
+                            }
+                        }
+                    }
+                }
+                if (!isSearched) {
+                    /*
+                     * If the Graph Search Query was not executed, then search 
+                     * for the given entity in all the models in the database. 
+                     */
+                    String singleActorQuery = _createSingleActorQuery(actor,
+                            actorsAlreadySearched);
+
+                    if (singleActorQuery != null) {
+
+                        modelFilesList = _executeGraphSearchQuery(
+                                singleActorQuery, modelFilesList);
+
+                        if (modelFilesList.size() == 0) {
+                            return new ArrayList<XMLDBModel>();
+                        }
+                    }
+                }
+            }
+        }
+
+        if (modelFilesList != null && modelFilesList.size() > 0) {
+           
+            return _getDistinctModelsList(modelFilesList);
+            
+        }
+        return modelList;
     }
 
     /**
@@ -809,6 +891,74 @@ public class OracleXMLDBConnection implements DBConnection {
         return attributesQuery.toString();
 
     }
+    
+    /** Create a graph query for the given combination of 
+     * actor - port - port- actor only if it has already not been evaluated.
+     * 
+     * @param actor The first actor in the pattern.
+     * @param portAttached The port for the first actor in the pattern.     
+     * @param portConnected The port of the second actor in the two actor 
+     * pattern.
+     * @param actorConnected The second actor in the two-actor pattern.
+     * @param evaluatedPairs Strings that represent already evaluated two-actor
+     * patterns.
+     * @return The two-actor pattern xQuery if the pattern has not already been 
+     * evaluated, else return null. 
+     */
+    private String _createComponentSearchQuery(ComponentEntity actor,
+            Port portAttached, Port portConnected,
+            ComponentEntity actorConnected, HashSet evaluatedPairs) {
+
+        String componentQuery = null;
+        String actorIdentifier = actor.getClassName();
+        String portAttachedIdentifier = portAttached.getName();
+        String portConnectedIdentifier = portConnected.getName();
+        String actorConnectedIdentifier = actorConnected.getClassName();
+
+        String key = actorIdentifier + " - " + portAttachedIdentifier + " - "
+                + portConnectedIdentifier + " - " + actorConnectedIdentifier;
+        String keyReverse = actorConnectedIdentifier + " - "
+                + portConnectedIdentifier + " - " + portAttachedIdentifier
+                + " - " + actorIdentifier;
+
+        if (!evaluatedPairs.contains(key)
+                && !evaluatedPairs.contains(keyReverse)) {
+
+            evaluatedPairs.add(key);
+            evaluatedPairs.add(keyReverse);
+
+            componentQuery = "for $entity1 in collection(\""
+                    + _params.getContainerName()
+                    + "\")/entity/entity [@class=\""
+                    + actorIdentifier
+                    + "\"] "
+                    + " return "
+                    + " for $entity2 in collection(\""
+                    + _params.getContainerName()
+                    + "\")/entity/entity "
+                    + " [@class=\""
+                    + actorConnectedIdentifier
+                    + "\"] "
+                    + " where $entity1/@name != $entity2/@name "
+                    + " and base-uri($entity1) = base-uri($entity2) "
+                    + " return "
+                    + " for $link1 in collection (\""
+                    + _params.getContainerName()
+                    + "\")/entity/link "
+                    + " where $link1/@port[starts-with(., concat($entity1/@name, \"."
+                    + portAttachedIdentifier + "\"))] "
+                    + " and base-uri($link1) = base-uri($entity1) "
+                    + " return " + " for $link2 in collection(\""
+                    + _params.getContainerName() + "\")/entity/link "
+                    + " [@port[starts-with(.,concat($entity2/@name,\"."
+                    + portConnectedIdentifier + "\"))]] "
+                    + " where $link1/@relation = $link2/@relation "
+                    + " and base-uri($link1) = base-uri($link2) "
+                    + " return base-uri($link1) ";
+
+        }
+        return componentQuery;
+    }
 
     /**
      * Create the parent hierarchy for the given base model.
@@ -856,6 +1006,129 @@ public class OracleXMLDBConnection implements DBConnection {
                 dBModelsMap.put(parentNodeName, parentDBModel);
             }
         }
+    }
+    /**
+     * Create a query to search for ports within the model in the database.
+     * @param port Port for which the query needs to be created.
+     * @return Query to search for ports within the models in the database.
+     */
+    private String _createPortSearchQuery(Port port) {
+
+        StringBuffer portSearchQuery = new StringBuffer();
+
+        portSearchQuery
+                .append(" for $x in collection(\"")
+                .append(_params.getContainerName())
+                .append(
+                        "\")/entity/port[@class = \"ptolemy.actor.TypedIOPort\"] where ");
+        boolean isFirstClause = true;
+        /*
+         * If the port is an output port, 
+         * search for port with property called input.
+         */
+        if (((IOPort) port).isInput()) {
+            portSearchQuery.append(" $x/property[@name=\"input\"] ");
+            isFirstClause = false;
+        }
+        /*
+         * If the port is an output port, 
+         * search for port with property called output.
+         */
+        if (((IOPort) port).isOutput()) {
+            if (!isFirstClause) {
+                portSearchQuery.append(" and ");
+            }
+            portSearchQuery.append(" $x/property[@name=\"output\"] ");
+            isFirstClause = false;
+        }
+
+        /*
+         * If the port is a multi-port, 
+         * search for port with property called multiport.
+         */
+        if (((IOPort) port).isOutput()) {
+            if (!isFirstClause) {
+                portSearchQuery.append(" and ");
+            }
+            portSearchQuery.append(" $x/property[@name=\"multiport\"] ");
+            isFirstClause = false;
+        }
+
+        portSearchQuery.append(" return base-uri($x) ");
+
+        return portSearchQuery.toString();
+    }
+    
+    /** Create an xQuery to search for a single actor within the models in the 
+     * database. 
+     * 
+     * @param actor The actor that needs to be searched. 
+     * @param actorsAlreadySearched List of already searched actors.
+     * @return Query to search for a single actor within the models in the 
+     * database.
+     */
+    private String _createSingleActorQuery(ComponentEntity actor,
+            HashSet actorsAlreadySearched) {
+        String singleActorQuery = null;
+        if (!actorsAlreadySearched.contains(actor.getClassName())) {
+
+            actorsAlreadySearched.add(actor.getClassName());
+            singleActorQuery = "for $entity1 in collection(\""
+                    + _params.getContainerName()
+                    + "\")/entity/entity [@class=\"" + actor.getClassName()
+                    + "\"] return base_uri($entity1)";
+        }
+
+        return singleActorQuery;
+
+    }
+    
+    /**
+     * 
+     * @param query Search xQuery that needs to be executed.  
+     * @param matchedModelsList Models within which we need to search for the 
+     * given query criterion.
+     * @return Returns a List of matching model names.
+     * @throws DBExecutionException If thrown while searching in the database.
+     */
+
+    private ArrayList<String> _executeGraphSearchQuery(String query,
+            ArrayList<String> matchedModelsList) throws DBExecutionException {
+        ArrayList<String> modelsList = new ArrayList<String>();
+
+        System.out.println("graphSearchQuery - " + query);
+
+        XmlQueryContext context;
+        try {
+            context = _xmlManager.createQueryContext();
+
+            if (context == null)
+                throw new DBExecutionException(
+                        "Failed to executeAttributeSearch - The Query context is null "
+                                + "and cannot be used to execute queries.");
+            context.setEvaluationType(XmlQueryContext.Lazy);
+
+            XmlResults results = _xmlManager.query(query, context, null);
+            if (results != null) {
+                XmlValue value;
+                while (results.hasNext()) {
+                    value = results.next();
+                    modelsList.add(value.asString());
+                }
+            }
+            /*
+             *  Intersect results to find the matching models list from within 
+             *  the given list.
+             */
+            if (matchedModelsList != null) {
+                modelsList.retainAll(matchedModelsList);
+            }
+
+        } catch (XmlException e) {
+            throw new DBExecutionException("Failed to executeGraphSearch - "
+                    + e.getMessage(), e);
+        }
+        return modelsList;
     }
 
     /**
@@ -1001,6 +1274,32 @@ public class OracleXMLDBConnection implements DBConnection {
         String referencesXML = referencesXMLBuf != null ? "<entities>"
                 + referencesXMLBuf.toString() + "</entities>" : null;
         return referencesXML;
+    }
+
+    /**
+     * Create a list of distinct XMLDBModels from the given list that may 
+     * contain duplicates.
+     *  
+     * @param modelNamesList List of models that may contain duplicates.
+     * @return List of distinct XMLDBModels.
+     */
+    private ArrayList<XMLDBModel> _getDistinctModelsList(
+            ArrayList<String> modelNamesList) {
+
+        ArrayList<XMLDBModel> finalModelsList = new ArrayList<XMLDBModel>();
+        XMLDBModel model;
+        HashSet resultModelNames = new HashSet();
+        for (String modelName : modelNamesList) {
+            if (!resultModelNames.contains(modelName)) {
+
+                model = new XMLDBModel(modelName.substring(modelName
+                        .lastIndexOf("/") + 1));
+
+                finalModelsList.add(model);
+                resultModelNames.add(modelName);
+            }
+        }
+        return finalModelsList;
     }
 
     /**
