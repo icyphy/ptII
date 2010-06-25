@@ -240,7 +240,7 @@ public class ProcessDirector extends SequencedModelDirector {
         // be an ordered list of all processes.
         if (_processExecutionArray == null || _usingDefaultProcessArray == true) {
             _usingDefaultProcessArray = true;
-            if (_getDefaultProcessExecutionArray() != null) {
+            if (_getDefaultProcessExecutionArray().length > 0) {
                 _processExecutionArray = _getDefaultProcessExecutionArray();
             } else {
                 ArrayList<String> processes = new ArrayList<String>();
@@ -248,7 +248,7 @@ public class ProcessDirector extends SequencedModelDirector {
                     processes.add(processName);
                 }
                 Collections.sort(processes);
-                _processExecutionArray = processes.toArray(new String[0]);
+                _processExecutionArray = processes.toArray(new String[processes.size()]);
             }
         }
     
@@ -360,7 +360,7 @@ public class ProcessDirector extends SequencedModelDirector {
     protected String[] _getDefaultProcessExecutionArray()
         throws IllegalActionException {
         if (defaultProcessExecutionArray.getExpression().equals("")) {
-            return null;
+            return new String[0];
         } else {
             ArrayToken processNameArrayToken = (ArrayToken) defaultProcessExecutionArray.getToken();
             Token[] processExecutionTokenArray = processNameArrayToken.arrayValue();

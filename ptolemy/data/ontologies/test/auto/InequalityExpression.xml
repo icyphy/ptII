@@ -238,7 +238,7 @@ _
             </entity>
         </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 223, 764, 457}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 223, 764, 467}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 350]">
     </property>
@@ -247,7 +247,7 @@ _
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.5, 175.0}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 75.0]">
         </property>

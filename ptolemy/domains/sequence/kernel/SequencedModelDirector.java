@@ -765,15 +765,14 @@ public abstract class SequencedModelDirector extends Director {
 
     protected void fireSchedule(SequenceSchedule seqSchedule)
             throws IllegalActionException {
+        
+        if (seqSchedule == null) {
+            throw new IllegalActionException(this,
+                    "Null schedule in ProcessDirector or SequenceDirector");
+        }
+        
         // Get a firing iterator for this schedule
         Iterator firings = seqSchedule.firingIterator();
-
-        if (firings == null) {
-            // FIXME: Throw exception?  Should exclude empty schedules
-            System.out
-                    .println("Null firing iterator in ProcessDirector or SequenceDirector");
-
-        }
 
         while (firings.hasNext() && !_stopRequested) {
             SequenceFiring firing = (SequenceFiring) firings.next();

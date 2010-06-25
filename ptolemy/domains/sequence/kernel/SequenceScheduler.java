@@ -1327,7 +1327,7 @@ public class SequenceScheduler extends Scheduler {
             // SequenceAttribute or ProcessAttribute
             //Integer sequenceNumber = new Integer(obj.getExpression());
 
-            Integer sequenceNumber = new Integer(obj.getSequenceNumber());
+            Integer sequenceNumber = Integer.valueOf(obj.getSequenceNumber());
             if (!found.add(sequenceNumber)) {
                 throw new IllegalActionException(this,
                         "Attempted to use duplicate sequence number : "

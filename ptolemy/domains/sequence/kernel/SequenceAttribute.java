@@ -149,6 +149,17 @@ public class SequenceAttribute extends Parameter implements Comparable {
                 "SequenceAttribute can only be compared to other"
                         + " instances of SequenceAttribute.");
     }
+    
+    /*
+    public boolean equals(Object rightArg) {
+        if (rightArg != null && rightArg instanceof SequenceAttribute &&
+                compareTo(rightArg) == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    */
 
     /** Returns the sequence number as an int, or 0 if there is none.
      * 

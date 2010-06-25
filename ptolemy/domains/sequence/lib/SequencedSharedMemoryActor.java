@@ -696,7 +696,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
          // Ensure that a valid name was given.  
          // FIXME:  Throw exception otherwise?
          
-         if (name != null && name != "")
+         if (name != null && !name.equals(""))
          {
              
              // Look for an attribute with this name 

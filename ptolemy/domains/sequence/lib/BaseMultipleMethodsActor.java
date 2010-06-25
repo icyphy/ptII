@@ -136,7 +136,7 @@ public abstract class BaseMultipleMethodsActor extends SequencedSharedMemoryActo
                 StringAttribute methodNameAttribute =
                     (StringAttribute) ((IOPort) outputPort).getAttribute(methodName);
                 if (methodNameAttribute != null) {
-                    if (methodNameAttribute.getValueAsString() == methodName) {
+                    if (methodNameAttribute.getValueAsString().equals(methodName)) {
                         return (IOPort) outputPort;
                     }
                 }
