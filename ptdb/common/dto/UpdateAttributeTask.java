@@ -5,7 +5,7 @@ package ptdb.common.dto;
 //// UpdateAttributeTask
 
 /**
- * A task request to delete an attribute from the database.
+ * A task request to update an attribute in the database.
  * 
  * <p>It is used as a data transfer object and hold the attribute 
  * with its getter and setter method.</p>
@@ -58,7 +58,7 @@ public class UpdateAttributeTask {
 
     
     //////////////////////////////////////////////////////////////////////
-    ////                private variables                                 ////
+    ////                private variables                             ////
     
     /** The attribute to be updated in the database. */
     private XMLDBAttribute _xmlDBAttribute;
