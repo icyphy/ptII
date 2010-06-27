@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ptdb.common.dto.AttributeSearchTask;
+import ptdb.common.dto.CreateAttributeTask;
 import ptdb.common.dto.CreateModelTask;
+import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
@@ -12,6 +14,7 @@ import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
+import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -127,6 +130,24 @@ public class AsynchronousDBConnection implements DBConnection {
                 "Asynchronous DB Execution error - executeAttributeSearchTask is "
                         + "not supported by this type of DBConnection");
     }
+    
+    /**
+     * Execute the necessary commands to create a new attribute in the database 
+     * according to the attribute specification given in the task parameter.
+     *
+     * @param task
+     *          The task to be completed.  In this case, CreateAttributeTask.
+     *          This will tell the DB layer to create a new attribute in the database.
+     * @exception DBExecutionException Thrown if the operation fails.
+     */
+    public void executeCreateAttributeTask(CreateAttributeTask task)
+            throws DBExecutionException {
+        
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeCreateAttributeTask is "
+                        + "not supported by this type of DBConnection");
+    }
+
 
     /**
      * Execute the necessary commands to create a new model in the database according
@@ -144,6 +165,23 @@ public class AsynchronousDBConnection implements DBConnection {
         //call the execueTask method to execute the given task
         _executeTask(task);
 
+    }
+    
+    /**
+     * Execute the necessary commands to delete an attribute from the database 
+     * according to the attribute specification given in the task parameter.
+     *
+     * @param task
+     *          The task to be completed.  In this case, DeleteAttributeTask.
+     *          This will tell the DB layer to delete an attribute from the database.
+     * @exception DBExecutionException Thrown if the operation fails.
+     */
+    public void executeDeleteAttributeTask(DeleteAttributeTask task)
+            throws DBExecutionException {
+        
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeDeleteAttributeTask is "
+                        + "not supported by this type of DBConnection");
     }
 
     /**
@@ -230,6 +268,26 @@ public class AsynchronousDBConnection implements DBConnection {
         //call the execueTask method to execute the given task
         _executeTask(task);
     }
+    
+    
+    /**
+     * Execute the necessary commands to update an attribute in the database 
+     * according to the attribute specification given in the task parameter.
+     *
+     * @param task
+     *          The task to be completed.  In this case, UpdateAttributeTask.
+     *          This will tell the DB layer to update an attribute in the database.
+     * @exception DBExecutionException Thrown if the operation fails.
+     */
+    public void executeUpdateAttributeTask(UpdateAttributeTask task)
+            throws DBExecutionException {
+        
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeUpdateAttributeTask "
+                        + "is not supported by this type of DBConnection");
+        
+    }
+    
 
     /**
      * Return a string representation for the
