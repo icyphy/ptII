@@ -1,4 +1,4 @@
-# Makefile for Java classes Created by Thales
+# Makefile for Java classes Created by Thales 
 #
 # @Version: $Id$
 # @Author: Christopher Hylands
