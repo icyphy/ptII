@@ -575,7 +575,7 @@ public class OracleXMLDBConnection implements DBConnection {
             
             String attributeName = xmlDBAttribute.getAttributeName();
             
-            //check if the attribute already exists.            
+            // check if the attribute already exists.            
             String query = "doc('dbxml:/" + _xmlContainer.getName() 
                 + "/Attributes.ptdbxml')/attributes/attribute[@name='" 
                 + attributeName + "']";
@@ -601,11 +601,11 @@ public class OracleXMLDBConnection implements DBConnection {
             //create the attribute id as a combination of the name and time stamp.
             Date date = new Date ();
             
-            String attributeId = attributeName + date.getTime();
+            String attributeId = attributeName + "_" + date.getTime();
             
             xmlDBAttribute.setAttributeId(attributeId);
 
-            String attributeNode = xmlDBAttribute.getXMLStringFormat();
+            String attributeNode = xmlDBAttribute.getAttributeXMLStringFormat();
             
             String insertQuery = "insert node " + attributeNode + " into doc('dbxml:/"
                 + _xmlContainer.getName() + "/Attributes.ptdbxml')/attributes";
@@ -661,9 +661,7 @@ public class OracleXMLDBConnection implements DBConnection {
             }
             
             String attributeId = xmlDBAttribute.getAttributeId();
-            
-            
-            
+                                    
             String query = "delete node doc('dbxml:/" + _xmlContainer.getName() 
                 + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
                 + attributeId + "']";
@@ -674,9 +672,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 throw new DBExecutionException(
                         "Failed to DeleteAttributeTask - The Query context is null "
                                 + "and cannot be used to execute queries.");
-            
-            xmlQueryContext.setEvaluationType(XmlQueryContext.Lazy);
-
+                        
             _xmlManager.query(query, xmlQueryContext, null);        
             
         } catch (XmlException e) {
@@ -910,7 +906,7 @@ public class OracleXMLDBConnection implements DBConnection {
             }
             
             
-            String attributeNode = xmlDBAttribute.getXMLStringFormat();
+            String attributeNode = xmlDBAttribute.getAttributeXMLStringFormat();
             
             String query = "replace node doc('dbxml:/"+ _xmlContainer.getName() 
                 + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
@@ -923,8 +919,6 @@ public class OracleXMLDBConnection implements DBConnection {
                 throw new DBExecutionException(
                         "Failed to UpdateAttributeTask - The Query context is null "
                                 + "and cannot be used to execute queries.");
-            
-            xmlQueryContext.setEvaluationType(XmlQueryContext.Lazy);
 
             _xmlManager.query(query, xmlQueryContext, null);        
             

@@ -124,15 +124,14 @@ public class XMLDBAttribute {
 
     /**
      * Create an XML string representation of XMLDBAttribute object.
-     * @param xmlDBAttribute The object that needs to be converted to string.
      * @return The XML string representation of XMLDBAttribute object
      */
-    public String getXMLStringFormat() {
+    public String getAttributeXMLStringFormat() {
         
         String attributeNode = "<attribute id='" + _attributeId + "'" + 
             " name='" + _attributeName + "' type='" + _attributeType + "'>";
         
-        if (_attributeType.equalsIgnoreCase("list")) {
+        if (_attributeType.equalsIgnoreCase(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
             
             
             if (_attributeValues != null && _attributeValues.size() > 0) {

@@ -123,7 +123,7 @@ public interface DBConnection {
      * Get the attributes defined from the database.
      * @param task The criteria to get the attribute.
      * @return List of attributes stored in the database.
-     * @exception DBExecutionException
+     * @exception DBExecutionException Thrown if the operation fails.
      */
     public List<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException;
