@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -22,14 +23,17 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ptdb.common.dto.AttributeSearchTask;
+import ptdb.common.dto.CreateAttributeTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
 import ptdb.common.dto.DBGraphSearchCriteria;
+import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
+import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -321,30 +325,76 @@ public class OracleXMLDBConnection implements DBConnection {
      * @return List of attributes stored in the database.
      * @exception DBExecutionException Thrown if there is a problem in executing the operation.
      */
-    public List<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
+    public ArrayList<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
-        //FIXME: this is a dummy data and should be replaced by the real attributes from the database once they are available.
-        List<XMLDBAttribute>  attributeList = new ArrayList<XMLDBAttribute>();
         
-        XMLDBAttribute xmlAttributeString = new XMLDBAttribute("Author", XMLDBAttribute.ATTRIBUTE_TYPE_STRING);
-        
-        XMLDBAttribute xmlAttributeBoolean = new XMLDBAttribute("isNew", XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN);
-        
-        XMLDBAttribute xmlAttributeList = new XMLDBAttribute("Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST);
-        
-        List<String> countryAttributeValues = new ArrayList<String>();
-        
-        countryAttributeValues.add("China");
-        countryAttributeValues.add("India");
-        countryAttributeValues.add("Saudi Arabia");
-        countryAttributeValues.add("United States of America");
-        
-        xmlAttributeList.setAttributeValue(countryAttributeValues);
-        
-        attributeList.add(xmlAttributeBoolean);
-        attributeList.add(xmlAttributeString);
-        attributeList.add(xmlAttributeList);
 
+        ArrayList<XMLDBAttribute> attributeList = new ArrayList<XMLDBAttribute> ();
+        
+        
+        try {
+
+            if (_xmlContainer == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetAttributesTask"
+                                + " - the XmlContainer object was not "
+                                + "instantiated properly");
+            }
+
+            if (_xmlTransaction == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetAttributesTask"
+                                + " - the XmlTransaction object was not "
+                                + "instantiated properly");
+            }
+
+            if (task == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetAttributesTask"
+                                + " - the CreateModelTask object passed was null");
+            }
+
+            XmlDocument doc = null;
+
+            try {
+                doc = _xmlContainer.getDocument("Attributes.ptdbxml");
+            } catch (XmlException e) {
+                throw new DBExecutionException(
+                        "Failed to execute GetAttributesTask"
+                                + " - Could not fetch the Attribute.ptdbxml.");
+            }
+
+            Document attributeDocument = (Document) _parseXML(
+                    doc.getContentAsString());
+            
+            if (attributeDocument != null) {
+                //get the first node in the attributes SAX document returned
+                Node firstNode = attributeDocument.getElementsByTagName("attributes").item(0);
+            
+                if (firstNode != null) {
+                
+                    NodeList children = firstNode.getChildNodes();
+                    
+                    for (int i = 0; i < children.getLength(); i++) {
+                        if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                            Node child = children.item(i);
+                            
+                            XMLDBAttribute xmlDBAttribute = _constructXMLDBAttribute(child);
+                            
+                            if (xmlDBAttribute != null) {
+                            
+                                attributeList.add(xmlDBAttribute);
+                            }
+                        }
+                    }
+                }
+            }
+            
+        } catch (XmlException e) {
+            
+            throw new DBExecutionException("Failed to execute GetAttributesTask - "
+                    + e.getMessage(), e);
+        }
         
         return attributeList;
     }
@@ -483,6 +533,150 @@ public class OracleXMLDBConnection implements DBConnection {
         }
         return null;
     }
+    
+
+    /**
+     * Execute a create attribute task which adds a new attribute to the database.
+     * @param task The task that contains the new attribute to be created.
+     * @throws DBExecutionException Thrown if the operation fails.
+     */
+    public void executeCreateAttributeTask(CreateAttributeTask task) 
+        throws DBExecutionException {
+        
+        try {
+            if (task == null) {
+                throw new DBExecutionException(
+                        "Failed to execute CreateAttributeTask"
+                                + " - the CreateAttributeTask object passed was null");
+            }
+            
+            if (_xmlContainer == null) {
+                throw new DBExecutionException(
+                        "Failed to execute CreateAttributeTask"
+                                + " - the XmlContainer object was not "
+                                + "instantiated properly");
+            }
+
+            if (_xmlManager == null) {
+                throw new DBExecutionException(
+                        "Failed to execute CreateAttributeTask"
+                                + " - the XmlManager object was not "
+                                + "instantiated properly");
+            }
+
+            
+            XMLDBAttribute xmlDBAttribute = task.getXMLDBAttribute();
+            
+            if (xmlDBAttribute == null) {
+                throw new DBExecutionException(
+                        "Failed to execute CreateAttributeTask"
+                                + " - the XMLDBAttribute object in the task was null");
+            }
+            
+            String attributeName = xmlDBAttribute.getAttributeName();
+            
+            //check if the attribute already exists.            
+            String query = "doc('dbxml:/" + _xmlContainer.getName() 
+                + "/Attributes.ptdbxml')/attributes/attribute[@name='" 
+                + attributeName + "']";
+            
+            XmlQueryContext xmlQueryContext = _xmlManager.createQueryContext();
+
+            if (xmlQueryContext == null)
+                throw new DBExecutionException(
+                        "Failed to CreateAttributeTask - The Query context is null "
+                                + "and cannot be used to execute queries.");
+            
+            
+            
+            //create the attribute id as a combination of the name and time stamp.
+            Date date = new Date ();
+            
+            String attributeId = attributeName + date.getTime();
+            
+            xmlDBAttribute.setAttributeId(attributeId);
+
+            String attributeNode = xmlDBAttribute.getXMLStringFormat();
+            
+            String insertQuery = "insert node " + attributeNode + " into doc('dbxml:/"
+                + _xmlContainer.getName() + "/Attributes.ptdbxml')/attributes";
+            
+            
+            XmlResults results = _xmlManager.query(insertQuery, xmlQueryContext, null);
+             
+            
+        } catch (XmlException e) {
+            throw new DBExecutionException("Failed to execute DeleteAttributeTask - "
+                    + e.getMessage(), e);
+        }
+        
+    }
+    
+
+    /**
+     * Execute delete attribute task which deletes a given attribute from the database.
+     * @param task The task that contains the attribute to be deleted.
+     * @throws DBExecutionException Thrown if the operation fails.
+     */
+    public void executeDeleteAttributeTask(DeleteAttributeTask task) 
+        throws DBExecutionException {
+        
+        try {
+            if (task == null) {
+                throw new DBExecutionException(
+                        "Failed to execute DeleteAttributeTask"
+                                + " - the DeleteAttributeTask object passed was null");
+            }
+            
+            if (_xmlContainer == null) {
+                throw new DBExecutionException(
+                        "Failed to execute DeleteAttributeTask"
+                                + " - the XmlContainer object was not "
+                                + "instantiated properly");
+            }
+
+            if (_xmlManager == null) {
+                throw new DBExecutionException(
+                        "Failed to execute DeleteAttributeTask"
+                                + " - the XmlManager object was not "
+                                + "instantiated properly");
+            }
+
+            
+            XMLDBAttribute xmlDBAttribute = task.getXMLDBAttribute();
+            
+            if (xmlDBAttribute == null) {
+                throw new DBExecutionException(
+                        "Failed to execute DeleteAttributeTask"
+                                + " - the XMLDBAttribute object in the task was null");
+            }
+            
+            String attributeId = xmlDBAttribute.getAttributeId();
+            
+            
+            
+            String query = "delete node doc('dbxml:/" + _xmlContainer.getName() 
+                + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
+                + attributeId + "']";
+            
+            XmlQueryContext xmlQueryContext = _xmlManager.createQueryContext();
+
+            if (xmlQueryContext == null)
+                throw new DBExecutionException(
+                        "Failed to DeleteAttributeTask - The Query context is null "
+                                + "and cannot be used to execute queries.");
+            
+            xmlQueryContext.setEvaluationType(XmlQueryContext.Lazy);
+
+            XmlResults results = _xmlManager.query(query, xmlQueryContext, null);        
+            
+        } catch (XmlException e) {
+            throw new DBExecutionException("Failed to execute DeleteAttributeTask - "
+                    + e.getMessage(), e);
+        }
+    }
+    
+    
 
     /**
      * Search models that contain given graphical pattern in the database.
@@ -665,6 +859,73 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
     }
+    
+    
+
+    /**
+     * Execute update attribute task to update a given attribute in the database.
+     * @param task The task that holds the attribute to be updated.
+     * @throws DBExecutionException Thrown if the operation fails with an error.
+     */
+    public void executeUpdateAttributeTask(UpdateAttributeTask task)
+        throws DBExecutionException {
+        
+        try {
+            if (task == null) {
+                throw new DBExecutionException(
+                        "Failed to execute UpdateAttributeTask"
+                                + " - the UpdateAttributeTask object passed was null");
+            }
+            
+            if (_xmlContainer == null) {
+                throw new DBExecutionException(
+                        "Failed to execute UpdateAttributeTask"
+                                + " - the XmlContainer object was not "
+                                + "instantiated properly");
+            }
+
+            if (_xmlManager == null) {
+                throw new DBExecutionException(
+                        "Failed to execute UpdateAttributeTask"
+                                + " - the XmlManager object was not "
+                                + "instantiated properly");
+            }
+
+            
+            XMLDBAttribute xmlDBAttribute = task.getXMLDBAttribute();
+            
+            if (xmlDBAttribute == null) {
+                throw new DBExecutionException(
+                        "Failed to execute UpdateAttributeTask"
+                                + " - the XMLDBAttribute object in the task was null");
+            }
+            
+            
+            String attributeNode = xmlDBAttribute.getXMLStringFormat();
+            
+            String query = "replace node doc('dbxml:/"+ _xmlContainer.getName() 
+                + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
+                + xmlDBAttribute.getAttributeId() + "'] with "+ attributeNode;
+            
+            
+            XmlQueryContext xmlQueryContext = _xmlManager.createQueryContext();
+
+            if (xmlQueryContext == null)
+                throw new DBExecutionException(
+                        "Failed to UpdateAttributeTask - The Query context is null "
+                                + "and cannot be used to execute queries.");
+            
+            xmlQueryContext.setEvaluationType(XmlQueryContext.Lazy);
+
+            XmlResults results = _xmlManager.query(query, xmlQueryContext, null);        
+            
+        } catch (XmlException e) {
+            throw new DBExecutionException("Failed to execute UpdateAttributeTask - "
+                    + e.getMessage(), e);
+        }
+    }
+
+    
 
     /**
      * Provide information regarding the state of the internal variables useful
@@ -687,6 +948,12 @@ public class OracleXMLDBConnection implements DBConnection {
         return classState.toString();
 
     }
+    
+        
+
+    
+    
+        
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -858,6 +1125,70 @@ public class OracleXMLDBConnection implements DBConnection {
         }
     }
 
+    /**
+     * Build an XMLDBAttribute from a given SAX node.
+     * @param node the node that represent the attribute. 
+     * @return XMLDBAttribute object.
+     */
+    private XMLDBAttribute _constructXMLDBAttribute(Node node) {
+        
+        XMLDBAttribute xmlDBAttribute = null;
+        String attributeName = "";
+        String attributeType = "";
+        String attributeId = "";
+        List<String> itemValues = new ArrayList<String>();
+        
+        if (node != null) {
+            
+            NamedNodeMap attributes = node.getAttributes();
+            
+            
+            for (int i = 0; i < attributes.getLength(); i++) {
+                Node attributeNode = attributes.item(i);
+                
+                if (attributeNode.getNodeName().equalsIgnoreCase("id")) {
+                    attributeId = attributeNode.getNodeValue();
+                }
+                
+
+                if (attributeNode.getNodeName().equalsIgnoreCase("name")) {
+                    attributeName = attributeNode.getNodeValue();
+                }
+                
+
+                if (attributeNode.getNodeName().equalsIgnoreCase("type")) {
+                    attributeType = attributeNode.getNodeValue();
+                    
+                    if (attributeType.equalsIgnoreCase("list")) {
+                        NodeList items = node.getChildNodes();
+                        
+                        for (int j = 0; j < items.getLength(); j++) {
+                            if (items.item(j).getNodeType() == Node.ELEMENT_NODE) {
+                                
+                                Node itemNode = items.item(j).getAttributes().getNamedItem("name");
+                                itemValues.add(itemNode.getNodeValue());
+                            }
+                        }
+                    }
+                }
+            }
+            
+            xmlDBAttribute = new XMLDBAttribute(
+                    attributeName, attributeType, attributeId);
+            
+            if (itemValues != null && itemValues.size() > 0) {
+                xmlDBAttribute.setAttributeValue(itemValues);
+            }
+            
+            
+        } else {
+            xmlDBAttribute = null;
+        }
+        
+        return xmlDBAttribute;
+    }
+    
+    
     /**
      * Create the attribute sub-query for the given attribute.
      * 
