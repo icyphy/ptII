@@ -73,7 +73,7 @@ public class DBConnectorFactory {
         
         if(_isDBSetupDone == true) {
             
-            SetupParameters setupParameters = new SetupParameters(_DB_URL, 
+            SetupParameters setupParameters = new SetupParameters(_dbUrl, 
                     _dbContainerName, _cacheContainerName);
             
             return setupParameters;
