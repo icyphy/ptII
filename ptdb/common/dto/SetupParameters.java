@@ -44,7 +44,7 @@ public class SetupParameters {
     /**
      * Return the cache container name.
      * @return The cache container name. 
-     * @see #getCacheContainerName()
+     * @see #getCacheContainerName
      */
     public String getCacheContainerName() {
         return _cacheContainerName;
