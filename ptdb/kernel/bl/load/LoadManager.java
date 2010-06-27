@@ -66,16 +66,11 @@ public class LoadManager {
                		"class=\"ptolemy.data.expr.StringParameter\" " +
                		"value=\"TRUE\"></property>";
                
-               try {
-                   MoMLChangeRequest change = new MoMLChangeRequest(null,
-                           returnEntity, referenceTag);
-                       
-                   change.setUndoable(true);
-                   returnEntity.requestChange(change);
+               MoMLChangeRequest change = new MoMLChangeRequest(null,
+                       returnEntity, referenceTag);
                    
-               } catch( Exception e){
-                   e.printStackTrace();
-               }
+               change.setUndoable(true);
+               returnEntity.requestChange(change);
                
            } else {
            
@@ -92,17 +87,12 @@ public class LoadManager {
                         "class=\"ptolemy.data.expr.StringParameter\" " +
                         "value=\"FALSE\"></property>";
                
-               try {
-                   MoMLChangeRequest change = new MoMLChangeRequest(null,
-                           returnEntity, referenceTag);
-                       
-                   change.setUndoable(true);
-                   returnEntity.requestChange(change);
+               MoMLChangeRequest change = new MoMLChangeRequest(null,
+                       returnEntity, referenceTag);
                    
-               } catch( Exception e){
-                   e.printStackTrace();
-               }
-               
+               change.setUndoable(true);
+               returnEntity.requestChange(change);
+                   
            } else {
            
                ((StringParameter) returnEntity

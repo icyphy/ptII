@@ -35,7 +35,6 @@ import ptdb.kernel.bl.search.SearchResultBuffer;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 

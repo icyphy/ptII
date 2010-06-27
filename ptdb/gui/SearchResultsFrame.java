@@ -20,8 +20,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
 
-import diva.graph.GraphModel;
-
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
@@ -30,7 +28,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.basic.BasicGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// SearchResultsFrame
@@ -229,7 +226,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         private methods                   ////
     
     private void _importByReference(){
         
@@ -247,23 +244,21 @@ public class SearchResultsFrame extends JFrame implements Observer {
             
                 Entity modelToImport = 
                     LoadManager.importModel(modelName, true);
-                
-                try {
                     
-                    NamedObj container = _containerModel;
-                        
+                if (modelToImport != null){
+                    
                     MoMLChangeRequest change = new MoMLChangeRequest(this,
-                            container, modelToImport.exportMoML());
+                            _containerModel, modelToImport.exportMoML());
                         
                     change.setUndoable(true);
-                    container.requestChange(change);
-                
-                } catch (Exception ex) {
-                        
-                    MessageHandler.error
-                        ("Cannot import the specified model. ", ex);
-                        
+                    _containerModel.requestChange(change);
+               
+                } else{
+                    
+                    throw new Exception();
+                    
                 }
+                
             }  catch (Exception e){
 
                 MessageHandler.error
@@ -273,8 +268,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
             
         }
         
-    }
-    
+    }    
     
     private void _importByValue(){
         
@@ -292,23 +286,21 @@ public class SearchResultsFrame extends JFrame implements Observer {
             
                 Entity modelToImport = 
                     LoadManager.importModel(modelName, false);
-                
-                try {
+
+                if (modelToImport != null){
                     
-                    NamedObj container = _containerModel;
-                        
                     MoMLChangeRequest change = new MoMLChangeRequest(this,
-                            container, modelToImport.exportMoML());
+                            _containerModel, modelToImport.exportMoML());
                         
                     change.setUndoable(true);
-                    container.requestChange(change);
-                
-                } catch (Exception ex) {
-                        
-                    MessageHandler.error
-                        ("Cannot import the specified model. ", ex);
-                        
+                    _containerModel.requestChange(change);
+                    
+                } else{
+                    
+                    throw new Exception();
+                    
                 }
+                    
             }  catch (Exception e){
 
                 MessageHandler.error
