@@ -5,13 +5,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Properties;
-import ptolemy.util.FileUtilities;
 
 import ptdb.common.dto.DBConnectionParameters;
 import ptdb.common.dto.SetupParameters;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.kernel.database.AsynchronousDBConnection;
 import ptdb.kernel.database.DBConnection;
+import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// DBConnectorFactory
@@ -274,8 +274,10 @@ public class DBConnectorFactory {
         } catch (InvocationTargetException e) {
 
             throw new DBConnectionException(
-                    "PTDB invocation target exception - " + _dbClassName + " "
-                            + e.getMessage(), e);
+                    "PTDB invocation target exception - " + _dbClassName
+                            + " for url - " + dbConnectionParameters.getUrl()
+                            + " and container name - "
+                            + dbConnectionParameters.getContainerName(), e);
 
         }
         return xmlDBConnection;

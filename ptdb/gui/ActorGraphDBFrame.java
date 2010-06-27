@@ -110,6 +110,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         _loadModelFromDBAction = new LoadModelFromDBAction();
         _openSearchFrameAction = new OpenSearchFrameAction(this.getTableau());
         _saveModelToDBAction = new SaveModelToDBAction();
+        _openDatabaseSetupAction = new DatabaseSetupAction();
         _simpleSearchAction = new SimpleSearchAction
                                 (getModel(), this, getConfiguration());
 
@@ -151,6 +152,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                 .addHotKey(_getRightComponent(), _saveModelToDBAction);
             GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
             
+            GUIUtilities
+            .addHotKey(_getRightComponent(), _openDatabaseSetupAction);
+            GUIUtilities.addMenuItem(_dbMenu, _openDatabaseSetupAction);
+            
             // TODO: }
         }
 
@@ -173,6 +178,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     
     /** The action for performing a simple database search. */
     protected Action _simpleSearchAction;
+
+    /** The action for saving a model to the database. */
+    protected Action _openDatabaseSetupAction;
 
     ///////////////////////////////////////////////////////////////////
     ////         public inner classes                              ////
@@ -421,8 +429,36 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
         
     }
+
     
     ///////////////////////////////////////////////////////////////////
+    //// DatabaseSetupAction
+
+    /**
+     * Setup database connection.
+     */
+    private class DatabaseSetupAction extends AbstractAction {
+        /**
+         * Create a new action to setup database connection.
+         * 
+         */
+        public DatabaseSetupAction() {
+
+            super("Setup Database Connection");
+
+            putValue("tooltip", "Setup Database Connection");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
+
+        }
+
+        public void actionPerformed(ActionEvent e) {
+
+            JFrame frame = new DatabaseSetupFrame();
+            frame.pack();
+            frame.setVisible(true);
+        }
+    }
+///////////////////////////////////////////////////////////////////
     //// SimpleSearchAction
 
     /**
@@ -469,5 +505,4 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         private Configuration _configuration;
         
     }
-
 }
