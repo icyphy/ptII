@@ -27,10 +27,12 @@ public class XMLDBAttribute {
      *
      * @param attributeName The name for the given attribute.
      * @param attributeType The type for the given attribute.
+     * @param attributeId The it for the given attribute.
      */
-    public XMLDBAttribute(String attributeName, String attributeType) {
+    public XMLDBAttribute(String attributeName, String attributeType, String attributeId) {
         this._attributeName = attributeName;
         this._attributeType = attributeType;
+        this._attributeId = attributeId;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -48,6 +50,18 @@ public class XMLDBAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    
+    /**
+     * Return the attribute id.
+     * @return The attribute id.
+     * 
+     * @see #setAttributeId
+     */
+    public String getAttributeId() {
+        return _attributeId;
+    }
+    
+    
 
     /**
      * Return the attribute name.
@@ -86,6 +100,15 @@ public class XMLDBAttribute {
 
 
     /**
+     * Set the attribute Id.
+     * @param attributeId the attribute id to be set.
+     * 
+     * @see #getAttributeId
+     */
+    public void setAttributeId(String attributeId) {
+        this._attributeId = attributeId;
+    }
+    /**
      * Set the attribute list value only when the attribute type is list.
      * @param attributeValues The list of attribute values.
      * 
@@ -97,6 +120,34 @@ public class XMLDBAttribute {
             _attributeValues = attributeValues;
         } 
     }
+    
+    
+
+    /**
+     * Create an XML string representation of XMLDBAttribute object.
+     * @param xmlDBAttribute The object that needs to be converted to string.
+     * @return The XML string representation of XMLDBAttribute object
+     */
+    public String getXMLStringFormat() {
+        
+        String attributeNode = "<attribute id='" + _attributeId + "'" + 
+            " name='" + _attributeName + "' type='" + _attributeType + "'>";
+        
+        if (_attributeType.equalsIgnoreCase("list")) {
+            
+            
+            if (_attributeValues != null && _attributeValues.size() > 0) {
+                for(int i = 0; i < _attributeValues.size(); i++) {
+                    attributeNode = attributeNode + "<item name='" + 
+                    _attributeValues.get(i).toString()+"'/>";
+                }
+            }
+        }
+        
+        attributeNode = attributeNode + "</attribute>";
+        
+        return attributeNode;
+    }
 
 
     
@@ -104,6 +155,10 @@ public class XMLDBAttribute {
     ////                         private variables                 ////
     
 
+    /** Attribute id. */
+    private String _attributeId;
+    
+    
     /** Attribute name. */
     private String _attributeName;
     
