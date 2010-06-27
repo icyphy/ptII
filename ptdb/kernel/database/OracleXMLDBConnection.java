@@ -541,7 +541,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBExecutionException Thrown if the operation fails.
      */
     public void executeCreateAttributeTask(CreateAttributeTask task) 
-        throws DBExecutionException {
+            throws DBExecutionException {
         
         try {
             if (task == null) {
@@ -588,6 +588,15 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + "and cannot be used to execute queries.");
             
             
+            XmlResults results = _xmlManager.query(query, xmlQueryContext, null);
+            
+        
+            if (results != null && results.size() > 0) {
+                
+                throw new DBExecutionException(
+                        "Failed to CreateAttributeTask - An attribute with the "
+                                + "same name already exist.");
+            }
             
             //create the attribute id as a combination of the name and time stamp.
             Date date = new Date ();
@@ -602,11 +611,11 @@ public class OracleXMLDBConnection implements DBConnection {
                 + _xmlContainer.getName() + "/Attributes.ptdbxml')/attributes";
             
             
-            XmlResults results = _xmlManager.query(insertQuery, xmlQueryContext, null);
+            _xmlManager.query(insertQuery, xmlQueryContext, null);
              
             
         } catch (XmlException e) {
-            throw new DBExecutionException("Failed to execute DeleteAttributeTask - "
+            throw new DBExecutionException("Failed to execute CreateAttributeTask - "
                     + e.getMessage(), e);
         }
         
@@ -619,7 +628,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBExecutionException Thrown if the operation fails.
      */
     public void executeDeleteAttributeTask(DeleteAttributeTask task) 
-        throws DBExecutionException {
+            throws DBExecutionException {
         
         try {
             if (task == null) {
@@ -668,7 +677,7 @@ public class OracleXMLDBConnection implements DBConnection {
             
             xmlQueryContext.setEvaluationType(XmlQueryContext.Lazy);
 
-            XmlResults results = _xmlManager.query(query, xmlQueryContext, null);        
+            _xmlManager.query(query, xmlQueryContext, null);        
             
         } catch (XmlException e) {
             throw new DBExecutionException("Failed to execute DeleteAttributeTask - "
@@ -868,7 +877,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBExecutionException Thrown if the operation fails with an error.
      */
     public void executeUpdateAttributeTask(UpdateAttributeTask task)
-        throws DBExecutionException {
+            throws DBExecutionException {
         
         try {
             if (task == null) {
@@ -917,7 +926,7 @@ public class OracleXMLDBConnection implements DBConnection {
             
             xmlQueryContext.setEvaluationType(XmlQueryContext.Lazy);
 
-            XmlResults results = _xmlManager.query(query, xmlQueryContext, null);        
+            _xmlManager.query(query, xmlQueryContext, null);        
             
         } catch (XmlException e) {
             throw new DBExecutionException("Failed to execute UpdateAttributeTask - "
