@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ptdb.common.dto.AttributeSearchTask;
+import ptdb.common.dto.CreateAttributeTask;
 import ptdb.common.dto.CreateModelTask;
+import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
+import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -52,7 +55,20 @@ public interface DBConnection {
      * transaction in the database.
      */
     public void commitConnection() throws DBConnectionException;
-
+    
+    
+    /**
+     * Execute the necessary commands to create a new attribute in the database 
+     * according to the attribute specification given in the task parameter.
+     *
+     * @param task
+     *          The task to be completed.  In this case, CreateAttributeTask.
+     *          This will tell the DB layer to create a new attribute in the database.
+     * @exception DBExecutionException Thrown if the operation fails.
+     */
+    public void executeCreateAttributeTask(CreateAttributeTask task)
+            throws DBExecutionException;
+    
     /**
      * Execute the necessary commands to create a new model in the database according
      * to the model specification given in the task parameter.
@@ -65,6 +81,19 @@ public interface DBConnection {
      */
     public void executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException, ModelAlreadyExistException;
+    
+    
+    /**
+     * Execute the necessary commands to delete an attribute from the database 
+     * according to the attribute specification given in the task parameter.
+     *
+     * @param task
+     *          The task to be completed.  In this case, DeleteAttributeTask.
+     *          This will tell the DB layer to delete an attribute from the database.
+     * @exception DBExecutionException Thrown if the operation fails.
+     */
+    public void executeDeleteAttributeTask(DeleteAttributeTask task)
+            throws DBExecutionException;
 
     /**
      * Fetch the parent model hierarchies for the given models.
@@ -133,6 +162,19 @@ public interface DBConnection {
      * @exception DBExecutionException Thrown when there is a problem in executing the task.
      */
     public void executeSaveModelTask(SaveModelTask task)
+            throws DBExecutionException;
+    
+
+    /**
+     * Execute the necessary commands to update an attribute in the database 
+     * according to the attribute specification given in the task parameter.
+     *
+     * @param task
+     *          The task to be completed.  In this case, UpdateAttributeTask.
+     *          This will tell the DB layer to update an attribute in the database.
+     * @exception DBExecutionException Thrown if the operation fails.
+     */
+    public void executeUpdateAttributeTask(UpdateAttributeTask task)
             throws DBExecutionException;
 
 }
