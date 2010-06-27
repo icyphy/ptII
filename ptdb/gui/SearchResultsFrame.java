@@ -20,10 +20,17 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
 
+import diva.graph.GraphModel;
+
 import ptdb.common.dto.XMLDBModel;
+import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.BasicGraphFrame;
 
 ///////////////////////////////////////////////////////////////////
 //// SearchResultsFrame
@@ -59,7 +66,10 @@ public class SearchResultsFrame extends JFrame implements Observer {
 
         _configuration = configuration;
         _cancelObservable = new CancelObservable();
-
+        _containerModel = model;
+        _sourceFrame = frame;
+        _configuration = configuration;
+        
         String title = "Search Results";
 
         setTitle(title);
@@ -97,11 +107,9 @@ public class SearchResultsFrame extends JFrame implements Observer {
         outerPanel.add(buttonPanel);
 
         _loadByRefButton = new JButton("Import By Reference");
-        _loadByRefButton.setEnabled(false);
         buttonPanel.add(_loadByRefButton);
 
         _loadByValButton = new JButton("Import By Value");
-        _loadByValButton.setEnabled(false);
         buttonPanel.add(_loadByValButton);
 
         _cancelButton = new JButton("Stop Search");
@@ -112,7 +120,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
 
             public void actionPerformed(ActionEvent event) {
 
-                //TODO
+                _importByReference();
 
             }
 
@@ -122,7 +130,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
 
             public void actionPerformed(ActionEvent event) {
 
-                //TODO
+                _importByValue();
 
             }
 
@@ -219,6 +227,98 @@ public class SearchResultsFrame extends JFrame implements Observer {
         }
 
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    private void _importByReference(){
+        
+        ArrayList<String> modelNames = new ArrayList();
+        
+        for (SearchResultPanel panel : _resultPanelList){
+            
+            modelNames.addAll(panel.getSelections());
+            
+        }
+        
+        for(String modelName : modelNames){
+            
+            try {
+            
+                Entity modelToImport = 
+                    LoadManager.importModel(modelName, true);
+                
+                try {
+                    
+                    NamedObj container = _containerModel;
+                        
+                    MoMLChangeRequest change = new MoMLChangeRequest(this,
+                            container, modelToImport.exportMoML());
+                        
+                    change.setUndoable(true);
+                    container.requestChange(change);
+                
+                } catch (Exception ex) {
+                        
+                    MessageHandler.error
+                        ("Cannot import the specified model. ", ex);
+                        
+                }
+            }  catch (Exception e){
+
+                MessageHandler.error
+                    ("Cannot import the specified model. ", e);
+                
+            }
+            
+        }
+        
+    }
+    
+    
+    private void _importByValue(){
+        
+        ArrayList<String> modelNames = new ArrayList();
+        
+        for (SearchResultPanel panel : _resultPanelList){
+            
+            modelNames.addAll(panel.getSelections());
+            
+        }
+        
+        for(String modelName : modelNames){
+            
+            try {
+            
+                Entity modelToImport = 
+                    LoadManager.importModel(modelName, false);
+                
+                try {
+                    
+                    NamedObj container = _containerModel;
+                        
+                    MoMLChangeRequest change = new MoMLChangeRequest(this,
+                            container, modelToImport.exportMoML());
+                        
+                    change.setUndoable(true);
+                    container.requestChange(change);
+                
+                } catch (Exception ex) {
+                        
+                    MessageHandler.error
+                        ("Cannot import the specified model. ", ex);
+                        
+                }
+            }  catch (Exception e){
+
+                MessageHandler.error
+                    ("Cannot import the specified model. ", e);
+                
+            }
+            
+        }
+        
+    }
 
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
@@ -229,7 +329,9 @@ public class SearchResultsFrame extends JFrame implements Observer {
     private JButton _cancelButton;
     private ArrayList<SearchResultPanel> _resultPanelList;
     private CancelObservable _cancelObservable;
+    JPanel _innerPanel;
+    private NamedObj _containerModel;
+    private JFrame _sourceFrame;
     private Configuration _configuration;
-   JPanel _innerPanel;
 
 }

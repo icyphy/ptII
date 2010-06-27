@@ -63,7 +63,8 @@ public class ModelPanel extends JPanel {
         JLabel modelLabel = new JLabel("Model Name:");
         add(modelLabel);
 
-        JCheckBox _loadCheck = new JCheckBox();
+        _loadCheck = new JCheckBox();
+        _loadCheck.setSelected(false);
         add(_loadCheck);
 
         _modelLink = new JButton("<html><u>" + _modelName + "</html></u>");

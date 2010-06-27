@@ -54,6 +54,8 @@ public class SearchResultPanel extends JPanel {
         _modelPanel.setAlignmentX(LEFT_ALIGNMENT);
         add(_modelPanel);
 
+        _parentPanelList = new ArrayList();
+        
         if (dbModel.getParents() != null) {
             
             if(dbModel.getParents().size()>0){
@@ -63,8 +65,6 @@ public class SearchResultPanel extends JPanel {
                 Border labelBorder = BorderFactory.createEmptyBorder(0, 3, 0, 0);
                 hierarchyLabel.setBorder(labelBorder);
                 add(hierarchyLabel);
-    
-                _parentPanelList = new ArrayList();
                 
                 for (List<XMLDBModel> hierarchy : dbModel.getParents()) {
     
@@ -108,12 +108,16 @@ public class SearchResultPanel extends JPanel {
 
         ArrayList<String> returnList = new ArrayList();
 
-        for (ParentHierarchyPanel hierarchy : _parentPanelList) {
-
-            returnList.addAll(hierarchy.getSelections());
-
+        if(_parentPanelList.size() > 0){
+            
+            for (ParentHierarchyPanel hierarchy : _parentPanelList) {
+    
+                returnList.addAll(hierarchy.getSelections());
+    
+            }
+            
         }
-
+        
         if (_modelPanel.getValue()) {
 
             returnList.add(_modelPanel.getModelName());

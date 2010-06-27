@@ -599,12 +599,26 @@ public class SaveModelToDBFrame extends JFrame {
 
         try {
 
-            if (_modelToSave.getAttribute("DBModel") == null) {
+            if (_modelToSave.getAttribute("DBReference") == null) {
 
                 StringParameter dbModelParam = new StringParameter(
-                        _modelToSave, "DBModel");
-                dbModelParam.setExpression("TRUE");
+                        _modelToSave, "DBReference");
+                dbModelParam.setExpression("FALSE");
                 dbModelParam.setContainer(_modelToSave);
+                
+            }
+            
+            if (_modelToSave.getAttribute("DBModelName") == null) {
+
+                StringParameter dbModelParam = new StringParameter(
+                        _modelToSave, "DBModelName");
+                dbModelParam.setExpression(_modelToSave.getName());
+                dbModelParam.setContainer(_modelToSave);
+                
+            } else { 
+                
+                ((StringParameter)_modelToSave.getAttribute("DBModelName"))
+                    .setExpression(_modelToSave.getName());
                 
             }
 
@@ -624,7 +638,8 @@ public class SaveModelToDBFrame extends JFrame {
             // set of attributes obtained from the DB.
             for (StringParameter attribute : attributesList) {
 
-                if (attribute.getName()!="DBModel" && 
+                if (attribute.getName()!="DBReference" && 
+                        attribute.getName()!="DBModelName" &&
                         _aList.containsKey(attribute.getName())){
                     
                     attribute.setContainer(null);

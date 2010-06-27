@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 
 import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gt.TransformationRule;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -28,6 +29,7 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
@@ -108,6 +110,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         _loadModelFromDBAction = new LoadModelFromDBAction();
         _openSearchFrameAction = new OpenSearchFrameAction(this.getTableau());
         _saveModelToDBAction = new SaveModelToDBAction();
+        _simpleSearchAction = new SimpleSearchAction
+                                (getModel(), this, getConfiguration());
 
     }
 
@@ -138,6 +142,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             GUIUtilities
                     .addHotKey(_getRightComponent(), _openSearchFrameAction);
             GUIUtilities.addMenuItem(_dbMenu, _openSearchFrameAction);
+            
+            GUIUtilities
+                    .addHotKey(_getRightComponent(), _simpleSearchAction);
+            GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
 
             GUIUtilities
                 .addHotKey(_getRightComponent(), _saveModelToDBAction);
@@ -162,9 +170,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     /** The action for saving a model to the database. */
     protected Action _saveModelToDBAction;
+    
+    /** The action for performing a simple database search. */
+    protected Action _simpleSearchAction;
 
     ///////////////////////////////////////////////////////////////////
-    ////         public inner classes                           ////
+    ////         public inner classes                              ////
 
     /** Search dialog. */
     public class ModelSearchResults extends JDialog implements QueryListener {
@@ -336,10 +347,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     private class OpenSearchFrameAction extends AbstractAction {
 
         public OpenSearchFrameAction(Tableau tableau) {
-            super("Search Model in Database");
+            super("Pattern Database Search");
 
-            putValue("tooltip", "Search Model in Database");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
+            putValue("tooltip", "Pattern Database Search");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
         ///////////////////////////////////////////////////////////////
@@ -397,7 +408,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             super("Save Model to Database");
             
             putValue("tooltip", "Save Model to Database");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_A));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
 
         }
 
@@ -408,6 +419,54 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             frame.setVisible(true);
 
         }
+        
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    //// SimpleSearchAction
+
+    /**
+     * Perform a simple database search.
+     */
+    private class SimpleSearchAction extends AbstractAction {
+        /**
+         * Create a new action to save a model to the database.
+         * @param model 
+         *      The model into which search results would be imported.
+         * @param frame 
+         *      The editing frame from which the simple search window will
+         *      open.
+         * @param configuration
+         *      The configuration under which models from the database will
+         *      be loaded. 
+         * 
+         */
+        public SimpleSearchAction(NamedObj model, 
+                JFrame frame, Configuration configuration) {
+
+            super("Simple Database Search");
+            
+            putValue("tooltip", "Simple Database Search");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
+
+            _containerModel = model;
+            _sourceFrame = frame;
+            _configuration = configuration;
+            
+        }
+
+        public void actionPerformed(ActionEvent e) {
+
+            JFrame frame = new SimpleSearchFrame(_containerModel, 
+                    _sourceFrame, _configuration);
+            frame.pack();
+            frame.setVisible(true);
+
+        }
+        
+        private NamedObj _containerModel;
+        private JFrame _sourceFrame;
+        private Configuration _configuration;
         
     }
 

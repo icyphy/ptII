@@ -8,8 +8,10 @@ import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////////
@@ -28,6 +30,93 @@ import ptolemy.moml.MoMLParser;
 
 public class LoadManager {
 
+    /** Given a model name, return an Entity object.
+    *
+    * @param name
+    *          The model name.  An alphanumeric
+    *          string without special characters.
+    *          If no model with the given name is found, return null.
+    * @param byReference
+    *          Indication that the model should be included by reference.
+    * @return
+    *          An Entity object that the GUI can display.
+    * @exception DBConnectionException
+    *          Thrown by DBModelFetcher if a problem occurs with the
+    *          database connection.
+    * @exception DBExecutionException 
+    *          Thrown by DBModelFetcher if a problem while executing a 
+    *          command.
+    * @exception Exception
+    *          Thrown if a problem occurs creating an effigy from the MoML.
+    */
+   public  static Entity importModel(String name, boolean byReference)
+           throws DBConnectionException, DBExecutionException, Exception {
+
+       XMLDBModel dbModel = DBModelFetcher.load(name);
+       
+       if(dbModel == null) return null;
+       
+       Entity returnEntity = _getEntity(dbModel);
+       
+       if(byReference){
+
+           if (returnEntity.getAttribute("DBReference") == null) {
+
+               String referenceTag = "<property name=\"DBReference\" " +
+               		"class=\"ptolemy.data.expr.StringParameter\" " +
+               		"value=\"TRUE\"></property>";
+               
+               try {
+                   MoMLChangeRequest change = new MoMLChangeRequest(null,
+                           returnEntity, referenceTag);
+                       
+                   change.setUndoable(true);
+                   returnEntity.requestChange(change);
+                   
+               } catch( Exception e){
+                   e.printStackTrace();
+               }
+               
+           } else {
+           
+               ((StringParameter) returnEntity
+                   .getAttribute("DBReference")).setExpression("TRUE");
+ 
+           }
+       
+       } else {
+           
+           if (returnEntity.getAttribute("DBReference") == null) {
+
+               String referenceTag = "<property name=\"DBReference\" " +
+                        "class=\"ptolemy.data.expr.StringParameter\" " +
+                        "value=\"FALSE\"></property>";
+               
+               try {
+                   MoMLChangeRequest change = new MoMLChangeRequest(null,
+                           returnEntity, referenceTag);
+                       
+                   change.setUndoable(true);
+                   returnEntity.requestChange(change);
+                   
+               } catch( Exception e){
+                   e.printStackTrace();
+               }
+               
+           } else {
+           
+               ((StringParameter) returnEntity
+                   .getAttribute("DBReference")).setExpression("FALSE");
+ 
+           }
+       
+       }
+       
+       return returnEntity;
+
+   }
+    
+    
     /** Given a model name, return a PtolemyEffigy objects.
      *
      * @param name
