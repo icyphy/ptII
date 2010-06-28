@@ -237,34 +237,13 @@ public class OracleXMLDBConnection implements DBConnection {
 
         try {
 
-            if (_xmlContainer == null) {
-                throw new DBExecutionException(
-                        "Failed to execute CreateModelTask"
-                                + " - the XmlContainer object was not "
-                                + "instantiated properly");
-            }
+            _checkXMLDBConnectionObjects(true, false, true);
+            
 
-            if (_xmlTransaction == null) {
-                throw new DBExecutionException(
-                        "Failed to execute CreateModelTask"
-                                + " - the XmlTransaction object was not "
-                                + "instantiated properly");
-            }
-
-            if (task == null) {
-                throw new DBExecutionException(
-                        "Failed to execute CreateModelTask"
-                                + " - the CreateModelTask object passed was null");
-            }
 
             XMLDBModel model = task.getXMLDBModel();
 
-            if (model == null) {
-                throw new DBExecutionException(
-                        "Failed to execute CreateModelTask"
-                                + " - the XMLDBModel object passed in the "
-                                + "CreateModelTask was null");
-            }
+
 
             XmlDocument doc = null;
 
@@ -333,26 +312,10 @@ public class OracleXMLDBConnection implements DBConnection {
         
         
         try {
+            
+            
+            _checkXMLDBConnectionObjects(true, false, false);
 
-            if (_xmlContainer == null) {
-                throw new DBExecutionException(
-                        "Failed to execute GetAttributesTask"
-                                + " - the XmlContainer object was not "
-                                + "instantiated properly");
-            }
-
-            if (_xmlTransaction == null) {
-                throw new DBExecutionException(
-                        "Failed to execute GetAttributesTask"
-                                + " - the XmlTransaction object was not "
-                                + "instantiated properly");
-            }
-
-            if (task == null) {
-                throw new DBExecutionException(
-                        "Failed to execute GetAttributesTask"
-                                + " - the CreateModelTask object passed was null");
-            }
 
             XmlDocument doc = null;
 
@@ -411,12 +374,8 @@ public class OracleXMLDBConnection implements DBConnection {
             throws DBExecutionException {
 
         try {
-
-            if (task == null) {
-                throw new DBExecutionException(
-                        "Failed to execute GetModelsTask"
-                                + " - the GetModelsTask object passed was null");
-            }
+            
+            _checkXMLDBConnectionObjects(true, false, false);
 
             XmlDocument dbModel;
             try {
@@ -544,34 +503,14 @@ public class OracleXMLDBConnection implements DBConnection {
             throws DBExecutionException {
         
         try {
-            if (task == null) {
-                throw new DBExecutionException(
-                        "Failed to execute CreateAttributeTask"
-                                + " - the CreateAttributeTask object passed was null");
-            }
             
-            if (_xmlContainer == null) {
-                throw new DBExecutionException(
-                        "Failed to execute CreateAttributeTask"
-                                + " - the XmlContainer object was not "
-                                + "instantiated properly");
-            }
+            _checkXMLDBConnectionObjects(true, true, false);
 
-            if (_xmlManager == null) {
-                throw new DBExecutionException(
-                        "Failed to execute CreateAttributeTask"
-                                + " - the XmlManager object was not "
-                                + "instantiated properly");
-            }
 
             
             XMLDBAttribute xmlDBAttribute = task.getXMLDBAttribute();
             
-            if (xmlDBAttribute == null) {
-                throw new DBExecutionException(
-                        "Failed to execute CreateAttributeTask"
-                                + " - the XMLDBAttribute object in the task was null");
-            }
+
             
             String attributeName = xmlDBAttribute.getAttributeName();
             
@@ -631,34 +570,12 @@ public class OracleXMLDBConnection implements DBConnection {
             throws DBExecutionException {
         
         try {
-            if (task == null) {
-                throw new DBExecutionException(
-                        "Failed to execute DeleteAttributeTask"
-                                + " - the DeleteAttributeTask object passed was null");
-            }
             
-            if (_xmlContainer == null) {
-                throw new DBExecutionException(
-                        "Failed to execute DeleteAttributeTask"
-                                + " - the XmlContainer object was not "
-                                + "instantiated properly");
-            }
-
-            if (_xmlManager == null) {
-                throw new DBExecutionException(
-                        "Failed to execute DeleteAttributeTask"
-                                + " - the XmlManager object was not "
-                                + "instantiated properly");
-            }
+            _checkXMLDBConnectionObjects(true, true, false);
 
             
             XMLDBAttribute xmlDBAttribute = task.getXMLDBAttribute();
             
-            if (xmlDBAttribute == null) {
-                throw new DBExecutionException(
-                        "Failed to execute DeleteAttributeTask"
-                                + " - the XMLDBAttribute object in the task was null");
-            }
             
             String attributeId = xmlDBAttribute.getAttributeId();
                                     
@@ -794,35 +711,12 @@ public class OracleXMLDBConnection implements DBConnection {
             throws DBExecutionException {
 
         try {
+            
+            _checkXMLDBConnectionObjects(true, false, true);
 
-            if (_xmlContainer == null) {
-                throw new DBExecutionException(
-                        "Failed to execute SaveModelTask"
-                                + " - the XmlContainer object was not "
-                                + "instantiated properly");
-            }
-
-            if (_xmlTransaction == null) {
-                throw new DBExecutionException(
-                        "Failed to execute SaveModelTask"
-                                + " - the XmlTransaction object was not "
-                                + "instantiated properly");
-            }
-
-            if (task == null) {
-                throw new DBExecutionException(
-                        "Failed to execute SaveModelTask"
-                                + " - the SaveModelTask object passed was null");
-            }
 
             XMLDBModel xmlDBModel = task.getXMLDBModel();
 
-            if (xmlDBModel == null) {
-                throw new DBExecutionException(
-                        "Failed to execute SaveModelTask"
-                                + " - the XMLDBModel object passed in the "
-                                + "SaveModelTask was null");
-            }
 
             XmlDocument currentDbModel = null;
 
@@ -876,34 +770,14 @@ public class OracleXMLDBConnection implements DBConnection {
             throws DBExecutionException {
         
         try {
-            if (task == null) {
-                throw new DBExecutionException(
-                        "Failed to execute UpdateAttributeTask"
-                                + " - the UpdateAttributeTask object passed was null");
-            }
             
-            if (_xmlContainer == null) {
-                throw new DBExecutionException(
-                        "Failed to execute UpdateAttributeTask"
-                                + " - the XmlContainer object was not "
-                                + "instantiated properly");
-            }
+            _checkXMLDBConnectionObjects(true, true, false);
 
-            if (_xmlManager == null) {
-                throw new DBExecutionException(
-                        "Failed to execute UpdateAttributeTask"
-                                + " - the XmlManager object was not "
-                                + "instantiated properly");
-            }
 
             
             XMLDBAttribute xmlDBAttribute = task.getXMLDBAttribute();
             
-            if (xmlDBAttribute == null) {
-                throw new DBExecutionException(
-                        "Failed to execute UpdateAttributeTask"
-                                + " - the XMLDBAttribute object in the task was null");
-            }
+
             
             
             String attributeNode = xmlDBAttribute.getAttributeXMLStringFormat();
@@ -960,6 +834,9 @@ public class OracleXMLDBConnection implements DBConnection {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    
+   
 
     /**
      * Build the complete model by resolving all the references in it.
@@ -1095,6 +972,44 @@ public class OracleXMLDBConnection implements DBConnection {
             throw new DBConnectionException(
                     "The transaction is no longer active. "
                             + "It has already been committed or aborted.");
+        }
+    }
+    
+    /**
+     * Check the xml db connection objects (xmlContainer, xmlManager, xmlTransaction
+     * to see if they are set properly.
+     * 
+     * @param checkContainer Boolean to indicate that the caller is using the 
+     * Container object and needs to check if it is instantiated properly.
+     * @param checkManager Boolean to indicate that the caller is using the 
+     * Manager object and needs to check if it is instantiated properly.
+     * @param checkTransaction Boolean to indicate that the caller is using
+     * a transaction and needs to check if it is instantiated properly.
+     * 
+     * @throws DBExecutionException Thrown if one of the objects for handling 
+     * XMLDBConnection operations is not set properly.
+     */
+    private void _checkXMLDBConnectionObjects(
+            boolean checkContainer, boolean checkManager, 
+            boolean checkTransaction) throws DBExecutionException {
+        
+        if (checkContainer && _xmlContainer == null) {
+            throw new DBExecutionException(
+                    "The XmlContainer object was not "
+                    + "instantiated properly");
+        }
+
+        if (checkManager && _xmlManager == null) {
+            throw new DBExecutionException(
+                    "The XmlManager object was not "
+                    + "instantiated properly");
+        }
+        
+        if (checkTransaction && _xmlTransaction == null) {
+            
+            throw new DBExecutionException(
+                    "The XmlTransaction object was not "   
+                    + "instantiated properly");
         }
     }
 
