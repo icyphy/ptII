@@ -1248,21 +1248,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     subscriberPort, global);
         } else {
             if (_publishedPorts != null) {
-//                boolean matched = false;
                 for (String name : _publishedPorts.keySet()) {
                     Matcher matcher = pattern.matcher(name);
                     //System.out.println("Match " + name);
                     if (matcher.matches()) {
-//                        matched = true;
                         linkToPublishedPort(name, subscriberPort);
                     }
                 }
-                
-//                if (!matched) {
-//                    throw new IllegalActionException(this,
-//                            "Failed to find a publisher to match \"" + pattern
-//                                    + "\"");
-//                }
                 
                 if (global && this != toplevel()) {
                     String portName = "_subscriber_"
@@ -2488,10 +2480,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
     ///////////////////////////////////////////////////////////////////
     ////                         public variables               ////
 
-    /** The level of the global, or top, level.  Used for level crossing
-     *  links in an opaque context, such as Publisher/Subscriber.
-     */
-    final static public int GLOBAL_EXPORT_LEVEL = -1;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
