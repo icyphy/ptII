@@ -70,8 +70,8 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: suball ptdb-params.properties
 install: all jars
 
-ptdb-params.properties: ptdb-params.properties.in
-	sed "s#@PTII#$(PTII)#" < ptdb-params.properties.in > ptdb-params.properties
+ptdb-params.properties: $(ROOT)/mk/ptII.mk
+	sed "s#@PTII@#$(PTII)#" < ptdb-params.properties.in > ptdb-params.properties
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
