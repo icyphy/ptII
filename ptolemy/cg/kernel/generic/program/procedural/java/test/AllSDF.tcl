@@ -229,7 +229,6 @@ $PTII/ptolemy/actor/lib/test/auto/Const3.xml \
 $PTII/ptolemy/actor/lib/test/auto/Const.xml \
 $PTII/ptolemy/actor/lib/test/auto/CurrentTimeSDF.xml \
 $PTII/ptolemy/actor/lib/test/auto/DB.xml \
-$PTII/ptolemy/actor/lib/test/auto/DelayTime.xml \
 $PTII/ptolemy/actor/lib/test/auto/Differential.xml \
 $PTII/ptolemy/actor/lib/test/auto/DisplayArray.xml \
 $PTII/ptolemy/actor/lib/test/auto/Distributor2.xml \
