@@ -1495,8 +1495,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/save \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/setup \
-	$(REMOTE1PTIIDIST)/ptolemy/vergil \
-	$(REMOTE1PTIIDIST)/ptolemy/cg/kernel/generic/program/procedural/java
+	$(REMOTE1PTIIDIST)/ptolemy/vergil
 
 
 # Directories we run make in before running make in the NONJSALLDIRS
