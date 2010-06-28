@@ -36,7 +36,8 @@ ME =		ptdb/kernel/bl/search/test
 ROOT =		../../../../..
 
 # Configure looks for PowerMock.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)
+# PTDBXML_JARS is set by configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)$(CLASSPATHSEPARATOR)$(PTDBXML_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -75,7 +76,10 @@ install:
 
 tests:: $(EXTRA_SRCS) jclass test_java
 
-test_java: jclass
+$(ROOT)/ptdb/config/database/testdata/Testing.dbxml:
+	(cd $(ROOT)/ptdb/config/database/testdata; $(MAKE))
+
+test_java: jclass $(ROOT)/ptdb/config/database/testdata/Testing.dbxml
 	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.search.test.TestAttributeSearcher
 	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.search.test.TestSearchByAttributeIntegration
 	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.search.test.TestSearchManager

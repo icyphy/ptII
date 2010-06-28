@@ -74,9 +74,12 @@ install:
 
 tests:: $(EXTRA_SRCS) jclass test_java
 
-test_java: jclass
-	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestLoadManagerInterface
-	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestLoadModelManager
+$(ROOT)/ptdb/config/database/testdata/Testing.dbxml:
+	(cd $(ROOT)/ptdb/config/database/testdata; $(MAKE))
+
+test_java: jclass $(ROOT)/ptdb/config/database/testdata/Testing.dbxml
+	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestDBModelFetcher
+	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestLoadManager
 	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestLoadRequirementsIntegration
 
 # These tests do not require a graphics terminal, but do use Java

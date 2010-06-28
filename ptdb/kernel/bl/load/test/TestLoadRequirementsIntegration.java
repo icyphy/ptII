@@ -64,7 +64,8 @@ public class TestLoadRequirementsIntegration {
             fail("failed to return an effigy.");
         }
 
-        System.out.println(effigy.getModel().exportMoML());
+        // FIXME: compare against a known good output.
+        //System.out.println(effigy.getModel().exportMoML());
         assertEquals(effigy.getName(), inputString);
 
         PowerMock.verifyAll();

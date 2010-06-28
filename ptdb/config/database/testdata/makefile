@@ -1,8 +1,8 @@
-# Makefile for ptdb tests that use EasyMock
+# Makefile for ptdb - A model database for Ptolemy, testdata directory
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks (makefile only), based on a file by Thomas M. Parks
 #
-# @Version: $Id: makefile 58300 2010-06-19 18:55:03Z lholsing $
+# @Version: $Id$
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,57 +29,52 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Location of this directory, relative to the Ptolemy II directory
-ME =		ptdb/kernel/bl/setup/test
+ME = 		ptdb/config/database/testdata
+
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../..
 
-# Configure looks for PowerMock.
-# PTDBXML_JARS is set by configure
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)$(CLASSPATHSEPARATOR)$(PTDBXML_JARS)
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# If you add a file, be sure to add a line to test_java
-JSRCS_TEST_DRIVERS = \
-	TestSetupManager.java
+# Used to build jar files
+PTPACKAGE = 	testdata
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-JSRCS = \
-	$(JSRCS_TEST_DRIVERS)
+# All the .class files necessary to run a Ptolemy II domain applet
+#PTCLASSALLJARS =
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
-EXTRA_SRCS =	$(JSRCS)
+JSRCS =
+
+OTHER_FILES_TO_BE_JARED =
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES =	test img
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
 
-JCLASS=	$(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
+all: Testing.dbxml
+install: all jars
 
-all: $(JCLASS)
-	@echo "Run 'make tests' to run the tests"
-install:
-	@echo "Nothing to be done in $(ME)"
+Testing.dbxml: 
+	if [ ! -f $@ ]; then \
+		echo "quit" | "$(PTDBXML_LIB)/../bin/dbxml" -s create_script.txt; \
+	fi
 
-tests:: $(EXTRA_SRCS) jclass test_java
-
-$(ROOT)/ptdb/config/database/testdata/Testing.dbxml:
-	(cd $(ROOT)/ptdb/config/database/testdata; $(MAKE))
-
-test_java: jclass $(ROOT)/ptdb/config/database/testdata/Testing.dbxml
-	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestLoadManagerInterface
-
-# These tests do not require a graphics terminal, but do use Java
-test_jsimple: $(EXTRA_SRCS) jclass test_java
+KRUFT = Testing.dbxml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

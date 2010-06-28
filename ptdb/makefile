@@ -33,7 +33,7 @@ ME =		ptdb
 
 # $PTII/configure runs and looks for PTPOWERMOCK
 # $(PTPOWERMOCK_DIR) to test
-DIRS =		common gui kernel $(PTPOWERMOCK_DIR)
+DIRS =		common database gui kernel $(PTPOWERMOCK_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		..

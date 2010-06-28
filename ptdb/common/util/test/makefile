@@ -71,7 +71,10 @@ install:
 
 tests:: $(EXTRA_SRCS) jclass test_java
 
-test_java: jclass
+$(ROOT)/ptdb/config/database/testdata/Testing.dbxml:
+	(cd $(ROOT)/ptdb/config/database/testdata; $(MAKE))
+
+test_java: jclass $(ROOT)/ptdb/config/database/testdata/Testing.dbxml
 	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.common.util.test.TestDBConnectorFactory
 
 # These tests do not require a graphics terminal, but do use Java

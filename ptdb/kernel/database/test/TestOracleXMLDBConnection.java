@@ -805,7 +805,7 @@ public class TestOracleXMLDBConnection {
 
             if (model != null && model.getModelName().equals(modelName)) {
                 
-                System.out.println(model.getModel());
+                //System.out.println(model.getModel());
                 assertTrue("Model was retrieved successfully.", true);
                 
             } else if (model != null && !model.getModelName().equals(modelName)) {
@@ -855,7 +855,7 @@ public class TestOracleXMLDBConnection {
 
             if (model != null && model.getModelName().equals(modelName)) {
 
-                System.out.println(model.getModel());
+                //System.out.println(model.getModel());
                 assertTrue("Model was retrieved successfully.", true);
                 
             } else if (model != null && !model.getModelName().equals(modelName)) {
