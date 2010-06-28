@@ -62,7 +62,10 @@ JSRCS = \
 	TaskQueue.java \
 	XMLDBAttribute.java \
 	XMLDBModel.java \
-	SetupParameters.java
+	SetupParameters.java \
+	CreateAttributeTask.java \
+	DeleteAttributeTask.java \
+	UpdateAttributeTask.java
 
 EXTRA_SRCS =	$(JSRCS)
 
