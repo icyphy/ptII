@@ -31,6 +31,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.lang.reflect.Field;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -166,14 +167,15 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 continue;
             }
 
-            String parameterName = parameter.getName();
+            String parameterName = StringUtilities.sanitizeName(parameter.getName()).replaceAll("\\$", "Dollar");
             if (parameterName.equals("firingsPerIteration")) {
                 continue;
             }
-
             // FIXME: handle multiline values
             String parameterValue = "";
-            if (parameter instanceof Variable) {
+            if (parameter != null
+                    && parameter instanceof Variable
+                    && ((Variable)parameter).getToken() != null) {
                 // Evaluate things like $PTII
                 parameterValue = ((Variable)parameter).getToken().toString();
                 if (((Variable)parameter).isStringMode()) {
@@ -190,13 +192,52 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             parameterValue = StringUtilities.escapeString(parameterValue);
             // FIXME: do we want one try block per parameter?  It does
             // make for better error messages.
-            code.append("try {\n"
-                + "    ptolemy.data.expr.Parameter " + parameterName + " = ((" + actorClassName + ")$actorSymbol(actor))." + parameterName + ";\n"
-                    + "    " + parameterName + ".setExpression(\""
-                    + parameterValue
-                    + "\");\n"
-                + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(" + parameterName + ");\n"
-                + "} catch (Exception ex) {\n"
+
+            boolean privateParameter = false;
+            try {
+                 getComponent().getClass().getField(parameterName);
+            } catch (NoSuchFieldException ex) {
+                privateParameter = true;
+                code.append("try{\n"
+                        + "{\n"
+                        + "// Accessing private field\n"
+                        + "Object actor = $actorSymbol(actor);\n"
+                        + "java.lang.reflect.Field fields[] = actor.getClass().getDeclaredFields();\n"
+                        + "for (int i = 0; i < fields.length; i++){\n"
+                        + "    if (fields[i].getName().equals(\"" + parameterName + "\")) {\n"
+                        + "        fields[i].setAccessible(true);\n" 
+                        + "        ptolemy.data.expr.Parameter parameter = (ptolemy.data.expr.Parameter)fields[i].get(actor);\n"
+                        + "        parameter.setExpression(\"" + parameterValue + "\");\n"
+                        + "       ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(parameter);\n"
+                        + "        break;\n"
+                        + "    }\n"
+                        + "}\n"
+                        + "}\n");
+            } catch (SecurityException ex2) {
+                throw new IllegalActionException(getComponent(), ex2,
+                        "Can't access " + parameterName + " field.");
+            }
+
+            if (!privateParameter) {
+                String setParameter = "";
+                if (parameter instanceof Parameter) {
+                    setParameter = "    ptolemy.data.expr.Parameter " + parameterName + " = ((" + actorClassName + ")$actorSymbol(actor))." + parameterName + ";\n"
+                        + "    " + parameterName + ".setExpression(\""
+                        + parameterValue
+                        + "\");\n";
+                } else {
+                    if (parameter instanceof ptolemy.kernel.util.StringAttribute) {
+                        setParameter = "    ptolemy.kernel.util.StringAttribute " + parameterName + " = ((" + actorClassName + ")$actorSymbol(actor))." + parameterName + ";\n"
+                            + "    " + parameterName + ".setExpression(\""
+                            + parameterValue
+                            + "\");\n";
+                    }
+                } 
+                code.append("try {\n"
+                        + setParameter
+                        + "    ((" + actorClassName + ")$actorSymbol(actor)).attributeChanged(" + parameterName + ");\n");
+            }
+            code.append("} catch (Exception ex) {\n"
                     + "    throw new RuntimeException(\"Failed to set parameter \\\"" + parameterName
                     + "\\\" in $actorSymbol(actor) to \\\"" + StringUtilities.escapeString(parameterValue) + "\\\"\", ex);\n"
                 + "}\n");
@@ -367,12 +408,17 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                 // Generate code for the sources.  We don't use getWidth() here
                 // because IOPort.getWidth() says not to.
                 int sources = inputPort.numberOfSources();
+                //code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort name " + name + " type: " + type + " numberOfSources: " + inputPort.numberOfSources() + " inputPort: " + inputPort + " width: " + inputPort.getWidth() + " numberOfSinks: " + inputPort.numberOfSinks()));
                 for (int i = 0; i < sources; i++) {
                     code.append(_generateSendInside(name, name + "Source" + i, type, i));
                 }
 
                 // Generate code for the sinks.
                 int sinks = inputPort.numberOfSinks();
+                int width = inputPort.getWidth();
+                if (width < sinks) {
+                    sinks = width;
+                }
                 for (int i = 0; i < sinks; i++) {
                     code.append(_generateSendInside(name, name + "Sink" + i, type, i));
                 }
