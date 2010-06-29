@@ -504,7 +504,7 @@ public class OracleXMLDBConnection implements DBConnection {
         
         try {
             
-            _checkXMLDBConnectionObjects(true, true, false);
+            _checkXMLDBConnectionObjects(true, true, true);
 
 
             
@@ -527,8 +527,9 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + "and cannot be used to execute queries.");
             
             
-            XmlResults results = _xmlManager.query(query, xmlQueryContext, null);
-            
+            XmlResults results = _xmlManager.query(
+                    _xmlTransaction, query, xmlQueryContext, null);
+                        
         
             if (results != null && results.size() > 0) {
                 
@@ -571,15 +572,18 @@ public class OracleXMLDBConnection implements DBConnection {
         
         try {
             
-            _checkXMLDBConnectionObjects(true, true, false);
+            _checkXMLDBConnectionObjects(true, true, true);
 
             
             XMLDBAttribute xmlDBAttribute = task.getXMLDBAttribute();
             
             
             String attributeId = xmlDBAttribute.getAttributeId();
-                                    
-            String query = "delete node doc('dbxml:/" + _xmlContainer.getName() 
+            
+            
+         
+            // check if the attribute already exists.            
+            String query = "doc('dbxml:/" + _xmlContainer.getName() 
                 + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
                 + attributeId + "']";
             
@@ -589,8 +593,25 @@ public class OracleXMLDBConnection implements DBConnection {
                 throw new DBExecutionException(
                         "Failed to DeleteAttributeTask - The Query context is null "
                                 + "and cannot be used to execute queries.");
+            
+            
+            XmlResults results = _xmlManager.query(
+                    _xmlTransaction, query, xmlQueryContext, null);
                         
-            _xmlManager.query(query, xmlQueryContext, null);        
+        
+            if (results == null || results.size() == 0) {
+                
+                throw new DBExecutionException(
+                        "Failed to DeleteAttributeTask  - The attribute does not "
+                                + "exist.");
+            }
+            
+            
+            query = "delete node doc('dbxml:/" + _xmlContainer.getName() 
+                + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
+                + attributeId + "']";
+            
+            _xmlManager.query(_xmlTransaction, query, xmlQueryContext, null);        
             
         } catch (XmlException e) {
             throw new DBExecutionException("Failed to execute DeleteAttributeTask - "
@@ -771,7 +792,7 @@ public class OracleXMLDBConnection implements DBConnection {
         
         try {
             
-            _checkXMLDBConnectionObjects(true, true, false);
+            _checkXMLDBConnectionObjects(true, true, true);
 
 
             
@@ -794,7 +815,7 @@ public class OracleXMLDBConnection implements DBConnection {
                         "Failed to UpdateAttributeTask - The Query context is null "
                                 + "and cannot be used to execute queries.");
 
-            _xmlManager.query(query, xmlQueryContext, null);        
+            _xmlManager.query(_xmlTransaction, query, xmlQueryContext, null);        
             
         } catch (XmlException e) {
             throw new DBExecutionException("Failed to execute UpdateAttributeTask - "
@@ -1566,19 +1587,10 @@ public class OracleXMLDBConnection implements DBConnection {
         String reference = "";
 
         try {
+            
+            _checkXMLDBConnectionObjects(true, true, false);
 
-            if (_xmlContainer == null) {
-                throw new DBExecutionException(
-                        "Failed to execute GetModelsTask"
-                                + " - the XmlContainer object was not instantiated properly");
-            }
-
-            if (_xmlManager == null) {
-                throw new DBExecutionException(
-                        "Failed to execute GetModelsTask"
-                                + " - the XmlManager object was not instantiated properly");
-            }
-
+            
             XmlQueryContext xmlContext = _xmlManager.createQueryContext();
 
             if (xmlContext == null) {
