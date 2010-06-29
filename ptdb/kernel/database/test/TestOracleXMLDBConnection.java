@@ -6,9 +6,12 @@ package ptdb.kernel.database.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,14 +23,20 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ptdb.common.dto.AttributeSearchTask;
+import ptdb.common.dto.CreateAttributeTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
+import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
+import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
 import ptdb.common.dto.SaveModelTask;
+import ptdb.common.dto.UpdateAttributeTask;
+import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.OracleXMLDBConnection;
 import ptolemy.data.StringToken;
@@ -36,7 +45,12 @@ import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
+import com.sleepycat.db.Environment;
+import com.sleepycat.db.EnvironmentConfig;
+import com.sleepycat.dbxml.XmlContainer;
 import com.sleepycat.dbxml.XmlException;
+import com.sleepycat.dbxml.XmlManager;
+import com.sleepycat.dbxml.XmlManagerConfig;
 
 ///////////////////////////////////////////////////////////////////
 //// TestOracleXMLDBConnection
@@ -483,30 +497,28 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(true);
 
         
-        XMLDBModel xmlModel = new XMLDBModel("test2");
+        XMLDBModel xmlModel = new XMLDBModel("new_test2");
 
         xmlModel.setIsNew(true);
 
         
 
-        xmlModel.setModel("<entity name=\"test2\" "
+        xmlModel.setModel("<entity name=\"new_test2\" "
                         + "class=\"test.class\"></entity>");
 
         CreateModelTask task = new CreateModelTask(xmlModel);
 
         try {
             oracleXMLDBConnection.executeCreateModelTask(task);
-            oracleXMLDBConnection.commitConnection();
             assertTrue("Model was created", true);
 
         } catch (DBExecutionException e) {
-            oracleXMLDBConnection.abortConnection();
             fail("Exception thrown - " + e.getMessage());
         } finally {
             
             if (oracleXMLDBConnection != null) {
                 
-                oracleXMLDBConnection.closeConnection();
+                oracleXMLDBConnection.abortConnection();
             }
         }
 
@@ -525,7 +537,7 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(true);
 
         
-        XMLDBModel xmlModel = new XMLDBModel("test");
+        XMLDBModel xmlModel = new XMLDBModel("modeltt");
 
         xmlModel.setIsNew(true);
        
@@ -541,12 +553,18 @@ public class TestOracleXMLDBConnection {
 
             fail("Model was created when it should be already there.");
 
-        } catch (DBExecutionException e) {
+        } catch (ModelAlreadyExistException e) {
             oracleXMLDBConnection.abortConnection();
             if (e.getMessage().contains("The model already exist")) {
                 assertTrue("model was not created because it already exists",
                         true);
             }
+            
+        } catch (DBExecutionException e) {
+            
+            oracleXMLDBConnection.abortConnection();
+            fail("The wrong exception was thrwon" + e.getMessage());
+            
         } finally {
             if (oracleXMLDBConnection != null) {
                 oracleXMLDBConnection.closeConnection();
@@ -902,13 +920,14 @@ public class TestOracleXMLDBConnection {
 
             fail("Method should throw an exception since the task is null.");
 
+        } catch (NullPointerException e) {
+            
+            assertTrue("Method threw the right exception", true);
+           
+        
         } catch (DBExecutionException e) {
-
-            if (e.getMessage().contains(
-                    "the GetModelsTask object passed was null")) {
-                assertTrue("model was not loaded because the task was null",
-                        true);
-            }
+            
+            fail("Method threw the wrong exception" + e.getMessage());
 
         } finally {
             if (oracleXMLDBConnection != null) {
@@ -997,7 +1016,675 @@ public class TestOracleXMLDBConnection {
         }
 
     }
+    
 
+    /**
+     * Test the executeCreateAttribueTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The attribute is of type string and it is new.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteCreateAttributeTask_String() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+
+
+
+        XMLDBAttribute attribute = new XMLDBAttribute(
+                "new_author", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, null);
+        CreateAttributeTask task = new CreateAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeCreateAttributeTask(task);
+        
+            assertTrue("Method successfully created attribute", true);
+        
+        } catch (DBExecutionException e) {
+        
+            fail("Failed to create Attribute" + e.getMessage());
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.abortConnection();
+            }
+        }
+        
+    }
+    
+    
+    
+
+    /**
+     * Test the executeCreateAttribueTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The attribute is of type list and it is new.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteCreateAttributeTask_List() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+
+
+
+        XMLDBAttribute attribute = new XMLDBAttribute(
+                "new_countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, null);
+        
+        List<String> attributeValues = new ArrayList<String>();
+        
+ 
+        attributeValues.add("India");
+        attributeValues.add("China");
+        attributeValues.add("Saudi Arabia");
+        attributeValues.add("United States");
+        attribute.setAttributeValue(attributeValues);
+        CreateAttributeTask task = new CreateAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeCreateAttributeTask(task);
+        
+            assertTrue("Method successfully created attribute", true);
+        
+        } catch (DBExecutionException e) {
+        
+            fail("Failed to create Attribute" + e.getMessage());
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.abortConnection();
+            }
+        }
+        
+    }
+    
+    
+    
+
+    /**
+     * Test the executeCreateAttribueTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The attribute is already in the database.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteCreateAttributeTask_AlreadyExists() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+
+
+
+        XMLDBAttribute attribute = new XMLDBAttribute(
+                "author", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, null);
+        
+        CreateAttributeTask task = new CreateAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeCreateAttributeTask(task);
+        
+            fail("The method created the attirbute when it should throw an exception");
+        
+        } catch (DBExecutionException e) {
+        
+            if (e.getMessage().contains("An attribute with the "
+                                + "same name already exist")) {
+                assertTrue("Method threw the right exception.", true);
+            } else {
+                fail("Method threw the wrong exception" + e.getMessage());
+            }
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.abortConnection();
+            }
+        }
+        
+    }
+    
+    
+
+    /**
+     * Test the executeCreateAttribueTask() method.
+     *
+     * <p>Test conditions:
+     * <br>Null task was provided.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteCreateAttributeTask_NullTask() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+
+        CreateAttributeTask task = null;
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeCreateAttributeTask(task);
+        
+            fail("The method returned without any errors when it should " 
+                    + "throw an exception");
+        
+        } catch (NullPointerException e) {
+            
+            assertTrue("Method threw the right exception", true);
+            
+        
+        } catch (DBExecutionException e) {
+            
+            fail("Method threw the wrong exception" + e.getMessage());
+
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.abortConnection();
+            }
+        }
+        
+    }
+    
+    
+    /**
+     * Test the executeCreateAttribueTask() method.
+     *
+     * <p>Test conditions:
+     * <br>Null attribute was provided.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteCreateAttributeTask_NullAttribute() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+
+        XMLDBAttribute attribute = null;
+        CreateAttributeTask task = new CreateAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeCreateAttributeTask(task);
+        
+            fail("The method returned without any errors when it should " 
+                    + "throw an exception");
+        
+        } catch (NullPointerException e) {
+            
+            assertTrue("Method threw the right exception", true);
+           
+        
+        } catch (DBExecutionException e) {
+            
+            fail("Method threw the wrong exception" + e.getMessage());
+
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.abortConnection();
+            }
+        }
+        
+    }
+    
+
+    /**
+     * Test the executeGetAttributesTask() method.
+     *
+     * <p>Test conditions:
+     * <br>There are valid attributes in the database.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteGetAttributesTask() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(false);
+
+        
+        
+        GetAttributesTask task = new GetAttributesTask();
+
+        try {
+        
+            ArrayList<XMLDBAttribute> attributesList = oracleXMLDBConnection
+                    .executeGetAttributesTask(task);
+            
+            assertTrue("The method returned the expected results", 
+                    (attributesList != null && attributesList.size() > 0));
+            for (int i = 0; i < attributesList.size(); i++) {
+                XMLDBAttribute attribute = (XMLDBAttribute) attributesList.get(i);
+                
+                System.out.println(attribute.getAttributeXMLStringFormat());
+            }
+        
+        } catch (DBExecutionException e) {
+            fail("Method threw and exception - " + e.getMessage());
+            
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+        
+    }
+
+    /**
+     * Test the executeGetAttributesTask() method.
+     *
+     * <p>Test conditions:
+     * <br>Attribues.ptdbxml document does not exist in the database.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteGetAttributesTask_DocumentDoesNotExist() throws Exception {
+
+
+        Environment environmentMock = PowerMock.createMock(Environment.class);
+        XmlContainer xmlContainerMock = PowerMock.createMock(XmlContainer.class);
+        XmlManager xmlManagerMock =  PowerMock.createMock(XmlManager.class);
+       
+       
+        
+        
+        PowerMock.expectNew(XmlManager.class, Environment.class, XmlManagerConfig.class).andReturn(
+                xmlManagerMock);
+        
+        
+        
+        EasyMock.expect(xmlManagerMock.openContainer("temp.dbxml")).andReturn(xmlContainerMock);
+       
+        EasyMock.expect(xmlContainerMock.getDocument("Attributes.ptdbxml")).andReturn(
+                null);
+        
+        PowerMock.replayAll();
+        
+                
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(false);
+
+        
+        GetAttributesTask task = new GetAttributesTask();      
+        
+
+        try {
+        
+            
+            ArrayList<XMLDBAttribute> attributesList = oracleXMLDBConnection
+                    .executeGetAttributesTask(task);
+            
+            fail("No exception was thrown");
+            
+            
+        
+        } catch (DBExecutionException e) {
+            if (e.getMessage().contains("Could not fetch the Attribute.ptdbxml.")) {
+                assertTrue("Method threw the right exception", true);
+            } else {
+                fail("Wrong exception was thrown" + e.getMessage());
+            }
+            
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+    }
+    
+    
+    
+
+    /**
+     * Test the executeDeleteAttributeTask() method.
+     *
+     * <p>Test conditions:
+     * <br>Simple Attribute the exists in the database.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteDeleteAttributeTask() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+            .getSyncConnection(true);
+
+        XMLDBAttribute attribute = new XMLDBAttribute(
+                "author", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, "author_1277686806343");
+
+        
+        DeleteAttributeTask task = new DeleteAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeDeleteAttributeTask(task);
+            
+            assertTrue("Method was successful.", true);
+        
+        } catch (DBExecutionException e) {
+            
+                fail("Wrong exception was thrown" + e.getMessage());
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.abortConnection();
+            }
+        }
+    }
+    
+    
+    /**
+     * Test the executeDeleteAttributeTask() method.
+     *
+     * <p>Test conditions:
+     * <br>A list attribute that exists in the database.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteDeleteAttributeTask_List() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+
+        XMLDBAttribute attribute = new XMLDBAttribute(
+                "Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "countries_1277687205671");
+
+        
+        DeleteAttributeTask task = new DeleteAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeDeleteAttributeTask(task);
+            
+            assertTrue("Method was successful.", true);
+        
+        } catch (DBExecutionException e) {
+            
+                fail("Wrong exception was thrown" + e.getMessage());
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.abortConnection();
+            }
+        }
+    }
+    
+    
+
+    /**
+     * Test the executeDeleteAttributeTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The task is null.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteDeleteAttributeTask_NullTask() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+
+        XMLDBAttribute attribute = new XMLDBAttribute(
+                "Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "countries_1277686491375");
+
+        
+        DeleteAttributeTask task = null;
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeDeleteAttributeTask(task);
+            
+            fail("Method did not throw exception");
+        
+        } catch (NullPointerException e) {
+            
+            assertTrue("Method threw the right exception", true);
+
+        } catch (DBExecutionException e) {
+            fail("Wrong exception was thrown" + e.getMessage());
+
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.abortConnection();
+            }
+        }
+    }
+    
+
+    /**
+     * Test the executeDeleteAttributeTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The attribute object is null.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteDeleteAttributeTask_NullAttribute() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+        .getSyncConnection(true);
+
+        XMLDBAttribute attribute = null;
+
+        
+        DeleteAttributeTask task = new DeleteAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeDeleteAttributeTask(task);
+            
+            fail("Method did not throw exception");
+        
+        } catch (NullPointerException e) {
+            
+            assertTrue("Method threw the right exception", true);
+           
+        
+        } catch (DBExecutionException e) {
+            fail("Wrong exception was thrown" + e.getMessage());
+
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.abortConnection();
+            }
+        }
+    }
+    
+    
+    
+
+    /**
+     * Test the executeUpdateAttributeTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The attribute exist in the database.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteUpdateAttributeTask() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+        .getSyncConnection(false);
+        
+        
+        XMLDBAttribute attribute = new XMLDBAttribute(
+                "UpdatedAuthor", XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN, "author_1277686806343");
+        
+        UpdateAttributeTask task = new UpdateAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeUpdateAttributeTask(task);
+            
+            assertTrue("Method returned without exceptions", true);
+        
+        } catch (DBExecutionException e) {
+                fail("Exception was thrown - " + e.getMessage());
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+    }
+    
+    
+    
+
+    /**
+     * Test the executeUpdateAttributeTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The attribute does not exist in the database.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteUpdateAttributeTask_DoesNotExist() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+        .getSyncConnection(false);
+        
+        
+        XMLDBAttribute attribute = new XMLDBAttribute(
+                "UpdatedCountry", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "country_123");
+        
+        UpdateAttributeTask task = new UpdateAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeUpdateAttributeTask(task);
+            
+            fail("Method did not throw exception");
+        
+        } catch (DBExecutionException e) {
+            assertTrue("Method threw the right exception", true);
+        
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+    }
+    
+    
+
+    
+    
+    /**
+     * Test the executeUpdateAttributeTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The task is null.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteUpdateAttributeTask_NullTask() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+        .getSyncConnection(false);
+        
+        UpdateAttributeTask task = null;
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeUpdateAttributeTask(task);
+            
+            fail("Method did not throw exception");
+        
+        } catch (NullPointerException e) {
+            
+            assertTrue("Method threw the right exception", true);
+
+        
+        }catch (DBExecutionException e) {
+            
+            fail("Wrong exception was thrown" + e.getMessage());
+            
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+    }
+    
+
+    /**
+     * Test the executeUpdateAttributeTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The attribute object is null.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteUpdateAttributeTask_NullAttribute() throws Exception {
+        
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+        .getSyncConnection(false);
+
+        XMLDBAttribute attribute = null;
+
+        
+        UpdateAttributeTask task = new UpdateAttributeTask(attribute);
+
+        try {
+        
+            oracleXMLDBConnection
+                    .executeUpdateAttributeTask(task);
+            
+            fail("Method did not throw exception");
+        
+        }catch (NullPointerException e) {
+            
+            assertTrue("Method threw the right exception", true);
+        
+        } catch (DBExecutionException e) {
+            
+            fail("Wrong exception was thrown" + e.getMessage());
+            
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                private methods                            ////
 
