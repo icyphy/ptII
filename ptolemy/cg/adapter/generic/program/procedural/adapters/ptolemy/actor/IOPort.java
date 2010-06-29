@@ -95,6 +95,13 @@ public class IOPort extends NamedProgramCodeGeneratorAdapter implements
         // receivers within the same
         // channel would occur.
         if (receivers.length != 0) {
+            if (channelIndex >= receivers.length) {
+                throw new IllegalActionException(getComponent(),
+                        "The channelIndex \"" + channelIndex + "\" is greater than "
+                        + "or equal to the length of the receiver \"" + receivers.length
+                        + "\".  The channel was: \"" + channel + "\", the offset was: \""
+                        + offset + "\".");
+            }
             if (receivers[channelIndex].length > 1) {
                 throw new IllegalActionException(
                         "Didn't take care of the case where one channel "
