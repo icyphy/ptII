@@ -52,9 +52,9 @@ public abstract class LoadStore extends MemoryAccess {
      *  
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
+     *  @exception IllegalActionException Thrown if the actor cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
+     *  @exception NameDuplicationException Thrown if the container already has an
      *   actor with this name.
      */    
     public LoadStore(CompositeEntity container, String name)

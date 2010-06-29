@@ -1,6 +1,6 @@
 # Makefile for taskpt domain actors library
 #
-# @Author: Christopher Brooks, Bastian Ristau
+# @Author: Christopher Brooks
 #
 # @Version: $Id$
 #

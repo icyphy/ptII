@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 //// MemoryAccess
 
-/** An actor that allows access to memory.
+/** An actor that allows access to a memory of a TaskPtDirector.
 *  
 * @author Bastian Ristau
 * @version $Id$
@@ -56,9 +56,9 @@ public abstract class MemoryAccess extends TypedAtomicActor {
      *  
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
+     *  @exception IllegalActionException Thrown if the actor cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
+     *  @exception NameDuplicationException Thrown if the container already has an
      *   actor with this name.
      */
     public MemoryAccess(CompositeEntity container, String name)
@@ -81,8 +81,8 @@ public abstract class MemoryAccess extends TypedAtomicActor {
     ////                         protected methods                 ////
 
     /** Get the memory that this actor can access. This is the memory
-     * controlled by the first director in the hierarchy that is of instance
-     * TaskPtDirector. 
+     * controlled by the first director in the hierarchy upwards that is of 
+     * instance TaskPtDirector. 
      * 
      * @return The memory that is accessible for this actor.
      */

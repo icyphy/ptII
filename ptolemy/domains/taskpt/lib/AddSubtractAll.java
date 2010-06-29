@@ -75,7 +75,7 @@ public class AddSubtractAll extends AddSubtract {
      *  from a zero token of the same type as the first token encountered
      *  on the minus channels.
      *
-     *  @throws IllegalActionException If there is no director,
+     *  @throws IllegalActionException Thrown if there is no director,
      *   or if addition and subtraction are not supported by the
      *   available tokens.
      */

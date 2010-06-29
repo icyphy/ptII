@@ -92,8 +92,7 @@ public class Alloc extends MemoryAccess {
      * by the value of the <i>size</i> PortParameter, the initial value by the
      * <i>init</i> PortParamter.
      * 
-     * @throws IllegalActionException If no memory is found, an exception is 
-     * thrown.
+     * @throws IllegalActionException Thrown if no memory is found.
      */
     public void fire() throws IllegalActionException {
 

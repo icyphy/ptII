@@ -41,15 +41,26 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 //// TaskDirector
 
-/** A director for controlling a task in the taskpt domain.
+/** A director for controlling a task in the taskpt domain. This director
+ * only accepts tokens of type <i>PtrToken</i> on its ports connected to upstream
+ * actors in the higher level composite. Pure output ports are ignored by this
+ * director.
  * 
- * See also the documentation of {@link ptolemy.domains.taskpt.kernel.TaskPtDirector} 
+ * <p>When transferring data from higher level composites, the director does not pass
+ * the incoming tokens directly. If the port is a pure input port, 
+ * tokens are read from the address specified in the <i>PtrToken</i>
+ * from the shared memory controlled by the higher level director and are passed
+ * to the downstream actors inside. If the port is an input/output port, the data
+ * send from the actors inside are stored in the shared memory of the higher level
+ * director after all the actors controlled by this director have finished execution.</p>
  *  
  * @author Bastian Ristau
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating red (ristau)
  * @Pt.AcceptedRating red (ristau)
+ * 
+ * @see ptolemy.domains.taskpt.lib.Task
  */
 public class TaskDirector extends TaskPtDirector {
 
@@ -64,9 +75,9 @@ public class TaskDirector extends TaskPtDirector {
      *
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception IllegalActionException If the director is not compatible
+     *  @exception IllegalActionException Thrown if the director is not compatible
      *   with the specified container.  May be thrown in a derived class.
-     *  @exception NameDuplicationException If the container is not a
+     *  @exception NameDuplicationException Thrown if the container is not a
      *   CompositeActor and the name collides with an entity in the container.
      */
     public TaskDirector(CompositeEntity container, String name)
@@ -85,10 +96,9 @@ public class TaskDirector extends TaskPtDirector {
      * specifies the address, where the output of the actors inside has to be 
      * written.
      * 
-     * @throws IllegalActionException If the width of the port is not exactly one,
+     * @throws IllegalActionException Thrown if the width of the port is not exactly one,
      * the input is not of type PtrToken, no memory is found where to write the data, 
-     * it is not an output port or the port is not opaque, 
-     * an IllegalActionException is thrown.
+     * it is not an output port or the port is not opaque.
      */
     protected boolean _transferInputs(IOPort port)
             throws IllegalActionException {
@@ -163,10 +173,10 @@ public class TaskDirector extends TaskPtDirector {
      * @param port The port to be inspected.
      * @return True, if an output is transferred.
      * 
-     * @throws IllegalActionException If the port is not an input/output port,
+     * @throws IllegalActionException Thrown if the port is not an input/output port,
      * there is no PtrToken present specifying the address where to write data,
      * no memory is found where to write the data, it is not an output port or
-     * the port is not opaque, an IllegalActionException is thrown.
+     * the port is not opaque.
      */
     protected boolean _transferOutputs(IOPort port)
             throws IllegalActionException {

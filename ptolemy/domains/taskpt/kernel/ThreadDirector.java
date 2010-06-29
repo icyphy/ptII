@@ -71,8 +71,8 @@ public class ThreadDirector extends TaskPtDirector {
 
     /** Fire the actors in sequence.
 
-     *  @throws IllegalActionException If any actor executed by this
-     *  actor return false in prefire.
+     *  @throws IllegalActionException Thrown if any actor executed by this
+     *  actor return false in prefire().
      */
     public void fire() throws IllegalActionException {
         //FIXME: Currently all actors are fired in sequence as defined in

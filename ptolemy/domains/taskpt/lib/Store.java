@@ -52,9 +52,9 @@ public class Store extends LoadStore {
      *  
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
+     *  @exception IllegalActionException Thrown if the actor cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
+     *  @exception NameDuplicationException Thrown if the container already has an
      *   actor with this name.
      */    
     public Store(CompositeEntity container, String name)
@@ -70,7 +70,7 @@ public class Store extends LoadStore {
     /** Store tokens present in <i>data</i> to memory. Address and number
      * of tokens to be stored is given by the Token in the <i>ptr</i> port.
      * 
-     * @throws IllegalActionException If no memory is found, an exception is 
+     * @throws IllegalActionException Thrown if no memory is found, an exception is 
      * thrown.
      */
      public void fire() throws IllegalActionException {

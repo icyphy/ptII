@@ -1,6 +1,6 @@
 # Makefile for the taskpt domain kernel
 #
-# @Author: Christopher Brooks, Bastian Ristau
+# @Author: Christopher Brooks
 #
 # @Version: $Id$
 #

@@ -51,9 +51,9 @@ public class DisplayAll extends Display {
      * 
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the entity cannot be contained
+     *  @exception IllegalActionException Thrown if the entity cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
+     *  @exception NameDuplicationException Thrown if the container already has an
      *   actor with this name.
      */
     public DisplayAll(CompositeEntity container, String name)
@@ -69,7 +69,7 @@ public class DisplayAll extends Display {
      *  with a newline character. Order display of tokens by position in channel
      *  first, then by channel.
      *  
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException Thrown if there is no director.
      */
     public boolean postfire() throws IllegalActionException {
         //  TODO: Order by channel first and then by position in channel will be nicer,

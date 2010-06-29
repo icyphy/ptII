@@ -36,11 +36,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////////
 //// Task
 
-/** A task in the taskpt domain. This actor reads data from a shared memory,
- * computes something and writes the output to the addresses passed on the input/
- * output ports. A task has its own shared memory that its actors can access. During
- * computation it does not have access to the shared memory of its 
- * controlling ThreadDirector.
+/** A task in the taskpt domain. It consumes all input tokens at the 
+ * beginning and produces all output tokens at the end. 
+ * 
+ * <p>Input and output tokens are not passed directly, but via pointers that point to
+ * an address (range) in a shared memory that is controlled by the director
+ * of the container of a task. That's why a task has input/output ports for
+ * specifying the outputs. The token on the outside of this port specifies 
+ * the address, where the tokens have to be stored in the shared memory. The 
+ * inside of this port receives the tokens to be stored. A task
+ * works on copies of the data read from memory. A 
+ * TaskDirector takes care of transferring the outputs and inputs. The TaskDirector
+ * also provides a shared memory that is exclusive to all actors within this task.
+ * This ensures that a task is free of side effects.</p>
  * 
  * @author Bastian Ristau
  * @version $Id$
@@ -55,13 +63,14 @@ public class Task extends TypedCompositeActor {
      *  NullPointerException will be thrown.  This actor will use the
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.  This actor will have a TaskDirector.
+     *  Increment the version of the workspace.  The director of the Task is
+     *  set to be a TaskDirector.
      *
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the container is incompatible
+     *  @exception IllegalActionException Thrown if the container is incompatible
      *   with this actor.
-     *  @exception NameDuplicationException If the name coincides with
+     *  @exception NameDuplicationException Thrown if the name coincides with
      *   an actor already in the container.
      */
     public Task(CompositeEntity container, String name)

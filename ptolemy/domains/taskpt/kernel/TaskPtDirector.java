@@ -46,9 +46,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TaskPtDirector
 
 /** A director for controlling tasks and threads in the taskpt domain.
- * A TaskPtDirector has a shared memory that can be accessed by the actors
- * that this director is controlling. The memory is however local to this
- * director. Thus, it is hidden for higher level entities. 
+ * 
+ * <p>A TaskPtDirector has a shared memory that can be accessed by the actors
+ * that this director is controlling. The memory is local to this
+ * director (and not accessible for higher level entities).</p> 
  * 
  * For more details on this MoC see 
  * Torsten Limberg, Bastian Ristau, and Gerhard Fettweis. 
@@ -100,7 +101,7 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
 
     /** Initialize the model controlled by this director.
      *  
-     *  @throws IllegalActionException If the initialize() method of
+     *  @throws IllegalActionException Thrown if the initialize() method of
      *  one of the associated actors throws it, or if there is no
      *  scheduler.
      */
@@ -122,7 +123,7 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
      * 
      *  @return True if the Director wants to be fired again in the
      *  future.
-     *  @throws IllegalActionException If the iterations parameter
+     *  @throws IllegalActionException Thrown if the iterations parameter
      *  does not contain a legal value.
      */
     public boolean postfire() throws IllegalActionException {
@@ -140,9 +141,9 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
     /** Initialize the shared memory for the actors and set the 
      * iterations for this director to one.
      * 
-     *  @throws IllegalActionException If there is a problem instantiating
+     *  @throws IllegalActionException Thrown if there is a problem instantiating
      *   the director's parameters.
-     *  @throws NameDuplicationException If there is a problem instantiating
+     *  @throws NameDuplicationException Thrown if there is a problem instantiating
      *   the director's parameters.
      */
     protected void _init() throws IllegalActionException,
@@ -153,11 +154,58 @@ public abstract class TaskPtDirector extends VisualSequenceDirector {
         }
         iterations.setExpression("1");
     }
+    
+    /** Transfer at most one data token from the given input port of
+     *  the container to the ports it is connected to on the inside.
+     *  This method delegates the operation to the IOPort, so that the
+     *  subclass of IOPort, TypedIOPort, can override this method to
+     *  perform run-time type conversion.
+     *
+     *  @param port The port to transfer tokens from.
+     *  @return True if at least one data token is transferred.
+     *  @exception IllegalActionException Thrown, if the port is not an opaque
+     *   input port.
+     *  @see IOPort#transferInputs
+     */
+    protected boolean _transferInputs(IOPort port) throws IllegalActionException {
+        // FIXME: Currently also PtrTokens are directly transferred. This
+        // will lead to an error as this director has its own memory. If
+        // the address specified in the passed PtrToken is read or written inside,
+        // it will not read/write to the intended location. 
+        //
+        // In case of a present
+        // Token of type PtrToken, transfer the Tokens this PtrToken is pointing to
+        // instead. If the port is an input/output port and PtrTokens are 
+        // present, do nothing (because it is an address for the output tokens send
+        // from inside).
+        return super._transferInputs(port);        
+    }
+    
+    /** Transfer at most one data token from the given output port of
+     *  the container to the ports it is connected to on the outside.
+     *  @param port The port to transfer tokens from.
+     *  @return True if the port has an inside token that was successfully
+     *  transferred.  Otherwise return false (or throw an exception).
+     *  @exception IllegalActionException Thrown, if the port is not an opaque
+     *   output port.
+     */
+    protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
+        // FIXME: Currently also PtrTokens are directly transferred. This
+        // will lead to an error as this director has its own memory. If
+        // the address specified in the passed PtrToken is read or written outside,
+        // it will not read/write to the intended location.
+        //
+        // In case of a present
+        // Token of type PtrToken, transfer the Tokens this PtrToken is pointing to
+        // instead. If the port is an input/output port and PtrTokens are 
+        // present from outside, write data to the memory of the higher level director.
+         return super._transferOutputs(port);
+    }
 
     /** Set the initial Tokens present on the inputs of the actors. In
      * this case do not set any initial tokens. Remove already present tokens.
      * 
-     * @throws IllegalActionException If already present tokens cannot be
+     * @throws IllegalActionException Thrown if already present tokens cannot be
      * removed.
      */
     protected void _setInitialValues() throws IllegalActionException {

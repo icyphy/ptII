@@ -1,7 +1,7 @@
 # Makefile for PtolemyII taskpt domain
 #
 # @Version: $Id$
-# @Author: Christopher Brooks, Bastian Ristau
+# @Author: Christopher Brooks
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.

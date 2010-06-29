@@ -110,8 +110,8 @@ public class ChangePtr extends TypedAtomicActor {
      * plus addressOffset and size = size of the token present at <i>input</i>
      * plus sizeOffset.
      * 
-     * @throws NoTokenException If there is no token.
-     * @throws IllegalActionException If there is no director, and hence
+     * @throws NoTokenException Thrown if there is no token.
+     * @throws IllegalActionException Thrown if there is no director, and hence
      * no receivers have been created, if the port is not an input port, or
      * if the channel index is out of range.
       */
