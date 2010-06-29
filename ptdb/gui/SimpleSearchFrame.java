@@ -496,7 +496,7 @@ public class SimpleSearchFrame extends JFrame {
                         try {
                             
                             StringParameter attributeToAdd = new StringParameter(
-                                    _containerModel, ((ModelAttributePanel) 
+                                    null, ((ModelAttributePanel) 
                                             componentArray2[j])
                                                 .getAttributeName());
                             

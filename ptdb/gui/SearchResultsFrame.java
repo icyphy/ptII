@@ -243,7 +243,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
             try {
             
                 Entity modelToImport = 
-                    LoadManager.importModel(modelName, true);
+                    LoadManager.importModel(modelName, true, _containerModel);
                     
                 if (modelToImport != null){
                     
@@ -285,7 +285,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
             try {
             
                 Entity modelToImport = 
-                    LoadManager.importModel(modelName, false);
+                    LoadManager.importModel(modelName, false, _containerModel);
 
                 if (modelToImport != null){
                     

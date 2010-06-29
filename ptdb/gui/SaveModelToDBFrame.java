@@ -463,7 +463,7 @@ public class SaveModelToDBFrame extends JFrame {
 
         // It is not new if the model has the DBModel tag 
         // and the model name is still the same.
-        if (_modelToSave.getAttribute("DBModel") != null
+        if (_modelToSave.getAttribute("DBReference") != null
                 && _modelToSave.getName().equals(_initialModelName)) {
             
             isNew = false;

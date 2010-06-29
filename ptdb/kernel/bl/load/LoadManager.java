@@ -11,6 +11,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 
@@ -38,6 +39,9 @@ public class LoadManager {
     *          If no model with the given name is found, return null.
     * @param byReference
     *          Indication that the model should be included by reference.
+     * @param container 
+     *          The NamedObj that will contain this imported model.
+     *          It is used here to obtain a unique name.
     * @return
     *          An Entity object that the GUI can display.
     * @exception DBConnectionException
@@ -49,7 +53,8 @@ public class LoadManager {
     * @exception Exception
     *          Thrown if a problem occurs creating an effigy from the MoML.
     */
-   public  static Entity importModel(String name, boolean byReference)
+   public  static Entity importModel(String name, boolean byReference
+           , NamedObj container)
            throws DBConnectionException, DBExecutionException, Exception {
 
        XMLDBModel dbModel = DBModelFetcher.load(name);
@@ -102,6 +107,32 @@ public class LoadManager {
        
        }
        
+ 
+       // If it doesn't have a DBModelName attribute, add it.
+       if (returnEntity.getAttribute("DBModelName") == null) {
+
+           String dbNameTag = "<property name=\"DBModelName\" " +
+                    "class=\"ptolemy.data.expr.StringParameter\" " +
+                    "value=\"" + returnEntity.getName() + 
+                    "\"></property>";
+           
+           MoMLChangeRequest change = new MoMLChangeRequest(null,
+                   returnEntity, dbNameTag);
+               
+           change.setUndoable(true);
+           returnEntity.requestChange(change);
+               
+       } else {
+       
+           ((StringParameter) returnEntity
+               .getAttribute("DBModelName"))
+                   .setExpression(returnEntity.getName());
+
+       }
+       
+       // Make the entity name unique within container.
+       returnEntity.setName(container.uniqueName(returnEntity.getName()));
+    
        return returnEntity;
 
    }
