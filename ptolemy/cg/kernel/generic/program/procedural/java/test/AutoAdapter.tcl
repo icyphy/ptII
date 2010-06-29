@@ -98,7 +98,6 @@ if {[info procs testJavaCG] == "" } then {
 set models [list \
 		$PTII/ptolemy/actor/lib/conversions/test/auto/StringToIntArray.xml \
 		$PTII/ptolemy/actor/lib/test/auto/AbsoluteValue.xml \
-		$PTII/ptolemy/actor/lib/test/auto/DelayTime.xml \
 		$PTII/ptolemy/actor/lib/test/auto/FileWriter1.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Gaussian1.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Gaussian2.xml \
