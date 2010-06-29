@@ -376,27 +376,29 @@ public class NamedProgramCodeGeneratorAdapter extends
             throws IllegalActionException {
     }
 
-    /** Generate sanitized name for the given named object. Remove all
-     *  underscores to avoid conflicts with systems functions.
-     *  @param namedObj The named object for which the name is generated.
-     *  @return The sanitized name.
-     */
-    public static String generateName(NamedObj namedObj) {
-        String name = StringUtilities.sanitizeName(namedObj.getFullName());
+    // /** Generate sanitized name for the given named object. Remove all
+    //  *  underscores to avoid conflicts with systems functions.
+    //  *  @param namedObj The named object for which the name is generated.
+    //  *  @return The sanitized name.
+    //  *  @see #generateSimpleName(NamedObj)
+    //  */
+    // public static String generateName(NamedObj namedObj) {
+    //     // FIXME: cg/kernel/generic/CodeGeneratorAdapter has a duplicate method with this name?
+    //     String name = StringUtilities.sanitizeName(namedObj.getFullName());
 
-        // FIXME: Assume that all objects share the same top level. In this case,
-        // having the top level in the generated name does not help to
-        // expand the name space but merely lengthen the name string.
-        //        NamedObj parent = namedObj.toplevel();
-        //        if (namedObj.toplevel() == namedObj) {
-        //            return "_toplevel_";
-        //        }
-        //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
-        if (name.startsWith("_")) {
-            name = name.substring(1, name.length());
-        }
-        return name.replaceAll("\\$", "Dollar");
-    }
+    //     // FIXME: Assume that all objects share the same top level. In this case,
+    //     // having the top level in the generated name does not help to
+    //     // expand the name space but merely lengthen the name string.
+    //     //        NamedObj parent = namedObj.toplevel();
+    //     //        if (namedObj.toplevel() == namedObj) {
+    //     //            return "_toplevel_";
+    //     //        }
+    //     //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
+    //     if (name.startsWith("_")) {
+    //         name = name.substring(1, name.length());
+    //     }
+    //     return name.replaceAll("\\$", "Dollar");
+    // }
 
     /**
      * Generate the postfire code. In this base class, do nothing. Subclasses
@@ -450,6 +452,7 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  underscores to avoid conflicts with systems functions.
      *  @param namedObj The named object for which the name is generated.
      *  @return The sanitized name.
+     *  @see #generateName(NamedObj)
      */
     final public static String generateSimpleName(NamedObj namedObj) {
         String name = StringUtilities.sanitizeName(namedObj.getName());
