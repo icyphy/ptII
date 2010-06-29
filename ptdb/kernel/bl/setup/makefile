@@ -38,7 +38,11 @@ DIRS =		$(PTPOWERMOCK_DIR)
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH = 	$(ROOT)
+# This package imports ptdb.kernel.database.OracleXMLDBConnection, so
+# we need dbxml jars.
+# PTDBXML_JARS is set by configure
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(PTDBXML_JARS)
+
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
