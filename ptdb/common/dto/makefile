@@ -65,7 +65,8 @@ JSRCS = \
 	SetupParameters.java \
 	CreateAttributeTask.java \
 	DeleteAttributeTask.java \
-	UpdateAttributeTask.java
+	UpdateAttributeTask.java \
+	RemoveModelsTask.java
 
 EXTRA_SRCS =	$(JSRCS)
 
