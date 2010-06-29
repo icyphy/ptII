@@ -1,0 +1,10 @@
+putDocument Attributes.ptdbxml '<attributes>
+	<attribute id="countries_1277687205671" name="countries" type="List">
+		<item name="India"/>
+		<item name="China"/>
+		<item name="Saudi Arabia"/>
+		<item name="United States"/>
+	</attribute>
+	<attribute id="author_1277754213656" name="author" type="String"/>
+	<attribute id="new_1277754213123" name="new" type="Boolean"/>
+</attributes>'
