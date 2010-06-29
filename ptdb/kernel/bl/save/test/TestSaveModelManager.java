@@ -78,10 +78,10 @@ public class TestSaveModelManager {
         CreateModelTask createModelTaskMock = PowerMock
                 .createMock(CreateModelTask.class);
 
-        PowerMock.expectNew(CreateModelTask.class).andReturn(
+        PowerMock.expectNew(CreateModelTask.class, modelMock).andReturn(
                 createModelTaskMock);
 
-        createModelTaskMock.setXMLDBModel(modelMock);
+        //createModelTaskMock.setXMLDBModel(modelMock);
 
         dBConnectionMock.executeCreateModelTask(createModelTaskMock);
 
@@ -140,11 +140,11 @@ public class TestSaveModelManager {
         CreateModelTask createModelTaskMock = PowerMock
                 .createMock(CreateModelTask.class);
 
-        PowerMock.expectNew(CreateModelTask.class).andReturn(
+        PowerMock.expectNew(CreateModelTask.class, modelMock).andReturn(
                 createModelTaskMock);
 
 
-        createModelTaskMock.setXMLDBModel(modelMock);
+        //createModelTaskMock.setXMLDBModel(modelMock);
 
 
         dBConnectionMock.executeCreateModelTask(createModelTaskMock);
@@ -222,10 +222,10 @@ public class TestSaveModelManager {
         SaveModelTask saveModelTaskMock = PowerMock
                 .createMock(SaveModelTask.class);
 
-        PowerMock.expectNew(SaveModelTask.class).andReturn(saveModelTaskMock);
+        PowerMock.expectNew(SaveModelTask.class, modelMock).andReturn(saveModelTaskMock);
 
 
-        saveModelTaskMock.setXMLDBModel(modelMock);
+        //saveModelTaskMock.setXMLDBModel(modelMock);
 
 
         dBConnectionMock.executeSaveModelTask(saveModelTaskMock);
@@ -289,10 +289,10 @@ public class TestSaveModelManager {
         SaveModelTask saveModelTaskMock = PowerMock
                 .createMock(SaveModelTask.class);
 
-        PowerMock.expectNew(SaveModelTask.class).andReturn(saveModelTaskMock);
+        PowerMock.expectNew(SaveModelTask.class, modelMock).andReturn(saveModelTaskMock);
 
 
-        saveModelTaskMock.setXMLDBModel(modelMock);
+        //saveModelTaskMock.setXMLDBModel(modelMock);
 
 
         dBConnectionMock.executeSaveModelTask(saveModelTaskMock);
