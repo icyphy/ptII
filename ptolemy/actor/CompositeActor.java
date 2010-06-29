@@ -1149,7 +1149,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     //connect the newly created port to the subscriber port
                     try {
                         // CompositeActor always creates an IORelation.
-                        relation = (IORelation) newRelation(uniqueName("subscriberExternalRelation"));
+                        relation = (IORelation) newRelation(uniqueName(subscriberPort.getContainer().getName()+ "subscriberExternalRelationB"));
                     } catch (NameDuplicationException e) {
                         // Shouldn't happen.
                         throw new IllegalStateException(e);
@@ -1272,7 +1272,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         //connect the newly created port to the subscriber port
                         try {
                             // CompositeActor always creates an IORelation.
-                            relation = (IORelation) newRelation(uniqueName("subscriberExternalRelation"));
+                            relation = (IORelation) newRelation(uniqueName(subscriberPort.getContainer().getName()+ "subscriberExternalRelationA"));
                         } catch (NameDuplicationException e) {
                             // Shouldn't happen.
                             throw new IllegalStateException(e);
