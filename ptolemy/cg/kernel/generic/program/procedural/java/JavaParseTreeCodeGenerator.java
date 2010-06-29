@@ -81,10 +81,11 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.util.StringUtilities;
 
-////ParseTreeEvaluator
+//////////////////////////////////////////////////////////////////////
+//// JavaParseTreeCodeGenerator
 
 /**
- This class evaluates a parse tree given a reference to its root node.
+ Evaluate a parse tree given a reference to its root node and generate Java code.
  It implements a visitor that visits the parse tree in depth-first order,
  evaluating each node and storing the result as a token in the node.
  Two exceptions are logic nodes and the ternary if node (the ? : construct),
@@ -92,11 +93,11 @@ import ptolemy.util.StringUtilities;
 
  <p>This class has the following limitations:
  <ul>
- <li> It is a copy of ParseTreeCodeGenerator from data/expr and thus
+ <li> It is a copy of ParseTreeEvaluator from data/expr and thus
  has lots of code for evaluating expressions, which we don't need
  <li> It is not properly converting types: We need to add logic to
  convert types.
- <li> The .tcl test has known failures involving nulls
+ <li> The .tcl test has known failures involving nulls.
  <li> It does not evaluate constants.
  </ul>
 
@@ -1883,6 +1884,8 @@ public class JavaParseTreeCodeGenerator extends AbstractParseTreeVisitor
         cFunctionMap.put("log", "Math.log");
         cFunctionMap.put("log10", "Math.log10");
         cFunctionMap.put("log1p", "Math.log1p");
+        cFunctionMap.put("max", "Math.max");
+        cFunctionMap.put("min", "Math.min");
         cFunctionMap.put("rint", "Math.rint");
         cFunctionMap.put("round", "Math.round");
         cFunctionMap.put("signum", "Math.signum");
