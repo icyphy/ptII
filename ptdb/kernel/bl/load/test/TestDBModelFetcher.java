@@ -51,11 +51,11 @@ public class TestDBModelFetcher {
 
         XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
 
-        PowerMock.expectNew(GetModelsTask.class).andReturn(getModelsTaskMock);
         EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(dBConnectionMock);
-        getModelsTaskMock.setModelName(loadModel);
+        PowerMock.expectNew(GetModelsTask.class, loadModel).andReturn(getModelsTaskMock);
+        //getModelsTaskMock.setModelName(loadModel);
         EasyMock.expect(dBConnectionMock.executeGetModelsTask(getModelsTaskMock)).andReturn(modelMock);
-        dBConnectionMock.commitConnection();
+
         dBConnectionMock.closeConnection();
 
         //Execute the test.  Verify that, load does not return null if the database layer is mocked.
