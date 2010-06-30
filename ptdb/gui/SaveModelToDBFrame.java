@@ -334,7 +334,7 @@ public class SaveModelToDBFrame extends JFrame {
             
         }
         
-        if (_attributesListPanel.allAttributeValuesSet()){
+        if (!_attributesListPanel.allAttributeValuesSet()){
             
             JOptionPane.showMessageDialog(this,
                     "You must specify a value for all attributes.", 
