@@ -117,47 +117,55 @@ public class ModelAttributePanel extends JPanel {
      */
     public String getValue() {
 
-        if (((XMLDBAttribute)_attributeMap
-                .get(_attributeName.getSelectedItem()
-                .toString())).getAttributeType()
-                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
-
-            return _textValue.getText();
-
-        } else if (((XMLDBAttribute)_attributeMap
-                .get(_attributeName.getSelectedItem()
-                .toString())).getAttributeType()
-                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
-
-            if (_listValue.getSelectedItem() != null) {
-
-                return _listValue.getSelectedItem().toString();
-
+        try {
+            
+            if (((XMLDBAttribute)_attributeMap
+                    .get(_attributeName.getSelectedItem()
+                    .toString())).getAttributeType()
+                    .equals(XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
+    
+                return _textValue.getText();
+    
+            } else if (((XMLDBAttribute)_attributeMap
+                    .get(_attributeName.getSelectedItem()
+                    .toString())).getAttributeType()
+                    .equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+    
+                if (_listValue.getSelectedItem() != null) {
+    
+                    return _listValue.getSelectedItem().toString();
+    
+                } else {
+    
+                    return "";
+    
+                }
+    
+            } else if (((XMLDBAttribute)_attributeMap
+                    .get(_attributeName.getSelectedItem()
+                    .toString())).getAttributeType()
+                    .equals(XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
+    
+                if (_booleanValue.isSelected()) {
+    
+                    return "TRUE";
+    
+                } else {
+    
+                    return "FALSE";
+    
+                }
+    
             } else {
-
+    
                 return "";
-
+    
             }
-
-        } else if (((XMLDBAttribute)_attributeMap
-                .get(_attributeName.getSelectedItem()
-                .toString())).getAttributeType()
-                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN)) {
-
-            if (_booleanValue.isSelected()) {
-
-                return "TRUE";
-
-            } else {
-
-                return "FALSE";
-
-            }
-
-        } else {
-
-            return null;
-
+            
+        } catch (NullPointerException e){
+            
+            return "";
+        
         }
 
     }

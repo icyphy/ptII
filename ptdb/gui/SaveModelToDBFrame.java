@@ -30,6 +30,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.icon.ValueIcon;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
@@ -66,11 +67,9 @@ public class SaveModelToDBFrame extends JFrame {
 
         _modelToSave = model;
         _initialModelName = model.getName();
-        
         _orignialAttributes = new ArrayList();
         _attributesListPanel = new AttributesListPanel(_modelToSave);
         _tabbedPane = new JTabbedPane();
-        
         
         //Create a list of the original attributes
         for(Object attribute : _modelToSave.attributeList()){
@@ -162,36 +161,25 @@ public class SaveModelToDBFrame extends JFrame {
 
                 } catch (NameDuplicationException e) {
 
-                    JOptionPane
-                            .showMessageDialog((Component) event.getSource(),
-                                    "The entered name will result in a "
-                                            + "duplicate " + "model name.  "
-                                            + "Please enter a different name.",
-                                    "Save Error",
-                                    JOptionPane.INFORMATION_MESSAGE, null);
+                    MessageHandler.error("The model cannot be saved now " +
+                            "due to a NameDuplicationException.", e);
+
                     _rollbackModel();
 
                 } catch (IllegalActionException e) {
 
-                    JOptionPane
-                            .showMessageDialog((Component) event.getSource(),
-                                    "Saving this model will result in "
-                                            + "incorrect or "
-                                            + "inconsistent data.  "
-                                            + "Please cancel and try again.",
-                                    "Save Error",
-                                    JOptionPane.INFORMATION_MESSAGE, null);
+                    MessageHandler.error("The model cannot be saved now " +
+                            "due to an IllegalActionException.", e);
+                    
                     _rollbackModel();
 
                 } catch (Exception e) {
 
-                    JOptionPane
-                            .showMessageDialog((Component) event.getSource(),
-                                    "Could not save the model.  "
-                                            + "Please cancel and try again.",
-                                    "Save Error",
-                                    JOptionPane.INFORMATION_MESSAGE, null);
+                    MessageHandler.error("The model cannot be saved now " +
+                            "due to an Exception.", e);
+                    
                     _rollbackModel();
+                    
                 }
 
             }
@@ -342,6 +330,17 @@ public class SaveModelToDBFrame extends JFrame {
                     "You must specify a name for all attributes.", "Save Error",
                     JOptionPane.INFORMATION_MESSAGE, null);
             
+            return false;
+            
+        }
+        
+        if (_attributesListPanel.allAttributeValuesSet()){
+            
+            JOptionPane.showMessageDialog(this,
+                    "You must specify a value for all attributes.", 
+                    "Save Error",
+                    JOptionPane.INFORMATION_MESSAGE, null);
+    
             return false;
             
         }

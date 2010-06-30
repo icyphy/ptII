@@ -375,7 +375,7 @@ public class AttributesListPanel extends JPanel {
                     if (componentArray2[j] instanceof ModelAttributePanel) {
 
                         if(((ModelAttributePanel) componentArray2[j])
-                                        .getAttributeName().length()<=0){
+                                        .getAttributeName().equals("")){
                             
                             return false;
                             
@@ -391,6 +391,57 @@ public class AttributesListPanel extends JPanel {
         }
 
         return true;
+    }
+
+    /** Get an indication if all attributes in the panel have values.
+     * @return
+     *          An indication if all attributes in the panel have values.
+     *           (true they do. false if they do not).
+     * 
+     */
+    public boolean allAttributeValuesSet(){
+        
+        Component[] componentArray1 = _attListPanel.getComponents();
+
+        for (int i = 0; i < componentArray1.length; i++) {
+
+            if (componentArray1[i] instanceof JPanel) {
+
+                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                        .getComponents();
+
+                for (int j = 0; j < componentArray2.length; j++) {
+
+                    if (componentArray2[j] instanceof ModelAttributePanel) {
+
+                        if(((ModelAttributePanel) componentArray2[j])
+                                        .getValue().equals("")){
+                            
+                            return false;
+                            
+                        }
+                                        
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return true;
+    }
+    
+    /** Get the number of attributes displayed in the panel.
+     * @return
+     *          The number of attributes displayed in the panel.
+     * 
+     */
+    public int getAttributeCount(){
+        
+        return _AttDelete.size();
+        
     }
     
     ///////////////////////////////////////////////////////////////////
