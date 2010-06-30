@@ -1,39 +1,28 @@
 package ptdb.gui;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 
-import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
-import ptdb.kernel.bl.save.AttributesManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -63,9 +52,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 public class SaveModelToDBFrame extends JFrame {
 
     /**
-     * Construct a SaveModelToDBFrame. Add swing Components to the frame. Add a
-     * listener for the "+" button, which adds a ModelAttributePanel to the
-     * tabbed pane. Add a listener for the Save button to call _saveModel().
+     * Construct a SaveModelToDBFrame. Add swing Components to the frame. Add
+     * listeners for the "Save" and "Cancel" buttons.
      * 
      * @param model The model that is being saved to the database.
      * 
@@ -78,241 +66,98 @@ public class SaveModelToDBFrame extends JFrame {
 
         _modelToSave = model;
         _initialModelName = model.getName();
-
-        _aList = new HashMap();
-        _AttDelete = new HashMap();
-
-        setPreferredSize(new Dimension(760, 400));
         
-        JPanel outerPanel = new JPanel();
+        _orignialAttributes = new ArrayList();
+        _attributesListPanel = new AttributesListPanel(_modelToSave);
+        _tabbedPane = new JTabbedPane();
+        
+        
+        //Create a list of the original attributes
+        for(Object attribute : _modelToSave.attributeList()){
+            
+            if(attribute instanceof StringParameter){
+                
+                if (((StringParameter) attribute).getName()!="DBReference" && 
+                        ((StringParameter) attribute).getName()!="DBModelName" &&
+                        _attributesListPanel.isDBAttribute(((StringParameter) attribute).getName())){
+                    
+                    _orignialAttributes.add((StringParameter) attribute);
+                    
+                }
+                
+            }            
+            
+        }
+
         JPanel topPanel = new JPanel();
         JPanel bottomPanel = new JPanel();
-        JPanel innerPanel = new JPanel();
-        JPanel modelNamePanel = new JPanel();
-        JLabel nameLabel = new JLabel("Model Name");
-
-        _tabbedPane = new JTabbedPane();
-        _nameText = new JTextField(model.getName());
-        _attListPanel = new JPanel();
-        _scrollPane = new JScrollPane(_attListPanel,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        nameLabel.setAlignmentX(LEFT_ALIGNMENT);
-        modelNamePanel.setAlignmentX(LEFT_ALIGNMENT);
-        innerPanel.setAlignmentX(LEFT_ALIGNMENT);
-        _nameText.setAlignmentX(LEFT_ALIGNMENT);
+        
+        _attributesListPanel.setAlignmentX(LEFT_ALIGNMENT);
         _tabbedPane.setAlignmentX(LEFT_ALIGNMENT);
         topPanel.setAlignmentX(LEFT_ALIGNMENT);
-        outerPanel.setAlignmentX(LEFT_ALIGNMENT);
-        _attListPanel.setAlignmentX(LEFT_ALIGNMENT);
-        _scrollPane.setAlignmentX(LEFT_ALIGNMENT);
         bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
 
-        nameLabel.setAlignmentY(TOP_ALIGNMENT);
-        modelNamePanel.setAlignmentY(TOP_ALIGNMENT);
-        innerPanel.setAlignmentY(TOP_ALIGNMENT);
-        _nameText.setAlignmentY(TOP_ALIGNMENT);
+        _attributesListPanel.setAlignmentY(TOP_ALIGNMENT);
         _tabbedPane.setAlignmentY(TOP_ALIGNMENT);
         topPanel.setAlignmentY(TOP_ALIGNMENT);
-        outerPanel.setAlignmentY(TOP_ALIGNMENT);
-        _attListPanel.setAlignmentY(TOP_ALIGNMENT);
-        _scrollPane.setAlignmentY(TOP_ALIGNMENT);
         bottomPanel.setAlignmentY(TOP_ALIGNMENT);
 
-        outerPanel.setLayout(new BoxLayout(outerPanel, BoxLayout.Y_AXIS));
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         _tabbedPane.setLayout(new BoxLayout(_tabbedPane, BoxLayout.Y_AXIS));
-        modelNamePanel
-                .setLayout(new BoxLayout(modelNamePanel, BoxLayout.X_AXIS));
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
-        _attListPanel.setLayout(new BoxLayout(_attListPanel, BoxLayout.Y_AXIS));
-        _scrollPane.setLayout(new ScrollPaneLayout());
-        _scrollPane.setPreferredSize(new Dimension(500, 300));
-
-        modelNamePanel.setMaximumSize(new Dimension(300, 20));
-        _nameText.setPreferredSize(new Dimension(100, 20));
-        nameLabel.setPreferredSize(new Dimension(70, 20));
 
         topPanel.setBorder(BorderFactory.createEmptyBorder());
-        nameLabel.setBorder(new EmptyBorder(2, 2, 2, 2));
 
-        modelNamePanel.add(nameLabel);
-        modelNamePanel.add(_nameText);
-        innerPanel.add(modelNamePanel);
-        innerPanel.add(_scrollPane);
-        _tabbedPane.addTab("Model Info", innerPanel);
-
+        _tabbedPane.addTab("Model Info", _attributesListPanel);
+        
         _tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
         _tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        try {
-            
-            AttributesManager attributeManager = new AttributesManager();
-            List <XMLDBAttribute> xmlAttList = new ArrayList();
-            xmlAttList = attributeManager.getDBAttributes();
-            
-            for(XMLDBAttribute a : xmlAttList){
-                
-                _aList.put(a.getAttributeName(), a);
-                
-            }
-        
-        } catch(DBExecutionException e){
-            
-            JOptionPane
-            .showMessageDialog((Component) this,
-                    "Could not retrieve attributes from the database.",
-                    "Save Error",
-                    JOptionPane.INFORMATION_MESSAGE, null);
-            
-        } catch(DBConnectionException e){
-         
-            JOptionPane
-            .showMessageDialog((Component) this,
-                    "Could not retrieve attributes from the database.",
-                    "Save Error",
-                    JOptionPane.INFORMATION_MESSAGE, null);
-            
-        }
-        
-
-
-        // Add existing attributes.
-        for (Object a : model.attributeList()) {
-
-            if (a instanceof StringParameter) {
-
-                // We only show the Attribute if it is in the list returned
-                // from the DB.
-                if (_aList.containsKey(((StringParameter) a).getName())) {
-
-                    JPanel modelDeletePanel = new JPanel();
-                    modelDeletePanel
-                        .setLayout(new BoxLayout(modelDeletePanel, BoxLayout.X_AXIS));
-                    modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
-                    modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
-                    
-                    ModelAttributePanel modelAttPanel = new ModelAttributePanel(
-                            _aList);
-                    modelAttPanel.setValue(((StringParameter) a).getExpression());
-                    JButton deleteButton = new JButton("Delete");
-                    deleteButton.setAlignmentY(TOP_ALIGNMENT);
-
-                    modelAttPanel.setAttributeName(((StringParameter) a).getName());
-                    modelAttPanel.setValue(((StringParameter) a).getExpression());
-
-                    deleteButton.setActionCommand("Delete");
-                    deleteButton
-                            .setHorizontalTextPosition(SwingConstants.CENTER);
-
-                    modelDeletePanel.add(modelAttPanel);
-                    modelDeletePanel.add(deleteButton);
-
-                    _AttDelete.put(deleteButton, modelDeletePanel);
-                    
-                    _attListPanel.add(modelDeletePanel);
-                    _attListPanel.setMaximumSize(getMinimumSize());
-                    
-                    deleteButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent event) {
-
-                            _attListPanel.remove((JPanel) _AttDelete.get(event
-                                    .getSource()));
-                            _attListPanel.remove((JButton) event.getSource());
-                            repaint();
-
-                        }
-
-                    });
-
-                    validate();
-                    repaint();
-
-                }
-
-            }
-
-        }
-
         JButton save_Button;
-        JButton add_Button;
         JButton cancel_Button;
 
-        add_Button = new JButton("+");
         save_Button = new JButton("Save");
         cancel_Button = new JButton("Cancel");
 
-        add_Button.setMnemonic(KeyEvent.VK_PLUS);
         save_Button.setMnemonic(KeyEvent.VK_ENTER);
         cancel_Button.setMnemonic(KeyEvent.VK_ESCAPE);
 
-        add_Button.setActionCommand("+");
         save_Button.setActionCommand("Save");
         cancel_Button.setActionCommand("Cancel");
 
-        add_Button.setHorizontalTextPosition(SwingConstants.CENTER);
         save_Button.setHorizontalTextPosition(SwingConstants.CENTER);
         cancel_Button.setHorizontalTextPosition(SwingConstants.CENTER);
 
-        add_Button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+        for (Object stringParameter : _modelToSave.attributeList()) {
 
-                JPanel modelDeletePanel = new JPanel();
-                modelDeletePanel
-                    .setLayout(new BoxLayout(modelDeletePanel, BoxLayout.X_AXIS));
-                modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
-                modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
+            // If the attribute is a StringParameter that is not the
+            // reference indication or the model name AND it is one of the
+            // attributes configured in the DB, show it in the panel.
+            if (stringParameter instanceof StringParameter && 
+                ((StringParameter) stringParameter).getName()!="DBReference" && 
+                ((StringParameter) stringParameter).getName()!="DBModelName" &&
+                _attributesListPanel.isDBAttribute(((StringParameter) 
+                      stringParameter).getName())) {
                 
-                ModelAttributePanel modelAttPanel = new ModelAttributePanel(
-                        _aList);
-                JButton deleteButton = new JButton("Delete");
-                deleteButton.setAlignmentY(TOP_ALIGNMENT);
-
-                modelAttPanel.setAttributeName("");
-
-                deleteButton.setActionCommand("Delete");
-                deleteButton.setHorizontalTextPosition(SwingConstants.CENTER);
-
-                modelDeletePanel.add(modelAttPanel);
-                modelDeletePanel.add(deleteButton);
-
-                _AttDelete.put(deleteButton, modelDeletePanel);
-
-                _attListPanel.add(modelDeletePanel);
-                _attListPanel.setMaximumSize(getMinimumSize());
-
-                deleteButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent event) {
-
-                        _attListPanel.remove((JPanel) _AttDelete.get(event
-                                .getSource()));
-                        _attListPanel.remove((JButton) event.getSource());
-
-                        validate();
-                        repaint();
-
-                    }
-
-                });
-
-                validate();
-                repaint();
+                _attributesListPanel.addAttribute((StringParameter) stringParameter);
+                
             }
-        });
+        
+        }
 
         save_Button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 
-                // If the form is in an invalid state, do not continue;
-                if (!_isValid()) {
-
-                    return;
-
-                }
-
                 try {
+                    
+                    // If the form is in an invalid state, do not continue;
+                    if (!_isValid()) {
 
+                        _rollbackModel();
+                        
+                        return;
+
+                    }
+                    
                     _saveModel();
 
                 } catch (NameDuplicationException e) {
@@ -324,6 +169,7 @@ public class SaveModelToDBFrame extends JFrame {
                                             + "Please enter a different name.",
                                     "Save Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
+                    _rollbackModel();
 
                 } catch (IllegalActionException e) {
 
@@ -335,6 +181,7 @@ public class SaveModelToDBFrame extends JFrame {
                                             + "Please cancel and try again.",
                                     "Save Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
+                    _rollbackModel();
 
                 } catch (Exception e) {
 
@@ -344,6 +191,7 @@ public class SaveModelToDBFrame extends JFrame {
                                             + "Please cancel and try again.",
                                     "Save Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
+                    _rollbackModel();
                 }
 
             }
@@ -352,36 +200,23 @@ public class SaveModelToDBFrame extends JFrame {
         cancel_Button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 
-                try {
-
-                    _rollbackModel();
-                    setVisible(false);
-
-                } catch (Exception e) {
-
-                    JOptionPane.showMessageDialog(
-                            (Component) event.getSource(),
-                            "Could not roll back the model.", "Save Error",
-                            JOptionPane.INFORMATION_MESSAGE, null);
-
-                }
+                _rollbackModel();
+                setVisible(false);
 
             }
 
         });
 
         topPanel.add(_tabbedPane);
-        bottomPanel.add(add_Button);
         bottomPanel.add(save_Button);
         bottomPanel.add(cancel_Button);
-        outerPanel.add(topPanel);
-        outerPanel.add(bottomPanel);
-        add(outerPanel);
+        add(topPanel);
+        add(bottomPanel);
         validate();
         repaint();
 
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     //                    private methods                          ////
 
@@ -415,20 +250,14 @@ public class SaveModelToDBFrame extends JFrame {
 
         } catch (DBConnectionException exception) {
 
-            _rollbackModel();
-            exception.printStackTrace();
             throw exception;
 
         } catch (DBExecutionException exception) {
 
-            _rollbackModel();
-            exception.printStackTrace();
             throw exception;
 
         } catch (IllegalArgumentException exception) {
 
-            _rollbackModel();
-            exception.printStackTrace();
             throw exception;
 
         } catch (ModelAlreadyExistException exception) {
@@ -473,9 +302,10 @@ public class SaveModelToDBFrame extends JFrame {
         return isNew;
     }
 
-    private boolean _isValid() {
+    private boolean _isValid() throws NameDuplicationException,
+        IllegalActionException {
 
-        if (_nameText.getText().length() == 0) {
+        if (_attributesListPanel.getModelName().length() == 0) {
 
             JOptionPane.showMessageDialog(this, "You must enter a Model Name.",
                     "Save Error", JOptionPane.INFORMATION_MESSAGE, null);
@@ -484,7 +314,7 @@ public class SaveModelToDBFrame extends JFrame {
 
         }
         
-        if (!_nameText.getText().matches("^[A-Za-z0-9]+$")){
+        if (!_attributesListPanel.getModelName().matches("^[A-Za-z0-9]+$")){
             
             JOptionPane.showMessageDialog(this,
                     "The model name should only contain letters and numbers.", 
@@ -495,58 +325,75 @@ public class SaveModelToDBFrame extends JFrame {
             
         }
         
-        ArrayList<String> attributes = new ArrayList();
-
-        // Get a list of all attributes we have displayed.
-        Component[] componentArray1 = _attListPanel.getComponents();
-
-        for (int i = 0; i < componentArray1.length; i++) {
-
-            if (componentArray1[i] instanceof JPanel) {
-
-                Component[] componentArray2 = ((JPanel) componentArray1[i])
-                        .getComponents();
-
-                for (int j = 0; j < componentArray2.length; j++) {
-
-                    if (componentArray2[j] instanceof ModelAttributePanel) {
-
-                        attributes
-                                .add(((ModelAttributePanel) componentArray2[j])
-                                        .getAttributeName());
-
-                    }
-
-                }
-
-            }
-
+        if (_attributesListPanel.containsDuplicates()) {
+            
+            JOptionPane.showMessageDialog(this,
+                    "The model cannot contain more" + " than one instance "
+                            + "of the same attribute.", "Save Error",
+                    JOptionPane.INFORMATION_MESSAGE, null);
+            
+            return false;
+            
         }
-
-        // Check for duplicate attributes.
-        HashSet set = new HashSet();
-        for (int i = 0; i < attributes.size(); i++) {
-
-            boolean val = set.add(attributes.get(i));
-            if (val == false) {
-
-                JOptionPane.showMessageDialog(this,
-                        "The model cannot contain more" + " than one instance "
-                                + "of the same attribute.", "Save Error",
-                        JOptionPane.INFORMATION_MESSAGE, null);
-                return false;
-
-            }
-
+        
+        if (!_attributesListPanel.allAttributeNamesSet()) {
+            
+            JOptionPane.showMessageDialog(this,
+                    "You must specify a name for all attributes.", "Save Error",
+                    JOptionPane.INFORMATION_MESSAGE, null);
+            
+            return false;
+            
         }
 
         return true;
 
     }
 
-    private void _rollbackModel() throws Exception {
+    private void _rollbackModel() {
 
-        //TODO
+        try{
+
+            ArrayList<StringParameter> attributesList = new ArrayList();
+
+            for (Object a : _modelToSave.attributeList()) {
+
+                if (a instanceof StringParameter) {
+
+                    attributesList.add((StringParameter) a);
+
+                }
+
+            }
+
+            // Delete all existing attributes that are in the
+            // set of attributes obtained from the DB.
+            for (StringParameter attribute : attributesList) {
+
+                if (attribute.getName()!="DBReference" && 
+                        attribute.getName()!="DBModelName" &&
+                        _attributesListPanel.isDBAttribute(attribute.getName())){
+                    
+                    attribute.setContainer(null);
+                    
+                }
+
+            }
+            
+            for(StringParameter attribute : _orignialAttributes){
+                
+                attribute.setContainer(_modelToSave);
+                
+            }
+
+            MoMLChangeRequest change = new MoMLChangeRequest(
+                    this, null, _modelToSave.exportMoML());
+            change.setUndoable(true);
+                            
+            _modelToSave.requestChange(change);
+            
+        } catch (Exception e){}
+        
 
     }
 
@@ -554,7 +401,7 @@ public class SaveModelToDBFrame extends JFrame {
 
         try {
 
-            _modelToSave.setName(_nameText.getText());
+            _modelToSave.setName(_attributesListPanel.getModelName());
 
             if (_initialModelName != null && _initialModelName.length() > 0) {
 
@@ -640,7 +487,7 @@ public class SaveModelToDBFrame extends JFrame {
 
                 if (attribute.getName()!="DBReference" && 
                         attribute.getName()!="DBModelName" &&
-                        _aList.containsKey(attribute.getName())){
+                        _attributesListPanel.isDBAttribute(attribute.getName())){
                     
                     attribute.setContainer(null);
                     
@@ -649,66 +496,42 @@ public class SaveModelToDBFrame extends JFrame {
             }
 
             // Get all attributes we have displayed.
-            Component[] componentArray1 = _attListPanel.getComponents();
+           for(Attribute attributeToAdd : _attributesListPanel.getAttributes()){
 
-            for (int i = 0; i < componentArray1.length; i++) {
+               attributeToAdd.setContainer(_modelToSave);
+               
+                SingletonAttribute sa = new SingletonAttribute(
+                        attributeToAdd.workspace());
+                sa.setContainer(attributeToAdd);
+                sa.setName("_hideName");
 
-                if (componentArray1[i] instanceof JPanel) {
+                ValueIcon vi = new ValueIcon(attributeToAdd,
+                        "_icon");
+                vi.setContainer(attributeToAdd);
 
-                    Component[] componentArray2 = ((JPanel) componentArray1[i])
-                            .getComponents();
+                ColorAttribute ca = new ColorAttribute(vi, "_color");
+                ca.setContainer(vi);
+                ca.setExpression("{1.0, 0.0, 0.0, 1.0}");
 
-                    for (int j = 0; j < componentArray2.length; j++) {
+                SingletonConfigurableAttribute sca = new SingletonConfigurableAttribute(
+                        attributeToAdd.workspace());
+                sca.setContainer(attributeToAdd);
+                sca.configure(null, attributeToAdd.getSource(),
+                        "<svg><text x=\"20\" "
+                                + "style=\"font-size:14; "
+                                + "font-family:SansSerif; "
+                                + "fill:blue\" " + "y=\"20\">"
+                                + "</text></svg>");
 
-                        if (componentArray2[j] instanceof ModelAttributePanel) {
+                VisibleParameterEditorFactory vpef = new VisibleParameterEditorFactory(
+                        attributeToAdd, "_editorFactory");
+                vpef.setContainer(attributeToAdd);
 
-                            StringParameter attributeToAdd = new StringParameter(
-                                    _modelToSave,
-                                    ((ModelAttributePanel) componentArray2[j])
-                                            .getAttributeName());
-                            attributeToAdd
-                                    .setExpression(((ModelAttributePanel) componentArray2[j])
-                                            .getValue());
-                            attributeToAdd.setContainer(_modelToSave);
-
-                            SingletonAttribute sa = new SingletonAttribute(
-                                    attributeToAdd.workspace());
-                            sa.setContainer(attributeToAdd);
-                            sa.setName("_hideName");
-
-                            ValueIcon vi = new ValueIcon(attributeToAdd,
-                                    "_icon");
-                            vi.setContainer(attributeToAdd);
-
-                            ColorAttribute ca = new ColorAttribute(vi, "_color");
-                            ca.setContainer(vi);
-                            ca.setExpression("{1.0, 0.0, 0.0, 1.0}");
-
-                            SingletonConfigurableAttribute sca = new SingletonConfigurableAttribute(
-                                    attributeToAdd.workspace());
-                            sca.setContainer(attributeToAdd);
-                            sca.configure(null, attributeToAdd.getSource(),
-                                    "<svg><text x=\"20\" "
-                                            + "style=\"font-size:14; "
-                                            + "font-family:SansSerif; "
-                                            + "fill:blue\" " + "y=\"20\">"
-                                            + "</text></svg>");
-
-                            VisibleParameterEditorFactory vpef = new VisibleParameterEditorFactory(
-                                    attributeToAdd, "_editorFactory");
-                            vpef.setContainer(attributeToAdd);
-
-                            // TODO Figure out how to place in unique location.
-                            double[] xy = { 250, 170 };
-                            Location l = new Location(attributeToAdd,
-                                    "_location");
-                            l.setLocation(xy);
-
-                        }
-
-                    }
-
-                }
+                // TODO Figure out how to place in unique location.
+                double[] xy = { 250, 170 };
+                Location l = new Location(attributeToAdd,
+                        "_location");
+                l.setLocation(xy);
 
             }
             
@@ -737,16 +560,13 @@ public class SaveModelToDBFrame extends JFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //                    private variables                        ////
-
-    private JPanel _attListPanel;
-    private HashMap _aList;
-    private JScrollPane _scrollPane;
-    private HashMap _AttDelete;
+    //                    private variables                        ////    
+    
     private JTabbedPane _tabbedPane;
     private NamedObj _modelToSave;
-    private JTextField _nameText;
     private String _initialModelName;
+    private AttributesListPanel _attributesListPanel;
     private XMLDBModel xmlModel;
-
+    private ArrayList<StringParameter> _orignialAttributes;
+    
 }

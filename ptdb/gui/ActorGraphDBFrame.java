@@ -421,7 +421,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
         public void actionPerformed(ActionEvent e) {
-
+            
             JFrame frame = new SaveModelToDBFrame(getModel());
             frame.pack();
             frame.setVisible(true);
