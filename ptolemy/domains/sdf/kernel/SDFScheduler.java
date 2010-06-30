@@ -1334,7 +1334,16 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                                     + connectedPort.getFullName()
                                     + " was not found in the map from external ports of the container"
                                     + " to the fractional rates of that port, or is null.  "
-                                    + " Perhaps there is a link to a port within a class definition?");
+                                    + " Perhaps there is a link to a port within a class "
+                                    + "definition? The container of " + currentPort.getFullName()
+                                    + (((Entity)(currentPort.getContainer())).isWithinClassDefinition()
+                                            ? " is" : " is not")
+                                    + " within an actor oriented class definition. "
+                                    + "The container of " + connectedPort.getFullName()
+                                    + (((Entity)(connectedPort.getContainer())).isWithinClassDefinition()
+                                            ? " is" : " is not")
+                                    + " within an actor oriented class definition.");
+
                 }
 
                 //if (previousRate.equals(Fraction.ZERO)) {
