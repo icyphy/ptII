@@ -1,12 +1,19 @@
 package ptdb.kernel.bl.save;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
+import ptdb.common.exception.XMLDBModelParsingException;
 import ptdb.common.util.DBConnectorFactory;
+import ptdb.common.util.Utilities;
 import ptdb.kernel.database.DBConnection;
 
 ///////////////////////////////////////////////////////////////////
@@ -54,14 +61,15 @@ public class SaveModelManager {
      * @exception DBExecutionException Thrown if the execution failed.
      * @exception IllegalArgumentException Thrown if the parameters were not right.
      * @exception ModelAlreadyExistException Thrown if the model being created already exists.
+     * @throws XMLDBModelParsingException Thrown if the model is parsed incorrectly.
      * 
      */
     public boolean save(XMLDBModel xmlDBModel) throws DBConnectionException,
-            DBExecutionException, IllegalArgumentException, ModelAlreadyExistException {
-        
+            DBExecutionException, IllegalArgumentException,
+            ModelAlreadyExistException, XMLDBModelParsingException {
+
         boolean isSuccessful = false;
 
-        
         DBConnection dbConnection = null;
 
         try {
@@ -71,8 +79,7 @@ public class SaveModelManager {
                         "Failed while attempting to save."
                                 + " The XMLDBModel to be saved is null");
             }
-
-            
+            xmlDBModel = populateChildModelsList(xmlDBModel);
             dbConnection = DBConnectorFactory.getSyncConnection(true);
 
             if (dbConnection == null) {
@@ -82,7 +89,8 @@ public class SaveModelManager {
 
             if (xmlDBModel.getIsNew()) {
 
-                CreateModelTask createModelTask = new CreateModelTask(xmlDBModel);
+                CreateModelTask createModelTask = new CreateModelTask(
+                        xmlDBModel);
 
                 dbConnection.executeCreateModelTask(createModelTask);
 
@@ -119,8 +127,136 @@ public class SaveModelManager {
 
             }
         }
-        
+
         return isSuccessful;
 
+    }
+
+    /**
+     * Populate the referenced child models list and update the model XML by 
+     * replacing the referenced models with place holder.  
+     * 
+     * @param model Model with references to be resolved.
+     * 
+     * @return The updates model containing the list of child models and 
+     * updated content.
+     * 
+     * @throws XMLDBModelParsingException If thrown while parsing the XML. 
+     */
+    public XMLDBModel populateChildModelsList(XMLDBModel model)
+            throws XMLDBModelParsingException {
+        
+        if(model.getModel() == null) {
+            return model;
+        }
+        
+        Document modelDocument = (Document) Utilities
+                .parseXML(model.getModel());
+        /*
+         * First level nodes.
+         */
+        NodeList entityList = modelDocument.getFirstChild().getChildNodes();
+
+        boolean isChanged = false;
+
+        if (entityList != null) {
+
+            for (int i = 0; i < entityList.getLength(); i++) {
+
+                Node entity = entityList.item(i);
+
+                if (!"entity".equals(entity.getNodeName())) {
+                    continue;
+                }
+
+                /* Get all first-level nodes inside the given entity. */
+                NodeList parameterList = entity.getChildNodes();
+
+                String referencedModelName = null;
+                boolean isReferenced = false;
+                int noOfParametersFound = 0;
+
+                /* Get value for the DBReference and DBModelName properties.*/
+                for (int j = 0; j < parameterList.getLength(); j++) {
+
+                    Node parameter = parameterList.item(j);
+
+                    if ("property".equals(parameter.getNodeName())) {
+
+                        String name = Utilities.getValueForAttribute(parameter,
+                                "name");
+
+                        if ("DBModelName".equals(name)) {
+
+                            referencedModelName = Utilities
+                                    .getValueForAttribute(parameter, "value");
+
+                            noOfParametersFound++;
+
+                        } else if ("DBReference".equals(name)) {
+
+                            String value = Utilities.getValueForAttribute(
+                                    parameter, "value");
+                            isReferenced = "TRUE".equals(value);
+
+                            noOfParametersFound++;
+                        }
+
+                        if (noOfParametersFound == 2) {
+                            break;
+                        }
+                    }
+                }
+
+                if (isReferenced && referencedModelName != null) {
+
+                    /*
+                     * As we are considering only "entity" nodes, we can be 
+                     * sure that the type conversion will not fail.
+                     */
+                    Element entityElement = (Element) entity.cloneNode(false);
+                    NodeList childNodesList = entity.getChildNodes();
+
+                    /*
+                     * Create an entity node with the required properties and 
+                     * replace the current referenced entity.
+                     */
+                    for (int k = 0; k < childNodesList.getLength(); k++) {
+                        Node childNode = childNodesList.item(k);
+
+                        if ("property".equals(childNode.getNodeName())) {
+
+                            String name = Utilities.getValueForAttribute(
+                                    childNode, "name");
+
+                            if (name != null
+                                    && (name.startsWith("_")
+                                            || "DBReference".equals(name) || "DBModelName"
+                                            .equals(name))) {
+                                entityElement.appendChild(childNode);
+                            }
+                        }
+                    }
+                    
+                    entityElement.setAttribute("DBModelName",
+                            referencedModelName);
+                    modelDocument.getFirstChild().replaceChild(entityElement, entity);
+
+                    model.addReferencedChild(referencedModelName);
+                    isChanged = true;
+                }
+            }
+        }
+
+        /* Update model content only if the model has changed. */
+        if (isChanged) {
+
+            String newModelContent = Utilities
+                    .getDocumentXMLString(modelDocument);
+            model.setModel(newModelContent);
+
+        }
+
+        return model;
     }
 }

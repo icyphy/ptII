@@ -15,7 +15,9 @@ import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.XMLDBModelParsingException;
 import ptdb.common.util.DBConnectorFactory;
+import ptdb.kernel.bl.load.DBModelFetcher;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptdb.kernel.database.DBConnection;
 
@@ -60,20 +62,15 @@ public class TestSaveModelManager {
 
         PowerMock.mockStatic(DBConnectorFactory.class);
 
-
         DBConnection dBConnectionMock = PowerMock
                 .createMock(DBConnection.class);
-
 
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 dBConnectionMock);
 
-
-        XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
-
+        XMLDBModel modelMock = PowerMock.createPartialMock(XMLDBModel.class, "getIsNew");
 
         EasyMock.expect(modelMock.getIsNew()).andReturn(true);
-
 
         CreateModelTask createModelTaskMock = PowerMock
                 .createMock(CreateModelTask.class);
@@ -87,14 +84,11 @@ public class TestSaveModelManager {
 
         dBConnectionMock.commitConnection();
 
-
         dBConnectionMock.closeConnection();
 
         PowerMock.replayAll();
 
-
         boolean isSuccess = saveManager.save(modelMock);
-
 
         assertTrue(isSuccess);
 
@@ -117,12 +111,9 @@ public class TestSaveModelManager {
     @Test
     public void testSave_CreateModelNotSuccessful() throws Exception {
 
-
         SaveModelManager saveManager = new SaveModelManager();
 
-
         PowerMock.mockStatic(DBConnectorFactory.class);
-
 
         DBConnection dBConnectionMock = PowerMock
                 .createMock(DBConnection.class);
@@ -130,12 +121,9 @@ public class TestSaveModelManager {
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 dBConnectionMock);
 
-
-        XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
-
+        XMLDBModel modelMock = PowerMock.createPartialMock(XMLDBModel.class, "getIsNew");
 
         EasyMock.expect(modelMock.getIsNew()).andReturn(true);
-
 
         CreateModelTask createModelTaskMock = PowerMock
                 .createMock(CreateModelTask.class);
@@ -143,12 +131,9 @@ public class TestSaveModelManager {
         PowerMock.expectNew(CreateModelTask.class, modelMock).andReturn(
                 createModelTaskMock);
 
-
         //createModelTaskMock.setXMLDBModel(modelMock);
 
-
         dBConnectionMock.executeCreateModelTask(createModelTaskMock);
-
 
         PowerMock.expectLastCall().andAnswer(new IAnswer() {
             public Object answer() throws DBExecutionException {
@@ -160,11 +145,9 @@ public class TestSaveModelManager {
 
         dBConnectionMock.closeConnection();
 
-
         dBConnectionMock.abortConnection();
 
         PowerMock.replayAll();
-
 
         boolean isSuccess = false;
 
@@ -177,9 +160,7 @@ public class TestSaveModelManager {
             isSuccess = true;
         }
 
-
         assertTrue(isSuccess);
-
 
         PowerMock.verifyAll();
 
@@ -199,51 +180,39 @@ public class TestSaveModelManager {
     @Test
     public void testSave_SaveModel() throws Exception {
 
-
         SaveModelManager saveManager = new SaveModelManager();
 
-
         PowerMock.mockStatic(DBConnectorFactory.class);
-
 
         DBConnection dBConnectionMock = PowerMock
                 .createMock(DBConnection.class);
 
-
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 dBConnectionMock);
 
-
-        XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
-
+        XMLDBModel modelMock = PowerMock.createPartialMock(XMLDBModel.class, "getIsNew");
 
         EasyMock.expect(modelMock.getIsNew()).andReturn(false);
 
         SaveModelTask saveModelTaskMock = PowerMock
                 .createMock(SaveModelTask.class);
 
-        PowerMock.expectNew(SaveModelTask.class, modelMock).andReturn(saveModelTaskMock);
-
+        PowerMock.expectNew(SaveModelTask.class, modelMock).andReturn(
+                saveModelTaskMock);
 
         //saveModelTaskMock.setXMLDBModel(modelMock);
-
 
         dBConnectionMock.executeSaveModelTask(saveModelTaskMock);
 
         dBConnectionMock.commitConnection();
 
-
         dBConnectionMock.closeConnection();
-
 
         PowerMock.replayAll();
 
-
         boolean isSuccess = saveManager.save(modelMock);
 
-
         assertTrue(isSuccess);
-
 
         PowerMock.verifyAll();
 
@@ -265,38 +234,29 @@ public class TestSaveModelManager {
     @Test
     public void testSave_SaveModelNotSuccessful() throws Exception {
 
-
         SaveModelManager saveManager = new SaveModelManager();
 
-
         PowerMock.mockStatic(DBConnectorFactory.class);
-
 
         DBConnection dBConnectionMock = PowerMock
                 .createMock(DBConnection.class);
 
-
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 dBConnectionMock);
 
-
-        XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
-
+        XMLDBModel modelMock = PowerMock.createPartialMock(XMLDBModel.class, "getIsNew");
 
         EasyMock.expect(modelMock.getIsNew()).andReturn(false);
-
 
         SaveModelTask saveModelTaskMock = PowerMock
                 .createMock(SaveModelTask.class);
 
-        PowerMock.expectNew(SaveModelTask.class, modelMock).andReturn(saveModelTaskMock);
-
+        PowerMock.expectNew(SaveModelTask.class, modelMock).andReturn(
+                saveModelTaskMock);
 
         //saveModelTaskMock.setXMLDBModel(modelMock);
 
-
         dBConnectionMock.executeSaveModelTask(saveModelTaskMock);
-
 
         PowerMock.expectLastCall().andAnswer(new IAnswer() {
             public Object answer() throws DBExecutionException {
@@ -306,15 +266,11 @@ public class TestSaveModelManager {
             }
         });
 
-
         dBConnectionMock.closeConnection();
-
 
         dBConnectionMock.abortConnection();
 
-
         PowerMock.replayAll();
-
 
         boolean isSuccess = false;
 
@@ -327,9 +283,7 @@ public class TestSaveModelManager {
             isSuccess = true;
         }
 
-
         assertTrue(isSuccess);
-
 
         PowerMock.verifyAll();
 
@@ -350,22 +304,16 @@ public class TestSaveModelManager {
     @Test
     public void testSave_NullDBConn() throws Exception {
 
-
         SaveModelManager saveManager = new SaveModelManager();
 
-
         PowerMock.mockStatic(DBConnectorFactory.class);
-
 
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 null);
 
-
-        XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
-
+        XMLDBModel modelMock = PowerMock.createPartialMock(XMLDBModel.class, "getIsNew");
 
         PowerMock.replayAll();
-
 
         boolean isSuccess = false;
 
@@ -378,9 +326,7 @@ public class TestSaveModelManager {
             isSuccess = true;
         }
 
-
         assertTrue(isSuccess);
-
 
         PowerMock.verifyAll();
 
@@ -401,12 +347,9 @@ public class TestSaveModelManager {
     @Test
     public void testSave_NullModelParam() throws Exception {
 
-
         SaveModelManager saveManager = new SaveModelManager();
 
-
         PowerMock.replayAll();
-
 
         boolean isSuccess = false;
 
@@ -418,10 +361,106 @@ public class TestSaveModelManager {
             isSuccess = true;
         }
 
-
         assertTrue(isSuccess);
 
         PowerMock.verifyAll();
 
+    }
+
+    @Test
+    public void testPopulateChildModelsList() throws DBExecutionException,
+            DBConnectionException {
+        // Two referenceModels
+        XMLDBModel model = new XMLDBModel("Test1");
+        String content = "<entity name=\"Test1\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + " <property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
+                + " </property>"
+                + " <property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={271, 127, 823, 514}, maximized=false}\">"
+                + " </property>"
+                + " <property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
+                + " </property>"
+                + " <property name=\"_vergilZoomFactor\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"1.0\">"
+                + " </property>"
+                + " <property name=\"_vergilCenter\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"{300.0, 200.0}\">"
+                + " </property>"
+                + " <entity name=\"TypeComp1\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + " <entity name=\"AddSubtract\" class=\"ptolemy.actor.lib.AddSubtract\">"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
+                + "</property>"
+                + "</entity>"
+                + "<property name=\"DBModelName\" value=\"ModelX\">"
+                + "  </property>"
+                + "  <property name=\"DBReference\" value=\"TRUE\">  </property>"
+                + "  <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
+                + " </property>"
+                + "</entity>"
+                + " <entity name=\"TypeComp2\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                + "<entity name=\"AddSubtract\" class=\"ptolemy.actor.lib.AddSubtract\">"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
+                + "</property>"
+                + "</entity>"
+                + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
+                + " </property>"
+                + "  <property name=\"DBModelName\" value=\"ModelX\">"
+                + "  </property>"
+                + "  <property name=\"DBReference\" value=\"TRUE\">  </property>"
+                + "</entity></entity>";
+
+        model.setModel(content);
+        DBConnectorFactory.loadDBProperties();
+        SaveModelManager manager = new SaveModelManager();
+        try {
+            model = manager.populateChildModelsList(model);
+            assertTrue("Referenced models list is null.", model
+                    .getReferencedChildren() != null);
+            assertTrue("Incorrect number of reference models were returned.",
+                    model.getReferencedChildren().size() == 2);
+        } catch (XMLDBModelParsingException e) {
+            fail("Failed with error - " + e.getMessage());
+        }
+
+        // No referenceModels.
+
+        XMLDBModel adderModel = DBModelFetcher.load("Adder");
+
+        try {
+            adderModel = manager.populateChildModelsList(adderModel);
+
+            assertTrue("Referenced models list is not empty.", adderModel
+                    .getReferencedChildren() == null
+                    || adderModel.getReferencedChildren().size() > 0);
+        } catch (XMLDBModelParsingException e) {
+            fail("Failed with error - " + e.getMessage());
+        }
+        // Reference model with extra attributes. 
+        XMLDBModel oneAdderModel = DBModelFetcher.load("modelWithOneAdder");
+
+        try {
+            oneAdderModel = manager.populateChildModelsList(oneAdderModel);
+
+            assertTrue("Referenced models list is null.", oneAdderModel
+                    .getReferencedChildren() != null);
+            
+            assertTrue("Incorrect number of reference models were returned.",
+                    oneAdderModel.getReferencedChildren().size() == 1);
+        } catch (XMLDBModelParsingException e) {
+            fail("Failed with error - " + e.getMessage());
+        }
+        // Reference model with two referenced model.
+        XMLDBModel twoAdderModel = DBModelFetcher.load("modelWithTwoAdders");
+        try {
+            twoAdderModel = manager.populateChildModelsList(twoAdderModel);
+
+            assertTrue("Referenced models list is null.", twoAdderModel
+                    .getReferencedChildren() != null);
+            
+            assertTrue("Incorrect number of reference models were returned.",
+                    twoAdderModel.getReferencedChildren().size() == 2);
+            
+        } catch (XMLDBModelParsingException e) {
+            fail("Failed with error - " + e.getMessage());
+        }
+
+        // Reference model with two referenced model. 
     }
 }

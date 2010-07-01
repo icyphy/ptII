@@ -52,6 +52,18 @@ public class XMLDBModel {
     }
 
     /**
+     * Add the given child entity to the model's
+     * referenced children list.
+     * @param modelName Child entity to be added to the referenced children list.
+     */
+    public void addReferencedChild(String modelName) {
+        if (_listReferencedChildren == null) {
+            _listReferencedChildren = new ArrayList<String>();
+        }
+
+        _listReferencedChildren.add(modelName);
+    }
+    /**
      * Return True or false based on if the model is new or it exists in the database.
      * @return True or false based on if the model is new or it exists in the database.
      * 
@@ -89,6 +101,19 @@ public class XMLDBModel {
      */
     public List<List<XMLDBModel>> getParents() {
         return _listParents;
+    }
+
+    /**
+     * Return the first level referenced children entities  
+     * for the current model.
+     * 
+     * @return List of first level referenced children entities 
+     * for the current model.
+     * 
+     * @see #setReferencedChildren
+     */
+    public List<String> getReferencedChildren() {
+        return _listReferencedChildren;
     }
 
     /**
@@ -133,6 +158,17 @@ public class XMLDBModel {
     }
 
     
+    /**
+     * Set the first level referenced children entities  for the current model.
+     * @param listChildren List of first level referenced children entities
+     * for this model.
+     * 
+     * @see #getReferencedChildren
+     */
+    public void setReferencedChildren(List<String> listChildren) {
+        _listReferencedChildren = listChildren;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
@@ -145,6 +181,11 @@ public class XMLDBModel {
     /** List of all the parents for the current model. */
     private List<List<XMLDBModel>> _listParents;
 
+    /** List of all the first level referenced child entities for 
+     * the current model. 
+     */
+    private List<String> _listReferencedChildren;
+    
     /** The content of the model in a string. */
     private String _modelContent;
 

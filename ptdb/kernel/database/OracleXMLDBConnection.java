@@ -2,8 +2,6 @@ package ptdb.kernel.database;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,16 +9,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateAttributeTask;
@@ -39,6 +31,8 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
+import ptdb.common.exception.XMLDBModelParsingException;
+import ptdb.common.util.Utilities;
 import ptolemy.actor.IOPort;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
@@ -292,9 +286,17 @@ public class OracleXMLDBConnection implements DBConnection {
             FetchHierarchyTask task) throws DBExecutionException {
         ArrayList<XMLDBModel> modelsList = task.getModelsList();
         for (XMLDBModel model : modelsList) {
-            _fetchHierarchyForModel(model);
-        }
+            try {
+         
+                _fetchHierarchyForModel(model);
+            
+            } catch (XMLDBModelParsingException e) {
 
+                throw new DBExecutionException(
+                        "Failed to execute GetAttributesTask - "
+                                + e.getMessage(), e);
+            }
+        }
         return modelsList;
     }
 
@@ -306,7 +308,6 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     public ArrayList<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException {
-        
 
         ArrayList<XMLDBAttribute> attributeList = new ArrayList<XMLDBAttribute> ();
         
@@ -327,9 +328,9 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + " - Could not fetch the Attribute.ptdbxml.");
             }
 
-            Document attributeDocument = (Document) _parseXML(
-                    doc.getContentAsString());
-            
+            Document attributeDocument = (Document) Utilities.parseXML(doc
+                    .getContentAsString());
+
             if (attributeDocument != null) {
                 //get the first node in the attributes SAX document returned
                 Node firstNode = attributeDocument.getElementsByTagName("attributes").item(0);
@@ -357,6 +358,10 @@ public class OracleXMLDBConnection implements DBConnection {
             
             throw new DBExecutionException("Failed to execute GetAttributesTask - "
                     + e.getMessage(), e);
+        } catch (XMLDBModelParsingException e) {
+            
+            throw new DBExecutionException("Failed to execute GetAttributesTask - "
+                    + e.getMessage(), e);
         }
         
         return attributeList;
@@ -374,7 +379,7 @@ public class OracleXMLDBConnection implements DBConnection {
             throws DBExecutionException {
 
         try {
-            
+
             _checkXMLDBConnectionObjects(true, false, false);
 
             XmlDocument dbModel;
@@ -400,7 +405,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 if (references != null && references.length() > 0) {
 
-                    Node modelNode = _parseXML(references);
+                    Node modelNode = Utilities.parseXML(references);
 
                     modelNode = modelNode.getChildNodes().item(0);
 
@@ -425,8 +430,12 @@ public class OracleXMLDBConnection implements DBConnection {
 
             throw new DBExecutionException("Failed to execute GetModelsTask - "
                     + e.getMessage(), e);
-        }
+        } catch (XMLDBModelParsingException e) {
 
+            throw new DBExecutionException(
+                    "Failed to execute GetAttributesTask - " + e.getMessage(),
+                    e);
+        }
     }
 
     /**
@@ -639,73 +648,84 @@ public class OracleXMLDBConnection implements DBConnection {
         ArrayList<Port> portsList = criteria.getPortsList();
         ArrayList<ComponentEntity> actorsList = criteria
                 .getComponentEntitiesList();
+        if (portsList != null) {
+            for (Port port : portsList) {
 
-        for (Port port : portsList) {
+                String portQuery = _createPortSearchQuery(port);
 
-            String portQuery = _createPortSearchQuery(port);
+                if (portQuery != null && portQuery.length() > 0) {
 
-            if (portQuery != null && portQuery.length() > 0) {
+                    modelFilesList = _executeGraphSearchQuery(portQuery,
+                            modelFilesList);
 
-                modelFilesList = _executeGraphSearchQuery(portQuery,
-                        modelFilesList);
-
-                if (modelFilesList.size() == 0) {
-                    return new ArrayList<XMLDBModel>();
+                    if (modelFilesList.size() == 0) {
+                        return new ArrayList<XMLDBModel>();
+                    }
                 }
             }
         }
 
         if (modelFilesList == null || modelFilesList.size() > 0) {
+            if (actorsList != null) {
+                HashSet<String> evaluatedPairs = new HashSet();
+                HashSet<String> actorsAlreadySearched = new HashSet();
+                boolean isSearched;
 
-            HashSet<String> evaluatedPairs = new HashSet();
-            HashSet<String> actorsAlreadySearched = new HashSet();
-            boolean isSearched;
+                for (ComponentEntity actor : actorsList) {
 
-            for (ComponentEntity actor : actorsList) {
+                    isSearched = false;
+                    if (actor.portList() != null) {
+                        for (Object object : actor.portList()) {
+                            Port portAttached = (Port) object;
 
-                isSearched = false;
+                            if (portAttached.connectedPortList() != null) {
+                                for (Object object1 : portAttached
+                                        .connectedPortList()) {
+                                    Port portConnected = (Port) object1;
 
-                for (Object object : actor.portList()) {
-                    Port portAttached = (Port) object;
+                                    if (portConnected.getContainer() != null
+                                            && portConnected.getContainer() 
+                                            instanceof ComponentEntity) {
 
-                    for (Object object1 : portAttached.connectedPortList()) {
-                        Port portConnected = (Port) object1;
+                                        String componentQuery = _createComponentSearchQuery(
+                                                actor, portAttached,
+                                                portConnected,
+                                                (ComponentEntity) portConnected
+                                                        .getContainer(),
+                                                evaluatedPairs);
 
-                        if (portConnected.getContainer() instanceof ComponentEntity) {
+                                        if (componentQuery != null) {
+                                            modelFilesList = _executeGraphSearchQuery(
+                                                    componentQuery,
+                                                    modelFilesList);
 
-                            String componentQuery = _createComponentSearchQuery(
-                                    actor, portAttached, portConnected,
-                                    (ComponentEntity) portConnected
-                                            .getContainer(), evaluatedPairs);
+                                            if (modelFilesList.size() == 0) {
+                                                return new ArrayList<XMLDBModel>();
+                                            }
 
-                            if (componentQuery != null) {
-                                modelFilesList = _executeGraphSearchQuery(
-                                        componentQuery, modelFilesList);
-
-                                if (modelFilesList.size() == 0) {
-                                    return new ArrayList<XMLDBModel>();
+                                            isSearched = true;
+                                        }
+                                    }
                                 }
-
-                                isSearched = true;
                             }
                         }
                     }
-                }
-                if (!isSearched) {
-                    /*
-                     * If the Graph Search Query was not executed, then search 
-                     * for the given entity in all the models in the database. 
-                     */
-                    String singleActorQuery = _createSingleActorQuery(actor,
-                            actorsAlreadySearched);
+                    if (!isSearched) {
+                        /*
+                         * If the Graph Search Query was not executed, then search 
+                         * for the given entity in all the models in the database. 
+                         */
+                        String singleActorQuery = _createSingleActorQuery(
+                                actor, actorsAlreadySearched);
 
-                    if (singleActorQuery != null) {
+                        if (singleActorQuery != null) {
 
-                        modelFilesList = _executeGraphSearchQuery(
-                                singleActorQuery, modelFilesList);
+                            modelFilesList = _executeGraphSearchQuery(
+                                    singleActorQuery, modelFilesList);
 
-                        if (modelFilesList.size() == 0) {
-                            return new ArrayList<XMLDBModel>();
+                            if (modelFilesList.size() == 0) {
+                                return new ArrayList<XMLDBModel>();
+                            }
                         }
                     }
                 }
@@ -794,13 +814,8 @@ public class OracleXMLDBConnection implements DBConnection {
             
             _checkXMLDBConnectionObjects(true, true, true);
 
-
-            
             XMLDBAttribute xmlDBAttribute = task.getXMLDBAttribute();
-            
-
-            
-            
+                        
             String attributeNode = xmlDBAttribute.getAttributeXMLStringFormat();
             
             String query = "replace node doc('dbxml:/"+ _xmlContainer.getName() 
@@ -1141,7 +1156,8 @@ public class OracleXMLDBConnection implements DBConnection {
             throws IllegalActionException {
 
         StringBuffer attributesQuery = new StringBuffer();
-        if (attribute.getName() != null && !"".equals(attribute.getName().trim())) {
+        if (attribute.getName() != null
+                && !"".equals(attribute.getName().trim())) {
             attributesQuery.append("$const/@name=\"").append(
                     attribute.getName()).append("\"");
 
@@ -1150,7 +1166,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
         if (attribute.getToken() != null) {
             attributesQuery.append("$const/@value[contains(.,\"").append(
-                    _removeQuotes(attribute.getToken().toString())).append("\")]");
+                    _removeQuotes(attribute.getToken().toString())).append(
+                    "\")]");
 
             attributesQuery.append(" and ");
         }
@@ -1161,7 +1178,7 @@ public class OracleXMLDBConnection implements DBConnection {
         return attributesQuery.toString();
 
     }
-    
+
     /** Create a graph query for the given combination of 
      * actor - port - port- actor only if it has already not been evaluated.
      * 
@@ -1251,7 +1268,7 @@ public class OracleXMLDBConnection implements DBConnection {
          * If the current model is already visited,
          * then add the current model to the parent list.
          */
-        String currentNodeName = _getValueForAttribute(currentNode, "name");
+        String currentNodeName = Utilities.getValueForAttribute(currentNode, "name");
         //System.out.println(parentNodeName + " - " + currentNodeName);
         if (currentNodeName != null) {
 
@@ -1316,7 +1333,7 @@ public class OracleXMLDBConnection implements DBConnection {
          * If the port is a multi-port, 
          * search for port with property called multiport.
          */
-        if (((IOPort) port).isOutput()) {
+        if (((IOPort) port).isMultiport()) {
             if (!isFirstClause) {
                 portSearchQuery.append(" and ");
             }
@@ -1345,8 +1362,8 @@ public class OracleXMLDBConnection implements DBConnection {
             actorsAlreadySearched.add(actor.getClassName());
             singleActorQuery = "for $entity1 in collection(\""
                     + _params.getContainerName()
-                    + "\")/entity/entity [@class=\"" + actor.getClassName()
-                    + "\"] return base_uri($entity1)";
+                    + "\")/entity/entity[@class=\"" + actor.getClassName()
+                    + "\"] return base-uri($entity1)";
         }
 
         return singleActorQuery;
@@ -1411,7 +1428,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @return List of models matching the attribute search.
      * 
      * @exception XmlException If thrown while executing query.
-     * @exception DBExecutionException Thrown if hte query context is not
+     * @exception DBExecutionException Thrown if the query context is not
      * initialized properly.
      */
     private ArrayList<String> _executeSingleAttributeMatch(
@@ -1423,7 +1440,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 + _params.getContainerName() + "\")/entity/property where "
                 + attributeClause + " " + " return base-uri($const)";
 
-        //System.out.println("attributeSearchQuery - " + attributeSearchQuery);
+        System.out.println("attributeSearchQuery - " + attributeSearchQuery);
 
         XmlQueryContext context = _xmlManager.createQueryContext();
         if (context == null)
@@ -1451,9 +1468,10 @@ public class OracleXMLDBConnection implements DBConnection {
      * @param model The model for which the parent hierarchies are required.
      * 
      * @exception DBExecutionException If thrown while fetching model hierarchy.
+     * @throws XMLDBModelParsingException If thrown while parsing the model.
      */
     private XMLDBModel _fetchHierarchyForModel(XMLDBModel model)
-            throws DBExecutionException {
+            throws DBExecutionException, XMLDBModelParsingException {
         /*
          * Fetch references from database reference file.
          */
@@ -1462,7 +1480,7 @@ public class OracleXMLDBConnection implements DBConnection {
             /*
              * Create document for the given references XML.
              */
-            Document document = (Document) _parseXML(referencesXML);
+            Document document = (Document) Utilities.parseXML(referencesXML);
             /*
              * "entities" is the root tag which contains entity tags.
              * For every child entity tag populate the dbModelsMap
@@ -1478,7 +1496,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 for (int i = 0; i < children.getLength(); i++) {
                     if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
                         Node child = children.item(i);
- //                       System.out.println("Start of New Entity");
+                        //                       System.out.println("Start of New Entity");
                         _createParentHierarchy(child, null, dBModelsMap, model);
                     }
                 }
@@ -1665,93 +1683,8 @@ public class OracleXMLDBConnection implements DBConnection {
         return parentNode;
     }
 
-    /**
-     * Get the value for the given attribute.
-     * 
-     * @param currentNode Node for which attribute value needs to be determined.
-     * @param attributeName Name of the attribute.
-     * @return Return the value for the given attribute. Return null if
-     * attribute not present for the given node.
-     */
-    private String _getValueForAttribute(Node currentNode, String attributeName) {
-
-        NamedNodeMap attributes = currentNode.getAttributes();
-        String strCurrentModelName = null;
-
-        if (attributes != null) {
-            for (int i = 0; i < attributes.getLength(); i++) {
-
-                Node node = attributes.item(i);
-                if (node.getNodeName().equalsIgnoreCase("name")) {
-                    strCurrentModelName = node.getNodeValue();
-                    break;
-                }
-            }
-        }
-        return strCurrentModelName;
-    }
-
-    /**
-     * Parse the xml string that is passed to it and return the upper node of
-     * that xml.
-     * 
-     * @param xmlString The xml string that needs to be parsed
-     * @return The upper node for the xml string after parsing it.
-     * @exception DBExecutionException Thrown if a parser exceptions was thrown
-     */
-    private Node _parseXML(String xmlString) throws DBExecutionException {
-
-        if (xmlString == null || xmlString.length() == 0) {
-            throw new DBExecutionException("Faild to parse the xml - "
-                    + "content sent is empty or null");
-        }
-
-        DocumentBuilder docBuilder;
-
-        Node firstNode = null;
-
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-
-        if (docBuilderFactory == null) {
-            throw new DBExecutionException(
-                    "Faild to parse the xml - "
-                            + "could not create a new instance of DocumentBuilderFactory.");
-        }
-
-        docBuilderFactory.setIgnoringElementContentWhitespace(true);
-
-        try {
-
-            docBuilder = docBuilderFactory.newDocumentBuilder();
-
-            if (docBuilder == null) {
-                throw new DBExecutionException("Faild to parse the xml - "
-                        + "could not create a new instance of DocumentBuilder.");
-            }
-
-            InputSource inputSource = new InputSource();
-
-            inputSource.setCharacterStream(new StringReader(xmlString));
-
-            firstNode = docBuilder.parse(inputSource);
-
-        } catch (ParserConfigurationException e) {
-
-            throw new DBExecutionException("Failed to parse the model - "
-                    + e.getMessage(), e);
-
-        } catch (SAXException e) {
-            throw new DBExecutionException("Failed to parse the model - "
-                    + e.getMessage(), e);
-        } catch (IOException e) {
-            throw new DBExecutionException("Failed to parse the model - "
-                    + e.getMessage(), e);
-        }
-
-        return firstNode;
-    }
-
+    
+    
     /**
      * Populate the base model with the maximal parent hierarchies.
      * 

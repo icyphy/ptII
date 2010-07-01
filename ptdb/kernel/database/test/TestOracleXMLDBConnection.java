@@ -26,10 +26,12 @@ import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateAttributeTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
+	import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.XMLDBAttribute;
@@ -39,11 +41,20 @@ import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.OracleXMLDBConnection;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.AddSubtract;
+import ptolemy.actor.lib.MultiplyDivide;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import com.sleepycat.db.Environment;
 import com.sleepycat.db.EnvironmentConfig;
@@ -60,7 +71,8 @@ import com.sleepycat.dbxml.XmlManagerConfig;
  * 
  * @author Ashwini Bijwe, Yousef Alsaeed
  * 
- * @version $Id$
+ * @version $Id: TestOracleXMLDBConnection.java 58206 2010-06-16 19:54:03Z
+ * yalsaeed $
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (abijwe)
  * @Pt.AcceptedRating Red (abijwe)
@@ -243,7 +255,7 @@ public class TestOracleXMLDBConnection {
     /**
      * Test method for
      * {@link ptdb.kernel.database.OracleXMLDBConnection#abortConnection()}.
-     * @throws DBConnectionException 
+     * @throws DBConnectionException
      */
 
     @Test
@@ -284,7 +296,7 @@ public class TestOracleXMLDBConnection {
 
             }
         } finally {
-            if(conn != null) {
+            if (conn != null) {
                 conn.closeConnection();
             }
                 
@@ -366,20 +378,32 @@ public class TestOracleXMLDBConnection {
         Token tokenModelId = new StringToken("13781");
         variableModelId.setToken(tokenModelId);
 
+        Variable variableNameNull = new Variable();
+        variableNameNull.setClassName("ptolemy.data.expr.Parameter");
+        variableNameNull.setName(null);
+
         task.addAttribute(attribute);
         task.addAttribute(variableCreatedBy);
         task.addAttribute(variableModelId);
+        task.addAttribute(variableNameNull);
         task.addAttribute(attribute);
 
         try {
 
             ArrayList<XMLDBModel> modelsList = conn
                     .executeAttributeSearchTask(task);
-            assertTrue("More than one results returned.",
-                    modelsList.size() == 1);
-            String modelName = modelsList.get(0).getModelName();
-            assertTrue(modelName + " - Wrong model returned.",
-                    "ModelContainsBothAttributes.xml".equals(modelName));
+            assertTrue("No results returned.", modelsList.size() > 0);
+            boolean found = false;
+            for (XMLDBModel model : modelsList) {
+                String modelName = model.getModelName();
+                if ("ModelContainsBothAttributes".equals(modelName)) {
+                    found = true;
+                    break;
+                }
+            }
+            assertTrue(
+                    "ModelContainsBothAttributes.xml model not in the results.",
+                    found);
 
             ///////////////////////////////////////////////////////////////////////////////////////
             //IllegalActionException
@@ -433,6 +457,141 @@ public class TestOracleXMLDBConnection {
 
     }
 
+	 /**
+     * Test testExecuteGraphSearchTask of OracleXMLDBConnection.
+     * @throws DBConnectionException
+     * @throws IllegalActionException
+     * @throws NameDuplicationException 
+     */
+    @Test
+    public void testExecuteGraphSearchTask() throws DBConnectionException,
+            IllegalActionException, NameDuplicationException {
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+
+        DBGraphSearchCriteria searchCriteria = new DBGraphSearchCriteria();
+        ArrayList<Port> portList = new ArrayList<Port>();
+        Port portInput = new TypedIOPort();
+        ((IOPort) portInput).setInput(true);
+        ((IOPort) portInput).setOutput(false);
+        ((IOPort) portInput).setMultiport(false);
+        portList.add(portInput);
+
+        Port portOutput = new TypedIOPort();
+        ((IOPort) portOutput).setInput(false);
+        ((IOPort) portOutput).setOutput(true);
+        ((IOPort) portOutput).setMultiport(true);
+        portList.add(portOutput);
+
+        Port portMulti = new TypedIOPort();
+        ((IOPort) portMulti).setInput(false);
+        ((IOPort) portMulti).setOutput(false);
+        ((IOPort) portMulti).setMultiport(true);
+        portList.add(portMulti);
+
+        searchCriteria.setPortsList(portList);
+
+        GraphSearchTask graphSearchTask = new GraphSearchTask();
+        graphSearchTask.setGraphSearchCriteria(searchCriteria);
+
+        try {
+            ArrayList<XMLDBModel> matchedModelsList = oracleXMLDBConnection
+                    .executeGraphSearchTask(graphSearchTask);
+
+            boolean found = false;
+            for (XMLDBModel model : matchedModelsList) {
+                if ("ManyActors".equalsIgnoreCase(model.getModelName())) {
+
+                    found = true;
+                    break;
+
+                }
+            }
+            assertTrue("Invalid result returned for portSearch", found);
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+        
+
+        CompositeEntity entity = new CompositeEntity();
+        AddSubtract actor = new AddSubtract(entity, "test");
+        ArrayList<ComponentEntity> componentEntitiesList = new ArrayList();
+        componentEntitiesList.add(actor);
+        searchCriteria.setComponentEntitiesList(componentEntitiesList);
+        XMLDBModel xmlModel = new XMLDBModel("new_test2");
+
+
+        try {
+            ArrayList<XMLDBModel> matchedModelsList = oracleXMLDBConnection
+                    .executeGraphSearchTask(graphSearchTask);
+
+            boolean found = false;
+            for (XMLDBModel model : matchedModelsList) {
+                if ("ManyActors".equalsIgnoreCase(model.getModelName())) {
+
+                    found = true;
+                    break;
+
+                }
+            }
+            assertTrue(
+                    "Invalid result returned for port + single actor Search",
+                    found);
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+        
+        AddSubtract addActor = PowerMock.createMock(AddSubtract.class);
+        MultiplyDivide mulActor = PowerMock.createMock(MultiplyDivide.class);
+        componentEntitiesList = new ArrayList<ComponentEntity>();
+        componentEntitiesList.add(addActor);
+        //componentEntitiesList.add(mulActor);
+        
+        searchCriteria.setComponentEntitiesList(componentEntitiesList);
+        ArrayList<Port> connPortList = new ArrayList<Port>();
+        Port mockPort1 = PowerMock.createMock(Port.class);
+        connPortList.add(mockPort1);
+        
+        try {
+            EasyMock.expect(addActor.portList()).andReturn(connPortList);
+            EasyMock.expect(addActor.portList()).andReturn(connPortList);
+            EasyMock.expect(mockPort1.connectedPortList()).andReturn(connPortList);
+            EasyMock.expect(mockPort1.connectedPortList()).andReturn(connPortList);
+            EasyMock.expect(mockPort1.getContainer()).andReturn(mulActor);
+            
+            EasyMock.expect(addActor.getClassName()).andReturn("ptolemy.kernel.actor.lib.AddSubtract");
+            EasyMock.expect(mockPort1.getName()).andReturn("output");
+            EasyMock.expect(mockPort1.getName()).andReturn("multiply");
+            EasyMock.expect(mulActor.getClassName()).andReturn("ptolemy.kernel.actor.lib.MultiplyDivide");
+            
+            /*EasyMock.expect(mulActor.getClassName()).andReturn("ptolemy.kernel.actor.lib.MultiplyDivide");
+            EasyMock.expect(mockPort1.getName()).andReturn("multiply");
+            EasyMock.expect(mockPort1.getName()).andReturn("output");
+            EasyMock.expect(addActor.getClassName()).andReturn("ptolemy.kernel.actor.lib.AddSubtract");*/
+            
+            EasyMock.replay();
+            
+            ArrayList<XMLDBModel> matchedModelsList = oracleXMLDBConnection
+                    .executeGraphSearchTask(graphSearchTask);
+
+
+            boolean found = false;
+            for (XMLDBModel model : matchedModelsList) {
+                if ("ManyActors".equalsIgnoreCase(model.getModelName())) {
+
+                    found = true;
+                    break;
+
+                }
+            }
+            assertTrue(
+                    "Invalid result returned for port + single actor Search",
+                    found);
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+
+    }
     /**
      * Test executeFetchHierarchyTask of OracleXMLDBConnection.
      * @exception DBConnectionException If thrown while creating a connection.
