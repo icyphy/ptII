@@ -1290,7 +1290,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
                     if (container instanceof CompositeActor) {
                         ((CompositeActor) container).linkToPublishedPort(pattern,
-                                subscriberPort, global);
+                                (TypedIOPort)port, global);
                     }
                 }
             } else {
