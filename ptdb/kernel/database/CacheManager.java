@@ -33,6 +33,9 @@ import ptdb.common.util.DBConnectorFactory;
  * 
  */
 public class CacheManager {
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                public methods                            ////
 
     /** Remove a set of models from the cache.
      * 

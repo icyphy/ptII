@@ -1,11 +1,16 @@
 package ptdb.kernel.bl.save;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import ptdb.common.dto.CreateModelTask;
+import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -14,6 +19,7 @@ import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.exception.XMLDBModelParsingException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.common.util.Utilities;
+import ptdb.kernel.database.CacheManager;
 import ptdb.kernel.database.DBConnection;
 
 ///////////////////////////////////////////////////////////////////
@@ -49,7 +55,8 @@ public class SaveModelManager {
 
     /**
      * Save the changes of an existing model in the database or create a new
-     * model in the database.
+     * model in the database.  Remove all prior entries to the saved model
+     * from the cache, including any other models that reference it.
      * 
      * @param xmlDBModel The model object that is required to be saved or
      * created in the database.
@@ -128,6 +135,8 @@ public class SaveModelManager {
             }
         }
 
+        isSuccessful = updateCache(xmlDBModel);
+        
         return isSuccessful;
 
     }
@@ -258,5 +267,87 @@ public class SaveModelManager {
         }
 
         return model;
+    }
+    
+    //////////////////////////////////////////////////////////////////////
+    ////                private methods                               ////
+    
+    private boolean updateCache(XMLDBModel xmlDBModel) 
+        throws DBConnectionException, DBExecutionException{
+    
+        boolean isSuccessful = false;
+    
+        ArrayList <XMLDBModel> hierarchy = new ArrayList();
+        ArrayList <XMLDBModel> modelsToRemoveList = new ArrayList();
+        
+        DBConnection dbConnection = null;
+        
+        try {
+            
+            dbConnection = DBConnectorFactory.getSyncConnection(false);
+            
+            ArrayList<XMLDBModel> modelList = new ArrayList();
+            modelList.add(xmlDBModel);
+            FetchHierarchyTask fetchHierarchyTask 
+                = new FetchHierarchyTask();
+            fetchHierarchyTask.setModelsList(modelList);
+            
+            hierarchy = 
+                  dbConnection.executeFetchHierarchyTask(fetchHierarchyTask);
+    
+            if(hierarchy != null && hierarchy.size()>0) {
+                    
+                if (hierarchy.get(0) != null){
+                   
+                    if(hierarchy.get(0).getParents() != null){
+                        
+                        for(List<XMLDBModel> branch : hierarchy.get(0).getParents()){
+                            
+                            for(XMLDBModel modelToRemove : branch){
+                                
+                                if(!modelsToRemoveList.contains(modelToRemove)){
+            
+                                    modelsToRemoveList.add(modelToRemove);
+                                    
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    } 
+                    
+                }
+            
+            }
+                
+            
+        } catch (DBExecutionException dbEx) {            
+            throw dbEx;
+        } finally {
+            if (dbConnection != null) {
+                dbConnection.closeConnection();
+            }
+        }
+        
+        modelsToRemoveList.add(xmlDBModel);
+    
+        // Remove duplicate models.
+        HashSet set = new HashSet();
+        for (int i = 0; i < modelsToRemoveList.size(); i++) {
+    
+            boolean val = set.add(modelsToRemoveList.get(i).getModel());
+            if (val == false) {
+    
+                modelsToRemoveList.remove(i);
+    
+            }
+    
+        }
+        
+        isSuccessful = CacheManager.removeFromCache(hierarchy);        
+            
+        return isSuccessful;
+        
     }
 }
