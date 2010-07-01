@@ -9,8 +9,9 @@ import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
-import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GraphSearchTask;
+import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.XMLDBAttribute;
@@ -132,14 +133,31 @@ public interface DBConnection {
      * Execute the necessary commands to retrieve a model from the database.
      *
      * @param task
-     *          The task to be completed.  In this case, GetModelsTask.
+     *          The task to be completed.  In this case, GetModelTask.
      *          This will tell the DB layer to return the specified model.
      * @return XMLDBModel
      *          This object will be populated with the model's MoML string.
      * @exception DBConnectionException Thrown if the operations fails.
      */
-    public XMLDBModel executeGetModelsTask(GetModelsTask task)
+    public XMLDBModel executeGetModelTask(GetModelTask task)
             throws DBExecutionException;
+    
+    
+    /**
+     * Execute the necessary commands to retrieve a model from the database 
+     * and resolve all the references in it if any.
+     *
+     * @param task
+     *          The task to be completed.  In this case, GetModelTask.
+     *          This will tell the DB layer to return the specified model.
+     * @return XMLDBModel
+     *          This object will be populated with the model's MoML string.
+     * @exception DBConnectionException Thrown if the operations fails.
+     */
+    public XMLDBModel executeGetCompleteModelTask(GetModelTask task)
+            throws DBExecutionException;
+    
+    
 
     /**
      * Search models that contain given graphical pattern in the database.
@@ -162,6 +180,15 @@ public interface DBConnection {
      * @exception DBExecutionException Thrown when there is a problem in executing the task.
      */
     public void executeSaveModelTask(SaveModelTask task)
+            throws DBExecutionException;
+    
+    
+    /**
+     * Execute remove models task to delete a list of models from the database.
+     * @param task Contains a list of models to be deleted from the database.
+     * @throws DBExecutionException Thrown if the operation fails.
+     */
+    public void executeRemoveModelsTask (RemoveModelsTask task) 
             throws DBExecutionException;
     
 

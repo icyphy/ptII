@@ -22,8 +22,9 @@ import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
-import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GraphSearchTask;
+import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.XMLDBAttribute;
@@ -214,6 +215,8 @@ public class OracleXMLDBConnection implements DBConnection {
             _isConnectionAlive = false;
         }
     }
+    
+    
 
     /**
      * Execute the necessary commands to create a new model in the database
@@ -367,33 +370,84 @@ public class OracleXMLDBConnection implements DBConnection {
         return attributeList;
     }
 
+    
     /**
-     * Execute the get models task and return the model requested as XMLDBModel
-     * object.
-     * @param task The GetModelsTask object that contains the model name.
-     * @return Model retrieved from the database.
+     * Execute the get model task and return the model requested as XMLDBModel
+     * object as it is represented in the database.
+     * @param task The GetModelTask object that contains the model name.
+     * @return Model retrieved from the database in XMLDBModel object format.
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
      */
-    public XMLDBModel executeGetModelsTask(GetModelsTask task)
+    public XMLDBModel executeGetModelTask(GetModelTask task)
             throws DBExecutionException {
 
+        XMLDBModel xmlDBModel = null;
+        
         try {
 
-            _checkXMLDBConnectionObjects(true, false, false);
+            XmlDocument dbModel = _getModelFromDB(task);
 
-            XmlDocument dbModel;
-            try {
-                dbModel = _xmlContainer.getDocument(task.getModelName());
-            } catch (XmlException e) {
+            if (dbModel != null) {
 
-                throw new DBExecutionException(
-                        "Failed to execute GetModelsTask"
-                                + " - Could not find the model in the database"
-                                + e.getMessage(), e);
+                xmlDBModel = new XMLDBModel(dbModel.getName());
+
+                String modelBody = dbModel.getContentAsString();
+
+                xmlDBModel.setModel(modelBody);
+
+                xmlDBModel.setIsNew(false);
+
+                xmlDBModel.setParents(null);
+
             }
 
-            XMLDBModel completeXMLDBModel = null;
+        } catch (XmlException e) {
+
+            throw new DBExecutionException("Failed to execute GetModelTask - "
+                    + e.getMessage(), e);
+        }
+        
+        return xmlDBModel;
+        
+        
+    }
+
+    
+    
+    /**
+     * Execute the get model task and return the model requested as XMLDBModel
+     * object and resolve any references in it.
+     * @param task The GetModelTask object that contains the model name.
+     * @return Model retrieved from the database as XMLDBModel task.
+     * @exception DBExecutionException Thrown if there is a problem executing
+     * the task.
+     */
+    public XMLDBModel executeGetCompleteModelTask(GetModelTask task)
+            throws DBExecutionException {
+
+        XMLDBModel completeXMLDBModel = null;
+        
+        try {
+            
+            
+//            try {
+//                
+//                XMLDBModel xmlDBModelCache = CacheManager.loadFromCache(task.getModelName());
+//                
+//                if (xmlDBModelCache != null) {
+//                    
+//                    return xmlDBModelCache;
+//                }
+//                
+//            } catch (Exception e) {
+//                //do nothing
+//            }
+            
+            
+            
+            
+            XmlDocument dbModel = _getModelFromDB(task);
 
             if (dbModel != null) {
 
@@ -410,6 +464,20 @@ public class OracleXMLDBConnection implements DBConnection {
                     modelNode = modelNode.getChildNodes().item(0);
 
                     completeModelBody = _buildCompleteModel(modelNode);
+                    
+                  try {
+                  
+                    
+                      if (_xmlModelHerarichyMap != null && 
+                              _xmlModelHerarichyMap.size() > 0) {
+                    
+                          CacheManager.updateCache(_xmlModelHerarichyMap);
+                      }
+                      
+                  } catch (Exception e) {
+                      //do nothing since the updating of the cache 
+                      //should not affect the load operation.
+                  }
 
                 } else {
 
@@ -430,12 +498,17 @@ public class OracleXMLDBConnection implements DBConnection {
 
             throw new DBExecutionException("Failed to execute GetModelsTask - "
                     + e.getMessage(), e);
-        } catch (XMLDBModelParsingException e) {
+            
+        } catch (DBConnectionException e) {
 
-            throw new DBExecutionException(
-                    "Failed to execute GetAttributesTask - " + e.getMessage(),
-                    e);
-        }
+            throw new DBExecutionException("Failed to execute GetModelsTask - "
+                    + e.getMessage(), e);
+            
+        } catch (XMLDBModelParsingException e) {
+            
+            throw new DBExecutionException("Failed to execute GetModelsTask - "
+                    + e.getMessage(), e);
+        }   
     }
 
     /**
@@ -590,12 +663,6 @@ public class OracleXMLDBConnection implements DBConnection {
             String attributeId = xmlDBAttribute.getAttributeId();
             
             
-         
-            // check if the attribute already exists.            
-            String query = "doc('dbxml:/" + _xmlContainer.getName() 
-                + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
-                + attributeId + "']";
-            
             XmlQueryContext xmlQueryContext = _xmlManager.createQueryContext();
 
             if (xmlQueryContext == null)
@@ -603,20 +670,7 @@ public class OracleXMLDBConnection implements DBConnection {
                         "Failed to DeleteAttributeTask - The Query context is null "
                                 + "and cannot be used to execute queries.");
             
-            
-            XmlResults results = _xmlManager.query(
-                    _xmlTransaction, query, xmlQueryContext, null);
-                        
-        
-            if (results == null || results.size() == 0) {
-                
-                throw new DBExecutionException(
-                        "Failed to DeleteAttributeTask  - The attribute does not "
-                                + "exist.");
-            }
-            
-            
-            query = "delete node doc('dbxml:/" + _xmlContainer.getName() 
+            String query = "delete node doc('dbxml:/" + _xmlContainer.getName() 
                 + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
                 + attributeId + "']";
             
@@ -800,7 +854,37 @@ public class OracleXMLDBConnection implements DBConnection {
 
     }
     
-    
+    /**
+     * Execute remove models task to delete a list of models from the database.
+     * @param task Contains a list of models to be deleted from the database.
+     * @throws DBExecutionException Thrown if the operation fails.
+     */
+    public void executeRemoveModelsTask (RemoveModelsTask task) 
+            throws DBExecutionException {
+        
+        try {
+            
+            _checkXMLDBConnectionObjects(true, false, true);
+            
+            ArrayList<XMLDBModel> modelsList = task.getModelsList();
+            
+            if (modelsList != null && modelsList.size() > 0) {
+                
+                for (XMLDBModel xmlDBModel : modelsList) {
+                    
+                    _xmlContainer.deleteDocument(
+                            _xmlTransaction, xmlDBModel.getModelName());
+                }
+                
+            }
+            
+        } catch (XmlException e) {
+            throw new DBExecutionException("Failed to execute RemoveModelsTask - "
+                    + e.getMessage(), e);
+        }
+        
+        
+    }
 
     /**
      * Execute update attribute task to update a given attribute in the database.
@@ -815,15 +899,43 @@ public class OracleXMLDBConnection implements DBConnection {
             _checkXMLDBConnectionObjects(true, true, true);
 
             XMLDBAttribute xmlDBAttribute = task.getXMLDBAttribute();
-                        
+            
+            
+
+            // check if the attribute already exists.            
+                
+            String query = "doc('dbxml:/" + _xmlContainer.getName() 
+                    + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
+                    + xmlDBAttribute.getAttributeId() + "']";
+                
+                
+            XmlQueryContext xmlQueryContext = _xmlManager.createQueryContext();
+
+                
+            if (xmlQueryContext == null)
+                throw new DBExecutionException(
+                        "Failed to DeleteAttributeTask - The Query context is null "
+                        + "and cannot be used to execute queries.");
+                
+                
+                
+            XmlResults results = _xmlManager.query(
+                    _xmlTransaction, query, xmlQueryContext, null);
+                            
+            
+                
+            if (results == null || results.size() == 0) {                    
+                throw new DBExecutionException(
+                        "Failed to UpdateAttributeTask  - The attribute does not "                                    
+                        + "exist.");
+            }
+            
+            
             String attributeNode = xmlDBAttribute.getAttributeXMLStringFormat();
             
-            String query = "replace node doc('dbxml:/"+ _xmlContainer.getName() 
-                + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
-                + xmlDBAttribute.getAttributeId() + "'] with "+ attributeNode;
-            
-            
-            XmlQueryContext xmlQueryContext = _xmlManager.createQueryContext();
+            query = "replace node doc('dbxml:/"+ _xmlContainer.getName() 
+                    + "/Attributes.ptdbxml')/attributes/attribute[@id='" 
+                    + xmlDBAttribute.getAttributeId() + "'] with "+ attributeNode;
 
             if (xmlQueryContext == null)
                 throw new DBExecutionException(
@@ -880,10 +992,11 @@ public class OracleXMLDBConnection implements DBConnection {
      * @param currentNode The node in the reference file that points to the model.
      * @return Model body without references in xml format.
      * @exception DBExecutionException Thrown if there is a problem executing
+     * @exception DBConnectionException Thrown if the connection to the cache failed.
      * the task.
      */
     private String _buildCompleteModel(Node currentNode)
-            throws DBExecutionException {
+            throws DBExecutionException, DBConnectionException {
 
         if (_xmlModelHerarichyMap == null) {
             _xmlModelHerarichyMap = new HashMap<String, String>();
@@ -903,6 +1016,7 @@ public class OracleXMLDBConnection implements DBConnection {
                     currentModelName = node.getNodeValue();
 
                     break;
+
                 }
             }
         }
@@ -920,15 +1034,29 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + " - the XmlContainer object was not instantiated properly");
             }
 
-            XmlDocument currentDbModel;
+            XmlDocument currentDbModel = null;
+            
+            XMLDBModel currentXMLDBModel = null;
 
             String currentModelContent = "";
+            
+            boolean isLoadedFromCache = true;
 
             try {
 
-                currentDbModel = _xmlContainer.getDocument(currentModelName);
+                try {
+                    currentXMLDBModel = CacheManager.loadFromCache(currentModelName);
+                } catch (Exception e) {
+                    //do nothing...
+                }
+               
+                if (currentXMLDBModel == null) {
+                    
+                    currentDbModel = _xmlContainer.getDocument(currentModelName);
+                    isLoadedFromCache = false;
+                }
 
-                if (currentDbModel == null) {
+                if (currentDbModel == null && currentXMLDBModel == null) {
 
                     throw new DBExecutionException(
                             "Failed to execute GetModelsTask"
@@ -939,16 +1067,24 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 }
 
-                currentModelContent = currentDbModel.getContentAsString();
+                if (isLoadedFromCache) {
+                    
+                    currentModelContent = currentXMLDBModel.getModel();
+                    
+                } else {
+                    
+                    currentModelContent = currentDbModel.getContentAsString();
+                }
+                
 
             } catch (XmlException e) {
 
                 throw new DBExecutionException(
-                        "Failed to execute GetModelsTask - " + e.getMessage(),
+                        "Failed to execute GetModelTask - " + e.getMessage(),
                         e);
             }
 
-            if (currentNode.hasChildNodes()) {
+            if (currentNode.hasChildNodes() && isLoadedFromCache == false) {
 
                 NodeList children = currentNode.getChildNodes();
 
@@ -962,14 +1098,23 @@ public class OracleXMLDBConnection implements DBConnection {
 
                         childContent = childContent.substring(childContent
                                 .indexOf("<entity"));
+                        
+                        String childName =  childContent.substring(childContent
+                                .indexOf("name=\"") + 6);
+                        
+                        childName = childName.substring(0, childName
+                                .indexOf("\""));
 
-                        String childNode = _getParentEntityNodeAsString(childContent);
-
-                        if (childNode != null && childNode.length() > 0) {
-
-                            currentModelContent = currentModelContent
-                                    .replaceAll(childNode, childContent);
-                        }
+                        String childBodyContent = childContent.substring(childContent
+                                .indexOf(">") + 1);
+                        
+                        childBodyContent = childBodyContent.substring(
+                                0 , childBodyContent.lastIndexOf("</entity>"));
+                        
+                        
+                        currentModelContent = _replaceReferenceWithContent(
+                                currentModelContent, childBodyContent, childName);
+                        
 
                         currentModelContent = currentModelContent.replaceAll(
                                 ">", ">\n");
@@ -978,6 +1123,9 @@ public class OracleXMLDBConnection implements DBConnection {
             }
 
             _xmlModelHerarichyMap.put(currentModelName, currentModelContent);
+            
+            
+            
 
             return currentModelContent;
 
@@ -985,6 +1133,8 @@ public class OracleXMLDBConnection implements DBConnection {
             return "";
         }
     }
+    
+    
 
     /**
      * Check if the connection is alive/open.
@@ -1101,19 +1251,18 @@ public class OracleXMLDBConnection implements DBConnection {
                 Node attributeNode = attributes.item(i);
                 
                 if (attributeNode.getNodeName().equalsIgnoreCase("id")) {
+                    
                     attributeId = attributeNode.getNodeValue();
-                }
-                
-
-                if (attributeNode.getNodeName().equalsIgnoreCase("name")) {
+                    
+                } else if (attributeNode.getNodeName().equalsIgnoreCase("name")) {
+                    
                     attributeName = attributeNode.getNodeValue();
-                }
-                
-
-                if (attributeNode.getNodeName().equalsIgnoreCase("type")) {
+                    
+                } else if (attributeNode.getNodeName().equalsIgnoreCase("type")) {
+                    
                     attributeType = attributeNode.getNodeValue();
                     
-                    if (attributeType.equalsIgnoreCase("list")) {
+                    if (attributeType.equalsIgnoreCase(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
                         NodeList items = node.getChildNodes();
                         
                         for (int j = 0; j < items.getLength(); j++) {
@@ -1135,9 +1284,7 @@ public class OracleXMLDBConnection implements DBConnection {
             }
             
             
-        } else {
-            xmlDBAttribute = null;
-        }
+        } 
         
         return xmlDBAttribute;
     }
@@ -1589,6 +1736,33 @@ public class OracleXMLDBConnection implements DBConnection {
         }
         return finalModelsList;
     }
+    
+    /**
+     * Return the model from the database as XmlDocument.
+     * 
+     * @param task GetModelTask that contains the model name.
+     * @return The model as XmlDocument.
+     * @throws DBExecutionException Thrown if the operation fails.
+     */
+    private XmlDocument _getModelFromDB(GetModelTask task)
+            throws DBExecutionException {
+        
+        _checkXMLDBConnectionObjects(true, false, false);
+
+        XmlDocument dbModel;
+        try {
+            
+            dbModel = _xmlContainer.getDocument(task.getModelName());
+            
+        } catch (XmlException e) {
+
+            throw new DBExecutionException(
+                    "Failed to execute GetModelsTask"
+                            + " - Could not find the model in the database. "
+                            + e.getMessage(), e);
+        }
+        return dbModel;
+    }
 
     /**
      * Retrieve the references inside a model from the reference file in the
@@ -1648,40 +1822,40 @@ public class OracleXMLDBConnection implements DBConnection {
 
     }
 
-    /**
-     * Return the upper level entity node in a model content that is being
-     * passed to it as a string.
-     * 
-     * @param strModelContent The model content as a string in xml format.
-     * @return A string representation of the upper level node.
-     * @exception DBExecutionException Thrown if there is a problem executing
-     * the task.
-     */
-    private static String _getParentEntityNodeAsString(String strModelContent)
-            throws DBExecutionException {
-
-        String parentNode = null;
-
-        try {
-
-            if (strModelContent == null || strModelContent.length() == 0) {
-                throw new DBExecutionException(
-                        "Faild to extract entity node from the xml content - "
-                                + "content sent is empty or null");
-            }
-
-            parentNode = strModelContent.substring(strModelContent
-                    .indexOf("<entity"), strModelContent.indexOf(">") + 1);
-
-            parentNode = parentNode.replace(">", "/>");
-
-        } catch (IndexOutOfBoundsException e) {
-            throw new DBExecutionException(
-                    "Faild to extract entity node from the xml content - "
-                            + e.getMessage(), e);
-        }
-        return parentNode;
-    }
+//    /**
+//     * Return the upper level entity node in a model content that is being
+//     * passed to it as a string.
+//     * 
+//     * @param strModelContent The model content as a string in xml format.
+//     * @return A string representation of the upper level node.
+//     * @exception DBExecutionException Thrown if there is a problem executing
+//     * the task.
+//     */
+//    private static String _getParentEntityNodeAsString(String strModelContent)
+//            throws DBExecutionException {
+//
+//        String parentNode = null;
+//
+//        try {
+//
+//            if (strModelContent == null || strModelContent.length() == 0) {
+//                throw new DBExecutionException(
+//                        "Faild to extract entity node from the xml content - "
+//                                + "content sent is empty or null");
+//            }
+//
+//            parentNode = strModelContent.substring(strModelContent
+//                    .indexOf("<entity"), strModelContent.indexOf(">") + 1);
+//
+////            parentNode = parentNode.replace(">", "/>");
+//
+//        } catch (IndexOutOfBoundsException e) {
+//            throw new DBExecutionException(
+//                    "Faild to extract entity node from the xml content - "
+//                            + e.getMessage(), e);
+//        }
+//        return parentNode;
+//    }
 
     
     
@@ -1741,6 +1915,48 @@ public class OracleXMLDBConnection implements DBConnection {
     private String _removeQuotes(String originalString) {
         return originalString.replaceAll("\"", "");
     }
+    
+    /**
+     * Replace the reference tags in a given model with the reference content.
+     * @param modelContent The model content.
+     * @param referenceModelContent The content that needs to be inserted in the parent model.
+     * @param referenceModelName The name of the model being referenced.
+     * @return A string representation of the parent model with the reference replaced.
+     */
+    private String _replaceReferenceWithContent(
+            String modelContent, String referenceModelContent, 
+            String referenceModelName) {
+        
+        StringBuffer parentModelContentBuffer = new StringBuffer(modelContent);
+        String referenceString = "<entity dbmodelname=\"" + referenceModelName + "\"";
+        
+        int startPosition = 0;
+        boolean isDone = false;
+        
+        while(!isDone) {
+            
+            int refIndex = parentModelContentBuffer.indexOf(referenceString, startPosition);
+            
+            if (refIndex != -1) {
+                parentModelContentBuffer.replace(refIndex, 
+                        refIndex + referenceString.length(), "<entity");
+        
+                int refContentIndex = parentModelContentBuffer.indexOf(">", refIndex) + 1;
+        
+                parentModelContentBuffer.insert(refContentIndex, referenceModelContent);
+        
+                startPosition = refContentIndex + referenceModelContent.length();
+            } else {
+                
+                isDone = true;
+                
+            }  
+        }
+
+        return parentModelContentBuffer.toString(); 
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**

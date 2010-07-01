@@ -9,8 +9,9 @@ import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
-import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GraphSearchTask;
+import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
@@ -113,6 +114,7 @@ public class AsynchronousDBConnection implements DBConnection {
         _taskQueue.setAllTasksAdded();
     }
 
+    
     /**
      * Search models that contain the given attributes in the database.
      * Not supported by this type of connection.
@@ -219,20 +221,43 @@ public class AsynchronousDBConnection implements DBConnection {
                         + "not supported by this type of DBConnection");
     }
 
+    
     /**
-     * Get Models Task is not supported by the asynchronous connection.
-     * Use a synchronous connection for that.
+     * Execute the necessary commands to retrieve a model from the database.
+     *
      * @param task
-     *          The task to be completed.
+     *          The task to be completed.  In this case, GetModelTask.
+     *          This will tell the DB layer to return the specified model.
      * @return XMLDBModel
-     *          The model object containing the MoML.
-     * @exception DBExecutionException
+     *          This object will be populated with the model's MoML string.
+     * @exception DBConnectionException Thrown if the operations fails.
      */
-    public XMLDBModel executeGetModelsTask(GetModelsTask task)
+    public XMLDBModel executeGetModelTask(GetModelTask task)
             throws DBExecutionException {
-        throw new DBExecutionException(
-                "Asynchronous DB Execution error - executeGetModels "
-                        + "is not supported by this type of DBConnection");
+                throw new DBExecutionException(
+                        "Asynchronous DB Execution error - executeGetModelTask "
+                                + "is not supported by this type of DBConnection");
+            
+    }
+    
+    
+    /**
+     * Execute the necessary commands to retrieve a model from the database 
+     * and resolve all the references in it if any.
+     *
+     * @param task
+     *          The task to be completed.  In this case, GetModelTask.
+     *          This will tell the DB layer to return the specified model.
+     * @return XMLDBModel
+     *          This object will be populated with the model's MoML string.
+     * @exception DBConnectionException Thrown if the operations fails.
+     */
+    public XMLDBModel executeGetCompleteModelTask(GetModelTask task)
+            throws DBExecutionException {
+                throw new DBExecutionException(
+                        "Asynchronous DB Execution error - executeGetCompleteModelTask "
+                                + "is not supported by this type of DBConnection");
+            
     }
 
     /**
@@ -267,6 +292,20 @@ public class AsynchronousDBConnection implements DBConnection {
 
         //call the execueTask method to execute the given task
         _executeTask(task);
+    }
+    
+    
+    /**
+     * Execute remove models task to delete a list of models from the database.
+     * @param task Contains a list of models to be deleted from the database.
+     * @throws DBExecutionException Thrown if the operation fails.
+     */
+    public void executeRemoveModelsTask (RemoveModelsTask task) 
+            throws DBExecutionException {
+        
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeRemoveModelsTask "
+                        + "is not supported by this type of DBConnection");
     }
     
     
