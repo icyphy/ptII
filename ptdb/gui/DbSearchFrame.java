@@ -246,62 +246,61 @@ public class DbSearchFrame extends TransformationEditor {
             // set the attributes to the search criteria accordingly
             searchCriteria.setAttributes(attributesList);
 
-            // TODO comment for the first release, un-comment later. 
             // Create the graph pattern search criteria
-            //            DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
-            //
-            //            // get the ports specified by the user
-            //            List<Port> portsList = pattern.portList();
-            //            ArrayList<Port> ports = new ArrayList<Port>();
-            //
-            //            for (Iterator iterator = portsList.iterator(); iterator.hasNext();) {
-            //                Port port = (Port) iterator.next();
-            //                ports.add(port);
-            //            }
-            //
-            //            dbGraphSearchCriteria.setPortsList(ports);
-            //
-            //            // get the relations specified by the user
-            //            List<Relation> relationsList = pattern.relationList();
-            //            ArrayList<Relation> relations = new ArrayList<Relation>();
-            //
-            //            for (Iterator iterator = relationsList.iterator(); iterator
-            //                    .hasNext();) {
-            //                Relation relation = (Relation) iterator.next();
-            //                relations.add(relation);
-            //            }
-            //
-            //            dbGraphSearchCriteria.setRelationsList(relations);
-            //
-            //            // get the component entities specified by the user
-            //            ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
-            //
-            //            ArrayList<CompositeEntity> compositeEntities = new ArrayList<CompositeEntity>();
-            //
-            //            for (Iterator iterator = pattern.entityList().iterator(); iterator
-            //                    .hasNext();) {
-            //                Entity entity = (Entity) iterator.next();
-            //
-            //                if (entity instanceof CompositeEntity) {
-            //                    compositeEntities.add((CompositeEntity) entity);
-            //                } else if (entity instanceof ComponentEntity) {
-            //                    componentEntities.add((ComponentEntity) entity);
-            //                }
-            //
-            //            }
-            //
-            //            //            _getAtomicEntities(pattern, componentEntities);
-            //
-            //            dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
-            //            dbGraphSearchCriteria.setCompositeEntities(compositeEntities);
-            //
-            //            // set the DBGraph search criteria to the whole search criteria
-            //            searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
-            // TODO end of graph pattern criteria
+            DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
+
+            // get the ports specified by the user
+            List<Port> portsList = pattern.portList();
+            ArrayList<Port> ports = new ArrayList<Port>();
+
+            for (Iterator iterator = portsList.iterator(); iterator.hasNext();) {
+                Port port = (Port) iterator.next();
+                ports.add(port);
+            }
+
+            dbGraphSearchCriteria.setPortsList(ports);
+
+            // get the relations specified by the user
+            List<Relation> relationsList = pattern.relationList();
+            ArrayList<Relation> relations = new ArrayList<Relation>();
+
+            for (Iterator iterator = relationsList.iterator(); iterator
+                    .hasNext();) {
+                Relation relation = (Relation) iterator.next();
+                relations.add(relation);
+            }
+
+            dbGraphSearchCriteria.setRelationsList(relations);
+
+            // get the component entities specified by the user
+            ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
+
+            ArrayList<CompositeEntity> compositeEntities = new ArrayList<CompositeEntity>();
+
+            for (Iterator iterator = pattern.entityList().iterator(); iterator
+                    .hasNext();) {
+                Entity entity = (Entity) iterator.next();
+
+                if (entity instanceof CompositeEntity) {
+                    compositeEntities.add((CompositeEntity) entity);
+                } else if (entity instanceof ComponentEntity) {
+                    componentEntities.add((ComponentEntity) entity);
+                }
+
+            }
+
+            //            _getAtomicEntities(pattern, componentEntities);
+
+            dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
+            dbGraphSearchCriteria.setCompositeEntities(compositeEntities);
+
+            // set the DBGraph search criteria to the whole search criteria
+            searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
 
             // Check whether any search criteria has been set. 
-            // TODO add the pattern criteria checking here later. 
-            if (attributesList.size() == 0) {
+            if (attributesList.size() == 0 && pattern.portList().isEmpty()
+                    && pattern.relationList().isEmpty()
+                    && pattern.entityList().isEmpty()) {
                 JOptionPane.showMessageDialog(DbSearchFrame.this,
                         "Please specify search criteria.");
             } else {
