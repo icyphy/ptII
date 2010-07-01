@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import ptdb.common.dto.CreateModelTask;
+import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
