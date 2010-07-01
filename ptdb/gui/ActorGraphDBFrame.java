@@ -107,7 +107,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      */
     protected void _initActorGraphDBFrame() {
 
-        _loadModelFromDBAction = new LoadModelFromDBAction();
         _openSearchFrameAction = new OpenSearchFrameAction(this.getTableau());
         _saveModelToDBAction = new SaveModelToDBAction();
         _openDatabaseSetupAction = new DatabaseSetupAction();
@@ -134,11 +133,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             // Add menu items if database connection has been established.
             // TODO: if (DB IS CONNECTED) {
-
-            // LoadModelFromDBAction is a new internal class.
-            GUIUtilities
-                    .addHotKey(_getRightComponent(), _loadModelFromDBAction);
-            GUIUtilities.addMenuItem(_dbMenu, _loadModelFromDBAction);
 
             GUIUtilities
                     .addHotKey(_getRightComponent(), _openSearchFrameAction);
@@ -167,9 +161,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     /** The database menu. */
     protected JMenu _dbMenu;
 
-    /** The action for loading a model from the database. */
-    protected Action _loadModelFromDBAction;
-
     /** The action for opening the search frame. */
     protected Action _openSearchFrameAction;
 
@@ -183,171 +174,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     protected Action _openDatabaseSetupAction;
 
     ///////////////////////////////////////////////////////////////////
-    ////         public inner classes                              ////
-
-    /** Search dialog. */
-    public class ModelSearchResults extends JDialog implements QueryListener {
-
-        private JButton _Load_Button;
-        private JButton _Cancel_Button;
-
-        String _selectedModel = null;
-
-        /** Construct the dialog box with all components and listeners. */
-        public ModelSearchResults() {
-
-            super();
-
-            JPanel contentPane = new JPanel();
-
-            contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-
-            contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-            _query = new Query();
-            contentPane.add(_query);
-
-            _Load_Button = new JButton("Load");
-            _Load_Button.setMnemonic(KeyEvent.VK_ENTER);
-            _Load_Button.setActionCommand("Load");
-
-            // For this requirement, we are
-            // just temporarily going to use a text box and pretend that the
-            // content of the text box contains the model you wanted to load
-            _query.addTextArea("searchResults", "Search Results", null,
-                    Color.white, Color.black, 1, 8);
-
-            contentPane.add(_Load_Button);
-            _Load_Button.setHorizontalTextPosition(SwingConstants.CENTER);
-
-            _Load_Button.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent event) {
-
-                    _loadModel();
-                    setVisible(false);
-
-                }
-            });
-
-            _Cancel_Button = new JButton("Cancel");
-            _Cancel_Button.setMnemonic(KeyEvent.VK_ESCAPE);
-            _Cancel_Button.setActionCommand("Cancel");
-
-            contentPane.add(_Cancel_Button);
-            _Cancel_Button.setHorizontalTextPosition(SwingConstants.CENTER);
-
-            _Cancel_Button.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent event) {
-
-                    setVisible(false);
-
-                }
-            });
-
-            _query.addQueryListener(this);
-            _query.setBackground(getBackground());
-            setContentPane(contentPane);
-
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                    public methods                          ////
-
-        /**
-         * Called to notify that one of the entries has changed. The name of the
-         * entry is passed as an argument.
-         *
-         * @param name
-         *            The name of the entry.
-         */
-        public void changed(String name) {
-
-            if (name.equals("searchResults")) {
-
-                _selectedModel = _query.getStringValue(name);
-
-            }
-
-        }
-
-        /** Load selected models into new frames **/
-        private void _loadModel() {
-
-            // For now we are only passing one model name string.
-            // This will need to change when we allow loading of
-            // Multiple models.
-
-            try {
-
-                String modelToFetch = _selectedModel;
-
-                PtolemyEffigy effigy = LoadManager.loadModel(modelToFetch,
-                        getConfiguration());
-
-                if(effigy != null){
-                    
-                    effigy.showTableaux();
-                    
-                } else {
-                    
-                    JOptionPane
-                    .showMessageDialog((Component) this,
-                            "The specified model could " +
-                            "not be found in the database.",
-                            "Load Error",
-                            JOptionPane.INFORMATION_MESSAGE, null);
-                    
-                }
-
-            } catch (Exception e) {
-
-                MessageHandler.error("Cannot load the specified model. ", e);
-
-            }
-
-            setVisible(false);
-
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                private inner classes                      ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// LoadModelFromDB
-
-    /**
-     * Action to load a model from the model database.
-     */
-    private class LoadModelFromDBAction extends AbstractAction {
-        /**
-         * Create a new action to load a model from the database.
-         */
-        public LoadModelFromDBAction() {
-
-            super("Load Model from Database");
-            putValue("tooltip", "Load Model from Database");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
-
-        }
-
-        public void actionPerformed(ActionEvent e) {
-
-            // When search is implemented, it will open the search dialog.
-            // For now, we are directly opening a temporary form
-            // with a prefilled model result.
-            // We're using JDialog in case we later decide we want a Wizard
-            // based
-            // search.
-
-            JDialog dialog = new ModelSearchResults();
-            dialog.pack();
-            dialog.setVisible(true);
-
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     //// OpenSearchFrameAction
