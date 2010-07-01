@@ -34,9 +34,10 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -116,8 +117,8 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
         IOPort portOut = (IOPort) getPort("out");
 
         // One port in theory
-        IOPort previousPort = (IOPort) portIn.connectedPortList().get(0);
-        int nbDims = PthalesIOPort.getDimensions(previousPort).length;
+//        IOPort previousPort = (IOPort) portIn.connectedPortList().get(0);
+        int nbDims = PthalesIOPort.getDimensions(portIn).length;
 
         // Token Arrays from simulation
         Token[] tokensIn = null;
@@ -125,17 +126,20 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
         // Input ports created and filled before elementary task called 
         int dataSize = PthalesIOPort.getDataProducedSize(portIn)
                 * PthalesIOPort.getNbTokenPerData(portIn);
-        tokensIn = new FloatToken[dataSize];
+//        tokensIn = new Token[dataSize];
         tokensIn = portIn.get(0, dataSize);
 
         // Header construction
         List<Token> header = new ArrayList<Token>();
 
         LinkedHashMap<String, Integer> sizes = PthalesIOPort
-                .getArraySizes(previousPort);
+                .getArraySizes(portIn);
 
         header.add(new IntToken(nbDims));
-        for (String dim : PthalesIOPort.getDimensions(previousPort)) {
+        header.add(new IntToken(PthalesIOPort.getNbTokenPerData(portIn)));
+        
+        for (String dim : PthalesIOPort.getDimensions(portIn)) {
+            header.add(new StringToken(dim));
             header.add(new IntToken(sizes.get(dim)));
         }
 
@@ -147,40 +151,7 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
             portOut.send(i, tokensIn, dataSize);
         }
     }
-
-    /** Create receivers. 
-     * Propagates array sizes to every actors that are connected to
-     * the associated PthalesRemoveActor. 
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Header
-        IOPort portOut = (IOPort) getPort("out");
-        IOPort portIn = (IOPort) getPort("in");
-
-        // One port in theory
-        IOPort port = (IOPort) portIn.connectedPortList().get(0);
-
-        // 1 tokens per dimension + 1 token for the number of dimensions
-        String[] dims = PthalesIOPort.getDimensions(port);
-        int[] sizes = new int[dims.length];
-        Object[] sizesString = PthalesIOPort.getArraySizes(port).values()
-                .toArray();
-        for (int i = 0; i < sizes.length; i++) {
-            sizes[i] = (Integer) sizesString[i];
-        }
-
-        // Ports modifications
-        PthalesIOPort.modifyPattern(portIn, dims, sizes);
-        PthalesIOPort.modifyPattern(portOut, "global", 1
-                + PthalesIOPort.getDimensions(port).length
-                + PthalesIOPort.getArraySize(port));
-
-        PthalesIOPort.propagateHeader(portOut, dims, sizes, 1 + PthalesIOPort
-                .getDimensions(port).length, PthalesIOPort
-                .getArraySizes(portIn));
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -192,7 +163,8 @@ public class PthalesAddHeaderActor extends PthalesAtomicActor {
         new TypedIOPort(this, "in", true, false);
 
         // output port
-        new TypedIOPort(this, "out", false, true);
+        TypedIOPort portOut = new TypedIOPort(this, "out", false, true);
+        portOut.setTypeEquals(BaseType.GENERAL);
     }
 
 }

@@ -37,6 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.domains.pthales.lib.PthalesAtomicActor;
 import ptolemy.domains.pthales.lib.PthalesIOPort;
@@ -98,7 +99,7 @@ public class PthalesReceiver extends SDFReceiver {
     /** Update parameters of this receiver according to the actor and port.
      * @param actor  The actor.
      * @param port The port.
-     */  
+     */
     public void fillParameters(Actor actor, IOPort port) {
         int[] repetitions = null;
 
@@ -154,7 +155,21 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public Token get() throws NoTokenException {
         if (_buffer != null) {
-            Token result = _buffer[_getAddress(_posIn++, true)];
+            Token result = null;
+            if (_dynamic) {
+                if (_currentCtrlPosOut < _headerSize) {
+                    result = _header.get(_currentCtrlPosOut);
+                    _currentCtrlPosOut++;
+                    if (_currentCtrlPosOut >= _headerSize) {
+                        _header.clear();
+                    }
+                } else {
+                    result = _buffer[_getAddress(_posIn++, true)];
+                }
+
+            } else {
+                result = _buffer[_getAddress(_posIn++, true)];
+            }
             return result;
         } else {
             throw new NoTokenException("Empty buffer in PthalesReceiver !");
@@ -193,7 +208,7 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return true or false.
      */
     public boolean hasRoom(int numberOfTokens) {
-        return (_getAddress(_posOut + (numberOfTokens-1), true) < _buffer.length);
+        return (_getAddress(_posOut + (numberOfTokens - 1), true) < _buffer.length);
     }
 
     /** Return if the buffer contains 1 more token to be read.
@@ -208,7 +223,14 @@ public class PthalesReceiver extends SDFReceiver {
      *  @return True.
      */
     public boolean hasToken(int numberOfTokens) {
-        return (_getAddress(_posIn + (numberOfTokens-1), true) < _buffer.length);
+        return (_getAddress(_posIn + (numberOfTokens - 1), true) < _buffer.length);
+    }
+
+    /**
+     * 
+     */
+    public boolean isDynamic() {
+        return _dynamic;
     }
 
     /** Return true.
@@ -228,7 +250,55 @@ public class PthalesReceiver extends SDFReceiver {
      */
     public void put(Token token) {
         if (_buffer != null) {
-            _buffer[_getAddress(_posOut++, false)] = token;
+            if (_dynamic) {
+                if (_header.size() == 0) {
+                    //the first token of the header
+                    _headerSize = ((IntToken) token).intValue() * 2 + 2;
+                    _header.add(token);
+                    _currentCtrlPosOut = 0;
+                } else if (_header.size() < _headerSize) {
+                    _header.add(token);
+                    if (_header.size() == _headerSize) {
+                        int finalSize = 1;
+                        int nDims = ((IntToken) _header.get(0)).intValue();
+
+                        //                      Computed for output ports only
+                        _sizes = new LinkedHashMap<String, Integer>();
+
+                        _dimensions = new String[nDims];
+
+                        for (int i = 0; i < nDims; i++) {
+                            finalSize *= ((IntToken) _header.get(3 + 2 * i))
+                                    .intValue();
+                            _sizes.put(_header.get(2 + 2 * i).toString(),
+                                    ((IntToken) _header.get(3 + 2 * i))
+                                            .intValue());
+                            _dimensions[i] = _header.get(2 + 2 * i).toString();
+                        }
+                        if (_buffer == null || _buffer.length < finalSize) {
+                            _buffer = new Token[finalSize
+                                    * ((IntToken) _header.get(1)).intValue()];
+                        }
+
+                        // Address jump for each dimension, determined by output port only
+                        int previousSize;
+                        for (int nDim = 0; nDim < _dimensions.length; nDim++) {
+                            previousSize = 1;
+                            for (int prev = 0; prev < nDim; prev++) {
+                                if (_sizes.get(_dimensions[prev]) != null) {
+                                    previousSize *= _sizes
+                                            .get(_dimensions[prev]);
+                                }
+                            }
+                            _jumpAddr.put(_dimensions[nDim], previousSize);
+                        }
+                    }
+                } else {
+                    _buffer[_getAddress(_posOut++, false)] = token;
+                }
+            } else {
+                _buffer[_getAddress(_posOut++, false)] = token;
+            }
         }
     }
 
@@ -299,6 +369,10 @@ public class PthalesReceiver extends SDFReceiver {
     public void reset() throws IllegalActionException {
         _posIn = 0;
         _posOut = 0;
+    }
+
+    public void setDynamic(boolean dynamic) {
+        _dynamic = dynamic;
     }
 
     /**
@@ -388,6 +462,14 @@ public class PthalesReceiver extends SDFReceiver {
     int _posIn = 0;
 
     int _posOut = 0;
+
+    int _currentCtrlPosOut = 0;
+
+    int _headerSize = 0;
+
+    boolean _dynamic = false;
+
+    List<Token> _header = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     //                    Variables for input ports                ////

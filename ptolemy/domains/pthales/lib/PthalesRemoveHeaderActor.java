@@ -28,10 +28,11 @@
 package ptolemy.domains.pthales.lib;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.domains.pthales.kernel.PthalesReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -114,21 +115,47 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
         // Token Arrays from simulation
         Token[] tokensIn = null;
 
-        // Input ports created and filled before elementary task called 
-        int dataSize = PthalesIOPort.getDataProducedSize(portIn)
-                * PthalesIOPort.getNbTokenPerData(portIn);
-        tokensIn = new FloatToken[dataSize];
-
         // Header
-        int nbToken = ((IntToken) portIn.get(0)).intValue();
-        Token[] headerIn = portIn.get(0, nbToken);
+        int nDims = ((IntToken) portIn.get(0)).intValue();
+        int nbTokens = ((IntToken) portIn.get(0)).intValue();
+        Token[] headerIn = portIn.get(0, nDims * 2);
 
+        // Input ports created and filled before elementary task called 
+        int dataSize = nbTokens;
+        String[] dims = new String[nDims];
+        int[] sizes =  new int[dims.length];
+        
+        for (int i = 0; i < nDims; i++) {
+            dataSize *= ((IntToken) headerIn[2 * i + 1]).intValue();
+            dims[i] = headerIn[2 * i].toString();
+            sizes[i] = ((IntToken)headerIn[2 * i + 1]).intValue();
+        }
+
+        // Ports modifications
+        PthalesIOPort.modifyPattern(portIn, dims, sizes);
+        PthalesIOPort.modifyPattern(portOut, "global", dataSize);
+        
         // Token Arrays from simulation
-        tokensIn = portIn.get(0, dataSize - headerIn.length - 1);
+        tokensIn = portIn.get(0, dataSize);
 
         // then input sent to output
         for (int i = 0; i < portOut.getWidth(); i++) {
-            portOut.send(i, tokensIn, dataSize - headerIn.length - 1);
+            portOut.send(i, tokensIn, dataSize);
+        }
+    }
+
+    /** Initialize this actor.  
+     *  @exception IllegalActionException If a super class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        IOPort portIn = (IOPort) getPort("in");
+
+        Receiver[][] receivers = portIn.getReceivers();
+
+        for (int i = 0; i < portIn.getWidth(); i++) {
+            ((PthalesReceiver) receivers[i][0]).setDynamic(true);
         }
     }
 
@@ -144,6 +171,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
 
         // output port
         new TypedIOPort(this, "out", false, true);
+
     }
 
 }
