@@ -579,9 +579,10 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Execute a create attribute task which adds a new attribute to the database.
      * @param task The task that contains the new attribute to be created.
+     * @return The XMLDBAttribute object that was stored in the Database.
      * @throws DBExecutionException Thrown if the operation fails.
      */
-    public void executeCreateAttributeTask(CreateAttributeTask task) 
+    public XMLDBAttribute executeCreateAttributeTask(CreateAttributeTask task) 
             throws DBExecutionException {
         
         try {
@@ -634,6 +635,8 @@ public class OracleXMLDBConnection implements DBConnection {
             
             
             _xmlManager.query(insertQuery, xmlQueryContext, null);
+            
+            return xmlDBAttribute;
              
             
         } catch (XmlException e) {

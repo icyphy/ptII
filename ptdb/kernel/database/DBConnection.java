@@ -65,9 +65,12 @@ public interface DBConnection {
      * @param task
      *          The task to be completed.  In this case, CreateAttributeTask.
      *          This will tell the DB layer to create a new attribute in the database.
+     * 
+     * @return The XMLDBAttribute object that was stored in the Database.
+     *  
      * @exception DBExecutionException Thrown if the operation fails.
      */
-    public void executeCreateAttributeTask(CreateAttributeTask task)
+    public XMLDBAttribute executeCreateAttributeTask(CreateAttributeTask task)
             throws DBExecutionException;
     
     /**
