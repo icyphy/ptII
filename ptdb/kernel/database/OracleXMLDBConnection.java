@@ -431,6 +431,12 @@ public class OracleXMLDBConnection implements DBConnection {
         try {
             
             
+            
+            //FIXME: This is failing because of Database issues.
+            //The best way to handle it is to make the BL trigger the CacheManager.loadFromCache() 
+            //and then create an normal connection and call this method 
+            //if the model was not found in the cache.
+            
 //            try {
 //                
 //                XMLDBModel xmlDBModelCache = CacheManager.loadFromCache(task.getModelName());
@@ -1047,11 +1053,12 @@ public class OracleXMLDBConnection implements DBConnection {
 
             try {
 
-                try {
-                    currentXMLDBModel = CacheManager.loadFromCache(currentModelName);
-                } catch (Exception e) {
-                    //do nothing...
-                }
+                //FIXME: This will not work because of database issues.
+//                try {
+//                    currentXMLDBModel = CacheManager.loadFromCache(currentModelName);
+//                } catch (Exception e) {
+//                    //do nothing...
+//                }
                
                 if (currentXMLDBModel == null) {
                     
