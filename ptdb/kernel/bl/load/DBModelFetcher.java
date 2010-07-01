@@ -2,7 +2,7 @@ package ptdb.kernel.bl.load;
 
 import java.util.ArrayList;
 
-import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
@@ -53,8 +53,8 @@ public class DBModelFetcher {
 
         try {
 
-            GetModelsTask getModelsTask = new GetModelsTask(name);
-            returnModel = connection.executeGetModelsTask(getModelsTask);
+            GetModelTask getModelTask = new GetModelTask(name);
+            returnModel = connection.executeGetCompleteModelTask(getModelTask);
 
         } catch (DBExecutionException dbEx) {            
             throw dbEx;
@@ -97,9 +97,9 @@ public class DBModelFetcher {
             for(XMLDBModel model: modelList){
                 
                 XMLDBModel resultModel;
-                GetModelsTask getModelsTask = 
-                    new GetModelsTask(model.getModelName());
-                resultModel = connection.executeGetModelsTask(getModelsTask);
+                GetModelTask getModelTask = 
+                    new GetModelTask(model.getModelName());
+                resultModel = connection.executeGetCompleteModelTask(getModelTask);
                 
                 if(resultModel != null){
                     

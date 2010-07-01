@@ -10,7 +10,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import ptdb.common.dto.GetModelsTask;
+import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.bl.load.DBModelFetcher;
@@ -31,7 +31,7 @@ import ptdb.kernel.database.DBConnection;
 */
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DBModelFetcher.class, DBConnectorFactory.class, GetModelsTask.class})
+@PrepareForTest({DBModelFetcher.class, DBConnectorFactory.class, GetModelTask.class})
 @SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory")
 public class TestDBModelFetcher {
 
@@ -46,15 +46,15 @@ public class TestDBModelFetcher {
 
         PowerMock.mockStatic(DBConnectorFactory.class);
 
-        GetModelsTask getModelsTaskMock = PowerMock.createMock(GetModelsTask.class);
+        GetModelTask getModelTaskMock = PowerMock.createMock(GetModelTask.class);
         DBConnection dBConnectionMock = PowerMock.createMock(DBConnection.class);
 
         XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
 
         EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(dBConnectionMock);
-        PowerMock.expectNew(GetModelsTask.class, loadModel).andReturn(getModelsTaskMock);
+        PowerMock.expectNew(GetModelTask.class, loadModel).andReturn(getModelTaskMock);
         //getModelsTaskMock.setModelName(loadModel);
-        EasyMock.expect(dBConnectionMock.executeGetModelsTask(getModelsTaskMock)).andReturn(modelMock);
+        EasyMock.expect(dBConnectionMock.executeGetCompleteModelTask(getModelTaskMock)).andReturn(modelMock);
 
         dBConnectionMock.closeConnection();
 
