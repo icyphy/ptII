@@ -260,6 +260,7 @@ public class DatabaseSetupFrame extends JFrame {
 
         pack();
     }// </editor-fold>
+
     /**
      * Take action for the connection button event.
      * @param evt Connection button event.
@@ -268,7 +269,7 @@ public class DatabaseSetupFrame extends JFrame {
             java.awt.event.ActionEvent evt) {
         _testConnection();
     }
-    
+
     /**
      * Take action for the save button event.
      * @param evt Save button event.
@@ -276,7 +277,7 @@ public class DatabaseSetupFrame extends JFrame {
     private void _saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
         _saveSetupParameters();
     }
-    
+
     /**
      * Take action for the reset button event.
      * @param evt Reset button event.
@@ -367,7 +368,7 @@ public class DatabaseSetupFrame extends JFrame {
             try {
                 setupManager.updateDBConnectionSetupParameters(setupParameters);
                 JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
-                "Setup parameters have been saved.");
+                        "Setup parameters have been saved.");
                 _setupParameters = setupParameters;
             } catch (DBConnectionException e) {
                 JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
@@ -388,17 +389,17 @@ public class DatabaseSetupFrame extends JFrame {
      */
     private void _testConnection() {
         SetupManager setupManager = new SetupManager();
-        _validateSetupParameters();
-        try {
-            setupManager.testConnection(_readSetupParameters());
-            JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
-            "Connection test was successful.");
-        } catch (DBConnectionException e) {
-            JOptionPane
-            .showMessageDialog(DatabaseSetupFrame.this,
-                    e.getMessage(),
-                    "Connection Error",
-                    JOptionPane.INFORMATION_MESSAGE, null);
+        boolean isValid = _validateSetupParameters();
+        if (isValid) {
+            try {
+                setupManager.testConnection(_readSetupParameters());
+                JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
+                        "Connection test was successful.");
+            } catch (DBConnectionException e) {
+                JOptionPane.showMessageDialog(DatabaseSetupFrame.this, e
+                        .getMessage(), "Connection Error",
+                        JOptionPane.INFORMATION_MESSAGE, null);
+            }
         }
     }
 
