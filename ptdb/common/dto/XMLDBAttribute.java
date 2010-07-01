@@ -18,6 +18,18 @@ import java.util.List;
 public class XMLDBAttribute {
 
     /**
+     * Construct an XMLDBAttribute instance with the given attribute name and 
+     * type. 
+     * 
+     * @param attributeName The name of the attribute to create.
+     * @param attributeType The type of the attribute to create. 
+     */
+    public XMLDBAttribute(String attributeName, String attributeType) {
+        this._attributeName = attributeName;
+        this._attributeType = attributeType;
+    }
+
+    /**
      * Construct a XMLDBAttribute instance with the given attribute name.
      * 
      * @param attributeName The name for the given attribute.
@@ -99,6 +111,15 @@ public class XMLDBAttribute {
     }
 
     /**
+     * Set the name of the attribute. 
+     * 
+     * @param attributName The name of the attribute. 
+     */
+    public void setAttributeName(String attributName) {
+        _attributeName = attributName;
+    }
+
+    /**
      * Set the attribute list value only when the attribute type is list.
      * @param attributeValues The list of attribute values.
      * 
@@ -145,10 +166,10 @@ public class XMLDBAttribute {
     /** Attribute name. */
     private String _attributeName;
 
-    /** The value of the attribute in a string. */
-    private List<String> _attributeValues;
-
     /** The type of the attribute in a string. */
     private String _attributeType;
+
+    /** The value of the attribute in a string. */
+    private List<String> _attributeValues;
 
 }
