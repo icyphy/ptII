@@ -4,12 +4,12 @@
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;
+import ptdb.common.util.XMLDBModelManager;
 import ptdb.kernel.database.DBConnection;
 
 ///////////////////////////////////////////////////////////////////
@@ -45,6 +45,11 @@ public abstract class AbstractSearcher implements ResultHandler {
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException {
 
+        // check whether searching is canceled 
+        if (isSearchCancelled()) {
+            return;
+        }
+
         // store the passed results in the previous found results field
         _previousResults = modelResults;
 
@@ -62,55 +67,56 @@ public abstract class AbstractSearcher implements ResultHandler {
             // search criteria
             if (this._isSearchCriteriaSet()) {
 
-                while (!_isSearchDone()) {
-                    if (this instanceof AbstractDBSearcher) {
-                        try {
-                            //get the DB connection
-                            this._dbConnection = DBConnectorFactory
+                if (this instanceof AbstractDBSearcher) {
+                    try {
+                        //get the DB connection
+                        if (_dbConnection == null) {
+                            _dbConnection = DBConnectorFactory
                                     .getSyncConnection(false);
-
-                            _search();
-
-                            // commit the DB connection
-                            this._dbConnection.commitConnection();
-                        } finally {
-                            // close the connection anyway
-                            if (this._dbConnection != null) {
-                                this._dbConnection.closeConnection();
-                            }
-
+                            // pass the db connection to the next searchers 
+                            setConnection(_dbConnection);
                         }
 
-                        if (!(this instanceof HierarchyFetcher)
-                                && !(this instanceof AttributeSearcher)) {
-                            _toPassResults = _intersectResults(
-                                    _previousResults, _currentResults);
-                        } else {
-                            _toPassResults = _currentResults;
-                        }
+                        _search();
 
+                    } catch (DBExecutionException e) {
+                        // Close the connection in case of exception.
+                        _dbConnection.closeConnection();
+                        throw e;
+                    }
+
+                    // Only when the searcher is not attribute searcher or 
+                    // hierarchy searcher, the results searched from the 
+                    // current searcher needs to intersect with the results 
+                    // passed by the previous searchers.
+                    if (!(this instanceof HierarchyFetcher)
+                            && !(this instanceof AttributeSearcher)) {
+                        _toPassResults = XMLDBModelManager.intersectResults(
+                                _previousResults, _currentResults);
                     } else {
-                        // for the searcher that does not require the db
-                        // connection just execute the _search method
-                        this._search();
-
                         _toPassResults = _currentResults;
                     }
 
                     // send the results to the next result handler
                     _nextResultHandler.handleResults(_toPassResults);
+                } else {
+                    // For the searcher that does not require the DB
+                    // connection just execute the _search method.
+                    this._search();
 
                 }
 
             } else {
+                pass();
 
-                // Just pass the results to the next result handler
+                // Just pass the results to the next result handler.
                 _nextResultHandler.handleResults(modelResults);
 
             }
 
-            // if there is no following searcher, just finish the searching
-            if (_nextResultHandler instanceof SearchResultBuffer) {
+            // If there is no following searcher, just finish the searching.
+            if ((_nextResultHandler instanceof SearchResultBuffer)
+                    && _previousSearcher.isPassed()) {
                 ((SearchResultBuffer) _nextResultHandler).wholeSearchDone();
             }
         }
@@ -125,7 +131,31 @@ public abstract class AbstractSearcher implements ResultHandler {
      */
     public boolean isSearchCancelled() {
 
-        return _isSearchCancelled;
+        return _nextResultHandler.isSearchCancelled();
+    }
+
+    /**
+     * Check with this searcher has been passed the searching. 
+     * 
+     * @return true - if the searching has passed in this searcher.<br>
+     *          false - if the searching has not passed in this searcher.
+     */
+    public boolean isPassed() {
+        return _passed;
+    }
+
+    /**
+     * Set the DB connection for this searcher.  
+     * 
+     * @param connection The DBConnection instance to be set in this searcher. 
+     */
+    public void setConnection(DBConnection connection) {
+        _dbConnection = connection;
+
+        // Pass the DB connection to the following searchers. 
+        if (_nextResultHandler != null) {
+            _nextResultHandler.setConnection(connection);
+        }
     }
 
     /**
@@ -151,8 +181,10 @@ public abstract class AbstractSearcher implements ResultHandler {
 
     /**
      * Notify the search result buffer that the searching is done.
+     * @exception DBConnectionException Thrown from the database layer if the 
+     *  database connection cannot be obtained. 
      */
-    public void wholeSearchDone() {
+    public void wholeSearchDone() throws DBConnectionException {
 
         // tell the next result handler that the searching is done
         if (_nextResultHandler != null) {
@@ -173,14 +205,9 @@ public abstract class AbstractSearcher implements ResultHandler {
      */
     protected abstract boolean _isSearchCriteriaSet();
 
-    /**
-     * Check whether the searching is done in this searcher. 
-     * 
-     * @return true - the searching is done in this searcher.<br>
-     *          false - the searching is not done in this searcher.
-     */
-    protected boolean _isSearchDone() {
-        return _searchDone;
+    protected void pass() {
+        _passed = true;
+
     }
 
     /**
@@ -188,16 +215,12 @@ public abstract class AbstractSearcher implements ResultHandler {
      * 
      * @exception DBExecutionException Thrown from the database layer when 
      * there is error occurring during the searching. 
+     * @exception DBConnectionException Thrown by the DBConnectorFactory
+     *           when getting the DBConnection from it, which
+     *          indicates that the DBConnection cannot be obtained.
      */
-    protected abstract void _search() throws DBExecutionException;
-
-    /**
-     * Set the searching done for this searcher. 
-     */
-    protected void _setSearchDone() {
-
-        this._searchDone = true;
-    }
+    protected abstract void _search() throws DBExecutionException,
+            DBConnectionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -213,45 +236,18 @@ public abstract class AbstractSearcher implements ResultHandler {
     protected DBConnection _dbConnection;
 
     /**
+     * The next result handler to be called to pass the search results
+     * from this result handler.
+     */
+    protected ResultHandler _nextResultHandler;
+
+    /**
      * Contains the results found and passed by the previous searchers.
      */
     protected ArrayList<XMLDBModel> _previousResults;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    private ArrayList<XMLDBModel> _intersectResults(
-            ArrayList<XMLDBModel> previousResults,
-            ArrayList<XMLDBModel> currentResults) {
-
-        // If the previous result is empty, just return the results found
-        // in this searcher.
-        if (previousResults == null || previousResults.size() == 0) {
-            return currentResults;
-        }
-
-        // If the current result is empty, just return the empty set.
-        if (currentResults == null || currentResults.size() == 0) {
-            return currentResults;
-        }
-
-        java.util.Hashtable<String, XMLDBModel> existingModels = new java.util.Hashtable<String, XMLDBModel>();
-        ArrayList<XMLDBModel> returnedResults = new ArrayList<XMLDBModel>();
-
-        for (Iterator iterator = previousResults.iterator(); iterator.hasNext();) {
-            XMLDBModel xmldbModel = (XMLDBModel) iterator.next();
-            existingModels.put(xmldbModel.getModelName(), xmldbModel);
-        }
-
-        for (Iterator iterator = currentResults.iterator(); iterator.hasNext();) {
-            XMLDBModel xmldbModel = (XMLDBModel) iterator.next();
-            if (existingModels.get(xmldbModel.getModelName()) != null) {
-                returnedResults.add(xmldbModel);
-            }
-        }
-
-        return returnedResults;
-    }
 
     /**
      * Check whether the searching is done since no result has been matched.
@@ -261,15 +257,15 @@ public abstract class AbstractSearcher implements ResultHandler {
      */
     private boolean _noMatch() {
         if (_previousSearcher == null) {
-            // this is the first searcher
+            // This is the first searcher.
             return false;
         }
 
-        // there is no result from the previous searcher
+        // There is no result from the previous searcher.
         if (_previousResults == null || _previousResults.size() == 0) {
 
             if (_previousSearcher._isSearchCriteriaSet()) {
-                // in the case that the previous searcher is set and no results
+                // In the case that the previous searcher is set and no results
                 // returned, this means there is no match in the previous
                 // searchers.  So this searcher should be skipped also.
 
@@ -293,17 +289,9 @@ public abstract class AbstractSearcher implements ResultHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private boolean _isSearchCancelled = false;
-
-    /**
-     * The next result handler to be called to pass the search results
-     * from this result handler.
-     */
-    private ResultHandler _nextResultHandler;
+    private boolean _passed;
 
     private AbstractSearcher _previousSearcher;
-
-    private boolean _searchDone = false;
 
     /**
      * The results to pass to the next result handler.

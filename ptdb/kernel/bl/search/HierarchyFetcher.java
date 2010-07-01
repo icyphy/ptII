@@ -54,9 +54,6 @@ public class HierarchyFetcher extends AbstractSearcher implements
         _currentResults = _dbConnection
                 .executeFetchHierarchyTask(fetchHierarchyTask);
 
-        // set the search done
-        _setSearchDone();
-
     }
 
 }

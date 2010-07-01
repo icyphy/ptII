@@ -80,19 +80,13 @@ public class SearchManager {
         commandSearcher.setNextResultHandler(graphSearchers.get(0));
         graphSearchers.get(0).setPreviousSeacher(commandSearcher);
 
-        // if the pattern match graph searcher is also returned
         // set the pattern match searcher after DB graph searcher
-        if (graphSearchers.size() > 1) {
-            graphSearchers.get(0).setNextResultHandler(graphSearchers.get(1));
-            graphSearchers.get(1).setPreviousSeacher(graphSearchers.get(0));
+        graphSearchers.get(0).setNextResultHandler(graphSearchers.get(1));
+        graphSearchers.get(1).setPreviousSeacher(graphSearchers.get(0));
 
-            // set the hierarchy fetcher to the last searcher
-            graphSearchers.get(1).setNextResultHandler(hierarchyFetcher);
-            hierarchyFetcher.setPreviousSeacher(graphSearchers.get(1));
-        } else {
-            graphSearchers.get(0).setNextResultHandler(hierarchyFetcher);
-            hierarchyFetcher.setPreviousSeacher(graphSearchers.get(0));
-        }
+        // set the hierarchy fetcher to the last searcher
+        graphSearchers.get(1).setNextResultHandler(hierarchyFetcher);
+        hierarchyFetcher.setPreviousSeacher(graphSearchers.get(1));
 
         // assign the result handler to the fetcher
         hierarchyFetcher.setNextResultHandler(searchResultBuffer);

@@ -61,8 +61,7 @@ public class XQueryGraphSearcher extends GraphSearcher implements
             _dbGraphSearchCriteria = null;
         }
 
-        // set the search done
-        _setSearchDone();
+        pass();
 
     }
 

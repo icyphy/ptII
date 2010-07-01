@@ -34,6 +34,7 @@ public class AttributeSearcher extends AbstractSearcher implements
     public AttributeSearcher(SearchCriteria searchCriteria) {
 
         this._attributesCriteria = searchCriteria.getAttributes();
+       
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -44,7 +45,7 @@ public class AttributeSearcher extends AbstractSearcher implements
      *  this attribute searcher instance.
      *
      * @return true - if the search criteria has been set.<br>
-     *         false - if the search criteria has not been set
+     *         false - if the search criteria has not been set. 
      */
     @Override
     protected boolean _isSearchCriteriaSet() {
@@ -60,7 +61,7 @@ public class AttributeSearcher extends AbstractSearcher implements
     /**
      * Perform the actual search for the attributes.
      *
-     * @exception DBExecutionException Thrown by the DBConnection when
+     * @exception DBExecutionException Thrown by the DBConnection if
      * unexpected problem happens during the execution of DB query tasks.
      */
     @Override
@@ -79,11 +80,9 @@ public class AttributeSearcher extends AbstractSearcher implements
             // The db layer cannot perform the searching, so make the search 
             // criteria not set. 
             _attributesCriteria = null;
-        }
+        } 
 
-        // set the search done
-        _setSearchDone();
-
+        pass();
     }
 
     ///////////////////////////////////////////////////////////////////

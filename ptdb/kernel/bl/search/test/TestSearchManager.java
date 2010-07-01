@@ -24,6 +24,7 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;
+import ptdb.kernel.bl.load.DBModelFetcher;
 import ptdb.kernel.bl.search.AttributeSearcher;
 import ptdb.kernel.bl.search.CommandSearcher;
 import ptdb.kernel.bl.search.HierarchyFetcher;
@@ -32,10 +33,16 @@ import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 import ptdb.kernel.bl.search.XQueryGraphSearcher;
 import ptdb.kernel.database.DBConnection;
+import ptolemy.actor.gt.GraphMatcher;
+import ptolemy.actor.gt.Pattern;
+import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.moml.MoMLParser;
+import ptolemy.vergil.gt.MatchResultRecorder;
 
 ///////////////////////////////////////////////////////////////////
 //// TestSearchManager
@@ -54,8 +61,9 @@ import ptolemy.kernel.util.Attribute;
 @PrepareForTest( { SearchManager.class, AttributeSearcher.class,
         CommandSearcher.class, XQueryGraphSearcher.class,
         PatternMatchGraphSearcher.class, HierarchyFetcher.class,
-        SearchResultBuffer.class })
-@SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory")
+        SearchResultBuffer.class, GraphMatcher.class })
+@SuppressStaticInitializationFor( { "ptdb.common.util.DBConnectorFactory",
+        "ptdb.kernel.bl.load.DBModelFetcher" })
 public class TestSearchManager {
 
     ///////////////////////////////////////////////////////////////////
@@ -83,6 +91,9 @@ public class TestSearchManager {
         searchCriteria.setAttributes(attributes);
 
         DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
+
+        Pattern patternMock = PowerMock.createMock(Pattern.class);
+        dbGraphSearchCriteria.setPattern(patternMock);
 
         dbGraphSearchCriteria
                 .setComponentEntitiesList(new ArrayList<ComponentEntity>());
@@ -120,18 +131,10 @@ public class TestSearchManager {
                         .executeAttributeSearchTask(attributeSearchTaskMock))
                 .andReturn(resultsFromAttributes);
 
-        dbConnectionAttributeMock.commitConnection();
-
-        dbConnectionAttributeMock.closeConnection();
-
         // Testing in command searcher. 
+        // To add later. 
 
         // Testing in XQuery searcher. 
-        DBConnection dbConnectionXQueryMock = PowerMock
-                .createMock(DBConnection.class);
-
-        expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
-                dbConnectionXQueryMock);
 
         GraphSearchTask graphSearchTaskMock = PowerMock
                 .createMockAndExpectNew(GraphSearchTask.class);
@@ -147,47 +150,80 @@ public class TestSearchManager {
         }
 
         expect(
-                dbConnectionXQueryMock
+                dbConnectionAttributeMock
                         .executeGraphSearchTask(graphSearchTaskMock))
                 .andReturn(resultsFromXQuery);
 
-        dbConnectionXQueryMock.commitConnection();
+        // Testing in GraphPatternMatchingSearch.
+        GraphMatcher graphMatcherMock = PowerMock
+                .createMockAndExpectNew(GraphMatcher.class);
 
-        dbConnectionXQueryMock.closeConnection();
+        MoMLParser parserMock = PowerMock
+                .createMockAndExpectNew(MoMLParser.class);
 
-        // Testing in hierarchy fetcher. 
-        DBConnection dbConnectionHierarcyMock = PowerMock
-                .createMock(DBConnection.class);
+        mockStatic(DBModelFetcher.class);
 
-        expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
-                dbConnectionHierarcyMock);
-
-        FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
-                .createMockAndExpectNew(FetchHierarchyTask.class);
-
-        ArrayList<XMLDBModel> expectedResults = new ArrayList<XMLDBModel>();
+        ArrayList<XMLDBModel> patternMatchInitialModels = new ArrayList<XMLDBModel>();
+        ArrayList<XMLDBModel> passModels = new ArrayList<XMLDBModel>();
 
         for (int i = 0; i < 5; i++) {
 
-            expectedResults.add(resultsFromXQuery.get(i));
+            passModels.add(resultsFromXQuery.get(i));
+
+            patternMatchInitialModels.add(new XMLDBModel("model_new" + i));
+
         }
 
-        fetchHierarchyTaskMock.setModelsList(expectedResults);
+        expect(DBModelFetcher.load(passModels)).andReturn(
+                patternMatchInitialModels);
 
         ArrayList<XMLDBModel> resultsFromHierarchy = new ArrayList<XMLDBModel>();
 
-        for (int i = 15; i < 25; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
-            resultsFromHierarchy.add(xmldbModel);
+        for (int i = 0; i < 5; i++) {
+            CompositeEntity namedObjMock = PowerMock
+                    .createMock(CompositeEntity.class);
+            expect(
+                    parserMock.parse(patternMatchInitialModels.get(i)
+                            .getModel())).andReturn(namedObjMock);
+
+            MatchResultRecorder matchResultRecorderMock = PowerMock
+                    .createMockAndExpectNew(MatchResultRecorder.class);
+
+            graphMatcherMock.setMatchCallback(matchResultRecorderMock);
+
+            expect(graphMatcherMock.match(patternMock, namedObjMock))
+                    .andReturn(true);
+
+            ArrayList<MatchResult> matchResults = new ArrayList<MatchResult>();
+            matchResults.add(new MatchResult());
+
+            expect(matchResultRecorderMock.getResults())
+                    .andReturn(matchResults);
+
+            // Testing in hierarchy fetcher. 
+
+            FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
+                    .createMockAndExpectNew(FetchHierarchyTask.class);
+
+            ArrayList<XMLDBModel> expectedResults = new ArrayList<XMLDBModel>();
+
+            expectedResults.add(patternMatchInitialModels.get(i));
+
+            fetchHierarchyTaskMock.setModelsList(expectedResults);
+
+            for (int j = 15; j < 25; j++) {
+                XMLDBModel xmldbModel = new XMLDBModel("model" + j);
+                resultsFromHierarchy.add(xmldbModel);
+            }
+
+            expect(
+                    dbConnectionAttributeMock
+                            .executeFetchHierarchyTask(fetchHierarchyTaskMock))
+                    .andReturn(resultsFromHierarchy);
+
         }
 
-        expect(
-                dbConnectionHierarcyMock
-                        .executeFetchHierarchyTask(fetchHierarchyTaskMock))
-                .andReturn(resultsFromHierarchy);
-
-        dbConnectionHierarcyMock.commitConnection();
-        dbConnectionHierarcyMock.closeConnection();
+        dbConnectionAttributeMock.closeConnection();
 
         // Start the testing.
         PowerMock.replayAll();
@@ -340,6 +376,9 @@ public class TestSearchManager {
 
         DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
 
+        Pattern patternMock = PowerMock.createMock(Pattern.class);
+        dbGraphSearchCriteria.setPattern(patternMock);
+
         dbGraphSearchCriteria
                 .setComponentEntitiesList(new ArrayList<ComponentEntity>());
         dbGraphSearchCriteria.setPortsList(new ArrayList<Port>());
@@ -377,36 +416,135 @@ public class TestSearchManager {
                         .executeGraphSearchTask(graphSearchTaskMock))
                 .andReturn(resultsFromXQuery);
 
-        dbConnectionXQueryMock.commitConnection();
+        // Testing in GraphPatternMatchingSearch.
+        GraphMatcher graphMatcherMock = PowerMock
+                .createMockAndExpectNew(GraphMatcher.class);
 
-        dbConnectionXQueryMock.closeConnection();
+        MoMLParser parserMock = PowerMock
+                .createMockAndExpectNew(MoMLParser.class);
 
-        // Testing in hierarchy fetcher. 
-        DBConnection dbConnectionHierarcyMock = PowerMock
-                .createMock(DBConnection.class);
+        mockStatic(DBModelFetcher.class);
 
-        expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
-                dbConnectionHierarcyMock);
+        ArrayList<XMLDBModel> patternMatchInitialModels = new ArrayList<XMLDBModel>();
+        ArrayList<XMLDBModel> passModels = new ArrayList<XMLDBModel>();
 
-        FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
-                .createMockAndExpectNew(FetchHierarchyTask.class);
+        for (int i = 0; i < 5; i++) {
 
-        fetchHierarchyTaskMock.setModelsList(resultsFromXQuery);
+            passModels.add(resultsFromXQuery.get(i));
+
+            patternMatchInitialModels.add(new XMLDBModel("model_new" + i));
+
+        }
+
+        expect(DBModelFetcher.load(passModels)).andReturn(
+                patternMatchInitialModels);
 
         ArrayList<XMLDBModel> resultsFromHierarchy = new ArrayList<XMLDBModel>();
 
-        for (int i = 15; i < 25; i++) {
-            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
-            resultsFromHierarchy.add(xmldbModel);
+        for (int i = 0; i < 5; i++) {
+            CompositeEntity namedObjMock = PowerMock
+                    .createMock(CompositeEntity.class);
+            expect(
+                    parserMock.parse(patternMatchInitialModels.get(i)
+                            .getModel())).andReturn(namedObjMock);
+
+            MatchResultRecorder matchResultRecorderMock = PowerMock
+                    .createMockAndExpectNew(MatchResultRecorder.class);
+
+            graphMatcherMock.setMatchCallback(matchResultRecorderMock);
+
+            expect(graphMatcherMock.match(patternMock, namedObjMock))
+                    .andReturn(true);
+
+            ArrayList<MatchResult> matchResults = new ArrayList<MatchResult>();
+            matchResults.add(new MatchResult());
+
+            expect(matchResultRecorderMock.getResults())
+                    .andReturn(matchResults);
+
+            // Testing in hierarchy fetcher. 
+
+            FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
+                    .createMockAndExpectNew(FetchHierarchyTask.class);
+
+            ArrayList<XMLDBModel> expectedResults = new ArrayList<XMLDBModel>();
+
+            expectedResults.add(patternMatchInitialModels.get(i));
+
+            fetchHierarchyTaskMock.setModelsList(expectedResults);
+
+            for (int j = 15; j < 25; j++) {
+                XMLDBModel xmldbModel = new XMLDBModel("model" + j);
+                resultsFromHierarchy.add(xmldbModel);
+            }
+
+            expect(
+                    dbConnectionXQueryMock
+                            .executeFetchHierarchyTask(fetchHierarchyTaskMock))
+                    .andReturn(resultsFromHierarchy);
+
         }
 
-        expect(
-                dbConnectionHierarcyMock
-                        .executeFetchHierarchyTask(fetchHierarchyTaskMock))
-                .andReturn(resultsFromHierarchy);
+        // Second batch.
+        passModels = new ArrayList<XMLDBModel>();
+        patternMatchInitialModels = new ArrayList<XMLDBModel>();
 
-        dbConnectionHierarcyMock.commitConnection();
-        dbConnectionHierarcyMock.closeConnection();
+        for (int i = 5; i < 10; i++) {
+
+            passModels.add(resultsFromXQuery.get(i));
+
+            patternMatchInitialModels.add(new XMLDBModel("model_new" + i));
+
+        }
+
+        expect(DBModelFetcher.load(passModels)).andReturn(
+                patternMatchInitialModels);
+
+        for (int i = 0; i < 5; i++) {
+            CompositeEntity namedObjMock = PowerMock
+                    .createMock(CompositeEntity.class);
+            expect(
+                    parserMock.parse(patternMatchInitialModels.get(i)
+                            .getModel())).andReturn(namedObjMock);
+
+            MatchResultRecorder matchResultRecorderMock = PowerMock
+                    .createMockAndExpectNew(MatchResultRecorder.class);
+
+            graphMatcherMock.setMatchCallback(matchResultRecorderMock);
+
+            expect(graphMatcherMock.match(patternMock, namedObjMock))
+                    .andReturn(true);
+
+            ArrayList<MatchResult> matchResults = new ArrayList<MatchResult>();
+            matchResults.add(new MatchResult());
+
+            expect(matchResultRecorderMock.getResults())
+                    .andReturn(matchResults);
+
+            // Testing in hierarchy fetcher. 
+
+            FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
+                    .createMockAndExpectNew(FetchHierarchyTask.class);
+
+            ArrayList<XMLDBModel> expectedResults = new ArrayList<XMLDBModel>();
+
+            expectedResults.add(patternMatchInitialModels.get(i));
+
+            fetchHierarchyTaskMock.setModelsList(expectedResults);
+
+            for (int j = 15; j < 25; j++) {
+                XMLDBModel xmldbModel = new XMLDBModel("model" + j);
+                resultsFromHierarchy.add(xmldbModel);
+            }
+
+            expect(
+                    dbConnectionXQueryMock
+                            .executeFetchHierarchyTask(fetchHierarchyTaskMock))
+                    .andReturn(resultsFromHierarchy);
+
+        }
+
+        dbConnectionXQueryMock.closeConnection();
 
         // Start testing. 
         PowerMock.replayAll();
@@ -473,8 +611,6 @@ public class TestSearchManager {
                 dbConnectionAttributeMock
                         .executeAttributeSearchTask(attributeSearchTaskMock))
                 .andReturn(resultsFromAttributes);
-
-        dbConnectionAttributeMock.commitConnection();
 
         dbConnectionAttributeMock.closeConnection();
 
@@ -543,17 +679,7 @@ public class TestSearchManager {
                         .executeAttributeSearchTask(attributeSearchTaskMock))
                 .andReturn(resultsFromAttributes);
 
-        dbConnectionAttributeMock.commitConnection();
-
-        dbConnectionAttributeMock.closeConnection();
-
         // Testing in hierarchy fetcher.
-        DBConnection dbConnectionHierarcyMock = PowerMock
-                .createMock(DBConnection.class);
-
-        expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
-                dbConnectionHierarcyMock);
-
         FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                 .createMockAndExpectNew(FetchHierarchyTask.class);
 
@@ -567,12 +693,11 @@ public class TestSearchManager {
         }
 
         expect(
-                dbConnectionHierarcyMock
+                dbConnectionAttributeMock
                         .executeFetchHierarchyTask(fetchHierarchyTaskMock))
                 .andReturn(resultsFromHierarchy);
 
-        dbConnectionHierarcyMock.commitConnection();
-        dbConnectionHierarcyMock.closeConnection();
+        dbConnectionAttributeMock.closeConnection();
 
         // Start testing. 
         PowerMock.replayAll();
@@ -589,8 +714,8 @@ public class TestSearchManager {
      * Test the search() method in the case there is no result found in 
      * the XQuery graph searcher.
      *
-     * @exception Exception Thrown by PowerMock during the execution of test
-     *  cases.
+     * @exception Exception Thrown by PowerMock if error occurs during the 
+     *  execution of test cases.
      */
     @Test
     public void testSearchNoXQueryGraphResult() throws Exception {
@@ -644,16 +769,7 @@ public class TestSearchManager {
                         .executeAttributeSearchTask(attributeSearchTaskMock))
                 .andReturn(resultsFromAttributes);
 
-        dbConnectionAttributeMock.commitConnection();
-
-        dbConnectionAttributeMock.closeConnection();
-
         // Testing in XQuery searcher.
-        DBConnection dbConnectionXQueryMock = PowerMock
-                .createMock(DBConnection.class);
-
-        expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
-                dbConnectionXQueryMock);
 
         GraphSearchTask graphSearchTaskMock = PowerMock
                 .createMockAndExpectNew(GraphSearchTask.class);
@@ -664,13 +780,11 @@ public class TestSearchManager {
         ArrayList<XMLDBModel> resultsFromXQuery = new ArrayList<XMLDBModel>();
 
         expect(
-                dbConnectionXQueryMock
+                dbConnectionAttributeMock
                         .executeGraphSearchTask(graphSearchTaskMock))
                 .andReturn(resultsFromXQuery);
 
-        dbConnectionXQueryMock.commitConnection();
-
-        dbConnectionXQueryMock.closeConnection();
+        dbConnectionAttributeMock.closeConnection();
 
         // Testing in hierarchy fetcher, found no match returned. 
 

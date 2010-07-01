@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.kernel.database.DBConnection;
 
 ///////////////////////////////////////////////////////////////////
 //// ResultHandler
@@ -50,9 +51,21 @@ public interface ResultHandler {
      */
     public boolean isSearchCancelled();
 
+    
+    /**
+     * Set the DB connection for this result handler.  
+     * 
+     * @param connection The DBConnection instance to be set in this result 
+     *  handler. 
+     */
+    public void setConnection(DBConnection connection);
+    
+    
     /**
      * Notify the search result buffer that the searching is done.
+     * @exception DBConnectionException Thrown if the DB connection cannot be
+     * obtained. 
      */
-    public void wholeSearchDone();
+    public void wholeSearchDone() throws DBConnectionException;
 
 }

@@ -5,8 +5,11 @@ package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.DBConnectionException;
+import ptdb.kernel.database.DBConnection;
 
 ///////////////////////////////////////////////////////////////////
 //// SearchResultBuffer
@@ -14,11 +17,12 @@ import ptdb.common.dto.XMLDBModel;
 /**
  * The buffer for caching the search results from the previous searchers.
  *
- * <p>This class extends class Observable, to implement the Observer pattern.</p>
+ * <p>This class extends class Observable, to implement the Observer pattern.
+ * </p>
  *
  * <p>It requires the SearchResultListener from the GUI layer to implement the
- * Observer interface, and register in this class to get notified when there are
- * results being added into the buffer.</p>
+ * Observer interface, and register in this class to get notified when there 
+ * are results being added into the buffer.</p>
  *
  * @author Alek Wang
  * @version $Id$
@@ -26,7 +30,8 @@ import ptdb.common.dto.XMLDBModel;
  * @Pt.ProposedRating red (wenjiaow)
  * @Pt.AcceptedRating red (wenjiaow)
  */
-public class SearchResultBuffer extends Observable implements ResultHandler {
+public class SearchResultBuffer extends Observable implements ResultHandler,
+        Observer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -63,7 +68,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
 
         // only write and notify when the passed results contain results
         if (modelResults != null && modelResults.size() > 0) {
-            // The results are added to the arraylist
+            // The results are added to the arraylist.
 
             if (_storedResults == null) {
 
@@ -101,11 +106,42 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
         return _isSearchDone;
     }
 
+    
+    /**
+     * Set the DB connection for this result handler.  
+     * 
+     * @param connection The DBConnection instance to be set in this result 
+     *  handler. 
+     */
+    @Override
+    public void setConnection(DBConnection connection) {
+        _dbConnection = connection;
+
+    }
+    
+    /**
+     * Implement the update method from the Observer interface. 
+     * 
+     * @param o The object that this SearchResultBuffer is observing. 
+     * @param arg The argument passed to this SearcResultBuffer. 
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        _isSearchCancelled = true;
+    }
+
     /**
      * Notify the search result buffer that the searching is done.
+     * @exception DBConnectionException Thrown if the DB connection cannot be
+     * obtained. 
      */
-    public void wholeSearchDone() {
+    public void wholeSearchDone() throws DBConnectionException {
 
+        // close the connection
+        if (_dbConnection != null) {
+            _dbConnection.closeConnection();
+        }
+        
         _isSearchDone = true;
 
         setChanged();
@@ -117,6 +153,8 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private DBConnection _dbConnection;
+    
     private boolean _isSearchCancelled = false;
 
     private boolean _isSearchDone = false;
@@ -125,4 +163,5 @@ public class SearchResultBuffer extends Observable implements ResultHandler {
      * The field that stores the buffered results.
      */
     private ArrayList<XMLDBModel> _storedResults;
+
 }

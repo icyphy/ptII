@@ -33,7 +33,7 @@ public class CommandSearcher extends AbstractSearcher implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////        protected methods                                       /////
+    ////        protected methods                                  ////
 
     @Override
     protected boolean _isSearchCriteriaSet() {
@@ -47,12 +47,10 @@ public class CommandSearcher extends AbstractSearcher implements
     protected void _search() {
         // to be implemented in the next requirement
 
-        // set the search done
-        _setSearchDone();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////       private variables                                        /////
+    ////       private variables                                   ////
 
     /**
      * Stores the XQuery command string input by the user.

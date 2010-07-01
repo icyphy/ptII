@@ -39,14 +39,23 @@ public abstract class GraphSearcher extends AbstractSearcher {
     public static ArrayList<GraphSearcher> getGraphSearcher(
             SearchCriteria searchCriteria) {
 
+        // For now, construct two graph searchers, which are the 
+        // XQueryGraphSearcher and PatternMatchGraphSearcher, and return both
+        // of them in a list. 
+        // The first searcher in the list will be the instance of the 
+        // XQueryGraphSearcher, and the second will be 
+        // PatternMatchGraphSearcher. 
+
         ArrayList<GraphSearcher> graphSearchers = new ArrayList<GraphSearcher>();
 
-        // this method will be implemented to add more logic in the
-        // later release
         XQueryGraphSearcher xQueryGraphSearcher = new XQueryGraphSearcher(
                 searchCriteria.getDBGraphSearchCriteria());
 
         graphSearchers.add(xQueryGraphSearcher);
+
+        PatternMatchGraphSearcher patternMatchGraphSearcher = new PatternMatchGraphSearcher(
+                searchCriteria.getDBGraphSearchCriteria());
+        graphSearchers.add(patternMatchGraphSearcher);
 
         return graphSearchers;
     }
