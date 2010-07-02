@@ -1,7 +1,6 @@
 package ptdb.kernel.database;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -133,7 +132,7 @@ public class CacheManager {
 
             if (dbConnection == null) {
                 throw new DBConnectionException(
-                        "Unable to get synchronous connection to the cache.");
+                        "Unable to get asynchronous connection to the cache.");
             }
         
             GetModelTask getModelTask = new GetModelTask(modelName);
@@ -172,13 +171,12 @@ public class CacheManager {
             if (assemblies == null) {
                 throw new IllegalArgumentException(
                         "Failed to remove models from the cache."
-                                + " The array of XMLDBModel objects was null.");
+                                + " The expected HashMap was null.");
             }
 
             dbConnection = DBConnectorFactory.getCacheConnection(true);
 
-            Collection collection = assemblies.values();
-            Iterator iterator = collection.iterator();
+            Iterator iterator = assemblies.keySet().iterator();
          
             while(iterator.hasNext()){
             
