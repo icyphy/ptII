@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ptolemy.actor.lib.Discard;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
@@ -60,7 +61,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -509,10 +509,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
         // Undid this change temporarily since the move of createReceivers breaks HDF
         /*
-        for (Object actor : deepEntityList()) {
-            ((Actor) actor).createReceivers();
-        }
-        */
+         for (Object actor : deepEntityList()) {
+         ((Actor) actor).createReceivers();
+         }
+         */
     }
 
     /** Create the schedule for this model, if necessary.
@@ -711,8 +711,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
     }
 
     /** Determine whether widths are currently being inferred or not.
-    *  @return True When widths are currently being inferred.
-    */
+     *  @return True When widths are currently being inferred.
+     */
     public boolean inferringWidths() {
         RelationWidthInference widthInferenceAlgorithm = _getWidthInferenceAlgorithm();
         if (widthInferenceAlgorithm != null) {
@@ -1087,6 +1087,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
             if (!subscriberPort.isLinked(relation)) {
                 subscriberPort.liberalLink(relation);
+                notifyConnectivityChange();
 
                 Director director = getDirector();
                 if (director != null) {
@@ -1149,7 +1150,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     //connect the newly created port to the subscriber port
                     try {
                         // CompositeActor always creates an IORelation.
-                        relation = (IORelation) newRelation(uniqueName(subscriberPort.getContainer().getName()+ "subscriberExternalRelationB"));
+                        relation = (IORelation) newRelation(uniqueName(subscriberPort
+                                .getContainer().getName()
+                                + "subscriberExternalRelationB"));
                     } catch (NameDuplicationException e) {
                         // Shouldn't happen.
                         throw new IllegalStateException(e);
@@ -1162,6 +1165,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
                     if (!subscriberPort.isLinked(relation)) {
                         subscriberPort.liberalLink(relation);
+                        notifyConnectivityChange();
                     }
                 }
 
@@ -1255,7 +1259,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         linkToPublishedPort(name, subscriberPort);
                     }
                 }
-                
+
                 if (global && this != toplevel()) {
                     String portName = "_subscriber_"
                             + StringUtilities.sanitizeName(pattern.toString());
@@ -1272,7 +1276,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         //connect the newly created port to the subscriber port
                         try {
                             // CompositeActor always creates an IORelation.
-                            relation = (IORelation) newRelation(uniqueName(subscriberPort.getContainer().getName()+ "subscriberExternalRelationA"));
+                            relation = (IORelation) newRelation(uniqueName(subscriberPort
+                                    .getContainer().getName()
+                                    + "subscriberExternalRelationA"));
                         } catch (NameDuplicationException e) {
                             // Shouldn't happen.
                             throw new IllegalStateException(e);
@@ -1285,12 +1291,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
                         if (!subscriberPort.isLinked(relation)) {
                             subscriberPort.liberalLink(relation);
+                            notifyConnectivityChange();
                         }
                     }
 
                     if (container instanceof CompositeActor) {
-                        ((CompositeActor) container).linkToPublishedPort(pattern,
-                                (TypedIOPort)port, global);
+                        ((CompositeActor) container).linkToPublishedPort(
+                                pattern, (TypedIOPort) port, global);
                     }
                 }
             } else {
@@ -1750,6 +1757,63 @@ public class CompositeActor extends CompositeEntity implements Actor,
                             publisherPort, global);
                 }
             }
+
+            if (global && this == toplevel()) {
+                //ground the exported publisher port to a discard at toplevel
+
+                TypedIOPort discardPort = null;
+//                //find a discard actor if existed
+//                for (Object actor : entityList()) {
+//                    if (actor instanceof Discard) {
+//                        Discard discard = (Discard) actor;
+//                        discardPort = discard.input;
+//                        break;
+//                    }
+//                }
+
+                if (discardPort == null) {
+                    Discard discard = new Discard(this, uniqueName("_discard"));
+                    discard.setPersistent(false);
+                    new Parameter(discard, "_hide", BooleanToken.TRUE);
+                    discardPort = discard.input;
+                }
+
+                IORelation relation = _publisherRelations != null ? _publisherRelations
+                        .get(name)
+                        : null;
+
+                if (relation == null) {
+                    IOPort publishedPort = getPublishedPort(name);
+                    try {
+                        // CompositeActor always creates an IORelation.
+                        relation = (IORelation) newRelation(uniqueName("publisherRelation"));
+                    } catch (NameDuplicationException e) {
+                        // Shouldn't happen.
+                        throw new IllegalStateException(e);
+                    }
+
+                    // Prevent the relation and its links from being exported.
+                    relation.setPersistent(false);
+                    // Prevent the relation from showing up in vergil.
+                    new Parameter(relation, "_hide", BooleanToken.TRUE);
+                    publishedPort.liberalLink(relation);
+                    if (_publisherRelations == null) {
+                        _publisherRelations = new HashMap<String, IORelation>();
+                    }
+                    _publisherRelations.put(name, relation);
+
+                }
+                if (!discardPort.isLinked(relation)) {
+                    discardPort.liberalLink(relation);
+                    notifyConnectivityChange();
+
+                    Director director = getDirector();
+                    if (director != null) {
+                        director.invalidateSchedule();
+                        director.invalidateResolvedTypes();
+                    }
+                }
+            }
         }
     }
 
@@ -2104,6 +2168,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
             if (relation != null) {
                 subscriberPort.unlink(relation);
+                notifyConnectivityChange();
             }
 
             Director director = getDirector();
@@ -2203,6 +2268,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 if (relation != null) {
                     try {
                         relation.setContainer(null);
+                        notifyConnectivityChange();
                     } catch (IllegalActionException e) {
                         // Should not happen.
                         throw new IllegalStateException(e);
@@ -2479,7 +2545,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables               ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
