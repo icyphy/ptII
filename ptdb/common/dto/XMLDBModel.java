@@ -84,6 +84,16 @@ public class XMLDBModel {
     }
 
     /**
+     * Return the model id.
+     * @return The model id.
+     * 
+     * @see #setModelId
+     */
+    public String getModelId() {
+        return _modelId;
+    }
+    
+    /**
      * Return the model name.
      * @return The model name.
      * 
@@ -128,16 +138,6 @@ public class XMLDBModel {
     }
 
     /**
-     * Set the model name.
-     * @param modelName The model name.
-     * 
-     * @see #getModelName
-     */
-    public void setModelName(String modelName) {
-        _modelName = modelName;
-    }
-
-    /**
      * Set the model content.
      * @param modelContent The model content in xml format.
      * 
@@ -147,6 +147,28 @@ public class XMLDBModel {
         _modelContent = modelContent;
     }
 
+    /**
+     * Set the model content.
+     * @param modelContent The model content in xml format.
+     * 
+     * @see #getModelId
+     */
+    public void setModelId(String modelId) {
+        _modelId = modelId;
+    }
+    
+    
+    /**
+     * Set the model name.
+     * @param modelName The model name.
+     * 
+     * @see #getModelName
+     */
+    public void setModelName(String modelName) {
+        _modelName = modelName;
+    }
+
+   
     /**
      * Set the parents for the current model.
      * @param listParents List of parents for this model.
@@ -191,5 +213,8 @@ public class XMLDBModel {
 
     /** Model name. */
     private String _modelName;
+    
+    /** Model id. */
+    private String _modelId;
 
 }
