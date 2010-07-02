@@ -3,6 +3,7 @@ package ptdb.common.util;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Properties;
 
@@ -53,8 +54,7 @@ public class DBConnectorFactory {
      * name in the config/ptdb-properties file.
      */
     public final static String _CACHE_CONTAINER_NAME = "Cache_Container_Name";
-    
-    
+
     /**
      * Path to the configuration file.
      */
@@ -62,7 +62,7 @@ public class DBConnectorFactory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * create a setup parameter object that contains the database setup parameters
      * and return that setup parameter object to the caller.
@@ -70,19 +70,19 @@ public class DBConnectorFactory {
      * @return The setup parameter object.
      */
     public static SetupParameters getSetupParameters() {
-        
-        if(_isDBSetupDone == true) {
-            
-            SetupParameters setupParameters = new SetupParameters(_dbUrl, 
+
+        if (_isDBSetupDone == true) {
+
+            SetupParameters setupParameters = new SetupParameters(_dbUrl,
                     _dbContainerName, _cacheContainerName);
-            
+
             return setupParameters;
-            
+
         } else {
             return null;
         }
     }
-    
+
     /**
      * This API is used to get a synchronous connection to the database.
      * A synchronous connection is a connection that
@@ -219,7 +219,8 @@ public class DBConnectorFactory {
      * to the database.
      */
     private static DBConnection _createConnection(
-            DBConnectionParameters dbConnectionParameters) throws DBConnectionException {
+            DBConnectionParameters dbConnectionParameters)
+            throws DBConnectionException {
 
         if (_dbClassName == null)
             throw new DBConnectionException(
@@ -235,7 +236,8 @@ public class DBConnectorFactory {
             Constructor<DBConnection> xmlDBConstructor = xmlDBClass
                     .getConstructor(parameterTypes);
 
-            xmlDBConnection = xmlDBConstructor.newInstance(dbConnectionParameters);
+            xmlDBConnection = xmlDBConstructor
+                    .newInstance(dbConnectionParameters);
 
         } catch (ClassNotFoundException e) {
 
@@ -313,8 +315,8 @@ public class DBConnectorFactory {
             // Use FileUtilities.nameToURL() because it handles jar urls from Web Start.
             URL url = FileUtilities.nameToURL(ptdbParams, null, null);
             if (url == null) {
-                throw new ExceptionInInitializerError(
-                    "Did not find the " + ptdbParams + " file.");
+                throw new ExceptionInInitializerError("Did not find the "
+                        + ptdbParams + " file.");
             }
 
             props.load(url.openStream());
@@ -328,13 +330,18 @@ public class DBConnectorFactory {
                 _cacheContainerName = props.getProperty(_CACHE_CONTAINER_NAME);
                 _isDBSetupDone = true;
 
+                Class dbConnectionClass = Class.forName(_dbClassName);
+                Method initializeDatabaseMethod = dbConnectionClass.getMethod(
+                        "initializeDatabase", String.class);
+                initializeDatabaseMethod.invoke(null, _dbUrl);
             }
         } catch (IOException ex) {
             //ExceptionInInitializerError exception = new ExceptionInInitializerError(
             //        "Did not find " + ptdbParams + " file.");
             throw new ExceptionInInitializerError(ex);
-            //exception.initCause(ex);
-            //throw exception;
+
+        } catch (Exception e) {
+            throw new ExceptionInInitializerError(e);
         }
     }
 

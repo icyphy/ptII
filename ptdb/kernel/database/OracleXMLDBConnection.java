@@ -86,27 +86,11 @@ public class OracleXMLDBConnection implements DBConnection {
             throws DBConnectionException {
 
         try {
-
             _params = dbConnParams;
-
-            EnvironmentConfig config = new EnvironmentConfig();
-            config.setRunRecovery(true);
-            config.setCacheSize(5 * 1024 * 1024); // 50MB
-            config.setAllowCreate(true);
-            config.setInitializeCache(true);
-            config.setTransactional(true);
-            config.setInitializeLocking(true);
-            config.setInitializeLogging(true);
-            config.setErrorStream(System.err);
-            config.setMaxLockers(1000);
-            config.setMaxLocks(1000);
-            config.setMaxLockObjects(1000);
-            config.setLockDetectMode(LockDetectMode.DEFAULT);
-
-            File dbFile = new File(_params.getUrl());
-
-            _environment = new Environment(dbFile, config);
-
+            
+            if(_environment == null) {
+                initializeDatabase(_params.getUrl());
+            }
             _xmlManager = new XmlManager(_environment, null);
 
             _xmlContainer = _xmlManager.openContainer(_params
@@ -120,15 +104,8 @@ public class OracleXMLDBConnection implements DBConnection {
             }
 
             _isConnectionAlive = true;
-
-        } catch (FileNotFoundException e) {
-
-            throw new DBConnectionException(
-                    "Exception while connecting to the database : "
-                            + "Database not found at the given location : "
-                            + _params.getUrl(), e);
-
-        } catch (DatabaseException e) {
+        }
+       catch (DatabaseException e) {
 
             System.out.println("Exception while connecting to the database : "
                     + e.getMessage());
@@ -166,6 +143,42 @@ public class OracleXMLDBConnection implements DBConnection {
                             + e.getMessage(), e);
 
         }
+    }
+    
+    /** Create a database environment with the given configuration.
+     * @param url Database URL
+     * @throws DBConnectionException If thrown while creating the environment.
+     */
+    public static void initializeDatabase(String url) throws DBConnectionException{
+        EnvironmentConfig config = new EnvironmentConfig();
+        config.setRunRecovery(true);
+        config.setCacheSize(5 * 1024 * 1024); // 50MB
+        config.setAllowCreate(true);
+        config.setInitializeCache(true);
+        config.setTransactional(true);
+        config.setInitializeLocking(true);
+        config.setInitializeLogging(true);
+        config.setErrorStream(System.err);
+        config.setMaxLockers(1000);
+        config.setMaxLocks(1000);
+        config.setMaxLockObjects(1000);
+        config.setLockDetectMode(LockDetectMode.DEFAULT);
+
+        File dbFile = new File(url);
+
+        try {
+            
+            if(_environment != null)
+                _environment.close();
+            
+            _environment = new Environment(dbFile, config);
+            
+        } catch (FileNotFoundException e) {
+            throw new DBConnectionException("Error while creating the database environment - " + e.getMessage());
+        } catch (DatabaseException e) {
+            throw new DBConnectionException("Error while creating the database environment - " + e.getMessage());
+        }
+
     }
 
     /**
@@ -1974,7 +1987,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * parameters like cache size, locking mechanism, storing mechanism etc.
      * required for creating a database connection.
      */
-    private Environment _environment;
+    private static Environment _environment;
     /**
      * Denote whether the database connection is active or not
      */
