@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 815, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 815, 507}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -59,7 +59,7 @@
         </property>
     </property>
     <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
-        <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Default inferred width to 1"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 70.0]">
@@ -69,16 +69,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="LazyCompositeActor2 contains a Ramp connected to a Publisher.&#10;&#10;LazyCompositeActor contains a ModularCodeGenTypedComposite that has&#10;a Subscriber.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 215.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: we should not need to default the inferred width to 1.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 85.0]">
         </property>
     </property>
     <entity name="LazyCompositeActor" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
@@ -98,25 +88,15 @@
         <configure>
             <group>
                 <entity name="ModularCodeGenTypedCompositeActor" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 200.0]">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 200.0}">
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 815, 517}, maximized=false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 815, 507}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
                     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{16.7272727272727, 158.0059974747475}">
-                    </property>
-                    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-                        </property>
-                        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-                        </property>
-                        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: we should not need a Publisher here, but&#10;if it is not here, then we get an exception.">
-                        </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="{0, 10}">
-                        </property>
                     </property>
                     <port name="port" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -152,23 +132,6 @@
                                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 140.0]">
                                 </property>
                             </entity>
-                            <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
-                                <property name="channel" class="ptolemy.data.expr.StringParameter" value="MyPort">
-                                </property>
-                                <property name="global" class="ptolemy.data.expr.Parameter" value="false">
-                                </property>
-                                <doc>Publish the input values to all matching Subscribers.</doc>
-                                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="channel">
-                                    </property>
-                                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                                    </property>
-                                    <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.85, 0.6, 0.58, 1.0}">
-                                    </property>
-                                </property>
-                                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 75.0]">
-                                </property>
-                            </entity>
                             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                             </relation>
                             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -181,7 +144,6 @@
                             <link port="Scale.input" relation="relation2"/>
                             <link port="Scale.output" relation="relation3"/>
                             <link port="SubscriptionAggregator.output" relation="relation2"/>
-                            <link port="Publisher.input" relation="relation3"/>
                         </group>
                     </configure>
                 </entity>
