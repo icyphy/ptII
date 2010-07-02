@@ -877,29 +877,32 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     public void executeRemoveModelsTask (RemoveModelsTask task) 
             throws DBExecutionException {
+            
+        _checkXMLDBConnectionObjects(true, false, true);
         
-        try {
+        ArrayList<XMLDBModel> modelsList = task.getModelsList();
+        
+        if (modelsList != null && modelsList.size() > 0) {
             
-            _checkXMLDBConnectionObjects(true, false, true);
-            
-            ArrayList<XMLDBModel> modelsList = task.getModelsList();
-            
-            if (modelsList != null && modelsList.size() > 0) {
+            for (XMLDBModel xmlDBModel : modelsList) {
                 
-                for (XMLDBModel xmlDBModel : modelsList) {
-                    
+                try {
                     _xmlContainer.deleteDocument(
                             _xmlTransaction, xmlDBModel.getModelName());
+                } catch (XmlException e) {
+                    
+                    if (e.getErrorCode() == XmlException.DOCUMENT_NOT_FOUND) {
+                        //do nothing
+                    } else {
+                        
+                        throw new DBExecutionException(
+                                "Failed to execute RemoveModelsTask - "
+                                + e.getMessage(), e);
+                        
+                    }
                 }
-                
-            }
-            
-        } catch (XmlException e) {
-            throw new DBExecutionException("Failed to execute RemoveModelsTask - "
-                    + e.getMessage(), e);
+            }   
         }
-        
-        
     }
 
     /**
@@ -1674,6 +1677,59 @@ public class OracleXMLDBConnection implements DBConnection {
             }
         }
         return model;
+    }
+    
+    private String _getModelIdFromModelName(String modelName) 
+            throws DBExecutionException {
+        
+        
+        String modelId = "";
+        
+
+        try {
+            
+            _checkXMLDBConnectionObjects(true, true, false);
+
+            
+            XmlQueryContext xmlContext = _xmlManager.createQueryContext();
+
+            if (xmlContext == null) {
+                throw new DBExecutionException(
+                        "Failed to execute _getModelIdFromModelName"
+                                + " - could not create an xml query context from the xml manager.");
+            }
+
+            String query = "for $x in doc('dbxml:/temp.dbxml/"+ modelName + "')"
+                    + "/entity/property[@DBModelId] return data($x/@DBModelId)";
+
+            XmlQueryExpression queryExpression = _xmlManager.prepare(query,
+                    xmlContext);
+
+            if (queryExpression == null) {
+                throw new DBExecutionException(
+                        "Failed to execute GetModelsTask"
+                                + " - could not create an xml query expression from the xml manager.");
+            }
+
+            XmlResults results = queryExpression.execute(xmlContext);
+
+            if (results != null && results.size() > 0) {
+
+                XmlValue xmlValue = results.next();
+                modelId = xmlValue.asString();
+            }
+
+        } catch (XmlException e) {
+            throw new DBExecutionException(
+                    "Failed to retrieve the references for the given model - "
+                            + e.getMessage(), e);
+        }
+        
+        
+        
+        return modelId;
+        
+        
     }
 
     /**
