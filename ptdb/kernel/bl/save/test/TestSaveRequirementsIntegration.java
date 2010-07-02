@@ -26,7 +26,7 @@ import ptolemy.moml.MoMLParser;
  * 
  * 
  * @author Lyle Holsinger
- * @version $$
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)

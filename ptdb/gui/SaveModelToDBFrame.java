@@ -1,6 +1,5 @@
 package ptdb.gui;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -78,6 +77,7 @@ public class SaveModelToDBFrame extends JFrame {
                 
                 if (((StringParameter) attribute).getName()!="DBReference" && 
                         ((StringParameter) attribute).getName()!="DBModelName" &&
+                        ((StringParameter) attribute).getName()!="DBModelID" &&
                         _attributesListPanel.isDBAttribute(((StringParameter) attribute).getName())){
                     
                     _orignialAttributes.add((StringParameter) attribute);
@@ -134,6 +134,7 @@ public class SaveModelToDBFrame extends JFrame {
             if (stringParameter instanceof StringParameter && 
                 ((StringParameter) stringParameter).getName()!="DBReference" && 
                 ((StringParameter) stringParameter).getName()!="DBModelName" &&
+                ((StringParameter) stringParameter).getName()!="DBModelID" &&
                 _attributesListPanel.isDBAttribute(((StringParameter) 
                       stringParameter).getName())) {
                 
@@ -215,6 +216,9 @@ public class SaveModelToDBFrame extends JFrame {
         xmlModel = new XMLDBModel(_modelToSave.getName());
         xmlModel.setModel(_modelToSave.exportMoML());
         xmlModel.setIsNew(isNew);
+        xmlModel.setModelId(
+                ((StringParameter)_modelToSave.getAttribute("DBModelID"))
+                    .getExpression());
 
         SaveModelManager saveModelManager = new SaveModelManager();
 
@@ -371,6 +375,7 @@ public class SaveModelToDBFrame extends JFrame {
 
                 if (attribute.getName()!="DBReference" && 
                         attribute.getName()!="DBModelName" &&
+                        attribute.getName()!="DBModelID" &&
                         _attributesListPanel.isDBAttribute(attribute.getName())){
                     
                     attribute.setContainer(null);
@@ -419,7 +424,21 @@ public class SaveModelToDBFrame extends JFrame {
 
                         return;
 
+                    } else {
+                        
+                        if (_modelToSave.getAttribute("DBModelID") != null){
+
+                            java.util.Date time = new java.util.Date();
+                            
+                            ((StringParameter)_modelToSave.getAttribute("DBModelID"))
+                                .setExpression(_modelToSave.getName() + 
+                                        "_" + String.valueOf(time.getTime()));
+                        
+                            System.out.println("GOT HERE");
+                        }
+                        
                     }
+                    
                 }
             }
 
@@ -468,6 +487,17 @@ public class SaveModelToDBFrame extends JFrame {
                 
             }
 
+            if (_modelToSave.getAttribute("DBModelID") == null) {
+                java.util.Date time = new java.util.Date();
+                
+                StringParameter dbModelParam = new StringParameter(
+                        _modelToSave, "DBModelID");
+                dbModelParam.setExpression(_modelToSave.getName() + 
+                        "_" + String.valueOf(time.getTime()));
+                dbModelParam.setContainer(_modelToSave);
+                
+            }
+            
             ArrayList<StringParameter> attributesList = new ArrayList();
 
             for (Object a : _modelToSave.attributeList()) {
@@ -486,6 +516,7 @@ public class SaveModelToDBFrame extends JFrame {
 
                 if (attribute.getName()!="DBReference" && 
                         attribute.getName()!="DBModelName" &&
+                        attribute.getName()!="DBModelID" &&
                         _attributesListPanel.isDBAttribute(attribute.getName())){
                     
                     attribute.setContainer(null);
