@@ -1260,50 +1260,47 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                 }
 
-                if (global && this != toplevel()) {
-                    String portName = "_subscriber_"
-                            + StringUtilities.sanitizeName(pattern.toString());
-                    IOPort port = (IOPort) getPort(portName);
-                    if (port == null) {
-                        port = (IOPort) newPort(portName);
-                        new Parameter(port, "_hide", BooleanToken.TRUE);
-                        port.setPersistent(false);
-                        port.setInput(true);
-                        port.setMultiport(true);
-                        port.setDefaultWidth(0);
+            }
 
-                        IORelation relation = null;
-                        //connect the newly created port to the subscriber port
-                        try {
-                            // CompositeActor always creates an IORelation.
-                            relation = (IORelation) newRelation(uniqueName(subscriberPort
-                                    .getContainer().getName()
-                                    + "subscriberExternalRelationA"));
-                        } catch (NameDuplicationException e) {
-                            // Shouldn't happen.
-                            throw new IllegalStateException(e);
-                        }
-                        // Prevent the relation and its links from being exported.
-                        relation.setPersistent(false);
-                        // Prevent the relation from showing up in vergil.
-                        new Parameter(relation, "_hide", BooleanToken.TRUE);
-                        port.liberalLink(relation);
+            if (global && this != toplevel()) {
+                String portName = "_subscriber_"
+                        + StringUtilities.sanitizeName(pattern.toString());
+                IOPort port = (IOPort) getPort(portName);
+                if (port == null) {
+                    port = (IOPort) newPort(portName);
+                    new Parameter(port, "_hide", BooleanToken.TRUE);
+                    port.setPersistent(false);
+                    port.setInput(true);
+                    port.setMultiport(true);
+                    port.setDefaultWidth(0);
 
-                        if (!subscriberPort.isLinked(relation)) {
-                            subscriberPort.liberalLink(relation);
-                            notifyConnectivityChange();
-                        }
+                    IORelation relation = null;
+                    //connect the newly created port to the subscriber port
+                    try {
+                        // CompositeActor always creates an IORelation.
+                        relation = (IORelation) newRelation(uniqueName(subscriberPort
+                                .getContainer().getName()
+                                + "subscriberExternalRelationA"));
+                    } catch (NameDuplicationException e) {
+                        // Shouldn't happen.
+                        throw new IllegalStateException(e);
                     }
+                    // Prevent the relation and its links from being exported.
+                    relation.setPersistent(false);
+                    // Prevent the relation from showing up in vergil.
+                    new Parameter(relation, "_hide", BooleanToken.TRUE);
+                    port.liberalLink(relation);
 
-                    if (container instanceof CompositeActor) {
-                        ((CompositeActor) container).linkToPublishedPort(
-                                pattern, (TypedIOPort) port, global);
+                    if (!subscriberPort.isLinked(relation)) {
+                        subscriberPort.liberalLink(relation);
+                        notifyConnectivityChange();
                     }
                 }
-            } else {
-                throw new IllegalActionException(this,
-                        "No Publishers were found adjacent to or " + "below "
-                                + subscriberPort.getContainer().getFullName());
+
+                if (container instanceof CompositeActor) {
+                    ((CompositeActor) container).linkToPublishedPort(pattern,
+                            (TypedIOPort) port, global);
+                }
             }
         }
     }
@@ -1762,14 +1759,14 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 //ground the exported publisher port to a discard at toplevel
 
                 TypedIOPort discardPort = null;
-//                //find a discard actor if existed
-//                for (Object actor : entityList()) {
-//                    if (actor instanceof Discard) {
-//                        Discard discard = (Discard) actor;
-//                        discardPort = discard.input;
-//                        break;
-//                    }
-//                }
+                //                //find a discard actor if existed
+                //                for (Object actor : entityList()) {
+                //                    if (actor instanceof Discard) {
+                //                        Discard discard = (Discard) actor;
+                //                        discardPort = discard.input;
+                //                        break;
+                //                    }
+                //                }
 
                 if (discardPort == null) {
                     Discard discard = new Discard(this, uniqueName("_discard"));
