@@ -135,7 +135,7 @@ public class SaveModelManager {
             }
         }
 
-        isSuccessful = updateCache(xmlDBModel);
+        isSuccessful = (isSuccessful && updateCache(xmlDBModel));
         
         return isSuccessful;
 
