@@ -916,6 +916,96 @@ public class TestOracleXMLDBConnection {
             }
         }
     }
+    
+    
+    
+    /**
+     * Test the executeGetModelTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The task is null.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteModelTask_NullTask() throws Exception {
+
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(false);
+
+
+
+        GetModelTask task = null;
+
+
+        try {
+
+            XMLDBModel model = oracleXMLDBConnection.executeGetModelTask(task);
+
+            fail("method should throw an exception");
+            
+        } catch (NullPointerException e) {
+
+            assertTrue("", true);
+
+        } catch (DBExecutionException e) {
+
+            fail("Operation threw an exception. " + e.getMessage());
+
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+    }
+    
+    
+    /**
+     * Test the executeGetModelTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The model name is empty</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteModelTask_EmptyModeName() throws Exception {
+
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(false);
+
+
+
+        GetModelTask task = new GetModelTask("");
+
+
+        try {
+
+            XMLDBModel model = oracleXMLDBConnection.executeGetModelTask(task);
+
+            fail("method should throw an exception");
+            
+        } catch (NullPointerException e) {
+
+            assertTrue("", true);
+
+        } catch (DBExecutionException e) {
+
+            if (e.getMessage().contains(
+            "<empty name>")) {
+       
+                assertTrue("model was not loaded because the task was null",
+                true);
+    
+            }
+
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+    }
+    
 
 
     /**
@@ -928,10 +1018,6 @@ public class TestOracleXMLDBConnection {
      */
     @Test
     public void testExecuteGetCompleteModel_ModelWithNoReferences() throws Exception {
-
-        
-
-        
 
         String modelName = "NoReferences";
 
@@ -990,7 +1076,7 @@ public class TestOracleXMLDBConnection {
 
         
 
-        String modelName = "modeltt";
+        String modelName = "modeltt1000";
 
         GetModelTask task = new GetModelTask(modelName);
 
@@ -1090,7 +1176,8 @@ public class TestOracleXMLDBConnection {
         } catch (DBExecutionException e) {
 
             if (e.getMessage().contains(
-                    "Could not find the model in the database")) {
+                    "<empty name>")) {
+                
                 assertTrue("model was not loaded because the task was null",
                         true);
             }
@@ -1131,7 +1218,7 @@ public class TestOracleXMLDBConnection {
         } catch (DBExecutionException e) {
 
             if (e.getMessage().contains(
-                    "Could not find the model in the database")) {
+                    "Could not find the model")) {
                 assertTrue("model was not loaded because the task was null",
                         true);
             }
@@ -1497,7 +1584,7 @@ public class TestOracleXMLDBConnection {
             .getSyncConnection(true);
 
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "author", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, "author_1277686806343");
+                "author", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, "testId");
 
         
         DeleteAttributeTask task = new DeleteAttributeTask(attribute);
@@ -1536,7 +1623,7 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(true);
 
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "countries_1277687205671");
+                "Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "testId");
 
         
         DeleteAttributeTask task = new DeleteAttributeTask(attribute);
@@ -1576,7 +1663,7 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(true);
 
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "countries_1277686491375");
+                "Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "testId");
 
         
         DeleteAttributeTask task = null;
@@ -1665,7 +1752,7 @@ public class TestOracleXMLDBConnection {
         
         
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "UpdatedAuthor", XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN, "author_1277686806343");
+                "UpdatedAuthor", XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN, "testId");
         
         UpdateAttributeTask task = new UpdateAttributeTask(attribute);
 
@@ -1681,7 +1768,7 @@ public class TestOracleXMLDBConnection {
         
         } finally {
             if (oracleXMLDBConnection != null) {
-                oracleXMLDBConnection.closeConnection();
+                oracleXMLDBConnection.abortConnection();
             }
         }
     }
@@ -1721,7 +1808,7 @@ public class TestOracleXMLDBConnection {
         
         } finally {
             if (oracleXMLDBConnection != null) {
-                oracleXMLDBConnection.closeConnection();
+                oracleXMLDBConnection.abortConnection();
             }
         }
     }
