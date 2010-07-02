@@ -293,6 +293,7 @@ public class DbSearchFrame extends TransformationEditor {
 
             dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
             dbGraphSearchCriteria.setCompositeEntities(compositeEntities);
+            dbGraphSearchCriteria.setPattern(pattern);
 
             // set the DBGraph search criteria to the whole search criteria
             searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);

@@ -37,10 +37,10 @@ public class CommandSearcher extends AbstractSearcher implements
 
     @Override
     protected boolean _isSearchCriteriaSet() {
-        if (_commandSearchCriteria != null) {
-            return true;
+        if (_commandSearchCriteria == null || _commandSearchCriteria.equals("")) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override

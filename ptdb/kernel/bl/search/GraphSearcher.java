@@ -66,7 +66,11 @@ public abstract class GraphSearcher extends AbstractSearcher {
     @Override
     protected boolean _isSearchCriteriaSet() {
 
-        if (_dbGraphSearchCriteria != null) {
+        if (_dbGraphSearchCriteria != null
+                && (!_dbGraphSearchCriteria.getPortsList().isEmpty()
+                        || !_dbGraphSearchCriteria.getComponentEntitiesList()
+                                .isEmpty() || !_dbGraphSearchCriteria
+                        .getCompositeEntities().isEmpty())) {
             return true;
         }
 
