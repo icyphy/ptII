@@ -465,10 +465,12 @@ public class OracleXMLDBConnection implements DBConnection {
             if (dbModel != null) {
 
                 completeXMLDBModel = new XMLDBModel(dbModel.getName());
+                
+                String modelId = _getModelIdFromModelName(dbModel.getName());
 
                 String completeModelBody = "";
 
-                String references = _getModelReferences(dbModel.getName());
+                String references = _getModelReferences(modelId);
 
                 if (references != null && references.length() > 0) {
 
@@ -1024,15 +1026,16 @@ public class OracleXMLDBConnection implements DBConnection {
         NamedNodeMap attributes = currentNode.getAttributes();
 
         String currentModelName = "";
+        String currentModelId = "";
 
         if (attributes != null) {
             for (int i = 0; i < attributes.getLength(); i++) {
 
                 Node node = attributes.item(i);
 
-                if (node.getNodeName().equalsIgnoreCase("name")) {
+                if (node.getNodeName().equalsIgnoreCase("DBModelId")) {
 
-                    currentModelName = node.getNodeValue();
+                    currentModelId = node.getNodeValue();
 
                     break;
 
@@ -1040,7 +1043,9 @@ public class OracleXMLDBConnection implements DBConnection {
             }
         }
 
-        if (currentModelName != null && currentModelName.length() > 0) {
+        if (currentModelId != null && currentModelId.length() > 0) {
+            
+            currentModelName = _getModelNameFromModelId(currentModelId);
 
             if (_xmlModelHerarichyMap.containsKey(currentModelName)) {
 
@@ -1124,6 +1129,8 @@ public class OracleXMLDBConnection implements DBConnection {
                         
                         childName = childName.substring(0, childName
                                 .indexOf("\""));
+                        
+                        String childId = _getModelIdFromModelName(childName);
 
                         String childBodyContent = childContent.substring(childContent
                                 .indexOf(">") + 1);
@@ -1133,7 +1140,7 @@ public class OracleXMLDBConnection implements DBConnection {
                         
                         
                         currentModelContent = _replaceReferenceWithContent(
-                                currentModelContent, childBodyContent, childName);
+                                currentModelContent, childBodyContent, childId);
                         
 
                         currentModelContent = currentModelContent.replaceAll(
@@ -1679,6 +1686,12 @@ public class OracleXMLDBConnection implements DBConnection {
         return model;
     }
     
+    /**
+     * Return the name model id provided the model name.
+     * @param modelName The model name that needs the Id.
+     * @return The model Id.
+     * @exception DBExecutionException Thrown if the operation fails.
+     */
     private String _getModelIdFromModelName(String modelName) 
             throws DBExecutionException {
         
@@ -1696,7 +1709,8 @@ public class OracleXMLDBConnection implements DBConnection {
             if (xmlContext == null) {
                 throw new DBExecutionException(
                         "Failed to execute _getModelIdFromModelName"
-                                + " - could not create an xml query context from the xml manager.");
+                                + " - could not create an xml query context"
+                                + " from the xml manager.");
             }
 
             String query = "for $x in doc('dbxml:/temp.dbxml/"+ modelName + "')"
@@ -1708,7 +1722,8 @@ public class OracleXMLDBConnection implements DBConnection {
             if (queryExpression == null) {
                 throw new DBExecutionException(
                         "Failed to execute GetModelsTask"
-                                + " - could not create an xml query expression from the xml manager.");
+                                + " - could not create an xml query expression"
+                                + " from the xml manager.");
             }
 
             XmlResults results = queryExpression.execute(xmlContext);
@@ -1724,12 +1739,42 @@ public class OracleXMLDBConnection implements DBConnection {
                     "Failed to retrieve the references for the given model - "
                             + e.getMessage(), e);
         }
+        return modelId; 
+    }
+    
+    
+    /**
+     * Return the model name provided a model Id.
+     * @param dbModelId The model Id for which the name is needed.
+     * @return The model name.
+     * @exception DBExecutionException Thrown if the operation fails.
+     */
+    private String _getModelNameFromModelId(String dbModelId) 
+            throws DBExecutionException {
         
         
+        String modelName = "";
         
-        return modelId;
-        
-        
+
+        try {
+            
+            String searchClause = "$const/@name='DBModelId' and "
+                + "$const/@value='"+ dbModelId+"'";
+            
+            ArrayList<String> result = _executeSingleAttributeMatch(searchClause);
+            
+            if (result != null && result.size() > 0) {
+                
+                modelName = (String) result.get(0);
+            }
+            
+
+        } catch (XmlException e) {
+            throw new DBExecutionException(
+                    "Failed to retrieve the references for the given model - "
+                            + e.getMessage(), e);
+        }
+        return modelName; 
     }
 
     /**
@@ -1841,13 +1886,13 @@ public class OracleXMLDBConnection implements DBConnection {
      * Retrieve the references inside a model from the reference file in the
      * database.
      * 
-     * @param modelName The model name for which the references are required.
+     * @param modelId The model Id for which the references are required.
      * @return A string representation of all the references in the given model
      * in xml format.
      * @exception DBExecutionException Thrown if there is an execution
      * exception.
      */
-    private String _getModelReferences(String modelName)
+    private String _getModelReferences(String modelId)
             throws DBExecutionException {
         String reference = "";
 
@@ -1865,8 +1910,8 @@ public class OracleXMLDBConnection implements DBConnection {
             }
 
             String query = "doc('dbxml:/" + _xmlContainer.getName()
-                    + "/ReferenceFile.ptdbxml')" + "/reference/entity[@name='"
-                    + modelName + "']";
+                    + "/ReferenceFile.ptdbxml')" + "/reference/entity[@DBModelId='"
+                    + modelId + "']";
 
             XmlQueryExpression queryExpression = _xmlManager.prepare(query,
                     xmlContext);
@@ -1993,15 +2038,15 @@ public class OracleXMLDBConnection implements DBConnection {
      * Replace the reference tags in a given model with the reference content.
      * @param modelContent The model content.
      * @param referenceModelContent The content that needs to be inserted in the parent model.
-     * @param referenceModelName The name of the model being referenced.
+     * @param referenceModelId The Id of the model being referenced.
      * @return A string representation of the parent model with the reference replaced.
      */
     private String _replaceReferenceWithContent(
             String modelContent, String referenceModelContent, 
-            String referenceModelName) {
+            String referenceModelId) {
         
         StringBuffer parentModelContentBuffer = new StringBuffer(modelContent);
-        String referenceString = "<entity dbmodelname=\"" + referenceModelName + "\"";
+        String referenceString = "<entity DBModelId=\"" + referenceModelId + "\"";
         
         int startPosition = 0;
         boolean isDone = false;
