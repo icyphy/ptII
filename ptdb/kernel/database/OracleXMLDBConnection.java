@@ -664,7 +664,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 + _xmlContainer.getName() + "/Attributes.ptdbxml')/attributes";
             
             
-            _xmlManager.query(insertQuery, xmlQueryContext, null);
+            _xmlManager.query(_xmlTransaction, insertQuery, xmlQueryContext, null);
             
             return xmlDBAttribute;
              
