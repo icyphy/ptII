@@ -76,7 +76,6 @@ public class SaveModelToDBFrame extends JFrame {
             if(attribute instanceof StringParameter){
                 
                 if (((StringParameter) attribute).getName()!="DBReference" && 
-                        ((StringParameter) attribute).getName()!="DBModelName" &&
                         ((StringParameter) attribute).getName()!="DBModelID" &&
                         _attributesListPanel.isDBAttribute(((StringParameter) attribute).getName())){
                     
@@ -133,7 +132,6 @@ public class SaveModelToDBFrame extends JFrame {
             // attributes configured in the DB, show it in the panel.
             if (stringParameter instanceof StringParameter && 
                 ((StringParameter) stringParameter).getName()!="DBReference" && 
-                ((StringParameter) stringParameter).getName()!="DBModelName" &&
                 ((StringParameter) stringParameter).getName()!="DBModelID" &&
                 _attributesListPanel.isDBAttribute(((StringParameter) 
                       stringParameter).getName())) {
@@ -209,27 +207,55 @@ public class SaveModelToDBFrame extends JFrame {
     ///////////////////////////////////////////////////////////////////
     //                    private methods                          ////
 
-    private void _commitSave(boolean isNew) throws Exception {
+    private void _commitSave(boolean isNew, String id) throws Exception {
 
         _updateDisplayedModel();
 
         xmlModel = new XMLDBModel(_modelToSave.getName());
         xmlModel.setModel(_modelToSave.exportMoML());
         xmlModel.setIsNew(isNew);
-        xmlModel.setModelId(
-                ((StringParameter)_modelToSave.getAttribute("DBModelID"))
-                    .getExpression());
-
+        xmlModel.setModelId(id);
+        
         SaveModelManager saveModelManager = new SaveModelManager();
 
         try {
 
-            if (saveModelManager.save(xmlModel)) {
+            String modelId = saveModelManager.save(xmlModel);
+            if (modelId != null) {
 
                 JOptionPane.showMessageDialog(this,
                         "The model was successfully saved.", "Success",
                         JOptionPane.INFORMATION_MESSAGE, null);
 
+                if (_modelToSave.getAttribute("DBModelID") == null) {
+                    
+                    StringParameter dbModelParam = new StringParameter(
+                            _modelToSave, "DBModelID");
+                    dbModelParam.setExpression(modelId);
+                    dbModelParam.setContainer(_modelToSave);
+                    
+                } else if(!((StringParameter)
+                        _modelToSave.getAttribute("DBModelID")).getExpression()
+                        .equals(modelId)){
+                    
+                    ((StringParameter)
+                            _modelToSave.getAttribute("DBModelID"))
+                            .setExpression(modelId);
+                    
+                }
+                
+                try {
+
+                    MoMLChangeRequest change = new MoMLChangeRequest(
+                            this, null, _modelToSave.exportMoML());
+                    change.setUndoable(true);
+                                    
+                    _modelToSave.requestChange(change);
+                    
+                } catch (Exception e) {
+                    throw e;
+                }
+                
                 setVisible(false);
 
             } else {
@@ -265,7 +291,7 @@ public class SaveModelToDBFrame extends JFrame {
             if (n == JOptionPane.YES_OPTION) {
 
                 saveModelManager = null;
-                _commitSave(false);
+                _commitSave(false, null);
 
             } else {
 
@@ -374,7 +400,6 @@ public class SaveModelToDBFrame extends JFrame {
             for (StringParameter attribute : attributesList) {
 
                 if (attribute.getName()!="DBReference" && 
-                        attribute.getName()!="DBModelName" &&
                         attribute.getName()!="DBModelID" &&
                         _attributesListPanel.isDBAttribute(attribute.getName())){
                     
@@ -423,26 +448,22 @@ public class SaveModelToDBFrame extends JFrame {
                     if (n != JOptionPane.YES_OPTION) {
 
                         return;
-
-                    } else {
-                        
-                        if (_modelToSave.getAttribute("DBModelID") != null){
-
-                            java.util.Date time = new java.util.Date();
-                            
-                            ((StringParameter)_modelToSave.getAttribute("DBModelID"))
-                                .setExpression(_modelToSave.getName() + 
-                                        "_" + String.valueOf(time.getTime()));
-                        
-                            System.out.println("GOT HERE");
-                        }
                         
                     }
                     
                 }
             }
+            
+            String id = null;
+            
+            if (_modelToSave.getAttribute("DBModelID") != null){
 
-            _commitSave(_isNew());
+                id = ((StringParameter)_modelToSave.getAttribute("DBModelID"))
+                    .getExpression();
+            
+            }
+
+            _commitSave(_isNew(), id);
 
         } catch (DBConnectionException exception) {
 
@@ -473,31 +494,6 @@ public class SaveModelToDBFrame extends JFrame {
                 
             }
             
-            if (_modelToSave.getAttribute("DBModelName") == null) {
-
-                StringParameter dbModelParam = new StringParameter(
-                        _modelToSave, "DBModelName");
-                dbModelParam.setExpression(_modelToSave.getName());
-                dbModelParam.setContainer(_modelToSave);
-                
-            } else { 
-                
-                ((StringParameter)_modelToSave.getAttribute("DBModelName"))
-                    .setExpression(_modelToSave.getName());
-                
-            }
-
-            if (_modelToSave.getAttribute("DBModelID") == null) {
-                java.util.Date time = new java.util.Date();
-                
-                StringParameter dbModelParam = new StringParameter(
-                        _modelToSave, "DBModelID");
-                dbModelParam.setExpression(_modelToSave.getName() + 
-                        "_" + String.valueOf(time.getTime()));
-                dbModelParam.setContainer(_modelToSave);
-                
-            }
-            
             ArrayList<StringParameter> attributesList = new ArrayList();
 
             for (Object a : _modelToSave.attributeList()) {
@@ -515,7 +511,6 @@ public class SaveModelToDBFrame extends JFrame {
             for (StringParameter attribute : attributesList) {
 
                 if (attribute.getName()!="DBReference" && 
-                        attribute.getName()!="DBModelName" &&
                         attribute.getName()!="DBModelID" &&
                         _attributesListPanel.isDBAttribute(attribute.getName())){
                     

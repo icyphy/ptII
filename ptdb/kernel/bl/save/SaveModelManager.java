@@ -71,11 +71,11 @@ public class SaveModelManager {
      * @throws XMLDBModelParsingException Thrown if the model is parsed incorrectly.
      * 
      */
-    public boolean save(XMLDBModel xmlDBModel) throws DBConnectionException,
+    public String save(XMLDBModel xmlDBModel) throws DBConnectionException,
             DBExecutionException, IllegalArgumentException,
             ModelAlreadyExistException, XMLDBModelParsingException {
 
-        boolean isSuccessful = false;
+        String returnString = null;
 
         DBConnection dbConnection = null;
 
@@ -99,9 +99,7 @@ public class SaveModelManager {
                 CreateModelTask createModelTask = new CreateModelTask(
                         xmlDBModel);
 
-                dbConnection.executeCreateModelTask(createModelTask);
-
-                isSuccessful = true;
+                returnString = dbConnection.executeCreateModelTask(createModelTask);
 
                 dbConnection.commitConnection();
 
@@ -109,9 +107,7 @@ public class SaveModelManager {
 
                 SaveModelTask saveModelTask = new SaveModelTask(xmlDBModel);
 
-                dbConnection.executeSaveModelTask(saveModelTask);
-
-                isSuccessful = true;
+                returnString = dbConnection.executeSaveModelTask(saveModelTask);
 
                 dbConnection.commitConnection();
 
@@ -135,9 +131,9 @@ public class SaveModelManager {
             }
         }
 
-        isSuccessful = (isSuccessful && updateCache(xmlDBModel));
+        updateCache(xmlDBModel);
         
-        return isSuccessful;
+        return returnString;
 
     }
 
@@ -272,10 +268,8 @@ public class SaveModelManager {
     //////////////////////////////////////////////////////////////////////
     ////                private methods                               ////
     
-    private boolean updateCache(XMLDBModel xmlDBModel) 
+    private void updateCache(XMLDBModel xmlDBModel) 
         throws DBConnectionException, DBExecutionException{
-    
-        boolean isSuccessful = false;
     
         ArrayList <XMLDBModel> hierarchy = new ArrayList();
         ArrayList <XMLDBModel> modelsToRemoveList = new ArrayList();
@@ -345,9 +339,7 @@ public class SaveModelManager {
     
         }
         
-        isSuccessful = CacheManager.removeFromCache(hierarchy);        
-            
-        return isSuccessful;
+        CacheManager.removeFromCache(hierarchy);        
         
     }
 }

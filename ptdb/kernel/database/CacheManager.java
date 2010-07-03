@@ -122,7 +122,7 @@ public class CacheManager {
         
         try {
 
-            if (modelName.equals(null)) {
+            if (modelName == null) {
                 throw new IllegalArgumentException(
                         "Failed to load the model from the cache."
                                 + " The model name was null.");
@@ -175,11 +175,16 @@ public class CacheManager {
             }
 
             dbConnection = DBConnectorFactory.getCacheConnection(true);
+            
+            if (dbConnection == null) {
+                throw new DBConnectionException(
+                        "Unable to get asynchronous connection to the cache.");
+            }
 
             Iterator iterator = assemblies.keySet().iterator();
          
             while(iterator.hasNext()){
-            
+
                 String modelName = (String) iterator.next();
                 XMLDBModel cacheModel = new XMLDBModel(modelName);
                 cacheModel.setModel((String) assemblies.get(modelName));
@@ -197,6 +202,8 @@ public class CacheManager {
                 }
             
             }
+            
+            dbConnection.commitConnection();
             
         } catch (DBExecutionException e) {
 

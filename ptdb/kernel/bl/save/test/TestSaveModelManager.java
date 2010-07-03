@@ -80,7 +80,8 @@ public class TestSaveModelManager {
 
         //createModelTaskMock.setXMLDBModel(modelMock);
 
-        dBConnectionMock.executeCreateModelTask(createModelTaskMock);
+        EasyMock.expect(dBConnectionMock.
+                executeCreateModelTask(createModelTaskMock)).andReturn("ID");
 
         dBConnectionMock.commitConnection();
 
@@ -88,7 +89,7 @@ public class TestSaveModelManager {
 
         PowerMock.replayAll();
 
-        boolean isSuccess = saveManager.save(modelMock);
+        boolean isSuccess = (saveManager.save(modelMock) != null);
 
         assertTrue(isSuccess);
 
@@ -202,7 +203,8 @@ public class TestSaveModelManager {
 
         //saveModelTaskMock.setXMLDBModel(modelMock);
 
-        dBConnectionMock.executeSaveModelTask(saveModelTaskMock);
+        EasyMock.expect(dBConnectionMock.
+                executeSaveModelTask(saveModelTaskMock)).andReturn("ID");
 
         dBConnectionMock.commitConnection();
 
@@ -210,7 +212,7 @@ public class TestSaveModelManager {
 
         PowerMock.replayAll();
 
-        boolean isSuccess = saveManager.save(modelMock);
+        boolean isSuccess = (saveManager.save(modelMock) != null);
 
         assertTrue(isSuccess);
 

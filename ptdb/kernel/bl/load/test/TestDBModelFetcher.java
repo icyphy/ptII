@@ -53,7 +53,6 @@ public class TestDBModelFetcher {
 
         EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(dBConnectionMock);
         PowerMock.expectNew(GetModelTask.class, loadModel).andReturn(getModelTaskMock);
-        //getModelsTaskMock.setModelName(loadModel);
         EasyMock.expect(dBConnectionMock.executeGetCompleteModelTask(getModelTaskMock)).andReturn(modelMock);
 
         dBConnectionMock.closeConnection();
