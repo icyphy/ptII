@@ -118,6 +118,15 @@ public class XMLDBAttribute {
     public void setAttributeName(String attributName) {
         _attributeName = attributName;
     }
+    
+    /**
+     * Set the type of this attribute. 
+     * 
+     * @param attributeType The type to set to this attribute. 
+     */
+    public void setAttributeType(String attributeType) {
+        _attributeType = attributeType;
+    }
 
     /**
      * Set the attribute list value only when the attribute type is list.
