@@ -510,13 +510,13 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(true);
 
         
-        XMLDBModel xmlModel = new XMLDBModel("new_test2");
+        XMLDBModel xmlModel = new XMLDBModel("new_test2000");
 
         xmlModel.setIsNew(true);
 
         
 
-        xmlModel.setModel("<entity name=\"new_test2\" "
+        xmlModel.setModel("<entity name=\"new_test2000\" "
                         + "class=\"test.class\"></entity>");
 
         CreateModelTask task = new CreateModelTask(xmlModel);
@@ -836,7 +836,7 @@ public class TestOracleXMLDBConnection {
 
             if (model != null && model.getModelName().equals(modelName)) {
                 
-                //System.out.println(model.getModel());
+                
                 assertTrue("Model was retrieved successfully.", true);
                 
             } else if (model != null && !model.getModelName().equals(modelName)) {
@@ -864,7 +864,7 @@ public class TestOracleXMLDBConnection {
      * Test the executeGetModelTask() method.
      *
      * <p>Test conditions:
-     * <br>The model exist in the database.</p>
+     * <br>The model does not exist in the database.</p>
      *
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
@@ -1086,7 +1086,7 @@ public class TestOracleXMLDBConnection {
 
             if (model != null && model.getModelName().equals(modelName)) {
 
-                //System.out.println(model.getModel());
+                System.out.println(model.getModel());
                 assertTrue("Model was retrieved successfully.", true);
                 
             } else if (model != null && !model.getModelName().equals(modelName)) {
@@ -1249,15 +1249,21 @@ public class TestOracleXMLDBConnection {
 
 
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "new_author", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, null);
+                "new_author2", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, null);
         CreateAttributeTask task = new CreateAttributeTask(attribute);
 
         try {
         
-            oracleXMLDBConnection
+            XMLDBAttribute newAttribute = oracleXMLDBConnection
                     .executeCreateAttributeTask(task);
         
             assertTrue("Method successfully created attribute", true);
+            
+            
+            DeleteAttributeTask deleteTask = new DeleteAttributeTask(newAttribute);
+            oracleXMLDBConnection.executeDeleteAttributeTask(deleteTask);
+            
+            
         
         } catch (DBExecutionException e) {
         
@@ -1265,7 +1271,7 @@ public class TestOracleXMLDBConnection {
         
         } finally {
             if (oracleXMLDBConnection != null) {
-                oracleXMLDBConnection.abortConnection();
+                oracleXMLDBConnection.closeConnection();
             }
         }
         
@@ -1291,7 +1297,7 @@ public class TestOracleXMLDBConnection {
 
 
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "new_countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, null);
+                "new_countries_test1", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, null);
         
         List<String> attributeValues = new ArrayList<String>();
         
@@ -1305,10 +1311,18 @@ public class TestOracleXMLDBConnection {
 
         try {
         
-            oracleXMLDBConnection
+            XMLDBAttribute newAttribute = oracleXMLDBConnection
                     .executeCreateAttributeTask(task);
-        
+
+    
             assertTrue("Method successfully created attribute", true);
+    
+    
+    
+            DeleteAttributeTask deleteTask = new DeleteAttributeTask(newAttribute);
+    
+            oracleXMLDBConnection.executeDeleteAttributeTask(deleteTask);
+    
         
         } catch (DBExecutionException e) {
         
@@ -1316,7 +1330,7 @@ public class TestOracleXMLDBConnection {
         
         } finally {
             if (oracleXMLDBConnection != null) {
-                oracleXMLDBConnection.abortConnection();
+                oracleXMLDBConnection.closeConnection();
             }
         }
         
@@ -1519,10 +1533,10 @@ public class TestOracleXMLDBConnection {
         XmlManager xmlManagerMock =  PowerMock.createMock(XmlManager.class);
        
        
-        Object [] parameters = {Environment.class, XmlManagerConfig.class};
+        //Object [] parameters = {Environment.class, XmlManagerConfig.class};
         
-        PowerMock.expectNew(XmlManager.class, parameters, environmentMock, null).andReturn(
-                xmlManagerMock);
+//        PowerMock.expectNew(XmlManager.class, Environment.class, null).andReturn(
+//                xmlManagerMock);
         
         
         
@@ -1752,7 +1766,7 @@ public class TestOracleXMLDBConnection {
         
         
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "UpdatedAuthor", XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN, "testId");
+                "author", XMLDBAttribute.ATTRIBUTE_TYPE_BOOLEAN, "author_1277754213656");
         
         UpdateAttributeTask task = new UpdateAttributeTask(attribute);
 
