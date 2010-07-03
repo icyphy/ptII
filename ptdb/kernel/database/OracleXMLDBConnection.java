@@ -1746,7 +1746,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
             String query = "for $x in doc('dbxml:/"+ _xmlContainer.getName() 
                     + "/" + modelName + "')"
-                    + "/entity/property[@DBModelId] return data($x/@DBModelId)";
+                    + "/entity/property[@name='DBModelId'] return data($x/@value)";
 
             XmlQueryExpression queryExpression = _xmlManager.prepare(query,
                     xmlContext);
@@ -1768,7 +1768,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
         } catch (XmlException e) {
             throw new DBExecutionException(
-                    "Failed to get the model Id from the name for the given model"
+                    "Failed to get the model Id from the name for the given model "
                     + modelName + " - " + e.getMessage(), e);
         }
         return modelId; 
@@ -1798,12 +1798,15 @@ public class OracleXMLDBConnection implements DBConnection {
             if (result != null && result.size() > 0) {
                 
                 modelName = (String) result.get(0);
+                
+                modelName = modelName.substring(modelName
+                        .lastIndexOf("/") + 1);
             }
             
 
         } catch (XmlException e) {
             throw new DBExecutionException(
-                    "Failed to retrieve model name from model Id for the given Id" 
+                    "Failed to retrieve model name from model Id for the given Id " 
                     + dbModelId + " - " + e.getMessage(), e);
         }
         return modelName; 
