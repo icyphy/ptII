@@ -112,6 +112,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         _openDatabaseSetupAction = new DatabaseSetupAction();
         _simpleSearchAction = new SimpleSearchAction
                                 (getModel(), this, getConfiguration());
+        _configureAttributesAction = new ConfigureAttributesAction();
 
     }
 
@@ -150,6 +151,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             .addHotKey(_getRightComponent(), _openDatabaseSetupAction);
             GUIUtilities.addMenuItem(_dbMenu, _openDatabaseSetupAction);
             
+            GUIUtilities
+            .addHotKey(_getRightComponent(), _configureAttributesAction);
+            GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
+            
             // TODO: }
         }
 
@@ -158,6 +163,11 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /**
+     * The action for opening the attributes configuration frame. 
+     */
+    protected Action _configureAttributesAction;
+    
     /** The database menu. */
     protected JMenu _dbMenu;
 
@@ -176,6 +186,30 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                private inner classes                      ////
 
+    
+    ///////////////////////////////////////////////////////////////////
+    //// ConfigureAttributesAction
+
+    private class ConfigureAttributesAction extends AbstractAction {
+
+        public ConfigureAttributesAction() {
+            super("Configure Attributes");
+
+            putValue("tooltip", "Configure Attributes");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_A));
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////            public methods                          //////
+
+        public void actionPerformed(ActionEvent e) {
+
+            new ConfigureAttributesFrame().setVisible(true);
+
+        }
+    }
+    
+    
     ///////////////////////////////////////////////////////////////////
     //// OpenSearchFrameAction
 
@@ -285,7 +319,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             frame.setVisible(true);
         }
     }
-///////////////////////////////////////////////////////////////////
+    
+    ///////////////////////////////////////////////////////////////////
     //// SimpleSearchAction
 
     /**
