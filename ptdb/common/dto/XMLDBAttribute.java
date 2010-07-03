@@ -99,6 +99,15 @@ public class XMLDBAttribute {
         }
 
     }
+    
+    /**
+     * Get the attribute list values without checking the attribute's type. 
+     * 
+     * @return The list of items for the attribute list type. 
+     */
+    public List<String> getAttributeValuesPlain() {
+        return _attributeValues;
+    }
 
     /**
      * Set the attribute Id.
@@ -139,6 +148,15 @@ public class XMLDBAttribute {
         if (_attributeType.equals(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
             _attributeValues = attributeValues;
         }
+    }
+    
+    /**
+     * Set the list values to the attribute regardless of the attribute type. 
+     * 
+     * @param attributeValues The list values to be set to this attribute. 
+     */
+    public void setAttributeValuesPlain(List<String> attributeValues) {
+        _attributeValues = attributeValues;
     }
 
     /**
