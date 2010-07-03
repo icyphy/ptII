@@ -237,12 +237,13 @@ public class OracleXMLDBConnection implements DBConnection {
      * 
      * @param task The task to be completed. In this case, CreateModelTask. This
      * will tell the DB layer to create a new model in the database.
+     * @return The Id of the newly created model in the database.
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
      * @exception ModelAlreadyExistException Thrown if the model being created
      * already exists.
      */
-    public void executeCreateModelTask(CreateModelTask task)
+    public String executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException, ModelAlreadyExistException {
 
         try {
@@ -278,9 +279,19 @@ public class OracleXMLDBConnection implements DBConnection {
                     modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
                     modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
                 }
+                
+                
+                //add the id to the model.
+                
+                String modelId = Utilities.generateId(model.getModelName());
+                
+                modelBody = Utilities.insertIdTagToModelBody(modelBody, modelId);
+                
 
                 _xmlContainer.putDocument(_xmlTransaction,
                         model.getModelName(), modelBody);
+                
+                return modelId;
 
             }
         } catch (XmlException e) {
@@ -289,6 +300,10 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
     }
+    
+    
+    
+    
 
     /**
      * Fetch the parent model hierarchies for the given models.
@@ -639,7 +654,7 @@ public class OracleXMLDBConnection implements DBConnection {
             //create the attribute id as a combination of the name and time stamp.
             Date date = new Date ();
             
-            String attributeId = attributeName + "_" + date.getTime();
+            String attributeId = Utilities.generateId(attributeName);
             
             xmlDBAttribute.setAttributeId(attributeId);
 
@@ -817,10 +832,13 @@ public class OracleXMLDBConnection implements DBConnection {
      * according to the model specification given in the task parameter.
      * 
      * @param task a SaveModelTask to be completed.
+     * 
+     * @return The Id of the model saved.
+     * 
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
      */
-    public void executeSaveModelTask(SaveModelTask task)
+    public String executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException {
 
         try {
@@ -845,7 +863,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 throw new DBExecutionException(
                         "Failed to execute SaveModelTask"
                                 + " - the model does not exist in the database."
-                                + " Please use executeCreateModelTask instead.");
+                                + " Please use executeSaveModelTask instead.");
             } else {
 
                 String modelBody = xmlDBModel.getModel();
@@ -855,6 +873,17 @@ public class OracleXMLDBConnection implements DBConnection {
                     modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
                     modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
                 }
+                
+                String modelId = xmlDBModel.getModelId();
+                
+                if (modelId == null || modelId.length() == 0) {
+                    
+                    modelId = _getModelIdFromModelName(xmlDBModel.getModelName());
+                    
+                    modelBody = Utilities.insertIdTagToModelBody(modelBody, modelId);
+                    
+                }
+                    
 
 //                currentDbModel.setContent(modelBody);
                 
@@ -863,6 +892,8 @@ public class OracleXMLDBConnection implements DBConnection {
                 _xmlContainer.putDocument(_xmlTransaction, xmlDBModel.getModelName(), modelBody);
                 
 //                _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
+                
+                return modelId;
             }
 
         } catch (XmlException e) {

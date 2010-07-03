@@ -160,14 +160,18 @@ public class AsynchronousDBConnection implements DBConnection {
      * @param task
      *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
+     * 
+     * @return The Id of the newly created model.
      * @exception DBExecutionException If thrown while creating a model.
      * @exception ModelAlreadyExistException Thrown if the model being created already exists.
      */
-    public void executeCreateModelTask(CreateModelTask task)
+    public String executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException, ModelAlreadyExistException {
 
         //call the execueTask method to execute the given task
         _executeTask(task);
+        
+        return null;
 
     }
     
@@ -286,14 +290,19 @@ public class AsynchronousDBConnection implements DBConnection {
      *          The task to be completed.  In this case, SaveModelTask.
      *          This will tell the DB layer to save/update a model
      *          already existing in the database.
+     * 
+     * @return The Id of the model being saved.
+     * 
      * @exception DBExecutionException If thrown while saving model
      * in the database.
      */
-    public void executeSaveModelTask(SaveModelTask task)
+    public String executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException {
 
         //call the execueTask method to execute the given task
         _executeTask(task);
+        
+        return null;
     }
     
     

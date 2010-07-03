@@ -80,10 +80,13 @@ public interface DBConnection {
      * @param task
      *          The task to be completed.  In this case, CreateModelTask.
      *          This will tell the DB layer to create a new model in the database.
+     * 
+     * @return The Id of the newly created model.
+     * 
      * @exception DBExecutionException
      * @exception ModelAlreadyExistException Thrown if the model being created already exists.
      */
-    public void executeCreateModelTask(CreateModelTask task)
+    public String executeCreateModelTask(CreateModelTask task)
             throws DBExecutionException, ModelAlreadyExistException;
     
     
@@ -180,9 +183,12 @@ public interface DBConnection {
      * @param task
      *          The task to be completed.  In this case, SaveModelTask.
      *          This will tell the DB layer to save/update a model already existing in the database.
+     * 
+     * @return The Id of the saved model.
+     * 
      * @exception DBExecutionException Thrown when there is a problem in executing the task.
      */
-    public void executeSaveModelTask(SaveModelTask task)
+    public String executeSaveModelTask(SaveModelTask task)
             throws DBExecutionException;
     
     

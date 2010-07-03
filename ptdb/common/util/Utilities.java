@@ -5,6 +5,7 @@ package ptdb.common.util;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -127,6 +128,41 @@ public class Utilities {
             }
         }
         return strCurrentModelName;
+    }
+    
+    /**
+     * Create new Id by appending a timestamp to the given name.
+     * @param name The name that will be used to generate the id.
+     * @return An Id that is a combination of the name passed with the time stamp.
+     */
+    public static String generateId(String name) {
+        
+        String id = "";
+
+        Date date = new Date ();
+        
+        id = name + "_" + date.getTime();
+                
+        return id;
+    }
+    
+    
+    /**
+     * Add a parameter tag called DBModelId to the given model body.
+     * @param modelBody The XML model body where the Id parameter will be added.
+     * @param modelId The Id of the model that needs to be inserted.
+     * @return The resulting modelBody after inserting the Id to it.
+     */
+    public static String insertIdTagToModelBody(String modelBody, String modelId) {
+                
+        String modelIdTag = "<parameter DBModelId=\"" + modelId + "\"/>";
+        
+        StringBuffer modelBodyBuffer = new StringBuffer(modelBody);
+      
+        modelBodyBuffer.insert(modelBodyBuffer.indexOf(">") + 1, modelIdTag);
+        
+        return modelBodyBuffer.toString();
+
     }
     
     /**
