@@ -54,6 +54,17 @@ public class SearchCriteria {
         return _dbGraphSearchCriteria;
     }
 
+    
+    /**
+     * Get the name of the model from the search criteria. 
+     * 
+     * @return The model name search criteria. 
+     */
+    public String getModelName() {
+        return _modelName;
+    }
+    
+    
     /**
      * Get the search command criteria from the search criteria.
      *
@@ -86,6 +97,16 @@ public class SearchCriteria {
             DBGraphSearchCriteria dbGraphSearchCriteria) {
         _dbGraphSearchCriteria = dbGraphSearchCriteria;
     }
+    
+    
+    /**
+     * Set the name of the model for the search criteria. 
+     * 
+     * @param modelName The name of the model to be set in the search criteria.
+     */
+    public void setModelName(String modelName) {
+        _modelName = modelName;
+    }
 
     /**
      * Set the XQuery search command for the search criteria.
@@ -107,6 +128,11 @@ public class SearchCriteria {
     private ArrayList<Attribute> _attributes;
 
     private DBGraphSearchCriteria _dbGraphSearchCriteria;
+    
+    /**
+     * The name of the model as the search criteria. 
+     */
+    private String _modelName;
 
     /**
      * Represents the XQuery search command input by the user.

@@ -19,6 +19,7 @@ import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GraphSearchTask;
+import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -28,6 +29,7 @@ import ptdb.kernel.bl.load.DBModelFetcher;
 import ptdb.kernel.bl.search.AttributeSearcher;
 import ptdb.kernel.bl.search.CommandSearcher;
 import ptdb.kernel.bl.search.HierarchyFetcher;
+import ptdb.kernel.bl.search.NameSearcher;
 import ptdb.kernel.bl.search.PatternMatchGraphSearcher;
 import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
@@ -59,7 +61,7 @@ import ptolemy.vergil.gt.MatchResultRecorder;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest( { SearchManager.class, AttributeSearcher.class,
-        CommandSearcher.class, XQueryGraphSearcher.class,
+        NameSearcher.class, CommandSearcher.class, XQueryGraphSearcher.class,
         PatternMatchGraphSearcher.class, HierarchyFetcher.class,
         SearchResultBuffer.class, GraphMatcher.class })
 @SuppressStaticInitializationFor( { "ptdb.common.util.DBConnectorFactory",
@@ -89,14 +91,18 @@ public class TestSearchManager {
         attributes.add(attribute);
 
         searchCriteria.setAttributes(attributes);
+        searchCriteria.setModelName("Test Model name");
 
         DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
 
         Pattern patternMock = PowerMock.createMock(Pattern.class);
         dbGraphSearchCriteria.setPattern(patternMock);
 
-        dbGraphSearchCriteria
-                .setComponentEntitiesList(new ArrayList<ComponentEntity>());
+        ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
+        componentEntities.add(new ComponentEntity());
+
+        dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
+
         dbGraphSearchCriteria.setPortsList(new ArrayList<Port>());
         dbGraphSearchCriteria.setRelationsList(new ArrayList<Relation>());
 
@@ -130,6 +136,22 @@ public class TestSearchManager {
                 dbConnectionAttributeMock
                         .executeAttributeSearchTask(attributeSearchTaskMock))
                 .andReturn(resultsFromAttributes);
+
+        // Testing in name searcher. 
+        ModelNameSearchTask modelNameSearchTaskMock = PowerMock
+                .createMockAndExpectNew(ModelNameSearchTask.class,
+                        searchCriteria.getModelName());
+
+        ArrayList<XMLDBModel> resultsFromNameSearcher = new ArrayList<XMLDBModel>();
+        for (int i = 0; i < 10; i++) {
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
+            resultsFromNameSearcher.add(xmldbModel);
+        }
+
+        expect(
+                dbConnectionAttributeMock
+                        .executeModelNameSearchTask(modelNameSearchTaskMock))
+                .andReturn(resultsFromNameSearcher);
 
         // Testing in command searcher. 
         // To add later. 
@@ -379,8 +401,11 @@ public class TestSearchManager {
         Pattern patternMock = PowerMock.createMock(Pattern.class);
         dbGraphSearchCriteria.setPattern(patternMock);
 
-        dbGraphSearchCriteria
-                .setComponentEntitiesList(new ArrayList<ComponentEntity>());
+        ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
+        componentEntities.add(new ComponentEntity());
+
+        dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
+
         dbGraphSearchCriteria.setPortsList(new ArrayList<Port>());
         dbGraphSearchCriteria.setRelationsList(new ArrayList<Relation>());
 
@@ -628,6 +653,273 @@ public class TestSearchManager {
         PowerMock.verifyAll();
 
     }
+    
+    
+    
+    /**
+     * Test the search() method in the case when no model name criteria is 
+     * specified. 
+     *
+     * @exception Exception Thrown by PowerMock during the execution of test
+     *  cases.
+     */
+    @Test
+    public void testSearchNoModelNameCriteria() throws Exception {
+
+        SearchManager searchManager = new SearchManager();
+
+        SearchCriteria searchCriteria = new SearchCriteria();
+        ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+
+        Attribute attribute = new Attribute();
+        attribute.setName("test name");
+        attributes.add(attribute);
+
+        searchCriteria.setAttributes(attributes);
+
+        DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
+
+        Pattern patternMock = PowerMock.createMock(Pattern.class);
+        dbGraphSearchCriteria.setPattern(patternMock);
+
+        ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
+        componentEntities.add(new ComponentEntity());
+
+        dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
+
+        dbGraphSearchCriteria.setPortsList(new ArrayList<Port>());
+        dbGraphSearchCriteria.setRelationsList(new ArrayList<Relation>());
+
+        searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
+
+        SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
+
+        // Testing in attribute searcher.
+        DBConnection dbConnectionAttributeMock = PowerMock
+                .createMock(DBConnection.class);
+
+        mockStatic(DBConnectorFactory.class);
+
+        expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
+                dbConnectionAttributeMock);
+
+        AttributeSearchTask attributeSearchTaskMock = PowerMock
+                .createMockAndExpectNew(AttributeSearchTask.class);
+
+        attributeSearchTaskMock.setAttributesList(searchCriteria
+                .getAttributes());
+
+        ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
+
+        for (int i = 0; i < 10; i++) {
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
+            resultsFromAttributes.add(xmldbModel);
+        }
+
+        expect(
+                dbConnectionAttributeMock
+                        .executeAttributeSearchTask(attributeSearchTaskMock))
+                .andReturn(resultsFromAttributes);
+
+        // Testing in name searcher. 
+        // Do nothing. 
+
+        // Testing in XQuery searcher. 
+
+        GraphSearchTask graphSearchTaskMock = PowerMock
+                .createMockAndExpectNew(GraphSearchTask.class);
+
+        graphSearchTaskMock.setGraphSearchCriteria(searchCriteria
+                .getDBGraphSearchCriteria());
+
+        ArrayList<XMLDBModel> resultsFromXQuery = new ArrayList<XMLDBModel>();
+
+        for (int i = 5; i < 15; i++) {
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
+            resultsFromXQuery.add(xmldbModel);
+        }
+
+        expect(
+                dbConnectionAttributeMock
+                        .executeGraphSearchTask(graphSearchTaskMock))
+                .andReturn(resultsFromXQuery);
+
+        // Testing in GraphPatternMatchingSearch.
+        GraphMatcher graphMatcherMock = PowerMock
+                .createMockAndExpectNew(GraphMatcher.class);
+
+        MoMLParser parserMock = PowerMock
+                .createMockAndExpectNew(MoMLParser.class);
+
+        mockStatic(DBModelFetcher.class);
+
+        ArrayList<XMLDBModel> patternMatchInitialModels = new ArrayList<XMLDBModel>();
+        ArrayList<XMLDBModel> passModels = new ArrayList<XMLDBModel>();
+
+        for (int i = 0; i < 5; i++) {
+
+            passModels.add(resultsFromXQuery.get(i));
+
+            patternMatchInitialModels.add(new XMLDBModel("model_new" + i));
+
+        }
+
+        expect(DBModelFetcher.load(passModels)).andReturn(
+                patternMatchInitialModels);
+
+        ArrayList<XMLDBModel> resultsFromHierarchy = new ArrayList<XMLDBModel>();
+
+        for (int i = 0; i < 5; i++) {
+            CompositeEntity namedObjMock = PowerMock
+                    .createMock(CompositeEntity.class);
+            expect(
+                    parserMock.parse(patternMatchInitialModels.get(i)
+                            .getModel())).andReturn(namedObjMock);
+
+            MatchResultRecorder matchResultRecorderMock = PowerMock
+                    .createMockAndExpectNew(MatchResultRecorder.class);
+
+            graphMatcherMock.setMatchCallback(matchResultRecorderMock);
+
+            expect(graphMatcherMock.match(patternMock, namedObjMock))
+                    .andReturn(true);
+
+            ArrayList<MatchResult> matchResults = new ArrayList<MatchResult>();
+            matchResults.add(new MatchResult());
+
+            expect(matchResultRecorderMock.getResults())
+                    .andReturn(matchResults);
+
+            // Testing in hierarchy fetcher. 
+
+            FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
+                    .createMockAndExpectNew(FetchHierarchyTask.class);
+
+            ArrayList<XMLDBModel> expectedResults = new ArrayList<XMLDBModel>();
+
+            expectedResults.add(patternMatchInitialModels.get(i));
+
+            fetchHierarchyTaskMock.setModelsList(expectedResults);
+
+            for (int j = 15; j < 25; j++) {
+                XMLDBModel xmldbModel = new XMLDBModel("model" + j);
+                resultsFromHierarchy.add(xmldbModel);
+            }
+
+            expect(
+                    dbConnectionAttributeMock
+                            .executeFetchHierarchyTask(fetchHierarchyTaskMock))
+                    .andReturn(resultsFromHierarchy);
+
+        }
+
+        dbConnectionAttributeMock.closeConnection();
+
+        // Start the testing.
+        PowerMock.replayAll();
+
+        searchManager.search(searchCriteria, searchResultBuffer);
+
+        assertEquals(resultsFromHierarchy, searchResultBuffer.getResults());
+
+        PowerMock.verifyAll();
+
+    }
+
+    
+    
+    /**
+     * Test the search() method in the case there is no result found in 
+     * the model name searcher. 
+     *
+     * @exception Exception Thrown by PowerMock if error occurs during the 
+     *  execution of test cases.
+     */
+    @Test
+    public void testSearchNoModelNameResult() throws Exception {
+
+        SearchManager searchManager = new SearchManager();
+
+        SearchCriteria searchCriteria = new SearchCriteria();
+        ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+
+        Attribute attribute = new Attribute();
+        attribute.setName("test name");
+        attributes.add(attribute);
+
+        searchCriteria.setAttributes(attributes);
+        searchCriteria.setModelName("Some weird name");
+
+        DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
+
+        ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
+        componentEntities.add(new ComponentEntity());
+
+        dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
+
+        dbGraphSearchCriteria.setPortsList(new ArrayList<Port>());
+        dbGraphSearchCriteria.setRelationsList(new ArrayList<Relation>());
+
+        searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
+
+        SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
+
+        // Testing in attribute searcher.
+        DBConnection dbConnectionAttributeMock = PowerMock
+                .createMock(DBConnection.class);
+
+        mockStatic(DBConnectorFactory.class);
+
+        expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
+                dbConnectionAttributeMock);
+
+        AttributeSearchTask attributeSearchTaskMock = PowerMock
+                .createMockAndExpectNew(AttributeSearchTask.class);
+
+        attributeSearchTaskMock.setAttributesList(searchCriteria
+                .getAttributes());
+
+        ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
+
+        for (int i = 0; i < 10; i++) {
+            XMLDBModel xmldbModel = new XMLDBModel("model" + i);
+            resultsFromAttributes.add(xmldbModel);
+        }
+
+        expect(
+                dbConnectionAttributeMock
+                        .executeAttributeSearchTask(attributeSearchTaskMock))
+                .andReturn(resultsFromAttributes);
+
+        // Testing in name searcher. 
+        ModelNameSearchTask modelNameSearchTaskMock = PowerMock
+                .createMockAndExpectNew(ModelNameSearchTask.class,
+                        searchCriteria.getModelName());
+
+        expect(
+                dbConnectionAttributeMock
+                        .executeModelNameSearchTask(modelNameSearchTaskMock))
+                .andReturn(new ArrayList<XMLDBModel>());
+        
+        
+        // Testing in XQuery searcher.
+
+        dbConnectionAttributeMock.closeConnection();
+
+        // Testing in hierarchy fetcher, found no match returned. 
+
+        // Start testing.
+        PowerMock.replayAll();
+
+        searchManager.search(searchCriteria, searchResultBuffer);
+
+        assertNull(searchResultBuffer.getResults());
+
+        PowerMock.verifyAll();
+
+    }
+
+    
 
     /**
      * Test the search() method in the case there is no criteria for
@@ -733,8 +1025,11 @@ public class TestSearchManager {
 
         DBGraphSearchCriteria dbGraphSearchCriteria = new DBGraphSearchCriteria();
 
-        dbGraphSearchCriteria
-                .setComponentEntitiesList(new ArrayList<ComponentEntity>());
+        ArrayList<ComponentEntity> componentEntities = new ArrayList<ComponentEntity>();
+        componentEntities.add(new ComponentEntity());
+
+        dbGraphSearchCriteria.setComponentEntitiesList(componentEntities);
+
         dbGraphSearchCriteria.setPortsList(new ArrayList<Port>());
         dbGraphSearchCriteria.setRelationsList(new ArrayList<Relation>());
 

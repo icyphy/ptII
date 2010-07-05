@@ -64,7 +64,10 @@ public class SearchManager {
         AttributeSearcher attributeSearcher = new AttributeSearcher(
                 searchCriteria);
 
+        NameSearcher nameSearcher = new NameSearcher(searchCriteria);
+        
         CommandSearcher commandSearcher = new CommandSearcher(searchCriteria);
+        
 
         ArrayList<GraphSearcher> graphSearchers = GraphSearcher
                 .getGraphSearcher(searchCriteria);
@@ -74,8 +77,11 @@ public class SearchManager {
 
         // configure the searchers to set the next result handlers
         // also configure the searchers to set the previous searcher
-        attributeSearcher.setNextResultHandler(commandSearcher);
-        commandSearcher.setPreviousSeacher(attributeSearcher);
+        attributeSearcher.setNextResultHandler(nameSearcher);
+        nameSearcher.setPreviousSeacher(attributeSearcher);
+        
+        nameSearcher.setNextResultHandler(commandSearcher);
+        commandSearcher.setPreviousSeacher(nameSearcher);
 
         commandSearcher.setNextResultHandler(graphSearchers.get(0));
         graphSearchers.get(0).setPreviousSeacher(commandSearcher);
