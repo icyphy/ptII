@@ -151,10 +151,10 @@ public class SaveModelManager {
     public XMLDBModel populateChildModelsList(XMLDBModel model)
             throws XMLDBModelParsingException {
         
-        if(model.getModel() == null) {
+        if (model.getModel() == null) {
             return model;
         }
-        
+        model.setReferencedChildren(new ArrayList<String>());
         Document modelDocument = (Document) Utilities
                 .parseXML(model.getModel());
         /*
@@ -177,7 +177,7 @@ public class SaveModelManager {
                 /* Get all first-level nodes inside the given entity. */
                 NodeList parameterList = entity.getChildNodes();
 
-                String referencedModelName = null;
+                String referencedModelId = null;
                 boolean isReferenced = false;
                 int noOfParametersFound = 0;
 
@@ -191,14 +191,14 @@ public class SaveModelManager {
                         String name = Utilities.getValueForAttribute(parameter,
                                 "name");
 
-                        if ("DBModelName".equals(name)) {
+                        if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)) {
 
-                            referencedModelName = Utilities
-                                    .getValueForAttribute(parameter, "value");
+                            referencedModelId = Utilities.getValueForAttribute(
+                                    parameter, "value");
 
                             noOfParametersFound++;
 
-                        } else if ("DBReference".equals(name)) {
+                        } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)) {
 
                             String value = Utilities.getValueForAttribute(
                                     parameter, "value");
@@ -213,7 +213,7 @@ public class SaveModelManager {
                     }
                 }
 
-                if (isReferenced && referencedModelName != null) {
+                if (isReferenced && referencedModelId != null) {
 
                     /*
                      * As we are considering only "entity" nodes, we can be 
@@ -236,18 +236,20 @@ public class SaveModelManager {
 
                             if (name != null
                                     && (name.startsWith("_")
-                                            || "DBReference".equals(name) || "DBModelName"
+                                            || XMLDBModel.DB_REFERENCE_ATTR.equals(name) 
+                                            || XMLDBModel.DB_MODEL_ID_ATTR
                                             .equals(name))) {
                                 entityElement.appendChild(childNode);
                             }
                         }
                     }
-                    
-                    entityElement.setAttribute("DBModelName",
-                            referencedModelName);
-                    modelDocument.getFirstChild().replaceChild(entityElement, entity);
 
-                    model.addReferencedChild(referencedModelName);
+                    entityElement.setAttribute(XMLDBModel.DB_MODEL_ID_ATTR,
+                            referencedModelId);
+                    modelDocument.getFirstChild().replaceChild(entityElement,
+                            entity);
+
+                    model.addReferencedChild(referencedModelId);
                     isChanged = true;
                 }
             }

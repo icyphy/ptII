@@ -25,6 +25,10 @@ import java.util.List;
  */
 public class XMLDBModel {    
     
+	/** String for DBModelId */
+    public static final String DB_MODEL_ID_ATTR = "DBModelId";
+    /** String for DBReference */
+    public static final String DB_REFERENCE_ATTR = "DBReference";
     /**
      * Construct a XMLDBModel instance
      * with the given model name.
@@ -54,14 +58,14 @@ public class XMLDBModel {
     /**
      * Add the given child entity to the model's
      * referenced children list.
-     * @param modelName Child entity to be added to the referenced children list.
+     * @param modelId Child entity to be added to the referenced children list.
      */
-    public void addReferencedChild(String modelName) {
+    public void addReferencedChild(String modelId) {
         if (_listReferencedChildren == null) {
             _listReferencedChildren = new ArrayList<String>();
         }
 
-        _listReferencedChildren.add(modelName);
+        _listReferencedChildren.add(modelId);
     }
     /**
      * Return True or false based on if the model is new or it exists in the database.
