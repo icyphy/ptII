@@ -102,8 +102,8 @@ public class TestSaveRequirementsIntegration {
         
         SaveModelManager saveModelManager = new SaveModelManager();
 
-        boolean saved = saveModelManager.save(dbModel);
-        assertTrue(saved);
+        String id = saveModelManager.save(dbModel);
+        assertNotNull(id);
         
         effigy = LoadManager.loadModel(dbModel.getModelName(), configuration);
         
@@ -163,9 +163,8 @@ public class TestSaveRequirementsIntegration {
         // so test overwriting it.
         dbModel.setIsNew(false);
 
-        boolean saved = saveModelManager.save(dbModel);
-        
-        assertTrue(saved);
+        String id = saveModelManager.save(dbModel);
+        assertNotNull(id);
         
         effigy = LoadManager.loadModel(dbModel.getModelName(), configuration);
         
@@ -219,11 +218,11 @@ public class TestSaveRequirementsIntegration {
         SaveModelManager saveModelManager = new SaveModelManager();
 
         boolean exceptionThrown = false;
-        boolean saved = false;
+        String id = null;
         
         try{
-        
-            saved = saveModelManager.save(dbModel);
+            
+            id = saveModelManager.save(dbModel);
         
         } catch(DBExecutionException e){
             
@@ -232,19 +231,19 @@ public class TestSaveRequirementsIntegration {
         }
         
         assertTrue(exceptionThrown);
-        assertTrue(!saved);
+        assertTrue(id == null);
        
         exceptionThrown = false; 
-        saved = false;
+        id = null;
         
         dbModel.setIsNew(true);
-        saved = saveModelManager.save(dbModel);
-        assertTrue(saved);
-        saved = false;
+        id = saveModelManager.save(dbModel);
+        assertNotNull(id);
+        id = null;
         
         try{
             
-            saved = saveModelManager.save(dbModel);
+            id = saveModelManager.save(dbModel);
         
         } catch(ModelAlreadyExistException e){
             
@@ -253,7 +252,7 @@ public class TestSaveRequirementsIntegration {
         }
         
         assertTrue(exceptionThrown);
-        assertTrue(!saved);
+        assertTrue(id == null);
         
         effigy = LoadManager.loadModel(dbModel.getModelName(), configuration);
         
