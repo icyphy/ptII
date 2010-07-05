@@ -221,6 +221,7 @@ public class SaveModelToDBFrame extends JFrame {
         try {
 
             String modelId = saveModelManager.save(xmlModel);
+            
             if (modelId != null) {
 
                 JOptionPane.showMessageDialog(this,

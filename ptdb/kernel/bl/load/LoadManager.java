@@ -107,29 +107,6 @@ public class LoadManager {
        
        }
        
- 
-       // If it doesn't have a DBModelName attribute, add it.
-       if (returnEntity.getAttribute("DBModelName") == null) {
-
-           String dbNameTag = "<property name=\"DBModelName\" " +
-                    "class=\"ptolemy.data.expr.StringParameter\" " +
-                    "value=\"" + returnEntity.getName() + 
-                    "\"></property>";
-           
-           MoMLChangeRequest change = new MoMLChangeRequest(null,
-                   returnEntity, dbNameTag);
-               
-           change.setUndoable(true);
-           returnEntity.requestChange(change);
-               
-       } else {
-       
-           ((StringParameter) returnEntity
-               .getAttribute("DBModelName"))
-                   .setExpression(returnEntity.getName());
-
-       }
-       
        // Make the entity name unique within container.
        returnEntity.setName(container.uniqueName(returnEntity.getName()));
     
