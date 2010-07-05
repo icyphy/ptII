@@ -3,6 +3,7 @@
  */
 package ptdb.common.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Date;
@@ -19,6 +20,7 @@ import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.XMLDBModelParsingException;
 
@@ -103,7 +105,17 @@ public class Utilities {
 
         return firstNode;
     }
-
+    
+    /** Check whether the given file exists.
+     * 
+     * @param filePath Path for the file.
+     * @return True, if file exists, false otherwise.
+     */
+    public static boolean checkFileExists(String filePath) {
+        
+        File file = new File(filePath);
+        return file.exists();
+    }
     /**
      * Get the value for the given attribute.
      * 

@@ -87,13 +87,22 @@ public class OracleXMLDBConnection implements DBConnection {
             throws DBConnectionException {
 
         try {
-            _params = dbConnParams;
             
-            if(_environment == null) {
+            _params = dbConnParams;
+            if (_environment == null
+                    || !_environmentPath.equals(
+                            dbConnParams.getUrl())) {
                 initializeDatabase(_params.getUrl());
             }
+            
             _xmlManager = new XmlManager(_environment, null);
-
+            
+            if (!Utilities.checkFileExists(_params.getUrl()
+                    + System.getProperty("file.separator")
+                    + _params.getContainerName())) {
+                throw new DBConnectionException(
+                        "The database file does not exist.");
+            }
             _xmlContainer = _xmlManager.openContainer(_params
                     .getContainerName());
 
@@ -151,6 +160,10 @@ public class OracleXMLDBConnection implements DBConnection {
      * @throws DBConnectionException If thrown while creating the environment.
      */
     public static void initializeDatabase(String url) throws DBConnectionException{
+        if (!Utilities.checkFileExists(url)) {
+            throw new DBConnectionException(
+                    "The database directory does not exist.");
+        }
         EnvironmentConfig config = new EnvironmentConfig();
         config.setRunRecovery(true);
         config.setCacheSize(5 * 1024 * 1024); // 50MB
@@ -168,11 +181,16 @@ public class OracleXMLDBConnection implements DBConnection {
         File dbFile = new File(url);
 
         try {
-            
+            try { 
             if(_environment != null)
                 _environment.close();
+            }
+            catch (Exception e) {
+                
+            }
             
             _environment = new Environment(dbFile, config);
+            _environmentPath = url;
             
         } catch (FileNotFoundException e) {
             throw new DBConnectionException("Error while creating the database environment - " + e.getMessage());
@@ -291,7 +309,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 _xmlContainer.putDocument(_xmlTransaction,
                         model.getModelName(), modelBody);
-
+                
+                model.setModelId(modelId);
                 _updateReferenceFile(model);
 
                 
@@ -553,7 +572,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * database.
      */
     public boolean doesModelExist(XMLDBModel model) throws DBExecutionException {
-        if (model == null) {
+        if (model == null) { 
             throw new DBExecutionException("Model object passed is null");
         }
 
@@ -572,9 +591,13 @@ public class OracleXMLDBConnection implements DBConnection {
                     .getModelName());
             doesExist = dbModelDocument != null;
         } catch (XmlException e) {
-            throw new DBExecutionException(
-                    "Error while checking if model exists - " + e.getMessage(),
-                    e);
+            if (e.getErrorCode() == XmlException.DOCUMENT_NOT_FOUND) {
+                //do nothing
+            } else {
+                throw new DBExecutionException(
+                        "Error while checking if model exists - "
+                                + e.getMessage(), e);
+            }
         }
         return doesExist;
     }
@@ -2286,7 +2309,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 referenceQuery = "for $i in doc(\"dbxml:/"
                         + _params.getContainerName()
-                        + "/ReferenceFile.ptdbxml\")/reference/entity[@DBModelId=\""
+                        + "/ReferenceFile.ptdbxml\")/reference/entity[@"
+                        + XMLDBModel.DB_MODEL_ID_ATTR + "=\""
                         + xmlDBModel.getModelId()
                         + "\"] return replace node $i with " + referenceString;
 
@@ -2308,6 +2332,9 @@ public class OracleXMLDBConnection implements DBConnection {
      * required for creating a database connection.
      */
     private static Environment _environment;
+    
+    /** Path for the given environment */
+    private static String _environmentPath;
     /**
      * Denote whether the database connection is active or not
      */

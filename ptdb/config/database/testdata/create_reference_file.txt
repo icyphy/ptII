@@ -1,104 +1,104 @@
 putDocument ReferenceFile.ptdbxml '<reference>
-	<entity name="A.xml">
-		<entity name="B.xml">
-			<entity name="C.xml">
-				<entity name="D.xml">
-					<entity name="H.xml">
+	<entity DBModelId="A.xml">
+		<entity DBModelId="B.xml">
+			<entity DBModelId="C.xml">
+				<entity DBModelId="D.xml">
+					<entity DBModelId="H.xml">
 					</entity>				
 				</entity>	
-				<entity name="D.xml">
-					<entity name="H.xml">
+				<entity DBModelId="D.xml">
+					<entity DBModelId="H.xml">
 					</entity>
 				</entity>
-				<entity name="I.xml">
-					<entity name="H.xml">
+				<entity DBModelId="I.xml">
+					<entity DBModelId="H.xml">
 					</entity>				
 				</entity>			
 			</entity>
 		</entity>		
-		<entity name="C.xml">
-			<entity name="D.xml">
-				<entity name="H.xml">
+		<entity DBModelId="C.xml">
+			<entity DBModelId="D.xml">
+				<entity DBModelId="H.xml">
 				</entity>
 			</entity>				
 		</entity>
-		<entity name="E.xml">
-			<entity name="D.xml">
-				<entity name="H.xml">
+		<entity DBModelId="E.xml">
+			<entity DBModelId="D.xml">
+				<entity DBModelId="H.xml">
 				</entity>
 			</entity>				
 		</entity>
 	</entity>
-	<entity name="B.xml">
-		<entity name="C.xml">
-			<entity name="D.xml">
-				<entity name="H.xml">
+	<entity DBModelId="B.xml">
+		<entity DBModelId="C.xml">
+			<entity DBModelId="D.xml">
+				<entity DBModelId="H.xml">
 				</entity>
 			</entity>				
 		</entity>
-		<entity name="D.xml">
-			<entity name="H.xml">
+		<entity DBModelId="D.xml">
+			<entity DBModelId="H.xml">
 			</entity>
 		</entity>
 	</entity>		
-	<entity name="C.xml">
-		<entity name="D.xml">
-			<entity name="H.xml">
+	<entity DBModelId="C.xml">
+		<entity DBModelId="D.xml">
+			<entity DBModelId="H.xml">
 			</entity>
 		</entity>				
 	</entity>
-	<entity name="E.xml">
-		<entity name="D.xml">
-			<entity name="H.xml">
+	<entity DBModelId="E.xml">
+		<entity DBModelId="D.xml">
+			<entity DBModelId="H.xml">
 			</entity>
 		</entity>				
 	</entity>
-	<entity name="D.xml">
-		<entity name="H.xml">
+	<entity DBModelId="D.xml">
+		<entity DBModelId="H.xml">
 		</entity>
 	</entity>				
-	<entity name="E.xml">
-		<entity name="B.xml">
-			<entity name="C.xml">
-				<entity name="D.xml">
-					<entity name="H.xml">
+	<entity DBModelId="E.xml">
+		<entity DBModelId="B.xml">
+			<entity DBModelId="C.xml">
+				<entity DBModelId="D.xml">
+					<entity DBModelId="H.xml">
 					</entity>			
 				</entity>				
 			</entity>
-			<entity name="D.xml">
-				<entity name="H.xml">
+			<entity DBModelId="D.xml">
+				<entity DBModelId="H.xml">
 				</entity>
 			</entity>				
 		</entity>
 	</entity>		
-	<entity name="K.xml">
-		<entity name="B.xml">
-			<entity name="C.xml">
-				<entity name="D.xml">
-					<entity name="H.xml">
+	<entity DBModelId="K.xml">
+		<entity DBModelId="B.xml">
+			<entity DBModelId="C.xml">
+				<entity DBModelId="D.xml">
+					<entity DBModelId="H.xml">
 					</entity>
 				</entity>				
-			<entity name="D.xml">
-				<entity name="H.xml">
+			<entity DBModelId="D.xml">
+				<entity DBModelId="H.xml">
 				</entity>
 			</entity>
 			</entity>
 		</entity>		
-		<entity name="X.xml">
-			<entity name="F.xml">
-				<entity name="G.xml">
+		<entity DBModelId="X.xml">
+			<entity DBModelId="F.xml">
+				<entity DBModelId="G.xml">
 				</entity>				
 			</entity>
 		</entity>		
 	</entity>
-	<entity name="NoReferences" class="ptolemy.actor.TypedCompositeActor">
+	<entity DBModelId="NoReferences" class="ptolemy.actor.TypedCompositeActor">
 	</entity>
-	<entity name="modeltt" class="ptolemy.actor.TypedCompositeActor">
-		<entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+	<entity DBModelId="modeltt" class="ptolemy.actor.TypedCompositeActor">
+		<entity DBModelId="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
 		</entity>
 	</entity>
-		<entity name="X" class="ptolemy.actor.TypedCompositeActor">
-		<entity name="Y" class="ptolemy.actor.TypedCompositeActor">
+		<entity DBModelId="X" class="ptolemy.actor.TypedCompositeActor">
+		<entity DBModelId="Y" class="ptolemy.actor.TypedCompositeActor">
 		</entity>
 	</entity>
 

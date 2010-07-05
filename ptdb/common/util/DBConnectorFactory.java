@@ -431,7 +431,11 @@ public class DBConnectorFactory {
      * throw an exception.
      */
     static {
+        try {
         loadDBProperties();
+        } catch(ExceptionInInitializerError e) {
+ 
+        }
 
     }
 }

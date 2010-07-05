@@ -366,7 +366,11 @@ public class DatabaseSetupFrame extends JFrame {
         if (isValid) {
             SetupParameters setupParameters = _readSetupParameters();
             try {
+                try{
                 setupManager.updateDBConnectionSetupParameters(setupParameters);
+                } catch (ExceptionInInitializerError e) {
+                    
+                }
                 JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
                         "Setup parameters have been saved.");
                 _setupParameters = setupParameters;
@@ -381,7 +385,6 @@ public class DatabaseSetupFrame extends JFrame {
                         "Save Error", JOptionPane.INFORMATION_MESSAGE, null);
             }
         }
-
     }
 
     /**
