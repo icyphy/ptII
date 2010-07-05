@@ -11,6 +11,7 @@ import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GraphSearchTask;
+import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
@@ -282,8 +283,26 @@ public class AsynchronousDBConnection implements DBConnection {
                         + "is not supported by this type of DBConnection");
     }
 
+    /** 
+     * Execute the model name search task is not supported by the asynchronous 
+     * connection.
+     * Use a synchronous connection for that.
+     * 
+     * @param modelNameSearchTask Task that contains the model name to be 
+     * searched for.
+     * @return List of matching models.
+     * @throws DBExecutionException If thrown while searching the database.
+     */
+    public ArrayList<XMLDBModel> executeModelNameSearchTask(
+            ModelNameSearchTask modelNameSearchTask)
+            throws DBExecutionException {
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeModelNameSearchTask "
+                        + "is not supported by this type of DBConnection");
+    }
     /**
-     * Execute the necessary commands to save/update a model in the database according
+     * Execute the necessary commands to save/update a model in the 
+     * database according
      * to the model specification given in the task parameter.
      *
      * @param task

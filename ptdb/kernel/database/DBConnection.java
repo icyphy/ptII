@@ -11,6 +11,7 @@ import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GraphSearchTask;
+import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
@@ -176,6 +177,16 @@ public interface DBConnection {
     public ArrayList<XMLDBModel> executeGraphSearchTask(GraphSearchTask task)
             throws DBExecutionException;
 
+    /** Execute the model name search task.
+     * 
+     * @param modelNameSearchTask Task that contains the model name to be searched for.
+     * @return List of matching models.
+     * @throws DBExecutionException If thrown while searching the database.
+     */
+    public ArrayList<XMLDBModel> executeModelNameSearchTask(
+            ModelNameSearchTask modelNameSearchTask)
+            throws DBExecutionException;
+    
     /**
      * Execute the necessary commands to save/update a model in the database according
      * to the model specification given in the task parameter.
