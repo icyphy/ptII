@@ -510,16 +510,25 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(true);
 
         
-        XMLDBModel xmlModel = new XMLDBModel("new_test2000");
+        
+
+        java.util.Date time = new java.util.Date();
+
+        
+        XMLDBModel xmlModel = new XMLDBModel(String.valueOf(time.getTime()));
 
         xmlModel.setIsNew(true);
 
         
 
-        xmlModel.setModel("<entity name=\"new_test2000\" "
+        xmlModel.setModel("<entity name=\"new_test2001\" "
                         + "class=\"test.class\"></entity>");
 
+        xmlModel.setReferencedChildren(new ArrayList<String>());
+        
         CreateModelTask task = new CreateModelTask(xmlModel);
+        
+        
 
         try {
             oracleXMLDBConnection.executeCreateModelTask(task);
@@ -554,8 +563,7 @@ public class TestOracleXMLDBConnection {
 
         xmlModel.setIsNew(true);
        
-        xmlModel.setModelName("test");
-        xmlModel.setModel("<entity name=\"test\" " 
+        xmlModel.setModel("<entity name=\"modeltt\" " 
                 + "class=\"test.class\"></entity>");
 
         CreateModelTask task = new CreateModelTask(xmlModel);
@@ -668,7 +676,10 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(false);
 
         
-        XMLDBModel xmlModel = new XMLDBModel("test5");
+        java.util.Date time = new java.util.Date();
+
+        
+        XMLDBModel xmlModel = new XMLDBModel(String.valueOf(time.getTime()));
 
         xmlModel.setIsNew(true);
         
@@ -714,11 +725,27 @@ public class TestOracleXMLDBConnection {
         
         XMLDBModel xmlModel = new XMLDBModel("test2");
 
-        xmlModel.setIsNew(true);
+        xmlModel.setIsNew(false);
 
         xmlModel.setModel("<entity name=\"test2\" "
                         + "class=\"test1.class\"></entity>");
 
+        xmlModel.setReferencedChildren(new ArrayList<String>());
+        
+        //try to create the model first... so that the test case works.
+        CreateModelTask createTask = new CreateModelTask(xmlModel);
+
+        try {
+            
+            oracleXMLDBConnection.executeCreateModelTask(createTask);
+            
+        } catch (Exception e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        
+        
+        
         SaveModelTask task = new SaveModelTask(xmlModel);
 
         try {
@@ -818,7 +845,7 @@ public class TestOracleXMLDBConnection {
      * @exception Exception Thrown if the test fails and the exception was not handled.
      */
     @Test
-    public void testExecuteModelTask() throws Exception {
+    public void testExecuteGetModelTask() throws Exception {
 
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(false);
@@ -1246,10 +1273,13 @@ public class TestOracleXMLDBConnection {
         OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
                 .getSyncConnection(true);
 
-
+        
+        java.util.Date time = new java.util.Date();
 
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "new_author2", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, null);
+                "author_" + String.valueOf(time.getTime()),
+                XMLDBAttribute.ATTRIBUTE_TYPE_STRING, null);
+        
         CreateAttributeTask task = new CreateAttributeTask(attribute);
 
         try {
@@ -1296,8 +1326,10 @@ public class TestOracleXMLDBConnection {
 
 
 
+        java.util.Date time = new java.util.Date();
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "new_countries_test1", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, null);
+                "countries_" + String.valueOf(time.getTime()), 
+                XMLDBAttribute.ATTRIBUTE_TYPE_LIST, null);
         
         List<String> attributeValues = new ArrayList<String>();
         
@@ -1516,69 +1548,69 @@ public class TestOracleXMLDBConnection {
         
     }
 
-    /**
-     * Test the executeGetAttributesTask() method.
-     *
-     * <p>Test conditions:
-     * <br>Attribues.ptdbxml document does not exist in the database.</p>
-     *
-     * @exception Exception Thrown if the test fails and the exception was not handled.
-     */
-    @Test
-    public void testExecuteGetAttributesTask_DocumentDoesNotExist() throws Exception {
-
-
-        Environment environmentMock = PowerMock.createMock(Environment.class);
-        XmlContainer xmlContainerMock = PowerMock.createMock(XmlContainer.class);
-        XmlManager xmlManagerMock =  PowerMock.createMock(XmlManager.class);
-       
-       
-        //Object [] parameters = {Environment.class, XmlManagerConfig.class};
-        
-//        PowerMock.expectNew(XmlManager.class, Environment.class, null).andReturn(
-//                xmlManagerMock);
-        
-        
-        
-        EasyMock.expect(xmlManagerMock.openContainer("temp.dbxml")).andReturn(xmlContainerMock);
-       
-        EasyMock.expect(xmlContainerMock.getDocument("Attributes.ptdbxml")).andReturn(
-                null);
-        
-        PowerMock.replayAll();
-        
-                
-        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
-                .getSyncConnection(false);
-
-        
-        GetAttributesTask task = new GetAttributesTask();      
-        
-
-        try {
-        
-            
-            ArrayList<XMLDBAttribute> attributesList = oracleXMLDBConnection
-                    .executeGetAttributesTask(task);
-            
-            fail("No exception was thrown");
-            
-            
-        
-        } catch (DBExecutionException e) {
-            if (e.getMessage().contains("Could not fetch the Attribute.ptdbxml.")) {
-                assertTrue("Method threw the right exception", true);
-            } else {
-                fail("Wrong exception was thrown" + e.getMessage());
-            }
-            
-        
-        } finally {
-            if (oracleXMLDBConnection != null) {
-                oracleXMLDBConnection.closeConnection();
-            }
-        }
-    }
+//    /**
+//     * Test the executeGetAttributesTask() method.
+//     *
+//     * <p>Test conditions:
+//     * <br>Attribues.ptdbxml document does not exist in the database.</p>
+//     *
+//     * @exception Exception Thrown if the test fails and the exception was not handled.
+//     */
+//    @Test
+//    public void testExecuteGetAttributesTask_DocumentDoesNotExist() throws Exception {
+//
+//
+//        Environment environmentMock = PowerMock.createMock(Environment.class);
+//        XmlContainer xmlContainerMock = PowerMock.createMock(XmlContainer.class);
+//        XmlManager xmlManagerMock =  PowerMock.createMock(XmlManager.class);
+//       
+//       
+//        //Object [] parameters = {Environment.class, XmlManagerConfig.class};
+//        
+////        PowerMock.expectNew(XmlManager.class, Environment.class, null).andReturn(
+////                xmlManagerMock);
+//        
+//        
+//        
+//        EasyMock.expect(xmlManagerMock.openContainer("temp.dbxml")).andReturn(xmlContainerMock);
+//       
+//        EasyMock.expect(xmlContainerMock.getDocument("Attributes.ptdbxml")).andReturn(
+//                null);
+//        
+//        PowerMock.replayAll();
+//        
+//                
+//        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+//                .getSyncConnection(false);
+//
+//        
+//        GetAttributesTask task = new GetAttributesTask();      
+//        
+//
+//        try {
+//        
+//            
+//            ArrayList<XMLDBAttribute> attributesList = oracleXMLDBConnection
+//                    .executeGetAttributesTask(task);
+//            
+//            fail("No exception was thrown");
+//            
+//            
+//        
+//        } catch (DBExecutionException e) {
+//            if (e.getMessage().contains("Could not fetch the Attribute.ptdbxml.")) {
+//                assertTrue("Method threw the right exception", true);
+//            } else {
+//                fail("Wrong exception was thrown" + e.getMessage());
+//            }
+//            
+//        
+//        } finally {
+//            if (oracleXMLDBConnection != null) {
+//                oracleXMLDBConnection.closeConnection();
+//            }
+//        }
+//    }
     
     
     
@@ -1598,7 +1630,7 @@ public class TestOracleXMLDBConnection {
             .getSyncConnection(true);
 
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "author", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, "testId");
+                "author_test", XMLDBAttribute.ATTRIBUTE_TYPE_STRING, "a_testId");
 
         
         DeleteAttributeTask task = new DeleteAttributeTask(attribute);
@@ -1637,7 +1669,7 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(true);
 
         XMLDBAttribute attribute = new XMLDBAttribute(
-                "Countries", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "testId");
+                "Countries_test", XMLDBAttribute.ATTRIBUTE_TYPE_LIST, "c_testId");
 
         
         DeleteAttributeTask task = new DeleteAttributeTask(attribute);
