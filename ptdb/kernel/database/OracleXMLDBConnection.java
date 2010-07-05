@@ -24,6 +24,7 @@ import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GraphSearchTask;
+import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
@@ -290,6 +291,9 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 _xmlContainer.putDocument(_xmlTransaction,
                         model.getModelName(), modelBody);
+
+                _updateReferenceFile(model);
+
                 
                 return modelId;
 
@@ -541,6 +545,40 @@ public class OracleXMLDBConnection implements DBConnection {
         }   
     }
 
+    /** Check if the given model already exists in the database.
+     * 
+     * @param model XMLDBModel that needs to be looked up in the database.
+     * @return True if model exists, false otherwise.
+     * @throws DBExecutionException If thrown while getting hte model from the
+     * database.
+     */
+    public boolean doesModelExist(XMLDBModel model) throws DBExecutionException {
+        if (model == null) {
+            throw new DBExecutionException("Model object passed is null");
+        }
+
+        boolean doesExist = false;
+
+        try {
+            XmlQueryContext context = _xmlManager.createQueryContext();
+            if (context == null) {
+                throw new DBExecutionException(
+                        "Failed to executeAttributeSearch - The Query context is null "
+                                + "and cannot be used to execute queries.");
+            }
+            context.setEvaluationType(XmlQueryContext.Lazy);
+
+            XmlDocument dbModelDocument = _xmlContainer.getDocument(model
+                    .getModelName());
+            doesExist = dbModelDocument != null;
+        } catch (XmlException e) {
+            throw new DBExecutionException(
+                    "Error while checking if model exists - " + e.getMessage(),
+                    e);
+        }
+        return doesExist;
+    }
+    
     /**
      * Search models that contain the given attributes in the database.
      * 
@@ -891,6 +929,8 @@ public class OracleXMLDBConnection implements DBConnection {
                 
                 _xmlContainer.putDocument(_xmlTransaction, xmlDBModel.getModelName(), modelBody);
                 
+                _updateReferenceFile(xmlDBModel);
+                
 //                _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
                 
                 return modelId;
@@ -901,6 +941,51 @@ public class OracleXMLDBConnection implements DBConnection {
                     + e.getMessage(), e);
         }
 
+    }
+    
+    /** Execute the model name search task.
+     * 
+     * @param modelNameSearchTask Task that contains the model name to be searched for.
+     * @return List of matching models.
+     * @throws DBExecutionException If thrown while searching the database.
+     */
+    public ArrayList<XMLDBModel> executeModelNameSearchTask(
+            ModelNameSearchTask modelNameSearchTask)
+            throws DBExecutionException {
+
+        String modelNameSearchQuery = "for $entity in collection(\""
+                + _params.getContainerName()
+                + "\")/entity where $entity/@value[contains(.,\""
+                + modelNameSearchTask.getModelName() + "\")] "
+                + " return base-uri($const)";
+                
+        ArrayList<XMLDBModel> modelsList = new ArrayList<XMLDBModel>();
+        
+        try {
+            XmlQueryContext context = _xmlManager.createQueryContext();
+            if (context == null) {
+                throw new DBExecutionException(
+                        "Failed to executeAttributeSearch - The Query context is null "
+                                + "and cannot be used to execute queries.");
+            }
+            context.setEvaluationType(XmlQueryContext.Lazy);
+
+            XmlResults results = _xmlManager.query(modelNameSearchQuery,
+                    context, null);
+
+            if (results != null) {
+                XmlValue value;
+                while (results.hasNext()) {
+                    value = results.next();
+                    modelsList.add(new XMLDBModel(value.asString()));
+                }
+            }
+        } catch (XmlException e) {
+            throw new DBExecutionException(
+                    "Error while executing ModelNameSearchTask - "
+                            + e.getMessage(), e);
+        }
+        return modelsList;
     }
     
     /**
@@ -1551,6 +1636,33 @@ public class OracleXMLDBConnection implements DBConnection {
         return portSearchQuery.toString();
     }
     
+    /** Create the reference string for the given model.
+     * 
+     * @param xmlDBModel Model for which the reference string needs to be created.
+     * @return Reference string for the given model.
+     * @throws DBExecutionException If thrown while creating the reference string.
+     */
+    private String _createReferenceString(XMLDBModel xmlDBModel)
+            throws DBExecutionException {
+        StringBuffer referenceString = new StringBuffer();
+
+        referenceString.append("<entity ").append(XMLDBModel.DB_MODEL_ID_ATTR)
+                .append("=").append("\"").append(xmlDBModel.getModelId())
+                .append("\">");
+        HashMap<String, String> modelReferencesMap = new HashMap<String, String>();
+        for (String dbModelId : xmlDBModel.getReferencedChildren()) {
+
+            if (!modelReferencesMap.containsKey(dbModelId)) {
+                modelReferencesMap.put(dbModelId,
+                        _getModelReferences(dbModelId));
+            }
+            referenceString.append(modelReferencesMap.get(dbModelId));
+        }
+
+        referenceString.append("</entity>");
+        return referenceString.toString();
+    }
+    
     /** Create an xQuery to search for a single actor within the models in the 
      * database. 
      * 
@@ -1826,11 +1938,13 @@ public class OracleXMLDBConnection implements DBConnection {
     private String _getParentHierarchiesForModelFromDB(XMLDBModel model)
             throws DBExecutionException {
         StringBuffer referencesXMLBuf = null;
+        model.setModelId(_getModelIdFromModelName(model.getModelName()));
 
         String fetchHierarchyQuery = "doc(\""
                 + _params.getContainerName()
-                + "/ReferenceFile.ptdbxml\")/reference/*[descendant::entity[attribute::name=\""
-                + model.getModelName() + "\"]]";
+                + "/ReferenceFile.ptdbxml\")/reference/*[descendant::entity[attribute::"
+                + XMLDBModel.DB_MODEL_ID_ATTR + "=\"" + model.getModelId()
+                + "\"]]";
 
         try {
             XmlQueryContext context = _xmlManager.createQueryContext();
@@ -2109,7 +2223,71 @@ public class OracleXMLDBConnection implements DBConnection {
         return parentModelContentBuffer.toString(); 
     }
     
-    
+    /** Update the reference file with new references.
+     * 
+     * @param xmlDBModel Model for which the referene file needs to be updated.
+     * @throws DBExecutionException - If thrown while updating references.
+     */
+    private void _updateReferenceFile(XMLDBModel xmlDBModel)
+            throws DBExecutionException {
+
+        if (xmlDBModel.getReferencedChildren() == null) {
+            throw new DBExecutionException(
+                    "The references for this model have not been resolved or set.");
+        }
+
+        String referenceString = _createReferenceString(xmlDBModel);
+
+        try {
+
+            XmlQueryContext xmlQueryContext = _xmlManager.createQueryContext();
+
+            if (xmlQueryContext == null)
+                throw new DBExecutionException(
+                        "Failed to CreateAttributeTask - The Query context is null "
+                                + "and cannot be used to execute queries.");
+
+            String referenceQuery = null;
+
+            if (xmlDBModel.getIsNew()) {
+                referenceQuery = "insert node " + referenceString
+                        + " into doc(\"dbxml:/" + _params.getContainerName()
+                        + "/ReferenceFile.ptdbxml\")/reference";
+                _xmlManager.query(_xmlTransaction, referenceQuery,
+                        xmlQueryContext, null);
+
+            } else {
+                referenceQuery = "for $entity in doc(\""
+                        + _params.getContainerName()
+                        + "/ReferenceFile.ptdbxml\")/reference/*[descendant::entity[attribute::"
+                        + XMLDBModel.DB_MODEL_ID_ATTR
+                        + "=\""
+                        + xmlDBModel.getModelId()
+                        + "\"]] for $descendant in $entity/descendant::entity[attribute::"
+                        + XMLDBModel.DB_MODEL_ID_ATTR + "=\""
+                        + xmlDBModel.getModelId()
+                        + "\"] return replace node $descendant with "
+                        + referenceString;
+
+                _xmlManager.query(_xmlTransaction, referenceQuery,
+                        xmlQueryContext, null);
+
+                referenceQuery = "for $i in doc(\"dbxml:/"
+                        + _params.getContainerName()
+                        + "/ReferenceFile.ptdbxml\")/reference/entity[@DBModelId=\""
+                        + xmlDBModel.getModelId()
+                        + "\"] return replace node $i with " + referenceString;
+
+                _xmlManager.query(_xmlTransaction, referenceQuery,
+                        xmlQueryContext, null);
+
+            }
+
+        } catch (XmlException e) {
+            throw new DBExecutionException(
+                    "Error while updating referenceFile - " + e.getMessage(), e);
+        }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**
