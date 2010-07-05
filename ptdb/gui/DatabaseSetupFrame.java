@@ -69,7 +69,7 @@ public class DatabaseSetupFrame extends JFrame {
         resetButton = new javax.swing.JButton();
         _cancelButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         urlLabel.setText("URL");
 
