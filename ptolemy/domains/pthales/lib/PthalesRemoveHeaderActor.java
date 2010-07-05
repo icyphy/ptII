@@ -31,6 +31,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.domains.pthales.kernel.PthalesReceiver;
 import ptolemy.kernel.CompositeEntity;
@@ -127,13 +128,13 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
         
         for (int i = 0; i < nDims; i++) {
             dataSize *= ((IntToken) headerIn[2 * i + 1]).intValue();
-            dims[i] = headerIn[2 * i].toString();
+            dims[i] = ((StringToken)headerIn[2 * i]).stringValue();
             sizes[i] = ((IntToken)headerIn[2 * i + 1]).intValue();
         }
 
         // Ports modifications
-        PthalesIOPort.modifyPattern(portIn, dims, sizes);
         PthalesIOPort.modifyPattern(portOut, "global", dataSize);
+        PthalesIOPort.modifyPattern(portIn, dims, sizes);
         
         // Token Arrays from simulation
         tokensIn = portIn.get(0, dataSize);
