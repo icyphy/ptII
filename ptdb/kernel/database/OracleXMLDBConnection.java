@@ -1139,25 +1139,29 @@ public class OracleXMLDBConnection implements DBConnection {
             _xmlModelHerarichyMap = new HashMap<String, String>();
         }
 
-        NamedNodeMap attributes = currentNode.getAttributes();
-
+//        NamedNodeMap attributes = currentNode.getAttributes();
+//
         String currentModelName = "";
         String currentModelId = "";
-
-        if (attributes != null) {
-            for (int i = 0; i < attributes.getLength(); i++) {
-
-                Node node = attributes.item(i);
-
-                if (node.getNodeName().equalsIgnoreCase("DBModelId")) {
-
-                    currentModelId = node.getNodeValue();
-
-                    break;
-
-                }
-            }
-        }
+//
+//        if (attributes != null) {
+//            for (int i = 0; i < attributes.getLength(); i++) {
+//
+//                Node node = attributes.item(i);
+//
+//               
+//                if (node.getNodeName().equalsIgnoreCase("DBModelId")) {
+//
+//                    currentModelId = node.getNodeValue();
+//
+//                    break;
+//
+//                }
+//            }
+//        }
+        
+        
+        Utilities.getValueForAttribute(currentNode, XMLDBModel.DB_MODEL_ID_ATTR);
 
         if (currentModelId != null && currentModelId.length() > 0) {
             
@@ -1187,17 +1191,27 @@ public class OracleXMLDBConnection implements DBConnection {
                 try {
                     currentXMLDBModel = CacheManager.loadFromCache(
                             currentModelName);
+                    
+                    if (currentXMLDBModel != null) {
+                    
+                        _xmlModelHerarichyMap.put(
+                                currentXMLDBModel.getModelName(), 
+                                currentXMLDBModel.getModel());
+                        
+                        return currentXMLDBModel.getModel();
+                    }
+                    
                 } catch (Exception e) {
                     //do nothing...
                 }
-               
-                if (currentXMLDBModel == null) {
                     
-                    currentDbModel = _xmlContainer.getDocument(currentModelName);
-                    isLoadedFromCache = false;
-                }
+               
+                //load the model normally
+                currentDbModel = _xmlContainer.getDocument(currentModelName);
+                isLoadedFromCache = false;
+               
 
-                if (currentDbModel == null && currentXMLDBModel == null) {
+                if (currentDbModel == null) {
 
                     throw new DBExecutionException(
                             "Failed to execute GetModelsTask"
@@ -1208,14 +1222,10 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 }
 
-                if (isLoadedFromCache) {
+                                  
                     
-                    currentModelContent = currentXMLDBModel.getModel();
-                    
-                } else {
-                    
-                    currentModelContent = currentDbModel.getContentAsString();
-                }
+                currentModelContent = currentDbModel.getContentAsString();
+                
                 
 
             } catch (XmlException e) {
@@ -1225,7 +1235,7 @@ public class OracleXMLDBConnection implements DBConnection {
                         e);
             }
 
-            if (currentNode.hasChildNodes() && isLoadedFromCache == false) {
+            if (currentNode.hasChildNodes()) {
 
                 NodeList children = currentNode.getChildNodes();
 
@@ -1858,7 +1868,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
             String query = "for $x in doc('dbxml:/"+ _xmlContainer.getName() 
                     + "/" + modelName + "')"
-                    + "/entity/property[@name='DBModelId'] return data($x/@value)";
+                    + "/entity/property[@name='" + XMLDBModel.DB_MODEL_ID_ATTR 
+                    + "'] return data($x/@value)";
 
             XmlQueryExpression queryExpression = _xmlManager.prepare(query,
                     xmlContext);
@@ -1902,8 +1913,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
         try {
             
-            String searchClause = "$const/@name='DBModelId' and "
-                + "$const/@value='"+ dbModelId+"'";
+            String searchClause = "$const/@name='" + XMLDBModel.DB_MODEL_ID_ATTR 
+                + "' and $const/@value='"+ dbModelId +"'";
             
             ArrayList<String> result = _executeSingleAttributeMatch(searchClause);
             
@@ -2059,8 +2070,8 @@ public class OracleXMLDBConnection implements DBConnection {
             }
 
             String query = "doc('dbxml:/" + _xmlContainer.getName()
-                    + "/ReferenceFile.ptdbxml')" + "/reference/entity[@DBModelId='"
-                    + modelId + "']";
+                    + "/ReferenceFile.ptdbxml')" + "/reference/entity[@" 
+                    + XMLDBModel.DB_MODEL_ID_ATTR + "='" + modelId + "']";
 
             XmlQueryExpression queryExpression = _xmlManager.prepare(query,
                     xmlContext);
@@ -2195,7 +2206,8 @@ public class OracleXMLDBConnection implements DBConnection {
             String referenceModelId) {
         
         StringBuffer parentModelContentBuffer = new StringBuffer(modelContent);
-        String referenceString = "<entity DBModelId=\"" + referenceModelId + "\"";
+        String referenceString = "<entity " + XMLDBModel.DB_MODEL_ID_ATTR 
+                + "=\"" + referenceModelId + "\"";
         
         int startPosition = 0;
         boolean isDone = false;
