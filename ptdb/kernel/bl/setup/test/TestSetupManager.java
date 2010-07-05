@@ -129,11 +129,14 @@ public class TestSetupManager {
     @Test
     public void testTestConnection() throws Exception {
 
-        SetupParameters setupParam = new SetupParameters("D:/dbxml",
-                "temp.dbxml", "temp_cache.dbxml");
-
+        
+        
         SetupManager setupManager = new SetupManager();
 
+        SetupParameters setupParam = setupManager.getSetupParameters();
+        
+        
+        
         try {
             DBConnectorFactory.loadDBProperties();
 
@@ -166,7 +169,7 @@ public class TestSetupManager {
         boolean isSuccessful = false;
 
         try {
-            DBConnectorFactory.loadDBProperties();
+            DBConnectorFactory.loadDBProperties();    
 
             setupManager.testConnection(setupParam);
         } catch (DBConnectionException e) {
@@ -230,16 +233,27 @@ public class TestSetupManager {
 
         SetupManager setupManager = new SetupManager();
 
+        SetupParameters oldParam = setupManager.getSetupParameters();
+        
+        
         try {
             DBConnectorFactory.loadDBProperties();
 
             setupManager.updateDBConnectionSetupParameters(setupParam);
+            assertTrue("Completed the update.", true);
+            
+            
+            setupManager.updateDBConnectionSetupParameters(oldParam);
+            
         } catch (DBConnectionException e) {
 
             fail("An exception was thrown" + e.getMessage());
         }
 
-        assertTrue("Completed the update.", true);
+        
+        
+        
+        
     }
 
     /**
@@ -257,6 +271,8 @@ public class TestSetupManager {
 
         SetupManager setupManager = new SetupManager();
 
+        SetupParameters oldParam = setupManager.getSetupParameters();
+        
         boolean isSuccessful = false;
 
         try {
@@ -269,54 +285,8 @@ public class TestSetupManager {
 
         if (!isSuccessful) {
             fail("Updated completed without throwing an exception when it should.");
+            setupManager.updateDBConnectionSetupParameters(oldParam);
+            
         }
     }
-
-    //
-    //    /**
-    //     * Test the SetupManager.updateConnection() method.
-    //     * <p>
-    //     * The conditions for this test case:<br/>
-    //     * 
-    //     * - The properties file does not exist. To generate this scenario, we will 
-    //     * mock the properties file with a dummy one. In this case, the system should
-    //     * create the file and write the properties to it.
-    //     * </p>
-    //     * @exception Exception Thrown if the test fails and the exception was not
-    //     * handled.
-    //     */
-    //    @Test
-    //    public void testUpdateConnection_PropFileNotExist() throws Exception {
-    //        
-    //        SetupParameters setupParam = new SetupParameters("D:/dbxml", "temp1.dbxml", "temp_cache.dbxml");
-    //        
-    //
-    //        PowerMock.mockStatic(DBConnectorFactory.class);
-    //
-    //        
-    //   
-    //        EasyMock.expect(DBConnectorFactory._PROPERTIES_FILE_PATH).andReturn(
-    //                "$CLASSPATH/ptdb/config/ptdb-params11.properties");
-    //
-    //        PowerMock.replayAll();
-    //        
-    //        
-    //        SetupManager setupManager = new SetupManager();
-    //        
-    //        try {
-    //            setupManager.updateDBConnectionSetupParameters(setupParam);
-    //        } catch (DBConnectionException e) {
-    //            fail("An exception was thrown.");   
-    //        }
-    //        
-    //
-    //        File file = FileUtilities.nameToFile("$CLASSPATH/ptdb/config/ptdb-params11.properties", null);
-    //        
-    //        
-    //        
-    //        assertTrue("Check if the file was created", file.exists());
-    //        
-    //        PowerMock.verifyAll();
-    //    }
-
 }
