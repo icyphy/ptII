@@ -1184,7 +1184,7 @@ public class OracleXMLDBConnection implements DBConnection {
 //        }
         
         
-        Utilities.getValueForAttribute(currentNode, XMLDBModel.DB_MODEL_ID_ATTR);
+        currentModelId = Utilities.getValueForAttribute(currentNode, XMLDBModel.DB_MODEL_ID_ATTR);
 
         if (currentModelId != null && currentModelId.length() > 0) {
             
@@ -1207,7 +1207,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
             String currentModelContent = "";
             
-            boolean isLoadedFromCache = true;
+//            boolean isLoadedFromCache = true;
 
             try {
 
@@ -1231,7 +1231,7 @@ public class OracleXMLDBConnection implements DBConnection {
                
                 //load the model normally
                 currentDbModel = _xmlContainer.getDocument(currentModelName);
-                isLoadedFromCache = false;
+//                isLoadedFromCache = false;
                
 
                 if (currentDbModel == null) {
