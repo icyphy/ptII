@@ -357,6 +357,26 @@ public class AsynchronousDBConnection implements DBConnection {
         
     }
     
+    /**
+     * Execute the necessary commands to update the cache with the given model.
+     * 
+     * <p>If the model exists, replace it with the new model. 
+     * <br> If the model does not exist, save it in the cache.</p>
+     * 
+     * @param xmlDBModel The model object that needs to be added to the cache.
+     * @exception DBExecutionException Thrown if the operation fails.
+     * already exists.
+     */
+    public void executeUpdateModelInCache(XMLDBModel xmlDBModel)
+            throws DBExecutionException{
+        
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeUpdateModelInCache "
+                        + "is not supported by this type of DBConnection");
+        
+        
+    }
+    
 
     /**
      * Return a string representation for the

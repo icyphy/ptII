@@ -1109,6 +1109,60 @@ public class OracleXMLDBConnection implements DBConnection {
                     + e.getMessage(), e);
         }
     }
+    
+    /**
+     * Execute the necessary commands to update the cache with the given model.
+     * 
+     * <p>If the model exists, replace it with the new model. 
+     * <br> If the model does not exist, save it in the cache.</p>
+     * 
+     * @param xmlDBModel The model object that needs to be added to the cache.
+     * @exception DBExecutionException Thrown if the operation fails.
+     * already exists.
+     */
+    public void executeUpdateModelInCache(XMLDBModel xmlDBModel)
+            throws DBExecutionException{
+
+        try {
+
+            _checkXMLDBConnectionObjects(true, false, true);  
+            
+            String modelName = xmlDBModel.getModelName();
+            String modelBody = xmlDBModel.getModel();
+
+            
+            if (modelBody.indexOf("<!DOCTYPE") >= 0) {
+                
+                modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
+                modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
+            }
+            
+
+            XmlDocument dbModel = null;
+
+            try {
+                dbModel = _xmlContainer.getDocument(modelName);
+            } catch (XmlException e) {
+                //do nothing
+            }
+
+            //if the model exist
+            if (dbModel != null) {
+
+                _xmlContainer.deleteDocument(_xmlTransaction, dbModel);
+                _xmlContainer.putDocument(_xmlTransaction, xmlDBModel.getModelName(), modelBody);                
+                
+            } else {
+
+                _xmlContainer.putDocument(_xmlTransaction,
+                        modelName, modelBody);
+            }
+        } catch (XmlException e) {
+            throw new DBExecutionException("Failed to execute executeUpdateModelInCache - "
+                    + e.getMessage(), e);
+        }
+
+    }
 
     
 

@@ -223,5 +223,18 @@ public interface DBConnection {
      */
     public void executeUpdateAttributeTask(UpdateAttributeTask task)
             throws DBExecutionException;
+    
+    /**
+     * Execute the necessary commands to update the cache with the given model.
+     * 
+     * <p>If the model exists, replace it with the new model. 
+     * <br> If the model does not exist, save it in the cache.</p>
+     * 
+     * @param xmlDBModel The model object that needs to be added to the cache.
+     * @exception DBExecutionException Thrown if the operation fails.
+     * already exists.
+     */
+    public void executeUpdateModelInCache(XMLDBModel xmlDBModel)
+            throws DBExecutionException;
 
 }
