@@ -160,7 +160,8 @@ public class SaveModelManager {
         /*
          * First level nodes.
          */
-        NodeList entityList = modelDocument.getFirstChild().getChildNodes();
+        Node topEntityNode = modelDocument.getElementsByTagName("entity").item(0);
+        NodeList entityList = topEntityNode.getChildNodes();
 
         boolean isChanged = false;
 
@@ -246,7 +247,7 @@ public class SaveModelManager {
 
                     entityElement.setAttribute(XMLDBModel.DB_MODEL_ID_ATTR,
                             referencedModelId);
-                    modelDocument.getFirstChild().replaceChild(entityElement,
+                    topEntityNode.replaceChild(entityElement,
                             entity);
 
                     model.addReferencedChild(referencedModelId);

@@ -374,7 +374,10 @@ public class TestSaveModelManager {
             DBConnectionException {
         // Two referenceModels
         XMLDBModel model = new XMLDBModel("Test1");
-        String content = "<entity name=\"Test1\" class=\"ptolemy.actor.TypedCompositeActor\">"
+        String content = "<?xml version=\"1.0\" standalone=\"no\"?>"
+                + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"  "
+                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">"
+                + " <entity name=\"Test1\" class=\"ptolemy.actor.TypedCompositeActor\">"
                 + " <property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                 + " </property>"
                 + " <property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={271, 127, 823, 514}, maximized=false}\">"
@@ -390,7 +393,7 @@ public class TestSaveModelManager {
                 + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
                 + "</property>"
                 + "</entity>"
-                + "<property name=\"DBModelName\" value=\"ModelX\">"
+                + "<property name=\"DBModelId\" value=\"ModelX\">"
                 + "  </property>"
                 + "  <property name=\"DBReference\" value=\"TRUE\">  </property>"
                 + "  <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
@@ -403,7 +406,7 @@ public class TestSaveModelManager {
                 + "</entity>"
                 + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
                 + " </property>"
-                + "  <property name=\"DBModelName\" value=\"ModelX\">"
+                + "  <property name=\"DBModelId\" value=\"ModelX\">"
                 + "  </property>"
                 + "  <property name=\"DBReference\" value=\"TRUE\">  </property>"
                 + "</entity></entity>";
@@ -422,7 +425,6 @@ public class TestSaveModelManager {
         }
 
         // No referenceModels.
-
         XMLDBModel adderModel = DBModelFetcher.load("Adder");
 
         try {
@@ -430,10 +432,11 @@ public class TestSaveModelManager {
 
             assertTrue("Referenced models list is not empty.", adderModel
                     .getReferencedChildren() == null
-                    || adderModel.getReferencedChildren().size() > 0);
+                    || adderModel.getReferencedChildren().size() == 0);
         } catch (XMLDBModelParsingException e) {
             fail("Failed with error - " + e.getMessage());
         }
+
         // Reference model with extra attributes. 
         XMLDBModel oneAdderModel = DBModelFetcher.load("modelWithOneAdder");
 

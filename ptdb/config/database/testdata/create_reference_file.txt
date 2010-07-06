@@ -91,15 +91,16 @@ putDocument ReferenceFile.ptdbxml '<reference>
 			</entity>
 		</entity>		
 	</entity>
+	<entity DBModelId="H.xml"/>
 	<entity DBModelId="NoReferences" class="ptolemy.actor.TypedCompositeActor">
 	</entity>
 	<entity DBModelId="modeltt" class="ptolemy.actor.TypedCompositeActor">
 		<entity DBModelId="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
 		</entity>
 	</entity>
-		<entity DBModelId="X" class="ptolemy.actor.TypedCompositeActor">
+	<entity DBModelId="X" class="ptolemy.actor.TypedCompositeActor">
 		<entity DBModelId="Y" class="ptolemy.actor.TypedCompositeActor">
 		</entity>
 	</entity>
-
+	<entity DBModelId="Adder"/>
 </reference>'
