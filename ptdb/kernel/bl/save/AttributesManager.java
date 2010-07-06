@@ -40,7 +40,7 @@ public class AttributesManager {
      * @exception DBConnectionException Thrown from the database layer if the
      *  database layer fails to create a connection to the database.
      * @exception DBExecutionException Thrown from the database layer if the
-     *  database layer fails to execute the searching in the database. 
+     *  database layer fails to execute the operations in the database. 
      */
     public XMLDBAttribute createAttribute(XMLDBAttribute attribute)
             throws DBConnectionException, DBExecutionException {
@@ -81,7 +81,7 @@ public class AttributesManager {
      * @exception DBConnectionException Thrown from the database layer if the
      *  database layer fails to create a connection to the database.
      * @exception DBExecutionException Thrown from the database layer if the
-     *  database layer fails to execute the searching in the database.
+     *  database layer fails to execute the operations in the database.
      */
     public void deleteAttribute(XMLDBAttribute attribute)
             throws DBConnectionException, DBExecutionException {
@@ -119,7 +119,8 @@ public class AttributesManager {
      * @return The list of attributes stored in the database.
      * 
      * @exception DBExecutionException Thrown if the operation fails.
-     * @exception DBConnectionException Thrown if the connection fails.
+     * @exception DBConnectionException Thrown if the db layer fails to create
+     * the connection.
      * 
      */
     public List<XMLDBAttribute> getDBAttributes() throws DBExecutionException,
@@ -143,7 +144,7 @@ public class AttributesManager {
             if (_dbConnection != null) {
                 _dbConnection.abortConnection();
             }
-            throw new DBExecutionException("Failed to save the model - "
+            throw new DBExecutionException("Failed to fetch the attributes - "
                     + e.getMessage(), e);
 
         } finally {
@@ -162,7 +163,7 @@ public class AttributesManager {
      * @exception DBConnectionException Thrown from the database layer if the 
      *  database layer fails to create a connection to the database.
      * @exception DBExecutionException Thrown from the database layer if the
-     *  database layer fails to execute the searching in the database.
+     *  database layer fails to execute the operations in the database.
      */
     public void updateAttribute(XMLDBAttribute attribute)
             throws DBConnectionException, DBExecutionException {
@@ -197,7 +198,7 @@ public class AttributesManager {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////                public methods                                ////
+    ////                public variables                              ////
 
     private DBConnection _dbConnection;
 
