@@ -188,18 +188,7 @@ public class CacheManager {
                 String modelName = (String) iterator.next();
                 XMLDBModel cacheModel = new XMLDBModel(modelName);
                 cacheModel.setModel((String) assemblies.get(modelName));
-                
-                try {
-                    
-                    CreateModelTask createModelTask = new CreateModelTask(cacheModel);
-                    dbConnection.executeCreateModelTask(createModelTask);
-                
-                } catch (ModelAlreadyExistException e){
-                    
-                    SaveModelTask saveModelTask = new SaveModelTask(cacheModel);
-                    dbConnection.executeSaveModelTask(saveModelTask);
-                    
-                }
+                dbConnection.executeUpdateModelInCache(cacheModel);
             
             }
             

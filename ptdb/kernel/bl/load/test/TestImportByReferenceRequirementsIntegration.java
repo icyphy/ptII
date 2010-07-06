@@ -3,12 +3,19 @@ package ptdb.kernel.bl.load.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
 
+import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.DBConnectionException;
+import ptdb.common.exception.DBExecutionException;
+import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.save.SaveModelManager;
+import ptdb.kernel.database.DBConnection;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.Entity;
 
@@ -66,8 +73,11 @@ public class TestImportByReferenceRequirementsIntegration {
                     ((StringParameter) entity.getAttribute("DBReference"))
                         .getExpression(), 
                     "TRUE");
-            PowerMock.verifyAll();
+
+            removeModel(dbModel);            
             
+            PowerMock.verifyAll();
+
         }
     
     /**
@@ -122,7 +132,12 @@ public class TestImportByReferenceRequirementsIntegration {
                     ((StringParameter) entity.getAttribute("DBReference"))
                         .getExpression(), 
                     "TRUE");
+            
+
+            removeModel(dbModel);
+            
             PowerMock.verifyAll();
+            
             
         }
     
@@ -178,8 +193,12 @@ public class TestImportByReferenceRequirementsIntegration {
                     ((StringParameter) entity.getAttribute("DBReference"))
                         .getExpression(), 
                     "FALSE");
-            PowerMock.verifyAll();
             
+
+            removeModel(dbModel);
+            
+            PowerMock.verifyAll();
+
         }
     
     /**
@@ -234,6 +253,10 @@ public class TestImportByReferenceRequirementsIntegration {
                     ((StringParameter) entity.getAttribute("DBReference"))
                         .getExpression(), 
                     "FALSE");
+          
+
+            removeModel(dbModel);
+            
             PowerMock.verifyAll();
             
         }
@@ -269,4 +292,36 @@ public class TestImportByReferenceRequirementsIntegration {
             
         }
     
+    private void removeModel(XMLDBModel dbModel) throws Exception{
+        
+        DBConnection dbConnection = null;
+        
+        try {
+
+            ArrayList<XMLDBModel> modelList = new ArrayList();
+            modelList.add(dbModel);
+            dbConnection = DBConnectorFactory.getSyncConnection(true);
+            RemoveModelsTask removeModelsTask = new RemoveModelsTask(modelList);
+            dbConnection.executeRemoveModelsTask(removeModelsTask);
+            dbConnection.commitConnection();
+            
+        } catch (DBExecutionException e) {
+
+            if (dbConnection != null) {
+
+                dbConnection.abortConnection();
+            }
+
+            throw e;
+            
+        } finally {
+
+            if (dbConnection != null) {
+
+                dbConnection.closeConnection();
+
+            }
+        }
+        
+    }
 }

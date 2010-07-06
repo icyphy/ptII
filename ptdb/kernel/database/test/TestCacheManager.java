@@ -79,12 +79,13 @@ public class TestCacheManager {
             PowerMock.expectNew(XMLDBModel.class, "model" + i).andReturn(updateModel);
             updateModel.setModel((String) assemblies.get("model" + i));
             
-            CreateModelTask createModelTask = PowerMock.createMock(CreateModelTask.class);
-            PowerMock.expectNew(CreateModelTask.class, updateModel).andReturn(createModelTask);
+            //CreateModelTask createModelTask = PowerMock.createMock(CreateModelTask.class);
+            //PowerMock.expectNew(CreateModelTask.class, updateModel).andReturn(createModelTask);
             
-            EasyMock.expect(dbConnectionMock.executeCreateModelTask
-                    (createModelTask)).andReturn(
-                    "ID");
+            //EasyMock.expect(dbConnectionMock.executeCreateModelTask
+            //        (createModelTask)).andReturn(
+            //        "ID");
+            dbConnectionMock.executeUpdateModelInCache(updateModel);
         }
         
         dbConnectionMock.commitConnection();

@@ -20,6 +20,7 @@ import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
+import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptdb.kernel.database.CacheManager;
@@ -116,7 +117,7 @@ public class TestCacheRequirementsIntegration {
         assemblies.put(dbModel.getModelName(), dbModel.getModel());
         
         CacheManager.updateCache(assemblies);
-        
+        System.out.print("Got Here");
         assertTrue(true);
         
         CacheManager.removeFromCache(modelsToRemove);
@@ -124,7 +125,9 @@ public class TestCacheRequirementsIntegration {
         assertTrue(true);
         
         PowerMock.verifyAll();
- */
+ 
+        removeModel(dbModel);
+        */
     }
   
  
@@ -407,5 +410,39 @@ public class TestCacheRequirementsIntegration {
         PowerMock.verifyAll();
         
         */
+    }
+    
+    
+    private void removeModel(XMLDBModel dbModel) throws Exception{
+        
+        DBConnection dbConnection = null;
+        
+        try {
+
+            ArrayList<XMLDBModel> modelList = new ArrayList();
+            modelList.add(dbModel);
+            dbConnection = DBConnectorFactory.getSyncConnection(true);
+            RemoveModelsTask removeModelsTask = new RemoveModelsTask(modelList);
+            dbConnection.executeRemoveModelsTask(removeModelsTask);
+            dbConnection.commitConnection();
+            
+        } catch (DBExecutionException e) {
+
+            if (dbConnection != null) {
+
+                dbConnection.abortConnection();
+            }
+
+            throw e;
+            
+        } finally {
+
+            if (dbConnection != null) {
+
+                dbConnection.closeConnection();
+
+            }
+        }
+        
     }
 }
