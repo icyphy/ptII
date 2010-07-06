@@ -106,26 +106,23 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
         return _isSearchDone;
     }
 
-    
     /**
      * Set the DB connection for this result handler.  
      * 
      * @param connection The DBConnection instance to be set in this result 
      *  handler. 
      */
-    @Override
     public void setConnection(DBConnection connection) {
         _dbConnection = connection;
 
     }
-    
+
     /**
      * Implement the update method from the Observer interface. 
      * 
      * @param o The object that this SearchResultBuffer is observing. 
      * @param arg The argument passed to this SearcResultBuffer. 
      */
-    @Override
     public void update(Observable o, Object arg) {
         _isSearchCancelled = true;
     }
@@ -141,7 +138,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
         if (_dbConnection != null) {
             _dbConnection.closeConnection();
         }
-        
+
         _isSearchDone = true;
 
         setChanged();
@@ -154,7 +151,7 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
     ////                         private variables                 ////
 
     private DBConnection _dbConnection;
-    
+
     private boolean _isSearchCancelled = false;
 
     private boolean _isSearchDone = false;

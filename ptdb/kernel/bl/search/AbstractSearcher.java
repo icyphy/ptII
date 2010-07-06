@@ -44,7 +44,7 @@ public abstract class AbstractSearcher implements ResultHandler {
      */
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException {
-        
+
         // check whether searching is canceled 
         if (isSearchCancelled()) {
             return;
@@ -92,12 +92,13 @@ public abstract class AbstractSearcher implements ResultHandler {
                     if (!(this instanceof HierarchyFetcher)
                             && !(this instanceof AttributeSearcher)) {
                         if (_isSearchCriteriaSet()) {
-                            _toPassResults = XMLDBModelManager.intersectResults(
-                                    _previousResults, _currentResults);
+                            _toPassResults = XMLDBModelManager
+                                    .intersectResults(_previousResults,
+                                            _currentResults);
                         } else {
                             _toPassResults = _previousResults;
                         }
-                        
+
                     } else {
                         _toPassResults = _currentResults;
                     }

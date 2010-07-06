@@ -8,7 +8,7 @@ import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// NameSearcher
 
 /**
@@ -34,12 +34,12 @@ public class NameSearcher extends AbstractSearcher implements
         _modelNameCriteria = searchCriteria.getModelName();
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ////                    protected methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     @Override
     protected boolean _isSearchCriteriaSet() {
-        if (_modelNameCriteria == null || _modelNameCriteria.isEmpty()) {
+        if (_modelNameCriteria == null || _modelNameCriteria.length() == 0) {
             return false;
         }
 
@@ -71,14 +71,13 @@ public class NameSearcher extends AbstractSearcher implements
             // The db layer cannot perform the searching, so make the search 
             // criteria not set. 
             _modelNameCriteria = null;
-        } 
+        }
 
         pass();
     }
 
-
-    //////////////////////////////////////////////////////////////////////
-    ////                    private variables                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /**
      * The search criteria of model name.

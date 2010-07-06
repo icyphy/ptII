@@ -20,7 +20,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TestSearchByAttributeIntegration
 
 /**
@@ -36,8 +36,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class TestSearchByAttributeIntegration {
 
-    //////////////////////////////////////////////////////////////////////
-    ////                public methods                                ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Test searching the models by empty search criteria. 

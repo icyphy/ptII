@@ -45,7 +45,7 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////        protected methods                                  ////
+    ////                         protected methods                 ////
 
     @Override
     protected void _search() throws DBConnectionException, DBExecutionException {
@@ -110,7 +110,7 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////        private variables                                  ////
+    ////                         private variables                 ////
     private MoMLParser _parser;
 
 }

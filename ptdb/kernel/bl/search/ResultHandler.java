@@ -27,7 +27,7 @@ import ptdb.kernel.database.DBConnection;
 public interface ResultHandler {
 
     ///////////////////////////////////////////////////////////////////
-    ////        public methods                                     ////
+    ////                         public methods                    ////
 
     /**
      * To be implemented by the concrete classes to implement the
@@ -51,7 +51,6 @@ public interface ResultHandler {
      */
     public boolean isSearchCancelled();
 
-    
     /**
      * Set the DB connection for this result handler.  
      * 
@@ -59,8 +58,7 @@ public interface ResultHandler {
      *  handler. 
      */
     public void setConnection(DBConnection connection);
-    
-    
+
     /**
      * Notify the search result buffer that the searching is done.
      * @exception DBConnectionException Thrown if the DB connection cannot be

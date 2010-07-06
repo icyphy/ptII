@@ -38,7 +38,7 @@ public class XQueryGraphSearcher extends GraphSearcher implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////        protected methods                                  ////
+    ////                         protected methods                 ////
 
     @Override
     protected void _search() throws DBExecutionException {

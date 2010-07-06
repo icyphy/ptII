@@ -34,11 +34,11 @@ public class AttributeSearcher extends AbstractSearcher implements
     public AttributeSearcher(SearchCriteria searchCriteria) {
 
         this._attributesCriteria = searchCriteria.getAttributes();
-       
+
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////        protected methods                                  ////
+    ////                         protected methods                 ////
 
     /**
      * Checks whether the attribute search criteria has been set in
@@ -75,18 +75,18 @@ public class AttributeSearcher extends AbstractSearcher implements
         // set the returned results
         _currentResults = _dbConnection
                 .executeAttributeSearchTask(attributeSearchTask);
-        
+
         if (_currentResults == null) {
             // The db layer cannot perform the searching, so make the search 
             // criteria not set. 
             _attributesCriteria = null;
-        } 
+        }
 
         pass();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////       private variables                                   ////
+    ////                         private variables                 ////
 
     /**
      * This field contains the search criteria of attributes.
