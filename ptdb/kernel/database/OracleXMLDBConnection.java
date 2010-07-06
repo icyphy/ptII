@@ -978,9 +978,9 @@ public class OracleXMLDBConnection implements DBConnection {
 
         String modelNameSearchQuery = "for $entity in collection(\""
                 + _params.getContainerName()
-                + "\")/entity where $entity/@value[contains(.,\""
+                + "\")/entity where $entity/@name[contains(.,\""
                 + modelNameSearchTask.getModelName() + "\")] "
-                + " return base-uri($const)";
+                + " return base-uri($entity)";
                 
         ArrayList<XMLDBModel> modelsList = new ArrayList<XMLDBModel>();
         

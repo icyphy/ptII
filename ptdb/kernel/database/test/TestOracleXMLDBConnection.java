@@ -6,12 +6,10 @@ package ptdb.kernel.database.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -26,12 +24,11 @@ import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateAttributeTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
-import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelTask;
-import ptdb.common.dto.GraphSearchTask;
+import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.XMLDBAttribute;
@@ -40,29 +37,14 @@ import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.DBConnectorFactory;
-import ptdb.kernel.database.CacheManager;
 import ptdb.kernel.database.OracleXMLDBConnection;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.AddSubtract;
-import ptolemy.actor.lib.MultiplyDivide;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 
-import com.sleepycat.db.Environment;
-import com.sleepycat.db.EnvironmentConfig;
-import com.sleepycat.dbxml.XmlContainer;
 import com.sleepycat.dbxml.XmlException;
-import com.sleepycat.dbxml.XmlManager;
-import com.sleepycat.dbxml.XmlManagerConfig;
 
 ///////////////////////////////////////////////////////////////////
 //// TestOracleXMLDBConnection
@@ -626,6 +608,129 @@ public class TestOracleXMLDBConnection {
             }
         }
 
+    }
+    
+    @Test
+    public void testExecuteModelNameSearchTask() throws DBConnectionException {
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+        
+        try {
+            ArrayList<XMLDBModel> list = oracleXMLDBConnection
+                    .executeModelNameSearchTask(new ModelNameSearchTask("Adder"));
+            assertTrue("Model not returned. ", list.size() == 1);
+
+        } catch (DBExecutionException e) { 
+            fail("Failed with exception - " + e.getMessage());
+        }
+
+        try {
+            ArrayList<XMLDBModel> list = oracleXMLDBConnection
+                    .executeModelNameSearchTask(new ModelNameSearchTask("AdderDoesNotExist"));
+            assertTrue("Model returned.", list.size() == 0);
+
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+        
+        try {
+            ArrayList<XMLDBModel> list = oracleXMLDBConnection
+                    .executeModelNameSearchTask(new ModelNameSearchTask("model"));
+            assertTrue("Model returned.", list.size() > 1);
+
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+    }
+    /*@Test
+    public void testUpdateReferenceFile() throws DBConnectionException {
+//        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+//        .getSyncConnection(true);
+//        try {
+//            oracleXMLDBConnection._updateReferenceFile(new XMLDBModel("Test"));
+//            fail("No Exception thrown");
+//        } catch (DBExecutionException e) {
+//            
+//        }
+        
+        try {
+            XMLDBModel existingModel = new XMLDBModel("D.xml");
+            existingModel.setIsNew(false);
+            existingModel.setModelId("D.xml");
+            existingModel.setReferencedChildren(new ArrayList<String>());
+            oracleXMLDBConnection._updateReferenceFile(existingModel);
+            
+        } catch (DBExecutionException e) {
+            fail("Failed with xception - " + e.getMessage());
+        }
+        
+        try {
+            XMLDBModel newModel = new XMLDBModel("NewD.xml");
+            newModel.setIsNew(true);
+            newModel.setModelId("NewD.xml");
+            newModel.setReferencedChildren(new ArrayList<String>());
+            oracleXMLDBConnection._updateReferenceFile(newModel);
+            
+        } catch (DBExecutionException e) {
+            fail("Failed with xception - " + e.getMessage());
+        }
+        
+        try {
+            XMLDBModel newModelWithChildren = new XMLDBModel("NewD1.xml");
+            newModelWithChildren.setIsNew(true);
+            newModelWithChildren.setModelId("NewD1.xml");
+            newModelWithChildren.addReferencedChild("X");
+            oracleXMLDBConnection._updateReferenceFile(newModelWithChildren);
+            
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+        
+        try {
+            XMLDBModel existingModelWithChildren = new XMLDBModel("D.xml");
+            existingModelWithChildren.setIsNew(false);
+            existingModelWithChildren.setModelId("D.xml");
+            existingModelWithChildren.addReferencedChild("X");
+            oracleXMLDBConnection._updateReferenceFile(existingModelWithChildren);
+            
+        } catch (DBExecutionException e) {
+            fail("Failed with xception - " + e.getMessage());
+        }
+        oracleXMLDBConnection.abortConnection();
+        oracleXMLDBConnection.closeConnection();
+    }*/
+    /**
+     * Test the doesModelExist() method.
+     * @throws DBConnectionException If thrown while creating a connection.
+     */
+
+    @Test 
+    public void testDoesModelExist() throws DBConnectionException {
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+        .getSyncConnection(false);
+        
+        try {
+            XMLDBModel existingModel = new XMLDBModel("X");
+            boolean doesExist = oracleXMLDBConnection.doesModelExist(existingModel);
+            assertTrue("An existing model is flagged as does not exist.", doesExist == true);
+        } catch (DBExecutionException e) {
+            fail("Test failed with exception - " + e.getMessage());
+        } 
+        
+        try {
+            XMLDBModel nonExistingModel = new XMLDBModel("X_doesnotExist");
+            boolean doesExist = oracleXMLDBConnection.doesModelExist(nonExistingModel);
+            assertTrue("A non-existing model is flagged existing.", doesExist == false);
+        } catch (DBExecutionException e) {
+            fail("Test failed with exception - " + e.getMessage());
+        }
+        
+        try {
+            oracleXMLDBConnection.doesModelExist(null);
+            fail("No exception was thrown for null model.");
+        } catch (DBExecutionException e) {
+            
+        }
     }
 
     /**
