@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -17,7 +19,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -70,7 +71,54 @@ public class AttributeListEditFrame extends JFrame {
         _editListItemsLabel = new JLabel();
         _saveButton = new JButton();
 
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        //        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        addWindowListener(new WindowListener() {
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                // Do nothing special. 
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                // Do nothing special. 
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                // Do nothing special. 
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                // Do nothing special. 
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                _parentFrame.setEnabled(true);
+                AttributeListEditFrame.this.dispose();
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                _parentFrame.setEnabled(true);
+                AttributeListEditFrame.this.dispose();
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                // Do nothing special. 
+
+            }
+        });
 
         _itemsJList.setModel(new ArrayModelList(_storedListItems));
 
