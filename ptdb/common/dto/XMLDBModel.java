@@ -23,12 +23,13 @@ import java.util.List;
  * @Pt.AcceptedRating Red (yalsaeed)
  *
  */
-public class XMLDBModel {    
-    
-	/** String for DBModelId */
+public class XMLDBModel {
+
+    /** String for DBModelId */
     public static final String DB_MODEL_ID_ATTR = "DBModelId";
     /** String for DBReference */
     public static final String DB_REFERENCE_ATTR = "DBReference";
+
     /**
      * Construct a XMLDBModel instance
      * with the given model name.
@@ -41,7 +42,7 @@ public class XMLDBModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /**
      * Add the given parent list to the model's
      * parent list.
@@ -67,6 +68,7 @@ public class XMLDBModel {
 
         _listReferencedChildren.add(modelId);
     }
+
     /**
      * Return True or false based on if the model is new or it exists in the database.
      * @return True or false based on if the model is new or it exists in the database.
@@ -96,7 +98,7 @@ public class XMLDBModel {
     public String getModelId() {
         return _modelId;
     }
-    
+
     /**
      * Return the model name.
      * @return The model name.
@@ -160,8 +162,7 @@ public class XMLDBModel {
     public void setModelId(String modelId) {
         _modelId = modelId;
     }
-    
-    
+
     /**
      * Set the model name.
      * @param modelName The model name.
@@ -172,7 +173,6 @@ public class XMLDBModel {
         _modelName = modelName;
     }
 
-   
     /**
      * Set the parents for the current model.
      * @param listParents List of parents for this model.
@@ -183,7 +183,6 @@ public class XMLDBModel {
         _listParents = listParents;
     }
 
-    
     /**
      * Set the first level referenced children entities  for the current model.
      * @param listChildren List of first level referenced children entities
@@ -195,9 +194,20 @@ public class XMLDBModel {
         _listReferencedChildren = listChildren;
     }
 
+    /**
+     * Get the String representation of this model. 
+     * 
+    * @return The String representation of this model. 
+    */
+    @Override
+    public String toString() {
+
+        return super.toString() + "@ModelName:" + _modelName;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /**
      * True or false value to indicate whether the model is in the database or
      * a new model.
@@ -211,13 +221,13 @@ public class XMLDBModel {
      * the current model. 
      */
     private List<String> _listReferencedChildren;
-    
+
     /** The content of the model in a string. */
     private String _modelContent;
 
     /** Model name. */
     private String _modelName;
-    
+
     /** Model id. */
     private String _modelId;
 

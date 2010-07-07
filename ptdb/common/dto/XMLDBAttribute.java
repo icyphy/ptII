@@ -99,7 +99,7 @@ public class XMLDBAttribute {
         }
 
     }
-    
+
     /**
      * Get the attribute list values without checking the attribute's type. 
      * 
@@ -127,7 +127,7 @@ public class XMLDBAttribute {
     public void setAttributeName(String attributName) {
         _attributeName = attributName;
     }
-    
+
     /**
      * Set the type of this attribute. 
      * 
@@ -149,7 +149,7 @@ public class XMLDBAttribute {
             _attributeValues = attributeValues;
         }
     }
-    
+
     /**
      * Set the list values to the attribute regardless of the attribute type. 
      * 
@@ -157,6 +157,18 @@ public class XMLDBAttribute {
      */
     public void setAttributeValuesPlain(List<String> attributeValues) {
         _attributeValues = attributeValues;
+    }
+
+    /**
+     * Get the String representation of this object information. 
+     * 
+     * @return String representation of the attribute information. 
+     */
+    @Override
+    public String toString() {
+
+        return super.toString() + "@Name:" + _attributeName + "@Type:"
+                + _attributeType;
     }
 
     /**
