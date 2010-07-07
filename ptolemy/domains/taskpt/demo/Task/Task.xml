@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="ThreadDirector" class="ptolemy.domains.taskpt.kernel.ThreadDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 60.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -37,7 +37,7 @@
     <entity name="Load" class="ptolemy.domains.taskpt.lib.Load">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 245.0]">
         </property>
-        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="3">
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="4">
         </property>
     </entity>
     <entity name="Task" class="ptolemy.domains.taskpt.lib.Task">
@@ -47,7 +47,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 170.0]">
         </property>
-        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="4">
+        <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="3">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 142, 823, 516}, maximized=false}">
         </property>
@@ -109,25 +109,25 @@
             <property name="sequenceNumber" class="ptolemy.domains.sequence.kernel.SequenceAttribute" value="3">
             </property>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="port" relation="relation"/>
-        <link port="port2" relation="relation2"/>
         <link port="port2" relation="relation3"/>
-        <link port="Const.output" relation="relation2"/>
-        <link port="Const2.output" relation="relation3"/>
+        <link port="port2" relation="relation2"/>
+        <link port="Const.output" relation="relation3"/>
+        <link port="Const2.output" relation="relation2"/>
         <link port="DisplayAll.input" relation="relation"/>
     </entity>
     <entity name="Alloc2" class="ptolemy.domains.taskpt.lib.Alloc">
         <property name="size" class="ptolemy.actor.parameters.PortParameter" value="2">
         </property>
-        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 240.0]">
         </property>

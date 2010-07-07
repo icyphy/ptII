@@ -103,14 +103,25 @@ public class TaskDirector extends TaskPtDirector {
     protected boolean _transferInputs(IOPort port)
             throws IllegalActionException {
 
+        if (_debugging) {
+            _debug("Calling transferInputs on port: " + port.getFullName());
+        }
+
         // Do not transfer inputs, if the port is also an output port.
         // In this case the port contains the address for writing the output.
         if (port.isOutput()) {
-            return true;
-        }
 
-        if (_debugging) {
-            _debug("Calling transferInputs on port: " + port.getFullName());
+            // remove present tokens on outputs
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                try {
+                    while (port.hasTokenInside(i)) {
+                        port.getInside(i);
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                }
+            }
+            return true;
         }
 
         if (!port.isInput() || !port.isOpaque()) {
@@ -149,12 +160,12 @@ public class TaskDirector extends TaskPtDirector {
                         for (int i = 0; i < insideWidth; ++i) {
                             port.sendInside(i, token);
                         }
-                        _debug("Transferring input " + t + " from address "
-                                + (addr + j) + " from " + port.getName());
+                        _debug("Transferring input token " + token + " from address "
+                                + (addr + j));
                     }
 
                 } else {
-                    throw new IllegalActionException(this,port,
+                    throw new IllegalActionException(this, port,
                             "Wrong type of token. PtrToken required.");
                 }
                 wasTransferred = true;
@@ -222,9 +233,9 @@ public class TaskDirector extends TaskPtDirector {
                     if (offset < size) {
                         mem.write(addr + offset, t);
                         if (_debugging) {
-                            _debug("Writing output " + t + " to address "
-                                    + (addr + offset) + " from "
-                                    + port.getName());
+                            _debug("Writing token " + t
+                                    + " present on inside channel " + i
+                                    + " to address " + (addr + offset));
                         }
                         offset++;
                     }
