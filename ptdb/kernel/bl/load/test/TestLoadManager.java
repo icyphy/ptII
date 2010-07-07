@@ -158,7 +158,7 @@ public class TestLoadManager {
             assertEquals(entity.getName(), "modelName");
 
             assertEquals(
-                    ((StringParameter) entity.getAttribute("DBReference"))
+                    ((StringParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "TRUE");
             PowerMock.verifyAll();
@@ -187,7 +187,7 @@ public class TestLoadManager {
                         + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
                         + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                         + "</property>"
-                        + "<property name=\"DBReference\" class=\"ptolemy.data.expr.StringParameter\" value=\"FALSE\"></property>"
+                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringParameter\" value=\"FALSE\"></property>"
                         + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
                         + "</property>"
                         + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
@@ -218,7 +218,7 @@ public class TestLoadManager {
             assertEquals(entity.getName(), "modelName");
 
             assertEquals(
-                    ((StringParameter) entity.getAttribute("DBReference"))
+                    ((StringParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "TRUE");
             PowerMock.verifyAll();
@@ -277,7 +277,7 @@ public class TestLoadManager {
             assertEquals(entity.getName(), "modelName");
 
             assertEquals(
-                    ((StringParameter) entity.getAttribute("DBReference"))
+                    ((StringParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "FALSE");
             PowerMock.verifyAll();
@@ -306,7 +306,7 @@ public class TestLoadManager {
                         + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
                         + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                         + "</property>"
-                        + "<property name=\"DBReference\" class=\"ptolemy.data.expr.StringParameter\" value=\"FALSE\"></property>"
+                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringParameter\" value=\"FALSE\"></property>"
                         + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
                         + "</property>"
                         + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
@@ -337,7 +337,7 @@ public class TestLoadManager {
             assertEquals(entity.getName(), "modelName");
 
             assertEquals(
-                    ((StringParameter) entity.getAttribute("DBReference"))
+                    ((StringParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "FALSE");
             PowerMock.verifyAll();

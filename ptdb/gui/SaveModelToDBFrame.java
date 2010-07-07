@@ -18,20 +18,15 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
+import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.save.SaveModelManager;
-import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.icon.ValueIcon;
-import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 ///////////////////////////////////////////////////////////////////
 //// SaveModelToDBFrame
@@ -75,8 +70,8 @@ public class SaveModelToDBFrame extends JFrame {
             
             if(attribute instanceof StringParameter){
                 
-                if (((StringParameter) attribute).getName()!="DBReference" && 
-                        ((StringParameter) attribute).getName()!="DBModelID" &&
+                if (((StringParameter) attribute).getName()!= XMLDBModel.DB_REFERENCE_ATTR && 
+                        ((StringParameter) attribute).getName()!=XMLDBModel.DB_MODEL_ID_ATTR &&
                         _attributesListPanel.isDBAttribute(((StringParameter) attribute).getName())){
                     
                     _orignialAttributes.add((StringParameter) attribute);
@@ -131,8 +126,8 @@ public class SaveModelToDBFrame extends JFrame {
             // reference indication or the model name AND it is one of the
             // attributes configured in the DB, show it in the panel.
             if (stringParameter instanceof StringParameter && 
-                ((StringParameter) stringParameter).getName()!="DBReference" && 
-                ((StringParameter) stringParameter).getName()!="DBModelID" &&
+                ((StringParameter) stringParameter).getName()!= XMLDBModel.DB_REFERENCE_ATTR && 
+                ((StringParameter) stringParameter).getName()!=XMLDBModel.DB_MODEL_ID_ATTR &&
                 _attributesListPanel.isDBAttribute(((StringParameter) 
                       stringParameter).getName())) {
                 
@@ -228,19 +223,19 @@ public class SaveModelToDBFrame extends JFrame {
                         "The model was successfully saved.", "Success",
                         JOptionPane.INFORMATION_MESSAGE, null);
 
-                if (_modelToSave.getAttribute("DBModelID") == null) {
+                if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) == null) {
                     
                     StringParameter dbModelParam = new StringParameter(
-                            _modelToSave, "DBModelID");
+                            _modelToSave, XMLDBModel.DB_MODEL_ID_ATTR);
                     dbModelParam.setExpression(modelId);
                     dbModelParam.setContainer(_modelToSave);
                     
                 } else if(!((StringParameter)
-                        _modelToSave.getAttribute("DBModelID")).getExpression()
+                        _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)).getExpression()
                         .equals(modelId)){
                     
                     ((StringParameter)
-                            _modelToSave.getAttribute("DBModelID"))
+                            _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                             .setExpression(modelId);
                     
                 }
@@ -311,7 +306,7 @@ public class SaveModelToDBFrame extends JFrame {
 
         // It is not new if the model has the DBModel tag 
         // and the model name is still the same.
-        if (_modelToSave.getAttribute("DBReference") != null
+        if (_modelToSave.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null
                 && _modelToSave.getName().equals(_initialModelName)) {
             
             isNew = false;
@@ -400,8 +395,8 @@ public class SaveModelToDBFrame extends JFrame {
             // set of attributes obtained from the DB.
             for (StringParameter attribute : attributesList) {
 
-                if (attribute.getName()!="DBReference" && 
-                        attribute.getName()!="DBModelID" &&
+                if (attribute.getName()!=XMLDBModel.DB_REFERENCE_ATTR && 
+                        attribute.getName()!=XMLDBModel.DB_MODEL_ID_ATTR &&
                         _attributesListPanel.isDBAttribute(attribute.getName())){
                     
                     attribute.setContainer(null);
@@ -457,9 +452,9 @@ public class SaveModelToDBFrame extends JFrame {
             
             String id = null;
             
-            if (_modelToSave.getAttribute("DBModelID") != null){
+            if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null){
 
-                id = ((StringParameter)_modelToSave.getAttribute("DBModelID"))
+                id = ((StringParameter)_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                     .getExpression();
             
             }
@@ -486,10 +481,10 @@ public class SaveModelToDBFrame extends JFrame {
 
         try {
 
-            if (_modelToSave.getAttribute("DBReference") == null) {
+            if (_modelToSave.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
                 StringParameter dbModelParam = new StringParameter(
-                        _modelToSave, "DBReference");
+                        _modelToSave, XMLDBModel.DB_REFERENCE_ATTR);
                 dbModelParam.setExpression("FALSE");
                 dbModelParam.setContainer(_modelToSave);
                 
@@ -511,8 +506,8 @@ public class SaveModelToDBFrame extends JFrame {
             // set of attributes obtained from the DB.
             for (StringParameter attribute : attributesList) {
 
-                if (attribute.getName()!="DBReference" && 
-                        attribute.getName()!="DBModelID" &&
+                if (attribute.getName()!= XMLDBModel.DB_REFERENCE_ATTR && 
+                        attribute.getName()!= XMLDBModel.DB_MODEL_ID_ATTR &&
                         _attributesListPanel.isDBAttribute(attribute.getName())){
                     
                     attribute.setContainer(null);

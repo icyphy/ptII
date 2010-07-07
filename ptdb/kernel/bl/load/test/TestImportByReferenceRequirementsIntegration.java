@@ -6,11 +6,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 
 import org.junit.Test;
-import org.powermock.api.easymock.PowerMock;
 
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.XMLDBModel;
-import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.bl.load.LoadManager;
@@ -70,13 +68,12 @@ public class TestImportByReferenceRequirementsIntegration {
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
-                    ((StringParameter) entity.getAttribute("DBReference"))
+                    ((StringParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "TRUE");
 
-            removeModel(dbModel);            
+            removeModel(new XMLDBModel(dbModel.getModelName()));            
             
-            PowerMock.verifyAll();
 
         }
     
@@ -102,7 +99,7 @@ public class TestImportByReferenceRequirementsIntegration {
                         + "<entity name=\"" + modelName + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
                         + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                         + "</property>"
-                        + "<property name=\"DBReference\" class=\"ptolemy.data.expr.StringParameter\" value=\"FALSE\"></property>"
+                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringParameter\" value=\"FALSE\"></property>"
                         + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
                         + "</property>"
                         + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
@@ -129,14 +126,13 @@ public class TestImportByReferenceRequirementsIntegration {
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
-                    ((StringParameter) entity.getAttribute("DBReference"))
+                    ((StringParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "TRUE");
             
 
-            removeModel(dbModel);
+            removeModel(new XMLDBModel(dbModel.getModelName()));
             
-            PowerMock.verifyAll();
             
             
         }
@@ -190,14 +186,13 @@ public class TestImportByReferenceRequirementsIntegration {
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
-                    ((StringParameter) entity.getAttribute("DBReference"))
+                    ((StringParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "FALSE");
             
 
-            removeModel(dbModel);
+            removeModel(new XMLDBModel(dbModel.getModelName()));
             
-            PowerMock.verifyAll();
 
         }
     
@@ -223,7 +218,7 @@ public class TestImportByReferenceRequirementsIntegration {
                         + "<entity name=\"" + modelName + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
                         + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                         + "</property>"
-                        + "<property name=\"DBReference\" class=\"ptolemy.data.expr.StringParameter\" value=\"FALSE\"></property>"
+                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringParameter\" value=\"FALSE\"></property>"
                         + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
                         + "</property>"
                         + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
@@ -250,14 +245,13 @@ public class TestImportByReferenceRequirementsIntegration {
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
-                    ((StringParameter) entity.getAttribute("DBReference"))
+                    ((StringParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "FALSE");
           
 
-            removeModel(dbModel);
+            removeModel(new XMLDBModel(dbModel.getModelName()));
             
-            PowerMock.verifyAll();
             
         }
     
@@ -288,7 +282,6 @@ public class TestImportByReferenceRequirementsIntegration {
         
         assertTrue(isSuccess);
 
-        PowerMock.verifyAll();
             
         }
     

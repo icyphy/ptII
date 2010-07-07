@@ -65,9 +65,9 @@ public class LoadManager {
        
        if(byReference){
 
-           if (returnEntity.getAttribute("DBReference") == null) {
+           if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
-               String referenceTag = "<property name=\"DBReference\" " +
+               String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
                		"class=\"ptolemy.data.expr.StringParameter\" " +
                		"value=\"TRUE\"></property>";
                
@@ -80,15 +80,15 @@ public class LoadManager {
            } else {
            
                ((StringParameter) returnEntity
-                   .getAttribute("DBReference")).setExpression("TRUE");
+                   .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("TRUE");
  
            }
        
        } else {
            
-           if (returnEntity.getAttribute("DBReference") == null) {
+           if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
-               String referenceTag = "<property name=\"DBReference\" " +
+               String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
                         "class=\"ptolemy.data.expr.StringParameter\" " +
                         "value=\"FALSE\"></property>";
                
@@ -101,7 +101,7 @@ public class LoadManager {
            } else {
            
                ((StringParameter) returnEntity
-                   .getAttribute("DBReference")).setExpression("FALSE");
+                   .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("FALSE");
  
            }
        

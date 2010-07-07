@@ -393,9 +393,9 @@ public class TestSaveModelManager {
                 + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
                 + "</property>"
                 + "</entity>"
-                + "<property name=\"DBModelId\" value=\"ModelX\">"
+                + "<property name=\"" + XMLDBModel.DB_MODEL_ID_ATTR + "\" value=\"ModelX\">"
                 + "  </property>"
-                + "  <property name=\"DBReference\" value=\"TRUE\">  </property>"
+                + "  <property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" value=\"TRUE\">  </property>"
                 + "  <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
                 + " </property>"
                 + "</entity>"
@@ -406,9 +406,9 @@ public class TestSaveModelManager {
                 + "</entity>"
                 + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{240, 150}\">"
                 + " </property>"
-                + "  <property name=\"DBModelId\" value=\"ModelX\">"
+                + "  <property name=\"" + XMLDBModel.DB_MODEL_ID_ATTR + "\" value=\"ModelX\">"
                 + "  </property>"
-                + "  <property name=\"DBReference\" value=\"TRUE\">  </property>"
+                + "  <property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" value=\"TRUE\">  </property>"
                 + "</entity></entity>";
 
         model.setModel(content);

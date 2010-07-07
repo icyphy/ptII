@@ -20,6 +20,7 @@ import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.XMLDBModelParsingException;
@@ -167,7 +168,7 @@ public class Utilities {
      */
     public static String insertIdTagToModelBody(String modelBody, String modelId) {
                 
-        String modelIdTag = "<property name=\"DBModelId\" "
+        String modelIdTag = "<property name=\"" + XMLDBModel.DB_MODEL_ID_ATTR + "\" "
             +"class=\"ptolemy.data.expr.StringParameter\" value=\"" 
             + modelId + "\"></property>";
         

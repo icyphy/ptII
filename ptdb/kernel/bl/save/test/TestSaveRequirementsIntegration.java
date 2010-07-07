@@ -115,7 +115,7 @@ public class TestSaveRequirementsIntegration {
         
         assertTrue(equal);
         
-        removeModel(dbModel);
+        removeModel(new XMLDBModel(dbModel.getModelName()));
         
     }
     
@@ -179,7 +179,7 @@ public class TestSaveRequirementsIntegration {
         assertTrue(equal);
         
 
-        removeModel(dbModel);
+        removeModel(new XMLDBModel(dbModel.getModelName()));
         
     }
     
@@ -270,7 +270,7 @@ public class TestSaveRequirementsIntegration {
         assertTrue(equal);
         
 
-        removeModel(dbModel);
+        removeModel(new XMLDBModel(dbModel.getModelName()));
         
     }
     
