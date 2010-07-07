@@ -240,23 +240,19 @@ public class SimpleSearchFrame extends JFrame {
         searchResultBuffer.addObserver(searchResultsFrame);
         
         SearchCriteria searchCriteria = new SearchCriteria();
-
-        ArrayList<Attribute> attributesToSearch = 
-            _attributesListPanel.getAttributes();
+        
         
         if (!_attributesListPanel.getModelName().equals("")){
             
-            StringParameter stringParameter = new StringParameter
-                (new NamedObj(), "DBModelName");
-            
-            stringParameter.setExpression
-                (_attributesListPanel.getModelName());
-            
-            attributesToSearch.add(stringParameter);
-         
+            searchCriteria.setModelName(_attributesListPanel.getModelName());
         }
         
-        searchCriteria.setAttributes(attributesToSearch);
+        if(_attributesListPanel.getAttributeCount() > 0){
+        
+            ArrayList<Attribute> attributesToSearch = 
+                _attributesListPanel.getAttributes();
+            searchCriteria.setAttributes(attributesToSearch);
+        }
         
         // Show the search result frame.
         searchResultsFrame.pack();
