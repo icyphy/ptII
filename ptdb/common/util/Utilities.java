@@ -180,14 +180,24 @@ public class Utilities {
     }
     
     /**
+     * Convert the document node to string.
      * 
-     * @param document
-     * @return
+     * @param document Document which needs to be converted to String.
+     * @return String for the given document.
      */
     public static String getDocumentXMLString(Document document) {
-        DOMImplementationLS domImplementation = (DOMImplementationLS) document.getImplementation();
+        DOMImplementationLS domImplementation = (DOMImplementationLS) document
+                .getImplementation();
         LSSerializer lsSerializer = domImplementation.createLSSerializer();
-        return lsSerializer.writeToString(document); 
+        String documentContent = lsSerializer.writeToString(document);
+
+        /* Removing the XML tag appended automatically by the parser. */
+        if (documentContent.startsWith("<?xml")) {
+            int index = documentContent.indexOf("?>") + 2;
+            documentContent = documentContent.substring(index);
+        }
+
+        return documentContent;
     }
     //////////////////////////////////////////////////////////////////////
     ////		protected methods 				////
