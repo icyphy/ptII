@@ -48,7 +48,7 @@ but the port must be a PthalesIOPort, because of the ArrayOL parameters.
 
 @author Dai Bui
 @see ptolemy.actor.TypedIOPort
-@version $Id:$
+@version $Id$
 @since Ptolemy II 8.0
 @Pt.ProposedRating Red (daib)
 @Pt.AcceptedRating Red (daib)
