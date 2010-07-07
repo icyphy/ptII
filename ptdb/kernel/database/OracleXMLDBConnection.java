@@ -1000,7 +1000,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 XmlValue value;
                 while (results.hasNext()) {
                     value = results.next();
-                    modelsList.add(new XMLDBModel(value.asString()));
+                    modelsList.add(new XMLDBModel(_extractModelName(value.asString())));
                 }
             }
         } catch (XmlException e) {
@@ -1645,7 +1645,7 @@ public class OracleXMLDBConnection implements DBConnection {
          * If the current model is already visited,
          * then add the current model to the parent list.
          */
-        String currentNodeName = Utilities.getValueForAttribute(currentNode, "name");
+        String currentNodeName = Utilities.getValueForAttribute(currentNode, XMLDBModel.DB_MODEL_ID_ATTR);
         //System.out.println(parentNodeName + " - " + currentNodeName);
         if (currentNodeName != null) {
 
@@ -1867,6 +1867,17 @@ public class OracleXMLDBConnection implements DBConnection {
     }
 
     /**
+     * Extract model name from the given string.
+     * @param completeModelName Model name with container name.
+     * @return Model name 
+     */
+    public String _extractModelName(String completeModelName) {
+        if (completeModelName != null) {
+            return completeModelName.substring(completeModelName.lastIndexOf("/") + 1);
+        } else
+            return completeModelName;
+    }
+    /**
      * Fetch the parent hierarchies for the given model.
      * 
      * @param model The model for which the parent hierarchies are required.
@@ -1999,8 +2010,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 
                 modelName = (String) result.get(0);
                 
-                modelName = modelName.substring(modelName
-                        .lastIndexOf("/") + 1);
+                modelName = _extractModelName(modelName);
             }
             
 
@@ -2082,8 +2092,7 @@ public class OracleXMLDBConnection implements DBConnection {
         for (String modelName : modelNamesList) {
             if (!resultModelNames.contains(modelName)) {
 
-                model = new XMLDBModel(modelName.substring(modelName
-                        .lastIndexOf("/") + 1));
+                model = new XMLDBModel(_extractModelName(modelName));
 
                 finalModelsList.add(model);
                 resultModelNames.add(modelName);
