@@ -525,39 +525,6 @@ public class SaveModelToDBFrame extends JFrame {
            for(Attribute attributeToAdd : _attributesListPanel.getAttributes()){
 
                attributeToAdd.setContainer(_modelToSave);
-               
-                SingletonAttribute sa = new SingletonAttribute(
-                        attributeToAdd.workspace());
-                sa.setContainer(attributeToAdd);
-                sa.setName("_hideName");
-
-                ValueIcon vi = new ValueIcon(attributeToAdd,
-                        "_icon");
-                vi.setContainer(attributeToAdd);
-
-                ColorAttribute ca = new ColorAttribute(vi, "_color");
-                ca.setContainer(vi);
-                ca.setExpression("{1.0, 0.0, 0.0, 1.0}");
-
-                SingletonConfigurableAttribute sca = new SingletonConfigurableAttribute(
-                        attributeToAdd.workspace());
-                sca.setContainer(attributeToAdd);
-                sca.configure(null, attributeToAdd.getSource(),
-                        "<svg><text x=\"20\" "
-                                + "style=\"font-size:14; "
-                                + "font-family:SansSerif; "
-                                + "fill:blue\" " + "y=\"20\">"
-                                + "</text></svg>");
-
-                VisibleParameterEditorFactory vpef = new VisibleParameterEditorFactory(
-                        attributeToAdd, "_editorFactory");
-                vpef.setContainer(attributeToAdd);
-
-                // TODO Figure out how to place in unique location.
-                double[] xy = { 250, 170 };
-                Location l = new Location(attributeToAdd,
-                        "_location");
-                l.setLocation(xy);
 
             }
             
