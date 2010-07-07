@@ -55,26 +55,19 @@ public abstract class ConceptFunction {
      *   represent the concept domain for each input concept argument.
      *  @param outputRangeOntology The ontology that represents the
      *   range of output concepts for this concept function.
-     *  @exception IllegalActionException If the ontology inputs are null
-     *   or the length of the array of domain ontologies does not
-     *   match the number of arguments for the function.
+     *  @exception IllegalActionException If the output ontology is null.
      */
     public ConceptFunction(String name, boolean numArgsIsFixed,
-            List <Ontology> argumentDomainOntologies, Ontology outputRangeOntology)
+            List<Ontology> argumentDomainOntologies, Ontology outputRangeOntology)
             throws IllegalActionException {
         _name = name;
         _numArgsIsFixed = numArgsIsFixed;
-        _argumentDomainOntologies = new LinkedList(argumentDomainOntologies);
+        _argumentDomainOntologies = new LinkedList<Ontology>(argumentDomainOntologies);
         _outputRangeOntology = outputRangeOntology;
 
         if (_outputRangeOntology == null) {
             throw new IllegalActionException(
                     "The outputRangeOntology cannot be null.");
-        }
-
-        if (_argumentDomainOntologies == null) {
-            throw new IllegalActionException(
-                    "The argumentDomainOntologies cannot be null.");
         }
     }
 

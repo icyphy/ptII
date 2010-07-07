@@ -91,8 +91,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
         String functionName = node.getFunctionName();
-        List conceptFunctionDefs = _solverModel
-                .attributeList(ConceptFunctionDefinitionAttribute.class);
+        List<ConceptFunctionDefinitionAttribute> conceptFunctionDefs =
+            _conceptFunctionDefinitions();
 
         ConceptFunction function = null;
         for (Object functionDef : conceptFunctionDefs) {
@@ -197,7 +197,28 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
             }
         }
     }
-    
+
+    /** Return a list of the attributes for all concept functions
+     *  that are defined in the local solver model.
+     *  If the local solver model is set to null, this returns the empty list.
+     *  
+     *  Note, that we perform an unchecked cast from List to
+     *  List<ConceptFunctionDefinitionAttribute> here, which relies on
+     *  the correctness of the implementation of
+     *  {@link ptolemy.kernel.util.NamedObj#attributeList(Class)}
+     *  
+     *  @return A list of the local concept function definition attributes. 
+     */
+    @SuppressWarnings("unchecked")
+    private List<ConceptFunctionDefinitionAttribute> _conceptFunctionDefinitions() {
+        if (_solverModel == null) {
+            return new LinkedList<ConceptFunctionDefinitionAttribute>();
+        } else {
+            return _solverModel.attributeList(
+                    ConceptFunctionDefinitionAttribute.class);
+        }
+    }
+
     /** Return the concept with the specified name. If it cannot be
      *  found in any of the argument domain ontologies, throw an
      *  exception.
