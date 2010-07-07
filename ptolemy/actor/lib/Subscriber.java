@@ -155,7 +155,7 @@ public class Subscriber extends TypedAtomicActor {
                 if (container instanceof CompositeActor
                         && !(_channel == null || _channel.trim().equals(""))) {
                     ((CompositeActor) container).unlinkToPublishedPort(
-                            _channel, input);
+                            _channel, input, _global);
                 }
                 _channel = newValue;
                 /* NOTE: We used to call _updateLinks(), as shown below,
@@ -186,6 +186,10 @@ public class Subscriber extends TypedAtomicActor {
             }
         } else if (attribute == global) {
             _global = ((BooleanToken) global.getToken()).booleanValue();
+            if(_global == false) {
+                ((CompositeActor) getContainer()).unlinkToPublishedPort(
+                        _channel, input, false);
+            }
         } else {
             super.attributeChanged(attribute);
         }
