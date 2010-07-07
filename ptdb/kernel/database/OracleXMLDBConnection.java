@@ -442,6 +442,10 @@ public class OracleXMLDBConnection implements DBConnection {
             if (dbModel != null) {
 
                 xmlDBModel = new XMLDBModel(dbModel.getName());
+                
+                String modelId = _getModelIdFromModelName(dbModel.getName());
+                
+                xmlDBModel.setModelId(modelId);
 
                 String modelBody = dbModel.getContentAsString();
 
@@ -505,6 +509,8 @@ public class OracleXMLDBConnection implements DBConnection {
                 completeXMLDBModel = new XMLDBModel(dbModel.getName());
                 
                 String modelId = _getModelIdFromModelName(dbModel.getName());
+                
+                completeXMLDBModel.setModelId(modelId);
 
                 String completeModelBody = "";
 
@@ -536,7 +542,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
                     completeModelBody = dbModel.getContentAsString();
                 }
-
+                
                 completeXMLDBModel.setModel(completeModelBody);
 
                 completeXMLDBModel.setIsNew(false);
