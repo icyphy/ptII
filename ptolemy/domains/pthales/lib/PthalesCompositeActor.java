@@ -238,12 +238,6 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** The name of the total repetitions parameter. */
-    protected static String _REPETITIONS = "repetitions";
-
-    ///////////////////////////////////////////////////////
-    ////              protected variables              ////
-
     /** Set specific attributes common to all Pthales composite actors.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
@@ -262,4 +256,11 @@ public class PthalesCompositeActor extends TypedCompositeActor {
             repetitions.setExpression("{1}");
         }
     }
+    
+
+    ///////////////////////////////////////////////////////
+    ////              protected variables              ////
+    
+    /** The name of the total repetitions parameter. */
+    protected static String _REPETITIONS = "repetitions";
 }
