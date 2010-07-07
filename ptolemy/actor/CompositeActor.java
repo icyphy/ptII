@@ -49,6 +49,8 @@ import ptolemy.actor.util.BooleanDependency;
 import ptolemy.actor.util.CausalityInterface;
 import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.Dependency;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -1074,7 +1076,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 // Prevent the relation and its links from being exported.
                 relation.setPersistent(false);
                 // Prevent the relation from showing up in vergil.
-                //                new Parameter(relation, "_hide", BooleanToken.TRUE);
+                new Parameter(relation, "_hide", BooleanToken.TRUE);
                 publishedPort.liberalLink(relation);
                 if (_publisherRelations == null) {
                     _publisherRelations = new HashMap<String, IORelation>();
@@ -1137,7 +1139,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 IOPort port = (IOPort) getPort(portName);
                 if (port == null) {
                     port = (IOPort) newPort(portName);
-                    //                    new Parameter(port, "_hide", BooleanToken.TRUE);
+                    new Parameter(port, "_hide", BooleanToken.TRUE);
                     port.setPersistent(false);
                     port.setInput(true);
                     port.setMultiport(true);
@@ -1157,7 +1159,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     // Prevent the relation and its links from being exported.
                     relation.setPersistent(false);
                     // Prevent the relation from showing up in vergil.
-                    //                    new Parameter(relation, "_hide", BooleanToken.TRUE);
+                    new Parameter(relation, "_hide", BooleanToken.TRUE);
                     port.liberalLink(relation);
 
                     if (!subscriberPort.isLinked(relation)) {
@@ -1265,7 +1267,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 IOPort port = (IOPort) getPort(portName);
                 if (port == null) {
                     port = (IOPort) newPort(portName);
-                    //                    new Parameter(port, "_hide", BooleanToken.TRUE);
+                    new Parameter(port, "_hide", BooleanToken.TRUE);
                     port.setPersistent(false);
                     port.setInput(true);
                     port.setMultiport(true);
@@ -1285,7 +1287,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     // Prevent the relation and its links from being exported.
                     relation.setPersistent(false);
                     // Prevent the relation from showing up in vergil.
-                    //                    new Parameter(relation, "_hide", BooleanToken.TRUE);
+                    new Parameter(relation, "_hide", BooleanToken.TRUE);
                     port.liberalLink(relation);
 
                     if (!subscriberPort.isLinked(relation)) {
@@ -1733,7 +1735,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 IOPort publisherPort = (IOPort) getPort(portName);
                 if (publisherPort == null) {
                     publisherPort = (IOPort) newPort(portName);
-                    //                    new Parameter(publisherPort, "_hide", BooleanToken.TRUE);
+                    new Parameter(publisherPort, "_hide", BooleanToken.TRUE);
                     publisherPort.setPersistent(false);
                     publisherPort.setOutput(true);
                     publisherPort.setMultiport(true);
@@ -2131,6 +2133,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @exception NameDuplicationException If there are name conflicts
      *          as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
+     * @throws NameDuplicationException 
      */
     public void unlinkToPublishedPort(String name, IOPort subscriberPort,
             boolean global) throws IllegalActionException {
@@ -2143,6 +2146,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     subscriberPort, global);
         } else {
             // Remove the link to a previous relation, if necessary.
+
+            List connectedPorts = subscriberPort.connectedPortList();
 
             IORelation relation = _publisherRelations != null ? _publisherRelations
                     .get(name)
@@ -2160,8 +2165,19 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
 
             if (global && container instanceof CompositeActor) {
-                ((CompositeActor) container).unlinkToPublishedPort(name,
-                        subscriberPort, global);
+                for (Object port : connectedPorts) {
+                    IOPort subscribedPort = (IOPort) port;
+                    if (subscribedPort.isOutput()) {
+                        ((CompositeActor) container).unlinkToPublishedPort(
+                                name, subscribedPort, global);
+                        try {
+                            subscribedPort.setContainer(null);
+                        } catch (NameDuplicationException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         }
     }
@@ -2196,6 +2212,62 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     Matcher matcher = pattern.matcher(name);
                     if (matcher.matches()) {
                         unlinkToPublishedPort(name, subscriberPort);
+                    }
+                }
+            }
+        }
+    }
+
+    /** Unlink the subscriberPort with a already registered "published port" coming
+     *  from a publisher. The pattern is the pattern being used in the
+     *  matching process to match publisher and subscriber. A
+     *  subscriber interested in the output of this publisher uses
+     *  the  name. This registration process of publisher
+     *  typically happens before the model is preinitialized,
+     *  for example when opening the model. The subscribers
+     *  will look for publishers during the preinitialization phase.
+     *  @param pattern The pattern is being used in the matching process
+     *          to match publisher and subscriber.
+     *  @param subscriberPort The subscribed port.
+     *  @exception NameDuplicationException If there are name conflicts
+     *          as a result of the added relations or ports. 
+     *  @exception IllegalActionException If the published port cannot be found.
+     */
+    public void unlinkToPublishedPort(Pattern pattern,
+            TypedIOPort subscriberPort, boolean global)
+            throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor
+                && !((CompositeActor) container).isClassDefinition()) {
+            // Published ports are not propagated if this actor
+            // is opaque.
+            ((CompositeActor) container).unlinkToPublishedPort(pattern,
+                    subscriberPort, global);
+        } else {
+
+            List connectedPorts = subscriberPort.connectedPortList();
+
+            if (_publishedPorts != null) {
+                for (String name : _publishedPorts.keySet()) {
+                    Matcher matcher = pattern.matcher(name);
+                    if (matcher.matches()) {
+                        unlinkToPublishedPort(name, subscriberPort);
+                    }
+                }
+            }
+
+            if (global && container instanceof CompositeActor) {
+                for (Object port : connectedPorts) {
+                    IOPort subscribedPort = (IOPort) port;
+                    if (subscribedPort.isOutput()) {
+                        ((CompositeActor) container).unlinkToPublishedPort(
+                                pattern, (TypedIOPort) subscribedPort, global);
+                        try {
+                            subscribedPort.setContainer(null);
+                        } catch (NameDuplicationException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
