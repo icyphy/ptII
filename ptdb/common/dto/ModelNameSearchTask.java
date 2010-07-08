@@ -57,7 +57,7 @@ public class ModelNameSearchTask extends Task {
     ////		public methods 					////
     /**
      * Return the model name.
-     * @see setModelName
+     * @see #setModelName
      */
     public String getModelName() {
         return modelName;
@@ -65,7 +65,7 @@ public class ModelNameSearchTask extends Task {
     /**
      * Set the given String as the model name.
      * @param modelName String to be set as model name.
-     * @see getModelName
+     * @see #getModelName
      */
     public void setModelName(String modelName) {
         this.modelName = modelName;
