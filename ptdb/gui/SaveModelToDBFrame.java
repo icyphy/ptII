@@ -314,7 +314,27 @@ public class SaveModelToDBFrame extends JFrame {
 
             if (n == JOptionPane.YES_OPTION) {
 
+                
+                // If the Model ID is in the MoML, remove it.
+                if(_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)!= null){
+                    
+                    _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR).setContainer(null);
+                    
+                    try {
+
+                        MoMLChangeRequest change = new MoMLChangeRequest(
+                                this, null, _modelToSave.exportMoML());
+                        change.setUndoable(true);
+                                        
+                        _modelToSave.requestChange(change);
+                        
+                    } catch (Exception e) {
+                        throw e;
+                    }   
+                }
+                
                 saveModelManager = null;
+                
                 _commitSave(false, null);
 
             } else {
