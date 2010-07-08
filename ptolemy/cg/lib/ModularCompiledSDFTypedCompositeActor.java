@@ -1034,7 +1034,8 @@ public class ModularCompiledSDFTypedCompositeActor extends
      *          that should be removed
      *  @param publisherPort The publisher port.
      */
-    public void unregisterPublisherPort(String name, IOPort publisherPort) {
+    public void unregisterPublisherPort(String name, IOPort publisherPort)
+	throws IllegalActionException, NameDuplicationException {
         try {
             ++_creatingPubSub;
             NamedObj container = getContainer();
