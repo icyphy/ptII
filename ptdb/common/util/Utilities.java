@@ -197,7 +197,7 @@ public class Utilities {
     public static String insertIdTagToModelBody(String modelBody, String modelId) {
                 
         String modelIdTag = "<property name=\"" + XMLDBModel.DB_MODEL_ID_ATTR + "\" "
-            +"class=\"ptolemy.data.expr.StringParameter\" value=\"" 
+            +"class=\"ptolemy.data.expr.DBParameter\" value=\"" 
             + modelId + "\"></property>";
         
         StringBuffer modelBodyBuffer = new StringBuffer(modelBody);

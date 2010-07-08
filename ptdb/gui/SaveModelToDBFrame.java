@@ -46,13 +46,14 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
-import ptdb.common.util.Utilities;
+import ptolemy.data.expr.DBParameter;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 
@@ -253,16 +254,16 @@ public class SaveModelToDBFrame extends JFrame {
 
                 if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) == null) {
                     
-                    StringParameter dbModelParam = new StringParameter(
+                    DBParameter dbModelParam = new DBParameter(
                             _modelToSave, XMLDBModel.DB_MODEL_ID_ATTR);
                     dbModelParam.setExpression(modelId);
                     dbModelParam.setContainer(_modelToSave);
                     
-                } else if(!((StringParameter)
+                } else if(!((DBParameter)
                         _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)).getExpression()
                         .equals(modelId)){
                     
-                    ((StringParameter)
+                    ((DBParameter)
                             _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                             .setExpression(modelId);
                     
@@ -502,7 +503,7 @@ public class SaveModelToDBFrame extends JFrame {
             
             if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null){
 
-                id = ((StringParameter)_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
+                id = ((DBParameter)_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                     .getExpression();
             
             }
@@ -531,10 +532,11 @@ public class SaveModelToDBFrame extends JFrame {
 
             if (_modelToSave.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
-                StringParameter dbModelParam = new StringParameter(
+                DBParameter dbModelParam = new DBParameter(
                         _modelToSave, XMLDBModel.DB_REFERENCE_ATTR);
                 dbModelParam.setExpression("FALSE");
                 dbModelParam.setContainer(_modelToSave);
+                dbModelParam.setVisibility(Settable.NONE);
                 
             }
             

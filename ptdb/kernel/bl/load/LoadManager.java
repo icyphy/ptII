@@ -34,9 +34,9 @@ import java.util.List;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptolemy.data.expr.DBParameter;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.NamedObj;
@@ -96,7 +96,7 @@ public class LoadManager {
            if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
                String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
-               		"class=\"ptolemy.data.expr.StringParameter\" " +
+               		"class=\"ptolemy.data.expr.DBParameter\" " +
                		"value=\"TRUE\"></property>";
                
                MoMLChangeRequest change = new MoMLChangeRequest(null,
@@ -107,7 +107,7 @@ public class LoadManager {
                
            } else {
            
-               ((StringParameter) returnEntity
+               ((DBParameter) returnEntity
                    .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("TRUE");
  
            }
@@ -117,7 +117,7 @@ public class LoadManager {
            if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
                String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
-                        "class=\"ptolemy.data.expr.StringParameter\" " +
+                        "class=\"ptolemy.data.expr.DBParameter\" " +
                         "value=\"FALSE\"></property>";
                
                MoMLChangeRequest change = new MoMLChangeRequest(null,
@@ -128,7 +128,7 @@ public class LoadManager {
                    
            } else {
            
-               ((StringParameter) returnEntity
+               ((DBParameter) returnEntity
                    .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("FALSE");
  
            }
