@@ -48,7 +48,7 @@ but the port must be a PthalesIOPort, because of the ArrayOL parameters.
 
 @author Dai Bui
 @see ptolemy.actor.TypedIOPort
-@version $Id$
+@version $Id $
 @since Ptolemy II 8.0
 @Pt.ProposedRating Red (daib)
 @Pt.AcceptedRating Red (daib)
@@ -88,9 +88,19 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
         // TODO Auto-generated constructor stub
     }
 
+    /** compute the number of iterations of the actor
+     * 
+     * @return The number of iterations of the actor.
+     * @throws NoTokenException
+     * @throws IllegalActionException
+     */
     public int computeIterations() throws NoTokenException,
             IllegalActionException {
-        //      Variables
+
+        //FIXME This implementation does not consider multiple input ports.
+        //we need to implement a more general function, specified by users
+        //that computes the iterations based on the values at the input ports.
+        
         for (Object port : inputPortList()) {
             IOPort portIn = (IOPort) port;
 
@@ -98,9 +108,6 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
             int nDims = ((IntToken) portIn.get(0)).intValue();
             int nbTokens = ((IntToken) portIn.get(0)).intValue();
             Token[] headerIn = portIn.get(0, nDims * 2);
-
-            // Input ports created and filled before elementary task called 
-//            LinkedHashMap sizes = new LinkedHashMap<String, Integer>();
 
             int iterations = nbTokens;
             
@@ -151,6 +158,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     public int iterate(int count) throws IllegalActionException {
         int iterations = count;
 
+        //check if we need to compute the iterations
         if (count == 0) {
             iterations = computeIterations();
         }
