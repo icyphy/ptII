@@ -40,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Action;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
@@ -52,6 +53,7 @@ import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.TransformationRule;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.Variable;
@@ -97,9 +99,17 @@ public class DbSearchFrame extends TransformationEditor {
      *
      * @param entity  The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
+     * @param containerModel The model that will import the searched results. 
+     * @param sourceFrame The frame that contains the model to import the 
+     * searched results. 
      */
-    public DbSearchFrame(CompositeEntity entity, Tableau tableau) {
+    public DbSearchFrame(CompositeEntity entity, Tableau tableau,
+            NamedObj containerModel, JFrame sourceFrame) {
         super(entity, tableau);
+        
+        _containerModel = containerModel;
+        _sourceFrame = sourceFrame;
+
     }
 
     /**
@@ -200,7 +210,7 @@ public class DbSearchFrame extends TransformationEditor {
 
             // create the new SearchResultFrame
             SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
-                    new NamedObj(), DbSearchFrame.this, DbSearchFrame.this
+                    _containerModel, _sourceFrame, DbSearchFrame.this
                             .getConfiguration());
 
             SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
@@ -460,5 +470,12 @@ public class DbSearchFrame extends TransformationEditor {
             JOptionPane.showMessageDialog(new Frame(), "Under construction.");
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private NamedObj _containerModel;
+    private JFrame _sourceFrame;
+    //    private Configuration _configuration;
 
 }
