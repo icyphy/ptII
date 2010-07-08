@@ -20,11 +20,11 @@
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
                 </property>
                 <property name="ConceptFunctionDefinitionAttribute" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
-                    <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="simpleMonotonicityLattice">
+                    <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="monotonicityAnalysis">
                     </property>
                     <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{'arg0', 'arg1', 'arg2'}">
                     </property>
-                    <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{'simpleMonotonicityLattice', 'simpleMonotonicityLattice', 'simpleMonotonicityLattice'}">
+                    <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{'monotonicityAnalysis', 'monotonicityAnalysis', 'monotonicityAnalysis'}">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
                     </property>
@@ -32,12 +32,12 @@
                 <property name="BinaryOperationMonotonicFunctionDefinition" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
                     <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{'arg0', 'arg1'}">
                     </property>
-                    <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="simpleMonotonicityLattice">
+                    <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="monotonicityAnalysis">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 135.0]">
                     </property>
                 </property>
-                <entity name="simpleMonotonicityLattice" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.simpleMonotonicityLattice">
+                <entity name="monotonicityAnalysis" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.monotonicityAnalysis">
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 85.0]">
                     </property>
                 </entity>
@@ -58,7 +58,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 65.0]">
         </property>
     </property>
-    <property name="simpleMonotonicityLattice::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.x &gt;= Monotonic">
+    <property name="monotonicityAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.x &gt;= Monotonic">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
