@@ -94,7 +94,7 @@ public class AttributesListPanel extends JPanel {
         _AttDelete = new HashMap();
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        
+
         JPanel topPanel = new JPanel();
         JPanel bottomPanel = new JPanel();
         JPanel innerPanel = new JPanel();
@@ -146,27 +146,27 @@ public class AttributesListPanel extends JPanel {
         innerPanel.add(_scrollPane);
 
         try {
-            
-            AttributesManager attributeManager = new AttributesManager();
-            List <XMLDBAttribute> xmlAttList = new ArrayList();
-            xmlAttList = attributeManager.getDBAttributes();
-            
-            for(XMLDBAttribute a : xmlAttList){
-                
-                _aList.put(a.getAttributeName(), a);
-                
-            }
-        
-        } catch(DBExecutionException e){
 
-            MessageHandler.error
-                ("Could not retrieve attributes from the database.", e);
-            
-        } catch(DBConnectionException e){
-         
-            MessageHandler.error
-                ("Could not retrieve attributes from the database.", e);
-            
+            AttributesManager attributeManager = new AttributesManager();
+            List<XMLDBAttribute> xmlAttList = new ArrayList();
+            xmlAttList = attributeManager.getDBAttributes();
+
+            for (XMLDBAttribute a : xmlAttList) {
+
+                _aList.put(a.getAttributeName(), a);
+
+            }
+
+        } catch (DBExecutionException e) {
+
+            MessageHandler.error(
+                    "Could not retrieve attributes from the database.", e);
+
+        } catch (DBConnectionException e) {
+
+            MessageHandler.error(
+                    "Could not retrieve attributes from the database.", e);
+
         }
 
         JButton add_Button = new JButton("Add Attribute");
@@ -175,11 +175,11 @@ public class AttributesListPanel extends JPanel {
         add_Button.setHorizontalTextPosition(SwingConstants.CENTER);
 
         add_Button.addActionListener(new ActionListener() {
-            
+
             public void actionPerformed(ActionEvent event) {
 
                 addAttribute(null);
-                
+
             }
         });
 
@@ -191,35 +191,34 @@ public class AttributesListPanel extends JPanel {
         repaint();
 
     }
-    
+
     /** Add a database attribute to the panel for display.  An associated
      *  delete button is also created.
      *  
      * @param stringParameter
      *          The parameter to add to the panel for display.
      */
-    public void addAttribute(StringParameter stringParameter){
-        
+    public void addAttribute(StringParameter stringParameter) {
+
         JPanel modelDeletePanel = new JPanel();
-        modelDeletePanel
-            .setLayout(new BoxLayout(modelDeletePanel, BoxLayout.X_AXIS));
+        modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
+                BoxLayout.X_AXIS));
         modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
         modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
-        
-        ModelAttributePanel modelAttPanel = new ModelAttributePanel(
-                _aList);
-        
+
+        ModelAttributePanel modelAttPanel = new ModelAttributePanel(_aList);
+
         // Set a value if there is one.
-        if(stringParameter != null) {
-            
+        if (stringParameter != null) {
+
             modelAttPanel.setAttributeName(stringParameter.getName());
             modelAttPanel.setValue(stringParameter.getExpression());
-        
+
         } else {
-            
+
             modelAttPanel.setAttributeName("");
         }
-        
+
         JButton deleteButton = new JButton("Delete");
         deleteButton.setAlignmentY(TOP_ALIGNMENT);
 
@@ -237,9 +236,9 @@ public class AttributesListPanel extends JPanel {
         deleteButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 
-                _attListPanel.remove((JPanel) _AttDelete.get(event
-                        .getSource()));
-                _AttDelete.remove(event.getSource());                
+                _attListPanel
+                        .remove((JPanel) _AttDelete.get(event.getSource()));
+                _AttDelete.remove(event.getSource());
                 _attListPanel.remove((JButton) event.getSource());
 
                 validate();
@@ -251,9 +250,9 @@ public class AttributesListPanel extends JPanel {
 
         validate();
         repaint();
-        
+
     }
-    
+
     /** Get an ArrayList of all displayed attributes as Attribute objects.
      * 
      * @return An ArrayList of Attributes that are present in the display.
@@ -263,9 +262,9 @@ public class AttributesListPanel extends JPanel {
      * @exception IllegalActionException
      *          Thrown if a problem occurs creating the attribute objects.
      */
-    public ArrayList<Attribute> getAttributes() 
-        throws NameDuplicationException, IllegalActionException{
-        
+    public ArrayList<Attribute> getAttributes()
+            throws NameDuplicationException, IllegalActionException {
+
         ArrayList<Attribute> returnList = new ArrayList();
 
         // Get a list of all attributes we have displayed.
@@ -282,12 +281,13 @@ public class AttributesListPanel extends JPanel {
 
                     if (componentArray2[j] instanceof ModelAttributePanel) {
 
-                        StringParameter stringParameter = new StringParameter
-                            (_model, ((ModelAttributePanel) componentArray2[j])
-                                    .getAttributeName());
-                        stringParameter.setExpression
-                            (((ModelAttributePanel) 
-                                    componentArray2[j]).getValue());
+                        StringParameter stringParameter = new StringParameter(
+                                _model,
+                                ((ModelAttributePanel) componentArray2[j])
+                                        .getAttributeName());
+                        stringParameter
+                                .setExpression(((ModelAttributePanel) componentArray2[j])
+                                        .getValue());
                         returnList.add(stringParameter);
 
                     }
@@ -297,21 +297,83 @@ public class AttributesListPanel extends JPanel {
             }
 
         }
-        
+
         return returnList;
-        
+
     }
-    
+
+    /** 
+     * Get an ArrayList of all displayed attributes as Attribute objects.
+     * 
+     * @param existingAttributes The existing attributes in this frame. 
+     * 
+     * @return An ArrayList of Attributes that are present in the display.
+     * @exception IllegalActionException
+     *          Thrown if a problem occurs creating the attribute objects.
+     */
+    public ArrayList<Attribute> getAttributes(List<Attribute> existingAttributes)
+            throws IllegalActionException {
+
+        ArrayList<Attribute> returnList = new ArrayList();
+
+        // Get a list of all attributes we have displayed.
+        Component[] componentArray1 = _attListPanel.getComponents();
+
+        for (int i = 0; i < componentArray1.length; i++) {
+
+            if (componentArray1[i] instanceof JPanel) {
+
+                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                        .getComponents();
+
+                for (int j = 0; j < componentArray2.length; j++) {
+
+                    if (componentArray2[j] instanceof ModelAttributePanel) {
+
+                        StringParameter stringParameter;
+                        try {
+                            stringParameter = new StringParameter(_model,
+                                    ((ModelAttributePanel) componentArray2[j])
+                                            .getAttributeName());
+
+                            stringParameter
+                                    .setExpression(((ModelAttributePanel) componentArray2[j])
+                                            .getValue());
+                            returnList.add(stringParameter);
+
+                        } catch (NameDuplicationException e) {
+                            for (Attribute existingAttribute : existingAttributes) {
+                                if (existingAttribute
+                                        .getName()
+                                        .equals(
+                                                ((ModelAttributePanel) componentArray2[j])
+                                                        .getAttributeName())) {
+                                    returnList.add(existingAttribute);
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return returnList;
+
+    }
+
     /** Get the model name.
      * 
      * @return The model name.
      */
     public String getModelName() {
-        
+
         return _nameText.getText();
-        
+
     }
-    
 
     /** Get an indication if the specified attribute name is in the set of
      *  database attributes.
@@ -322,20 +384,20 @@ public class AttributesListPanel extends JPanel {
      *          An indication if the specified name is in the set of 
      *          database attributes (true if is. false if it is not).
      */
-    public boolean isDBAttribute(String attributeName){
-        
+    public boolean isDBAttribute(String attributeName) {
+
         return _aList.containsKey(attributeName);
-                
-    }    
-    
+
+    }
+
     /** Get an indication if the panel contains duplicate attributes.
      * @return
      *          An indication if the panel contains duplicate attributes
      *           (true if does. false if it does not).
      * 
      */
-    public boolean containsDuplicates(){
-        
+    public boolean containsDuplicates() {
+
         ArrayList<String> attributes = new ArrayList();
 
         // Get a list of all attributes we have displayed.
@@ -376,19 +438,18 @@ public class AttributesListPanel extends JPanel {
             }
 
         }
-        
+
         return false;
     }
-    
-    
+
     /** Get an indication if all attributes in the panel have names.
      * @return
      *          An indication if all attributes in the panel have names.
      *           (true they do. false if they do not).
      * 
      */
-    public boolean allAttributeNamesSet(){
-        
+    public boolean allAttributeNamesSet() {
+
         Component[] componentArray1 = _attListPanel.getComponents();
 
         for (int i = 0; i < componentArray1.length; i++) {
@@ -402,13 +463,12 @@ public class AttributesListPanel extends JPanel {
 
                     if (componentArray2[j] instanceof ModelAttributePanel) {
 
-                        if(((ModelAttributePanel) componentArray2[j])
-                                        .getAttributeName().equals("")){
-                            
+                        if (((ModelAttributePanel) componentArray2[j])
+                                .getAttributeName().equals("")) {
+
                             return false;
-                            
+
                         }
-                                        
 
                     }
 
@@ -427,8 +487,8 @@ public class AttributesListPanel extends JPanel {
      *           (true they do. false if they do not).
      * 
      */
-    public boolean allAttributeValuesSet(){
-        
+    public boolean allAttributeValuesSet() {
+
         Component[] componentArray1 = _attListPanel.getComponents();
 
         for (int i = 0; i < componentArray1.length; i++) {
@@ -442,13 +502,12 @@ public class AttributesListPanel extends JPanel {
 
                     if (componentArray2[j] instanceof ModelAttributePanel) {
 
-                        if(((ModelAttributePanel) componentArray2[j])
-                                        .getValue().equals("")){
-                            
+                        if (((ModelAttributePanel) componentArray2[j])
+                                .getValue().equals("")) {
+
                             return false;
-                            
+
                         }
-                                        
 
                     }
 
@@ -460,18 +519,18 @@ public class AttributesListPanel extends JPanel {
 
         return true;
     }
-    
+
     /** Get the number of attributes displayed in the panel.
      * @return
      *          The number of attributes displayed in the panel.
      * 
      */
-    public int getAttributeCount(){
-        
+    public int getAttributeCount() {
+
         return _AttDelete.size();
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
 
@@ -481,5 +540,5 @@ public class AttributesListPanel extends JPanel {
     private HashMap _AttDelete;
     private NamedObj _model;
     private JTextField _nameText;
-    
+
 }

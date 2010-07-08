@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.gui;
 
 import java.awt.Frame;
@@ -106,9 +104,9 @@ public class DbSearchFrame extends TransformationEditor {
     public DbSearchFrame(CompositeEntity entity, Tableau tableau,
             NamedObj containerModel, JFrame sourceFrame) {
         super(entity, tableau);
-        
+
         setTitle("Database Pattern Search");
-        
+
         _containerModel = containerModel;
         _sourceFrame = sourceFrame;
 
@@ -136,10 +134,14 @@ public class DbSearchFrame extends TransformationEditor {
 
         super._addMenus();
 
-        // add the menu of searching in the database
+        // Add the menu of searching in the database.
         DBMatchAction dbMatchAction = new DBMatchAction();
 
         GUIUtilities.addToolBarButton(_toolbar, dbMatchAction);
+
+        // Add the menu of opening simple search window. 
+        SimpleSearchAction simpleSearchAction = new SimpleSearchAction();
+        GUIUtilities.addToolBarButton(_toolbar, simpleSearchAction);
 
         // remove the replacement and correspondence tabs 
         JTabbedPane tabbedPane = getFrameController().getTabbedPane();
@@ -283,6 +285,24 @@ public class DbSearchFrame extends TransformationEditor {
                 }
             }
 
+            // Get the attributes from the simple search window. 
+            if (_simpleSearchFrame != null) {
+                // Get the attributes. 
+                if (_simpleSearchFrame.getAttributes() != null) {
+                    for (Attribute attribute : _simpleSearchFrame
+                            .getAttributes()) {
+                        attributesList.add(attribute);
+                    }
+                }
+
+                // Get the model name search criteria from the simple search window. 
+                if (_simpleSearchFrame.getModelName() != null
+                        && !_simpleSearchFrame.getModelName().trim().isEmpty()) {
+                    searchCriteria.setModelName(_simpleSearchFrame
+                            .getModelName());
+                }
+            }
+
             // set the attributes to the search criteria accordingly
             searchCriteria.setAttributes(attributesList);
 
@@ -339,9 +359,12 @@ public class DbSearchFrame extends TransformationEditor {
             searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
 
             // Check whether any search criteria has been set. 
-            if (attributesList.size() == 0 && pattern.portList().isEmpty()
+            if (attributesList.size() == 0
+                    && pattern.portList().isEmpty()
                     && pattern.relationList().isEmpty()
-                    && pattern.entityList().isEmpty()) {
+                    && pattern.entityList().isEmpty()
+                    && (searchCriteria.getModelName() == null || searchCriteria
+                            .getModelName().trim().isEmpty())) {
                 JOptionPane.showMessageDialog(DbSearchFrame.this,
                         "Please specify search criteria.");
             } else {
@@ -473,11 +496,50 @@ public class DbSearchFrame extends TransformationEditor {
         }
     }
 
+    private class SimpleSearchAction extends FigureAction {
+
+        public SimpleSearchAction() {
+            super("Simple Search Configure");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptdb/gui/img/simplesearchfigure.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptdb/gui/img/simplesearchfigure.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptdb/gui/img/simplesearchfigure.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptdb/gui/img/simplesearchfigure.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Configure Simple Search Criteria" + "(Ctrl+2)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_2, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+        }
+
+        //////////////////////////////////////////////////////////////////////
+        ////                public  methods                               ////
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            if (_simpleSearchFrame == null) {
+                _simpleSearchFrame = new AdvancedSimpleSearchFrame(
+                        DbSearchFrame.this);
+            }
+
+            _simpleSearchFrame.pack();
+            _simpleSearchFrame.setVisible(true);
+
+        }
+
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private NamedObj _containerModel;
+    private AdvancedSimpleSearchFrame _simpleSearchFrame;
     private JFrame _sourceFrame;
-    //    private Configuration _configuration;
 
 }

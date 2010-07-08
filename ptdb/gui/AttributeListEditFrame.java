@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- * 
- */
+
 package ptdb.gui;
 
 import java.awt.Font;

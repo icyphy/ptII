@@ -1,0 +1,306 @@
+/*
+ * 
+ */
+package ptdb.gui;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
+
+///////////////////////////////////////////////////////////////
+//// AdvancedSimpleSearchFrame
+
+/**
+ * The simple search frame to be opened in the advanced DB search window. 
+ * 
+ * @author Alek Wang
+ * @version $Id$
+ * @since Ptolemy II 8.1
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
+ *
+ */
+public class AdvancedSimpleSearchFrame extends JFrame {
+
+    /**
+     * Construct the AdvancedSimpleSearchFrame. 
+     * 
+     * @param parentFrame The parent frame that invokes this simple search 
+     * frame. 
+     */
+    public AdvancedSimpleSearchFrame(JFrame parentFrame) {
+
+        super("Simple Search Criteria");
+
+        _parentFrame = parentFrame;
+
+        // Disable the parent frame when this window is active.
+        _parentFrame.setEnabled(false);
+
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
+
+        addWindowListener(new WindowListener() {
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                // Do nothing. 
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                // Do nothing. 
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                // Do nothing. 
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                // Do nothing. 
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                AdvancedSimpleSearchFrame.this.setVisible(false);
+                _parentFrame.setEnabled(true);
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                AdvancedSimpleSearchFrame.this.setVisible(false);
+                _parentFrame.setEnabled(true);
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                // Do nothing. 
+            }
+        });
+
+        // Configure the layout and panels of the frame. 
+        setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+
+        _attributesListPanel = new AttributesListPanel(new NamedObj());
+
+        JPanel topPanel = new JPanel();
+        JPanel bottomPanel = new JPanel();
+
+        _attributesListPanel.setAlignmentX(LEFT_ALIGNMENT);
+        topPanel.setAlignmentX(LEFT_ALIGNMENT);
+        bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
+
+        _attributesListPanel.setAlignmentY(TOP_ALIGNMENT);
+        topPanel.setAlignmentY(TOP_ALIGNMENT);
+        bottomPanel.setAlignmentY(TOP_ALIGNMENT);
+
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+
+        topPanel.setBorder(BorderFactory.createEmptyBorder());
+
+        JButton doneButtone = new JButton("Done");
+        JButton cancelButton = new JButton("Cancel");
+
+        doneButtone.setMnemonic(KeyEvent.VK_ENTER);
+        cancelButton.setMnemonic(KeyEvent.VK_ESCAPE);
+
+        doneButtone.setActionCommand("Done");
+        cancelButton.setActionCommand("Cancel");
+
+        doneButtone.setHorizontalTextPosition(SwingConstants.CENTER);
+        cancelButton.setHorizontalTextPosition(SwingConstants.CENTER);
+
+        doneButtone.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+
+                try {
+
+                    // If the form is in an invalid state, do not continue.
+                    if (!_isValid()) {
+
+                        return;
+
+                    }
+
+                    _attributes = _attributesListPanel
+                            .getAttributes(_attributes);
+                    _modelName = _attributesListPanel.getModelName();
+
+                    AdvancedSimpleSearchFrame.this.setVisible(false);
+                    _parentFrame.setEnabled(true);
+
+                } catch (NameDuplicationException e) {
+
+                    MessageHandler.error("The search cannot be performed now "
+                            + "due to a NameDuplicationException.", e);
+
+                } catch (IllegalActionException e) {
+
+                    MessageHandler.error("The search cannot be performed now "
+                            + "due to an IllegalActionException.", e);
+
+                }
+
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+
+                try {
+                    _attributes = _attributesListPanel
+                            .getAttributes(_attributes);
+                } catch (IllegalActionException e) {
+                    MessageHandler.error("The search cannot be performed now "
+                            + "due to an IllegalActionException.", e);
+                }
+
+                _modelName = _attributesListPanel.getModelName();
+
+                setVisible(false);
+                _parentFrame.setEnabled(true);
+
+            }
+
+        });
+
+        topPanel.add(_attributesListPanel);
+        bottomPanel.add(doneButtone);
+        bottomPanel.add(cancelButton);
+        add(topPanel);
+        add(bottomPanel);
+
+        validate();
+        repaint();
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //                    public  methods                          ////
+    
+    /**
+     * Get the attributes search criteria that the user specified in this 
+     * frame. 
+     * 
+     * @return The list of attributes search criteria. 
+     */
+    public List<Attribute> getAttributes() {
+        return _attributes;
+    }
+
+    
+    /**
+     * Get the model name search criteria that the user specified in this 
+     * frame.
+     * 
+     * @return The model name search criteria.
+     */
+    public String getModelName() {
+        return _modelName;
+    }
+    
+
+    ///////////////////////////////////////////////////////////////////
+    //                    private methods                          ////
+
+    /**
+     * Validate whether the search criteria that the user has input is valid or 
+     * not. 
+     * 
+     * @return true - the search criteria is valid.<br>
+     *          false - the search criteria is invalid. 
+     * @exception NameDuplicationException Thrown if attributes with duplicated
+     * names are found in the search criteria. 
+     * @exception IllegalActionException Thrown if the intend action is illegal. 
+     */
+    private boolean _isValid() throws NameDuplicationException,
+            IllegalActionException {
+
+        if (_attributesListPanel.getAttributeCount() == 0
+                && _attributesListPanel.getModelName().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "You must enter the Model Name or "
+                            + "select attributes on which to search.",
+                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+
+            return false;
+
+        }
+
+        if (!_attributesListPanel.getModelName().trim().isEmpty()) {
+            if (!_attributesListPanel.getModelName().matches("^[A-Za-z0-9]+$")) {
+
+                JOptionPane.showMessageDialog(this,
+                        "The model name should only "
+                                + "contain letters and numbers.",
+                        "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+
+                return false;
+
+            }
+        }
+
+        if (_attributesListPanel.containsDuplicates()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "The search criteria cannot contain more"
+                            + " than one instance " + "of the same attribute.",
+                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+
+            return false;
+
+        }
+
+        if (!_attributesListPanel.allAttributeNamesSet()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "You must specify a name for all attributes.",
+                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+
+            return false;
+
+        }
+
+        if (!_attributesListPanel.allAttributeValuesSet()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "You must specify a value for all attributes.",
+                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+
+            return false;
+
+        }
+
+        return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //                    private variables                        ////
+
+    private AttributesListPanel _attributesListPanel;
+    private List<Attribute> _attributes;
+    private String _modelName;
+    private JFrame _parentFrame;
+
+}
