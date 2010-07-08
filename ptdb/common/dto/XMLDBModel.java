@@ -67,7 +67,19 @@ public class XMLDBModel {
     public XMLDBModel(String modelName) {
         this._modelName = modelName;
     }
-
+    
+    /**
+     * Construct a XMLDBModel instance
+     * with the given model name.
+     *
+     * @param modelName Name for the given model.
+     * @param modelId Id for the given model.
+     */
+    public XMLDBModel(String modelName, String modelId) {
+        this._modelName = modelName;
+        this._modelId = modelId;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

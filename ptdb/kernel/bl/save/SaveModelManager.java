@@ -208,7 +208,8 @@ public class SaveModelManager {
 
                 String referencedModelId = null;
                 boolean isReferenced = false;
-                int noOfParametersFound = 0;
+                boolean isReferencedFound = false;
+                boolean dbModelIdFound = false;
 
                 /* Get value for the DBReference and DBModelName properties.*/
                 for (int j = 0; j < parameterList.getLength(); j++) {
@@ -220,23 +221,25 @@ public class SaveModelManager {
                         String name = Utilities.getValueForAttribute(parameter,
                                 "name");
 
-                        if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)) {
+                        if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)
+                                && !dbModelIdFound) {
 
                             referencedModelId = Utilities.getValueForAttribute(
                                     parameter, "value");
 
-                            noOfParametersFound++;
+                            dbModelIdFound = true;
 
-                        } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)) {
+                        } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)
+                                && !isReferencedFound) {
 
                             String value = Utilities.getValueForAttribute(
                                     parameter, "value");
                             isReferenced = "TRUE".equals(value);
 
-                            noOfParametersFound++;
+                            isReferencedFound = true;
                         }
 
-                        if (noOfParametersFound == 2) {
+                        if (isReferencedFound && dbModelIdFound) {
                             break;
                         }
                     }

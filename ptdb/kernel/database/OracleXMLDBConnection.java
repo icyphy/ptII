@@ -171,7 +171,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
             if (_xmlTransaction != null) {
                 _checkTransactionActive();
-                _xmlTransaction.abort();
+                _xmlTransaction.getTransaction().abort();
                 _isTransactionActive = false;
             }
         } catch (XmlException e) {
@@ -180,6 +180,10 @@ public class OracleXMLDBConnection implements DBConnection {
                     "Database transaction could not be aborted - "
                             + e.getMessage(), e);
 
+        } catch (DatabaseException e) {
+            throw new DBConnectionException(
+                    "Database transaction could not be aborted - "
+                            + e.getMessage(), e);
         }
     }
     
@@ -201,11 +205,13 @@ public class OracleXMLDBConnection implements DBConnection {
         config.setInitializeLocking(true);
         config.setInitializeLogging(true);
         config.setErrorStream(System.err);
-        config.setMaxLockers(1000);
-        config.setMaxLocks(1000);
-        config.setMaxLockObjects(1000);
-        config.setLockDetectMode(LockDetectMode.DEFAULT);
-
+        config.setJoinEnvironment(true);
+        config.setNoLocking(true);
+        /*config.setMaxLockers(2000);
+        config.setMaxLocks(2000);
+        config.setMaxLockObjects(2000);
+        config.setLockDetectMode(LockDetectMode.DEFAULT);*/
+        
         File dbFile = new File(url);
 
         try {
@@ -1662,14 +1668,15 @@ public class OracleXMLDBConnection implements DBConnection {
      * Create the parent hierarchy for the given base model.
      * 
      * @param currentNode Current node for which processing needs to be done.
-     * @param parentNodeName Parent node for the current node.
+     * @param parentNodeId Parent node for the current node.
      * @param dBModelsMap Map that contains all the DBModels as they are created
      * so that their parent lists can be populated.
      * @param baseModel Base model for which the hierarchy is being created.
+     * @throws DBExecutionException 
      */
     private void _createParentHierarchy(Node currentNode,
-            String parentNodeName, HashMap<String, DBModel> dBModelsMap,
-            XMLDBModel baseModel) {
+            String parentNodeId, HashMap<String, DBModel> dBModelsMap,
+            XMLDBModel baseModel) throws DBExecutionException {
         /*
          * If the currentNode is not already visited
          * and it is not the base model,
@@ -1679,29 +1686,30 @@ public class OracleXMLDBConnection implements DBConnection {
          * If the current model is already visited,
          * then add the current model to the parent list.
          */
-        String currentNodeName = Utilities.getValueForAttribute(currentNode, XMLDBModel.DB_MODEL_ID_ATTR);
+        String currentNodeId = Utilities.getValueForAttribute(currentNode, XMLDBModel.DB_MODEL_ID_ATTR);
         //System.out.println(parentNodeName + " - " + currentNodeName);
-        if (currentNodeName != null) {
+        if (currentNodeId != null) {
 
-            if (!dBModelsMap.containsKey(currentNodeName)
+            if (!dBModelsMap.containsKey(currentNodeId)
                     && currentNode.hasChildNodes()) {
                 NodeList children = currentNode.getChildNodes();
                 for (int i = 0; i < children.getLength(); i++) {
                     if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
                         Node child = children.item(i);
-                        _createParentHierarchy(child, currentNodeName,
+                        _createParentHierarchy(child, currentNodeId,
                                 dBModelsMap, baseModel);
                     }
                 }
             }
-            if (parentNodeName != null
-                    && dBModelsMap.containsKey(currentNodeName)) {
-                DBModel currentDBModel = dBModelsMap.get(currentNodeName);
-                DBModel parentDBModel = new DBModel(parentNodeName);
-                //System.out.println("Adding parent " + parentNodeName
-                //        + " for child " + currentNodeName);
+            if (parentNodeId != null
+                    && dBModelsMap.containsKey(currentNodeId)) {
+                DBModel currentDBModel = dBModelsMap.get(currentNodeId);
+                
+                String modelName = _getModelNameFromModelId(parentNodeId);
+                DBModel parentDBModel = new DBModel(modelName, parentNodeId);
+                
                 currentDBModel.addParent(parentDBModel);
-                dBModelsMap.put(parentNodeName, parentDBModel);
+                dBModelsMap.put(parentNodeId, parentDBModel);
             }
         }
     }
@@ -1821,7 +1829,7 @@ public class OracleXMLDBConnection implements DBConnection {
             ArrayList<String> matchedModelsList) throws DBExecutionException {
         ArrayList<String> modelsList = new ArrayList<String>();
 
-        System.out.println("graphSearchQuery - " + query);
+        //System.out.println("graphSearchQuery - " + query);
 
         XmlQueryContext context;
         try {
@@ -1878,7 +1886,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 + _params.getContainerName() + "\")/entity/property where "
                 + attributeClause + " " + " return base-uri($const)";
 
-        System.out.println("attributeSearchQuery - " + attributeSearchQuery);
+        //System.out.println("attributeSearchQuery - " + attributeSearchQuery);
 
         XmlQueryContext context = _xmlManager.createQueryContext();
         if (context == null)
@@ -1905,7 +1913,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @param completeModelName Model name with container name.
      * @return Model name 
      */
-    public String _extractModelName(String completeModelName) {
+    private String _extractModelName(String completeModelName) {
         if (completeModelName != null) {
             return completeModelName.substring(completeModelName.lastIndexOf("/") + 1);
         } else
@@ -1938,19 +1946,19 @@ public class OracleXMLDBConnection implements DBConnection {
             Node firstNode = document.getElementsByTagName("entities").item(0);
             if (firstNode != null) {
                 HashMap<String, DBModel> dBModelsMap = new HashMap<String, DBModel>();
-                String modelName = model.getModelName();
-                dBModelsMap.put(modelName, new DBModel(modelName));
+                String modelId = model.getModelId();
+                dBModelsMap.put(modelId, new DBModel(model.getModelName(), modelId));
                 NodeList children = firstNode.getChildNodes();
 
                 for (int i = 0; i < children.getLength(); i++) {
                     if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
                         Node child = children.item(i);
-                        //                       System.out.println("Start of New Entity");
+                        //System.out.println("Start of New Entity");
                         _createParentHierarchy(child, null, dBModelsMap, model);
                     }
                 }
 
-                DBModel baseDBModel = dBModelsMap.get(model.getModelName());
+                DBModel baseDBModel = dBModelsMap.get(model.getModelId());
                 /*
                  * Get unique and maximal hierarchies from the baseDBModel
                  */
@@ -2289,8 +2297,8 @@ public class OracleXMLDBConnection implements DBConnection {
             for (DBModel parentDBModel : parentsList) {
 
                 XMLDBModel parentXMLDBModel = new XMLDBModel(
-                        parentDBModel._modelName);
-
+                        parentDBModel._modelName, parentDBModel._modelId);
+                
                 _populateParentList(parentXMLDBModel, parentDBModel,
                         childHierarchy, baseModel);
             }
@@ -2299,6 +2307,7 @@ public class OracleXMLDBConnection implements DBConnection {
             LinkedList<XMLDBModel> xmlDBModelParentsList = new LinkedList<XMLDBModel>();
             xmlDBModelParentsList.addAll(childHierarchy);
             xmlDBModelParentsList.addFirst(model);
+            xmlDBModelParentsList.removeLast();
             baseModel.addParentList(xmlDBModelParentsList);
         }
 
@@ -2476,13 +2485,14 @@ public class OracleXMLDBConnection implements DBConnection {
      * Contain the parents list for a model.
      */
     private class DBModel {
+        
         /**
          * Construct an instance with the given model name.
          */
-        DBModel(String modelName) {
+        DBModel(String modelName, String modelId) {
+            _modelId = modelId;
             _modelName = modelName;
         }
-
         /**
          * Add parent to model if the parent is not already present.
          * @param model Parent model to be added to parentslist.
@@ -2500,7 +2510,9 @@ public class OracleXMLDBConnection implements DBConnection {
          * Name of the model
          */
         String _modelName;
-        /**
+        /* Id for the model */
+        String _modelId;
+        /*
          * Parents list for the model.
          */
         ArrayList<DBModel> _parentsList;
