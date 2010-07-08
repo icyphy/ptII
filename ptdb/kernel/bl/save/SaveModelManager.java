@@ -336,7 +336,6 @@ public class SaveModelManager {
                                 if(!modelsToRemoveList.contains(modelToRemove)){
             
                                     modelsToRemoveList.add(modelToRemove);
-                                    
                                 }
                                 
                             }
@@ -359,20 +358,7 @@ public class SaveModelManager {
         }
         
         modelsToRemoveList.add(xmlDBModel);
-    
-        // Remove duplicate models.
-        HashSet set = new HashSet();
-        for (int i = 0; i < modelsToRemoveList.size(); i++) {
-    
-            boolean val = set.add(modelsToRemoveList.get(i).getModel());
-            if (val == false) {
-    
-                modelsToRemoveList.remove(i);
-    
-            }
-    
-        }
-        
+ 
         CacheManager.removeFromCache(modelsToRemoveList);        
         
     }

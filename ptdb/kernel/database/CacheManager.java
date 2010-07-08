@@ -217,7 +217,6 @@ public class CacheManager {
                 XMLDBModel cacheModel = new XMLDBModel(modelName);
                 cacheModel.setModel((String) assemblies.get(modelName));
                 dbConnection.executeUpdateModelInCache(cacheModel);
-            
             }
             
             dbConnection.commitConnection();
