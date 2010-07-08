@@ -104,6 +104,7 @@ $(RAMP_CLASS):
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) \
 		alljtests.tcl test_auto test_java_cg
 	$(JTCLSH) alljtests.tcl
+	-(cd $(ROOT)/ptolemy/actor/lib/test; $(MAKE) cleanFileWriter cleanRunCompositeActor)
 
 # 'make clean' removes $(KRUFT)
 KRUFT = 
