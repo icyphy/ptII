@@ -74,6 +74,7 @@ import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.Environment;
 import com.sleepycat.db.EnvironmentConfig;
 import com.sleepycat.db.LockDetectMode;
+import com.sleepycat.db.TransactionConfig;
 import com.sleepycat.dbxml.XmlContainer;
 import com.sleepycat.dbxml.XmlDocument;
 import com.sleepycat.dbxml.XmlException;
@@ -135,7 +136,15 @@ public class OracleXMLDBConnection implements DBConnection {
                     .getContainerName());
 
             if (_params.isTransactionRequired()) {
-                _xmlTransaction = _xmlManager.createTransaction();
+                 TransactionConfig transactionConfig = new TransactionConfig();
+                 /*
+                  * Open the transaction and enable committed reads. All
+                  * queries performed with this transaction handle will
+                  * use read committed isolation.
+                  */
+                 transactionConfig.setReadCommitted(true);
+
+                _xmlTransaction = _xmlManager.createTransaction(null, transactionConfig);
                 _isTransactionActive = true;
             } else {
                 _isTransactionActive = false;
@@ -202,15 +211,16 @@ public class OracleXMLDBConnection implements DBConnection {
         config.setAllowCreate(true);
         config.setInitializeCache(true);
         config.setTransactional(true);
+        config.setTxnWriteNoSync(true);
         config.setInitializeLocking(true);
         config.setInitializeLogging(true);
         config.setErrorStream(System.err);
         config.setJoinEnvironment(true);
         config.setNoLocking(true);
-        /*config.setMaxLockers(2000);
-        config.setMaxLocks(2000);
-        config.setMaxLockObjects(2000);
-        config.setLockDetectMode(LockDetectMode.DEFAULT);*/
+        config.setMaxLockers(3000);
+        config.setMaxLocks(3000);
+        config.setMaxLockObjects(3000);
+        config.setLockDetectMode(LockDetectMode.DEFAULT);
         
         File dbFile = new File(url);
 
