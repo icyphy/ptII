@@ -107,6 +107,8 @@ public class DbSearchFrame extends TransformationEditor {
             NamedObj containerModel, JFrame sourceFrame) {
         super(entity, tableau);
         
+        setTitle("Database Pattern Search");
+        
         _containerModel = containerModel;
         _sourceFrame = sourceFrame;
 
