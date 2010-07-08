@@ -373,7 +373,7 @@ public class SaveModelManager {
     
         }
         
-        CacheManager.removeFromCache(hierarchy);        
+        CacheManager.removeFromCache(modelsToRemoveList);        
         
     }
 }
