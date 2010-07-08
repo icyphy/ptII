@@ -112,7 +112,7 @@ set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/Sinewave2.xml \
 		$PTII/ptolemy/actor/lib/test/auto/UnaryMathFunction.xml \
 		$PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml \
-		$PTII/ptolemy/actor/lib/test/auto/sizedArray1.xml \
+		$PTII/ptolemy/actor/lib/test/auto/sizedarray1.xml \
 		$PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml \
 		$PTII/ptolemy/actor/lib/comm/test/auto/Scrambler1.xml \
 		$PTII/ptolemy/actor/lib/hoc/test/auto/MultiInstanceComposite.xml \
