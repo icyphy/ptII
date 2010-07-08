@@ -186,7 +186,9 @@ public class Subscriber extends TypedAtomicActor {
             }
         } else if (attribute == global) {
             _global = ((BooleanToken) global.getToken()).booleanValue();
-            if(_global == false) {
+            if (!_global && getContainer() instanceof CompositeActor) {
+                // The vergil and config tests were failing because
+                // moml.EntityLibrary sometimes contains Subscribers.
                 ((CompositeActor) getContainer()).unlinkToPublishedPort(
                         _channel, input, false);
             }

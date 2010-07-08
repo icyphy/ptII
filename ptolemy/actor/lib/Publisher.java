@@ -181,6 +181,8 @@ public class Publisher extends TypedAtomicActor {
                         || globalValue != _global) {
                     NamedObj container = getContainer();
                     if (container instanceof CompositeActor) {
+                        // The vergil and config tests were failing because
+                        // moml.EntityLibrary sometimes contains Subscribers.
                         try {
                             if (attribute == global) {
                                 if (_global && !globalValue) {
