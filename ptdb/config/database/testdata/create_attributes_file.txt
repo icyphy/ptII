@@ -7,4 +7,10 @@ putDocument Attributes.ptdbxml '<attributes>
 	</attribute>
 	<attribute id="author_1277754213656" name="author" type="String"/>
 	<attribute id="new_1277754213123" name="new" type="Boolean"/>
+
+	<attribute id="a_testId" name="author_test" type="String"/>
+	<attribute id="c_testId" name="countries_test" type="List">
+		<item name="India"/>
+	</attribute>
+
 </attributes>'
