@@ -46,7 +46,7 @@ unzip /tmp/opencv_01.zip
 cp /usr/java/OpenCV/library/OpenCV.jar /usr/java/default/jre/lib/ext/
 cp /usr/java/OpenCV/library/libOpenCV.so /usr/java/default/jre/bin/
 </pre>
-</ol>
+
 Note that <code>libOpenCV.so</code> is a 32 bit shared library, so to
 recompile for 64 bit:
 <pre>
@@ -56,6 +56,12 @@ g++ -fPIC -shared OpenCV.cpp -I/usr/local/include/opencv -lc\
 v -o libOpenCV.so
 cp libOpenCV.so /usr/java/default/jre/lib/amd64/
 </pre>
+<li> Download <a href="http://processing.googlecode.com/files/processing-1.1.tgz"><code>http://processing.googlecode.com/files/processing-1.1.tgz</code></a>
+<pre>
+tar -zxf processing-1.1.tgz
+cp processing-1.1/lib/core.jar /usr/java/default/jre/lib/ext/
+</pre>
+</ol>
 
 <h3>Installing OpenCV under Mac OS X</h3>
 <p>>Note that Under Mac OS 1.5, you <b>must</b> be running Java 1.5
