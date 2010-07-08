@@ -256,62 +256,12 @@ public class AttributesListPanel extends JPanel {
     /** Get an ArrayList of all displayed attributes as Attribute objects.
      * 
      * @return An ArrayList of Attributes that are present in the display.
-     * @exception NameDuplicationException
      *          Thrown if more than one attribute added to the display, has the
      *          same name.
      * @exception IllegalActionException
      *          Thrown if a problem occurs creating the attribute objects.
      */
     public ArrayList<Attribute> getAttributes()
-            throws NameDuplicationException, IllegalActionException {
-
-        ArrayList<Attribute> returnList = new ArrayList();
-
-        // Get a list of all attributes we have displayed.
-        Component[] componentArray1 = _attListPanel.getComponents();
-
-        for (int i = 0; i < componentArray1.length; i++) {
-
-            if (componentArray1[i] instanceof JPanel) {
-
-                Component[] componentArray2 = ((JPanel) componentArray1[i])
-                        .getComponents();
-
-                for (int j = 0; j < componentArray2.length; j++) {
-
-                    if (componentArray2[j] instanceof ModelAttributePanel) {
-
-                        StringParameter stringParameter = new StringParameter(
-                                _model,
-                                ((ModelAttributePanel) componentArray2[j])
-                                        .getAttributeName());
-                        stringParameter
-                                .setExpression(((ModelAttributePanel) componentArray2[j])
-                                        .getValue());
-                        returnList.add(stringParameter);
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        return returnList;
-
-    }
-
-    /** 
-     * Get an ArrayList of all displayed attributes as Attribute objects.
-     * 
-     * @param existingAttributes The existing attributes in this frame. 
-     * 
-     * @return An ArrayList of Attributes that are present in the display.
-     * @exception IllegalActionException
-     *          Thrown if a problem occurs creating the attribute objects.
-     */
-    public ArrayList<Attribute> getAttributes(List<Attribute> existingAttributes)
             throws IllegalActionException {
 
         ArrayList<Attribute> returnList = new ArrayList();
@@ -332,26 +282,18 @@ public class AttributesListPanel extends JPanel {
 
                         StringParameter stringParameter;
                         try {
-                            stringParameter = new StringParameter(_model,
+                            stringParameter = new StringParameter(
+                                    _model,
                                     ((ModelAttributePanel) componentArray2[j])
                                             .getAttributeName());
-
-                            stringParameter
-                                    .setExpression(((ModelAttributePanel) componentArray2[j])
-                                            .getValue());
-                            returnList.add(stringParameter);
-
                         } catch (NameDuplicationException e) {
-                            for (Attribute existingAttribute : existingAttributes) {
-                                if (existingAttribute
-                                        .getName()
-                                        .equals(
-                                                ((ModelAttributePanel) componentArray2[j])
-                                                        .getAttributeName())) {
-                                    returnList.add(existingAttribute);
-                                }
-                            }
+                            stringParameter = (StringParameter)_model.getAttribute(((ModelAttributePanel) componentArray2[j])
+                                            .getAttributeName());
                         }
+                        stringParameter
+                                .setExpression(((ModelAttributePanel) componentArray2[j])
+                                        .getValue());
+                        returnList.add(stringParameter);
 
                     }
 
@@ -364,6 +306,7 @@ public class AttributesListPanel extends JPanel {
         return returnList;
 
     }
+
 
     /** Get the model name.
      * 

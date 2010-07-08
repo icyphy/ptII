@@ -143,7 +143,7 @@ public class DbSearchFrame extends TransformationEditor {
         SimpleSearchAction simpleSearchAction = new SimpleSearchAction();
         GUIUtilities.addToolBarButton(_toolbar, simpleSearchAction);
 
-        // remove the replacement and correspondence tabs 
+        // Remove the replacement and correspondence tabs.
         JTabbedPane tabbedPane = getFrameController().getTabbedPane();
         tabbedPane.remove(1);
         tabbedPane.remove(1);

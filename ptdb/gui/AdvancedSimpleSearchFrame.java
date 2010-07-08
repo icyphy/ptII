@@ -119,16 +119,12 @@ public class AdvancedSimpleSearchFrame extends JFrame {
         topPanel.setBorder(BorderFactory.createEmptyBorder());
 
         JButton doneButtone = new JButton("Done");
-        JButton cancelButton = new JButton("Cancel");
 
         doneButtone.setMnemonic(KeyEvent.VK_ENTER);
-        cancelButton.setMnemonic(KeyEvent.VK_ESCAPE);
 
         doneButtone.setActionCommand("Done");
-        cancelButton.setActionCommand("Cancel");
 
         doneButtone.setHorizontalTextPosition(SwingConstants.CENTER);
-        cancelButton.setHorizontalTextPosition(SwingConstants.CENTER);
 
         doneButtone.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -143,7 +139,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
                     }
 
                     _attributes = _attributesListPanel
-                            .getAttributes(_attributes);
+                            .getAttributes();
                     _modelName = _attributesListPanel.getModelName();
 
                     AdvancedSimpleSearchFrame.this.setVisible(false);
@@ -164,29 +160,9 @@ public class AdvancedSimpleSearchFrame extends JFrame {
             }
         });
 
-        cancelButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-
-                try {
-                    _attributes = _attributesListPanel
-                            .getAttributes(_attributes);
-                } catch (IllegalActionException e) {
-                    MessageHandler.error("The search cannot be performed now "
-                            + "due to an IllegalActionException.", e);
-                }
-
-                _modelName = _attributesListPanel.getModelName();
-
-                setVisible(false);
-                _parentFrame.setEnabled(true);
-
-            }
-
-        });
-
         topPanel.add(_attributesListPanel);
         bottomPanel.add(doneButtone);
-        bottomPanel.add(cancelButton);
+        
         add(topPanel);
         add(bottomPanel);
 
@@ -239,12 +215,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
         if (_attributesListPanel.getAttributeCount() == 0
                 && _attributesListPanel.getModelName().trim().isEmpty()) {
 
-            JOptionPane.showMessageDialog(this,
-                    "You must enter the Model Name or "
-                            + "select attributes on which to search.",
-                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
-
-            return false;
+            return true;
 
         }
 
