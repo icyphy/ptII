@@ -262,10 +262,12 @@ public class PthalesReceiver extends SDFReceiver {
                         int finalSize = 1;
                         int nDims = ((IntToken) _header.get(0)).intValue();
 
-                        //                      Computed for output ports only
+                        //Computed for output ports only
                         _sizes = new LinkedHashMap<String, Integer>();
 
                         _dimensions = new String[nDims];
+
+                        LinkedHashMap<String, Integer[]> pattern = new LinkedHashMap<String, Integer[]>();
 
                         for (int i = 0; i < nDims; i++) {
                             finalSize *= ((IntToken) _header.get(3 + 2 * i))
@@ -274,6 +276,10 @@ public class PthalesReceiver extends SDFReceiver {
                                     ((IntToken) _header.get(3 + 2 * i))
                                             .intValue());
                             _dimensions[i] = _header.get(2 + 2 * i).toString();
+                            Integer[] values = new Integer[2];
+                            values[0] = ((IntToken) _header.get(3 + 2 * i)).intValue();
+                            values[1] = 1;
+                            pattern.put(_header.get(2 + 2 * i).toString(), values);
                         }
                         if (_buffer == null || _buffer.length < finalSize) {
                             _buffer = new Token[finalSize
@@ -292,6 +298,9 @@ public class PthalesReceiver extends SDFReceiver {
                             }
                             _jumpAddr.put(_dimensions[nDim], previousSize);
                         }
+                        
+                        _patternOut = pattern;
+                        _patternSizeOut = finalSize;
                     }
                 } else {
                     _buffer[_getAddress(_posOut++, false)] = token;
