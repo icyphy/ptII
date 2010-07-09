@@ -1,31 +1,3 @@
-/*
-@Copyright (c) 2010 The Regents of the University of California.
-All rights reserved.
-
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
-
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
-
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-
-						PT_COPYRIGHT_VERSION_2
-						COPYRIGHTENDKEY
-
-
-*/
 package ptdb.kernel.database;
 
 import java.io.File;
@@ -527,24 +499,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
         XMLDBModel completeXMLDBModel = null;
         
-        try {
-            
-            try {
-                
-                XMLDBModel xmlDBModelCache = CacheManager.loadFromCache(
-                        task.getModelName());
-                
-                if (xmlDBModelCache != null) {
-                    
-                    return xmlDBModelCache;
-                }
-                
-            } catch (Exception e) {
-                //do nothing
-            }
-            
-            
-            
+        try {            
             
             XmlDocument dbModel = _getModelFromDB(task);
 
@@ -567,9 +522,16 @@ public class OracleXMLDBConnection implements DBConnection {
                     modelNode = modelNode.getChildNodes().item(0);
 
                     completeModelBody = _buildCompleteModel(modelNode);
+
                     
                   try {
-                  
+
+                      /*
+                       * The _buildCompleteModel() method will put complete models
+                       * extracted from the database into _xmlModelHerarichyMap
+                       * The step below is to put those models in the cache to avoid
+                       * building them again.
+                       */
                     
                       if (_xmlModelHerarichyMap != null && 
                               _xmlModelHerarichyMap.size() > 0) {
@@ -584,6 +546,12 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 } else {
 
+                    /*
+                     * If no references found, then the model body has no references,
+                     * therefore, the complete model body is the same as the model
+                     * content fetched directly from the database.
+                     */
+                    
                     completeModelBody = dbModel.getContentAsString();
                 }
                 
@@ -738,7 +706,7 @@ public class OracleXMLDBConnection implements DBConnection {
             
             String attributeName = xmlDBAttribute.getAttributeName();
             
-            // check if the attribute already exists.            
+            // Check if the attribute already exists.            
             String query = "doc('dbxml:/" + _xmlContainer.getName() 
                 + "/Attributes.ptdbxml')/attributes/attribute[@name='" 
                 + attributeName + "']";
@@ -762,7 +730,7 @@ public class OracleXMLDBConnection implements DBConnection {
                                 + "same name already exist.");
             }
             
-            //create the attribute id as a combination of the name and time stamp.
+            // Create the attribute id as a combination of the name and time stamp.
             Date date = new Date ();
             
             String attributeId = Utilities.generateId(attributeName);
@@ -966,7 +934,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 currentDbModel = _xmlContainer.getDocument(_xmlTransaction,
                         xmlDBModel.getModelName());
             } catch (XmlException e) {
-                //do nothing
+                // Do nothing.
             }
 
             if (currentDbModel == null) {
@@ -987,6 +955,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 
                 String modelId = xmlDBModel.getModelId();
                 
+                // If the model id is not set yet, get it from the database.
                 if (modelId == null || modelId.length() == 0) {
                     
                     modelId = _getModelIdFromModelName(xmlDBModel.getModelName());
@@ -995,16 +964,11 @@ public class OracleXMLDBConnection implements DBConnection {
                     
                 }
                     
-
-//                currentDbModel.setContent(modelBody);
-                
                 _xmlContainer.deleteDocument(_xmlTransaction, currentDbModel);
                 
                 _xmlContainer.putDocument(_xmlTransaction, xmlDBModel.getModelName(), modelBody);
                 
                 _updateReferenceFile(xmlDBModel);
-                
-//                _xmlContainer.updateDocument(_xmlTransaction, currentDbModel);
                 
                 return modelId;
             }
@@ -1204,6 +1168,8 @@ public class OracleXMLDBConnection implements DBConnection {
                 
             } else {
 
+                _xmlContainer.getName();
+                
                 _xmlContainer.putDocument(_xmlTransaction,
                         modelName, modelBody);
             }
@@ -1266,33 +1232,14 @@ public class OracleXMLDBConnection implements DBConnection {
             _xmlModelHerarichyMap = new HashMap<String, String>();
         }
 
-//        NamedNodeMap attributes = currentNode.getAttributes();
-//
         String currentModelName = "";
         String currentModelId = "";
-//
-//        if (attributes != null) {
-//            for (int i = 0; i < attributes.getLength(); i++) {
-//
-//                Node node = attributes.item(i);
-//`
-//               
-//                if (node.getNodeName().equalsIgnoreCase("DBModelId")) {
-//
-//                    currentModelId = node.getNodeValue();
-//
-//                    break;
-//
-//                }
-//            }
-//        }
         
         
         currentModelId = Utilities.getValueForAttribute(currentNode, XMLDBModel.DB_MODEL_ID_ATTR);
+        currentModelName = Utilities.getValueForAttribute(currentNode, "name");
 
         if (currentModelId != null && currentModelId.length() > 0) {
-            
-            currentModelName = _getModelNameFromModelId(currentModelId);
 
             if (_xmlModelHerarichyMap.containsKey(currentModelName)) {
 
@@ -1311,10 +1258,10 @@ public class OracleXMLDBConnection implements DBConnection {
 
             String currentModelContent = "";
             
-//            boolean isLoadedFromCache = true;
 
             try {
 
+                // Try to load the model from cache.
                 try {
                     currentXMLDBModel = CacheManager.loadFromCache(
                             currentModelName);
@@ -1329,13 +1276,12 @@ public class OracleXMLDBConnection implements DBConnection {
                     }
                     
                 } catch (Exception e) {
-                    //do nothing...
+                    // Do nothing...
                 }
                     
                
-                //load the model normally
+                // Load the model form the database normally.
                 currentDbModel = _xmlContainer.getDocument(currentModelName);
-//                isLoadedFromCache = false;
                
 
                 if (currentDbModel == null) {
@@ -1349,12 +1295,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 }
 
-                                  
-                    
                 currentModelContent = currentDbModel.getContentAsString();
-                
-                
-
+               
             } catch (XmlException e) {
 
                 throw new DBExecutionException(
@@ -1404,9 +1346,6 @@ public class OracleXMLDBConnection implements DBConnection {
 
             _xmlModelHerarichyMap.put(currentModelName, currentModelContent);
             
-            
-            
-
             return currentModelContent;
 
         } else {
@@ -1826,6 +1765,55 @@ public class OracleXMLDBConnection implements DBConnection {
 
     }
     
+
+    /**
+     * Execute the query being passed to it to get the model name or model id from
+     * the database. 
+     * 
+     * @param query The query constructed by _getModelNameFromModelId() or _getModelIdFromModelName() methods.
+     * @return The results of the query.
+     * @Exception DBExecutionException Thrown if there are configuration issues with the database.
+     * @throws XmlException Thrown if there was a problem running the query.
+     */
+    private String _executeGetModelIdOrNameQuery(String query) 
+            throws DBExecutionException, XmlException {
+        
+        String result = "";
+            
+        _checkXMLDBConnectionObjects(false, true, false);
+
+        
+        XmlQueryContext xmlContext = _xmlManager.createQueryContext();
+
+        if (xmlContext == null) {
+            throw new DBExecutionException(
+                    "Failed to execute _getModelIdFromModelName"
+                            + " - could not create an xml query context"
+                            + " from the xml manager.");
+        }
+
+        XmlQueryExpression queryExpression = _xmlManager.prepare(query,
+                xmlContext);
+
+        if (queryExpression == null) {
+            throw new DBExecutionException(
+                    "Failed to execute GetModelsTask"
+                            + " - could not create an xml query expression"
+                            + " from the xml manager.");
+        }
+
+        XmlResults results = queryExpression.execute(xmlContext);
+
+        if (results != null && results.size() > 0) {
+
+            XmlValue xmlValue = results.next();
+            result = xmlValue.asString();
+        }
+        
+        return result; 
+        
+    }
+    
     /**
      * 
      * @param query Search xQuery that needs to be executed.  
@@ -1987,53 +1975,30 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     private String _getModelIdFromModelName(String modelName) 
             throws DBExecutionException {
-        
+                
         
         String modelId = "";
         
-
+        String query ;
         try {
             
-            _checkXMLDBConnectionObjects(true, true, false);
+            _checkXMLDBConnectionObjects(true, false, false);
 
+
+            query = "for $x in doc('dbxml:/" + _xmlContainer.getName()
+                    + "/ReferenceFile.ptdbxml')" + "/reference/entity[@" 
+                    + "name='" + modelName + "'] return data($x/@" 
+                    + XMLDBModel.DB_MODEL_ID_ATTR + ")";
             
-            XmlQueryContext xmlContext = _xmlManager.createQueryContext();
-
-            if (xmlContext == null) {
-                throw new DBExecutionException(
-                        "Failed to execute _getModelIdFromModelName"
-                                + " - could not create an xml query context"
-                                + " from the xml manager.");
-            }
-
-            String query = "for $x in doc('dbxml:/"+ _xmlContainer.getName() 
-                    + "/" + modelName + "')"
-                    + "/entity/property[@name='" + XMLDBModel.DB_MODEL_ID_ATTR 
-                    + "'] return data($x/@value)";
-
-            XmlQueryExpression queryExpression = _xmlManager.prepare(query,
-                    xmlContext);
-
-            if (queryExpression == null) {
-                throw new DBExecutionException(
-                        "Failed to execute GetModelsTask"
-                                + " - could not create an xml query expression"
-                                + " from the xml manager.");
-            }
-
-            XmlResults results = queryExpression.execute(xmlContext);
-
-            if (results != null && results.size() > 0) {
-
-                XmlValue xmlValue = results.next();
-                modelId = xmlValue.asString();
-            }
-
+            modelId = _executeGetModelIdOrNameQuery(query);
+            
         } catch (XmlException e) {
+            
             throw new DBExecutionException(
-                    "Failed to get the model Id from the name for the given model "
-                    + modelName + " - " + e.getMessage(), e);
+                    "Failed to get model Id from model name for the given model name: "
+                    + modelName + " - " + e.getMessage(), e);    
         }
+        
         return modelId; 
     }
     
@@ -2047,32 +2012,32 @@ public class OracleXMLDBConnection implements DBConnection {
     private String _getModelNameFromModelId(String dbModelId) 
             throws DBExecutionException {
         
-        
+                
         String modelName = "";
-        
-
+       
+        String query ;
         try {
             
-            String searchClause = "$const/@name='" + XMLDBModel.DB_MODEL_ID_ATTR 
-                + "' and $const/@value='"+ dbModelId +"'";
+            _checkXMLDBConnectionObjects(true, false, false);
             
-            ArrayList<String> result = _executeSingleAttributeMatch(searchClause);
+            query = "for $x in doc('dbxml:/" + _xmlContainer.getName()
+                    + "/ReferenceFile.ptdbxml')" + "/reference/entity[@" 
+                    + XMLDBModel.DB_MODEL_ID_ATTR + "='" + dbModelId + "'] "
+                    + "return data($x/@name)";
+            modelName = _executeGetModelIdOrNameQuery(query);
             
-            if (result != null && result.size() > 0) {
-                
-                modelName = (String) result.get(0);
-                
-                modelName = _extractModelName(modelName);
-            }
-            
-
         } catch (XmlException e) {
+            
             throw new DBExecutionException(
-                    "Failed to retrieve model name from model Id for the given Id " 
+                    "Failed to get model name from model Id for the given model Id: "
                     + dbModelId + " - " + e.getMessage(), e);
+            
+            
         }
+        
         return modelName; 
     }
+    
 
     /**
      * Get all the parent entries in the reference file where the given model is
