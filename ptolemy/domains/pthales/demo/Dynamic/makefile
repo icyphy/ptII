@@ -49,7 +49,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Dynamic.xml \
-	ThalesDynamic.xml
+	ThalesDynamic.xml \
+	ThalesDynamicModalModel.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
