@@ -2,6 +2,8 @@ putdocument ModelContainsBothAttributes '<?xml version="1.0" standalone="no"?>
 <entity name="ModelContainsBothAttributes" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
+	<property name="DBModelId" value="ModelContainsBothAttributes" class="ptolemy.data.expr.StringParameter">
+        </property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -952,9 +954,7 @@ putDocument CompositeActor '<entity name="CompositeActor" class="ptolemy.actor.T
 putDocument Adder '<entity name="Adder" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 115.0]">
         </property>
-		<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringParameter">
-        </property>
-		<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringParameter">
+	<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringParameter">
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1638,4 +1638,8 @@ putDocument modelWithTwoAdders '<entity name="model2" class="ptolemy.actor.Typed
     <link port="AddSubtract.minus" relation="relation7"/>
     <link port="AddSubtract.output" relation="relation5"/>
 </entity>'
+
+putDocument D.xml '<entity name="D.xml" class="ptolemy.actor.lib.TypedCompositeActor"><property name="DBModelId" value="D.xml"/></entity>'
+
+putDocument DB.xml '<entity name="DB.xml" class="ptolemy.actor.lib.TypedCompositeActor"><property name="DBModelId" value="DB.xml"/></entity>'
 

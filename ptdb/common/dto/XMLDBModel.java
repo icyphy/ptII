@@ -57,7 +57,9 @@ public class XMLDBModel {
     public static final String DB_MODEL_ID_ATTR = "DBModelId";
     /** String for DBReference */
     public static final String DB_REFERENCE_ATTR = "DBReference";
-
+    /** String for model name */
+    public static final String DB_MODEL_NAME = "name";
+    
     /**
      * Construct a XMLDBModel instance
      * with the given model name.

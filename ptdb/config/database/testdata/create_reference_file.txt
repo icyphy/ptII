@@ -1,110 +1,110 @@
 putDocument ReferenceFile.ptdbxml '<reference>
-	<entity DBModelId="A.xml">
-		<entity DBModelId="B.xml">
-			<entity DBModelId="C.xml">
-				<entity DBModelId="D.xml">
-					<entity DBModelId="H.xml">
+	<entity DBModelId="A.xml" name="A.xml">
+		<entity DBModelId="B.xml" name="B.xml">
+			<entity DBModelId="C.xml" name="C.xml">
+				<entity DBModelId="D.xml" name="D.xml">
+					<entity DBModelId="H.xml" name="H.xml">
 					</entity>				
 				</entity>	
-				<entity DBModelId="D.xml">
-					<entity DBModelId="H.xml">
+				<entity DBModelId="D.xml" name="D.xml">
+					<entity DBModelId="H.xml" name="H.xml">
 					</entity>
 				</entity>
-				<entity DBModelId="I.xml">
-					<entity DBModelId="H.xml">
+				<entity DBModelId="I.xml" name="I.xml">
+					<entity DBModelId="H.xml" name="H.xml">
 					</entity>				
 				</entity>			
 			</entity>
 		</entity>		
-		<entity DBModelId="C.xml">
-			<entity DBModelId="D.xml">
-				<entity DBModelId="H.xml">
+		<entity DBModelId="C.xml" name="C.xml">
+			<entity DBModelId="D.xml" name="D.xml">
+				<entity DBModelId="H.xml" name="H.xml">
 				</entity>
 			</entity>				
 		</entity>
-		<entity DBModelId="E.xml">
-			<entity DBModelId="D.xml">
-				<entity DBModelId="H.xml">
+		<entity DBModelId="E.xml" name="E.xml">
+			<entity DBModelId="D.xml" name="D.xml">
+				<entity DBModelId="H.xml" name="H.xml">
 				</entity>
 			</entity>				
 		</entity>
 	</entity>
-	<entity DBModelId="B.xml">
-		<entity DBModelId="C.xml">
-			<entity DBModelId="D.xml">
-				<entity DBModelId="H.xml">
+	<entity DBModelId="B.xml" name="B.xml">
+		<entity DBModelId="C.xml" name="C.xml">
+			<entity DBModelId="D.xml" name="D.xml">
+				<entity DBModelId="H.xml" name="H.xml">
 				</entity>
 			</entity>				
 		</entity>
-		<entity DBModelId="D.xml">
-			<entity DBModelId="H.xml">
+		<entity DBModelId="D.xml" name="D.xml">
+			<entity DBModelId="H.xml" name="H.xml">
 			</entity>
 		</entity>
 	</entity>		
-	<entity DBModelId="C.xml">
-		<entity DBModelId="D.xml">
-			<entity DBModelId="H.xml">
+	<entity DBModelId="C.xml" name="C.xml">
+		<entity DBModelId="D.xml" name="D.xml">
+			<entity DBModelId="H.xml" name="H.xml">
 			</entity>
 		</entity>				
 	</entity>
-	<entity DBModelId="E.xml">
-		<entity DBModelId="D.xml">
-			<entity DBModelId="H.xml">
+	<entity DBModelId="E.xml" name="E.xml">
+		<entity DBModelId="D.xml" name="D.xml">
+			<entity DBModelId="H.xml" name="H.xml">
 			</entity>
 		</entity>				
 	</entity>
-	<entity DBModelId="D.xml">
-		<entity DBModelId="H.xml">
+	<entity DBModelId="D.xml" name="D.xml">
+		<entity DBModelId="H.xml" name="H.xml">
 		</entity>
 	</entity>				
-	<entity DBModelId="E.xml">
-		<entity DBModelId="B.xml">
-			<entity DBModelId="C.xml">
-				<entity DBModelId="D.xml">
-					<entity DBModelId="H.xml">
+	<entity DBModelId="E.xml" name="E.xml">
+		<entity DBModelId="B.xml" name="B.xml">
+			<entity DBModelId="C.xml" name="C.xml">
+				<entity DBModelId="D.xml" name="D.xml">
+					<entity DBModelId="H.xml" name="H.xml">
 					</entity>			
 				</entity>				
 			</entity>
-			<entity DBModelId="D.xml">
-				<entity DBModelId="H.xml">
+			<entity DBModelId="D.xml" name="D.xml">
+				<entity DBModelId="H.xml" name="H.xml">
 				</entity>
 			</entity>				
 		</entity>
 	</entity>		
-	<entity DBModelId="K.xml">
-		<entity DBModelId="B.xml">
-			<entity DBModelId="C.xml">
-				<entity DBModelId="D.xml">
-					<entity DBModelId="H.xml">
+	<entity DBModelId="K.xml" name="K.xml">
+		<entity DBModelId="B.xml" name="B.xml">
+			<entity DBModelId="C.xml" name="C.xml">
+				<entity DBModelId="D.xml" name="D.xml">
+					<entity DBModelId="H.xml" name="H.xml">
 					</entity>
 				</entity>				
-			<entity DBModelId="D.xml">
-				<entity DBModelId="H.xml">
+			<entity DBModelId="D.xml" name="D.xml">
+				<entity DBModelId="H.xml" name="H.xml">
 				</entity>
 			</entity>
 			</entity>
 		</entity>		
-		<entity DBModelId="X.xml">
-			<entity DBModelId="F.xml">
-				<entity DBModelId="G.xml">
+		<entity DBModelId="X.xml" name="X.xml">
+			<entity DBModelId="F.xml" name="F.xml">
+				<entity DBModelId="G.xml" name="G.xml">
 				</entity>				
 			</entity>
 		</entity>		
 	</entity>
-	<entity DBModelId="H.xml"/>
-	<entity DBModelId="NoReferences" class="ptolemy.actor.TypedCompositeActor">
+	<entity DBModelId="H.xml" name="H.xml"/>
+	<entity DBModelId="NoReferences" name="NoReferences">
 	</entity>
-	<entity DBModelId="modeltt" class="ptolemy.actor.TypedCompositeActor">
-		<entity DBModelId="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+	<entity DBModelId="modeltt" name="modeltt">
+		<entity DBModelId="CompositeActor" name="CompositeActor">
 		</entity>
 	</entity>
-	<entity DBModelId="X" class="ptolemy.actor.TypedCompositeActor">
-		<entity DBModelId="Y" class="ptolemy.actor.TypedCompositeActor">
+	<entity DBModelId="X" name="X">
+		<entity DBModelId="Y" name="Y">
 		</entity>
 	</entity>
-	<entity DBModelId="Adder"/>
-	<entity DBModelId="modeltt1000_123">
-		<entity DBModelId="CompositeActor_123">
+	<entity DBModelId="Adder" name="Adder"/>
+	<entity DBModelId="modeltt1000_123" name="modeltt1000">
+		<entity DBModelId="CompositeActor_123" name="CompositeActor">
 		</entity>
 	</entity>
 

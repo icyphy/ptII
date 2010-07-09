@@ -1726,7 +1726,12 @@ public class OracleXMLDBConnection implements DBConnection {
 
         referenceString.append("<entity ").append(XMLDBModel.DB_MODEL_ID_ATTR)
                 .append("=").append("\"").append(xmlDBModel.getModelId())
-                .append("\">");
+                .append("\" ");
+                        
+        referenceString.append(XMLDBModel.DB_MODEL_NAME)
+        .append("=").append("\"").append(xmlDBModel.getModelName())
+        .append("\">");;
+        
         HashMap<String, String> modelReferencesMap = new HashMap<String, String>();
         for (String dbModelId : xmlDBModel.getReferencedChildren()) {
 
