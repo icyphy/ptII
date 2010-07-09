@@ -29,7 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.kernel.bl.save;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.w3c.dom.Document;

@@ -34,7 +34,7 @@ import java.util.List;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
-import ptolemy.data.expr.DBParameter;
+import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.Entity;
@@ -96,7 +96,7 @@ public class LoadManager {
            if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
                String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
-               		"class=\"ptolemy.data.expr.DBParameter\" " +
+               		"class=\"ptolemy.data.expr.StringConstantParameter\" " +
                		"value=\"TRUE\"></property>";
                
                MoMLChangeRequest change = new MoMLChangeRequest(null,
@@ -107,7 +107,7 @@ public class LoadManager {
                
            } else {
            
-               ((DBParameter) returnEntity
+               ((StringConstantParameter) returnEntity
                    .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("TRUE");
  
            }
@@ -117,7 +117,7 @@ public class LoadManager {
            if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
                String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
-                        "class=\"ptolemy.data.expr.DBParameter\" " +
+                        "class=\"ptolemy.data.expr.StringConstantParameter\" " +
                         "value=\"FALSE\"></property>";
                
                MoMLChangeRequest change = new MoMLChangeRequest(null,
@@ -128,7 +128,7 @@ public class LoadManager {
                    
            } else {
            
-               ((DBParameter) returnEntity
+               ((StringConstantParameter) returnEntity
                    .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("FALSE");
  
            }

@@ -41,7 +41,7 @@ import org.powermock.core.classloader.annotations.SuppressStaticInitializationFo
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ptdb.common.dto.XMLDBModel;
-import ptolemy.data.expr.DBParameter;
+import ptolemy.data.expr.StringConstantParameter;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.load.DBModelFetcher;
 import ptolemy.actor.gui.Configuration;
@@ -186,7 +186,7 @@ public class TestLoadManager {
             assertEquals(entity.getName(), "modelName");
 
             assertEquals(
-                    ((DBParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "TRUE");
             PowerMock.verifyAll();
@@ -215,7 +215,7 @@ public class TestLoadManager {
                         + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
                         + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                         + "</property>"
-                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.DBParameter\" value=\"FALSE\"></property>"
+                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
                         + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
                         + "</property>"
                         + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
@@ -246,7 +246,7 @@ public class TestLoadManager {
             assertEquals(entity.getName(), "modelName");
 
             assertEquals(
-                    ((DBParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "TRUE");
             PowerMock.verifyAll();
@@ -305,7 +305,7 @@ public class TestLoadManager {
             assertEquals(entity.getName(), "modelName");
 
             assertEquals(
-                    ((DBParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "FALSE");
             PowerMock.verifyAll();
@@ -334,7 +334,7 @@ public class TestLoadManager {
                         + "<entity name=\"modelName\" class=\"ptolemy.actor.TypedCompositeActor\">"
                         + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                         + "</property>"
-                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.DBParameter\" value=\"FALSE\"></property>"
+                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
                         + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
                         + "</property>"
                         + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
@@ -365,7 +365,7 @@ public class TestLoadManager {
             assertEquals(entity.getName(), "modelName");
 
             assertEquals(
-                    ((DBParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "FALSE");
             PowerMock.verifyAll();

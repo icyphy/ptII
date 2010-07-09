@@ -46,7 +46,7 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
-import ptolemy.data.expr.DBParameter;
+import ptolemy.data.expr.StringConstantParameter;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
@@ -240,6 +240,28 @@ public class SaveModelToDBFrame extends JFrame {
         xmlModel.setIsNew(isNew);
         xmlModel.setModelId(id);
         
+        if(isNew || id == null){
+            
+            // If the Model ID is in the MoML, remove it.
+            if(_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)!= null){
+                
+                _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR).setContainer(null);
+                
+                try {
+
+                    MoMLChangeRequest change = new MoMLChangeRequest(
+                            this, null, _modelToSave.exportMoML());
+                    change.setUndoable(true);
+                                    
+                    _modelToSave.requestChange(change);
+                    
+                } catch (Exception e) {
+                    throw e;
+                }   
+            }
+            
+        }
+        
         SaveModelManager saveModelManager = new SaveModelManager();
 
         try {
@@ -254,16 +276,16 @@ public class SaveModelToDBFrame extends JFrame {
 
                 if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) == null) {
                     
-                    DBParameter dbModelParam = new DBParameter(
+                    StringConstantParameter dbModelParam = new StringConstantParameter(
                             _modelToSave, XMLDBModel.DB_MODEL_ID_ATTR);
                     dbModelParam.setExpression(modelId);
                     dbModelParam.setContainer(_modelToSave);
                     
-                } else if(!((DBParameter)
+                } else if(!((StringConstantParameter)
                         _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)).getExpression()
                         .equals(modelId)){
                     
-                    ((DBParameter)
+                    ((StringConstantParameter)
                             _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                             .setExpression(modelId);
                     
@@ -315,24 +337,6 @@ public class SaveModelToDBFrame extends JFrame {
 
             if (n == JOptionPane.YES_OPTION) {
 
-                
-                // If the Model ID is in the MoML, remove it.
-                if(_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)!= null){
-                    
-                    _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR).setContainer(null);
-                    
-                    try {
-
-                        MoMLChangeRequest change = new MoMLChangeRequest(
-                                this, null, _modelToSave.exportMoML());
-                        change.setUndoable(true);
-                                        
-                        _modelToSave.requestChange(change);
-                        
-                    } catch (Exception e) {
-                        throw e;
-                    }   
-                }
                 
                 saveModelManager = null;
                 
@@ -503,7 +507,7 @@ public class SaveModelToDBFrame extends JFrame {
             
             if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null){
 
-                id = ((DBParameter)_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
+                id = ((StringConstantParameter)_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                     .getExpression();
             
             }
@@ -532,7 +536,7 @@ public class SaveModelToDBFrame extends JFrame {
 
             if (_modelToSave.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
 
-                DBParameter dbModelParam = new DBParameter(
+                StringConstantParameter dbModelParam = new StringConstantParameter(
                         _modelToSave, XMLDBModel.DB_REFERENCE_ATTR);
                 dbModelParam.setExpression("FALSE");
                 dbModelParam.setContainer(_modelToSave);

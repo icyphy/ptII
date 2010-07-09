@@ -39,7 +39,7 @@ import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.DBConnectorFactory;
-import ptolemy.data.expr.DBParameter;
+import ptolemy.data.expr.StringConstantParameter;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptdb.kernel.database.DBConnection;
@@ -96,7 +96,7 @@ public class TestImportByReferenceRequirementsIntegration {
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
-                    ((DBParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "TRUE");
 
@@ -127,7 +127,7 @@ public class TestImportByReferenceRequirementsIntegration {
                         + "<entity name=\"" + modelName + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
                         + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                         + "</property>"
-                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.DBParameter\" value=\"FALSE\"></property>"
+                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
                         + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
                         + "</property>"
                         + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
@@ -154,7 +154,7 @@ public class TestImportByReferenceRequirementsIntegration {
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
-                    ((DBParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "TRUE");
             
@@ -214,7 +214,7 @@ public class TestImportByReferenceRequirementsIntegration {
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
-                    ((DBParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "FALSE");
             
@@ -246,7 +246,7 @@ public class TestImportByReferenceRequirementsIntegration {
                         + "<entity name=\"" + modelName + "\" class=\"ptolemy.actor.TypedCompositeActor\">"
                         + "<property name=\"_createdBy\" class=\"ptolemy.kernel.attributes.VersionAttribute\" value=\"8.1.devel\">"
                         + "</property>"
-                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.DBParameter\" value=\"FALSE\"></property>"
+                        + "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" class=\"ptolemy.data.expr.StringConstantParameter\" value=\"FALSE\"></property>"
                         + "<property name=\"_windowProperties\" class=\"ptolemy.actor.gui.WindowPropertiesAttribute\" value=\"{bounds={232, 141, 815, 517}, maximized=false}\">"
                         + "</property>"
                         + "<property name=\"_vergilSize\" class=\"ptolemy.actor.gui.SizeAttribute\" value=\"[600, 400]\">"
@@ -273,7 +273,7 @@ public class TestImportByReferenceRequirementsIntegration {
             assertEquals(entity.getName(), modelName);
 
             assertEquals(
-                    ((DBParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                    ((StringConstantParameter) entity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression(), 
                     "FALSE");
           
