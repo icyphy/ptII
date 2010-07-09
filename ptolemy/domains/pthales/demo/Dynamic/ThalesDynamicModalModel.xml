@@ -1,19 +1,19 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ThalesDynamic2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ThalesDynamicModalModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 1002}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1288, 994}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 895]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 887]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{536.5, 447.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{536.5, 443.5}">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 75.0]">
         </property>
@@ -85,14 +85,6 @@
         <link port="port_" relation="relation"/>
         <link port="port" relation="relation"/>
         <link port="Display.input" relation="relation"/>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={624, 479, 351, 241}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[343, 186]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 200.0]">
-        </property>
     </entity>
     <entity name="ModalModel" class="ptolemy.domains.modal.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.modal.kernel.MultirateFSMDirector">
@@ -194,7 +186,7 @@
                 </property>
             </property>
             <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 105.0}">
                 </property>
@@ -306,7 +298,7 @@
                 </property>
             </property>
             <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
-                <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+                <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 115.0}">
                 </property>
@@ -408,12 +400,8 @@
         <link port="state.port" relation="portRelation"/>
         <link port="state2.port" relation="portRelation"/>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="PthalesDynamicCompositeActor.port_" relation="relation2"/>
-    <link port="PthalesDynamicCompositeActor.port" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
     <link port="ModalModel.port" relation="relation2"/>
 </entity>
