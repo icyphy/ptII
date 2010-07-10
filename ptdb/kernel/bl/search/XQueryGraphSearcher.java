@@ -90,7 +90,7 @@ public class XQueryGraphSearcher extends GraphSearcher implements
         if (_currentResults == null) {
             // The db layer cannot perform the searching, so make the search 
             // criteria not set. 
-            System.out.println("null results returned");
+            
             _dbGraphSearchCriteria = null;
         } else {
             // Pass the intermediate results found in this searcher. 
