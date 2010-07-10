@@ -26,15 +26,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- * 
- */
+
 package ptdb.common.util;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -52,7 +53,6 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.XMLDBModelParsingException;
-
 
 ///////////////////////////////////////////////////////////////
 //// Utilities
@@ -82,7 +82,8 @@ public class Utilities {
      * @return The upper node for the xml string after parsing it.
      * @exception DBExecutionException Thrown if a parser exceptions was thrown
      */
-    public static Node parseXML(String xmlString) throws XMLDBModelParsingException {
+    public static Node parseXML(String xmlString)
+            throws XMLDBModelParsingException {
 
         if (xmlString == null || xmlString.length() == 0) {
             throw new XMLDBModelParsingException("Failed to parse the xml - "
@@ -109,8 +110,9 @@ public class Utilities {
             docBuilder = docBuilderFactory.newDocumentBuilder();
 
             if (docBuilder == null) {
-                throw new XMLDBModelParsingException("Faild to parse the xml - "
-                        + "could not create a new instance of DocumentBuilder.");
+                throw new XMLDBModelParsingException(
+                        "Faild to parse the xml - "
+                                + "could not create a new instance of DocumentBuilder.");
             }
 
             InputSource inputSource = new InputSource();
@@ -134,17 +136,18 @@ public class Utilities {
 
         return firstNode;
     }
-    
+
     /** Check whether the given file exists.
      * 
      * @param filePath Path for the file.
      * @return True, if file exists, false otherwise.
      */
     public static boolean checkFileExists(String filePath) {
-        
+
         File file = new File(filePath);
         return file.exists();
     }
+
     /**
      * Get the value for the given attribute.
      * 
@@ -153,7 +156,8 @@ public class Utilities {
      * @return Return the value for the given attribute. Return null if
      * attribute not present for the given node.
      */
-    public static String getValueForAttribute(Node currentNode, String attributeName) {
+    public static String getValueForAttribute(Node currentNode,
+            String attributeName) {
 
         NamedNodeMap attributes = currentNode.getAttributes();
         String strCurrentModelName = null;
@@ -170,24 +174,23 @@ public class Utilities {
         }
         return strCurrentModelName;
     }
-    
+
     /**
      * Create new Id by appending a timestamp to the given name.
      * @param name The name that will be used to generate the id.
      * @return An Id that is a combination of the name passed with the time stamp.
      */
     public static String generateId(String name) {
-        
+
         String id = "";
 
-        Date date = new Date ();
-        
+        Date date = new Date();
+
         id = name + "_" + date.getTime();
-                
+
         return id;
     }
-    
-    
+
     /**
      * Add a parameter tag called DBModelId to the given model body.
      * @param modelBody The XML model body where the Id parameter will be added.
@@ -195,19 +198,21 @@ public class Utilities {
      * @return The resulting modelBody after inserting the Id to it.
      */
     public static String insertIdTagToModelBody(String modelBody, String modelId) {
-                
-        String modelIdTag = "<property name=\"" + XMLDBModel.DB_MODEL_ID_ATTR + "\" "
-            +"class=\"ptolemy.data.expr.StringConstantParameter\" value=\"" 
-            + modelId + "\"></property>";
+
+        String modelIdTag = "<property name=\"" + XMLDBModel.DB_MODEL_ID_ATTR
+                + "\" "
+                + "class=\"ptolemy.data.expr.StringParameter\" value=\""
+                + modelId + "\"></property>";
         
+
         StringBuffer modelBodyBuffer = new StringBuffer(modelBody);
-      
+
         modelBodyBuffer.insert(modelBodyBuffer.indexOf(">") + 1, modelIdTag);
-        
+
         return modelBodyBuffer.toString();
 
     }
-    
+
     /**
      * Convert the document node to string.
      * 
@@ -228,6 +233,49 @@ public class Utilities {
 
         return documentContent;
     }
+
+    /**
+     * Intersect the XMLDBModels results from two list, and take the common
+     * ones and return them in a new list. 
+     * 
+     * @param previousResults The list of the first batch of models. 
+     * @param currentResults The list of the second batch of models. 
+     * @return The list of common models from both lists. 
+     */
+    public static ArrayList<XMLDBModel> intersectResults(
+            ArrayList<XMLDBModel> previousResults,
+            ArrayList<XMLDBModel> currentResults) {
+
+        // If the previous result is empty, just return the results found
+        // in this searcher.
+        if (previousResults == null || previousResults.size() == 0) {
+            return currentResults;
+        }
+
+        // If the current result is empty, just return the empty set.
+        if (currentResults == null || currentResults.size() == 0) {
+            return currentResults;
+        }
+
+        Hashtable<String, XMLDBModel> existingModels = new Hashtable<String, XMLDBModel>();
+
+        ArrayList<XMLDBModel> returnedResults = new ArrayList<XMLDBModel>();
+
+        for (Iterator iterator = previousResults.iterator(); iterator.hasNext();) {
+            XMLDBModel xmldbModel = (XMLDBModel) iterator.next();
+            existingModels.put(xmldbModel.getModelName(), xmldbModel);
+        }
+
+        for (Iterator iterator = currentResults.iterator(); iterator.hasNext();) {
+            XMLDBModel xmldbModel = (XMLDBModel) iterator.next();
+            if (existingModels.get(xmldbModel.getModelName()) != null) {
+                returnedResults.add(xmldbModel);
+            }
+        }
+
+        return returnedResults;
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////		protected methods 				////
 
