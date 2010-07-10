@@ -1,4 +1,4 @@
-/* A non-editible parameter that is in string mode by default.
+/* A StringParmeter that is not easily edited by the user.
 
  Copyright (c) 2003-2010 The Regents of the University of California.
  All rights reserved.
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.AcceptedRating Red (lholsing)
  */
 
-public class DBParameter extends StringParameter {
+public class StringConstantParameter extends StringParameter {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will use the
@@ -66,7 +66,7 @@ public class DBParameter extends StringParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public DBParameter(NamedObj container, String name)
+    public StringConstantParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.NOT_EDITABLE);
