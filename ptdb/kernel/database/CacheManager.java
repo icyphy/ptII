@@ -89,7 +89,7 @@ public class CacheManager {
                                 + " The array of XMLDBModel objects was null.");
             }
 
-            dbConnection = DBConnectorFactory.getCacheConnection(true);
+            dbConnection = DBConnectorFactory.getCacheConnection(false);
 
             if (dbConnection == null) {
                 throw new DBConnectionException(
@@ -161,9 +161,12 @@ public class CacheManager {
             }
         
             GetModelTask getModelTask = new GetModelTask(modelName);
+            getModelTask.setModelFromCache(true);
             returnXMLDBModel = dbConnection.executeGetModelTask(getModelTask);
+            //System.out.println("Got from cache - " + modelName);
                        
         } catch (DBExecutionException e) {
+            //System.out.println("Error while getting model from cache - " + e.getMessage());
             throw e;            
         } finally {
             if (dbConnection != null) {
@@ -199,7 +202,7 @@ public class CacheManager {
                                 + " The expected HashMap was null.");
             }
 
-            dbConnection = DBConnectorFactory.getCacheConnection(true);
+            dbConnection = DBConnectorFactory.getCacheConnection(false);
             
             if (dbConnection == null) {
                 throw new DBConnectionException(
@@ -214,6 +217,7 @@ public class CacheManager {
                 XMLDBModel cacheModel = new XMLDBModel(modelName);
                 cacheModel.setModel((String) assemblies.get(modelName));
                 dbConnection.executeUpdateModelInCache(cacheModel);
+                //System.out.println("Updated in cache - " + modelName);
             }
             
             dbConnection.commitConnection();

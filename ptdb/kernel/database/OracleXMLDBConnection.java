@@ -486,10 +486,11 @@ public class OracleXMLDBConnection implements DBConnection {
             if (dbModel != null) {
 
                 xmlDBModel = new XMLDBModel(dbModel.getName());
-                
+                if(!task.isModelFromCache()) {
                 String modelId = _getModelIdFromModelName(dbModel.getName());
                 
                 xmlDBModel.setModelId(modelId);
+                }
 
                 String modelBody = dbModel.getContentAsString();
 
@@ -1061,7 +1062,7 @@ public class OracleXMLDBConnection implements DBConnection {
     public void executeRemoveModelsTask (RemoveModelsTask task) 
             throws DBExecutionException {
             
-        _checkXMLDBConnectionObjects(true, false, true);
+        _checkXMLDBConnectionObjects(true, false, false);
         
         ArrayList<XMLDBModel> modelsList = task.getModelsList();
         
@@ -1070,8 +1071,7 @@ public class OracleXMLDBConnection implements DBConnection {
             for (XMLDBModel xmlDBModel : modelsList) {
                 
                 try {
-                    _xmlContainer.deleteDocument(
-                            _xmlTransaction, xmlDBModel.getModelName());
+                    _xmlContainer.deleteDocument(xmlDBModel.getModelName());
                 } catch (XmlException e) {
                     
                     if (e.getErrorCode() == XmlException.DOCUMENT_NOT_FOUND) {
@@ -1167,7 +1167,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
         try {
 
-            _checkXMLDBConnectionObjects(true, false, true);  
+            _checkXMLDBConnectionObjects(true, false, false);  
             
             String modelName = xmlDBModel.getModelName();
             String modelBody = xmlDBModel.getModel();

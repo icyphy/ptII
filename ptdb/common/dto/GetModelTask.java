@@ -72,6 +72,14 @@ public class GetModelTask extends Task {
         return _modelName;
 
     }
+    /**
+     * Return if the model is to be read from cache or not.
+     * @return True if the model is being read from cache, false otherwise.
+     * see #setModelFromCache
+     */
+    public boolean isModelFromCache() {
+        return isModelFromCache;
+    }
 
     /**
      * Set the model name to be fetched from the database.
@@ -84,10 +92,20 @@ public class GetModelTask extends Task {
         _modelName = modelName;
     }
     
+    /**
+     * Set if the model is being retrieved from cache.
+     * @param isModelFromCache Boolean to indicate whether the model is being 
+     * retrieved from cache.
+     */
+    public void setModelFromCache(boolean isModelFromCache) {
+        this.isModelFromCache = isModelFromCache;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The model name. */
     private String _modelName;
+    /** Flag for cache */
+    private boolean isModelFromCache = false;
 
 }
