@@ -26,21 +26,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- * 
- */
+
 package ptdb.kernel.bl.search;
 
 import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.SearchCriteria;
-import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 
 ///////////////////////////////////////////////////////////////////
 //// NameSearcher
 
 /**
- * The concrete searcher to handle the search by model name.  
+ * The concrete searcher to handle the search by model name search criteria.
  * 
  * @author Alek Wang
  * @version $Id$
@@ -65,6 +62,13 @@ public class NameSearcher extends AbstractSearcher implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Checks whether the graph search criteria has been set in
+     *  this graph searcher instance.
+     *
+     * @return true - if the search criteria has been set.<br>
+     *         false - if the search criteria has not been set. 
+     */
     @Override
     protected boolean _isSearchCriteriaSet() {
         if (_modelNameCriteria == null || _modelNameCriteria.length() == 0) {
@@ -82,8 +86,8 @@ public class NameSearcher extends AbstractSearcher implements
      * unexpected problem happens during the execution of DB query tasks.
      */
     @Override
-    protected void _search() throws DBExecutionException, DBConnectionException {
-        // Create the ModelNameSearchTask. 
+    protected void _search() throws DBExecutionException {
+
         ModelNameSearchTask modelNameSearchTask = new ModelNameSearchTask(
                 _modelNameCriteria);
 
@@ -91,7 +95,6 @@ public class NameSearcher extends AbstractSearcher implements
         // class.
         // Get the results returned by the executeModelNameSearchTask() method.
         // Set the returned results to the currentResults field.
-
         _currentResults = _dbConnection
                 .executeModelNameSearchTask(modelNameSearchTask);
 
@@ -99,9 +102,13 @@ public class NameSearcher extends AbstractSearcher implements
             // The db layer cannot perform the searching, so make the search 
             // criteria not set. 
             _modelNameCriteria = null;
+        } else {
+            // Pass the intermediate results. 
+            handleIntermediateResults(_currentResults, this);
         }
 
-        pass();
+        // The search is done in this searcher, mark this searcher as passed.
+        _pass();
     }
 
     ///////////////////////////////////////////////////////////////////

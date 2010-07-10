@@ -33,8 +33,8 @@ package ptdb.kernel.bl.search;
 
 /**
  * Indicate whether a searcher is performing the searching through the XML DB
- * XQuery, or through Ptolemy existing functionality.  The classes implement
- * this interface will be querying the database.
+ * XQuery, or through Ptolemy existing functionality.  The classes that 
+ * implement this interface will be querying the database.
  *
  * @author Alek Wang
  * @version $Id$

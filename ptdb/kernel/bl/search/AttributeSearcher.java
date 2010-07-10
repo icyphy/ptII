@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
@@ -61,7 +59,7 @@ public class AttributeSearcher extends AbstractSearcher implements
      */
     public AttributeSearcher(SearchCriteria searchCriteria) {
 
-        this._attributesCriteria = searchCriteria.getAttributes();
+        _attributesCriteria = searchCriteria.getAttributes();
 
     }
 
@@ -87,7 +85,7 @@ public class AttributeSearcher extends AbstractSearcher implements
     }
 
     /**
-     * Perform the actual search for the attributes.
+     * Perform the actual search for the attributes search criteria. 
      *
      * @exception DBExecutionException Thrown by the DBConnection if
      * unexpected problem happens during the execution of DB query tasks.
@@ -99,8 +97,8 @@ public class AttributeSearcher extends AbstractSearcher implements
 
         attributeSearchTask.setAttributesList(_attributesCriteria);
 
-        // call the executeAttributeTask() method from the DBConnection class
-        // set the returned results
+        // Call the executeAttributeTask() method from the DBConnection class
+        // and set the returned results.
         _currentResults = _dbConnection
                 .executeAttributeSearchTask(attributeSearchTask);
 
@@ -108,9 +106,13 @@ public class AttributeSearcher extends AbstractSearcher implements
             // The db layer cannot perform the searching, so make the search 
             // criteria not set. 
             _attributesCriteria = null;
+        } else {
+            // Pass the intermediate results. 
+            handleIntermediateResults(_currentResults, this);
         }
 
-        pass();
+        // Mark this searcher as passed in the chain. 
+        _pass();
     }
 
     ///////////////////////////////////////////////////////////////////

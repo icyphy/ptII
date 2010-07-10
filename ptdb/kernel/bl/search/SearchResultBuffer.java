@@ -26,12 +26,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -65,25 +65,57 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
     ////                         public methods                    ////
 
     /**
-     * Get the results stored in the buffer.
+     * Get the results stored in the buffer. After the results is read once 
+     * from this buffer, that set of results will be removed from the buffer. 
+     * Do not read the same set of results twice.  
      *
      * @return All the searched model results in this buffer.
      */
     public ArrayList<XMLDBModel> getResults() {
 
-        // fetch the stored results
         ArrayList<XMLDBModel> returnedResults = _storedResults;
 
-        // reset the stored results to null
         _storedResults = null;
 
-        // return the stored results
         return returnedResults;
     }
 
     /**
+     * Handle the intermediate results found and passed by the other searchers
+     * in the searchers chain.
+     * 
+     * <p>The intermediate results are currently stored in a HashMap to
+     * distinguish the results passed by different searchers.  This class can 
+     * be extended later to fetch different intermediate searched results.</p>
+     * 
+     * @param intermediateResults The intermediate results found in the other 
+     * searchers. 
+     * @param resultHandler The result handler searcher that finds and passes
+     * the intermediate results. 
+     */
+    @Override
+    public void handleIntermediateResults(List<XMLDBModel> intermediateResults,
+            ResultHandler resultHandler) {
+        // FIXME to be delete later 
+//        System.out.println("Intermediate Results: " + resultHandler + " @ "
+//                + intermediateResults);
+
+        if (_intermediateResults == null) {
+            _intermediateResults = new HashMap<ResultHandler, List<XMLDBModel>>();
+        }
+
+        if (_intermediateResults.containsKey(resultHandler)) {
+            _intermediateResults.get(resultHandler).addAll(intermediateResults);
+        } else {
+            _intermediateResults.put(resultHandler, intermediateResults);
+        }
+
+    }
+
+    /**
      * Called by the other searcher to write the searched results
-     * to this buffer.
+     * to this buffer. If there is some other results that are already stored 
+     * in the buffer, the new results will appended to the existing results. 
      *
      * <p>When the results are written to the buffer in this method,
      * the buffer will notify its registered observers.
@@ -94,9 +126,9 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
      */
     public void handleResults(ArrayList<XMLDBModel> modelResults) {
 
-        // only write and notify when the passed results contain results
+        // Only write and notify when the passed results contain results. 
         if (modelResults != null && modelResults.size() > 0) {
-            // The results are added to the arraylist.
+            // The results are added to the ArrayList.
 
             if (_storedResults == null) {
 
@@ -108,8 +140,8 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
 
             setChanged();
 
-            // notify the observers
-            this.notifyObservers();
+            // Notify the observers. 
+            notifyObservers();
         }
     }
 
@@ -125,13 +157,32 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
     }
 
     /**
-     * Check whether the whole searching is done.
+     * Check whether the all the searchers in the search chain have finished.
      *
      * @return true - the searching is done.<br>
      *          false - the searching is not done yet.
      */
     public boolean isWholeSearchDone() {
         return _isSearchDone;
+    }
+
+    /**
+     * Handle the error models passed by the other searchers.  
+     * 
+     * <p>For now, the passed error models are just stored in the buffer, but 
+     * this class can be modified later to add more function for handling 
+     * passed error models.</p>
+     * 
+     * @param errorModels The passed error models. 
+     */
+    @Override
+    public void passErrorModels(List<XMLDBModel> errorModels) {
+        if (_errorModels == null) {
+            _errorModels = errorModels;
+        } else {
+            _errorModels.addAll(errorModels);
+        }
+
     }
 
     /**
@@ -146,33 +197,52 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
     }
 
     /**
-     * Implement the update method from the Observer interface. 
+     * Implement the update method from the Observer interface. This class is 
+     * assumed to only observe the SearchResultFrame class, so this update() 
+     * method is only called by the SearchResultFrame to cancel the search.  So
+     *  this method only perform the operations to cancel the search operation.
      * 
-     * @param o The object that this SearchResultBuffer is observing. 
-     * @param arg The argument passed to this SearcResultBuffer. 
+     * @param observable The object that this SearchResultBuffer is observing. 
+     * It is assumed that this SearchResultBuffer will only observe the 
+     * SearchResultFrame window. 
+     * @param argument The argument passed to this SearcResultBuffer. 
      */
-    public void update(Observable o, Object arg) {
+    public void update(Observable observable, Object argument) {
+
         _isSearchCancelled = true;
+
+        // Close the DBConnection if it has already been created and set. 
+        if (_dbConnection != null) {
+            try {
+                _dbConnection.closeConnection();
+                _dbConnection = null;
+            } catch (DBConnectionException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
     /**
      * Notify the search result buffer that the searching is done.
+     * 
      * @exception DBConnectionException Thrown if the DB connection cannot be
      * obtained. 
      */
     public void wholeSearchDone() throws DBConnectionException {
 
-        // close the connection
+        // Close the connection. 
         if (_dbConnection != null) {
             _dbConnection.closeConnection();
+            _dbConnection = null;
         }
 
         _isSearchDone = true;
 
         setChanged();
 
-        // tell all the registered observers that the searching is done
-        this.notifyObservers();
+        // Tell all the registered observers that the searching is done.
+        notifyObservers();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -180,8 +250,25 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
 
     private DBConnection _dbConnection;
 
+    /**
+     * The place to store the intermediate results passed by different 
+     * searchers. 
+     */
+    private HashMap<ResultHandler, List<XMLDBModel>> _intermediateResults;
+
+    /**
+     * The error models passed by the other searchers. 
+     */
+    private List<XMLDBModel> _errorModels;
+
+    /**
+     * Mark whether the search has been cancelled.
+     */
     private boolean _isSearchCancelled = false;
 
+    /**
+     * Mark whether the entire search is done. 
+     */
     private boolean _isSearchDone = false;
 
     /**

@@ -358,15 +358,20 @@ public class DbSearchFrame extends TransformationEditor {
             // set the DBGraph search criteria to the whole search criteria
             searchCriteria.setDBGraphSearchCriteria(dbGraphSearchCriteria);
 
-            // Check whether any search criteria has been set. 
+            // Check whether any search criteria has been set.  At least one of
+            // the attribute, model name, port, or component entity search 
+            // criteria needs to be set in the search criteria. 
             if (attributesList.size() == 0
                     && pattern.portList().isEmpty()
-                    && pattern.relationList().isEmpty()
-                    && pattern.entityList().isEmpty()
+                    && componentEntities.isEmpty()
                     && (searchCriteria.getModelName() == null || searchCriteria
                             .getModelName().trim().isEmpty())) {
                 JOptionPane.showMessageDialog(DbSearchFrame.this,
-                        "Please specify search criteria.");
+                        "Please specify search criteria.  At least one"
+                                + " of attribute, model name, port or"
+                                + " component"
+                                + " entity needs to be set in the search "
+                                + "criteria.");
             } else {
 
                 // Show the search result frame.

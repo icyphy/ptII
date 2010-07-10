@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
@@ -42,8 +40,8 @@ import ptdb.common.exception.DBExecutionException;
 //// XQueryGraphSearcher
 
 /**
- * Searcher for searching the models according to graph pattern matching
- * in the database.
+ * Searcher for searching the models in the database according to graph pattern
+ *  matching in the database.
  *
  * @author Alek Wang
  * @version $Id$
@@ -68,28 +66,39 @@ public class XQueryGraphSearcher extends GraphSearcher implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Perform the actual search in the database according the graph search 
+     * criteria. 
+     * 
+     * @exception DBExecutionException Thrown from the database if the error
+     * occurs in the database execution. 
+     */
     @Override
     protected void _search() throws DBExecutionException {
 
-        // create the GraphSearchTask
         GraphSearchTask graphSearchTask = new GraphSearchTask();
         graphSearchTask.setGraphSearchCriteria(_dbGraphSearchCriteria);
 
-        // call the executeGraphSearchTask() method from the DBConnection class
-        // get the results returned by the executeGraphSearchTask() method
+        // Call the executeGraphSearchTask() method from the DBConnection class
+        // and get the results returned by the executeGraphSearchTask() method.
         ArrayList<XMLDBModel> models = _dbConnection
                 .executeGraphSearchTask(graphSearchTask);
 
-        // set the returned results to the _currentResults field
+        // Set the returned results to the _currentResults field. 
         _currentResults = models;
 
         if (_currentResults == null) {
             // The db layer cannot perform the searching, so make the search 
             // criteria not set. 
+            System.out.println("null results returned");
             _dbGraphSearchCriteria = null;
+        } else {
+            // Pass the intermediate results found in this searcher. 
+            handleIntermediateResults(_currentResults, this);
         }
 
-        pass();
+        // The search is done in this searcher, so mark this searcher passed. 
+        _pass();
 
     }
 

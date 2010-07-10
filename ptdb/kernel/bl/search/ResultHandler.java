@@ -26,12 +26,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -42,8 +41,8 @@ import ptdb.kernel.database.DBConnection;
 //// ResultHandler
 
 /**
- * Indicates the implementing classes are
- * the handlers for dealing with searched models results.
+ * Handles the results from the searched models, according to different 
+ * implementation of the actual handling function. 
  *
  * @author Alek Wang
  * @version $Id$
@@ -56,6 +55,18 @@ public interface ResultHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /**
+     * Handle the intermediate results that got from a certain ResultHandler 
+     * instance. 
+     * 
+     * @param intermediateResults The intermediate results set to be handled 
+     * in this ResultHandler. 
+     * @param resultHandler The ResutHandler instance that gets the passed
+     * intermediate results. 
+     */
+    public void handleIntermediateResults(List<XMLDBModel> intermediateResults,
+            ResultHandler resultHandler);
 
     /**
      * To be implemented by the concrete classes to implement the
@@ -79,6 +90,17 @@ public interface ResultHandler {
      */
     public boolean isSearchCancelled();
 
+    
+    /**
+     * In the case of getting some models that cannot be parsed or contains 
+     * some error, use this method to pass these error models to store for 
+     * error handling. 
+     * 
+     * @param errorModels The error models. 
+     */
+    public void passErrorModels(List<XMLDBModel> errorModels);
+    
+    
     /**
      * Set the DB connection for this result handler.  
      * 

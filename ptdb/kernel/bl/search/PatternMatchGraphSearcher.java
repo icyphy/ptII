@@ -26,13 +26,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import ptdb.common.dto.DBGraphSearchCriteria;
@@ -51,7 +48,7 @@ import ptolemy.vergil.gt.MatchResultRecorder;
 //// PatternMatchGraphSearcher
 
 /**
- * Searcher for using the pattern match function in the Ptolemy.
+ * Search for models using the Ptolemy Graph matching functionality. 
  *
  * @author Alek Wang
  * @version $Id$
@@ -66,15 +63,28 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
      * Construct the PatternMatchGraphSearcher with the db graph search 
      * criteria.
      * 
+     * <p>This searcher is not an independent searcher, so it needs to exist 
+     * with other independent searchers. </p>
+     * 
      * @param dbGraphSearchCriteria The search criteria for the graph matching.
      */
     public PatternMatchGraphSearcher(DBGraphSearchCriteria dbGraphSearchCriteria) {
         _dbGraphSearchCriteria = dbGraphSearchCriteria;
+        
+        _isIndependent = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Perform the actual pattern match for the passed models. 
+     * 
+     * @exception DBConnectionException Thrown from the database layer if the 
+     * connection to database cannot be obtained. 
+     * @exception DBExecutionException Thrown from the database layer if error
+     * occurs during some execution. 
+     */
     @Override
     protected void _search() throws DBConnectionException, DBExecutionException {
 
@@ -85,31 +95,37 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
         int count = 0;
         ArrayList<XMLDBModel> modelsBatch = new ArrayList<XMLDBModel>();
 
-        for (Iterator iterator = _previousResults.iterator(); iterator
-                .hasNext();) {
-            XMLDBModel model = (XMLDBModel) iterator.next();
-            // get models from the LoadManager, as 5 models in a batch
+        int fetchedCount = 0;
+        for (XMLDBModel model : _previousResults) {
+
+            // Get models from the LoadManager, as 5 models in a batch.  
+            // Fetching 5 models will not hit the database with searching for 
+            // too many models that will hurt the database performance.  Also, 
+            // fetching 5 models in a batch can help to reduce the times that 
+            // this searcher needs to hit the database to fetch the full models. 
 
             modelsBatch.add(model);
             count++;
+            fetchedCount++;
 
-            if (count == 5 || !iterator.hasNext()) {
+            if (count == 5 || fetchedCount == _previousResults.size()) {
 
                 count = 0;
 
                 List<XMLDBModel> fullModels = DBModelFetcher.load(modelsBatch);
 
-                for (Iterator iterator2 = fullModels.iterator(); iterator2
-                        .hasNext();) {
-                    XMLDBModel fullModel = (XMLDBModel) iterator2.next();
+                for (XMLDBModel fullModel : fullModels) {
+                    if (isSearchCancelled()) {
+                        return;
+                    }
 
                     CompositeEntity modelNamedObj;
                     try {
                         modelNamedObj = (CompositeEntity) _parser
                                 .parse(fullModel.getModel());
                     } catch (Exception e) {
-                        // Just skip this model. 
-                        e.printStackTrace();
+                        // Add this model to the error models list. 
+                        _addErrorModel(fullModel);
                         continue;
                     }
 
@@ -132,13 +148,19 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
             }
 
         }
-
+        // Pass the error models.
+        passErrorModels(_errorModels);
+        
+        // The pattern match searcher normally should be the last searcher 
+        // performing the actual search.  So once the search in this searcher
+        // is done, the whole search process is done. 
         wholeSearchDone();
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     private MoMLParser _parser;
 
 }

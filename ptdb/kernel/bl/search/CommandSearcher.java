@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search;
 
 import ptdb.common.dto.SearchCriteria;
@@ -57,12 +55,20 @@ public class CommandSearcher extends AbstractSearcher implements
      */
     public CommandSearcher(SearchCriteria searchCriteria) {
 
-        this._commandSearchCriteria = searchCriteria.getSearchCommand();
+        _commandSearchCriteria = searchCriteria.getSearchCommand();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    
+    /**
+     * Checks whether the command search criteria has been set in
+     *  this command searcher instance.
+     *
+     * @return true - if the search criteria has been set.<br>
+     *         false - if the search criteria has not been set. 
+     */
     @Override
     protected boolean _isSearchCriteriaSet() {
         if (_commandSearchCriteria == null || _commandSearchCriteria.equals("")) {
@@ -71,6 +77,12 @@ public class CommandSearcher extends AbstractSearcher implements
         return true;
     }
 
+    
+    /**
+     * Perform the actual search for the attributes search criteria. 
+     * 
+     * <p>This method has not been implemented yet.</p>
+     */
     @Override
     protected void _search() {
         // to be implemented in the next requirement

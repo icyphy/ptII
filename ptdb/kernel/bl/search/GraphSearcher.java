@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
@@ -40,8 +38,8 @@ import ptdb.common.dto.SearchCriteria;
 //// GraphSearcher
 
 /**
- * Inherits from the AbstractSearch, and contains the common
- * functions used in the graph search.
+ * Inherits from the AbstractSearcher, and contains the common
+ * functions for the searchers for graph pattern match search. 
  *
  * @author Alek Wang
  * @version $Id$
@@ -58,6 +56,18 @@ public abstract class GraphSearcher extends AbstractSearcher {
     /**
      * A factory which returns the concrete GraphSearcher objects
      * according to the complexity of the search criteria from the user.
+     * 
+     * <p>Different graph searcher has different capability to perform the 
+     * graph pattern match search.  The original design is that this factory 
+     * method will return the appropriate searchers according to the given 
+     * graph pattern search criteria.</p>
+     * 
+     * <p>For now, due to the limitation of searching patterns in the 
+     * database, this factory will anyway construct both XQueryGraphSearcher 
+     * and PatternMatchGraphSearcher, and return both of them in a list. The 
+     * first searcher in the list will be the instance of the 
+     * XQueryGraphSearcher, and the second will be 
+     * PatternMatchGraphSearcher.</p>
      *
      * @param searchCriteria The search criteria input by the user.
      * @return The list that contains the required graph searchers, created
@@ -66,13 +76,6 @@ public abstract class GraphSearcher extends AbstractSearcher {
      */
     public static ArrayList<GraphSearcher> getGraphSearcher(
             SearchCriteria searchCriteria) {
-
-        // For now, construct two graph searchers, which are the 
-        // XQueryGraphSearcher and PatternMatchGraphSearcher, and return both
-        // of them in a list. 
-        // The first searcher in the list will be the instance of the 
-        // XQueryGraphSearcher, and the second will be 
-        // PatternMatchGraphSearcher. 
 
         ArrayList<GraphSearcher> graphSearchers = new ArrayList<GraphSearcher>();
 
@@ -91,8 +94,34 @@ public abstract class GraphSearcher extends AbstractSearcher {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Checks whether the graph search criteria has been set in
+     *  this graph searcher instance.
+     *
+     * @return true - if the search criteria has been set.<br>
+     *         false - if the search criteria has not been set. 
+     */
     @Override
     protected boolean _isSearchCriteriaSet() {
+        //
+        //        // TODO delete later
+        //        System.out.println("db search criteria: " + _dbGraphSearchCriteria);
+        //        System.out
+        //                .println("ports: " + (_dbGraphSearchCriteria.getPortsList() != null ? _dbGraphSearchCriteria
+        //                        .getPortsList()
+        //                        : "null"));
+        //        System.out
+        //                .println("components: "
+        //                        + (_dbGraphSearchCriteria.getComponentEntitiesList() != null ? _dbGraphSearchCriteria
+        //                        .getComponentEntitiesList()
+        //                        : "null"));
+        //        System.out
+        //                .println("composites:"
+        //                        + (_dbGraphSearchCriteria.getCompositeEntities() != null ? _dbGraphSearchCriteria
+        //                        .getCompositeEntities()
+        //                        : "null"));
+        //
+        //        // TODO delete later ends. 
 
         if (_dbGraphSearchCriteria != null
                 && ((_dbGraphSearchCriteria.getPortsList() != null && !_dbGraphSearchCriteria
@@ -111,7 +140,7 @@ public abstract class GraphSearcher extends AbstractSearcher {
     ////                         protected variables               ////
 
     /**
-     * The search criteria from graph pattern matching that input by the 
+     * The search criteria for graph pattern matching that are input by the 
      * user. 
      */
     protected DBGraphSearchCriteria _dbGraphSearchCriteria;

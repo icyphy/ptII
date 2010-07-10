@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search;
 
 import ptdb.common.dto.FetchHierarchyTask;
@@ -39,6 +37,16 @@ import ptdb.common.exception.DBExecutionException;
 
 /**
  * Fetch the referencing hierarchy for the models.
+ * 
+ * <p>This searcher does not perform any search in the database according
+ * to the search criteria, but it fetches all the parents models of the results
+ * found in the other searchers.</p>
+ * 
+ * <p>This searcher does not actually perform the search according to any 
+ *  search criteria, but just fetch the reference hierarchy for the passed
+ *  models.  So this searcher does not exist without other searchers.  Also, 
+ *  the results get from this searcher does not need to intersect with the 
+ *  results from the other searchers.</p>
  *
  * @author Alek Wang
  * @version $Id$
@@ -50,9 +58,29 @@ import ptdb.common.exception.DBExecutionException;
 public class HierarchyFetcher extends AbstractSearcher implements
         ResultHandler, AbstractDBSearcher {
 
+    /**
+     * Construct the HierarchyFetcher object.
+     */
+    public HierarchyFetcher() {
+        super();
+
+        noIntersect();
+        
+        _isIndependent = false;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Checks whether the search criteria has been set in
+     *  this searcher instance.  This searcher does not need any search
+     *  criteria, since it just fetch the hierarchy, so the search criteria 
+     *  is always marked set for this searcher. 
+     *
+     * @return true - if the search criteria has been set.<br>
+     *         false - if the search criteria has not been set. 
+     */
     @Override
     protected boolean _isSearchCriteriaSet() {
 
@@ -72,13 +100,13 @@ public class HierarchyFetcher extends AbstractSearcher implements
     @Override
     protected void _search() throws DBExecutionException {
 
-        // create the FetchHierarchyTask
         FetchHierarchyTask fetchHierarchyTask = new FetchHierarchyTask();
 
         fetchHierarchyTask.setModelsList(_previousResults);
 
-        // call the executeFetchHierarchyTask() method from the DBConnection class
-        // get the results returned by the executeFetchHierarchyTask() method
+        // Call the executeFetchHierarchyTask() method from the 
+        // DBConnection class, and get the results returned by the
+        // executeFetchHierarchyTask() method.
         _currentResults = _dbConnection
                 .executeFetchHierarchyTask(fetchHierarchyTask);
 

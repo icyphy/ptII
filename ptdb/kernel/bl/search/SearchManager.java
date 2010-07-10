@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
@@ -45,6 +43,9 @@ import ptdb.common.exception.DBExecutionException;
  * Business layer interface class that mainly handles the search models
  * function. It constructs and configures the actual searcher classes according
  * to the search criteria, and triggers the searching.
+ * 
+ * <p>For different requirement for search configuration, this class can be 
+ * modified to add more searchers chain configuration.</p>
  *
  * @author Alek Wang
  * @version $Id$
@@ -92,6 +93,7 @@ public class SearchManager {
         AttributeSearcher attributeSearcher = new AttributeSearcher(
                 searchCriteria);
 
+
         NameSearcher nameSearcher = new NameSearcher(searchCriteria);
 
         CommandSearcher commandSearcher = new CommandSearcher(searchCriteria);
@@ -104,6 +106,8 @@ public class SearchManager {
 
         // configure the searchers to set the next result handlers
         // also configure the searchers to set the previous searcher
+        attributeSearcher.setFirstSearcher();
+        
         attributeSearcher.setNextResultHandler(nameSearcher);
         nameSearcher.setPreviousSeacher(attributeSearcher);
 
@@ -123,6 +127,7 @@ public class SearchManager {
 
         // assign the result handler to the fetcher
         hierarchyFetcher.setNextResultHandler(searchResultBuffer);
+        hierarchyFetcher.setLastSearcher();
 
         // start the search
         attributeSearcher.handleResults(new ArrayList<XMLDBModel>());
