@@ -376,7 +376,7 @@ public class DbSearchFrame extends TransformationEditor {
                     && (searchCriteria.getModelName() == null || searchCriteria
                             .getModelName().trim().isEmpty())) {
                 JOptionPane.showMessageDialog(DbSearchFrame.this,
-                        "Please specify search criteria.  At least one"
+                        "In order to narrow the search, please specify search criteria.  At least one"
                                 + " of attribute, model name, port or"
                                 + " component"
                                 + " entity needs to be set in the search "
