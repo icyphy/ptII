@@ -150,23 +150,45 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             // Add menu items if database connection has been established.
             // TODO: if (DB IS CONNECTED) {
 
-            GUIUtilities
-                    .addHotKey(_getRightComponent(), _openSearchFrameAction);
-            GUIUtilities.addMenuItem(_dbMenu, _openSearchFrameAction);
+            if (true) {
 
-            GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
-            GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
+                // Create database menu.
+                _dbMenu = new JMenu("Database");
+                _dbMenu.setMnemonic(KeyEvent.VK_B);
+                _menubar.add(_dbMenu);
 
-            GUIUtilities.addHotKey(_getRightComponent(), _saveModelToDBAction);
-            GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
+                // Add menu items if database connection has been established.
+                // TODO: if (DB IS CONNECTED) {
 
-            GUIUtilities.addHotKey(_getRightComponent(),
-                    _openDatabaseSetupAction);
-            GUIUtilities.addMenuItem(_dbMenu, _openDatabaseSetupAction);
+                GUIUtilities
+                    .addHotKey(_getRightComponent(), _saveModelToDBAction);
+                GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
+               
+                
+                // Create search menu.
+                JMenu searchMenu = new JMenu("Search");
+                searchMenu.setMnemonic(KeyEvent.VK_C);
+                _dbMenu.add(searchMenu);
 
-            GUIUtilities.addHotKey(_getRightComponent(),
-                    _configureAttributesAction);
-            GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
+                GUIUtilities
+                .addHotKey(_getRightComponent(), _simpleSearchAction);
+                GUIUtilities.addMenuItem(searchMenu, _simpleSearchAction);
+                
+                GUIUtilities
+                        .addHotKey(_getRightComponent(), _openSearchFrameAction);
+                GUIUtilities.addMenuItem(searchMenu, _openSearchFrameAction);
+                
+
+                GUIUtilities.addHotKey(_getRightComponent(),
+                        _openDatabaseSetupAction);
+                GUIUtilities.addMenuItem(_dbMenu, _openDatabaseSetupAction);
+
+                GUIUtilities.addHotKey(_getRightComponent(),
+                        _configureAttributesAction);
+                GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
+
+                // TODO: }
+            }
 
             // TODO: }
         }
@@ -227,9 +249,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     private class OpenSearchFrameAction extends AbstractAction {
 
         public OpenSearchFrameAction(Tableau tableau) {
-            super("Pattern Database Search");
+            super("Pattern Search");
             _tableau = tableau;
-            putValue("tooltip", "Pattern Database Search");
+            putValue("tooltip", "Pattern Search");
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
@@ -289,9 +311,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
          */
         public SaveModelToDBAction() {
 
-            super("Save Model to Database");
+            super("Save to Database");
 
-            putValue("tooltip", "Save Model to Database");
+            putValue("tooltip", "Save to Database");
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
 
         }
@@ -356,9 +378,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         public SimpleSearchAction(NamedObj model, JFrame frame,
                 Configuration configuration) {
 
-            super("Simple Database Search");
+            super("Quick Search");
 
-            putValue("tooltip", "Simple Database Search");
+            putValue("tooltip", "Quick Search");
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
 
             _containerModel = model;
