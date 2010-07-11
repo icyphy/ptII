@@ -33,7 +33,7 @@ package ptdb.common.exception;
 //// IllegalNameException
 
 /**
- * 
+ * Exception for illegal names for attributes, model or other values. 
  * 
  * @author Alek Wang
  * @version $Id$
@@ -48,7 +48,7 @@ public class IllegalNameException extends Exception {
     ////                    public methods                            ////
     
     /**
-     * Construct an instance of DBConnectionException
+     * Construct an instance of IllegalNameException
      * with the given message.
      * @param errorMessage Exception message.
      */
