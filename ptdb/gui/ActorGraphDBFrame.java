@@ -150,45 +150,32 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             // Add menu items if database connection has been established.
             // TODO: if (DB IS CONNECTED) {
 
-            if (true) {
+            GUIUtilities
+                .addHotKey(_getRightComponent(), _saveModelToDBAction);
+            GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
+           
+            
+            // Create search menu.
+            JMenu searchMenu = new JMenu("Search");
+            searchMenu.setMnemonic(KeyEvent.VK_C);
+            _dbMenu.add(searchMenu);
 
-                // Create database menu.
-                _dbMenu = new JMenu("Database");
-                _dbMenu.setMnemonic(KeyEvent.VK_B);
-                _menubar.add(_dbMenu);
+            GUIUtilities
+            .addHotKey(_getRightComponent(), _simpleSearchAction);
+            GUIUtilities.addMenuItem(searchMenu, _simpleSearchAction);
+            
+            GUIUtilities
+                    .addHotKey(_getRightComponent(), _openSearchFrameAction);
+            GUIUtilities.addMenuItem(searchMenu, _openSearchFrameAction);
+            
 
-                // Add menu items if database connection has been established.
-                // TODO: if (DB IS CONNECTED) {
+            GUIUtilities.addHotKey(_getRightComponent(),
+                    _openDatabaseSetupAction);
+            GUIUtilities.addMenuItem(_dbMenu, _openDatabaseSetupAction);
 
-                GUIUtilities
-                    .addHotKey(_getRightComponent(), _saveModelToDBAction);
-                GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
-               
-                
-                // Create search menu.
-                JMenu searchMenu = new JMenu("Search");
-                searchMenu.setMnemonic(KeyEvent.VK_C);
-                _dbMenu.add(searchMenu);
-
-                GUIUtilities
-                .addHotKey(_getRightComponent(), _simpleSearchAction);
-                GUIUtilities.addMenuItem(searchMenu, _simpleSearchAction);
-                
-                GUIUtilities
-                        .addHotKey(_getRightComponent(), _openSearchFrameAction);
-                GUIUtilities.addMenuItem(searchMenu, _openSearchFrameAction);
-                
-
-                GUIUtilities.addHotKey(_getRightComponent(),
-                        _openDatabaseSetupAction);
-                GUIUtilities.addMenuItem(_dbMenu, _openDatabaseSetupAction);
-
-                GUIUtilities.addHotKey(_getRightComponent(),
-                        _configureAttributesAction);
-                GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
-
-                // TODO: }
-            }
+            GUIUtilities.addHotKey(_getRightComponent(),
+                    _configureAttributesAction);
+            GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
 
             // TODO: }
         }

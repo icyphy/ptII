@@ -281,11 +281,11 @@ public class SaveModelToDBFrame extends JFrame {
                     dbModelParam.setExpression(modelId);
                     dbModelParam.setContainer(_modelToSave);
                     
-                } else if(!((StringConstantParameter)
+                } else if(!((StringParameter)
                         _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)).getExpression()
                         .equals(modelId)){
                     
-                    ((StringConstantParameter)
+                    ((StringParameter)
                             _modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                             .setExpression(modelId);
                     
@@ -507,7 +507,7 @@ public class SaveModelToDBFrame extends JFrame {
             
             if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null){
 
-                id = ((StringConstantParameter)_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
+                id = ((StringParameter)_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                     .getExpression();
             
             }
