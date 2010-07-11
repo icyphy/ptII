@@ -295,7 +295,9 @@ public class SearchResultsFrame extends JFrame implements Observer {
             }
             
         }
-        
+
+        _sourceFrame.toFront();
+        JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
     }    
     
     private void _importByValue(){
@@ -337,6 +339,9 @@ public class SearchResultsFrame extends JFrame implements Observer {
             }
             
         }
+
+        _sourceFrame.toFront();
+        JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
         
     }
 
