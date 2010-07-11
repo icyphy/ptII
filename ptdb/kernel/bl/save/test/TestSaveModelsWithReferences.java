@@ -28,7 +28,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.kernel.bl.save.test;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -88,7 +87,7 @@ public class TestSaveModelsWithReferences {
         }
         
 
-        assertNotNull(exceptionThrown);
+        assertTrue(exceptionThrown);
         
     }
     
@@ -728,7 +727,7 @@ public class TestSaveModelsWithReferences {
         
         SaveModelManager saveModelManager = new SaveModelManager();
 
-        String modelId = saveModelManager.save(dbModel);
+        saveModelManager.save(dbModel);
         
         dbModel.setIsNew(true);
         
@@ -881,7 +880,7 @@ public class TestSaveModelsWithReferences {
                
         SaveModelManager saveModelManager = new SaveModelManager();
 
-        String modelId = saveModelManager.save(dbModel);
+        saveModelManager.save(dbModel);
         
         dbModel.setIsNew(true);
         
