@@ -48,6 +48,8 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import ptdb.common.util.Utilities;
+
 ///////////////////////////////////////////////////////////////
 //// AttributeListEditFrame
 
@@ -169,8 +171,8 @@ public class AttributeListEditFrame extends JFrame {
 
                 if (!_validate()) {
                     JOptionPane.showMessageDialog(AttributeListEditFrame.this,
-                            "Duplicated item! Please change to other value.",
-                            "Duplicated Item", JOptionPane.ERROR_MESSAGE);
+                            "Invalid value item! Please change to other value.",
+                            "Invalid value Item", JOptionPane.ERROR_MESSAGE);
                 } else {
                     ((ArrayModelList) _itemsJList.getModel())
                             .addItem(_listItemTextField.getText());
@@ -197,10 +199,10 @@ public class AttributeListEditFrame extends JFrame {
             }
         });
 
-        _editListItemsLabel.setFont(new Font("Lucida Grande", 1, 18));
+        _editListItemsLabel.setFont(new Font("Title", 1, 18));
         _editListItemsLabel.setText("Edit List Items");
 
-        _saveButton.setText("Save");
+        _saveButton.setText("Add to Attribute");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
                 getContentPane());
@@ -312,6 +314,10 @@ public class AttributeListEditFrame extends JFrame {
      *          false - It is invalid to add that item.
      */
     private boolean _validate() {
+
+        if (!Utilities.checkAttributeModelName(_listItemTextField.getText())) {
+            return false;
+        }
 
         ArrayModelList modelList = ((ArrayModelList) _itemsJList.getModel());
         for (int i = 0; i < modelList.getSize(); i++) {

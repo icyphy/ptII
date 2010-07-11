@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import ptdb.common.util.Utilities;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -138,8 +139,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
 
                     }
 
-                    _attributes = _attributesListPanel
-                            .getAttributes();
+                    _attributes = _attributesListPanel.getAttributes();
                     _modelName = _attributesListPanel.getModelName();
 
                     AdvancedSimpleSearchFrame.this.setVisible(false);
@@ -162,7 +162,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
 
         topPanel.add(_attributesListPanel);
         bottomPanel.add(doneButtone);
-        
+
         add(topPanel);
         add(bottomPanel);
 
@@ -173,7 +173,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
 
     ///////////////////////////////////////////////////////////////////
     //                    public  methods                          ////
-    
+
     /**
      * Get the attributes search criteria that the user specified in this 
      * frame. 
@@ -184,7 +184,6 @@ public class AdvancedSimpleSearchFrame extends JFrame {
         return _attributes;
     }
 
-    
     /**
      * Get the model name search criteria that the user specified in this 
      * frame.
@@ -194,7 +193,6 @@ public class AdvancedSimpleSearchFrame extends JFrame {
     public String getModelName() {
         return _modelName;
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     //                    private methods                          ////
@@ -220,7 +218,8 @@ public class AdvancedSimpleSearchFrame extends JFrame {
         }
 
         if (!_attributesListPanel.getModelName().trim().isEmpty()) {
-            if (!_attributesListPanel.getModelName().matches("^[A-Za-z0-9]+$")) {
+            if (!Utilities.checkAttributeModelName(_attributesListPanel
+                    .getModelName())) {
 
                 JOptionPane.showMessageDialog(this,
                         "The model name should only "

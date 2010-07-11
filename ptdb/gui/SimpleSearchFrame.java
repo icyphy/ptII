@@ -44,6 +44,7 @@ import javax.swing.SwingConstants;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 import ptolemy.actor.gui.Configuration;
@@ -84,19 +85,19 @@ public class SimpleSearchFrame extends JFrame {
      *      be loaded. 
      *      
      */
-    public SimpleSearchFrame(NamedObj model, 
-            JFrame frame, Configuration configuration) {
+    public SimpleSearchFrame(NamedObj model, JFrame frame,
+            Configuration configuration) {
 
         super("Save Model to Database");
 
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
         _containerModel = model;
-        
+
         _sourceFrame = frame;
         _configuration = configuration;
         _attributesListPanel = new AttributesListPanel(new NamedObj());
-        
+
         JPanel topPanel = new JPanel();
         JPanel bottomPanel = new JPanel();
 
@@ -131,10 +132,10 @@ public class SimpleSearchFrame extends JFrame {
             public void actionPerformed(ActionEvent event) {
 
                 try {
-                    
+
                     // If the form is in an invalid state, do not continue;
                     if (!_isValid()) {
-                        
+
                         return;
 
                     }
@@ -143,23 +144,23 @@ public class SimpleSearchFrame extends JFrame {
 
                 } catch (NameDuplicationException e) {
 
-                    MessageHandler.error("The search cannot be performed now " +
-                            "due to a NameDuplicationException.", e);
+                    MessageHandler.error("The search cannot be performed now "
+                            + "due to a NameDuplicationException.", e);
 
                 } catch (IllegalActionException e) {
 
-                    MessageHandler.error("The search cannot be performed now " +
-                            "due to an IllegalActionException.", e);
+                    MessageHandler.error("The search cannot be performed now "
+                            + "due to an IllegalActionException.", e);
 
                 } catch (DBConnectionException e) {
-                    
-                    MessageHandler.error("The search cannot be performed now " +
-                            "due to a DBConnectionException.", e);
+
+                    MessageHandler.error("The search cannot be performed now "
+                            + "due to a DBConnectionException.", e);
 
                 } catch (DBExecutionException e) {
 
-                    MessageHandler.error("The search cannot be performed now " +
-                            "due to a DBExecutionException.", e);
+                    MessageHandler.error("The search cannot be performed now "
+                            + "due to a DBExecutionException.", e);
 
                 }
 
@@ -180,107 +181,102 @@ public class SimpleSearchFrame extends JFrame {
         bottomPanel.add(cancel_Button);
         add(topPanel);
         add(bottomPanel);
-        
+
         validate();
         repaint();
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                    private methods                          ////
-    
-    private boolean _isValid() throws NameDuplicationException,
-        IllegalActionException {
-        
-        if (_attributesListPanel.getAttributeCount() == 0 &&
-                _attributesListPanel.getModelName().length()==0) {
 
-            JOptionPane.showMessageDialog(this, 
-                        "You must enter the Model Name or " +
-                        "select attributes on which to search.",
+    private boolean _isValid() throws NameDuplicationException,
+            IllegalActionException {
+
+        if (_attributesListPanel.getAttributeCount() == 0
+                && _attributesListPanel.getModelName().length() == 0) {
+
+            JOptionPane.showMessageDialog(this,
+                    "You must enter the Model Name or "
+                            + "select attributes on which to search.",
+                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+
+            return false;
+
+        }
+
+        if (_attributesListPanel.getModelName().length() > 0) {
+
+            if (!Utilities.checkAttributeModelName(_attributesListPanel
+                    .getModelName())) {
+                JOptionPane.showMessageDialog(this,
+                        "The model name should only "
+                                + "contain letters and numbers.",
                         "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
 
+                return false;
+
+            }
+        }
+
+        if (_attributesListPanel.containsDuplicates()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "The search criteria cannot contain more"
+                            + " than one instance " + "of the same attribute.",
+                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+
             return false;
 
         }
-        
-        
-        if(_attributesListPanel.getModelName().length()>0){
-            if (!_attributesListPanel.getModelName().matches("^[A-Za-z0-9]+$")){
-                
-                JOptionPane.showMessageDialog(this,
-                        "The model name should only " +
-                        "contain letters and numbers.", 
-                        "Search Error",
-                        JOptionPane.INFORMATION_MESSAGE, null);
-    
-                return false;
-                
-            }
-        }
-        
-        if (_attributesListPanel.containsDuplicates()) {
-            
+
+        if (!_attributesListPanel.allAttributeNamesSet()) {
+
             JOptionPane.showMessageDialog(this,
-                    "The search criteria cannot contain more" + 
-                    " than one instance " + 
-                    "of the same attribute.", "Search Error",
-                    JOptionPane.INFORMATION_MESSAGE, null);
-            
+                    "You must specify a name for all attributes.",
+                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+
             return false;
-            
+
         }
-        
-        if (!_attributesListPanel.allAttributeNamesSet()){
-            
+
+        if (!_attributesListPanel.allAttributeValuesSet()) {
+
             JOptionPane.showMessageDialog(this,
-                    "You must specify a name for all attributes.", 
-                    "Search Error",
-                    JOptionPane.INFORMATION_MESSAGE, null);
-    
+                    "You must specify a value for all attributes.",
+                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+
             return false;
-            
-        }
-            
-        if (!_attributesListPanel.allAttributeValuesSet()){
-            
-            JOptionPane.showMessageDialog(this,
-                    "You must specify a value for all attributes.", 
-                    "Search Error",
-                    JOptionPane.INFORMATION_MESSAGE, null);
-    
-            return false;
-            
+
         }
 
         return true;
     }
-    
-    private void _simpleSearch() 
-        throws DBConnectionException, DBExecutionException, 
-        NameDuplicationException, IllegalActionException {
-        
+
+    private void _simpleSearch() throws DBConnectionException,
+            DBExecutionException, NameDuplicationException,
+            IllegalActionException {
+
         SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
                 _containerModel, _sourceFrame, _configuration);
-        
+
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
         searchResultBuffer.addObserver(searchResultsFrame);
-        
+
         SearchCriteria searchCriteria = new SearchCriteria();
-        
-        
-        if (!_attributesListPanel.getModelName().equals("")){
-            
+
+        if (!_attributesListPanel.getModelName().equals("")) {
+
             searchCriteria.setModelName(_attributesListPanel.getModelName());
         }
-        
-        if(_attributesListPanel.getAttributeCount() > 0){
-        
-            ArrayList<Attribute> attributesToSearch = 
-                _attributesListPanel.getAttributes();
+
+        if (_attributesListPanel.getAttributeCount() > 0) {
+
+            ArrayList<Attribute> attributesToSearch = _attributesListPanel
+                    .getAttributes();
             searchCriteria.setAttributes(attributesToSearch);
         }
-        
+
         // Show the search result frame.
         searchResultsFrame.pack();
         searchResultsFrame.setVisible(true);
@@ -302,7 +298,7 @@ public class SimpleSearchFrame extends JFrame {
         }
         setVisible(false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
 
@@ -310,5 +306,5 @@ public class SimpleSearchFrame extends JFrame {
     private JFrame _sourceFrame;
     private Configuration _configuration;
     private AttributesListPanel _attributesListPanel;
-    
+
 }

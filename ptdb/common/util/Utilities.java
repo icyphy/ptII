@@ -137,6 +137,20 @@ public class Utilities {
         return firstNode;
     }
 
+    
+    public static boolean checkAttributeModelName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        
+        if (name.matches("^[A-Za-z0-9]+$")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
     /** Check whether the given file exists.
      * 
      * @param filePath Path for the file.
