@@ -89,8 +89,9 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
     protected void _search() throws DBConnectionException, DBExecutionException {
 
         Pattern pattern = _dbGraphSearchCriteria.getPattern();
-        GraphMatcher matcher = new GraphMatcher();
+        
         _parser = new MoMLParser();
+        GraphMatcher matcher = new GraphMatcher();
 
         int count = 0;
         ArrayList<XMLDBModel> modelsBatch = new ArrayList<XMLDBModel>();
@@ -115,17 +116,21 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
                 List<XMLDBModel> fullModels = DBModelFetcher.load(modelsBatch);
 
                 for (XMLDBModel fullModel : fullModels) {
+
                     if (isSearchCancelled()) {
                         return;
                     }
 
                     CompositeEntity modelNamedObj;
                     try {
+                        _parser.resetAll();
                         modelNamedObj = (CompositeEntity) _parser
                                 .parse(fullModel.getModel());
+
                     } catch (Exception e) {
                         // Add this model to the error models list. 
                         _addErrorModel(fullModel);
+
                         continue;
                     }
 
