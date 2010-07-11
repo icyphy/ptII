@@ -1070,9 +1070,9 @@ putDocument modelWithOneAdder '<entity name="model2" class="ptolemy.actor.TypedC
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-		<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringParameter">
+		<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringConstantParameter">
         </property>
-		<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringParameter">
+		<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringConstantParameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 115.0]">
         </property>
@@ -1200,9 +1200,9 @@ putDocument modelWithOneAdder '<entity name="model2" class="ptolemy.actor.TypedC
         </property>
     </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-			<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringParameter">
+			<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringConstantParameter">
         </property>
-		<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringParameter">
+		<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringConstantParameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 210.0]">
         </property>
@@ -1362,9 +1362,9 @@ putDocument modelWithTwoAdders '<entity name="model2" class="ptolemy.actor.Typed
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-		<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringParameter">
+		<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringConstantParameter">
         </property>
-		<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringParameter">
+		<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringConstantParameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 115.0]">
         </property>
@@ -1492,9 +1492,9 @@ putDocument modelWithTwoAdders '<entity name="model2" class="ptolemy.actor.Typed
         </property>
     </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-			<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringParameter">
+			<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringConstantParameter">
         </property>
-		<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringParameter">
+		<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringConstantParameter">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 210.0]">
         </property>
