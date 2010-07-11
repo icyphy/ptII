@@ -1025,7 +1025,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 + modelNameSearchTask.getModelName() + "\")] "
                 + " return base-uri($entity)";
                 
-        ArrayList<XMLDBModel> modelsList = new ArrayList<XMLDBModel>();
+        ArrayList<String> modelsList = new ArrayList<String>();
         
         try {
             XmlQueryContext context = _xmlManager.createQueryContext();
@@ -1043,7 +1043,7 @@ public class OracleXMLDBConnection implements DBConnection {
                 XmlValue value;
                 while (results.hasNext()) {
                     value = results.next();
-                    modelsList.add(new XMLDBModel(_extractModelName(value.asString())));
+                    modelsList.add(value.asString());
                 }
             }
         } catch (XmlException e) {
@@ -1051,7 +1051,7 @@ public class OracleXMLDBConnection implements DBConnection {
                     "Error while executing ModelNameSearchTask - "
                             + e.getMessage(), e);
         }
-        return modelsList;
+        return _getDistinctModelsList(modelsList);
     }
     
     /**
