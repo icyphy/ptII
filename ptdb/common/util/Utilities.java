@@ -201,7 +201,7 @@ public class Utilities {
 
         String modelIdTag = "<property name=\"" + XMLDBModel.DB_MODEL_ID_ATTR
                 + "\" "
-                + "class=\"ptolemy.data.expr.StringParameter\" value=\""
+                + "class=\"ptolemy.data.expr.StringConstantParameter\" value=\""
                 + modelId + "\"></property>";
         
 
