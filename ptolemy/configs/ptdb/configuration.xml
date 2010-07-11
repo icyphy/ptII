@@ -59,4 +59,93 @@
   
   <!-- Main default library. -->
   <input source="ptolemy/configs/basicLibrary.xml"/>
+   <!-- basicLibrary.xml is included in Ptiny. We include components
+       that are not part of Ptiny below. -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/configs/utilityPteraModalModel.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+  </entity>
+
+  <!-- Icon editor library. -->
+  <!-- NOTE: This is identical to the default, so it need not be specified. -->
+  <!-- We specify it here as a guide to those writing custom configurations. -->
+  <input source="ptolemy/vergil/kernel/attributes/iconEditorLibrary.xml"/>
+
+  <!-- Modifications to the library. -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+    <!-- First, additional directors. -->
+    <entity name="Directors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <!-- NOTE: because this is in a configure, this list completely -->
+            <!-- replaces anything in basicLibrary.xml, so we repeat this.  -->
+            <input source="ptolemy/configs/basicDirectors.xml"/>
+            <input source="ptolemy/configs/experimentalDirectors.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
+    <!-- Optional packages that may or may not be present  -->
+    <!-- Alphabetize these  -->
+    <entity name="MoreLibraries" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/configs/automataActorLibrary.xml"/>
+        <!-- Backtracking actors -->
+            <input source="ptolemy/backtrack/backtrack.xml"/>
+        <!-- Chic actors are not being shipped in 4.0 -->
+            <!-- input source="ptolemy/chic/chic.xml"/ -->
+            <input source="ptolemy/configs/codegen.xml"/>
+        <!-- Javacomm serial actors depend on javacomm being present  -->
+            <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
+        <!-- Corba actors are not being shipped in 4.0 -->
+            <!--input source="ptolemy/actor/corba/corba.xml"/-->
+            <input source="ptolemy/actor/lib/database/database.xml"/>
+            <input source="ptolemy/actor/designs/designPatterns.xml"/>
+            <input source="ptolemy/actor/lib/esoteric.xml"/>
+            <input source="ptolemy/domains/domains.xml"/>
+        <!-- Graph transformation library -->
+            <input source="ptolemy/configs/gtActorLibrary.xml"/>
+        <!-- GR depends on the 3D graphics package of Java being present-->
+            <input source="ptolemy/domains/gr/gr.xml"/>
+            <input source="ptolemy/actor/lib/image/image.xml"/>
+            <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
+        <!-- Joystick actors depend on the Joystick interface being present  -->
+            <input source="ptolemy/actor/lib/joystick/jstick.xml"/>
+
+        <!-- jxta is not shipping in 4.0 -->
+            <!-- input source="ptolemy/actor/lib/jxta/jxta.xml"-->
+
+        <!-- matlab depends on Matlab being present -->
+            <input source="ptolemy/matlab/matlab.xml"/>
+        <!--ptalon not shipped with 6.0 -->
+            <!--input source="ptolemy/actor/ptalon/ptalon.xml"/-->
+        <!-- Properties library -->
+            <input source="ptolemy/configs/properties/propertiesLibrary.xml"/>
+        <!--ptp not shipped with 6.0 -->
+            <!--input source="ptolemy/ptp/lib/ptpentities.xml"/-->
+            <input source="ptolemy/actor/lib/python/python.xml"/>
+            <input source="ptolemy/actor/lib/test.xml"/>
+            <input source="ptolemy/actor/lib/security/security.xml"/>
+            <input source="ptolemy/domains/wireless/wireless.xml"/>
+        <!-- x10 actors depend on the x10 library in vendor/misc/x10 -->
+            <input source="ptolemy/actor/lib/x10/x10.xml"/>
+            <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+    
+     </entity>
+
 </entity>

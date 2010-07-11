@@ -119,10 +119,19 @@ public class DbSearchFrame extends TransformationEditor {
      * @param tableau The tableau responsible for this frame.
      * @param defaultLibrary An attribute specifying the default library to
      *   use if the model does not have a library.
+     * @param containerModel The model that will import the searched results. 
+     * @param sourceFrame The frame that contains the model to import the 
+     * searched results. 
      */
     public DbSearchFrame(CompositeEntity entity, Tableau tableau,
-            LibraryAttribute defaultLibrary) {
+            LibraryAttribute defaultLibrary, NamedObj containerModel,
+            JFrame sourceFrame) {
         super(entity, tableau, defaultLibrary);
+
+        setTitle("Database Pattern Search");
+
+        _containerModel = containerModel;
+        _sourceFrame = sourceFrame;
 
     }
 

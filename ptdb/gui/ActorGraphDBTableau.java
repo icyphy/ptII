@@ -115,9 +115,37 @@ public class ActorGraphDBTableau extends Tableau {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /**
+     * Get the library for DB pattern search window. 
+     * 
+     * @return The library instance for DB pattern search window. 
+     */
+    public LibraryAttribute getGtLibrary() {
+        return _gtLibrary;
+    }
+
+    /**
+     * Set the library for DB pattern search window. 
+     * 
+     * @param libraryAttribute The library instance for DB pattern search 
+     * window to be set in this tableau. 
+     */
+    public void setGtLibrary(LibraryAttribute libraryAttribute) {
+        _gtLibrary = libraryAttribute;
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // The background color.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+    
+    /**
+     * The library for pattern search window. 
+     */
+    private LibraryAttribute _gtLibrary;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
@@ -135,7 +163,9 @@ public class ActorGraphDBTableau extends Tableau {
          */
         public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
+
             super(container, name);
+
         }
 
         /** Create a tableau in the default workspace with no name for the
@@ -165,6 +195,11 @@ public class ActorGraphDBTableau extends Tableau {
                             "_library", LibraryAttribute.class);
                     tableau = new ActorGraphDBTableau((PtolemyEffigy) effigy,
                             "graphTableau", library);
+
+                    // Fetch the gt library, and set it in the tableau. 
+                    tableau.setGtLibrary((LibraryAttribute) getAttribute(
+                            "gtlibrary", LibraryAttribute.class));
+
                 }
 
                 // Don't call show() here, it is called for us in
@@ -174,6 +209,8 @@ public class ActorGraphDBTableau extends Tableau {
                 return null;
             }
         }
+
+
     }
 
 }

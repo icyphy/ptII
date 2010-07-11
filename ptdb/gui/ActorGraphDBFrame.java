@@ -125,8 +125,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         _openSearchFrameAction = new OpenSearchFrameAction(this.getTableau());
         _saveModelToDBAction = new SaveModelToDBAction();
         _openDatabaseSetupAction = new DatabaseSetupAction();
-        _simpleSearchAction = new SimpleSearchAction
-                                (getModel(), this, getConfiguration());
+        _simpleSearchAction = new SimpleSearchAction(getModel(), this,
+                getConfiguration());
         _configureAttributesAction = new ConfigureAttributesAction();
 
     }
@@ -153,23 +153,21 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             GUIUtilities
                     .addHotKey(_getRightComponent(), _openSearchFrameAction);
             GUIUtilities.addMenuItem(_dbMenu, _openSearchFrameAction);
-            
-            GUIUtilities
-                    .addHotKey(_getRightComponent(), _simpleSearchAction);
+
+            GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
             GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
 
-            GUIUtilities
-                .addHotKey(_getRightComponent(), _saveModelToDBAction);
+            GUIUtilities.addHotKey(_getRightComponent(), _saveModelToDBAction);
             GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
-            
-            GUIUtilities
-            .addHotKey(_getRightComponent(), _openDatabaseSetupAction);
+
+            GUIUtilities.addHotKey(_getRightComponent(),
+                    _openDatabaseSetupAction);
             GUIUtilities.addMenuItem(_dbMenu, _openDatabaseSetupAction);
-            
-            GUIUtilities
-            .addHotKey(_getRightComponent(), _configureAttributesAction);
+
+            GUIUtilities.addHotKey(_getRightComponent(),
+                    _configureAttributesAction);
             GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
-            
+
             // TODO: }
         }
 
@@ -182,7 +180,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * The action for opening the attributes configuration frame. 
      */
     protected Action _configureAttributesAction;
-    
+
     /** The database menu. */
     protected JMenu _dbMenu;
 
@@ -191,7 +189,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     /** The action for saving a model to the database. */
     protected Action _saveModelToDBAction;
-    
+
     /** The action for performing a simple database search. */
     protected Action _simpleSearchAction;
 
@@ -201,7 +199,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                private inner classes                      ////
 
-    
     ///////////////////////////////////////////////////////////////////
     //// ConfigureAttributesAction
 
@@ -223,8 +220,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         }
     }
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     //// OpenSearchFrameAction
 
@@ -232,7 +228,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         public OpenSearchFrameAction(Tableau tableau) {
             super("Pattern Database Search");
-
+            _tableau = tableau;
             putValue("tooltip", "Pattern Database Search");
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
@@ -261,7 +257,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                         effigy, "transformation rule");
 
                 ExtendedGraphFrame frame = new DbSearchFrame(compositeEntity,
-                        new Tableau(effigy, "DBSearchframe"), getModel(), ActorGraphDBFrame.this);
+                        new Tableau(effigy, "DBSearchframe"),
+                        ((ActorGraphDBTableau) _tableau).getGtLibrary(),
+                        getModel(), ActorGraphDBFrame.this);
 
                 frame.setBackground(BACKGROUND_COLOR);
                 frame.pack();
@@ -274,8 +272,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             }
 
         }
+
+        private Tableau _tableau;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// SaveModelToDBAction
 
@@ -290,23 +290,22 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         public SaveModelToDBAction() {
 
             super("Save Model to Database");
-            
+
             putValue("tooltip", "Save Model to Database");
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
 
         }
 
         public void actionPerformed(ActionEvent e) {
-            
+
             JFrame frame = new SaveModelToDBFrame(getModel());
             frame.pack();
             frame.setVisible(true);
 
         }
-        
+
     }
 
-    
     ///////////////////////////////////////////////////////////////////
     //// DatabaseSetupAction
 
@@ -334,7 +333,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             frame.setVisible(true);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// SimpleSearchAction
 
@@ -354,32 +353,32 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
          *      be loaded. 
          * 
          */
-        public SimpleSearchAction(NamedObj model, 
-                JFrame frame, Configuration configuration) {
+        public SimpleSearchAction(NamedObj model, JFrame frame,
+                Configuration configuration) {
 
             super("Simple Database Search");
-            
+
             putValue("tooltip", "Simple Database Search");
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
 
             _containerModel = model;
             _sourceFrame = frame;
             _configuration = configuration;
-            
+
         }
 
         public void actionPerformed(ActionEvent e) {
 
-            JFrame frame = new SimpleSearchFrame(_containerModel, 
-                    _sourceFrame, _configuration);
+            JFrame frame = new SimpleSearchFrame(_containerModel, _sourceFrame,
+                    _configuration);
             frame.pack();
             frame.setVisible(true);
 
         }
-        
+
         private NamedObj _containerModel;
         private JFrame _sourceFrame;
         private Configuration _configuration;
-        
+
     }
 }

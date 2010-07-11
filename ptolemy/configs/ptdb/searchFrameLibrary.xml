@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<group>
+  <property name="AttributeMatcher" class="ptolemy.actor.gt.AttributeMatcher"/>
+  <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher"/>
+  <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher"/>
+  <entity name="FSMMatcher" class="ptolemy.actor.gt.FSMMatcher"/>
+  <entity name="ModalModelMatcher" class="ptolemy.actor.gt.ModalModelMatcher"/>
+</group>
