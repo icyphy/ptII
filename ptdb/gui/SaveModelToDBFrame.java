@@ -234,11 +234,6 @@ public class SaveModelToDBFrame extends JFrame {
     private void _commitSave(boolean isNew, String id) throws Exception {
 
         _updateDisplayedModel();
-
-        xmlModel = new XMLDBModel(_modelToSave.getName());
-        xmlModel.setModel(_modelToSave.exportMoML());
-        xmlModel.setIsNew(isNew);
-        xmlModel.setModelId(id);
         
         if(isNew || id == null){
             
@@ -261,6 +256,11 @@ public class SaveModelToDBFrame extends JFrame {
             }
             
         }
+        
+        xmlModel = new XMLDBModel(_modelToSave.getName());
+        xmlModel.setModel(_modelToSave.exportMoML());
+        xmlModel.setIsNew(isNew);
+        xmlModel.setModelId(id);
         
         SaveModelManager saveModelManager = new SaveModelManager();
 
