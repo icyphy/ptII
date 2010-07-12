@@ -194,7 +194,7 @@ public class SimpleSearchFrame extends JFrame {
             IllegalActionException {
 
         if (_attributesListPanel.getAttributeCount() == 0
-                && _attributesListPanel.getModelName().length() == 0) {
+                && _attributesListPanel.getModelName().trim().isEmpty()) {
 
             JOptionPane.showMessageDialog(this,
                     "You must enter the Model Name or "
@@ -265,7 +265,7 @@ public class SimpleSearchFrame extends JFrame {
 
         SearchCriteria searchCriteria = new SearchCriteria();
 
-        if (!_attributesListPanel.getModelName().equals("")) {
+        if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
             searchCriteria.setModelName(_attributesListPanel.getModelName());
         }
