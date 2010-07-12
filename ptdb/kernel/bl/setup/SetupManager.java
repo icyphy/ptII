@@ -164,12 +164,12 @@ public class SetupManager {
         Properties props = new Properties();
 
         
-        File file = FileUtilities.nameToFile(ptdbParams, null);
-        
+        File tempFile = FileUtilities.nameToFile(ptdbParams, null);
+        File file = new File(tempFile.getPath().replaceAll("%20", " "));
         // if the file does not exist, then create it.
         if(file.exists() == false) {
             file.createNewFile();
-        }
+        } 
 
 
         URL url = FileUtilities.nameToURL(ptdbParams, null, null);
@@ -200,7 +200,7 @@ public class SetupManager {
                 .getCacheContainerName());
 
         
-        props.store(new FileOutputStream(url.getPath()), null);
+        props.store(new FileOutputStream(url.getPath().replaceAll("%20", " ")), null);
 
         DBConnectorFactory.loadDBProperties();
 
