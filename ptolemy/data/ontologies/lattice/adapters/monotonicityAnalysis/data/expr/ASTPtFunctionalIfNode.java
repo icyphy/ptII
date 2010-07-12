@@ -188,8 +188,6 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
                 throws IllegalActionException {
             ConceptGraph monotonicityLattice = _monotonicityAnalysisOntology.getGraph();
 
-            _checkConditionalStructure();
-
             // This represents the ifc rule. (from p145)
             // The approach presented in the paper, however, does not work,
             // so this is my attempt to correct them.
@@ -204,22 +202,31 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
             if (conditional == _constantConcept) {
                 return (Concept) monotonicityLattice.leastUpperBound(me3, me4);
             }
+            
+            _checkConditionalStructure();
+            
+            boolean bothBranchesMonotonic = _monotonicConcept.isAboveOrEqualTo(me3) && _monotonicConcept.isAboveOrEqualTo(me4);
+            boolean bothBranchesAntimonotonic = _antimonotonicConcept.isAboveOrEqualTo(me3) && _antimonotonicConcept.isAboveOrEqualTo(me4);
             if (_antimonotonicConcept.isAboveOrEqualTo(conditional)) {
-                if (_monotonicConcept.isAboveOrEqualTo(me3) && _monotonicConcept.isAboveOrEqualTo(me4)) {
+                Concept e3Bot = _evaluateChild(1, (Concept)monotonicityLattice.bottom());
+                Concept e4Top = _evaluateChild(2, (Concept)monotonicityLattice.top());
+                if (bothBranchesMonotonic && e3Bot.isAboveOrEqualTo(e4Top)) {
                     // Case 1: \phi = e3(bot) >= e4(top)
                     return _monotonicConcept;
-                } else if (_antimonotonicConcept.isAboveOrEqualTo(me3) && _antimonotonicConcept.isAboveOrEqualTo(me4)) {
+                } else if (bothBranchesAntimonotonic && e4Top.isAboveOrEqualTo(e3Bot)) {
                     // Case 2: \phi = e3(bot) <= e4(top)
                     return _antimonotonicConcept;
                 }
             } else if (_monotonicConcept.isAboveOrEqualTo(conditional)) {
-                if (_monotonicConcept.isAboveOrEqualTo(me3) && _monotonicConcept.isAboveOrEqualTo(me4)) {
+                Concept e3Top = _evaluateChild(1, (Concept)monotonicityLattice.top());
+                Concept e4Bot = _evaluateChild(2, (Concept)monotonicityLattice.bottom());
+                if (bothBranchesMonotonic && e4Bot.isAboveOrEqualTo(e3Top)) {
                     // Case 3: \phi = e3(top) <= e4(bot)
                     return _monotonicConcept;
-                } else if (_antimonotonicConcept.isAboveOrEqualTo(me3) && _antimonotonicConcept.isAboveOrEqualTo(me4)) {
+                } else if (bothBranchesAntimonotonic && e3Top.isAboveOrEqualTo(e4Bot)) {
                     // Case 4: \phi = e3(top) >= e4(bot)
                     return _antimonotonicConcept;
-                }                
+                }
             }
             
             // FIXME: This could be any partial order,
