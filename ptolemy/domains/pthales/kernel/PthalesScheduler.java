@@ -45,6 +45,7 @@ import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.domains.pthales.lib.PthalesAtomicActor;
+import ptolemy.domains.pthales.lib.PthalesDynamicCompositeActor;
 import ptolemy.domains.pthales.lib.PthalesIOPort;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
@@ -158,6 +159,7 @@ public class PthalesScheduler extends SDFScheduler {
         CompositeActor model = (CompositeActor) director.getContainer();
         _checkDynamicRateVariables(model, _rateVariables);
 
+        //FIXME Remove this part?
         // Iterate over the actors.
         for (Actor actor : actors) {
 
@@ -195,6 +197,9 @@ public class PthalesScheduler extends SDFScheduler {
                 // Notify the receivers of the read pattern.  This
                 // will have the side effect of setting the capacity
                 // of the receivers.
+                if(port.getContainer() instanceof PthalesDynamicCompositeActor)
+                    continue;
+                
                 Receiver[][] receivers = port.getReceivers();
                 if (receivers != null && receivers.length > 0) {
                     for (Receiver[] receiverss : receivers) {
