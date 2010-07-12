@@ -1,3 +1,4 @@
+createContainer Testing_cache.dbxml
 open Testing.dbxml
 run remove_models.txt
 run create_reference_file.txt
