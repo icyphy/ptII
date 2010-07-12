@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ptdb.common.dto.XMLDBModel;
@@ -127,6 +128,12 @@ public abstract class AbstractSearcher implements ResultHandler {
 
         // Store the passed results in the previous found results field.
         _previousResults = modelResults;
+        
+        // Sort the previous fetched results.
+        if (_previousResults != null && _previousResults.size() > 0) {
+            Collections.sort(_previousResults);
+        }
+        
 
         // Check whether there is no match in the previous searchers
         // to decide to stop here or not.

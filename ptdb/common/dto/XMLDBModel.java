@@ -51,7 +51,7 @@ import java.util.List;
  * @Pt.AcceptedRating Red (yalsaeed)
  *
  */
-public class XMLDBModel {
+public class XMLDBModel implements Comparable {
 
     /** String for DBModelId */
     public static final String DB_MODEL_ID_ATTR = "DBModelId";
@@ -59,7 +59,7 @@ public class XMLDBModel {
     public static final String DB_REFERENCE_ATTR = "DBReference";
     /** String for model name */
     public static final String DB_MODEL_NAME = "name";
-    
+
     /**
      * Construct a XMLDBModel instance
      * with the given model name.
@@ -69,7 +69,7 @@ public class XMLDBModel {
     public XMLDBModel(String modelName) {
         this._modelName = modelName;
     }
-    
+
     /**
      * Construct a XMLDBModel instance
      * with the given model name.
@@ -81,7 +81,7 @@ public class XMLDBModel {
         this._modelName = modelName;
         this._modelId = modelId;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -109,6 +109,23 @@ public class XMLDBModel {
         }
 
         _listReferencedChildren.add(modelId);
+    }
+
+    /**
+     * Compare this model with another given model, and the model is compared 
+     * according to their name. 
+     * 
+     * @param otherModel The other model to be compared with this model. 
+     * @return The value to indicate the result of comparation. If the returned
+     * value is larger than 0, it means the otherModel is smaller.  If the 
+     * returned value is less than 0, it means the otherModel is larger. If 0 
+     * is returned, it means these two models are equal. 
+     */
+    @Override
+    public int compareTo(Object otherModel) {
+
+        return _modelName.compareToIgnoreCase(((XMLDBModel) otherModel)
+                .getModelName());
     }
 
     /**
