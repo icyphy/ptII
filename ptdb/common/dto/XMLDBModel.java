@@ -213,8 +213,8 @@ public class XMLDBModel implements Comparable {
     }
 
     /**
-     * Set the model content.
-     * @param modelContent The model content in xml format.
+     * Set the model identifier.
+     * @param modelId The model identifier.
      * 
      * @see #getModelId
      */
