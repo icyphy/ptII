@@ -99,7 +99,7 @@ public class DBConnectorFactory {
      */
     public static SetupParameters getSetupParameters() {
 
-        if (_isDBSetupDone == true) {
+        if (isSetupDone() == true) {
 
             SetupParameters setupParameters = new SetupParameters(_dbUrl,
                     _dbContainerName, _cacheContainerName);
@@ -227,7 +227,7 @@ public class DBConnectorFactory {
     private static DBConnection _createConnection(String containerName,
             boolean isTransactionRequired) throws DBConnectionException {
 
-        if (!_isDBSetupDone)
+        if (!isSetupDone())
             throw new DBConnectionException(
                     "XML Database Connection is not configured. "
                             + "Please provide details in ptdb-params.properties");
