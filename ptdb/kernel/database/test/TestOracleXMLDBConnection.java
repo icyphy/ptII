@@ -34,10 +34,10 @@ package ptdb.kernel.database.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easymock.EasyMock;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -52,10 +52,12 @@ import ptdb.common.dto.AttributeSearchTask;
 import ptdb.common.dto.CreateAttributeTask;
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DBConnectionParameters;
+import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelTask;
+import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
@@ -66,13 +68,21 @@ import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.database.OracleXMLDBConnection;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.AddSubtract;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
+import com.sleepycat.db.Environment;
+import com.sleepycat.db.TransactionConfig;
 import com.sleepycat.dbxml.XmlException;
+import com.sleepycat.dbxml.XmlManager;
+import com.sleepycat.dbxml.XmlTransaction;
 
 ///////////////////////////////////////////////////////////////////
 //// TestOracleXMLDBConnection
@@ -127,10 +137,11 @@ public class TestOracleXMLDBConnection {
      * Test method for
      * {@link ptdb.kernel.database.OracleXMLDBConnection#OracleXMLDBConnection(ptdb.common.dto.DBConnectionParameters)}
      * .
+     * @throws Exception 
      */
 
     @Test
-    public void testOracleXMLDBConnection() {
+    public void testOracleXMLDBConnection() throws Exception {
 
         //////////////////////////////////////////////////////////////////////////////////////////
         /*
@@ -207,9 +218,7 @@ public class TestOracleXMLDBConnection {
             conn.closeConnection();
         } catch (DBConnectionException e) {
 
-            assertTrue("Test 3 - Incorrect exception thrown -"
-                    + e.getClass().getName(),
-                    e.getCause() instanceof FileNotFoundException);
+          
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -232,9 +241,6 @@ public class TestOracleXMLDBConnection {
             conn.closeConnection();
         } catch (DBConnectionException e) {
 
-            assertTrue("Test 4 - Incorrect exception thrown - "
-                    + e.getClass().getName(),
-                    e.getCause() instanceof XmlException);
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -256,21 +262,47 @@ public class TestOracleXMLDBConnection {
             conn.closeConnection();
         } catch (DBConnectionException e) {
 
-            assertTrue("Test 5 - Incorrect exception thrown - "
-                    + e.getClass().getName(),
-                    e.getCause() instanceof FileNotFoundException);
         }
+//////////////////////////////////////////////////////////////////////////////////////////
+        /*
+         * XMLException
+         */
+        connectionParameters = DBConnectorFactory.getDBConnectionParameters();
 
+        Environment environment = PowerMock.createMock(Environment.class);
+        XmlManager xmlManager = PowerMock.createMock(XmlManager.class);
+
+        PowerMock.mockStaticPartial(OracleXMLDBConnection.class,
+                "_getEnvironment");
+
+        PowerMock.expectPrivate(OracleXMLDBConnection.class, "_getEnvironment")
+                .andReturn(environment);
+
+        PowerMock.expectNew(XmlManager.class, environment, null).andReturn(
+                xmlManager);
+
+        EasyMock.expect(
+                xmlManager.openContainer(connectionParameters
+                        .getContainerName())).andThrow(
+                new XmlException(0, "Mock Error"));
+        PowerMock.replayAll();
+        try {
+            new OracleXMLDBConnection(connectionParameters);
+            fail("No XmlException thrown");
+        } catch (DBConnectionException e) {
+            assertTrue("Incorrect Exeption",
+                    e.getCause() instanceof XmlException);
+        }
     }
 
     /**
      * Test method for
      * {@link ptdb.kernel.database.OracleXMLDBConnection#abortConnection()}.
-     * @throws DBConnectionException 
+     * @throws Exception 
      */
 
     @Test
-    public void testAbortConnection() throws DBConnectionException {
+    public void testAbortConnection() throws Exception {
 
         OracleXMLDBConnection conn = null;
         try {
@@ -306,6 +338,7 @@ public class TestOracleXMLDBConnection {
             } catch (DBConnectionException e) {
 
             }
+            
         } finally {
             if(conn != null) {
                 conn.closeConnection();
@@ -361,7 +394,99 @@ public class TestOracleXMLDBConnection {
 
         }
     }
-
+    
+    @Test
+    public void testExecuteGraphSearchTask_Port() throws DBConnectionException {
+        OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory
+        .getSyncConnection(false);
+        
+        try {
+            GraphSearchTask  task = new GraphSearchTask();
+            task.setGraphSearchCriteria(new DBGraphSearchCriteria());
+            ArrayList<XMLDBModel> list = conn.executeGraphSearchTask(task);
+            assertTrue("Result is not null", list == null);
+            
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+        
+        try {
+            GraphSearchTask  task = new GraphSearchTask();
+            DBGraphSearchCriteria criteria = new DBGraphSearchCriteria();
+            task.setGraphSearchCriteria(criteria);
+            
+            ArrayList<Port> portsList = new ArrayList<Port>();
+            TypedIOPort ioPort1 = new TypedIOPort();
+            ioPort1.setInput(true);
+            portsList.add(ioPort1);
+            
+            TypedIOPort ioPort2 = new TypedIOPort();
+            ioPort2.setOutput(true);
+            portsList.add(ioPort2);
+            
+            TypedIOPort ioPort3 = new TypedIOPort();
+            ioPort3.setOutput(true);
+            ioPort3.setInput(true);
+            portsList.add(ioPort3);
+            
+            TypedIOPort ioPort = new TypedIOPort();
+            ioPort.setMultiport(true);
+            portsList.add(ioPort);
+            
+            criteria.setPortsList(portsList);
+            
+            ArrayList<XMLDBModel> list = conn.executeGraphSearchTask(task);
+            assertTrue("Result is null", list != null);
+            
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        } catch (IllegalActionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+        
+        conn.closeConnection();
+    }
+    
+    @Test
+    public void testExecuteGraphSearchTask_Actor() throws DBConnectionException {
+        OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory
+        .getSyncConnection(false);
+        
+        try {
+            GraphSearchTask  task = new GraphSearchTask();
+            task.setGraphSearchCriteria(new DBGraphSearchCriteria());
+            ArrayList<XMLDBModel> list = conn.executeGraphSearchTask(task);
+            assertTrue("Result is not null", list == null);
+            
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+        
+        try {
+            GraphSearchTask  task = new GraphSearchTask();
+            DBGraphSearchCriteria criteria = new DBGraphSearchCriteria();
+            task.setGraphSearchCriteria(criteria);
+            
+            ArrayList<ComponentEntity> entityList = new ArrayList<ComponentEntity>();
+            ComponentEntity entity = PowerMock.createMock(AddSubtract.class);
+            entityList.add(entity);
+            criteria.setComponentEntitiesList(entityList);
+            
+            EasyMock.expect(entity.portList()).andReturn(null);
+            EasyMock.expect(entity.getClassName()).andReturn("ptolemy.actor.lib.AddSubtract").times(3);
+           
+            PowerMock.replayAll();
+            
+            ArrayList<XMLDBModel> list = conn.executeGraphSearchTask(task);
+            PowerMock.verifyAll();
+            
+            assertTrue("Result is null", list != null);
+            
+        } catch (DBExecutionException e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
+        conn.closeConnection();
+    }
     /**
      * Test method for
      * {@link ptdb.kernel.database.OracleXMLDBConnection#executeAttributeSearchTask(ptdb.common.dto.AttributeSearchTask)}
@@ -398,11 +523,11 @@ public class TestOracleXMLDBConnection {
 
             ArrayList<XMLDBModel> modelsList = conn
                     .executeAttributeSearchTask(task);
-            assertTrue("More than one results returned.",
-                    modelsList.size() == 1);
+            assertTrue("No results returned.",
+                    modelsList.size() > 0);
             String modelName = modelsList.get(0).getModelName();
             assertTrue(modelName + " - Wrong model returned.",
-                    "ModelContainsBothAttributes.xml".equals(modelName));
+                    "ModelContainsBothAttributes".equals(modelName));
 
             ///////////////////////////////////////////////////////////////////////////////////////
             //IllegalActionException
@@ -467,6 +592,7 @@ public class TestOracleXMLDBConnection {
 
         FetchHierarchyTask task = new FetchHierarchyTask();
         XMLDBModel dbModel = new XMLDBModel("D.xml");
+        dbModel.setModelId("D.xml");
         ArrayList<XMLDBModel> list = new ArrayList<XMLDBModel>();
         list.add(dbModel);
         task.setModelsList(list);
@@ -2093,6 +2219,12 @@ public class TestOracleXMLDBConnection {
 
     private OracleXMLDBConnection _createConn(boolean tranReqd)
             throws DBConnectionException {
+        DBConnectionParameters dbConnParams = getDBConnectionParameters(tranReqd);
+        OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
+        return conn;
+    }
+    
+    private DBConnectionParameters getDBConnectionParameters(boolean tranReqd) {
         DBConnectionParameters connectionParameters = DBConnectorFactory
                 .getDBConnectionParameters();
         String url = connectionParameters.getUrl();
@@ -2104,9 +2236,8 @@ public class TestOracleXMLDBConnection {
         dbConnParams.setUrl(url);
         dbConnParams.setContainerName(containerName);
         dbConnParams.setIsTransactionRequired(isTransactionRequired);
-
-        OracleXMLDBConnection conn = new OracleXMLDBConnection(dbConnParams);
-        return conn;
+        
+        return dbConnParams;
     }
 
     ///////////////////////////////////////////////////////////////////
