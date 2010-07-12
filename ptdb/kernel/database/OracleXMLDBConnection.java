@@ -118,13 +118,15 @@ public class OracleXMLDBConnection implements DBConnection {
         try {
             
             _params = dbConnParams;
+            
             if (_environment == null
                     || !_environmentPath.equals(
                             dbConnParams.getUrl())) {
                 initializeDatabase(_params.getUrl());
             }
             
-            _xmlManager = new XmlManager(_environment, null);
+            Environment environment = _getEnvironment();
+            _xmlManager = new XmlManager(environment, null);
             
             if (!Utilities.checkFileExists(_params.getUrl()
                     + System.getProperty("file.separator")
@@ -1029,11 +1031,6 @@ public class OracleXMLDBConnection implements DBConnection {
         
         try {
             XmlQueryContext context = _xmlManager.createQueryContext();
-            if (context == null) {
-                throw new DBExecutionException(
-                        "Failed to executeAttributeSearch - The Query context is null "
-                                + "and cannot be used to execute queries.");
-            }
             context.setEvaluationType(XmlQueryContext.Lazy);
 
             XmlResults results = _xmlManager.query(modelNameSearchQuery,
@@ -2151,6 +2148,13 @@ public class OracleXMLDBConnection implements DBConnection {
         return finalModelsList;
     }
     
+    /**
+     * Returns the current environment.
+     * @return Database environment set in the class.
+     */
+    private static Environment _getEnvironment() {
+        return _environment;
+    }
     /**
      * Return the model from the database as XmlDocument.
      * 
