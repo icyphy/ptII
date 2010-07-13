@@ -28,11 +28,14 @@
 
 package ptolemy.domains.pthales.lib;
 
+import java.util.LinkedHashMap;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.domains.pthales.kernel.PthalesReceiver;
 import ptolemy.kernel.CompositeEntity;
@@ -41,18 +44,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
-A composite actor imposes the use of PthalesIOPort
-as they contain needed values used by PThalesDirector.
-A PthalesCompositeActor can contain actors from different model (as SDF),
-but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
+ A composite actor imposes the use of PthalesIOPort
+ as they contain needed values used by PThalesDirector.
+ A PthalesCompositeActor can contain actors from different model (as SDF),
+ but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
 
-@author Dai Bui
-@see ptolemy.actor.TypedIOPort
-@version $Id $
-@since Ptolemy II 8.0
-@Pt.ProposedRating Red (daib)
-@Pt.AcceptedRating Red (daib)
-*/
+ @author Dai Bui
+ @see ptolemy.actor.TypedIOPort
+ @version $Id: $
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (daib)
+ @Pt.AcceptedRating Red (daib)
+ */
 
 public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
 
@@ -100,7 +103,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
         //FIXME This implementation does not consider multiple input ports.
         //we need to implement a more general function, specified by users
         //that computes the iterations based on the values at the input ports.
-        
+
         for (Object port : inputPortList()) {
             IOPort portIn = (IOPort) port;
 
@@ -109,10 +112,42 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
             int nbTokens = ((IntToken) portIn.get(0)).intValue();
             Token[] headerIn = portIn.get(0, nDims * 2);
 
-            int iterations = nbTokens;
-            
+            //            int iterations = nbTokens;
+            LinkedHashMap<String, Integer> sizes = new LinkedHashMap<String, Integer>();
             for (int i = 0; i < nDims; i++) {
-                iterations *= ((IntToken) headerIn[2 * i + 1]).intValue();
+                sizes.put(((StringToken) headerIn[2 * i]).stringValue(),
+                        ((IntToken) headerIn[2 * i + 1]).intValue());
+                //                iterations *= ((IntToken) headerIn[2 * i + 1]).intValue();
+            }
+
+            //          Simple example : pattern is fixed and iterations
+            LinkedHashMap<String, Integer[]> patternDims = PthalesIOPort
+                    .getInternalPattern(portIn);
+            LinkedHashMap<String, Integer[]> tilingDims = PthalesIOPort
+                    .getTiling(portIn);
+
+            int iterations = 1;
+            
+            // Input array dimension
+            Object[] dims = tilingDims.keySet().toArray();
+
+            for (int i = 0; i < tilingDims.size(); i++) {
+
+                // No tiling => no repetition on dimension => next dim
+                if (tilingDims.get(dims[i]) != null) {
+                    int nb = nbTokens;
+                    int jump = 1;
+                    if (patternDims.get(dims[i]) != null) {
+                        nb = (patternDims.get(dims[i])[0] - 1)
+                                * patternDims.get(dims[i])[1] + 1;
+                        jump = patternDims.get(dims[i])[1];
+                    }
+                    int val = (int) Math
+                            .floor((sizes.get(dims[i]) - nb) / jump) + 1;
+
+                    iterations *= val;
+
+                }
             }
             
             return iterations;
