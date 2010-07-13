@@ -37,6 +37,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
@@ -47,6 +48,7 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.gui.GUIUtilities;
@@ -123,7 +125,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     protected void _initActorGraphDBFrame() {
 
         _openSearchFrameAction = new OpenSearchFrameAction(this.getTableau());
-        _saveModelToDBAction = new SaveModelToDBAction();
+        _saveModelToDBAction = new SaveModelToDBAction(this);
         _openDatabaseSetupAction = new DatabaseSetupAction();
         _simpleSearchAction = new SimpleSearchAction(getModel(), this,
                 getConfiguration());
@@ -181,7 +183,50 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
     }
+    
+    /** Open a dialog to prompt the user to save the data.
+     *  If Save to Database is selected, the SaveModelToDBFrame is opened.  In 
+     *  this case, _CANCELED is returned.  This keeps the editing frame open 
+     *  until the complex saving is complete.  For filed-based saving, return false 
+     *  if the user clicks "cancel", and otherwise return true.
+     *  If the user clicks "Save", this also saves the data.
+     *  @return _SAVED if the file is saved, _DISCARDED if the modifications are
+     *   discarded, _CANCELED if the operation is canceled by the user, and
+     *   _FAILED if the user selects save and the save fails.
+     */
+    protected int _queryForSave() {
+        Object[] options = { "Save to Database", "Save to File System", 
+                "Discard changes", "Cancel" };
 
+        String query = "Save changes to " + StringUtilities.split(_getName())
+                + "?";
+
+        // Show the MODAL dialog
+        int selected = JOptionPane.showOptionDialog(this, query,
+                "Save Changes?", JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+        if (selected == 0) {
+            _saveModelToDBAction.actionPerformed(null);
+            return _CANCELED;
+        } 
+        else if (selected == 1) {
+        
+            if (_save()) {
+                return _SAVED;
+            } else {
+                return _FAILED;
+            }
+        }
+
+        if (selected == 2) {
+            return _DISCARDED;
+        }
+
+        return _CANCELED;
+    }
+    
+   
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -296,23 +341,25 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
          * Create a new action to save a model to the database.
          * 
          */
-        public SaveModelToDBAction() {
+        public SaveModelToDBAction(ActorGraphDBFrame source) {
 
             super("Save to Database");
 
             putValue("tooltip", "Save to Database");
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
 
+            _source = source;
         }
 
         public void actionPerformed(ActionEvent e) {
 
-            JFrame frame = new SaveModelToDBFrame(getModel());
+            JFrame frame = new SaveModelToDBFrame(getModel(), _source);
             frame.pack();
             frame.setVisible(true);
 
         }
 
+        ActorGraphDBFrame _source;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -80,14 +80,17 @@ public class SaveModelToDBFrame extends JFrame {
      * listeners for the "Save" and "Cancel" buttons.
      * 
      * @param model The model that is being saved to the database.
+     * @param source The source frame.  Used to set modified to false upon
+     *          successful save.
      * 
      */
-    public SaveModelToDBFrame(NamedObj model) {
+    public SaveModelToDBFrame(NamedObj model, ActorGraphDBFrame source) {
 
         super("Save Model to Database");
 
         setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 
+        _source = source;
         _modelToSave = model;
         _initialModelName = model.getName();
         _orignialAttributes = new ArrayList();
@@ -304,6 +307,8 @@ public class SaveModelToDBFrame extends JFrame {
                 }
                 
                 setVisible(false);
+                
+                _source.setModified(false);
 
             } else {
 
@@ -610,5 +615,6 @@ public class SaveModelToDBFrame extends JFrame {
     private AttributesListPanel _attributesListPanel;
     private XMLDBModel xmlModel;
     private ArrayList<StringParameter> _orignialAttributes;
+    private ActorGraphDBFrame _source;
     
 }
