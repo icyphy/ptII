@@ -40,6 +40,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.CompositeEntity;
@@ -175,15 +176,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class PthalesDirector extends SDFDirector {
 
-// FIXME: Change the parameters to be ordered record types
-// so that the full expression language is supported.
-// They should not be strings, and they need not be parsed.
-// Moreover, record types provide nice support for merging in defaults, etc.
+    // FIXME: Change the parameters to be ordered record types
+    // so that the full expression language is supported.
+    // They should not be strings, and they need not be parsed.
+    // Moreover, record types provide nice support for merging in defaults, etc.
 
-// FIXME: The value of the size parameter could optionally be inferred
-// if there is no torroidal wrap around desired.  Perhaps there should
-// be parameter indicating to do such inference.
-
+    // FIXME: The value of the size parameter could optionally be inferred
+    // if there is no torroidal wrap around desired.  Perhaps there should
+    // be parameter indicating to do such inference.
 
     /**
      * Constructs a PthalesDirector object, using PthalesScheduler.
@@ -413,6 +413,60 @@ public class PthalesDirector extends SDFDirector {
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
                 throw new InternalErrorException(this, ex, null);
+            }
+        }
+
+        return wasTransferred;
+    }
+
+    /** Override the base class method to transfer enough tokens to
+     *  fulfill the output production rate.
+     *  This behavior is required to handle the case of non-homogeneous
+     *  opaque composite actors. The port argument must be an opaque
+     *  output port. If any channel of the output port has no data, then
+     *  that channel is ignored.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if data are transferred.
+     */
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
+        if (_debugging) {
+            _debug("Calling transferOutputs on port: " + port.getFullName());
+        }
+
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferOutputs on a port that "
+                            + "is not an opaque output port.");
+        }
+
+        boolean wasTransferred = false;
+
+
+        if (!(((Actor)(port.getContainer())).getExecutiveDirector() 
+                instanceof PNDirector)) {
+            wasTransferred = super.transferOutputs(port);
+        } else {
+
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                try {
+                    while (port.hasTokenInside(i)) {
+                        Token t = port.getInside(i);
+
+                        if (_debugging) {
+                            _debug(getName(), "transferring output from "
+                                    + port.getName());
+                        }
+
+                        port.send(i, t);
+                        wasTransferred = true;
+                    }
+                } catch (NoTokenException ex) {
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
+                }
             }
         }
 
