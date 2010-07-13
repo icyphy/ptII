@@ -92,6 +92,8 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     }
 
     /** compute the number of iterations of the actor
+     * based on multiple input ports. The iteraions is the 
+     * minimum of legal iterations from the ports.
      * 
      * @return The number of iterations of the actor.
      * @throws NoTokenException
@@ -100,10 +102,8 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     public int computeIterations() throws NoTokenException,
             IllegalActionException {
 
-        //FIXME This implementation does not consider multiple input ports.
-        //we need to implement a more general function, specified by users
-        //that computes the iterations based on the values at the input ports.
-
+        int minIterations = 0;
+        
         for (Object port : inputPortList()) {
             IOPort portIn = (IOPort) port;
 
@@ -117,7 +117,6 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
             for (int i = 0; i < nDims; i++) {
                 sizes.put(((StringToken) headerIn[2 * i]).stringValue(),
                         ((IntToken) headerIn[2 * i + 1]).intValue());
-                //                iterations *= ((IntToken) headerIn[2 * i + 1]).intValue();
             }
 
             //          Simple example : pattern is fixed and iterations
@@ -127,7 +126,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
                     .getTiling(portIn);
 
             int iterations = 1;
-            
+
             // Input array dimension
             Object[] dims = tilingDims.keySet().toArray();
 
@@ -146,13 +145,13 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
                             .floor((sizes.get(dims[i]) - nb) / jump) + 1;
 
                     iterations *= val;
-
                 }
             }
-            
-            return iterations;
+
+            if(minIterations <  iterations)
+                minIterations = iterations;
         }
-        return 0;
+        return minIterations;
     }
 
     /** Initialize this actor.  
