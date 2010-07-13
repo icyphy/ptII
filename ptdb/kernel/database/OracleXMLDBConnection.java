@@ -1800,9 +1800,12 @@ public class OracleXMLDBConnection implements DBConnection {
      * Execute the query being passed to it to get the model name or model id from
      * the database. 
      * 
-     * @param query The query constructed by _getModelNameFromModelId() or _getModelIdFromModelName() methods.
+     * @param query The query constructed by
+     * _getModelNameFromModelId() or _getModelIdFromModelName()
+     * methods.
      * @return The results of the query.
-     * @Exception DBExecutionException Thrown if there are configuration issues with the database.
+     * @exception DBExecutionException Thrown if there are
+     * configuration issues with the database.
      * @throws XmlException Thrown if there was a problem running the query.
      */
     private String _executeGetModelIdOrNameQuery(String query) 
