@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{536.5, 443.5}">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 75.0]">
         </property>
