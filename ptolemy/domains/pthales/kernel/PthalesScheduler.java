@@ -178,8 +178,10 @@ public class PthalesScheduler extends SDFScheduler {
                     for (Receiver[] receiverss : receivers) {
                         if (receiverss != null && receiverss.length > 0) {
                             for (Receiver receiver : receiverss) {
-                                ((PthalesReceiver) receiver).setOutputArray(
-                                        port, actor);
+                                //FIXME: Should we do this?
+                                if (receiver instanceof PthalesReceiver)
+                                    ((PthalesReceiver) receiver)
+                                            .setOutputArray(port, actor);
                             }
                         }
                     }
@@ -197,9 +199,9 @@ public class PthalesScheduler extends SDFScheduler {
                 // Notify the receivers of the read pattern.  This
                 // will have the side effect of setting the capacity
                 // of the receivers.
-                if(port.getContainer() instanceof PthalesDynamicCompositeActor)
+                if (port.getContainer() instanceof PthalesDynamicCompositeActor)
                     continue;
-                
+
                 Receiver[][] receivers = port.getReceivers();
                 if (receivers != null && receivers.length > 0) {
                     for (Receiver[] receiverss : receivers) {
