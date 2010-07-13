@@ -44,8 +44,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- A composite actor imposes the use of PthalesIOPort
- as they contain needed values used by PThalesDirector.
+ A composite actor imposes the use of dynamic PthalesReceivers
+ strips header information and computes the its iteration automatically.
  A PthalesCompositeActor can contain actors from different model (as SDF),
  but the port must be a PthalesIOPort, because of the ArrayOL parameters. 
 
@@ -65,10 +65,9 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
      */
     public PthalesDynamicCompositeActor() throws NameDuplicationException,
             IllegalActionException {
-        // TODO Auto-generated constructor stub
     }
 
-    /**
+    /** Constructor
      * @param container
      * @param name
      * @throws IllegalActionException
@@ -77,7 +76,6 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     public PthalesDynamicCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -88,10 +86,9 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     public PthalesDynamicCompositeActor(Workspace workspace)
             throws NameDuplicationException, IllegalActionException {
         super(workspace);
-        // TODO Auto-generated constructor stub
     }
 
-    /** compute the number of iterations of the actor
+    /** Compute the number of iterations of the actor
      * based on multiple input ports. The iteraions is the 
      * minimum of legal iterations from the ports.
      * 
@@ -151,6 +148,9 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
             if(minIterations < 0 || minIterations >  iterations)
                 minIterations = iterations;
         }
+        
+        if(minIterations < 0)
+            minIterations = 0;
         
         return minIterations;
     }
