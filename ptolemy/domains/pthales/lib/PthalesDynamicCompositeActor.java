@@ -102,7 +102,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     public int computeIterations() throws NoTokenException,
             IllegalActionException {
 
-        int minIterations = 0;
+        int minIterations = -1;
         
         for (Object port : inputPortList()) {
             IOPort portIn = (IOPort) port;
@@ -148,9 +148,10 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
                 }
             }
 
-            if(minIterations <  iterations)
+            if(minIterations < 0 || minIterations >  iterations)
                 minIterations = iterations;
         }
+        
         return minIterations;
     }
 
