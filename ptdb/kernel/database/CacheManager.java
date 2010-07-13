@@ -69,9 +69,9 @@ public class CacheManager {
      *          are used to remove the respective MoMLs from the cache.
      * @return
      *          True if the removal was successful.  False if it was not.
-     * @throws DBConnectionException
+     * @exception DBConnectionException
      *          Thrown if a problem occurs with the cache connection.
-     * @throws DBExecutionException
+     * @exception DBExecutionException
      *          Thrown if a problem occurs removing a model from the cache.
      */
     public static boolean removeFromCache(ArrayList<XMLDBModel> modelsToRemove) 

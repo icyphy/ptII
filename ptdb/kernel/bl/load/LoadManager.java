@@ -197,25 +197,11 @@ public class LoadManager {
         returnEffigy = new PtolemyEffigy(configuration.workspace());
         returnEffigy.setModel(entity);
 
-        // Look to see whether the model has a URIAttribute.
-        List attributes = entity.attributeList(URIAttribute.class);
+        returnEffigy.setName(configuration.getDirectory().uniqueName(
+                entity.getName()));
+        returnEffigy.setContainer(configuration.getDirectory());
 
-        if (attributes.size() > 0) {
-
-            // The entity has a URI, which was probably
-            // inserted by MoMLParser.
-            URI uri = ((URIAttribute) attributes.get(0)).getURI();
-
-            // Set the URI and identifier of the effigy.
-            returnEffigy.uri.setURI(uri);
-            returnEffigy.identifier.setExpression(uri.toString());
-
-            // Put the effigy into the directory
-            returnEffigy.setName(configuration.getDirectory().uniqueName(
-                    entity.getName()));
-            returnEffigy.setContainer(configuration.getDirectory());
-
-        }
+        returnEffigy.identifier.setExpression(returnEffigy.getName());
 
         return returnEffigy;
 
@@ -236,7 +222,7 @@ public class LoadManager {
         MoMLParser parser = new MoMLParser();
     
         Entity entity = new Entity();
-        parser.reset();
+        parser.resetAll();
     
         entity = (Entity) parser.parse(dbModel.getModel());
     
