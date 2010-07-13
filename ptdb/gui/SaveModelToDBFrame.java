@@ -306,9 +306,9 @@ public class SaveModelToDBFrame extends JFrame {
                     throw e;
                 }
                 
-                setVisible(false);
-                
+
                 _source.setModified(false);
+                dispose();
 
             } else {
 

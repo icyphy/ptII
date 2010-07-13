@@ -191,10 +191,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      *  if the user clicks "cancel", and otherwise return true.
      *  If the user clicks "Save", this also saves the data.
      *  @return _SAVED if the file is saved, _DISCARDED if the modifications are
-     *   discarded, _CANCELED if the operation is canceled by the user, and
-     *   _FAILED if the user selects save and the save fails.
+     *   discarded, _CANCELED if the operation is canceled by the user (or if 
+     *   saving to the Database), and _FAILED if the user selects save 
+     *   and the save fails.
      */
     protected int _queryForSave() {
+        
         Object[] options = { "Save to Database", "Save to File System", 
                 "Discard changes", "Cancel" };
 
@@ -224,6 +226,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
         return _CANCELED;
+        
     }
     
    
@@ -339,6 +342,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     private class SaveModelToDBAction extends AbstractAction {
         /**
          * Create a new action to save a model to the database.
+         * @param source The frame from which the save frame will be opened.
          * 
          */
         public SaveModelToDBAction(ActorGraphDBFrame source) {
@@ -359,7 +363,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         }
 
-        ActorGraphDBFrame _source;
+        private ActorGraphDBFrame _source;
     }
 
     ///////////////////////////////////////////////////////////////////
