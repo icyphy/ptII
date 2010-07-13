@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters
+# Makefile for Java Ptolemy Data Ontologies Lattice Monotonicity Analysis Adapters Actor Library
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id$
+# $Id: makefile 57191 2010-02-09 17:15:54Z cshelton $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters
+ME =		ptolemy/data/ontologies/lattice/adapters/monotonicityAnalysis/actor/lib
 
-DIRS = 		defaultAdapters dimensionSystem monotonicityAnalysis
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,16 +43,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	adapters
+PTPACKAGE = 	lib
+PTCLASSJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	defaultAdapters/defaultAdapters.jar \
-	dimensionSystem/dimensionSystem.jar \
-	monotonicityAnalysis/monotonicityAnalysis.jar
+#PTCLASSALLJARS = \
+#	lib/lib.jar
+#
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS =
+JSRCS = \
+	Expression.java
 
 EXTRA_SRCS =	$(JSRCS)
 

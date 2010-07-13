@@ -337,6 +337,9 @@ DATAONTOLOGIESPACKAGES = \
 	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.lib \
 	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.lib.logic \
 	ptolemy.data.ontologies.lattice.adapters.dimensionSystem.domains.continuous.lib \
+	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis \
+	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.actor.lib \
+	ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr \
 	ptolemy.data.ontologies.util
 
 # Packages used by data/properties 

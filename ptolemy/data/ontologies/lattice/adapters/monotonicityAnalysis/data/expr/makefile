@@ -1,8 +1,8 @@
-# Makefile for Java Ptolemy Data Ontologies Lattice Adapters
+# Makefile for Java Ptolemy Data Ontologies Lattice Monotonicity Analysis Adapters Data Expr
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# $Id$
+# $Id: makefile 57191 2010-02-09 17:15:54Z cshelton $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/data/ontologies/lattice/adapters
+ME =		ptolemy/data/ontologies/lattice/adapters/monotonicityAnalysis/data/expr
 
-DIRS = 		defaultAdapters dimensionSystem monotonicityAnalysis
+DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,16 +43,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	adapters
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	defaultAdapters/defaultAdapters.jar \
-	dimensionSystem/dimensionSystem.jar \
-	monotonicityAnalysis/monotonicityAnalysis.jar
+PTPACKAGE = 	expr
+PTCLASSJAR = $(PTPACKAGE).jar
+## Include the .class files from these jars in PTCLASSALLJAR
+#PTCLASSALLJARS = \
+#	expr/expr.jar
+#
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-JSRCS =
+JSRCS = \
+	ASTPtFunctionalIfNode.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -63,7 +63,8 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	
+OPTIONAL_FILES = \
+	'ASTPtFunctionalIfNode$$ASTPtFunctionalIfNodeFunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
