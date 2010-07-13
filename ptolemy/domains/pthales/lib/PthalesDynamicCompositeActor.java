@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Dai Bui
  @see ptolemy.actor.TypedIOPort
- @version $Id: $
+ @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (daib)
  @Pt.AcceptedRating Red (daib)
