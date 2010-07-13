@@ -188,12 +188,7 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
                 throws IllegalActionException {
             ConceptGraph monotonicityLattice = _monotonicityAnalysisOntology.getGraph();
 
-            // This represents the ifc rule. (from p145)
-            // The approach presented in the paper, however, does not work,
-            // so this is my attempt to correct them.
-            // We are assuming the form of the ifc rule for now, ie:
-            //     (x <= c) ? e_3 : e_4
-            // so for now we will not check the form of the conditional.
+            // This represents the if rule. (from p144)
             Concept conditional = inputConceptValues.get(0);
             Concept me3 = inputConceptValues.get(1);
             Concept me4 = inputConceptValues.get(2);
@@ -203,13 +198,15 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
                 return (Concept) monotonicityLattice.leastUpperBound(me3, me4);
             }
             
-            _checkConditionalStructure();
-            
             boolean bothBranchesMonotonic = _monotonicConcept.isAboveOrEqualTo(me3) && _monotonicConcept.isAboveOrEqualTo(me4);
             boolean bothBranchesAntimonotonic = _antimonotonicConcept.isAboveOrEqualTo(me3) && _antimonotonicConcept.isAboveOrEqualTo(me4);
+            // FIXME: The lattice here should be the input lattice (the domain of "x"),
+            // which in general is not necessarily the monotonicityLattice
+            ConceptGraph inputLattice = monotonicityLattice;
             if (_antimonotonicConcept.isAboveOrEqualTo(conditional)) {
-                Concept e3Bot = _evaluateChild(1, (Concept)monotonicityLattice.bottom());
-                Concept e4Top = _evaluateChild(2, (Concept)monotonicityLattice.top());
+
+                Concept e3Bot = _evaluateChild(1, (Concept)inputLattice.bottom());
+                Concept e4Top = _evaluateChild(2, (Concept)inputLattice.top());
                 if (bothBranchesMonotonic && e3Bot.isAboveOrEqualTo(e4Top)) {
                     // Case 1: \phi = e3(bot) >= e4(top)
                     return _monotonicConcept;
@@ -218,8 +215,8 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
                     return _antimonotonicConcept;
                 }
             } else if (_monotonicConcept.isAboveOrEqualTo(conditional)) {
-                Concept e3Top = _evaluateChild(1, (Concept)monotonicityLattice.top());
-                Concept e4Bot = _evaluateChild(2, (Concept)monotonicityLattice.bottom());
+                Concept e3Top = _evaluateChild(1, (Concept)inputLattice.top());
+                Concept e4Bot = _evaluateChild(2, (Concept)inputLattice.bottom());
                 if (bothBranchesMonotonic && e4Bot.isAboveOrEqualTo(e3Top)) {
                     // Case 3: \phi = e3(top) <= e4(bot)
                     return _monotonicConcept;
@@ -229,48 +226,9 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
                 }
             }
             
-            // FIXME: This could be any partial order,
-            // not necessarily restricted to concepts.
-            // FIXME: Also, the lattice should be the input lattice,
-            // which in general is not necessarily the monotonicityLattice
-            /*
-            Concept me3Value = _evaluateChild(1, (Concept)monotonicityLattice.top());
-            Concept me4Value = _evaluateChild(2, (Concept)monotonicityLattice.bottom());
-            if (me3 == this._constantConcept && me4 == this._constantConcept) {
-                if (me3Value.isAboveOrEqualTo(me4Value)) {
-                    return this._antimonotonicConcept;
-                } else if (me4Value.isAboveOrEqualTo(me3Value)) {
-                    return this._monotonicConcept;
-                }
-            }
-            */
-            return (Concept) monotonicityLattice.top();
+            return _nonmonotonicConcept;
         }
 
-        /** Check that the structure of the given conditional (_ifNode)
-         *  conforms to the structure required by our analysis.
-         *  We could have maintained soundness by simply returning
-         *  Nonmonotonic in this case, but instead we raise an exception.
-         *
-         *  @throws IllegalActionException If the structure of the
-         *      conditional pointed to by _ifNode does not meet the
-         *      assumptions of our analysis.
-         */
-        private void _checkConditionalStructure() throws IllegalActionException {
-            ASTPtRootNode conditionNode = (ASTPtRootNode) _ifNode.jjtGetChild(0);
-            if (!(conditionNode instanceof ASTPtRelationalNode)) {
-                throw new IllegalActionException("Conditional guards must be realtions!");
-            }
-            ASTPtRelationalNode relationNode = (ASTPtRelationalNode) conditionNode;
-            ASTPtRootNode lhs = (ASTPtRootNode) relationNode.jjtGetChild(0);
-            ASTPtRootNode rhs = (ASTPtRootNode) relationNode.jjtGetChild(1);
-            if (!(lhs instanceof ASTPtLeafNode) || !(rhs instanceof ASTPtLeafNode)
-                    || relationNode.getOperator().toString() != "<=") {
-                throw new IllegalActionException("Can only check monotonicity"
-                      + " for conditionals with guards of the form (x <= y)"); 
-            }
-        }
-        
         /** Evaluate a branch of the if statement pointed to by _ifNode and
          *  return the result.
          *  @param childNumber 1 for the then branch, and 2 for the
