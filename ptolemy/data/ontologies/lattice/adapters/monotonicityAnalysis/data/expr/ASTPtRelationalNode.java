@@ -28,8 +28,6 @@
 
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 
-import java.util.ArrayList;
-
 import java.util.List;
 
 import ptolemy.data.ontologies.Concept;
@@ -39,7 +37,6 @@ import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -78,35 +75,14 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
-        InequalityTerm[] childNodeTerms = _getChildNodeTerms();
-        List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(childNodeTerms.length);
-        for (int i = 0; i < childNodeTerms.length; i++) {
-            argumentDomainOntologies.add(getSolver().getOntology());
-        }
-
-        int childNodeTermsLength = _getNode().jjtGetNumChildren();
-        assert (childNodeTerms.length == childNodeTermsLength);
-        
         ptolemy.data.expr.ASTPtRelationalNode _relationalNode = (ptolemy.data.expr.ASTPtRelationalNode) _getNode();
 
         ASTPtRelationalNodeFunction astRelationFunction = new ASTPtRelationalNodeFunction(
                 _relationalNode.getOperator(),
-                argumentDomainOntologies,
-                // FIXME: This assumption that the ontology of the expression
-                // is the same as this solver is bogus.  It should be
-                // parameterized somewhere instead.
                 getSolver().getOntology());
 
-        if (!astRelationFunction.isMonotonic()) {
-            throw new IllegalActionException(
-                    _solver,
-                    "The concept function for determining the "
-                            + "PtIfNode concept is not monotonic. All concept functions used for a "
-                            + "lattice ontology solver must be monotonic.");
-        }
-
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
-                astRelationFunction, childNodeTerms));
+                astRelationFunction, _getChildNodeTerms()));
 
         return super.constraintList();
     }
@@ -123,20 +99,16 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
 
         /** Create a new function for inferring the monotonicity concept
          *  over a relational node, given the operator at the node,
-         *  the domain of the arguments, and the range of the output.
+         *  the monotonicity ontology.
          *
          *  @param operator Token for the operator at this node.
-         *  @param argumentDomainOntologies A list of ontologies that the
-         *     arguments of the expression of this AST are drawn from.
-         *  @param outputRangeOntology The ontology that forms the codomain
-         *     of this function.
+         *  @param monotonicityOntology The monotonicity ontology.
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtRelationalNodeFunction(ptolemy.data.expr.Token operator,
-                List<Ontology> argumentDomainOntologies,
-                Ontology outputRangeOntology) throws IllegalActionException {
-            super("defaultASTPtRelationalNodeFunction", true,
-                    argumentDomainOntologies, outputRangeOntology);
+                Ontology monotonicityOntology) throws IllegalActionException {
+            super("defaultASTPtRelationalNodeFunction", 2,
+                    monotonicityOntology);
             _operator = operator.toString();
         }
 

@@ -28,14 +28,11 @@
 
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import java.util.List;
 
 import ptolemy.data.ConceptToken;
-import ptolemy.data.expr.ASTPtLeafNode;
-import ptolemy.data.expr.ASTPtRelationalNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.ontologies.Concept;
@@ -47,7 +44,6 @@ import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -86,30 +82,12 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
-        InequalityTerm[] childNodeTerms = _getChildNodeTerms();
-        List<Ontology> argumentDomainOntologies = new ArrayList<Ontology>(childNodeTerms.length);
-        for (int i = 0; i < childNodeTerms.length; i++) {
-            argumentDomainOntologies.add(getSolver().getOntology());
-        }
-
         ASTPtFunctionalIfNodeFunction astIfFunction = new ASTPtFunctionalIfNodeFunction(
                 (ptolemy.data.expr.ASTPtFunctionalIfNode) _getNode(),
-                argumentDomainOntologies,
-                // FIXME: This assumption that the ontology of the expression
-                // is the same as this solver is bogus.  It should be
-                // parameterized somewhere instead.
                 getSolver().getOntology());
 
-        if (!astIfFunction.isMonotonic()) {
-            throw new IllegalActionException(
-                    _solver,
-                    "The concept function for determining the "
-                            + "PtIfNode concept is not monotonic. All concept functions used for a "
-                            + "lattice ontology solver must be monotonic.");
-        }
-
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
-                astIfFunction, childNodeTerms));
+                astIfFunction, _getChildNodeTerms()));
 
         return super.constraintList();
     }
@@ -125,24 +103,18 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
     private class ASTPtFunctionalIfNodeFunction extends MonotonicityConceptFunction {
 
         /** Create a new function from the given ifNode and
-         *  over the given ontologies.
+         *  over the given monotonicity ontology.
          *  
          *  @param ifNode The AST node being constrained by this function. 
-         *  @param argumentDomainOntologies A list of ontologies that the
-         *     arguments of the expression of this AST are drawn from.
-         *     Can be null (or the empty list) in the case of an
-         *     argumentless expression.
-         *  @param outputRangeOntology The ontology that forms the codomain
-         *     of this function.
+         *  @param monotonicityOntology The monotonicity ontology.
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtFunctionalIfNodeFunction(
                 ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
-                List<Ontology> argumentDomainOntologies,
-                Ontology outputRangeOntology)
+                Ontology monotonicityOntology)
                     throws IllegalActionException {
-            super("defaultASTPtFunctionalIfNodeFunction", true,
-                    argumentDomainOntologies, outputRangeOntology);
+            super("defaultASTPtFunctionalIfNodeFunction", 3,
+                    monotonicityOntology);
             _ifNode = ifNode;
         }
 
@@ -226,6 +198,9 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
                     argumentNames,
                     argumentValues,
                     null,
+                    // FIXME: This should not be the argumentDomainOntologies,
+                    // which refer to the monotonicity lattice, but the actual
+                    // domain of the arguments in their normal lattice.
                     _argumentDomainOntologies);
             ConceptToken evaluatedToken = (ConceptToken)evaluator.evaluateParseTree(childNode);
             return evaluatedToken.conceptValue();

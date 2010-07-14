@@ -22,6 +22,7 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -68,6 +69,41 @@ public abstract class ConceptFunction {
         if (_outputRangeOntology == null) {
             throw new IllegalActionException(
                     "The outputRangeOntology cannot be null.");
+        }
+    }
+
+    /** Create the concept function where all arguments and
+     *  output values are drawn from the same ontology.
+     *  @param name The name of the concept function.
+     *  @param numArgs The number of arguments for this function, if
+     *   this number is fixed, and -1 otherwise.
+     *  @param inputOutputOntology The ontology that represents the
+     *   domain and range for this concept function.
+     *  @exception IllegalActionException If the output ontology is null,
+     *   or numArgs is invalid.
+     */
+    public ConceptFunction(String name, int numArgs,
+            Ontology inputOutputOntology)
+            throws IllegalActionException {
+        if (inputOutputOntology == null) {
+            throw new IllegalActionException(
+                    "The ontology cannot be null.");
+        }
+        if (numArgs < -1) {
+            throw new IllegalActionException(
+                    "Invalid number of arguments: " + numArgs);
+        }
+
+        _name = name;
+        _numArgsIsFixed = (numArgs >= 0);
+        _outputRangeOntology = inputOutputOntology;
+        _argumentDomainOntologies = new LinkedList<Ontology>();
+        if (_numArgsIsFixed) {
+           for (int i = 0; i < numArgs; i++) {
+               _argumentDomainOntologies.add(inputOutputOntology);
+           }
+        } else {
+           _argumentDomainOntologies.add(inputOutputOntology);
         }
     }
 
@@ -153,11 +189,17 @@ public abstract class ConceptFunction {
         return _name;
     }
 
-    /** Return the number of input arguments for this concept function. 
+    /** Return the number of input arguments for this concept function,
+     *  or -1 if the concept function can take a variable number of
+     *  arguments.
      *  @return The number of arguments taken as input for this function.
      */
     public int getNumberOfArguments() {
-        return _argumentDomainOntologies.size();
+        if (_numArgsIsFixed) {
+            return _argumentDomainOntologies.size();
+        } else {
+            return -1;
+        }
     }
 
     /** Return the ontology that represents the range of concepts that can be

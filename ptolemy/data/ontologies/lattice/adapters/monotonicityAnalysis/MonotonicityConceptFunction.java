@@ -48,25 +48,21 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public abstract class MonotonicityConceptFunction extends ConceptFunction {
 
-    /** Create the concept function with the number of arguments it takes
-     *  and the ontologies from which input and output concepts can be taken.
+    /** Create the concept function over the monotonicity lattice.
      *  @param name The name of the concept function.
-     *  @param numArgsIsFixed True if the number of arguments for this function
-     *   is fixed and cannot change, false otherwise.
-     *  @param argumentDomainOntologies The list of ontologies that
-     *   represent the concept domain for each input concept argument.
-     *  @param outputRangeOntology The ontology that represents the
-     *   range of output concepts for this concept function.
-     *  @exception IllegalActionException If the ontology inputs are null
-     *   or the length of the array of domain ontologies does not
-     *   match the number of arguments for the function.
+     *  @param numArgs The number of arguments for this function, if
+     *   this number is fixed, and -1 otherwise.
+     *  @param monotonicityAnalysisOntology The ontology that represents
+     *   monotonicity lattice.
+     *  @exception IllegalActionException If the output ontology is null,
+     *   or numArgs is invalid.
      */
-    public MonotonicityConceptFunction(String name, boolean numArgsIsFixed,
-            List<Ontology> argumentDomainOntologies,
-            Ontology outputRangeOntology) throws IllegalActionException {
-        super(name, numArgsIsFixed, argumentDomainOntologies, outputRangeOntology);
+    public MonotonicityConceptFunction(String name, int numArgs,
+            Ontology monotonicityAnalysisOntology)
+            throws IllegalActionException {
+        super(name, numArgs, monotonicityAnalysisOntology);
 
-        _monotonicityAnalysisOntology = outputRangeOntology;
+        _monotonicityAnalysisOntology = monotonicityAnalysisOntology;
         
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the monotonicityAnalysis ontology
