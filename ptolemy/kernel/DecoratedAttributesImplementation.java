@@ -45,10 +45,11 @@ import ptolemy.kernel.util.Workspace;
 ////DecoratedAttributesImplementation
 
 /**
-A class that represents a number of decorated attributed.
-The functionality is divided in two classes (DecoratedAttributes
+A class that represents a number of decorated attributes.
+
+<p>The functionality is divided in two classes ({@link DecoratedAttributes}
 and this class) to solve dependency issues.
-See DecoratedAttributes for more information.
+See {@link DecoratedAttributes} for more information.
 
 @author Bert Rodiers
 @version $Id$

@@ -35,24 +35,24 @@ import java.io.Writer;
 ////DecoratedAttributes
 
 /**
-An abstract class that represents a number of decorated attributed.
+An abstract class that represents a number of decorated attributes.
 
-A NamedObj can contain DecoratedAttributes. These are attributes that are
+<p>A NamedObj can contain DecoratedAttributes. These are attributes that are
 added by another NamedObj, called a decorator to this NamedObj.
-An example is for example a code generator. This one has specific attributes
-for for example the generated code of the director in a model. These attributes
-are added by the Decorator (the code generator), to the director ("this" object).
-These attributes are stored seperately and can be retrieved by using
+An example is a code generator that has specific attributes such as
+parameters that control the code code generator. These attributes
+are added by the Decorator (the code generator), to the director (the "this" object).
+These attributes are stored separately and can be retrieved by using
 {@link NamedObj#getDecoratorAttributes(Decorator)} or
-{@link NamedObj#getDecoratorAttributes(Decorator)}.
+{@link NamedObj#getDecoratorAttributes(Decorator)}.</p>
 
-A DecoratedAttributes instance has a decorator and  
-attributes, the decorated attributes.
-The container of this class is the object that is being decorated.
+<p>A DecoratedAttributes instance has a decorator and  
+decoratored attributes.
+The container of this class is the object that is being decorated.</p>
 
+<p>The implementation class is {@link DecoratedAttributesImplementation},
+the functionality is divided in two classes to solve dependency issues.
 
-The implementation class is DecoratedAttributesImplementation, the
-functionality is divided in two classes to solve dependency issues.
 @author Bert Rodiers
 @version $Id$
 @since Ptolemy II 8.0
