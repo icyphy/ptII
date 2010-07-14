@@ -39,6 +39,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
@@ -193,14 +194,22 @@ public class LoadManager {
         PtolemyEffigy returnEffigy = null;
 
         Entity entity = _getEntity(dbModel);
+        
+        // If the model is already open, bring it to the front.
+        // Otherwise, a new PtolemyEffigy is created.
+        if(configuration.getDirectory().getEntity(entity.getName()) != null){
 
+            return (PtolemyEffigy) configuration.getDirectory().getEffigy(entity.getName());
+     
+        }
+        
         returnEffigy = new PtolemyEffigy(configuration.workspace());
         returnEffigy.setModel(entity);
-
+        
         returnEffigy.setName(configuration.getDirectory().uniqueName(
                 entity.getName()));
         returnEffigy.setContainer(configuration.getDirectory());
-
+        
         returnEffigy.identifier.setExpression(returnEffigy.getName());
 
         return returnEffigy;
