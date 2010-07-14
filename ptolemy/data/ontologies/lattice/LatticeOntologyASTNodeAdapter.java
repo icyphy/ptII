@@ -39,6 +39,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver.ConstraintType;
 import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -70,6 +71,9 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
             ASTPtRootNode node) throws IllegalActionException {
         this(solver, node, true);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                 ////
 
     /**
      * Construct the property constraint adapter for the given
@@ -170,31 +174,6 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
     //        return children;
     //    }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /**
-     * Return a list of property-able NamedObj contained by
-     * the component. All ports and parameters are considered
-     * property-able.
-     * @return The list of property-able named object.
-     */
-    public List<Object> getPropertyables() {
-        List<Object> list = new ArrayList<Object>();
-        list.add(getComponent());
-        return list;
-    }
-
-    /**
-     * Return the list of sub-adapters. In this base class,
-     * return an empty list.
-     * @return The list of sub-adapters.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    protected List<OntologyAdapter> _getSubAdapters() {
-        return new ArrayList<OntologyAdapter>();
-    }
-
     /**
      * Returns the component referenced by the given name in the given
      * container.
@@ -221,11 +200,59 @@ public class LatticeOntologyASTNodeAdapter extends LatticeOntologyAdapter {
     }
 
     /**
+     * Return a list of property-able NamedObj contained by
+     * the component. All ports and parameters are considered
+     * property-able.
+     * @return The list of property-able named object.
+     */
+    public List<Object> getPropertyables() {
+        List<Object> list = new ArrayList<Object>();
+        list.add(getComponent());
+        return list;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
+    /** Return an array of all the inequality terms for the
+     *  child nodes to this product node.
+     * @return The array of inequality terms for the child nodes.
+     */
+    protected InequalityTerm[] _getChildNodeTerms() {
+        List<InequalityTerm> terms = new ArrayList<InequalityTerm>();
+        try {
+            for (int i = 0; i < _getNode().jjtGetNumChildren(); i++) {
+                Object child = _getNode().jjtGetChild(i);
+
+                LatticeOntologyASTNodeAdapter adapter = (LatticeOntologyASTNodeAdapter) getSolver()
+                        .getAdapter(child);
+
+                InequalityTerm term = adapter.getPropertyTerm(child);
+                terms.add(term);
+            }
+        } catch (IllegalActionException e) {
+            throw new AssertionError(
+                    "Unable to get the children property term(s).");
+        }
+        return terms.toArray(new InequalityTerm[terms.size()]);
+    }
+
+    /**
      * Return the node this adapter references.
      * 
      * @return The node referred to by this adapter
      */
     protected ASTPtRootNode _getNode() {
         return (ASTPtRootNode) getComponent();
+    }
+    
+    /**
+     * Return the list of sub-adapters. In this base class,
+     * return an empty list.
+     * @return The list of sub-adapters.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    protected List<OntologyAdapter> _getSubAdapters() {
+        return new ArrayList<OntologyAdapter>();
     }
 }

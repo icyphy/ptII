@@ -115,32 +115,6 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
-
-    /** Return an array of all the inequality terms for the
-     *  child nodes to this product node.
-     * @return The array of inequality terms for the child nodes.
-     */
-    protected InequalityTerm[] _getChildNodeTerms() {
-        List<InequalityTerm> terms = new ArrayList<InequalityTerm>();
-        try {
-            for (int i = 0; i < _getNode().jjtGetNumChildren(); i++) {
-                Object child = _getNode().jjtGetChild(i);
-
-                LatticeOntologyASTNodeAdapter adapter = (LatticeOntologyASTNodeAdapter) getSolver()
-                        .getAdapter(child);
-
-                InequalityTerm term = adapter.getPropertyTerm(child);
-                terms.add(term);
-            }
-        } catch (IllegalActionException e) {
-            throw new AssertionError(
-                    "Unable to get the children property term(s).");
-        }
-        return terms.toArray(new InequalityTerm[terms.size()]);
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                    private inner class                    ////
 
     
