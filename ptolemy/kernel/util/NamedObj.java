@@ -127,7 +127,7 @@ import ptolemy.util.StringUtilities;
  are added by the Decorator (the code generator), to the director ("this" object).
  These attributes are stored seperately and can be retrieved by using
  {@link #getDecoratorAttributes(Decorator)} or
- {@link #getDecoratorAttributes(Decorator)}.
+ {@link #getDecoratorAttribute(Decorator)}.
   
  @author Mudit Goel, Edward A. Lee, Neil Smyth, Contributor: Bert Rodiers
  @version $Id$
@@ -1098,10 +1098,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  If the DecoratedAttributes for this NamedObj do not contain the
      *  decorated named by the <i>decorator</i> parameter, then the a
      *  DecoratedAttribute is created, see
-     *  {@link @Decorator.createDecoratedAttribute(Object)}.
+     *  {@link Decorator.createDecoratedAttribute(Object)}.
      *  @param decorator The decorator.
      *  @return The decorated attributes. 
-
      */
     public DecoratedAttributes getDecoratorAttributes(Decorator decorator) {
         synchronized (_decoratedAttributes) {
@@ -2149,7 +2148,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  key in the map is the {@link Decorator} for the attribute, the value
      *  is the attribute.  The DecoratedAttribute may be read using
      *  {@link #getDecoratorAttributes(Decorator)} or
-     *  {@link #getDecoratorAttributes(Decorator, String)}.</p>
+     *  {@link #getDecoratorAttribute(Decorator, String)}.</p>
      *  
      *  <p>This method is write-synchronized on the workspace and increments its
      *  version number.</p>

@@ -50,7 +50,7 @@ These attributes are stored separately and can be retrieved by using
 decoratored attributes.
 The container of this class is the object that is being decorated.</p>
 
-<p>The implementation class is {@link DecoratedAttributesImplementation},
+<p>The implementation class is {@link ptolemy.kernel.DecoratedAttributesImplementation},
 the functionality is divided in two classes to solve dependency issues.
 
 @author Bert Rodiers
@@ -62,12 +62,13 @@ the functionality is divided in two classes to solve dependency issues.
 
 public abstract class DecoratedAttributes extends Attribute {
 
-    /** Construct a DecoratedAttributes instance with the given name and the container of the decorator.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This attribute will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
+    /** Construct a DecoratedAttributes instance with the given name
+     *  and the container of the decorator.  The container argument
+     *  must not be null, or a NullPointerException will be thrown.
+     *  This attribute will use the workspace of the container for
+     *  synchronization and version counts.  If the name argument is
+     *  null, then the name is set to the empty string.  Increment the
+     *  version of the workspace.
      *  @param container The container of this object.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
@@ -143,9 +144,10 @@ public abstract class DecoratedAttributes extends Attribute {
      */
     protected abstract StringAttribute _decoratorPath();
 
-    /** Register this attribute again to the container. This is necessary, since when
-     *  opening the model, the decorator is not directly know, the container doesn't
-     *  have the mapping between attribute and decorator.
+    /** Register this attribute again to the container. This is
+     *  necessary, since when opening the model, the decorator is not
+     *  directly know, the container doesn't have the mapping between
+     *  attribute and decorator.
      *  @exception NameDuplicationException If the container already
      *   has an attribute with the same name.
      *  @exception IllegalActionException If the attribute is not an
