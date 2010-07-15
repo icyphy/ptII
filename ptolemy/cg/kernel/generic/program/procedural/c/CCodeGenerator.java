@@ -64,6 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.JVMBitWidth;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
@@ -1243,7 +1244,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
                 } else if (osName.startsWith("Mac OS X")) {
-                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-dynamiclib");
+                    String widthFlag = "";
+                    if (!JVMBitWidth.is32Bit()) {
+                        widthFlag = "-m64 ";
+                    }
+                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", widthFlag + "-dynamiclib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
                 } else if (osName.startsWith("SunOS")) {
