@@ -121,7 +121,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
             if (insidePort instanceof IOPort) {
                 IOPort castPort = (IOPort) insidePort;
-                String name = castPort.getName();
+                String name = TemplateParser.escapePortName(castPort.getName());
                 if (!castPort.isMultiport()) {
                     code.append(_generatePortInstantiation(name, name, castPort));
                 } else {
@@ -273,7 +273,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
             ComponentPort insidePort = (ComponentPort) entityPorts.next();
             if (insidePort instanceof IOPort) {
                 IOPort castPort = (IOPort) insidePort;
-                String name = castPort.getName();
+                String name = TemplateParser.escapePortName(castPort.getName());
                 if (!castPort.isMultiport()) {
                     code.append("TypedIOPort $actorSymbol(" + name + ");\n");
                 } else {
@@ -530,10 +530,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generatePortInstantiation(String actorPortName,
             String codegenPortName, IOPort port) throws IllegalActionException {
-
+        codegenPortName = TemplateParser.escapePortName(codegenPortName);
         PortParameter portParameter = (PortParameter)getComponent().getAttribute(actorPortName,
                 PortParameter.class);
-
         StringBuffer code = new StringBuffer("    $actorSymbol(" + codegenPortName + ") = new TypedIOPort($actorSymbol(container)"
                 + ", \"" + codegenPortName + "\", "
                 + port.isInput()
@@ -712,6 +711,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateSendInside(String actorPortName,
             String codegenPortName, Type type, int channel) {
+        actorPortName = TemplateParser.escapePortName(actorPortName);
+        codegenPortName = TemplateParser.escapePortName(codegenPortName);
         if (type instanceof ArrayType) {
             
             ArrayType array = (ArrayType)type;
