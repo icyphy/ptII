@@ -54,7 +54,9 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.DecoratedAttributesImplementation;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.IllegalActionException;
@@ -359,7 +361,6 @@ public class StaticSchedulingDirector extends Director {
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
             throws IllegalActionException {
-
         name = processCode(name);
         String castType = _getCastType(name);
         String refName = _getRefName(name);
@@ -395,14 +396,14 @@ public class StaticSchedulingDirector extends Director {
 
                 String refType = getCodeGenerator().codeGenType(port.getType());
 
-                return _templateParser.generateTypeConvertMethod(result,
+                String returnValue = _templateParser.generateTypeConvertMethod(result,
                         castType, refType);
+                return returnValue;
             }
         }
 
         // Try if the name is a parameter.
         Attribute attribute = target.getComponent().getAttribute(refName);
-
         if (attribute != null) {
             String refType = _getRefType(attribute);
 
@@ -436,7 +437,6 @@ public class StaticSchedulingDirector extends Director {
             boolean forComposite, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
             throws IllegalActionException {
-
         StringBuffer result = new StringBuffer();
         boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
 
@@ -457,7 +457,6 @@ public class StaticSchedulingDirector extends Director {
                         .intValue();
             }
         }
-
         if (!isChannelNumberInt) { // variable channel reference.
             if (port.isOutput()) {
                 throw new IllegalActionException(
@@ -465,7 +464,8 @@ public class StaticSchedulingDirector extends Director {
                                 + " for output ports");
             } else {
 
-                return _generatePortReference(port, channelAndOffset, isWrite);
+                String returnValue = _generatePortReference(port, channelAndOffset, isWrite);
+                return returnValue;
             }
         }
 
@@ -504,7 +504,6 @@ public class StaticSchedulingDirector extends Director {
                     port, channelNumber);
 
             boolean hasTypeConvertReference = false;
-
             for (int i = 0; i < sinkChannels.size(); i++) {
                 ProgramCodeGeneratorAdapter.Channel channel = sinkChannels
                         .get(i);
@@ -566,7 +565,6 @@ public class StaticSchedulingDirector extends Director {
                             channelAndOffset[1], sinkChannelNumber, true));
                 }
             }
-
             return result.toString();
         }
 
@@ -923,15 +921,13 @@ public class StaticSchedulingDirector extends Director {
         public int getBufferSize(int channelNumber)
                 throws IllegalActionException {
             ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
-
             if (_bufferSizes.get(channel) == null) {
                 // This should be a special case for doing
                 // codegen for a sub-part of a model.
                 //FIXME Why is the buffer size of a port its width? Should it be the rate of the port?
-              return DFUtilities.getRate(channel.port);
-              //return channel.port.getWidth();
+                return DFUtilities.getRate(channel.port);
+                //return channel.port.getWidth();
             }
-
             return _bufferSizes.get(channel);
         }
 
@@ -961,7 +957,6 @@ public class StaticSchedulingDirector extends Director {
                     bufferSize = channelBufferSize;
                 }
             }
-
             return bufferSize;
         }
 
@@ -1042,8 +1037,10 @@ public class StaticSchedulingDirector extends Director {
         public Object getWriteOffset(int channelNumber)
                 throws IllegalActionException {
             ProgramCodeGeneratorAdapter.Channel channel = _getChannel(channelNumber);
-            if(_writeOffsets.get(channel) == null) {
-                throw new IllegalActionException("Could not find the specified channel in this director");
+            if (_writeOffsets.get(channel) == null) {
+                throw new IllegalActionException(_port, "Could not write offset for channel "
+                        + channelNumber + " in port " + _port.getFullName() + ", there were "
+                        + _writeOffsets.size() + " writeOffsets for this port.");
             }
             return _writeOffsets.get(channel);
 
@@ -1238,7 +1235,6 @@ public class StaticSchedulingDirector extends Director {
          */
         private String _generateOffset(String offsetString, int channel,
                 boolean isWrite) throws IllegalActionException {
-
             boolean dynamicReferencesAllowed = allowDynamicMultiportReference();
             boolean padBuffers = padBuffers();
 
@@ -1253,7 +1249,8 @@ public class StaticSchedulingDirector extends Director {
                     return "";
                 }
             } else {
-                if (!(getBufferSize() > 1)) {
+                int bufferSize = getBufferSize();
+                if (!(bufferSize > 1)) {
                     return "";
                 }
             }
@@ -1267,7 +1264,6 @@ public class StaticSchedulingDirector extends Director {
             } else {
                 offsetObject = getReadOffset(channel);
             }
-
             if (!offsetString.equals("")) {
                 // Specified offset.
 
@@ -1468,7 +1464,6 @@ public class StaticSchedulingDirector extends Director {
         public String generateOffset(IOPort port, String offset, int channel,
                 boolean isWrite) throws IllegalActionException {
             return _getPortInfo(port).generateOffset(offset, channel, isWrite);
-
         }
 
         /** Get the buffer size of channel of the port.
@@ -1544,7 +1539,7 @@ public class StaticSchedulingDirector extends Director {
          *  @param bufferSize The size of the buffer.
          *  @see #getBufferSize(IOPort, int)
          */
-        public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
+        public void setBufferSize(IOPort port, int channelNumber, int bufferSize) throws IllegalActionException {
             _getPortInfo(port).setBufferSize(channelNumber, bufferSize);
         }
 
@@ -1608,10 +1603,36 @@ public class StaticSchedulingDirector extends Director {
          * @param port The given port for which we want to
          *      retrieve information to generate code.
          */
-        private PortInfo _getPortInfo(IOPort port) {
+        private PortInfo _getPortInfo(IOPort port) throws IllegalActionException {
             PortInfo info = null;
             if (!_portInfo.containsKey(port)) {
-                info = new PortInfo(port);
+                NamedObj container = getComponent().getContainer().getContainer();
+                // If we don't have portInfo for the port, then go up the hierarchy and look
+                // for portInfo elsewhere.  This is very convoluted, but necessary for
+                // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/test/auto/SampleDelay5.xml
+                if (container != null && getComponent().getContainer() != port.getContainer().getContainer()
+                        && getComponent().getContainer() != port.getContainer()
+                        && getComponent().getContainer().getFullName().startsWith(port.getContainer().getContainer().getFullName())) {
+                    while (container != null) {
+                        if (container instanceof CompositeEntity) {
+                            List entities = ((CompositeEntity)container).attributeList(ptolemy.actor.Director.class);
+                            if (entities.size() > 0) {
+                                Director entity = (Director)getCodeGenerator().getAdapter(entities.get(entities.size() - 1));
+                                if (entity instanceof StaticSchedulingDirector) { 
+                                    StaticSchedulingDirector parent = (StaticSchedulingDirector)entity;
+                                    if (parent._ports._portInfo.containsKey(port)) {
+                                        info = parent._ports._portInfo.get(port);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        container = container.getContainer();
+                    }
+                }
+                if (info == null) {
+                    info = new PortInfo(port);
+                }
                 _portInfo.put(port, info);
             } else {
                 info = _portInfo.get(port);
@@ -1619,7 +1640,7 @@ public class StaticSchedulingDirector extends Director {
             return info;
         }
 
-        private Map<IOPort, PortInfo> _portInfo = new HashMap<IOPort, PortInfo>();
+        protected Map<IOPort, PortInfo> _portInfo = new HashMap<IOPort, PortInfo>();
     }
 
     /** The meta information about the ports in the container. */
