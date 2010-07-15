@@ -53,7 +53,10 @@ JSRCS = \
 	ModularCodeGenTypedCompositeActor.java \
 	ModularCompiledSDFTypedCompositeActor.java \
 	PointerToken.java \
-	Profile.java
+	Profile.java \
+	SyntacticGraph.java \
+	SyntacticNode.java \
+	SyntacticPort.java
 
 OTHER_FILES_TO_BE_JARED =
 
