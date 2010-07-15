@@ -70,7 +70,7 @@ public class MigrateModelsManager {
      */
     public String  migrateModels(String directoryPath) throws IOException {
         
-        String csvFilePath = directoryPath + "migrationResults.csv";
+        String csvFilePath = directoryPath + "\\migrationResults.csv";
         
         // Check if the application has write access to the csv file path.
         try {
