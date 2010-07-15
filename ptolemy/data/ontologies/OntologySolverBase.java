@@ -275,6 +275,20 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
         return _getAdapter(object);
     }
 
+    /** Return a list of all the ontologies contained in this solver.
+     *  If it contains no ontologies, then return an empty list.
+     *  @return A list containing all ontologies in this solver.
+     */
+    @SuppressWarnings("unchecked")
+    public List<Ontology> getAllContainedOntologies() {
+        NamedObj containedModel = getContainedModel();
+        if (containedModel instanceof CompositeEntity) {
+            return ((CompositeEntity) containedModel)
+                    .entityList(Ontology.class);
+        }
+        return new LinkedList<Ontology>();        
+    }
+
     /** Return the ontology for this constraint solver.
      *  If this solver contains more than one ontology, then return the
      *  last one added. If it contains no ontologies, then return null.
@@ -282,13 +296,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *  @exception IllegalActionException If the structure is not a lattice.
      */
     public Ontology getOntology() throws IllegalActionException {
-        NamedObj containedModel = getContainedModel();
-        if (containedModel instanceof CompositeEntity) {
-            List<Ontology> ontologies = ((CompositeEntity) containedModel)
-                    .entityList(Ontology.class);
-            if (ontologies.size() > 0) {
-                return ontologies.get(ontologies.size() - 1);
-            }
+        List<Ontology> ontologies = getAllContainedOntologies();
+        if (ontologies.size() > 0) {
+            return ontologies.get(ontologies.size() - 1);
         }
         return null;
     }
