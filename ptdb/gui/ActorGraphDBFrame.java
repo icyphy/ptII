@@ -130,6 +130,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         _simpleSearchAction = new SimpleSearchAction(getModel(), this,
                 getConfiguration());
         _configureAttributesAction = new ConfigureAttributesAction();
+        
+        _openModelMigrationFrameAction = new OpenModelMigrationFrameAction();
 
     }
 
@@ -178,6 +180,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             GUIUtilities.addHotKey(_getRightComponent(),
                     _configureAttributesAction);
             GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
+            
+            GUIUtilities.addHotKey(_getRightComponent(),
+                    _openModelMigrationFrameAction);
+            GUIUtilities.addMenuItem(_dbMenu, _openModelMigrationFrameAction);
 
             // TODO: }
         }
@@ -252,6 +258,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     /** The action for saving a model to the database. */
     protected Action _openDatabaseSetupAction;
+    
+    /** The action for opening the model migration frame. */
+    protected Action _openModelMigrationFrameAction;
 
     ///////////////////////////////////////////////////////////////////
     ////                private inner classes                      ////
@@ -393,6 +402,38 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             frame.setVisible(true);
         }
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    //// OpenModelMigrationFrameAction
+
+    /**
+     * Open model migration frame.
+     */
+    private class OpenModelMigrationFrameAction extends AbstractAction {
+        /**
+         * Create a new action to setup database connection.
+         * 
+         */
+        public OpenModelMigrationFrameAction() {
+
+            super("Migrate Models");
+
+            putValue("tooltip", "Migrate Models");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
+
+        }
+
+        public void actionPerformed(ActionEvent e) {
+
+            JFrame frame = new ModelMigrationFrame();
+            frame.pack();
+            frame.setVisible(true);
+        }
+    }
+    
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     //// SimpleSearchAction
