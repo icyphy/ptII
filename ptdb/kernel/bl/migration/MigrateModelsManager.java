@@ -70,17 +70,23 @@ public class MigrateModelsManager {
      */
     public String  migrateModels(String directoryPath) throws IOException {
         
-        String csvFilePath = directoryPath + "migrationResults.txt";
+        String csvFilePath = directoryPath + "migrationResults.csv";
         
+        // Check if the application has write access to the csv file path.
         try {
+            
             File csvFile = new File(csvFilePath);
+            
         } catch (Exception e) {
             
-            csvFilePath = StringUtilities.preferencesDirectory() + "migrationResults.txt";
+            csvFilePath = StringUtilities.preferencesDirectory() + "migrationResults.csv";
         }
         
         _csvFileWriter = new FileWriter(csvFilePath);
         
+        //write the header for the csv file.
+        _csvFileWriter.write("Model Name" + "," + "Migration Status" 
+                + "," + "Error Messages" + "\n");
         
         File directoryFile = new File(directoryPath);
         
@@ -108,11 +114,23 @@ public class MigrateModelsManager {
         // If the path sent is a file, try to create a model in the database out of it.
         if (directory.isFile()) {
             
-            _createDBModel(directory.getName().substring(0, directory.getName().indexOf(".")),
-                    _getContent(directory));
+            String modelName = "";
+            
+            if (directory.getName().indexOf(".") > 0) {
+                
+                modelName = directory.getName().substring(0, directory.getName().indexOf("."));
+                
+            } else {
+                
+                modelName = directory.getName();
+            }
+                
+            _createDBModel(modelName, _getContent(directory));
+            
             
         } else if (directory.isDirectory()) {
-            // If the path is a directory, get the list of files and call this method recursively. 
+            // If the path is a directory, get the list of files and call 
+            // this method recursively on each of the files. 
             
             File[] listOfFiles = directory.listFiles();
       
@@ -151,9 +169,7 @@ public class MigrateModelsManager {
                 contents.append(System.getProperty("line.separator"));
             
             }
-        }
-          
-        finally {
+        } finally {
             
             input.close();
           
@@ -199,6 +215,7 @@ public class MigrateModelsManager {
         }
         
         if (isSuccessful == true) {
+            
             _csvFileWriter.write(modelName + "," + "Successful" 
                     + "," + " " + "\n");
             
@@ -206,7 +223,7 @@ public class MigrateModelsManager {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		private variables				  ////
+    ////		private variables				////
     /** File writer to handle writing the migration result to CSV file. */
     private FileWriter _csvFileWriter; 
 
