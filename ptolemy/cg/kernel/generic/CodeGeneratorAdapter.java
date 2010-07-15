@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.kernel.generic;
 
+import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.kernel.DecoratedAttributesImplementation;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.IllegalActionException;
@@ -92,6 +93,9 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
      * @return The sanitized name.
      */
     public static String generateName(NamedObj namedObj) {
+        // FIXME: note that if we have a port that has a character that
+        // is santized away, then we will run into problems if we try to
+        // refer to the port by the sanitized name.
         String name = StringUtilities.sanitizeName(namedObj.getFullName());
 
         // FIXME: Assume that all objects share the same top level. In this case,
@@ -105,7 +109,7 @@ abstract public class CodeGeneratorAdapter extends NamedObj {
         if (name.startsWith("_")) {
             name = name.substring(1, name.length());
         }
-        return name.replaceAll("\\$", "Dollar");
+        return TemplateParser.escapePortName(name);
     }
 
     /** Get the code generator associated with this adapter class.

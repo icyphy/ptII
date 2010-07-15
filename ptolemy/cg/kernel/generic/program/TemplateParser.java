@@ -100,6 +100,30 @@ public class TemplateParser {
         _codeGenerator._typeFuncUsed.add(functionName);
     }
 
+    /** Escape a port name for use in the macro language.
+     *  The issue is that port names can have certain
+     *  characters in them that cause problems with 
+     *  macro expansion.  Removing these characters is
+     *  not sufficient as the code generator sometimes
+     *  needs to refer to the corresponding port.  The
+     *  solution is to replace the characters with a string
+     *  that we can then use to reverse the escape process
+     *  in {@link #unescapePortName(String)}.
+     *  @param name The port name, which may contain "$",
+     *  "-" and/or "*".
+     *  @return A sanitized string suitable for use with
+     *  the macro language.
+     *  @see ptolemy.cg.kernel.generic.CodeGeneratorAdapter.generateName(String)
+     *  @see #unescapePortName(String)
+     */
+    public static String escapePortName(String name) {
+        // FIXME:  Should this method be in this file
+        // or should it be elsewhere.
+        // See ptolemy.cg.kernel.generic.CodeGeneratorAdapter.generateName(String)
+        // for a possible bug in port names.
+        return name.replace("$", "_X_DOLLAR_X_").replace("-","_X_MINUS_X_").replace("*", "_X_STAR_X_");
+    }
+
     /**
      * Generate expression that evaluates to a result of equivalent
      * value with the cast type.
@@ -174,7 +198,7 @@ public class TemplateParser {
             sourceRef = alternativeSourceRef;
         }
 
-        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
+        String sinkPortChannel = escapePortName(sink.port.getName()) + "#" + sink.channelNumber
                 + ", " + offset;
 
         // For composite actor, generate a variable corresponding to
@@ -886,7 +910,10 @@ public class TemplateParser {
 
     /**
      * Get the port that has the given name.
-     * @param refName The given name.
+     * @param refName The given of the port, usually a simple string
+     * like "input".  The refName is also processed using
+     * {@link #unescapePortName(String)} so that we handle port
+     * names that have "$", "*" and "-".
      * @return The port that has the given name.
      */
     final public TypedIOPort getPort(String refName) {
@@ -895,9 +922,11 @@ public class TemplateParser {
 
         while (inputPorts.hasNext()) {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-
-            // The channel is specified as $ref(port#channelNumber).
-            if (inputPort.getName().equals(refName)) {
+            String portName = inputPort.getName();
+            if (portName.equals(refName)) {
+                return inputPort;
+            }
+            if (unescapePortName(refName).equals(portName)) {
                 return inputPort;
             }
         }
@@ -907,8 +936,11 @@ public class TemplateParser {
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
 
-            // The channel is specified as $ref(port#channelNumber).
-            if (outputPort.getName().equals(refName)) {
+            String portName = outputPort.getName();
+            if (portName.equals(refName)) {
+                return outputPort;
+            }
+            if (unescapePortName(refName).equals(portName)) {
                 return outputPort;
             }
         }
@@ -973,6 +1005,21 @@ public class TemplateParser {
      */
     final public void setCodeGenerator(ProgramCodeGenerator codeGenerator) {
         _codeGenerator = codeGenerator;
+    }
+
+    /** Unescape a port name so that the return value
+     *  may be used to find the port in the model.   
+     *  @param name The port name, which may contain "$",
+     *  "-" and/or "*".
+     *  @return A sanitized string suitable for use with
+     *  the macro language.
+     *  @see escapePortName(String)
+     */
+    public static String unescapePortName(String name) {
+        // This is probably slow, see
+        // ptolemy.util.StringUtilities.escapeForXML() for
+        // a possibly faster solution.
+        return name.replace("_X_DOLLAR_X_", "$").replace("_X_MINUS_X_", "-").replace("_X_STAR_X_", "*");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -490,7 +490,7 @@ public class StaticSchedulingDirector extends Director {
                 result.append(NamedProgramCodeGeneratorAdapter
                         .generateName(target.getComponent()));
                 result.append("_");
-                result.append(port.getName());
+                result.append(TemplateParser.escapePortName(port.getName()));
                 return result.toString();
             }
 

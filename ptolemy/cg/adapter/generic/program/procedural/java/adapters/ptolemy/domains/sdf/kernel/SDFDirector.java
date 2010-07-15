@@ -41,6 +41,7 @@ import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
 import ptolemy.data.BooleanToken;
@@ -130,7 +131,7 @@ public class SDFDirector
                         " is not an instance of TypedIOPort.");
             }
             Type type = ((TypedIOPort) inputPort).getType();
-            String portName = inputPort.getName();
+            String portName = TemplateParser.escapePortName(inputPort.getName());
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
@@ -176,7 +177,7 @@ public class SDFDirector
         } else {
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
-                    String name = inputPort.getName();
+                    String name = TemplateParser.escapePortName(inputPort.getName());
 
                     if (inputPort.isMultiport()) {
                         name = name + '#' + i;
@@ -231,7 +232,7 @@ public class SDFDirector
                         + "];" + _eol);
             }
 
-            String portName = outputPort.getName();
+            String portName = TemplateParser.escapePortName(outputPort.getName());
             String tokensToThisPort = "tokensTo" + portName;
 
             // FindBugs wants this instanceof check.
@@ -292,7 +293,7 @@ public class SDFDirector
         } else {
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {
-                    String name = outputPort.getName();
+                    String name = TemplateParser.escapePortName(outputPort.getName());
 
                     if (outputPort.isMultiport()) {
                         name = name + '#' + i;
