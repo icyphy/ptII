@@ -28,18 +28,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.kernel.bl.load;
 
-import java.net.URI;
-import java.util.List;
-
+import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.util.DBConnectorFactory;
+import ptdb.common.util.Utilities;
+import ptdb.kernel.database.DBConnection;
 import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
@@ -81,10 +81,13 @@ public class LoadManager {
     *          command.
     * @exception Exception
     *          Thrown if a problem occurs creating an effigy from the MoML.
+     * @throws CircularDependencyException 
+     *          Thrown if an import would result in a circular dependency.
     */
    public  static Entity importModel(String name, boolean byReference
            , NamedObj container)
-           throws DBConnectionException, DBExecutionException, Exception {
+           throws DBConnectionException, DBExecutionException, Exception, 
+           CircularDependencyException {
 
        XMLDBModel dbModel = DBModelFetcher.load(name);
        
@@ -94,23 +97,33 @@ public class LoadManager {
        
        if(byReference){
 
-           if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
-
-               String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
-               		"class=\"ptolemy.data.expr.StringConstantParameter\" " +
-               		"value=\"TRUE\"></property>";
+           if(_createsCircularDepenency(name, container.getName())){
                
-               MoMLChangeRequest change = new MoMLChangeRequest(null,
-                       returnEntity, referenceTag);
-                   
-               change.setUndoable(true);
-               returnEntity.requestChange(change);
+               throw new CircularDependencyException("This import would " +
+                                           "result in a circular dependency.");
                
-           } else {
+           }    
+           else{
            
-               ((StringConstantParameter) returnEntity
-                   .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("TRUE");
- 
+               if (returnEntity.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) == null) {
+    
+                   String referenceTag = "<property name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " +
+                   		"class=\"ptolemy.data.expr.StringConstantParameter\" " +
+                   		"value=\"TRUE\"></property>";
+                   
+                   MoMLChangeRequest change = new MoMLChangeRequest(null,
+                           returnEntity, referenceTag);
+                       
+                   change.setUndoable(true);
+                   returnEntity.requestChange(change);
+                   
+               } else {
+               
+                   ((StringConstantParameter) returnEntity
+                       .getAttribute(XMLDBModel.DB_REFERENCE_ATTR)).setExpression("TRUE");
+     
+               }
+           
            }
        
        } else {
@@ -175,6 +188,68 @@ public class LoadManager {
         
         return returnEffigy;
 
+    }
+    
+    /** Check if a circular dependency would result from importing a child 
+     * model.
+     *
+     * @param modelName
+     *          The name of the model being imported.
+     * @param containerName
+     *          The name of the container into which the model is being 
+     *          imported.
+     * @exception DBConnectionException
+     *          Thrown if a problem occurs with the database connection.
+     * @exception DBExecutionException
+     *          Thrown if a problem occurs getting the reference string for
+     *          modelName.
+     */
+    private static boolean _createsCircularDepenency(String modelName
+            , String containerName) throws DBConnectionException, 
+            DBExecutionException {
+        
+        boolean returnValue = false;
+        
+        /* //TODO - Uncomment when executeReferenceStringTask is implemented
+           //       in DBConnection and OracleXMLDBConnection
+           //       Also, modelReferenceExists() must be created as a static
+           //       method in the Utilities class.
+         
+        DBConnection connection = DBConnectorFactory.getSyncConnection(false);
+
+        try {
+
+            GetReferenceStringTask getReferenceStringTask = 
+                new GetReferenceStringTask(modelName);
+            String referenceString = new String();
+            referenceString = connection.
+                executeGetReferenceStringTask(getReferenceStringTask);
+            
+            if(referenceString == null){
+                
+                throw new DBExecutionException("Model References could not " +
+                        "be retrieved in the database.  " + 
+                        "Rebuild the Reference file.");
+            }
+            
+
+            if(Utilities.modelReferenceExists(containerName, referenceString)){
+                
+                returnValue = true;
+                
+            }
+            
+        } catch (DBExecutionException dbEx) {            
+            throw dbEx;
+        } finally {
+            if (connection != null) {
+                connection.closeConnection();
+            }
+        }
+        */
+        
+        return returnValue;
+        
     }
 
     /** Generate an effigy from an XMLDBModel object.
