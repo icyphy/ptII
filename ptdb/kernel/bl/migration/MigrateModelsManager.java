@@ -70,6 +70,16 @@ public class MigrateModelsManager {
      */
     public String  migrateModels(String directoryPath) throws IOException {
         
+        
+
+        //check if the path provided exists.
+        File directoryFile = new File(directoryPath);
+        
+        if (directoryFile.exists() == false) {
+            throw new IOException ("Directory: " + directoryPath + " does not exist.");
+        }
+        
+        
         String csvFilePath = directoryPath + "\\migrationResults.csv";
         
         // Check if the application has write access to the csv file path.
@@ -88,8 +98,6 @@ public class MigrateModelsManager {
         //write the header for the csv file.
         _csvFileWriter.write("Model Name" + "," + "Migration Status" 
                 + "," + "Error Messages" + "\n");
-        
-        File directoryFile = new File(directoryPath);
         
         _readFiles(directoryFile); 
         
