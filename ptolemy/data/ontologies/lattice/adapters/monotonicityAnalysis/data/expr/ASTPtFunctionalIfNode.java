@@ -81,10 +81,20 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
      *  @return The list of constraints for this adapter.
      */
     public List<Inequality> constraintList() throws IllegalActionException {
+        
+        // Here we make the assumption that the domain ontology
+        // (i.e. the one other than the monotonicity lattice) is
+        // the rearmost lattice.  This is because we already required
+        // that the lattice corresponding to the ontology from which
+        // the inferred concepts are drawn be the frontmost, in that
+        // getOntology always returns the frontmost lattice in the
+        // solver.
+        List<Ontology> ontologies = getSolver().getAllContainedOntologies();
 
         ASTPtFunctionalIfNodeFunction astIfFunction = new ASTPtFunctionalIfNodeFunction(
                 (ptolemy.data.expr.ASTPtFunctionalIfNode) _getNode(),
-                getSolver().getOntology());
+                getSolver().getOntology(),
+                ontologies.get(0));
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
                 astIfFunction, _getChildNodeTerms()));
@@ -111,11 +121,13 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
          */
         public ASTPtFunctionalIfNodeFunction(
                 ptolemy.data.expr.ASTPtFunctionalIfNode ifNode,
-                Ontology monotonicityOntology)
+                Ontology monotonicityOntology,
+                Ontology domainOntology)
                     throws IllegalActionException {
             super("defaultASTPtFunctionalIfNodeFunction", 3,
                     monotonicityOntology);
             _ifNode = ifNode;
+            _domainOntology = domainOntology;
         }
 
         /** Return the monotonicity concept that results from analyzing the
@@ -133,6 +145,7 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
             ConceptGraph monotonicityLattice = _monotonicityAnalysisOntology.getGraph();
+            ConceptGraph inputLattice = _domainOntology.getGraph();
 
             // This represents the if rule. (from p144)
             Concept conditional = inputConceptValues.get(0);
@@ -146,9 +159,7 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
             
             boolean bothBranchesMonotonic = _monotonicConcept.isAboveOrEqualTo(me3) && _monotonicConcept.isAboveOrEqualTo(me4);
             boolean bothBranchesAntimonotonic = _antimonotonicConcept.isAboveOrEqualTo(me3) && _antimonotonicConcept.isAboveOrEqualTo(me4);
-            // FIXME: The lattice here should be the input lattice (the domain of "x"),
-            // which in general is not necessarily the monotonicityLattice
-            ConceptGraph inputLattice = monotonicityLattice;
+
             if (_antimonotonicConcept.isAboveOrEqualTo(conditional)) {
 
                 Concept e3Bot = _evaluateChild(1, (Concept)inputLattice.bottom());
@@ -193,15 +204,14 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
             argumentNames.add("x");
             List<Concept> argumentValues = new LinkedList<Concept>();
             argumentValues.add(xValue);
+            List<Ontology> argumentDomains = new LinkedList<Ontology>();
+            argumentDomains.add(_domainOntology);
             
             ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                     argumentNames,
                     argumentValues,
                     null,
-                    // FIXME: This should not be the argumentDomainOntologies,
-                    // which refer to the monotonicity lattice, but the actual
-                    // domain of the arguments in their normal lattice.
-                    _argumentDomainOntologies);
+                    argumentDomains);
             ConceptToken evaluatedToken = (ConceptToken)evaluator.evaluateParseTree(childNode);
             return evaluatedToken.conceptValue();
         }
@@ -210,6 +220,11 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
          *  function is defined over.
          */
         private ptolemy.data.expr.ASTPtFunctionalIfNode _ifNode;
+        
+        /** The Ontology over which the expression under consideration's
+         *  variables and constants are drawn from.
+         */
+        private Ontology _domainOntology;
 
     }
 
