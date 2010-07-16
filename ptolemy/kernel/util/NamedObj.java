@@ -1094,11 +1094,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
     /** Return the decorated attributes of this Named Object, decorated by decorator.
      *  DecoratedAttributes are attributes that have been added by calling
-     *  {@link #_addAttribute(Attribute)).
+     *  {@link #_addAttribute(Attribute)}.
      *  If the DecoratedAttributes for this NamedObj do not contain the
      *  decorated named by the <i>decorator</i> parameter, then the a
      *  DecoratedAttribute is created, see
-     *  {@link Decorator.createDecoratedAttribute(Object)}.
+     *  {@link ptolemy.kernel.util.Decorator.createDecoratedAttribute(Object)}.
      *  @param decorator The decorator.
      *  @return The decorated attributes. 
      */
