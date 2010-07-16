@@ -1188,15 +1188,14 @@ public class OracleXMLDBConnection implements DBConnection {
             //if the model exist
             if (dbModel != null) {
 
-                _xmlContainer.deleteDocument(_xmlTransaction, dbModel);
-                _xmlContainer.putDocument(_xmlTransaction, xmlDBModel.getModelName(), modelBody);                
+                _xmlContainer.deleteDocument( dbModel);
+                _xmlContainer.putDocument( xmlDBModel.getModelName(), modelBody);                
                 
             } else {
 
                 _xmlContainer.getName();
                 
-                _xmlContainer.putDocument(_xmlTransaction,
-                        modelName, modelBody);
+                _xmlContainer.putDocument(modelName, modelBody);
             }
         } catch (XmlException e) {
             throw new DBExecutionException("Failed to execute executeUpdateModelInCache - "
