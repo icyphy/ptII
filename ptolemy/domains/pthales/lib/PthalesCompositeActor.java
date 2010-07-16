@@ -27,8 +27,8 @@
  */
 package ptolemy.domains.pthales.lib;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
@@ -172,7 +172,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     public Integer[] computeIterations(IOPort portIn,
             LinkedHashMap<String, Integer> sizes) {
 
-        List<Integer> repetition = new LinkedList<Integer>();
+        List<Integer> repetition = new ArrayList<Integer>();
 
         // Simple example : pattern is fixed and iterations
         LinkedHashMap<String, Integer[]> patternDims = PthalesIOPort
@@ -200,7 +200,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
             }
         }
 
-        return (Integer[]) repetition.toArray();
+        return repetition.toArray(new Integer[repetition.size()]);
     }
 
     /** Compute iteration number of the actor,

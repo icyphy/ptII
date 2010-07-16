@@ -28,7 +28,10 @@
 
 package ptolemy.domains.pthales.lib;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
@@ -116,37 +119,18 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
                         ((IntToken) headerIn[2 * i + 1]).intValue());
             }
 
-            //          Simple example : pattern is fixed and iterations
-            LinkedHashMap<String, Integer[]> patternDims = PthalesIOPort
-                    .getInternalPattern(portIn);
-            LinkedHashMap<String, Integer[]> tilingDims = PthalesIOPort
-                    .getTiling(portIn);
-
-            int iterations = 1;
-
-            // Input array dimension
-            Object[] dims = tilingDims.keySet().toArray();
-
-            for (int i = 0; i < tilingDims.size(); i++) {
-
-                // No tiling => no repetition on dimension => next dim
-                if (tilingDims.get(dims[i]) != null) {
-                    int nb = nbTokens;
-                    int jump = 1;
-                    if (patternDims.get(dims[i]) != null) {
-                        nb = (patternDims.get(dims[i])[0] - 1)
-                                * patternDims.get(dims[i])[1] + 1;
-                        jump = patternDims.get(dims[i])[1];
-                    }
-                    int val = (int) Math
-                            .floor((sizes.get(dims[i]) - nb) / jump) + 1;
-
-                    iterations *= val;
-                }
+            Integer[] repetition = computeIterations(portIn, sizes);
+            
+            int iterations = nbTokens;
+            
+            for(int i = 0; i < repetition.length; i++) {
+                iterations *= repetition[i];
             }
 
-            if(minIterations < 0 || minIterations >  iterations)
+            if(minIterations < 0 || minIterations >  iterations) {
+                _repetition = repetition;
                 minIterations = iterations;
+            }
         }
         
         if(minIterations < 0)
@@ -161,10 +145,12 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        for (Object portIn : inputPortList()) {
-            Receiver[][] receivers = ((TypedIOPort) portIn).getReceivers();
+        for (Object port : inputPortList()) {
+            //FIXME We could check if the port is set to a dynamic port?
+            
+            Receiver[][] receivers = ((TypedIOPort) port).getReceivers();
 
-            for (int i = 0; i < ((IOPort) portIn).getWidth(); i++) {
+            for (int i = 0; i < ((IOPort) port).getWidth(); i++) {
                 ((PthalesReceiver) receivers[i][0]).setDynamic(true);
             }
         }
@@ -200,4 +186,56 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
 
         return super.iterate(iterations);
     }
+    
+    /** If this actor is opaque, invoke the prefire() method of the local
+     *  director. This method returns true if the actor is ready to fire
+     *  (determined by the prefire() method of the director).
+     *  It is read-synchronized on the workspace.
+     *
+     *  @exception IllegalActionException If there is no director,
+     *   or if the director's prefire() method throws it, or if this actor
+     *   is not opaque.
+     */
+    public boolean prefire() throws IllegalActionException {
+        boolean result = super.prefire();
+        
+        //send header information to the next actor
+        Iterator<?> outports = outputPortList().iterator();
+
+        while (outports.hasNext() && !_stopRequested) {
+            //FIXME check if the port is dynamic
+            
+            IOPort p = (IOPort) outports.next();
+            LinkedHashMap<String, Integer> sizes = PthalesIOPort.getArraySizes(p, _repetition);
+
+            //Header construction
+            List<Token> header = new ArrayList<Token>();
+            
+            int nbDims = PthalesIOPort.getDimensions(p).length;
+            
+            header.add(new IntToken(nbDims));
+            header.add(new IntToken(PthalesIOPort.getNbTokenPerData(p)));
+            
+            for (String dim : sizes.keySet()) {
+                header.add(new StringToken(dim));
+                header.add(new IntToken(sizes.get(dim)));
+            }
+
+            // then sent to output
+            for (int i = 0; i < p.getWidth(); i++) {
+                for (int j = 0; j < header.size(); j++) {
+                    p.send(i, header.get(j));
+                }
+            }
+            
+        }
+        
+        return result;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /* cached value for the repetition parameter */
+    private Integer[] _repetition;
 }
