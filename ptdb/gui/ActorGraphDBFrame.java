@@ -392,9 +392,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         public void actionPerformed(ActionEvent e) {
 
-            URL toRead = getClass().getClassLoader().getResource(
-                    "ptolemy/actor/gt/controller/ModelBasedTransformation.xml");
+//            URL toRead = getClass().getClassLoader().getResource(
+//                    "ptolemy/actor/gt/controller/ModelBasedTransformation.xml");
 
+            URL toRead = getClass().getClassLoader().getResource(
+                  "ptolemy.actor.gt.controller.Match");
+                    
             try {
 
                 EffigyFactory effigyFactory = new EffigyFactory(
@@ -410,7 +413,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                 CompositeEntity compositeEntity = new TransformationRule(
                         effigy, "transformation rule");
 
-                ExtendedGraphFrame frame = new DbSearchFrame(compositeEntity,
+                ExtendedGraphFrame frame = new GraphPatternSearchEditor(compositeEntity,
                         new Tableau(effigy, "DBSearchframe"),
                         ((ActorGraphDBTableau) _tableau).getGtLibrary(),
                         getModel(), ActorGraphDBFrame.this);

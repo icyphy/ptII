@@ -39,6 +39,7 @@ import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
@@ -72,12 +73,15 @@ import ptolemy.vergil.actor.LinkController;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.gt.TransformationEditor;
 
+
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.graph.GraphController;
+import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
-//// DbSearchFrame
+//// GraphPatternSearchEditor
 
 /**
  * The UI frame for the advanced DB search window. It has the specific 
@@ -90,10 +94,10 @@ import diva.gui.GUIUtilities;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class DbSearchFrame extends TransformationEditor {
+public class GraphPatternSearchEditor extends TransformationEditor {
 
     /**
-     * Construct the DbSearchFrame.
+     * Construct the GraphPatternSearchEditor.
      *
      * @param entity  The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
@@ -101,7 +105,7 @@ public class DbSearchFrame extends TransformationEditor {
      * @param sourceFrame The frame that contains the model to import the 
      * searched results. 
      */
-    public DbSearchFrame(CompositeEntity entity, Tableau tableau,
+    public GraphPatternSearchEditor(CompositeEntity entity, Tableau tableau,
             NamedObj containerModel, JFrame sourceFrame) {
         super(entity, tableau);
 
@@ -113,7 +117,7 @@ public class DbSearchFrame extends TransformationEditor {
     }
 
     /**
-     * Construct the DbSearchFrame.
+     * Construct the GraphPatternSearchEditor.
      *
      * @param entity The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
@@ -123,7 +127,7 @@ public class DbSearchFrame extends TransformationEditor {
      * @param sourceFrame The frame that contains the model to import the 
      * searched results. 
      */
-    public DbSearchFrame(CompositeEntity entity, Tableau tableau,
+    public GraphPatternSearchEditor(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary, NamedObj containerModel,
             JFrame sourceFrame) {
         super(entity, tableau, defaultLibrary);
@@ -143,9 +147,21 @@ public class DbSearchFrame extends TransformationEditor {
 
         super._addMenus();
 
+        // Remove the unused match actions from the rule menu. 
+        _ruleMenu.remove(0);
+        _ruleMenu.remove(0);
+        _ruleMenu.remove(0);
+        
+        // Remove the fullscreen and open container tool bar icon. 
+        _toolbar.remove(6);
+        _toolbar.remove(6);
+        
+        // Remove the match actions icons from the tool bar. 
+        _toolbar.remove(_toolbar.getComponentCount() - 1);
+        _toolbar.remove(_toolbar.getComponentCount() - 1);
+        
         // Add the menu of searching in the database.
         DBMatchAction dbMatchAction = new DBMatchAction();
-
         GUIUtilities.addToolBarButton(_toolbar, dbMatchAction);
 
         // Add the menu of opening simple search window. 
@@ -156,6 +172,7 @@ public class DbSearchFrame extends TransformationEditor {
         JTabbedPane tabbedPane = getFrameController().getTabbedPane();
         tabbedPane.remove(1);
         tabbedPane.remove(1);
+
 
     }
 
@@ -184,7 +201,7 @@ public class DbSearchFrame extends TransformationEditor {
             _configureAction = new DBSearchConfigureAction("Configure");
             _configureMenuFactory.substitute(oldConfigureAction,
                     _configureAction);
-            _configureMenuFactory.addMenuItemListener(DbSearchFrame.this);
+            _configureMenuFactory.addMenuItemListener(GraphPatternSearchEditor.this);
         }
 
     }
@@ -223,7 +240,7 @@ public class DbSearchFrame extends TransformationEditor {
 
             // create the new SearchResultFrame
             SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
-                    _containerModel, _sourceFrame, DbSearchFrame.this
+                    _containerModel, _sourceFrame, GraphPatternSearchEditor.this
                             .getConfiguration());
 
             SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
@@ -375,7 +392,7 @@ public class DbSearchFrame extends TransformationEditor {
                     && componentEntities.isEmpty()
                     && (searchCriteria.getModelName() == null || searchCriteria
                             .getModelName().trim().isEmpty())) {
-                JOptionPane.showMessageDialog(DbSearchFrame.this,
+                JOptionPane.showMessageDialog(GraphPatternSearchEditor.this,
                         "In order to narrow the search, please specify search criteria.  At least one"
                                 + " of attribute, model name, port or"
                                 + " component"
@@ -539,7 +556,7 @@ public class DbSearchFrame extends TransformationEditor {
 
             if (_simpleSearchFrame == null) {
                 _simpleSearchFrame = new AdvancedSimpleSearchFrame(
-                        DbSearchFrame.this);
+                        GraphPatternSearchEditor.this);
             }
 
             _simpleSearchFrame.pack();

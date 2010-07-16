@@ -670,10 +670,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
         }
         _removeUnusedToolbarButtons();
 
-        if (!this.getClass().getName().equals("ptdb.gui.DbSearchFrame")) {
-            GUIUtilities.addToolBarButton(_toolbar, singleMatchAction);
-            GUIUtilities.addToolBarButton(_toolbar, batchMatchAction);
-        }
+        GUIUtilities.addToolBarButton(_toolbar, singleMatchAction);
+        GUIUtilities.addToolBarButton(_toolbar, batchMatchAction);
     }
 
     protected RunnableGraphController _createActorGraphController() {
@@ -756,8 +754,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                 }
 
                 ButtonGroup group = new ButtonGroup();
-                JMenuItem hiddenItem = _add(submenu, new FigureAction(
-                        "hidden"), true);
+                JMenuItem hiddenItem = _add(submenu,
+                        new FigureAction("hidden"), true);
                 hiddenItem.setVisible(false);
                 group.add(hiddenItem);
 
@@ -786,9 +784,8 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     group.add(radioItems[i]);
                 }
 
-                JMenuItem noneItem = _add(submenu,
-                        new MatchingAttributeAction("None", radioActions),
-                        true);
+                JMenuItem noneItem = _add(submenu, new MatchingAttributeAction(
+                        "None", radioActions), true);
                 group.add(noneItem);
 
                 boolean setHidden = false;
@@ -798,8 +795,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     NamedObj child = (NamedObj) childObject;
                     MatchingAttribute attribute = _getRadioAttribute(child,
                             radioActions);
-                    if (attributeClass == null && attribute != null
-                            && i == 0) {
+                    if (attributeClass == null && attribute != null && i == 0) {
                         attributeClass = attribute.getClass();
                     } else if (attributeClass == null && attribute != null
                             || attributeClass != null
