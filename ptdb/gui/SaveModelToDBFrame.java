@@ -202,9 +202,10 @@ public class SaveModelToDBFrame extends JFrame {
                     
                 } catch (CircularDependencyException e) {
                     
-                    MessageHandler.error("Saving this model as it is will result " +
-                                 "in a circular dependency.  Examine the reference " +
-                                 "models to determine the cause.", e);
+                    MessageHandler.error("Saving this model as it is will " +
+                                "result in a circular dependency.  Examine " +
+                                "the referenced models to determine " +
+                                "the cause.", e);
                     
                     _rollbackModel();
                 
