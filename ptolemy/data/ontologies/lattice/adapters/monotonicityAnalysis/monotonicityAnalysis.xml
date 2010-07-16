@@ -4,7 +4,7 @@
 <class name="monotonicityAnalysis" extends="ptolemy.data.ontologies.Ontology">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={303, 383, 815, 509}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={432, 270, 815, 509}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -67,7 +67,7 @@
         </property>
     </entity>
     <entity name="Nonmonotonic" class="ptolemy.data.ontologies.Concept">
-        <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 110.0]">
         </property>
