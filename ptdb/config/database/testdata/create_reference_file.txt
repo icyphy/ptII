@@ -107,5 +107,8 @@ putDocument ReferenceFile.ptdbxml '<reference>
 		<entity DBModelId="CompositeActor_123" name="CompositeActor">
 		</entity>
 	</entity>
-
+	<entity DBModelId="newModel_1279249394703" name="newModel">
+		<entity DBModelId="Adder" name="Adder"/>
+		<entity DBModelId="Adder" name="Adder"/>
+	</entity>
 </reference>'
