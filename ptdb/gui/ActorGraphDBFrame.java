@@ -28,26 +28,40 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.gui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import ptdb.common.dto.XMLDBModel;
+import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.gui.UndeferredGraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
@@ -115,6 +129,60 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         _initActorGraphDBFrame();
 
     }
+    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                 ////
+    
+    /**
+     * Update the DBModelHistory
+     * 
+     * @param modelName 
+     *          The model name to add to the history.
+     * @param delete 
+     *          Indication if the history should be updated with model name
+     *          or if it should be deleted.
+     * @exception IOException 
+     *          Thrown if the history cannot be read from or written to.
+     * 
+     */
+    public void _updateDBModelHistory(String modelName, boolean delete) 
+        throws IOException  {
+        
+        List<String> historyList = _readHistory();
+
+         // Remove if already present (then added to first position)
+         for (int i = 0; i < historyList.size(); i++) {
+    
+            if (historyList.get(i).equals(modelName)) {
+    
+               historyList.remove(i);
+    
+            }
+    
+         }
+    
+         // Remove if depth > limit
+         if (historyList.size() >= _historyDepth) {
+    
+             historyList.remove(historyList.size() - 1);
+    
+         }
+    
+         // Add to fist position
+         if (!delete) {
+    
+            historyList.add(0, modelName);
+    
+         }
+    
+         // Serialize history
+         _writeDBModelHistory(historyList);
+    
+         // Update submenu
+         _populateDBModelHistory(historyList);
+
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -172,7 +240,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                     .addHotKey(_getRightComponent(), _openSearchFrameAction);
             GUIUtilities.addMenuItem(searchMenu, _openSearchFrameAction);
             
-
+            
+            JMenu recentModelMenu = new JMenu("Recently Opened Models");
+            searchMenu.setMnemonic(KeyEvent.VK_R);
+            _dbMenu.add(recentModelMenu);
+            
+            
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openDatabaseSetupAction);
             GUIUtilities.addMenuItem(_dbMenu, _openDatabaseSetupAction);
@@ -185,6 +258,22 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                     _openModelMigrationFrameAction);
             GUIUtilities.addMenuItem(_dbMenu, _openModelMigrationFrameAction);
 
+            try {
+                
+                if(getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null){
+                
+                    _updateDBModelHistory(getModel().getName(), false);
+                
+                } else {
+
+                    _updateDBModelHistory(getModel().getName(), true);
+            
+                }
+            } catch (Exception ex) {
+            
+                MessageHandler.error("Cannot read model history.", ex);
+
+            }
             // TODO: }
         }
 
@@ -235,7 +324,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         
     }
     
-   
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -482,4 +570,164 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         private Configuration _configuration;
 
     }
+
+    /** Listener for help menu commands. */
+    class DBHistoryMenuListener implements ActionListener {
+        
+        public void actionPerformed(ActionEvent e) {
+            // Make this the default context for modal messages.
+            UndeferredGraphicalMessageHandler.setContext(ActorGraphDBFrame.this);
+
+            JMenuItem target = (JMenuItem) e.getSource();
+            String actionCommand = target.getActionCommand();
+            
+            try {
+        
+                PtolemyEffigy effigy = LoadManager.loadModel
+                    (((JMenuItem)e.getSource()).getText(), getConfiguration());
+            
+                if(effigy != null){
+                            
+                    effigy.showTableaux();
+                            
+                } else {
+                            
+                    JOptionPane
+                       .showMessageDialog(ActorGraphDBFrame.this,
+                           "The specified model could " +
+                           "not be found in the database.",
+                           "Load Error",
+                           JOptionPane.INFORMATION_MESSAGE, null);
+                            
+                }
+            
+            } catch (Exception ex) {
+            
+                MessageHandler.error("Cannot read model history.", ex);
+        
+                try {
+            
+                    _updateDBModelHistory(actionCommand, true);
+            
+                } catch (IOException ex2) {
+            
+                    // Ignore
+            
+                }
+        
+            }
+
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    
+    private String _getDBModelHistoryFileName() throws IOException {
+
+        return StringUtilities.preferencesDirectory() + 
+            "DBModelHistory.txt";
+
+    }
+    
+    private void _populateDBModelHistory(List historyList) {
+        
+        Component[] components = _dbMenu.getMenuComponents();
+        JMenu history = null;
+
+        for (Component component : components) {
+
+            if (component instanceof JMenu
+                && ((JMenu) component).getText()
+                    .equals("Recently Opened Models")) {
+
+                history = (JMenu) component;
+
+            }
+
+        }
+
+        if (history == null) {
+            throw new KernelRuntimeException(
+
+                "Unexpected loss of Recently Opened Models menu.");
+
+        }
+
+        DBHistoryMenuListener listener = new DBHistoryMenuListener();
+
+        history.removeAll();
+
+        for (int i = 0; i < historyList.size(); i++) {
+
+            JMenuItem item = 
+                new JMenuItem((String) historyList.get(i));
+            item.addActionListener(listener);
+            history.add(item);
+
+        }
+
+        
+    }
+    
+    /** Get the history from the file that contains names
+     * Always return a list, that can be empty
+     * @return list of file history
+     */
+    private List<String> _readHistory() throws IOException {
+        ArrayList<String> historyList = new ArrayList<String>();
+        String historyFileName = _getDBModelHistoryFileName();
+        if (!new File(historyFileName).exists()) {
+            // No history file, so just return
+            return historyList;
+        }
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(historyFileName);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                historyList.add(line);
+            }
+        } finally {
+            if (fileReader != null) {
+                fileReader.close();
+            }
+        }
+
+        return historyList;
+    }
+    
+    private void _writeDBModelHistory(List<String> historyList) 
+        throws IOException {
+        
+        FileWriter fileWriter = null;
+        try {
+
+            fileWriter = new FileWriter(_getDBModelHistoryFileName());
+            for (String line : historyList) {
+
+                fileWriter.write(line + "\n");
+
+            }
+
+        } finally {
+
+            if (fileWriter != null) {
+
+               fileWriter.close();
+
+            }
+
+        }
+
+        
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // History depth
+    private int _historyDepth = 4;
 }
