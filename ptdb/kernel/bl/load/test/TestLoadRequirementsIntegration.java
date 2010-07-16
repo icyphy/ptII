@@ -28,17 +28,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.kernel.bl.load.test;
 
-import static org.junit.Assert.*;
-import java.net.URL;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.powermock.api.easymock.PowerMock;
+
 import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
 
 /**
  * JUnit test for integration testing of the Load feature.
@@ -78,14 +79,6 @@ public class TestLoadRequirementsIntegration {
 
         String inputString = "CompositeActor";
 
-        //MoMLParser parser = new MoMLParser();
-        //parser.reset();
-        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
-
-        //URL configURL = ConfigurationApplication.specToURL(configPath);
-        //Configuration configuration = (Configuration) parser.parse(configURL,
-        //        configURL);
-
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
         ModelDirectory modelDirectory = new ModelDirectory(configuration, 
@@ -120,15 +113,7 @@ public class TestLoadRequirementsIntegration {
     @Test
     public void testloadModelWithReferences() throws Exception {
 
-        String inputString = "modeltt";
-
-        //MoMLParser parser = new MoMLParser();
-        //parser.reset();
-        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
-
-        //URL configURL = ConfigurationApplication.specToURL(configPath);
-        //Configuration configuration = (Configuration) parser.parse(configURL,
-        //        configURL);
+        String inputString = "newModel";
 
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
@@ -144,7 +129,6 @@ public class TestLoadRequirementsIntegration {
             fail("failed to return an effigy.");
         }
 
-        System.out.println(effigy.getModel().exportMoML());
         assertEquals(effigy.getName(), inputString);
 
         PowerMock.verifyAll();
@@ -164,13 +148,6 @@ public class TestLoadRequirementsIntegration {
 
         String inputString = "not in database";
 
-        //MoMLParser parser = new MoMLParser();
-        //parser.reset();
-        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
-
-        //URL configURL = ConfigurationApplication.specToURL(configPath);
-        //Configuration configuration = (Configuration) parser.parse(configURL,
-        //        configURL);
 
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
@@ -184,7 +161,6 @@ public class TestLoadRequirementsIntegration {
             effigy = LoadManager.loadModel(inputString, configuration);
 
         } catch (Exception e) {
-            e.printStackTrace();
             assertTrue("The system throwed an exception" + e.getMessage(), true);
         }
 
@@ -205,14 +181,6 @@ public class TestLoadRequirementsIntegration {
 
         String inputString = null;
 
-        //MoMLParser parser = new MoMLParser();
-        //parser.reset();
-        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
-
-        //URL configURL = ConfigurationApplication.specToURL(configPath);
-        //Configuration configuration = (Configuration) parser.parse(configURL,
-        //        configURL);
-
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
         ModelDirectory modelDirectory = new ModelDirectory(configuration, 
@@ -225,7 +193,6 @@ public class TestLoadRequirementsIntegration {
             effigy = LoadManager.loadModel(inputString, configuration);
 
         } catch (Exception e) {
-            e.printStackTrace();
             assertTrue("The system throwed an exception" + e.getMessage(), true);
         }
 
@@ -246,14 +213,6 @@ public class TestLoadRequirementsIntegration {
 
         String inputString = "";
 
-        //MoMLParser parser = new MoMLParser();
-        //parser.reset();
-        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
-
-        //URL configURL = ConfigurationApplication.specToURL(configPath);
-        //Configuration configuration = (Configuration) parser.parse(configURL,
-        //        configURL);
-
         Workspace workspace = new Workspace();
         Configuration configuration = new Configuration(workspace);
         ModelDirectory modelDirectory = new ModelDirectory(configuration, 
@@ -266,7 +225,6 @@ public class TestLoadRequirementsIntegration {
             effigy = LoadManager.loadModel(inputString, configuration);
 
         } catch (Exception e) {
-            e.printStackTrace();
             assertTrue("The system throwed an exception" + e.getMessage(), true);
         }
 
