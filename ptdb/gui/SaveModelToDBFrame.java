@@ -43,6 +43,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
@@ -198,7 +199,15 @@ public class SaveModelToDBFrame extends JFrame {
                             "due to an IllegalActionException.", e);
                     
                     _rollbackModel();
-
+                    
+                } catch (CircularDependencyException e) {
+                    
+                    MessageHandler.error("Saving this model as it is will result " +
+                                 "in a circular dependency.  Examine the reference " +
+                                 "models to determine the cause.", e);
+                    
+                    _rollbackModel();
+                
                 } catch (Exception e) {
 
                     MessageHandler.error("The model cannot be saved now " +
@@ -207,6 +216,7 @@ public class SaveModelToDBFrame extends JFrame {
                     _rollbackModel();
                     
                 }
+
 
             }
         });
