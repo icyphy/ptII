@@ -1,0 +1,124 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MonotonicityIfcHarderCase" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 70.0]">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+        <configure>
+            <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={811, 428, 815, 507}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+                </property>
+                <property name="ConceptFunctionDefinitionAttribute" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
+                    <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="monotonicityAnalysis">
+                    </property>
+                    <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{'arg0', 'arg1', 'arg2'}">
+                    </property>
+                    <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{'monotonicityAnalysis', 'monotonicityAnalysis', 'monotonicityAnalysis'}">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
+                    </property>
+                </property>
+                <property name="BinaryOperationMonotonicFunctionDefinition" class="ptolemy.data.ontologies.lattice.BinaryOperationMonotonicFunctionDefinition">
+                    <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{'arg0', 'arg1'}">
+                    </property>
+                    <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="monotonicityAnalysis">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 70.0]">
+                    </property>
+                </property>
+                <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In order for the monotonicity analysis to work correctly,&#10;the monotonicityAnalysis lattice must be &quot;in front&quot; of&#10;the other lattice here.">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 165.0]">
+                    </property>
+                </property>
+                <entity name="dimensionSystem" class="ptolemy.data.ontologies.lattice.adapters.dimensionSystem.dimensionSystem">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 280.0}">
+                    </property>
+                </entity>
+                <entity name="monotonicityAnalysis" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.monotonicityAnalysis">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 280.0]">
+                    </property>
+                </entity>
+            </entity>
+        </configure>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 320, 960, 620}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 513]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.953125">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{208.7314551767677, 144.4929766414142}">
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 65.0]">
+        </property>
+    </property>
+    <property name="monotonicityAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.x &gt;= Monotonic">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 240.0}">
+        </property>
+    </property>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= Acceleration) ? x : Acceleration">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 160.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+        </port>
+        <port name="x" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+        </port>
+    </entity>
+</entity>
