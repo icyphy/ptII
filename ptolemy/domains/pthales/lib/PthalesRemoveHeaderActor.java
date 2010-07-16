@@ -133,8 +133,22 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
         }
 
         // Ports modifications
-        PthalesIOPort.modifyPattern(portOut, "global", dataSize);
-        PthalesIOPort.modifyPattern(portIn, dims, sizes);
+//        PthalesIOPort.modifyPattern(portOut, "global", dataSize);
+//        PthalesIOPort.modifyPattern(portIn, dims, sizes);
+//        Receiver[][] receivers = portIn.getReceivers();
+//        if (receivers != null && receivers.length > 0) {
+//            for (Receiver[] receiverss : receivers) {
+//                if (receiverss != null && receiverss.length > 0) {
+//                    for (Receiver receiver : receiverss) {
+//                        // FIXME: Is the cast to LinkedHashSet
+//                        // safe?  Depends on the Java
+//                        // implementation of LinkedHashMap.
+//                        ((PthalesReceiver) receiver).setInputArray(
+//                                portIn, this);
+//                    }
+//                }
+//            }
+//        }
         
         // Token Arrays from simulation
         tokensIn = portIn.get(0, dataSize);
