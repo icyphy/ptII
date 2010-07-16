@@ -35,7 +35,9 @@ import org.powermock.api.easymock.PowerMock;
 import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
+import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
 /**
@@ -76,14 +78,20 @@ public class TestLoadRequirementsIntegration {
 
         String inputString = "CompositeActor";
 
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
-        String configPath = "ptolemy/configs/ptdb/configuration.xml";
+        //MoMLParser parser = new MoMLParser();
+        //parser.reset();
+        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
 
-        URL configURL = ConfigurationApplication.specToURL(configPath);
-        Configuration configuration = (Configuration) parser.parse(configURL,
-                configURL);
+        //URL configURL = ConfigurationApplication.specToURL(configPath);
+        //Configuration configuration = (Configuration) parser.parse(configURL,
+        //        configURL);
 
+        Workspace workspace = new Workspace();
+        Configuration configuration = new Configuration(workspace);
+        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+                "directory");
+        modelDirectory.setContainer(configuration);
+        
         PtolemyEffigy effigy = null;
 
         effigy = LoadManager.loadModel(inputString, configuration);
@@ -114,14 +122,20 @@ public class TestLoadRequirementsIntegration {
 
         String inputString = "modeltt";
 
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
-        String configPath = "ptolemy/configs/ptdb/configuration.xml";
+        //MoMLParser parser = new MoMLParser();
+        //parser.reset();
+        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
 
-        URL configURL = ConfigurationApplication.specToURL(configPath);
-        Configuration configuration = (Configuration) parser.parse(configURL,
-                configURL);
+        //URL configURL = ConfigurationApplication.specToURL(configPath);
+        //Configuration configuration = (Configuration) parser.parse(configURL,
+        //        configURL);
 
+        Workspace workspace = new Workspace();
+        Configuration configuration = new Configuration(workspace);
+        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+                "directory");
+        modelDirectory.setContainer(configuration);
+        
         PtolemyEffigy effigy = null;
 
         effigy = LoadManager.loadModel(inputString, configuration);
@@ -150,14 +164,20 @@ public class TestLoadRequirementsIntegration {
 
         String inputString = "not in database";
 
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
-        String configPath = "ptolemy/configs/ptdb/configuration.xml";
+        //MoMLParser parser = new MoMLParser();
+        //parser.reset();
+        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
 
-        URL configURL = ConfigurationApplication.specToURL(configPath);
-        Configuration configuration = (Configuration) parser.parse(configURL,
-                configURL);
+        //URL configURL = ConfigurationApplication.specToURL(configPath);
+        //Configuration configuration = (Configuration) parser.parse(configURL,
+        //        configURL);
 
+        Workspace workspace = new Workspace();
+        Configuration configuration = new Configuration(workspace);
+        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+                "directory");
+        modelDirectory.setContainer(configuration);
+        
         PtolemyEffigy effigy = null;
 
         try {
@@ -185,14 +205,20 @@ public class TestLoadRequirementsIntegration {
 
         String inputString = null;
 
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
-        String configPath = "ptolemy/configs/ptdb/configuration.xml";
+        //MoMLParser parser = new MoMLParser();
+        //parser.reset();
+        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
 
-        URL configURL = ConfigurationApplication.specToURL(configPath);
-        Configuration configuration = (Configuration) parser.parse(configURL,
-                configURL);
+        //URL configURL = ConfigurationApplication.specToURL(configPath);
+        //Configuration configuration = (Configuration) parser.parse(configURL,
+        //        configURL);
 
+        Workspace workspace = new Workspace();
+        Configuration configuration = new Configuration(workspace);
+        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+                "directory");
+        modelDirectory.setContainer(configuration);
+        
         PtolemyEffigy effigy = null;
 
         try {
@@ -220,14 +246,20 @@ public class TestLoadRequirementsIntegration {
 
         String inputString = "";
 
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
-        String configPath = "ptolemy/configs/ptdb/configuration.xml";
+        //MoMLParser parser = new MoMLParser();
+        //parser.reset();
+        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
 
-        URL configURL = ConfigurationApplication.specToURL(configPath);
-        Configuration configuration = (Configuration) parser.parse(configURL,
-                configURL);
+        //URL configURL = ConfigurationApplication.specToURL(configPath);
+        //Configuration configuration = (Configuration) parser.parse(configURL,
+        //        configURL);
 
+        Workspace workspace = new Workspace();
+        Configuration configuration = new Configuration(workspace);
+        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+                "directory");
+        modelDirectory.setContainer(configuration);
+        
         PtolemyEffigy effigy = null;
 
         try {
