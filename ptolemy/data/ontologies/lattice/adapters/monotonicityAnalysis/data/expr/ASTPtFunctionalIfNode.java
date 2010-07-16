@@ -28,13 +28,16 @@
 
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import java.util.List;
 
 import ptolemy.data.ConceptToken;
+import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.Token;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.ConceptGraph;
@@ -44,6 +47,7 @@ import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.graph.Inequality;
+import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -117,6 +121,8 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
          *  
          *  @param ifNode The AST node being constrained by this function. 
          *  @param monotonicityOntology The monotonicity ontology.
+         *  @param domainOntology The ontology over which the expression
+         *   should be interpreted. 
          *  @throws IllegalActionException If a function cannot be created.
          */
         public ASTPtFunctionalIfNodeFunction(
@@ -143,6 +149,147 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
          *  @see ptolemy.data.ontologies.ConceptFunction#_evaluateFunction(java.util.List)
          */
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
+                throws IllegalActionException {
+            Concept result = _standardIfAnalysis(inputConceptValues);
+            if (result.isAboveOrEqualTo(_nonmonotonicConcept)) {
+                Concept constant = _checkConditionalExtractConstant(inputConceptValues);
+                if (constant != null) {
+                   result = _specialIfAnalysis(constant);
+                }
+            }
+            return result;
+        }
+        
+        /** Check that an expression is of the form:
+         *    (x <= c) ? e1 : e2
+         *  where e1 and e2 are monotonic, and c is a constant.
+         *  If the expression is of this form, return the constant
+         *  concept c. Otherwise, return null.
+         *  
+         *  @param inputConceptValues The monotonicity of the conditional
+         *    and branches.
+         *  @return The constant c if the expression meets all checks.
+         *    Null, otherwise.
+         *  @exception IllegalActionException If there is a problem
+         *    evaluating the constant.
+         */
+        private Concept _checkConditionalExtractConstant(List<Concept> inputConceptValues) throws IllegalActionException {
+            Concept mconditional = inputConceptValues.get(0);
+            Concept me3 = inputConceptValues.get(1);
+            Concept me4 = inputConceptValues.get(2);
+
+            if (!_monotonicConcept.isAboveOrEqualTo(mconditional)
+                    || !_monotonicConcept.isAboveOrEqualTo(me3)
+                    || !_monotonicConcept.isAboveOrEqualTo(me4)) {
+                return null;
+            }
+
+            ptolemy.data.expr.ASTPtRelationalNode condition = (ptolemy.data.expr.ASTPtRelationalNode) _ifNode.jjtGetChild(0);
+            ASTPtRootNode rhs = (ASTPtRootNode) condition.jjtGetChild(1);
+            String conditionalType = condition.getOperator().toString();
+            if (conditionalType != "<=" || !(rhs instanceof ASTPtLeafNode)) {
+                return null;
+            }
+            List<Ontology> argumentDomains = new LinkedList<Ontology>();
+            argumentDomains.add(_domainOntology);
+            ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
+                    new LinkedList<String>(), new LinkedList<Concept>(), null,
+                    argumentDomains);
+            Token rhsToken = evaluator.evaluateParseTree(rhs);    
+            if (!(rhsToken instanceof ConceptToken)) {
+                return null;
+            }
+            Concept constant = ((ConceptToken)rhsToken).conceptValue();
+            return constant;
+        }
+
+        /** Evaluate a branch of the if statement pointed to by _ifNode and
+         *  return the result.
+         *  @param childNumber 1 for the then branch, and 2 for the
+         *      else branch.
+         *  @param xValue The value of the variable "x" during evaluation.
+         *  @return The concept that the given child evaluates to.
+         *  @exception IllegalActionException If there is a problem while
+         *      evaluating the parse tree, or an invalid childNumber is
+         *      passed.
+         */
+        private Concept _evaluateChild(int childNumber, Concept xValue) throws IllegalActionException {
+            ASTPtRootNode childNode = (ASTPtRootNode) _ifNode.jjtGetChild(childNumber);
+            
+            // FIXME: Refactor so that we can have multiple argument names,
+            // and not all named "x"
+            List<String> argumentNames = new LinkedList<String>();
+            argumentNames.add("x");
+            List<Concept> argumentValues = new LinkedList<Concept>();
+            argumentValues.add(xValue);
+            List<Ontology> argumentDomains = new LinkedList<Ontology>();
+            argumentDomains.add(_domainOntology);
+            
+            ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
+                    argumentNames,
+                    argumentValues,
+                    null,
+                    argumentDomains);
+            ConceptToken evaluatedToken = (ConceptToken)evaluator.evaluateParseTree(childNode);
+            return evaluatedToken.conceptValue();
+        }
+
+        /** Return the monotonicity of the conditional being analyzed given a
+         *  few extra assumptions.  The if statement must be of the form:
+         *    (x <= c) ? e1 : e2
+         *  where both e1 and e2 are montonic, and c is a constant.
+         *  If these assumptions are not met, this function may return an
+         *  unsound analysis.
+         *  
+         *  Note that this function performs an analysis that is approximately
+         *  equivalent to the ifc analysis of "Static Monotonicity Analysis
+         *  for lambda-definable Functions over Lattices" (Murawski and Yi,
+         *  2002), except that that analysis is unsound.  This analysis
+         *  is a corrected form of that one.
+         *  
+         *  @param constant The constant c.
+         *  @return Monotonic, if the function is monotonic.
+         *    Nonmonotonic, otherwise.
+         *  @exception IllegalActionException If there is a problem
+         *    evaluating the subexpressions of the conditional.
+         */
+        private Concept _specialIfAnalysis(Concept constant) throws IllegalActionException {
+            ConceptGraph inputLattice = _domainOntology.getGraph();
+            List downsetList = Arrays.asList(inputLattice.downSet(constant));
+            List<Concept> downset = (List<Concept>) downsetList;
+            for (Concept b : downset) {
+                List<ComponentPort> l = b.abovePort.deepConnectedPortList();
+                for (ComponentPort cp : l) {
+                    Concept d = (Concept) cp.getContainer();
+                    if (downset.contains(d)) {
+                        continue;
+                    }
+                    Concept fb = _evaluateChild(1, b);
+                    Concept fd = _evaluateChild(2, d);
+                    if (!fd.isAboveOrEqualTo(fb)) {
+                        return _nonmonotonicConcept;
+                    }
+                }
+            }
+            return _monotonicConcept;
+        }
+
+
+        /** Perform the most general type of conditional analysis.
+         *  This version does not make any assumptions about the structure
+         *  of the conditional statement.
+         *  
+         *  Note that the analysis is sound but conservative, so it is
+         *  possible for a monotonic function to be reported as nonmonotonic,
+         *  for example.
+         *  
+         *  @param inputConceptValues The monotonicity of each of the
+         *    subexpressions of this node.
+         *  @return Either Constant, Monotonic, Antimonotonic, or
+         *    Nonmonotonic, depending on the result of the analysis.
+         *  @exception IllegalActionException If there is an error evaluating the function.
+         */
+        private Concept _standardIfAnalysis(List<Concept> inputConceptValues)
                 throws IllegalActionException {
             ConceptGraph monotonicityLattice = _monotonicityAnalysisOntology.getGraph();
             ConceptGraph inputLattice = _domainOntology.getGraph();
@@ -184,36 +331,6 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
             }
             
             return _nonmonotonicConcept;
-        }
-
-        /** Evaluate a branch of the if statement pointed to by _ifNode and
-         *  return the result.
-         *  @param childNumber 1 for the then branch, and 2 for the
-         *      else branch.
-         *  @return The concept that the given child evaluates to.
-         *  @throws IllegalActionException If there is a problem while
-         *      evaluating the parse tree, or an invalid childNumber is
-         *      passed.
-         */
-        private Concept _evaluateChild(int childNumber, Concept xValue) throws IllegalActionException {
-            ASTPtRootNode childNode = (ASTPtRootNode) _ifNode.jjtGetChild(childNumber);
-            
-            // FIXME: Refactor so that we can have multiple argument names,
-            // and not all named "x"
-            List<String> argumentNames = new LinkedList<String>();
-            argumentNames.add("x");
-            List<Concept> argumentValues = new LinkedList<Concept>();
-            argumentValues.add(xValue);
-            List<Ontology> argumentDomains = new LinkedList<Ontology>();
-            argumentDomains.add(_domainOntology);
-            
-            ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
-                    argumentNames,
-                    argumentValues,
-                    null,
-                    argumentDomains);
-            ConceptToken evaluatedToken = (ConceptToken)evaluator.evaluateParseTree(childNode);
-            return evaluatedToken.conceptValue();
         }
         
         /** The AST node for the conditional expression that this
