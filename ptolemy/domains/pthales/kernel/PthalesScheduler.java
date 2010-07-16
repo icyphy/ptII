@@ -192,6 +192,9 @@ public class PthalesScheduler extends SDFScheduler {
             // to support hierarchical nestings of this director
             // inside other models.
 
+            if (actor instanceof PthalesDynamicCompositeActor)
+                continue;
+            
             // Next do the input ports.
             ports = actor.inputPortList();
             for (IOPort port : ports) {
@@ -199,8 +202,6 @@ public class PthalesScheduler extends SDFScheduler {
                 // Notify the receivers of the read pattern.  This
                 // will have the side effect of setting the capacity
                 // of the receivers.
-                if (port.getContainer() instanceof PthalesDynamicCompositeActor)
-                    continue;
 
                 Receiver[][] receivers = port.getReceivers();
                 if (receivers != null && receivers.length > 0) {
