@@ -206,7 +206,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         Object[] options = { "Save to Database", "Save to File System", 
                 "Discard changes", "Cancel" };
 
-        String query = "Save changes to " + StringUtilities.split(_getName())
+        String query = "Save changes to " + getModel().getName()
                 + "?";
 
         // Show the MODAL dialog
