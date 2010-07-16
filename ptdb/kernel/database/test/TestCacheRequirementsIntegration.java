@@ -46,9 +46,11 @@ import ptdb.kernel.database.CacheManager;
 import ptdb.kernel.database.DBConnection;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
+import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 
@@ -186,16 +188,22 @@ public class TestCacheRequirementsIntegration {
     
     private PtolemyEffigy loadModel(String modelName) throws Exception{
         
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
-        String configPath = "ptolemy/configs/ptdb/configuration.xml";
+       // MoMLParser parser = new MoMLParser();
+        //parser.resetAll();
+        //String configPath = "ptolemy/configs/ptdb/configuration.xml";
 
-        URL configURL = ConfigurationApplication.specToURL(configPath);
-        Configuration configuration = (Configuration) parser.parse(configURL,
-                configURL);
-
+        //URL configURL = ConfigurationApplication.specToURL(configPath);
+        //Configuration configuration = (Configuration) parser.parse(configURL,
+         //       configURL);
+        
+        Workspace workspace = new Workspace();
+        Configuration configuration = new Configuration(workspace);
+        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+                "directory");
+        modelDirectory.setContainer(configuration);
+        
         PtolemyEffigy effigy = null;
-
+        
         effigy = LoadManager.loadModel(modelName, configuration);
         
         return effigy;

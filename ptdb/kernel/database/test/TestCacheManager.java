@@ -98,7 +98,7 @@ public class TestCacheManager {
         DBConnection dbConnectionMock = PowerMock
             .createMock(DBConnection.class);
         
-        EasyMock.expect(DBConnectorFactory.getCacheConnection(true))
+        EasyMock.expect(DBConnectorFactory.getCacheConnection(false))
             .andReturn(dbConnectionMock);
 
         for(int i = 0; i<numModels; i++){
@@ -111,7 +111,7 @@ public class TestCacheManager {
             //PowerMock.expectNew(CreateModelTask.class, updateModel).andReturn(createModelTask);
             
             //EasyMock.expect(dbConnectionMock.executeCreateModelTask
-            //        (createModelTask)).andReturn(
+             //       (createModelTask)).andReturn(
             //        "ID");
             dbConnectionMock.executeUpdateModelInCache(updateModel);
         }
@@ -145,6 +145,7 @@ public class TestCacheManager {
 
         EasyMock.expect(DBConnectorFactory.getCacheConnection(false)).andReturn(dBConnectionMock);
         PowerMock.expectNew(GetModelTask.class, loadModel).andReturn(getModelTaskMock);
+        getModelTaskMock.setModelFromCache(true);
         EasyMock.expect(dBConnectionMock.executeGetModelTask(getModelTaskMock)).andReturn(modelMock);
 
         dBConnectionMock.closeConnection();
@@ -183,7 +184,7 @@ public class TestCacheManager {
         DBConnection dbConnectionMock = PowerMock
             .createMock(DBConnection.class);
         
-        EasyMock.expect(DBConnectorFactory.getCacheConnection(true))
+        EasyMock.expect(DBConnectorFactory.getCacheConnection(false))
             .andReturn(dbConnectionMock);
 
         RemoveModelsTask removeModelsMock = PowerMock
@@ -252,7 +253,7 @@ public class TestCacheManager {
     
         DBConnection dbConnectionMock = null;
         
-        EasyMock.expect(DBConnectorFactory.getCacheConnection(true))
+        EasyMock.expect(DBConnectorFactory.getCacheConnection(false))
             .andReturn(dbConnectionMock);
 
         PowerMock.replayAll();
@@ -378,7 +379,7 @@ public class TestCacheManager {
         
         DBConnection dbConnectionMock = null;
         
-        EasyMock.expect(DBConnectorFactory.getCacheConnection(true))
+        EasyMock.expect(DBConnectorFactory.getCacheConnection(false))
             .andReturn(dbConnectionMock);
         
         PowerMock.replayAll();
