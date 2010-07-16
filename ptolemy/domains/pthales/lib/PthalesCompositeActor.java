@@ -28,6 +28,8 @@
 package ptolemy.domains.pthales.lib;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
@@ -167,10 +169,10 @@ public class PthalesCompositeActor extends TypedCompositeActor {
      * @param portIn the input port
      * @param sizes dimensions sizes of the input
      */
-    public void computeIterations(IOPort portIn,
+    public Integer[] computeIterations(IOPort portIn,
             LinkedHashMap<String, Integer> sizes) {
 
-        String repetition = "{";
+        List<Integer> repetition = new LinkedList<Integer>();
 
         // Simple example : pattern is fixed and iterations
         LinkedHashMap<String, Integer[]> patternDims = PthalesIOPort
@@ -194,18 +196,45 @@ public class PthalesCompositeActor extends TypedCompositeActor {
                 }
                 int val = (int) Math.floor((sizes.get(dims[i]) - nb) / jump) + 1;
 
-                repetition += val;
-
-                if (i < dims.length - 1) {
-                    repetition += ",";
-                }
+                repetition.add(val);
             }
         }
-        repetition += "}";
+
+        return (Integer[]) repetition.toArray();
+    }
+
+    /** Compute iteration number of the actor,
+     * which is the number of times internal entities are called. 
+     * and set corresponding attribute
+     * @param portIn the input port
+     * @param sizes dimensions sizes of the input
+     */
+    public void computeSetIterations(IOPort portIn,
+            LinkedHashMap<String, Integer> sizes) {
+        setIterations(computeIterations(portIn, sizes));
+    }
+
+    /** Set iteration number of the actor,
+     * which is the number of times internal entities are called. 
+     * and set corresponding attribute
+     * @param portIn the input port
+     * @param sizes dimensions sizes of the input
+     */
+    public void setIterations(Integer[] repetition) {
+        String repetitionString = "{";
+
+        for (int i = 0; i < repetition.length; i++) {
+            repetitionString += repetition[i];
+            if (i < repetition.length - 1) {
+                repetitionString += ",";
+            }
+        }
+
+        repetitionString += "}";
 
         Attribute repetitions = getAttribute(PthalesCompositeActor._REPETITIONS);
         if (repetitions != null && repetitions instanceof Parameter) {
-            ((Parameter) repetitions).setExpression(repetition);
+            ((Parameter) repetitions).setExpression(repetitionString);
         }
     }
 
@@ -256,11 +285,10 @@ public class PthalesCompositeActor extends TypedCompositeActor {
             repetitions.setExpression("{1}");
         }
     }
-    
 
     ///////////////////////////////////////////////////////
     ////              protected variables              ////
-    
+
     /** The name of the total repetitions parameter. */
     protected static String _REPETITIONS = "repetitions";
 }
