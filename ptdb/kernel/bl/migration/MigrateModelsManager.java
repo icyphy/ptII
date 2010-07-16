@@ -76,6 +76,7 @@ public class MigrateModelsManager {
         try {
             
             File csvFile = new File(csvFilePath);
+            csvFile.createNewFile();
             
         } catch (Exception e) {
             
@@ -101,7 +102,7 @@ public class MigrateModelsManager {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		private methods 				  ////
+    ////		private methods 				////
     
     /**
      * Reads the models in the given directory and store them in the database.
