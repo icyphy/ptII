@@ -103,7 +103,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
             IllegalActionException {
 
         int minIterations = -1;
-        
+
         for (Object port : inputPortList()) {
             IOPort portIn = (IOPort) port;
 
@@ -120,22 +120,22 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
             }
 
             Integer[] repetition = computeIterations(portIn, sizes);
-            
+
             int iterations = nbTokens;
-            
-            for(int i = 0; i < repetition.length; i++) {
+
+            for (int i = 0; i < repetition.length; i++) {
                 iterations *= repetition[i];
             }
 
-            if(minIterations < 0 || minIterations >  iterations) {
+            if (minIterations < 0 || minIterations > iterations) {
                 _repetition = repetition;
                 minIterations = iterations;
             }
         }
-        
-        if(minIterations < 0)
+
+        if (minIterations < 0)
             minIterations = 0;
-        
+
         return minIterations;
     }
 
@@ -147,7 +147,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
 
         for (Object port : inputPortList()) {
             //FIXME We could check if the port is set to a dynamic port?
-            
+
             Receiver[][] receivers = ((TypedIOPort) port).getReceivers();
 
             for (int i = 0; i < ((IOPort) port).getWidth(); i++) {
@@ -183,10 +183,12 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
         if (count == 0) {
             iterations = computeIterations();
         }
+        
+        _headerSent = false;
 
         return super.iterate(iterations);
     }
-    
+
     /** If this actor is opaque, invoke the prefire() method of the local
      *  director. This method returns true if the actor is ready to fire
      *  (determined by the prefire() method of the director).
@@ -198,44 +200,52 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
      */
     public boolean prefire() throws IllegalActionException {
         boolean result = super.prefire();
-        
-        //send header information to the next actor
-        Iterator<?> outports = outputPortList().iterator();
 
-        while (outports.hasNext() && !_stopRequested) {
-            //FIXME check if the port is dynamic
-            
-            IOPort p = (IOPort) outports.next();
-            LinkedHashMap<String, Integer> sizes = PthalesIOPort.getArraySizes(p, _repetition);
+        if (!_headerSent) {
+            //send header information to the next actor
+            Iterator<?> outports = outputPortList().iterator();
 
-            //Header construction
-            List<Token> header = new ArrayList<Token>();
-            
-            int nbDims = PthalesIOPort.getDimensions(p).length;
-            
-            header.add(new IntToken(nbDims));
-            header.add(new IntToken(PthalesIOPort.getNbTokenPerData(p)));
-            
-            for (String dim : sizes.keySet()) {
-                header.add(new StringToken(dim));
-                header.add(new IntToken(sizes.get(dim)));
-            }
+            while (outports.hasNext() && !_stopRequested) {
+                //FIXME check if the port is dynamic
 
-            // then sent to output
-            for (int i = 0; i < p.getWidth(); i++) {
-                for (int j = 0; j < header.size(); j++) {
-                    p.send(i, header.get(j));
+                IOPort p = (IOPort) outports.next();
+                LinkedHashMap<String, Integer> sizes = PthalesIOPort
+                        .getArraySizes(p, _repetition);
+
+                //Header construction
+                List<Token> header = new ArrayList<Token>();
+
+                int nbDims = PthalesIOPort.getDimensions(p).length;
+
+                header.add(new IntToken(nbDims));
+                header.add(new IntToken(PthalesIOPort.getNbTokenPerData(p)));
+
+                for (String dim : sizes.keySet()) {
+                    header.add(new StringToken(dim));
+                    header.add(new IntToken(sizes.get(dim)));
                 }
+
+                // then sent to output
+                for (int i = 0; i < p.getWidth(); i++) {
+                    for (int j = 0; j < header.size(); j++) {
+                        p.send(i, header.get(j));
+                    }
+                }
+
             }
             
+            _headerSent = true;
         }
-        
+
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
+    /* flag indicating if header has been sent or not */
+    private boolean _headerSent = false;
+
     /* cached value for the repetition parameter */
     private Integer[] _repetition;
 }
