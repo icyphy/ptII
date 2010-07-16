@@ -107,16 +107,25 @@ public class PthalesIOPort {
      *  @return array sizes
      */
     public static LinkedHashMap<String, Integer> getArraySizes(IOPort port) {
-        LinkedHashMap<String, Integer> sizes = new LinkedHashMap<String, Integer>();
-        LinkedHashMap<String, Token> sizesToMap = new LinkedHashMap<String, Token>();
 
         Actor actor = (Actor) port.getContainer();
         Integer[] rep = { 1 };
 
+        rep = PthalesAtomicActor.getRepetitions((ComponentEntity) actor);
+
+        return getArraySizes(port, rep);
+    }
+    
+    /** Compute array sizes (for each dimension).
+     *  @param port associated port
+     *  @return array sizes
+     */
+    public static LinkedHashMap<String, Integer> getArraySizes(IOPort port, Integer[] rep) {
+        LinkedHashMap<String, Integer> sizes = new LinkedHashMap<String, Integer>();
+        LinkedHashMap<String, Token> sizesToMap = new LinkedHashMap<String, Token>();
+
         LinkedHashMap<String, Integer[]> pattern = getPattern(port);
         LinkedHashMap<String, Integer[]> tiling = getTiling(port);
-
-        rep = PthalesAtomicActor.getRepetitions((ComponentEntity) actor);
 
         Set dims = pattern.keySet();
         Set tilingSet = tiling.keySet();
@@ -664,7 +673,7 @@ public class PthalesIOPort {
         // Iterations
         if (portIn.getContainer() instanceof PthalesCompositeActor) {
             // Iteration computation
-            ((PthalesCompositeActor) portIn.getContainer()).computeIterations(
+            ((PthalesCompositeActor) portIn.getContainer()).computeSetIterations(
                     portIn, sizes);
 
             // Once iterations are computed, output port can be computed
