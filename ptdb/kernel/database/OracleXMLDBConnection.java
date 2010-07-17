@@ -1944,8 +1944,10 @@ public class OracleXMLDBConnection implements DBConnection {
      * @return Model name 
      */
     private String _extractModelName(String completeModelName) {
-        if (completeModelName != null) {
-            return completeModelName.substring(completeModelName.lastIndexOf("/") + 1);
+        if (completeModelName != null
+                && completeModelName.lastIndexOf("/") != -1) {
+            return completeModelName.substring(completeModelName
+                    .lastIndexOf("/") + 1);
         } else
             return completeModelName;
     }
@@ -2132,7 +2134,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * @param modelNamesList List of models that may contain duplicates.
      * @return List of distinct XMLDBModels.
      */
-    private ArrayList<XMLDBModel> _getDistinctModelsList(
+    protected ArrayList<XMLDBModel> _getDistinctModelsList(
             ArrayList<String> modelNamesList) {
 
         ArrayList<XMLDBModel> finalModelsList = new ArrayList<XMLDBModel>();
@@ -2451,37 +2453,37 @@ public class OracleXMLDBConnection implements DBConnection {
      * parameters like cache size, locking mechanism, storing mechanism etc.
      * required for creating a database connection.
      */
-    private static Environment _environment;
+    protected static Environment _environment;
     
     /** Path for the given environment */
-    private static String _environmentPath;
+    protected static String _environmentPath;
     /**
      * Denote whether the database connection is active or not
      */
-    private boolean _isConnectionAlive;
+    protected boolean _isConnectionAlive;
 
     /**
      * Denote whether the database connection is active or not
      */
-    private boolean _isTransactionActive;
+    protected boolean _isTransactionActive;
 
     /**
      * This object contains the parameters like path, container name etc.
      * required to connect with the database
      */
-    private DBConnectionParameters _params;
+    protected DBConnectionParameters _params;
 
     /**
      * This is the Oracle Berkeley XML DB Container that is used to add and
      * remove documents.
      */
-    private XmlContainer _xmlContainer;
+    protected XmlContainer _xmlContainer;
 
     /**
      * This is the Oracle BerkeleyXML DB manager that is used to execute queries
      * over the opened container
      */
-    private XmlManager _xmlManager;
+    protected XmlManager _xmlManager;
 
     /**
      * This is a hash map to store the complete models without any references.
@@ -2493,7 +2495,7 @@ public class OracleXMLDBConnection implements DBConnection {
      * abort certain transactions. This will be set only if a transaction
      * enabled connection is requested.
      */
-    private XmlTransaction _xmlTransaction;
+    protected XmlTransaction _xmlTransaction;
 
     /**
      * Contain the parents list for a model.
