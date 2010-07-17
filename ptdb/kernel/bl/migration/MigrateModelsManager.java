@@ -70,8 +70,6 @@ public class MigrateModelsManager {
      */
     public String  migrateModels(String directoryPath) throws IOException {
         
-        
-
         //check if the path provided exists.
         File directoryFile = new File(directoryPath);
         
@@ -80,7 +78,8 @@ public class MigrateModelsManager {
         }
         
         
-        String csvFilePath = directoryPath + "\\migrationResults.csv";
+        String csvFilePath = directoryPath + System.getProperty("file.separator") 
+                + "migrationResults.csv";
         
         // Check if the application has write access to the csv file path.
         try {
@@ -96,14 +95,19 @@ public class MigrateModelsManager {
         _csvFileWriter = new FileWriter(csvFilePath);
         
         //write the header for the csv file.
-        _csvFileWriter.write("Model Name" + "," + "Migration Status" 
-                + "," + "Error Messages" + "\n");
+        _csvFileWriter.write("Model Name,Migration Status,Error Messages" 
+                + System.getProperty("line.separator"));
         
-        _readFiles(directoryFile); 
+        try {
+            
+            _readFiles(directoryFile);
+            
+        } finally {
+            
+            _csvFileWriter.flush();
         
-        _csvFileWriter.flush();
-        
-        _csvFileWriter.close();
+            _csvFileWriter.close();
+        }
         
         return csvFilePath;
         
@@ -123,19 +127,19 @@ public class MigrateModelsManager {
         // If the path sent is a file, try to create a model in the database out of it.
         if (directory.isFile()) {
             
+            
             String modelName = "";
             
-            if (directory.getName().indexOf(".") > 0) {
+            // Only files with .xml extension will be considered.
+            
+            if (directory.getName().indexOf(".xml") > 0) {
                 
-                modelName = directory.getName().substring(0, directory.getName().indexOf("."));
+                modelName = directory.getName().substring(0, 
+                        directory.getName().indexOf(".xml"));
                 
-            } else {
-                
-                modelName = directory.getName();
+                _createDBModel(modelName, _getContent(directory));
             }
                 
-            _createDBModel(modelName, _getContent(directory));
-            
             
         } else if (directory.isDirectory()) {
             // If the path is a directory, get the list of files and call 
@@ -208,26 +212,15 @@ public class MigrateModelsManager {
         
         SaveModelManager saveModelManager = new SaveModelManager();
         
-        boolean isSuccessful = false;
-        
         try {
             
             saveModelManager.save(xmlDBModel);
-            isSuccessful = true;
+            
+            _csvFileWriter.write(modelName + ",Successful, " + System.getProperty("line.separator"));
             
         } catch (Exception e) {
-            
-            isSuccessful = false;
-            _csvFileWriter.write(modelName + "," + "Failed" 
-                    + "," + e.getMessage() + "\n");
-            
-        }
-        
-        if (isSuccessful == true) {
-            
-            _csvFileWriter.write(modelName + "," + "Successful" 
-                    + "," + " " + "\n");
-            
+            _csvFileWriter.write(modelName + ",Failed," + e.getMessage() 
+                    + System.getProperty("line.separator"));
         }
     }
 
