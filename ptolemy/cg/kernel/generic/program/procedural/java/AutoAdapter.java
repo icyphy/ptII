@@ -482,7 +482,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
         }
 
-        code.append("} catch (Exception ex) {\n"
+        code.append("\n} catch (Exception ex) {\n"
                 + "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\" /*+ $actorSymbol(toplevel).exportMoML()*/, ex);\n"
                 + " };\n");
         return code.toString();

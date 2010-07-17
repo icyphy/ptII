@@ -185,11 +185,10 @@ public class SDFDirector
 
                     for (int k = 0; k < rate; k++) {
                         code.append(compositeActorAdapter.getReference("@"
-                                + name + "," + k, false));
-                        code.append(" = " + _eol);
-                        code.append(compositeActorAdapter.getReference(name
-                                + "," + k, false));
-                        code.append(";" + _eol);
+                                + name + "," + k, false)
+                                + " = "
+                                + compositeActorAdapter.getReference(name + "," + k, false)
+                                + ";" + _eol);
                     }
                 }
             }
@@ -301,11 +300,11 @@ public class SDFDirector
 
                     for (int k = 0; k < rate; k++) {
                         code.append(CodeStream.indent(compositeActorAdapter
-                                .getReference(name + "," + k, false)));
-                        code.append(" =" + _eol);
-                        code.append(CodeStream.indent(compositeActorAdapter
-                                .getReference("@" + name + "," + k, false)));
-                        code.append(";" + _eol);
+                                .getReference(name + "," + k, false))
+                                + " ="
+                                + CodeStream.indent(compositeActorAdapter
+                                        .getReference("@" + name + "," + k, false))
+                                + ";" + _eol);
                     }
                 }
             }

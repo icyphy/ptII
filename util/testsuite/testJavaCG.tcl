@@ -37,12 +37,17 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 proc testJavaCG {model} {
+    testJavaCGInline $model true
+    testJavaCGInline $model false
+}
+
+proc testJavaCGInline {model inline} {
     global PTII	
     set relativeFilename \
 	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
 	    $PTII $model {$PTII}]
-    puts "------------------ Java ptolemy/cg testing $relativeFilename"
-    test "Auto" "Automatic Java ptolemy/cg test in file $relativeFilename" {
+    puts "------------------ JavaCG \$PTII/bin/ptcg -language java -inline $inline $relativeFilename"
+    test "Auto" "Automatic JavaCG \$PTII/bin/ptcg -language java -inline $inline $relativeFilename" {
 	# Remove files from ~/cg so as to force building
 	foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
 	foreach javaFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.java] { file delete -force $javaFile}
@@ -51,11 +56,11 @@ proc testJavaCG {model} {
 	$parser reset
 	$parser purgeAllModelRecords
 
-	set args [java::new {String[]} 3 \
-		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.java" $model]]
+	set args [java::new {String[]} 5 \
+		  [list "-language" "java" "-inline" $inline $model]]
 
 	set timeout 300000
-	puts "JavaCGAuto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+	puts "testJavaCG.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
 

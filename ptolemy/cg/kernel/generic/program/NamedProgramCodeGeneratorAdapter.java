@@ -334,10 +334,16 @@ public class NamedProgramCodeGeneratorAdapter extends
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        String fireCode = _generateFireCode();
+        String[] splitFireCode = getCodeGenerator()._splitBody(
+                "_" + NamedProgramCodeGeneratorAdapter.generateName(getComponent()) + "_",
+                fireCode);
+        code.append(splitFireCode[0]);
         code.append(_eol + "void "
                 + NamedProgramCodeGeneratorAdapter.generateName(getComponent())
                 + getCodeGenerator()._getFireFunctionArguments() + " {" + _eol);
-        code.append(_generateFireCode());
+        // code.append(_generateFireCode());
+        code.append(splitFireCode[1]);
         code.append("}" + _eol);
         return processCode(code.toString());
     }

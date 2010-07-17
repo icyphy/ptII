@@ -62,9 +62,9 @@ if ($hasToken(reset#channel)) {
 /**/
 
 /***ifReset***/
-if ($actorSymbol(resetTemp))
-        /**/
+if ($actorSymbol(resetTemp)) {
+/**/
 
-        /***StringWrapupBlock***/
-        free($actorSymbol(sum));
+/***StringWrapupBlock***/
+free($actorSymbol(sum));
 /**/

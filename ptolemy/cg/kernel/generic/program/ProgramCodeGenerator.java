@@ -1001,9 +1001,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         if (!inlineValue) {
 
-            code.append(comment("before appending fireFunctionCode"));
+            code.append(comment("Before appending fireFunctionCode."));
             code.append(fireFunctionCode);
-            code.append(comment("after appending fireFunctionCode"));
+            code.append(comment("After appending fireFunctionCode."));
         }
 
         //if (containsCode(variableInitCode)
@@ -1011,13 +1011,20 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
         String[] splitVariableInitCode = _splitBody("_varinit_",
                 variableInitCode);
+        code.append(comment("Before appending splitVariableInitCode[0]."));
         code.append(splitVariableInitCode[0]);
+        code.append(comment("After appending splitVariableInitCode[0]."));
         String[] splitInitializeCode = _splitBody("_initialize_",
                 initializeCode);
+        code.append(comment("Before appending splitInitializeCode[0]."));
         code.append(splitInitializeCode[0]);
+        code.append(comment("After appending splitInitializeCode[0]."));
 
+        code.append(comment("Before appending initializeEntryCode"));
         code.append(initializeEntryCode);
+        code.append(comment("Before appending splitVariableInitCode[0]."));
         code.append(splitVariableInitCode[1]);
+        code.append(comment("Before appending splitInitializeCode[1]."));
         code.append(splitInitializeCode[1]);
         code.append(initializeExitCode);
 
@@ -1214,7 +1221,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
     /** Split the code. */
-    private String[] _splitBody(String prefix, String code) {
+    public String[] _splitBody(String prefix, String code) {
         // Split the initialize body into multiple methods
         // so that the compiler has an easier time.
         String[] results = null;

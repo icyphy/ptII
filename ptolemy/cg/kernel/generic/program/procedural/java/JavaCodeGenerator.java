@@ -970,21 +970,31 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             while ((line = bufferedReader.readLine()) != null) {
                 String methodName = prefix + "_" + methodNumber++;
                 body = new StringBuffer(line + _eol);
-                int openBracketCount = 0;
                 int commentCount = 0;
+                int ifCount = 0;
+                int openBracketCount = 0;
                 int tryCount = 0;
+                if (line.trim().startsWith("if")) {
+                    ifCount++;
+                }
                 if (line.trim().endsWith("{")) {
+                    if (ifCount > 0) {
+                        ifCount--;
+                    }
                     openBracketCount++;
                 }
                 if (line.trim().startsWith("try")) {
                     tryCount++;
                 }
+                //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " " + line);
                 for (int i = 0;
                      ((i + 1) < linesPerMethod && line != null)
-                         || openBracketCount > 0 || commentCount > 0 || tryCount > 0
+                         || ifCount > 0 || openBracketCount > 0 || commentCount > 0 || tryCount > 0
                          ; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
+                    //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " " + line);
+
                     if (line != null) {
                         body.append(line + _eol);
                         String trimmedLine = line.trim();
@@ -1001,10 +1011,16 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                             // Look for curly braces in non-commented lines
                             // This code could be buggy . . .
                             if (trimmedLine.endsWith("{")) {
+                                if (ifCount > 0) {
+                                    ifCount--;
+                                }
                                 openBracketCount++;
                             }
                             // Lines can both start and end with braces.
                             if (trimmedLine.startsWith("}")) {
+                                if (ifCount > 0) {
+                                    ifCount--;
+                                }
                                 openBracketCount--;
                                 // Don't break up try catch blocks
                                 if (trimmedLine.startsWith("} catch")
@@ -1013,6 +1029,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 }
                             } else if (trimmedLine.startsWith("try")) {
                                 tryCount++;
+                            } else if (line.trim().startsWith("if")) {
+                                ifCount++;
                             }
                         }
                     }

@@ -23,13 +23,13 @@ static boolean zero_BooleanOneArg(boolean a) {
 /**/
 
 /*** zero_Double() ***/
-double zero_Double() {
+static double zero_Double() {
         return 0.0;
 }
 /**/
 
 /*** zero_DoubleOneArg() ***/
-double zero_DoubleOneArg(double a) {
+static double zero_DoubleOneArg(double a) {
         return 0.0;
 }
 /**/
@@ -47,13 +47,13 @@ static Token zero_DoubleArrayOneArg(double [] a) {
 /**/
 
 /*** zero_Integer() ***/
-int zero_Integer() {
+static int zero_Integer() {
         return 0;
 }
 /**/
 
 /*** zero_IntegerOneArg() ***/
-int zero_IntegerOneArg(int a) {
+static int zero_IntegerOneArg(int a) {
         return 0;
 }
 /**/
@@ -71,25 +71,25 @@ static Token zero_IntArrayOneArg(int [] a) {
 /**/
 
 /*** zero_Long() ***/
-long long zero_Long() {
+static long long zero_Long() {
         return 0;
 }
 /**/
 
 /*** zero_LongOneArg() ***/
-long long zero_LongOneArg(long[] a) {
+static long long zero_LongOneArg(long[] a) {
         return 0;
 }
 /**/
 
 /*** zero_String() ***/
-String zero_String() {
+static String zero_String() {
         return "";
 }
 /**/
 
 /*** zero_StringOneArg() ***/
-String zero_StringOneArg(String a) {
+static String zero_StringOneArg(String a) {
         return "";
 }
 /**/
@@ -152,13 +152,13 @@ static Token zero_Token_TokenOneArg(Token a, Token... b) {
 /**/
 
 /*** zero_UnsignedByte() ***/
-int zero_UnsignedByte() {
+static int zero_UnsignedByte() {
         return 0;
 }
 /**/
 
 /*** zero_UnsignedByteOneArg() ***/
-int zero_UnsignedByte(int a) {
+static int zero_UnsignedByte(int a) {
         return 0;
 }
 /**/
