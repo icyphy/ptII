@@ -73,7 +73,7 @@ import diva.gui.GUIUtilities;
 /**
  * An extended graph editor frame containing the ability to interface with a
  * model database via the Database menu.
- *
+ * 
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -91,12 +91,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * tableau. This constructor results in a graph frame that obtains its
      * library either from the model (if it has one) or the default library
      * defined in the configuration.
-     *
+     * 
      * @see Tableau#show()
-     * @param entity
-     *            The model to put in this frame.
-     * @param tableau
-     *            The tableau responsible for this frame.
+     * @param entity The model to put in this frame.
+     * @param tableau The tableau responsible for this frame.
      */
     public ActorGraphDBFrame(CompositeEntity entity, Tableau tableau) {
 
@@ -112,75 +110,18 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * library either from the model (if it has one), or the
      * <i>defaultLibrary</i> argument (if it is non-null), or the default
      * library defined in the configuration.
-     *
+     * 
      * @see Tableau#show()
-     * @param entity
-     *            The model to put in this frame.
-     * @param tableau
-     *            The tableau responsible for this frame.
-     * @param defaultLibrary
-     *            An attribute specifying the default library to use if the
-     *            model does not have a library.
+     * @param entity The model to put in this frame.
+     * @param tableau The tableau responsible for this frame.
+     * @param defaultLibrary An attribute specifying the default library to use
+     * if the model does not have a library.
      */
     public ActorGraphDBFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
 
         super(entity, tableau, defaultLibrary);
         _initActorGraphDBFrame();
-
-    }
-    
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                 ////
-    
-    /**
-     * Update the DBModelHistory
-     * 
-     * @param modelName 
-     *          The model name to add to the history.
-     * @param delete 
-     *          Indication if the history should be updated with model name
-     *          or if it should be deleted.
-     * @exception IOException 
-     *          Thrown if the history cannot be read from or written to.
-     * 
-     */
-    public void _updateDBModelHistory(String modelName, boolean delete) 
-        throws IOException  {
-        
-        List<String> historyList = _readHistory();
-
-         // Remove if already present (then added to first position)
-         for (int i = 0; i < historyList.size(); i++) {
-    
-            if (historyList.get(i).equals(modelName)) {
-    
-               historyList.remove(i);
-    
-            }
-    
-         }
-    
-         // Remove if depth > limit
-         if (historyList.size() >= _historyDepth) {
-    
-             historyList.remove(historyList.size() - 1);
-    
-         }
-    
-         // Add to fist position
-         if (!delete) {
-    
-            historyList.add(0, modelName);
-    
-         }
-    
-         // Serialize history
-         _writeDBModelHistory(historyList);
-    
-         // Update submenu
-         _populateDBModelHistory(historyList);
 
     }
 
@@ -198,7 +139,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         _simpleSearchAction = new SimpleSearchAction(getModel(), this,
                 getConfiguration());
         _configureAttributesAction = new ConfigureAttributesAction();
-        
+
         _openModelMigrationFrameAction = new OpenModelMigrationFrameAction();
 
     }
@@ -222,30 +163,25 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             // Add menu items if database connection has been established.
             // TODO: if (DB IS CONNECTED) {
 
-            GUIUtilities
-                .addHotKey(_getRightComponent(), _saveModelToDBAction);
+            GUIUtilities.addHotKey(_getRightComponent(), _saveModelToDBAction);
             GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
-           
-            
+
             // Create search menu.
             JMenu searchMenu = new JMenu("Search");
             searchMenu.setMnemonic(KeyEvent.VK_C);
             _dbMenu.add(searchMenu);
 
-            GUIUtilities
-            .addHotKey(_getRightComponent(), _simpleSearchAction);
+            GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
             GUIUtilities.addMenuItem(searchMenu, _simpleSearchAction);
-            
+
             GUIUtilities
                     .addHotKey(_getRightComponent(), _openSearchFrameAction);
             GUIUtilities.addMenuItem(searchMenu, _openSearchFrameAction);
-            
-            
+
             JMenu recentModelMenu = new JMenu("Recently Opened Models");
             searchMenu.setMnemonic(KeyEvent.VK_R);
             _dbMenu.add(recentModelMenu);
-            
-            
+
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openDatabaseSetupAction);
             GUIUtilities.addMenuItem(_dbMenu, _openDatabaseSetupAction);
@@ -253,24 +189,26 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             GUIUtilities.addHotKey(_getRightComponent(),
                     _configureAttributesAction);
             GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
-            
+
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openModelMigrationFrameAction);
             GUIUtilities.addMenuItem(_dbMenu, _openModelMigrationFrameAction);
 
             try {
-                
-                if(getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null){
-                
+
+                if (getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) 
+                        != null) {
+
                     _updateDBModelHistory(getModel().getName(), false);
-                
+
                 } else {
 
                     _updateDBModelHistory(getModel().getName(), true);
-            
+
                 }
+                
             } catch (Exception ex) {
-            
+
                 MessageHandler.error("Cannot read model history.", ex);
 
             }
@@ -278,25 +216,25 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
     }
-    
-    /** Open a dialog to prompt the user to save the data.
-     *  If Save to Database is selected, the SaveModelToDBFrame is opened.  In 
-     *  this case, _CANCELED is returned.  This keeps the editing frame open 
-     *  until the complex saving is complete.  For filed-based saving, return false 
-     *  if the user clicks "cancel", and otherwise return true.
-     *  If the user clicks "Save", this also saves the data.
-     *  @return _SAVED if the file is saved, _DISCARDED if the modifications are
-     *   discarded, _CANCELED if the operation is canceled by the user (or if 
-     *   saving to the Database), and _FAILED if the user selects save 
-     *   and the save fails.
+
+    /**
+     * Open a dialog to prompt the user to save the data. If Save to Database is
+     * selected, the SaveModelToDBFrame is opened. In this case, _CANCELED is
+     * returned. This keeps the editing frame open until the complex saving is
+     * complete. For filed-based saving, return false if the user clicks
+     * "cancel", and otherwise return true. If the user clicks "Save", this also
+     * saves the data.
+     * @return _SAVED if the file is saved, _DISCARDED if the modifications are
+     * discarded, _CANCELED if the operation is canceled by the user (or if
+     * saving to the Database), and _FAILED if the user selects save and the
+     * save fails.
      */
     protected int _queryForSave() {
-        
-        Object[] options = { "Save to Database", "Save to File System", 
+
+        Object[] options = { "Save to Database", "Save to File System",
                 "Discard changes", "Cancel" };
 
-        String query = "Save changes to " + getModel().getName()
-                + "?";
+        String query = "Save changes to " + getModel().getName() + "?";
 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(this, query,
@@ -306,8 +244,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         if (selected == 0) {
             _saveModelToDBAction.actionPerformed(null);
             return _CANCELED;
-        } 
-        else if (selected == 1) {
+        } else if (selected == 1) {
 
             if (_save()) {
                 return _SAVED;
@@ -321,14 +258,14 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
         return _CANCELED;
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /**
-     * The action for opening the attributes configuration frame. 
+     * The action for opening the attributes configuration frame.
      */
     protected Action _configureAttributesAction;
 
@@ -346,7 +283,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     /** The action for saving a model to the database. */
     protected Action _openDatabaseSetupAction;
-    
+
     /** The action for opening the model migration frame. */
     protected Action _openModelMigrationFrameAction;
 
@@ -392,12 +329,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         public void actionPerformed(ActionEvent e) {
 
-//            URL toRead = getClass().getClassLoader().getResource(
-//                    "ptolemy/actor/gt/controller/ModelBasedTransformation.xml");
+            //            URL toRead = getClass().getClassLoader().getResource(
+            //                    "ptolemy/actor/gt/controller/ModelBasedTransformation.xml");
 
             URL toRead = getClass().getClassLoader().getResource(
-                  "ptolemy.actor.gt.controller.Match");
-                    
+                    "ptolemy.actor.gt.controller.Match");
+
             try {
 
                 EffigyFactory effigyFactory = new EffigyFactory(
@@ -413,8 +350,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                 CompositeEntity compositeEntity = new TransformationRule(
                         effigy, "transformation rule");
 
-                ExtendedGraphFrame frame = new GraphPatternSearchEditor(compositeEntity,
-                        new Tableau(effigy, "DBSearchframe"),
+                ExtendedGraphFrame frame = new GraphPatternSearchEditor(
+                        compositeEntity, new Tableau(effigy, "DBSearchframe"),
                         ((ActorGraphDBTableau) _tableau).getGtLibrary(),
                         getModel(), ActorGraphDBFrame.this);
 
@@ -494,7 +431,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     //// OpenModelMigrationFrameAction
 
@@ -522,9 +458,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             frame.setVisible(true);
         }
     }
-    
-    
-    
 
     ///////////////////////////////////////////////////////////////////
     //// SimpleSearchAction
@@ -535,14 +468,11 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     private class SimpleSearchAction extends AbstractAction {
         /**
          * Create a new action to save a model to the database.
-         * @param model 
-         *      The model into which search results would be imported.
-         * @param frame 
-         *      The editing frame from which the simple search window will
-         *      open.
-         * @param configuration
-         *      The configuration under which models from the database will
-         *      be loaded. 
+         * @param model The model into which search results would be imported.
+         * @param frame The editing frame from which the simple search window
+         * will open.
+         * @param configuration The configuration under which models from the
+         * database will be loaded.
          * 
          */
         public SimpleSearchAction(NamedObj model, JFrame frame,
@@ -574,50 +504,54 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    //// DBHistoryMenuListener
+    
     /** Listener for help menu commands. */
-    class DBHistoryMenuListener implements ActionListener {
-        
+    private class DBHistoryMenuListener implements ActionListener {
+
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
-            UndeferredGraphicalMessageHandler.setContext(ActorGraphDBFrame.this);
+            UndeferredGraphicalMessageHandler
+                    .setContext(ActorGraphDBFrame.this);
 
             JMenuItem target = (JMenuItem) e.getSource();
             String actionCommand = target.getActionCommand();
-            
+
             try {
-        
-                PtolemyEffigy effigy = LoadManager.loadModel
-                    (((JMenuItem)e.getSource()).getText(), getConfiguration());
-            
-                if(effigy != null){
-                            
+
+                PtolemyEffigy effigy = LoadManager.loadModel(((JMenuItem) e
+                        .getSource()).getText(), getConfiguration());
+
+                if (effigy != null) {
+
                     effigy.showTableaux();
-                            
+
                 } else {
-                            
+
                     JOptionPane
-                       .showMessageDialog(ActorGraphDBFrame.this,
-                           "The specified model could " +
-                           "not be found in the database.",
-                           "Load Error",
-                           JOptionPane.INFORMATION_MESSAGE, null);
-                            
+                            .showMessageDialog(ActorGraphDBFrame.this,
+                                    "The specified model could "
+                                            + "not be found in the database.",
+                                    "Load Error",
+                                    JOptionPane.INFORMATION_MESSAGE, null);
+
                 }
-            
+
             } catch (Exception ex) {
-            
+
                 MessageHandler.error("Cannot read model history.", ex);
-        
+
                 try {
-            
+
                     _updateDBModelHistory(actionCommand, true);
-            
+
                 } catch (IOException ex2) {
-            
+
                     // Ignore
-            
+
                 }
-        
+
             }
 
         }
@@ -625,25 +559,23 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
-    
+
     private String _getDBModelHistoryFileName() throws IOException {
 
-        return StringUtilities.preferencesDirectory() + 
-            "DBModelHistory.txt";
+        return StringUtilities.preferencesDirectory() + "DBModelHistory.txt";
 
     }
-    
+
     private void _populateDBModelHistory(List historyList) {
-        
+
         Component[] components = _dbMenu.getMenuComponents();
         JMenu history = null;
 
         for (Component component : components) {
 
             if (component instanceof JMenu
-                && ((JMenu) component).getText()
-                    .equals("Recently Opened Models")) {
+                    && ((JMenu) component).getText().equals(
+                            "Recently Opened Models")) {
 
                 history = (JMenu) component;
 
@@ -654,7 +586,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         if (history == null) {
             throw new KernelRuntimeException(
 
-                "Unexpected loss of Recently Opened Models menu.");
+            "Unexpected loss of Recently Opened Models menu.");
 
         }
 
@@ -664,18 +596,17 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         for (int i = 0; i < historyList.size(); i++) {
 
-            JMenuItem item = 
-                new JMenuItem((String) historyList.get(i));
+            JMenuItem item = new JMenuItem((String) historyList.get(i));
             item.addActionListener(listener);
             history.add(item);
 
         }
 
-        
     }
-    
-    /** Get the history from the file that contains names
-     * Always return a list, that can be empty
+
+    /**
+     * Get the history from the file that contains names Always return a list,
+     * that can be empty
      * @return list of file history
      */
     private List<String> _readHistory() throws IOException {
@@ -701,10 +632,58 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         return historyList;
     }
-    
-    private void _writeDBModelHistory(List<String> historyList) 
-        throws IOException {
-        
+
+    /**
+     * Update the DBModelHistory.
+     * 
+     * @param modelName The model name to add to the history.
+     * @param delete Indication if the history should be updated with model name
+     * or if it should be deleted.
+     * @exception IOException Thrown if the history cannot be read from or
+     * written to.
+     * 
+     */
+    private void _updateDBModelHistory(String modelName, boolean delete)
+            throws IOException {
+
+        List<String> historyList = _readHistory();
+
+        // Remove if already present (then added to first position)
+        for (int i = 0; i < historyList.size(); i++) {
+
+            if (historyList.get(i).equals(modelName)) {
+
+                historyList.remove(i);
+
+            }
+
+        }
+
+        // Remove if depth > limit
+        if (historyList.size() >= _historyDepth) {
+
+            historyList.remove(historyList.size() - 1);
+
+        }
+
+        // Add to fist position
+        if (!delete) {
+
+            historyList.add(0, modelName);
+
+        }
+
+        // Serialize history
+        _writeDBModelHistory(historyList);
+
+        // Update submenu
+        _populateDBModelHistory(historyList);
+
+    }
+
+    private void _writeDBModelHistory(List<String> historyList)
+            throws IOException {
+
         FileWriter fileWriter = null;
         try {
 
@@ -719,18 +698,18 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             if (fileWriter != null) {
 
-               fileWriter.close();
+                fileWriter.close();
 
             }
 
         }
 
-        
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // History depth
     private int _historyDepth = 4;
+
 }
