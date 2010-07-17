@@ -7,12 +7,12 @@ typedef struct complex* ComplexToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Complex_new(double real, double imag);
+static Token Complex_new(double real, double imag);
 /**/
 
 /***Complex_new***/
 // make a new integer token from the given value.
-Token Complex_new(double real, double imag) {
+static Token Complex_new(double real, double imag) {
     Token result;
     result.type = TYPE_Complex;
     result.payload.Complex = (ComplexToken) malloc(sizeof(struct complex));
@@ -24,13 +24,13 @@ Token Complex_new(double real, double imag) {
 
 
 /***Complex_delete***/
-Token Complex_delete(Token token, Token... tokens) {
+static Token Complex_delete(Token token, Token... tokens) {
     free(token.payload.Complex);
 }
 /**/
 
 /***Complex_equals***/
-Token Complex_equals(Token thisToken, Token... tokens) {
+static Token Complex_equals(Token thisToken, Token... tokens) {
     va_list argp;
     Token otherToken;
     va_start(argp, thisToken);
@@ -50,13 +50,13 @@ Token Complex_equals(Token thisToken, Token... tokens) {
 /**/
 
 /***Complex_print***/
-Token Complex_print(Token thisToken, Token... tokens) {
+static Token Complex_print(Token thisToken, Token... tokens) {
     printf("%g + %gi", thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
 }
 /**/
 
 /***Complex_toString***/
-Token Complex_toString(Token thisToken, Token... tokens) {
+static Token Complex_toString(Token thisToken, Token... tokens) {
     char* string = (char*) malloc(sizeof(char) * 32);
     sprintf(string, "%.14g + %.14gi", thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
 
@@ -65,7 +65,7 @@ Token Complex_toString(Token thisToken, Token... tokens) {
 /**/
 
 /***Complex_add***/
-Token Complex_add(Token thisToken, Token... tokens) {
+static Token Complex_add(Token thisToken, Token... tokens) {
     va_list argp;
     Token otherToken;
     va_start(argp, thisToken);
@@ -80,7 +80,7 @@ Token Complex_add(Token thisToken, Token... tokens) {
 /**/
 
 /***Complex_subtract***/
-Token Complex_subtract(Token thisToken, Token... tokens) {
+static Token Complex_subtract(Token thisToken, Token... tokens) {
     va_list argp;
     Token otherToken;
 
@@ -96,7 +96,7 @@ Token Complex_subtract(Token thisToken, Token... tokens) {
 /**/
 
 /***Complex_multiply***/
-Token Complex_multiply(Token thisToken, Token... tokens) {
+static Token Complex_multiply(Token thisToken, Token... tokens) {
     va_list argp;
     Token result;
     Token otherToken;
@@ -142,7 +142,7 @@ Token Complex_multiply(Token thisToken, Token... tokens) {
 /**/
 
 /***Complex_divide***/
-Token Complex_divide(Token thisToken, Token... tokens) {
+static Token Complex_divide(Token thisToken, Token... tokens) {
     va_list argp;
     Token otherToken;
     Token result;
@@ -167,7 +167,7 @@ Token Complex_divide(Token thisToken, Token... tokens) {
 /**/
 
 /***Complex_negate***/
-Token Complex_negate(Token thisToken, Token... tokens) {
+static Token Complex_negate(Token thisToken, Token... tokens) {
     thisToken.payload.Complex->real = -thisToken.payload.Complex->real;
     thisToken.payload.Complex->imag = -thisToken.payload.Complex->imag;
     return thisToken;
@@ -175,20 +175,20 @@ Token Complex_negate(Token thisToken, Token... tokens) {
 /**/
 
 /***Complex_zero***/
-Token Complex_zero(Token token, Token... tokens) {
+static Token Complex_zero(Token token, Token... tokens) {
     return Complex_new(0.0, 0.0);
 }
 /**/
 
 /***Complex_one***/
-Token Complex_one(Token token, Token... tokens) {
+static Token Complex_one(Token token, Token... tokens) {
     return Complex_new(1.0, 0.0);
 }
 /**/
 
 
 /***Complex_clone***/
-Token Complex_clone(Token thisToken, Token... tokens) {
+static Token Complex_clone(Token thisToken, Token... tokens) {
     return Complex_new(thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
 }
 /**/
@@ -198,7 +198,7 @@ Token Complex_clone(Token thisToken, Token... tokens) {
 
 --------------------- static functions --------------------------
 /***Complex_convert***/
-Token Complex_convert(Token token, Token... tokens) {
+static Token Complex_convert(Token token, Token... tokens) {
     switch (token.type) {
 #ifdef TYPE_Integer
     case TYPE_Integer:

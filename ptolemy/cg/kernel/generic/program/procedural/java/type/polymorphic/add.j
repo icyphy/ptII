@@ -1,29 +1,29 @@
 /*** add_Array_Array() ***/
-Token add_Array_Array(Token a1, Token a2) {
+static Token add_Array_Array(Token a1, Token a2) {
     return $Array_add(a1, a2);
 }
 /**/
 
 /*** add_Array_Double() ***/
-Token add_Array_Double(Token a1, double a2) {
+static Token add_Array_Double(Token a1, double a2) {
     return $add_Double_Array(a2, a1);
 }
 /**/
 
 /*** add_Array_Integer() ***/
-Token add_Integer_Array(Token a1, int a2) {
+static Token add_Integer_Array(Token a1, int a2) {
     return $add_Array_Integer(a2, a1);
 }
 /**/
 
 /*** add_Array_Long() ***/
-Token add_Long_Array(Token a1, long long a2) {
+static Token add_Long_Array(Token a1, long long a2) {
     return $add_Array_Long(a2, a1);
 }
 /**/
 
 /*** add_Boolean_Boolean() ***/
-boolean add_Boolean_Boolean(boolean a1, boolean a2) {
+static boolean add_Boolean_Boolean(boolean a1, boolean a2) {
     return a1 | a2;
 }
 /**/
@@ -41,7 +41,7 @@ String add_Boolean_String(boolean a1, String a2) {
 /**/
 
 /*** add_Double_Array() ***/
-Token add_Double_Array(double a1, Token a2) {
+static Token add_Double_Array(double a1, Token a2) {
     int i;
     Token result = $new(Array(((Array)(a2.payload)).size, 0));
 
@@ -71,14 +71,14 @@ char* add_Double_String(double a1, char* a2) {
 /**/
 
 /*** add_Double_Token() ***/
-Token add_Double_Token(double a1, Token a2) {
+static Token add_Double_Token(double a1, Token a2) {
     Token token = $new(Double(a1));
     return $add_Token_Token(token, a2);
 }
 /**/
 
 /*** add_Integer_Array() ***/
-Token add_Integer_Array(int a1, Token a2) {
+static Token add_Integer_Array(int a1, Token a2) {
     Token result = $new(Array(((Array)(a2.payload)).size, 0));
     for (int i = 0; i < ((Array)(a2.payload)).size; i++) {
         Array_set(result, i, $add_Integer_Token(a1, Array_get(a2, i)));
@@ -115,7 +115,7 @@ int add_Integer_Token(int a1, Token a2) {
 /**/
 
 /*** add_Long_Array() ***/
-Token add_Long_Array(long long a1, Token a2) {
+static Token add_Long_Array(long long a1, Token a2) {
     Token result = $new(Array(((Array)(a2.payload)).size, 0));
     for (int i = 0; i < ((Array)(a2.payload)).size; i++) {
         Array_set(result, i, $add_Long_Token(a1, Array_get(a2, i)));
@@ -131,7 +131,7 @@ long long add_Long_Long(long long a1, long long a2) {
 /**/
 
 /*** add_Long_Token() ***/
-Token add_Long_Token(long long a1, Token a2) {
+static Token add_Long_Token(long long a1, Token a2) {
     Token token = $new(Long(a1));
     return $add_Token_Token(token, a2);
 }
@@ -162,7 +162,7 @@ String add_String_String(String a1, String a2) {
 /**/
 
 /*** add_Token_Double() ***/
-Token add_Token_Double(Token a1, double a2) {
+static Token add_Token_Double(Token a1, double a2) {
     return $add_Double_Token(a2, a1);
 }
 /**/
@@ -174,7 +174,7 @@ int add_Token_Integer(Token a1, int a2) {
 /**/
 
 /*** add_Token_Token() ***/
-Token add_Token_Token(Token a1, Token a2) {
+static Token add_Token_Token(Token a1, Token a2) {
     Token result = null;
     switch (a1.type) {
 #ifdef PTCG_TYPE_Double
@@ -231,7 +231,7 @@ Token add_Token_Token(Token a1, Token a2) {
    return result;
 }
 
-void print_Token2(Token token) {
+static void print_Token2(Token token) {
     if (token == null) {
         System.out.println("Token is null");
         return;
@@ -271,7 +271,7 @@ char* add_UnsignedByte_String(int a1, char* a2) {
 /**/
 
 /*** add_UnsignedByte_Token() ***/
-Token add_UnsignedByte_Token(int a1, Token a2) {
+static Token add_UnsignedByte_Token(int a1, Token a2) {
     Token token = $new(UnsignedByte(a1));
     return $add_Token_Token(token, a2);
 }

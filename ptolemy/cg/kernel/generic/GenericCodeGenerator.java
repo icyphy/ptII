@@ -76,7 +76,7 @@ import ptolemy.util.StringUtilities;
 //// GenericCodeGenerator
 
 /** Base class for code generator.
- *
+ *  <p>Derived classes usually override {@link #generateCode(StringBuffer)}.
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks, Bert Rodiers
  *  @version $Id$
  *  @since Ptolemy II 8.0
@@ -693,15 +693,19 @@ public abstract class GenericCodeGenerator extends Attribute implements
     }
 
     /** Generate code and append it to the given string buffer.
-     *  Write the code to the directory specified by the codeDirectory
+     *  <p>Write the code to the directory specified by the codeDirectory
      *  parameter.  The file name is a sanitized version of the model
      *  name with a suffix that is based on last package name of the
      *  <i>generatorPackage</i> parameter.  Thus if the
      *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
      *  model is <code>Foo</code> and the <i>generatorPackage</i>
      *  is <code>ptolemy.codegen.c</code>, then the file that is
-     *  written will be <code>$HOME/Foo.c</code>
-     *  This method is the main entry point.
+     *  written will be <code>$HOME/Foo.c</code></p>
+     *
+     *  <p>This method is the main entry point, derived classes will
+     *  override this method with code that traverses the model and
+     *  generates code.</p>
+     *
      *  @param code The given string buffer.
      *  @return The return value of the last subprocess that was executed.
      *  or -1 if no commands were executed.

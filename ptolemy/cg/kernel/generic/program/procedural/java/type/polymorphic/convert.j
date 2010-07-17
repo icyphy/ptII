@@ -1,11 +1,11 @@
 /*** convert_Array_Array() ***/
-Token convert_Array_Array(Token a) {
+static Token convert_Array_Array(Token a) {
        return a;
 }
 /**/
 
 /*** convert_Boolean_Boolean() ***/
-boolean convert_Boolean_Boolean(boolean a) {
+static boolean convert_Boolean_Boolean(boolean a) {
         return a;
 }
 /**/
@@ -23,7 +23,7 @@ String convert_Boolean_String(boolean a) {
 /**/
 
 /*** convert_Double_Array() ***/
-Token convert_Double_Array(double a) {
+static Token convert_Double_Array(double a) {
     return $new(Array(1, 1, $new(Double(a))));
 }
 /**/
@@ -47,19 +47,19 @@ String convert_Double_String(double a) {
 /**/
 
 /*** convert_Double_Token() ***/
-Token convert_Double_Token(double a) {
+static Token convert_Double_Token(double a) {
     return $new(Double(a));
 }
 /**/
 
 /*** convert_Integer_Array() ***/
-Token convert_Integer_Array(int a) {
+static Token convert_Integer_Array(int a) {
     return $new(Array(1, 1, $new(Integer(a))));
 }
 /**/
 
 /*** convert_Integer_Boolean() ***/
-boolean convert_Integer_Boolean(int a) {
+static boolean convert_Integer_Boolean(int a) {
     return (a != 0) ? true : false;
 }
 /**/
@@ -83,13 +83,13 @@ String convert_Integer_String(int a) {
 /**/
 
 /*** convert_Integer_Token() ***/
-Token convert_Integer_Token(int a) {
+static Token convert_Integer_Token(int a) {
     return $new(Integer(a));
 }
 /**/
 
 /*** convert_Long_Array() ***/
-Token convert_Long_Array(long long a) {
+static Token convert_Long_Array(long long a) {
     return $new(Array(1, 1, $new(Long(a))));
 }
 /**/
@@ -101,13 +101,13 @@ long convert_Long_Long(long a) {
 /**/
 
 /*** convert_Long_Token() ***/
-Token convert_Long_Token(long long a) {
+static Token convert_Long_Token(long long a) {
     return $new(Long(a));
 }
 /**/
 
 /*** convert_Matrix_Matrix() ***/
-Token convert_Matrix_Matrix(Token a1) {
+static Token convert_Matrix_Matrix(Token a1) {
     return a1;
 }
 /**/
@@ -138,13 +138,13 @@ String convert_String_String(String a) {
 /**/
 
 /*** convert_Token_Token() ***/
-Token convert_Token_Token(Token a) {
+static Token convert_Token_Token(Token a) {
        return a;
 }
 /**/
 
 /*** convert_Token_Token2() ***/
-Token convert_Token_Token2(Short type1, Token token, Short type2) {
+static Token convert_Token_Token2(Short type1, Token token, Short type2) {
       switch (type1) {
 #ifdef PTCG_TYPE_Array
     case TYPE_Array:

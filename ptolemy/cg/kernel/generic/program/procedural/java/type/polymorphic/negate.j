@@ -1,11 +1,11 @@
 /*** negate_Array() ***/
-Token negate_Array(Token a) {
+static Token negate_Array(Token a) {
      return $Array_negate(a);
 }
 /**/
 
 /*** negate_Boolean() ***/
-boolean negate_Boolean(boolean a) {
+static boolean negate_Boolean(boolean a) {
      return !a;
 }
 /**/
@@ -29,13 +29,13 @@ long negate_Long(long a) {
 /**/
 
 /*** negate_Token() ***/
-Token negate_Token(Token a) {
+static Token negate_Token(Token a) {
       return $tokenFunc(a::negate());
 }
 /**/
 
 /*** negate_Token_Token() ***/
-Token negate_Token_Token(Token token) {
+static Token negate_Token_Token(Token token) {
       switch (token.type) {
 #ifdef PTCG_TYPE_Array
     case TYPE_Array:

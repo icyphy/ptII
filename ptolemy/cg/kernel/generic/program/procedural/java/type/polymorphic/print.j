@@ -1,35 +1,35 @@
 /*** print_Array() ***/
-void print_Array(Array a) {
+static void print_Array(Array a) {
      $Array_print(a);
 }
 /**/
 
 /*** print_Boolean() ***/
-void print_Double(boolean b) {
+static void print_Double(boolean b) {
      System.out.println(b);
 }
 /**/
 
 *** print_Double() ***/
-void print_Double(double d) {
+static void print_Double(double d) {
      System.out.println(d);
 }
 /**/
 
 /*** print_Integer() ***/
-void print_Integer(int i) {
+static void print_Integer(int i) {
      System.out.println(i);
 }
 /**/
 
 /*** print_Long() ***/
-void print_Integer(long l) {
+static void print_Integer(long l) {
     System.out.println(l);
 }
 /**/
 
 /*** print_Token() ***/
-void print_Token(Token a) {
+static void print_Token(Token a) {
      //$tokenFunc(a::print());
     switch (token.type) {
         case TYPE_Double:
@@ -49,7 +49,7 @@ void print_Token(Token a) {
 /**/
 
 /*** print_Token_Token() ***/
-Token print_Token_Token(Token a) {
+static Token print_Token_Token(Token a) {
      print_Token(a);
      return null;
 }

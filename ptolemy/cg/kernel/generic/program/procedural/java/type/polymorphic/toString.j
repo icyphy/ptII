@@ -1,6 +1,6 @@
 
 /*** toString_Token_Token() ***/
-Token toString_Token_Token(Token thisToken, Token... otherToken) {
+static Token toString_Token_Token(Token thisToken, Token... otherToken) {
     Token result = null;
     switch (thisToken.type) {
 #ifdef PTCG_TYPE_Double

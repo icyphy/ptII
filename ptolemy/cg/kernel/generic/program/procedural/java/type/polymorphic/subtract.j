@@ -1,11 +1,11 @@
 /*** subtract_Array_Array() ***/
-Token subtract_Array_Array(Token a1, Token a2) {
+static Token subtract_Array_Array(Token a1, Token a2) {
     return $Array_subtract(a1, a2);
 }
 /**/
 
 /*** subtract_Array_Double() ***/
-Token subtract_Array_Double(Token a1, double a2) {
+static Token subtract_Array_Double(Token a1, double a2) {
     int i;
     Token result = $new(Array(((Array)(a1.payload)).size, 0));
 
@@ -17,7 +17,7 @@ Token subtract_Array_Double(Token a1, double a2) {
 /**/
 
 /*** subtract_Array_Integer() ***/
-Token subtract_Integer_Array(Token a1, int a2) {
+static Token subtract_Integer_Array(Token a1, int a2) {
     int i;
     Token result = $new(Array(((Array)(a1.payload)).size, 0));
 
@@ -29,7 +29,7 @@ Token subtract_Integer_Array(Token a1, int a2) {
 /**/
 
 /*** subtract_Array_Long() ***/
-Token subtract_Long_Array(Token a1, long long a2) {
+static Token subtract_Long_Array(Token a1, long long a2) {
     int i;
     Token result = $new(Array(((Array)(a1.payload)).size, 0));
 
@@ -41,7 +41,7 @@ Token subtract_Long_Array(Token a1, long long a2) {
 /**/
 
 /*** subtract_Boolean_Boolean() ***/
-boolean subtract_Boolean_Boolean(boolean a1, boolean a2) {
+static boolean subtract_Boolean_Boolean(boolean a1, boolean a2) {
     return a1 | a2;
 }
 /**/
@@ -53,7 +53,7 @@ int subtract_Boolean_Integer(boolean a1, int a2) {
 /**/
 
 /*** subtract_Double_Array() ***/
-Token subtract_Double_Array(double a1, Token a2) {
+static Token subtract_Double_Array(double a1, Token a2) {
     int i;
     Token result = $new(Array(((Array)(a2.payload)).size, 0));
 
@@ -77,14 +77,14 @@ double subtract_Double_Integer(double a1, int a2) {
 /**/
 
 /*** subtract_Double_Token() ***/
-Token subtract_Double_Token(double a1, Token a2) {
+static Token subtract_Double_Token(double a1, Token a2) {
     Token token = $new(Double(a1));
     return $subtract_Token_Token(token, a2);
 }
 /**/
 
 /*** subtract_Integer_Array() ***/
-Token subtract_Integer_Array(int a1, Token a2) {
+static Token subtract_Integer_Array(int a1, Token a2) {
     int i;
     Token result = $new(Array(((Array)(a2.payload)).size, 0));
 
@@ -115,7 +115,7 @@ int subtract_Integer_Token(int a1, Token a2) {
 /**/
 
 /*** subtract_Long_Array() ***/
-Token subtract_Long_Array(long long a1, Token a2) {
+static Token subtract_Long_Array(long long a1, Token a2) {
     int i;
     Token result = $new(Array(((Array)(a1.payload)).size, 0));
 
@@ -133,14 +133,14 @@ long long subtract_Long_Long(long long a1, long long a2) {
 /**/
 
 /*** subtract_Long_Token() ***/
-Token subtract_Long_Token(long long a1, Token a2) {
+static Token subtract_Long_Token(long long a1, Token a2) {
     Token token = $new(Long(a1));
     return $subtract_Token_Token(token, a2);
 }
 /**/
 
 /*** subtract_Token_Double() ***/
-Token subtract_Token_Double(Token a1, double a2) {
+static Token subtract_Token_Double(Token a1, double a2) {
     Token token = $new(Double(a2));
     return $subtract_Token_Token(a1, token);
 }
@@ -154,7 +154,7 @@ int subtract_Token_Integer(Token a1, int a2) {
 /**/
 
 /*** subtract_Token_Token() ***/
-Token subtract_Token_Token(Token a1, Token a2) {
+static Token subtract_Token_Token(Token a1, Token a2) {
     Token result = null;
     switch (a1.type) {
 #ifdef PTCG_TYPE_Double
@@ -231,7 +231,7 @@ void print_Token3(Token token) {
 
 
 /*** subtract_UnsignedByte_Array() ***/
-Token subtract_UnsignedByte_Array(int a1, Token a2) {
+static Token subtract_UnsignedByte_Array(int a1, Token a2) {
     int i;
     Token result = $new(Array(((Array)(a2.payload)).size, 0));
 
@@ -255,7 +255,7 @@ int subtract_UnsignedByte_Integer(int a1, int a2) {
 /**/
 
 /*** subtract_UnsignedByte_Token() ***/
-Token subtract_UnsignedByte_Token(int a1, Token a2) {
+static Token subtract_UnsignedByte_Token(int a1, Token a2) {
     Token token = $new(UnsignedByte(a1));
     return $subtract_Token_Token(token, a2);
 }

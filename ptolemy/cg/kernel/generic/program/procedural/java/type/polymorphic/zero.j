@@ -1,23 +1,23 @@
 /*** zero_Array() ***/
-Token zero_Array() {
+static Token zero_Array() {
         return $Array_new(0,0);
 }
 /**/
 
 /*** zero_ArrayOneArg() ***/
-Token zero_ArrayOneArg(Token a) {
+static Token zero_ArrayOneArg(Token a) {
         return $Array_zero(a);
 }
 /**/
  
 /*** zero_Boolean() ***/
-boolean zero_Boolean() {
+static boolean zero_Boolean() {
         return false;
 }
 /**/
 
 /*** zero_BooleanOneArg() ***/
-boolean zero_BooleanOneArg(boolean a) {
+static boolean zero_BooleanOneArg(boolean a) {
         return false;
 }
 /**/
@@ -35,13 +35,13 @@ double zero_DoubleOneArg(double a) {
 /**/
 
 /*** zero_DoubleArray() ***/
-Token zero_DoubleArray() {
+static Token zero_DoubleArray() {
         return $new_DoubleArray(0,0);
 }
 /**/
 
 /*** zero_DoubleArrayOneArg() ***/
-Token zero_DoubleArrayOneArg(double [] a) {
+static Token zero_DoubleArrayOneArg(double [] a) {
         return $DoubleArray_zero(a);
 }
 /**/
@@ -59,13 +59,13 @@ int zero_IntegerOneArg(int a) {
 /**/
 
 /*** zero_IntArray() ***/
-Token zero_IntArray() {
+static Token zero_IntArray() {
         return $IntArray_new(0,0);
 }
 /**/
 
 /*** zero_IntArrayOneArg() ***/
-Token zero_IntArrayOneArg(int [] a) {
+static Token zero_IntArrayOneArg(int [] a) {
         return $IntArray_zero(a);
 }
 /**/
@@ -95,19 +95,19 @@ String zero_StringOneArg(String a) {
 /**/
 
 /*** zero_Token() ***/
-Token zero_Token(Token a) {
+static Token zero_Token(Token a) {
         return $tokenFunc(a::zero());
 }
 /**/
 
 /*** zero_TokenOneArg() ***/
-Token zero_TokenOneArg(Token a) {
+static Token zero_TokenOneArg(Token a) {
         return $tokenFunc(a::zero());
 }
 /**/
 
 /*** zero_Token_Token() ***/
-Token zero_Token_Token(Token token, Token... b) {
+static Token zero_Token_Token(Token token, Token... b) {
 
     Token result = null;
     switch (token.type) {
@@ -146,7 +146,7 @@ Token zero_Token_Token(Token token, Token... b) {
 /**/
 
 /*** zero_Token_TokenOneArg() ***/
-Token zero_Token_TokenOneArg(Token a, Token... b) {
+static Token zero_Token_TokenOneArg(Token a, Token... b) {
       return zero_Token_Token(a, b);
 }
 /**/

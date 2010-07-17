@@ -1,11 +1,11 @@
 /*** one_Array() ***/
-Token one_Array(Token a) {
+static Token one_Array(Token a) {
         return $Array_one(a);
 }
 /**/
 
 /*** one_Boolean() ***/
-boolean one_Boolean() {
+static boolean one_Boolean() {
         return true;
 }
 /**/
@@ -17,7 +17,7 @@ double one_Double() {
 /**/
 
 /*** one_DoubleArray() ***/
-Token one_DoubleArray(Token a) {
+static Token one_DoubleArray(Token a) {
         return $DoubleArray_one(a);
 }
 /**/
@@ -29,7 +29,7 @@ int one_Int() {
 /**/
 
 /*** one_IntArray() ***/
-Token one_IntArray(Token a) {
+static Token one_IntArray(Token a) {
         return $IntArray_one(a);
 }
 /**/
@@ -45,7 +45,7 @@ long long one_Long() {
 /**/
 
 /*** one_Token() ***/
-Token one_Token(Token a) {
+static Token one_Token(Token a) {
         return $tokenFunc(a::one());
 }
 /**/

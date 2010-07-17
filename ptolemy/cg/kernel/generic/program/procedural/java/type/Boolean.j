@@ -6,7 +6,7 @@
 
 /***Boolean_new***/
 // make a new integer token from the given value.
-Token Boolean_new(boolean b) {
+static Token Boolean_new(boolean b) {
     Token result = new Token();
     result.type = TYPE_Boolean;
     result.payload = Boolean.valueOf(b);
@@ -19,7 +19,7 @@ Token Boolean_new(boolean b) {
 /**/
 
 /***Boolean_equals***/
-Token Boolean_equals(Token thisToken, Token... tokens) {
+static Token Boolean_equals(Token thisToken, Token... tokens) {
     Token otherToken;
     otherToken = tokens[0];
 
@@ -35,20 +35,20 @@ Token Boolean_equals(Token thisToken, Token... tokens) {
 /**/
 
 /***Boolean_print***/
-Token Boolean_print(Token thisToken, Token... tokens) {
+static Token Boolean_print(Token thisToken, Token... tokens) {
     System.out.println((Boolean)thisToken.payload);
     return null;
 }
 /**/
 
 /***Boolean_toString***/
-Token Boolean_toString(Token thisToken, Token... ignored) {
+static Token Boolean_toString(Token thisToken, Token... ignored) {
     return String_new(BooleantoString((Boolean)thisToken.payload));
 }
 /**/
 
 /***Boolean_add***/
-Token Boolean_add(Token thisToken, Token... tokens) {
+static Token Boolean_add(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
     return Boolean_new((Boolean)thisToken.payload || (Boolean)otherToken.payload);
 }
@@ -67,26 +67,26 @@ Token Boolean_add(Token thisToken, Token... tokens) {
 /**/
 
 /***Boolean_negate***/
-Token Boolean_negate(Token thisToken, Token... tokens) {
+static Token Boolean_negate(Token thisToken, Token... tokens) {
     return Boolean_new(!(Boolean)thisToken.payload);
 }
 /**/
 
 /***Boolean_zero***/
-Token Boolean_zero(Token token, Token... tokens) {
+static Token Boolean_zero(Token token, Token... tokens) {
     return Boolean_new(false);
 }
 /**/
 
 /***Boolean_one***/
-Token Boolean_one(Token token, Token... tokens) {
+static Token Boolean_one(Token token, Token... tokens) {
     return Boolean_new(true);
 }
 /**/
 
 
 /***Boolean_clone***/
-Token Boolean_clone(Token thisToken, Token... tokens) {
+static Token Boolean_clone(Token thisToken, Token... tokens) {
     return thisToken;
 }
 /**/
@@ -94,7 +94,7 @@ Token Boolean_clone(Token thisToken, Token... tokens) {
 
 --------------------- static functions ------------------------------
 /***Boolean_convert***/
-Token Boolean_convert(Token token, Token... tokens) {
+static Token Boolean_convert(Token token, Token... tokens) {
     switch (token.type) {
     case TYPE_Boolean:
         return token;

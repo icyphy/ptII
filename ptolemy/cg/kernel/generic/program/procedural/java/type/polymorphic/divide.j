@@ -1,11 +1,11 @@
 /*** divide_Array_Array() ***/
-Token divide_Array_Array(Token a1, Token a2) {
+static Token divide_Array_Array(Token a1, Token a2) {
     return $Array_divide(a1, a2);
 }
 /**/
 
 /*** divide_Array_Double() ***/
-Token divide_Array_Double(Token a1, double a2) {
+static Token divide_Array_Double(Token a1, double a2) {
     int i;
     Token result = $new(Array(((Array)(a1.payload)).size, 0));
 
@@ -17,7 +17,7 @@ Token divide_Array_Double(Token a1, double a2) {
 /**/
 
 /*** divide_Array_Integer() ***/
-Token divide_Array_Integer(Token a1, int a2) {
+static Token divide_Array_Integer(Token a1, int a2) {
     int i;
     Token result = $new(Array(((Array)(a1.payload)).size, 0));
 
@@ -29,7 +29,7 @@ Token divide_Array_Integer(Token a1, int a2) {
 /**/
 
 /*** divide_Array_Long() ***/
-Token divide_Array_Long(Token a1, long long a2) {
+static Token divide_Array_Long(Token a1, long long a2) {
     int i;
     Token result = $new(Array(((Array)(a1.payload)).size, 0));
 
@@ -41,7 +41,7 @@ Token divide_Array_Long(Token a1, long long a2) {
 /**/
 
 /*** divide_Boolean_Boolean() ***/
-boolean divide_Boolean_Boolean(boolean a1, boolean a2) {
+static boolean divide_Boolean_Boolean(boolean a1, boolean a2) {
     //if (!a2) {
     // FIXME: Illegal boolean divide.
     // throw exception("Illegal boolean division.");
@@ -51,7 +51,7 @@ boolean divide_Boolean_Boolean(boolean a1, boolean a2) {
 /**/
 
 /*** divide_Double_Array() ***/
-Token divide_Double_Array(double a1, Token a2) {
+static Token divide_Double_Array(double a1, Token a2) {
     int i;
     Token result = $new(Array(((Array)(a2.payload)).size, 0));
 
@@ -75,14 +75,14 @@ double divide_Double_Integer(double a1, int a2) {
 /**/
 
 /*** divide_Double_Token() ***/
-Token divide_Double_Token(double a1, Token a2) {
+static Token divide_Double_Token(double a1, Token a2) {
     Token token = $new(Double(a1));
     return $divide_Token_Token(token, a2);
 }
 /**/
 
 /*** divide_Integer_Array() ***/
-Token divide_Integer_Array(int a1, Token a2) {
+static Token divide_Integer_Array(int a1, Token a2) {
     int i;
     Token result = $new(Array(((Array)(a2.payload)).size, 0));
 
@@ -113,7 +113,7 @@ int divide_Integer_Token(int a1, Token a2) {
 /**/
 
 /*** divide_Long_Array() ***/
-Token divide_Long_Array(long long a1, Token a2) {
+static Token divide_Long_Array(long long a1, Token a2) {
     int i;
     Token result = $new(Array(((Array)(a2.payload)).size, 0));
 
@@ -125,20 +125,20 @@ Token divide_Long_Array(long long a1, Token a2) {
 /**/
 
 /*** divide_Long_Long() ***/
-Token divide_Long_Long(long long a1, long long a2) {
+static Token divide_Long_Long(long long a1, long long a2) {
     return a1 / a2;
 }
 /**/
 
 /*** divide_Long_Token() ***/
-Token divide_Long_Token(long long a1, Token a2) {
+static Token divide_Long_Token(long long a1, Token a2) {
     Token token = $new(Long(a1));
     return $divide_Token_Token(token, a2);
 }
 /**/
 
 /*** divide_Matrix_Double() ***/
-Token divide_Matrix_Double(Token a1, double a2) {
+static Token divide_Matrix_Double(Token a1, double a2) {
     int i, j;
     Token result = $new(Matrix(((Matrix)(a1.payload)).row,
                     ((Matrix)(a1.payload)).column, 0));
@@ -154,7 +154,7 @@ Token divide_Matrix_Double(Token a1, double a2) {
 /**/
 
 /*** divide_Token_Double() ***/
-Token divide_Token_Double(Token a1, double a2) {
+static Token divide_Token_Double(Token a1, double a2) {
     Token token = $new(Double(a2));
     return $divide_Token_Token(a1, token);
 }
@@ -168,7 +168,7 @@ int divide_Token_Integer(Token a1, int a2) {
 /**/
 
 /*** divide_Token_Token() ***/
-Token divide_Token_Token(Token a1, Token a2) {
+static Token divide_Token_Token(Token a1, Token a2) {
     Token result = null;
     switch (a1.type) {
 #ifdef PTCG_TYPE_Double
@@ -236,7 +236,7 @@ Token divide_Token_Token(Token a1, Token a2) {
 /**/
 
 /***divide_one_Array***/
-Token divide_one_Array(Token a1, Token... tokens) {
+static Token divide_one_Array(Token a1, Token... tokens) {
     Token oneToken = $tokenFunc(a1::one(a1));
     return $Array_divide(oneToken, a1);
 }

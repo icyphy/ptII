@@ -315,9 +315,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         if (functions.length > 0 && types.length > 0) {
 
-            code.append("private final int NUM_TYPE = " + types.length + ";"
+            code.append("private static final int NUM_TYPE = " + types.length + ";"
                     + _eol);
-            code.append("private final int NUM_FUNC = " + functions.length
+            code.append("private static final int NUM_FUNC = " + functions.length
                     + ";" + _eol);
             code.append("//Token (*functionTable[NUM_TYPE][NUM_FUNC])"
                     + "(Token, ...)= {" + _eol);
@@ -571,7 +571,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         // Generate type map.
         StringBuffer typeMembers = new StringBuffer();
-        code.append("private final short TYPE_Token = -1;" + _eol);
+        code.append("private static final short TYPE_Token = -1;" + _eol);
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .j file for each type.
 
@@ -584,8 +584,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             code.append("#define PTCG_TYPE_" + typesArray[i] + " "
                     + codeGenTypeValue(typesArray[i].toString()) + _eol);
 
-            //            code.append("private final short TYPE_" + typesArray[i] + " = " + i
-            code.append("private final short TYPE_" + typesArray[i] + " = "
+            //            code.append("private static final short TYPE_" + typesArray[i] + " = " + i
+            code.append("private static final short TYPE_" + typesArray[i] + " = "
                     + codeGenTypeValue(typesArray[i].toString()) + ";" + _eol);
 
             // Dynamically generate all the types within the union.
@@ -633,7 +633,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     .getCodeBlock("tokenDeclareBlock"));
 
             if (defineEmptyToken) {
-                sharedStream.append("Token emptyToken; "
+                sharedStream.append("static Token emptyToken; "
                         + comment("Used by *_delete() and others.") + _eol);
             }
 
@@ -957,8 +957,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     public String[] splitLongBody(int linesPerMethod, String prefix, String code)
             throws IOException {
         BufferedReader bufferedReader = null;
-        StringBuffer bodies = new StringBuffer();
-        StringBuffer masterBody = new StringBuffer();
+        StringBuffer bodies = new StringBuffer("public class " + prefix + " {" + _eol);
+        StringBuffer masterBody = new StringBuffer(prefix + " " + prefix
+                + " = new " + prefix + "();" + _eol);
 
         try {
             bufferedReader = new BufferedReader(new StringReader(code));
@@ -971,8 +972,17 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 body = new StringBuffer(line + _eol);
                 int openBracketCount = 0;
                 int commentCount = 0;
-                for (int i = 0; ((i + 1) < linesPerMethod && line != null)
-                        || openBracketCount > 0 || commentCount > 0; i++) {
+                int tryCount = 0;
+                if (line.trim().endsWith("{")) {
+                    openBracketCount++;
+                }
+                if (line.trim().startsWith("try")) {
+                    tryCount++;
+                }
+                for (int i = 0;
+                     ((i + 1) < linesPerMethod && line != null)
+                         || openBracketCount > 0 || commentCount > 0 || tryCount > 0
+                         ; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     if (line != null) {
@@ -990,12 +1000,19 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                                 && !trimmedLine.startsWith("*")) {
                             // Look for curly braces in non-commented lines
                             // This code could be buggy . . .
-                            if (line.trim().endsWith("{")) {
+                            if (trimmedLine.endsWith("{")) {
                                 openBracketCount++;
                             }
                             // Lines can both start and end with braces.
-                            if (line.trim().startsWith("}")) {
+                            if (trimmedLine.startsWith("}")) {
                                 openBracketCount--;
+                                // Don't break up try catch blocks
+                                if (trimmedLine.startsWith("} catch")
+                                        || trimmedLine.startsWith("}catch")) {
+                                    tryCount--;
+                                }
+                            } else if (trimmedLine.startsWith("try")) {
+                                tryCount++;
                             }
                         }
                     }
@@ -1003,7 +1020,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                 bodies.append("void " + methodName + "() {" + _eol
                         + body.toString() + "}" + _eol);
-                masterBody.append(methodName + "();" + _eol);
+                masterBody.append(prefix + "." + methodName + "();" + _eol);
             }
             if (lineNumber < linesPerMethod) {
                 // We must have less than linesPerMethod lines in the body
@@ -1018,6 +1035,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     // Ignore
                 }
             }
+        }
+
+        if (bodies.length() != 0) {
+            bodies.append(_eol + "}" + _eol);
         }
 
         String[] results = { bodies.toString(), masterBody.toString() };

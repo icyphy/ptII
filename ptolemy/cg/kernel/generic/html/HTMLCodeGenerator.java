@@ -92,7 +92,7 @@ public class HTMLCodeGenerator extends GenericCodeGenerator {
      *  model is <code>Foo</code> and the <i>generatorPackage</i>
      *  is <code>ptolemy.cg.kernel.generic.html</code>, then the file that is
      *  written will be <code>$HOME/Foo.html</code>
-     *  This method is the main entry point to generate code.
+     *  This method is the main entry point to generate html.
      *
      *  @param code The given string buffer.
      *  @return The return value of the last subprocess that was executed.

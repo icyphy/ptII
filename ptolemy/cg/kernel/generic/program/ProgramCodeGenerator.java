@@ -1273,9 +1273,9 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     private int _indent;
 
     /** Maximum number of lines in initialize(), postfire() and wrapup()
-     *  methodS. This variable is used to make smaller methods so that
+     *  methods. This variable is used to make smaller methods so that
      *  compilers take less time.*/
-    private static int _LINES_PER_METHOD = 10000;
+    private static int _LINES_PER_METHOD = 2500;
 
     /** The extension of the template files.
      *   (for example c in case of C and j in case of Java)

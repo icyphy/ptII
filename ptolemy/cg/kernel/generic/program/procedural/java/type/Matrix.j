@@ -13,12 +13,12 @@ public class Matrix {
 
 /***funcDeclareBlock***/
 
-Token Matrix_get(Token token, int row, int column) {
+static Token Matrix_get(Token token, int row, int column) {
     //return token.payload.Matrix->elements[column * token.payload.Matrix->row + row];
     return ((Matrix)(token.payload)).elements[column * ((Matrix)(token.payload)).row + row];
 }
 
-void Matrix_set(Token matrix, int row, int column, Token element) {
+static void Matrix_set(Token matrix, int row, int column, Token element) {
     //matrix.payload.Matrix->elements[column * matrix.payload.Matrix->row + row] = element;
     ((Matrix)(matrix.payload)).elements[column * ((Matrix)(matrix.payload)).row + row] = element;
 }
@@ -26,7 +26,7 @@ void Matrix_set(Token matrix, int row, int column, Token element) {
 
 
 /***Matrix_delete***/
-Token Matrix_delete(Token token, Token... tokens) {
+static Token Matrix_delete(Token token, Token... tokens) {
     int i, j;
     Token element, emptyToken;
 
@@ -46,7 +46,7 @@ Token Matrix_delete(Token token, Token... tokens) {
 /**/
 
 /***Matrix_convert***/
-Token Matrix_convert(Token token, Token... tokens) {
+static Token Matrix_convert(Token token, Token... tokens) {
     /* token.payload.Matrix = (MatrixToken) malloc(sizeof(struct matrix));
        token.payload.Matrix->row = 1;
        token.payload.Matrix->column = 1;
@@ -70,7 +70,7 @@ Token Matrix_convert(Token token, Token... tokens) {
 // should be of type Token.
 // The last element is the type, which is why this takes Object...
 // and not Token...
-Token Matrix_new(int row, int column, int given, Object... elements) {
+static Token Matrix_new(int row, int column, int given, Object... elements) {
     int i;
     Token result = new Token();
     int elementType;
@@ -132,7 +132,7 @@ Token Matrix_new(int row, int column, int given, Object... elements) {
 /***Matrix_equals***/
 // FIXME: should not need to if def for Matrix here.
 #ifdef PTCG_TYPE_Matrix
-boolean Matrix_equals(Token thisToken, Token... tokens) {
+static boolean Matrix_equals(Token thisToken, Token... tokens) {
     int i, j;
     Token otherToken = tokens[0];
 
@@ -155,7 +155,7 @@ boolean Matrix_equals(Token thisToken, Token... tokens) {
 
 
 /***Matrix_isCloseTo***/
-Token Matrix_isCloseTo(Token thisToken, Token... elements) {
+static Token Matrix_isCloseTo(Token thisToken, Token... elements) {
     int i, j;
     Token otherToken = elements[0];
     Token tolerance = elements[1];
@@ -176,7 +176,7 @@ Token Matrix_isCloseTo(Token thisToken, Token... elements) {
 /**/
 
 /***Matrix_print***/
-Token Matrix_print(Token thisToken, Token... tokens) {
+static Token Matrix_print(Token thisToken, Token... tokens) {
     // Token string = Matrix_toString(thisToken);
     // printf(string.payload.String);
     // free(string.payload.String);
@@ -204,7 +204,7 @@ Token Matrix_print(Token thisToken, Token... tokens) {
 
 
 /***Matrix_toString***/
-Token Matrix_toString(Token thisToken, Token... tokens) {
+static Token Matrix_toString(Token thisToken, Token... tokens) {
     int i, j;
     int currentSize, allocatedSize;
     Token elementString;
@@ -233,7 +233,7 @@ Token Matrix_toString(Token thisToken, Token... tokens) {
 /***Matrix_add***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Matrix_add(Token thisToken, Token... tokens) {
+static Token Matrix_add(Token thisToken, Token... tokens) {
     int i, j;
     Token otherToken = tokens[0];
 
@@ -254,7 +254,7 @@ Token Matrix_add(Token thisToken, Token... tokens) {
 /***Matrix_subtract***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Matrix_subtract(Token thisToken, Token... tokens) {
+static Token Matrix_subtract(Token thisToken, Token... tokens) {
     int i, j;
     Token result;
     Token otherToken = tokens[0];
@@ -278,7 +278,7 @@ Token Matrix_subtract(Token thisToken, Token... tokens) {
 /***Matrix_multiply***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Matrix_multiply(Token thisToken, Token... tokens) {
+static Token Matrix_multiply(Token thisToken, Token... tokens) {
     int i, j, index;
     Token result;
     Token element;
@@ -334,7 +334,7 @@ Token Matrix_multiply(Token thisToken, Token... tokens) {
 /***Matrix_divide***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Matrix_divide(Token thisToken, Token... tokens) {
+static Token Matrix_divide(Token thisToken, Token... tokens) {
     int i, j, index;
     Token result = null;
     Token element;
@@ -378,7 +378,7 @@ Token Matrix_divide(Token thisToken, Token... tokens) {
 /**/
 
 /***Matrix_toExpression***/
-Token Matrix_toExpression(Token thisToken, Token... tokens) {
+static Token Matrix_toExpression(Token thisToken, Token... tokens) {
     return Matrix_toString(thisToken);
 }
 /**/

@@ -61,3 +61,145 @@ test JavaCodeGenerator-1.1 {Instantiate a JavaCodeGenerator, call a few methods}
 	[$codeGenerator comment {This is a comment}]
 } {{ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator {.top.myCodeGenerator}} {/* This is a comment */
 }}
+
+################################################
+# Tests for splitLongBody
+
+proc makeCode {lines} {
+    set results {line 1;}
+    for {set i 2} {$i <= $lines} {incr i} {
+	set results "$results\nline $i;"
+    }
+    return $results;
+}
+
+proc testSplitLongBody {codeLines bodyLines} {
+    global codeGenerator
+    set code [makeCode $codeLines]
+    return [$codeGenerator splitLongBody $bodyLines foo $code]
+}
+
+
+#####
+test JavaCodeGenerator-2.1 {splitLongBody no code} {
+    set results [$codeGenerator splitLongBody 5 foo ""]
+    $results getrange
+} {{} {}}
+
+#####
+test JavaCodeGenerator-2.2 {splitLongBody code smaller than max body size} {
+    set results [testSplitLongBody 4 5]
+    $results getrange
+} {{} {line 1;
+line 2;
+line 3;
+line 4;
+}}
+
+#####
+test JavaCodeGenerator-2.3 {splitLongBody code same size as max body size} {
+    set results [testSplitLongBody 5 5]
+    $results getrange
+} {{} {line 1;
+line 2;
+line 3;
+line 4;
+line 5;
+}}
+
+#####
+test JavaCodeGenerator-2.4 {splitLongBody code same size one over max body size} {
+    set results [testSplitLongBody 6 5]
+    $results getrange
+} {{public class foo {
+void foo_0() {
+line 1;
+line 2;
+line 3;
+line 4;
+line 5;
+}
+void foo_1() {
+line 6;
+}
+
+}
+} {foo foo = new foo();
+foo.foo_0();
+foo.foo_1();
+}}
+
+
+#####
+test JavaCodeGenerator-2.5 {splitLongBody code same size one over max body size} {
+    set results [testSplitLongBody 12 5]
+    $results getrange
+} {{public class foo {
+void foo_0() {
+line 1;
+line 2;
+line 3;
+line 4;
+line 5;
+}
+void foo_1() {
+line 6;
+line 7;
+line 8;
+line 9;
+line 10;
+}
+void foo_2() {
+line 11;
+line 12;
+}
+
+}
+} {foo foo = new foo();
+foo.foo_0();
+foo.foo_1();
+foo.foo_2();
+}}
+
+
+#####
+test JavaCodeGenerator-2.6 {Don't split try catch blocks} {
+    set code "try \{
+line1;
+line2;
+line3;
+line3;
+line3;
+line3;
+line3;
+\} catch (Exception ex) \{
+    line4;
+    line5;
+    line6;
+\}"
+
+   set results [$codeGenerator splitLongBody 2 foo $code]
+   $results getrange
+} {{public class foo {
+void foo_0() {
+try {
+line1;
+line2;
+line3;
+line3;
+line3;
+line3;
+line3;
+} catch (Exception ex) {
+    line4;
+    line5;
+    line6;
+}
+}
+
+}
+} {foo foo = new foo();
+foo.foo_0();
+}}
+
+

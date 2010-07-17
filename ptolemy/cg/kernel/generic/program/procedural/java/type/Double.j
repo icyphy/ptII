@@ -6,7 +6,7 @@
 
 /***Double_new***/
 // make a new integer token from the given value.
-Token Double_new(double d) {
+static Token Double_new(double d) {
     Token result = new Token();
     result.type = TYPE_Double;
     result.payload = Double.valueOf(d);
@@ -19,7 +19,7 @@ Token Double_new(double d) {
 /**/
 
 /***Double_equals***/
-Token Double_equals(Token thisToken, Token... tokens) {
+static Token Double_equals(Token thisToken, Token... tokens) {
     Token otherToken;
     otherToken = tokens[0];
 
@@ -33,7 +33,7 @@ Token Double_equals(Token thisToken, Token... tokens) {
 
 /***Double_isCloseTo***/
 $include(<math.h>)
-Token Double_isCloseTo(Token thisToken, Token... tokens) {
+static Token Double_isCloseTo(Token thisToken, Token... tokens) {
     Token otherToken;
     Token tolerance;
     otherToken = tokens[0];
@@ -44,20 +44,20 @@ Token Double_isCloseTo(Token thisToken, Token... tokens) {
 /**/
 
 /***Double_print***/
-Token Double_print(Token thisToken, Token... tokens) {
+static Token Double_print(Token thisToken, Token... tokens) {
     System.out.println((Double)thisToken.payload);
     return null;
 }
 /**/
 
 /***Double_toString***/
-Token Double_toString(Token thisToken, Token... tokens) {
+static Token Double_toString(Token thisToken, Token... tokens) {
     return String_new(((Double)thisToken.payload).toString());
 }
 /**/
 
 /***Double_add***/
-Token Double_add(Token thisToken, Token... tokens) {
+static Token Double_add(Token thisToken, Token... tokens) {
     Token result;
     Token otherToken = tokens[0];
 
@@ -82,7 +82,7 @@ Token Double_add(Token thisToken, Token... tokens) {
 /**/
 
 /***Double_subtract***/
-Token Double_subtract(Token thisToken, Token... tokens) {
+static Token Double_subtract(Token thisToken, Token... tokens) {
     Token result;
     Token otherToken = tokens[0];
 
@@ -106,7 +106,7 @@ Token Double_subtract(Token thisToken, Token... tokens) {
 /**/
 
 /***Double_multiply***/
-Token Double_multiply(Token thisToken, Token... tokens) {
+static Token Double_multiply(Token thisToken, Token... tokens) {
     Token result;
     Token otherToken = tokens[0];
 
@@ -136,33 +136,33 @@ Token Double_multiply(Token thisToken, Token... tokens) {
 /**/
 
 /***Double_divide***/
-Token Double_divide(Token thisToken, Token... tokens) {
+static Token Double_divide(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
     return Double_new((Double)thisToken.payload / (Double)otherToken.payload);
 }
 /**/
 
 /***Double_negate***/
-Token Double_negate(Token thisToken, Token... tokens) {
+static Token Double_negate(Token thisToken, Token... tokens) {
     return Double_new(-(Double)(thisToken.payload));
 }
 /**/
 
 /***Double_zero***/
-Token Double_zero(Token token, Token... tokens) {
+static Token Double_zero(Token token, Token... tokens) {
     return Double_new(0.0);
 }
 /**/
 
 /***Double_one***/
-Token Double_one(Token token, Token... tokens) {
+static Token Double_one(Token token, Token... tokens) {
     return Double_new(1.0);
 }
 /**/
 
 
 /***Double_clone***/
-Token Double_clone(Token thisToken, Token... tokens) {
+static Token Double_clone(Token thisToken, Token... tokens) {
     return thisToken;
 }
 /**/
@@ -172,7 +172,7 @@ Token Double_clone(Token thisToken, Token... tokens) {
 
 --------------------- static functions --------------------------
 /***Double_convert***/
-Token Double_convert(Token token, Token... elements) {
+static Token Double_convert(Token token, Token... elements) {
     switch (token.type) {
 #ifdef PTCG_TYPE_String
     case TYPE_String:

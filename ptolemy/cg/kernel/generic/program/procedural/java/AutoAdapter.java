@@ -242,7 +242,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
                     + "\\\" in $actorSymbol(actor) to \\\"" + StringUtilities.escapeString(parameterValue) + "\\\"\", ex);\n"
                 + "}\n");
         }
-        code.append(getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start"));
+        //code.append(getCodeGenerator().comment("AutoAdapter._generateInitalizeCode() start"));
 
         return processCode(code.toString());
     }
@@ -465,26 +465,19 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
             // Get data from the actor.
             if (!outputPort.isMultiport()) {
-                code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() not MultiPort name " + name + " type: " + type));
                 if (outputPort.isOutsideConnected()) {
                     code.append(_generateGetInside(name, name, type, 0));
                 }
-                code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() not MultiPort end"));
             } else {
-                code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort"));
                 // Multiports.
                 int sources = outputPort.numberOfSources();
                 for (int i = 0; i < sources; i++) {
-                    code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort Source " + i + " name: " + name + " type: " + type));
                     code.append(_generateGetInside(name, name + "Source" + i, type, i));
                 }
-
                 int sinks = outputPort.numberOfSinks();
                 for (int i = 0; i < sinks; i++) {
-                    code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort Sink " + i + " type: " + type + " name: " + name));
                     code.append(_generateGetInside(name, name + "Sink" + i, type, i));
                 }
-                code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() MultiPort Done"));
             }
 
         }
@@ -492,7 +485,6 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
         code.append("} catch (Exception ex) {\n"
                 + "    throw new RuntimeException(\"Failed to fire() $actorSymbol(actor))\" /*+ $actorSymbol(toplevel).exportMoML()*/, ex);\n"
                 + " };\n");
-        code.append(_eol + getCodeGenerator().comment("AutoAdapter._generateFireCode() end"));
         return code.toString();
     }
 
@@ -530,6 +522,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generatePortInstantiation(String actorPortName,
             String codegenPortName, IOPort port) throws IllegalActionException {
+        actorPortName = TemplateParser.escapePortName(actorPortName);
         codegenPortName = TemplateParser.escapePortName(codegenPortName);
         PortParameter portParameter = (PortParameter)getComponent().getAttribute(actorPortName,
                 PortParameter.class);
@@ -590,6 +583,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateGetInsideDeclarations(String actorPortName,
             String codegenPortName, Type type, int channel) {
+        actorPortName = TemplateParser.escapePortName(actorPortName);
+        codegenPortName = TemplateParser.escapePortName(codegenPortName);
         // This method is needed by $PTII/ptolemy/actor/lib/comm/test/auto/DeScrambler.xml
         String portData = actorPortName + "_portData"
             + (channel == 0 ? "" : channel);
@@ -648,6 +643,8 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      */
     private String _generateGetInside(String actorPortName,
             String codegenPortName, Type type, int channel) {
+        actorPortName = TemplateParser.escapePortName(actorPortName);
+        codegenPortName = TemplateParser.escapePortName(codegenPortName);
         if (type instanceof ArrayType) {
             
             ArrayType array = (ArrayType)type;

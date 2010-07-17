@@ -16,27 +16,27 @@ public class Array {
 /***funcDeclareBlock***/
 
 // Array_get: get an element of an array.
-Token Array_get(Token array, int i) {
+static Token Array_get(Token array, int i) {
     //return array.payload.Array->elements[i];
     return ((Array)(array.payload)).elements[i];
 }
 
 // Array_set: set an element of an array.
-void Array_set(Token array, int i, Token element) {
+static void Array_set(Token array, int i, Token element) {
     //array.payload.Array->elements[i] = element;
     ((Array)(array.payload)).elements[i] = element;
 }
 
 // Array_resize: Change the size of an array,
 // preserving those elements that fit.
-void Array_resize(Token array, int size) {
+static void Array_resize(Token array, int size) {
         //array.payload.Array->size = size;
         // FIXME: Does realloc() initialize memory? If not, then we need to do that.
         //array.payload.Array->elements = (Token*) realloc(array.payload.Array->elements, size * sizeof(Token));
 }
 
 // Array_insert: Append the specified element to the end of an array.
-void Array_insert(Token array, Token token) {
+static void Array_insert(Token array, Token token) {
     //int oldSize = array.payload.Array->size++;
     //Array_resize(array, array.payload.Array->size);
     //array.payload.Array->elements[oldSize] = token;
@@ -59,7 +59,7 @@ int Array_length(Token array) {
 // should be of type Token.
 // The last element is the type, which is why this takes Object...
 // and not Token...
-Token Array_new(int size, int given, Object... elements) {
+static Token Array_new(int size, int given, Object... elements) {
     int i;
     Token result = new Token();
     int elementType;
@@ -117,7 +117,7 @@ Token Array_new(int size, int given, Object... elements) {
 /***Array_delete***/
 
 // Array_delete: FIXME: What does this do?
-Token Array_delete(Token token, Object... elements) {
+static Token Array_delete(Token token, Object... elements) {
     int i;
     Token element;
 
@@ -140,7 +140,7 @@ Token Array_delete(Token token, Object... elements) {
 /***Array_equals***/
 
 // Array_equals: Test an array for equality with a second array.
-boolean Array_equals(Token thisToken, Token... tokens) {
+static boolean Array_equals(Token thisToken, Token... tokens) {
     int i;
     Token otherToken = tokens[0];
     if (((Array)(thisToken.payload)).size != ((Array)(otherToken.payload)).size) {
@@ -159,7 +159,7 @@ boolean Array_equals(Token thisToken, Token... tokens) {
 /***Array_isCloseTo***/
 
 // Array_isCloseTo: Test an array to see whether it is close in value to another.
-Token Array_isCloseTo(Token thisToken, Token... elements) {
+static Token Array_isCloseTo(Token thisToken, Token... elements) {
     int i;
     Token otherToken = elements[0];
     Token tolerance = elements[1];
@@ -187,7 +187,7 @@ Token Array_isCloseTo(Token thisToken, Token... elements) {
 /***Array_print***/
 
 // Array_print: Print the contents of an array to standard out.
-Token Array_print(Token thisToken, Token... tokens) {
+static Token Array_print(Token thisToken, Token... tokens) {
     // Token string = Array_toString(thisToken);
     // System.out.printf(string.payload.String);
     // free(string.payload.String);
@@ -225,7 +225,7 @@ Token Array_print(Token thisToken, Token... tokens) {
 
 // Array_toString: Return a string token with a string representation
 // of the specified array.
-Token Array_toString(Token thisToken, Token... ignored) {
+static Token Array_toString(Token thisToken, Token... ignored) {
     StringBuffer result = new StringBuffer("{");
     if (thisToken == null) {
         result.append("null");
@@ -266,7 +266,7 @@ Token Array_toString(Token thisToken, Token... ignored) {
 // Array_add: Add an array to another array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Array_add(Token thisToken, Token... tokens) {
+static Token Array_add(Token thisToken, Token... tokens) {
     int i;
     int size1;
     int size2;
@@ -308,7 +308,7 @@ Token Array_add(Token thisToken, Token... tokens) {
 // FIXME: Arrays can have scalars subtracted!
 // This will cause a nasty seg fault.
 // Return a new Array token.
-Token Array_subtract(Token thisToken, Token... tokens) {
+static Token Array_subtract(Token thisToken, Token... tokens) {
     int i;
     int size1;
     int size2;
@@ -348,7 +348,7 @@ Token Array_subtract(Token thisToken, Token... tokens) {
 // Multiplication is element-wise.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Array_multiply(Token thisToken, Token... elements) {
+static Token Array_multiply(Token thisToken, Token... elements) {
     int i;
     int size1;
     int size2;
@@ -385,7 +385,7 @@ Token Array_multiply(Token thisToken, Token... elements) {
 // by the elements of the second array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Array_divide(Token thisToken, Token... elements) {
+static Token Array_divide(Token thisToken, Token... elements) {
     int i;
     int size1;
     int size2;
@@ -419,7 +419,7 @@ Token Array_divide(Token thisToken, Token... elements) {
 
 // Array_negate: Negate each element of an array.
 // Return a new Array token.
-Token Array_negate(Token thisToken, Token... tokens) {
+static Token Array_negate(Token thisToken, Token... tokens) {
     int i;
     Token result;
 
@@ -436,7 +436,7 @@ Token Array_negate(Token thisToken, Token... tokens) {
 
 // Array_zero: Return an array like the specified
 // array but with zeros of the same type.
-Token Array_zero(Token thisToken, Token... tokens) {
+static Token Array_zero(Token thisToken, Token... tokens) {
     Token result;
     Token element;
     int i;
@@ -455,7 +455,7 @@ Token Array_zero(Token thisToken, Token... tokens) {
 
 // Array_one: Return an array like the specified
 // array but with ones of the same type.
-Token Array_one(Token token, Token... tokens) {
+static Token Array_one(Token token, Token... tokens) {
     Token result;
     Token element;
     int i;
@@ -475,7 +475,7 @@ Token Array_one(Token token, Token... tokens) {
 
 // Array_clone: Return a new array just like the
 // specified array.
-Token Array_clone(Token token, Token... tokens) {
+static Token Array_clone(Token token, Token... tokens) {
     Token result;
     Token element;
     int i;
@@ -492,7 +492,7 @@ Token Array_clone(Token token, Token... tokens) {
 
 
 /***arraySum***/
-Token arraySum(Token token) {
+static Token arraySum(Token token) {
         Token result;
         int i;
         if (((Array)(thisToken.payload)).size <= 0) {
@@ -509,7 +509,7 @@ Token arraySum(Token token) {
 /**/
 
 /***arrayRepeat***/
-Token arrayRepeat(int number, Token value) {
+static Token arrayRepeat(int number, Token value) {
         Token result = $new(Array(number, 0));
         int i;
 
@@ -529,7 +529,7 @@ Token arrayRepeat(int number, Token value) {
 // into the type specified by the second argument.
 // @param token The token to be converted.
 // @param targetType The type to convert the elements of the given token to.
-Token Array_convert(Token token, Short... targetTypes) {
+static Token Array_convert(Token token, Short... targetTypes) {
     int i;
     Token result;
     Token element;

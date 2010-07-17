@@ -6,7 +6,7 @@
 
 /***String_new***/
 /* Make a new integer token from the given value. */
-Token String_new(String s) {
+static Token String_new(String s) {
     Token result = new Token();;
     result.type = TYPE_String;
     result.payload = new String(s);
@@ -15,7 +15,7 @@ Token String_new(String s) {
 /**/
 
 /***String_delete***/
-Token String_delete(Token token, Token... ignored) {
+static Token String_delete(Token token, Token... ignored) {
     //free(token.payload.String);
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
@@ -25,7 +25,7 @@ Token String_delete(Token token, Token... ignored) {
 /**/
 
 /***String_equals***/
-Token String_equals(Token thisToken, Token... tokens) {
+static Token String_equals(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
     return Boolean_new(((String)(thisToken.payload)).equals((String)(otherToken.payload)));
 }
@@ -37,20 +37,20 @@ Token String_equals(Token thisToken, Token... tokens) {
 /**/
 
 /***String_print***/
-Token String_print(Token thisToken, Token... tokens) {
+static Token String_print(Token thisToken, Token... tokens) {
     System.out.println((String)(thisToken.payload));
     return emptyToken;
 }
 /**/
 
 /***String_toString***/
-Token String_toString(Token thisToken, Token... ignored) {
+static Token String_toString(Token thisToken, Token... ignored) {
     return String_new("\"" + (String)(thisToken.payload) + "\"");
 }
 /**/
 
 /***String_add***/
-Token String_add(Token thisToken, Token... tokens) {
+static Token String_add(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
 
     return String_new((String)(String_convert(thisToken).payload)
@@ -71,13 +71,13 @@ Token String_add(Token thisToken, Token... tokens) {
 /**/
 
 /***String_negate***/
-Token String_negate(Token thisToken, Token... tokens) {
+static Token String_negate(Token thisToken, Token... tokens) {
     return emptyToken;
 }
 /**/
 
 /***String_zero***/
-Token String_zero(Token token, Token... tokens) {
+static Token String_zero(Token token, Token... tokens) {
     return String_new("");
 }
 /**/
@@ -87,17 +87,16 @@ Token String_zero(Token token, Token... tokens) {
 /**/
 
 /***String_clone***/
-Token String_clone(Token thisToken, Token... tokens) {
+static Token String_clone(Token thisToken, Token... tokens) {
     return String_new((String)(thisToken.payload));
 }
 /**/
-o
 
 
 ------------------ static functions --------------------------------------
 
 /***String_convert***/
-Token String_convert(Token token, Token... ignored) {
+static Token String_convert(Token token, Token... ignored) {
     switch (token.type) {
 #ifdef PTCG_TYPE_Boolean
     case TYPE_Boolean:

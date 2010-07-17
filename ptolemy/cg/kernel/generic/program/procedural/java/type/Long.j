@@ -3,13 +3,13 @@ typedef long long LongToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Long_new(long long i);
+static Token Long_new(long long i);
 /**/
 
 
 /***Long_new***/
 // make a new long token from the given value.
-Token Long_new(long long i) {
+static Token Long_new(long long i) {
     Token result;
     result.type = TYPE_Long;
     result.payload.Long = i;
@@ -18,7 +18,7 @@ Token Long_new(long long i) {
 /**/
 
 /***Long_equals***/
-Token Long_equals(Token thisToken, ...) {
+static Token Long_equals(Token thisToken, ...) {
     va_list argp;
     Token otherToken;
     va_start(argp, thisToken);
@@ -34,19 +34,19 @@ Token Long_equals(Token thisToken, ...) {
 /**/
 
 /***Long_print***/
-Token Long_print(Token thisToken, ...) {
+static Token Long_print(Token thisToken, ...) {
     printf("%d", thisToken.payload.Long);
 }
 /**/
 
 /***Long_toString***/
-Token Long_toString(Token thisToken, ...) {
+static Token Long_toString(Token thisToken, ...) {
     return String_new(LongtoString(thisToken.payload.Long));
 }
 /**/
 
 /***Long_add***/
-Token Long_add(Token thisToken, ...) {
+static Token Long_add(Token thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
@@ -57,7 +57,7 @@ Token Long_add(Token thisToken, ...) {
 /**/
 
 /***Long_subtract***/
-Token Long_subtract(Token thisToken, ...) {
+static Token Long_subtract(Token thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
@@ -68,7 +68,7 @@ Token Long_subtract(Token thisToken, ...) {
 /**/
 
 /***Long_multiply***/
-Token Long_multiply(Token thisToken, ...) {
+static Token Long_multiply(Token thisToken, ...) {
     va_list argp;
     Token result;
     Token otherToken;
@@ -104,7 +104,7 @@ Token Long_multiply(Token thisToken, ...) {
 /**/
 
 /***Long_divide***/
-Token Long_divide(Token thisToken, ...) {
+static Token Long_divide(Token thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
@@ -115,26 +115,26 @@ Token Long_divide(Token thisToken, ...) {
 /**/
 
 /***Long_negate***/
-Token Long_negate(Token thisToken, ...) {
+static Token Long_negate(Token thisToken, ...) {
     thisToken.payload.Long = -thisToken.payload.Long;
     return thisToken;
 }
 /**/
 
 /***Long_zero***/
-Token Long_zero(Token token, ...) {
+static Token Long_zero(Token token, ...) {
     return Long_new(0);
 }
 /**/
 
 /***Long_one***/
-Token Long_one(Token token, ...) {
+static Token Long_one(Token token, ...) {
     return Long_new(1);
 }
 /**/
 
 /***Long_clone***/
-Token Long_clone(Token thisToken, ...) {
+static Token Long_clone(Token thisToken, ...) {
     return thisToken;
 }
 /**/
@@ -142,7 +142,7 @@ Token Long_clone(Token thisToken, ...) {
 ---------------- static functions -----------------------
 
 /***Long_convert***/
-Token Long_convert(Token token, ...) {
+static Token Long_convert(Token token, ...) {
     switch (token.type) {
 
 #ifdef TYPE_Double

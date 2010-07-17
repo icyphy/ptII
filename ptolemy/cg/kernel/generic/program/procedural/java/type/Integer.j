@@ -7,7 +7,7 @@
 
 /***Integer_new***/
 // make a new integer token from the given value.
-Token Integer_new(int i) {
+static Token Integer_new(int i) {
     Token result = new Token();
     result.type = TYPE_Integer;
     result.payload = Integer.valueOf(i);
@@ -16,7 +16,7 @@ Token Integer_new(int i) {
 /**/
 
 /***Integer_equals***/
-Token Integer_equals(Token thisToken, Token... tokens) {
+static Token Integer_equals(Token thisToken, Token... tokens) {
     Token otherToken;
     otherToken = tokens[0];
 
@@ -25,7 +25,7 @@ Token Integer_equals(Token thisToken, Token... tokens) {
 /**/
 
 /***Integer_isCloseTo***/
-Token Integer_isCloseTo(Token thisToken, Token... tokens) {
+static Token Integer_isCloseTo(Token thisToken, Token... tokens) {
     Token otherToken;
     Token tolerance;
     otherToken = tokens[0];
@@ -40,34 +40,34 @@ Token Integer_isCloseTo(Token thisToken, Token... tokens) {
 /**/
 
 /***Integer_print***/
-Token Integer_print(Token thisToken, Token... tokens) {
+static Token Integer_print(Token thisToken, Token... tokens) {
     System.out.println((Integer)thisToken.payload);
     return null;
 }
 /**/
 
 /***Integer_toString***/
-Token Integer_toString(Token thisToken, Token... tokens) {
+static Token Integer_toString(Token thisToken, Token... tokens) {
     return String_new(((Integer)thisToken.payload).toString());
 }
 /**/
 
 /***Integer_add***/
-Token Integer_add(Token thisToken, Token... tokens) {
+static Token Integer_add(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
     return Integer_new((Integer)(thisToken.payload) + (Integer)(otherToken.payload));
 }
 /**/
 
 /***Integer_subtract***/
-Token Integer_subtract(Token thisToken, Token... tokens) {
+static Token Integer_subtract(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
     return Integer_new((Integer)(thisToken.payload) - (Integer)(otherToken.payload));
 }
 /**/
 
 /***Integer_multiply***/
-Token Integer_multiply(Token thisToken, Token... tokens) {
+static Token Integer_multiply(Token thisToken, Token... tokens) {
     Token result = new Token();
     Token otherToken;
 
@@ -94,32 +94,32 @@ Token Integer_multiply(Token thisToken, Token... tokens) {
 /**/
 
 /***Integer_divide***/
-Token Integer_divide(Token thisToken, Token... tokens) {
+static Token Integer_divide(Token thisToken, Token... tokens) {
     Token otherToken = tokens[0];
     return Integer_new((Integer)(thisToken.payload) / (Integer)(otherToken.payload));
 }
 /**/
 
 /***Integer_negate***/
-Token Integer_negate(Token thisToken, Token... tokens) {
+static Token Integer_negate(Token thisToken, Token... tokens) {
     return Integer_new(-(Integer)(thisToken.payload));
 }
 /**/
 
 /***Integer_zero***/
-Token Integer_zero(Token token, Token... tokens) {
+static Token Integer_zero(Token token, Token... tokens) {
     return Integer_new(0);
 }
 /**/
 
 /***Integer_one***/
-Token Integer_one(Token token, Token... tokens) {
+static Token Integer_one(Token token, Token... tokens) {
     return Integer_new(1);
 }
 /**/
 
 /***Integer_clone***/
-Token Integer_clone(Token thisToken, Token... tokens) {
+static Token Integer_clone(Token thisToken, Token... tokens) {
     return thisToken;
 }
 /**/
@@ -127,7 +127,7 @@ Token Integer_clone(Token thisToken, Token... tokens) {
 ---------------- static functions -----------------------
 
 /***Integer_convert***/
-Token Integer_convert(Token token, Token... elements) {
+static Token Integer_convert(Token token, Token... elements) {
     token.type = TYPE_Integer;
     switch (token.type) {
 

@@ -3,13 +3,13 @@ typedef unsigned char UnsignedByteToken;
 /**/
 
 /***funcDeclareBlock***/
-Token UnsignedByte_new(int i);
+static Token UnsignedByte_new(int i);
 /**/
 
 
 /***UnsignedByte_new***/
 // make a new unsigned byte token from the given value.
-Token UnsignedByte_new(int b) {
+static Token UnsignedByte_new(int b) {
     Token result;
     result.type = TYPE_UnsignedByte;
     result.payload.UnsignedByte = b;
@@ -18,7 +18,7 @@ Token UnsignedByte_new(int b) {
 /**/
 
 /***UnsignedByte_equals***/
-Token UnsignedByte_equals(Token thisToken, ...) {
+static Token UnsignedByte_equals(Token thisToken, ...) {
     va_list argp;
     Token otherToken;
     va_start(argp, thisToken);
@@ -30,7 +30,7 @@ Token UnsignedByte_equals(Token thisToken, ...) {
 /**/
 
 /***UnsignedByte_isCloseTo***/
-Token UnsignedByte_isCloseTo(Token thisToken, ...) {
+static Token UnsignedByte_isCloseTo(Token thisToken, ...) {
     va_list argp;
     Token otherToken;
     Token tolerance;
@@ -48,19 +48,19 @@ Token UnsignedByte_isCloseTo(Token thisToken, ...) {
 /**/
 
 /***UnsignedByte_print***/
-Token UnsignedByte_print(Token thisToken, ...) {
+static Token UnsignedByte_print(Token thisToken, ...) {
     printf("%dub", thisToken.payload.UnsignedByte);
 }
 /**/
 
 /***UnsignedByte_toString***/
-Token UnsignedByte_toString(Token thisToken, ...) {
+static Token UnsignedByte_toString(Token thisToken, ...) {
     return String_new(UnsignedBytetoString(thisToken.payload.UnsignedByte));
 }
 /**/
 
 /***UnsignedByte_add***/
-Token UnsignedByte_add(Token thisToken, ...) {
+static Token UnsignedByte_add(Token thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
@@ -71,7 +71,7 @@ Token UnsignedByte_add(Token thisToken, ...) {
 /**/
 
 /***UnsignedByte_subtract***/
-Token UnsignedByte_subtract(Token thisToken, ...) {
+static Token UnsignedByte_subtract(Token thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
@@ -82,7 +82,7 @@ Token UnsignedByte_subtract(Token thisToken, ...) {
 /**/
 
 /***UnsignedByte_multiply***/
-Token UnsignedByte_multiply(Token thisToken, ...) {
+static Token UnsignedByte_multiply(Token thisToken, ...) {
     va_list argp;
     Token result;
     Token otherToken;
@@ -113,7 +113,7 @@ Token UnsignedByte_multiply(Token thisToken, ...) {
 /**/
 
 /***UnsignedByte_divide***/
-Token UnsignedByte_divide(Token thisToken, ...) {
+static Token UnsignedByte_divide(Token thisToken, ...) {
     va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
@@ -124,26 +124,26 @@ Token UnsignedByte_divide(Token thisToken, ...) {
 /**/
 
 /***UnsignedByte_negate***/
-Token UnsignedByte_negate(Token thisToken, ...) {
+static Token UnsignedByte_negate(Token thisToken, ...) {
     thisToken.payload.UnsignedByte = -thisToken.payload.UnsignedByte;
     return thisToken;
 }
 /**/
 
 /***UnsignedByte_zero***/
-Token UnsignedByte_zero(Token token, ...) {
+static Token UnsignedByte_zero(Token token, ...) {
     return UnsignedByte_new(0);
 }
 /**/
 
 /***UnsignedByte_one***/
-Token UnsignedByte_one(Token token, ...) {
+static Token UnsignedByte_one(Token token, ...) {
     return UnsignedByte_new(1);
 }
 /**/
 
 /***UnsignedByte_clone***/
-Token UnsignedByte_clone(Token thisToken, ...) {
+static Token UnsignedByte_clone(Token thisToken, ...) {
     return thisToken;
 }
 /**/
@@ -151,7 +151,7 @@ Token UnsignedByte_clone(Token thisToken, ...) {
 ---------------- static functions -----------------------
 
 /***UnsignedByte_convert***/
-Token UnsignedByte_convert(Token token, ...) {
+static Token UnsignedByte_convert(Token token, ...) {
     switch (token.type) {
 
 #ifdef TYPE_Double
