@@ -1,7 +1,8 @@
-# Makefile for ptdb - A model database for Ptolemy, bl directory
+# Makefile for ptdb - A model database for Ptolemy, business logic for migration.
 #
-# @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks (makefile only), based on a file by Thomas M. Parks
+#
+# @Version: $Id: makefile 58342 2010-06-23 14:44:33Z bldmastr $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -27,43 +28,46 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptdb/kernel/bl
+ME = 		ptdb/kernel/bl/migration
 
-DIRS =		load migration search save setup
+# $PTII/configure runs and looks for PTPOWERMOCK
+# $(PTPOWERMOCK_DIR) to test
+DIRS =		$(PTPOWERMOCK_DIR)
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../..
+
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	bl
-PTCLASSJAR =
+PTPACKAGE = 	migration
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	load/load.jar \
-	migration/migration.jar \
-	save/save.jar \
-	search/search.jar \
-	setup/setup.jar
+JSRCS = \
+	MigrateModelsManager.java
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-EXTRA_SRCS =
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS) setup
+MISC_FILES =	test
 
-OPTIONAL_FILES =
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc \
+	$(PTCLASSJAR)
 
-all: jclass $(EXTRA_SRCS)
-install: subinstall jars
+JCLASS = $(JSRCS:%.java=%.class)
 
-# Include rules for directories that contain only subdirectories.
+all: jclass
+install: jclass $(PTCLASSJAR)
+
+
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

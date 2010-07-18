@@ -1,7 +1,8 @@
-# Makefile for ptdb - A model database for Ptolemy, bl directory
+# Makefile for ptdb tests that use EasyMock
 #
-# @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks (makefile only)
+#
+# @Version: $Id: makefile 58060 2010-06-10 18:40:20Z cxh $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -27,43 +28,54 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptdb/kernel/bl
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptdb/kernel/bl/migration/test
 
-DIRS =		load migration search save setup
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Configure looks for PowerMock.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	bl
-PTCLASSJAR =
+# If you add a file, be sure to add a line to test_java
+JSRCS_TEST_DRIVERS = \
+	TestMigrateModelsManager.java
 
-# All the .class files necessary to run a Ptolemy II domain applet
-PTCLASSALLJARS = \
-	load/load.jar \
-	migration/migration.jar \
-	save/save.jar \
-	search/search.jar \
-	setup/setup.jar
+JSRCS = \
+	$(JSRCS_TEST_DRIVERS)
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-EXTRA_SRCS =
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS) setup
+MISC_FILES =
 
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-all: jclass $(EXTRA_SRCS)
-install: subinstall jars
+JCLASS=	$(JSRCS:%.java=%.class)
 
-# Include rules for directories that contain only subdirectories.
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
+
+all: $(JCLASS)
+	@echo "Run 'make tests' to run the tests"
+install:
+	@echo "Nothing to be done in $(ME)"
+
+tests:: $(EXTRA_SRCS) jclass test_java
+
+test_java: jclass
+	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.migration.test.TestMigrateModelsManager
+
+# These tests do not require a graphics terminal, but do use Java
+test_jsimple: $(EXTRA_SRCS) jclass test_java
+
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

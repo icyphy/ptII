@@ -1492,6 +1492,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptdb/common/util \
 	$(REMOTE1PTIIDIST)/ptdb/gui \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/load \
+	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/migration \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/save \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/search \
 	$(REMOTE1PTIIDIST)/ptdb/kernel/bl/setup \
