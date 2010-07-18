@@ -38,10 +38,12 @@ import org.w3c.dom.NodeList;
 
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.FetchHierarchyTask;
+import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.DBModelNotFoundException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.exception.XMLDBModelParsingException;
 import ptdb.common.util.DBConnectorFactory;
@@ -296,6 +298,80 @@ public class SaveModelManager {
         }
 
         return model;
+    }
+    
+    /**
+     * Rename an existing model in the database.
+     * 
+     * @param originalModel XMLDBModel object that represent the model that its name needs to be changed.
+     * @param newName A string that contains the new model name.
+     * @exception DBConnectionException Thrown if the connection to the database fails.
+     * @exception DBExecutionException Thrown if the operation failed during execution.
+     * @exception IllegalArgumentException Thrown if one of the parameters is not proper.
+     * @exception ModelAlreadyExistException Thrown if the new name of the model represent a model that already exists in the database.
+     * @exception DBModelNotFoundException Thrown if the original model does not exit in the database.
+     */
+    public void renameModel(XMLDBModel originalModel, String newName) 
+            throws DBConnectionException, DBExecutionException, 
+            IllegalArgumentException, ModelAlreadyExistException, 
+            DBModelNotFoundException {
+        
+        if (originalModel.getModelId() == null && 
+                (originalModel.getModelName() == null || 
+                        originalModel.getModelName().length() == 0)) {
+            
+            throw new IllegalArgumentException("The original model must contain either"
+                    + " the model name or model Id.");
+        }
+        
+        if (newName == null || newName.length() == 0) {
+            
+            throw new IllegalArgumentException("The new model name cannot be empty.");
+        }
+        
+        
+        RenameModelTask renameModelTask = new RenameModelTask(originalModel, newName);
+        
+        DBConnection dbConnection = DBConnectorFactory.getSyncConnection(true);
+        
+        
+     
+        try {
+            
+            //FIXME: remove the commented line below once the database layer is ready.
+//            
+//          
+//          dbConnection.executeRenameModelTask(renameModelTask);
+//          
+//            
+//        } catch (DBExecutionException e){
+//            
+//            dbConnection.abortConnection();
+//            
+//            throw new DBExecutionException(e.getMessage(),e);
+//            
+//        } catch (ModelAlreadyExistException e){
+//            
+//            dbConnection.abortConnection();
+//            
+//            throw new ModelAlreadyExistException(e.getMessage(),e);
+//            
+//        } catch (DBModelNotFoundException e){
+//            
+//            dbConnection.abortConnection();
+//            
+//            throw new DBModelNotFoundException(e.getMessage(),e);
+//            
+        } finally {
+            
+            if (dbConnection != null) {
+                dbConnection.closeConnection();
+            }
+        }
+        
+        
+        
+        
     }
     
     //////////////////////////////////////////////////////////////////////
