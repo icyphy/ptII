@@ -45,8 +45,7 @@ if ($channel == 0) {
 }
 
 /* IBMC $channel of $actorSymbol() */
-$actorSymbol(correctValuesThisFiring_$channel) =
- $param(correctValues, $actorSymbol(numberOfTokensSeen));
+$actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
                 - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())
@@ -125,8 +124,7 @@ if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
 /* $channel of $actorSymbol() */
-$actorSymbol(correctValuesThisFiring_$channel) =
-$param(correctValues, $actorSymbol(numberOfTokensSeen));
+$actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
     && (!Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).getPayload().equals(
        $actorSymbol(inputToken)))) {
@@ -156,8 +154,7 @@ if ($channel == 0) {
         $actorSymbol(numberOfTokensSeen)++;
 }
 /* $channel of $actorSymbol() */
-$actorSymbol(correctValuesThisFiring_$channel) =
-$param(correctValues, $actorSymbol(numberOfTokensSeen));
+$actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && !$actorSymbol(inputToken).equals(
                     (String)(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload))) {
@@ -254,8 +251,7 @@ if ($channel == 0) {
 }
 
 /* UBMC $channel of $actorSymbol() */
-$actorSymbol(correctValuesThisFiring_$channel) =
- $param(correctValues, $actorSymbol(numberOfTokensSeen));
+$actorSymbol(correctValuesThisFiring_$channel) = $param(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && Math.abs($actorSymbol(inputToken)
                 - (($cgType(input))(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload)).$lcCgType(input)Value())

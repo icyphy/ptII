@@ -110,7 +110,7 @@ line 5;
 #####
 test JavaCodeGenerator-2.4 {splitLongBody code same size one over max body size} {
     set results [testSplitLongBody 6 5]
-    $results getrange
+    list [$results get 0] [$results get 1]
 } {{public class foo {
 void foo_0() {
 line 1;
@@ -123,12 +123,15 @@ void foo_1() {
 line 6;
 }
 
-}
-} {foo foo = new foo();
+void callAllfoo() {
+foo foo = new foo();
 foo.foo_0();
 foo.foo_1();
+}
+}
+} {foo foo = new foo();
+foo.callAllfoo();
 }}
-
 
 #####
 test JavaCodeGenerator-2.5 {splitLongBody code same size one over max body size} {
@@ -154,11 +157,15 @@ line 11;
 line 12;
 }
 
-}
-} {foo foo = new foo();
+void callAllfoo() {
+foo foo = new foo();
 foo.foo_0();
 foo.foo_1();
 foo.foo_2();
+}
+}
+} {foo foo = new foo();
+foo.callAllfoo();
 }}
 
 
@@ -167,11 +174,11 @@ test JavaCodeGenerator-2.6 {Don't split try catch blocks} {
     set code "try \{
 line1;
 line2;
-line3;
-line3;
-line3;
-line3;
-line3;
+line3.1;
+line3.2;
+line3.3;
+line3.4;
+line3.5;
 \} catch (Exception ex) \{
     line4;
     line5;
@@ -185,11 +192,11 @@ void foo_0() {
 try {
 line1;
 line2;
-line3;
-line3;
-line3;
-line3;
-line3;
+line3.1;
+line3.2;
+line3.3;
+line3.4;
+line3.5;
 } catch (Exception ex) {
     line4;
     line5;
@@ -197,9 +204,13 @@ line3;
 }
 }
 
+void callAllfoo() {
+foo foo = new foo();
+foo.foo_0();
+}
 }
 } {foo foo = new foo();
-foo.foo_0();
+foo.callAllfoo();
 }}
 
 
@@ -227,9 +238,14 @@ void foo_2() {
 line 3;
 }
 
-}
-} {foo foo = new foo();
+void callAllfoo() {
+foo foo = new foo();
 foo.foo_0();
 foo.foo_1();
 foo.foo_2();
+}
+}
+} {foo foo = new foo();
+foo.callAllfoo();
 }}
+

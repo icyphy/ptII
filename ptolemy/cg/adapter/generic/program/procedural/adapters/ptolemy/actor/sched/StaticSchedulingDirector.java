@@ -276,16 +276,20 @@ public class StaticSchedulingDirector extends Director {
             }
         }
 
+        String[] splitFireCode = getCodeGenerator()._splitBody(
+                "_" + NamedProgramCodeGeneratorAdapter.generateName(getComponent()) + "_run_",
+                generateFireCode());
+
         code.append("if (!run()) {" + _eol
                 + "break;" + _eol
                 + "}" + _eol
                 + "}" + _eol
                 + "}" + _eol + _eol
+                + splitFireCode[0] + _eol
                 + getCodeGenerator().getMethodVisibiliyString()
                 + " boolean run() "
-                + getCodeGenerator().getMethodExceptionString() + " {" + _eol);
-
-        code.append(generateFireCode());
+                + getCodeGenerator().getMethodExceptionString() + " {" + _eol
+                + splitFireCode[1]);
 
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.

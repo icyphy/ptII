@@ -4,7 +4,7 @@ static int $actorSymbol(j);
 /**/
 
 /***fireBlock***/
-
+{
 for ($actorSymbol(i) = 0;
      $actorSymbol(i) < $val(blockSize);
      $actorSymbol(i)++) {
@@ -13,5 +13,6 @@ for ($actorSymbol(i) = 0;
          $actorSymbol(j)++) {
         $put(output, $actorSymbol(j) * $val(blockSize) + $actorSymbol(i), $get(input, $actorSymbol(i)));
     }
+}
 }
 /**/

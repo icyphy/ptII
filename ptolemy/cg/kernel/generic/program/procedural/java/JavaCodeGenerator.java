@@ -960,7 +960,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         StringBuffer bodies = new StringBuffer("public class " + prefix + " {" + _eol);
         // One method calls all the other methods, thus reducing the
         // size of the top level caller.
-        StringBuffer callAllBody = new StringBuffer("void " + "callAll" + prefix
+        String callAllBodyMethodName = "callAll" + prefix;
+        StringBuffer callAllBody = new StringBuffer("void "
+                + callAllBodyMethodName
                 + "() {" + _eol
                 + prefix + " " + prefix
                 + " = new " + prefix + "();" + _eol);
@@ -1074,14 +1076,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                     }
                 }
 
+                callAllBody.append(prefix + "." + methodName + "();" + _eol);
                 bodies.append("void " + methodName + "() {" + _eol
-                        + body.toString() + "}" + _eol);
-                //callAllBody.append(prefix + "." + methodName + "();" + _eol);
-                masterBody.append(prefix + "." + methodName + "();" + _eol);
+                        + body.toString() 
+                        + "}" + _eol);
             }
             if (lineNumber <= linesPerMethod) {
                 // We must have less than linesPerMethod lines in the body
                 bodies = new StringBuffer();
+                callAllBody = new StringBuffer();
                 masterBody = new StringBuffer(body);
             }
         } finally {
@@ -1095,9 +1098,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         if (bodies.length() != 0) {
-            //bodies.append(_eol + callAllBody + _eol);
-            bodies.append(_eol + "}" + _eol);
-            //masterBody.append(prefix + "." + "callAll" + prefix + "();" + _eol);
+            bodies.append(_eol + callAllBody);
+            bodies.append("}" + _eol);
+            bodies.append("}" + _eol);
+            masterBody.append(prefix + "." + "callAll" + prefix + "();" + _eol);
         }
 
         String[] results = { bodies.toString(), masterBody.toString() };
