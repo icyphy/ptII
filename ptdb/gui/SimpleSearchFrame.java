@@ -51,6 +51,7 @@ import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
+import ptolemy.actor.gt.MalformedStringException;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -177,6 +178,9 @@ public class SimpleSearchFrame extends JFrame {
                     MessageHandler.error("The search cannot be performed now "
                             + "due to a DBExecutionException.", e);
 
+                } catch (MalformedStringException e) {
+                    MessageHandler.error("The search cannot be performed now "
+                            + "due to a MalformedStringException.", e);
                 }
 
             }
@@ -282,6 +286,7 @@ public class SimpleSearchFrame extends JFrame {
      *          false - the search criteria input by the user is not enough. 
      */
     private boolean _isSearchCriteriaEnough(SearchCriteria searchCriteria) {
+        
 
         if ((searchCriteria.getAttributes() == null || searchCriteria
                 .getAttributes().size() == 0)
@@ -295,7 +300,12 @@ public class SimpleSearchFrame extends JFrame {
 
                 && (searchCriteria.getModelName() == null || searchCriteria
                         .getModelName().trim().isEmpty())) {
-
+            
+            
+            
+            
+            
+            
             return false;
         } else {
             return true;
@@ -379,7 +389,7 @@ public class SimpleSearchFrame extends JFrame {
 
     private void _simpleSearch() throws DBConnectionException,
             DBExecutionException, NameDuplicationException,
-            IllegalActionException {
+            IllegalActionException, MalformedStringException {
 
         SearchCriteria searchCriteria = new SearchCriteria();
 
