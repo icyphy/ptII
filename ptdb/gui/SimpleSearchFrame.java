@@ -31,8 +31,12 @@ package ptdb.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.net.URL;
 import java.util.ArrayList;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -47,7 +51,13 @@ import ptdb.common.exception.DBExecutionException;
 import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
+import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.EffigyFactory;
+import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -83,10 +93,11 @@ public class SimpleSearchFrame extends JFrame {
      * @param configuration
      *      The configuration under which models from the database will
      *      be loaded. 
+     * @param tableau The tableau of the window that opens this frame. 
      *      
      */
     public SimpleSearchFrame(NamedObj model, JFrame frame,
-            Configuration configuration) {
+            Configuration configuration, Tableau tableau) {
 
         super("Save Model to Database");
 
@@ -113,22 +124,26 @@ public class SimpleSearchFrame extends JFrame {
 
         topPanel.setBorder(BorderFactory.createEmptyBorder());
 
-        JButton search_Button;
         JButton cancel_Button;
+        JButton advancedSearchButton;
 
-        search_Button = new JButton("Search");
+        _searchButton = new JButton("Search");
         cancel_Button = new JButton("Cancel");
+        advancedSearchButton = new JButton("Open Advanced Search...");
 
-        search_Button.setMnemonic(KeyEvent.VK_ENTER);
+        _searchButton.setMnemonic(KeyEvent.VK_ENTER);
         cancel_Button.setMnemonic(KeyEvent.VK_ESCAPE);
 
-        search_Button.setActionCommand("Search");
+        _searchButton.setActionCommand("Search");
         cancel_Button.setActionCommand("Cancel");
+        advancedSearchButton.setActionCommand("Open Advanced Search...");
 
-        search_Button.setHorizontalTextPosition(SwingConstants.CENTER);
+        _searchButton.setHorizontalTextPosition(SwingConstants.CENTER);
         cancel_Button.setHorizontalTextPosition(SwingConstants.CENTER);
 
-        search_Button.addActionListener(new ActionListener() {
+        advancedSearchButton.setHorizontalAlignment(SwingConstants.RIGHT);
+
+        _searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 
                 try {
@@ -170,15 +185,69 @@ public class SimpleSearchFrame extends JFrame {
         cancel_Button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 
-                setVisible(false);
-
+                //                setVisible(false);
+                if (_patternMatchframe != null) {
+                    _patternMatchframe.dispose();
+                }
+                
+                dispose();
             }
 
         });
 
+        advancedSearchButton
+                .addActionListener(new OpenPatternSearchFrameAction(tableau));
+
+        addWindowListener(new WindowListener() {
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                // Do nothing.    
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+                // Do nothing.    
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                // Do nothing.    
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                // Do nothing.    
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (_patternMatchframe != null) {
+                    _patternMatchframe.dispose();
+                }
+                
+                dispose();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if (_patternMatchframe != null) {
+                    _patternMatchframe.dispose();
+                }
+                
+                dispose();
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                // Do nothing.    
+            }
+        });
+
         topPanel.add(_attributesListPanel);
-        bottomPanel.add(search_Button);
+        bottomPanel.add(_searchButton);
         bottomPanel.add(cancel_Button);
+        bottomPanel.add(advancedSearchButton);
         add(topPanel);
         add(bottomPanel);
 
@@ -188,20 +257,75 @@ public class SimpleSearchFrame extends JFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //                    private methods                          ////
+    ////                  public methods                           ////
 
-    private boolean _isValid() throws NameDuplicationException,
-            IllegalActionException {
+    /**
+     * Perform the action of clicking the search button on this frame. 
+     * 
+     * @param event The ActionEvent for this click. 
+     */
+    public void clickSearchButton(ActionEvent event) {
+        _searchButton.doClick();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  private methods                          ////
+
+    /**
+     * Validate whether the entire search criteria is enough. In order to 
+     * narrow down the search, at least one of the attribute, model name, 
+     * port, or component entity search criteria needs to be set in the 
+     * search criteria.
+     *  
+     * @param searchCriteria The search criteria to be check. 
+     * @return true - the search criteria input by the user is enough.<br>
+     *          false - the search criteria input by the user is not enough. 
+     */
+    private boolean _isSearchCriteriaEnough(SearchCriteria searchCriteria) {
+
+        if ((searchCriteria.getAttributes() == null || searchCriteria
+                .getAttributes().size() == 0)
+
+                && (searchCriteria.getDBGraphSearchCriteria() == null || ((searchCriteria
+                        .getDBGraphSearchCriteria().getPortsList() == null || searchCriteria
+                        .getDBGraphSearchCriteria().getPortsList().isEmpty()) && (searchCriteria
+                        .getDBGraphSearchCriteria().getComponentEntitiesList() == null || searchCriteria
+                        .getDBGraphSearchCriteria().getComponentEntitiesList()
+                        .isEmpty())))
+
+                && (searchCriteria.getModelName() == null || searchCriteria
+                        .getModelName().trim().isEmpty())) {
+
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    /**
+     * Validate whether the search criteria put in this simple search frame 
+     * is valid or not. These search criteria includes the model name and 
+     * attributes.  
+     * 
+     * @return true - if the search criteria are valid.<br>
+     *          false - if the search criteria are invalid.
+     */
+    private boolean _isValid() {
 
         if (_attributesListPanel.getAttributeCount() == 0
                 && _attributesListPanel.getModelName().trim().isEmpty()) {
-
-            JOptionPane.showMessageDialog(this,
-                    "You must enter the Model Name or "
-                            + "select attributes on which to search.",
-                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
-
-            return false;
+            //
+            //            JOptionPane.showMessageDialog(this,
+            //                    "You must enter the Model Name or "
+            //                            + "select attributes on which to search.",
+            //                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
+            //
+            //            return false;
+            
+            // As long as there is the pattern matching criteria, this situation
+            // can also be possible. 
+            return true;
 
         }
 
@@ -257,12 +381,6 @@ public class SimpleSearchFrame extends JFrame {
             DBExecutionException, NameDuplicationException,
             IllegalActionException {
 
-        SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
-                _containerModel, _sourceFrame, _configuration);
-
-        SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
-        searchResultBuffer.addObserver(searchResultsFrame);
-
         SearchCriteria searchCriteria = new SearchCriteria();
 
         if (!_attributesListPanel.getModelName().trim().isEmpty()) {
@@ -277,34 +395,120 @@ public class SimpleSearchFrame extends JFrame {
             searchCriteria.setAttributes(attributesToSearch);
         }
 
-        // Show the search result frame.
-        searchResultsFrame.pack();
-        searchResultsFrame.setVisible(true);
-
-        // Call the Search Manager to trigger the search.
-        SearchManager searchManager = new SearchManager();
-        try {
-            searchManager.search(searchCriteria, searchResultBuffer);
-
-        } catch (DBConnectionException e1) {
-            searchResultsFrame.setVisible(false);
-            searchResultsFrame.dispose();
-            MessageHandler.error("Cannot perform the search now.", e1);
-
-        } catch (DBExecutionException e2) {
-            searchResultsFrame.setVisible(false);
-            searchResultsFrame.dispose();
-            MessageHandler.error("Cannot perform the search now.", e2);
+        // Fetch the search criteria from the pattern match window.
+        if (_patternMatchframe != null) {
+            _patternMatchframe.fetchSearchCriteria(searchCriteria);
         }
-        setVisible(false);
+
+        // Validate whether the search criteria is enough. 
+        if (_isSearchCriteriaEnough(searchCriteria)) {
+
+            SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
+                    _containerModel, _sourceFrame, _configuration);
+
+            SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
+            searchResultBuffer.addObserver(searchResultsFrame);
+
+            // Show the search result frame.
+            searchResultsFrame.pack();
+            searchResultsFrame.setVisible(true);
+
+            // Call the Search Manager to trigger the search.
+            SearchManager searchManager = new SearchManager();
+            try {
+                searchManager.search(searchCriteria, searchResultBuffer);
+
+            } catch (DBConnectionException e1) {
+                searchResultsFrame.setVisible(false);
+                searchResultsFrame.dispose();
+                MessageHandler.error("Cannot perform the search now.", e1);
+
+            } catch (DBExecutionException e2) {
+                searchResultsFrame.setVisible(false);
+                searchResultsFrame.dispose();
+                MessageHandler.error("Cannot perform the search now.", e2);
+            }
+
+            //            setVisible(false);
+
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "In order to narrow the search, please specify "
+                            + "search criteria.  At least one of "
+                            + "attribute, model name, port or" + " component"
+                            + " entity needs to be set in the search "
+                            + "criteria.", "Not Enough Search Criteria",
+                    JOptionPane.INFORMATION_MESSAGE, null);
+
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
-    //                    private variables                        ////
+    ////                  private variables                        ////
 
-    private NamedObj _containerModel;
-    private JFrame _sourceFrame;
-    private Configuration _configuration;
     private AttributesListPanel _attributesListPanel;
+    private Configuration _configuration;
+    private NamedObj _containerModel;
+    private GraphPatternSearchEditor _patternMatchframe;
+    private JButton _searchButton;
+    private JFrame _sourceFrame;
+
+    ///////////////////////////////////////////////////////////////////
+    //// OpenPatternSearchFrameAction
+
+    private class OpenPatternSearchFrameAction extends AbstractAction {
+
+        public OpenPatternSearchFrameAction(Tableau tableau) {
+            super("Pattern Search");
+            _tableau = tableau;
+//            putValue("tooltip", "Pattern Search");
+//            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////            public methods                          //////
+
+        public void actionPerformed(ActionEvent e) {
+
+            if (_patternMatchframe == null) {
+                URL toRead = getClass().getClassLoader().getResource(
+                        "ptolemy.actor.gt.controller.Match");
+
+                try {
+
+                    EffigyFactory effigyFactory = new EffigyFactory(
+                            _configuration.workspace());
+
+                    PtolemyEffigy.Factory ptolemyEffigyFactory = new PtolemyEffigy.Factory(
+                            effigyFactory, "new effigy factory");
+
+                    Effigy effigy = ptolemyEffigyFactory.createEffigy(
+                            _configuration.getDirectory(), null, toRead);
+
+                    CompositeEntity compositeEntity = new TransformationRule(
+                            effigy, "transformation rule");
+
+                    _patternMatchframe = new GraphPatternSearchEditor(
+                            compositeEntity, new Tableau(effigy,
+                                    "DBSearchframe"),
+                            ((ActorGraphDBTableau) _tableau).getGtLibrary(),
+                            _containerModel, _sourceFrame,
+                            SimpleSearchFrame.this);
+
+                } catch (Exception e2) {
+
+                    MessageHandler.error(
+                            "Failed to open pattern match search editor.", e2);
+                }
+            }
+
+            _patternMatchframe.pack();
+            _patternMatchframe.centerOnScreen();
+            _patternMatchframe.setVisible(true);
+        }
+
+        private Tableau _tableau;
+    }
 
 }

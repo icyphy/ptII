@@ -133,7 +133,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      */
     protected void _initActorGraphDBFrame() {
 
-        _openSearchFrameAction = new OpenSearchFrameAction(this.getTableau());
+        //        _openSearchFrameAction = new OpenSearchFrameAction(this.getTableau());
         _saveModelToDBAction = new SaveModelToDBAction(this);
         _openDatabaseSetupAction = new DatabaseSetupAction();
         _simpleSearchAction = new SimpleSearchAction(getModel(), this,
@@ -167,19 +167,21 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
 
             // Create search menu.
-            JMenu searchMenu = new JMenu("Search");
-            searchMenu.setMnemonic(KeyEvent.VK_C);
-            _dbMenu.add(searchMenu);
+            //            JMenu searchMenu = new JMenu("Search");
+            //            searchMenu.setMnemonic(KeyEvent.VK_C);
+            //            _dbMenu.add(searchMenu);
 
             GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
-            GUIUtilities.addMenuItem(searchMenu, _simpleSearchAction);
+            GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
 
-            GUIUtilities
-                    .addHotKey(_getRightComponent(), _openSearchFrameAction);
-            GUIUtilities.addMenuItem(searchMenu, _openSearchFrameAction);
+            //            GUIUtilities.addMenuItem(searchMenu, _simpleSearchAction);
+
+            //            GUIUtilities
+            //                    .addHotKey(_getRightComponent(), _openSearchFrameAction);
+            //            GUIUtilities.addMenuItem(searchMenu, _openSearchFrameAction);
 
             JMenu recentModelMenu = new JMenu("Recently Opened Models");
-            searchMenu.setMnemonic(KeyEvent.VK_R);
+            recentModelMenu.setMnemonic(KeyEvent.VK_R);
             _dbMenu.add(recentModelMenu);
 
             GUIUtilities.addHotKey(_getRightComponent(),
@@ -196,8 +198,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             try {
 
-                if (getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) 
-                        != null) {
+                if (getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null) {
 
                     _updateDBModelHistory(getModel().getName(), false);
 
@@ -206,7 +207,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                     _updateDBModelHistory(getModel().getName(), true);
 
                 }
-                
+
             } catch (Exception ex) {
 
                 MessageHandler.error("Cannot read model history.", ex);
@@ -272,8 +273,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     /** The database menu. */
     protected JMenu _dbMenu;
 
-    /** The action for opening the search frame. */
-    protected Action _openSearchFrameAction;
+    //    /** The action for opening the pattern match search frame. */
+    //    protected Action _openSearchFrameAction;
 
     /** The action for saving a model to the database. */
     protected Action _saveModelToDBAction;
@@ -312,63 +313,63 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// OpenSearchFrameAction
-
-    private class OpenSearchFrameAction extends AbstractAction {
-
-        public OpenSearchFrameAction(Tableau tableau) {
-            super("Pattern Search");
-            _tableau = tableau;
-            putValue("tooltip", "Pattern Search");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////            public methods                          //////
-
-        public void actionPerformed(ActionEvent e) {
-
-            //            URL toRead = getClass().getClassLoader().getResource(
-            //                    "ptolemy/actor/gt/controller/ModelBasedTransformation.xml");
-
-            URL toRead = getClass().getClassLoader().getResource(
-                    "ptolemy.actor.gt.controller.Match");
-
-            try {
-
-                EffigyFactory effigyFactory = new EffigyFactory(
-                        ActorGraphDBFrame.this.getConfiguration().workspace());
-
-                PtolemyEffigy.Factory ptolemyEffigyFactory = new PtolemyEffigy.Factory(
-                        effigyFactory, "new effigy factory");
-
-                Effigy effigy = ptolemyEffigyFactory.createEffigy(
-                        ActorGraphDBFrame.this.getConfiguration()
-                                .getDirectory(), null, toRead);
-
-                CompositeEntity compositeEntity = new TransformationRule(
-                        effigy, "transformation rule");
-
-                ExtendedGraphFrame frame = new GraphPatternSearchEditor(
-                        compositeEntity, new Tableau(effigy, "DBSearchframe"),
-                        ((ActorGraphDBTableau) _tableau).getGtLibrary(),
-                        getModel(), ActorGraphDBFrame.this);
-
-                frame.setBackground(BACKGROUND_COLOR);
-                frame.pack();
-                frame.centerOnScreen();
-                frame.setVisible(true);
-
-            } catch (Exception e2) {
-
-                e2.printStackTrace();
-            }
-
-        }
-
-        private Tableau _tableau;
-    }
+    //    ///////////////////////////////////////////////////////////////////
+    //    //// OpenSearchFrameAction
+    //
+    //    private class OpenSearchFrameAction extends AbstractAction {
+    //
+    //        public OpenSearchFrameAction(Tableau tableau) {
+    //            super("Pattern Search");
+    //            _tableau = tableau;
+    //            putValue("tooltip", "Pattern Search");
+    //            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
+    //        }
+    //
+    //        ///////////////////////////////////////////////////////////////
+    //        ////            public methods                          //////
+    //
+    //        public void actionPerformed(ActionEvent e) {
+    //
+    //            //            URL toRead = getClass().getClassLoader().getResource(
+    //            //                    "ptolemy/actor/gt/controller/ModelBasedTransformation.xml");
+    //
+    //            URL toRead = getClass().getClassLoader().getResource(
+    //                    "ptolemy.actor.gt.controller.Match");
+    //
+    //            try {
+    //
+    //                EffigyFactory effigyFactory = new EffigyFactory(
+    //                        ActorGraphDBFrame.this.getConfiguration().workspace());
+    //
+    //                PtolemyEffigy.Factory ptolemyEffigyFactory = new PtolemyEffigy.Factory(
+    //                        effigyFactory, "new effigy factory");
+    //
+    //                Effigy effigy = ptolemyEffigyFactory.createEffigy(
+    //                        ActorGraphDBFrame.this.getConfiguration()
+    //                                .getDirectory(), null, toRead);
+    //
+    //                CompositeEntity compositeEntity = new TransformationRule(
+    //                        effigy, "transformation rule");
+    //
+    //                ExtendedGraphFrame frame = new GraphPatternSearchEditor(
+    //                        compositeEntity, new Tableau(effigy, "DBSearchframe"),
+    //                        ((ActorGraphDBTableau) _tableau).getGtLibrary(),
+    //                        getModel(), ActorGraphDBFrame.this);
+    //
+    //                frame.setBackground(BACKGROUND_COLOR);
+    //                frame.pack();
+    //                frame.centerOnScreen();
+    //                frame.setVisible(true);
+    //
+    //            } catch (Exception e2) {
+    //
+    //                e2.printStackTrace();
+    //            }
+    //
+    //        }
+    //
+    //        private Tableau _tableau;
+    //    }
 
     ///////////////////////////////////////////////////////////////////
     //// SaveModelToDBAction
@@ -492,7 +493,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         public void actionPerformed(ActionEvent e) {
 
             JFrame frame = new SimpleSearchFrame(_containerModel, _sourceFrame,
-                    _configuration);
+                    _configuration, getTableau());
             frame.pack();
             frame.setVisible(true);
 
@@ -506,7 +507,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     ///////////////////////////////////////////////////////////////////
     //// DBHistoryMenuListener
-    
+
     /** Listener for help menu commands. */
     private class DBHistoryMenuListener implements ActionListener {
 
