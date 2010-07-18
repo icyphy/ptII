@@ -29,6 +29,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.kernel.bl.save.test;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
 import org.junit.Test;
@@ -39,14 +42,19 @@ import org.powermock.core.classloader.annotations.SuppressStaticInitializationFo
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import ptdb.common.dto.CreateModelTask;
+import ptdb.common.dto.FetchHierarchyTask;
+import ptdb.common.dto.RemoveModelsTask;
+import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.XMLDBModelParsingException;
 import ptdb.common.util.DBConnectorFactory;
+import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.load.DBModelFetcher;
 import ptdb.kernel.bl.save.SaveModelManager;
+import ptdb.kernel.database.CacheManager;
 import ptdb.kernel.database.DBConnection;
 
 ///////////////////////////////////////////////////////////////////
@@ -65,8 +73,8 @@ import ptdb.kernel.database.DBConnection;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest( { SaveModelManager.class, DBConnection.class,
         DBConnectorFactory.class, CreateModelTask.class, SaveModelTask.class,
-        DBExecutionException.class })
-@SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory")
+        DBExecutionException.class, CacheManager.class, RenameModelTask.class })
+@SuppressStaticInitializationFor("ptdb.common.util.DBConnectorFactory,ptdb.kernel.database.CacheManager")
 public class TestSaveModelManager {
 
     ///////////////////////////////////////////////////////////////////
@@ -87,37 +95,65 @@ public class TestSaveModelManager {
     public void testSave_CreateModel() throws Exception {
 
         SaveModelManager saveManager = new SaveModelManager();
-
+        
         PowerMock.mockStatic(DBConnectorFactory.class);
+        
+        
+        PowerMock.mockStatic(CacheManager.class);
+        
+        
 
         DBConnection dBConnectionMock = PowerMock
+                .createMock(DBConnection.class);
+        
+        DBConnection dBCacheConnectionMock = PowerMock
                 .createMock(DBConnection.class);
 
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 dBConnectionMock);
 
-        XMLDBModel modelMock = PowerMock.createPartialMock(XMLDBModel.class, "getIsNew");
+        EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
+                dBCacheConnectionMock);        
 
-        EasyMock.expect(modelMock.getIsNew()).andReturn(true);
 
+        
+        XMLDBModel xmlDBModel = new XMLDBModel(Utilities.generateId("test"));
+
+        xmlDBModel.setIsNew(true);
+        
+        xmlDBModel.setModel("<entity name=\""+ xmlDBModel.getModelName()+"\"></entity>");
+        
+        
         CreateModelTask createModelTaskMock = PowerMock
                 .createMock(CreateModelTask.class);
 
-        PowerMock.expectNew(CreateModelTask.class, modelMock).andReturn(
+        PowerMock.expectNew(CreateModelTask.class, xmlDBModel).andReturn(
                 createModelTaskMock);
+        
+        EasyMock.expect(dBConnectionMock.executeCreateModelTask(createModelTaskMock)).andReturn(xmlDBModel.getModelName());
+        
+        FetchHierarchyTask fetchHierarchyTaskMock = PowerMock.createMock(FetchHierarchyTask.class);
 
-        //createModelTaskMock.setXMLDBModel(modelMock);
-
-        EasyMock.expect(dBConnectionMock.
-                executeCreateModelTask(createModelTaskMock)).andReturn("ID");
-
+        ArrayList<XMLDBModel> modelList = new ArrayList();
+        modelList.add(xmlDBModel);
+        
+        fetchHierarchyTaskMock.setModelsList(modelList);
+        
+        EasyMock.expect(CacheManager.removeFromCache(modelList)).andReturn(true);
+           
+        PowerMock.expectNew(FetchHierarchyTask.class).andReturn(fetchHierarchyTaskMock);
+        
+        EasyMock.expect(dBCacheConnectionMock.executeFetchHierarchyTask(fetchHierarchyTaskMock)).andReturn(null);
+  
         dBConnectionMock.commitConnection();
 
         dBConnectionMock.closeConnection();
+        
+        dBCacheConnectionMock.closeConnection();
 
         PowerMock.replayAll();
 
-        boolean isSuccess = (saveManager.save(modelMock) != null);
+        boolean isSuccess = (saveManager.save(xmlDBModel) != null);
 
         assertTrue(isSuccess);
 
@@ -209,38 +245,66 @@ public class TestSaveModelManager {
     @Test
     public void testSave_SaveModel() throws Exception {
 
-        SaveModelManager saveManager = new SaveModelManager();
-
+SaveModelManager saveManager = new SaveModelManager();
+        
         PowerMock.mockStatic(DBConnectorFactory.class);
+        
+        
+        PowerMock.mockStatic(CacheManager.class);
+        
+        
 
         DBConnection dBConnectionMock = PowerMock
+                .createMock(DBConnection.class);
+        
+        DBConnection dBCacheConnectionMock = PowerMock
                 .createMock(DBConnection.class);
 
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 dBConnectionMock);
 
-        XMLDBModel modelMock = PowerMock.createPartialMock(XMLDBModel.class, "getIsNew");
+        EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
+                dBCacheConnectionMock);        
 
-        EasyMock.expect(modelMock.getIsNew()).andReturn(false);
 
+        
+        XMLDBModel xmlDBModel = new XMLDBModel(Utilities.generateId("test"));
+
+        xmlDBModel.setIsNew(false);
+        
+        xmlDBModel.setModel("<entity name=\""+ xmlDBModel.getModelName()+"\"></entity>");
+        
+        
         SaveModelTask saveModelTaskMock = PowerMock
                 .createMock(SaveModelTask.class);
 
-        PowerMock.expectNew(SaveModelTask.class, modelMock).andReturn(
+        PowerMock.expectNew(SaveModelTask.class, xmlDBModel).andReturn(
                 saveModelTaskMock);
+        
+        EasyMock.expect(dBConnectionMock.executeSaveModelTask(saveModelTaskMock)).andReturn(xmlDBModel.getModelName());
+        
+        FetchHierarchyTask fetchHierarchyTaskMock = PowerMock.createMock(FetchHierarchyTask.class);
 
-        //saveModelTaskMock.setXMLDBModel(modelMock);
-
-        EasyMock.expect(dBConnectionMock.
-                executeSaveModelTask(saveModelTaskMock)).andReturn("ID");
-
+        ArrayList<XMLDBModel> modelList = new ArrayList();
+        modelList.add(xmlDBModel);
+        
+        fetchHierarchyTaskMock.setModelsList(modelList);
+        
+        EasyMock.expect(CacheManager.removeFromCache(modelList)).andReturn(true);
+           
+        PowerMock.expectNew(FetchHierarchyTask.class).andReturn(fetchHierarchyTaskMock);
+        
+        EasyMock.expect(dBCacheConnectionMock.executeFetchHierarchyTask(fetchHierarchyTaskMock)).andReturn(null);
+          
         dBConnectionMock.commitConnection();
 
         dBConnectionMock.closeConnection();
+        
+        dBCacheConnectionMock.closeConnection();
 
         PowerMock.replayAll();
 
-        boolean isSuccess = (saveManager.save(modelMock) != null);
+        boolean isSuccess = (saveManager.save(xmlDBModel) != null);
 
         assertTrue(isSuccess);
 
@@ -466,7 +530,7 @@ public class TestSaveModelManager {
         }
 
         // Reference model with extra attributes. 
-        XMLDBModel oneAdderModel = DBModelFetcher.load("modelWithOneAdder");
+        XMLDBModel oneAdderModel = DBModelFetcher.load("modelWithTwoAdders");
 
         try {
             oneAdderModel = manager.populateChildModelsList(oneAdderModel);
@@ -475,7 +539,7 @@ public class TestSaveModelManager {
                     .getReferencedChildren() != null);
             
             assertTrue("Incorrect number of reference models were returned.",
-                    oneAdderModel.getReferencedChildren().size() == 1);
+                    oneAdderModel.getReferencedChildren().size() == 2);
         } catch (XMLDBModelParsingException e) {
             fail("Failed with error - " + e.getMessage());
         }
@@ -496,4 +560,220 @@ public class TestSaveModelManager {
 
         // Reference model with two referenced model. 
     }
+    
+    
+    /**
+     * Test the renaming of a model when the model and the name are correct.
+     * @throws Exception
+     */
+    @Test
+    public void testRenameModel() throws Exception {
+
+        SaveModelManager saveManager = new SaveModelManager();
+
+        PowerMock.mockStatic(DBConnectorFactory.class);
+
+
+        DBConnection dBConnectionMock = PowerMock
+                .createMock(DBConnection.class);
+
+        
+        EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
+                dBConnectionMock);        
+        
+
+        XMLDBModel modelMock = new XMLDBModel(Utilities.generateId("old"));
+        
+        modelMock.setModelId(modelMock.getModelName());
+        
+        String newName = "newModelName";
+            
+        RenameModelTask taskMock = new RenameModelTask(modelMock, newName);
+        
+        PowerMock.expectNew(RenameModelTask.class, modelMock, newName).andReturn(taskMock);
+
+        dBConnectionMock.closeConnection();
+        
+        PowerMock.replayAll();
+
+        try {
+
+            saveManager.renameModel(modelMock, newName);
+
+            assertTrue(true);
+            
+        } catch (DBConnectionException e) {
+
+            fail("Exception was thrown");
+        }
+        
+        PowerMock.verifyAll();
+
+        
+    }
+    
+    
+
+    /**
+     * Test the renaming of a model when the new name is empty.
+     * @throws Exception
+     */
+    @Test
+    public void testRenameModel_emptyNewName() throws Exception {
+
+        SaveModelManager saveManager = new SaveModelManager();
+
+        PowerMock.mockStatic(DBConnectorFactory.class);
+
+        XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
+        
+        EasyMock.expect(modelMock.getModelId()).andReturn("modelId");
+        
+        String newName = "";
+        
+        PowerMock.replayAll();
+
+        try {
+
+            saveManager.renameModel(modelMock, newName);
+
+            fail("Should throw IllegralArgumentException...");
+            
+        } catch (IllegalArgumentException e) {
+
+            assertTrue(true);
+        }
+        
+        PowerMock.verifyAll();
+        
+    }
+    
+    
+    /**
+     * Test the renaming of a model when the original model does not contain 
+     * an Id or a name.
+     * @throws Exception
+     */
+    @Test
+    public void testRenameModel_NoIdOrNameInOriginal() throws Exception {
+
+        SaveModelManager saveManager = new SaveModelManager();
+
+        PowerMock.mockStatic(DBConnectorFactory.class);       
+
+        XMLDBModel originalModel = new XMLDBModel("");
+        
+        originalModel.setModelId(null);        
+        
+        String newName = "modelName";
+        
+        PowerMock.replayAll();
+
+        try {
+
+            saveManager.renameModel(originalModel, newName);
+
+            fail("Should throw IllegralArgumentException...");
+            
+        } catch (IllegalArgumentException e) {
+
+            assertTrue(true);
+        }
+        
+        PowerMock.verifyAll();
+        
+    }
+    
+    
+    /**
+     * Test the renaming of a model when the original model does not contain 
+     * an Id but contains a name.
+     * @throws Exception
+     */
+    @Test
+    public void testRenameModel_NoIdInOriginal() throws Exception {
+
+        SaveModelManager saveManager = new SaveModelManager();
+
+        PowerMock.mockStatic(DBConnectorFactory.class);
+
+
+        DBConnection dBConnectionMock = PowerMock
+                .createMock(DBConnection.class);
+
+        
+        EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
+                dBConnectionMock);        
+        
+        XMLDBModel originalModel = new XMLDBModel("Test");
+        
+        originalModel.setModelId(null);        
+        
+        String newName = "modelName";
+        
+        dBConnectionMock.closeConnection();
+        
+        PowerMock.replayAll();
+
+        try {
+
+            saveManager.renameModel(originalModel, newName);
+
+            assertTrue(true);
+            
+        } catch (IllegalArgumentException e) {
+
+            fail("Should not throw an IllegalArgumentException...");
+        }
+        
+        PowerMock.verifyAll();
+        
+    }
+    
+    
+    /**
+     * Test the renaming of a model when the original model contains 
+     * an Id but does not contains a name.
+     * @throws Exception
+     */
+    @Test
+    public void testRenameModel_NoNameInOriginal() throws Exception {
+
+        SaveModelManager saveManager = new SaveModelManager();
+
+        PowerMock.mockStatic(DBConnectorFactory.class);
+
+
+        DBConnection dBConnectionMock = PowerMock
+                .createMock(DBConnection.class);
+
+        
+        EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
+                dBConnectionMock);        
+        
+        XMLDBModel originalModel = new XMLDBModel(null);
+        
+        originalModel.setModelId("testId");        
+        
+        String newName = "modelName";
+        
+        dBConnectionMock.closeConnection();
+        
+        PowerMock.replayAll();
+
+        try {
+
+            saveManager.renameModel(originalModel, newName);
+
+            assertTrue(true);
+            
+        } catch (IllegalArgumentException e) {
+
+            fail("Should not throw an IllegalArgumentException...");
+        }
+        
+        PowerMock.verifyAll();
+        
+    }
+    
 }
