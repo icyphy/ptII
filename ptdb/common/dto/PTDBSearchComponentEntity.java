@@ -26,33 +26,32 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-
 package ptdb.common.dto;
 
-import ptolemy.data.expr.Variable;
+import ptolemy.kernel.ComponentEntity;
+
 
 ///////////////////////////////////////////////////////////////
-//// PTDBSearchAttribute
+//// PTDBSearchComponentEntity
 
 /**
- * The attribute to wrap the attributes information to be searched in the
- * database. It indicates that this attribute is wrapped from the DB Search
- * frame.
- *
+ * The component entity to wrap the component information to be searched in the
+ * database. It wraps the atomic component information specified in the 
+ * AtomicActorMatcher. 
+ * 
  * @author Alek Wang
  * @version $Id$
  * @since Ptolemy II 8.1
- * @Pt.ProposedRating
- * @Pt.AcceptedRating
+ * @Pt.ProposedRating red (wenjiaow)
+ * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class PTDBSearchAttribute extends Variable {
+public class PTDBSearchComponentEntity extends ComponentEntity {
 
     /**
-     * Default constructor of PTDBSearchAttribute.
+     * Default constructor. 
      */
-    public PTDBSearchAttribute() {
-        super();
+    public PTDBSearchComponentEntity() {
+       super();
     }
-
 }
