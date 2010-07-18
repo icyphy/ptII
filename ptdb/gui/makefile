@@ -57,7 +57,6 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	ActorGraphDBFrame.java \
 	ActorGraphDBTableau.java \
-	DbSearchFrame.java \
 	ModelPanel.java \
 	CancelObservable.java \
 	ParentPanel.java \
@@ -87,9 +86,6 @@ OPTIONAL_FILES = \
 	'ActorGraphDBFrame$$ModelSearchResults.class' \
 	'ActorGraphDBFrame$$OpenSearchFrameAction.class' \
 	'ActorGraphDBTableau$$Factory.class' \
-	'DbSearchFrame$$DBMatchAction.class' \
-	'DbSearchFrame$$DBSearchConfigureAction.class' \
-	'DbSearchFrame$$DBSearchFrameController.class' \
 	'ModelAttributePanel$$1.class' \
 	'ModelPanel$$1.class' \
 	'ParentPanel$$1.class' \
