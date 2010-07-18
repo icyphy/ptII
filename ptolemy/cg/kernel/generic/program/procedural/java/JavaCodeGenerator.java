@@ -952,12 +952,19 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  is less than linesPerMethod, then the first element will be
      *  the empty string and the second element will be the value of
      *  the code parameter.
-     *  @exception IOException If thrown will reading the code.
+     *  @exception IOException If thrown while reading the code.
      */
     public String[] splitLongBody(int linesPerMethod, String prefix, String code)
             throws IOException {
         BufferedReader bufferedReader = null;
         StringBuffer bodies = new StringBuffer("public class " + prefix + " {" + _eol);
+        // One method calls all the other methods, thus reducing the
+        // size of the top level caller.
+        StringBuffer callAllBody = new StringBuffer("void " + "callAll" + prefix
+                + "() {" + _eol
+                + prefix + " " + prefix
+                + " = new " + prefix + "();" + _eol);
+
         StringBuffer masterBody = new StringBuffer(prefix + " " + prefix
                 + " = new " + prefix + "();" + _eol);
 
@@ -965,39 +972,70 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             bufferedReader = new BufferedReader(new StringReader(code));
             String line;
             int methodNumber = 0;
+
+            // lineNumber keeps track of the number of lines seen
+            // so that we know whether we've reached the linesPerMethod
+            // Note that we don't reset lineNumer in the while loop.
             int lineNumber = 0;
             StringBuffer body = new StringBuffer();
+            // Read lines until we reach the linesPerMethod.
+            // If we reach the linesPerMethod line and we are inside
+            // a try/catch, if or {} block, then keep reading and appending
+            // until the block ends
             while ((line = bufferedReader.readLine()) != null) {
                 String methodName = prefix + "_" + methodNumber++;
+                lineNumber++;
                 body = new StringBuffer(line + _eol);
                 int commentCount = 0;
                 int ifCount = 0;
                 int openBracketCount = 0;
                 int tryCount = 0;
-                if (line.trim().startsWith("if")) {
-                    ifCount++;
+                String trimmedLine = line.trim();
+                if (trimmedLine.startsWith("/*")) {
+                    commentCount++;
                 }
-                if (line.trim().endsWith("{")) {
+                if (trimmedLine.endsWith("*/")) {
+                    commentCount--;
+                }
+
+                // Look for curly braces in non-commented lines
+                if (trimmedLine.endsWith("{")) {
                     if (ifCount > 0) {
                         ifCount--;
                     }
                     openBracketCount++;
                 }
-                if (line.trim().startsWith("try")) {
+                // Lines can both start and end with braces.
+                if (trimmedLine.startsWith("}")) {
+                    if (ifCount > 0) {
+                        ifCount--;
+                    }
+                    openBracketCount--;
+                    // Don't break up try catch blocks
+                    if (trimmedLine.startsWith("} catch")
+                            || trimmedLine.startsWith("}catch")) {
+                        tryCount--;
+                    }
+                } else if (trimmedLine.startsWith("try")) {
                     tryCount++;
+                } else if (line.trim().startsWith("if")) {
+                    ifCount++;
                 }
-                //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " " + line);
+
+                //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " a: " + line);
+                // Keep appending lines until we are do linesPerMethod lines
+                // or the if, {}, comment or try/catch block ends.
                 for (int i = 0;
-                     ((i + 1) < linesPerMethod && line != null)
+                     (i + 1 < linesPerMethod && line != null)
                          || ifCount > 0 || openBracketCount > 0 || commentCount > 0 || tryCount > 0
                          ; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
-                    //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " " + line);
+                    //System.out.println(ifCount + " " + openBracketCount + " " + commentCount + " " + tryCount + " b:" + line);
 
                     if (line != null) {
                         body.append(line + _eol);
-                        String trimmedLine = line.trim();
+                        trimmedLine = line.trim();
                         if (trimmedLine.startsWith("/*")) {
                             commentCount++;
                         }
@@ -1008,8 +1046,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                         if (!trimmedLine.startsWith("//")
                                 && !trimmedLine.startsWith("/*")
                                 && !trimmedLine.startsWith("*")) {
+                            // FIXME: this looks like duplicated code
                             // Look for curly braces in non-commented lines
-                            // This code could be buggy . . .
                             if (trimmedLine.endsWith("{")) {
                                 if (ifCount > 0) {
                                     ifCount--;
@@ -1038,9 +1076,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                 bodies.append("void " + methodName + "() {" + _eol
                         + body.toString() + "}" + _eol);
+                //callAllBody.append(prefix + "." + methodName + "();" + _eol);
                 masterBody.append(prefix + "." + methodName + "();" + _eol);
             }
-            if (lineNumber < linesPerMethod) {
+            if (lineNumber <= linesPerMethod) {
                 // We must have less than linesPerMethod lines in the body
                 bodies = new StringBuffer();
                 masterBody = new StringBuffer(body);
@@ -1056,7 +1095,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         if (bodies.length() != 0) {
+            //bodies.append(_eol + callAllBody + _eol);
             bodies.append(_eol + "}" + _eol);
+            //masterBody.append(prefix + "." + "callAll" + prefix + "();" + _eol);
         }
 
         String[] results = { bodies.toString(), masterBody.toString() };

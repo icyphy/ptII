@@ -203,3 +203,33 @@ foo.foo_0();
 }}
 
 
+#####
+test JavaCodeGenerator-2.7 {one line per method start with a comment} {
+    set code "     /* This is a comment*/"
+
+   set results [$codeGenerator splitLongBody 1 foo $code]
+   $results getrange
+} {{} {     /* This is a comment*/
+}}
+
+#####
+test JavaCodeGenerator-2.8 {one line per method} {
+    set results [testSplitLongBody 3 1]
+   $results getrange
+} {{public class foo {
+void foo_0() {
+line 1;
+}
+void foo_1() {
+line 2;
+}
+void foo_2() {
+line 3;
+}
+
+}
+} {foo foo = new foo();
+foo.foo_0();
+foo.foo_1();
+foo.foo_2();
+}}
