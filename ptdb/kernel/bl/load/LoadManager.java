@@ -97,7 +97,7 @@ public class LoadManager {
        
        if(byReference){
 
-           if(_createsCircularDepenency(name, container.getName())){
+           if(_circularDepenencyExists(name, container.getName())){
                
                throw new CircularDependencyException("This import would " +
                                            "result in a circular dependency.");
@@ -198,31 +198,28 @@ public class LoadManager {
      * @param containerName
      *          The name of the container into which the model is being 
      *          imported.
+     * @return
+     *          Indication if the import results in a circular dependency.
+     *          True if it does.  False if it does not.
      * @exception DBConnectionException
      *          Thrown if a problem occurs with the database connection.
      * @exception DBExecutionException
      *          Thrown if a problem occurs getting the reference string for
      *          modelName.
      */
-    private static boolean _createsCircularDepenency(String modelName
+    private static boolean _circularDepenencyExists(String modelName
             , String containerName) throws DBConnectionException, 
             DBExecutionException {
         
         boolean returnValue = false;
         
-        /* //TODO - Uncomment when executeReferenceStringTask is implemented
-           //       in DBConnection and OracleXMLDBConnection
-           //       Also, modelReferenceExists() must be created as a static
-           //       method in the Utilities class.
-         
         DBConnection connection = DBConnectorFactory.getSyncConnection(false);
 
         try {
 
             GetReferenceStringTask getReferenceStringTask = 
                 new GetReferenceStringTask(modelName);
-            String referenceString = new String();
-            referenceString = connection.
+            String referenceString = connection.
                 executeGetReferenceStringTask(getReferenceStringTask);
             
             if(referenceString == null){
@@ -244,9 +241,10 @@ public class LoadManager {
         } finally {
             if (connection != null) {
                 connection.closeConnection();
+                connection = null;
             }
         }
-        */
+        
         
         return returnValue;
         
