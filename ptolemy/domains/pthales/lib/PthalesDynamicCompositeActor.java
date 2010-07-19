@@ -119,22 +119,24 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
                         ((IntToken) headerIn[2 * i + 1]).intValue());
             }
 
-            Integer[] repetition = computeIterations(portIn, sizes);
+            Integer[] repetitions = computeIterations(portIn, sizes);
 
             int iterations = nbTokens;
 
-            for (int i = 0; i < repetition.length; i++) {
-                iterations *= repetition[i];
+            for (int i = 0; i < repetitions.length; i++) {
+                iterations *= repetitions[i];
             }
 
             if (minIterations < 0 || minIterations > iterations) {
-                _repetition = repetition;
+                _repetitions = repetitions;
                 minIterations = iterations;
             }
         }
 
-        if (minIterations < 0)
+        if (minIterations < 0) {
             minIterations = 0;
+            //FIXME How to set the repetitions?
+        }
 
         return minIterations;
     }
@@ -188,6 +190,24 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
             iterations = computeIterations();
         }
 
+        for (Object portIn : inputPortList()) {
+            IOPort port = (IOPort) portIn;
+            Receiver[][] receivers = port.getReceivers();
+            if (receivers != null && receivers.length > 0) {
+                for (Receiver[] receiverss : receivers) {
+                    if (receiverss != null && receiverss.length > 0) {
+                        for (Receiver receiver : receiverss) {
+                            // FIXME: Is the cast to LinkedHashSet
+                            // safe?  Depends on the Java
+                            // implementation of LinkedHashMap.
+                            ((PthalesReceiver) receiver)
+                                    .setRepetitionsIn(_repetitions);
+                        }
+                    }
+                }
+            }
+        }
+
         _headerSent = false;
 
         return super.iterate(iterations);
@@ -214,7 +234,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
 
                 IOPort p = (IOPort) outports.next();
                 LinkedHashMap<String, Integer> sizes = PthalesIOPort
-                        .getArraySizes(p, _repetition);
+                        .getArraySizes(p, _repetitions);
 
                 //Header construction
                 List<Token> header = new ArrayList<Token>();
@@ -251,5 +271,5 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
     private boolean _headerSent = false;
 
     /* cached value for the repetition parameter */
-    private Integer[] _repetition;
+    private Integer[] _repetitions;
 }
