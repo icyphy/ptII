@@ -168,14 +168,14 @@ public class GraphPatternSearchEditor extends TransformationEditor {
     ////                         public methods                    ////
 
     /**
-     * Fetch the search criteria of graph pattern specified in this frame. 
+     * Fetch the search criteria of the graph pattern specified in this frame. 
      * 
-     * @param searchCriteria The search criteria object that to be set with 
+     * @param searchCriteria The search criteria object to be set with 
      * the graph pattern criteria information. 
-     * @exception NameDuplicationException Thrown if there is duplicated names 
+     * @exception NameDuplicationException Thrown if there are duplicated names 
      * of the attributes. 
-     * @exception IllegalActionException Thrown if there is illegal action in 
-     * setting the attribute name. 
+     * @exception IllegalActionException Thrown if there is an illegal action  
+     * in setting the attribute name. 
      * @exception MalformedStringException Thrown if error occurs while parsing
      *  the expression.
      */
