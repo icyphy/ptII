@@ -201,7 +201,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
                             // safe?  Depends on the Java
                             // implementation of LinkedHashMap.
                             ((PthalesReceiver) receiver)
-                                    .setRepetitionsIn(_repetitions);
+                                    .setReadParameters(_repetitions);
                         }
                     }
                 }

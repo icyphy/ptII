@@ -271,12 +271,14 @@ public class PthalesReceiver extends SDFReceiver {
                         LinkedHashMap<String, Integer[]> pattern = new LinkedHashMap<String, Integer[]>();
 
                         for (int i = 0; i < nDims; i++) {
-                            int val = ((IntToken) _header.get(3 + 2 * i)).intValue();
-                            
-                            String dim = ((StringToken)_header.get(2 + 2 * i)).stringValue();
-                            
+                            int val = ((IntToken) _header.get(3 + 2 * i))
+                                    .intValue();
+
+                            String dim = ((StringToken) _header.get(2 + 2 * i))
+                                    .stringValue();
+
                             finalSize *= val;
-                            
+
                             _sizes.put(dim, val);
                             _dimensions[i] = dim;
                             Integer[] values = new Integer[2];
@@ -314,14 +316,6 @@ public class PthalesReceiver extends SDFReceiver {
                         //                      Number of tokens per data
                         _nbTokens = PthalesIOPort.getNbTokenPerData(port);
 
-                        // FIXME: sizeRepetition is not used?
-                        // total repetition size
-                        //                        int sizeRepetition = 1;
-                        //                        for (Integer size : repetitions) {
-                        //                            sizeRepetition *= size;
-                        //                        }
-
-                        // origin construction once per port (order is not important)
                         int origin = 0;
                         for (int nDim = 0; nDim < _dimensions.length; nDim++) {
                             // a base can be null so origin does not increase
@@ -334,9 +328,6 @@ public class PthalesReceiver extends SDFReceiver {
 
                         //Specific to input ports
                         _originIn = origin;
-                        _patternSizeIn = PthalesIOPort
-                                .getPatternNbAddress(port);
-                        _patternIn = PthalesIOPort.getInternalPattern(port);
                     }
                 } else {
                     _buffer[_getAddress(_posOut++, false)] = token;
@@ -503,13 +494,16 @@ public class PthalesReceiver extends SDFReceiver {
 
     /** Set repetitions of the actor containing the port that contains the receiver
      */
-    public void setRepetitionsIn(Integer[] repetitions) {
+    public void setReadParameters(Integer[] repetitions) {
         if (repetitions != null) {
             _repetitionsIn = new int[repetitions.length];
 
             for (int i = 0; i < repetitions.length; i++) {
                 _repetitionsIn[i] = repetitions[i].intValue();
             }
+
+            _patternSizeIn = PthalesIOPort.getPatternNbAddress(getContainer());
+            _patternIn = PthalesIOPort.getInternalPattern(getContainer());
 
             _tilingIn = PthalesIOPort.getExternalTiling(getContainer(),
                     _repetitionsIn.length);
