@@ -54,7 +54,7 @@ EXTRA_SRCS =	$(JSRCS)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = \
-	TestSearchResultsFrame.java
+	TestActorGraphDBFrame.java
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -74,7 +74,6 @@ tests:: $(EXTRA_SRCS) jclass test_java
 
 test_java: jclass
 	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.gui.test.TestActorGraphDBFrame
-	-"$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.gui.test.TestSearchResultsFrame
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java
