@@ -38,6 +38,7 @@ import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelTask;
+import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.RemoveModelsTask;
@@ -256,6 +257,22 @@ public class AsynchronousDBConnection implements DBConnection {
                         + "not supported by this type of DBConnection");
     }
 
+    /**
+     * Get the model reference string is not supported by the asynchronous 
+     * connection.
+     * Use a synchronous connection for that.
+     * 
+     * @param task Task that contains the model name.
+     * @return The reference string for the given model name. 
+     * @throws DBExecutionException If thrown while fetching the reference 
+     * string.
+     */
+    public String executeGetReferenceStringTask(GetReferenceStringTask task)
+            throws DBExecutionException {
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeGetReferenceStringTask is "
+                        + "not supported by this type of DBConnection");
+    }
     
     /**
      * Execute the necessary commands to retrieve a model from the database.

@@ -289,7 +289,25 @@ public class Utilities {
 
         return returnedResults;
     }
-
+    
+    /**
+     * Check if the model name exists in the given reference string.
+     * @param modelName Model name to check.
+     * @param referenceString Reference string to check within.
+     * @return True if the model name is present within the given reference 
+     * string, false otherwise.
+     */
+    public static boolean modelReferenceExists(String modelName,
+            String referenceString) {
+        boolean modelExists = false;
+        if (modelName != null && referenceString != null) {
+            String searchString = "name=\"" + modelName + "\"";
+            if (referenceString.indexOf(searchString) != -1) {
+                modelExists = true;
+            }
+        }
+        return modelExists;
+    }
     //////////////////////////////////////////////////////////////////////
     ////		protected methods 				////
 

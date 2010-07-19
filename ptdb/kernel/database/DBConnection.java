@@ -38,6 +38,7 @@ import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
 import ptdb.common.dto.GetModelTask;
+import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.RemoveModelsTask;
@@ -177,6 +178,15 @@ public interface DBConnection {
     public XMLDBModel executeGetModelTask(GetModelTask task)
             throws DBExecutionException;
     
+    /**
+     * Get the model reference string for the given model name.
+     * @param task Task that contains the model name.
+     * @return The reference string for the given model name. 
+     * @throws DBExecutionException If thrown while fetching the reference 
+     * string.
+     */
+    public String executeGetReferenceStringTask(GetReferenceStringTask task)
+            throws DBExecutionException;
     
     /**
      * Execute the necessary commands to retrieve a model from the database 
