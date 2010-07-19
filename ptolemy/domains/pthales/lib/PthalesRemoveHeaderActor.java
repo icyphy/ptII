@@ -109,6 +109,7 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
     public void createReceivers() throws IllegalActionException {
         super.createReceivers();
 
+        //set the receiver of the input port to type dynamic
         IOPort portIn = (IOPort) getPort("in");
 
         Receiver[][] receivers = portIn.getReceivers();
@@ -155,35 +156,6 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
             portOut.send(i, tokensIn, dataSize);
         }
     }
-
-    /** Initialize this actor.  Derived classes override this method
-     *  to perform actions that should occur once at the beginning of
-     *  an execution, but after type resolution.  Derived classes can
-     *  produce output data and schedule events.
-     *
-     *  @exception IllegalActionException If a derived class throws it.
-     */
-//    public void initialize() throws IllegalActionException {
-//        super.initialize();
-//
-//        IOPort port = (IOPort) getPort("in");
-//        Integer[] rep = new Integer[1];
-//        rep[0] = 1;
-//        Receiver[][] receivers = port.getReceivers();
-//        if (receivers != null && receivers.length > 0) {
-//            for (Receiver[] receiverss : receivers) {
-//                if (receiverss != null && receiverss.length > 0) {
-//                    for (Receiver receiver : receiverss) {
-//                        // FIXME: Is the cast to LinkedHashSet
-//                        // safe?  Depends on the Java
-//                        // implementation of LinkedHashMap.
-////                        ((PthalesReceiver) receiver)
-////                                .setRepetitionsIn(rep);
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
