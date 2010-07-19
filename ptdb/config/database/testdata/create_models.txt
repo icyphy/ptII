@@ -60,6 +60,8 @@ putdocument ModelContainsBothAttributes '<?xml version="1.0" standalone="no"?>
 putDocument X '<entity name="X" class="ptolemy.actor.TypedCompositeActor">
 <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
     <display name="Created By"/>
+    <property name="DBModelId" value="X" class="ptolemy.data.expr.StringParameter">
+        </property>
     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -114,6 +116,8 @@ putDocument X '<entity name="X" class="ptolemy.actor.TypedCompositeActor">
 putdocument Y '<entity name="Y" class="ptolemy.actor.TypedCompositeActor">
 <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 85.0]">
     </property>
+        <property name="DBModelId" value="Y" class="ptolemy.data.expr.StringParameter">
+        </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 127, 823, 514}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -158,6 +162,8 @@ putdocument NoNamesNoValues '<?xml version="1.0" standalone="no"?>
 <entity name="NoNamesNoValues" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
+        <property name="DBModelId" value="NoNamesNoValues" class="ptolemy.data.expr.StringParameter">
+        </property>
     <property name="CreatedBy_Temp" class="ptolemy.data.expr.StringParameter" value="Ashwini Vikram">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -215,6 +221,8 @@ putDocument  ContainsBothNamesButExchangedValues '<?xml version="1.0" standalone
 <entity name="ContainsBothNamesButExchangedValues" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
+    <property name="DBModelId" value="ContainsBothNamesButExchangedValues" class="ptolemy.data.expr.StringParameter">
+        </property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="13781">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -272,6 +280,8 @@ putDocument ContainsBothNamesOneValue '<?xml version="1.0" standalone="no"?>
 <entity name="ContainsBothNamesOneValue" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
+    <property name="DBModelId" value="ContainsBothNamesOneValue" class="ptolemy.data.expr.StringParameter">
+        </property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -329,6 +339,8 @@ putDocument ContainsOneNameValue '<?xml version="1.0" standalone="no"?>
 <entity name="ContainsOneNameValue" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
+     <property name="DBModelId" value="ContainsOneNameValue" class="ptolemy.data.expr.StringParameter">
+        </property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -366,6 +378,8 @@ putDocument NoNamesAllValues '<?xml version="1.0" standalone="no"?>
 <entity name="NoNamesAllValues" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
+     <property name="DBModelId" value="NoNamesAllValues" class="ptolemy.data.expr.StringParameter">
+        </property>
     <property name="CreatedBy_Temp" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -424,6 +438,8 @@ putdocument ModelB '<?xml version="1.0" standalone="no"?>
 <entity name="ModelB" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
+     <property name="DBModelId" value="ModelB" class="ptolemy.data.expr.StringParameter">
+        </property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
