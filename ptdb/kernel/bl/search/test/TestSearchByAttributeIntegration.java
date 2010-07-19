@@ -113,8 +113,8 @@ public class TestSearchByAttributeIntegration {
         SearchCriteria searchCriteria = new SearchCriteria();
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        StringParameter criteriaVariable = new StringParameter(new Entity(), "TestAttribute");
-        criteriaVariable.setToken("test value");
+        StringParameter criteriaVariable = new StringParameter(new Entity(), "new_countries");
+        criteriaVariable.setToken("India");
 
 
         ArrayList<Attribute> attributesList = new ArrayList<Attribute>();
@@ -125,8 +125,7 @@ public class TestSearchByAttributeIntegration {
 
         ArrayList<XMLDBModel> resultModels = searchResultBuffer.getResults();
 
-        assertEquals("Spectrum2.xml", resultModels.get(0).getModelName());
-        assertEquals("model4", resultModels.get(1).getModelName());
+        assertEquals("modeltt1000", resultModels.get(0).getModelName());
 
     }
 

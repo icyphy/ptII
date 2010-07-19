@@ -36,6 +36,8 @@ import static org.junit.Assert.*;
 import static org.powermock.api.easymock.PowerMock.mockStatic;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
@@ -232,6 +234,9 @@ public class TestSearchManager {
         for (int i = 0; i < 5; i++) {
             CompositeEntity namedObjMock = PowerMock
                     .createMock(CompositeEntity.class);
+            
+            parserMock.resetAll();
+            
             expect(
                     parserMock.parse(patternMatchInitialModels.get(i)
                             .getModel())).andReturn(namedObjMock);
@@ -464,6 +469,8 @@ public class TestSearchManager {
             resultsFromXQuery.add(xmldbModel);
         }
 
+        Collections.sort(resultsFromXQuery);
+        
         expect(
                 dbConnectionXQueryMock
                         .executeGraphSearchTask(graphSearchTaskMock))
@@ -497,6 +504,9 @@ public class TestSearchManager {
         for (int i = 0; i < 5; i++) {
             CompositeEntity namedObjMock = PowerMock
                     .createMock(CompositeEntity.class);
+            
+            parserMock.resetAll();
+            
             expect(
                     parserMock.parse(patternMatchInitialModels.get(i)
                             .getModel())).andReturn(namedObjMock);
@@ -556,6 +566,9 @@ public class TestSearchManager {
         for (int i = 0; i < 5; i++) {
             CompositeEntity namedObjMock = PowerMock
                     .createMock(CompositeEntity.class);
+            
+            parserMock.resetAll();
+            
             expect(
                     parserMock.parse(patternMatchInitialModels.get(i)
                             .getModel())).andReturn(namedObjMock);
@@ -582,7 +595,6 @@ public class TestSearchManager {
             ArrayList<XMLDBModel> expectedResults = new ArrayList<XMLDBModel>();
 
             expectedResults.add(patternMatchInitialModels.get(i));
-
             fetchHierarchyTaskMock.setModelsList(expectedResults);
 
             for (int j = 15; j < 25; j++) {
@@ -800,6 +812,7 @@ public class TestSearchManager {
         for (int i = 0; i < 5; i++) {
             CompositeEntity namedObjMock = PowerMock
                     .createMock(CompositeEntity.class);
+            parserMock.resetAll();
             expect(
                     parserMock.parse(patternMatchInitialModels.get(i)
                             .getModel())).andReturn(namedObjMock);

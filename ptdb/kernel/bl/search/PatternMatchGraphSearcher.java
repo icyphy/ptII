@@ -97,6 +97,7 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
         ArrayList<XMLDBModel> modelsBatch = new ArrayList<XMLDBModel>();
 
         int fetchedCount = 0;
+
         for (XMLDBModel model : _previousResults) {
 
             // Get models from the LoadManager, as 5 models in a batch.  
@@ -148,7 +149,7 @@ public class PatternMatchGraphSearcher extends GraphSearcher {
                         _nextResultHandler.handleResults(tempResultsList);
                     }
                 }
-                modelsBatch = new ArrayList<XMLDBModel>();
+                modelsBatch.clear();
 
             }
 

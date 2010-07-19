@@ -105,27 +105,14 @@ public abstract class AbstractSearcher implements ResultHandler {
     public void handleResults(ArrayList<XMLDBModel> modelResults)
             throws DBConnectionException, DBExecutionException {
 
-        // TODO delete later 
-//        System.out.println("-----------------------------");
-//        System.out.println(getClass().getName());
-//        if (modelResults != null && modelResults.size() > 0) {
-//            for (Iterator iterator = modelResults.iterator(); iterator
-//                    .hasNext();) {
-//                XMLDBModel xmldbModel = (XMLDBModel) iterator.next();
-//                System.out.println("model: " + xmldbModel);
-//            }
-//        } else {
-//            System.out.println("results: "
-//                    + (modelResults == null ? "null" : "empty"));
-//        }
-        // TODO delete later end. 
 
         // Check whether searching is canceled, and stop the search is it is 
         // canceled. 
         if (isSearchCancelled()) {
             return;
         }
-
+        
+        
         // Store the passed results in the previous found results field.
         _previousResults = modelResults;
         
@@ -148,9 +135,6 @@ public abstract class AbstractSearcher implements ResultHandler {
             // skip the current searcher if it is not set with the
             // search criteria. 
             if (_isSearchCriteriaSet()) {
-
-                // TODO to delete later
-//                System.out.println("is set");
 
                 if (this instanceof AbstractDBSearcher) {
                     try {
@@ -184,8 +168,10 @@ public abstract class AbstractSearcher implements ResultHandler {
                         //                    if (!(this instanceof HierarchyFetcher)
                         //                            && !(this instanceof AttributeSearcher)) {
                         if (_isSearchCriteriaSet()) {
+
                             _toPassResults = Utilities.intersectResults(
                                     _previousResults, _currentResults);
+
                         } else {
                             _toPassResults = _previousResults;
                         }

@@ -103,25 +103,6 @@ public abstract class GraphSearcher extends AbstractSearcher {
      */
     @Override
     protected boolean _isSearchCriteriaSet() {
-        //
-        //        // TODO delete later
-        //        System.out.println("db search criteria: " + _dbGraphSearchCriteria);
-        //        System.out
-        //                .println("ports: " + (_dbGraphSearchCriteria.getPortsList() != null ? _dbGraphSearchCriteria
-        //                        .getPortsList()
-        //                        : "null"));
-        //        System.out
-        //                .println("components: "
-        //                        + (_dbGraphSearchCriteria.getComponentEntitiesList() != null ? _dbGraphSearchCriteria
-        //                        .getComponentEntitiesList()
-        //                        : "null"));
-        //        System.out
-        //                .println("composites:"
-        //                        + (_dbGraphSearchCriteria.getCompositeEntities() != null ? _dbGraphSearchCriteria
-        //                        .getCompositeEntities()
-        //                        : "null"));
-        //
-        //        // TODO delete later ends. 
 
         if (_dbGraphSearchCriteria != null
                 && ((_dbGraphSearchCriteria.getPortsList() != null && !_dbGraphSearchCriteria

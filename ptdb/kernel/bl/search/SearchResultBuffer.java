@@ -96,9 +96,6 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
     @Override
     public void handleIntermediateResults(List<XMLDBModel> intermediateResults,
             ResultHandler resultHandler) {
-        // FIXME to be delete later 
-//        System.out.println("Intermediate Results: " + resultHandler + " @ "
-//                + intermediateResults);
 
         if (_intermediateResults == null) {
             _intermediateResults = new HashMap<ResultHandler, List<XMLDBModel>>();
