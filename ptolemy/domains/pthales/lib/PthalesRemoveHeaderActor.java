@@ -107,17 +107,17 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
      *  @exception IllegalActionException If any port throws it.
      */
     public void createReceivers() throws IllegalActionException {
-       super.createReceivers();
-       
-       IOPort portIn = (IOPort) getPort("in");
+        super.createReceivers();
 
-       Receiver[][] receivers = portIn.getReceivers();
+        IOPort portIn = (IOPort) getPort("in");
 
-       for (int i = 0; i < portIn.getWidth(); i++) {
-           ((PthalesReceiver) receivers[i][0]).setDynamic(true);
-       }
+        Receiver[][] receivers = portIn.getReceivers();
+
+        for (int i = 0; i < portIn.getWidth(); i++) {
+            ((PthalesReceiver) receivers[i][0]).setDynamic(true);
+        }
     }
-    
+
     /** Read the contents of the array, and extract the header containing 
      * the number of dimensions and the size of each dimension
      * at the beginning of the array then send only the useful informations.
@@ -139,12 +139,12 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
         // Input ports created and filled before elementary task called 
         int dataSize = nbTokens;
         String[] dims = new String[nDims];
-        int[] sizes =  new int[dims.length];
-        
+        int[] sizes = new int[dims.length];
+
         for (int i = 0; i < nDims; i++) {
             dataSize *= ((IntToken) headerIn[2 * i + 1]).intValue();
-            dims[i] = ((StringToken)headerIn[2 * i]).stringValue();
-            sizes[i] = ((IntToken)headerIn[2 * i + 1]).intValue();
+            dims[i] = ((StringToken) headerIn[2 * i]).stringValue();
+            sizes[i] = ((IntToken) headerIn[2 * i + 1]).intValue();
         }
 
         // Token Arrays from simulation
@@ -155,6 +155,35 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
             portOut.send(i, tokensIn, dataSize);
         }
     }
+
+    /** Initialize this actor.  Derived classes override this method
+     *  to perform actions that should occur once at the beginning of
+     *  an execution, but after type resolution.  Derived classes can
+     *  produce output data and schedule events.
+     *
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+//    public void initialize() throws IllegalActionException {
+//        super.initialize();
+//
+//        IOPort port = (IOPort) getPort("in");
+//        Integer[] rep = new Integer[1];
+//        rep[0] = 1;
+//        Receiver[][] receivers = port.getReceivers();
+//        if (receivers != null && receivers.length > 0) {
+//            for (Receiver[] receiverss : receivers) {
+//                if (receiverss != null && receiverss.length > 0) {
+//                    for (Receiver receiver : receiverss) {
+//                        // FIXME: Is the cast to LinkedHashSet
+//                        // safe?  Depends on the Java
+//                        // implementation of LinkedHashMap.
+////                        ((PthalesReceiver) receiver)
+////                                .setRepetitionsIn(rep);
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
