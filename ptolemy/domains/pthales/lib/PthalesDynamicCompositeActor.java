@@ -139,12 +139,16 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
         return minIterations;
     }
 
-    /** Initialize this actor.  
-     *  @exception IllegalActionException If a super class throws it.
+    /** Create receivers for each port. If the port is an
+     *  input port, then receivers are created for outside
+     *  connections. If it is an output port, then receivers
+     *  are created for inside connections. This method replaces
+     *  any pre-existing receivers, so any data they contain
+     *  will be lost.
+     *  @exception IllegalActionException If any port throws it.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
+    public void createReceivers() throws IllegalActionException {
+        super.createReceivers();
         for (Object port : inputPortList()) {
             //FIXME We could check if the port is set to a dynamic port?
 
@@ -183,7 +187,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
         if (count == 0) {
             iterations = computeIterations();
         }
-        
+
         _headerSent = false;
 
         return super.iterate(iterations);
@@ -233,7 +237,7 @@ public class PthalesDynamicCompositeActor extends PthalesCompositeActor {
                 }
 
             }
-            
+
             _headerSent = true;
         }
 

@@ -103,6 +103,21 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    public void createReceivers() throws IllegalActionException {
+       super.createReceivers();
+       
+       IOPort portIn = (IOPort) getPort("in");
+
+       Receiver[][] receivers = portIn.getReceivers();
+
+       for (int i = 0; i < portIn.getWidth(); i++) {
+           ((PthalesReceiver) receivers[i][0]).setDynamic(true);
+       }
+    }
+    
     /** Read the contents of the array, and extract the header containing 
      * the number of dimensions and the size of each dimension
      * at the beginning of the array then send only the useful informations.
@@ -132,45 +147,12 @@ public class PthalesRemoveHeaderActor extends PthalesAtomicActor {
             sizes[i] = ((IntToken)headerIn[2 * i + 1]).intValue();
         }
 
-        // Ports modifications
-//        PthalesIOPort.modifyPattern(portOut, "global", dataSize);
-//        PthalesIOPort.modifyPattern(portIn, dims, sizes);
-//        Receiver[][] receivers = portIn.getReceivers();
-//        if (receivers != null && receivers.length > 0) {
-//            for (Receiver[] receiverss : receivers) {
-//                if (receiverss != null && receiverss.length > 0) {
-//                    for (Receiver receiver : receiverss) {
-//                        // FIXME: Is the cast to LinkedHashSet
-//                        // safe?  Depends on the Java
-//                        // implementation of LinkedHashMap.
-//                        ((PthalesReceiver) receiver).setInputArray(
-//                                portIn, this);
-//                    }
-//                }
-//            }
-//        }
-        
         // Token Arrays from simulation
         tokensIn = portIn.get(0, dataSize);
 
         // then input sent to output
         for (int i = 0; i < portOut.getWidth(); i++) {
             portOut.send(i, tokensIn, dataSize);
-        }
-    }
-
-    /** Initialize this actor.  
-     *  @exception IllegalActionException If a super class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        IOPort portIn = (IOPort) getPort("in");
-
-        Receiver[][] receivers = portIn.getReceivers();
-
-        for (int i = 0; i < portIn.getWidth(); i++) {
-            ((PthalesReceiver) receivers[i][0]).setDynamic(true);
         }
     }
 

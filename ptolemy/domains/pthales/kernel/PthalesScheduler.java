@@ -45,7 +45,6 @@ import ptolemy.actor.util.CausalityInterfaceForComposites;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.domains.pthales.lib.PthalesAtomicActor;
-import ptolemy.domains.pthales.lib.PthalesDynamicCompositeActor;
 import ptolemy.domains.pthales.lib.PthalesIOPort;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
@@ -67,18 +66,11 @@ public class PthalesScheduler extends SDFScheduler {
     // FIXME: To do:
     // The tokenInitProduction parameter is not being used. ArrayOL equivalent?
 
-    /** Construct a Pthales scheduler in the given container with the given name.
-     *  @param container The container.
-     *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
     public PthalesScheduler(Director container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -192,9 +184,6 @@ public class PthalesScheduler extends SDFScheduler {
             // to support hierarchical nestings of this director
             // inside other models.
 
-            if (actor instanceof PthalesDynamicCompositeActor)
-                continue;
-            
             // Next do the input ports.
             ports = actor.inputPortList();
             for (IOPort port : ports) {

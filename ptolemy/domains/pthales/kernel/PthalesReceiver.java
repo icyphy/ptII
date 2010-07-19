@@ -413,7 +413,7 @@ public class PthalesReceiver extends SDFReceiver {
             throws IllegalActionException {
 
         // Common to all ports
-        if (_buffer != null) {
+        if (!_dynamic && _buffer != null) {
             fillParameters(actor, port);
         }
 
