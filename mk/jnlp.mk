@@ -340,6 +340,16 @@ PTINY_JNLP_JARS = \
 	$(DSP_ONLY_JNLP_JARS) \
 	$(PTINY_ONLY_JNLP_JARS)
 
+PTINY_KEPLER_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/PtinyKeplerApplication.jar
+
+PTINY_KEPLER_JNLP_JARS = \
+	$(PTINY_KEPLER_MAIN_JAR) \
+	$(CORE_JNLP_JARS) \
+	$(DOC_CODEDOC_JAR) \
+	$(DSP_ONLY_JNLP_JARS) \
+	$(PTINY_ONLY_JNLP_JARS)
+
 PTINY_SANDBOX_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar
 
@@ -666,6 +676,7 @@ MKJNLP =		$(PTII)/bin/mkjnlp
 JNLPS =	vergilDSP.jnlp \
 	vergilHyVisual.jnlp \
 	vergilPtiny.jnlp \
+	vergilPtinyKepler.jnlp \
 	vergilPtinySandbox.jnlp \
 	vergilVisualSense.jnlp \
 	vergilSpace.jnlp \
@@ -793,6 +804,40 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
 			vergilPtiny.jnlp.in > $@
+	if [ ! -f $(SIGNED_DIR)/$(PTINY_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)$(PTINY_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so we copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
+		cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
+	fi
+	@echo "# Adding jar files to $@"
+	-chmod a+x "$(MKJNLP)"
+	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
+		$(PTINY_MAIN_JAR) \
+		$(PTINY_JNLP_JARS)
+	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
+	rm -rf JNLP-INF
+	mkdir JNLP-INF
+	cp $@ JNLP-INF/APPLICATION.JNLP
+	@echo "# $(PTINY_MAIN_JAR) contains the main class"
+	"$(JAR)" -uf $(PTINY_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(PTINY_MAIN_JAR)`; \
+	cp -p $(PTINY_MAIN_JAR) `dirname $(SIGNED_DIR)/$(PTINY_MAIN_JAR)`; \
+	"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		"$(SIGNED_DIR)/$(PTINY_MAIN_JAR)" "$(KEYALIAS)"
+
+# Web Start: Ptiny version of Vergil for Kepler
+vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
+			vergilPtinyKepler.jnlp.in > $@
 	if [ ! -f $(SIGNED_DIR)/$(PTINY_MAIN_JAR) ]; then \
 		echo "$(SIGNED_DIR)$(PTINY_MAIN_JAR) does not"; \
 		echo "   exist yet, but we need the size"; \
