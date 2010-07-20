@@ -85,7 +85,7 @@ public class TestMigrateModelsManager {
             String csvFilePath = migrateModelsManager
                     .migrateModels(directoryPath);
 
-            assertTrue(csvFilePath.equals(directoryPath + "\\migrationResults.csv"));
+            assertTrue(csvFilePath.equals(directoryPath + System.getProperty("file.separator") + "migrationResults.csv"));
             
             
 
@@ -120,7 +120,7 @@ public class TestMigrateModelsManager {
                     .migrateModels(directoryPath);
 
             assertTrue(csvFilePath.equals(directoryPath
-                    + "\\migrationResults.csv"));
+                   + System.getProperty("file.separator") + "migrationResults.csv"));
             
 
 
@@ -154,7 +154,7 @@ public class TestMigrateModelsManager {
                     .migrateModels(directoryPath);
 
             assertTrue(csvFilePath.equals(directoryPath
-                    + "\\migrationResults.csv"));
+                    + System.getProperty("file.separator") + "migrationResults.csv"));
             
 
         } catch (Exception e) {
@@ -259,7 +259,8 @@ public class TestMigrateModelsManager {
         if (directory.mkdir()) {
 
             for (int i = 0; i < models; i++) {
-                FileWriter writer = new FileWriter(directoryPath + "\\testModel"
+                FileWriter writer = new FileWriter(directoryPath 
+                        + System.getProperty("file.separator") + "testModel"
                         + i + ".xml");
     
                 try {
@@ -274,14 +275,15 @@ public class TestMigrateModelsManager {
     
             for (int i = 0; i < levels; i++) {
     
-                String subPath = directoryPath + "\\sub" + i;
+                String subPath = directoryPath + System.getProperty("file.separator") + "sub" + i;
     
                 File sub = new File(subPath);
     
                 if (sub.mkdir()) {
     
                     for (int j = 0; j < models; j++) {
-                        FileWriter writer = new FileWriter(sub + "\\testModel" + i + j
+                        FileWriter writer = new FileWriter(sub 
+                                + System.getProperty("file.separator") + "testModel" + i + j
                                 + ".xml");
                         try {
                             
