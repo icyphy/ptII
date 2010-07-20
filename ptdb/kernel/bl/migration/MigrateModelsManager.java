@@ -87,7 +87,7 @@ public class MigrateModelsManager {
             File csvFile = new File(csvFilePath);
             csvFile.createNewFile();
             
-        } catch (Exception e) {
+        } catch (IOException e) {
             
             csvFilePath = StringUtilities.preferencesDirectory() + "migrationResults.csv";
         }
