@@ -972,6 +972,8 @@ putDocument Adder '<entity name="Adder" class="ptolemy.actor.TypedCompositeActor
         </property>
 	<property name="DBModelId" value="Adder" class="ptolemy.data.expr.StringParameter">
         </property>
+	<property name="StartMode" value="Efficient" class="ptolemy.data.expr.StringParameter">
+        </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 210.0]">
