@@ -168,7 +168,13 @@ public class SetupManager {
         File file = new File(tempFile.getPath().replaceAll("%20", " "));
         // if the file does not exist, then create it.
         if(file.exists() == false) {
-            file.createNewFile();
+            
+            if (file.createNewFile() == false) {
+                
+                throw new IOException(
+                        "Could not create the properties file "
+                                + ptdbParams);
+            }
         } 
 
 
@@ -176,7 +182,7 @@ public class SetupManager {
         
         if (url == null) {
             throw new IOException(
-                    "Could not find or create the properties file "
+                    "Could not find the properties file "
                             + ptdbParams);
         }
 
