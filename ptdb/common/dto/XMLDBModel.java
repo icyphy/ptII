@@ -53,11 +53,11 @@ import java.util.List;
  */
 public class XMLDBModel implements Comparable {
 
-    /** String for DBModelId */
+    /** String for DBModelId. */
     public static final String DB_MODEL_ID_ATTR = "DBModelId";
-    /** String for DBReference */
+    /** String for DBReference. */
     public static final String DB_REFERENCE_ATTR = "DBReference";
-    /** String for model name */
+    /** String for model name. */
     public static final String DB_MODEL_NAME = "name";
 
     /**
