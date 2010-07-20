@@ -89,7 +89,7 @@ public class TestMigrateModelsManager {
             
             
 
-        } catch (Exception e) {
+        } catch (IOException e) {
 
             fail("Failed to migrate models - " + e.getMessage());
 
@@ -125,7 +125,7 @@ public class TestMigrateModelsManager {
 
 
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             fail("Failed to migrate models - " + e.getMessage());
         } finally {
             
@@ -181,12 +181,13 @@ public class TestMigrateModelsManager {
 
         try {
 
-            String csvFilePath = migrateModelsManager
+           
+            migrateModelsManager
                     .migrateModels(directoryPath);
 
             fail("The Migration operation did not report any error when the path was incorrect.");
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             assertTrue(true);
         }
     }
@@ -255,33 +256,44 @@ public class TestMigrateModelsManager {
 
         File directory = new File(directoryPath);
 
-        directory.mkdir();
+        if (directory.mkdir()) {
 
-        for (int i = 0; i < models; i++) {
-            FileWriter writer = new FileWriter(directoryPath + "\\testModel"
-                    + i + ".xml");
-
-            writer.write(fileContent);
-
-            writer.flush();
-            writer.close();
-        }
-
-        for (int i = 0; i < levels; i++) {
-
-            String subPath = directoryPath + "\\sub" + i;
-
-            File sub = new File(subPath);
-
-            sub.mkdir();
-
-            for (int j = 0; j < models; j++) {
-                FileWriter writer = new FileWriter(sub + "\\testModel" + i + j
-                        + ".xml");
-                writer.write(fileContent);
-
-                writer.flush();
-                writer.close();
+            for (int i = 0; i < models; i++) {
+                FileWriter writer = new FileWriter(directoryPath + "\\testModel"
+                        + i + ".xml");
+    
+                try {
+                
+                    writer.write(fileContent);
+                    writer.flush();
+                
+                } finally {
+                    writer.close();
+                }
+            }
+    
+            for (int i = 0; i < levels; i++) {
+    
+                String subPath = directoryPath + "\\sub" + i;
+    
+                File sub = new File(subPath);
+    
+                if (sub.mkdir()) {
+    
+                    for (int j = 0; j < models; j++) {
+                        FileWriter writer = new FileWriter(sub + "\\testModel" + i + j
+                                + ".xml");
+                        try {
+                            
+                            writer.write(fileContent);
+                            writer.flush();
+                        
+                        } finally {
+                            writer.close();
+                        }
+                        
+                    }
+                }
             }
         }
 
