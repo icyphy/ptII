@@ -31,8 +31,6 @@ package ptdb.kernel.bl.setup.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
-
 import org.easymock.EasyMock;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +46,6 @@ import ptdb.common.util.DBConnectorFactory;
 import ptdb.kernel.bl.setup.SetupManager;
 import ptdb.kernel.database.DBConnection;
 import ptdb.kernel.database.OracleXMLDBConnection;
-import ptolemy.util.FileUtilities;
 
 /**
  * JUnit test for testing the SetupManager class.
@@ -161,12 +158,14 @@ public class TestSetupManager {
         
         SetupManager setupManager = new SetupManager();
 
-        SetupParameters setupParam = setupManager.getSetupParameters();
+        
         
         
         
         try {
             DBConnectorFactory.loadDBProperties();
+            
+            SetupParameters setupParam = setupManager.getSetupParameters();
 
             setupManager.testConnection(setupParam);
         } catch (DBConnectionException e) {
@@ -197,7 +196,7 @@ public class TestSetupManager {
         boolean isSuccessful = false;
 
         try {
-            DBConnectorFactory.loadDBProperties();    
+//            DBConnectorFactory.loadDBProperties();    
 
             setupManager.testConnection(setupParam);
         } catch (DBConnectionException e) {
@@ -231,7 +230,7 @@ public class TestSetupManager {
 
         try {
 
-            DBConnectorFactory.loadDBProperties();
+//            DBConnectorFactory.loadDBProperties();
 
             setupManager.testConnection(setupParam);
         } catch (DBConnectionException e) {
@@ -256,8 +255,8 @@ public class TestSetupManager {
     @Test
     public void testUpdateConnection() throws Exception {
 
-        SetupParameters setupParam = new SetupParameters("D:/dbxml",
-                "temp.dbxml", "temp_cache.dbxml");
+        SetupParameters setupParam = new SetupParameters("D:/dbxml1",
+                "temp1.dbxml", "temp_cache1.dbxml");
 
         SetupManager setupManager = new SetupManager();
 
@@ -265,7 +264,7 @@ public class TestSetupManager {
         
         
         try {
-            DBConnectorFactory.loadDBProperties();
+//            DBConnectorFactory.loadDBProperties();
 
             setupManager.updateDBConnectionSetupParameters(setupParam);
             assertTrue("Completed the update.", true);
