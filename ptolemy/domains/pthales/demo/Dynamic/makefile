@@ -50,7 +50,9 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Dynamic.xml \
 	ThalesDynamic.xml \
-	ThalesDynamicModalModel.xml
+	ThalesDynamic2.xml \
+	ThalesDynamicModalModel.xml \
+	ThalesDynamicModalModelPN.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
