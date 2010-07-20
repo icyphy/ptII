@@ -49,10 +49,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	PthalesAddHeaderActor.java \
 	PthalesAtomicActor.java \
+	PthalesDynamicCompositeActor.java \
 	PthalesRemoveHeaderActor.java \
 	PthalesCompositeActor.java \
 	PthalesGenericActor.java \
-	PthalesIOPort.java
+	PthalesIOPort.java \
+	PthalesWrapperCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
 	pthalesentities.xml
