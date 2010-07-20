@@ -99,6 +99,8 @@ public class XMLDBAttribute {
      * Return the attribute name.
      * @return The attribute name.
      * 
+     * @see #setAttributeName
+     * 
      */
     public String getAttributeName() {
         return _attributeName;
@@ -107,6 +109,8 @@ public class XMLDBAttribute {
     /**
      * Return the attribute type.
      * @return A string representation of the attribute type.
+     * 
+     * @see #setAttributeType
      */
     public String getAttributeType() {
         return _attributeType;
@@ -131,7 +135,9 @@ public class XMLDBAttribute {
     /**
      * Get the attribute list values without checking the attribute's type. 
      * 
-     * @return The list of items for the attribute list type. 
+     * @return The list of items for the attribute list type.
+     * 
+     *  @see #setAttributeValuesPlain
      */
     public List<String> getAttributeValuesPlain() {
         return _attributeValues;
@@ -150,7 +156,9 @@ public class XMLDBAttribute {
     /**
      * Set the name of the attribute. 
      * 
-     * @param attributName The name of the attribute. 
+     * @param attributName The name of the attribute.
+     * 
+     *  @see #getAttributeName
      */
     public void setAttributeName(String attributName) {
         _attributeName = attributName;
@@ -159,7 +167,9 @@ public class XMLDBAttribute {
     /**
      * Set the type of this attribute. 
      * 
-     * @param attributeType The type to set to this attribute. 
+     * @param attributeType The type to set to this attribute.
+     * 
+     * @see #getAttributeType 
      */
     public void setAttributeType(String attributeType) {
         _attributeType = attributeType;
@@ -181,7 +191,9 @@ public class XMLDBAttribute {
     /**
      * Set the list values to the attribute regardless of the attribute type. 
      * 
-     * @param attributeValues The list values to be set to this attribute. 
+     * @param attributeValues The list values to be set to this attribute.
+     * 
+     *  @see #getAttributeValuesPlain
      */
     public void setAttributeValuesPlain(List<String> attributeValues) {
         _attributeValues = attributeValues;
