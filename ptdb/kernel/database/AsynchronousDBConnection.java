@@ -42,6 +42,7 @@ import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.RemoveModelsTask;
+import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
@@ -381,6 +382,24 @@ public class AsynchronousDBConnection implements DBConnection {
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeRemoveModelsTask "
                         + "is not supported by this type of DBConnection");
+    }
+    
+    
+    /**
+     * Execute rename model task which will change the name of the model in 
+     * the database and reflect the change in the reference file.
+     * @param task RenameModelTask object that contains the XMLDBModel 
+     * object and the new name.
+     * @throws DBConnectionException Thrown if there was a problem with the connection.
+     * @throws DBExecutionException Thrown if there is a problem in executing the task.
+     */
+    public void executeRenameModelTask(RenameModelTask task) 
+            throws DBConnectionException, DBExecutionException {
+        
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeRenameModelTask "
+                        + "is not supported by this type of DBConnection");
+        
     }
     
     
