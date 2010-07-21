@@ -166,14 +166,16 @@ public class ModelMigrationFrame extends JFrame {
         });
 
         _doneButton.setText("Done");
+        _doneButton.setVisible(false);
         _doneButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 doneButtonActionPerformed(evt);
             }
         });
+        
 
         _resultsTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
-        _resultsTextField.setEnabled(false);
+        _resultsTextField.setEditable(false);
 
         _jLabel3.setText("NOTE:");
 
