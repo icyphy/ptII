@@ -51,6 +51,7 @@ import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.DBModelNotFoundException;
 import ptdb.common.exception.ModelAlreadyExistException;
 
 ///////////////////////////////////////////////////////////////////
@@ -390,11 +391,14 @@ public class AsynchronousDBConnection implements DBConnection {
      * the database and reflect the change in the reference file.
      * @param task RenameModelTask object that contains the XMLDBModel 
      * object and the new name.
-     * @throws DBConnectionException Thrown if there was a problem with the connection.
-     * @throws DBExecutionException Thrown if there is a problem in executing the task.
+     * @exception DBConnectionException Thrown if there was a problem with the connection.
+     * @exception DBExecutionException Thrown if there is a problem in executing the task.
+     * @exception DBModelNotFoundException Thrown if the model with the name to be changed does not exist.
+     * @exception ModelAlreadyExistException Thrown if the new name is a name of a model that is already in the database.
      */
     public void executeRenameModelTask(RenameModelTask task) 
-            throws DBConnectionException, DBExecutionException {
+            throws DBConnectionException, DBExecutionException,
+            ModelAlreadyExistException, DBModelNotFoundException {
         
         throw new DBExecutionException(
                 "Asynchronous DB Execution error - executeRenameModelTask "
