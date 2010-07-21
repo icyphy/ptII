@@ -329,39 +329,33 @@ public class SaveModelManager {
             throw new IllegalArgumentException("The new model name cannot be empty.");
         }
         
-        
+
         RenameModelTask renameModelTask = new RenameModelTask(originalModel, newName);
         
         DBConnection dbConnection = DBConnectorFactory.getSyncConnection(true);
-        
-        
-     
+
         try {
+
+          dbConnection.executeRenameModelTask(renameModelTask);
+
+        } catch (DBExecutionException e){
             
-            //FIXME: remove the commented line below once the database layer is ready.
-//            
-//          
-//          dbConnection.executeRenameModelTask(renameModelTask);
-//          
-//            
-//        } catch (DBExecutionException e){
-//            
-//            dbConnection.abortConnection();
-//            
-//            throw new DBExecutionException(e.getMessage(),e);
-//            
-//        } catch (ModelAlreadyExistException e){
-//            
-//            dbConnection.abortConnection();
-//            
-//            throw new ModelAlreadyExistException(e.getMessage(),e);
-//            
-//        } catch (DBModelNotFoundException e){
-//            
-//            dbConnection.abortConnection();
-//            
-//            throw new DBModelNotFoundException(e.getMessage(),e);
-//            
+            dbConnection.abortConnection();
+            
+            throw new DBExecutionException(e.getMessage(),e);
+            
+        } catch (ModelAlreadyExistException e){
+            
+            dbConnection.abortConnection();
+            
+            throw new ModelAlreadyExistException(e.getMessage(),e);
+            
+        } catch (DBModelNotFoundException e){
+            
+            dbConnection.abortConnection();
+            
+            throw new DBModelNotFoundException(e.getMessage(),e);
+            
         } finally {
             
             if (dbConnection != null) {
