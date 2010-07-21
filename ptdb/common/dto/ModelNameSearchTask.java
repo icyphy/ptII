@@ -55,8 +55,10 @@ public class ModelNameSearchTask extends Task {
     }
     //////////////////////////////////////////////////////////////////////
     ////		public methods 					////
+    
     /**
      * Return the model name.
+     * @return The model name.
      * @see #setModelName
      */
     public String getModelName() {
