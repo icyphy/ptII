@@ -59,7 +59,7 @@ import ptdb.kernel.bl.migration.MigrateModelsManager;
 
 public class ModelMigrationFrame extends JFrame {
 
-    /** Creates new form ModelMigrationFrame */
+    /** Creates new form ModelMigrationFrame. */
     public ModelMigrationFrame() {
         this.setTitle("Migrate Models");
         initComponents();
