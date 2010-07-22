@@ -451,6 +451,11 @@ public class GraphPatternSearchEditor extends TransformationEditor {
      */
     @Override
     protected boolean _close() {
+        
+        if(isModified()){
+            _simpleSearchFrame.setModified(true);
+        }
+        
         return true;
     }
 

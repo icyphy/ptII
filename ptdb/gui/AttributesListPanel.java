@@ -32,6 +32,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,7 +94,9 @@ public class AttributesListPanel extends JPanel {
         _model = model;
         _aList = new HashMap();
         _AttDelete = new HashMap();
-
+        _modified = false;
+        _currentText = "";
+        
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel topPanel = new JPanel();
@@ -179,8 +183,29 @@ public class AttributesListPanel extends JPanel {
             public void actionPerformed(ActionEvent event) {
 
                 addAttribute(null);
+                setModified(true);
 
             }
+        });
+        
+        _nameText.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                // Do nothing.
+                
+            }
+
+            @Override
+            public void focusLost(FocusEvent arg0) {
+                
+                if(!_nameText.getText().equals(_currentText)){
+                        setModified(true);
+                        _currentText = _nameText.getText();
+                }
+                
+            }
+
         });
 
         topPanel.add(innerPanel);
@@ -243,6 +268,8 @@ public class AttributesListPanel extends JPanel {
 
                 validate();
                 repaint();
+                
+                setModified(true);
 
             }
 
@@ -311,11 +338,22 @@ public class AttributesListPanel extends JPanel {
     /** Get the model name.
      * 
      * @return The model name.
+     * @see #setModelName
      */
     public String getModelName() {
 
         return _nameText.getText();
 
+    }
+    
+    /** Set the model name.
+     * @param name The name to be set
+     * @see #getModelName
+     */
+    public void setModelName(String name) {
+
+        _nameText.setText(name);
+        _currentText=_nameText.getText();
     }
 
     /** Get an indication if the specified attribute name is in the set of
@@ -473,6 +511,91 @@ public class AttributesListPanel extends JPanel {
         return _AttDelete.size();
 
     }
+    
+    /** Get an indication if the panel has been modified.
+     *  True if it has, false if it hasn't.
+     *
+     * @return
+     *         An indication if the panel has been modified.
+     * 
+     * @see #setMofified
+     * 
+     */
+    public boolean isModified() {
+        
+        boolean panelsModified = false;
+        
+        Component[] componentArray1 = _attListPanel.getComponents();
+
+        for (int i = 0; i < componentArray1.length; i++) {
+
+            if (componentArray1[i] instanceof JPanel) {
+
+                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                        .getComponents();
+
+                for (int j = 0; j < componentArray2.length; j++) {
+
+                    if (componentArray2[j] instanceof ModelAttributePanel) {
+
+                        if(panelsModified || ((ModelAttributePanel)componentArray2[j]).isModified()){
+                            panelsModified = true;
+                        }
+                        
+                    }
+                }
+            }
+        }
+        
+        // Note:  AttributeListPanel may already be modified if the
+        // user has added or deleted ModelAttributePanels.  This is independent
+        // of the modified variables contained in each individual 
+        // ModelAttributePanel.  However, if they have been modified, we
+        // consider their container (this AttributeListPanel) to be modified
+        // as well.
+        if(panelsModified){
+            
+            _modified = true;
+            
+        }
+    
+        return _modified;
+       
+    }
+    
+    /** Set the panel to modified or unmodified.
+     * 
+     * @param modified True to set to modified.  False to set to unmodified.
+     * 
+     * @see #isMofified
+     * 
+     */
+    public void setModified(boolean modified) {
+    
+        _modified = modified;
+    
+        // Propagate _modified to all contained ModelAttributePanels.
+        Component[] componentArray1 = _attListPanel.getComponents();
+
+        for (int i = 0; i < componentArray1.length; i++) {
+
+            if (componentArray1[i] instanceof JPanel) {
+
+                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                        .getComponents();
+
+                for (int j = 0; j < componentArray2.length; j++) {
+
+                    if (componentArray2[j] instanceof ModelAttributePanel) {
+
+                        ((ModelAttributePanel)componentArray2[j])
+                            .setModified(_modified);
+                        
+                    }
+                }
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
@@ -483,5 +606,7 @@ public class AttributesListPanel extends JPanel {
     private HashMap _AttDelete;
     private NamedObj _model;
     private JTextField _nameText;
+    private boolean _modified;
+    private String _currentText;
 
 }

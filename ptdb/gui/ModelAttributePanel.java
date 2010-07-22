@@ -31,6 +31,8 @@ package ptdb.gui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -80,6 +82,8 @@ public class ModelAttributePanel extends JPanel {
         super();
 
         _attributeMap = attMap;
+        _modified = false;
+        _currentText = "";
         
         setBorder(BorderFactory.createEtchedBorder());
         
@@ -118,10 +122,52 @@ public class ModelAttributePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
 
                 updateDisplay();
+                setModified(true);
+                
+            }
+
+        });
+        
+        _textValue.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                // Do nothing.
+                
+            }
+
+            @Override
+            public void focusLost(FocusEvent arg0) {
+                
+                if(!_textValue.getText().equals(_currentText)){
+                        setModified(true);
+                        _currentText = _textValue.getText();
+                }
+                
             }
 
         });
 
+        _booleanValue.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                setModified(true);
+                
+            }
+
+        });
+        
+        _listValue.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+
+                setModified(true);
+                
+            }
+
+        });
+        
         add(nameLabel);
         add(_attributeName);
         add(valueLabel);
@@ -252,6 +298,7 @@ public class ModelAttributePanel extends JPanel {
                .equals(XMLDBAttribute.ATTRIBUTE_TYPE_STRING)) {
 
            _textValue.setText(value);
+           _currentText = _textValue.getText();
 
        } else if (((XMLDBAttribute)_attributeMap
                .get(_attributeName.getSelectedItem()
@@ -375,6 +422,35 @@ public class ModelAttributePanel extends JPanel {
         return returnList;
     }
 
+    /** Get an indication if the panel has been modified.
+     *  True if it has, false if it hasn't.
+     *
+     * @return
+     *         An indication if the panel has been modified.
+     * 
+     * @see #setMofified
+     * 
+     */
+    public boolean isModified() {
+    
+        return _modified;
+       
+    }
+    
+    /** Set the panel to modified or unmodified.
+     * 
+     * @param modified True to set to modified.  False to set to unmodified.
+     * 
+     * @see #isMofified
+     * 
+     */
+    public void setModified(boolean modified) {
+    
+        _modified = modified;
+       
+    }
+    
+   
     ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
 
@@ -383,5 +459,7 @@ public class ModelAttributePanel extends JPanel {
     private JCheckBox _booleanValue;
     private JComboBox _listValue;
     private HashMap _attributeMap;
+    private boolean _modified;
+    private String _currentText;
 
 }
