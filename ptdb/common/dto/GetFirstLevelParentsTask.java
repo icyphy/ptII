@@ -21,6 +21,17 @@ package ptdb.common.dto;
 public class GetFirstLevelParentsTask extends Task{
 
     
+    
+    /**
+     * Construct an instance of this class and set the model for which the first 
+     * level parents need to be fetched.
+     * @param model Model for which the first level parents need to be fetched.
+     */
+    public GetFirstLevelParentsTask(XMLDBModel model) {
+        this._model = model;
+    }
+    
+    
     //////////////////////////////////////////////////////////////////////
     ////		public methods 					////
     
