@@ -54,9 +54,6 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
     }
 
     //////////////////////////////////////////////////////////////////////
-    ////		public variables 				////
-
-    //////////////////////////////////////////////////////////////////////
     ////		public methods 					////
     /**
      * Re-create the reference file in the database.
@@ -284,9 +281,11 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
     private String _getModelNameFromModelId(String modelId) throws XmlException {
         String modelName = null;
 
-        String query = "for $entity in doc(\"" + _params.getContainerName()
-                + "/ReferenceFile.ptdbxml\")/reference/entity "
-                + " return delete nodes $entity";
+        String query = "for $prop in collection(\""
+            + _params.getContainerName()
+            + "\")/entity/property where $prop/@name = \"DBModelId\" "
+            + " and $prop/@value = \"" + modelId + "\""
+            + " return base-uri($prop)";
 
         XmlQueryContext context = _xmlManager.createQueryContext();
         XmlResults results = _xmlManager.query(query, context, null);
@@ -328,7 +327,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
                                 + xmlDBModel.getModelName());
             }
             xmlDBModel.setModelId(modelId);
-        } else if (xmlDBModel.getModelId() == null) {
+        } else if (xmlDBModel.getModelName() == null) {
             String modelName = _getModelNameFromModelId(xmlDBModel.getModelId());
             if (modelName == null) {
                 throw new DBExecutionException(
@@ -423,7 +422,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
 
         String userInput = null;
         try {
-            while ((userInput = br.readLine()) == null);
+            userInput = br.readLine();
         } finally {
             br.close();
         }
