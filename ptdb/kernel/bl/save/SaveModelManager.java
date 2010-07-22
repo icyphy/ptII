@@ -31,6 +31,7 @@ package ptdb.kernel.bl.save;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.powermock.reflect.exceptions.MethodNotFoundException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,10 +39,14 @@ import org.w3c.dom.NodeList;
 
 import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.FetchHierarchyTask;
+import ptdb.common.dto.GetFirstLevelParentsTask;
+import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
+import ptdb.common.dto.UpdateParentsToNewVersionTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.CircularDependencyException;
+import ptdb.common.dto.XMLDBModelWithReferenceChanges;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.DBModelNotFoundException;
@@ -82,6 +87,61 @@ public class SaveModelManager {
     ////                public methods                            ////
 
     /**
+     * Return the first level parents that reference a give model.
+     * 
+     * @param baseModel An XMLDBModel object that represents the model for which
+     * the first level parents are retrieved.
+     * @return A list of first level parent models for the given model.
+     * 
+     * @exception DBConnectionException Thrown if there is a problem creating a
+     * connection to the database.
+     * @exception DBExecutionException Thrown if the operation fails to execute.
+     */
+    public ArrayList<XMLDBModel> getFirstLevelParents(XMLDBModel baseModel)
+            throws DBConnectionException, DBExecutionException {
+
+        ArrayList<XMLDBModel> parentsList = new ArrayList<XMLDBModel>();
+
+        if (baseModel == null || baseModel.getModelName() == null
+                || baseModel.getModelName().length() == 0) {
+
+            throw new IllegalArgumentException(
+                    "The base model passed is not properly created.");
+        }
+
+        GetFirstLevelParentsTask getFirstLevelParentsTask = new GetFirstLevelParentsTask(
+                baseModel);
+
+        DBConnection dbConnection = null;
+
+        try {
+
+            dbConnection = DBConnectorFactory.getSyncConnection(false);
+
+            if (dbConnection == null) {
+                throw new DBConnectionException(
+                        "Unable to get synchronous connection from the database");
+            }
+
+            parentsList = (ArrayList<XMLDBModel>) dbConnection
+                    .executeGetFirstLevelParents(getFirstLevelParentsTask);
+
+        } catch (DBExecutionException e) {
+
+            throw e;
+
+        } finally {
+
+            if (dbConnection != null) {
+
+                dbConnection.closeConnection();
+            }
+        }
+
+        return parentsList;
+    }
+
+    /**
      * Save the changes of an existing model in the database or create a new
      * model in the database. Remove all prior entries to the saved model from
      * the cache, including any other models that reference it.
@@ -101,12 +161,14 @@ public class SaveModelManager {
      * already exists.
      * @throws XMLDBModelParsingException Thrown if the model is parsed
      * incorrectly.
-     * @throws CircularDependencyException Thrown if there is a circular dependency.
+     * @throws CircularDependencyException Thrown if there is a circular
+     * dependency.
      * 
      */
     public String save(XMLDBModel xmlDBModel) throws DBConnectionException,
             DBExecutionException, IllegalArgumentException,
-            ModelAlreadyExistException, XMLDBModelParsingException, CircularDependencyException {
+            ModelAlreadyExistException, XMLDBModelParsingException,
+            CircularDependencyException {
 
         String returnString = null;
 
@@ -119,7 +181,7 @@ public class SaveModelManager {
                         "Failed while attempting to save."
                                 + " The XMLDBModel to be saved is null");
             }
-            xmlDBModel = populateChildModelsList(xmlDBModel);
+
             dbConnection = DBConnectorFactory.getSyncConnection(true);
 
             if (dbConnection == null) {
@@ -127,25 +189,9 @@ public class SaveModelManager {
                         "Unable to get synchronous connection from the database");
             }
 
-            if (xmlDBModel.getIsNew()) {
+            save(xmlDBModel, dbConnection);
 
-                CreateModelTask createModelTask = new CreateModelTask(
-                        xmlDBModel);
-
-                returnString = dbConnection
-                        .executeCreateModelTask(createModelTask);
-
-                dbConnection.commitConnection();
-
-            } else {
-
-                SaveModelTask saveModelTask = new SaveModelTask(xmlDBModel);
-
-                returnString = dbConnection.executeSaveModelTask(saveModelTask);
-
-                dbConnection.commitConnection();
-
-            }
+            dbConnection.commitConnection();
 
         } catch (DBExecutionException e) {
 
@@ -168,6 +214,165 @@ public class SaveModelManager {
         updateCache(xmlDBModel);
 
         return returnString;
+
+    }
+
+    /**
+     * Save a model but keep a list of models that reference it point to the old
+     * model and update the rest of the models.
+     * 
+     * @param xmlDBModelWithReferenceChanges An object that contains the model
+     * to be saved, the list of parents that should have the old reference, and
+     * the new version name that will be placed as a reference in the parents'
+     * list.
+     * @return A string that represents the model Id of the newly created model.
+     * @throws DBConnectionException Thrown if the connection to the database
+     * fails.
+     * @throws DBExecutionException Thrown if the operation fails to execute.
+     * @exception DBModelNotFoundException Thrown if the model to be saved is
+     * not in the database.
+     * @throws ModelAlreadyExistException Thrown if the new version name matches
+     * a name of a model that is already in the database.
+     * @throws IllegalArgumentException Thrown if the parameters passed are not
+     * properly set.
+     * @throws XMLDBModelParsingException Thrown if the MoML in the model object
+     * is corrupted.
+     * @throws CircularDependencyException Thrown if the save operation causes a
+     * circular dependency.
+     */
+    public String saveWithParents(
+            XMLDBModelWithReferenceChanges xmlDBModelWithReferenceChanges)
+            throws DBConnectionException, DBExecutionException,
+            DBModelNotFoundException, ModelAlreadyExistException,
+            IllegalArgumentException, XMLDBModelParsingException,
+            CircularDependencyException {
+
+        String newModelId = "";
+
+        // Check if the object sent is properly set with correct values.
+
+        if (xmlDBModelWithReferenceChanges == null
+                || xmlDBModelWithReferenceChanges.getModelToBeSaved() == null
+                || xmlDBModelWithReferenceChanges.getVersionName() == null
+                || xmlDBModelWithReferenceChanges.getVersionName().length() == 0
+                || xmlDBModelWithReferenceChanges.getParentsList() == null
+                || xmlDBModelWithReferenceChanges.getParentsList().size() == 0) {
+
+            throw new IllegalArgumentException(
+                    "The parameters sent was not set properly.");
+        }
+
+        DBConnection dbConnection = null;
+
+        try {
+
+            dbConnection = DBConnectorFactory.getSyncConnection(true);
+
+            if (dbConnection == null) {
+                throw new DBConnectionException(
+                        "Unable to get synchronous connection from the database");
+            }
+
+            GetModelTask getModelTask = new GetModelTask(
+                    xmlDBModelWithReferenceChanges.getModelToBeSaved()
+                            .getModelName());
+
+            XMLDBModel dbModelToBeSaved = dbConnection
+                    .executeGetModelTask(getModelTask);
+
+            XMLDBModel newXMLDBModel = new XMLDBModel(
+                    xmlDBModelWithReferenceChanges.getVersionName());
+
+            newXMLDBModel.setIsNew(true);
+
+            newXMLDBModel.setModel(dbModelToBeSaved.getModel());
+
+            newModelId = save(newXMLDBModel, dbConnection);
+
+            newXMLDBModel.setModelId(newModelId);
+
+            UpdateParentsToNewVersionTask updateParentsToNewVersionTask = 
+                new UpdateParentsToNewVersionTask();
+
+            updateParentsToNewVersionTask.setNewModel(newXMLDBModel);
+
+            updateParentsToNewVersionTask
+                    .setOldModel(xmlDBModelWithReferenceChanges
+                            .getModelToBeSaved());
+
+            updateParentsToNewVersionTask
+                    .setParentsList(xmlDBModelWithReferenceChanges
+                            .getParentsList());
+
+            dbConnection
+                    .executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
+
+            save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
+                    dbConnection);
+
+        } catch (DBConnectionException e) {
+
+            if (dbConnection != null) {
+
+                dbConnection.abortConnection();
+            }
+
+            throw e;
+
+        } catch (DBExecutionException e) {
+
+            if (dbConnection != null) {
+
+                dbConnection.abortConnection();
+            }
+
+            throw e;
+
+        } catch (MethodNotFoundException e) {
+
+            if (dbConnection != null) {
+
+                dbConnection.abortConnection();
+            }
+
+            throw e;
+
+        } catch (ModelAlreadyExistException e) {
+
+            if (dbConnection != null) {
+
+                dbConnection.abortConnection();
+            }
+
+            throw e;
+
+        } catch (IllegalArgumentException e) {
+
+            if (dbConnection != null) {
+
+                dbConnection.abortConnection();
+            }
+
+            throw e;
+
+        } catch (XMLDBModelParsingException e) {
+
+            if (dbConnection != null) {
+
+                dbConnection.abortConnection();
+            }
+
+            throw e;
+
+        } finally {
+
+            if (dbConnection != null) {
+
+                dbConnection.closeConnection();
+            }
+        }
+
+        return newModelId;
 
     }
 
@@ -381,6 +586,94 @@ public class SaveModelManager {
     //////////////////////////////////////////////////////////////////////
     ////                private methods                               ////
 
+    /**
+     * Save the changes of an existing model in the database or create a new
+     * model in the database. Remove all prior entries to the saved model from
+     * the cache, including any other models that reference it.
+     * 
+     * @param xmlDBModel The model object that is required to be saved or
+     * created in the database.
+     * 
+     * @param dbConnection The connection to the database that will be used to
+     * execute the task.
+     * 
+     * @return A boolean indicator of weather the operation was successful or
+     * not.
+     * 
+     * @exception DBConnectionException Thrown if there is a database connection
+     * error.
+     * @exception DBExecutionException Thrown if the execution failed.
+     * @exception IllegalArgumentException Thrown if the parameters were not
+     * right.
+     * @exception ModelAlreadyExistException Thrown if the model being created
+     * already exists.
+     * @throws XMLDBModelParsingException Thrown if the model is parsed
+     * incorrectly.
+     * @throws CircularDependencyException
+     * 
+     */
+    private String save(XMLDBModel xmlDBModel, DBConnection dbConnection)
+            throws DBConnectionException, DBExecutionException,
+            IllegalArgumentException, ModelAlreadyExistException,
+            XMLDBModelParsingException, CircularDependencyException {
+
+        String returnString = null;
+
+        try {
+
+            if (xmlDBModel == null) {
+                throw new IllegalArgumentException(
+                        "Failed while attempting to save."
+                                + " The XMLDBModel to be saved is null");
+            }
+
+            xmlDBModel = populateChildModelsList(xmlDBModel);
+
+            if (dbConnection == null) {
+                throw new DBConnectionException(
+                        "Unable to get synchronous connection from the database");
+            }
+
+            if (xmlDBModel.getIsNew()) {
+
+                CreateModelTask createModelTask = new CreateModelTask(
+                        xmlDBModel);
+
+                returnString = dbConnection
+                        .executeCreateModelTask(createModelTask);
+
+                dbConnection.commitConnection();
+
+            } else {
+
+                SaveModelTask saveModelTask = new SaveModelTask(xmlDBModel);
+
+                returnString = dbConnection.executeSaveModelTask(saveModelTask);
+
+                dbConnection.commitConnection();
+
+            }
+
+        } catch (DBExecutionException e) {
+
+            throw new DBExecutionException("Failed to save the model - "
+                    + e.getMessage(), e);
+
+        }
+
+        updateCache(xmlDBModel);
+
+        return returnString;
+    }
+
+    /**
+     * Update the cache with the model provided.
+     * 
+     * @param xmlDBModel The model to be updated in the cache.
+     * @throws DBConnectionException Thrown if the connection to the cache
+     * fails.
+     * @throws DBExecutionException Thrown if the execution of the task fails.
+     */
     private void updateCache(XMLDBModel xmlDBModel)
             throws DBConnectionException, DBExecutionException {
 
