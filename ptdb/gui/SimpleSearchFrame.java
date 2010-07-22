@@ -298,6 +298,9 @@ public class SimpleSearchFrame extends JFrame {
         _fileMenu.setMnemonic(KeyEvent.VK_F);
         _menuBar.add(_fileMenu);
 
+        GUIUtilities
+            .addHotKey(this.getRootPane(), _newSearchCriteriaAction);
+            GUIUtilities.addMenuItem(_fileMenu, _newSearchCriteriaAction);
         
         GUIUtilities
             .addHotKey(this.createRootPane(), _openSearchCriteriaAction);
@@ -315,9 +318,6 @@ public class SimpleSearchFrame extends JFrame {
             .addHotKey(this.getRootPane(), _exitSearchCriteriaAction);
         GUIUtilities.addMenuItem(_fileMenu, _exitSearchCriteriaAction);
         
-        GUIUtilities
-            .addHotKey(this.getRootPane(), _newSearchCriteriaAction);
-            GUIUtilities.addMenuItem(_fileMenu, _newSearchCriteriaAction);
 
         
     }
