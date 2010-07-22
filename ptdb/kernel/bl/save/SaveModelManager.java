@@ -57,8 +57,7 @@ import ptdb.kernel.database.DBConnection;
 /**
  * The business layer of the save to database function.
  * 
- * <p> 
- * It is responsible for:
+ * <p> It is responsible for:
  * 
  * <br>- Get the XMLDBModel which is the Ptolemy model wrapped in a special Data
  * Transfer Object (dto).
@@ -67,8 +66,7 @@ import ptdb.kernel.database.DBConnection;
  * to either create it in the database or save the modification made on it.
  * 
  * <br>- Get a database connection and run the execute method on the database
- * connection object to perform the saving or creation of the model. 
- * </p>
+ * connection object to perform the saving or creation of the model. </p>
  * 
  * @author Yousef Alsaeed
  * @version $Id$
@@ -84,8 +82,8 @@ public class SaveModelManager {
 
     /**
      * Save the changes of an existing model in the database or create a new
-     * model in the database.  Remove all prior entries to the saved model
-     * from the cache, including any other models that reference it.
+     * model in the database. Remove all prior entries to the saved model from
+     * the cache, including any other models that reference it.
      * 
      * @param xmlDBModel The model object that is required to be saved or
      * created in the database.
@@ -93,11 +91,15 @@ public class SaveModelManager {
      * @return A boolean indicator of weather the operation was successful or
      * not.
      * 
-     * @exception DBConnectionException Thrown if there is a database connection error.
+     * @exception DBConnectionException Thrown if there is a database connection
+     * error.
      * @exception DBExecutionException Thrown if the execution failed.
-     * @exception IllegalArgumentException Thrown if the parameters were not right.
-     * @exception ModelAlreadyExistException Thrown if the model being created already exists.
-     * @throws XMLDBModelParsingException Thrown if the model is parsed incorrectly.
+     * @exception IllegalArgumentException Thrown if the parameters were not
+     * right.
+     * @exception ModelAlreadyExistException Thrown if the model being created
+     * already exists.
+     * @throws XMLDBModelParsingException Thrown if the model is parsed
+     * incorrectly.
      * 
      */
     public String save(XMLDBModel xmlDBModel) throws DBConnectionException,
@@ -128,7 +130,8 @@ public class SaveModelManager {
                 CreateModelTask createModelTask = new CreateModelTask(
                         xmlDBModel);
 
-                returnString = dbConnection.executeCreateModelTask(createModelTask);
+                returnString = dbConnection
+                        .executeCreateModelTask(createModelTask);
 
                 dbConnection.commitConnection();
 
@@ -161,25 +164,25 @@ public class SaveModelManager {
         }
 
         updateCache(xmlDBModel);
-        
+
         return returnString;
 
     }
 
     /**
-     * Populate the referenced child models list and update the model XML by 
-     * replacing the referenced models with place holder.  
+     * Populate the referenced child models list and update the model XML by
+     * replacing the referenced models with place holder.
      * 
      * @param model Model with references to be resolved.
      * 
-     * @return The updates model containing the list of child models and 
-     * updated content.
+     * @return The updates model containing the list of child models and updated
+     * content.
      * 
-     * @throws XMLDBModelParsingException If thrown while parsing the XML. 
+     * @throws XMLDBModelParsingException If thrown while parsing the XML.
      */
     public XMLDBModel populateChildModelsList(XMLDBModel model)
             throws XMLDBModelParsingException {
-        
+
         if (model.getModel() == null) {
             return model;
         }
@@ -189,7 +192,8 @@ public class SaveModelManager {
         /*
          * First level nodes.
          */
-        Node topEntityNode = modelDocument.getElementsByTagName("entity").item(0);
+        Node topEntityNode = modelDocument.getElementsByTagName("entity").item(
+                0);
         NodeList entityList = topEntityNode.getChildNodes();
 
         boolean isChanged = false;
@@ -269,8 +273,8 @@ public class SaveModelManager {
 
                             if (name != null
                                     && (name.startsWith("_")
-                                            || XMLDBModel.DB_REFERENCE_ATTR.equals(name) 
-                                            || XMLDBModel.DB_MODEL_ID_ATTR
+                                            || XMLDBModel.DB_REFERENCE_ATTR
+                                                    .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
                                             .equals(name))) {
                                 entityElement.appendChild(childNode);
                             }
@@ -279,8 +283,7 @@ public class SaveModelManager {
 
                     entityElement.setAttribute(XMLDBModel.DB_MODEL_ID_ATTR,
                             referencedModelId);
-                    topEntityNode.replaceChild(entityElement,
-                            entity);
+                    topEntityNode.replaceChild(entityElement, entity);
 
                     model.addReferencedChild(referencedModelId);
                     isChanged = true;
@@ -299,136 +302,140 @@ public class SaveModelManager {
 
         return model;
     }
-    
+
     /**
      * Rename an existing model in the database.
      * 
-     * @param originalModel XMLDBModel object that represent the model that its name needs to be changed.
+     * @param originalModel XMLDBModel object that represent the model that its
+     * name needs to be changed.
      * @param newName A string that contains the new model name.
-     * @exception DBConnectionException Thrown if the connection to the database fails.
-     * @exception DBExecutionException Thrown if the operation failed during execution.
-     * @exception IllegalArgumentException Thrown if one of the parameters is not proper.
-     * @exception ModelAlreadyExistException Thrown if the new name of the model represent a model that already exists in the database.
-     * @exception DBModelNotFoundException Thrown if the original model does not exit in the database.
+     * @exception DBConnectionException Thrown if the connection to the database
+     * fails.
+     * @exception DBExecutionException Thrown if the operation failed during
+     * execution.
+     * @exception IllegalArgumentException Thrown if one of the parameters is
+     * not proper.
+     * @exception ModelAlreadyExistException Thrown if the new name of the model
+     * represent a model that already exists in the database.
+     * @exception DBModelNotFoundException Thrown if the original model does not
+     * exit in the database.
      */
-    public void renameModel(XMLDBModel originalModel, String newName) 
-            throws DBConnectionException, DBExecutionException, 
-            IllegalArgumentException, ModelAlreadyExistException, 
+    public void renameModel(XMLDBModel originalModel, String newName)
+            throws DBConnectionException, DBExecutionException,
+            IllegalArgumentException, ModelAlreadyExistException,
             DBModelNotFoundException {
-        
-        if (originalModel.getModelId() == null && 
-                (originalModel.getModelName() == null || 
-                        originalModel.getModelName().length() == 0)) {
-            
-            throw new IllegalArgumentException("The original model must contain either"
-                    + " the model name or model Id.");
-        }
-        
-        if (newName == null || newName.length() == 0) {
-            
-            throw new IllegalArgumentException("The new model name cannot be empty.");
-        }
-        
 
-        RenameModelTask renameModelTask = new RenameModelTask(originalModel, newName);
-        
+        if (originalModel.getModelId() == null
+                && (originalModel.getModelName() == null || originalModel
+                        .getModelName().length() == 0)) {
+
+            throw new IllegalArgumentException(
+                    "The original model must contain either"
+                            + " the model name or model Id.");
+        }
+
+        if (newName == null || newName.length() == 0) {
+
+            throw new IllegalArgumentException(
+                    "The new model name cannot be empty.");
+        }
+
+        RenameModelTask renameModelTask = new RenameModelTask(originalModel,
+                newName);
+
         DBConnection dbConnection = DBConnectorFactory.getSyncConnection(true);
 
         try {
 
-          dbConnection.executeRenameModelTask(renameModelTask);
+            dbConnection.executeRenameModelTask(renameModelTask);
 
-        } catch (DBExecutionException e){
-            
+        } catch (DBExecutionException e) {
+
             dbConnection.abortConnection();
-            
-            throw new DBExecutionException(e.getMessage(),e);
-            
-        } catch (ModelAlreadyExistException e){
-            
+
+            throw e;
+
+        } catch (ModelAlreadyExistException e) {
+
             dbConnection.abortConnection();
-            
-            throw new ModelAlreadyExistException(e.getMessage(),e);
-            
-        } catch (DBModelNotFoundException e){
-            
+
+            throw e;
+
+        } catch (DBModelNotFoundException e) {
+
             dbConnection.abortConnection();
-            
-            throw new DBModelNotFoundException(e.getMessage(),e);
-            
+
+            throw e;
+
         } finally {
-            
+
             if (dbConnection != null) {
                 dbConnection.closeConnection();
             }
         }
-        
-        
-        
-        
+
     }
-    
+
     //////////////////////////////////////////////////////////////////////
     ////                private methods                               ////
-    
-    private void updateCache(XMLDBModel xmlDBModel) 
-        throws DBConnectionException, DBExecutionException{
-    
-        ArrayList <XMLDBModel> hierarchy = new ArrayList();
-        ArrayList <XMLDBModel> modelsToRemoveList = new ArrayList();
-        
+
+    private void updateCache(XMLDBModel xmlDBModel)
+            throws DBConnectionException, DBExecutionException {
+
+        ArrayList<XMLDBModel> hierarchy = new ArrayList();
+        ArrayList<XMLDBModel> modelsToRemoveList = new ArrayList();
+
         DBConnection dbConnection = null;
-        
+
         try {
-            
+
             dbConnection = DBConnectorFactory.getSyncConnection(false);
-            
+
             ArrayList<XMLDBModel> modelList = new ArrayList();
             modelList.add(xmlDBModel);
-            FetchHierarchyTask fetchHierarchyTask 
-                = new FetchHierarchyTask();
+            FetchHierarchyTask fetchHierarchyTask = new FetchHierarchyTask();
             fetchHierarchyTask.setModelsList(modelList);
-            
-            hierarchy = 
-                  dbConnection.executeFetchHierarchyTask(fetchHierarchyTask);
-    
-            if(hierarchy != null && hierarchy.size()>0) {
-                    
-                if (hierarchy.get(0) != null){
-                   
-                    if(hierarchy.get(0).getParents() != null){
-                        
-                        for(List<XMLDBModel> branch : hierarchy.get(0).getParents()){
-                            
-                            for(XMLDBModel modelToRemove : branch){
-                                
-                                if(!modelsToRemoveList.contains(modelToRemove)){
-            
+
+            hierarchy = dbConnection
+                    .executeFetchHierarchyTask(fetchHierarchyTask);
+
+            if (hierarchy != null && hierarchy.size() > 0) {
+
+                if (hierarchy.get(0) != null) {
+
+                    if (hierarchy.get(0).getParents() != null) {
+
+                        for (List<XMLDBModel> branch : hierarchy.get(0)
+                                .getParents()) {
+
+                            for (XMLDBModel modelToRemove : branch) {
+
+                                if (!modelsToRemoveList.contains(modelToRemove)) {
+
                                     modelsToRemoveList.add(modelToRemove);
                                 }
-                                
+
                             }
-                            
+
                         }
-                        
-                    } 
-                    
+
+                    }
+
                 }
-            
+
             }
-                
-            
-        } catch (DBExecutionException dbEx) {            
+
+        } catch (DBExecutionException dbEx) {
             throw dbEx;
         } finally {
             if (dbConnection != null) {
                 dbConnection.closeConnection();
             }
         }
-        
+
         modelsToRemoveList.add(xmlDBModel);
- 
-        CacheManager.removeFromCache(modelsToRemoveList);        
-        
+
+        CacheManager.removeFromCache(modelsToRemoveList);
+
     }
 }
