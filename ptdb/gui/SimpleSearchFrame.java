@@ -510,8 +510,6 @@ public class SimpleSearchFrame extends JFrame {
             
         }
         
-        
-        
     }
     
     protected void _saveAs () {
@@ -530,24 +528,64 @@ public class SimpleSearchFrame extends JFrame {
                 
             }
             
-            int returnVal = chooser.showOpenDialog(this);
+            boolean saveComplete = false;
             
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
+            while(!saveComplete){
                 
-                //TODO Uncomment when implemented at the BL.
-                //try{
-                //    
-                //    SearchCriteriaManager.save(_searchCriteria, 
-                //          chooser.getSelectedFile().getCanonicalPath());
-                // 
-                //} catch(??) {
-                //    
-                //}
-    
-                _saveLocation = chooser.getSelectedFile().getCanonicalPath();
-                setModified(false);
-            }
+                if (chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+                
+                    return;
+                    
+                } else {
+                    
+                    File filename = chooser.getSelectedFile();
+
+                    if( filename.exists()  && !filename.getCanonicalFile()
+                            .toString().equals(_saveLocation)) {
+                        
+                        Object[] options = { "Yes", "No" };
+                        int n = JOptionPane.showOptionDialog(this,
+                                filename.toString()  + " already exists.\n" +
+                                "Do you want to replace it?",
+                                "Overwrite File?", 
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE, 
+                                null, options, options[1]);
+
+                        if (n == JOptionPane.YES_OPTION) {                
+
+                            saveComplete = true;
+                            
+                        } else {
+
+                            saveComplete = false;
+                            
+                        }
+                    
+                    } else {
+                     
+                        saveComplete = true; 
+                    
+                    }
+                    if(saveComplete) {
+                     
+                        //TODO Uncomment when implemented at the BL.
+                        //try{
+                        //    
+                        //    SearchCriteriaManager.save(_searchCriteria, 
+                        //          chooser.getSelectedFile().getCanonicalPath());
+                        // 
+                        //} catch(??) {
+                        //    
+                        //}
         
+                        _saveLocation = chooser.getSelectedFile().getCanonicalPath();
+                        setModified(false);
+
+                    }
+                }
+            }
+            
         } catch(IOException e){
     
             MessageHandler.error("Cannot save to the selected file.", e);
