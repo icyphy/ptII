@@ -32,6 +32,8 @@ import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
+import ptdb.common.dto.UpdateParentsToNewVersionTask;
+import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
@@ -59,7 +61,7 @@ public class ExecutorThread implements Runnable {
     /** Construct an instance of the executor thread that
      *  performs tasks one by one from the taskQueue.
      *
-     * @param taskQueue List of Tasks that need to be executed
+     * @param taskQueue List of Tasks that need to be executed.
      *
      * @exception DBConnectionException - When we face a problem
      * while creating a database connection. These problems could
@@ -80,11 +82,11 @@ public class ExecutorThread implements Runnable {
     /**
      * Manage the execution of tasks from the task queue.
      *
-     * <p> It aborts its working if it encounter an exception
+     * <p>It aborts its working if it encounter an exception
      * or if the processing error flag in the taskQueue
      * is set to true. </p>
      *
-     * <p> Stop execution if the taskQueue is completed
+     * <p>Stop execution if the taskQueue is completed
      * and all the tasks are executed
      * or if it exceeds its max wait time of 50 seconds. </p>
      *
@@ -95,21 +97,21 @@ public class ExecutorThread implements Runnable {
 
             /**
              * In case of a processing error, we abort the connection
-             * and stop the executino of this thread
+             * and stop the execution of this thread
              */
             if (_taskQueue.hasProcessingError()) {
-                _abortConnection();
+                _abortConnection(null);
                 return;
             }
 
             try {
 
                 if (_noOfTasksExecuted < _taskQueue.size()) {
-                    /**
+                    /*
                      * If there exists a task in the TaskQueue that
                      * as not been executed, then the task is executed,
                      * the task counter incremented and the maxWait
-                     * counter is reset
+                     * counter is reset.
                      */
                     _executeTask();
                     _noOfTasksExecuted++;
@@ -117,22 +119,21 @@ public class ExecutorThread implements Runnable {
 
                 } else if ((_taskQueue.size() == _noOfTasksExecuted)
                         && (_taskQueue.areAllTasksAdded())) {
-                    /**
+                    /*
                      * If all the tasks are executed and the taskQueue is
                      * complete, then the processing is completed.
                      * We then close the connection and mark execution
                      * as complete and stop the execution of this thread.
                      */
-                    _dbConn.closeConnection();
-                    _taskQueue.setExecutionCompleted();
+                    _closeConnection();
                     return;
 
                 } else {
-                    /**
+                    /*
                      * If neither a new task is present in the queue nor
                      * the processing is completed,
                      * the thread decrements the wait counter
-                     * and goes to sleep
+                     * and goes to sleep.
                      */
                     maxWait--;
                     Thread.sleep(500);
@@ -144,26 +145,27 @@ public class ExecutorThread implements Runnable {
                  * In case of error, we abort the connection and set the
                  * ExecutionError and stop the execution of this thread
                  */
-                _abortConnection();
-                _taskQueue.setExecutionError("Database execution error - "
+                _abortConnection("Database execution error - "
                         + e.getMessage());
                 return;
 
             } catch (InterruptedException e) {
-                _abortConnection();
-                _taskQueue.setExecutionError("Database execution error - "
+                _abortConnection("Database execution error - "
                         + e.getMessage());
                 e.printStackTrace();
                 return;
             } catch (DBExecutionException e) {
-                _abortConnection();
-                _taskQueue.setExecutionError("Database execution error - "
+                _abortConnection("Database execution error - "
                         + e.getMessage());
                 e.printStackTrace();
                 return;
             } catch (ModelAlreadyExistException e) {
-                _abortConnection();
-                _taskQueue.setExecutionError("Database execution error - "
+                _abortConnection("Database execution error - "
+                        + e.getMessage());
+                e.printStackTrace();
+                return;
+            } catch (CircularDependencyException e) {
+                _abortConnection("Circular dependency error - "
                         + e.getMessage());
                 e.printStackTrace();
                 return;
@@ -176,26 +178,49 @@ public class ExecutorThread implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     /**
-     * Delegate the call to the abortConnection() API of DBConnection
+     * Delegate the call to the abortConnection() API of DBConnection.
+     * Set the error message in the task queue if the error message is not null.
+     * @param errorMessage Error message due to which the transaction needs to 
+     * be aborted. 
      */
-    private void _abortConnection() {
+    private void _abortConnection(String errorMessage) {
         try {
             _dbConn.abortConnection();
 
         } catch (DBConnectionException e) {
             e.printStackTrace();
         }
-
+        if(errorMessage != null) {
+            _taskQueue.setExecutionError(errorMessage);
+        }
+    }
+    
+    /**
+     * Commit and close the connection. 
+     * Mark execution completed in the task queue.
+     * 
+     * @throws DBConnectionException If thrown while closing or committing the
+     * database connection.
+     */
+    private void _closeConnection() throws DBConnectionException {
+        _dbConn.commitConnection();
+        _dbConn.closeConnection();
+        _taskQueue.setExecutionCompleted();
     }
 
     /**
      * Delegate the call to the appropriate API of DBConnection
      * depending on the type of the task it is executing
-     * @exception DBExecutionException
-     * @exception ModelAlreadyExistException Thrown when the model being created is already in the database.
+     * @exception DBExecutionException If thrown while executing the tasks.
+     * @exception ModelAlreadyExistException Thrown when the model being created 
+     * is already in the database.
+     * @throws CircularDependencyException If thrown while creating the model 
+     * reference.
      */
-    private void _executeTask() throws DBExecutionException, ModelAlreadyExistException {
+    private void _executeTask() throws DBExecutionException,
+            ModelAlreadyExistException, CircularDependencyException {
         Task task = _taskQueue.get(_noOfTasksExecuted);
 
         //if the task is of type save model task, then execute the proper method from the connection
@@ -204,8 +229,12 @@ public class ExecutorThread implements Runnable {
         }
 
         //if the task is of type CreateModelTask then execute the proper method from the connection
-        if (task instanceof CreateModelTask) {
+        else if (task instanceof CreateModelTask) {
             _dbConn.executeCreateModelTask((CreateModelTask) task);
+        }
+        
+        else if( task instanceof UpdateParentsToNewVersionTask) {
+            _dbConn.executeUpdateParentsToNewVersion((UpdateParentsToNewVersionTask) task);
         }
     }
 
@@ -224,13 +253,16 @@ public class ExecutorThread implements Runnable {
 
     /**
      * This is the taskQueue into which an Asynchronous
-     * connection adds the tasks for execution
+     * connection adds the tasks for execution.
+     * 
      * The Executor thread reads tasks one by one from this
-     * queue and executes them on the database
+     * queue and executes them on the database.
+     * 
      * The taskQueue is also used as a communication mechanism
-     * between the Executor thread and the Asynchronous connection
+     * between the Executor thread and the Asynchronous connection.
+     * 
      * Each informs the other of an error by setting it
-     * the error flag in the taskQueue
+     * the error flag in the taskQueue.
      */
     private TaskQueue _taskQueue;
 

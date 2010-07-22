@@ -37,6 +37,7 @@ import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
+import ptdb.common.dto.GetFirstLevelParentsTask;
 import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
@@ -47,6 +48,7 @@ import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.Task;
 import ptdb.common.dto.TaskQueue;
 import ptdb.common.dto.UpdateAttributeTask;
+import ptdb.common.dto.UpdateParentsToNewVersionTask;
 import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -258,7 +260,28 @@ public class AsynchronousDBConnection implements DBConnection {
                 "Asynchronous DB Execution error - executeGetAttributes is "
                         + "not supported by this type of DBConnection");
     }
-
+    
+    /**
+     * Fetch the first level parents for the given model is not supported by 
+     * this connection. 
+     * Use a synchronous connection for that.
+     * 
+     * @param task Task that contains the model for which the first level 
+     * parents list needs to be fetched.
+     * 
+     * @return List of models that are the first-level parents of the given 
+     * model.
+     * 
+     * @throws DBExecutionException If thrown while fetching the parents list 
+     * from the database.
+     */
+    public List<XMLDBModel> executeGetFirstLevelParents(GetFirstLevelParentsTask task)
+            throws DBExecutionException {
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeGetFirstLevelParents is "
+                        + "not supported by this type of DBConnection");
+    }
+    
     /**
      * Get the model reference string is not supported by the asynchronous 
      * connection.
@@ -445,7 +468,18 @@ public class AsynchronousDBConnection implements DBConnection {
         
     }
     
-
+    /**
+     * Execute the given task to update the referenced version for the given 
+     * parents from the old model to the new model. 
+     * @param task Task that contains the list of parents, the old model and the 
+     * new model.
+     * @throws DBExecutionException If thrown while updating the parents in the 
+     * database.
+     */
+    public void executeUpdateParentsToNewVersion(
+            UpdateParentsToNewVersionTask task) throws DBExecutionException {
+        _executeTask(task);
+    }
     /**
      * Return a string representation for the
      * internal parameters of the class.

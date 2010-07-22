@@ -41,6 +41,7 @@ import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.DBModelNotFoundException;
@@ -100,11 +101,12 @@ public class SaveModelManager {
      * already exists.
      * @throws XMLDBModelParsingException Thrown if the model is parsed
      * incorrectly.
+     * @throws CircularDependencyException Thrown if there is a circular dependency.
      * 
      */
     public String save(XMLDBModel xmlDBModel) throws DBConnectionException,
             DBExecutionException, IllegalArgumentException,
-            ModelAlreadyExistException, XMLDBModelParsingException {
+            ModelAlreadyExistException, XMLDBModelParsingException, CircularDependencyException {
 
         String returnString = null;
 

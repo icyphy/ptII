@@ -37,6 +37,7 @@ import ptdb.common.dto.CreateModelTask;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
+import ptdb.common.dto.GetFirstLevelParentsTask;
 import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
@@ -45,8 +46,10 @@ import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
+import ptdb.common.dto.UpdateParentsToNewVersionTask;
 import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.DBModelNotFoundException;
@@ -116,10 +119,13 @@ public interface DBConnection {
      * @return The Id of the newly created model.
      * 
      * @exception DBExecutionException
-     * @exception ModelAlreadyExistException Thrown if the model being created already exists.
+     * @exception ModelAlreadyExistException Thrown if the model being created 
+     * already exists.
+     * @throws CircularDependencyException If thrown while creating reference 
+     * string.
      */
     public String executeCreateModelTask(CreateModelTask task)
-            throws DBExecutionException, ModelAlreadyExistException;
+            throws DBExecutionException, ModelAlreadyExistException, CircularDependencyException;
     
     
     /**
@@ -166,7 +172,22 @@ public interface DBConnection {
      */
     public List<XMLDBAttribute> executeGetAttributesTask(GetAttributesTask task)
             throws DBExecutionException;
-
+    
+    /**
+     * Execute the given task to fetch the first level parents for the given model.
+     * First level parents are models that are immediate parents for the given model.
+     *
+     * @param task Task that contains the model for which the first level 
+     * parents list needs to be fetched.
+     * 
+     * @return List of models that are the first-level parents of the given model.
+     * 
+     * @throws DBExecutionException If thrown while fetching the parents list from the 
+     * database.
+     */
+    public List<XMLDBModel> executeGetFirstLevelParents(
+            GetFirstLevelParentsTask task) throws DBExecutionException;
+    
     /**
      * Execute the necessary commands to retrieve a model from the database.
      *
@@ -228,19 +249,23 @@ public interface DBConnection {
             throws DBExecutionException;
     
     /**
-     * Execute the necessary commands to save/update a model in the database according
-     * to the model specification given in the task parameter.
+     * Execute the necessary commands to save/update a model in the database 
+     * according to the model specification given in the task parameter.
      *
      * @param task
      *          The task to be completed.  In this case, SaveModelTask.
-     *          This will tell the DB layer to save/update a model already existing in the database.
+     *          This will tell the DB layer to save/update a model already 
+     *          existing in the database.
      * 
      * @return The Id of the saved model.
      * 
-     * @exception DBExecutionException Thrown when there is a problem in executing the task.
+     * @exception DBExecutionException Thrown when there is a problem in 
+     * executing the task.
+     * @throws CircularDependencyException If thrown while creating reference 
+     * string. 
      */
     public String executeSaveModelTask(SaveModelTask task)
-            throws DBExecutionException;
+            throws DBExecutionException, CircularDependencyException;
     
     
     /**
@@ -291,5 +316,16 @@ public interface DBConnection {
      */
     public void executeUpdateModelInCache(XMLDBModel xmlDBModel)
             throws DBExecutionException;
+    
+    /**
+     * Execute the given task to update the referenced version for the given 
+     * parents from the old model to the new model. 
+     * @param task Task that contains the list of parents, the old model and the 
+     * new model.
+     * @throws DBExecutionException If thrown while updating the parents in the 
+     * database.
+     */
+    public void executeUpdateParentsToNewVersion(
+            UpdateParentsToNewVersionTask task) throws DBExecutionException;
 
 }

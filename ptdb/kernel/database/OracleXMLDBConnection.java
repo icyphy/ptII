@@ -50,16 +50,20 @@ import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
+import ptdb.common.dto.GetFirstLevelParentsTask;
 import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
+import ptdb.common.dto.PTDBSearchAttribute;
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
+import ptdb.common.dto.UpdateParentsToNewVersionTask;
 import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.DBModelNotFoundException;
@@ -310,9 +314,11 @@ public class OracleXMLDBConnection implements DBConnection {
      * the task.
      * @exception ModelAlreadyExistException Thrown if the model being created
      * already exists.
+     * @throws CircularDependencyException If thrown while creating reference string.
      */
     public String executeCreateModelTask(CreateModelTask task)
-            throws DBExecutionException, ModelAlreadyExistException {
+            throws DBExecutionException, ModelAlreadyExistException,
+            CircularDependencyException {
 
         try {
 
@@ -482,7 +488,70 @@ public class OracleXMLDBConnection implements DBConnection {
         String modelId = _getModelIdFromModelName(task.getModelName());
         return _getModelReferences(modelId);
     }
-    
+
+    /**
+     * Execute the given task to fetch the first level parents for the given 
+     * model.
+     * First level parents are models that are immediate parents for the given 
+     * model.
+     *
+     * @param model Model for which the first level parents list needs to be 
+     * fetched.
+     * @return List of models that are the first-level parents of the given 
+     * model.
+     * 
+     * @throws DBExecutionException If thrown while fetching the parents list 
+     * from the database.
+     */
+    public List<XMLDBModel> executeGetFirstLevelParents(
+            GetFirstLevelParentsTask task) throws DBExecutionException {
+        String references = null;
+        ArrayList<XMLDBModel> parentsList = new ArrayList<XMLDBModel>();
+        XMLDBModel model = task.getModel();
+        try {
+
+            XmlQueryContext xmlContext = _xmlManager.createQueryContext();
+
+            String query = "for $entity in doc (\"dbxml:Testing.dbxml/"
+                    + "ReferenceFile.ptdbxml\")"
+                    + "/reference/entity[child::entity[attribute::name=\""
+                    + model.getModelName() + "\"]] return $entity";
+
+            XmlQueryExpression queryExpression = _xmlManager.prepare(query,
+                    xmlContext);
+
+            XmlResults results = queryExpression.execute(xmlContext);
+
+            if (results != null && results.size() > 0) {
+
+                XmlValue xmlValue = results.next();
+                references = "<entities>" + xmlValue.asString() + "</entities>";
+                Node entitiesNode = Utilities.parseXML(references);
+                NodeList entityList = entitiesNode.getChildNodes();
+                for (int i = 0; i < entityList.getLength(); i++) {
+                    Node entity = entityList.item(i);
+                    String parentName = Utilities.getValueForAttribute(entity,
+                            XMLDBModel.DB_MODEL_NAME);
+                    String parentId = Utilities.getValueForAttribute(entity,
+                            XMLDBModel.DB_MODEL_ID_ATTR);
+
+                    parentsList.add(new XMLDBModel(parentName, parentId));
+                }
+
+            }
+
+        } catch (XmlException e) {
+            throw new DBExecutionException(
+                    "Failed to retrieve the first level parents for the given model - "
+                            + e.getMessage(), e);
+        } catch (XMLDBModelParsingException e) {
+            throw new DBExecutionException(
+                    "Error shile parsing the references - " + e.getMessage(), e);
+        }
+        //FIXME Make sure the parent list returns unique values.
+        return parentsList;
+    }
+
     /**
      * Execute the get model task and return the model requested as XMLDBModel
      * object as it is represented in the database.
@@ -690,8 +759,12 @@ public class OracleXMLDBConnection implements DBConnection {
             for (Attribute attribute : attributesList) {
                 if (attribute instanceof Variable) {
                     try {
-
-                        String attributeClause = _createAttributeClause((Variable) attribute);
+                        boolean isFromAttributeMatcher = false;
+                        if (attribute instanceof PTDBSearchAttribute) {
+                            isFromAttributeMatcher = true;
+                        }
+                        String attributeClause = _createAttributeClause(
+                                (Variable) attribute, isFromAttributeMatcher);
                         ArrayList<String> modelNamesList = _executeSingleAttributeMatch(attributeClause);
                         if (matchingModelNamesList == null) {
                             matchingModelNamesList = new ArrayList<String>();
@@ -962,9 +1035,11 @@ public class OracleXMLDBConnection implements DBConnection {
      * 
      * @exception DBExecutionException Thrown if there is a problem executing
      * the task.
+     * @throws CircularDependencyException If thrown while creating reference 
+     * string.
      */
     public String executeSaveModelTask(SaveModelTask task)
-            throws DBExecutionException {
+            throws DBExecutionException, CircularDependencyException {
 
         try {
             
@@ -1236,7 +1311,80 @@ public class OracleXMLDBConnection implements DBConnection {
 
     }
 
-    
+    /**
+     * Execute the given task to update the referenced version for the given 
+     * parents from the old model to the new model. 
+     * @param task Task that contains the list of parents, the old model and the 
+     * new model.
+     * @throws DBExecutionException If thrown while updating the parents in the 
+     * database.
+     */
+    public void executeUpdateParentsToNewVersion(
+            UpdateParentsToNewVersionTask task) throws DBExecutionException {
+
+        String newModelId = task.getNewModel().getModelId();
+        String newModelName = task.getNewModel().getModelName();
+
+        if (newModelId == null || newModelId.length() == 0) {
+            newModelId = _getModelIdFromModelName(newModelName);
+        }
+
+        String propertyString = Utilities.getPropertyString(
+                XMLDBModel.DB_MODEL_ID_ATTR, newModelName);
+
+        String oldModelId = task.getOldModel().getModelId();
+        for (String parentName : task.getParentsList()) {
+
+            String parentsQuery = "for $entity in doc(\"dbxml:"
+                    + _params.getContainerName() + "/" + parentName
+                    + "\")/entity/entity  "
+                    + "return for $prop in $entity/property "
+                    + "where $prop/@name= \"" + XMLDBModel.DB_REFERENCE_ATTR
+                    + "\" " + "and $prop/@value = \"TRUE\" "
+                    + "return for $x in $entity/property "
+                    + "where $x/@name= \"" + XMLDBModel.DB_MODEL_ID_ATTR
+                    + "\" " + "and $x/@value = \"" + oldModelId + "\" "
+                    + "return replace node $x " + "with " + propertyString;
+
+            try {
+
+                XmlQueryContext xmlQueryContext = _xmlManager
+                        .createQueryContext();
+
+                _xmlManager.query(_xmlTransaction, parentsQuery,
+                        xmlQueryContext, null);
+
+            } catch (XmlException e) {
+                throw new DBExecutionException(
+                        "Error while updating DBModelId in the parent files - "
+                                + e.getMessage(), e);
+            }
+
+            String referenceString = _getModelReferences(newModelId);
+            String referenceFileQuery = "for $parententity in doc(\"dbxml:"
+                    + _params.getContainerName()
+                    + "/ReferenceFile.ptdbxml\")/reference/entity/*"
+                    + "[descendant::entity[attribute::name=\"" + newModelName
+                    + "\"]] where $parententity/@name=\"" + parentName
+                    + "\"return for $entity in "
+                    + "$parententity/descendant::entity[attribute::name=\""
+                    + newModelName + "\"] return replace node $entity with "
+                    + referenceString;
+            try {
+
+                XmlQueryContext xmlQueryContext = _xmlManager
+                        .createQueryContext();
+
+                _xmlManager.query(_xmlTransaction, referenceFileQuery,
+                        xmlQueryContext, null);
+
+            } catch (XmlException e) {
+                throw new DBExecutionException(
+                        "Error while updating DBModelId in the reference file - "
+                                + e.getMessage(), e);
+            }
+        }
+    }
 
     /**
      * Provide information regarding the state of the internal variables useful
@@ -1588,28 +1736,39 @@ public class OracleXMLDBConnection implements DBConnection {
      * @exception IllegalActionException If thrown whie retrieving attribute
      * data.
      */
-    private String _createAttributeClause(Variable attribute)
-            throws IllegalActionException {
+    private String _createAttributeClause(Variable attribute,
+            boolean isFromAttributeMatcher) throws IllegalActionException {
 
         StringBuffer attributesQuery = new StringBuffer();
+        boolean isPreviousClauseSet = false;
         if (attribute.getName() != null
                 && !"".equals(attribute.getName().trim())) {
             attributesQuery.append("$const/@name=\"").append(
                     attribute.getName()).append("\"");
-
-            attributesQuery.append(" and ");
+            isPreviousClauseSet = true;
         }
 
         if (attribute.getToken() != null) {
+            if (isPreviousClauseSet) {
+                attributesQuery.append(" and ");
+            }
+
             attributesQuery.append("$const/@value[contains(.,\"").append(
                     _removeQuotes(attribute.getToken().toString())).append(
                     "\")]");
 
-            attributesQuery.append(" and ");
+            isPreviousClauseSet = true;
         }
 
-        attributesQuery.append("$const/@class=\"").append(
-                attribute.getClassName()).append("\"");
+        if (!isFromAttributeMatcher) {
+
+            if (isPreviousClauseSet) {
+                attributesQuery.append(" and ");
+            }
+
+            attributesQuery.append("$const/@class=\"").append(
+                    attribute.getClassName()).append("\"");
+        }
 
         return attributesQuery.toString();
 
@@ -1786,28 +1945,44 @@ public class OracleXMLDBConnection implements DBConnection {
     
     /** Create the reference string for the given model.
      * 
-     * @param xmlDBModel Model for which the reference string needs to be created.
+     * @param xmlDBModel Model for which the reference string needs to be 
+     * created.
+     * 
      * @return Reference string for the given model.
-     * @throws DBExecutionException If thrown while creating the reference string.
+     * 
+     * @throws DBExecutionException If thrown while creating the reference 
+     * string.
+     * @throws CircularDependencyException If thrown while creating the 
+     * reference string.
      */
     private String _createReferenceString(XMLDBModel xmlDBModel)
-            throws DBExecutionException {
+            throws DBExecutionException, CircularDependencyException {
         StringBuffer referenceString = new StringBuffer();
+        String modelName = xmlDBModel.getModelName();
 
         referenceString.append("<entity ").append(XMLDBModel.DB_MODEL_ID_ATTR)
                 .append("=").append("\"").append(xmlDBModel.getModelId())
                 .append("\" ");
-                        
-        referenceString.append(XMLDBModel.DB_MODEL_NAME)
-        .append("=").append("\"").append(xmlDBModel.getModelName())
-        .append("\">");;
+
+        referenceString.append(XMLDBModel.DB_MODEL_NAME).append("=").append(
+                "\"").append(modelName).append("\">");
         
         HashMap<String, String> modelReferencesMap = new HashMap<String, String>();
         for (String dbModelId : xmlDBModel.getReferencedChildren()) {
 
             if (!modelReferencesMap.containsKey(dbModelId)) {
-                modelReferencesMap.put(dbModelId,
-                        _getModelReferences(dbModelId));
+                String modelReferenceString = _getModelReferences(dbModelId);
+                
+                if (Utilities.modelReferenceExists(modelName,
+                        modelReferenceString)) {
+                    throw new CircularDependencyException(
+                            "The model ("
+                                    + modelName
+                                    + ") already exists within one of its submodel. "
+                                    + "This action would result in a circular dependency.");
+                }
+
+                modelReferencesMap.put(dbModelId, modelReferenceString);
             }
             referenceString.append(modelReferencesMap.get(dbModelId));
         }
@@ -2429,10 +2604,12 @@ public class OracleXMLDBConnection implements DBConnection {
     /** Update the reference file with new references.
      * 
      * @param xmlDBModel Model for which the referene file needs to be updated.
-     * @throws DBExecutionException - If thrown while updating references.
+     * @throws DBExecutionException If thrown while updating references.
+     * @throws CircularDependencyException If thrown while creating reference 
+     * string.
      */
     private void _updateReferenceFile(XMLDBModel xmlDBModel)
-            throws DBExecutionException {
+            throws DBExecutionException, CircularDependencyException {
 
         if (xmlDBModel.getReferencedChildren() == null) {
             throw new DBExecutionException(

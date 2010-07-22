@@ -537,11 +537,11 @@ public class TestOracleXMLDBConnection {
                         "_executeSingleAttributeMatch");
 
                 PowerMock.expectPrivate(mockConn, "_createAttributeClause",
-                        OracleXMLDBConnection.class, variableCreatedBy)
+                        OracleXMLDBConnection.class, variableCreatedBy, false)
                         .andThrow(new IllegalActionException("Test Exception"));
 
                 PowerMock.expectPrivate(mockConn, "_createAttributeClause",
-                        OracleXMLDBConnection.class, variableModelId)
+                        OracleXMLDBConnection.class, variableModelId, false)
                         .andReturn("Test String");
 
                 PowerMock.expectPrivate(mockConn,
@@ -772,7 +772,7 @@ public class TestOracleXMLDBConnection {
         try {
             ArrayList<XMLDBModel> list = oracleXMLDBConnection
                     .executeModelNameSearchTask(new ModelNameSearchTask("Adder"));
-            assertTrue("Model not returned. ", list.size() == 1);
+            assertTrue("Model not returned. ", list.size() > 0);
 
         } catch (DBExecutionException e) { 
             fail("Failed with exception - " + e.getMessage());
