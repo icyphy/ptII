@@ -324,7 +324,7 @@ public class SimpleSearchFrame extends JFrame {
     
     protected void _exit (){
         
-        if(isModified() || (isModified() &&_saveLocation == null)){
+        if(isModified()){
             
             Object[] options = { "Yes", "No", "Cancel" };
             int n = JOptionPane.showOptionDialog(this,
@@ -361,7 +361,7 @@ public class SimpleSearchFrame extends JFrame {
     
     protected void _new () {
      
-        if(isModified() || (isModified() &&_saveLocation == null)){
+        if(isModified()){
             
             Object[] options = { "Yes", "No", "Cancel" };
             int n = JOptionPane.showOptionDialog(this,
@@ -409,7 +409,7 @@ public class SimpleSearchFrame extends JFrame {
 
             try {
                 
-                if(isModified() || (isModified() &&_saveLocation == null)){
+                if(isModified()){
                     
                     Object[] options = { "Yes", "No", "Cancel" };
                     int n = JOptionPane.showOptionDialog(this,
