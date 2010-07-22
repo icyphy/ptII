@@ -69,6 +69,12 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: Testing.dbxml
 install: all jars
 
+# Initialize the test database
+initialize:
+	(cd ../..; rm ptdb-params.properties; $(MAKE) ptdb-params.properties)
+	-echo "quit" | "$(PTDBXML_LIB)/../bin/dbxml" -s remove.txt
+	echo "quit" | "$(PTDBXML_LIB)/../bin/dbxml" -s create_script.txt
+
 Testing.dbxml: 
 	if [ ! -f $@ ]; then \
 		echo "quit" | "$(PTDBXML_LIB)/../bin/dbxml" -s create_script.txt; \
