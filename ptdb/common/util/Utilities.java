@@ -74,69 +74,7 @@ public class Utilities {
 
     //////////////////////////////////////////////////////////////////////
     ////		public methods 					////
-    /**
-     * Parse the xml string that is passed to it and return the upper node of
-     * that xml.
-     * 
-     * @param xmlString The xml string that needs to be parsed
-     * @return The upper node for the xml string after parsing it.
-     * @exception DBExecutionException Thrown if a parser exceptions was thrown
-     */
-    public static Node parseXML(String xmlString)
-            throws XMLDBModelParsingException {
-
-        if (xmlString == null || xmlString.length() == 0) {
-            throw new XMLDBModelParsingException("Failed to parse the xml - "
-                    + "content sent is empty or null");
-        }
-
-        DocumentBuilder docBuilder;
-
-        Node firstNode = null;
-
-        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
-                .newInstance();
-
-        if (docBuilderFactory == null) {
-            throw new XMLDBModelParsingException(
-                    "Faild to parse the xml - "
-                            + "could not create a new instance of DocumentBuilderFactory.");
-        }
-
-        docBuilderFactory.setIgnoringElementContentWhitespace(true);
-
-        try {
-
-            docBuilder = docBuilderFactory.newDocumentBuilder();
-
-            if (docBuilder == null) {
-                throw new XMLDBModelParsingException(
-                        "Faild to parse the xml - "
-                                + "could not create a new instance of DocumentBuilder.");
-            }
-
-            InputSource inputSource = new InputSource();
-
-            inputSource.setCharacterStream(new StringReader(xmlString));
-
-            firstNode = docBuilder.parse(inputSource);
-
-        } catch (ParserConfigurationException e) {
-
-            throw new XMLDBModelParsingException("Failed to parse the model - "
-                    + e.getMessage(), e);
-
-        } catch (SAXException e) {
-            throw new XMLDBModelParsingException("Failed to parse the model - "
-                    + e.getMessage(), e);
-        } catch (IOException e) {
-            throw new XMLDBModelParsingException("Failed to parse the model - "
-                    + e.getMessage(), e);
-        }
-
-        return firstNode;
-    }
-
+    
     
     public static boolean checkAttributeModelName(String name) {
         if (name == null || name.trim().isEmpty()) {
@@ -163,6 +101,57 @@ public class Utilities {
     }
 
     /**
+     * Create new Id by appending a timestamp to the given name.
+     * @param name The name that will be used to generate the id.
+     * @return An Id that is a combination of the name passed with the time stamp.
+     */
+    public static String generateId(String name) {
+
+        String id = "";
+
+        Date date = new Date();
+
+        id = name + "_" + date.getTime();
+
+        return id;
+    }
+
+    /**
+     * Convert the document node to string.
+     * 
+     * @param document Document which needs to be converted to String.
+     * @return String for the given document.
+     */
+    public static String getDocumentXMLString(Document document) {
+        DOMImplementationLS domImplementation = (DOMImplementationLS) document
+                .getImplementation();
+        LSSerializer lsSerializer = domImplementation.createLSSerializer();
+        String documentContent = lsSerializer.writeToString(document);
+
+        /* Removing the XML tag appended automatically by the parser. */
+        if (documentContent.startsWith("<?xml")) {
+            int index = documentContent.indexOf("?>") + 2;
+            documentContent = documentContent.substring(index);
+        }
+
+        return documentContent;
+    }
+    
+    /**
+     * Create the property node string to add to a MOML with 
+     * the class as StringConstantParameter.
+     * @param propertyName Name for the property.
+     * @param propertyValue Value for the property.
+     * @return Property node string for the given name and value.
+     */
+    public static String getPropertyString(String propertyName, String propertyValue) {
+        
+        return "<property name=\"" + propertyName + "\" " +
+        "class=\"ptolemy.data.expr.StringConstantParameter\" " +
+        "value=\"" + propertyValue + "\"></property>";
+    }
+    
+    /**
      * Get the value for the given attribute.
      * 
      * @param currentNode Node for which attribute value needs to be determined.
@@ -188,23 +177,7 @@ public class Utilities {
         }
         return strCurrentModelName;
     }
-
-    /**
-     * Create new Id by appending a timestamp to the given name.
-     * @param name The name that will be used to generate the id.
-     * @return An Id that is a combination of the name passed with the time stamp.
-     */
-    public static String generateId(String name) {
-
-        String id = "";
-
-        Date date = new Date();
-
-        id = name + "_" + date.getTime();
-
-        return id;
-    }
-
+    
     /**
      * Add a parameter tag called DBModelId to the given model body.
      * @param modelBody The XML model body where the Id parameter will be added.
@@ -226,28 +199,7 @@ public class Utilities {
         return modelBodyBuffer.toString();
 
     }
-
-    /**
-     * Convert the document node to string.
-     * 
-     * @param document Document which needs to be converted to String.
-     * @return String for the given document.
-     */
-    public static String getDocumentXMLString(Document document) {
-        DOMImplementationLS domImplementation = (DOMImplementationLS) document
-                .getImplementation();
-        LSSerializer lsSerializer = domImplementation.createLSSerializer();
-        String documentContent = lsSerializer.writeToString(document);
-
-        /* Removing the XML tag appended automatically by the parser. */
-        if (documentContent.startsWith("<?xml")) {
-            int index = documentContent.indexOf("?>") + 2;
-            documentContent = documentContent.substring(index);
-        }
-
-        return documentContent;
-    }
-
+    
     /**
      * Intersect the XMLDBModels results from two list, and take the common
      * ones and return them in a new list. 
@@ -308,6 +260,70 @@ public class Utilities {
         }
         return modelExists;
     }
+    
+    /**
+     * Parse the xml string that is passed to it and return the upper node of
+     * that xml.
+     * 
+     * @param xmlString The xml string that needs to be parsed
+     * @return The upper node for the xml string after parsing it.
+     * @exception XMLDBModelParsingException Thrown if a parser exceptions was thrown
+     */
+    public static Node parseXML(String xmlString)
+            throws XMLDBModelParsingException {
+
+        if (xmlString == null || xmlString.length() == 0) {
+            throw new XMLDBModelParsingException("Failed to parse the xml - "
+                    + "content sent is empty or null");
+        }
+
+        DocumentBuilder docBuilder;
+
+        Node firstNode = null;
+
+        DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
+                .newInstance();
+
+        if (docBuilderFactory == null) {
+            throw new XMLDBModelParsingException(
+                    "Faild to parse the xml - "
+                            + "could not create a new instance of DocumentBuilderFactory.");
+        }
+
+        docBuilderFactory.setIgnoringElementContentWhitespace(true);
+
+        try {
+
+            docBuilder = docBuilderFactory.newDocumentBuilder();
+
+            if (docBuilder == null) {
+                throw new XMLDBModelParsingException(
+                        "Faild to parse the xml - "
+                                + "could not create a new instance of DocumentBuilder.");
+            }
+
+            InputSource inputSource = new InputSource();
+
+            inputSource.setCharacterStream(new StringReader(xmlString));
+
+            firstNode = docBuilder.parse(inputSource);
+
+        } catch (ParserConfigurationException e) {
+
+            throw new XMLDBModelParsingException("Failed to parse the model - "
+                    + e.getMessage(), e);
+
+        } catch (SAXException e) {
+            throw new XMLDBModelParsingException("Failed to parse the model - "
+                    + e.getMessage(), e);
+        } catch (IOException e) {
+            throw new XMLDBModelParsingException("Failed to parse the model - "
+                    + e.getMessage(), e);
+        }
+
+        return firstNode;
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////		protected methods 				////
 
