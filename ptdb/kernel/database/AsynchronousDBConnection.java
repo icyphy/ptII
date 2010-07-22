@@ -284,7 +284,7 @@ public class AsynchronousDBConnection implements DBConnection {
      *          This will tell the DB layer to return the specified model.
      * @return XMLDBModel
      *          This object will be populated with the model's MoML string.
-     * @exception DBConnectionException Thrown if the operations fails.
+     * @exception DBExecutionException Thrown if the operations fails.
      */
     public XMLDBModel executeGetModelTask(GetModelTask task)
             throws DBExecutionException {
@@ -304,7 +304,7 @@ public class AsynchronousDBConnection implements DBConnection {
      *          This will tell the DB layer to return the specified model.
      * @return XMLDBModel
      *          This object will be populated with the model's MoML string.
-     * @exception DBConnectionException Thrown if the operations fails.
+     * @exception DBExecutionException Thrown if the operations fails.
      */
     public XMLDBModel executeGetCompleteModelTask(GetModelTask task)
             throws DBExecutionException {
