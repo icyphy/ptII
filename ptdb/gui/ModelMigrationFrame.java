@@ -73,7 +73,7 @@ public class ModelMigrationFrame extends JFrame {
     /**
      * Entry point for running the migration frame from the command line.
      * 
-     * @param args the command line arguments
+     * @param args the command line arguments.
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
