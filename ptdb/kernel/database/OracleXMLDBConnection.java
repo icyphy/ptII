@@ -2487,21 +2487,21 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     protected static Environment _environment;
     
-    /** Path for the given environment */
+    /** Path for the given environment. */
     protected static String _environmentPath;
     /**
-     * Denote whether the database connection is active or not
+     * Denote whether the database connection is active or not.
      */
     protected boolean _isConnectionAlive;
 
     /**
-     * Denote whether the database connection is active or not
+     * Denote whether the database connection is active or not.
      */
     protected boolean _isTransactionActive;
 
     /**
      * This object contains the parameters like path, container name etc.
-     * required to connect with the database
+     * required to connect with the database.
      */
     protected DBConnectionParameters _params;
 
@@ -2513,7 +2513,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
     /**
      * This is the Oracle BerkeleyXML DB manager that is used to execute queries
-     * over the opened container
+     * over the opened container.
      */
     protected XmlManager _xmlManager;
 
