@@ -1290,7 +1290,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
         String currentModelName = "";
         String currentModelId = "";
-        
+        boolean hasReferences = false;
         
         currentModelId = Utilities.getValueForAttribute(currentNode, XMLDBModel.DB_MODEL_ID_ATTR);
         currentModelName = Utilities.getValueForAttribute(currentNode, "name");
@@ -1322,14 +1322,22 @@ public class OracleXMLDBConnection implements DBConnection {
                     currentXMLDBModel = CacheManager.loadFromCache(
                             currentModelName);
                     
-                    if (currentXMLDBModel != null) {
+                  /*
+                   * There is no need to put the model back in the hashmap 
+                   * since the hashmap is used to update the cache.
+                   */
+                    return currentXMLDBModel.getModel();
                     
-                        _xmlModelHerarichyMap.put(
-                                currentXMLDBModel.getModelName(), 
-                                currentXMLDBModel.getModel());
+                    
+                    
+//                    if (currentXMLDBModel != null) {
+//                    
+//                        _xmlModelHerarichyMap.put(
+//                                currentXMLDBModel.getModelName(), 
+//                                currentXMLDBModel.getModel());
                         
-                        return currentXMLDBModel.getModel();
-                    }
+//                    return currentXMLDBModel.getModel();
+//                    }
                     
                 } catch (Exception e) {
                     // Do nothing...
@@ -1368,6 +1376,8 @@ public class OracleXMLDBConnection implements DBConnection {
 
                     if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
 
+                        hasReferences = true;
+                        
                         Node child = children.item(i);
 
                         String childContent = _buildCompleteModel(child);
@@ -1400,7 +1410,11 @@ public class OracleXMLDBConnection implements DBConnection {
                 }
             }
 
-            _xmlModelHerarichyMap.put(currentModelName, currentModelContent);
+            // Only put models with references in the hashmap.
+            if (hasReferences == true) {
+            
+                _xmlModelHerarichyMap.put(currentModelName, currentModelContent);
+            }
             
             return currentModelContent;
 
