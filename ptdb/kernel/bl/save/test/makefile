@@ -36,7 +36,8 @@ ME =		ptdb/kernel/bl/save/test
 ROOT =		../../../../..
 
 # Configure looks for PowerMock.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)
+# PTDBXML_JARS is set by configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)$(CLASSPATHSEPARATOR)$(PTDBXML_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

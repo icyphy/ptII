@@ -81,6 +81,8 @@ import ptolemy.util.StringUtilities;
 public class TestDBConnectorFactory {
 
     String systemPath = System.getProperty("user.dir");
+    String ptIIPath = StringUtilities.getProperty("ptolemy.ptII.dir");
+
     String fileSeparator = System.getProperty("file.separator");
     String _testPath;
 
@@ -103,17 +105,10 @@ public class TestDBConnectorFactory {
      */
     @Before
     public void setUp() throws Exception {
-
-        StringBuffer strBuf = new StringBuffer(systemPath);
-
-        strBuf.append(fileSeparator).append("ptdb");
-        strBuf.append(fileSeparator).append("kernel");
-        strBuf.append(fileSeparator).append("database");
-        strBuf.append(fileSeparator).append("test");
-        strBuf.append(fileSeparator);
-
-        _testPath = strBuf.toString();
-
+        _testPath = ptIIPath + fileSeparator + "ptdb" 
+	    + fileSeparator + "kernel"
+	    + fileSeparator + "database"
+	    + fileSeparator + "test" + fileSeparator;
     }
 
     /**
@@ -142,7 +137,7 @@ public class TestDBConnectorFactory {
         assertTrue("DB Container Name is incorrect.", parameters
                 .contains("_dbContainerName = Testing.dbxml"));
         assertTrue("Cache Container Name is incorrect.", parameters
-                .contains("_cacheContainerName = cache_test.dbxml"));
+                .contains("_cacheContainerName = Testing_cache.dbxml"));
 
         //////////////////////////////////////////////////////////////////////////////////////////
         //Incorrect URL
@@ -196,7 +191,7 @@ public class TestDBConnectorFactory {
 
             URL url = PowerMock.createMock(URL.class);
             InputStream is = new FileInputStream(_testPath
-                    + "ptdb-test1.properties");
+					 + "ptdb-test1.properties");
 
             mockStatic(FileUtilities.class);
             expect(FileUtilities.nameToURL(ptdbParamsURL, null, null))
