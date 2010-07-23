@@ -81,8 +81,7 @@ public class TestRebuildReferenceFile {
         DBConnectionParameters dbConnectionParameters = DBConnectorFactory
                 .getDBConnectionParameters();
         try {
-            RebuildReferenceFile rebuildReferenceFile = new RebuildReferenceFile(
-                    dbConnectionParameters);
+            new RebuildReferenceFile(dbConnectionParameters);
 
         } catch (DBConnectionException e) {
             fail("Failed with exception - " + e.getMessage());
@@ -107,7 +106,7 @@ public class TestRebuildReferenceFile {
             mockBufferedReader.close();
             PowerMock.replay(InputStreamReader.class, BufferedReader.class, mockBufferedReader, mockInputStreamReader);
             
-            RebuildReferenceFile.main(null);
+            RebuildReferenceFile.main(new String[1]);
             PowerMock.verify();
             
         } catch (IOException e) {
