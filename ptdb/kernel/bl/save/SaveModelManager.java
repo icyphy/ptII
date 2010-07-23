@@ -149,8 +149,7 @@ public class SaveModelManager {
      * @param xmlDBModel The model object that is required to be saved or
      * created in the database.
      * 
-     * @return A boolean indicator of weather the operation was successful or
-     * not.
+     * @return A string representing the model id that was saved.
      * 
      * @exception DBConnectionException Thrown if there is a database connection
      * error.
@@ -170,7 +169,7 @@ public class SaveModelManager {
             ModelAlreadyExistException, XMLDBModelParsingException,
             CircularDependencyException {
 
-        String returnString = null;
+        String modelId = null;
 
         DBConnection dbConnection = null;
 
@@ -189,7 +188,7 @@ public class SaveModelManager {
                         "Unable to get synchronous connection from the database");
             }
 
-            save(xmlDBModel, dbConnection);
+            modelId = save(xmlDBModel, dbConnection);
 
             dbConnection.commitConnection();
 
@@ -211,9 +210,7 @@ public class SaveModelManager {
             }
         }
 
-        updateCache(xmlDBModel);
-
-        return returnString;
+        return modelId;
 
     }
 
@@ -277,6 +274,7 @@ public class SaveModelManager {
                     xmlDBModelWithReferenceChanges.getModelToBeSaved()
                             .getModelName());
 
+            // Get the content of the model to be saved from the database.
             XMLDBModel dbModelToBeSaved = dbConnection
                     .executeGetModelTask(getModelTask);
 
@@ -309,6 +307,8 @@ public class SaveModelManager {
 
             save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
                     dbConnection);
+            
+            dbConnection.commitConnection();
 
         } catch (DBConnectionException e) {
 
@@ -597,8 +597,7 @@ public class SaveModelManager {
      * @param dbConnection The connection to the database that will be used to
      * execute the task.
      * 
-     * @return A boolean indicator of weather the operation was successful or
-     * not.
+     * @return A string representing the model id that was saved.
      * 
      * @exception DBConnectionException Thrown if there is a database connection
      * error.
@@ -617,7 +616,7 @@ public class SaveModelManager {
             IllegalArgumentException, ModelAlreadyExistException,
             XMLDBModelParsingException, CircularDependencyException {
 
-        String returnString = null;
+        String newModelId = null;
 
         try {
 
@@ -639,14 +638,14 @@ public class SaveModelManager {
                 CreateModelTask createModelTask = new CreateModelTask(
                         xmlDBModel);
 
-                returnString = dbConnection
+                newModelId = dbConnection
                         .executeCreateModelTask(createModelTask);
 
             } else {
 
                 SaveModelTask saveModelTask = new SaveModelTask(xmlDBModel);
 
-                returnString = dbConnection.executeSaveModelTask(saveModelTask);
+                newModelId = dbConnection.executeSaveModelTask(saveModelTask);
 
             }
 
@@ -659,7 +658,7 @@ public class SaveModelManager {
 
         updateCache(xmlDBModel);
 
-        return returnString;
+        return newModelId;
     }
 
     /**
