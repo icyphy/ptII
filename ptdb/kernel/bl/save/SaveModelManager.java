@@ -642,15 +642,11 @@ public class SaveModelManager {
                 returnString = dbConnection
                         .executeCreateModelTask(createModelTask);
 
-                dbConnection.commitConnection();
-
             } else {
 
                 SaveModelTask saveModelTask = new SaveModelTask(xmlDBModel);
 
                 returnString = dbConnection.executeSaveModelTask(saveModelTask);
-
-                dbConnection.commitConnection();
 
             }
 
