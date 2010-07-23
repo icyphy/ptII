@@ -249,11 +249,7 @@ public class SaveModelManager {
         // Check if the object sent is properly set with correct values.
 
         if (xmlDBModelWithReferenceChanges == null
-                || xmlDBModelWithReferenceChanges.getModelToBeSaved() == null
-                || xmlDBModelWithReferenceChanges.getVersionName() == null
-                || xmlDBModelWithReferenceChanges.getVersionName().length() == 0
-                || xmlDBModelWithReferenceChanges.getParentsList() == null
-                || xmlDBModelWithReferenceChanges.getParentsList().size() == 0) {
+                || xmlDBModelWithReferenceChanges.getModelToBeSaved() == null) {
 
             throw new IllegalArgumentException(
                     "The parameters sent was not set properly.");
@@ -270,41 +266,53 @@ public class SaveModelManager {
                         "Unable to get synchronous connection from the database");
             }
 
-            GetModelTask getModelTask = new GetModelTask(
-                    xmlDBModelWithReferenceChanges.getModelToBeSaved()
-                            .getModelName());
+            
+            if (xmlDBModelWithReferenceChanges != null
+                    && xmlDBModelWithReferenceChanges.getModelToBeSaved() != null
+                    && !xmlDBModelWithReferenceChanges.getModelToBeSaved().getIsNew()
+                    && xmlDBModelWithReferenceChanges.getVersionName() != null
+                    && xmlDBModelWithReferenceChanges.getVersionName().length() > 0
+                    && xmlDBModelWithReferenceChanges.getParentsList() == null
+                    && xmlDBModelWithReferenceChanges.getParentsList().size() > 0) {
+                
+                
+                GetModelTask getModelTask = new GetModelTask(
+                        xmlDBModelWithReferenceChanges.getModelToBeSaved()
+                                .getModelName());
+    
+                // Get the content of the model to be saved from the database.
+                XMLDBModel dbModelToBeSaved = dbConnection
+                        .executeGetModelTask(getModelTask);
+    
+                XMLDBModel newXMLDBModel = new XMLDBModel(
+                        xmlDBModelWithReferenceChanges.getVersionName());
+    
+                newXMLDBModel.setIsNew(true);
+    
+                newXMLDBModel.setModel(dbModelToBeSaved.getModel());
+    
+                newModelId = save(newXMLDBModel, dbConnection);
+    
+                newXMLDBModel.setModelId(newModelId);
+    
+                UpdateParentsToNewVersionTask updateParentsToNewVersionTask = 
+                    new UpdateParentsToNewVersionTask();
+    
+                updateParentsToNewVersionTask.setNewModel(newXMLDBModel);
+    
+                updateParentsToNewVersionTask
+                        .setOldModel(xmlDBModelWithReferenceChanges
+                                .getModelToBeSaved());
+    
+                updateParentsToNewVersionTask
+                        .setParentsList(xmlDBModelWithReferenceChanges
+                                .getParentsList());
+    
+                dbConnection
+                        .executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
 
-            // Get the content of the model to be saved from the database.
-            XMLDBModel dbModelToBeSaved = dbConnection
-                    .executeGetModelTask(getModelTask);
-
-            XMLDBModel newXMLDBModel = new XMLDBModel(
-                    xmlDBModelWithReferenceChanges.getVersionName());
-
-            newXMLDBModel.setIsNew(true);
-
-            newXMLDBModel.setModel(dbModelToBeSaved.getModel());
-
-            newModelId = save(newXMLDBModel, dbConnection);
-
-            newXMLDBModel.setModelId(newModelId);
-
-            UpdateParentsToNewVersionTask updateParentsToNewVersionTask = 
-                new UpdateParentsToNewVersionTask();
-
-            updateParentsToNewVersionTask.setNewModel(newXMLDBModel);
-
-            updateParentsToNewVersionTask
-                    .setOldModel(xmlDBModelWithReferenceChanges
-                            .getModelToBeSaved());
-
-            updateParentsToNewVersionTask
-                    .setParentsList(xmlDBModelWithReferenceChanges
-                            .getParentsList());
-
-            dbConnection
-                    .executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
-
+            }
+            
             save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
                     dbConnection);
             
