@@ -246,7 +246,7 @@ public class SaveModelManager {
 
         String newModelId = "";
 
-        // Check if the object sent is properly set with correct values.
+        // Check if the object sent is properly set.
 
         if (xmlDBModelWithReferenceChanges == null
                 || xmlDBModelWithReferenceChanges.getModelToBeSaved() == null) {
