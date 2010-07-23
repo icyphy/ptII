@@ -87,6 +87,7 @@ public class SearchCriteria {
      * Get the name of the model from the search criteria. 
      * 
      * @return The model name search criteria. 
+     * @see #setModelName
      */
     public String getModelName() {
         return _modelName;
@@ -131,6 +132,7 @@ public class SearchCriteria {
      * Set the name of the model for the search criteria. 
      * 
      * @param modelName The name of the model to be set in the search criteria.
+     * @see #getModelName
      */
     public void setModelName(String modelName) {
         _modelName = modelName;

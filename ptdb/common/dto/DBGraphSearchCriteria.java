@@ -86,6 +86,7 @@ public class DBGraphSearchCriteria {
      * Get the pattern of this graph search criteria. 
      * 
      * @return The pattern of the graph search criteria. 
+     * @see #setPattern
      */
     public Pattern getPattern(){
         return _pattern;
@@ -140,6 +141,7 @@ public class DBGraphSearchCriteria {
      * Set the pattern of the graph search criteria. 
      * 
      * @param pattern The pattern of the graph search criteria. 
+     * @see #getPattern
      */
     public void setPattern(Pattern pattern){
         _pattern = pattern;

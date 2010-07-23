@@ -72,9 +72,9 @@ public class AttributeListEditFrame extends JFrame {
      * @param listItems The list of items to be displayed and edited in this
      *  frame. 
      */
-    public AttributeListEditFrame(JFrame parentFrame, List<String> listItems) {
+    public AttributeListEditFrame(ConfigureAttributesFrame parentFrame, List<String> listItems) {
 
-        _parentFrame = (ConfigureAttributesFrame) parentFrame;
+        _parentFrame = parentFrame;
         _storedListItems = listItems;
         _initComponents();
 

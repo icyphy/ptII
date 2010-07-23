@@ -50,8 +50,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ptdb.common.dto.XMLDBModel;
-import ptdb.common.exception.DBConnectionException;
-import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.XMLDBModelParsingException;
 
 ///////////////////////////////////////////////////////////////
@@ -74,21 +72,26 @@ public class Utilities {
 
     //////////////////////////////////////////////////////////////////////
     ////		public methods 					////
-    
-    
+
+    /**
+     * Check with the given name meet the attribute or model name convention. 
+     * 
+     * @param name The name to be verified. 
+     * @return true - if the name is valid.<br>
+     *          false - if the name is invalid. 
+     */
     public static boolean checkAttributeModelName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return false;
         }
-        
+
         if (name.matches("^[A-Za-z0-9]+$")) {
             return true;
         } else {
             return false;
         }
     }
-    
-    
+
     /** Check whether the given file exists.
      * 
      * @param filePath Path for the file.
@@ -136,7 +139,7 @@ public class Utilities {
 
         return documentContent;
     }
-    
+
     /**
      * Create the property node string to add to a MOML with 
      * the class as StringConstantParameter.
@@ -144,13 +147,14 @@ public class Utilities {
      * @param propertyValue Value for the property.
      * @return Property node string for the given name and value.
      */
-    public static String getPropertyString(String propertyName, String propertyValue) {
-        
-        return "<property name=\"" + propertyName + "\" " +
-        "class=\"ptolemy.data.expr.StringConstantParameter\" " +
-        "value=\"" + propertyValue + "\"></property>";
+    public static String getPropertyString(String propertyName,
+            String propertyValue) {
+
+        return "<property name=\"" + propertyName + "\" "
+                + "class=\"ptolemy.data.expr.StringConstantParameter\" "
+                + "value=\"" + propertyValue + "\"></property>";
     }
-    
+
     /**
      * Get the value for the given attribute.
      * 
@@ -177,7 +181,7 @@ public class Utilities {
         }
         return strCurrentModelName;
     }
-    
+
     /**
      * Add a parameter tag called DBModelId to the given model body.
      * @param modelBody The XML model body where the Id parameter will be added.
@@ -186,11 +190,11 @@ public class Utilities {
      */
     public static String insertIdTagToModelBody(String modelBody, String modelId) {
 
-        String modelIdTag = "<property name=\"" + XMLDBModel.DB_MODEL_ID_ATTR
+        String modelIdTag = "<property name=\""
+                + XMLDBModel.DB_MODEL_ID_ATTR
                 + "\" "
                 + "class=\"ptolemy.data.expr.StringConstantParameter\" value=\""
                 + modelId + "\"></property>";
-        
 
         StringBuffer modelBodyBuffer = new StringBuffer(modelBody);
 
@@ -199,7 +203,7 @@ public class Utilities {
         return modelBodyBuffer.toString();
 
     }
-    
+
     /**
      * Intersect the XMLDBModels results from two list, and take the common
      * ones and return them in a new list. 
@@ -241,7 +245,7 @@ public class Utilities {
 
         return returnedResults;
     }
-    
+
     /**
      * Check if the model name exists in the given reference string.
      * @param modelName Model name to check.
@@ -260,7 +264,7 @@ public class Utilities {
         }
         return modelExists;
     }
-    
+
     /**
      * Parse the xml string that is passed to it and return the upper node of
      * that xml.
@@ -323,17 +327,5 @@ public class Utilities {
 
         return firstNode;
     }
-
-    //////////////////////////////////////////////////////////////////////
-    ////		protected methods 				////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		protected variables 				////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		private methods 				////
-
-    //////////////////////////////////////////////////////////////////////
-    ////		private variables				////
 
 }

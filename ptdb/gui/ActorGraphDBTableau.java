@@ -121,6 +121,7 @@ public class ActorGraphDBTableau extends Tableau {
      * Get the library for DB pattern search window. 
      * 
      * @return The library instance for DB pattern search window. 
+     * @see #setGtLibrary
      */
     public LibraryAttribute getGtLibrary() {
         return _gtLibrary;
@@ -131,6 +132,7 @@ public class ActorGraphDBTableau extends Tableau {
      * 
      * @param libraryAttribute The library instance for DB pattern search 
      * window to be set in this tableau. 
+     * @see #getGtLibrary
      */
     public void setGtLibrary(LibraryAttribute libraryAttribute) {
         _gtLibrary = libraryAttribute;
