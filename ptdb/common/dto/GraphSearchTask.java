@@ -52,6 +52,7 @@ public class GraphSearchTask extends Task {
     /**
      * Return the graphical search criteria.
      * @return The graph search criteria.
+     * @see #setGraphSearchCriteria
      */
     public DBGraphSearchCriteria getGraphSearchCriteria() {
         return _graphSearchCriteria;
@@ -60,6 +61,7 @@ public class GraphSearchTask extends Task {
     /**
      * Set the graph search criteria.
      * @param graphSearchCriteria The graph search criteria.
+     * @see #getGraphSearchCriteria
      */
     public void setGraphSearchCriteria(DBGraphSearchCriteria graphSearchCriteria) {
         this._graphSearchCriteria = graphSearchCriteria;
