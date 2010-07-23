@@ -46,7 +46,9 @@ import ptdb.kernel.bl.save.SaveModelManager;
 import ptdb.kernel.database.DBConnection;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
+import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////
@@ -94,13 +96,11 @@ public class TestSaveRequirementsIntegration {
     @Test
     public void testSavingNewModel() throws Exception {
         
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
-        String configPath = "ptolemy/configs/ptdb/configuration.xml";
-
-        URL configURL = ConfigurationApplication.specToURL(configPath);
-        Configuration configuration = (Configuration) parser.parse(configURL,
-                configURL);
+        Workspace workspace = new Workspace();
+        Configuration configuration = new Configuration(workspace);
+        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+                "directory");
+        modelDirectory.setContainer(configuration);
 
         PtolemyEffigy effigy = null;
         
@@ -151,13 +151,11 @@ public class TestSaveRequirementsIntegration {
     @Test
     public void testUpdatingModel() throws Exception {
         
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
-        String configPath = "ptolemy/configs/ptdb/configuration.xml";
-
-        URL configURL = ConfigurationApplication.specToURL(configPath);
-        Configuration configuration = (Configuration) parser.parse(configURL,
-                configURL);
+        Workspace workspace = new Workspace();
+        Configuration configuration = new Configuration(workspace);
+        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+                "directory");
+        modelDirectory.setContainer(configuration);
 
         PtolemyEffigy effigy = null;
         
@@ -214,13 +212,11 @@ public class TestSaveRequirementsIntegration {
     @Test
     public void testExceptions() throws Exception {
         
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
-        String configPath = "ptolemy/configs/ptdb/configuration.xml";
-
-        URL configURL = ConfigurationApplication.specToURL(configPath);
-        Configuration configuration = (Configuration) parser.parse(configURL,
-                configURL);
+        Workspace workspace = new Workspace();
+        Configuration configuration = new Configuration(workspace);
+        ModelDirectory modelDirectory = new ModelDirectory(configuration, 
+                "directory");
+        modelDirectory.setContainer(configuration);
 
         PtolemyEffigy effigy = null;
         
