@@ -220,18 +220,22 @@ public class XMLDBAttribute {
         String attributeNode = "<attribute id='" + _attributeId + "'"
                 + " name='" + _attributeName + "' type='" + _attributeType
                 + "'>";
+        
+        StringBuffer attributeBuffer = new StringBuffer(attributeNode);
 
         if (_attributeType.equalsIgnoreCase(XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
 
             if (_attributeValues != null && _attributeValues.size() > 0) {
                 for (int i = 0; i < _attributeValues.size(); i++) {
-                    attributeNode = attributeNode + "<item name='"
-                            + _attributeValues.get(i).toString() + "'/>";
+                    attributeBuffer.append("<item name='"
+                            + _attributeValues.get(i).toString() + "'/>");
                 }
             }
         }
+        
+        attributeBuffer.append("</attribute>");
 
-        attributeNode = attributeNode + "</attribute>";
+        attributeNode = attributeBuffer.toString();
 
         return attributeNode;
     }
