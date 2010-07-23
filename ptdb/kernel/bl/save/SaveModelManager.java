@@ -159,9 +159,9 @@ public class SaveModelManager {
      * right.
      * @exception ModelAlreadyExistException Thrown if the model being created
      * already exists.
-     * @throws XMLDBModelParsingException Thrown if the model is parsed
+     * @exception XMLDBModelParsingException Thrown if the model is parsed
      * incorrectly.
-     * @throws CircularDependencyException Thrown if there is a circular
+     * @exception CircularDependencyException Thrown if there is a circular
      * dependency.
      * 
      */
@@ -226,18 +226,18 @@ public class SaveModelManager {
      * the new version name that will be placed as a reference in the parents'
      * list.
      * @return A string that represents the model Id of the newly created model.
-     * @throws DBConnectionException Thrown if the connection to the database
+     * @exception DBConnectionException Thrown if the connection to the database
      * fails.
-     * @throws DBExecutionException Thrown if the operation fails to execute.
+     * @exception DBExecutionException Thrown if the operation fails to execute.
      * @exception DBModelNotFoundException Thrown if the model to be saved is
      * not in the database.
-     * @throws ModelAlreadyExistException Thrown if the new version name matches
+     * @exception ModelAlreadyExistException Thrown if the new version name matches
      * a name of a model that is already in the database.
-     * @throws IllegalArgumentException Thrown if the parameters passed are not
+     * @exception IllegalArgumentException Thrown if the parameters passed are not
      * properly set.
-     * @throws XMLDBModelParsingException Thrown if the MoML in the model object
+     * @exception XMLDBModelParsingException Thrown if the MoML in the model object
      * is corrupted.
-     * @throws CircularDependencyException Thrown if the save operation causes a
+     * @exception CircularDependencyException Thrown if the save operation causes a
      * circular dependency.
      */
     public String saveWithParents(
@@ -385,7 +385,7 @@ public class SaveModelManager {
      * @return The updates model containing the list of child models and updated
      * content.
      * 
-     * @throws XMLDBModelParsingException If thrown while parsing the XML.
+     * @exception XMLDBModelParsingException If thrown while parsing the XML.
      */
     public XMLDBModel populateChildModelsList(XMLDBModel model)
             throws XMLDBModelParsingException {
