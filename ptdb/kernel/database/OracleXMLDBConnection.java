@@ -341,7 +341,9 @@ public class OracleXMLDBConnection implements DBConnection {
             if (doc != null) {
                 throw new ModelAlreadyExistException(
                         "Failed to execute CreateModelTask"
-                                + " - The model already exist in the database. "
+                                + " - The model with the name \"" 
+                                + model.getModelName() 
+                                + " \" already exist in the database. "
                                 + "Please use the executeSaveModelTask to "
                                 + "update the model.");
             } else {
@@ -858,7 +860,6 @@ public class OracleXMLDBConnection implements DBConnection {
             }
             
             // Create the attribute id as a combination of the name and time stamp.
-            Date date = new Date ();
             
             String attributeId = Utilities.generateId(attributeName);
             
