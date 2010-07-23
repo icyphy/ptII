@@ -84,17 +84,19 @@ public class TestSetupManager {
     @Test
     public void testGetSetupParameters() throws Exception {
 
+        DBConnectorFactory.loadDBProperties();
+        
         SetupManager setupManager = new SetupManager();
 
-        PowerMock.mockStatic(DBConnectorFactory.class);
+//        PowerMock.mockStatic(DBConnectorFactory.class);
+//
+//        SetupParameters setupParametersMock = PowerMock
+//                .createMock(SetupParameters.class);
+//
+//        EasyMock.expect(DBConnectorFactory.getSetupParameters()).andReturn(
+//                setupParametersMock);
 
-        SetupParameters setupParametersMock = PowerMock
-                .createMock(SetupParameters.class);
-
-        EasyMock.expect(DBConnectorFactory.getSetupParameters()).andReturn(
-                setupParametersMock);
-
-        PowerMock.replayAll();
+//        PowerMock.replayAll();
 
         SetupParameters resultSetupParameters = setupManager
                 .getSetupParameters();
@@ -163,7 +165,7 @@ public class TestSetupManager {
         
         
         try {
-            DBConnectorFactory.loadDBProperties();
+//            DBConnectorFactory.loadDBProperties();
             
             SetupParameters setupParam = setupManager.getSetupParameters();
 
@@ -254,33 +256,35 @@ public class TestSetupManager {
      */
     @Test
     public void testUpdateConnection() throws Exception {
-
-        SetupParameters setupParam = new SetupParameters("D:/dbxml1",
-                "temp1.dbxml", "temp_cache1.dbxml");
-
+      
         SetupManager setupManager = new SetupManager();
-
+        
         SetupParameters oldParam = setupManager.getSetupParameters();
         
+        PowerMock.mockStatic(DBConnectorFactory.class);
+
+       
+        DBConnectorFactory.loadDBProperties();
+        
+        PowerMock.expectLastCall().atLeastOnce();
+        
+     
+        PowerMock.replayAll();
+        
+        
+        SetupParameters setupParam = new SetupParameters("D:/Whatever", "testing.dbxml", "testing_cache.dbxml");
         
         try {
-//            DBConnectorFactory.loadDBProperties();
 
             setupManager.updateDBConnectionSetupParameters(setupParam);
             assertTrue("Completed the update.", true);
             
-            
-            setupManager.updateDBConnectionSetupParameters(oldParam);
-            
         } catch (DBConnectionException e) {
 
             fail("An exception was thrown" + e.getMessage());
+        } finally {
+            setupManager.updateDBConnectionSetupParameters(oldParam);
         }
-
-        
-        
-        
-        
     }
 
     /**
@@ -316,4 +320,9 @@ public class TestSetupManager {
             
         }
     }
+    
+    
+//    static {
+//        DBConnectorFactory.loadDBProperties();
+//    }
 }
