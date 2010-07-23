@@ -507,12 +507,14 @@ public class OracleXMLDBConnection implements DBConnection {
             GetFirstLevelParentsTask task) throws DBExecutionException {
         String references = null;
         ArrayList<XMLDBModel> parentsList = new ArrayList<XMLDBModel>();
+        HashSet alreadyFetchedParents = new HashSet();
         XMLDBModel model = task.getModel();
         try {
 
             XmlQueryContext xmlContext = _xmlManager.createQueryContext();
 
-            String query = "for $entity in doc (\"dbxml:Testing.dbxml/"
+            String query = "for $entity in doc (\"dbxml:"
+                    + _params.getContainerName() + "/"
                     + "ReferenceFile.ptdbxml\")"
                     + "/reference/entity[child::entity[attribute::name=\""
                     + model.getModelName() + "\"]] return $entity";
@@ -534,8 +536,13 @@ public class OracleXMLDBConnection implements DBConnection {
                             XMLDBModel.DB_MODEL_NAME);
                     String parentId = Utilities.getValueForAttribute(entity,
                             XMLDBModel.DB_MODEL_ID_ATTR);
+                    
+                    if (!alreadyFetchedParents.contains(parentName)) {
+                 
+                        parentsList.add(new XMLDBModel(parentName, parentId));
+                        alreadyFetchedParents.add(parentName);
 
-                    parentsList.add(new XMLDBModel(parentName, parentId));
+                    }
                 }
 
             }
@@ -1322,17 +1329,30 @@ public class OracleXMLDBConnection implements DBConnection {
     public void executeUpdateParentsToNewVersion(
             UpdateParentsToNewVersionTask task) throws DBExecutionException {
 
+        if (task.getNewModel() == null || task.getOldModel() == null
+                || task.getParentsList() == null) {
+            throw new DBExecutionException("Incomplete infomration sent. "
+                    + "The list of parents, the old model and the new model "
+                    + "should all be populated");
+        }
+        
         String newModelId = task.getNewModel().getModelId();
         String newModelName = task.getNewModel().getModelName();
 
         if (newModelId == null || newModelId.length() == 0) {
             newModelId = _getModelIdFromModelName(newModelName);
         }
-
-        String propertyString = Utilities.getPropertyString(
-                XMLDBModel.DB_MODEL_ID_ATTR, newModelName);
-
+        
         String oldModelId = task.getOldModel().getModelId();
+        String oldModelName = task.getOldModel().getModelName();
+
+        if (oldModelId == null || oldModelId.length() == 0) {
+            oldModelId = _getModelIdFromModelName(oldModelName);
+        }
+        
+        String propertyString = Utilities.getPropertyString(
+                XMLDBModel.DB_MODEL_ID_ATTR, newModelId);
+
         for (String parentName : task.getParentsList()) {
 
             String parentsQuery = "for $entity in doc(\"dbxml:"
@@ -1364,11 +1384,11 @@ public class OracleXMLDBConnection implements DBConnection {
             String referenceFileQuery = "for $parententity in doc(\"dbxml:"
                     + _params.getContainerName()
                     + "/ReferenceFile.ptdbxml\")/reference/entity/*"
-                    + "[descendant::entity[attribute::name=\"" + newModelName
+                    + "[descendant::entity[attribute::name=\"" + oldModelName
                     + "\"]] where $parententity/@name=\"" + parentName
                     + "\"return for $entity in "
                     + "$parententity/descendant::entity[attribute::name=\""
-                    + newModelName + "\"] return replace node $entity with "
+                    + oldModelName + "\"] return replace node $entity with "
                     + referenceString;
             try {
 
