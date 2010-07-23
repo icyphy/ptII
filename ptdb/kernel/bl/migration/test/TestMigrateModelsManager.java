@@ -315,6 +315,7 @@ public class TestMigrateModelsManager {
                 if (files[i].isDirectory()) {
                     deleteDirectory(files[i].getAbsolutePath());
                 } else {
+                    // The returned value is intentionally ignored.
                     files[i].delete();
                 }
             }
