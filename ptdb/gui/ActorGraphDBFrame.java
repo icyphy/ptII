@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,10 +49,7 @@ import javax.swing.JOptionPane;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManager;
-import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.gui.UndeferredGraphicalMessageHandler;
@@ -64,7 +60,6 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -482,10 +477,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         public SimpleSearchAction(NamedObj model, JFrame frame,
                 Configuration configuration) {
 
-            super("Quick Search");
+            super("Search Database");
 
-            putValue("tooltip", "Quick Search");
-            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
+            putValue("tooltip", "Search Database");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_B));
 
             _containerModel = model;
             _sourceFrame = frame;
@@ -623,7 +618,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(historyFileName);
-            // FindBugs flags, but FileReader is closed.
+            // FindBugs flags, but FileReader is closed below.
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -643,7 +638,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * 
      * @param modelName The model name to add to the history.
      * @param delete Indication if the history should be updated with model name
-     * or if it should be deleted.
+     * or if it should be deleted.  If true, the opened model will not be added
+     * to the history.  If false, it will.
      * @exception IOException Thrown if the history cannot be read from or
      * written to.
      * 
