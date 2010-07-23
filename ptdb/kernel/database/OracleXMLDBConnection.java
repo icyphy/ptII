@@ -508,7 +508,7 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     public List<XMLDBModel> executeGetFirstLevelParents(
             GetFirstLevelParentsTask task) throws DBExecutionException {
-        String references = null;
+        String references = "";
         ArrayList<XMLDBModel> parentsList = new ArrayList<XMLDBModel>();
         HashSet alreadyFetchedParents = new HashSet();
         XMLDBModel model = task.getModel();
@@ -528,11 +528,16 @@ public class OracleXMLDBConnection implements DBConnection {
             XmlResults results = queryExpression.execute(xmlContext);
 
             if (results != null && results.size() > 0) {
+                while (results.hasNext()) {
+                    XmlValue xmlValue = results.next();
+                    references += xmlValue.asString();
+                }
 
-                XmlValue xmlValue = results.next();
-                references = "<entities>" + xmlValue.asString() + "</entities>";
+                references = "<entities>" + references + "</entities>";
                 Node entitiesNode = Utilities.parseXML(references);
-                NodeList entityList = entitiesNode.getChildNodes();
+
+                NodeList entityList = entitiesNode.getFirstChild()
+                        .getChildNodes();
                 for (int i = 0; i < entityList.getLength(); i++) {
                     Node entity = entityList.item(i);
                     String parentName = Utilities.getValueForAttribute(entity,
@@ -558,7 +563,6 @@ public class OracleXMLDBConnection implements DBConnection {
             throw new DBExecutionException(
                     "Error shile parsing the references - " + e.getMessage(), e);
         }
-        //FIXME Make sure the parent list returns unique values.
         return parentsList;
     }
 
