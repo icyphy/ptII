@@ -205,7 +205,7 @@ public class SetupManager {
         props.setProperty(DBConnectorFactory._CACHE_CONTAINER_NAME, params
                 .getCacheContainerName());
 
-        
+        // The stream is closed inside the store method and we do not have control over it.
         props.store(new FileOutputStream(url.getPath().replaceAll("%20", " ")), null);
 
         DBConnectorFactory.loadDBProperties();
