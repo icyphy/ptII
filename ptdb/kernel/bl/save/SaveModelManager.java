@@ -313,8 +313,14 @@ public class SaveModelManager {
 
             }
             
-            save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
+            String oldModelId = "";
+            
+            oldModelId = save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
                     dbConnection);
+            
+            if (xmlDBModelWithReferenceChanges.getModelToBeSaved().getIsNew()) {
+                newModelId = oldModelId;
+            }
             
             dbConnection.commitConnection();
 
