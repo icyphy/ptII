@@ -294,6 +294,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     ///////////////////////////////////////////////////////////////////
     //// ConfigureAttributesAction
 
+    //TODO Consider making static inner class.
     private class ConfigureAttributesAction extends AbstractAction {
 
         public ConfigureAttributesAction() {
@@ -410,6 +411,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     /**
      * Setup database connection.
      */
+    //TODO Consider making a static inner class.
     private class DatabaseSetupAction extends AbstractAction {
         /**
          * Create a new action to setup database connection.
@@ -438,6 +440,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     /**
      * Open model migration frame.
      */
+    //TODO Consider making a static inner class.
     private class OpenModelMigrationFrameAction extends AbstractAction {
         /**
          * Create a new action to setup database connection.
@@ -620,6 +623,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(historyFileName);
+            // FindBugs flags, but FileReader is closed.
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {

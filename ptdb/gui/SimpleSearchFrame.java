@@ -290,6 +290,9 @@ public class SimpleSearchFrame extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                  protected methods                        //// 
     
+    /** 
+     * Add menus to the menu bar.
+     */
     protected void _addMenus() {
         
         this.setJMenuBar(_menuBar);
@@ -322,6 +325,10 @@ public class SimpleSearchFrame extends JFrame {
         
     }
     
+    /** 
+     * Exit the window.  If the search criteria was changed, give the user
+     * an opportunity to save it.
+     */
     protected void _exit (){
         
         if(isModified()){
@@ -349,6 +356,9 @@ public class SimpleSearchFrame extends JFrame {
         
     }
     
+    /** 
+     * Establish all event listeners.
+     */
     protected void _initActorGraphDBFrame (){
 
         _newSearchCriteriaAction = new NewSearchCriteriaAction ();
@@ -359,6 +369,10 @@ public class SimpleSearchFrame extends JFrame {
 
     }
     
+    /** 
+     * Create new search criteria.  If the currently opened search criteria is
+     * changed, give the user an opportunity to save it.
+     */
     protected void _new () {
      
         if(isModified()){
@@ -395,6 +409,10 @@ public class SimpleSearchFrame extends JFrame {
         
     }
     
+    /** 
+     * Open a previously saved search criteria file.  If the currently opened
+     * search criteria was changed, give the user an opportunity to save it.
+     */
     protected void _open () {
      
         JFileChooser chooser = new JFileChooser();
@@ -451,7 +469,7 @@ public class SimpleSearchFrame extends JFrame {
                     list.add(test);
                     _searchCriteria.setAttributes(list);
                     
-                } catch (IllegalActionException e) {
+                } catch (IllegalActionException e) {  //Intentionally no action.
                 } catch (NameDuplicationException e) {
                 }
                 ////////////////////////////////////////////////////
@@ -491,6 +509,9 @@ public class SimpleSearchFrame extends JFrame {
         
     }
     
+    /** 
+     * Save the currently opened search criteria.
+     */
     protected void _save () {
 
         if(_saveLocation == null){
@@ -512,6 +533,9 @@ public class SimpleSearchFrame extends JFrame {
         
     }
     
+    /** 
+     * Save the currently opened search criteria to a new location.
+     */
     protected void _saveAs () {
         
         try {
@@ -596,20 +620,28 @@ public class SimpleSearchFrame extends JFrame {
     ///////////////////////////////////////////////////////////////////
     ////                  protected variables                      ////    
     
+    /** The file menu for this frame. */
     protected JMenu _fileMenu;
     
+    /** The menu bar for this frame. */
     protected JMenuBar _menuBar = new JMenuBar();
     
+    /** The location where the currently opened search criteria is saved. */
     protected String _saveLocation;
     
+    /** The action for opening search criteria. */
     protected Action _openSearchCriteriaAction;
-    
+
+    /** The action for saving search criteria. */
     protected Action _saveSearchCriteriaAction;
-    
+
+    /** The action for saving search criteria to a new location. */
     protected Action _saveAsSearchCriteriaAction;
-    
+
+    /** The action for exiting the frame. */
     protected Action _exitSearchCriteriaAction;
-    
+
+    /** The action for creating new search criteria. */
     protected Action _newSearchCriteriaAction;
     
 

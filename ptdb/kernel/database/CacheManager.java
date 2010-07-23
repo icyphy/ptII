@@ -215,6 +215,7 @@ public class CacheManager {
 
                 String modelName = (String) iterator.next();
                 XMLDBModel cacheModel = new XMLDBModel(modelName);
+                //Intentionally using keySet iterator.
                 cacheModel.setModel((String) assemblies.get(modelName));
                 dbConnection.executeUpdateModelInCache(cacheModel);
                 //System.out.println("Updated in cache - " + modelName);

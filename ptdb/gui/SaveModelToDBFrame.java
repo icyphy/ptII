@@ -486,7 +486,7 @@ public class SaveModelToDBFrame extends JFrame {
                             
             _modelToSave.requestChange(change);
             
-        } catch (Exception e){}
+        } catch (Exception e){}  // Intentionally, we do nothing.
         
 
     }
