@@ -495,8 +495,9 @@ public class OracleXMLDBConnection implements DBConnection {
      * First level parents are models that are immediate parents for the given 
      * model.
      *
-     * @param model Model for which the first level parents list needs to be 
-     * fetched.
+     * @param task Task that contains the model for which the first level 
+     * parents list needs to be fetched.
+     * 
      * @return List of models that are the first-level parents of the given 
      * model.
      * 
