@@ -44,10 +44,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS_TEST_DRIVERS = \
-	TestOracleXMLDBConnection.java
+	TestCacheManager.java \
+	TestCacheRequirementsIntegration.java \
+	TestOracleXMLDBConnection.java \
+	TestRebuildReferenceFile.java
 
-JSRCS = \
-	$(JSRCS_TEST_DRIVERS)
+JSRCS = $(JSRCS_TEST_DRIVERS)
 
 EXTRA_SRCS =	$(JSRCS) \
 	ptdb-test1.properties \
@@ -80,7 +82,10 @@ update_Testing.dbxml:
 # avoid "java.lang.UnsatisfiedLinkError: no db_java-4.8 in java.library.path"
 test_java: jclass $(ROOT)/ptdb/config/database/testdata/Testing.dbxml
 	(cd $(ROOT)/ptdb/config/database/testdata; $(MAKE) initialize)
+	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestCacheManager
+	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestCacheRequirementsIntegrator
 	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestOracleXMLDBConnection
+	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.database.test.TestRebuildReferenceFile
 
 # These tests do not require a graphics terminal, but do use Java
 test_jsimple: $(EXTRA_SRCS) jclass test_java

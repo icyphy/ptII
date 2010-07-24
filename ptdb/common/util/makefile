@@ -49,7 +49,8 @@ PTPACKAGE = 	util
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DBConnectorFactory.java
+	DBConnectorFactory.java \
+	Utilities.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -48,25 +48,33 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AttributeSearchTask.java \
+	CreateAttributeTask.java \
 	CreateModelTask.java \
 	DBConnectionParameters.java \
 	DBGraphSearchCriteria.java \
+	DeleteAttributeTask.java \
 	FetchHierarchyTask.java \
 	GetAttributesTask.java \
+	GetFirstLevelParentsTask.java \
+	GetModelTask.java \
 	GetModelsTask.java \
+	GetReferenceStringTask.java \
 	GraphSearchTask.java \
+	ModelNameSearchTask.java \
 	PTDBSearchAttribute.java \
+	PTDBSearchComponentEntity.java \
+	RemoveModelsTask.java \
+	RenameModelTask.java \
 	SaveModelTask.java \
 	SearchCriteria.java \
+	SetupParameters.java \
 	Task.java \
 	TaskQueue.java \
+	UpdateAttributeTask.java \
+	UpdateParentsToNewVersionTask.java \
 	XMLDBAttribute.java \
 	XMLDBModel.java \
-	SetupParameters.java \
-	CreateAttributeTask.java \
-	DeleteAttributeTask.java \
-	UpdateAttributeTask.java \
-	RemoveModelsTask.java
+	XMLDBModelWithReferenceChanges.java
 
 EXTRA_SRCS =	$(JSRCS)
 

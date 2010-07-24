@@ -55,6 +55,7 @@ JSRCS = \
 	CommandSearcher.java \
 	GraphSearcher.java \
 	HierarchyFetcher.java \
+	NameSearcher.java \
 	PatternMatchGraphSearcher.java \
 	ResultHandler.java \
 	SearchManager.java \

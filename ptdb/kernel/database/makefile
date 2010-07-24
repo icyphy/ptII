@@ -51,9 +51,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	AsynchronousDBConnection.java \
+	CacheManager.java \
 	DBConnection.java \
 	ExecutorThread.java \
-	OracleXMLDBConnection.java 
+	OracleXMLDBConnection.java \
+	RebuildReferenceFile.java
 
 EXTRA_SRCS =	$(JSRCS)
 

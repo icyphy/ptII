@@ -47,9 +47,13 @@ PTPACKAGE = 	exception
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	CircularDependencyException.java \
 	DBConnectionException.java \
 	DBExecutionException.java \
-	ModelAlreadyExistException.java
+	ModelAlreadyExistException.java \
+	DBModelNotFoundException.java \
+	IllegalNameException.java \
+	XMLDBModelParsingException.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -57,14 +57,23 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	ActorGraphDBFrame.java \
 	ActorGraphDBTableau.java \
-	ModelPanel.java \
+	AdvancedSimpleSearchFrame.java \
+	ArrayModelList.java \
+	AttributeListEditFrame.java \
+	AttributesListPanel.java \
 	CancelObservable.java \
-	ParentPanel.java \
+	ConfigureAttributesFrame.java \
+	DatabaseSetupFrame.java \
+	GraphPatternSearchEditor.java \
+	ModelAttributePanel.java \
+	ModelMigrationFrame.java \
+	ModelPanel.java \
 	ParentHierarchyPanel.java \
+	ParentPanel.java \
+	SaveModelToDBFrame.java \
 	SearchResultPanel.java \
 	SearchResultsFrame.java \
-	ModelAttributePanel.java \
-	SaveModelToDBFrame.java
+	SimpleSearchFrame.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -79,25 +88,72 @@ MISC_FILES =	test img
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	'ActorGraphDBFrame$$SaveModelToDBAction.class' \
+	'ActorGraphDBFrame$$1.class' \
+	'ActorGraphDBFrame$$ConfigureAttributesAction.class' \
+	'ActorGraphDBFrame$$DBHistoryMenuListener.class' \
+	'ActorGraphDBFrame$$DatabaseSetupAction.class' \
 	'ActorGraphDBFrame$$LoadModelFromDBAction.class' \
 	'ActorGraphDBFrame$$ModelSearchResults$$1.class' \
 	'ActorGraphDBFrame$$ModelSearchResults$$2.class' \
 	'ActorGraphDBFrame$$ModelSearchResults.class' \
+	'ActorGraphDBFrame$$OpenModelMigrationFrameAction.class' \
 	'ActorGraphDBFrame$$OpenSearchFrameAction.class' \
+	'ActorGraphDBFrame$$SaveModelToDBAction.class' \
+	'ActorGraphDBFrame$$SimpleSearchAction.class' \
 	'ActorGraphDBTableau$$Factory.class' \
+	'AdvancedSimpleSearchFrame$$1.class' \
+	'AdvancedSimpleSearchFrame$$2.class' \
+	'AttributeListEditFrame$$1.class' \
+	'AttributeListEditFrame$$2.class' \
+	'AttributeListEditFrame$$3.class' \
+	'AttributeListEditFrame$$4.class' \
+	'AttributeListEditFrame$$5.class' \
+	'AttributeListEditFrame$$6.class' \
+	'AttributesListPanel$$1.class' \
+	'AttributesListPanel$$2.class' \
+	'AttributesListPanel$$3.class' \
+	'ConfigureAttributesFrame$$1.class' \
+	'ConfigureAttributesFrame$$2.class' \
+	'ConfigureAttributesFrame$$3.class' \
+	'ConfigureAttributesFrame$$4.class' \
+	'ConfigureAttributesFrame$$5.class' \
+	'ConfigureAttributesFrame$$6.class' \
+	'ConfigureAttributesFrame$$7.class' \
+	'ConfigureAttributesFrame$$8.class' \
+	'ConfigureAttributesFrame$$9.class' \
+	'DatabaseSetupFrame$$1.class' \
+	'DatabaseSetupFrame$$2.class' \
+	'DatabaseSetupFrame$$3.class' \
+	'DatabaseSetupFrame$$4.class' \
+	'GraphPatternSearchEditor$$DBMatchAction.class' \
 	'ModelAttributePanel$$1.class' \
+	'ModelAttributePanel$$2.class' \
+	'ModelAttributePanel$$3.class' \
+	'ModelAttributePanel$$4.class' \
+	'ModelMigrationFrame$$1.class' \
+	'ModelMigrationFrame$$2.class' \
+	'ModelMigrationFrame$$3.class' \
+	'ModelMigrationFrame$$4.class' \
 	'ModelPanel$$1.class' \
 	'ParentPanel$$1.class' \
 	'SaveModelToDBFrame$$1.class' \
-	'SaveModelToDBFrame$$2.class' \
 	'SaveModelToDBFrame$$2$$1.class' \
+	'SaveModelToDBFrame$$2.class' \
 	'SaveModelToDBFrame$$3.class' \
 	'SaveModelToDBFrame$$4.class' \
 	'SearchResultsFrame$$1.class' \
 	'SearchResultsFrame$$2.class' \
-	'SearchResultsFrame$$3.class'
-
+	'SearchResultsFrame$$3.class' \
+	'SimpleSearchFrame$$1.class' \
+	'SimpleSearchFrame$$2.class' \
+	'SimpleSearchFrame$$3.class' \
+	'SimpleSearchFrame$$ExitSearchCriteriaAction.class' \
+	'SimpleSearchFrame$$NewSearchCriteriaAction.class' \
+	'SimpleSearchFrame$$OpenPatternSearchFrameAction.class' \
+	'SimpleSearchFrame$$OpenSearchCriteriaAction.class' \
+	'SimpleSearchFrame$$SaveAsSearchCriteriaAction.class' \
+	'SimpleSearchFrame$$SaveSearchCriteriaAction.class' \
+	'SimpleSearchFrame$$SearchCriteriaFileFilter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

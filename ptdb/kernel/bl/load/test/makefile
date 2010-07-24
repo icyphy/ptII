@@ -47,6 +47,7 @@ include $(CONFIG)
 JSRCS_TEST_DRIVERS = \
 	TestLoadManager.java \
 	TestDBModelFetcher.java \
+	TestImportByReferenceRequirementsIntegration.java \
 	TestLoadRequirementsIntegration.java
 
 JSRCS = \
@@ -79,6 +80,7 @@ $(ROOT)/ptdb/config/database/testdata/Testing.dbxml:
 
 test_java: jclass $(ROOT)/ptdb/config/database/testdata/Testing.dbxml
 	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestDBModelFetcher
+	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestImportByReferenceRequirementsIntegration
 	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestLoadManager
 	-LD_LIBRARY_PATH=${PTDBXML_LIB} DYLD_LIBRARY_PATH=${PTDBXML_LIB} "$(JAVA)" -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) org.junit.runner.JUnitCore ptdb.kernel.bl.load.test.TestLoadRequirementsIntegration
 

@@ -50,7 +50,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	arrow.gif \
-	database.gif
+	database.gif \
+	simplesearchfigure.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
