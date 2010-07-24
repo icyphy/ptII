@@ -1372,7 +1372,7 @@ public class TestOracleXMLDBConnection {
 
             if (model != null && model.getModelName().equals(modelName)) {
 
-                System.out.println(model.getModel());
+                // System.out.println(model.getModel());
                 assertTrue("Model was retrieved successfully.", true);
                 
             } else if (model != null && !model.getModelName().equals(modelName)) {
@@ -1789,11 +1789,11 @@ public class TestOracleXMLDBConnection {
             
             assertTrue("The method returned the expected results", 
                     (attributesList != null && attributesList.size() > 0));
-            for (int i = 0; i < attributesList.size(); i++) {
-                XMLDBAttribute attribute = (XMLDBAttribute) attributesList.get(i);
+//             for (int i = 0; i < attributesList.size(); i++) {
+//                 XMLDBAttribute attribute = (XMLDBAttribute) attributesList.get(i);
                 
-                System.out.println(attribute.getAttributeXMLStringFormat());
-            }
+//                 System.out.println(attribute.getAttributeXMLStringFormat());
+//             }
         
         } catch (DBExecutionException e) {
             fail("Method threw and exception - " + e.getMessage());

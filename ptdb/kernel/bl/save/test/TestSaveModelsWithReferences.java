@@ -131,7 +131,7 @@ public class TestSaveModelsWithReferences {
         String modelId = saveModelManager.save(dbModel);
         assertTrue(modelId.contains(dbModel.getModelName()));
         
-        System.out.println(modelId);
+        //System.out.println(modelId);
     }
     
     
@@ -263,14 +263,14 @@ public class TestSaveModelsWithReferences {
                     + "</entity>");
         
         
-        System.out.println(dbModel.getModel());
+        //System.out.println(dbModel.getModel());
         
         SaveModelManager saveModelManager = new SaveModelManager();
 
         String modelId = saveModelManager.save(dbModel);
         assertTrue(modelId.contains(dbModel.getModelName()));
         
-        System.out.println(modelId);    
+        //System.out.println(modelId);    
     }
     
     
@@ -321,7 +321,7 @@ public class TestSaveModelsWithReferences {
         
         assertTrue(modelId.equals(newModelId));
         
-        System.out.println(modelId);
+        //System.out.println(modelId);
     }
     
     
@@ -466,7 +466,7 @@ public class TestSaveModelsWithReferences {
         
         assertTrue(modelId.equals(newModelId));
         
-        System.out.println(modelId);    
+        //System.out.println(modelId);    
     }
     
    
