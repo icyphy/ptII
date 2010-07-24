@@ -59,7 +59,7 @@ proc testJavaCGInline {model inline} {
 	set args [java::new {String[]} 5 \
 		  [list "-language" "java" "-inline" $inline $model]]
 
-	set timeout 300000
+	set timeout 500000
 	puts "testJavaCG.tcl: Setting watchdog for [expr {$timeout / 1000}]\
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
