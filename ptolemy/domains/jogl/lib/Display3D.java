@@ -191,8 +191,9 @@ public class Display3D extends AbstractPlaceableActor implements GLEventListener
     protected int _height = 480;
     protected int _width = 640;
     /* 
-     *   gl is an interface handle to OpenGL methods. All OpenGL commands are prefixed 
-     *   with “gl” as well, so you will see OpenGL method like gl.glColor(). 
+     *   gl is an interface handle to OpenGL methods. All OpenGL
+     *   commands are prefixed with "gl" as well, so you will see
+     *   OpenGL method like gl.glColor().
      */
     
     protected GL _gl;  
