@@ -1653,8 +1653,12 @@ public class TestOracleXMLDBConnection {
 
         try {
         
-            oracleXMLDBConnection
+            XMLDBAttribute created = oracleXMLDBConnection
                     .executeCreateAttributeTask(task);
+            
+            CreateAttributeTask alreadyExist = new CreateAttributeTask(created);
+            
+            oracleXMLDBConnection.executeCreateAttributeTask(alreadyExist);
         
             fail("The method created the attirbute when it should throw an exception");
         
