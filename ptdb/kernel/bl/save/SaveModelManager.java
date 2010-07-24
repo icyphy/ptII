@@ -272,7 +272,7 @@ public class SaveModelManager {
                     && !xmlDBModelWithReferenceChanges.getModelToBeSaved().getIsNew()
                     && xmlDBModelWithReferenceChanges.getVersionName() != null
                     && xmlDBModelWithReferenceChanges.getVersionName().length() > 0
-                    && xmlDBModelWithReferenceChanges.getParentsList() == null
+                    && xmlDBModelWithReferenceChanges.getParentsList() != null
                     && xmlDBModelWithReferenceChanges.getParentsList().size() > 0) {
                 
                 
@@ -342,15 +342,6 @@ public class SaveModelManager {
 
             throw e;
 
-        } catch (MethodNotFoundException e) {
-
-            if (dbConnection != null) {
-
-                dbConnection.abortConnection();
-            }
-
-            throw e;
-
         } catch (ModelAlreadyExistException e) {
 
             if (dbConnection != null) {
@@ -378,6 +369,15 @@ public class SaveModelManager {
 
             throw e;
 
+        } catch (CircularDependencyException e) {
+
+            if (dbConnection != null) {
+
+                dbConnection.abortConnection();
+            }
+
+            throw e;
+            
         } finally {
 
             if (dbConnection != null) {
