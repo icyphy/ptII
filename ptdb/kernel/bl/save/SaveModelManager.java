@@ -222,7 +222,7 @@ public class SaveModelManager {
      * to be saved, the list of parents that should have the old reference, and
      * the new version name that will be placed as a reference in the parents'
      * list.
-     * @return A string that represents the model Id of the newly created model.
+     * @return A string that represents the model Id of the model being saved.
      * @exception DBConnectionException Thrown if the connection to the database
      * fails.
      * @exception DBExecutionException Thrown if the operation fails to execute.
@@ -244,7 +244,7 @@ public class SaveModelManager {
             IllegalArgumentException, XMLDBModelParsingException,
             CircularDependencyException {
 
-        String newModelId = "";
+        String modelId = "";
 
         // Check if the object sent is properly set.
 
@@ -267,9 +267,7 @@ public class SaveModelManager {
             }
 
             
-            if (xmlDBModelWithReferenceChanges != null
-                    && xmlDBModelWithReferenceChanges.getModelToBeSaved() != null
-                    && !xmlDBModelWithReferenceChanges.getModelToBeSaved().getIsNew()
+            if (!xmlDBModelWithReferenceChanges.getModelToBeSaved().getIsNew()
                     && xmlDBModelWithReferenceChanges.getVersionName() != null
                     && xmlDBModelWithReferenceChanges.getVersionName().length() > 0
                     && xmlDBModelWithReferenceChanges.getParentsList() != null
@@ -291,7 +289,7 @@ public class SaveModelManager {
     
                 newXMLDBModel.setModel(dbModelToBeSaved.getModel());
     
-                newModelId = save(newXMLDBModel, dbConnection);
+                String newModelId = save(newXMLDBModel, dbConnection);
     
                 newXMLDBModel.setModelId(newModelId);
     
@@ -315,12 +313,9 @@ public class SaveModelManager {
             
             String oldModelId = "";
             
-            oldModelId = save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
+            modelId = save(xmlDBModelWithReferenceChanges.getModelToBeSaved(),
                     dbConnection);
             
-            if (xmlDBModelWithReferenceChanges.getModelToBeSaved().getIsNew()) {
-                newModelId = oldModelId;
-            }
             
             dbConnection.commitConnection();
 
@@ -386,7 +381,7 @@ public class SaveModelManager {
             }
         }
 
-        return newModelId;
+        return modelId;
 
     }
 
