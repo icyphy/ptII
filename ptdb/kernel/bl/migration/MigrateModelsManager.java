@@ -38,188 +38,203 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.util.StringUtilities;
 
-
 ///////////////////////////////////////////////////////////////
 //// MigrateModelsManager
 
 /**
  * 
- * Handle the migration of models from the file system to the database at the 
- * business layer. 
+ * Handle the migration of models from the file system to the database at the
+ * business layer.
  * 
  * @author Yousef Alsaeed
  * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
- *
+ * 
  */
 
 public class MigrateModelsManager {
 
-
     //////////////////////////////////////////////////////////////////////
     ////		public methods 					  ////
-    
+
     /**
-     * Migrate models from the file system stored in the given path to the database.
+     * Migrate models from the file system stored in the given path to the
+     * database.
      * 
      * @param directoryPath The path on the file system where the models exist.
-     * @return A string representing the path to the CSV file the contains the results of the migration.
-     * @exception IOException Thrown if there is an error reading or writing files.
+     * @param migrateFilesInSubDirectories A boolean that indicates if the
+     * migration should consider files in sub-directories.
+     * @return A string representing the path to the CSV file the contains the
+     * results of the migration.
+     * @exception IOException Thrown if there is an error reading or writing
+     * files.
      */
-    public String  migrateModels(String directoryPath) throws IOException {
-        
+    public String migrateModels(String directoryPath,
+            boolean migrateFilesInSubDirectories) throws IOException {
+
         //check if the path provided exists.
         File directoryFile = new File(directoryPath);
-        
+
         if (directoryFile.exists() == false) {
-            throw new IOException ("Directory: " + directoryPath + " does not exist.");
+            throw new IOException("Directory: " + directoryPath
+                    + " does not exist.");
         }
-        
-        
-        String csvFilePath = directoryPath + System.getProperty("file.separator") 
-                + "migrationResults.csv";
-        
+
+        String csvFilePath = directoryPath
+                + System.getProperty("file.separator") + "migrationResults.csv";
+
         // Check if the application has write access to the csv file path.
         try {
-            
+
             File csvFile = new File(csvFilePath);
             csvFile.createNewFile();
-            
+
         } catch (IOException e) {
-            
-            csvFilePath = StringUtilities.preferencesDirectory() + "migrationResults.csv";
+
+            csvFilePath = StringUtilities.preferencesDirectory()
+                    + "migrationResults.csv";
         }
-        
+
         _csvFileWriter = new FileWriter(csvFilePath);
-        
+
         //write the header for the csv file.
-        _csvFileWriter.write("Model Name,Migration Status,Error Messages" 
+        _csvFileWriter.write("Model Name,Migration Status,Error Messages"
                 + System.getProperty("line.separator"));
-        
+
         try {
-            
-            _readFiles(directoryFile);
-            
+
+            _readFiles(directoryFile, directoryFile,
+                    migrateFilesInSubDirectories);
+
         } finally {
-            
+
             _csvFileWriter.flush();
-        
+
             _csvFileWriter.close();
         }
-        
+
         return csvFilePath;
-        
+
     }
 
     //////////////////////////////////////////////////////////////////////
     ////		private methods 				////
-    
+
     /**
      * Reads the models in the given directory and store them in the database.
      * 
-     * @param directory A file that represents the directory that contains the models.
-     * @exception IOException Thrown if there is an error while reading or writing files.
+     * @param directory A file that represents the directory that contains the
+     * models.
+     * @param parentDirectory A file that represents the first directory passed.
+     * @param readSubDirectories A boolean indicating if the method should
+     * consider reading sub-directory files or not.
+     * @exception IOException Thrown if there is an error while reading or
+     * writing files.
      */
-    private void _readFiles(File directory) throws IOException {
-      
+    private void _readFiles(File directory, File parentDirectory,
+            boolean readSubDirectories) throws IOException {
+
         // If the path sent is a file, try to create a model in the database out of it.
         if (directory.isFile()) {
-            
-            
+
             String modelName = "";
-            
+
             // Only files with .xml extension will be considered.
-            
+
             if (directory.getName().indexOf(".xml") > 0) {
-                
-                modelName = directory.getName().substring(0, 
+
+                modelName = directory.getName().substring(0,
                         directory.getName().indexOf(".xml"));
-                
+
                 _createDBModel(modelName, _getContent(directory));
             }
-                
-            
-        } else if (directory.isDirectory()) {
+
+        } else if (directory.isDirectory()
+                && readSubDirectories
+                || (directory.isDirectory() && !readSubDirectories && directory
+                        .getAbsolutePath().equalsIgnoreCase(
+                                parentDirectory.getAbsolutePath()))) {
             // If the path is a directory, get the list of files and call 
             // this method recursively on each of the files. 
-            
+
             File[] listOfFiles = directory.listFiles();
-      
+
             if (listOfFiles != null) {
-                
+
                 for (int i = 0; i < listOfFiles.length; i++) {
-                    
-                    _readFiles(listOfFiles[i]); 
-                    
-                }     
+
+                    _readFiles(listOfFiles[i], parentDirectory,
+                            readSubDirectories);
+
+                }
             }
         }
     }
-    
-    
+
     /**
      * Read the content of a given file and return it to the caller as a string.
      * @param file The file that we need to read its content.
      * @return A string representation of the content of the model.
-     * @exception IOException Thrown if there is an error reading the content of the file.
+     * @exception IOException Thrown if there is an error reading the content of
+     * the file.
      */
     private String _getContent(File file) throws IOException {
-        
-        StringBuilder contents = new StringBuilder();
-          
-        BufferedReader input =  new BufferedReader(new FileReader(file));
-          
-        try {
-            
-            String line = null; 
 
-            while (( line = input.readLine()) != null) {
-              
+        StringBuilder contents = new StringBuilder();
+
+        BufferedReader input = new BufferedReader(new FileReader(file));
+
+        try {
+
+            String line = null;
+
+            while ((line = input.readLine()) != null) {
+
                 contents.append(line);
-              
+
                 contents.append(System.getProperty("line.separator"));
-            
+
             }
         } finally {
-            
+
             input.close();
-          
+
         }
-        
+
         return contents.toString();
-        
+
     }
-    
-    
+
     /**
      * create a new model in the database based on the parameters passed.
      * 
      * @param modelName The name of the model to be created.
      * @param modelContent The content of the model to be created.
-     * @exception IOException Thrown if there is an error writing the result to the CSV file.
+     * @exception IOException Thrown if there is an error writing the result to
+     * the CSV file.
      */
-    private void _createDBModel(String modelName, String modelContent) 
+    private void _createDBModel(String modelName, String modelContent)
             throws IOException {
-        
-        
+
         XMLDBModel xmlDBModel = new XMLDBModel(modelName);
-        
+
         xmlDBModel.setModel(modelContent);
-        
+
         xmlDBModel.setIsNew(true);
-        
+
         SaveModelManager saveModelManager = new SaveModelManager();
-        
+
         try {
-            
+
             saveModelManager.save(xmlDBModel);
-            
-            _csvFileWriter.write(modelName + ",Successful, " + System.getProperty("line.separator"));
-            
+
+            _csvFileWriter.write(modelName + ",Successful, "
+                    + System.getProperty("line.separator"));
+
         } catch (Exception e) {
-            _csvFileWriter.write(modelName + ",Failed," + e.getMessage() 
+            _csvFileWriter.write(modelName + ",Failed," + e.getMessage()
                     + System.getProperty("line.separator"));
         }
     }
@@ -227,6 +242,6 @@ public class MigrateModelsManager {
     //////////////////////////////////////////////////////////////////////
     ////		private variables				////
     /** File writer to handle writing the migration result to CSV file. */
-    private FileWriter _csvFileWriter; 
+    private FileWriter _csvFileWriter;
 
 }
