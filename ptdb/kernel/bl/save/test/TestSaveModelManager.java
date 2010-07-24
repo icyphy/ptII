@@ -860,7 +860,7 @@ public class TestSaveModelManager {
 
             String modelId = saveManager.saveWithParents(modelWithReference);
 
-            assertTrue(modelId.equalsIgnoreCase(""));
+            assertTrue(modelId.equalsIgnoreCase(modelToBeSaved.getModelId()));
 
         } catch (Exception e) {
 
@@ -1114,7 +1114,7 @@ public class TestSaveModelManager {
 
             String modelId = saveManager.saveWithParents(modelWithReference);
 
-            assertTrue(modelId.equalsIgnoreCase(newVersion.getModelId()));
+            assertTrue(modelId.equalsIgnoreCase(modelToBeSaved.getModelId()));
 
         } catch (Exception e) {
 
