@@ -38,7 +38,10 @@ DIRS =		img $(PTPOWERMOCK_DIR)
 # Root of the Ptolemy II directory
 ROOT =		../..
 
-CLASSPATH = 	$(ROOT)
+# SaveModelToDBFrame imports kernel.bl.save.SaveModelManager, so
+# we need the DBXML_JARS
+# PTDBXML_JARS is set by configure
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(PTDBXML_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
