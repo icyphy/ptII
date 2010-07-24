@@ -87,8 +87,7 @@ public class MultiplyDivide extends NamedProgramCodeGeneratorAdapter {
         }
 
         CodeStream codeStream = getTemplateParser().getCodeStream();
-        codeStream.appendCodeBlock(divideOnly ? "divideOnlyInitProduct"
-                : "initProduct", initArgs);
+        codeStream.appendCodeBlock("initProduct");
 
         args.add("");
         args.add(outputType);

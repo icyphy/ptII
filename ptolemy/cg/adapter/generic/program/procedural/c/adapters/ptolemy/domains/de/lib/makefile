@@ -56,11 +56,15 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
+	PID.c \
 	Register.java \
+	Sampler.java \
 	TimeGap.java
 
 OTHER_FILES_TO_BE_JARED = \
+	PID.c \
 	Register.c \
+	Sampler.c \
 	TimeGap.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

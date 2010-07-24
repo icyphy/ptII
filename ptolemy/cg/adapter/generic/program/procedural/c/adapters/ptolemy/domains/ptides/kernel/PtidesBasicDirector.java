@@ -46,6 +46,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.domains.ptides.lib.ActuationDevice;
+import ptolemy.domains.ptides.lib.ActuatorOutputDevice;
 import ptolemy.domains.ptides.lib.InputDevice;
 import ptolemy.domains.ptides.lib.OutputDevice;
 import ptolemy.domains.ptides.lib.SensorInputDevice;
@@ -495,7 +496,7 @@ public class PtidesBasicDirector extends Director {
         for (Actor actor : (List<Actor>) ((CompositeActor) _director
                 .getContainer()).deepEntityList()) {
             // FIXME: should I be using Interrupt/ActuationDevice or just Input/OutputDevice?
-            if (actor instanceof ActuationDevice) {
+            if (actor instanceof ActuatorOutputDevice) {
                 actuators.put(actor, new Integer(actuatorIndex));
                 actuatorIndex++;
             }

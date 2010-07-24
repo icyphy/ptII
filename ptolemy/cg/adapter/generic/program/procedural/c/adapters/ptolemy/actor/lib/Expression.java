@@ -159,7 +159,7 @@ public class Expression extends NamedProgramCodeGeneratorAdapter {
         CParseTreeCodeGenerator parseTreeCG = _cParseTreeCodeGenerator;
 
         Set codeBlocks = super.getSharedCode();
-        codeBlocks.add(processCode(parseTreeCG.generateSharedCode()));
+        //codeBlocks.add(processCode(parseTreeCG.generateSharedCode()));
         return codeBlocks;
     }
 
