@@ -518,7 +518,7 @@ public class AttributesListPanel extends JPanel {
      * @return
      *         An indication if the panel has been modified.
      * 
-     * @see #setMofified
+     * @see #setModified(boolean)
      * 
      */
     public boolean isModified() {
@@ -567,7 +567,7 @@ public class AttributesListPanel extends JPanel {
      * 
      * @param modified True to set to modified.  False to set to unmodified.
      * 
-     * @see #isMofified
+     * @see #isModified
      * 
      */
     public void setModified(boolean modified) {

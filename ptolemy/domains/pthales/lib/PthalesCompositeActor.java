@@ -217,8 +217,7 @@ public class PthalesCompositeActor extends TypedCompositeActor {
     /** Set iteration number of the actor,
      * which is the number of times internal entities are called. 
      * and set corresponding attribute
-     * @param portIn the input port
-     * @param sizes dimensions sizes of the input
+     * @param repetition The number of times this actor is fired.
      */
     public void setIterations(Integer[] repetition) {
         String repetitionString = "{";

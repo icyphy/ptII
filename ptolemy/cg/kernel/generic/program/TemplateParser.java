@@ -113,7 +113,7 @@ public class TemplateParser {
      *  "-" and/or "*".
      *  @return A sanitized string suitable for use with
      *  the macro language.
-     *  @see ptolemy.cg.kernel.generic.CodeGeneratorAdapter#generateName(String)
+     *  @see ptolemy.cg.kernel.generic.CodeGeneratorAdapter#generateName(NamedObj)
      *  @see #unescapePortName(String)
      */
     public static String escapePortName(String name) {
