@@ -33,6 +33,7 @@ package ptdb.common.dto;
 
 import java.util.ArrayList;
 
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.util.Attribute;
 
 ///////////////////////////////////////////////////////////////////
@@ -93,6 +94,15 @@ public class SearchCriteria {
         return _modelName;
     }
     
+    /**
+     * Get the effigy for the pattern specified in the pattern match search. 
+     * 
+     * @return The effigy instance of the pattern. 
+     * @see #setPatternEffigy(PtolemyEffigy)
+     */
+    public PtolemyEffigy getPatternEffigy() {
+        return _patternEffigy;
+    }
     
     /**
      * Get the search command criteria from the search criteria.
@@ -139,6 +149,18 @@ public class SearchCriteria {
     }
 
     /**
+     * Set the effigy instance for the pattern specified in the pattern search
+     * frame. 
+     * 
+     * @param patternEffigy The effigy of the pattern to be set. 
+     * @see #getPatternEffigy()
+     */
+    public void setPatternEffigy(PtolemyEffigy patternEffigy) {
+        _patternEffigy = patternEffigy;
+    }
+    
+    
+    /**
      * Set the XQuery search command for the search criteria.
      * 
      * @param searchCommand The XQuery search command to set in the search
@@ -163,7 +185,13 @@ public class SearchCriteria {
      * The name of the model as the search criteria. 
      */
     private String _modelName;
-
+    
+    
+    /**
+     * The effigy of the pattern specified in the db pattern search. 
+     */
+    private PtolemyEffigy _patternEffigy;
+    
     /**
      * Represents the XQuery search command input by the user.
      */
