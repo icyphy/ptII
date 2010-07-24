@@ -144,6 +144,8 @@ public class ModelMigrationFrame extends JFrame {
         _jLabel3 = new javax.swing.JLabel();
         _jLabel4 = new javax.swing.JLabel();
         _jLabel5 = new javax.swing.JLabel();
+        _allSubDirectoriesCheckBox = new javax.swing.JCheckBox();
+        
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -182,6 +184,12 @@ public class ModelMigrationFrame extends JFrame {
         _jLabel4.setText("- Only files with .xml extension will be migrated.");
 
         _jLabel5.setText("- The model name in the Database will be the name of the file without the extension.");
+        
+        
+        _allSubDirectoriesCheckBox.setSelected(true);
+        _allSubDirectoriesCheckBox.setText("Migrate all .xml files under the given folder path and all sub-directories under it.");
+        
+       
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -189,24 +197,10 @@ public class ModelMigrationFrame extends JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(_resultsTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(_jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(_directoryPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(_browseButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(146, 146, 146)
-                        .addComponent(_migrateButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(_doneButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(_jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                .addGap(156, 156, 156)
+                .addComponent(_migrateButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(_doneButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
@@ -220,6 +214,18 @@ public class ModelMigrationFrame extends JFrame {
                 .addContainerGap()
                 .addComponent(_jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(_allSubDirectoriesCheckBox)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(_jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(_directoryPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(_browseButton))
+                    .addComponent(_jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,7 +236,7 @@ public class ModelMigrationFrame extends JFrame {
                 .addComponent(_jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(_jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(_jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -238,6 +244,8 @@ public class ModelMigrationFrame extends JFrame {
                     .addComponent(_directoryPathTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(_browseButton))
                 .addGap(18, 18, 18)
+                .addComponent(_allSubDirectoriesCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(_migrateButton)
                     .addComponent(_doneButton))
@@ -288,7 +296,9 @@ public class ModelMigrationFrame extends JFrame {
         
         try {
             
-            String csvFilePath = migrateModelsManager.migrateModels(directoryPath);
+            boolean migrateFilesInSubDirectories = _allSubDirectoriesCheckBox.isSelected();
+            
+            String csvFilePath = migrateModelsManager.migrateModels(directoryPath, migrateFilesInSubDirectories);
             
             _resultsTextField.setText("The migration results can be found in: " + csvFilePath);
             
@@ -318,5 +328,6 @@ public class ModelMigrationFrame extends JFrame {
     private javax.swing.JLabel _jLabel5;
     private javax.swing.JButton _migrateButton;
     private javax.swing.JTextField _resultsTextField;
+    private javax.swing.JCheckBox _allSubDirectoriesCheckBox;
 
 }
