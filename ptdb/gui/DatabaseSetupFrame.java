@@ -33,6 +33,7 @@ package ptdb.gui;
 
 import java.io.IOException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -93,6 +94,7 @@ public class DatabaseSetupFrame extends JFrame {
         testConnectionButton = new javax.swing.JButton();
         _cacheContainerNameTextField = new javax.swing.JTextField();
         cacheLabel = new javax.swing.JLabel();
+        _browseButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         resetButton = new javax.swing.JButton();
         _cancelButton = new javax.swing.JButton();
@@ -112,7 +114,14 @@ public class DatabaseSetupFrame extends JFrame {
                 });
 
         cacheLabel.setText("Cache Container Name");
-
+        
+        _browseButton.setText("Browse...");
+        _browseButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseButtonActionPerformed(evt);
+            }
+        });
+        
         saveButton.setText("Save");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -297,6 +306,30 @@ public class DatabaseSetupFrame extends JFrame {
             java.awt.event.ActionEvent evt) {
         _testConnection();
     }
+    
+    /**
+     * Handles the browse button action.
+     * <p>
+     * Displays a file chooser with the option of selecting directories only.
+     * </p>
+     * @param evt The action event performed on the browse button.
+     */
+    private void browseButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        
+        JFileChooser fileChooser = new JFileChooser();
+
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        if (fileChooser.showOpenDialog(DatabaseSetupFrame.this) == JFileChooser.APPROVE_OPTION) {
+            
+            String directoryPath = fileChooser.getSelectedFile().getAbsolutePath();
+            
+            _urlTextField.setText(directoryPath);
+            
+            // Make sure the text field shows the beginning of the path.
+            _urlTextField.getCaret().setDot(0);
+        }
+    }
 
     /**
      * Take action for the save button event.
@@ -323,14 +356,14 @@ public class DatabaseSetupFrame extends JFrame {
         dispose();
     }
 
-    /*
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new DatabaseSetupFrame().setVisible(true);
             }
         });
-    }*/
+    }
 
     /**
      * Get the setup parameters to populate form fields.
@@ -388,7 +421,25 @@ public class DatabaseSetupFrame extends JFrame {
         SetupManager setupManager = new SetupManager();
 
         boolean isValid = _validateSetupParameters();
-
+        
+        if(isValid) {
+            try {
+                setupManager.testConnection(_readSetupParameters());
+            } catch (DBConnectionException e) {
+                Object[] options = { "Yes", "No"};
+                int input = JOptionPane
+                        .showOptionDialog(
+                                DatabaseSetupFrame.this,
+                                "The connection test was not successful. "
+                                        + "Do you still want to save the parameters?",
+                                "Connection Test Error",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE, null, options,
+                                options[1]);
+                isValid = input == JOptionPane.YES_OPTION;
+            }
+        }
+        
         if (isValid) {
             SetupParameters setupParameters = _readSetupParameters();
             try {
@@ -400,6 +451,8 @@ public class DatabaseSetupFrame extends JFrame {
                 JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
                         "Setup parameters have been saved.");
                 _setupParameters = setupParameters;
+                this.setVisible(false);
+                dispose();
             } catch (DBConnectionException e) {
                 JOptionPane.showMessageDialog(DatabaseSetupFrame.this,
                         "Error while connecting to the new connection - "
@@ -416,7 +469,7 @@ public class DatabaseSetupFrame extends JFrame {
     /**
      * Create a test connection using the setup parameters from the form.
      */
-    private void _testConnection() {
+    private boolean _testConnection() {
         SetupManager setupManager = new SetupManager();
         boolean isValid = _validateSetupParameters();
         if (isValid) {
@@ -430,6 +483,7 @@ public class DatabaseSetupFrame extends JFrame {
                         JOptionPane.INFORMATION_MESSAGE, null);
             }
         }
+        return isValid;
     }
 
     /**
@@ -460,6 +514,7 @@ public class DatabaseSetupFrame extends JFrame {
     private javax.swing.JLabel containerLabel;
     private javax.swing.JLabel cacheLabel;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton _browseButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JButton saveButton;
     private javax.swing.JButton testConnectionButton;
