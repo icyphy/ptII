@@ -52,6 +52,7 @@ import org.xml.sax.SAXException;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.XMLDBModelParsingException;
 import ptolemy.data.expr.StringConstantParameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////
@@ -156,7 +157,7 @@ public class Utilities {
         if (model != null
                 && model.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null) {
 
-            id = ((StringConstantParameter) model
+            id = ((StringParameter) model
                     .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)).getExpression();
 
         }

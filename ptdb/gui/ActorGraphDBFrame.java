@@ -48,6 +48,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -489,8 +490,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             // Check whether the model is an existing model.
             // If it is not an existing model, show text message to tell the user.
-            if (getModel() == null
-                    || getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) == null) {
+            if (Utilities.getIdFromModel(getModel()) == null) {
                 // A new model that does not exist in the database. 
 
                 JOptionPane.showMessageDialog(ActorGraphDBFrame.this,

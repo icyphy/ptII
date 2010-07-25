@@ -210,10 +210,7 @@ public class RenameModelFrame extends JFrame {
 
             XMLDBModel xmldbModel = new XMLDBModel(_model.getName());
 
-            xmldbModel
-                    .setModelId(((StringParameter) _model
-                            .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
-                            .getExpression());
+            xmldbModel.setModelId(Utilities.getIdFromModel(_model));
 
             try {
                 _model.setName(newName);
@@ -231,11 +228,11 @@ public class RenameModelFrame extends JFrame {
                 // If no exception thrown, show the update success message. 
                 JOptionPane.showMessageDialog(this,
                         "Rename model successfully!");
-                
+
                 _sourceFrame.setTitle(_model.getName());
-                
+
                 _sourceFrame.repaint();
-                
+
                 dispose();
 
             } catch (IllegalArgumentException e) {
