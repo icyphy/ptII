@@ -57,7 +57,9 @@ import diva.gui.GUIUtilities;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.SearchCriteriaParseException;
 import ptdb.common.util.Utilities;
+import ptdb.kernel.bl.search.SearchCriteriaManager;
 import ptdb.kernel.bl.search.SearchManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 import ptolemy.actor.gt.MalformedStringException;
@@ -112,7 +114,7 @@ public class SimpleSearchFrame extends JFrame {
 
         super("Search Database");
 
-        setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         _containerModel = model;
 
@@ -122,7 +124,7 @@ public class SimpleSearchFrame extends JFrame {
         _saveLocation = null;
         _searchCriteria = new SearchCriteria();
         
-        _initActorGraphDBFrame();
+        _initSimpleSearchFrame();
         _addMenus();
         
         _topPanel = new JPanel();
@@ -295,30 +297,30 @@ public class SimpleSearchFrame extends JFrame {
      */
     protected void _addMenus() {
         
-        this.setJMenuBar(_menuBar);
+        setJMenuBar(_menuBar);
         
         _fileMenu = new JMenu("File");
         _fileMenu.setMnemonic(KeyEvent.VK_F);
         _menuBar.add(_fileMenu);
 
         GUIUtilities
-            .addHotKey(this.getRootPane(), _newSearchCriteriaAction);
+            .addHotKey(getRootPane(), _newSearchCriteriaAction);
             GUIUtilities.addMenuItem(_fileMenu, _newSearchCriteriaAction);
         
         GUIUtilities
-            .addHotKey(this.createRootPane(), _openSearchCriteriaAction);
+            .addHotKey(createRootPane(), _openSearchCriteriaAction);
         GUIUtilities.addMenuItem(_fileMenu, _openSearchCriteriaAction);
 
         GUIUtilities
-            .addHotKey(this.createRootPane(), _saveSearchCriteriaAction);
+            .addHotKey(createRootPane(), _saveSearchCriteriaAction);
         GUIUtilities.addMenuItem(_fileMenu, _saveSearchCriteriaAction);
 
         GUIUtilities
-            .addHotKey(this.createRootPane(), _saveAsSearchCriteriaAction);
+            .addHotKey(createRootPane(), _saveAsSearchCriteriaAction);
         GUIUtilities.addMenuItem(_fileMenu, _saveAsSearchCriteriaAction);
 
         GUIUtilities
-            .addHotKey(this.getRootPane(), _exitSearchCriteriaAction);
+            .addHotKey(getRootPane(), _exitSearchCriteriaAction);
         GUIUtilities.addMenuItem(_fileMenu, _exitSearchCriteriaAction);
         
 
@@ -359,7 +361,7 @@ public class SimpleSearchFrame extends JFrame {
     /** 
      * Establish all event listeners.
      */
-    protected void _initActorGraphDBFrame (){
+    protected void _initSimpleSearchFrame (){
 
         _newSearchCriteriaAction = new NewSearchCriteriaAction ();
         _openSearchCriteriaAction = new OpenSearchCriteriaAction ();
@@ -448,31 +450,17 @@ public class SimpleSearchFrame extends JFrame {
                     }
                 }
                 
-                // TODO Uncomment when BL is ready.////////////////////
-                //try{
-                //_searchCriteria = SearchCriteriaManager.open
-                //    (chooser.getSelectedFile().getCanonicalPath());
-                //} catch (??){
-                //    
-                //}
-                ///////////////////////////////////////////////////////
-                
-                
-                // TODO This is temporary for testing//////////////////
-                _searchCriteria.setModelName("Name");
+                SearchCriteriaManager searchCriteriaManager = new SearchCriteriaManager();
                 try {
                     
-                    StringParameter test = new StringParameter(new NamedObj(), "test");
-                    test.setName("author");
-                    test.setExpression("Lyle");
-                    ArrayList<Attribute> list = new ArrayList();
-                    list.add(test);
-                    _searchCriteria.setAttributes(list);
+                    _searchCriteria = searchCriteriaManager.open
+                        (chooser.getSelectedFile().getCanonicalPath(), _configuration);
                     
-                } catch (IllegalActionException e) {  //Intentionally no action.
-                } catch (NameDuplicationException e) {
+                } catch (SearchCriteriaParseException e1) {
+                    
+                    MessageHandler.error("Cannot retrieve the search criteria.", e1);
+                
                 }
-                ////////////////////////////////////////////////////
                 
                 _topPanel.removeAll();
                 _attributesListPanel = new AttributesListPanel(new NamedObj());
@@ -494,7 +482,11 @@ public class SimpleSearchFrame extends JFrame {
                     
                 }
                 
-                //TODO If PtolemyEffigy is set, open it.                   
+                if(_searchCriteria.getPatternEffigy() != null){
+                    
+                    _searchCriteria.getPatternEffigy().showTableaux();
+                
+                }
                 
                 _saveLocation = chooser.getSelectedFile().getCanonicalPath();
                 setModified(false);
@@ -520,15 +512,45 @@ public class SimpleSearchFrame extends JFrame {
          
         } else {
             
-            //TODO Uncomment when implemented at the BL.
-            //try{
-            //    
-            //    SearchCriteriaManager.save(_searchCriteria, _saveLocation);
-            // 
-            //} catch(??) {
-            //    
-            //}
+            SearchCriteriaManager searchCriteriaManager = new SearchCriteriaManager();
+            try {
+                
+                if (!_attributesListPanel.getModelName().trim().isEmpty()) {
+
+                    _searchCriteria.setModelName(_attributesListPanel.getModelName());
+                }
+
+                if (_attributesListPanel.getAttributeCount() > 0) {
+
+                    ArrayList<Attribute> attributesToSearch = _attributesListPanel
+                            .getAttributes();
+                    _searchCriteria.setAttributes(attributesToSearch);
+                }
+
+                // Fetch the search criteria from the pattern match window.
+                if (_patternMatchframe != null) {
+                    _patternMatchframe.fetchSearchCriteria(_searchCriteria);
+                }
+                
+                searchCriteriaManager.save(_searchCriteria, _saveLocation);
+            } catch (IllegalActionException e) {
+
+                MessageHandler.error("Cannot save the search criteria.", e);
+                
+            } catch (IOException e) {
+
+                MessageHandler.error("Cannot save the search criteria.", e);
             
+            } catch (NameDuplicationException e) {
+                
+                MessageHandler.error("Cannot save the search criteria.", e);
+                
+            } catch (MalformedStringException e) {
+            
+                MessageHandler.error("Cannot save the search criteria.", e);
+                
+            }
+
         }
         
     }
@@ -539,6 +561,23 @@ public class SimpleSearchFrame extends JFrame {
     protected void _saveAs () {
         
         try {
+            
+            if (!_attributesListPanel.getModelName().trim().isEmpty()) {
+
+                _searchCriteria.setModelName(_attributesListPanel.getModelName());
+            }
+
+            if (_attributesListPanel.getAttributeCount() > 0) {
+
+                ArrayList<Attribute> attributesToSearch = _attributesListPanel
+                        .getAttributes();
+                _searchCriteria.setAttributes(attributesToSearch);
+            }
+
+            // Fetch the search criteria from the pattern match window.
+            if (_patternMatchframe != null) {
+                _patternMatchframe.fetchSearchCriteria(_searchCriteria);
+            }
             
             JFileChooser chooser = new JFileChooser();
     
@@ -563,6 +602,13 @@ public class SimpleSearchFrame extends JFrame {
                 } else {
                     
                     File filename = chooser.getSelectedFile();
+                    String name = filename.getName();
+                    if (!name.endsWith(".xml")) {
+                        
+                        filename = new File(filename.getParent(), name + ".xml");
+                    
+                    }
+                    
 
                     if( filename.exists()  && !filename.getCanonicalFile()
                             .toString().equals(_saveLocation)) {
@@ -593,15 +639,20 @@ public class SimpleSearchFrame extends JFrame {
                     }
                     if(saveComplete) {
                      
-                        //TODO Uncomment when implemented at the BL.
-                        //try{
-                        //    
-                        //    SearchCriteriaManager.save(_searchCriteria, 
-                        //          chooser.getSelectedFile().getCanonicalPath());
-                        // 
-                        //} catch(??) {
-                        //    
-                        //}
+
+                        SearchCriteriaManager searchCriteriaManager = new SearchCriteriaManager();
+                        try {
+                            searchCriteriaManager.save(_searchCriteria, 
+                                    filename.getCanonicalPath().toString());
+                        } catch (IllegalActionException e) {
+
+                            MessageHandler.error("Cannot save the search criteria.", e);
+                            
+                        } catch (IOException e) {
+
+                            MessageHandler.error("Cannot save the search criteria.", e);
+                        
+                        }
         
                         _saveLocation = chooser.getSelectedFile().getCanonicalPath();
                         setModified(false);
@@ -614,6 +665,13 @@ public class SimpleSearchFrame extends JFrame {
     
             MessageHandler.error("Cannot save to the selected file.", e);
             
+        } catch (IllegalActionException e) {
+            
+            MessageHandler.error("Cannot save to the selected file.", e);
+        } catch (NameDuplicationException e) {
+            MessageHandler.error("Cannot save to the selected file.", e);
+        } catch (MalformedStringException e) {
+            MessageHandler.error("Cannot save to the selected file.", e);
         }
     }
     
