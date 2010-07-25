@@ -137,6 +137,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         _openModelMigrationFrameAction = new OpenModelMigrationFrameAction();
 
+        _renameModelAction = new RenameModelAction();
+
     }
 
     /**
@@ -190,6 +192,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openModelMigrationFrameAction);
             GUIUtilities.addMenuItem(_dbMenu, _openModelMigrationFrameAction);
+
+            GUIUtilities.addHotKey(_getRightComponent(), _renameModelAction);
+            GUIUtilities.addMenuItem(_dbMenu, _renameModelAction);
 
             try {
 
@@ -270,6 +275,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     //    /** The action for opening the pattern match search frame. */
     //    protected Action _openSearchFrameAction;
+
+    protected Action _renameModelAction;
 
     /** The action for saving a model to the database. */
     protected Action _saveModelToDBAction;
@@ -456,6 +463,52 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             frame.pack();
             frame.setVisible(true);
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// RenameModelAction
+
+    /**
+     * Action for performing model renaming. 
+     */
+    private class RenameModelAction extends AbstractAction {
+
+        /**
+         * Default constructor. 
+         */
+        public RenameModelAction() {
+
+            super("Rename Model");
+
+            putValue("tooltip", "Rename Model");
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_N));
+
+        }
+
+        public void actionPerformed(ActionEvent e) {
+
+            // Check whether the model is an existing model.
+            // If it is not an existing model, show text message to tell the user.
+            if (getModel() == null
+                    || getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) == null) {
+                // A new model that does not exist in the database. 
+
+                JOptionPane.showMessageDialog(ActorGraphDBFrame.this,
+                        "This model hasn't been saved to the database"
+                                + " yet, so you cannot rename it.");
+
+            } else {
+                // If the model is an existing model, show the rename frame. 
+
+                RenameModelFrame renameModelFrame = new RenameModelFrame(
+                        getModel(), ActorGraphDBFrame.this);
+
+                renameModelFrame.pack();
+                renameModelFrame.setLocationRelativeTo(ActorGraphDBFrame.this);
+                renameModelFrame.setVisible(true);
+            }
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
