@@ -1,6 +1,6 @@
-/* An adapter class for ptolemy.domains.de.lib.Register
+/* An adapter class for ptolemy.domains.de.lib.PID
 
- Copyright (c) 2006-2009 The Regents of the University of California.
+ Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,14 +37,14 @@ package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains
 @version $Id: Register.java 57046 2010-01-27 23:35:53Z cxh $
 @since Ptolemy II 8.0
  */
-public class Sampler
+public class PID
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.Sampler {
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.PID {
     /**
-     *  Construct a Register adapter.
+     *  Construct a PID adapter.
      *  @param actor The given ptolemy.actor.lib.TimeGap actor.
      */
-    public Sampler(ptolemy.domains.de.lib.Sampler actor) {
+    public PID(ptolemy.domains.de.lib.PID actor) {
         super(actor);
     }
 }

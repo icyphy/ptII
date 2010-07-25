@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2005-2010 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -56,7 +56,7 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	PID.c \
+	PID.java \
 	Register.java \
 	Sampler.java \
 	TimeGap.java
