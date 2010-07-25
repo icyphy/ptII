@@ -51,6 +51,8 @@ import org.xml.sax.SAXException;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.XMLDBModelParsingException;
+import ptolemy.data.expr.StringConstantParameter;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////
 //// Utilities
@@ -140,6 +142,29 @@ public class Utilities {
         return documentContent;
     }
 
+    
+    /**
+     * Extra the PTDB model id from a given Ptolemy model. 
+     * 
+     * @param model The model to be extracted the id. 
+     * @return The id of the model in the database.  If that model hasn't been
+     * stored in the database yet, return null.
+     */
+    public static String getIdFromModel(NamedObj model) {
+        String id = null;
+
+        if (model != null
+                && model.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null) {
+
+            id = ((StringConstantParameter) model
+                    .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR)).getExpression();
+
+        }
+
+        return id;
+    }
+    
+    
     /**
      * Create the property node string to add to a MOML with 
      * the class as StringConstantParameter.
