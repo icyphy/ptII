@@ -31,7 +31,6 @@ package ptdb.kernel.database;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -1213,8 +1212,8 @@ public class OracleXMLDBConnection implements DBConnection {
         boolean doesModelExist = doesModelExist(newModel);
         if (doesModelExist) {
             throw new ModelAlreadyExistException(
-                    "A model with the new name - '" + task.getNewModelName()
-                            + "' already exists.");
+                    "Cannot rename - A model with the new name - '"
+                            + task.getNewModelName() + "' already exists.");
         }
         
         String existingModelName = task.getExistingModel().getModelName();
@@ -1227,8 +1226,9 @@ public class OracleXMLDBConnection implements DBConnection {
         
         if(existingReference == null || existingReference.length() == 0) {
             throw new DBModelNotFoundException(
-                    "The reference entry for the model - '" + existingModelName
-                            + "' is present in the Reference File.");
+                    "The reference entry for the existing model - '"
+                            + existingModelName
+                            + "' is not present in the Reference File.");
         }
         
         existingReference = existingReference.replaceAll("name=\""
@@ -1293,7 +1293,9 @@ public class OracleXMLDBConnection implements DBConnection {
                 existingModelId);
         renamedModel.setModel(existingModelContent);
         renamedModel.setIsNew(true);
-
+        /**
+         * Just using this API. It will not update the model in cache.
+         */
         executeUpdateModelInCache(renamedModel);
 
         ArrayList<XMLDBModel> removeModelsList = new ArrayList<XMLDBModel>();
@@ -1490,10 +1492,10 @@ public class OracleXMLDBConnection implements DBConnection {
             String referenceString = _getModelReferences(newModelId);
             String referenceFileQuery = "for $parententity in doc(\"dbxml:"
                     + _params.getContainerName()
-                    + "/ReferenceFile.ptdbxml\")/reference/entity/*"
-                    + "[descendant::entity[attribute::name=\"" + oldModelName
-                    + "\"]] where $parententity/@name=\"" + parentName
-                    + "\"return for $entity in "
+                    + "/ReferenceFile.ptdbxml\")/reference/*"
+                    + "[descendant-or-self::entity[attribute::name=\"" + parentName
+                    + "\"]] "
+                    + "return for $entity in "
                     + "$parententity/descendant::entity[attribute::name=\""
                     + oldModelName + "\"] return replace node $entity with "
                     + referenceString;
