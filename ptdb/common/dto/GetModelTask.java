@@ -58,9 +58,17 @@ public class GetModelTask extends Task {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    
+        
 
+    /**
+     * Return the model Id.
+     * @return The model Id.
+     * @see #setModelId
+     */
+    public String getModelId() {
+        return _modelId;
+    }
+    
     /**
      * Return the model name that is needed to be fetched from the database.
      *
@@ -81,6 +89,16 @@ public class GetModelTask extends Task {
         return isModelFromCache;
     }
 
+    /**
+     * Set the model Id.
+     * @param modelId The model Id to be set.
+     * @see #getModelId
+     */
+    public void setModelId(String modelId) {
+        _modelId = modelId;
+    }
+    
+    
     /**
      * Set the model name to be fetched from the database.
      *
@@ -107,5 +125,8 @@ public class GetModelTask extends Task {
     private String _modelName;
     /** Flag for cache */
     private boolean isModelFromCache = false;
+    
+    /** The model Id. */
+    private String _modelId;
 
 }
