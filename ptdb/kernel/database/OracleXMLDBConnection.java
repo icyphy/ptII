@@ -2522,8 +2522,25 @@ public class OracleXMLDBConnection implements DBConnection {
         XmlDocument dbModel;
         try {
             
-            dbModel = _xmlContainer.getDocument(task.getModelName());
             
+            
+            // Try to get the model by either its name or id.
+            if(task.getModelName() != null && task.getModelName().length() > 0) {
+
+                dbModel = _xmlContainer.getDocument(task.getModelName());
+
+            } else if (task.getModelId() != null && task.getModelId().length() > 0) {
+            
+                String modelName = this._getModelNameFromModelId(task.getModelId());
+                
+                dbModel = _xmlContainer.getDocument(modelName);
+
+            } else {
+                
+                throw new DBExecutionException("Failed to get the model." 
+                        + " The task does not contain a model name of model id.");
+            }
+
         } catch (XmlException e) {
 
             throw new DBExecutionException(
