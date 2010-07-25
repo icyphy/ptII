@@ -1202,7 +1202,108 @@ public class OracleXMLDBConnection implements DBConnection {
     public void executeRenameModelTask(RenameModelTask task) 
             throws DBConnectionException, DBExecutionException,
             ModelAlreadyExistException, DBModelNotFoundException {
-        //FIXME: Need to implement this method.
+        
+        if (task.getExistingModel() == null || task.getNewModelName() == null
+                || task.getNewModelName().length() == 0) {
+            throw new DBExecutionException(
+                    "The parameters are not set properly in the task.");
+        }
+        
+        XMLDBModel newModel = new XMLDBModel(task.getNewModelName());
+        boolean doesModelExist = doesModelExist(newModel);
+        if (doesModelExist) {
+            throw new ModelAlreadyExistException(
+                    "A model with the new name - '" + task.getNewModelName()
+                            + "' already exists.");
+        }
+        
+        String existingModelName = task.getExistingModel().getModelName();
+        String existingModelId = task.getExistingModel().getModelId();
+        
+        if (existingModelId == null || existingModelId.length() == 0) {
+            existingModelId = _getModelIdFromModelName(existingModelName);
+        }
+        String existingReference = _getModelReferences(existingModelId);
+        
+        if(existingReference == null || existingReference.length() == 0) {
+            throw new DBModelNotFoundException(
+                    "The reference entry for the model - '" + existingModelName
+                            + "' is present in the Reference File.");
+        }
+        
+        existingReference = existingReference.replaceAll("name=\""
+                + existingModelName + "\"", "name=\"" + task.getNewModelName()
+                + "\"");
+        
+        try {
+
+            XmlQueryContext xmlQueryContext = _xmlManager.createQueryContext();
+
+            String referenceQuery = "for $entity in doc(\""
+                    + _params.getContainerName()
+                    + "/ReferenceFile.ptdbxml\")/reference/*[descendant::entity[attribute::"
+                    + XMLDBModel.DB_MODEL_ID_ATTR
+                    + "=\""
+                    + existingModelId
+                    + "\"]] for $descendant in $entity/descendant::entity[attribute::"
+                    + XMLDBModel.DB_MODEL_ID_ATTR + "=\"" + existingModelId
+                    + "\"] return replace node $descendant with "
+                    + existingReference;
+
+            _xmlManager.query(_xmlTransaction, referenceQuery, xmlQueryContext,
+                    null);
+
+            referenceQuery = "for $i in doc(\"dbxml:/"
+                    + _params.getContainerName()
+                    + "/ReferenceFile.ptdbxml\")/reference/entity[@"
+                    + XMLDBModel.DB_MODEL_ID_ATTR + "=\"" + existingModelId
+                    + "\"] return replace node $i with " + existingReference;
+
+            _xmlManager.query(_xmlTransaction, referenceQuery, xmlQueryContext,
+                    null);
+        } catch (XmlException e) {
+            throw new DBExecutionException(
+                    "Error while updating the reference file with new name - "
+                            + e.getMessage(), e);
+        }
+        
+       
+       GetModelTask getModelTask = new GetModelTask(existingModelName);
+       XmlDocument existingModelDocument = _getModelFromDB(getModelTask);
+       String existingModelContent;
+       
+        try {
+            existingModelContent = existingModelDocument.getContentAsString();
+            if (existingModelDocument == null || existingModelContent == null) {
+                throw new DBModelNotFoundException(
+                        "The existing model was not found in the database - "
+                                + existingModelName);
+            }
+        } catch (XmlException e) {
+            throw new DBExecutionException(
+                    "Error while fetching existing model content from database - "
+                            + e.getMessage(), e);
+        }
+        
+        existingModelContent = existingModelContent.replaceAll("name=\""
+                + existingModelName + "\"", "name=\"" + task.getNewModelName()
+                + "\"");
+
+        XMLDBModel renamedModel = new XMLDBModel(task.getNewModelName(),
+                existingModelId);
+        renamedModel.setModel(existingModelContent);
+        renamedModel.setIsNew(true);
+
+        executeUpdateModelInCache(renamedModel);
+
+        ArrayList<XMLDBModel> removeModelsList = new ArrayList<XMLDBModel>();
+        removeModelsList
+                .add(new XMLDBModel(existingModelName, existingModelId));
+        RemoveModelsTask removeModelsTask = new RemoveModelsTask(
+                removeModelsList);
+
+        executeRemoveModelsTask(removeModelsTask);
+        
     }
 
     /**
