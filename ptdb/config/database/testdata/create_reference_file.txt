@@ -20,6 +20,14 @@ putDocument ReferenceFile.ptdbxml '<reference>
 			<entity DBModelId="D.xml" name="D.xml">
 				<entity DBModelId="H.xml" name="H.xml">
 				</entity>
+			</entity>	
+			<entity DBModelId="D.xml" name="D.xml">
+				<entity DBModelId="H.xml" name="H.xml">
+				</entity>
+			</entity>
+			<entity DBModelId="I.xml" name="I.xml">
+				<entity DBModelId="H.xml" name="H.xml">
+				</entity>				
 			</entity>				
 		</entity>
 		<entity DBModelId="E.xml" name="E.xml">
@@ -40,12 +48,24 @@ putDocument ReferenceFile.ptdbxml '<reference>
 			<entity DBModelId="H.xml" name="H.xml">
 			</entity>
 		</entity>
+		<entity DBModelId="I.xml" name="I.xml">
+			<entity DBModelId="H.xml" name="H.xml">
+			</entity>				
+		</entity>	
 	</entity>		
 	<entity DBModelId="C.xml" name="C.xml">
 		<entity DBModelId="D.xml" name="D.xml">
 			<entity DBModelId="H.xml" name="H.xml">
 			</entity>
 		</entity>				
+		<entity DBModelId="D.xml" name="D.xml">
+			<entity DBModelId="H.xml" name="H.xml">
+			</entity>
+		</entity>
+		<entity DBModelId="I.xml" name="I.xml">
+			<entity DBModelId="H.xml" name="H.xml">
+			</entity>				
+		</entity>	
 	</entity>
 	<entity DBModelId="E.xml" name="E.xml">
 		<entity DBModelId="D.xml" name="D.xml">
@@ -68,6 +88,10 @@ putDocument ReferenceFile.ptdbxml '<reference>
 			<entity DBModelId="D.xml" name="D.xml">
 				<entity DBModelId="H.xml" name="H.xml">
 				</entity>
+			</entity>		
+			<entity DBModelId="I.xml" name="I.xml">
+				<entity DBModelId="H.xml" name="H.xml">
+				</entity>				
 			</entity>				
 		</entity>
 	</entity>		
@@ -78,10 +102,14 @@ putDocument ReferenceFile.ptdbxml '<reference>
 					<entity DBModelId="H.xml" name="H.xml">
 					</entity>
 				</entity>				
-			<entity DBModelId="D.xml" name="D.xml">
-				<entity DBModelId="H.xml" name="H.xml">
+				<entity DBModelId="D.xml" name="D.xml">
+					<entity DBModelId="H.xml" name="H.xml">
+					</entity>
 				</entity>
-			</entity>
+				<entity DBModelId="I.xml" name="I.xml">
+					<entity DBModelId="H.xml" name="H.xml">
+					</entity>				
+				</entity>	
 			</entity>
 		</entity>		
 		<entity DBModelId="X.xml" name="X.xml">

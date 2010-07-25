@@ -1959,5 +1959,12 @@ putDocument newModel '<?xml version="1.0" standalone="no"?>
 
 putDocument D.xml '<entity name="D.xml" class="ptolemy.actor.lib.TypedCompositeActor"><property name="DBModelId" value="D.xml"/></entity>'
 
+putDocument C.xml '<entity name="C.xml" class="ptolemy.actor.lib.TypedCompositeActor"><property name="DBModelId" value="C.xml"/>    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+		<property name="DBReference" value="TRUE" class="ptolemy.data.expr.StringConstantParameter">
+        </property>
+		<property name="DBModelId" value="D.xml" class="ptolemy.data.expr.StringConstantParameter">
+        </property> </entity>
+</entity>'
+
 putDocument DB.xml '<entity name="DB.xml" class="ptolemy.actor.lib.TypedCompositeActor"><property name="DBModelId" value="DB.xml"/></entity>'
 
