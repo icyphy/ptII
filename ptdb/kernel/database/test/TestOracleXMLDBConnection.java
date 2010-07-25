@@ -56,11 +56,14 @@ import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.DeleteAttributeTask;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GetAttributesTask;
+import ptdb.common.dto.GetFirstLevelParentsTask;
 import ptdb.common.dto.GetModelTask;
+import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
+import ptdb.common.dto.UpdateParentsToNewVersionTask;
 import ptdb.common.dto.XMLDBAttribute;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -487,6 +490,142 @@ public class TestOracleXMLDBConnection {
         }
         conn.closeConnection();
     }
+    
+    @Test
+    public void testExecuteUpdateParentsToNewVersion() throws Exception {
+        OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(true);
+
+        UpdateParentsToNewVersionTask task = new UpdateParentsToNewVersionTask();
+        try {
+            conn.executeUpdateParentsToNewVersion(task);
+            fail("No exception thrown.");
+        } catch (Exception e) {
+
+        }
+
+        XMLDBModel oldModel = new XMLDBModel("D.xml");
+        XMLDBModel newModel = new XMLDBModel("Adder");
+
+        task.setNewModel(newModel);
+        try {
+            conn.executeUpdateParentsToNewVersion(task);
+            fail("No exception thrown.");
+        } catch (Exception e) {
+
+        }
+
+        task.setOldModel(oldModel);
+        try {
+            conn.executeUpdateParentsToNewVersion(task);
+            fail("No exception thrown.");
+        } catch (Exception e) {
+
+        }
+
+        ArrayList<String> parentsList = new ArrayList<String>();
+        parentsList.add("C.xml");
+        task.setParentsList(parentsList);
+        try {
+            conn.executeUpdateParentsToNewVersion(task);
+            GetReferenceStringTask task1 = new GetReferenceStringTask("C.xml");
+            String referenceString = conn.executeGetReferenceStringTask(task1);
+
+            assertTrue("Updation Incorrect - New model not found.",
+                    referenceString.indexOf("Adder") != -1);
+            assertTrue("Updation Incorrect - Old model still present.",
+                    referenceString.indexOf("D.xml") == -1);
+
+            oldModel = new XMLDBModel("Adder", "Adder");
+            newModel = new XMLDBModel("D.xml", "D.xml");
+
+            task = new UpdateParentsToNewVersionTask();
+            task.setNewModel(newModel);
+            task.setOldModel(oldModel);
+            parentsList = new ArrayList<String>();
+            parentsList.add("C.xml");
+            task.setParentsList(parentsList);
+
+            conn.executeUpdateParentsToNewVersion(task);
+            task1 = new GetReferenceStringTask("C.xml");
+
+            referenceString = conn.executeGetReferenceStringTask(task1);
+
+            assertTrue("Updation Incorrect - New model(D.xml) not found.",
+                    referenceString.indexOf("D.xml") != -1);
+            assertTrue("Updation Incorrect - Old model(Adder) still present.",
+                    referenceString.indexOf("Adder") == -1);
+
+            newModel = new XMLDBModel("DoesNotExist.xml", "DoesNotExist.xml");
+            task.setNewModel(newModel);
+
+            try {
+                conn.executeUpdateParentsToNewVersion(task);
+                fail("No exception thrown.");
+            } catch (Exception e) {
+
+            }
+
+        } catch (DBExecutionException e) {
+            fail("Failed with error - " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                conn.abortConnection();
+                conn.closeConnection();
+            }
+        }
+    }
+
+    @Test
+    public void testExecuteGetFirstLevelParents() throws Exception {
+        OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(false);
+        try {
+            GetFirstLevelParentsTask task = new GetFirstLevelParentsTask(null);
+            conn.executeGetFirstLevelParents(task);
+            fail("No exception thrown when model was null.");
+        } catch (Exception e) {
+            
+        }
+        
+        try {
+            
+            XMLDBModel model = new XMLDBModel("H.xml");
+            GetFirstLevelParentsTask task = new GetFirstLevelParentsTask(model);
+            List<XMLDBModel> parentsList = conn
+                    .executeGetFirstLevelParents(task);
+
+            assertTrue("No parents returned.", parentsList != null);
+
+            assertTrue("Invalid parents returned - "
+                    + parentsList.get(0).getModelName(), "D.xml"
+                    .equals(parentsList.get(0).getModelName()));
+
+            assertTrue("Invalid parents returned - "
+                    + parentsList.get(0).getModelId(), "D.xml"
+                    .equals(parentsList.get(0).getModelId()));
+
+            model = new XMLDBModel("D.xml");
+            task = new GetFirstLevelParentsTask(model);
+            parentsList = conn.executeGetFirstLevelParents(task);
+
+            assertTrue("No parents returned. " + parentsList.size(),
+                    parentsList != null && parentsList.size() == 3);
+
+            model = new XMLDBModel("K.xml");
+            task = new GetFirstLevelParentsTask(model);
+            parentsList = conn.executeGetFirstLevelParents(task);
+
+            assertTrue("Parents returned when it should be null.",
+                    parentsList == null || parentsList.size() == 0);
+        } catch (DBExecutionException e) {
+            fail("Failed with execption - " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                conn.closeConnection();
+            }
+        }
+    }
     /**
      * Test method for
      * {@link ptdb.kernel.database.OracleXMLDBConnection#executeAttributeSearchTask(ptdb.common.dto.AttributeSearchTask)}
@@ -848,7 +987,7 @@ public class TestOracleXMLDBConnection {
             oracleXMLDBConnection._updateReferenceFile(existingModelWithChildren);
             
         } catch (DBExecutionException e) {
-            fail("Failed with xception - " + e.getMessage());
+            fail("Failed with Exception - " + e.getMessage());
         }
         oracleXMLDBConnection.abortConnection();
         oracleXMLDBConnection.closeConnection();
@@ -882,6 +1021,12 @@ public class TestOracleXMLDBConnection {
         try {
             oracleXMLDBConnection.doesModelExist(null);
             fail("No exception was thrown for null model.");
+        } catch (DBExecutionException e) {
+            
+        }
+        
+        try {
+            oracleXMLDBConnection.doesModelExist(new XMLDBModel("Test's"));
         } catch (DBExecutionException e) {
             
         }
