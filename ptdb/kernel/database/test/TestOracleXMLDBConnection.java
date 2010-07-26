@@ -61,7 +61,6 @@ import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
-import ptdb.common.dto.RenameModelTask;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.UpdateParentsToNewVersionTask;
@@ -83,8 +82,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 import com.sleepycat.db.Environment;
+import com.sleepycat.db.TransactionConfig;
 import com.sleepycat.dbxml.XmlException;
 import com.sleepycat.dbxml.XmlManager;
+import com.sleepycat.dbxml.XmlTransaction;
 
 ///////////////////////////////////////////////////////////////////
 //// TestOracleXMLDBConnection
@@ -490,87 +491,6 @@ public class TestOracleXMLDBConnection {
         conn.closeConnection();
     }
     
-    @Test
-    public void testExecuteRenameModelsTask() throws Exception {
-        
-        OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory
-                .getSyncConnection(true);
-        try {
-            RenameModelTask task = new RenameModelTask(null, "Adder");
-            // Existing model = null.
-            try {
-                conn.executeRenameModelTask(task);
-                fail("DBExecution exception not thrown.");
-            } catch (DBExecutionException e) {
-
-            } catch (Exception e) {
-                fail("Incorrect exception thrown " + e.getClass().getName()
-                        + " with cause -  " + e.getMessage());
-            }
-            // New name = null.
-            XMLDBModel existingModel = new XMLDBModel("D.xml", "D.xml");
-            task = new RenameModelTask(existingModel, null);
-
-            try {
-                conn.executeRenameModelTask(task);
-                fail("DBExecution exception not thrown.");
-            } catch (DBExecutionException e) {
-
-            } catch (Exception e) {
-                fail("Incorrect exception thrown " + e.getClass().getName()
-                        + " with cause -  " + e.getMessage());
-            }
-
-            // New name = blank.
-            task = new RenameModelTask(existingModel, "");
-
-            try {
-                conn.executeRenameModelTask(task);
-                fail("DBExecution exception not thrown.");
-            } catch (DBExecutionException e) {
-
-            } catch (Exception e) {
-                fail("Incorrect exception thrown " + e.getClass().getName()
-                        + " with cause -  " + e.getMessage());
-            }
-
-            // New name = duplicate.
-            task = new RenameModelTask(existingModel, "Adder");
-            try {
-                conn.executeRenameModelTask(task);
-                fail("Model Already exists exception not thrown.");
-            } catch (ModelAlreadyExistException e) {
-
-            } catch (Exception e) {
-                fail("Incorrect exception thrown " + e.getClass().getName()
-                        + " with cause -  " + e.getMessage());
-            }
-            
-            // valid parameters
-            task = new RenameModelTask(existingModel, "NewRename");
-            try {
-                conn.executeRenameModelTask(task);
-            } catch (Exception e) {
-                fail("Failed with exception - "+ e.getMessage());
-            }
-            
-            // valid parameters
-            existingModel.setModelName("NewRename");
-            task = new RenameModelTask(existingModel, "D.xml");
-            try {
-                conn.executeRenameModelTask(task);
-            } catch (Exception e) {
-                fail("Failed with exception - "+ e.getMessage());
-            }
-
-            
-        } finally {
-            if (conn != null) {
-                conn.abortConnection();
-                conn.closeConnection();
-            }
-        }
-    }
     @Test
     public void testExecuteUpdateParentsToNewVersion() throws Exception {
         OracleXMLDBConnection conn = (OracleXMLDBConnection) DBConnectorFactory
@@ -1371,6 +1291,58 @@ public class TestOracleXMLDBConnection {
     }
     
     
+    
+    /**
+     * Test the executeGetModelTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The model exist in the database and the model id is passed.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteGetModelTask_ModelId() throws Exception {
+
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(false);
+
+        
+
+        String modelId = "modeltt1000_123";
+
+        GetModelTask task = new GetModelTask(null);
+        task.setModelId(modelId);
+
+
+        try {
+
+            XMLDBModel model = oracleXMLDBConnection.executeGetModelTask(task);
+
+            if (model != null && model.getModelName().equals("modeltt1000")) {
+                
+                
+                assertTrue("Model was retrieved successfully.", true);
+                
+            } else if (model != null && !model.getModelName().equals("modeltt1000")) {
+                
+                fail("Different model was retrieved. " + model.getModelName());
+                
+            } else {
+                
+                fail("no model was returned");
+            }
+
+        } catch (DBExecutionException e) {
+
+            fail("Operation threw an exception. " + e.getMessage());
+
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+    }
+    
     /**
      * Test the executeGetModelTask() method.
      *
@@ -1510,6 +1482,44 @@ public class TestOracleXMLDBConnection {
     
             }
 
+        } finally {
+            if (oracleXMLDBConnection != null) {
+                oracleXMLDBConnection.closeConnection();
+            }
+        }
+    }
+    
+    
+    /**
+     * Test the executeGetModelTask() method.
+     *
+     * <p>Test conditions:
+     * <br>The model exist in the database and the model id is passed.</p>
+     *
+     * @exception Exception Thrown if the test fails and the exception was not handled.
+     */
+    @Test
+    public void testExecuteGetModelTask_noNameOrId() throws Exception {
+
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+                .getSyncConnection(false);
+
+        
+
+        
+        GetModelTask task = new GetModelTask(null);
+
+
+        try {
+
+            XMLDBModel model = oracleXMLDBConnection.executeGetModelTask(task);
+
+
+            fail("Method should throw an exception since the task does not contain enough information.");
+        } catch (DBExecutionException e) {
+
+            assertTrue(true);
+            
         } finally {
             if (oracleXMLDBConnection != null) {
                 oracleXMLDBConnection.closeConnection();
