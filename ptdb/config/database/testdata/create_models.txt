@@ -58,10 +58,10 @@ putdocument ModelContainsBothAttributes '<?xml version="1.0" standalone="no"?>
     </entity>
 </entity>'
 putDocument X '<entity name="X" class="ptolemy.actor.TypedCompositeActor">
+<property name="DBModelId" value="X" class="ptolemy.data.expr.StringParameter">
+</property>
 <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
     <display name="Created By"/>
-    <property name="DBModelId" value="X" class="ptolemy.data.expr.StringParameter">
-        </property>
     <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
