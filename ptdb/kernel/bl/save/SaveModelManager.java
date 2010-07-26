@@ -478,7 +478,8 @@ public class SaveModelManager {
                      * Create an entity node with the required properties and 
                      * replace the current referenced entity.
                      */
-                    for (int k = 0; k < childNodesList.getLength(); k++) {
+                    int k = 0;
+                    while (k < childNodesList.getLength()) {
                         Node childNode = childNodesList.item(k);
 
                         if ("property".equals(childNode.getNodeName())) {
@@ -492,8 +493,14 @@ public class SaveModelManager {
                                                     .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
                                             .equals(name))) {
                                 entityElement.appendChild(childNode);
+                            } else {
+                                k++;
                             }
                         }
+                        else {
+                            k++;
+                        }
+                        
                     }
 
                     entityElement.setAttribute(XMLDBModel.DB_MODEL_ID_ATTR,
