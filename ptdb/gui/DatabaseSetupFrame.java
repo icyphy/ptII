@@ -171,11 +171,14 @@ public class DatabaseSetupFrame extends JFrame {
                                                                                                 urlLabel)
                                                                                         .addComponent(
                                                                                                 cacheLabel))
+                                                                  
+                                                                         
                                                                         .addGap(
                                                                                 33,
                                                                                 33,
                                                                                 33)
                                                                         .addGroup(
+                                                                                
                                                                                 jPanel1Layout
                                                                                         .createParallelGroup(
                                                                                                 javax.swing.GroupLayout.Alignment.TRAILING,
@@ -183,16 +186,22 @@ public class DatabaseSetupFrame extends JFrame {
                                                                                         .addComponent(
                                                                                                 _containerNameTextField,
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                                
+                                                                                        
                                                                                         .addComponent(
                                                                                                 _urlTextField,
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 281,
                                                                                                 Short.MAX_VALUE)
+                                                           
                                                                                         .addComponent(
                                                                                                 _cacheContainerNameTextField,
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)))
-                                                        .addGroup(
+                                                        
+                                                           
+                                                                                                       
+                                                           .addGroup(
                                                                 jPanel1Layout
                                                                         .createSequentialGroup()
                                                                         .addGap(
@@ -213,6 +222,14 @@ public class DatabaseSetupFrame extends JFrame {
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                         .addComponent(
                                                                                 _cancelButton)))
+                                                          .addGroup(
+                                                                           jPanel1Layout
+                                                                                   .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING,
+                                                                                           true)
+                                                                                           .addGap(100)
+                                                                                           .addComponent(
+                                                                                                   _browseButton,
+                                                                                                   javax.swing.GroupLayout.Alignment.TRAILING))
                                         .addContainerGap(22, Short.MAX_VALUE)));
         jPanel1Layout
                 .setVerticalGroup(jPanel1Layout
@@ -226,11 +243,14 @@ public class DatabaseSetupFrame extends JFrame {
                                                 jPanel1Layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        
                                                         .addComponent(
                                                                 _urlTextField,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        
+                                                        .addComponent(_browseButton)
                                                         .addComponent(urlLabel))
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
