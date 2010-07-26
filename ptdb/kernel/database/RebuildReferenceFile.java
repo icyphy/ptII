@@ -126,7 +126,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
         }
 
         referenceBuilder.append("<entity DBModelId=\"").append(modelId).append(
-                "\" name=\"").append(modelName).append("\" >");
+                "\" name=\"").append(modelName).append("\" >").append("\n");
 
         /* Retrieve the model content from the database.*/
         GetModelTask task = new GetModelTask(modelName);
@@ -205,12 +205,12 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
                     String referencedModelName = _getModelNameFromModelId(referencedModelId);
                     referenceBuilder
                             .append(_buildReferenceString(new XMLDBModel(
-                                    referencedModelName, referencedModelId)));
+                                    referencedModelName, referencedModelId))).append("\n");
                 }
             }
         }
 
-        referenceBuilder.append("</entity>");
+        referenceBuilder.append("</entity>").append("\n");
 
         String referenceString = referenceBuilder.toString();
         _referencesMap.put(modelName, referenceString);
@@ -293,8 +293,8 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
             XmlValue value;
             while (results.hasNext()) {
                 value = results.next();
-                modelId = value.asString();
-                modelId = modelId.substring(modelId.lastIndexOf('/'));
+                modelName = value.asString();
+                modelName = modelId.substring(modelId.lastIndexOf('/') + 1);
             }
         }
         return modelName;
