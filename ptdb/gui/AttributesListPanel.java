@@ -511,6 +511,17 @@ public class AttributesListPanel extends JPanel {
         return _AttDelete.size();
 
     }
+
+    /**
+     * Get the component of the text field to let the user input the model
+     *  name.
+     *  
+     * @return The JTextField instance for the model name. 
+     */
+    public JTextField getNameTextField() {
+        
+        return _nameText;
+    }
     
     /** Get an indication if the panel has been modified.
      *  True if it has, false if it hasn't.

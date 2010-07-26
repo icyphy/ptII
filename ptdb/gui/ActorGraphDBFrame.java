@@ -312,7 +312,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         public void actionPerformed(ActionEvent e) {
 
-            new ConfigureAttributesFrame().setVisible(true);
+            ConfigureAttributesFrame configureAttributesFrame = new ConfigureAttributesFrame();
+
+            configureAttributesFrame.pack();
+            configureAttributesFrame
+                    .setLocationRelativeTo(ActorGraphDBFrame.this);
+            configureAttributesFrame.setVisible(true);
 
         }
     }
@@ -401,6 +406,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             JFrame frame = new SaveModelToDBFrame(getModel(), _source);
             frame.pack();
+            frame.setLocationRelativeTo(_source);
             frame.setVisible(true);
 
         }
@@ -433,6 +439,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             JFrame frame = new DatabaseSetupFrame();
             frame.pack();
+            frame.setLocationRelativeTo(ActorGraphDBFrame.this);
             frame.setVisible(true);
         }
     }
@@ -546,6 +553,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             JFrame frame = new SimpleSearchFrame(_containerModel, _sourceFrame,
                     _configuration, getTableau());
             frame.pack();
+            frame.setLocationRelativeTo(_sourceFrame);
             frame.setVisible(true);
 
         }

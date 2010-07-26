@@ -28,28 +28,47 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.gui;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingConstants;
 
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.dto.XMLDBModelWithReferenceChanges;
 import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.ModelAlreadyExistException;
+import ptdb.common.util.Utilities;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.StringConstantParameter;
+import ptdb.kernel.bl.load.DBModelFetcher;
+import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -73,7 +92,6 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (lholsing)
  * 
  */
-
 public class SaveModelToDBFrame extends JFrame {
 
     /**
@@ -97,6 +115,17 @@ public class SaveModelToDBFrame extends JFrame {
         _orignialAttributes = new ArrayList();
         _attributesListPanel = new AttributesListPanel(_modelToSave);
         _tabbedPane = new JTabbedPane();
+
+        try {
+            if (!_isNew()) {
+                _xmlModel = new XMLDBModel(_modelToSave.getName());
+                _xmlModel.setModelId(Utilities.getIdFromModel(_modelToSave));
+            }
+        } catch (NameDuplicationException e1) {
+            // skip
+        } catch (IllegalActionException e1) {
+            // skip
+        }
 
         //Create a list of the original attributes
         for (Object attribute : _modelToSave.attributeList()) {
@@ -142,15 +171,19 @@ public class SaveModelToDBFrame extends JFrame {
 
         _saveButton = new JButton("Save");
         _cancelButton = new JButton("Cancel");
+        _nextButton = new JButton("Next >>");
 
         _saveButton.setMnemonic(KeyEvent.VK_ENTER);
         _cancelButton.setMnemonic(KeyEvent.VK_ESCAPE);
+        _nextButton.setMnemonic(KeyEvent.VK_RIGHT);
 
         _saveButton.setActionCommand("Save");
         _cancelButton.setActionCommand("Cancel");
+        _nextButton.setActionCommand("Next");
 
         _saveButton.setHorizontalTextPosition(SwingConstants.CENTER);
         _cancelButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        _nextButton.setHorizontalTextPosition(SwingConstants.CENTER);
 
         for (Object stringParameter : _modelToSave.attributeList()) {
 
@@ -174,50 +207,7 @@ public class SaveModelToDBFrame extends JFrame {
         _saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
 
-                try {
-
-                    // If the form is in an invalid state, do not continue;
-                    if (!_isValid()) {
-
-                        _rollbackModel();
-
-                        return;
-
-                    }
-
-                    _saveModel();
-
-                } catch (NameDuplicationException e) {
-
-                    MessageHandler.error("The model cannot be saved now "
-                            + "due to a NameDuplicationException.", e);
-
-                    _rollbackModel();
-
-                } catch (IllegalActionException e) {
-
-                    MessageHandler.error("The model cannot be saved now "
-                            + "due to an IllegalActionException.", e);
-
-                    _rollbackModel();
-
-                } catch (CircularDependencyException e) {
-
-                    MessageHandler.error("Saving this model as it is will "
-                            + "result in a circular dependency.  Examine "
-                            + "the referenced models to determine "
-                            + "the cause.", e);
-
-                    _rollbackModel();
-
-                } catch (Exception e) {
-
-                    MessageHandler.error("The model cannot be saved now "
-                            + "due to an Exception.", e);
-
-                    _rollbackModel();
-
-                }
+                _save();
 
             }
         });
@@ -228,24 +218,98 @@ public class SaveModelToDBFrame extends JFrame {
                 _rollbackModel();
                 setVisible(false);
 
+                if (_parentValidateFrame != null) {
+                    _parentValidateFrame.setVisible(false);
+                }
             }
 
         });
 
+        _nextButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                if (_parentValidateFrame == null) {
+                    _parentValidateFrame = new ParentValidateFrame(
+                            SaveModelToDBFrame.this);
+                }
+
+                _parentValidateFrame.pack();
+                _parentValidateFrame
+                        .setLocationRelativeTo(SaveModelToDBFrame.this);
+                _parentValidateFrame.setVisible(true);
+
+                // Hide the first frame.
+                setVisible(false);
+
+            }
+        });
+
+        // Add the action listener to model name text field. 
+        _attributesListPanel.getNameTextField().addKeyListener(
+                new KeyListener() {
+
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        // Do nothing. 
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+
+                        if (!_attributesListPanel.getNameTextField().getText()
+                                .equals(_initialModelName)) {
+                            // Disable the next button if the user has changed
+                            // the model name.
+                            _nextButton.setEnabled(false);
+                            _saveButton.setEnabled(true);
+
+                        } else {
+                            _setButtons();
+                        }
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        // Do nothing. 
+                    }
+                });
+
         topPanel.add(_tabbedPane);
         bottomPanel.add(_saveButton);
         bottomPanel.add(_cancelButton);
+        bottomPanel.add(_nextButton);
+
         add(topPanel);
         add(bottomPanel);
         validate();
         repaint();
+
+        // The next button should be disabled if there is no parent of 
+        // the saving model.
+        // The save button should be disabled if there are parents of the
+        // saving model.
+        _setButtons();
 
     }
 
     ///////////////////////////////////////////////////////////////////
     //                    private methods                          ////
 
-    private void _commitSave(boolean isNew, String id) throws Exception {
+    /**
+     * Save the model to the database, together with the references changes 
+     * to its parent models. 
+     * 
+     * @param isNew Whether this is a new model. 
+     * @param id The id of this model. 
+     * @param unchangedParentsList The list of parents names that do not want 
+     * to reflect the changes to the submodel they have.  
+     * @param newVersionName The new name of this saving model, to have those 
+     * parent models maintaining the old reference.
+     * @throws Exception Thrown if errors occur during the saving. 
+     */
+    private void _commitSave(boolean isNew, String id,
+            ArrayList<String> unchangedParentsList, String newVersionName)
+            throws Exception {
 
         _updateDisplayedModel();
 
@@ -272,14 +336,22 @@ public class SaveModelToDBFrame extends JFrame {
 
         }
 
-        _xmlModel = new XMLDBModel(_modelToSave.getName());
+        if (_xmlModel == null) {
+            _xmlModel = new XMLDBModel(_modelToSave.getName());
+        }
+
         _xmlModel.setModel(_modelToSave.exportMoML());
         _xmlModel.setIsNew(isNew);
         _xmlModel.setModelId(id);
 
+        XMLDBModelWithReferenceChanges xmlDBModelWithReferenceChanges = new XMLDBModelWithReferenceChanges(
+                _xmlModel, unchangedParentsList, newVersionName);
+
         try {
 
-            String modelId = _saveModelManager.save(_xmlModel);
+            //            String modelId = _saveModelManager.save(_xmlModel);
+            String modelId = _saveModelManager
+                    .saveWithParents(xmlDBModelWithReferenceChanges);
 
             if (modelId != null) {
 
@@ -287,6 +359,7 @@ public class SaveModelToDBFrame extends JFrame {
                         "The model was successfully saved.", "Success",
                         JOptionPane.INFORMATION_MESSAGE, null);
 
+                // Update the MoMl of the saving model.
                 if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) == null) {
 
                     StringConstantParameter dbModelParam = new StringConstantParameter(
@@ -294,11 +367,11 @@ public class SaveModelToDBFrame extends JFrame {
                     dbModelParam.setExpression(modelId);
                     dbModelParam.setContainer(_modelToSave);
 
-                } else if (!((StringConstantParameter) _modelToSave
+                } else if (!((StringParameter) _modelToSave
                         .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                         .getExpression().equals(modelId)) {
 
-                    ((StringConstantParameter) _modelToSave
+                    ((StringParameter) _modelToSave
                             .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                             .setExpression(modelId);
 
@@ -316,7 +389,114 @@ public class SaveModelToDBFrame extends JFrame {
                     throw e;
                 }
 
+                // Update the parent models that are opened already. 
+                // Update those parents with unchanged sub model first. 
+                if (unchangedParentsList != null
+                        && unchangedParentsList.size() > 0) {
+
+                    XMLDBModel newVersionModel = DBModelFetcher
+                            .load(newVersionName);
+
+                    for (String parentName : unchangedParentsList) {
+
+                        if (_source.getConfiguration().getDirectory()
+                                .getEntity(parentName) != null) {
+                            // This parent model is opened. 
+
+                            PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
+                                    .getConfiguration().getDirectory()
+                                    .getEffigy(parentName);
+
+                            for (Object entity : parentModelEffigy.entityList()) {
+
+                                ComponentEntity componentEntity = (ComponentEntity) entity;
+
+                                if (Utilities.getIdFromModel(componentEntity) != null
+                                        && Utilities.getIdFromModel(
+                                                componentEntity)
+                                                .equals(modelId)) {
+                                    // Update the original model id to the new 
+                                    // version model id.
+                                    StringParameter modelIdAttribute = (StringParameter) componentEntity
+                                            .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR);
+                                    modelIdAttribute.setToken(newVersionModel
+                                            .getModelId());
+                                    componentEntity.setName(parentModelEffigy
+                                            .uniqueName(newVersionModel
+                                                    .getModelName()));
+                                }
+                            }
+
+                            // Update the moml for this parent model. 
+                            MoMLChangeRequest change = new MoMLChangeRequest(
+                                    null, parentModelEffigy.getModel(),
+                                    parentModelEffigy.getModel().exportMoML());
+
+                            change.setUndoable(true);
+                            parentModelEffigy.getModel().requestChange(change);
+
+                        }
+
+                    }
+                }
+
+                // Update the parent models that want to maintain the reference.
+                if (_parentValidateFrame != null) {
+                    ArrayList<String> parentsModelsMaintainReferences = _parentValidateFrame
+                            ._getParentsMaintainReferences();
+                    if (parentsModelsMaintainReferences != null
+                            && parentsModelsMaintainReferences.size() > 0) {
+                        XMLDBModel savedModel = DBModelFetcher.loadUsingId(modelId);
+
+                        for (String parentName : parentsModelsMaintainReferences) {
+                            if (_source.getConfiguration().getDirectory()
+                                    .getEntity(parentName) != null) {
+                                // This parent model is opened. 
+
+                                PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
+                                        .getConfiguration().getDirectory()
+                                        .getEffigy(parentName);
+
+                                for (Object entity : parentModelEffigy
+                                        .entityList()) {
+
+                                    ComponentEntity componentEntity = (ComponentEntity) entity;
+
+                                    if (Utilities
+                                            .getIdFromModel(componentEntity) != null
+                                            && Utilities.getIdFromModel(
+                                                    componentEntity).equals(
+                                                    modelId)) {
+                                        // Update the moml of that sub model.
+                                        MoMLChangeRequest change = new MoMLChangeRequest(
+                                                null, componentEntity,
+                                                savedModel.getModel());
+
+                                        change.setUndoable(true);
+                                        componentEntity.requestChange(change);
+
+                                    }
+                                }
+
+                                // Update the moml for this parent model. 
+                                MoMLChangeRequest change = new MoMLChangeRequest(
+                                        null, parentModelEffigy.getModel(),
+                                        parentModelEffigy.getModel()
+                                                .exportMoML());
+
+                                change.setUndoable(true);
+                                parentModelEffigy.getModel().requestChange(
+                                        change);
+
+                            }
+                        }
+                    }
+                }
+
                 _source.setModified(false);
+                if (_parentValidateFrame != null) {
+                    _parentValidateFrame.dispose();
+                }
                 dispose();
 
             } else {
@@ -341,27 +521,79 @@ public class SaveModelToDBFrame extends JFrame {
 
         } catch (ModelAlreadyExistException exception) {
 
-            Object[] options = { "Yes", "No", "Cancel" };
-            int n = JOptionPane.showOptionDialog(this,
-                    "A model with the given name "
-                            + "already exists in the database.  "
-                            + "Would you like to overwrite it? ",
-                    "Model Exists", JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
+            if (!_modelToSave.getName().equals(_initialModelName)) {
+                // This exception comes from changing the name in the first 
+                // frame.
+                Object[] options = { "Yes", "No", "Cancel" };
+                int n = JOptionPane
+                        .showOptionDialog(this, "A model with the given name "
+                                + "already exists in the database.  "
+                                + "Would you like to overwrite it? ",
+                                "Model Exists",
+                                JOptionPane.YES_NO_CANCEL_OPTION,
+                                JOptionPane.QUESTION_MESSAGE, null, options,
+                                options[2]);
 
-            if (n == JOptionPane.YES_OPTION) {
+                if (n == JOptionPane.YES_OPTION) {
 
-                _saveModelManager = null;
+                    _commitSave(false, null, null, null);
 
-                _commitSave(false, null);
+                } else {
 
+                    _rollbackModel();
+
+                }
             } else {
-
+                JOptionPane.showMessageDialog(this,
+                        "A model with the new version name already"
+                                + " exists in the database. Please use"
+                                + " another name.");
                 _rollbackModel();
-
             }
 
         }
+
+    }
+
+    /**
+     * Check whether the given model has parents. 
+     * 
+     * @return true - if there are parents of the given model.<br>  
+     *  False - if there is no parent for the given model. 
+     * @exception DBExecutionException Thrown if error happens during the
+     *   execution of this operation in the db layer. 
+     * @exception DBConnectionException Thrown if db connection cannot be 
+     * obtained. 
+     */
+    private boolean _hasParents() throws DBConnectionException,
+            DBExecutionException {
+
+        if (_hasParentFlag == false) {
+            return false;
+        }
+
+        if (_hasParentFlag == true && _parentModels == null) {
+            // Hasn’t verified whether the saving model has parents yet. 
+            if (Utilities.getIdFromModel(_modelToSave) != null) {
+                _parentModels = _saveModelManager
+                        .getFirstLevelParents(_xmlModel);
+
+                // In the case of no parents, set the has parent flag to false. 
+                if (_parentModels == null || _parentModels.size() == 0) {
+                    _hasParentFlag = false;
+                    _parentModels = null;
+                    return false;
+                }
+
+                return true;
+            } else {
+                // New Model
+                return false;
+            }
+
+        }
+
+        return true;
 
     }
 
@@ -486,7 +718,68 @@ public class SaveModelToDBFrame extends JFrame {
 
     }
 
+    /**
+     * Perform the saving of the model.
+     */
+    private void _save() {
+        try {
+
+            // If the form is in an invalid state, do not continue;
+            if (!_isValid()) {
+
+                _rollbackModel();
+
+                return;
+            }
+
+            // Verify the data in the second parent validation frame.
+            if (_parentValidateFrame != null) {
+                if (!_parentValidateFrame._isValid()) {
+
+                    _rollbackModel();
+                    return;
+                }
+            }
+
+            _saveModel();
+
+        } catch (NameDuplicationException e) {
+
+            MessageHandler.error("The model cannot be saved now "
+                    + "due to a NameDuplicationException.", e);
+
+            _rollbackModel();
+
+        } catch (IllegalActionException e) {
+
+            MessageHandler.error("The model cannot be saved now "
+                    + "due to an IllegalActionException.", e);
+
+            _rollbackModel();
+
+        } catch (CircularDependencyException e) {
+
+            MessageHandler.error("Saving this model as it is will "
+                    + "result in a circular dependency.  Examine "
+                    + "the referenced models to determine " + "the cause.", e);
+
+            _rollbackModel();
+
+        } catch (Exception e) {
+
+            MessageHandler.error("The model cannot be saved now "
+                    + "due to an Exception.", e);
+
+            _rollbackModel();
+
+        }
+
+    }
+
     private void _saveModel() throws Exception {
+
+        ArrayList<String> unchangedParents = null;
+        String newVersionName = null;
 
         try {
 
@@ -511,20 +804,22 @@ public class SaveModelToDBFrame extends JFrame {
 
                     }
 
+                } else {
+                    // Save the parent models that are chosen to maintain the old model.
+
+                    if (_parentValidateFrame != null
+                            && _parentValidateFrame._hasParentsWithNewVersion()) {
+
+                        unchangedParents = _parentValidateFrame
+                                ._getParentsWithNewVersion();
+                        newVersionName = _parentValidateFrame
+                                ._getNewVersionName();
+                    }
                 }
             }
 
-            String id = null;
-
-            if (_modelToSave.getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null) {
-
-                id = ((StringConstantParameter) _modelToSave
-                        .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
-                        .getExpression();
-
-            }
-
-            _commitSave(_isNew(), id);
+            _commitSave(_isNew(), Utilities.getIdFromModel(_modelToSave),
+                    unchangedParents, newVersionName);
 
         } catch (DBConnectionException exception) {
 
@@ -538,6 +833,36 @@ public class SaveModelToDBFrame extends JFrame {
 
             throw exception;
 
+        }
+
+    }
+
+    private void _setButtons() {
+
+        try {
+            if (_hasParents()) {
+                _nextButton.setEnabled(true);
+
+                if (_parentValidateFrame == null) {
+                    _saveButton.setEnabled(false);
+                } else {
+                    _saveButton.setEnabled(true);
+                }
+
+            } else {
+                _nextButton.setEnabled(false);
+                _saveButton.setEnabled(true);
+            }
+        } catch (DBConnectionException e1) {
+            JOptionPane.showMessageDialog(this,
+                    "Cannot fetch the parent models for this model.");
+            _nextButton.setEnabled(false);
+            _saveButton.setEnabled(false);
+        } catch (DBExecutionException e1) {
+            JOptionPane.showMessageDialog(this,
+                    "Cannot fetch the parent models for this model.");
+            _nextButton.setEnabled(false);
+            _saveButton.setEnabled(false);
         }
 
     }
@@ -622,23 +947,465 @@ public class SaveModelToDBFrame extends JFrame {
 
     private JButton _cancelButton;
 
-    private boolean _hasParentFlag;
+    private boolean _hasParentFlag = true;
 
     private String _initialModelName;
+
     private NamedObj _modelToSave;
-    
+
     private JButton _nextButton;
-    
+
     private ArrayList<StringParameter> _orignialAttributes;
+
     private ArrayList<XMLDBModel> _parentModels;
+
+    private ParentValidateFrame _parentValidateFrame;
 
     private JButton _saveButton;
 
     private SaveModelManager _saveModelManager = new SaveModelManager();
 
     private ActorGraphDBFrame _source;
+
     private JTabbedPane _tabbedPane;
 
     private XMLDBModel _xmlModel;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    private inner classes                  ////
+
+    private class ParentValidateFrame extends JFrame {
+
+        /**
+         * Construct the parent validate frame. 
+         * 
+         * @param firstFrameOfSave The first frame of the saving wizard. 
+         */
+        public ParentValidateFrame(SaveModelToDBFrame firstFrameOfSave) {
+
+            super(firstFrameOfSave.getTitle());
+
+            setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+            setPreferredSize(firstFrameOfSave.getSize());
+
+            _firstFrameOfSave = firstFrameOfSave;
+
+            JPanel topPanel = new JPanel();
+            topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+
+            JPanel mainPanel = new JPanel();
+
+            JTabbedPane tabbedPane = new JTabbedPane();
+
+            tabbedPane.setAlignmentX(LEFT_ALIGNMENT);
+
+            tabbedPane.setAlignmentY(TOP_ALIGNMENT);
+
+            tabbedPane.setLayout(new BoxLayout(tabbedPane, BoxLayout.Y_AXIS));
+
+            tabbedPane.addTab("Validate Parent Models", mainPanel);
+
+            tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+            tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+            tabbedPane.setPreferredSize(new Dimension(800, 500));
+
+            _modelNamePanel = new JPanel();
+            _parentsPanel = new JPanel();
+            _bottomPanel = new JPanel();
+
+            _modelNamePanel.setMaximumSize(new Dimension(800, 30));
+
+            _modelNamePanel.setBorder(BorderFactory.createEtchedBorder());
+
+            _modelNamePanel.setLayout(new BoxLayout(_modelNamePanel,
+                    BoxLayout.X_AXIS));
+
+            _parentsPanel.setLayout(new BoxLayout(_parentsPanel,
+                    BoxLayout.Y_AXIS));
+
+            JPanel explanationPanel = new JPanel();
+            explanationPanel.setAlignmentX(LEFT_ALIGNMENT);
+            explanationPanel.setAlignmentY(TOP_ALIGNMENT);
+
+            explanationPanel.setLayout(new BoxLayout(explanationPanel,
+                    BoxLayout.Y_AXIS));
+
+            mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
+            JScrollPane parentsScrollPane = new JScrollPane(_parentsPanel,
+                    ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+                    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+            parentsScrollPane.setAlignmentX(LEFT_ALIGNMENT);
+            parentsScrollPane.setAlignmentY(TOP_ALIGNMENT);
+            parentsScrollPane.setLayout(new ScrollPaneLayout());
+            parentsScrollPane.setPreferredSize(new Dimension(800, 500));
+
+            mainPanel.add(explanationPanel);
+
+            mainPanel.add(_modelNamePanel);
+            mainPanel.add(parentsScrollPane);
+            mainPanel.setPreferredSize(new Dimension(800, 500));
+
+            JLabel explanationLabel = new JLabel(
+                    "The following models are the parent models for this"
+                            + " saving model.");
+            JLabel explanationLabel2 = new JLabel(
+                    "If you do not want to reflect"
+                            + " the change to some parent models, please uncheck"
+                            + " them.");
+
+            explanationLabel.setAutoscrolls(true);
+
+            explanationPanel.add(explanationLabel);
+            explanationPanel.add(explanationLabel2);
+            explanationPanel.add(new JSeparator());
+
+            _modelNamePanel.setAlignmentX(LEFT_ALIGNMENT);
+            _parentsPanel.setAlignmentX(LEFT_ALIGNMENT);
+            _bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
+
+            _modelNamePanel.setAlignmentY(TOP_ALIGNMENT);
+            _parentsPanel.setAlignmentY(TOP_ALIGNMENT);
+            _bottomPanel.setAlignmentY(TOP_ALIGNMENT);
+
+            _newModelNameLable = new JLabel(
+                    "Please input the new name to replace this model for these parents: ");
+
+            // paint the hidden field for inputting the new model name
+            _newModelNameTextField = new JTextField();
+
+            _modelNamePanel.add(_newModelNameLable);
+            _modelNamePanel.add(_newModelNameTextField);
+
+            // set the visibility to false at the beginning
+            _showModelNameField(false);
+
+            // Get the list of parent models from _parentModels of the parent 
+            // frame SaveModelToDBFrame, paint the models one by one in the
+            // frame, order by name. 
+            _parentModelsPanels = new ArrayList<ParentModelItemPanel>();
+
+            Collections.sort(_firstFrameOfSave._parentModels);
+
+            for (XMLDBModel parentModel : _firstFrameOfSave._parentModels) {
+
+                ParentModelItemPanel parentModelItemPanel = new ParentModelItemPanel(
+                        parentModel.getModelName(), _firstFrameOfSave._source
+                                .getConfiguration(), this);
+
+                _parentModelsPanels.add(parentModelItemPanel);
+                _parentsPanel.add(parentModelItemPanel);
+
+            }
+
+            _previousButton = new JButton("<< Previous");
+            _previousButton.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setVisible(false);
+                    _firstFrameOfSave.setVisible(true);
+
+                    _firstFrameOfSave._saveButton.setEnabled(true);
+
+                }
+            });
+
+            // Add the save button
+            _saveButton = new JButton("Save");
+            
+            _saveButton.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    
+                    // Add the action listener to call the save button in the
+                    // previous frame, when this button is clicked.
+           
+                    _firstFrameOfSave._saveButton.setEnabled(true);
+                    _firstFrameOfSave._saveButton.doClick();
+
+                }
+            });
+
+            // Add the previous button
+            _cancelButton = new JButton("Cancel");
+
+            _cancelButton.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Add the action listener to call the cancel button in the
+                    // previous frame, when this button is clicked.
+
+                    _firstFrameOfSave._cancelButton.doClick();
+
+                }
+            });
+
+            topPanel.add(tabbedPane);
+
+            _bottomPanel.add(_previousButton);
+            _bottomPanel.add(_saveButton);
+            _bottomPanel.add(_cancelButton);
+
+            add(topPanel);
+            add(_bottomPanel);
+
+            validate();
+            repaint();
+
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                  private methods                          ////
+
+        private String _getNewVersionName() {
+
+            return _newModelNameTextField.getText();
+        }
+
+        private ArrayList<String> _getParentsWithNewVersion() {
+            ArrayList<String> parents = null;
+
+            if (_parentModelsPanels != null) {
+                parents = new ArrayList<String>();
+
+                for (ParentModelItemPanel parentModelItemPanel : _parentModelsPanels) {
+                    if (!parentModelItemPanel.isSelected()) {
+                        parents.add(parentModelItemPanel.getParentModelName());
+                    }
+                }
+            }
+
+            return parents;
+        }
+
+        private ArrayList<String> _getParentsMaintainReferences() {
+
+            ArrayList<String> parents = null;
+
+            if (_parentModelsPanels != null) {
+                parents = new ArrayList<String>();
+
+                for (ParentModelItemPanel parentModelItemPanel : _parentModelsPanels) {
+                    if (parentModelItemPanel.isSelected()) {
+                        parents.add(parentModelItemPanel.getParentModelName());
+                    }
+                }
+            }
+
+            return parents;
+        }
+
+        /**
+         * Check whether there is any parent being chosen to have a new 
+         * version model name for the saving model, which means that parent
+         *  model has its check box unchecked. 
+         * 
+         * @return True - when there are some parent models chosen.<br>
+         *   False if there is no model chosen. 
+         */
+        private boolean _hasParentsWithNewVersion() {
+
+            // For each checkbox of the parents models
+            // check whether there is any check box unchecked
+            for (ParentModelItemPanel parentModelItemPanel : _parentModelsPanels) {
+                if (!parentModelItemPanel.isSelected()) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Validate whether the information in this frame is valid. 
+         * 
+         * @return True - if the data is valid.<br>
+         *       False - if some data is invalid.
+         */
+        private boolean _isValid() {
+            if (_hasParentsWithNewVersion()) {
+
+                if (_newModelNameTextField.getText().trim().isEmpty()
+                        || !Utilities
+                                .checkAttributeModelName(_newModelNameTextField
+                                        .getText())) {
+
+                    return false;
+                }
+                return true;
+            }
+
+            return true;
+
+        }
+
+        private void _showModelNameField(boolean isShown) {
+
+            _newModelNameTextField.setText("");
+
+            _newModelNameLable.setVisible(isShown);
+            _newModelNameTextField.setVisible(isShown);
+            _modelNamePanel.setVisible(isShown);
+        }
+
+        private void _unCheckParentModel() {
+
+            if (_hasParentsWithNewVersion()) {
+                if (!_modelNamePanel.isVisible()) {
+                    _showModelNameField(true);
+                }
+            } else {
+                if (_modelNamePanel.isVisible()) {
+                    _showModelNameField(false);
+                }
+            }
+
+            validate();
+            repaint();
+
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                  private variables                        ////
+
+        private JPanel _bottomPanel;
+
+        private JButton _cancelButton;
+
+        private SaveModelToDBFrame _firstFrameOfSave;
+
+        private JPanel _modelNamePanel;
+
+        private JLabel _newModelNameLable;
+
+        private JTextField _newModelNameTextField;
+
+        private ArrayList<ParentModelItemPanel> _parentModelsPanels;
+
+        private JPanel _parentsPanel;
+
+        private JButton _previousButton;
+
+        private JButton _saveButton;
+
+    }
+
+    private class ParentModelItemPanel extends JPanel {
+
+        /**
+         * Construct the ParentModelItemPanel. 
+         * 
+         * @param parentModelName The name of the parent model.
+         * @param configuration The configuration.
+         * @param parentValidateFrame The frame contains this panel. 
+         */
+        public ParentModelItemPanel(String parentModelName,
+                Configuration configuration,
+                ParentValidateFrame parentValidateFrame) {
+
+            super();
+
+            _modelName = parentModelName;
+            _parentFrame = parentValidateFrame;
+            _configuration = configuration;
+
+            GroupLayout layout = new GroupLayout(this);
+
+            setLayout(layout);
+            setAlignmentX(LEFT_ALIGNMENT);
+            setAlignmentY(TOP_ALIGNMENT);
+
+            _modelNameButton = new JButton("<html><u>" + parentModelName
+                    + "</html></u>");
+
+            _modelNameButton.setForeground(Color.BLUE);
+            _modelNameButton.setMaximumSize(getMinimumSize());
+
+            _modelNameButton.setAlignmentX(LEFT_ALIGNMENT);
+
+            _modelNameButton.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent event) {
+
+                    try {
+
+                        PtolemyEffigy effigy = LoadManager.loadModel(
+                                _modelName, _configuration);
+
+                        if (effigy != null) {
+
+                            effigy.showTableaux();
+
+                        } else {
+
+                            JOptionPane.showMessageDialog(
+                                    ParentModelItemPanel.this,
+                                    "The specified model could "
+                                            + "not be found in the database.",
+                                    "Load Error",
+                                    JOptionPane.INFORMATION_MESSAGE, null);
+
+                        }
+
+                    } catch (Exception e) {
+
+                        MessageHandler.error(
+                                "Cannot load the specified model. ", e);
+
+                    }
+
+                }
+
+            });
+
+            // For each model, paint one checkbox along with it, checked by 
+            // default.
+            _checkBox = new JCheckBox();
+            _checkBox.setSelected(true);
+
+            _checkBox.setAlignmentX(LEFT_ALIGNMENT);
+
+            _checkBox.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    _parentFrame._unCheckParentModel();
+
+                }
+            });
+
+            layout.setHorizontalGroup(layout.createSequentialGroup()
+                    .addComponent(_checkBox).addComponent(_modelNameButton));
+
+            layout.setVerticalGroup(layout.createParallelGroup().addComponent(
+                    _checkBox).addComponent(_modelNameButton));
+
+        }
+
+        public String getParentModelName() {
+
+            return _modelName;
+        }
+
+        public boolean isSelected() {
+
+            return _checkBox.isSelected();
+        }
+
+        private JCheckBox _checkBox;
+
+        private Configuration _configuration;
+
+        private String _modelName;
+
+        private JButton _modelNameButton;
+
+        private ParentValidateFrame _parentFrame;
+    }
 
 }
