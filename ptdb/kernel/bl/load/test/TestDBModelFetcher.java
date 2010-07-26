@@ -95,5 +95,38 @@ public class TestDBModelFetcher {
         PowerMock.verifyAll();
 
     }
+    
+    /**
+     * Verify that given a model name, null is not returned.
+     * @exception Exception
+     */
+    @Test
+    public void testLoadUsingId() throws Exception {
 
+        String modelId = "model1";
+        String modelName = null;
+        
+        PowerMock.mockStatic(DBConnectorFactory.class);
+
+        GetModelTask getModelTaskMock = PowerMock.createMock(GetModelTask.class);
+        DBConnection dBConnectionMock = PowerMock.createMock(DBConnection.class);
+
+        XMLDBModel modelMock = PowerMock.createMock(XMLDBModel.class);
+
+        EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(dBConnectionMock);
+        PowerMock.expectNew(GetModelTask.class, modelName, modelId).andReturn(getModelTaskMock);
+        EasyMock.expect(dBConnectionMock.executeGetCompleteModelTask(getModelTaskMock)).andReturn(modelMock);
+
+        dBConnectionMock.closeConnection();
+
+        //Execute the test.  Verify that, load does not return null if the database layer is mocked.
+        PowerMock.replayAll();
+
+        XMLDBModel dbModel = null;
+        dbModel = DBModelFetcher.loadUsingId(modelId);
+        assertNotNull(dbModel);
+
+        PowerMock.verifyAll();
+
+    }
 }

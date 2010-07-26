@@ -50,9 +50,21 @@ public class GetModelTask extends Task {
      * Construct an instance of the object and set the model name to be fetched
      * from the database.
      * 
-     * @param modelName the model name to be fetched from the database.
+     * @param modelName the model name to be fetched from the database. 
      */
     public GetModelTask(String modelName) {
+        _modelName = modelName;
+    }
+    
+    /**
+     * Construct an instance of the object and set the model id to be fetched
+     * from the database.
+     * 
+     * @param modelId the model id to be fetched from the database.
+     * @param modelName the model name to be fetched from the database.
+     */
+    public GetModelTask(String modelName, String modelId) {
+        _modelId = modelId;
         _modelName = modelName;
     }
     

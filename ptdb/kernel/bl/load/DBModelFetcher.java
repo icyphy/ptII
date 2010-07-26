@@ -55,7 +55,29 @@ public class DBModelFetcher {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    /** Given a model id representing the model to load, return
+     *  an XMLDBModel object that contains the MoML.
+     *
+     * @param id
+     *          The id of the model to be loaded.
+     *          
+     * @return An XMLDBModel object from the Database,
+     *         containing its MoML string.
+     *         
+     * @exception DBConnectionException
+     *          Thrown if there a problem with the database connection.
+     *          
+     * @exception DBExecutionException
+     *          Thrown if there is a problem executing the database task.
+     *          
+     */
+    public static XMLDBModel loadUsingId(String id)
+            throws DBConnectionException, DBExecutionException {
 
+        GetModelTask getModelTask = new GetModelTask(null, id);
+        return load(getModelTask);
+    }
+    
     /** Given a model name representing the model to load, return
      *  an XMLDBModel object that contains the MoML.
      *
@@ -75,16 +97,34 @@ public class DBModelFetcher {
     public static XMLDBModel load(String name) throws DBConnectionException,
             DBExecutionException {
 
+        GetModelTask getModelTask = new GetModelTask(name);
+        return load(getModelTask);
+    }
+    
+    /**
+     * Given a GetModelTask representing the model(name or id) to load, return 
+     * an XMLDBModel object that contains the MoML.
+     *  
+     * @param getModelTask GetModelTask that contains either the id or the model 
+     * name.
+     * @return An XMLDBModel object from the Database, containing its MoML string.
+     * @throws DBConnectionException Thrown if there a problem with the database 
+     * connection.
+     * @throws DBExecutionException Thrown if there is a problem executing the 
+     * database task.
+     */
+    private static XMLDBModel load(GetModelTask getModelTask)
+            throws DBConnectionException, DBExecutionException {
+
         XMLDBModel returnModel = null;
 
         DBConnection connection = DBConnectorFactory.getSyncConnection(false);
 
         try {
 
-            GetModelTask getModelTask = new GetModelTask(name);
             returnModel = connection.executeGetCompleteModelTask(getModelTask);
 
-        } catch (DBExecutionException dbEx) {            
+        } catch (DBExecutionException dbEx) {
             throw dbEx;
         } finally {
             if (connection != null) {

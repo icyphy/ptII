@@ -182,12 +182,56 @@ public class LoadManager {
 
         XMLDBModel dbModel = DBModelFetcher.load(name);
         
-        if(dbModel == null) return null;
-        
-        PtolemyEffigy returnEffigy = _getEffigy(dbModel, configuration);
-        
-        return returnEffigy;
+        return createEffigy(dbModel, configuration);
 
+    }
+    
+    /** Given a model id, return a PtolemyEffigy objects.
+    *
+    * @param id
+    *          The model id.  An alphanumeric
+    *          string without special characters.
+    *          If no model with the given name is found, return null.
+    * @param configuration
+    *          The configuration used to create the effigy.
+    * @return
+    *          A PtolemyEffigy object that the
+    *          GUI can display.
+    * @exception DBConnectionException
+    *          Thrown by DBModelFetcher if a problem occurs with the
+    *          database connection.
+    * @exception DBExecutionException 
+    *          Thrown by DBModelFetcher if a problem while executing a 
+    *          command.
+    * @exception Exception
+    *          Thrown if a problem occurs creating an effigy from the MoML.
+    */
+   public  static PtolemyEffigy loadModelUsingId(String id, Configuration configuration)
+           throws DBConnectionException, DBExecutionException, Exception {
+
+       XMLDBModel dbModel = DBModelFetcher.load(id);
+       
+       return createEffigy(dbModel, configuration);
+
+   }
+
+    /**
+     * Create a Ptolemy Effigy from the given XMLDBModel.
+     * 
+     * @param dbModel Model that needs to be converted into Ptolemy Effigy.
+     * @param configuration The configuration used to create the effigy.
+     * @return  A PtolemyEffigy object that the GUI can display.
+     * @throws Exception Thrown if a problem occurs creating an effigy from the 
+     * MoML. 
+     */
+    private static PtolemyEffigy createEffigy(XMLDBModel dbModel,
+            Configuration configuration) throws Exception {
+        
+        if (dbModel == null)
+            return null;
+     
+        PtolemyEffigy returnEffigy = _getEffigy(dbModel, configuration);
+        return returnEffigy;
     }
     
     /** Check if a circular dependency would result from importing a child 
