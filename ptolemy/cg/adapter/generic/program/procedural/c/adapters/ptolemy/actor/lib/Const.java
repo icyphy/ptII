@@ -28,7 +28,7 @@
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// AddSubtract
+//// Const
 
 /**
  A adapter class for Const.
@@ -43,8 +43,8 @@ public class Const
         extends
         ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.Const {
     /**
-     *  Construct a AddSubtract adapter.
-     *  @param actor The given ptolemy.actor.lib.AddSubtract actor.
+     *  Construct a Const adapter.
+     *  @param actor The given ptolemy.actor.lib.Const actor.
      */
     public Const(ptolemy.actor.lib.Const actor) {
         super(actor);

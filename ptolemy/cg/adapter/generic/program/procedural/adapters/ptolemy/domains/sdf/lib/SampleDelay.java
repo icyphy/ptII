@@ -48,8 +48,8 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class SampleDelay extends NamedProgramCodeGeneratorAdapter {
     /**
-     *  Construct a AddSubtract adapter.
-     *  @param actor The given ptolemy.actor.lib.AddSubtract actor.
+     *  Construct a SampleDelay adapter.
+     *  @param actor The given ptolemy.domains.sdf.lib.SampleDelay actor.
      */
     public SampleDelay(ptolemy.domains.sdf.lib.SampleDelay actor) {
         super(actor);

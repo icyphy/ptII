@@ -88,7 +88,7 @@ public class UpSample extends NamedProgramCodeGeneratorAdapter {
 
     /**
      * Generate preinitialize code.
-     * Read the <code>preinitBlock</code> from AddSubtract.c,
+     * Read the <code>preinitBlock</code> from the template file.
      * replace macros with their values and returns the processed code
      * block.
      * @return The generated code.

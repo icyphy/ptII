@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class MovingAverage extends NamedProgramCodeGeneratorAdapter {
     /**
-     * Construct an AddSubtract adapter.
+     * Construct a MovingAverage adapter.
      * @param actor the associated actor
      */
     public MovingAverage(ptolemy.actor.lib.MovingAverage actor) {
