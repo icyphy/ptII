@@ -540,6 +540,12 @@ public class SaveModelManager {
             IllegalArgumentException, ModelAlreadyExistException,
             DBModelNotFoundException {
 
+        if (originalModel == null) {
+            
+            throw new IllegalArgumentException(
+                    "The original model cannot be null.");
+        }
+        
         if (originalModel.getModelId() == null
                 && (originalModel.getModelName() == null || originalModel
                         .getModelName().length() == 0)) {
