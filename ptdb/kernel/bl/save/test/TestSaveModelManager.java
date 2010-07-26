@@ -571,6 +571,8 @@ public class TestSaveModelManager {
         SaveModelManager saveManager = new SaveModelManager();
 
         PowerMock.mockStatic(DBConnectorFactory.class);
+        
+        PowerMock.mockStatic(CacheManager.class);
 
         DBConnection dBConnectionMock = PowerMock
                 .createMock(DBConnection.class);
@@ -589,6 +591,11 @@ public class TestSaveModelManager {
         PowerMock.expectNew(RenameModelTask.class, modelMock, newName)
                 .andReturn(taskMock);
 
+        ArrayList<XMLDBModel> modelList = new ArrayList<XMLDBModel>();
+        modelList.add(modelMock);
+        EasyMock.expect(CacheManager.removeFromCache(modelList))
+                .andReturn(true);
+        
         dBConnectionMock.executeRenameModelTask(taskMock);
 
         PowerMock.expectLastCall().atLeastOnce();
@@ -692,6 +699,8 @@ public class TestSaveModelManager {
         SaveModelManager saveManager = new SaveModelManager();
 
         PowerMock.mockStatic(DBConnectorFactory.class);
+        
+        PowerMock.mockStatic(CacheManager.class);
 
         DBConnection dBConnectionMock = PowerMock
                 .createMock(DBConnection.class);
@@ -713,6 +722,11 @@ public class TestSaveModelManager {
         dBConnectionMock.executeRenameModelTask(taskMock);
 
         PowerMock.expectLastCall().atLeastOnce();
+        
+        ArrayList<XMLDBModel> modelList = new ArrayList<XMLDBModel>();
+        modelList.add(modelMock);
+        EasyMock.expect(CacheManager.removeFromCache(modelList))
+                .andReturn(true);
 
         dBConnectionMock.closeConnection();
 
@@ -744,6 +758,8 @@ public class TestSaveModelManager {
         SaveModelManager saveManager = new SaveModelManager();
 
         PowerMock.mockStatic(DBConnectorFactory.class);
+        
+        PowerMock.mockStatic(CacheManager.class);
 
         DBConnection dBConnectionMock = PowerMock
                 .createMock(DBConnection.class);
@@ -765,6 +781,11 @@ public class TestSaveModelManager {
         dBConnectionMock.executeRenameModelTask(taskMock);
 
         PowerMock.expectLastCall().atLeastOnce();
+        
+        ArrayList<XMLDBModel> modelList = new ArrayList<XMLDBModel>();
+        modelList.add(modelMock);
+        EasyMock.expect(CacheManager.removeFromCache(modelList))
+                .andReturn(true);
 
         dBConnectionMock.closeConnection();
 
