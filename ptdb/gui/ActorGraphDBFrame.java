@@ -712,18 +712,18 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             }
 
         }
-
-        // Remove if depth > limit
-        if (historyList.size() >= _historyDepth) {
-
-            historyList.remove(historyList.size() - 1);
-
-        }
-
+        
         // Add to fist position
         if (!delete) {
 
             historyList.add(0, modelName);
+
+        }
+        
+        // Remove if depth > limit
+        if (historyList.size() > _historyDepth) {
+
+            historyList.remove(historyList.size() - 1);
 
         }
 
