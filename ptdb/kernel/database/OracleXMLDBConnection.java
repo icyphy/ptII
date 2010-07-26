@@ -2089,8 +2089,13 @@ public class OracleXMLDBConnection implements DBConnection {
         StringBuffer referenceString = new StringBuffer();
         String modelName = xmlDBModel.getModelName();
 
+        String modelId = xmlDBModel.getModelId();
+        if(modelId == null || modelId.length() == 0) {
+            modelId = _getModelIdFromModelName(modelName);
+        }
+        
         referenceString.append("<entity ").append(XMLDBModel.DB_MODEL_ID_ATTR)
-                .append("=").append("\"").append(xmlDBModel.getModelId())
+                .append("=").append("\"").append(modelId)
                 .append("\" ");
 
         referenceString.append(XMLDBModel.DB_MODEL_NAME).append("=").append(
@@ -2749,7 +2754,7 @@ public class OracleXMLDBConnection implements DBConnection {
     
     /** Update the reference file with new references.
      * 
-     * @param xmlDBModel Model for which the referene file needs to be updated.
+     * @param xmlDBModel Model for which the reference file needs to be updated.
      * @throws DBExecutionException If thrown while updating references.
      * @throws CircularDependencyException If thrown while creating reference 
      * string.
