@@ -588,6 +588,13 @@ public class SaveModelManager {
                 dbConnection.closeConnection();
             }
         }
+        
+        // Remove the original model from the cache.
+        ArrayList<XMLDBModel> removeFromCacheList = new ArrayList<XMLDBModel>();
+        
+        removeFromCacheList.add(originalModel);
+        CacheManager.removeFromCache(removeFromCacheList);
+        
 
     }
 
