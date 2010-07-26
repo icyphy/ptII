@@ -33,6 +33,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -384,6 +385,16 @@ public class SaveModelToDBFrame extends JFrame {
                     change.setUndoable(true);
 
                     _modelToSave.requestChange(change);
+                    _source.setTitle(_xmlModel.getModelName());
+                    
+                    try {
+                        _source.updateDBModelHistory(
+                                _xmlModel.getModelName(), false);
+
+                    } catch (IOException e) {
+                        // Ignore if recent files are not updated.
+                    }
+
 
                 } catch (Exception e) {
                     throw e;
@@ -535,6 +546,9 @@ public class SaveModelToDBFrame extends JFrame {
                                 options[2]);
 
                 if (n == JOptionPane.YES_OPTION) {
+
+
+                _saveModelManager = new SaveModelManager();
 
                     _commitSave(false, null, null, null);
 

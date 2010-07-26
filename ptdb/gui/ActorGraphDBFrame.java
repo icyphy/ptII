@@ -201,11 +201,11 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
                 if (getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null) {
 
-                    _updateDBModelHistory(getModel().getName(), false);
+                    updateDBModelHistory(getModel().getName(), false);
 
                 } else {
 
-                    _updateDBModelHistory(getModel().getName(), true);
+                    updateDBModelHistory(getModel().getName(), true);
 
                 }
 
@@ -604,7 +604,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
                 try {
 
-                    _updateDBModelHistory(actionCommand, true);
+                    updateDBModelHistory(actionCommand, true);
 
                 } catch (IOException ex2) {
 
@@ -705,7 +705,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      * written to.
      * 
      */
-    private void _updateDBModelHistory(String modelName, boolean delete)
+    public void updateDBModelHistory(String modelName, boolean delete)
             throws IOException {
 
         List<String> historyList = _readHistory();

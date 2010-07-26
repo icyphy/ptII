@@ -34,6 +34,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -209,7 +210,8 @@ public class RenameModelFrame extends JFrame {
             SaveModelManager saveModelManager = new SaveModelManager();
 
             XMLDBModel xmldbModel = new XMLDBModel(_model.getName());
-
+            String oldName = _model.getName();
+            
             xmldbModel.setModelId(Utilities.getIdFromModel(_model));
 
             try {
@@ -230,7 +232,18 @@ public class RenameModelFrame extends JFrame {
                         "Rename model successfully!");
 
                 _sourceFrame.setTitle(_model.getName());
+                
+                try {
 
+                    ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(
+                            newName, false);
+                    ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(
+                            oldName, true);
+
+                } catch (IOException e) {
+                    // Ignore if recent files are not updated.
+                }
+                
                 _sourceFrame.repaint();
 
                 dispose();
