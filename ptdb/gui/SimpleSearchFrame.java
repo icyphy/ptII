@@ -852,6 +852,7 @@ public class SimpleSearchFrame extends JFrame {
 
             // Show the search result frame.
             searchResultsFrame.pack();
+            searchResultsFrame.setLocationRelativeTo(this);
             searchResultsFrame.setVisible(true);
 
             // Call the Search Manager to trigger the search.
@@ -948,7 +949,7 @@ public class SimpleSearchFrame extends JFrame {
             }
 
             _patternMatchframe.pack();
-            _patternMatchframe.centerOnScreen();
+            _patternMatchframe.setLocationRelativeTo(SimpleSearchFrame.this);
             _patternMatchframe.setVisible(true);
         }
 
