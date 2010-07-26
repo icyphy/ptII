@@ -209,7 +209,7 @@ public class LoadManager {
    public  static PtolemyEffigy loadModelUsingId(String id, Configuration configuration)
            throws DBConnectionException, DBExecutionException, Exception {
 
-       XMLDBModel dbModel = DBModelFetcher.load(id);
+       XMLDBModel dbModel = DBModelFetcher.loadUsingId(id);
        
        return createEffigy(dbModel, configuration);
 
