@@ -30,26 +30,27 @@ package ptdb.kernel.bl.save.test;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.junit.Test;
 
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.DBModelNotFoundException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.DBConnectorFactory;
+import ptdb.kernel.bl.load.DBModelFetcher;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptdb.kernel.database.DBConnection;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////
 //// TestSaveRequirementsIntegration
@@ -329,5 +330,78 @@ public class TestSaveRequirementsIntegration {
             }
         }
         
+    }
+    
+    @Test
+    public void testRenameModel() {
+        SaveModelManager saveModelManager = new SaveModelManager();
+        XMLDBModel originalModel = new XMLDBModel("Adder");
+        try {
+            saveModelManager.renameModel(originalModel, "X");
+            fail("Model already exists exception not thrown.");
+        } catch (ModelAlreadyExistException e) {
+
+        } catch (Exception e) {
+            fail("Model already exists exception not thrown - "
+                    + e.getMessage());
+        }
+
+        try {
+            saveModelManager.renameModel(new XMLDBModel(null), "X");
+            fail("Illegal argument exception not thrown.");
+        } catch (IllegalArgumentException e) {
+
+        } catch (Exception e) {
+            fail("Illegal argument exception not thrown - " + e.getMessage());
+        }
+
+        try {
+            saveModelManager.renameModel(originalModel, "");
+            fail("Illegal argument exception not thrown.");
+        } catch (IllegalArgumentException e) {
+
+        } catch (Exception e) {
+            fail("Illegal argument exception not thrown - " + e.getMessage());
+        }
+
+        try {
+            saveModelManager.renameModel(originalModel, null);
+            fail("Illegal argument exception not thrown.");
+        } catch (IllegalArgumentException e) {
+
+        } catch (Exception e) {
+            fail("Illegal argument exception not thrown - " + e.getMessage());
+        }
+        
+        try {
+            saveModelManager.renameModel(originalModel, "TestRenameModel");
+            try {
+                DBModelFetcher.load("Adder");
+                fail("Test failed. Model(Adder) still in the database");
+            } catch (DBExecutionException e) {
+                
+            }
+            
+            try {
+                DBModelFetcher.load("TestRenameModel");
+            } catch (DBExecutionException e) {
+                fail("Test failed. Model (TestRenameModel) not found in the database." + e.getMessage());
+            }
+        } catch (Exception e) {
+            fail("Failed with exception - " + e.getMessage());
+        }  
+    }
+    
+    @Test
+    public void testResetModels() {
+        SaveModelManager saveModelManager = new SaveModelManager();
+        XMLDBModel originalModel = new XMLDBModel("TestRenameModel");
+        System.out.println("Called----");
+        // Reset the name back to original.
+        try {
+            saveModelManager.renameModel(originalModel, "Adder");
+        } catch (Exception e) {
+            fail("Failed with exception - " + e.getMessage());
+        }
     }
 }
