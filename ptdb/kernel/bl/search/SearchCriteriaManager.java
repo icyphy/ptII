@@ -78,19 +78,19 @@ public class SearchCriteriaManager {
 
     /**
      * Open the file from the file system, and load the search criteria 
-     * stored in it.  Return the loaded search criteria back to the user. 
+     * stored in it.  Return the loaded search criteria back to the caller. 
      * 
      * @param searchCriteriaFileName The location and file name of the search
      *  criteria to be loaded.
      * @param configuration The configuration of the opening search criteria.
-     * @return The search criteria contains the information stored in the
+     * @return The search criteria that contains the information stored in the
      *  file to be loaded. 
      * @exception SearchCriteriaParseException Thrown if there is any error
      *  during parsing the search criteria file. 
-     * @exception IOException Thrown if IO errors happending during reading
+     * @exception IOException Thrown if IO errors happened during reading of
      * the search criteria file. 
      */
-    public SearchCriteria open(String searchCriteriaFileName,
+    public static SearchCriteria open(String searchCriteriaFileName,
             Configuration configuration) throws SearchCriteriaParseException,
             IOException {
 
@@ -240,7 +240,7 @@ public class SearchCriteriaManager {
      * @exception IOException Thrown if error happens during writing the 
      *  search criteria information to the file. 
      */
-    public boolean save(SearchCriteria searchCriteria, String searchCriteriaFile)
+    public static boolean save(SearchCriteria searchCriteria, String searchCriteriaFile)
             throws IllegalActionException, IOException {
 
         StringBuffer searchCriteriaStringBuffer = new StringBuffer();

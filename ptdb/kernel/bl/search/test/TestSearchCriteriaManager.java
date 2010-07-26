@@ -30,7 +30,6 @@ package ptdb.kernel.bl.search.test;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,22 +82,22 @@ public class TestSearchCriteriaManager {
             workingPath = workingPath.substring(0, workingPath.length() - 11);
         }
         
-        SearchCriteriaManager criteriaManager = new SearchCriteriaManager();
+//        SearchCriteriaManager criteriaManager = new SearchCriteriaManager();
 
-        SearchCriteria storedSearchCriteria1 = criteriaManager.open(workingPath
+        SearchCriteria storedSearchCriteria1 = SearchCriteriaManager.open(workingPath
                 + "/ptdb/kernel/bl/search/test/searchcriteria.xml",
                 new Configuration(new Workspace()));
         ;
 
-        criteriaManager.save(storedSearchCriteria1, workingPath
+        SearchCriteriaManager.save(storedSearchCriteria1, workingPath
                 + "/ptdb/kernel/bl/search/test/searchcriteria2.xml");
 
-        SearchCriteria storedSearchCriteria2 = criteriaManager.open(workingPath
+        SearchCriteria storedSearchCriteria2 = SearchCriteriaManager.open(workingPath
                 + "/ptdb/kernel/bl/search/test/searchcriteria2.xml",
                 new Configuration(new Workspace()));
         ;
 
-        criteriaManager.save(storedSearchCriteria2, workingPath
+        SearchCriteriaManager.save(storedSearchCriteria2, workingPath
                 + "/ptdb/kernel/bl/search/test/searchcriteria3.xml");
 
         assertEquals("testmodel", storedSearchCriteria1.getModelName());
@@ -144,10 +143,10 @@ public class TestSearchCriteriaManager {
 
         boolean flag = false;
 
-        SearchCriteriaManager criteriaManager = new SearchCriteriaManager();
+//        SearchCriteriaManager criteriaManager = new SearchCriteriaManager();
 
         try {
-            criteriaManager.open("searchcriteria333.xml", new Configuration(
+            SearchCriteriaManager.open("searchcriteria333.xml", new Configuration(
                     new Workspace()));
             ;
         } catch (FileNotFoundException e) {
