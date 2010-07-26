@@ -194,7 +194,9 @@ public class LinkController extends BasicEdgeController {
          *  _color of the edge is set then use that
          *  color to draw the line. If the StringAttribute
          *  _explanation of the edge is set then use it to set the
-         *  tooltip.
+         *  tooltip.  The _linkBendRadius preference is read from
+         *  the {@ link ptolemy.actor.gui.PtolemyPreferences} and used
+         *  to set the bend radius.  The default bend radius is 20.
          *  @param edge The edge.
          *  @param tailSite The tail site.
          *  @param headSite The head site.
