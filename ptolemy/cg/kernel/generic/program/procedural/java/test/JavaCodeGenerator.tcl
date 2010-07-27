@@ -63,20 +63,29 @@ test JavaCodeGenerator-1.1 {Instantiate a JavaCodeGenerator, call a few methods}
 }}
 
 ################################################
-# Tests for splitLongBody
+# Tests for splitLongBody and splitVariableDeclaration
 
+# Create dummy code
 proc makeCode {lines} {
     set results {line 1;}
     for {set i 2} {$i <= $lines} {incr i} {
 	set results "$results\nline $i;"
     }
-    return $results;
+    return "$results\n";
 }
 
+# Return a two element array
 proc testSplitLongBody {codeLines bodyLines} {
     global codeGenerator
     set code [makeCode $codeLines]
     return [$codeGenerator splitLongBody $bodyLines foo $code]
+}
+
+# Return a list of at least two Strings.
+proc testSplitVariableDeclaration {codeLines bodyLines} {
+    global codeGenerator
+    set code [makeCode $codeLines]
+    return [$codeGenerator splitVariableDeclaration $bodyLines foo $code]
 }
 
 
@@ -248,4 +257,116 @@ foo.foo_2();
 } {foo foo = new foo();
 foo.callAllfoo();
 }}
+
+#################################################################
+#### splitVariableDeclaration
+test JavaCodeGenerator-3.1 {splitVariableDeclaration no code} {
+    set results [$codeGenerator splitVariableDeclaration 5 foo ""]
+    # listToStrings is defined in $PTII/util/testsuite/enums.tcl
+    listToStrings $results
+} {{} {}}
+
+#####
+test JavaCodeGenerator-3.2 {splitVariableDeclaration code smaller than max body size} {
+    set results [testSplitVariableDeclaration 4 5]
+    listToStrings $results
+} {{} {line 1;
+line 2;
+line 3;
+line 4;
+}}
+
+#####
+test JavaCodeGenerator-3.3 {splitVariableDeclaration code same size as max body size} {
+    set results [testSplitVariableDeclaration 5 5]
+    listToStrings $results
+} {{} {line 1;
+line 2;
+line 3;
+line 4;
+line 5;
+}}
+
+#####
+test JavaCodeGenerator-3.4 {splitVariableDeclaration code same size one over max body size} {
+    set results [testSplitVariableDeclaration 6 5]
+    listToStrings $results
+} {{import foo.Token;
+import static foo.class0.*;
+import static foo.class1.*;
+} {package foo;
+public class class0 { 
+line 1;
+line 2;
+line 3;
+line 4;
+line 5;
+}
+} {package foo;
+public class class1 { 
+line 6;
+}
+}}
+
+#####
+test JavaCodeGenerator-3.5 {splitVariableDeclaration code same size one over max body size} {
+    set results [testSplitVariableDeclaration 12 5]
+    listToStrings $results
+} {{import foo.Token;
+import static foo.class0.*;
+import static foo.class1.*;
+import static foo.class2.*;
+} {package foo;
+public class class0 { 
+line 1;
+line 2;
+line 3;
+line 4;
+line 5;
+}
+} {package foo;
+public class class1 { 
+line 6;
+line 7;
+line 8;
+line 9;
+line 10;
+}
+} {package foo;
+public class class2 { 
+line 11;
+line 12;
+}
+}}
+
+#####
+test JavaCodeGenerator-3.7 {one line per method start with a comment} {
+    set code "     /* This is a comment*/"
+
+    set results [$codeGenerator splitVariableDeclaration 1 foo $code]
+    listToStrings $results
+} {{} {     /* This is a comment*/}}
+
+#####
+test JavaCodeGenerator-3.8 {one line per method} {
+    set results [testSplitVariableDeclaration 3 1]
+    listToStrings $results
+} {{import foo.Token;
+import static foo.class0.*;
+import static foo.class1.*;
+import static foo.class2.*;
+} {package foo;
+public class class0 { 
+line 1;
+}
+} {package foo;
+public class class1 { 
+line 2;
+}
+} {package foo;
+public class class2 { 
+line 3;
+}
+}}
+
 
