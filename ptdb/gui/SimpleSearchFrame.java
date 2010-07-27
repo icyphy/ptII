@@ -120,7 +120,7 @@ public class SimpleSearchFrame extends JFrame {
 
         _sourceFrame = frame;
         _configuration = configuration;
-        System.out.println("first configuration: " + _configuration);
+
         _attributesListPanel = new AttributesListPanel(new NamedObj());
         _saveLocation = null;
         _searchCriteria = new SearchCriteria();
