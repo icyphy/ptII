@@ -27,6 +27,8 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,13 +61,15 @@ public class BooleanMultiplexor extends NamedProgramCodeGeneratorAdapter {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    /*
     protected String _generateFireCode() throws IllegalActionException {
         super._generateFireCode();
-        
+
+        ptolemy.actor.lib.BooleanMultiplexor actor = (ptolemy.actor.lib.BooleanMultiplexor) getComponent();
         CodeStream codeStream = _templateParser.getCodeStream();
 
-        codeStream.appendCodeBlock("fireBlock");
+        ArrayList<String> args = new ArrayList<String>();
+        args.add(getCodeGenerator().codeGenType(actor.output.getType()));
+        codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
-    }*/
+    }
 }
