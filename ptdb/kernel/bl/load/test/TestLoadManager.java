@@ -207,7 +207,7 @@ public class TestLoadManager {
         //Mock the LoadModelManager class and assume that load() returns the XMLDBModel we've created.
 
         PowerMock.mockStatic(DBModelFetcher.class);
-        EasyMock.expect(DBModelFetcher.load(inputString)).andReturn(dbModel);
+        EasyMock.expect(DBModelFetcher.loadUsingId(inputString)).andReturn(dbModel);
 
         //Execute the test.  Verify that, given an XMLDBModel object, we can get a valid effigy.
         PowerMock.replayAll();
