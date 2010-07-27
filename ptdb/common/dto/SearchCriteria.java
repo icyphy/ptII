@@ -26,14 +26,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.common.dto;
 
 import java.util.ArrayList;
 
-import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.util.Attribute;
 
 ///////////////////////////////////////////////////////////////////
@@ -83,7 +80,6 @@ public class SearchCriteria {
         return _dbGraphSearchCriteria;
     }
 
-    
     /**
      * Get the name of the model from the search criteria. 
      * 
@@ -93,17 +89,17 @@ public class SearchCriteria {
     public String getModelName() {
         return _modelName;
     }
-    
+
     /**
-     * Get the effigy for the pattern specified in the pattern match search. 
+     * Get the MoML of the graph pattern search criteria.
      * 
-     * @return The effigy instance of the pattern. 
-     * @see #setPatternEffigy(PtolemyEffigy)
+     * @return The MoML of the pattern.
+     * @see #setPattnerMoML(String)
      */
-    public PtolemyEffigy getPatternEffigy() {
-        return _patternEffigy;
+    public String getPatternMoML() {
+        return _patternMoML;
     }
-    
+
     /**
      * Get the search command criteria from the search criteria.
      *
@@ -136,8 +132,7 @@ public class SearchCriteria {
             DBGraphSearchCriteria dbGraphSearchCriteria) {
         _dbGraphSearchCriteria = dbGraphSearchCriteria;
     }
-    
-    
+
     /**
      * Set the name of the model for the search criteria. 
      * 
@@ -149,17 +144,16 @@ public class SearchCriteria {
     }
 
     /**
-     * Set the effigy instance for the pattern specified in the pattern search
-     * frame. 
+     * Set the MoML for the graph pattern search criteria.
      * 
-     * @param patternEffigy The effigy of the pattern to be set. 
-     * @see #getPatternEffigy()
+     * @param patternMoML The MoMl of the pattern to be set in the search 
+     * criteria.
+     * @see #getPatternMoML()
      */
-    public void setPatternEffigy(PtolemyEffigy patternEffigy) {
-        _patternEffigy = patternEffigy;
+    public void setPattnerMoML(String patternMoML) {
+        _patternMoML = patternMoML;
     }
-    
-    
+
     /**
      * Set the XQuery search command for the search criteria.
      * 
@@ -180,18 +174,17 @@ public class SearchCriteria {
     private ArrayList<Attribute> _attributes;
 
     private DBGraphSearchCriteria _dbGraphSearchCriteria;
-    
+
     /**
      * The name of the model as the search criteria. 
      */
     private String _modelName;
-    
-    
+
     /**
-     * The effigy of the pattern specified in the db pattern search. 
+     * The moml of the pattern. 
      */
-    private PtolemyEffigy _patternEffigy;
-    
+    private String _patternMoML;
+
     /**
      * Represents the XQuery search command input by the user.
      */

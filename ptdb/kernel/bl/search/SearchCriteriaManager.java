@@ -49,13 +49,10 @@ import org.w3c.dom.NodeList;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.SearchCriteriaParseException;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.data.expr.StringConstantParameter;
-import ptolemy.kernel.Entity;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLParser;
 
 ///////////////////////////////////////////////////////////////
 //// SearchCriteriaManager
@@ -147,25 +144,11 @@ public class SearchCriteriaManager {
                     String patternMoml = criteriaString.substring(
                             startIndex + 9, endIndex);
 
-                    // Convert the pattern MOML to effigy.
-
-                    MoMLParser parser = new MoMLParser();
-                    parser.resetAll();
-
-                    Entity patternEntity = (Entity) parser.parse(patternMoml);
-
-                    PtolemyEffigy patternEffigy = new PtolemyEffigy(
-                            configuration.workspace());
-                    patternEffigy.setModel(patternEntity);
-
-                    //                    patternEffigy.setContainer(configuration.getDirectory());
-
-                    storedSearchCriteria.setPatternEffigy(patternEffigy);
+                    storedSearchCriteria.setPattnerMoML(patternMoml);
 
                 } else if (nodeName.equals("attributes")) {
 
                     // attributes node exists. 
-
                     ArrayList<Attribute> attributesList = new ArrayList();
 
                     Node attributesNode = childNodeList.item(j);
@@ -181,7 +164,7 @@ public class SearchCriteriaManager {
                             NamedNodeMap attributeInfoMap = attributeNode
                                     .getAttributes();
 
-                            StringConstantParameter attribute = new StringConstantParameter(
+                            StringParameter attribute = new StringParameter(
                                     new NamedObj(), attributeInfoMap
                                             .getNamedItem("name")
                                             .getNodeValue());
@@ -240,24 +223,28 @@ public class SearchCriteriaManager {
      * @exception IOException Thrown if error happens during writing the 
      *  search criteria information to the file. 
      */
-    public static boolean save(SearchCriteria searchCriteria, String searchCriteriaFile)
-            throws IllegalActionException, IOException {
+    public static boolean save(SearchCriteria searchCriteria,
+            String searchCriteriaFile) throws IllegalActionException,
+            IOException {
 
         StringBuffer searchCriteriaStringBuffer = new StringBuffer();
 
         searchCriteriaStringBuffer.append("<criteria>");
 
         // Fetch the effigy for the pattern. 
-        PtolemyEffigy patternEffigy = searchCriteria.getPatternEffigy();
-        if (patternEffigy != null) {
+        if (searchCriteria.getPatternMoML() != null) {
 
-            String patternMoMl = patternEffigy.getModel().exportMoML();
-            int startIndex = patternMoMl.indexOf("<entity");
-            int endIndex = patternMoMl.lastIndexOf("</entity>");
+            String patternMoMl = searchCriteria.getPatternMoML();
+
+            //            int startIndex = patternMoMl.indexOf("<entity");
+            //            int endIndex = patternMoMl.lastIndexOf("</entity>");
 
             searchCriteriaStringBuffer.append("<pattern>");
-            searchCriteriaStringBuffer.append(patternMoMl.substring(startIndex,
-                    endIndex + 9));
+            //            searchCriteriaStringBuffer.append(patternMoMl.substring(startIndex,
+            //                    endIndex + 9));
+
+            searchCriteriaStringBuffer.append(patternMoMl);
+
             searchCriteriaStringBuffer.append("</pattern>");
 
         }
@@ -271,10 +258,9 @@ public class SearchCriteriaManager {
 
             for (Attribute attribute : attributesList) {
                 searchCriteriaStringBuffer.append("<attribute name=\""
-                        + attribute.getName()
-                        + "\" value="
-                        + ((StringConstantParameter) attribute).getToken()
-                                .toString() + " />");
+                        + attribute.getName() + "\" value="
+                        + ((StringParameter) attribute).getToken().toString()
+                        + " />");
             }
 
             searchCriteriaStringBuffer.append("</attributes>");

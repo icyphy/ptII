@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptdb.gui;
 
+import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -36,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
@@ -71,6 +74,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.gt.TransformationEditor;
 
 import ptolemy.vergil.toolbox.FigureAction;
@@ -162,6 +166,7 @@ public class GraphPatternSearchEditor extends TransformationEditor {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
         _simpleSearchFrame = simpleSearchFrame;
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -393,6 +398,36 @@ public class GraphPatternSearchEditor extends TransformationEditor {
 
     }
 
+    /**
+     * Get the MoMl of the pattern of the model from this frame. 
+     * 
+     * @return The MoML of the pattern in this frame.
+     */
+    public String getPatternMoML() {
+        return getFrameController().getTransformationRule().getPattern()
+                .exportMoML();
+
+    }
+
+    /**
+     * Update and refresh the pattern contained in this frame. This methods 
+     * receives the MoML of the pattern, converts it to the model and display
+     * in this frame. 
+     * 
+     * @param moml The MoML of the pattern. 
+     */
+    public void updatePattern(String moml) {
+
+        MoMLChangeRequest change = new MoMLChangeRequest(this,
+                getFrameController().getTransformationRule(), moml);
+        change.setUndoable(true);
+
+        getFrameController().getTransformationRule().requestChange(change);
+
+        setModified(false);
+
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -401,10 +436,11 @@ public class GraphPatternSearchEditor extends TransformationEditor {
 
         super._addMenus();
 
-        // Remove the unused match actions from the rule menu. 
-        _ruleMenu.remove(0);
-        _ruleMenu.remove(0);
-        _ruleMenu.remove(0);
+        // Remove the rule menu.
+        _menubar.remove(_ruleMenu);
+
+        // Remove the file menu.
+        _menubar.remove(_fileMenu);
 
         // Remove the full screen from the view menu.
         _viewMenu.remove(4);
@@ -421,6 +457,23 @@ public class GraphPatternSearchEditor extends TransformationEditor {
         // Add the menu of searching in the database.
         DBMatchAction dbMatchAction = new DBMatchAction();
         GUIUtilities.addToolBarButton(_toolbar, dbMatchAction);
+
+        // Add the action for the save button in the tool bar.
+        ArrayList<JButton> buttons = new ArrayList<JButton>();
+        Component[] components = _toolbar.getComponents();
+
+        for (int i = 1; i < components.length; i++) {
+            buttons.add((JButton) components[i]);
+        }
+
+        _toolbar.removeAll();
+
+        SaveAction saveAction = new SaveAction("Save the search criteria");
+        GUIUtilities.addToolBarButton(_toolbar, saveAction);
+
+        for (JButton jButton : buttons) {
+            _toolbar.add(jButton);
+        }
 
         //        // Add the menu of opening simple search window. 
         //        SimpleSearchAction simpleSearchAction = new SimpleSearchAction();
@@ -451,11 +504,11 @@ public class GraphPatternSearchEditor extends TransformationEditor {
      */
     @Override
     protected boolean _close() {
-        
-        if(isModified()){
+
+        if (isModified()) {
             _simpleSearchFrame.setModified(true);
         }
-        
+
         return true;
     }
 
@@ -522,6 +575,49 @@ public class GraphPatternSearchEditor extends TransformationEditor {
 
         }
 
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// SaveAction
+
+    /**
+     *  Call the simple search frame to save the search criteria.
+     */
+    private class SaveAction extends AbstractAction {
+
+        /** Construct a save action.
+         *  @param description A string that describes the action.  Spaces are
+         *  permitted, each word is usually capitalized.
+         */
+        public SaveAction(String description) {
+
+            super(description);
+
+            putValue("tooltip", description);
+
+            // Load the image by using the absolute path to the gif.
+            // Using a relative location should work, but it does not.
+            // Use the resource locator of the class.
+            // For more information, see
+            // jdk1.3/docs/guide/resources/resources.html
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/basic/img/save.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/save_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/basic/img/save_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/save_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
+        }
+
+        /** Save the current layout.
+         *  @param e The action event, ignored by this method.
+         */
+        public void actionPerformed(ActionEvent e) {
+            _simpleSearchFrame._save();
+        }
     }
 
     //

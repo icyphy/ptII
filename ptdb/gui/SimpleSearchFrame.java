@@ -120,13 +120,15 @@ public class SimpleSearchFrame extends JFrame {
 
         _sourceFrame = frame;
         _configuration = configuration;
+        System.out.println("first configuration: " + _configuration);
         _attributesListPanel = new AttributesListPanel(new NamedObj());
         _saveLocation = null;
         _searchCriteria = new SearchCriteria();
-        
+        _baseTableau = tableau;
+
         _initSimpleSearchFrame();
         _addMenus();
-        
+
         _topPanel = new JPanel();
         _bottomPanel = new JPanel();
 
@@ -210,7 +212,7 @@ public class SimpleSearchFrame extends JFrame {
                 if (_patternMatchframe != null) {
                     _patternMatchframe.dispose();
                 }
-                
+
                 dispose();
             }
 
@@ -246,7 +248,7 @@ public class SimpleSearchFrame extends JFrame {
                 if (_patternMatchframe != null) {
                     _patternMatchframe.dispose();
                 }
-                
+
                 dispose();
             }
 
@@ -255,7 +257,7 @@ public class SimpleSearchFrame extends JFrame {
                 if (_patternMatchframe != null) {
                     _patternMatchframe.dispose();
                 }
-                
+
                 dispose();
             }
 
@@ -288,236 +290,315 @@ public class SimpleSearchFrame extends JFrame {
     public void clickSearchButton(ActionEvent event) {
         _searchButton.doClick();
     }
- 
+
+    /** Get an indication if the panel has been modified.
+     *  True if it has, false if it hasn't.
+     *
+     * @return
+     *         An indication if the panel has been modified.
+     * 
+     * @see #setModified(boolean)
+     * 
+     */
+    public boolean isModified() {
+
+        if (_patternMatchframe != null) {
+            return (_attributesListPanel.isModified() || _patternMatchframe
+                    .isModified());
+        } else {
+            return _attributesListPanel.isModified();
+        }
+
+    }
+
+    /** Set the panel to modified or unmodified.
+     * 
+     * @param modified True to set to modified.  False to set to unmodified.
+     * 
+     * @see #isModified
+     * 
+     */
+    public void setModified(boolean modified) {
+
+        _attributesListPanel.setModified(modified);
+        if (_patternMatchframe != null) {
+            _patternMatchframe.setModified(modified);
+        }
+
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                  protected methods                        //// 
-    
+
     /** 
      * Add menus to the menu bar.
      */
     protected void _addMenus() {
-        
+
         setJMenuBar(_menuBar);
-        
+
         _fileMenu = new JMenu("File");
         _fileMenu.setMnemonic(KeyEvent.VK_F);
         _menuBar.add(_fileMenu);
 
-        GUIUtilities
-            .addHotKey(getRootPane(), _newSearchCriteriaAction);
-            GUIUtilities.addMenuItem(_fileMenu, _newSearchCriteriaAction);
-        
-        GUIUtilities
-            .addHotKey(createRootPane(), _openSearchCriteriaAction);
+        GUIUtilities.addHotKey(getRootPane(), _newSearchCriteriaAction);
+        GUIUtilities.addMenuItem(_fileMenu, _newSearchCriteriaAction);
+
+        GUIUtilities.addHotKey(createRootPane(), _openSearchCriteriaAction);
         GUIUtilities.addMenuItem(_fileMenu, _openSearchCriteriaAction);
 
-        GUIUtilities
-            .addHotKey(createRootPane(), _saveSearchCriteriaAction);
+        GUIUtilities.addHotKey(createRootPane(), _saveSearchCriteriaAction);
         GUIUtilities.addMenuItem(_fileMenu, _saveSearchCriteriaAction);
 
-        GUIUtilities
-            .addHotKey(createRootPane(), _saveAsSearchCriteriaAction);
+        GUIUtilities.addHotKey(createRootPane(), _saveAsSearchCriteriaAction);
         GUIUtilities.addMenuItem(_fileMenu, _saveAsSearchCriteriaAction);
 
-        GUIUtilities
-            .addHotKey(getRootPane(), _exitSearchCriteriaAction);
+        GUIUtilities.addHotKey(getRootPane(), _exitSearchCriteriaAction);
         GUIUtilities.addMenuItem(_fileMenu, _exitSearchCriteriaAction);
-        
 
-        
     }
-    
+
     /** 
      * Exit the window.  If the search criteria was changed, give the user
      * an opportunity to save it.
      */
-    protected void _exit (){
-        
-        if(isModified()){
-            
+    protected void _exit() {
+
+        if (isModified()) {
+
             Object[] options = { "Yes", "No", "Cancel" };
             int n = JOptionPane.showOptionDialog(this,
                     "Would you like to save the search criteria? ",
-                    "Save Search Criteria?", 
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, 
-                    null, options, options[2]);
+                    "Save Search Criteria?", JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
 
-            if (n == JOptionPane.YES_OPTION) {                
+            if (n == JOptionPane.YES_OPTION) {
 
                 _save();
-                
-            } else if (n == JOptionPane.CANCEL_OPTION) { 
+
+            } else if (n == JOptionPane.CANCEL_OPTION) {
 
                 return;
-                
+
             }
         }
-        
+
         dispose();
-        
+
     }
-    
+
     /** 
      * Establish all event listeners.
      */
-    protected void _initSimpleSearchFrame (){
+    protected void _initSimpleSearchFrame() {
 
-        _newSearchCriteriaAction = new NewSearchCriteriaAction ();
-        _openSearchCriteriaAction = new OpenSearchCriteriaAction ();
-        _saveSearchCriteriaAction =  new SaveSearchCriteriaAction ();
-        _saveAsSearchCriteriaAction = new SaveAsSearchCriteriaAction ();
-        _exitSearchCriteriaAction = new ExitSearchCriteriaAction ();
+        _newSearchCriteriaAction = new NewSearchCriteriaAction();
+        _openSearchCriteriaAction = new OpenSearchCriteriaAction();
+        _saveSearchCriteriaAction = new SaveSearchCriteriaAction();
+        _saveAsSearchCriteriaAction = new SaveAsSearchCriteriaAction();
+        _exitSearchCriteriaAction = new ExitSearchCriteriaAction();
 
     }
-    
+
     /** 
      * Create new search criteria.  If the currently opened search criteria is
      * changed, give the user an opportunity to save it.
      */
-    protected void _new () {
-     
-        if(isModified()){
-            
+    protected void _new() {
+
+        if (isModified()) {
+
             Object[] options = { "Yes", "No", "Cancel" };
             int n = JOptionPane.showOptionDialog(this,
                     "Would you like to save the search criteria? ",
-                    "Save Search Criteria?", 
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, 
-                    null, options, options[2]);
+                    "Save Search Criteria?", JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, options, options[2]);
 
-            if (n == JOptionPane.YES_OPTION) {                
+            if (n == JOptionPane.YES_OPTION) {
 
                 _save();
-                
-            } else if (n == JOptionPane.CANCEL_OPTION) { 
+
+            } else if (n == JOptionPane.CANCEL_OPTION) {
 
                 return;
-                
+
             }
         }
-        
+
         _topPanel.removeAll();
         _attributesListPanel = new AttributesListPanel(new NamedObj());
         _topPanel.add(_attributesListPanel);
         validate();
         repaint();
-        
+
+        // Renew the pattner search frame.
+        if (_patternMatchframe != null) {
+            _patternMatchframe.dispose();
+            _patternMatchframe = null;
+        }
+
         _saveLocation = null;
         _searchCriteria = new SearchCriteria();
         setModified(false);
-        
-        
+
     }
-    
+
     /** 
      * Open a previously saved search criteria file.  If the currently opened
      * search criteria was changed, give the user an opportunity to save it.
      */
-    protected void _open () {
-     
+    protected void _open() {
+
         JFileChooser chooser = new JFileChooser();
 
-        FileFilter filter = new SearchCriteriaFileFilter("Model Search Criteria (*.xml)");
+        FileFilter filter = new SearchCriteriaFileFilter(
+                "Model Search Criteria (*.xml)");
         chooser.setFileFilter(filter);
         chooser.setDialogTitle("Open");
-        
+
         int returnVal = chooser.showOpenDialog(this);
-        
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
 
             try {
-                
-                if(isModified()){
-                    
+
+                if (isModified()) {
+
                     Object[] options = { "Yes", "No", "Cancel" };
                     int n = JOptionPane.showOptionDialog(this,
                             "Would you like to save the search criteria? ",
-                            "Save Search Criteria?", 
+                            "Save Search Criteria?",
                             JOptionPane.YES_NO_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE, 
-                            null, options, options[2]);
+                            JOptionPane.QUESTION_MESSAGE, null, options,
+                            options[2]);
 
-                    if (n == JOptionPane.YES_OPTION) {                
+                    if (n == JOptionPane.YES_OPTION) {
 
                         _save();
-                        
-                    } else if (n == JOptionPane.CANCEL_OPTION) { 
+
+                    } else if (n == JOptionPane.CANCEL_OPTION) {
 
                         return;
-                        
+
                     }
                 }
-                
-                SearchCriteriaManager searchCriteriaManager = new SearchCriteriaManager();
+
                 try {
-                    
-                    _searchCriteria = searchCriteriaManager.open
-                        (chooser.getSelectedFile().getCanonicalPath(), _configuration);
-                    
+
+                    _searchCriteria = SearchCriteriaManager.open(chooser
+                            .getSelectedFile().getCanonicalPath(),
+                            _configuration);
+
                 } catch (SearchCriteriaParseException e1) {
-                    
-                    MessageHandler.error("Cannot retrieve the search criteria.", e1);
-                
+
+                    MessageHandler.error(
+                            "Cannot retrieve the search criteria.", e1);
+
                 }
-                
+
                 _topPanel.removeAll();
                 _attributesListPanel = new AttributesListPanel(new NamedObj());
                 _topPanel.add(_attributesListPanel);
                 validate();
                 repaint();
-                
-                if(_searchCriteria.getModelName()!=null){
-                    _attributesListPanel.setModelName
-                        (_searchCriteria.getModelName());
+
+                if (_searchCriteria.getModelName() != null) {
+                    _attributesListPanel.setModelName(_searchCriteria
+                            .getModelName());
                 }
-                
-                if(_searchCriteria.getAttributes()!=null){
-                    
-                    for(Attribute attribute : _searchCriteria.getAttributes()){
+
+                if (_searchCriteria.getAttributes() != null) {
+
+                    for (Attribute attribute : _searchCriteria.getAttributes()) {
                         _attributesListPanel
-                            .addAttribute((StringParameter) attribute);
+                                .addAttribute((StringParameter) attribute);
                     }
-                    
+
                 }
-                
-                if(_searchCriteria.getPatternEffigy() != null){
-                    
-                    _searchCriteria.getPatternEffigy().showTableaux();
-                
+
+                if (_searchCriteria.getPatternMoML() != null) {
+                    // Open the pattern model in the advanced search frame.
+
+                    if (_patternMatchframe != null) {
+                        // Close the previous opened pattern search frame. 
+                        _patternMatchframe.dispose();
+                        _patternMatchframe = null;
+                    }
+
+                    URL toRead = getClass().getClassLoader().getResource(
+                            "ptolemy.actor.gt.controller.Match");
+
+                    try {
+
+                        EffigyFactory effigyFactory = new EffigyFactory(
+                                _configuration.workspace());
+
+                        PtolemyEffigy.Factory ptolemyEffigyFactory = new PtolemyEffigy.Factory(
+                                effigyFactory, "new effigy factory");
+
+                        PtolemyEffigy effigy = (PtolemyEffigy) ptolemyEffigyFactory
+                                .createEffigy(_configuration.getDirectory(),
+                                        null, toRead);
+
+                        CompositeEntity compositeEntity = new TransformationRule(
+                                effigy, "DB Search Pattern");
+
+                        _patternMatchframe = new GraphPatternSearchEditor(
+                                compositeEntity, new Tableau(effigy,
+                                        "DBSearchframe"),
+                                ((ActorGraphDBTableau) _baseTableau)
+                                        .getGtLibrary(), _containerModel,
+                                _sourceFrame, SimpleSearchFrame.this);
+
+                        String moml = _searchCriteria.getPatternMoML();
+
+                        _patternMatchframe.updatePattern(moml);
+
+                        _patternMatchframe.repaint();
+
+                        _patternMatchframe.pack();
+                        _patternMatchframe
+                                .setLocationRelativeTo(SimpleSearchFrame.this);
+                        _patternMatchframe.setVisible(true);
+
+                    } catch (Exception e2) {
+
+                        MessageHandler.error(
+                                "Failed to open pattern match search editor.",
+                                e2);
+                    }
+
                 }
-                
+
                 _saveLocation = chooser.getSelectedFile().getCanonicalPath();
                 setModified(false);
-                
-                
-            } catch(IOException e){
+
+            } catch (IOException e) {
 
                 MessageHandler.error("Cannot read from the selected file.", e);
-                
+
             }
         }
-        
+
     }
-    
+
     /** 
      * Save the currently opened search criteria.
      */
-    protected void _save () {
+    protected void _save() {
 
-        if(_saveLocation == null){
-            
+        if (_saveLocation == null) {
+
             _saveAs();
-         
+
         } else {
-            
-            SearchCriteriaManager searchCriteriaManager = new SearchCriteriaManager();
+
             try {
-                
+
                 if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
-                    _searchCriteria.setModelName(_attributesListPanel.getModelName());
+                    _searchCriteria.setModelName(_attributesListPanel
+                            .getModelName());
                 }
 
                 if (_attributesListPanel.getAttributeCount() > 0) {
@@ -529,42 +610,43 @@ public class SimpleSearchFrame extends JFrame {
 
                 // Fetch the search criteria from the pattern match window.
                 if (_patternMatchframe != null) {
-                    _patternMatchframe.fetchSearchCriteria(_searchCriteria);
+
+                    _searchCriteria.setPattnerMoML(_patternMatchframe
+                            .getPatternMoML());
                 }
-                
-                searchCriteriaManager.save(_searchCriteria, _saveLocation);
+
+                SearchCriteriaManager.save(_searchCriteria, _saveLocation);
+
+                setModified(false);
+
+                JOptionPane.showMessageDialog(this,
+                        "Search Criteria is saved successfully!");
+
             } catch (IllegalActionException e) {
 
                 MessageHandler.error("Cannot save the search criteria.", e);
-                
+
             } catch (IOException e) {
 
                 MessageHandler.error("Cannot save the search criteria.", e);
-            
-            } catch (NameDuplicationException e) {
-                
-                MessageHandler.error("Cannot save the search criteria.", e);
-                
-            } catch (MalformedStringException e) {
-            
-                MessageHandler.error("Cannot save the search criteria.", e);
-                
+
             }
 
         }
-        
+
     }
-    
+
     /** 
      * Save the currently opened search criteria to a new location.
      */
-    protected void _saveAs () {
-        
+    protected void _saveAs() {
+
         try {
-            
+
             if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
-                _searchCriteria.setModelName(_attributesListPanel.getModelName());
+                _searchCriteria.setModelName(_attributesListPanel
+                        .getModelName());
             }
 
             if (_attributesListPanel.getAttributeCount() > 0) {
@@ -576,117 +658,127 @@ public class SimpleSearchFrame extends JFrame {
 
             // Fetch the search criteria from the pattern match window.
             if (_patternMatchframe != null) {
-                _patternMatchframe.fetchSearchCriteria(_searchCriteria);
+
+                _searchCriteria.setPattnerMoML(_patternMatchframe
+                        .getPatternMoML());
             }
-            
+
             JFileChooser chooser = new JFileChooser();
-    
-            FileFilter filter = new SearchCriteriaFileFilter("Model Search Criteria (*.xml)");
+
+            FileFilter filter = new SearchCriteriaFileFilter(
+                    "Model Search Criteria (*.xml)");
             chooser.setFileFilter(filter);
             chooser.setDialogTitle("Save As");
-            
-            if(_saveLocation != null){
-                
+
+            if (_saveLocation != null) {
+
                 chooser.setSelectedFile(new File(_saveLocation));
-                
+
             }
-            
+
             boolean saveComplete = false;
-            
-            while(!saveComplete){
-                
+
+            while (!saveComplete) {
+
                 if (chooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
-                
+
                     return;
-                    
+
                 } else {
-                    
+
                     File filename = chooser.getSelectedFile();
                     String name = filename.getName();
                     if (!name.endsWith(".xml")) {
-                        
+
                         filename = new File(filename.getParent(), name + ".xml");
-                    
+
                     }
-                    
 
-                    if( filename.exists()  && !filename.getCanonicalFile()
-                            .toString().equals(_saveLocation)) {
-                        
+                    if (filename.exists()
+                            && !filename.getCanonicalFile().toString().equals(
+                                    _saveLocation)) {
+
                         Object[] options = { "Yes", "No" };
-                        int n = JOptionPane.showOptionDialog(this,
-                                filename.toString()  + " already exists.\n" +
-                                "Do you want to replace it?",
-                                "Overwrite File?", 
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.WARNING_MESSAGE, 
-                                null, options, options[1]);
+                        int n = JOptionPane.showOptionDialog(this, filename
+                                .toString()
+                                + " already exists.\n"
+                                + "Do you want to replace it?",
+                                "Overwrite File?", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE, null, options,
+                                options[1]);
 
-                        if (n == JOptionPane.YES_OPTION) {                
+                        if (n == JOptionPane.YES_OPTION) {
 
                             saveComplete = true;
-                            
+
                         } else {
 
                             saveComplete = false;
-                            
-                        }
-                    
-                    } else {
-                     
-                        saveComplete = true; 
-                    
-                    }
-                    if(saveComplete) {
-                     
 
-                        SearchCriteriaManager searchCriteriaManager = new SearchCriteriaManager();
+                        }
+
+                    } else {
+
+                        saveComplete = true;
+
+                    }
+                    if (saveComplete) {
+
                         try {
-                            searchCriteriaManager.save(_searchCriteria, 
+
+                            SearchCriteriaManager.save(_searchCriteria,
                                     filename.getCanonicalPath().toString());
+
+                            _saveLocation = chooser.getSelectedFile()
+                                    .getCanonicalPath();
+
+                            setModified(false);
+
+                            JOptionPane.showMessageDialog(this,
+                                    "Search Criteria is saved successfully!");
+
                         } catch (IllegalActionException e) {
 
-                            MessageHandler.error("Cannot save the search criteria.", e);
-                            
+                            MessageHandler.error(
+                                    "Cannot save the search criteria.", e);
+
                         } catch (IOException e) {
 
-                            MessageHandler.error("Cannot save the search criteria.", e);
-                        
+                            MessageHandler.error(
+                                    "Cannot save the search criteria.", e);
+
                         }
-        
-                        _saveLocation = chooser.getSelectedFile().getCanonicalPath();
-                        setModified(false);
 
                     }
                 }
             }
-            
-        } catch(IOException e){
-    
+
+        } catch (IOException e) {
+
             MessageHandler.error("Cannot save to the selected file.", e);
-            
+
         } catch (IllegalActionException e) {
-            
+
             MessageHandler.error("Cannot save to the selected file.", e);
-        } catch (NameDuplicationException e) {
-            MessageHandler.error("Cannot save to the selected file.", e);
-        } catch (MalformedStringException e) {
-            MessageHandler.error("Cannot save to the selected file.", e);
+            //        } catch (NameDuplicationException e) {
+            //            MessageHandler.error("Cannot save to the selected file.", e);
+            //        } catch (MalformedStringException e) {
+            //            MessageHandler.error("Cannot save to the selected file.", e);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                  protected variables                      ////    
-    
+
     /** The file menu for this frame. */
     protected JMenu _fileMenu;
-    
+
     /** The menu bar for this frame. */
     protected JMenuBar _menuBar = new JMenuBar();
-    
+
     /** The location where the currently opened search criteria is saved. */
     protected String _saveLocation;
-    
+
     /** The action for opening search criteria. */
     protected Action _openSearchCriteriaAction;
 
@@ -701,7 +793,6 @@ public class SimpleSearchFrame extends JFrame {
 
     /** The action for creating new search criteria. */
     protected Action _newSearchCriteriaAction;
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                  private methods                          ////
@@ -717,7 +808,6 @@ public class SimpleSearchFrame extends JFrame {
      *          false - the search criteria input by the user is not enough. 
      */
     private boolean _isSearchCriteriaEnough(SearchCriteria searchCriteria) {
-        
 
         if ((searchCriteria.getAttributes() == null || searchCriteria
                 .getAttributes().size() == 0)
@@ -731,12 +821,7 @@ public class SimpleSearchFrame extends JFrame {
 
                 && (searchCriteria.getModelName() == null || searchCriteria
                         .getModelName().trim().isEmpty())) {
-            
-            
-            
-            
-            
-            
+
             return false;
         } else {
             return true;
@@ -763,7 +848,7 @@ public class SimpleSearchFrame extends JFrame {
             //                    "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
             //
             //            return false;
-            
+
             // As long as there is the pattern matching criteria, this situation
             // can also be possible. 
             return true;
@@ -898,7 +983,8 @@ public class SimpleSearchFrame extends JFrame {
     private SearchCriteria _searchCriteria;
     private JPanel _topPanel = new JPanel();
     private JPanel _bottomPanel = new JPanel();
-    
+    private Tableau _baseTableau;
+
     ///////////////////////////////////////////////////////////////////
     //// OpenPatternSearchFrameAction
 
@@ -907,8 +993,8 @@ public class SimpleSearchFrame extends JFrame {
         public OpenPatternSearchFrameAction(Tableau tableau) {
             super("Pattern Search");
             _tableau = tableau;
-//            putValue("tooltip", "Pattern Search");
-//            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
+            //            putValue("tooltip", "Pattern Search");
+            //            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
         ///////////////////////////////////////////////////////////////
@@ -956,18 +1042,16 @@ public class SimpleSearchFrame extends JFrame {
         private Tableau _tableau;
     }
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                private inner classes                      ////
-    
+
     private class OpenSearchCriteriaAction extends AbstractAction {
 
         public OpenSearchCriteriaAction() {
             super("Open...");
 
             putValue("tooltip", "Open...");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    Integer.valueOf(KeyEvent.VK_O));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_O));
 
         }
 
@@ -980,15 +1064,14 @@ public class SimpleSearchFrame extends JFrame {
 
         }
     }
-    
+
     private class SaveSearchCriteriaAction extends AbstractAction {
 
         public SaveSearchCriteriaAction() {
             super("Save");
 
             putValue("tooltip", "Save");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    Integer.valueOf(KeyEvent.VK_S));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
 
         }
 
@@ -1001,15 +1084,14 @@ public class SimpleSearchFrame extends JFrame {
 
         }
     }
-    
+
     private class SaveAsSearchCriteriaAction extends AbstractAction {
 
         public SaveAsSearchCriteriaAction() {
             super("Save As...");
 
             putValue("tooltip", "Save As...");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    Integer.valueOf(KeyEvent.VK_A));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_A));
 
         }
 
@@ -1022,15 +1104,14 @@ public class SimpleSearchFrame extends JFrame {
 
         }
     }
-    
+
     private class ExitSearchCriteriaAction extends AbstractAction {
 
         public ExitSearchCriteriaAction() {
             super("Exit");
 
             putValue("tooltip", "Exit");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    Integer.valueOf(KeyEvent.VK_X));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_X));
 
         }
 
@@ -1043,15 +1124,14 @@ public class SimpleSearchFrame extends JFrame {
 
         }
     }
-    
+
     private class NewSearchCriteriaAction extends AbstractAction {
 
         public NewSearchCriteriaAction() {
             super("New");
 
             putValue("tooltip", "New");
-            putValue(GUIUtilities.MNEMONIC_KEY,
-                    Integer.valueOf(KeyEvent.VK_N));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_N));
 
         }
 
@@ -1064,16 +1144,16 @@ public class SimpleSearchFrame extends JFrame {
 
         }
     }
-    
+
     /** Filter that returns true if the selected file is an XML file. */
     private static class SearchCriteriaFileFilter extends FileFilter {
-        
+
         public SearchCriteriaFileFilter(String description) {
 
             _description = description;
-        
+
         }
-        
+
         /** Filter that returns true if the selected file is an XML file.
          *  @param pathname The pathname to be checked
          *  @return true if the pathname ends with .xml.
@@ -1081,40 +1161,13 @@ public class SimpleSearchFrame extends JFrame {
         public boolean accept(File pathname) {
             return pathname.getName().endsWith(".xml");
         }
-        
+
         public String getDescription() {
             return _description;
         }
- 
+
         private String _description;
 
     }
-    
-    /** Set the panel to modified or unmodified.
-     * 
-     * @param modified True to set to modified.  False to set to unmodified.
-     * 
-     * @see #isModified
-     * 
-     */
-    public void setModified(boolean modified){
-        
-        _attributesListPanel.setModified(modified);
-        
-    }
-    
-    /** Get an indication if the panel has been modified.
-     *  True if it has, false if it hasn't.
-     *
-     * @return
-     *         An indication if the panel has been modified.
-     * 
-     * @see #setModified(boolean)
-     * 
-     */
-    public boolean isModified(){
-        
-        return _attributesListPanel.isModified();
-        
-    }
+
 }
