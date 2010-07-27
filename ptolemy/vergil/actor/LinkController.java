@@ -197,7 +197,7 @@ public class LinkController extends BasicEdgeController {
          *
          *  <p>If the attribute is named "_color", then the value of
          *  the attribute is passed to {@link
-         *  diva.canvas.toolbox.SVGUtilities#getColor(String), which
+         *  diva.canvas.toolbox.SVGUtilities#getColor(String)}, which
          *  has accepts the following format: If the first character
          *  is "#" or "0", then the value of the attribute is expected
          *  to be in a format suitable for java.awt.Color.decode().
