@@ -311,7 +311,9 @@ public class SaveModelToDBFrame extends JFrame {
     private void _commitSave(boolean isNew, String id,
             ArrayList<String> unchangedParentsList, String newVersionName)
             throws Exception {
-
+        
+         String newName =  _attributesListPanel.getModelName();
+         _modelToSave.setName(newName);
         _updateDisplayedModel();
 
         if (isNew || id == null) {
@@ -331,6 +333,7 @@ public class SaveModelToDBFrame extends JFrame {
                     _modelToSave.requestChange(change);
 
                 } catch (Exception e) {
+                    _resetValues();
                     throw e;
                 }
             }
@@ -519,52 +522,23 @@ public class SaveModelToDBFrame extends JFrame {
             }
 
         } catch (DBConnectionException exception) {
-
+            _resetValues();
             throw exception;
 
         } catch (DBExecutionException exception) {
-
+            _resetValues();
             throw exception;
 
         } catch (IllegalArgumentException exception) {
-
+            _resetValues();
             throw exception;
 
         } catch (ModelAlreadyExistException exception) {
-
-            if (!_modelToSave.getName().equals(_initialModelName)) {
-                // This exception comes from changing the name in the first 
-                // frame.
-                Object[] options = { "Yes", "No", "Cancel" };
-                int n = JOptionPane
-                        .showOptionDialog(this, "A model with the given name "
-                                + "already exists in the database.  "
-                                + "Would you like to overwrite it? ",
-                                "Model Exists",
-                                JOptionPane.YES_NO_CANCEL_OPTION,
-                                JOptionPane.QUESTION_MESSAGE, null, options,
-                                options[2]);
-
-                if (n == JOptionPane.YES_OPTION) {
-
-
-                _saveModelManager = new SaveModelManager();
-
-                    _commitSave(false, null, null, null);
-
-                } else {
-
-                    _rollbackModel();
-
-                }
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "A model with the new version name already"
-                                + " exists in the database. Please use"
-                                + " another name.");
-                _rollbackModel();
-            }
-
+            JOptionPane.showMessageDialog(this,
+                    "A model with the new version name already"
+                            + " exists in the database. Please use"
+                            + " another name.");
+            _rollbackModel();
         }
 
     }
@@ -683,7 +657,19 @@ public class SaveModelToDBFrame extends JFrame {
         return true;
 
     }
-
+    
+    /**
+     * Reset the model name to the old name in the NamedObj.
+     */
+    private void _resetValues() {
+        try {
+            _modelToSave.setName(_initialModelName);
+        } catch (IllegalActionException e) {
+            
+        } catch (NameDuplicationException e) {
+            
+        }
+    }
     private void _rollbackModel() {
 
         try {
@@ -796,12 +782,11 @@ public class SaveModelToDBFrame extends JFrame {
         String newVersionName = null;
 
         try {
-
-            _modelToSave.setName(_attributesListPanel.getModelName());
-
+            String newName =  _attributesListPanel.getModelName();
+            
             if (_initialModelName != null && _initialModelName.length() > 0) {
 
-                if (!_modelToSave.getName().equals(_initialModelName)) {
+                if (!newName.equals(_initialModelName)) {
 
                     Object[] options = { "Yes", "No", "Cancel" };
                     int n = JOptionPane.showOptionDialog(this,
