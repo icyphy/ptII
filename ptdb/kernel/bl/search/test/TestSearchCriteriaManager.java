@@ -40,7 +40,7 @@ import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.SearchCriteriaParseException;
 import ptdb.kernel.bl.search.SearchCriteriaManager;
 import ptolemy.actor.gui.Configuration;
-import ptolemy.data.expr.StringConstantParameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -81,32 +81,30 @@ public class TestSearchCriteriaManager {
         if (workingPath.contains("build")) {
             workingPath = workingPath.substring(0, workingPath.length() - 11);
         }
-        
-//        SearchCriteriaManager criteriaManager = new SearchCriteriaManager();
 
-        SearchCriteria storedSearchCriteria1 = SearchCriteriaManager.open(workingPath
-                + "/ptdb/kernel/bl/search/test/searchcriteria.xml",
+        SearchCriteria storedSearchCriteria1 = SearchCriteriaManager.open(
+                workingPath + "/ptdb/kernel/bl/search/test/searchcriteria.xml",
                 new Configuration(new Workspace()));
         ;
 
         SearchCriteriaManager.save(storedSearchCriteria1, workingPath
                 + "/ptdb/kernel/bl/search/test/searchcriteria2.xml");
 
-        SearchCriteria storedSearchCriteria2 = SearchCriteriaManager.open(workingPath
-                + "/ptdb/kernel/bl/search/test/searchcriteria2.xml",
-                new Configuration(new Workspace()));
+        SearchCriteria storedSearchCriteria2 = SearchCriteriaManager
+                .open(workingPath
+                        + "/ptdb/kernel/bl/search/test/searchcriteria2.xml",
+                        new Configuration(new Workspace()));
         ;
 
         SearchCriteriaManager.save(storedSearchCriteria2, workingPath
                 + "/ptdb/kernel/bl/search/test/searchcriteria3.xml");
 
-        assertEquals("testmodel", storedSearchCriteria1.getModelName());
+        assertEquals("test", storedSearchCriteria1.getModelName());
 
         assertEquals(storedSearchCriteria1.getModelName(),
                 storedSearchCriteria2.getModelName());
-        assertEquals(storedSearchCriteria1.getPatternEffigy().getModel()
-                .exportMoML(), storedSearchCriteria2.getPatternEffigy()
-                .getModel().exportMoML());
+        assertEquals(storedSearchCriteria1.getPatternMoML(),
+                storedSearchCriteria2.getPatternMoML());
 
         ArrayList<Attribute> attributesList1 = storedSearchCriteria1
                 .getAttributes();
@@ -116,9 +114,9 @@ public class TestSearchCriteriaManager {
         for (int i = 0; i < storedSearchCriteria1.getAttributes().size(); i++) {
             assertEquals(attributesList1.get(i).getName(), attributesList2.get(
                     i).getName());
-            assertEquals(((StringConstantParameter) attributesList1.get(i))
+            assertEquals(((StringParameter) attributesList1.get(i))
                     .getValueAsString(),
-                    ((StringConstantParameter) attributesList2.get(i))
+                    ((StringParameter) attributesList2.get(i))
                             .getValueAsString());
         }
 
@@ -143,11 +141,9 @@ public class TestSearchCriteriaManager {
 
         boolean flag = false;
 
-//        SearchCriteriaManager criteriaManager = new SearchCriteriaManager();
-
         try {
-            SearchCriteriaManager.open("searchcriteria333.xml", new Configuration(
-                    new Workspace()));
+            SearchCriteriaManager.open("searchcriteria333.xml",
+                    new Configuration(new Workspace()));
             ;
         } catch (FileNotFoundException e) {
             flag = true;
