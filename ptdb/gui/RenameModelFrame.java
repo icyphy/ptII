@@ -215,10 +215,10 @@ public class RenameModelFrame extends JFrame {
             xmldbModel.setModelId(Utilities.getIdFromModel(_model));
 
             try {
-                _model.setName(newName);
 
                 saveModelManager.renameModel(xmldbModel, newName);
-
+                
+                _model.setName(newName);
                 // Update the moml to update to the new model name.
 
                 MoMLChangeRequest change = new MoMLChangeRequest(this, null,
