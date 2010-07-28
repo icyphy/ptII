@@ -60,6 +60,7 @@ import ptdb.common.dto.XMLDBModelWithReferenceChanges;
 import ptdb.common.exception.CircularDependencyException;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.IllegalNameException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.Utilities;
 import ptolemy.actor.gui.Configuration;
@@ -311,9 +312,9 @@ public class SaveModelToDBFrame extends JFrame {
     private void _commitSave(boolean isNew, String id,
             ArrayList<String> parentsMaintainOldVersion, String newVersionName)
             throws Exception {
-        
-         String newName =  _attributesListPanel.getModelName();
-         _modelToSave.setName(newName);
+
+        String newName = _attributesListPanel.getModelName();
+        _modelToSave.setName(newName);
         _updateDisplayedModel();
 
         if (isNew || id == null) {
@@ -389,15 +390,14 @@ public class SaveModelToDBFrame extends JFrame {
 
                     _modelToSave.requestChange(change);
                     _source.setTitle(_xmlModel.getModelName());
-                    
+
                     try {
-                        _source.updateDBModelHistory(
-                                _xmlModel.getModelName(), false);
+                        _source.updateDBModelHistory(_xmlModel.getModelName(),
+                                false);
 
                     } catch (IOException e) {
                         // Ignore if recent files are not updated.
                     }
-
 
                 } catch (Exception e) {
                     throw e;
@@ -460,7 +460,8 @@ public class SaveModelToDBFrame extends JFrame {
                             ._getParentsMaintainReferences();
                     if (parentsModelsMaintainReferences != null
                             && parentsModelsMaintainReferences.size() > 0) {
-                        XMLDBModel savedModel = DBModelFetcher.loadUsingId(modelId);
+                        XMLDBModel savedModel = DBModelFetcher
+                                .loadUsingId(modelId);
 
                         for (String parentName : parentsModelsMaintainReferences) {
                             if (_source.getConfiguration().getDirectory()
@@ -657,7 +658,7 @@ public class SaveModelToDBFrame extends JFrame {
         return true;
 
     }
-    
+
     /**
      * Reset the model name to the old name in the NamedObj.
      */
@@ -665,11 +666,12 @@ public class SaveModelToDBFrame extends JFrame {
         try {
             _modelToSave.setName(_initialModelName);
         } catch (IllegalActionException e) {
-            
+
         } catch (NameDuplicationException e) {
-            
+
         }
     }
+
     private void _rollbackModel() {
 
         try {
@@ -782,8 +784,8 @@ public class SaveModelToDBFrame extends JFrame {
         String newVersionName = null;
 
         try {
-            String newName =  _attributesListPanel.getModelName();
-            
+            String newName = _attributesListPanel.getModelName();
+
             if (_initialModelName != null && _initialModelName.length() > 0) {
 
                 if (!newName.equals(_initialModelName)) {
@@ -1114,15 +1116,15 @@ public class SaveModelToDBFrame extends JFrame {
 
             // Add the save button
             _saveButton = new JButton("Save");
-            
+
             _saveButton.addActionListener(new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    
+
                     // Add the action listener to call the save button in the
                     // previous frame, when this button is clicked.
-           
+
                     _firstFrameOfSave._saveButton.setEnabled(true);
                     _firstFrameOfSave._saveButton.doClick();
 
@@ -1225,17 +1227,15 @@ public class SaveModelToDBFrame extends JFrame {
          * 
          * @return True - if the data is valid.<br>
          *       False - if some data is invalid.
+         * @exception IllegalNameException Thrown if the new version name is 
+         * illegal. 
          */
-        private boolean _isValid() {
+        private boolean _isValid() throws IllegalNameException {
             if (_hasParentsWithNewVersion()) {
 
-                if (_newModelNameTextField.getText().trim().isEmpty()
-                        || !Utilities
-                                .checkAttributeModelName(_newModelNameTextField
-                                        .getText())) {
+                Utilities.checkAttributeModelName(_newModelNameTextField
+                        .getText());
 
-                    return false;
-                }
                 return true;
             }
 

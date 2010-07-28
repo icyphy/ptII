@@ -50,10 +50,10 @@ import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.DBModelNotFoundException;
+import ptdb.common.exception.IllegalNameException;
 import ptdb.common.exception.ModelAlreadyExistException;
 import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.save.SaveModelManager;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -159,7 +159,13 @@ public class RenameModelFrame extends JFrame {
         _updateButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                _update();
+                try {
+                    _update();
+
+                } catch (IllegalNameException e1) {
+                    JOptionPane.showMessageDialog(RenameModelFrame.this, e1
+                            .getMessage());
+                }
 
             }
         });
@@ -201,71 +207,69 @@ public class RenameModelFrame extends JFrame {
 
     /**
      * Perform the update of the model renaming. 
+     * 
+     * @exception IllegalNameException Thrown if the new model name is illegal.
      */
-    private void _update() {
+    private void _update() throws IllegalNameException {
 
         String newName = _newNameTextField.getText();
 
-        if (Utilities.checkAttributeModelName(newName)) {
-            SaveModelManager saveModelManager = new SaveModelManager();
+        Utilities.checkAttributeModelName(newName);
 
-            XMLDBModel xmldbModel = new XMLDBModel(_model.getName());
-            String oldName = _model.getName();
-            
-            xmldbModel.setModelId(Utilities.getIdFromModel(_model));
+        SaveModelManager saveModelManager = new SaveModelManager();
+
+        XMLDBModel xmldbModel = new XMLDBModel(_model.getName());
+        String oldName = _model.getName();
+
+        xmldbModel.setModelId(Utilities.getIdFromModel(_model));
+
+        try {
+
+            saveModelManager.renameModel(xmldbModel, newName);
+
+            _model.setName(newName);
+            // Update the moml to update to the new model name.
+
+            MoMLChangeRequest change = new MoMLChangeRequest(this, null, _model
+                    .exportMoML());
+            change.setUndoable(true);
+
+            _model.requestChange(change);
+
+            // If no exception thrown, show the update success message. 
+            JOptionPane.showMessageDialog(this, "Rename model successfully!");
+
+            _sourceFrame.setTitle(_model.getName());
 
             try {
 
-                saveModelManager.renameModel(xmldbModel, newName);
-                
-                _model.setName(newName);
-                // Update the moml to update to the new model name.
+                ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(
+                        newName, false);
+                ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(
+                        oldName, true);
 
-                MoMLChangeRequest change = new MoMLChangeRequest(this, null,
-                        _model.exportMoML());
-                change.setUndoable(true);
-
-                _model.requestChange(change);
-
-                // If no exception thrown, show the update success message. 
-                JOptionPane.showMessageDialog(this,
-                        "Rename model successfully!");
-
-                _sourceFrame.setTitle(_model.getName());
-                
-                try {
-
-                    ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(
-                            newName, false);
-                    ((ActorGraphDBFrame) _sourceFrame).updateDBModelHistory(
-                            oldName, true);
-
-                } catch (IOException e) {
-                    // Ignore if recent files are not updated.
-                }
-                
-                _sourceFrame.repaint();
-
-                dispose();
-
-            } catch (IllegalArgumentException e) {
-                MessageHandler.error("Unable to rename the model.", e);
-            } catch (DBConnectionException e) {
-                MessageHandler.error("Unable to rename the model.", e);
-            } catch (DBExecutionException e) {
-                MessageHandler.error("Unable to rename the model.", e);
-            } catch (ModelAlreadyExistException e) {
-                MessageHandler.error("Unable to rename the model.", e);
-            } catch (DBModelNotFoundException e) {
-                MessageHandler.error("Unable to rename the model.", e);
-            } catch (IllegalActionException e) {
-                MessageHandler.error("Unable to rename the model.", e);
-            } catch (NameDuplicationException e) {
-                MessageHandler.error("Unable to rename the model.", e);
+            } catch (IOException e) {
+                // Ignore if recent files are not updated.
             }
 
-        } else {
-            JOptionPane.showMessageDialog(this, "Empty or invalid model name!");
+            _sourceFrame.repaint();
+
+            dispose();
+
+        } catch (IllegalArgumentException e) {
+            MessageHandler.error("Unable to rename the model.", e);
+        } catch (DBConnectionException e) {
+            MessageHandler.error("Unable to rename the model.", e);
+        } catch (DBExecutionException e) {
+            MessageHandler.error("Unable to rename the model.", e);
+        } catch (ModelAlreadyExistException e) {
+            MessageHandler.error("Unable to rename the model.", e);
+        } catch (DBModelNotFoundException e) {
+            MessageHandler.error("Unable to rename the model.", e);
+        } catch (IllegalActionException e) {
+            MessageHandler.error("Unable to rename the model.", e);
+        } catch (NameDuplicationException e) {
+            MessageHandler.error("Unable to rename the model.", e);
         }
 
     }

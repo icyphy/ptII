@@ -50,8 +50,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.IllegalNameException;
 import ptdb.common.exception.XMLDBModelParsingException;
-import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.NamedObj;
 
@@ -71,9 +71,6 @@ import ptolemy.kernel.util.NamedObj;
 public class Utilities {
 
     //////////////////////////////////////////////////////////////////////
-    ////		public variables 				////
-
-    //////////////////////////////////////////////////////////////////////
     ////		public methods 					////
 
     /**
@@ -82,16 +79,19 @@ public class Utilities {
      * @param name The name to be verified. 
      * @return true - if the name is valid.<br>
      *          false - if the name is invalid. 
+     * @exception IllegalNameException Thrown if the verifying name is invalid. 
      */
-    public static boolean checkAttributeModelName(String name) {
+    public static boolean checkAttributeModelName(String name)
+            throws IllegalNameException {
         if (name == null || name.trim().isEmpty()) {
-            return false;
+            throw new IllegalNameException("The name cannot be empty!");
         }
 
         if (name.matches("^[A-Za-z0-9]+$")) {
             return true;
         } else {
-            return false;
+            throw new IllegalNameException("Invalid Name! The name can only "
+                    + "contain numbers and letters.");
         }
     }
 
@@ -143,7 +143,6 @@ public class Utilities {
         return documentContent;
     }
 
-    
     /**
      * Extra the PTDB model id from a given Ptolemy model. 
      * 
@@ -164,8 +163,7 @@ public class Utilities {
 
         return id;
     }
-    
-    
+
     /**
      * Create the property node string to add to a MOML with 
      * the class as StringConstantParameter.

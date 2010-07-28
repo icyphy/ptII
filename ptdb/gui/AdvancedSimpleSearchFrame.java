@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import ptdb.common.exception.IllegalNameException;
 import ptdb.common.util.Utilities;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -218,8 +219,11 @@ public class AdvancedSimpleSearchFrame extends JFrame {
         }
 
         if (!_attributesListPanel.getModelName().trim().isEmpty()) {
-            if (!Utilities.checkAttributeModelName(_attributesListPanel
-                    .getModelName())) {
+
+            try {
+                Utilities.checkAttributeModelName(_attributesListPanel
+                        .getModelName());
+            } catch (IllegalNameException e) {
 
                 JOptionPane.showMessageDialog(this,
                         "The model name should only "
@@ -227,8 +231,8 @@ public class AdvancedSimpleSearchFrame extends JFrame {
                         "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
 
                 return false;
-
             }
+
         }
 
         if (_attributesListPanel.containsDuplicates()) {

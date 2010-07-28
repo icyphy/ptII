@@ -48,6 +48,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import ptdb.common.exception.IllegalNameException;
 import ptdb.common.util.Utilities;
 
 ///////////////////////////////////////////////////////////////
@@ -72,7 +73,8 @@ public class AttributeListEditFrame extends JFrame {
      * @param listItems The list of items to be displayed and edited in this
      *  frame. 
      */
-    public AttributeListEditFrame(ConfigureAttributesFrame parentFrame, List<String> listItems) {
+    public AttributeListEditFrame(ConfigureAttributesFrame parentFrame,
+            List<String> listItems) {
 
         _parentFrame = parentFrame;
         _storedListItems = listItems;
@@ -169,16 +171,19 @@ public class AttributeListEditFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (!_validate()) {
-                    JOptionPane.showMessageDialog(AttributeListEditFrame.this,
-                            "Invalid value item! Please change to other value.",
-                            "Invalid value Item", JOptionPane.ERROR_MESSAGE);
-                } else {
+                try {
+                    _validate();
+
                     ((ArrayModelList) _itemsJList.getModel())
                             .addItem(_listItemTextField.getText());
 
                     _addButton.setEnabled(false);
                     _listItemTextField.setText("");
+
+                } catch (IllegalNameException exception) {
+                    JOptionPane.showMessageDialog(AttributeListEditFrame.this,
+                            exception.getMessage(), "Invalid value Item",
+                            JOptionPane.ERROR_MESSAGE);
                 }
 
             }
@@ -312,17 +317,22 @@ public class AttributeListEditFrame extends JFrame {
      * 
      * @return true - It is valid to add that item.<br>
      *          false - It is invalid to add that item.
+     * @exception IllegalNameException Thrown if the item value is legal. 
      */
-    private boolean _validate() {
+    private boolean _validate() throws IllegalNameException {
 
-        if (!Utilities.checkAttributeModelName(_listItemTextField.getText())) {
-            return false;
+        try {
+            Utilities.checkAttributeModelName(_listItemTextField.getText());
+        } catch (IllegalNameException e) {
+            throw new IllegalNameException(
+                    "Illegal list item value! The list item value can"
+                            + " only contain numbers and letters.", e);
         }
 
         ArrayModelList modelList = ((ArrayModelList) _itemsJList.getModel());
         for (int i = 0; i < modelList.getSize(); i++) {
             if (_listItemTextField.getText().equals(modelList.getElementAt(i))) {
-                return false;
+                throw new IllegalNameException("Duplicated item value!");
             }
         }
 

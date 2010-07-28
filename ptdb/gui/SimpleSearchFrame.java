@@ -57,6 +57,7 @@ import diva.gui.GUIUtilities;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
+import ptdb.common.exception.IllegalNameException;
 import ptdb.common.exception.SearchCriteriaParseException;
 import ptdb.common.util.Utilities;
 import ptdb.kernel.bl.search.SearchCriteriaManager;
@@ -856,17 +857,18 @@ public class SimpleSearchFrame extends JFrame {
         }
 
         if (_attributesListPanel.getModelName().length() > 0) {
-
-            if (!Utilities.checkAttributeModelName(_attributesListPanel
-                    .getModelName())) {
+            try {
+                Utilities.checkAttributeModelName(_attributesListPanel
+                        .getModelName());
+            } catch (IllegalNameException e) {
                 JOptionPane.showMessageDialog(this,
                         "The model name should only "
                                 + "contain letters and numbers.",
                         "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
 
                 return false;
-
             }
+
         }
 
         if (_attributesListPanel.containsDuplicates()) {

@@ -296,20 +296,18 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-//        _statusLabel.setFont(new Font("Title", Font.BOLD, 18)); // NOI18N
+        //        _statusLabel.setFont(new Font("Title", Font.BOLD, 18)); // NOI18N
         _statusLabel.setText("Status:");
-        
-
 
         _editPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-//        _nameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        //        _nameLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         _nameLabel.setText("Name");
 
-//        _typeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        //        _typeLabel.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         _typeLabel.setText("Type");
 
-//        _deleteButton.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        //        _deleteButton.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         _deleteButton.setForeground(new java.awt.Color(255, 0, 51));
         _deleteButton.setText("X");
 
@@ -341,7 +339,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
 
         _saveButton.setText("<< Save");
 
-//        _addButton.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
+        //        _addButton.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         _addButton.setForeground(new java.awt.Color(0, 153, 0));
         _addButton.setText("+");
 
@@ -575,31 +573,31 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
         }
 
         _attributesList.addMouseListener(new MouseListener() {
-            
+
             @Override
             public void mouseReleased(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
-            
+
             @Override
             public void mousePressed(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
                 // TODO Auto-generated method stub
-                
+
             }
-            
+
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (_currentEditedAttribute == null
@@ -659,80 +657,79 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
                                 true);
                     }
                 }
-                
+
             }
         });
-        
-//        _attributesList.addListSelectionListener(new ListSelectionListener() {
-//
-//            
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//
-//                if (_currentEditedAttribute == null
-//                        || !_attributesList.getSelectedValue().equals(
-//                                _currentEditedAttribute.getAttributeName())) {
-//                    boolean canChange = true;
-//
-//                    if (_checkChanged()) {
-//                        if (JOptionPane
-//                                .showConfirmDialog(
-//                                        ConfigureAttributesFrame.this,
-//                                        "Do you want to save the change you have made to this attribute?",
-//                                        "Save Change", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION) {
-//
-//                            try {
-//                                _saveButtonActionPerformed(null);
-//                            } catch (IllegalNameException e1) {
-//                                canChange = false;
-//                            }
-//                        }
-//                    }
-//
-//                    if (canChange) {
-//                        for (Iterator iterator = _attributes.iterator(); iterator
-//                                .hasNext();) {
-//                            XMLDBAttribute attribute = (XMLDBAttribute) iterator
-//                                    .next();
-//                            if (attribute.getAttributeName().equals(
-//                                    _attributesList.getSelectedValue())) {
-//
-//                                _currentEditedAttribute = attribute;
-//
-//                                _attributeNameField.setText(attribute
-//                                        .getAttributeName());
-//                                _attributeTypeField.setSelectedItem(attribute
-//                                        .getAttributeType());
-//
-//                                if (attribute.getAttributeType().equals(
-//                                        XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
-//                                    _listEditButton.setEnabled(true);
-//                                    _listItems = new ArrayList<String>();
-//                                    _listItems.addAll(attribute
-//                                            .getAttributeValuesPlain());
-//                                }
-//
-//                                _deleteButton
-//                                        .setEnabled(_canEnableDeleteButton());
-//
-//                                _saveButton.setEnabled(_canEnableSaveButton());
-//
-//                                break;
-//                            }
-//                        }
-//                    } else {
-//                        _attributesList.setSelectedValue(
-//                                _currentEditedAttribute.getAttributeName(),
-//                                true);
-//                    }
-//                }
-//
-//            }
-//        });
+
+        //        _attributesList.addListSelectionListener(new ListSelectionListener() {
+        //
+        //            
+        //            @Override
+        //            public void valueChanged(ListSelectionEvent e) {
+        //
+        //                if (_currentEditedAttribute == null
+        //                        || !_attributesList.getSelectedValue().equals(
+        //                                _currentEditedAttribute.getAttributeName())) {
+        //                    boolean canChange = true;
+        //
+        //                    if (_checkChanged()) {
+        //                        if (JOptionPane
+        //                                .showConfirmDialog(
+        //                                        ConfigureAttributesFrame.this,
+        //                                        "Do you want to save the change you have made to this attribute?",
+        //                                        "Save Change", JOptionPane.YES_OPTION) == JOptionPane.YES_OPTION) {
+        //
+        //                            try {
+        //                                _saveButtonActionPerformed(null);
+        //                            } catch (IllegalNameException e1) {
+        //                                canChange = false;
+        //                            }
+        //                        }
+        //                    }
+        //
+        //                    if (canChange) {
+        //                        for (Iterator iterator = _attributes.iterator(); iterator
+        //                                .hasNext();) {
+        //                            XMLDBAttribute attribute = (XMLDBAttribute) iterator
+        //                                    .next();
+        //                            if (attribute.getAttributeName().equals(
+        //                                    _attributesList.getSelectedValue())) {
+        //
+        //                                _currentEditedAttribute = attribute;
+        //
+        //                                _attributeNameField.setText(attribute
+        //                                        .getAttributeName());
+        //                                _attributeTypeField.setSelectedItem(attribute
+        //                                        .getAttributeType());
+        //
+        //                                if (attribute.getAttributeType().equals(
+        //                                        XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+        //                                    _listEditButton.setEnabled(true);
+        //                                    _listItems = new ArrayList<String>();
+        //                                    _listItems.addAll(attribute
+        //                                            .getAttributeValuesPlain());
+        //                                }
+        //
+        //                                _deleteButton
+        //                                        .setEnabled(_canEnableDeleteButton());
+        //
+        //                                _saveButton.setEnabled(_canEnableSaveButton());
+        //
+        //                                break;
+        //                            }
+        //                        }
+        //                    } else {
+        //                        _attributesList.setSelectedValue(
+        //                                _currentEditedAttribute.getAttributeName(),
+        //                                true);
+        //                    }
+        //                }
+        //
+        //            }
+        //        });
 
         _attributeNameLabel.setFont(new Font("Title", Font.BOLD, 18)); // NOI18N
         _attributeNameLabel.setText("     Attribute Name");
-
 
         javax.swing.GroupLayout attributesPanelLayout = new javax.swing.GroupLayout(
                 _attributesPanel);
@@ -972,114 +969,119 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
     private void _saveButtonActionPerformed(ActionEvent evt)
             throws IllegalNameException {
 
-        if (!_validate()) {
-            JOptionPane
-                    .showMessageDialog(
-                            this,
-                            "Empty or duplicated attribute name! Please change to other name.",
-                            "Invalid Attribute Name", JOptionPane.ERROR_MESSAGE);
-            throw new IllegalNameException(
-                    "Empty or duplication attribute name.");
+        try {
+            _validate();
+        } catch (IllegalNameException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+
+            throw e;
+        }
+
+        //        if (!_validate()) {
+
+        //            JOptionPane
+        //                    .showMessageDialog(
+        //                            this,
+        //                            "Empty or duplicated attribute name! Please change to other name.",
+        //                            "Invalid Attribute Name", JOptionPane.ERROR_MESSAGE);
+        //            throw new IllegalNameException(
+        //                    "Empty or duplication attribute name.");
+        //        } else {
+        if (_currentEditedAttribute != null
+                && _currentEditedAttribute.getAttributeId() != null
+                && !_currentEditedAttribute.getAttributeId().isEmpty()) {
+
+            // Existing attribute
+            boolean nameChanged = false;
+
+            if (!_currentEditedAttribute.getAttributeName().equals(
+                    _attributeNameField.getText())) {
+                nameChanged = true;
+            }
+            _currentEditedAttribute.setAttributeName(_attributeNameField
+                    .getText());
+            _currentEditedAttribute
+                    .setAttributeType((String) _attributeTypeField
+                            .getSelectedItem());
+
+            if (_attributeTypeField.getSelectedItem().equals(
+                    XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+                if (_listItems == null) {
+                    _listItems = new ArrayList<String>();
+                }
+                _currentEditedAttribute.setAttributeValuesPlain(_listItems);
+            }
+
+            try {
+                _attributeManager.updateAttribute(_currentEditedAttribute);
+
+                _statusMsgLabel.setText("Updated successfully.");
+
+                // Only update the list when the attribute name is changed.
+                if (nameChanged) {
+                    ((ArrayModelList) _attributesList.getModel()).updateItem(
+                            _currentEditedAttribute.getAttributeName(),
+                            _attributesList.getSelectedIndex());
+                }
+
+                // Update the stored list in this class.
+                int index = 0;
+                for (Iterator iterator = _attributes.iterator(); iterator
+                        .hasNext();) {
+                    XMLDBAttribute attribute = (XMLDBAttribute) iterator.next();
+                    if (attribute.getAttributeId().equals(
+                            _currentEditedAttribute.getAttributeId())) {
+                        _attributes.set(index, _currentEditedAttribute);
+
+                        break;
+                    }
+
+                    index++;
+                }
+                _resetEditPanel();
+            } catch (DBConnectionException e) {
+                MessageHandler.error("Cannot update the attribute now.", e);
+            } catch (DBExecutionException e) {
+                MessageHandler.error("Cannot update the attribute now.", e);
+            }
+
         } else {
-            if (_currentEditedAttribute != null
-                    && _currentEditedAttribute.getAttributeId() != null
-                    && !_currentEditedAttribute.getAttributeId().isEmpty()) {
 
-                // Existing attribute
-                boolean nameChanged = false;
+            // New attribute.
+            XMLDBAttribute newXmldbAttribute = new XMLDBAttribute(
+                    _attributeNameField.getText(), (String) _attributeTypeField
+                            .getSelectedItem());
 
-                if (!_currentEditedAttribute.getAttributeName().equals(
-                        _attributeNameField.getText())) {
-                    nameChanged = true;
-                }
-                _currentEditedAttribute.setAttributeName(_attributeNameField
-                        .getText());
-                _currentEditedAttribute
-                        .setAttributeType((String) _attributeTypeField
-                                .getSelectedItem());
-
-                if (_attributeTypeField.getSelectedItem().equals(
-                        XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
-                    if (_listItems == null) {
-                        _listItems = new ArrayList<String>();
-                    }
-                    _currentEditedAttribute.setAttributeValuesPlain(_listItems);
+            if (_attributeTypeField.getSelectedItem().equals(
+                    XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
+                if (_listItems == null) {
+                    _listItems = new ArrayList<String>();
                 }
 
-                try {
-                    _attributeManager.updateAttribute(_currentEditedAttribute);
+                newXmldbAttribute.setAttributeValuesPlain(_listItems);
+            }
 
-                    _statusMsgLabel.setText("Updated successfully.");
+            try {
+                newXmldbAttribute = _attributeManager
+                        .createAttribute(newXmldbAttribute);
 
-                    // Only update the list when the attribute name is changed.
-                    if (nameChanged) {
-                        ((ArrayModelList) _attributesList.getModel())
-                                .updateItem(_currentEditedAttribute
-                                        .getAttributeName(), _attributesList
-                                        .getSelectedIndex());
-                    }
+                _statusMsgLabel
+                        .setText("The new attribute is saved successfully.");
 
-                    // Update the stored list in this class.
-                    int index = 0;
-                    for (Iterator iterator = _attributes.iterator(); iterator
-                            .hasNext();) {
-                        XMLDBAttribute attribute = (XMLDBAttribute) iterator
-                                .next();
-                        if (attribute.getAttributeId().equals(
-                                _currentEditedAttribute.getAttributeId())) {
-                            _attributes.set(index, _currentEditedAttribute);
+                _resetEditPanel();
 
-                            break;
-                        }
+                ((ArrayModelList) _attributesList.getModel())
+                        .addItem(newXmldbAttribute.getAttributeName());
 
-                        index++;
-                    }
-                    _resetEditPanel();
-                } catch (DBConnectionException e) {
-                    MessageHandler.error("Cannot update the attribute now.", e);
-                } catch (DBExecutionException e) {
-                    MessageHandler.error("Cannot update the attribute now.", e);
-                }
+                _attributes.add(newXmldbAttribute);
 
-            } else {
-
-                // New attribute.
-                XMLDBAttribute newXmldbAttribute = new XMLDBAttribute(
-                        _attributeNameField.getText(),
-                        (String) _attributeTypeField.getSelectedItem());
-
-                if (_attributeTypeField.getSelectedItem().equals(
-                        XMLDBAttribute.ATTRIBUTE_TYPE_LIST)) {
-                    if (_listItems == null) {
-                        _listItems = new ArrayList<String>();
-                    }
-
-                    newXmldbAttribute.setAttributeValuesPlain(_listItems);
-                }
-
-                try {
-                    newXmldbAttribute = _attributeManager
-                            .createAttribute(newXmldbAttribute);
-
-                    _statusMsgLabel
-                            .setText("The new attribute is saved successfully.");
-
-                    _resetEditPanel();
-                    
-                    ((ArrayModelList) _attributesList.getModel())
-                            .addItem(newXmldbAttribute.getAttributeName());
-
-                    _attributes.add(newXmldbAttribute);
-
-                    
-
-                } catch (DBConnectionException e) {
-                    MessageHandler.error("Cannot save the attribute now.", e);
-                } catch (DBExecutionException e) {
-                    MessageHandler.error("Cannot save the attribute now.", e);
-                }
+            } catch (DBConnectionException e) {
+                MessageHandler.error("Cannot save the attribute now.", e);
+            } catch (DBExecutionException e) {
+                MessageHandler.error("Cannot save the attribute now.", e);
             }
         }
+        //        }
 
     }
 
@@ -1089,12 +1091,11 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
      * 
      * @return true - the edited attribute is valid to save.<br>
      *          false - the edited attribute is invalid to save. 
+     * @exception IllegalNameException Thrown if the attribute name is illegal.
      */
-    private boolean _validate() {
+    private boolean _validate() throws IllegalNameException {
 
-        if (!Utilities.checkAttributeModelName(_attributeNameField.getText())) {
-            return false;
-        }
+        Utilities.checkAttributeModelName(_attributeNameField.getText());
 
         for (Iterator iterator = _attributes.iterator(); iterator.hasNext();) {
             XMLDBAttribute existingAttribute = (XMLDBAttribute) iterator.next();
@@ -1106,7 +1107,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
                         || _currentEditedAttribute.getAttributeId() == null
                         || _currentEditedAttribute.getAttributeId().isEmpty()) {
                     // New attribute
-                    return false;
+                    throw new IllegalNameException("Duplicated name!");
                 } else {
                     // Existing attribute. 
                     if (existingAttribute.getAttributeId().equals(
@@ -1114,7 +1115,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
                         // Same attribute.
                         return true;
                     } else {
-                        return false;
+                        throw new IllegalNameException("Duplicated name!");
                     }
                 }
 
