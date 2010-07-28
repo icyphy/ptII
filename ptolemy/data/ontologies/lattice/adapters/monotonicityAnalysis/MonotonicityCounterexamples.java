@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.util.MultiHashMap;
@@ -75,6 +76,14 @@ public class MonotonicityCounterexamples {
             }
         }
         return entrySet;
+    }
+    
+    public String toString() {
+        String result = "{";
+        for (Entry<Concept, Concept> pair : entrySet()) {
+            result += "(" + pair.getKey().toString() + "," + pair.getValue() + ")";
+        }
+        return result  + "}";
     }
     
     
