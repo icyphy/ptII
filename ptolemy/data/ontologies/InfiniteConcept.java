@@ -21,8 +21,6 @@
  */
 package ptolemy.data.ontologies;
 
-import ptolemy.data.Token;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -35,7 +33,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @Pt.ProposedRating Red (blickly)
  *  @Pt.AcceptedRating Red (blickly)
  */
-public class InfiniteConcept extends Concept {
+public class InfiniteConcept<T> extends Concept {
 
     // FIXME/Idea: What if creating an InfiniteConcept also requires a regular
     // concept in order to be created, and the infinite concept somehow just
@@ -46,27 +44,18 @@ public class InfiniteConcept extends Concept {
     // standard concept saying that it was allowed to have infinite concepts,
     // or something like that.  That could even be checked in the infinite
     // concept's constructor, actually.
-    public InfiniteConcept(Concept finiteConcept, Object value) {
-        super(finiteConcept.getContainer(), finiteConcept.getName());
-        _value = value;
-    }
-    
-    /**
-     *  @param ontology
-     *  @param name
-     *  @throws NameDuplicationException
-     *  @throws IllegalActionException
-     */
-    public InfiniteConcept(CompositeEntity ontology, String name, Object value)
+    public InfiniteConcept(Concept finiteConcept, T value)
             throws NameDuplicationException, IllegalActionException {
-        super(ontology, name);
+        super(finiteConcept.getOntology(), finiteConcept.getName());
         _value = value;
+        _baseConcept = finiteConcept;
     }
     
-    public Object getParametrizedValue() {
+    public T getParametrizedValue() {
         return _value;
     }
     
-    private Object _value;
+    private T _value;
+    private Concept _baseConcept;
 
 }
