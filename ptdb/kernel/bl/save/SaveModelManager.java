@@ -307,6 +307,18 @@ public class SaveModelManager {
     
                 dbConnection
                         .executeUpdateParentsToNewVersion(updateParentsToNewVersionTask);
+                
+                ArrayList<String> parentsList = xmlDBModelWithReferenceChanges
+                        .getParentsList();
+                
+                ArrayList<XMLDBModel> modelsToRemove = new ArrayList<XMLDBModel>();
+                
+                for(String modelName : parentsList) {
+                    XMLDBModel xmlDBModel = new XMLDBModel(modelName);
+                    modelsToRemove.add(xmlDBModel);
+                }
+                
+                CacheManager.removeFromCache(modelsToRemove);
 
             }
             
