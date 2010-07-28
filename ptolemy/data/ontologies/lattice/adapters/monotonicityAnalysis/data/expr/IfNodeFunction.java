@@ -22,8 +22,10 @@
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.data.ConceptToken;
 import ptolemy.data.Token;
@@ -85,6 +87,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      */
     protected Concept _evaluateFunction(List<Concept> inputConceptValues)
     throws IllegalActionException {
+        _nodeToCounterexamples.remove(_ifNode);
         Concept result = _standardIfAnalysis(inputConceptValues);
         if (result.isAboveOrEqualTo(_nonmonotonicConcept)) {
             Concept constant = _checkConditionalExtractConstant(inputConceptValues);
@@ -114,9 +117,11 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         Concept me4 = inputConceptValues.get(2);
 
         if (!_monotonicConcept.isAboveOrEqualTo(mconditional)
-                || !_monotonicConcept.isAboveOrEqualTo(me3)
-                || !_monotonicConcept.isAboveOrEqualTo(me4)) { // FIXME: ->_almostmonotonicConcept
-            // FIXME: Plus, how to get out counterexamples?
+                || !_monotonicConcept.isAboveOrEqualTo(me3)) {
+            return null;
+        }
+        if (!_monotonicConcept.isAboveOrEqualTo(me4)
+                && !_nodeToCounterexamples.containsKey(_ifNode.jjtGetChild(2))) {
             return null;
         }
 
@@ -194,7 +199,6 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         List downsetList = Arrays.asList(inputLattice.downSet(constant));
         List<Concept> downset = (List<Concept>) downsetList;
         MonotonicityCounterexamples counterexamples = new MonotonicityCounterexamples();
-        // FIXME: If me4 == _almostMonotonic, also need to check counterexample pairs.
         for (Concept b : downset) {
             List<ComponentPort> l = b.abovePort.deepConnectedPortList();
             for (ComponentPort cp : l) {
@@ -209,7 +213,18 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 }
             }
         }
+        MonotonicityCounterexamples inherited = _nodeToCounterexamples.get(_ifNode.jjtGetChild(2));
+        if (inherited != null) {
+            for (Map.Entry<Concept, Concept> pair : inherited.entrySet()) {
+                Concept fb = _evaluateChild(1, pair.getKey());
+                Concept fd = _evaluateChild(2, pair.getValue());
+                if (!fd.isAboveOrEqualTo(fb)) {
+                    counterexamples.add(pair.getKey(), pair.getValue());
+                } 
+            }
+        }
         if (counterexamples.containsCounterexamples()) {
+            _nodeToCounterexamples.put(_ifNode, counterexamples);
             return _nonmonotonicConcept;
         } else {
             return _monotonicConcept;
@@ -284,5 +299,14 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  variables and constants are drawn from.
      */
     private Ontology _domainOntology;
-
+    
+    /** A static Map that keeps track of the counterexamples at different
+     *  nodes in the Ptolemy AST.  This doesn't seem like the right way
+     *  to keep track of these things, and should probably be redesigned.
+     *  FIXME: Rethink this approach.
+     */
+    private static Map<ptolemy.data.expr.ASTPtFunctionalIfNode,
+                       MonotonicityCounterexamples> _nodeToCounterexamples =
+           new HashMap<ptolemy.data.expr.ASTPtFunctionalIfNode,
+                       MonotonicityCounterexamples>();   
 }
