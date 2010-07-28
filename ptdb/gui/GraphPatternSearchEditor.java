@@ -410,6 +410,73 @@ public class GraphPatternSearchEditor extends TransformationEditor {
     }
 
     /**
+     * Indicates whether the pattern in this frame is empty. 
+     * 
+     * @return true - if the pattern is empty.<br>
+     *  false - if the pattern is not empty. 
+     */
+    public boolean isPatternEmpty() {
+
+        // Get the pattern specified by the user.
+        TransformationRule rule = getFrameController().getTransformationRule();
+        Pattern pattern = rule.getPattern();
+
+        // Check the attributes part.
+        List<NamedObj> attributes = pattern.attributeList();
+
+        for (NamedObj attribute : attributes) {
+
+            // Fetch the attribute criteria specified in the AttributeMatcher.
+            if (attribute instanceof AttributeMatcher) {
+                return false;
+
+            }
+
+            if (attribute instanceof Variable) {
+                return false;
+            }
+        }
+
+        // Check the ports in the pattern. 
+        List<Port> portsList = pattern.portList();
+
+        if (portsList != null && portsList.size() > 0) {
+            return false;
+        }
+
+        // Check the relations in the pattern. 
+        List<Relation> relationsList = pattern.relationList();
+        if (relationsList != null && relationsList.size() > 0) {
+            return false;
+        }
+
+        // Check the component and composite entities of the pattern. 
+        if (pattern.entityList().size() > 0) {
+            return false;
+
+        }
+
+        // The pattern GTIngredients attributes from the configure window. 
+        GTIngredientsAttribute patternGtIngredientsAttribute = pattern
+                .getCriteriaAttribute();
+
+        if (patternGtIngredientsAttribute != null) {
+
+            try {
+                if (patternGtIngredientsAttribute.getIngredientList().size() > 0) {
+                    return false;
+                }
+            } catch (MalformedStringException e) {
+                return false;
+            }
+
+        }
+
+        return true;
+
+    }
+
+    /**
      * Update and refresh the pattern contained in this frame. This methods 
      * receives the MoML of the pattern, converts it to the model and display
      * in this frame. 

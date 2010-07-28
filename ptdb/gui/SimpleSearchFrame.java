@@ -150,7 +150,7 @@ public class SimpleSearchFrame extends JFrame {
 
         _searchButton = new JButton("Search");
         cancel_Button = new JButton("Cancel");
-        advancedSearchButton = new JButton("Open Advanced Search...");
+        advancedSearchButton = new JButton("Open Graph Pattern Search...");
 
         _searchButton.setMnemonic(KeyEvent.VK_ENTER);
         cancel_Button.setMnemonic(KeyEvent.VK_ESCAPE);
@@ -432,7 +432,7 @@ public class SimpleSearchFrame extends JFrame {
         validate();
         repaint();
 
-        // Renew the pattner search frame.
+        // Renew the pattern search frame.
         if (_patternMatchframe != null) {
             _patternMatchframe.dispose();
             _patternMatchframe = null;
@@ -555,12 +555,14 @@ public class SimpleSearchFrame extends JFrame {
 
                         _patternMatchframe.updatePattern(moml);
 
-                        _patternMatchframe.repaint();
+                        if (!_patternMatchframe.isPatternEmpty()) {
+                            _patternMatchframe.repaint();
 
-                        _patternMatchframe.pack();
-                        _patternMatchframe
-                                .setLocationRelativeTo(SimpleSearchFrame.this);
-                        _patternMatchframe.setVisible(true);
+                            _patternMatchframe.pack();
+                            _patternMatchframe
+                                    .setLocationRelativeTo(SimpleSearchFrame.this);
+                            _patternMatchframe.setVisible(true);
+                        }
 
                     } catch (Exception e2) {
 
@@ -593,6 +595,7 @@ public class SimpleSearchFrame extends JFrame {
             _saveAs();
 
         } else {
+            _searchCriteria = new SearchCriteria();
 
             try {
 
@@ -610,7 +613,8 @@ public class SimpleSearchFrame extends JFrame {
                 }
 
                 // Fetch the search criteria from the pattern match window.
-                if (_patternMatchframe != null) {
+                if (_patternMatchframe != null
+                        && !_patternMatchframe.isPatternEmpty()) {
 
                     _searchCriteria.setPattnerMoML(_patternMatchframe
                             .getPatternMoML());
@@ -643,6 +647,7 @@ public class SimpleSearchFrame extends JFrame {
     protected void _saveAs() {
 
         try {
+            _searchCriteria = new SearchCriteria();
 
             if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
@@ -658,7 +663,8 @@ public class SimpleSearchFrame extends JFrame {
             }
 
             // Fetch the search criteria from the pattern match window.
-            if (_patternMatchframe != null) {
+            if (_patternMatchframe != null
+                    && !_patternMatchframe.isPatternEmpty()) {
 
                 _searchCriteria.setPattnerMoML(_patternMatchframe
                         .getPatternMoML());
@@ -909,27 +915,27 @@ public class SimpleSearchFrame extends JFrame {
             DBExecutionException, NameDuplicationException,
             IllegalActionException, MalformedStringException {
 
-        //SearchCriteria searchCriteria = new SearchCriteria();
+        SearchCriteria searchCriteria = new SearchCriteria();
 
         if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
-            _searchCriteria.setModelName(_attributesListPanel.getModelName());
+            searchCriteria.setModelName(_attributesListPanel.getModelName());
         }
 
         if (_attributesListPanel.getAttributeCount() > 0) {
 
             ArrayList<Attribute> attributesToSearch = _attributesListPanel
                     .getAttributes();
-            _searchCriteria.setAttributes(attributesToSearch);
+            searchCriteria.setAttributes(attributesToSearch);
         }
 
         // Fetch the search criteria from the pattern match window.
         if (_patternMatchframe != null) {
-            _patternMatchframe.fetchSearchCriteria(_searchCriteria);
+            _patternMatchframe.fetchSearchCriteria(searchCriteria);
         }
 
         // Validate whether the search criteria is enough. 
-        if (_isSearchCriteriaEnough(_searchCriteria)) {
+        if (_isSearchCriteriaEnough(searchCriteria)) {
 
             SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
                     _containerModel, _sourceFrame, _configuration);
@@ -945,7 +951,7 @@ public class SimpleSearchFrame extends JFrame {
             // Call the Search Manager to trigger the search.
             SearchManager searchManager = new SearchManager();
             try {
-                searchManager.search(_searchCriteria, searchResultBuffer);
+                searchManager.search(searchCriteria, searchResultBuffer);
 
             } catch (DBConnectionException e1) {
                 searchResultsFrame.setVisible(false);
