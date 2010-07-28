@@ -180,7 +180,8 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
 
             if (!_monotonicConcept.isAboveOrEqualTo(mconditional)
                     || !_monotonicConcept.isAboveOrEqualTo(me3)
-                    || !_monotonicConcept.isAboveOrEqualTo(me4)) {
+                    || !_monotonicConcept.isAboveOrEqualTo(me4)) { // FIXME: ->_almostmonotonicConcept
+                                                                   // FIXME: Plus, how to get out counterexamples?
                 return null;
             }
 
@@ -267,10 +268,12 @@ public class ASTPtFunctionalIfNode extends LatticeOntologyASTNodeAdapter {
                     Concept fb = _evaluateChild(1, b);
                     Concept fd = _evaluateChild(2, d);
                     if (!fd.isAboveOrEqualTo(fb)) {
+                        // FIXME: Just add this pair to a list
                         return _nonmonotonicConcept;
                     }
                 }
             }
+            // FIXME: Also check pairs from list, if me4 == _almostMonotonic
             return _monotonicConcept;
         }
 
