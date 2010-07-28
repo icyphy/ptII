@@ -1006,6 +1006,10 @@ public class TestSaveModelManager {
 
         EasyMock.expect(DBConnectorFactory.getSyncConnection(false)).andReturn(
                 dBConnectionNoTransactionMock);
+        
+        
+        
+        
 
         
         XMLDBModel modelToBeSaved = new XMLDBModel("ModelToBeSaved");
@@ -1078,6 +1082,16 @@ public class TestSaveModelManager {
         
         EasyMock.expect(CacheManager.removeFromCache(newVersionList))
                 .andReturn(true);
+        
+        
+        PowerMock.expectNew(XMLDBModel.class, "parent").andReturn(modelToBeSaved);
+
+        ArrayList<XMLDBModel> modelsToRemove = new ArrayList<XMLDBModel>();
+        
+        modelsToRemove.add(modelToBeSaved);
+
+        EasyMock.expect(CacheManager.removeFromCache(modelsToRemove))
+                .andReturn(true);
 
         
         
@@ -1120,6 +1134,11 @@ public class TestSaveModelManager {
 
         EasyMock.expect(dBConnectionMock.executeSaveModelTask(taskMock))
                 .andReturn(modelToBeSaved.getModelId());
+        
+        
+
+        
+        
 
         dBConnectionMock.commitConnection();
 
