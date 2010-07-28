@@ -7,9 +7,10 @@ void pwmDisable(void){
 	PWMGenDisable(PWM_BASE, MOTOR_PWM);							//disable PWM generator
 }
 #define NUM_OUTPUTS 10
-static int32 motorOutputPower[NUM_OUTPUTS];
-static uint32 motorNextOutput = 0;
-static uint32 motorLastOutput = 0;
+volatile int32 motorOutputPower[NUM_OUTPUTS];
+volatile uint32 motorNextOutput = 0;
+volatile uint32 motorLastOutput = 0;
+volatile uint32 numMotorOutputs = 0;
 /**/
 
 /*** sharedBlock ***/
@@ -57,10 +58,16 @@ static uint32 motorLastOutput = 0;
 
 /*** fireBlock($actuator) ***/
 Time currentRealTime;
+disableInterrupts();
+if (numMotorOutputs == NUM_OUTPUTS) {
+	die("motor output size too small");
+}
+numMotorOutputs++;
 motorOutputPower[motorLastOutput++] = $get(input#0);
 if (motorLastOutput >= NUM_OUTPUTS) {
-	motorLastOutput = 0;
+    motorLastOutput = 0;
 }
+enableInterrupts();
 getRealTime(&currentRealTime);
 if (timeCompare(currentRealTime, currentModelTime) <= 0) {
 	setActuationInterrupt($actuator);
@@ -73,10 +80,17 @@ if (timeCompare(currentRealTime, currentModelTime) <= 0) {
 // power is a 32bit int, which is the input to this actor.
 uint32 pwmGo;			//pwm channel to enable
 uint32 pwmStop;			//pwm channel to disable
-int32 power = motorOutputPower[motorNextOutput++];
-if (motorNextOutput >= NUM_OUTPUTS) {
-	motorNextOutput = 0;
+int32 power;
+disableInterrupts();
+if (numMotorOutputs == 0) {
+	die("trying to actuate but no power available");
 }
+numMotorOutputs--;
+power = motorOutputPower[motorNextOutput++];
+if (motorNextOutput >= NUM_OUTPUTS) {
+    motorNextOutput = 0;
+}
+enableInterrupts();
 
 //Assign PWM channel to enable (either forward or reverse)
 if(power >= 0){

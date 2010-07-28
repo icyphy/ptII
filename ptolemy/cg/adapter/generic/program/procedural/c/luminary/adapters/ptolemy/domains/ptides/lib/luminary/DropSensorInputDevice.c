@@ -16,7 +16,7 @@ const uint32 timeToDisc[timeToDisc_size] = {
 	260152, 260188, 260222, 260252, 260278, 260302, 260323, 260341, 260355, 260367, 
 	260377, 260383, 260387, 260388};
 
-static volatile Time g_impactTime;			// System time that a ball will impact the disc
+// static volatile Time g_impactTime;			// System time that a ball will impact the disc
 
 //	Based on dropTime (time it took for the ball to pass through the sensors)
 //	return the time it will take for the ball to reach the disk
@@ -67,12 +67,6 @@ if (dropTime.nsecs < timeToDisc_max && dropTime.nsecs > timeToDisc_offset){			//
     // dropTimeToImpactTime is in us.
 	timeToImpact = dropTimeToImpactTime(dropTime.nsecs / 1000);					// Time ball will be in the air
     getRealTime(&currentSysTime);
-    // g_impactTime is the sum of current time and timeToImpact.
-    g_impactTime.nsecs = currentSysTime.nsecs + timeToImpact * 1000;
-    if (g_impactTime.nsecs > 1000000000) {
-        g_impactTime.nsecs -= 1000000000;
-        g_impactTime.secs++;
-    }
 
 	//FIXME: If dropTime is out of range, dropCount may be erroneous and should be corrected	
     // send an dummy value out of its output port.
@@ -93,13 +87,14 @@ SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIO$pad);
 SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
 GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_IN);
 GPIOPinTypeGPIOInput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
-IntPrioritySet(INT_GPIO$pad, 0x00);
+IntPrioritySet(INT_GPIO$pad, 0x20);
 GPIOIntTypeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_RISING_EDGE);  // to set rising edge
 GPIOPinIntEnable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
 IntEnable(INT_GPIO$pad);
 /**/
 
 /*** sensingBlock($sensorFireMethod, $pad, $pin) ***/
+saveState();
 GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7);
 #ifdef LCD_DEBUG
     debugMessage("$pad$pin");
@@ -118,7 +113,7 @@ getRealTime(&currentModelTime);
 currentMicrostep = 0;
 
 // do not need to disable interrupts if all interrupts have the same priority
-disableInterrupts();
+//disableInterrupts();
 $sensorFireMethod();
 // stack manipulation here instead of later.
 addStack();

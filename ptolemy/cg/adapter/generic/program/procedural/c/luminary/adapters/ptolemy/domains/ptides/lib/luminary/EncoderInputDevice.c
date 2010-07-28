@@ -32,7 +32,7 @@ SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIO$pad);
 SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
 GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_IN);
 GPIOPinTypeGPIOInput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
-IntPrioritySet(INT_GPIO$pad, 0x00);
+IntPrioritySet(INT_GPIO$pad, 0x20);
 GPIOIntTypeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_RISING_EDGE);  // to set rising edge
 GPIOPinIntEnable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
 
@@ -53,6 +53,7 @@ IntEnable(INT_GPIO$pad);
     debugMessage("$pad$pin");
 #endif
 
+saveState();
 // need to push the currentModelTag onto the stack.
 executingModelTag[numStackedModelTag].microstep = currentMicrostep;
 timeSet(currentModelTime, &(executingModelTag[numStackedModelTag].timestamp));
@@ -75,7 +76,7 @@ encoderInputPinStatus = GPIOPinRead(ENCODER_BASE, ENCODER_PIN_B);
 encoderInputInterruptStatus |= (encoderInputPinStatus << 8);
 
 // do not need to disable interrupts if all interrupts have the same priority
-disableInterrupts();
+//disableInterrupts();
 $sensorFireMethod();
 // stack manipulation here instead of later.
 addStack();
