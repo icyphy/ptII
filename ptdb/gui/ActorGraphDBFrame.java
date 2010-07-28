@@ -157,20 +157,42 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             _dbMenu = new JMenu("Database");
             _dbMenu.setMnemonic(KeyEvent.VK_B);
             _menubar.add(_dbMenu);
+            
+            JMenu recentModelMenu = new JMenu("Recently Opened Models");
+            recentModelMenu.setMnemonic(KeyEvent.VK_R);
+            _dbMenu.add(recentModelMenu);
+            
+            _dbMenu.addSeparator();
+            
+            GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
+            GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
+            
+            GUIUtilities.addHotKey(_getRightComponent(), _saveModelToDBAction);
+            GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
+            
+            GUIUtilities.addHotKey(_getRightComponent(), _renameModelAction);
+            GUIUtilities.addMenuItem(_dbMenu, _renameModelAction);
+            
+            GUIUtilities.addHotKey(_getRightComponent(),
+                    _openModelMigrationFrameAction);
+            GUIUtilities.addMenuItem(_dbMenu, _openModelMigrationFrameAction);
+
+            
+            
+            _dbMenu.addSeparator();
+            
 
             // Add menu items if database connection has been established.
             // TODO: if (DB IS CONNECTED) {
 
-            GUIUtilities.addHotKey(_getRightComponent(), _saveModelToDBAction);
-            GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
+            
 
             // Create search menu.
             //            JMenu searchMenu = new JMenu("Search");
             //            searchMenu.setMnemonic(KeyEvent.VK_C);
             //            _dbMenu.add(searchMenu);
 
-            GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
-            GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
+            
 
             //            GUIUtilities.addMenuItem(searchMenu, _simpleSearchAction);
 
@@ -178,9 +200,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             //                    .addHotKey(_getRightComponent(), _openSearchFrameAction);
             //            GUIUtilities.addMenuItem(searchMenu, _openSearchFrameAction);
 
-            JMenu recentModelMenu = new JMenu("Recently Opened Models");
-            recentModelMenu.setMnemonic(KeyEvent.VK_R);
-            _dbMenu.add(recentModelMenu);
+            
 
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openDatabaseSetupAction);
@@ -190,13 +210,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                     _configureAttributesAction);
             GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
 
-            GUIUtilities.addHotKey(_getRightComponent(),
-                    _openModelMigrationFrameAction);
-            GUIUtilities.addMenuItem(_dbMenu, _openModelMigrationFrameAction);
+            
 
-            GUIUtilities.addHotKey(_getRightComponent(), _renameModelAction);
-            GUIUtilities.addMenuItem(_dbMenu, _renameModelAction);
-
+            
             try {
 
                 if (getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null) {
