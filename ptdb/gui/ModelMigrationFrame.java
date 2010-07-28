@@ -114,13 +114,13 @@ public class ModelMigrationFrame extends JFrame {
     }
     
     /**
-     * Handles the done button action.
+     * Handles the close button action.
      * <p>
      * This action will close the window.
      * </p>
      * @param evt The action event performed on the done button.
      */
-    private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {
         this.setVisible(false);
         dispose();
     }
@@ -139,7 +139,7 @@ public class ModelMigrationFrame extends JFrame {
         _directoryPathTextField = new javax.swing.JTextField();
         _browseButton = new javax.swing.JButton();
         _migrateButton = new javax.swing.JButton();
-        _doneButton = new javax.swing.JButton();
+        _closeButton = new javax.swing.JButton();
         _resultsTextField = new javax.swing.JTextField();
         _jLabel3 = new javax.swing.JLabel();
         _jLabel4 = new javax.swing.JLabel();
@@ -167,11 +167,11 @@ public class ModelMigrationFrame extends JFrame {
             }
         });
 
-        _doneButton.setText("Done");
-        _doneButton.setVisible(false);
-        _doneButton.addActionListener(new java.awt.event.ActionListener() {
+        _closeButton.setText("Close");
+        _closeButton.setVisible(true);
+        _closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                doneButtonActionPerformed(evt);
+                closeButtonActionPerformed(evt);
             }
         });
         
@@ -200,7 +200,7 @@ public class ModelMigrationFrame extends JFrame {
                 .addGap(156, 156, 156)
                 .addComponent(_migrateButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(_doneButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(_closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
@@ -248,7 +248,7 @@ public class ModelMigrationFrame extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(_migrateButton)
-                    .addComponent(_doneButton))
+                    .addComponent(_closeButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(_resultsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -287,8 +287,6 @@ public class ModelMigrationFrame extends JFrame {
      */
     private void _migrateModels(String directoryPath) {
         
-        // Hide the done button.
-        _doneButton.setVisible(false);
         // Clear the results text field.
         _resultsTextField.setText("");
         
@@ -311,7 +309,6 @@ public class ModelMigrationFrame extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE, null);
         }
         
-        _doneButton.setVisible(true);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -320,7 +317,7 @@ public class ModelMigrationFrame extends JFrame {
 
     private javax.swing.JButton _browseButton;
     private javax.swing.JTextField _directoryPathTextField;
-    private javax.swing.JButton _doneButton;
+    private javax.swing.JButton _closeButton;
     private javax.swing.JLabel _jLabel1;
     private javax.swing.JLabel _jLabel2;
     private javax.swing.JLabel _jLabel3;
