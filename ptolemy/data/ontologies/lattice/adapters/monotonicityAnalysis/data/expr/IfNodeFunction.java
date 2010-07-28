@@ -33,6 +33,7 @@ import ptolemy.data.ontologies.ConceptGraph;
 import ptolemy.data.ontologies.ExpressionConceptFunctionParseTreeEvaluator;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
+import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamples;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -192,6 +193,8 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         ConceptGraph inputLattice = _domainOntology.getGraph();
         List downsetList = Arrays.asList(inputLattice.downSet(constant));
         List<Concept> downset = (List<Concept>) downsetList;
+        MonotonicityCounterexamples counterexamples = new MonotonicityCounterexamples();
+        // FIXME: If me4 == _almostMonotonic, also need to check counterexample pairs.
         for (Concept b : downset) {
             List<ComponentPort> l = b.abovePort.deepConnectedPortList();
             for (ComponentPort cp : l) {
@@ -202,13 +205,15 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 Concept fb = _evaluateChild(1, b);
                 Concept fd = _evaluateChild(2, d);
                 if (!fd.isAboveOrEqualTo(fb)) {
-                    // FIXME: Just add this pair to a list
-                    return _nonmonotonicConcept;
+                    counterexamples.add(b,d);
                 }
             }
         }
-        // FIXME: Also check pairs from list, if me4 == _almostMonotonic
-        return _monotonicConcept;
+        if (counterexamples.containsCounterexamples()) {
+            return _nonmonotonicConcept;
+        } else {
+            return _monotonicConcept;
+        }
     }
 
 
