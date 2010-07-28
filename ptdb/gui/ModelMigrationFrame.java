@@ -148,6 +148,8 @@ public class ModelMigrationFrame extends JFrame {
         
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        
+        setResizable(false);
 
         _jLabel1.setText("Please select the directory where the Ptolemy models exist.");
 
