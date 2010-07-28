@@ -147,7 +147,7 @@ public class ModelMigrationFrame extends JFrame {
         _allSubDirectoriesCheckBox = new javax.swing.JCheckBox();
         
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         _jLabel1.setText("Please select the directory where the Ptolemy models exist.");
 
