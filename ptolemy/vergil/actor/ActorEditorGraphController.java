@@ -36,6 +36,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import javax.swing.Action;
@@ -44,6 +45,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
@@ -76,6 +79,7 @@ import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Interactor;
+import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeRenderer;
@@ -372,6 +376,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         super._addHotKeys(jgraph);
 
         _classDefinitionController.addHotKeys(getFrame().getJGraph());
+        _dbActorController.addHotKeys(getFrame().getJGraph());
 
     }
 
@@ -391,6 +396,48 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         _classDefinitionController = new ClassDefinitionController(this);
 
+        if (_config != null) {
+            StringParameter actorInteractionAddon;
+            try {
+                actorInteractionAddon = (StringParameter) _config
+                    .getAttribute("_ActorInteractionAddon", Parameter.class);
+
+                if (actorInteractionAddon != null) {
+                    String actorInteractionAddonClassName = actorInteractionAddon
+                            .stringValue();
+                    
+                    Class actorInteractionAddonClass = Class
+                        .forName(actorInteractionAddonClassName);
+                    
+                    ActorInteractionAddon actorInterationAddon =
+                        (ActorInteractionAddon) actorInteractionAddonClass
+                        .newInstance();
+
+                    Method method2 = 
+                        actorInteractionAddonClass
+                        .getMethod("getControllerInstance", 
+                                GraphController.class);
+                    
+                    _dbActorController = 
+                        (ActorController) method2
+                        .invoke(actorInterationAddon, this);
+                    
+                } else {
+                    
+                    _dbActorController =  new ActorInstanceController(this);
+                    
+                }
+
+            } catch (Exception e) {
+                // Just ignore it.
+            }
+            
+        } else {
+            
+            _dbActorController = new ActorInstanceController(this);
+        
+        }
+        
         if (_config != null) {
             /*
              * If _alternateActorInstanceController is set in the config, use that

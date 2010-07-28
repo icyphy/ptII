@@ -27,9 +27,13 @@
  */
 package ptolemy.vergil.actor;
 
+import java.lang.reflect.Method;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
@@ -47,6 +51,7 @@ import ptolemy.vergil.kernel.RelationController;
 import diva.canvas.Figure;
 import diva.canvas.interactor.SelectionDragger;
 import diva.graph.EdgeController;
+import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeController;
@@ -204,14 +209,63 @@ public class ActorViewerGraphController extends RunnableGraphController {
             Object semanticObject = getGraphModel().getSemanticObject(object);
 
             if (semanticObject instanceof Entity) {
+                
+                boolean isDatabaseReferenceActor = false;            
+
+                StringParameter actorInteractionAddon;
+                try {
+                    actorInteractionAddon = (StringParameter) 
+                        this.getConfiguration()
+                        .getAttribute("_ActorInteractionAddon", 
+                                Parameter.class);
+
+                    if (actorInteractionAddon != null) {
+                        String actorInteractionAddonClassName = 
+                            actorInteractionAddon.stringValue();
+                        
+                            Class actorInteractionAddonClass = Class
+                                .forName(actorInteractionAddonClassName);
+                            
+                            ActorInteractionAddon actorInterationAddon =
+                                (ActorInteractionAddon) 
+                                actorInteractionAddonClass.newInstance();
+                            
+                            Method method1 = actorInteractionAddonClass
+                                .getMethod("isActorOfInterestForAddonController"
+                                        , NamedObj.class);
+
+                            if(((Boolean) method1
+                                    .invoke(actorInterationAddon, 
+                                    semanticObject)).booleanValue()){
+
+                                isDatabaseReferenceActor = true;
+                         
+                                   
+                            }
+                        
+                                
+                        }
+
+                } catch (Exception e) {
+                    // Just ignore it.
+                }
+                
                 // In the viewer, there will not be a class definition
                 // controller that is distinct from the entity controller.
                 // In the edit, there will be.
                 if ((_classDefinitionController != null)
                         && ((Entity) semanticObject).isClassDefinition()) {
+                    
                     return _classDefinitionController;
+                    
+                } else if (isDatabaseReferenceActor) {
+
+                    return _dbActorController;
+                    
                 } else {
+                    
                     return _entityController;
+                
                 }
             } else if (semanticObject instanceof Attribute) {
                 return _attributeController;
@@ -240,6 +294,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _entityPortController.setConfiguration(configuration);
         _relationController.setConfiguration(configuration);
         _linkController.setConfiguration(configuration);
+        _dbActorController.setConfiguration(configuration);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -254,6 +309,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _entityController.addHotKeys(jgraph);
         _classDefinitionController.addHotKeys(jgraph);
         _attributeController.addHotKeys(jgraph);
+        _dbActorController.addHotKeys(jgraph);
     }
 
     /** Create the controllers for nodes in this graph.
@@ -272,6 +328,43 @@ public class ActorViewerGraphController extends RunnableGraphController {
         // ClassDefinitionController because access is only PARTIAL.
         _classDefinitionController = new ClassDefinitionController(this,
                 AttributeController.PARTIAL);
+        
+        StringParameter actorInteractionAddon;
+        try {
+            actorInteractionAddon = (StringParameter) this.getConfiguration()
+                .getAttribute("_ActorInteractionAddon", Parameter.class);
+
+            if (actorInteractionAddon != null) {
+                String actorInteractionAddonClassName = actorInteractionAddon
+                        .stringValue();
+                
+                Class actorInteractionAddonClass = Class
+                    .forName(actorInteractionAddonClassName);
+                
+                ActorInteractionAddon actorInterationAddon =
+                    (ActorInteractionAddon) actorInteractionAddonClass
+                    .newInstance();
+
+                Method method2 = 
+                    actorInteractionAddonClass
+                    .getMethod("getControllerInstance", 
+                            GraphController.class, Boolean.TYPE);
+                
+                _dbActorController = 
+                    (ActorController) method2
+                    .invoke(actorInterationAddon, this, false);
+                
+            } else {
+                
+                _dbActorController =  new ActorInstanceController(this,
+                        AttributeController.PARTIAL);
+                
+            }
+
+        } catch (Exception e) {
+            // Just ignore it.
+        }
+        
         _entityController = new ActorInstanceController(this,
                 AttributeController.PARTIAL);
         _entityPortController = new IOPortController(this,
@@ -309,6 +402,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
     /** The class definition controller. */
     protected ActorController _classDefinitionController;
 
+    /** The database reference controller. */
+    protected ActorController _dbActorController;
+    
     /** The entity controller. */
     protected ActorController _entityController;
 

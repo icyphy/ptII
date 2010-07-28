@@ -35,6 +35,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -57,6 +58,7 @@ import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -798,6 +800,46 @@ public abstract class ActorController extends AttributeController {
 
             NamedObj object = getTarget();
 
+            StringParameter actorInteractionAddon;
+            try {
+                actorInteractionAddon = (StringParameter) _configuration
+                    .getAttribute("_ActorInteractionAddon", Parameter.class);
+
+                if (actorInteractionAddon != null) {
+                    String actorInteractionAddonClassName = actorInteractionAddon
+                            .stringValue();
+                    
+                        Class actorInteractionAddonClass = Class
+                            .forName(actorInteractionAddonClassName);
+                        
+                        ActorInteractionAddon actorInterationAddon =
+                            (ActorInteractionAddon) actorInteractionAddonClass
+                            .newInstance();
+                        
+                        Method method1 = actorInteractionAddonClass
+                            .getMethod("isActorOfInterestForLookInside", 
+                                    NamedObj.class);
+
+                        if(((Boolean) method1
+                                .invoke(actorInterationAddon, object))
+                                .booleanValue()){
+                            
+                            Method method2 = 
+                                actorInteractionAddonClass
+                                .getMethod("lookInsideAction", 
+                                        FigureAction.class);
+                            
+                            method2.invoke(actorInterationAddon, this);
+                               
+                        }
+                    
+                            
+                    }
+
+            } catch (Exception e) {
+                // Just ignore it.
+            }
+            
             // NOTE: Used to open source code here if the object
             // was not a CompositeEntity. But this made it impossible
             // to associate a custom tableau with an atomic entity.
@@ -835,6 +877,46 @@ public abstract class ActorController extends AttributeController {
             super.actionPerformed(event);
             NamedObj object = getTarget();
 
+            StringParameter actorInteractionAddon;
+            try {
+                actorInteractionAddon = (StringParameter) _configuration
+                    .getAttribute("_ActorInteractionAddon", Parameter.class);
+
+                if (actorInteractionAddon != null) {
+                    String actorInteractionAddonClassName 
+                        = actorInteractionAddon
+                            .stringValue();
+
+                        Class actorInteractionAddonClass = Class
+                            .forName(actorInteractionAddonClassName);
+                        
+                        ActorInteractionAddon actorInterationAddon =
+                            (ActorInteractionAddon) actorInteractionAddonClass
+                            .newInstance();
+                        
+                        Method method1 = actorInteractionAddonClass
+                            .getMethod("isActorOfInterestForOpenInstance", 
+                                    NamedObj.class);
+
+                        if(((Boolean) method1.invoke(actorInterationAddon, 
+                                object)).booleanValue()){
+                            
+                            Method method2 = 
+                                actorInteractionAddonClass
+                                .getMethod("openInstanceAction", 
+                                        FigureAction.class);
+                            
+                            method2.invoke(actorInterationAddon, this);
+                               
+                        }
+                    
+                            
+                    }
+
+            } catch (Exception e) {
+                // Just ignore it.
+            }
+            
             if (object instanceof CompositeEntity) {
                 try {
                     _configuration.openInstance(object);
