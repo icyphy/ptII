@@ -302,14 +302,14 @@ public class SaveModelToDBFrame extends JFrame {
      * 
      * @param isNew Whether this is a new model. 
      * @param id The id of this model. 
-     * @param unchangedParentsList The list of parents names that do not want 
+     * @param parentsMaintainOldVersion The list of parents names that do not want 
      * to reflect the changes to the submodel they have.  
      * @param newVersionName The new name of this saving model, to have those 
      * parent models maintaining the old reference.
      * @throws Exception Thrown if errors occur during the saving. 
      */
     private void _commitSave(boolean isNew, String id,
-            ArrayList<String> unchangedParentsList, String newVersionName)
+            ArrayList<String> parentsMaintainOldVersion, String newVersionName)
             throws Exception {
         
          String newName =  _attributesListPanel.getModelName();
@@ -349,7 +349,7 @@ public class SaveModelToDBFrame extends JFrame {
         _xmlModel.setModelId(id);
 
         XMLDBModelWithReferenceChanges xmlDBModelWithReferenceChanges = new XMLDBModelWithReferenceChanges(
-                _xmlModel, unchangedParentsList, newVersionName);
+                _xmlModel, parentsMaintainOldVersion, newVersionName);
 
         try {
 
@@ -405,13 +405,13 @@ public class SaveModelToDBFrame extends JFrame {
 
                 // Update the parent models that are opened already. 
                 // Update those parents with unchanged sub model first. 
-                if (unchangedParentsList != null
-                        && unchangedParentsList.size() > 0) {
+                if (parentsMaintainOldVersion != null
+                        && parentsMaintainOldVersion.size() > 0) {
 
                     XMLDBModel newVersionModel = DBModelFetcher
                             .load(newVersionName);
 
-                    for (String parentName : unchangedParentsList) {
+                    for (String parentName : parentsMaintainOldVersion) {
 
                         if (_source.getConfiguration().getDirectory()
                                 .getEntity(parentName) != null) {
