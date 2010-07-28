@@ -28,6 +28,7 @@
 package ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
+import ptolemy.domains.ptides.lib.luminary.GPInputDevice;
 import ptolemy.domains.ptides.lib.luminary.LuminarySensorInputDevice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -290,7 +292,70 @@ public class PtidesBasicDirector
      * @exception IllegalActionException Not thrown in this base class.
      */
     public Set getSharedCode() throws IllegalActionException {
-        Set sharedCode = super.getSharedCode();
+        Set sharedCode = new HashSet();
+
+        // if the outside is already a Ptides director (this could only happen if
+        // we have a EmbeddedCodeActor inside of a Ptides director. This case
+        // the EmbeddedCodeActor would also have a Ptides director (in order to
+        // have Ptides receivers). But in this case no shared code needs to be
+        // generated.
+        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
+                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
+            return sharedCode;
+        }
+        
+        _modelStaticAnalysis();
+
+        _templateParser.getCodeStream().clear();
+
+        // define the number of actuators in the system as a macro.
+        _templateParser.getCodeStream().append("#define numActuators "
+                + actuators.size() + _eol);
+
+        _templateParser.getCodeStream().appendCodeBlocks("StructDefBlock");
+        _templateParser.getCodeStream().appendCodeBlocks("FuncProtoBlock");
+
+        // prototypes for actor functions
+        _templateParser.getCodeStream().append(_generateActorFuncProtoCode());
+
+        // prototypes for actuator functions.
+        _templateParser.getCodeStream().append(
+                _generateActuatorActuationFuncArrayCode());
+
+        // the only supported sensor inputs are GPIO inputs.
+        List args = new LinkedList();
+        for (Actor sensor : sensors.keySet()) {
+            if (sensor instanceof GPInputDevice) {
+                args.add("IntDisable(INT_GPIO" + 
+                        ((GPInputDevice)sensor).pad.stringValue() + ");" + _eol);
+            } else {
+                throw new IllegalActionException("Only GPIO inputs are supported " +
+                		"as sensors.");
+            }
+        }
+        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
+            args.add("");
+        }
+        for (Actor sensor : sensors.keySet()) {
+            if (sensor instanceof GPInputDevice) {
+                args.add("IntEnable(INT_GPIO" + 
+                        ((GPInputDevice)sensor).pad.stringValue() + ");" + _eol);
+            } else {
+                throw new IllegalActionException("Only GPIO inputs are supported " +
+                                "as sensors.");
+            }
+        }
+        for (int i = 0; i < maxNumSensorInputs - sensors.size(); i++) {
+            args.add("");
+        }
+        _templateParser.getCodeStream().append(
+                _templateParser.getCodeStream().getCodeBlock("FuncBlock", args));
+
+        if (!_templateParser.getCodeStream().isEmpty()) {
+            sharedCode.add(processCode(_templateParser.getCodeStream()
+                    .toString()));
+        }
+
         return sharedCode;
     }
 
@@ -332,4 +397,7 @@ public class PtidesBasicDirector
         return code.toString();
     }
 
+    /** The maximum number of sensor inputs that is supported.
+     */
+    private static int maxNumSensorInputs = 8;
 }

@@ -49,13 +49,13 @@ typedef struct event {
 void addEvent(Event*);
 void fireActor(Event*);
 void freeEvent(Event*);
-unsigned int higherPriority(Event*);
+unsigned int higherPriority(const Event*);
 void initializeEvents(void);
 Event* newEvent(void);
 void propagateDataToken(Event*);
 void queuePriority(Event*);
 void removeEvent(Event*);
-void safeToProcess(Event*, Time*);
+void safeToProcess(const Event* const, Time*);
 void setCurrentModelTag(Event*);
 void timeAdd(const Time, const Time, Time*);
 int timeCompare(const Time, const Time);
@@ -64,43 +64,38 @@ int timeSub(const Time, const Time, Time*);
 
 /* static variables */
 Event eventMemory[MAX_EVENTS];
-Event* DEADLINE_QUEUE_HEAD = NULL;
-int locationCounter;
-static Time currentModelTime;
-static int currentMicrostep;
+volatile Event* DEADLINE_QUEUE_HEAD = NULL;
+volatile int locationCounter;
+volatile Time currentModelTime;
+volatile int currentMicrostep;
 
 // Global variable to keep track of number of times the timer needs to interrupt before physical
 // time has exceeded safe to process time.
-static unsigned long timerInterruptSecsLeft;
-static unsigned long actuatorTimerInterruptSecsLeft;
-
-static Time lastTimerInterruptTime;
+volatile unsigned long timerInterruptSecsLeft;
+volatile unsigned long actuatorTimerInterruptSecsLeft;
 
 // ID of the current actuator that's causing the timer to run.
-int actuatorRunning = -1;
-Time lastActuateTime;
+volatile int actuatorRunning = -1;
+volatile Time lastActuateTime;
 
-// timer0 rolls over every 1sec
-static unsigned long TIMER_ROLLOVER_CYCLES;
+volatile int numStackedDeadline;
+volatile Time executingDeadlines[MAX_EVENTS];
+volatile void (*executingActors[MAX_EVENTS])();
 
-static int numStackedDeadline;
-static Time executingDeadlines[MAX_EVENTS];
-static void (*executingActors[MAX_EVENTS])();
+volatile Tag executingModelTag[MAX_EVENTS];
+volatile int numStackedModelTag;
 
-static Tag executingModelTag[MAX_EVENTS];
-static int numStackedModelTag;
-
-static Time lastTimerInterruptTime;
+volatile Time lastTimerInterruptTime;
 volatile uint32 _secs = 0;
 volatile uint32 _quarterSecs = 0;
 
 // actuator queue
 // Head points to the head of the array.
-int actuatorArrayHeadPtrs[numActuators];
+volatile int actuatorArrayHeadPtrs[numActuators];
 // Tail points to the last element array.
-int actuatorArrayTailPtrs[numActuators];
-int actuatorArrayCounts[numActuators];
-static Time actuatorTimerValues[numActuators][MAX_ACTUATOR_TIMER_VALUES];
+volatile int actuatorArrayTailPtrs[numActuators];
+volatile int actuatorArrayCounts[numActuators];
+volatile Time actuatorTimerValues[numActuators][MAX_ACTUATOR_TIMER_VALUES];
 
 // Times.
 static Time MAX_TIME = {(uint32)-1, (uint32)-1};
@@ -144,12 +139,9 @@ void addEvent(Event* newEvent) {
     // now add event to the deadline queue
     Event *compare_deadline;
     Event *before_deadline;
-
     disableInterrupts();
-
     before_deadline  = NULL;
     compare_deadline = DEADLINE_QUEUE_HEAD;
-
     while (1) {
         // We've reached the end of the queue.
         if (compare_deadline == NULL) {
@@ -161,33 +153,25 @@ void addEvent(Event* newEvent) {
             compare_deadline = compare_deadline->nextEvent;
         }
     }
-
     newEvent->nextEvent = compare_deadline;
     if (before_deadline == NULL) {
         DEADLINE_QUEUE_HEAD = newEvent;
     } else {
         before_deadline->nextEvent = newEvent;
     }
-
-#ifdef LCD_DEBUG
+    #ifdef LCD_DEBUG
     //sprintf(str,"addedEvent: %d",addeventcount);
     //RIT128x96x4StringDraw(str,   12,80,15);
-#endif
-
-    enableInterrupts();
+    #endif
+	enableInterrupts();
 }
 
 Event* peekEvent(unsigned int peekingIndex) {
-    int i;
+    int i = 0;
     Event* deadline = DEADLINE_QUEUE_HEAD;
-
-    if (deadline == NULL) {
-        return NULL;
-    } else {
-        for (i = 0; i < peekingIndex; i++) 
-        {
-            deadline = deadline->nextEvent;
-        }
+	while (deadline != NULL && i < peekingIndex) {
+		deadline = deadline->nextEvent;
+		i++;
     }
     return deadline;
 }
@@ -214,30 +198,39 @@ void removeAndPropagateSameTagEvents(int peekingIndex) {
     Event* event = DEADLINE_QUEUE_HEAD;
     Event* prevEvent = NULL;
     Event* refEvent = NULL;
-
     if (peekingIndex == 0) {
+		// remove event from the event queue.
         DEADLINE_QUEUE_HEAD = event->nextEvent;
     } else {
         for (i = 0; i < peekingIndex; i++) {
             prevEvent = event;
             event = event->nextEvent;
         }
+		// remove event from the event queue.
+		prevEvent->nextEvent = event->nextEvent;
     }
-    // propagate data, and remove it from the event queue.
+    // propagate data
     propagateDataToken(event);
-    prevEvent->nextEvent = event->nextEvent;
-    refEvent = event;
+
     // Now find the next event see we should process it at the same time.
+    refEvent = event;
     while (true) {
         event = event->nextEvent;
-        if (notSameTag(refEvent, event)) {
+		if (event == NULL) {
+			break;
+		} else if (notSameTag(refEvent, event)) {
             break;
         } else {
             // tags are the same, but only propagate if the destination
             // actor for these two events are the same.
             if (sameDestination(refEvent, event)) {
                 propagateDataToken(event);
-                prevEvent->nextEvent = event->nextEvent;
+				// remove event from the event queue,
+				if (prevEvent == NULL) {
+					DEADLINE_QUEUE_HEAD = event->nextEvent;
+				} else {	
+                	prevEvent->nextEvent = event->nextEvent;
+				}
             } else {
                 prevEvent = event;
             }
@@ -248,21 +241,26 @@ void removeAndPropagateSameTagEvents(int peekingIndex) {
 Event* newEvent(void) {
     // counter counts the number of times we loop around the memory.
     int counter = 0;
-    while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {  
+	disableInterrupts();
+    while (eventMemory[locationCounter].inUse != MAX_EVENTS + 1) {
         if (counter++ >= MAX_EVENTS) {  // if you've run out of memory just stop
             die("ran out of memory");
         }
         locationCounter++;
         // make it circular
-        locationCounter%=MAX_EVENTS;
+        locationCounter %= MAX_EVENTS;
     }
     //      RIT128x96x4StringDraw(itoa(locationCounter,10), 0,0,15);
-    eventMemory[locationCounter].inUse=locationCounter;
-    return &eventMemory[locationCounter];
+	counter = locationCounter;
+    eventMemory[counter].inUse=counter;
+	enableInterrupts();
+    return &eventMemory[counter];
 }
 
 void freeEvent(Event* thisEvent) {
+	disableInterrupts();
     eventMemory[thisEvent->inUse].inUse = MAX_EVENTS+1;
+    enableInterrupts();
 }
 
 /* time manipulation */
@@ -360,8 +358,8 @@ void processEvents() {
                 fireActor(event);
                 // After an actor fires, we not sure which event is safe to process,
                 // so we start examine the queue again start from the beginning.
-                peekingIndex = 0;
                 disableInterrupts();
+				peekingIndex = 0;
             } else {
                 // Set timed interrupt to run
                 // the event at the top of the
@@ -373,8 +371,8 @@ void processEvents() {
                     setTimedInterrupt(&processTime);
                 }
                 // this event is not safe to process, we look at the next one.
-                peekingIndex++;
-                //break;
+                //peekingIndex++;
+                break;
 
             }// end !(curentPhysicalTime >= processTime)
         } else {
@@ -427,7 +425,7 @@ void fireActor(Event* currentEvent) {
 /* determines whether the event to fire this current actor is of higher priority than
 * whatever even that's currently being executed.
 */                                                                    
-unsigned int higherPriority(Event* event) {
+unsigned int higherPriority(const Event* const event) {
     int i;
     if (numStackedDeadline == 0) {
         // there are no events on the stack, so it's always true.
@@ -487,7 +485,7 @@ void propagateDataToken(Event* currentEvent){
 * In this analysis, the clock event can be executed when real time exceeds
 * tau - model_delay3
 */
-void safeToProcess(Event* thisEvent, Time* safeTimestamp) {
+void safeToProcess(const Event* const thisEvent, Time* safeTimestamp) {
 
     //   safeTimestamp = physical time - offset;
 
@@ -604,8 +602,8 @@ void execute() {
                 fireActor(event);
                 // After an actor fires, we not sure which event is safe to process,
                 // so we start examine the queue again start from the beginning.
-                peekingIndex = 0;
                 disableInterrupts();
+                peekingIndex = 0;
             } else {
                 // Set timed interrupt to run
                 // the event at the top of the
@@ -617,8 +615,8 @@ void execute() {
                     setTimedInterrupt(&processTime);
                 }
                 // this event is not safe to process, we look at the next one.
-                peekingIndex++;
-                //break;
+                //peekingIndex++;
+                break;
             }// end !(curentPhysicalTime >= processTime)
         } else {
             // This is the only place for us to break out of the while loop. The only other possibility
@@ -628,12 +626,6 @@ void execute() {
             #endif
             break;
         }//end EVENT_QUEUE_HEAD != NULL
-    }
-    // restore the last executing stacked model tag.
-    if (numStackedModelTag > 0) {
-        numStackedModelTag--;
-        currentMicrostep = executingModelTag[numStackedModelTag].microstep;
-        timeSet(executingModelTag[numStackedModelTag].timestamp, &currentModelTime);
     }
     // This implies within the while loop, if all events cannot be processed,
     // we need to go through the entire event queue before another event can come in.

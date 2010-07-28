@@ -37,11 +37,19 @@ typedef signed char             int8;
 #include "statics.h"
 #include "globals.h"
 
+// Number of cycles until timer rolls over
+static unsigned long TIMER_ROLLOVER_CYCLES;
+
+// amount of delay between when the interrupt occurs and the ISR is entered
+// (assuming no resource contention). In the Luminary case, the latency is 4us. 
+#define INTERRUPT_DELAY 4000
+
 $super.StructDefBlock();
 /**/
 
 /*** FuncProtoBlock ***/
 void addStack(void);
+void saveState(void);
 uint32 convertCyclesToNsecs(uint32);
 uint32 convertNsecsToCycles(uint32);
 void die(char*);
@@ -58,7 +66,10 @@ void __svc(0)  restoreStack(void);
 $super.FuncProtoBlock();
 /**/
 
-/*** FuncBlock ***/
+// If more int's are to be added to the argument of FuncBlock, change the
+// maxNumSensorInputs field in PtidesBasicDirector.
+/*** FuncBlock($dis1, $dis2, $dis3, $dis4, $dis5, $dis6, $dis7, $dis8, 
+$en1, $en2, $en3, $en4, $en5, $en6, $en7, $en8) ***/
 
 #ifdef LCD_DEBUG
 //Unsigned long to ASCII; fixed maxiumum output string length of 32 characters
@@ -105,12 +116,12 @@ void debugMessage(char * szMsg){
         }
         screenBuffer[index+3] = '\0';
 
-        interruptDisabled = IntMasterDisable();
+        //interruptDisabled = IntMasterDisable();
         RIT128x96x4StringDraw("                      ", 0, screenIndex, 15);
         RIT128x96x4StringDraw(screenBuffer, 0, screenIndex, 15);
-        if (!interruptDisabled) {
+        /*if (!interruptDisabled) {
                 IntMasterEnable();
-        }
+        }*/
         screenIndex = screenIndex < 88 ? screenIndex + 8 : DBG_STARTLINE * 8;
         eventCount = (eventCount + 1) & 0xFF;
 }
@@ -169,18 +180,49 @@ void die(char *mess) {
         RIT128x96x4Init(2000000);
         RIT128x96x4DisplayOn();
         RIT128x96x4StringDraw(mess, 0,88,15);
-        enableInterrupts();
+        while(1);
         return;
 }
 
-// Disable all interrupts 
+// Disable all peripheral and timer interrupts (does not include the systick)
+// IntMasterDisable should not be called here, because the systick handler would be disabled.
+// Instead, we disable each interrupt individually.
 void disableInterrupts(void) {
-        IntMasterDisable();
+	// disable safe to process timer
+    IntDisable(INT_TIMER0A);
+	IntDisable(INT_TIMER0B);
+	// disable actuation timer
+	IntDisable(INT_TIMER1A);
+	IntDisable(INT_TIMER1B);
+	// disable sensor input peripherals
+	$dis1
+	$dis2
+	$dis3
+	$dis4
+	$dis5
+	$dis6
+	$dis7
+	$dis8
 }
-
-// Enable all interrupts 
+// Enable all peripheral and timer interrupts (does not include the systick)
+// IntMasterEnable should not be called here, because the systick handler would be disabled.
+// Instead, we disable each interrupt individually.
 void enableInterrupts(void) {
-        IntMasterEnable();
+	// enable Timer0
+	IntEnable(INT_TIMER0A);
+	IntEnable(INT_TIMER0B);
+	// enable actuation timer	
+	IntEnable(INT_TIMER1A);
+	IntEnable(INT_TIMER1B);
+	// enable sensor input peripherals
+	$en1
+	$en2
+	$en3
+	$en4
+	$en5
+	$en6
+	$en7
+	$en8
 }
 
 //Return the real physical time.
@@ -189,49 +231,59 @@ void getRealTime(Time * const physicalTime){
     uint32 tick2;
     uint32 tempSecs;
     uint32 tempQuarterSecs;
-        for (;;) {
-        tick1 = SysTickValueGet();
-        tempSecs = _secs;
-        tempQuarterSecs = _quarterSecs;
-        tick2 = SysTickValueGet();
-        //If the system tick rolls over (the tick counts down) between accessing
-        // the volatile variables _secs and _quartersecs, then we account for this here
-        // by incrementing _quartersecs
-            if(tick2 < tick1) {
-                    physicalTime->secs = tempSecs;
-                    switch(tempQuarterSecs){
-                                case 0:                        physicalTime->nsecs = 0;                 break;
-                        case 1:         physicalTime->nsecs = 250000000; break;
-                        case 2:         physicalTime->nsecs = 500000000; break;
-                        case 3:         physicalTime->nsecs = 750000000; break;
-                    }
-                    // convertCyclesToNsecs assumes 50MHz clock
-                    physicalTime->nsecs += (convertCyclesToNsecs((TIMER_ROLLOVER_CYCLES >> 2) - tick2));
-                        break;
-                }
-        }
+    for (;;) {
+    tick1 = SysTickValueGet();
+    tempSecs = _secs;
+    tempQuarterSecs = _quarterSecs;
+    tick2 = SysTickValueGet();
+    // since systick interrupt could take up to 5us to trigger, to make
+	// sure the tick2 value correspond to the correct _secs and _quarterSecs
+	// values, we do the following check:
+	if (tick2 > (TIMER_ROLLOVER_CYCLES - INTERRUPT_DELAY)) {
+		continue;
+	}
+    //If the system tick rolls over (the tick counts down) between accessing
+    // the volatile variables _secs and _quartersecs, then we account for this here
+    // by incrementing _quartersecs
+    	if(tick2 < tick1) {
+        	physicalTime->secs = tempSecs;
+            switch(tempQuarterSecs){
+				case 0:			physicalTime->nsecs = 0;		 break;
+                case 1:         physicalTime->nsecs = 250000000; break;
+                case 2:         physicalTime->nsecs = 500000000; break;
+                case 3:         physicalTime->nsecs = 750000000; break;
+            }
+            // convertCyclesToNsecs assumes 50MHz clock
+            physicalTime->nsecs += (convertCyclesToNsecs((TIMER_ROLLOVER_CYCLES >> 2) - tick2));
+                break;
+            }
+    }
 }
 
 /* timer */
 void setTimedInterrupt(const Time* safeToProcessTime) {
-        // it has already been checked, timer always needs to be set, so just set it.
-        TimerConfigure(TIMER0_BASE, TIMER_CFG_32_BIT_OS);
-        // interrupt 10 times per second
-        TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(safeToProcessTime->nsecs));
-        timerInterruptSecsLeft = safeToProcessTime->secs;
+	Time currentTime, timeToWait;
+    // it has already been checked, timer always needs to be set, so just set it.
+    TimerConfigure(TIMER0_BASE, TIMER_CFG_32_BIT_OS);
+    // interrupt 10 times per second
+	getRealTime(&currentTime);
+	if (-1 == timeSub(*safeToProcessTime, currentTime, &timeToWait)) {
+		TimerLoadSet(TIMER0_BASE, TIMER_BOTH, 0);
+		timerInterruptSecsLeft = 0;	
+	}
+    TimerLoadSet(TIMER0_BASE, TIMER_BOTH, convertNsecsToCycles(timeToWait.nsecs));
+    timerInterruptSecsLeft = timeToWait.secs;
 
-        //
-        //Setup the interrupts for the timer timeouts
-        //
-        IntEnable(INT_TIMER0A);
-        IntEnable(INT_TIMER0B);
-        TimerIntEnable(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
+    //
+    //Setup the interrupts for the timer timeouts
+    //
+    IntEnable(INT_TIMER0A);
+    IntEnable(INT_TIMER0B);
+    TimerIntEnable(TIMER0_BASE,TIMER_TIMA_TIMEOUT);
 
-        //
-        // Enable the timers.
-        //
-        TimerEnable(TIMER0_BASE, TIMER_BOTH);
-        return;         
+    // Enable the timers.
+    TimerEnable(TIMER0_BASE, TIMER_BOTH);
+    return;         
 }
 
 void Timer0IntHandler(void) {
@@ -242,7 +294,7 @@ void Timer0IntHandler(void) {
                 timerInterruptSecsLeft--;
                 return;
         }
-
+		saveState();
         // need to push the currentModelTag onto the stack.
         executingModelTag[numStackedModelTag].microstep = currentMicrostep;
         timeSet(currentModelTime, &(executingModelTag[numStackedModelTag].timestamp));
@@ -264,8 +316,8 @@ void Timer0IntHandler(void) {
 //SysTickHandler ISR
 //configured to execute every 1/4 second (
 void SysTickHandler(void) {
- if(++_quarterSecs >= 4){
-     _quarterSecs -= 4;
+ if(++_quarterSecs == 4){
+     _quarterSecs = 0;
      _secs++;
  }
 }
@@ -422,6 +474,9 @@ void Timer1IntHandler(void) {
         }
 
         // run the actuator actuation function to assert the output signal.
+        if (actuatorRunning == -1) {
+        	die("no actuator to actuate");
+        }
         actuatorActuations[actuatorRunning]();
 
         // When the timer returns to signal a new interrupt has been written, we need to check to see if we have more interrupts
@@ -495,14 +550,13 @@ initializeInterrupts();
 
 /*** initPDCodeBlock ***/
 void initializeTimers(void) {
-
         SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
         SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER1);
 
-        IntPrioritySet(INT_TIMER0A, 0x00);
-        IntPrioritySet(INT_TIMER0B, 0x00);
-        IntPrioritySet(INT_TIMER1A, 0x00);
-        IntPrioritySet(INT_TIMER1B, 0x00);
+        IntPrioritySet(INT_TIMER0A, 0x20);
+        IntPrioritySet(INT_TIMER0B, 0x20);
+        IntPrioritySet(INT_TIMER1A, 0x20);
+        IntPrioritySet(INT_TIMER1B, 0x20);
 }
 
 void initializePDSystem() {
@@ -515,10 +569,13 @@ void initializePDSystem() {
         // between 0 and 1677xxxx, assuming the main system clock runs at 50MHz,
         // TIMER_ROLLOVER_CYCLES >> 2 gives 12500000. In other words, systick
         // rolls over 4 times every second.
-        SysTickPeriodSet(TIMER_ROLLOVER_CYCLES >> 2);  
+        SysTickPeriodSet(TIMER_ROLLOVER_CYCLES >> 2);
+        IntPrioritySet(FAULT_SYSTICK, 0x00);  
         SysTickEnable();
         IntEnable(FAULT_SYSTICK);  //sys tick vector
-
+        // SVC should have lower priority than systick, but SVC should have
+        // higher or the same priority than all other peripheral interrupts.
+		IntPrioritySet(FAULT_SVCALL, 0x20);
         // Initialize LCD at 4 MHz
         RIT128x96x4Init(4000000);
         RIT128x96x4StringDraw("PtidyOSv0.5", 36,  0, 15);
@@ -574,7 +631,7 @@ void initializeInterrupts(void) {
 ; <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ;
 ;******************************************************************************
-Stack   EQU     0x00000400
+Stack   EQU     0x00001000
 
 ;******************************************************************************
 ;
@@ -748,32 +805,36 @@ IntDefaultHandler
 
 ;******************************************************************************
 ;
-; Function called to add stack to the end of an ISR
+; Function called to save state at the end of an ISR
 ;
 ;******************************************************************************
+saveState
+	POP			{R0, R1} 		
+	PUSH        {R4-R11}
+	PUSH        {R4-R11}
+	PUSH		{R0, R1}
+	BX			LR
+
+;******************************************************************************
+;
+; Function called to add stack to the end of an ISR
+;
+;******************************************************************************	
 ; IMPORTANT: this subroutine assumes addStack is compiled to run BEFORE popping out of ISR
 addStack
+	CPSID			I
     MRS                R1, MSP            ; move stackpointer to R1
     ; Copy previous R4, LR to very top of future stack
     LDRD        R2, R3, [R1, #0]
-    STRD         R2, R3, [R1, #-64]
-    ADD                R1, R1, #8
-    MSR                MSP, R1
-    PUSH        {R4-R11}
-    MOV                R3, #16777216        ; load R1 with the previous xPSR
-    ;LDR                R3, [R1, #28]                    ; load R1 with the previous xPSR
-    STR                R3, [R1, #-36]                        ; store it for use of processEvents
+    STRD         R2, R3, [R1, #-32]
+    MOV                R3, #16777216        ; load R3 with the desired xPSR
+    STR                R3, [R1, #4]                        ; store it for use of processEvents
     LDR                R3, =processEvents                ; find where "processEvents + 2" is
     ADD                R3, R3, #2
-    STR                R3, [R1, #-40]                        ; store this value into correct place in memory.
-    MOV                R2, #00000000                        ; write value #00000000
-    MOV                R3, #00000000
-    ;MOV                R0, #3            ; to 6 x 4 bytes to the top of the stack.
-    SUB                R1, R1, #72
-    STRD        R2, R3, [R1, #8]                        ; store value in R2 to address pointed by R1-32
-    STRD        R2, R3, [R1, #16]                        ; store value in R2 to address pointed by R1-32
-    STRD        R2, R3, [R1, #24]                        ; store value in R2 to address pointed by R1-32
-    MSR                MSP, R1            ; update Main Stack Pointer    
+    STR                R3, [R1, #0]                        ; store this value into correct place in memory.
+    SUB                R1, R1, #32
+    MSR                MSP, R1            ; update Main Stack Pointer
+	CPSIE			I    
     BX                LR
 
 ;******************************************************************************
@@ -786,9 +847,11 @@ stackRestore
     ; is triggered through a SVC call, which has higher priority than
     ; all other external interrupts in the system.
     MRS                R0, MSP            ; move stackpointer to R0
-    ADD                R0, R0, #32     ; the stack that was just pushed by the ISR is ignored
-    MSR                MSP, R0            ; instead we use the stack that was saved before the first ISR
+    ADD                R0, R0, #64     ; the stack that was just pushed by the ISR is ignored
+    ;ADD                R0, R0, #32     ; the stack that was just pushed by the ISR is ignored
+	MSR                MSP, R0            ; instead we use the stack that was saved before the first ISR
     POP                {R4-R11}
+	; this doesn't pass the compiler: POP					{SP, PC}
 	BX                LR                    ; branch back to end this ISR
 
 ;******************************************************************************
@@ -808,6 +871,7 @@ SVCallHandler
 ;
 ;******************************************************************************
                                 EXPORT addStack
+                                EXPORT saveState
                                 EXPORT stackRestore
                                 IMPORT processEvents
 
