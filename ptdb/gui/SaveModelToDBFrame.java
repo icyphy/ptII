@@ -344,7 +344,7 @@ public class SaveModelToDBFrame extends JFrame {
         if (_xmlModel == null) {
             _xmlModel = new XMLDBModel(_modelToSave.getName());
         }
-
+        _xmlModel.setModelName(_modelToSave.getName());
         _xmlModel.setModel(_modelToSave.exportMoML());
         _xmlModel.setIsNew(isNew);
         _xmlModel.setModelId(id);
@@ -535,6 +535,7 @@ public class SaveModelToDBFrame extends JFrame {
             throw exception;
 
         } catch (ModelAlreadyExistException exception) {
+            _resetValues();
             JOptionPane.showMessageDialog(this,
                     "A model with the new version name already"
                             + " exists in the database. Please use"
@@ -593,8 +594,9 @@ public class SaveModelToDBFrame extends JFrame {
 
         // It is not new if the model has the DBModel tag 
         // and the model name is still the same.
+        String newName = _attributesListPanel.getModelName();
         if (_modelToSave.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null
-                && _modelToSave.getName().equals(_initialModelName)) {
+                && newName.equals(_initialModelName)) {
 
             isNew = false;
 
