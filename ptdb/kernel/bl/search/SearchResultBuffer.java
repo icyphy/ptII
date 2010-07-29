@@ -137,8 +137,11 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
 
             setChanged();
 
-            // Notify the observers. 
-            notifyObservers();
+            if (!_isSearchCancelled) {
+                // Notify the observers. 
+                notifyObservers();
+            }
+
         }
     }
 
@@ -238,8 +241,11 @@ public class SearchResultBuffer extends Observable implements ResultHandler,
 
         setChanged();
 
-        // Tell all the registered observers that the searching is done.
-        notifyObservers();
+        if (!_isSearchCancelled) {
+            // Tell all the registered observers that the searching is done.
+            notifyObservers();
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
