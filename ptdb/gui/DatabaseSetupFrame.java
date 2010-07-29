@@ -100,6 +100,8 @@ public class DatabaseSetupFrame extends JFrame {
         _cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        
+        setResizable(false);
 
         urlLabel.setText("URL");
 
