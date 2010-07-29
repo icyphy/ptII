@@ -915,7 +915,7 @@ public class SimpleSearchFrame extends JFrame {
             DBExecutionException, NameDuplicationException,
             IllegalActionException, MalformedStringException {
 
-        SearchCriteria searchCriteria = new SearchCriteria();
+        final SearchCriteria searchCriteria = new SearchCriteria();
 
         if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
@@ -937,34 +937,49 @@ public class SimpleSearchFrame extends JFrame {
         // Validate whether the search criteria is enough. 
         if (_isSearchCriteriaEnough(searchCriteria)) {
 
-            SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
+            final SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
                     _containerModel, _sourceFrame, _configuration);
-
-            SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
+            
+            final SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
+            
+            // Register the search result frame as the observer of the search
+            // result buffer. Once there is any update in the buffer, the 
+            // search result frame will be notified. 
             searchResultBuffer.addObserver(searchResultsFrame);
+            
+            // Register the search result buffer as the observer of the search
+            // result frame. Once the user invokes the canceling search in the 
+            // search result frame, the buffer will be notified and stop.
+            searchResultsFrame.registerCancelObserver(searchResultBuffer);
 
             // Show the search result frame.
             searchResultsFrame.pack();
             searchResultsFrame.setLocationRelativeTo(this);
             searchResultsFrame.setVisible(true);
 
-            // Call the Search Manager to trigger the search.
-            SearchManager searchManager = new SearchManager();
-            try {
-                searchManager.search(searchCriteria, searchResultBuffer);
+            new Thread(new Runnable() {
+                
+                @Override
+                public void run() {
+                 // Call the Search Manager to trigger the search.
+                    SearchManager searchManager = new SearchManager();
+                    try {
+                        searchManager.search(searchCriteria, searchResultBuffer);
 
-            } catch (DBConnectionException e1) {
-                searchResultsFrame.setVisible(false);
-                searchResultsFrame.dispose();
-                MessageHandler.error("Cannot perform the search now.", e1);
+                    } catch (DBConnectionException e1) {
+                        searchResultsFrame.setVisible(false);
+                        searchResultsFrame.dispose();
+                        MessageHandler.error("Cannot perform the search now.", e1);
 
-            } catch (DBExecutionException e2) {
-                searchResultsFrame.setVisible(false);
-                searchResultsFrame.dispose();
-                MessageHandler.error("Cannot perform the search now.", e2);
-            }
+                    } catch (DBExecutionException e2) {
+                        searchResultsFrame.setVisible(false);
+                        searchResultsFrame.dispose();
+                        MessageHandler.error("Cannot perform the search now.", e2);
+                    }
+                }
+            }).start();
+            
 
-            //            setVisible(false);
 
         } else {
             JOptionPane.showMessageDialog(this,
@@ -978,6 +993,7 @@ public class SimpleSearchFrame extends JFrame {
         }
 
     }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                  private variables                        ////

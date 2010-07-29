@@ -52,6 +52,8 @@ public class CancelObservable extends Observable {
      */
     public void notifyObservers() {
 
+        setChanged();
+        
         super.notifyObservers();
 
     }

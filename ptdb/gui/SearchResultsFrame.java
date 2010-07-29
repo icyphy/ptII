@@ -138,7 +138,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
         buttonPanel.add(_loadByValButton);
 
         _cancelButton = new JButton("Stop Search");
-        _cancelButton.setEnabled(false);
+//        _cancelButton.setEnabled(false);
         buttonPanel.add(_cancelButton);
 
         _loadByRefButton.addActionListener(new ActionListener() {
