@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.common.dto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -93,9 +94,19 @@ public class XMLDBModel implements Comparable {
     public void addParentList(List<XMLDBModel> list) {
         if (_listParents == null) {
             _listParents = new ArrayList<List<XMLDBModel>>();
+            _parentsMap = new HashMap<String, Integer>();
         }
 
-        _listParents.add(list);
+        String parentsMapKey = _createParentHierarchyString(list);
+        if (_parentsMap.containsKey(parentsMapKey)) {
+            int count = _parentsMap.get(parentsMapKey);
+            count++;
+            _parentsMap.put(parentsMapKey, count);
+        } else {
+            _listParents.add(list);
+            _parentsMap.put(parentsMapKey, 1);
+        }
+
     }
 
     /**
@@ -166,6 +177,23 @@ public class XMLDBModel implements Comparable {
      */
     public String getModelName() {
         return _modelName;
+    }
+
+    /**
+     * Return the number of times the model is referenced in the 
+     * given hierarchy.
+     * 
+     * @param list List of models in the parent hierarchy.
+     * @return the number of times the model is referenced in the given 
+     * hierarchy. 
+     */
+    public int getReferenceCount(List<XMLDBModel> list) {
+        String parentsMapKey = _createParentHierarchyString(list);
+        int count = 0;
+        if (_parentsMap.containsKey(parentsMapKey)) {
+            count = _parentsMap.get(parentsMapKey);
+        }
+        return count;
     }
 
     /**
@@ -265,6 +293,19 @@ public class XMLDBModel implements Comparable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                    ////
+
+    private String _createParentHierarchyString(List<XMLDBModel> list) {
+        StringBuilder hierarchyStringBuilder = new StringBuilder();
+
+        for (XMLDBModel model : list) {
+            hierarchyStringBuilder.append(model.getModelName()).append(">");
+        }
+
+        return hierarchyStringBuilder.toString();
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /**
@@ -275,7 +316,8 @@ public class XMLDBModel implements Comparable {
 
     /** List of all the parents for the current model. */
     private List<List<XMLDBModel>> _listParents;
-
+    /** List of unique hierarchies and their counts */
+    private HashMap<String, Integer> _parentsMap;
     /** List of all the first level referenced child entities for 
      * the current model. 
      */
