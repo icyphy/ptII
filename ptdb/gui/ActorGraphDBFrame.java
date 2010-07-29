@@ -121,7 +121,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         super(entity, tableau, defaultLibrary);
         _initActorGraphDBFrame();
-
+        if (entity.getName() != null && entity.getName().length() > 0) {
+            this.setTitle(entity.getName());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
