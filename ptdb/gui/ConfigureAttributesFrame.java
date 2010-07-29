@@ -223,6 +223,8 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
     private void _initComponents() {
 
         setTitle("Configure Attributes");
+        
+        setSize(200,500);
 
         addWindowListener(new WindowListener() {
 
@@ -310,6 +312,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
         //        _deleteButton.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         _deleteButton.setForeground(new java.awt.Color(255, 0, 51));
         _deleteButton.setText("X");
+        _deleteButton.setToolTipText("Delete the Current Attribute");
 
         _deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -342,6 +345,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
         //        _addButton.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         _addButton.setForeground(new java.awt.Color(0, 153, 0));
         _addButton.setText("+");
+        _addButton.setToolTipText("Add a New Attribute");
 
         _addButton.addActionListener(new ActionListener() {
 
@@ -944,14 +948,46 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ConfigureAttributesFrame.this.dispose();
+                
+                
+                if (_checkChanged()) {
+                    
+                    Object[] options = { "Yes", "No", "Cancel" };
+
+                    String msg = "The current attribute was modified, do you want to save it?";
+                    
+                    int selected = JOptionPane.showOptionDialog(ConfigureAttributesFrame.this, msg, 
+                            "Save Changes", JOptionPane.YES_NO_CANCEL_OPTION, 
+                            JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+
+                    if (selected == JOptionPane.YES_OPTION) {
+                        
+                        _saveButton.getActionListeners()[0].actionPerformed(null);
+                        
+                        ConfigureAttributesFrame.this.dispose();
+                        
+                    } else if (selected == JOptionPane.NO_OPTION) {
+                        
+                        ConfigureAttributesFrame.this.dispose();
+                        
+                    } else if (selected == JOptionPane.CANCEL_OPTION) {
+                        
+                        // Do nothing.
+                    } 
+                    
+                } else {
+                    
+                    ConfigureAttributesFrame.this.dispose();
+                }
+                
 
             }
         });
 
         pack();
 
-        setSize(580, 500);
+        setSize(200, 500);
     }
 
     private void _resetEditPanel() {
