@@ -6,6 +6,6 @@ putDocument Attributes.ptdbxml '<attributes>
 		<item name="In Production"/>
 	</attribute>
 	<attribute id="author_1277754213656" name="Author" type="String"/>
-	<attribute id="hasDefects_1277754213123" name="Has Defects" type="Booleaan"/>
+	<attribute id="hasDefects_1277754213123" name="HasDefects" type="Boolean"/>
 
 </attributes>'
