@@ -1109,7 +1109,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
      *  @param subscriberPort The subscribed port. 
-     *  @param global The global parameter of the subscriber.
+     *  @param global Specification of whether the data is subscribed
+     *  globally.  If set to true, then subscribers will see values
+     *  published by publishers anywhere in the model that reference
+     *  the same channel by name.  If set to false, then only values
+     *  published by publishers that are fired by the same director
+     *  are seen by this subscriber.
      *  @exception NameDuplicationException If there are name conflicts
      *          as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
@@ -1235,6 +1240,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @param pattern The pattern is being used in the matching process
      *          to match publisher and subscriber.
      *  @param subscriberPort The subscribed port. 
+     *  @param global Specification of whether the data is subscribed
+     *  globally.  If set to true, then subscribers will see values
+     *  published by publishers anywhere in the model that reference
+     *  the same channel by name.  If set to false, then only values
+     *  published by publishers that are fired by the same director
+     *  are seen by this subscriber.
      *  @exception NameDuplicationException If there are name conflicts
      *          as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
@@ -2130,6 +2141,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
      *  @param subscriberPort The subscribed port. 
+     *  @param global Specification of whether the data is subscribed
+     *  globally.  If set to true, then subscribers will see values
+     *  published by publishers anywhere in the model that reference
+     *  the same channel by name.  If set to false, then only values
+     *  published by publishers that are fired by the same director
+     *  are seen by this subscriber.
      *  @exception NameDuplicationException If there are name conflicts
      *          as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
@@ -2229,6 +2246,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @param pattern The pattern is being used in the matching process
      *          to match publisher and subscriber.
      *  @param subscriberPort The subscribed port.
+     *  @param global Specification of whether the data is subscribed
+     *  globally.  If set to true, then subscribers will see values
+     *  published by publishers anywhere in the model that reference
+     *  the same channel by name.  If set to false, then only values
+     *  published by publishers that are fired by the same director
+     *  are seen by this subscriber.
      *  @exception NameDuplicationException If there are name conflicts
      *          as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
