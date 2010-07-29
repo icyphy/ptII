@@ -80,6 +80,9 @@ import diva.gui.GUIUtilities;
 public class ActorGraphDBFrame extends ActorGraphFrame implements
         ActionListener {
 
+    /** Name of the parameter that prevents changes to database. */
+    public static final String DB_NO_EDIT_ATTR = "DBNoEdit";
+    
     /**
      * Construct a frame associated with the specified Ptolemy II model. After
      * constructing this, it is necessary to call setVisible(true) to make the
@@ -232,6 +235,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             }
             // TODO: }
         }
+        
+        if(getModel().getAttribute(DB_NO_EDIT_ATTR) != null){
+            _dbMenu.setEnabled(false);
+        } else {
+            _dbMenu.setEnabled(true);            
+        }
 
     }
 
@@ -249,6 +258,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      */
     protected int _queryForSave() {
 
+        if(getModel().getAttribute(DB_NO_EDIT_ATTR) != null){
+            
+            return _CANCELED;
+           
+        }
+        
         Object[] options = { "Save to Database", "Save to File System",
                 "Discard changes", "Cancel" };
 
