@@ -435,7 +435,7 @@ public class OracleXMLDBConnection implements DBConnection {
             } catch (XmlException e) {
                 throw new DBExecutionException(
                         "Failed to execute GetAttributesTask"
-                                + " - Could not fetch the Attribute.ptdbxml.");
+                                + " - Could not fetch the Attributes.ptdbxml.");
             }
 
             Document attributeDocument = (Document) Utilities.parseXML(doc
