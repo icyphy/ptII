@@ -31,6 +31,7 @@ package ptdb.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -267,6 +268,36 @@ public class SimpleSearchFrame extends JFrame {
                 // Do nothing.    
             }
         });
+        
+     
+        // Add the action listener to model name text field. 
+        _attributesListPanel.getNameTextField().addKeyListener(
+                new KeyListener() {
+
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        // Do nothing. 
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        // Do nothing.
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        
+                        /* 
+                         * If the enter button is pressed, perform the search
+                         *  action.
+                         */  
+                        if (e.getKeyCode() == e.VK_ENTER) {
+
+                            _searchButton.getActionListeners()[0]
+                                                   .actionPerformed(null); 
+                        }
+                    }
+                });
 
         _topPanel.add(_attributesListPanel);
         _bottomPanel.add(_searchButton);
