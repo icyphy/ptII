@@ -463,10 +463,4 @@ public class TypedCompositeActor extends
 
         return sharedCode;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected methods.                    ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 }

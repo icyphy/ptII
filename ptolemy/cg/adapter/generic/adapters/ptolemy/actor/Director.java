@@ -44,13 +44,12 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-////Director
+//////////////////////////////////////////////////////////////////////////
+//// Director
 
 /**
  Code generator adapter associated with the ptolemy.actor.Director class.
  This class is also associated with a code generator.
-
- FIXME: need documentation on how subclasses should extend this class.
 
  @see GenericCodeGenerator
  @author Ye Zhou, Gang Zhou
@@ -58,9 +57,11 @@ import ptolemy.kernel.util.NamedObj;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (zhouye)
  @Pt.AcceptedRating Yellow (zhouye)
-
  */
 public class Director extends NamedProgramCodeGeneratorAdapter {
+
+    // FIXME: need documentation on how subclasses should extend this class.
+
     /** Construct the code generator adapter associated with the given director.
      *  Note before calling the generate*() methods, you must also call
      *  setCodeGenerator(GenericCodeGenerator).
@@ -432,11 +433,10 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
      *  is in the form "fullName_portName[channelNumber][offset]", if
      *  any channel number or offset is given.
      *
-     *  FIXME: need documentation on the input string format.
-     *
      *  @param name The name of the parameter or port
      *  @param isWrite Whether to generate the write or read offset.
-     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code
+     *  needs to be generated.
      *  @return The reference to that parameter or port (a variable name,
      *   for example).
      *  @exception IllegalActionException If the parameter or port does not
@@ -445,6 +445,7 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     public String getReference(String name, boolean isWrite,
             NamedProgramCodeGeneratorAdapter target)
             throws IllegalActionException {
+        // FIXME: need documentation on the input string format.
         return "";
     }
 
@@ -548,7 +549,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
-     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code
+     *  needs to be generated.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
@@ -560,7 +562,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     }
 
     /** Generate variable initialization for the referenced parameters.
-     *  @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+     *  @param target The ProgramCodeGeneratorAdapter for which code
+     *  needs to be generated.
      *  @return code The generated code.
      *  @exception IllegalActionException If the adapter class for the model
      *   director cannot be found.
