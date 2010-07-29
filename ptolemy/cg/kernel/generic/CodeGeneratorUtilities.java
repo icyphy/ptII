@@ -42,6 +42,7 @@ import java.util.Map;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
@@ -80,6 +81,13 @@ public class CodeGeneratorUtilities {
 
                 // If getToken() fails, make sure that you are calling
                 // setExpression with a string that has double quotes.
+                if (variable.getToken() == null) {
+                    throw new InternalErrorException(namedObj, null,
+                            "Internal error, for variable " + variable
+                            + ", getToken() returned null.  Make sure that you are "
+                            + "calling setExpression() in the c'tor for "
+                            + variable + ".");
+                }
                 String value = variable.getToken().toString();
 
                 // Strip out any leading and trailing double quotes
