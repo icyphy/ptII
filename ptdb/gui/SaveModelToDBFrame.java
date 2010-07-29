@@ -291,6 +291,10 @@ public class SaveModelToDBFrame extends JFrame {
         // The save button should be disabled if there are parents of the
         // saving model.
         _setButtons();
+        
+        this.pack();
+        
+        _attributesListPanel.setModelNameFocus();
 
     }
 
@@ -563,7 +567,7 @@ public class SaveModelToDBFrame extends JFrame {
         }
 
         if (_hasParentFlag == true && _parentModels == null) {
-            // Hasnâ€™t verified whether the saving model has parents yet. 
+            // Hasn’t verified whether the saving model has parents yet. 
             if (Utilities.getIdFromModel(_modelToSave) != null) {
                 _parentModels = _saveModelManager
                         .getFirstLevelParents(_xmlModel);
