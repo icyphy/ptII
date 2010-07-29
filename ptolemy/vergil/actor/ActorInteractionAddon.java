@@ -29,6 +29,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.vergil.actor;
 
 import diva.graph.GraphController;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -55,8 +57,12 @@ public interface ActorInteractionAddon {
     /**
      * The action to be taken when looking inside an actor.
      * @param figureAction The FigureAction from which the call is being made.
+     * @param actor The actor being opened.
+     * @throws IllegalActionException Thrown for illegal action.
+     * @throws NameDuplicationException Thrown for name duplication.
      */
-    abstract void lookInsideAction(FigureAction figureAction);
+    abstract void lookInsideAction(FigureAction figureAction, NamedObj actor) 
+    throws IllegalActionException, NameDuplicationException;
     
     
     /** Determine of a given actor is of interest for a desired action.
@@ -70,8 +76,12 @@ public interface ActorInteractionAddon {
     /**
      * The action to be taken when looking inside an actor.
      * @param figureAction The FigureAction from which the call is being made.
+     * @param actor The actor being opened.
+     * @throws IllegalActionException  Thrown for illegal action.
+     * @throws NameDuplicationException  Thrown for name duplication.
      */
-    abstract void openInstanceAction(FigureAction figureAction);
+    abstract void openInstanceAction(FigureAction figureAction, NamedObj actor) 
+        throws IllegalActionException, NameDuplicationException;
     
     /**
      * Get an instance of the controller for a given actor.  This assumes

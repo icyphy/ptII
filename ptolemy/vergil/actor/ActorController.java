@@ -827,9 +827,11 @@ public abstract class ActorController extends AttributeController {
                             Method method2 = 
                                 actorInteractionAddonClass
                                 .getMethod("lookInsideAction", 
-                                        FigureAction.class);
+                                        FigureAction.class, 
+                                        NamedObj.class);
                             
-                            method2.invoke(actorInterationAddon, this);
+                            method2.invoke(actorInterationAddon, this, 
+                                    object);
                                
                         }
                     
@@ -903,10 +905,12 @@ public abstract class ActorController extends AttributeController {
                             
                             Method method2 = 
                                 actorInteractionAddonClass
-                                .getMethod("openInstanceAction", 
-                                        FigureAction.class);
+                                .getMethod("lookInsideAction", 
+                                        FigureAction.class, 
+                                        NamedObj.class);
                             
-                            method2.invoke(actorInterationAddon, this);
+                            method2.invoke(actorInterationAddon, this, 
+                                    object);
                                
                         }
                     
