@@ -7,7 +7,10 @@ import diva.graph.GraphController;
 import ptdb.common.dto.XMLDBModel;
 import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorInteractionAddon;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -52,8 +55,12 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * Show a dialog box warning the user that changes will not be propagated 
      * to the database reference model.
      * @param figureAction The FigureAction from which the call is being made.
+     * @param actor The actor being opened.
+     * @throws IllegalActionException Thrown for illegal action.
+     * @throws NameDuplicationException Thrown for name duplication.
      */
-    public void lookInsideAction(FigureAction figureAction) {      
+    public void lookInsideAction(FigureAction figureAction, NamedObj actor) 
+            throws IllegalActionException, NameDuplicationException {      
         
         JOptionPane.showMessageDialog(figureAction.getFrame(), 
                 "Changes to this actor will not " +
@@ -64,6 +71,17 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
                 "Open Actor",
                 JOptionPane.WARNING_MESSAGE, null);
         
+        String referenceTag = "<property name=\"" + 
+            ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" " +
+            "class=\"ptolemy.data.expr.StringConstantParameter\" " +
+            "value=\"TRUE\"></property>";
+
+        MoMLChangeRequest change = new MoMLChangeRequest(null,
+                actor, referenceTag);
+
+        change.setUndoable(true);
+        actor.requestChange(change);
+
     }
 
     /**
@@ -130,8 +148,12 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * Show a dialog box warning the user that changes will not be propagated 
      * to the database reference model.
      * @param figureAction The FigureAction from which the call is being made.
+     * @param actor The actor being opened.
+     * @throws IllegalActionException Thrown for illegal action.
+     * @throws NameDuplicationException Thrown for name duplication.
      */
-    public void openInstanceAction(FigureAction figureAction) {
+    public void openInstanceAction(FigureAction figureAction, NamedObj actor) 
+            throws IllegalActionException, NameDuplicationException {
         JOptionPane.showMessageDialog(figureAction.getFrame(), 
                 "Changes to this instance will not " +
                 "be saved to the database.  " +
@@ -140,6 +162,18 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
                 "it from the database.", 
                 "Open Instance",
                 JOptionPane.WARNING_MESSAGE, null);
+        
+        String referenceTag = "<property name=\"" + 
+        ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" " +
+        "class=\"ptolemy.data.expr.StringConstantParameter\" " +
+        "value=\"TRUE\"></property>";
+
+        MoMLChangeRequest change = new MoMLChangeRequest(null,
+                actor, referenceTag);
+    
+        change.setUndoable(true);
+        actor.requestChange(change);
+    
     }
     
     /** Determine of a given actor is a database reference actor.
