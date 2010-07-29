@@ -272,7 +272,23 @@ public class SaveModelToDBFrame extends JFrame {
 
                     @Override
                     public void keyPressed(KeyEvent e) {
-                        // Do nothing. 
+                        
+                        /* 
+                         * If the enter button is pressed, perform the action
+                         *  based on the enabled button.
+                         */  
+                        if (e.getKeyCode() == e.VK_ENTER) {
+                            if (_saveButton.isEnabled()) {
+                                
+                                _saveButton.getActionListeners()[0]
+                                                 .actionPerformed(null);
+                                
+                            } else if (_nextButton.isEnabled()) {
+                                
+                                _nextButton.getActionListeners()[0]
+                                                  .actionPerformed(null);
+                            }
+                        }
                     }
                 });
 
