@@ -214,6 +214,8 @@ public class AttributesListPanel extends JPanel {
         add(bottomPanel);
         validate();
         repaint();
+        
+        
 
     }
 
@@ -354,6 +356,13 @@ public class AttributesListPanel extends JPanel {
 
         _nameText.setText(name);
         _currentText=_nameText.getText();
+    }
+    
+    /**
+     * Set the focus on the model name text field.
+     */
+    public void setModelNameFocus() {
+        _nameText.requestFocus();
     }
 
     /** Get an indication if the specified attribute name is in the set of
