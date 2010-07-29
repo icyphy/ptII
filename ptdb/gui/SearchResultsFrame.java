@@ -247,6 +247,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
                     // Searching is done. 
                     JOptionPane.showMessageDialog(this, "Search is done.");
                 }
+                _cancelButton.setEnabled(false);
             }
 
         }
@@ -259,90 +260,97 @@ public class SearchResultsFrame extends JFrame implements Observer {
     private void _importByReference(){
         
         ArrayList<String> modelNames = new ArrayList();
-        
-        for (SearchResultPanel panel : _resultPanelList){
-            
+
+        for (SearchResultPanel panel : _resultPanelList) {
+
             modelNames.addAll(panel.getSelections());
-            
+
         }
-        
-        for(String modelName : modelNames){
-            
-            try {
-            
-                Entity modelToImport = 
-                    LoadManager.importModel(modelName, true, _containerModel);
-                    
-                if (modelToImport != null){
-                    
-                    MoMLChangeRequest change = new MoMLChangeRequest(this,
-                            _containerModel, modelToImport.exportMoML());
-                        
-                    change.setUndoable(true);
-                    _containerModel.requestChange(change);
-               
-                } else{
-                    
-                    throw new Exception();
-                    
+        if (modelNames.size() > 0) {
+            for (String modelName : modelNames) {
+
+                try {
+
+                    Entity modelToImport = LoadManager.importModel(modelName,
+                            true, _containerModel);
+
+                    if (modelToImport != null) {
+
+                        MoMLChangeRequest change = new MoMLChangeRequest(this,
+                                _containerModel, modelToImport.exportMoML());
+
+                        change.setUndoable(true);
+                        _containerModel.requestChange(change);
+
+                    } else {
+
+                        throw new Exception();
+
+                    }
+
+                } catch (Exception e) {
+
+                    MessageHandler.error("Cannot import the specified model. ",
+                            e);
+
                 }
-                
-            }  catch (Exception e){
 
-                MessageHandler.error
-                    ("Cannot import the specified model. ", e);
-                
             }
-            
-        }
 
-        _sourceFrame.toFront();
-        JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+            _sourceFrame.toFront();
+            JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Please select atleast one model to import.");
+        }
     }    
     
     private void _importByValue(){
         
         ArrayList<String> modelNames = new ArrayList();
-        
-        for (SearchResultPanel panel : _resultPanelList){
-            
+
+        for (SearchResultPanel panel : _resultPanelList) {
+
             modelNames.addAll(panel.getSelections());
-            
-        }
-        
-        for(String modelName : modelNames){
-            
-            try {
-            
-                Entity modelToImport = 
-                    LoadManager.importModel(modelName, false, _containerModel);
 
-                if (modelToImport != null){
-                    
-                    MoMLChangeRequest change = new MoMLChangeRequest(this,
-                            _containerModel, modelToImport.exportMoML());
-                        
-                    change.setUndoable(true);
-                    _containerModel.requestChange(change);
-                    
-                } else{
-                    
-                    throw new Exception();
-                    
+        }
+        if (modelNames.size() > 0) {
+            for (String modelName : modelNames) {
+
+                try {
+
+                    Entity modelToImport = LoadManager.importModel(modelName,
+                            false, _containerModel);
+
+                    if (modelToImport != null) {
+
+                        MoMLChangeRequest change = new MoMLChangeRequest(this,
+                                _containerModel, modelToImport.exportMoML());
+
+                        change.setUndoable(true);
+                        _containerModel.requestChange(change);
+
+                    } else {
+
+                        throw new Exception();
+
+                    }
+
+                } catch (Exception e) {
+
+                    MessageHandler.error("Cannot import the specified model. ",
+                            e);
+
                 }
-                    
-            }  catch (Exception e){
 
-                MessageHandler.error
-                    ("Cannot import the specified model. ", e);
-                
             }
-            
-        }
 
-        _sourceFrame.toFront();
-        JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
-        
+            _sourceFrame.toFront();
+            JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Please select atleast one model to import.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
