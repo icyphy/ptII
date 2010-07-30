@@ -1131,7 +1131,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
      */
     private boolean _validate() throws IllegalNameException {
 
-        Utilities.checkAttributeModelName(_attributeNameField.getText());
+        Utilities.checkAttributeName(_attributeNameField.getText());
 
         for (Iterator iterator = _attributes.iterator(); iterator.hasNext();) {
             XMLDBAttribute existingAttribute = (XMLDBAttribute) iterator.next();
