@@ -49,6 +49,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
 
 import ptdb.common.dto.XMLDBModel;
+import ptdb.common.exception.CircularDependencyException;
 import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.search.SearchResultBuffer;
 import ptolemy.actor.gui.Configuration;
@@ -290,6 +291,13 @@ public class SearchResultsFrame extends JFrame implements Observer {
 
                     }
 
+                } catch (CircularDependencyException e){
+                    
+                    JOptionPane.showMessageDialog(this, "Importing this " +
+                            "model by reference will result in a circular " +
+                            "dependency.", "Import Error", 
+                            JOptionPane.INFORMATION_MESSAGE, null);
+                    
                 } catch (Exception e) {
 
                     MessageHandler.error("Cannot import the model - '" + modelName + "'.",
