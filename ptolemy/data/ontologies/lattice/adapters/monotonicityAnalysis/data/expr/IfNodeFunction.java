@@ -173,6 +173,20 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
     private Concept _evaluateChild(int childNumber, Concept xValue) throws IllegalActionException {
         ptolemy.data.expr.ASTPtRootNode childNode = (ptolemy.data.expr.ASTPtRootNode) _ifNode.jjtGetChild(childNumber);
 
+        return _evaluateNode(childNode, xValue);
+    }
+
+    /** Evaluate the given node as a concept expression over the domain
+     *  ontology, using the the given value for "x", and return the
+     *  result.
+     *  
+     *  @param node The Ptolemy AST node to evaluate.
+     *  @param xValue The value of "x" in this evaluation.
+     *  @return The computed concept value.
+     *  @throws IllegalActionException If there is an error during evaluation.
+     */
+    private Concept _evaluateNode(ptolemy.data.expr.ASTPtRootNode node,
+            Concept xValue) throws IllegalActionException {
         // FIXME: Refactor so that we can have multiple argument names,
         // and not all named "x"
         List<String> argumentNames = new LinkedList<String>();
@@ -187,7 +201,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 argumentValues,
                 null,
                 argumentDomains);
-        ConceptToken evaluatedToken = (ConceptToken)evaluator.evaluateParseTree(childNode);
+        ConceptToken evaluatedToken = (ConceptToken)evaluator.evaluateParseTree(node);
         return evaluatedToken.conceptValue();
     }
 
@@ -231,8 +245,8 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         // Check for counterexamples
         MonotonicityCounterexamples counterexamples = new MonotonicityCounterexamples();
         for (MonotonicityCounterexamples.ConceptPair pair : toCheck.entrySet()) {
-            Concept fb = _evaluateChild(1, pair.getKey());
-            Concept fd = _evaluateChild(2, pair.getValue());
+            Concept fb = _evaluateNode(_ifNode, pair.getKey());
+            Concept fd = _evaluateNode(_ifNode, pair.getValue());
             if (!fd.isAboveOrEqualTo(fb)) {
                 counterexamples.add(pair.getKey(), pair.getValue());
             } 

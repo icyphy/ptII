@@ -47,6 +47,7 @@ public class MonotonicityCounterexamples {
     }
     
     public void add(Concept x1, Concept x2) {
+        _counterexamples.remove(x1, x2);
         _counterexamples.put(x1, x2);
     }
     
