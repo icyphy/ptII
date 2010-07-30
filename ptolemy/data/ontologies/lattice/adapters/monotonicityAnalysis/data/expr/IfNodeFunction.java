@@ -90,8 +90,9 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         _nodeToCounterexamples.remove(_ifNode);
         Concept result = _standardIfAnalysis(inputConceptValues);
         if (result.isAboveOrEqualTo(_nonmonotonicConcept)) {
-            Concept constant = _checkConditionalExtractConstant(inputConceptValues);
-            if (constant != null) {
+            if (_checkConditionalStructure(inputConceptValues)) {
+                ptolemy.data.expr.ASTPtRelationalNode condition = (ptolemy.data.expr.ASTPtRelationalNode) _ifNode.jjtGetChild(0);
+                Concept constant = _extractConstant(condition);
                 result = _specialIfAnalysis(constant);
             }
         }
@@ -101,35 +102,32 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
     /** Check that an expression is of the form:
      *    (x <= c) ? e1 : e2
      *  where e1 and e2 are monotonic, and c is a constant.
-     *  If the expression is of this form, return the constant
-     *  concept c. Otherwise, return null.
      *  
      *  @param inputConceptValues The monotonicity of the conditional
      *    and branches.
-     *  @return The constant c if the expression meets all checks.
-     *    Null, otherwise.
+     *  @return True, if the expression meets all checks. False, otherwise.
      *  @exception IllegalActionException If there is a problem
      *    evaluating the constant.
      */
-    private Concept _checkConditionalExtractConstant(List<Concept> inputConceptValues) throws IllegalActionException {
+    private boolean _checkConditionalStructure(List<Concept> inputConceptValues) throws IllegalActionException {
         Concept mconditional = inputConceptValues.get(0);
         Concept me3 = inputConceptValues.get(1);
         Concept me4 = inputConceptValues.get(2);
 
         if (!_monotonicConcept.isAboveOrEqualTo(mconditional)
                 || !_monotonicConcept.isAboveOrEqualTo(me3)) {
-            return null;
+            return false;
         }
         if (!_monotonicConcept.isAboveOrEqualTo(me4)
                 && !_nodeToCounterexamples.containsKey(_ifNode.jjtGetChild(2))) {
-            return null;
+            return false;
         }
 
         ptolemy.data.expr.ASTPtRelationalNode condition = (ptolemy.data.expr.ASTPtRelationalNode) _ifNode.jjtGetChild(0);
         ptolemy.data.expr.ASTPtRootNode rhs = (ptolemy.data.expr.ASTPtRootNode) condition.jjtGetChild(1);
         String conditionalType = condition.getOperator().toString();
         if (conditionalType != "<=" || !(rhs instanceof ptolemy.data.expr.ASTPtLeafNode)) {
-            return null;
+            return false;
         }
         List<Ontology> argumentDomains = new LinkedList<Ontology>();
         argumentDomains.add(_domainOntology);
@@ -138,8 +136,26 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 argumentDomains);
         Token rhsToken = evaluator.evaluateParseTree(rhs);    
         if (!(rhsToken instanceof ConceptToken)) {
-            return null;
+            return false;
         }
+        return true;
+    }
+    
+    /** Assuming the right hand side of a conditional is constant, evaluate
+     *  and return that constant.
+     *  @param condition The AST node for the conditional expression.
+     *  @return The concept on the right hand side of the conditional.
+     *  @throws IllegalActionException If the right hand side of the
+     *   conditional is not properly formed.
+     */
+    private Concept _extractConstant(ptolemy.data.expr.ASTPtRelationalNode condition) throws IllegalActionException {
+        ptolemy.data.expr.ASTPtRootNode rhs = (ptolemy.data.expr.ASTPtRootNode) condition.jjtGetChild(1);
+        List<Ontology> argumentDomains = new LinkedList<Ontology>();
+        argumentDomains.add(_domainOntology);
+        ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
+                new LinkedList<String>(), new LinkedList<Concept>(), null,
+                argumentDomains);
+        Token rhsToken = evaluator.evaluateParseTree(rhs);
         Concept constant = ((ConceptToken)rhsToken).conceptValue();
         return constant;
     }
