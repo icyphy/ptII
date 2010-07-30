@@ -117,7 +117,7 @@ public class SaveModelToDBFrame extends JFrame {
         _orignialAttributes = new ArrayList();
         _attributesListPanel = new AttributesListPanel(_modelToSave);
         _tabbedPane = new JTabbedPane();
-
+        
         try {
             if (!_isNew()) {
                 _xmlModel = new XMLDBModel(_modelToSave.getName());
@@ -1428,6 +1428,8 @@ public class SaveModelToDBFrame extends JFrame {
         private JButton _modelNameButton;
 
         private ParentValidateFrame _parentFrame;
+        
+        
     }
 
 }

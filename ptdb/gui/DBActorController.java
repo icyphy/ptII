@@ -199,8 +199,12 @@ public class DBActorController extends ActorController {
   
                     try {
                         
-                        PtolemyEffigy effigy = LoadManager.loadModel
-                            (object.getName(), _configuration);
+                        PtolemyEffigy effigy = 
+                            LoadManager
+                            .loadModelUsingId
+                            (((StringParameter) object
+                                    .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
+                                    .getExpression(), _configuration);
     
                         if(effigy != null){
                             
