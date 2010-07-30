@@ -181,7 +181,6 @@ public class RenameModelFrame extends JFrame {
 
         _closeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-
                 dispose();
             }
 
@@ -214,7 +213,7 @@ public class RenameModelFrame extends JFrame {
 
         String newName = _newNameTextField.getText();
 
-        Utilities.checkAttributeModelName(newName);
+        Utilities.checkModelName(newName);
 
         SaveModelManager saveModelManager = new SaveModelManager();
 
