@@ -94,6 +94,29 @@ public class Utilities {
                     + "contain numbers and letters.");
         }
     }
+    
+    
+    /**
+     * Check if the given name meet the attribute name convention. 
+     * 
+     * @param name The name to be verified. 
+     * @return true - if the name is valid.<br>
+     *          false - if the name is invalid. 
+     * @exception IllegalNameException Thrown if the verifying name is invalid. 
+     */
+    public static boolean checkAttributeName(String name)
+            throws IllegalNameException {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalNameException("The name cannot be empty!");
+        }
+
+        if (name.matches("^[_,A-Za-z0-9,\\s]+$")) {
+            return true;
+        } else {
+            throw new IllegalNameException("Invalid Name! The name can only "
+                    + "contain numbers and letters.");
+        }
+    }
 
     /** Check whether the given file exists.
      * 
