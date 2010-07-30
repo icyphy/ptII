@@ -267,6 +267,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
 
         }
         if (modelNames.size() > 0) {
+            boolean importDone = false;
             for (String modelName : modelNames) {
 
                 try {
@@ -281,6 +282,7 @@ public class SearchResultsFrame extends JFrame implements Observer {
 
                         change.setUndoable(true);
                         _containerModel.requestChange(change);
+                        importDone = true;
 
                     } else {
 
@@ -290,15 +292,16 @@ public class SearchResultsFrame extends JFrame implements Observer {
 
                 } catch (Exception e) {
 
-                    MessageHandler.error("Cannot import the specified model. ",
+                    MessageHandler.error("Cannot import the model - '" + modelName + "'.",
                             e);
 
                 }
 
             }
-
-            _sourceFrame.toFront();
-            JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+            if (importDone) {
+                _sourceFrame.toFront();
+                JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+            }
         } else {
             JOptionPane.showMessageDialog(this,
                     "Please select atleast one model to import.");
