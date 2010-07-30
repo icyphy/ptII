@@ -322,7 +322,7 @@ public class AttributeListEditFrame extends JFrame {
     private boolean _validate() throws IllegalNameException {
 
         try {
-            Utilities.checkAttributeModelName(_listItemTextField.getText());
+            Utilities.checkAttributeName(_listItemTextField.getText());
         } catch (IllegalNameException e) {
             throw new IllegalNameException(
                     "Illegal list item value! The list item value can"
