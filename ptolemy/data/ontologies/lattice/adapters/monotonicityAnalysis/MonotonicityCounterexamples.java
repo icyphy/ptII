@@ -22,10 +22,7 @@
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -47,20 +44,10 @@ public class MonotonicityCounterexamples {
     
     public MonotonicityCounterexamples() {
         _counterexamples = new MultiHashMap();
-        //_counterexamples = new MultiHashMap<Concept, Concept>();
-        //_counterexamples = new HashMap<Concept, List<Concept>>();
     }
     
     public void add(Concept x1, Concept x2) {
         _counterexamples.put(x1, x2);
-        /*
-        List<Concept> bucket = _counterexamples.get(x1);
-        if (bucket == null) {
-            bucket = new LinkedList<Concept>();
-        }
-        bucket.add(x2);
-        _counterexamples.put(x1, bucket);
-        */
     }
     
     public boolean containsCounterexamples() {
@@ -68,8 +55,8 @@ public class MonotonicityCounterexamples {
     }
     
 
-    public Set<Map.Entry<Concept,Concept>> entrySet() {
-        Set<Map.Entry<Concept,Concept>> entrySet = new HashSet<Map.Entry<Concept,Concept>>();
+    public Set<ConceptPair> entrySet() {
+        Set<ConceptPair> entrySet = new HashSet<ConceptPair>();
         for (Concept lesser : (Set<Concept>)_counterexamples.keySet()) {
             for (Concept greater : (Collection<Concept>)_counterexamples.get(lesser)) {
                 entrySet.add(new ConceptPair(lesser, greater));
@@ -86,11 +73,9 @@ public class MonotonicityCounterexamples {
         return result  + "}";
     }
     
-    
-    //private Map<Concept, List<Concept>> _counterexamples;
-    //private MultiMap<Concept, Concept> _counterexamples;
     private MultiMap _counterexamples;
     
+    // Class for encapsulating counterexample pairs
     public class ConceptPair implements Map.Entry<Concept,Concept> {
         public ConceptPair(Concept l, Concept g) {
             lesser = l; greater = g;

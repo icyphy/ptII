@@ -215,7 +215,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         }
         MonotonicityCounterexamples inherited = _nodeToCounterexamples.get(_ifNode.jjtGetChild(2));
         if (inherited != null) {
-            for (Map.Entry<Concept, Concept> pair : inherited.entrySet()) {
+            for (MonotonicityCounterexamples.ConceptPair pair : inherited.entrySet()) {
                 Concept fb = _evaluateChild(1, pair.getKey());
                 Concept fd = _evaluateChild(2, pair.getValue());
                 if (!fd.isAboveOrEqualTo(fb)) {
