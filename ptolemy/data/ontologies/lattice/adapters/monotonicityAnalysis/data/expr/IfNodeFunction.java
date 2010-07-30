@@ -211,31 +211,31 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *    evaluating the subexpressions of the conditional.
      */
     private Concept _specialIfAnalysis(Concept constant) throws IllegalActionException {
+        // Get counterexamples to check from subexpressions
+        MonotonicityCounterexamples toCheck = _nodeToCounterexamples.get(_ifNode.jjtGetChild(2));
+        if (toCheck == null) {
+            toCheck = new MonotonicityCounterexamples();
+        }
+        // Get counterexamples to check from this predicate's border
         ConceptGraph inputLattice = _domainOntology.getGraph();
         List downsetList = Arrays.asList(inputLattice.downSet(constant));
         List<Concept> downset = (List<Concept>) downsetList;
-        MonotonicityCounterexamples counterexamples = new MonotonicityCounterexamples();
         for (Concept b : downset) {
             for (Concept d : b.getStrictDominators()) {
                 if (downset.contains(d)) {
                     continue;
                 }
-                Concept fb = _evaluateChild(1, b);
-                Concept fd = _evaluateChild(2, d);
-                if (!fd.isAboveOrEqualTo(fb)) {
-                    counterexamples.add(b,d);
-                }
+                toCheck.add(b, d);
             }
         }
-        MonotonicityCounterexamples inherited = _nodeToCounterexamples.get(_ifNode.jjtGetChild(2));
-        if (inherited != null) {
-            for (MonotonicityCounterexamples.ConceptPair pair : inherited.entrySet()) {
-                Concept fb = _evaluateChild(1, pair.getKey());
-                Concept fd = _evaluateChild(2, pair.getValue());
-                if (!fd.isAboveOrEqualTo(fb)) {
-                    counterexamples.add(pair.getKey(), pair.getValue());
-                } 
-            }
+        // Check for counterexamples
+        MonotonicityCounterexamples counterexamples = new MonotonicityCounterexamples();
+        for (MonotonicityCounterexamples.ConceptPair pair : toCheck.entrySet()) {
+            Concept fb = _evaluateChild(1, pair.getKey());
+            Concept fd = _evaluateChild(2, pair.getValue());
+            if (!fd.isAboveOrEqualTo(fb)) {
+                counterexamples.add(pair.getKey(), pair.getValue());
+            } 
         }
         if (counterexamples.containsCounterexamples()) {
             _nodeToCounterexamples.put(_ifNode, counterexamples);
