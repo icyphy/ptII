@@ -1255,7 +1255,7 @@ public class SaveModelToDBFrame extends JFrame {
         private boolean _isValid() throws IllegalNameException {
             if (_hasParentsWithNewVersion()) {
 
-                Utilities.checkAttributeModelName(_newModelNameTextField
+                Utilities.checkModelName(_newModelNameTextField
                         .getText());
 
                 return true;
