@@ -31,6 +31,7 @@ package ptdb.gui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,6 +47,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.util.Utilities;
@@ -169,14 +171,31 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             
             _dbMenu.addSeparator();
             
+            
+            _simpleSearchAction.putValue(Action.ACCELERATOR_KEY, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK));
+            
             GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
             GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
+            
+            
+            _saveModelToDBAction.putValue(Action.ACCELERATOR_KEY, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK 
+                            | InputEvent.SHIFT_MASK));
             
             GUIUtilities.addHotKey(_getRightComponent(), _saveModelToDBAction);
             GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
             
+            
+            _renameModelAction.putValue(Action.ACCELERATOR_KEY, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
+            
             GUIUtilities.addHotKey(_getRightComponent(), _renameModelAction);
             GUIUtilities.addMenuItem(_dbMenu, _renameModelAction);
+            
+            
+            _openModelMigrationFrameAction.putValue(Action.ACCELERATOR_KEY, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_MASK));
             
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openModelMigrationFrameAction);
