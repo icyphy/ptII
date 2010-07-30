@@ -895,7 +895,7 @@ public class SimpleSearchFrame extends JFrame {
 
         if (_attributesListPanel.getModelName().length() > 0) {
             try {
-                Utilities.checkAttributeModelName(_attributesListPanel
+                Utilities.checkModelName(_attributesListPanel
                         .getModelName());
             } catch (IllegalNameException e) {
                 JOptionPane.showMessageDialog(this,
