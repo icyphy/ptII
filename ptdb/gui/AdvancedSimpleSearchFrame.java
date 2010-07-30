@@ -221,7 +221,7 @@ public class AdvancedSimpleSearchFrame extends JFrame {
         if (!_attributesListPanel.getModelName().trim().isEmpty()) {
 
             try {
-                Utilities.checkAttributeModelName(_attributesListPanel
+                Utilities.checkModelName(_attributesListPanel
                         .getModelName());
             } catch (IllegalNameException e) {
 
