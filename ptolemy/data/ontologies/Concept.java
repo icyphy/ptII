@@ -25,6 +25,10 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -128,6 +132,30 @@ public class Concept extends ComponentEntity implements InequalityTerm,
         return abovePort;
     }
 
+    /** Return the concepts that are directly above this one.
+     *  @return A set of concepts that strictly dominate this one.
+     */
+    public Set<Concept> getStrictDominators() {
+        Set<Concept> dominators = new HashSet<Concept>();
+        List<ComponentPort> ports = abovePort.deepConnectedPortList();
+        for (ComponentPort port : ports) {
+            dominators.add((Concept) port.getContainer());
+        }
+        return dominators;
+    }
+
+    /** Return the concepts that are directly below this one.
+     *  @return A set of concepts that are strictly dominated by this one.
+     */
+    public Set<Concept> getStrictPostdominators() {
+        Set<Concept> postdominators = new HashSet<Concept>();
+        List<ComponentPort> ports = belowPort.deepConnectedPortList();
+        for (ComponentPort port : ports) {
+            postdominators.add((Concept) port.getContainer());
+        }
+        return postdominators;
+    }
+    
     /** Return the current value of the inequality term. Since a concept
      *  is a constant, not a variable, its value is just itself.
      *  

@@ -200,9 +200,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         List<Concept> downset = (List<Concept>) downsetList;
         MonotonicityCounterexamples counterexamples = new MonotonicityCounterexamples();
         for (Concept b : downset) {
-            List<ComponentPort> l = b.abovePort.deepConnectedPortList();
-            for (ComponentPort cp : l) {
-                Concept d = (Concept) cp.getContainer();
+            for (Concept d : b.getStrictDominators()) {
                 if (downset.contains(d)) {
                     continue;
                 }
