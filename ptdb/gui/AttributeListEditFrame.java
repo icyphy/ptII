@@ -71,13 +71,16 @@ public class AttributeListEditFrame extends JFrame {
      * 
      * @param parentFrame The parent frame from which creates this frame. 
      * @param listItems The list of items to be displayed and edited in this
-     *  frame. 
+     *  frame.
+     *  @param listName The name of the list being edited. 
      */
     public AttributeListEditFrame(ConfigureAttributesFrame parentFrame,
-            List<String> listItems) {
+            List<String> listItems, String listName) {
 
+        setTitle("Attribute List Editor");
         _parentFrame = parentFrame;
         _storedListItems = listItems;
+        _listName = listName;
         _initComponents();
 
         _parentFrame.setEnabled(false);
@@ -99,9 +102,12 @@ public class AttributeListEditFrame extends JFrame {
         _addButton = new JButton();
         _deleteButton = new JButton();
         _editListItemsLabel = new JLabel();
+        _newItemLabel = new JLabel();
         _saveButton = new JButton();
 
         //        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        
+        setResizable(false);
 
         addWindowListener(new WindowListener() {
 
@@ -189,6 +195,7 @@ public class AttributeListEditFrame extends JFrame {
             }
         });
 
+//        _deleteButton.setSize(100, );
         _deleteButton.setText("<< Delete");
         _deleteButton.setEnabled(false);
 
@@ -204,8 +211,10 @@ public class AttributeListEditFrame extends JFrame {
             }
         });
 
-        _editListItemsLabel.setFont(new Font("Title", 1, 18));
-        _editListItemsLabel.setText("Edit List Items");
+        _editListItemsLabel.setFont(new Font("Title", Font.BOLD, 12));
+        _editListItemsLabel.setText("Edit List Items in " + _listName + " List");
+        
+        _newItemLabel.setText("New Item ");
 
         _saveButton.setText("Add to Attribute");
 
@@ -216,13 +225,15 @@ public class AttributeListEditFrame extends JFrame {
                 javax.swing.GroupLayout.Alignment.LEADING).addGroup(
                 javax.swing.GroupLayout.Alignment.TRAILING,
                 layout.createSequentialGroup().addContainerGap(50,
-                        Short.MAX_VALUE).addComponent(_listItemTextField,
+                        Short.MAX_VALUE).addComponent(_newItemLabel).addComponent(_listItemTextField,
                         javax.swing.GroupLayout.PREFERRED_SIZE, 143,
                         javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18,
                         18).addGroup(
                         layout.createParallelGroup(
                                 javax.swing.GroupLayout.Alignment.TRAILING,
-                                false).addComponent(_deleteButton, 0, 0,
+                                false).addComponent(_deleteButton,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                javax.swing.GroupLayout.DEFAULT_SIZE,
                                 Short.MAX_VALUE).addComponent(_addButton,
                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                 javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -253,7 +264,7 @@ public class AttributeListEditFrame extends JFrame {
                                                 layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(
+                                                        .addComponent(_newItemLabel).addComponent(
                                                                 _listItemTextField,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -264,7 +275,7 @@ public class AttributeListEditFrame extends JFrame {
                                         .addComponent(_deleteButton)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-                                                79, Short.MAX_VALUE)
+                                                120, Short.MAX_VALUE)
                                         .addComponent(_saveButton).addGap(48,
                                                 48, 48)).addGroup(
                                 layout.createSequentialGroup().addGap(74, 74,
@@ -345,6 +356,7 @@ public class AttributeListEditFrame extends JFrame {
     private javax.swing.JButton _addButton;
     private javax.swing.JButton _deleteButton;
     private javax.swing.JLabel _editListItemsLabel;
+    private javax.swing.JLabel _newItemLabel;
     private javax.swing.JList _itemsJList;
     private javax.swing.JScrollPane _jScrollPane1;
     private javax.swing.JTextField _listItemTextField;
@@ -353,5 +365,6 @@ public class AttributeListEditFrame extends JFrame {
     private List<String> _storedListItems;
 
     private ConfigureAttributesFrame _parentFrame;
+    private String _listName;
 
 }
