@@ -72,7 +72,7 @@ public class MigrateModelsManager {
      * files.
      */
     public String migrateModels(String directoryPath,
-            boolean migrateFilesInSubDirectories) throws IOException {
+            boolean migrateFilesInSubDirectories, boolean checkContent) throws IOException {
 
         //check if the path provided exists.
         File directoryFile = new File(directoryPath);
@@ -100,13 +100,13 @@ public class MigrateModelsManager {
         _csvFileWriter = new FileWriter(csvFilePath);
 
         //write the header for the csv file.
-        _csvFileWriter.write("Model Name,Migration Status,Error Messages"
+        _csvFileWriter.write("Model Name,File Path,Migration Status,Error Messages"
                 + System.getProperty("line.separator"));
 
         try {
 
             _readFiles(directoryFile, directoryFile,
-                    migrateFilesInSubDirectories);
+                    migrateFilesInSubDirectories, checkContent);
 
         } finally {
 
@@ -130,11 +130,13 @@ public class MigrateModelsManager {
      * @param parentDirectory A file that represents the first directory passed.
      * @param readSubDirectories A boolean indicating if the method should
      * consider reading sub-directory files or not.
+     * @param checkContent A boolean indicating if the method should check the
+     * file content before creating a model and store it in the database or not.
      * @exception IOException Thrown if there is an error while reading or
      * writing files.
      */
     private void _readFiles(File directory, File parentDirectory,
-            boolean readSubDirectories) throws IOException {
+            boolean readSubDirectories, boolean checkContent) throws IOException {
 
         // If the path sent is a file, try to create a model in the database out of it.
         if (directory.isFile()) {
@@ -148,7 +150,22 @@ public class MigrateModelsManager {
                 modelName = directory.getName().substring(0,
                         directory.getName().indexOf(".xml"));
 
-                _createDBModel(modelName, _getContent(directory));
+                String fileContent = _getContent(directory);
+                
+                if (checkContent == false || 
+                        (checkContent && _checkFileContent(fileContent))) {
+                
+                    _createDBModel(modelName, fileContent, directory.getAbsolutePath());
+                    
+                } else {
+                    
+                    _csvFileWriter.write(modelName + "," 
+                            + directory.getAbsolutePath() + ",Failed,"
+                            + "The content of the file" 
+                            + " was not a proper Ptolemy model content." 
+                            + System.getProperty("line.separator"));
+                    
+                }
             }
 
         } else if (directory.isDirectory()
@@ -166,7 +183,7 @@ public class MigrateModelsManager {
                 for (int i = 0; i < listOfFiles.length; i++) {
 
                     _readFiles(listOfFiles[i], parentDirectory,
-                            readSubDirectories);
+                            readSubDirectories, checkContent);
 
                 }
             }
@@ -212,10 +229,11 @@ public class MigrateModelsManager {
      * 
      * @param modelName The name of the model to be created.
      * @param modelContent The content of the model to be created.
+     * @param filePath The absolute file path to the model on the file system.
      * @exception IOException Thrown if there is an error writing the result to
      * the CSV file.
      */
-    private void _createDBModel(String modelName, String modelContent)
+    private void _createDBModel(String modelName, String modelContent, String filePath)
             throws IOException {
 
         XMLDBModel xmlDBModel = new XMLDBModel(modelName);
@@ -230,13 +248,37 @@ public class MigrateModelsManager {
 
             saveModelManager.save(xmlDBModel);
 
-            _csvFileWriter.write(modelName + ",Successful, "
+            _csvFileWriter.write(modelName + "," + filePath + ",Successful, "
                     + System.getProperty("line.separator"));
 
         } catch (Exception e) {
-            _csvFileWriter.write(modelName + ",Failed," + e.getMessage()
+            _csvFileWriter.write(modelName + ","+ filePath + ",Failed," 
+                    + e.getMessage()
                     + System.getProperty("line.separator"));
         }
+    }
+    
+    /**
+     * Check if the file content is a proper Ptolemy Model content.
+     * @param fileContent The content of the file.
+     * @return boolean indicating whether the file content is a proper 
+     * Ptolemy model or not.
+     */
+    private boolean _checkFileContent(String fileContent) {
+        
+        boolean isPtolemyModel = false;
+        
+        if (fileContent.lastIndexOf("</") >= 0) {
+            String lastTag = fileContent.substring(fileContent.lastIndexOf("</"));
+            
+            if (lastTag.toLowerCase().contains("entity") 
+                    || lastTag.toLowerCase().contains("class")) {
+                isPtolemyModel = true;
+            }
+        }
+        
+        return isPtolemyModel;
+        
     }
 
     //////////////////////////////////////////////////////////////////////
