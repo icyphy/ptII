@@ -224,7 +224,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
 
         setTitle("Configure Attributes");
         
-        setSize(200,500);
+        setResizable(false);
 
         addWindowListener(new WindowListener() {
 
@@ -268,7 +268,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
         });
 
         _mainDialog = new javax.swing.JDialog();
-        _jTabbedPane1 = new javax.swing.JTabbedPane();
+//        _jTabbedPane1 = new javax.swing.JTabbedPane();
         _statusMsgLabel = new javax.swing.JLabel();
         _statusLabel = new javax.swing.JLabel();
         _editPanel = new javax.swing.JPanel();
@@ -824,16 +824,16 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
                                                                                 _editPanel,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 260,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addGap(
-                                                                                397,
-                                                                                397,
-                                                                                397)
-                                                                        .addComponent(
-                                                                                _jTabbedPane1,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                                                        .addGap(
+//                                                                                397,
+//                                                                                397,
+//                                                                                397)
+//                                                                        .addComponent(
+//                                                                                _jTabbedPane1,
+//                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+//                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+//                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addGroup(
                                                                 layout
                                                                         .createSequentialGroup()
@@ -870,18 +870,18 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
                                                 layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(
-                                                                layout
-                                                                        .createSequentialGroup()
-                                                                        .addGap(
-                                                                                176,
-                                                                                176,
-                                                                                176)
-                                                                        .addComponent(
-                                                                                _jTabbedPane1,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+//                                                        .addGroup(
+//                                                                layout
+//                                                                        .createSequentialGroup()
+//                                                                        .addGap(
+//                                                                                176,
+//                                                                                176,
+//                                                                                176)
+//                                                                        .addComponent(
+//                                                                                _jTabbedPane1,
+//                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+//                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+//                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addGroup(
                                                                 layout
                                                                         .createSequentialGroup()
@@ -986,8 +986,6 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
         });
 
         pack();
-
-        setSize(200, 500);
     }
 
     private void _resetEditPanel() {
@@ -1176,7 +1174,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
     private javax.swing.JButton _saveButton;
     private javax.swing.JDialog _mainDialog;
     private javax.swing.JScrollPane _jScrollPane1;
-    private javax.swing.JTabbedPane _jTabbedPane1;
+//    private javax.swing.JTabbedPane _jTabbedPane1;
     private javax.swing.JButton _listEditButton;
     private javax.swing.JLabel _nameLabel;
     private javax.swing.JLabel _statusLabel;
