@@ -71,12 +71,16 @@ import ptdb.kernel.bl.load.LoadManager;
 import ptdb.kernel.bl.save.SaveModelManager;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -117,7 +121,7 @@ public class SaveModelToDBFrame extends JFrame {
         _orignialAttributes = new ArrayList();
         _attributesListPanel = new AttributesListPanel(_modelToSave);
         _tabbedPane = new JTabbedPane();
-        
+
         try {
             if (!_isNew()) {
                 _xmlModel = new XMLDBModel(_modelToSave.getName());
@@ -272,21 +276,21 @@ public class SaveModelToDBFrame extends JFrame {
 
                     @Override
                     public void keyPressed(KeyEvent e) {
-                        
+
                         /* 
                          * If the enter button is pressed, perform the action
                          *  based on the enabled button.
-                         */  
+                         */
                         if (e.getKeyCode() == e.VK_ENTER) {
                             if (_saveButton.isEnabled()) {
-                                
+
                                 _saveButton.getActionListeners()[0]
-                                                 .actionPerformed(null);
-                                
+                                        .actionPerformed(null);
+
                             } else if (_nextButton.isEnabled()) {
-                                
+
                                 _nextButton.getActionListeners()[0]
-                                                  .actionPerformed(null);
+                                        .actionPerformed(null);
                             }
                         }
                     }
@@ -307,9 +311,9 @@ public class SaveModelToDBFrame extends JFrame {
         // The save button should be disabled if there are parents of the
         // saving model.
         _setButtons();
-        
+
         this.pack();
-        
+
         _attributesListPanel.setModelNameFocus();
 
     }
@@ -374,7 +378,6 @@ public class SaveModelToDBFrame extends JFrame {
 
         try {
 
-            //            String modelId = _saveModelManager.save(_xmlModel);
             String modelId = _saveModelManager
                     .saveWithParents(xmlDBModelWithReferenceChanges);
 
@@ -441,7 +444,11 @@ public class SaveModelToDBFrame extends JFrame {
                                     .getConfiguration().getDirectory()
                                     .getEffigy(parentName);
 
-                            for (Object entity : parentModelEffigy.entityList()) {
+                            boolean modifiedFlag = parentModelEffigy
+                                    .isModified();
+
+                            for (Object entity : ((CompositeEntity) parentModelEffigy
+                                    .getModel()).entityList()) {
 
                                 ComponentEntity componentEntity = (ComponentEntity) entity;
 
@@ -453,21 +460,40 @@ public class SaveModelToDBFrame extends JFrame {
                                     // version model id.
                                     StringParameter modelIdAttribute = (StringParameter) componentEntity
                                             .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR);
-                                    modelIdAttribute.setToken(newVersionModel
-                                            .getModelId());
+
+                                    modelIdAttribute
+                                            .setExpression(newVersionModel
+                                                    .getModelId());
                                     componentEntity.setName(parentModelEffigy
-                                            .uniqueName(newVersionModel
-                                                    .getModelName()));
+                                            .getModel().uniqueName(
+                                                    newVersionModel
+                                                            .getModelName()));
+
+                                    String momlString = componentEntity
+                                            .exportMoML();
+                                    //                                    componentEntity.setContainer(null);
+                                    if (componentEntity instanceof CompositeEntity) {
+                                        CompositeEntity compositeEntity = (CompositeEntity) componentEntity;
+                                        compositeEntity.removeAllEntities();
+                                    }
+
+                                    // Update the MoML of the opened parent
+                                    MoMLChangeRequest change = new MoMLChangeRequest(
+                                            null, parentModelEffigy.getModel(),
+                                            momlString);
+
+                                    change.setUndoable(true);
+                                    parentModelEffigy.getModel().requestChange(
+                                            change);
+
                                 }
                             }
 
-                            // Update the moml for this parent model. 
-                            MoMLChangeRequest change = new MoMLChangeRequest(
-                                    null, parentModelEffigy.getModel(),
-                                    parentModelEffigy.getModel().exportMoML());
-
-                            change.setUndoable(true);
-                            parentModelEffigy.getModel().requestChange(change);
+                            // If that model hasn't changed, set the changed
+                            // to false. 
+                            if (!modifiedFlag) {
+                                parentModelEffigy.setModified(false);
+                            }
 
                         }
 
@@ -480,8 +506,33 @@ public class SaveModelToDBFrame extends JFrame {
                             ._getParentsMaintainReferences();
                     if (parentsModelsMaintainReferences != null
                             && parentsModelsMaintainReferences.size() > 0) {
+
+                        // fetch the saved sub model from the database, to 
+                        // update the information in the parent model. 
                         XMLDBModel savedModel = DBModelFetcher
                                 .loadUsingId(modelId);
+
+                        MoMLParser parser = new MoMLParser();
+                        parser.resetAll();
+
+                        Entity savedSubModel = (Entity) parser.parse(savedModel
+                                .getModel());
+
+                        StringParameter referenceAttribute = null;
+
+                        if (savedSubModel
+                                .getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
+
+                            referenceAttribute = (StringParameter) savedSubModel
+                                    .getAttribute(XMLDBModel.DB_REFERENCE_ATTR);
+
+                        } else {
+                            referenceAttribute = new StringParameter(
+                                    savedSubModel, XMLDBModel.DB_REFERENCE_ATTR);
+
+                        }
+
+                        referenceAttribute.setExpression("TRUE");
 
                         for (String parentName : parentsModelsMaintainReferences) {
                             if (_source.getConfiguration().getDirectory()
@@ -492,8 +543,11 @@ public class SaveModelToDBFrame extends JFrame {
                                         .getConfiguration().getDirectory()
                                         .getEffigy(parentName);
 
-                                for (Object entity : parentModelEffigy
-                                        .entityList()) {
+                                boolean modifiedFlag = parentModelEffigy
+                                        .isModified();
+
+                                for (Object entity : ((CompositeEntity) parentModelEffigy
+                                        .getModel()).entityList()) {
 
                                     ComponentEntity componentEntity = (ComponentEntity) entity;
 
@@ -503,25 +557,46 @@ public class SaveModelToDBFrame extends JFrame {
                                                     componentEntity).equals(
                                                     modelId)) {
                                         // Update the moml of that sub model.
+                                        savedSubModel.setName(componentEntity
+                                                .getName());
+
+                                        // Set the location attribute.
+                                        Location location = (Location) savedSubModel
+                                                .getAttribute("_location");
+                                        if (location == null) {
+                                            location = new Location(
+                                                    savedSubModel, "_location");
+                                        }
+
+                                        location
+                                                .setExpression(((Location) componentEntity
+                                                        .getAttribute("_location"))
+                                                        .getExpression());
+
+                                        String newMoml = savedSubModel
+                                                .exportMoML();
+
+                                        if (componentEntity instanceof CompositeEntity) {
+                                            CompositeEntity compositeEntity = (CompositeEntity) componentEntity;
+                                            compositeEntity.removeAllEntities();
+                                        }
+
                                         MoMLChangeRequest change = new MoMLChangeRequest(
-                                                null, componentEntity,
-                                                savedModel.getModel());
+                                                null, parentModelEffigy
+                                                        .getModel(), newMoml);
 
                                         change.setUndoable(true);
-                                        componentEntity.requestChange(change);
+                                        parentModelEffigy.getModel()
+                                                .requestChange(change);
 
                                     }
                                 }
 
-                                // Update the moml for this parent model. 
-                                MoMLChangeRequest change = new MoMLChangeRequest(
-                                        null, parentModelEffigy.getModel(),
-                                        parentModelEffigy.getModel()
-                                                .exportMoML());
-
-                                change.setUndoable(true);
-                                parentModelEffigy.getModel().requestChange(
-                                        change);
+                                // If that model hasn't changed, set the changed
+                                // to false. 
+                                if (!modifiedFlag) {
+                                    parentModelEffigy.setModified(false);
+                                }
 
                             }
                         }
@@ -583,7 +658,7 @@ public class SaveModelToDBFrame extends JFrame {
         }
 
         if (_hasParentFlag == true && _parentModels == null) {
-            // Hasn’t verified whether the saving model has parents yet. 
+            // Hasnï¿½t verified whether the saving model has parents yet. 
             if (Utilities.getIdFromModel(_modelToSave) != null) {
                 _parentModels = _saveModelManager
                         .getFirstLevelParents(_xmlModel);
@@ -783,9 +858,9 @@ public class SaveModelToDBFrame extends JFrame {
 
         } catch (CircularDependencyException e) {
 
-            JOptionPane.showMessageDialog(this, "Saving this model as it is "+
-                    "will result in a circular dependency.  Examine "
-                    + "the referenced models to determine the cause.", 
+            JOptionPane.showMessageDialog(this, "Saving this model as it is "
+                    + "will result in a circular dependency.  Examine "
+                    + "the referenced models to determine the cause.",
                     "Save Error", JOptionPane.INFORMATION_MESSAGE, null);
 
             _rollbackModel();
@@ -1256,8 +1331,7 @@ public class SaveModelToDBFrame extends JFrame {
         private boolean _isValid() throws IllegalNameException {
             if (_hasParentsWithNewVersion()) {
 
-                Utilities.checkModelName(_newModelNameTextField
-                        .getText());
+                Utilities.checkModelName(_newModelNameTextField.getText());
 
                 return true;
             }
@@ -1428,8 +1502,7 @@ public class SaveModelToDBFrame extends JFrame {
         private JButton _modelNameButton;
 
         private ParentValidateFrame _parentFrame;
-        
-        
+
     }
 
 }
