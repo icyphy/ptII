@@ -543,7 +543,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
                 }
 
                 (new AttributeListEditFrame(ConfigureAttributesFrame.this,
-                        _listItems)).setVisible(true);
+                        _listItems, _attributeNameField.getText())).setVisible(true);
 
             }
         });
@@ -732,8 +732,8 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
         //            }
         //        });
 
-        _attributeNameLabel.setFont(new Font("Title", Font.BOLD, 18)); // NOI18N
-        _attributeNameLabel.setText("     Attribute Name");
+        _attributeNameLabel.setFont(new Font("Title", Font.BOLD, 12)); // NOI18N
+        _attributeNameLabel.setText("  List of Available Attributes");
 
         javax.swing.GroupLayout attributesPanelLayout = new javax.swing.GroupLayout(
                 _attributesPanel);
