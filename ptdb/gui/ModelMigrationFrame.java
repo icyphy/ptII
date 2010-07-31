@@ -145,7 +145,7 @@ public class ModelMigrationFrame extends JFrame {
         _jLabel4 = new javax.swing.JLabel();
         _jLabel5 = new javax.swing.JLabel();
         _allSubDirectoriesCheckBox = new javax.swing.JCheckBox();
-        
+        _checkFileContentCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         
@@ -191,7 +191,8 @@ public class ModelMigrationFrame extends JFrame {
         _allSubDirectoriesCheckBox.setSelected(true);
         _allSubDirectoriesCheckBox.setText("Migrate all .xml files under the given folder path and all sub-directories under it.");
         
-       
+        _checkFileContentCheckBox.setSelected(true);
+        _checkFileContentCheckBox.setText("Validate the file content before migrating the model. Only migrate proper Ptolemy models.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -220,6 +221,7 @@ public class ModelMigrationFrame extends JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(_allSubDirectoriesCheckBox)
+                    .addComponent(_checkFileContentCheckBox)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(_jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -247,6 +249,7 @@ public class ModelMigrationFrame extends JFrame {
                     .addComponent(_browseButton))
                 .addGap(18, 18, 18)
                 .addComponent(_allSubDirectoriesCheckBox)
+                .addComponent(_checkFileContentCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(_migrateButton)
@@ -297,10 +300,14 @@ public class ModelMigrationFrame extends JFrame {
         try {
             
             boolean migrateFilesInSubDirectories = _allSubDirectoriesCheckBox.isSelected();
+            boolean checkFileContent = _checkFileContentCheckBox.isSelected();
             
-            String csvFilePath = migrateModelsManager.migrateModels(directoryPath, migrateFilesInSubDirectories);
+            String csvFilePath = migrateModelsManager.migrateModels(
+                    directoryPath, migrateFilesInSubDirectories, 
+                    checkFileContent);
             
-            _resultsTextField.setText("The migration results can be found in: " + csvFilePath);
+            _resultsTextField.setText("The migration results can be found in: " 
+                    + csvFilePath);
             
             // Make sure the text field shows the beginning of the result message.
             _resultsTextField.getCaret().setDot(0);
@@ -328,5 +335,6 @@ public class ModelMigrationFrame extends JFrame {
     private javax.swing.JButton _migrateButton;
     private javax.swing.JTextField _resultsTextField;
     private javax.swing.JCheckBox _allSubDirectoriesCheckBox;
+    private javax.swing.JCheckBox _checkFileContentCheckBox;
 
 }
