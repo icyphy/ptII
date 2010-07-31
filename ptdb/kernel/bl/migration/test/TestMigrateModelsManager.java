@@ -86,7 +86,7 @@ public class TestMigrateModelsManager {
 
         try {
             String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, true);
+                    .migrateModels(directoryPath, true, true);
 
             assertTrue(csvFilePath.equals(directoryPath + System.getProperty("file.separator") + "migrationResults.csv"));
             
@@ -122,7 +122,7 @@ public class TestMigrateModelsManager {
         try {
 
             String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, true);
+                    .migrateModels(directoryPath, true, true);
 
             assertTrue(csvFilePath.equals(directoryPath
                    + System.getProperty("file.separator") + "migrationResults.csv"));
@@ -162,7 +162,7 @@ public class TestMigrateModelsManager {
         try {
 
             String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, false);
+                    .migrateModels(directoryPath, false, true);
 
             assertTrue(csvFilePath.equals(directoryPath
                    + System.getProperty("file.separator") + "migrationResults.csv"));
@@ -207,6 +207,136 @@ public class TestMigrateModelsManager {
 
     }
 
+    
+    
+    /**
+     * Test the migrateModels() method in the case when the given path is
+     * correct and it contains models at the first level and models inside a
+     * directory which is inside the current directory but we want to only 
+     * migrate those in the first level.
+     * 
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
+     */
+    @Test
+    public void testMigrateModelsNoDepth_checkContent() throws Exception {
+
+        String directoryPath = createDirectory(2, 2);
+
+        MigrateModelsManager migrateModelsManager = new MigrateModelsManager();
+
+        try {
+
+            String csvFilePath = migrateModelsManager
+                    .migrateModels(directoryPath, false, true);
+
+            assertTrue(csvFilePath.equals(directoryPath
+                   + System.getProperty("file.separator") + "migrationResults.csv"));
+            
+
+
+            File csvFile = new File(csvFilePath);
+            
+            BufferedReader input = new BufferedReader(new FileReader(csvFile));
+
+            try {
+
+                int count = 0;
+                String line = null;
+
+                while ((line = input.readLine()) != null) {
+
+                    count++;
+                   
+                }
+                
+                assertTrue(count == 3);
+                
+            } finally {
+
+                input.close();
+
+            }
+            
+
+
+            PowerMock.verifyAll();
+            
+        } catch (IOException e) {
+            fail("Failed to migrate models - " + e.getMessage());
+        } finally {
+            
+            deleteDirectory(directoryPath);
+            File file = new File(directoryPath);
+            file.delete();
+        }
+
+    }
+    
+    
+    /**
+     * Test the migrateModels() method in the case when the given path is
+     * correct and it contains models at the first level and models inside a
+     * directory which is inside the current directory but we want to only 
+     * migrate those in the first level.
+     * 
+     * @exception Exception Thrown by PowerMock if error occurs in the testing.
+     */
+    @Test
+    public void testMigrateModelsNoDepth_NoCheckContent() throws Exception {
+
+        String directoryPath = createDirectory(2, 2);
+
+        MigrateModelsManager migrateModelsManager = new MigrateModelsManager();
+
+        try {
+
+            String csvFilePath = migrateModelsManager
+                    .migrateModels(directoryPath, false, false);
+
+            assertTrue(csvFilePath.equals(directoryPath
+                   + System.getProperty("file.separator") + "migrationResults.csv"));
+            
+
+
+            File csvFile = new File(csvFilePath);
+            
+            BufferedReader input = new BufferedReader(new FileReader(csvFile));
+
+            try {
+
+                int count = 0;
+                String line = null;
+
+                while ((line = input.readLine()) != null) {
+
+                    count++;
+                   
+                }
+                
+                assertTrue(count == 3);
+                
+            } finally {
+
+                input.close();
+
+            }
+            
+
+
+            PowerMock.verifyAll();
+            
+        } catch (IOException e) {
+            fail("Failed to migrate models - " + e.getMessage());
+        } finally {
+            
+            deleteDirectory(directoryPath);
+            File file = new File(directoryPath);
+            file.delete();
+        }
+
+    }
+    
+    
     /**
      * Test the migrateModels() method in the case when the given path is
      * correct but it does not contain any models in it.
@@ -223,7 +353,7 @@ public class TestMigrateModelsManager {
         try {
 
             String csvFilePath = migrateModelsManager
-                    .migrateModels(directoryPath, true);
+                    .migrateModels(directoryPath, true, true);
 
             assertTrue(csvFilePath.equals(directoryPath
                     + System.getProperty("file.separator") + "migrationResults.csv"));
@@ -257,7 +387,7 @@ public class TestMigrateModelsManager {
 
            
             migrateModelsManager
-                    .migrateModels(directoryPath, true);
+                    .migrateModels(directoryPath, true, true);
 
             fail("The Migration operation did not report any error when the path was incorrect.");
 
@@ -265,6 +395,10 @@ public class TestMigrateModelsManager {
             assertTrue(true);
         }
     }
+    
+    
+    
+    
 
 
     //////////////////////////////////////////////////////////////////////
