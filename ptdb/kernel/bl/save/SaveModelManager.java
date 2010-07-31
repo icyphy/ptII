@@ -285,8 +285,11 @@ public class SaveModelManager {
                         xmlDBModelWithReferenceChanges.getVersionName());
     
                 newXMLDBModel.setIsNew(true);
-    
-                newXMLDBModel.setModel(dbModelToBeSaved.getModel());
+                String modelContent = dbModelToBeSaved.getModel();
+                modelContent = modelContent.replaceFirst("name=\""
+                        + dbModelToBeSaved.getModelName() +"\"", "name=\""
+                        + xmlDBModelWithReferenceChanges.getVersionName() + "\"");
+                newXMLDBModel.setModel(modelContent);
     
                 String newModelId = save(newXMLDBModel, dbConnection);
     
