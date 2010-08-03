@@ -110,7 +110,21 @@ public class LoadManager {
                    + "class=\"ptolemy.data.expr.StringConstantParameter\" " 
                    + "value=\"FALSE\"";
            
-           modelContent.replaceAll(trueReference, falseReference);
+           modelContent = modelContent.replaceAll(trueReference, falseReference);
+           
+           
+           trueReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
+               + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " 
+               + "value=\"TRUE\"";
+
+           falseReference = "property class=\"ptolemy.data.expr.StringConstantParameter\" "
+               + "name=\"" + XMLDBModel.DB_REFERENCE_ATTR + "\" " 
+               + "value=\"FALSE\"";
+           
+           modelContent = modelContent.replaceAll(trueReference, falseReference);
+           
+           dbModel.setModel(modelContent);
+           
        }
        
        
