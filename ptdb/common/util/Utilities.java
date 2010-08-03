@@ -87,7 +87,8 @@ public class Utilities {
             throw new IllegalNameException("The name cannot be empty!");
         }
 
-        if (name.matches("^[A-Za-z0-9]+$")) {
+//        if (name.matches("^[A-Za-z0-9]+$")) {
+        if (name.matches("^[\\w]+$")) {
             return true;
         } else {
             throw new IllegalNameException("Invalid Name! The name can only "
@@ -110,7 +111,7 @@ public class Utilities {
             throw new IllegalNameException("The name cannot be empty!");
         }
 
-        if (name.matches("^[_,A-Za-z0-9,\\s]+$")) {
+        if (name.matches("^[\\w\\s]+$")) {
             return true;
         } else {
             throw new IllegalNameException("Invalid Name! The name can only "
