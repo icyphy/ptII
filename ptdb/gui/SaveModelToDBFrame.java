@@ -30,6 +30,7 @@ package ptdb.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -701,7 +702,7 @@ public class SaveModelToDBFrame extends JFrame {
     }
 
     private boolean _isValid() throws NameDuplicationException,
-            IllegalActionException {
+            IllegalActionException, HeadlessException, IllegalNameException {
 
         if (_attributesListPanel.getModelName().length() == 0) {
 
@@ -712,7 +713,7 @@ public class SaveModelToDBFrame extends JFrame {
 
         }
 
-        if (!_attributesListPanel.getModelName().matches("^[A-Za-z0-9]+$")) {
+        if (!Utilities.checkModelName(_attributesListPanel.getModelName())) {
 
             JOptionPane.showMessageDialog(this,
                     "The model name should only contain letters and numbers.",
