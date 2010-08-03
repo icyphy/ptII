@@ -151,14 +151,14 @@ public class SimpleSearchFrame extends JFrame {
 
         _searchButton = new JButton("Search");
         cancel_Button = new JButton("Cancel");
-        advancedSearchButton = new JButton("Open Graph Pattern Search...");
+        advancedSearchButton = new JButton("Add Graph Pattern Search");
 
         _searchButton.setMnemonic(KeyEvent.VK_ENTER);
         cancel_Button.setMnemonic(KeyEvent.VK_ESCAPE);
 
         _searchButton.setActionCommand("Search");
         cancel_Button.setActionCommand("Cancel");
-        advancedSearchButton.setActionCommand("Open Advanced Search...");
+        advancedSearchButton.setActionCommand("Add Graph Pattern Search");
 
         _searchButton.setHorizontalTextPosition(SwingConstants.CENTER);
         cancel_Button.setHorizontalTextPosition(SwingConstants.CENTER);
