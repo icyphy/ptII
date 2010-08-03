@@ -1459,38 +1459,25 @@ public class OracleXMLDBConnection implements DBConnection {
             oldModelId = _getModelIdFromModelName(oldModelName);
         }
         
-        String propertyString = Utilities.getPropertyString(
-                XMLDBModel.DB_MODEL_ID_ATTR, newModelId);
-
+        
         for (String parentName : task.getParentsList()) {
 
-            String parentsQuery = "for $entity in doc(\"dbxml:"
-                    + _params.getContainerName() + "/" + parentName
-                    + "\")/entity/entity  "
-                    + "return for $prop in $entity/property "
-                    + "where $prop/@name= \"" + XMLDBModel.DB_REFERENCE_ATTR
-                    + "\" " + "and $prop/@value = \"TRUE\" "
-                    + "return for $x in $entity/property "
-                    + "where $x/@name= \"" + XMLDBModel.DB_MODEL_ID_ATTR
-                    + "\" " + "and $x/@value = \"" + oldModelId + "\" "
-                    + "return replace node $x " + "with " + propertyString;
-
-            try {
-
-                XmlQueryContext xmlQueryContext = _xmlManager
-                        .createQueryContext();
-
-                _xmlManager.query(_xmlTransaction, parentsQuery,
-                        xmlQueryContext, null);
-
-            } catch (XmlException e) {
-                throw new DBExecutionException(
-                        "Error while updating DBModelId in the parent files - "
-                                + e.getMessage(), e);
-            }
-
-            String referenceString = _getModelReferences(newModelId);
-            String referenceFileQuery = "for $parententity in doc(\"dbxml:"
+        GetModelTask getModelTask = new GetModelTask(parentName);
+        XmlDocument parentModelDoc = _getModelFromDB(getModelTask);
+        
+        String parentModelContent;
+        try {
+            parentModelContent = parentModelDoc.getContentAsString();
+        } catch (XmlException e1) {
+            throw new DBExecutionException("Exception while fetching model content for model - " + parentName);
+        }
+        parentModelContent = parentModelContent.replaceAll("\"" + oldModelId + "\"", "\"" + newModelId + "\"");
+        XMLDBModel parentModel = new XMLDBModel(parentName);
+        parentModel.setModel(parentModelContent);
+        executeUpdateModelInCache(parentModel);
+        
+        String referenceString = _getModelReferences(newModelId);
+        String referenceFileQuery = "for $parententity in doc(\"dbxml:"
                     + _params.getContainerName()
                     + "/ReferenceFile.ptdbxml\")/reference/*"
                     + "[descendant-or-self::entity[attribute::name=\"" + parentName
@@ -2502,6 +2489,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 finalModelsList.add(model);
                 resultModelNames.add(modelName);
+                //System.out.println(resultModelNames);
             }
         }
         return finalModelsList;
