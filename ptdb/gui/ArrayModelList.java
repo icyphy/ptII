@@ -26,11 +26,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- * 
- */
+
 package ptdb.gui;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -57,6 +56,10 @@ public class ArrayModelList extends AbstractListModel {
      * @param items The passed list instance. 
      */
     public ArrayModelList(List<String> items) {
+
+        // Sort the passed items initially. 
+        Collections.sort(items);
+
         _items = items;
     }
 
@@ -67,11 +70,17 @@ public class ArrayModelList extends AbstractListModel {
      * Add a new item to this list. 
      * 
      * @param newItem The new item to be added into the list. 
+     * @return Return the index of the newly added item. 
      */
-    public void addItem(String newItem) {
-        int index = _items.size();
-        _items.add(newItem);
+    public int addItem(String newItem) {
+        //        int index = _items.size();
+        int index = _getInsertIndex(newItem);
+
+        _items.add(index, newItem);
+
         fireIntervalAdded(this, index, index);
+
+        return index;
     }
 
     /**
@@ -111,19 +120,46 @@ public class ArrayModelList extends AbstractListModel {
             }
         }
     }
+    
 
     /**
      * Update the item at a given index. 
      * 
      * @param item The new item to put into the list. 
      * @param index The index of the item to be replaced. 
+     * @return Return the new index of the updated item. 
      */
-    public void updateItem(String item, int index) {
-        _items.set(index, item);
+    public int updateItem(String item, int index) {
 
-        fireIntervalAdded(this, index, index);
+        // Remove the original item from the list.
+        _items.remove(index);
+
+        //        _items.set(index, item);
+        //
+        //        fireIntervalAdded(this, index, index);
+        // Add the new item into the list.
+        return addItem(item);
+        
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
+    private int _getInsertIndex(String itemToInsert) {
+
+        int index = 0;
+
+        for (String itemString : _items) {
+
+            if (itemString.compareTo(itemToInsert) >= 0) {
+                break;
+            }
+
+            index++;
+        }
+
+        return index;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////

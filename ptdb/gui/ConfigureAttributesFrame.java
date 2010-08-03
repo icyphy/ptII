@@ -1053,9 +1053,10 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
 
                 // Only update the list when the attribute name is changed.
                 if (nameChanged) {
-                    ((ArrayModelList) _attributesList.getModel()).updateItem(
+                    int newIndex = ((ArrayModelList) _attributesList.getModel()).updateItem(
                             _currentEditedAttribute.getAttributeName(),
                             _attributesList.getSelectedIndex());
+                    _attributesList.setSelectedIndex(newIndex);
                 }
 
                 // Update the stored list in this class.
