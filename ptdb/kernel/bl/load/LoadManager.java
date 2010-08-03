@@ -93,6 +93,27 @@ public class LoadManager {
        
        if(dbModel == null) return null;
        
+       
+       // Make sure that all references in the model are by value.
+       if (!byReference) {
+           
+           String modelContent = dbModel.getModel();
+           
+           String trueReference = "property name=\""  
+                   + XMLDBModel.DB_REFERENCE_ATTR + "\" " 
+                   + "class=\"ptolemy.data.expr.StringConstantParameter\" " 
+                   + "value=\"TRUE\"";
+           
+           
+           String falseReference = "property name=\"" 
+                   + XMLDBModel.DB_REFERENCE_ATTR + "\" " 
+                   + "class=\"ptolemy.data.expr.StringConstantParameter\" " 
+                   + "value=\"FALSE\"";
+           
+           modelContent.replaceAll(trueReference, falseReference);
+       }
+       
+       
        Entity returnEntity = _getEntity(dbModel);
        
        if(byReference){
