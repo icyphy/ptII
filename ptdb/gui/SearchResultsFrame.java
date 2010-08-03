@@ -167,6 +167,8 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
             public void actionPerformed(ActionEvent event) {
 
                 _cancelObservable.notifyObservers();
+                
+                _cancelButton.setEnabled(false);
 
             }
 
