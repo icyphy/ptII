@@ -667,6 +667,17 @@ public class SaveModelManager {
 
         try {
 
+
+            String modelBody = xmlDBModel.getModel();
+            
+            if (modelBody.indexOf("<!DOCTYPE") >= 0) {
+                
+                modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
+                modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
+            }
+            
+            xmlDBModel.setModel(modelBody);
+            
             if (xmlDBModel == null) {
                 throw new IllegalArgumentException(
                         "Failed while attempting to save."
@@ -679,6 +690,8 @@ public class SaveModelManager {
                 throw new DBConnectionException(
                         "Unable to get synchronous connection from the database");
             }
+            
+            
 
             if (xmlDBModel.getIsNew()) {
 
