@@ -424,117 +424,121 @@ public class SaveModelManager {
          */
         Node topEntityNode = modelDocument.getElementsByTagName("entity").item(
                 0);
-        NodeList entityList = topEntityNode.getChildNodes();
-
-        boolean isChanged = false;
-
-        if (entityList != null) {
-
-            for (int i = 0; i < entityList.getLength(); i++) {
-
-                Node entity = entityList.item(i);
-
-                if (!"entity".equals(entity.getNodeName())) {
-                    continue;
-                }
-
-                /* Get all first-level nodes inside the given entity. */
-                NodeList parameterList = entity.getChildNodes();
-
-                String referencedModelId = null;
-                boolean isReferenced = false;
-                boolean isReferencedFound = false;
-                boolean dbModelIdFound = false;
-
-                /* Get value for the DBReference and DBModelName properties.*/
-                for (int j = 0; j < parameterList.getLength(); j++) {
-
-                    Node parameter = parameterList.item(j);
-
-                    if ("property".equals(parameter.getNodeName())) {
-
-                        String name = Utilities.getValueForAttribute(parameter,
-                                "name");
-
-                        if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)
-                                && !dbModelIdFound) {
-
-                            referencedModelId = Utilities.getValueForAttribute(
-                                    parameter, "value");
-
-                            dbModelIdFound = true;
-
-                        } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)
-                                && !isReferencedFound) {
-
-                            String value = Utilities.getValueForAttribute(
-                                    parameter, "value");
-                            isReferenced = "TRUE".equals(value);
-
-                            isReferencedFound = true;
-                        }
-
-                        if (isReferencedFound && dbModelIdFound) {
-                            break;
-                        }
+        
+        if (topEntityNode != null) {
+            
+            NodeList entityList = topEntityNode.getChildNodes();
+    
+            boolean isChanged = false;
+    
+            if (entityList != null) {
+    
+                for (int i = 0; i < entityList.getLength(); i++) {
+    
+                    Node entity = entityList.item(i);
+    
+                    if (!"entity".equals(entity.getNodeName())) {
+                        continue;
                     }
-                }
-
-                if (isReferenced && referencedModelId != null) {
-
-                    /*
-                     * As we are considering only "entity" nodes, we can be 
-                     * sure that the type conversion will not fail.
-                     */
-                    Element entityElement = (Element) entity.cloneNode(false);
-                    NodeList childNodesList = entity.getChildNodes();
-
-                    /*
-                     * Create an entity node with the required properties and 
-                     * replace the current referenced entity.
-                     */
-                    int k = 0;
-                    while (k < childNodesList.getLength()) {
-                        Node childNode = childNodesList.item(k);
-
-                        if ("property".equals(childNode.getNodeName())) {
-
-                            String name = Utilities.getValueForAttribute(
-                                    childNode, "name");
-
-                            if (name != null
-                                    && (name.startsWith("_")
-                                            || XMLDBModel.DB_REFERENCE_ATTR
-                                                    .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
-                                            .equals(name))) {
-                                entityElement.appendChild(childNode);
-                            } else {
-                                k++;
+    
+                    /* Get all first-level nodes inside the given entity. */
+                    NodeList parameterList = entity.getChildNodes();
+    
+                    String referencedModelId = null;
+                    boolean isReferenced = false;
+                    boolean isReferencedFound = false;
+                    boolean dbModelIdFound = false;
+    
+                    /* Get value for the DBReference and DBModelName properties.*/
+                    for (int j = 0; j < parameterList.getLength(); j++) {
+    
+                        Node parameter = parameterList.item(j);
+    
+                        if ("property".equals(parameter.getNodeName())) {
+    
+                            String name = Utilities.getValueForAttribute(parameter,
+                                    "name");
+    
+                            if (XMLDBModel.DB_MODEL_ID_ATTR.equals(name)
+                                    && !dbModelIdFound) {
+    
+                                referencedModelId = Utilities.getValueForAttribute(
+                                        parameter, "value");
+    
+                                dbModelIdFound = true;
+    
+                            } else if (XMLDBModel.DB_REFERENCE_ATTR.equals(name)
+                                    && !isReferencedFound) {
+    
+                                String value = Utilities.getValueForAttribute(
+                                        parameter, "value");
+                                isReferenced = "TRUE".equals(value);
+    
+                                isReferencedFound = true;
+                            }
+    
+                            if (isReferencedFound && dbModelIdFound) {
+                                break;
                             }
                         }
-                        else {
-                            k++;
-                        }
-                        
                     }
-
-                    entityElement.setAttribute(XMLDBModel.DB_MODEL_ID_ATTR,
-                            referencedModelId);
-                    topEntityNode.replaceChild(entityElement, entity);
-
-                    model.addReferencedChild(referencedModelId);
-                    isChanged = true;
+    
+                    if (isReferenced && referencedModelId != null) {
+    
+                        /*
+                         * As we are considering only "entity" nodes, we can be 
+                         * sure that the type conversion will not fail.
+                         */
+                        Element entityElement = (Element) entity.cloneNode(false);
+                        NodeList childNodesList = entity.getChildNodes();
+    
+                        /*
+                         * Create an entity node with the required properties and 
+                         * replace the current referenced entity.
+                         */
+                        int k = 0;
+                        while (k < childNodesList.getLength()) {
+                            Node childNode = childNodesList.item(k);
+    
+                            if ("property".equals(childNode.getNodeName())) {
+    
+                                String name = Utilities.getValueForAttribute(
+                                        childNode, "name");
+    
+                                if (name != null
+                                        && (name.startsWith("_")
+                                                || XMLDBModel.DB_REFERENCE_ATTR
+                                                        .equals(name) || XMLDBModel.DB_MODEL_ID_ATTR
+                                                .equals(name))) {
+                                    entityElement.appendChild(childNode);
+                                } else {
+                                    k++;
+                                }
+                            }
+                            else {
+                                k++;
+                            }
+                            
+                        }
+    
+                        entityElement.setAttribute(XMLDBModel.DB_MODEL_ID_ATTR,
+                                referencedModelId);
+                        topEntityNode.replaceChild(entityElement, entity);
+    
+                        model.addReferencedChild(referencedModelId);
+                        isChanged = true;
+                    }
                 }
             }
-        }
-
-        /* Update model content only if the model has changed. */
-        if (isChanged) {
-
-            String newModelContent = Utilities
-                    .getDocumentXMLString(modelDocument);
-            model.setModel(newModelContent);
-
+    
+            /* Update model content only if the model has changed. */
+            if (isChanged) {
+    
+                String newModelContent = Utilities
+                        .getDocumentXMLString(modelDocument);
+                model.setModel(newModelContent);
+    
+            }
         }
 
         return model;
