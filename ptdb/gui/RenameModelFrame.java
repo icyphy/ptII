@@ -117,13 +117,14 @@ public class RenameModelFrame extends JFrame {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                _sourceFrame.setEnabled(true);
+                // Do nothing.
 
             }
 
             @Override
             public void windowClosed(WindowEvent e) {
                 _sourceFrame.setEnabled(true);
+                _sourceFrame.toFront();
 
             }
 
