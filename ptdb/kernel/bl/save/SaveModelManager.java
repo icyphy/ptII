@@ -425,7 +425,7 @@ public class SaveModelManager {
         Node topEntityNode = modelDocument.getElementsByTagName("entity").item(
                 0);
         
-        if (topEntityNode != null) {
+//        if (topEntityNode != null) {
             
             NodeList entityList = topEntityNode.getChildNodes();
     
@@ -538,7 +538,7 @@ public class SaveModelManager {
                         .getDocumentXMLString(modelDocument);
                 model.setModel(newModelContent);
     
-            }
+//            }
         }
 
         return model;
