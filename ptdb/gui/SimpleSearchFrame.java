@@ -94,7 +94,7 @@ import ptolemy.util.MessageHandler;
  * 
  */
 
-public class SimpleSearchFrame extends JFrame {
+public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
     /**
      * Construct a SimpleSearchFrame. Add swing Components to the frame. Add
@@ -247,20 +247,26 @@ public class SimpleSearchFrame extends JFrame {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                if (_patternMatchframe != null) {
-                    _patternMatchframe.dispose();
-                }
-
-                dispose();
+                
+                closeFrame();
+                
+//                if (_patternMatchframe != null) {
+//                    _patternMatchframe.dispose();
+//                }
+//
+//                dispose();
             }
 
             @Override
             public void windowClosed(WindowEvent e) {
-                if (_patternMatchframe != null) {
-                    _patternMatchframe.dispose();
-                }
-
-                dispose();
+                
+                closeFrame();
+//                
+//                if (_patternMatchframe != null) {
+//                    _patternMatchframe.dispose();
+//                }
+//
+//                dispose();
             }
 
             @Override
@@ -268,8 +274,7 @@ public class SimpleSearchFrame extends JFrame {
                 // Do nothing.    
             }
         });
-        
-     
+
         // Add the action listener to model name text field. 
         _attributesListPanel.getNameTextField().addKeyListener(
                 new KeyListener() {
@@ -286,15 +291,15 @@ public class SimpleSearchFrame extends JFrame {
 
                     @Override
                     public void keyPressed(KeyEvent e) {
-                        
+
                         /* 
                          * If the enter button is pressed, perform the search
                          *  action.
-                         */  
+                         */
                         if (e.getKeyCode() == e.VK_ENTER) {
 
                             _searchButton.getActionListeners()[0]
-                                                   .actionPerformed(null); 
+                                    .actionPerformed(null);
                         }
                     }
                 });
@@ -321,6 +326,17 @@ public class SimpleSearchFrame extends JFrame {
      */
     public void clickSearchButton(ActionEvent event) {
         _searchButton.doClick();
+    }
+
+    /**
+     * Close this frame. 
+     */
+    @Override
+    public void closeFrame() {
+
+        _ptdbContainedFramesManager.closeContainedFrames();
+
+        dispose();
     }
 
     /** Get an indication if the panel has been modified.
@@ -895,8 +911,7 @@ public class SimpleSearchFrame extends JFrame {
 
         if (_attributesListPanel.getModelName().length() > 0) {
             try {
-                Utilities.checkModelName(_attributesListPanel
-                        .getModelName());
+                Utilities.checkModelName(_attributesListPanel.getModelName());
             } catch (IllegalNameException e) {
                 JOptionPane.showMessageDialog(this,
                         "The model name should only "
@@ -970,14 +985,16 @@ public class SimpleSearchFrame extends JFrame {
 
             final SearchResultsFrame searchResultsFrame = new SearchResultsFrame(
                     _containerModel, _sourceFrame, _configuration);
-            
+
             final SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
             
+            _ptdbContainedFramesManager.addContainedFrame(searchResultsFrame);
+
             // Register the search result frame as the observer of the search
             // result buffer. Once there is any update in the buffer, the 
             // search result frame will be notified. 
             searchResultBuffer.addObserver(searchResultsFrame);
-            
+
             // Register the search result buffer as the observer of the search
             // result frame. Once the user invokes the canceling search in the 
             // search result frame, the buffer will be notified and stop.
@@ -989,28 +1006,29 @@ public class SimpleSearchFrame extends JFrame {
             searchResultsFrame.setVisible(true);
 
             new Thread(new Runnable() {
-                
+
                 @Override
                 public void run() {
-                 // Call the Search Manager to trigger the search.
+                    // Call the Search Manager to trigger the search.
                     SearchManager searchManager = new SearchManager();
                     try {
-                        searchManager.search(searchCriteria, searchResultBuffer);
+                        searchManager
+                                .search(searchCriteria, searchResultBuffer);
 
                     } catch (DBConnectionException e1) {
                         searchResultsFrame.setVisible(false);
                         searchResultsFrame.dispose();
-                        MessageHandler.error("Cannot perform the search now.", e1);
+                        MessageHandler.error("Cannot perform the search now.",
+                                e1);
 
                     } catch (DBExecutionException e2) {
                         searchResultsFrame.setVisible(false);
                         searchResultsFrame.dispose();
-                        MessageHandler.error("Cannot perform the search now.", e2);
+                        MessageHandler.error("Cannot perform the search now.",
+                                e2);
                     }
                 }
             }).start();
-            
-
 
         } else {
             JOptionPane.showMessageDialog(this,
@@ -1024,7 +1042,6 @@ public class SimpleSearchFrame extends JFrame {
         }
 
     }
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                  private variables                        ////
@@ -1039,6 +1056,7 @@ public class SimpleSearchFrame extends JFrame {
     private JPanel _topPanel = new JPanel();
     private JPanel _bottomPanel = new JPanel();
     private Tableau _baseTableau;
+    private PTDBContainedFramesManager _ptdbContainedFramesManager = new PTDBContainedFramesManager();
 
     ///////////////////////////////////////////////////////////////////
     //// OpenPatternSearchFrameAction
@@ -1081,6 +1099,8 @@ public class SimpleSearchFrame extends JFrame {
                             ((ActorGraphDBTableau) _tableau).getGtLibrary(),
                             _containerModel, _sourceFrame,
                             SimpleSearchFrame.this);
+                    
+                    _ptdbContainedFramesManager.addContainedFrame(_patternMatchframe);
 
                 } catch (Exception e2) {
 

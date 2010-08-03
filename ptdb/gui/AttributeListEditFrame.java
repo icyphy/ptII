@@ -64,7 +64,7 @@ import ptdb.common.util.Utilities;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class AttributeListEditFrame extends JFrame {
+public class AttributeListEditFrame extends JFrame implements PTDBBasicFrame{
 
     /**
      * Creates new form AttributeListEditFrame.
@@ -85,6 +85,18 @@ public class AttributeListEditFrame extends JFrame {
 
         _parentFrame.setEnabled(false);
 
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /**
+     * Close the window. 
+     */
+    @Override
+    public void closeFrame() {
+        dispose();
+        
     }
 
     ///////////////////////////////////////////////////////////////////

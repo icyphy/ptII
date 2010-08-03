@@ -74,7 +74,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (lholsing)
  */
 
-public class SearchResultsFrame extends JFrame implements Observer {
+public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFrame {
 
     /**
      * Construct a panel associated with a search result.
@@ -192,6 +192,14 @@ public class SearchResultsFrame extends JFrame implements Observer {
         _scrollPane.validate();
         repaint();
 
+    }
+    
+    /**
+     * Close this frame. 
+     */
+    @Override
+    public void closeFrame() {
+        dispose();
     }
 
     /** Display new search results in the scroll pane.

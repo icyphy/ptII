@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
@@ -69,7 +70,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class ConfigureAttributesFrame extends javax.swing.JFrame {
+public class ConfigureAttributesFrame extends JFrame implements PTDBBasicFrame {
 
     /** 
      * Creates new form ConfigureAttributesFrame.
@@ -80,6 +81,18 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
         _attributeManager = new AttributesManager();
 
         _initComponents();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /**
+     * Close this frame.
+     */
+    @Override
+    public void closeFrame() {
+        _containedFramesManager.closeContainedFrames();
+
+        dispose();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -223,7 +236,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
     private void _initComponents() {
 
         setTitle("Configure Attributes");
-        
+
         setResizable(false);
 
         addWindowListener(new WindowListener() {
@@ -250,12 +263,12 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                // Do Nothing. 
+                _containedFramesManager.closeContainedFrames();
             }
 
             @Override
             public void windowClosed(WindowEvent e) {
-                // Do Nothing. 
+                _containedFramesManager.closeContainedFrames();
             }
 
             @Override
@@ -268,7 +281,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
         });
 
         _mainDialog = new javax.swing.JDialog();
-//        _jTabbedPane1 = new javax.swing.JTabbedPane();
+        //        _jTabbedPane1 = new javax.swing.JTabbedPane();
         _statusMsgLabel = new javax.swing.JLabel();
         _statusLabel = new javax.swing.JLabel();
         _editPanel = new javax.swing.JPanel();
@@ -542,8 +555,14 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
                     _listItems = new ArrayList<String>();
                 }
 
-                (new AttributeListEditFrame(ConfigureAttributesFrame.this,
-                        _listItems, _attributeNameField.getText())).setVisible(true);
+                AttributeListEditFrame attributeListEditFrame = new AttributeListEditFrame(
+                        ConfigureAttributesFrame.this, _listItems,
+                        _attributeNameField.getText());
+
+                _containedFramesManager
+                        .addContainedFrame(attributeListEditFrame);
+
+                attributeListEditFrame.setVisible(true);
 
             }
         });
@@ -825,15 +844,15 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                 260,
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
-//                                                                        .addGap(
-//                                                                                397,
-//                                                                                397,
-//                                                                                397)
-//                                                                        .addComponent(
-//                                                                                _jTabbedPane1,
-//                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-//                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-//                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        //                                                                        .addGap(
+                                                        //                                                                                397,
+                                                        //                                                                                397,
+                                                        //                                                                                397)
+                                                        //                                                                        .addComponent(
+                                                        //                                                                                _jTabbedPane1,
+                                                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        //                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addGroup(
                                                                 layout
                                                                         .createSequentialGroup()
@@ -870,18 +889,18 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
                                                 layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.LEADING)
-//                                                        .addGroup(
-//                                                                layout
-//                                                                        .createSequentialGroup()
-//                                                                        .addGap(
-//                                                                                176,
-//                                                                                176,
-//                                                                                176)
-//                                                                        .addComponent(
-//                                                                                _jTabbedPane1,
-//                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
-//                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
-//                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        //                                                        .addGroup(
+                                                        //                                                                layout
+                                                        //                                                                        .createSequentialGroup()
+                                                        //                                                                        .addGap(
+                                                        //                                                                                176,
+                                                        //                                                                                176,
+                                                        //                                                                                176)
+                                                        //                                                                        .addComponent(
+                                                        //                                                                                _jTabbedPane1,
+                                                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                        //                                                                                javax.swing.GroupLayout.DEFAULT_SIZE,
+                                                        //                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
                                                         .addGroup(
                                                                 layout
                                                                         .createSequentialGroup()
@@ -948,39 +967,39 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
-                
+
                 if (_checkChanged()) {
-                    
+
                     Object[] options = { "Yes", "No", "Cancel" };
 
                     String msg = "The current attribute was modified, do you want to save it?";
-                    
-                    int selected = JOptionPane.showOptionDialog(ConfigureAttributesFrame.this, msg, 
-                            "Save Changes", JOptionPane.YES_NO_CANCEL_OPTION, 
-                            JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
+                    int selected = JOptionPane.showOptionDialog(
+                            ConfigureAttributesFrame.this, msg, "Save Changes",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, null, options,
+                            options[0]);
 
                     if (selected == JOptionPane.YES_OPTION) {
-                        
-                        _saveButton.getActionListeners()[0].actionPerformed(null);
-                        
+
+                        _saveButton.getActionListeners()[0]
+                                .actionPerformed(null);
+
                         ConfigureAttributesFrame.this.dispose();
-                        
+
                     } else if (selected == JOptionPane.NO_OPTION) {
-                        
+
                         ConfigureAttributesFrame.this.dispose();
-                        
+
                     } else if (selected == JOptionPane.CANCEL_OPTION) {
-                        
+
                         // Do nothing.
-                    } 
-                    
+                    }
+
                 } else {
-                    
+
                     ConfigureAttributesFrame.this.dispose();
                 }
-                
 
             }
         });
@@ -1053,9 +1072,10 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
 
                 // Only update the list when the attribute name is changed.
                 if (nameChanged) {
-                    int newIndex = ((ArrayModelList) _attributesList.getModel()).updateItem(
-                            _currentEditedAttribute.getAttributeName(),
-                            _attributesList.getSelectedIndex());
+                    int newIndex = ((ArrayModelList) _attributesList.getModel())
+                            .updateItem(_currentEditedAttribute
+                                    .getAttributeName(), _attributesList
+                                    .getSelectedIndex());
                     _attributesList.setSelectedIndex(newIndex);
                 }
 
@@ -1175,7 +1195,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
     private javax.swing.JButton _saveButton;
     private javax.swing.JDialog _mainDialog;
     private javax.swing.JScrollPane _jScrollPane1;
-//    private javax.swing.JTabbedPane _jTabbedPane1;
+    //    private javax.swing.JTabbedPane _jTabbedPane1;
     private javax.swing.JButton _listEditButton;
     private javax.swing.JLabel _nameLabel;
     private javax.swing.JLabel _statusLabel;
@@ -1201,5 +1221,7 @@ public class ConfigureAttributesFrame extends javax.swing.JFrame {
     private XMLDBAttribute _currentEditedAttribute;
 
     private List<String> _listItems;
+
+    private PTDBContainedFramesManager _containedFramesManager = new PTDBContainedFramesManager();
 
 }

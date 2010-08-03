@@ -84,7 +84,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
     /** Name of the parameter that prevents changes to database. */
     public static final String DB_NO_EDIT_ATTR = "DBNoEdit";
-    
+
     /**
      * Construct a frame associated with the specified Ptolemy II model. After
      * constructing this, it is necessary to call setVisible(true) to make the
@@ -164,67 +164,55 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             _dbMenu = new JMenu("Database");
             _dbMenu.setMnemonic(KeyEvent.VK_B);
             _menubar.add(_dbMenu);
-            
+
             JMenu recentModelMenu = new JMenu("Recently Opened Models");
             recentModelMenu.setMnemonic(KeyEvent.VK_R);
             _dbMenu.add(recentModelMenu);
-            
+
             _dbMenu.addSeparator();
-            
-            
-            _simpleSearchAction.putValue(Action.ACCELERATOR_KEY, 
-                    KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK));
-            
+
+            _simpleSearchAction.putValue(Action.ACCELERATOR_KEY, KeyStroke
+                    .getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_MASK));
+
             GUIUtilities.addHotKey(_getRightComponent(), _simpleSearchAction);
             GUIUtilities.addMenuItem(_dbMenu, _simpleSearchAction);
-            
-            
-            _saveModelToDBAction.putValue(Action.ACCELERATOR_KEY, 
-                    KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK 
+
+            _saveModelToDBAction.putValue(Action.ACCELERATOR_KEY, KeyStroke
+                    .getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK
                             | InputEvent.SHIFT_MASK));
-            
+
             GUIUtilities.addHotKey(_getRightComponent(), _saveModelToDBAction);
             GUIUtilities.addMenuItem(_dbMenu, _saveModelToDBAction);
-            
-            
-            _renameModelAction.putValue(Action.ACCELERATOR_KEY, 
-                    KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
-            
+
+            _renameModelAction.putValue(Action.ACCELERATOR_KEY, KeyStroke
+                    .getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
+
             GUIUtilities.addHotKey(_getRightComponent(), _renameModelAction);
             GUIUtilities.addMenuItem(_dbMenu, _renameModelAction);
-            
-            
-            _openModelMigrationFrameAction.putValue(Action.ACCELERATOR_KEY, 
-                    KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_MASK));
-            
+
+            _openModelMigrationFrameAction
+                    .putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                            KeyEvent.VK_M, InputEvent.CTRL_MASK));
+
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openModelMigrationFrameAction);
             GUIUtilities.addMenuItem(_dbMenu, _openModelMigrationFrameAction);
 
-            
-            
             _dbMenu.addSeparator();
-            
 
             // Add menu items if database connection has been established.
             // TODO: if (DB IS CONNECTED) {
-
-            
 
             // Create search menu.
             //            JMenu searchMenu = new JMenu("Search");
             //            searchMenu.setMnemonic(KeyEvent.VK_C);
             //            _dbMenu.add(searchMenu);
 
-            
-
             //            GUIUtilities.addMenuItem(searchMenu, _simpleSearchAction);
 
             //            GUIUtilities
             //                    .addHotKey(_getRightComponent(), _openSearchFrameAction);
             //            GUIUtilities.addMenuItem(searchMenu, _openSearchFrameAction);
-
-            
 
             GUIUtilities.addHotKey(_getRightComponent(),
                     _openDatabaseSetupAction);
@@ -234,9 +222,6 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                     _configureAttributesAction);
             GUIUtilities.addMenuItem(_dbMenu, _configureAttributesAction);
 
-            
-
-            
             try {
 
                 if (getModel().getAttribute(XMLDBModel.DB_MODEL_ID_ATTR) != null) {
@@ -256,13 +241,24 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             }
             // TODO: }
         }
-        
-        if(getModel().getAttribute(DB_NO_EDIT_ATTR) != null){
+
+        if (getModel().getAttribute(DB_NO_EDIT_ATTR) != null) {
             _dbMenu.setEnabled(false);
         } else {
-            _dbMenu.setEnabled(true);            
+            _dbMenu.setEnabled(true);
         }
 
+    }
+
+    @Override
+    protected boolean _close() {
+        boolean closeResult = super._close();
+
+        if (closeResult) {
+            _containedFramesManager.closeContainedFrames();
+        }
+
+        return closeResult;
     }
 
     /**
@@ -279,12 +275,12 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
      */
     protected int _queryForSave() {
 
-        if(getModel().getAttribute(DB_NO_EDIT_ATTR) != null){
-            
+        if (getModel().getAttribute(DB_NO_EDIT_ATTR) != null) {
+
             return _CANCELED;
-           
+
         }
-        
+
         Object[] options = { "Save to Database", "Save to File System",
                 "Discard changes", "Cancel" };
 
@@ -365,6 +361,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         public void actionPerformed(ActionEvent e) {
 
             ConfigureAttributesFrame configureAttributesFrame = new ConfigureAttributesFrame();
+
+            _containedFramesManager.addContainedFrame(configureAttributesFrame);
 
             configureAttributesFrame.pack();
             configureAttributesFrame
@@ -456,10 +454,17 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         public void actionPerformed(ActionEvent e) {
 
-            JFrame frame = new SaveModelToDBFrame(getModel(), _source);
-            frame.pack();
-            frame.setLocationRelativeTo(_source);
-            frame.setVisible(true);
+            if (_saveModelToDBFrame == null) {
+                _saveModelToDBFrame = new SaveModelToDBFrame(getModel(),
+                        _source);
+
+                _containedFramesManager.addContainedFrame(_saveModelToDBFrame);
+
+                _saveModelToDBFrame.pack();
+                _saveModelToDBFrame.setLocationRelativeTo(_source);
+            }
+
+            _saveModelToDBFrame.setVisible(true);
 
         }
 
@@ -490,6 +495,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         public void actionPerformed(ActionEvent e) {
 
             JFrame frame = new DatabaseSetupFrame();
+            _containedFramesManager
+                    .addContainedFrame((DatabaseSetupFrame) frame);
             frame.pack();
             frame.setLocationRelativeTo(ActorGraphDBFrame.this);
             frame.setVisible(true);
@@ -562,6 +569,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
                 RenameModelFrame renameModelFrame = new RenameModelFrame(
                         getModel(), ActorGraphDBFrame.this);
 
+                _containedFramesManager.addContainedFrame(renameModelFrame);
+                
                 renameModelFrame.pack();
                 renameModelFrame.setLocationRelativeTo(ActorGraphDBFrame.this);
                 renameModelFrame.setVisible(true);
@@ -604,6 +613,10 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
             JFrame frame = new SimpleSearchFrame(_containerModel, _sourceFrame,
                     _configuration, getTableau());
+
+            _containedFramesManager
+                    .addContainedFrame((SimpleSearchFrame) frame);
+
             frame.pack();
             frame.setLocationRelativeTo(_sourceFrame);
             frame.setVisible(true);
@@ -772,14 +785,14 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             }
 
         }
-        
+
         // Add to fist position
         if (!delete) {
 
             historyList.add(0, modelName);
 
         }
-        
+
         // Remove if depth > limit
         if (historyList.size() > _historyDepth) {
 
@@ -823,7 +836,11 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private PTDBContainedFramesManager _containedFramesManager = new PTDBContainedFramesManager();
+
     // History depth
     private int _historyDepth = 4;
+
+    private SaveModelToDBFrame _saveModelToDBFrame;
 
 }

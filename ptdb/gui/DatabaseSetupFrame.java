@@ -54,7 +54,7 @@ import ptdb.kernel.bl.setup.SetupManager;
  * @Pt.AcceptedRating Red (abijwe)
  *
  */
-public class DatabaseSetupFrame extends JFrame {
+public class DatabaseSetupFrame extends JFrame implements PTDBBasicFrame{
 
     /** Create a new Database setup frame with values 
      * from the properties file. */
@@ -69,7 +69,15 @@ public class DatabaseSetupFrame extends JFrame {
     ////		public variables 				////
 
     //////////////////////////////////////////////////////////////////////
-    ////		public methods 					////
+    ////		public methods                                ////
+    
+    /**
+     * 
+     */
+    @Override
+    public void closeFrame() {
+        dispose();
+    }
 
     //////////////////////////////////////////////////////////////////////
     ////		protected methods 				////

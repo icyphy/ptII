@@ -94,7 +94,8 @@ import diva.gui.GUIUtilities;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class GraphPatternSearchEditor extends TransformationEditor {
+public class GraphPatternSearchEditor extends TransformationEditor implements
+        PTDBBasicFrame {
 
     //    /**
     //     * Construct the GraphPatternSearchEditor.
@@ -171,6 +172,13 @@ public class GraphPatternSearchEditor extends TransformationEditor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /**
+     * Close this window. 
+     */
+    public void closeFrame() {
+        dispose();
+    }
 
     /**
      * Fetch the search criteria of the graph pattern specified in this frame. 

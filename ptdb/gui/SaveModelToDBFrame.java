@@ -99,7 +99,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (lholsing)
  * 
  */
-public class SaveModelToDBFrame extends JFrame {
+public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
     /**
      * Construct a SaveModelToDBFrame. Add swing Components to the frame. Add
@@ -317,6 +317,21 @@ public class SaveModelToDBFrame extends JFrame {
 
         _attributesListPanel.setModelNameFocus();
 
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    public methods                         ////
+
+    /**
+     * Close this window.
+     */
+    @Override
+    public void closeFrame() {
+        if (_parentValidateFrame != null) {
+            _parentValidateFrame.dispose();
+        }
+
+        dispose();
     }
 
     ///////////////////////////////////////////////////////////////////

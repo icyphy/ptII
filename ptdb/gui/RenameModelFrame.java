@@ -75,7 +75,7 @@ import ptolemy.util.MessageHandler;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class RenameModelFrame extends JFrame {
+public class RenameModelFrame extends JFrame implements PTDBBasicFrame {
 
     /**
      * Construct the rename model frame. 
@@ -202,6 +202,19 @@ public class RenameModelFrame extends JFrame {
 
     }
 
+    
+    //////////////////////////////////////////////////////////////////////
+    ////                    public methods                            ////
+    
+    /**
+     * Close this window.
+     */
+    @Override
+    public void closeFrame() {
+        dispose();
+        
+    }
+    
     //////////////////////////////////////////////////////////////////////
     ////                    private methods                           ////
 
