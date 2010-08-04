@@ -134,6 +134,8 @@ public class OracleXMLDBConnection implements DBConnection {
             Environment environment = _getEnvironment();
             _xmlManager = new XmlManager(environment, null);
             
+            
+            
             if (!Utilities.checkFileExists(_params.getUrl()
                     + System.getProperty("file.separator")
                     + _params.getContainerName())) {
@@ -349,12 +351,11 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 String modelBody = model.getModel();
 
-                if (modelBody.indexOf("<!DOCTYPE") >= 0) {
-                    
-                    modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
-                    modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
-                }
-                
+//                if (modelBody.indexOf("<!DOCTYPE") >= 0) {
+//                    
+//                    modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
+//                    modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
+//                }
                 
                 //add the id to the model.
                 
@@ -1080,11 +1081,11 @@ public class OracleXMLDBConnection implements DBConnection {
 
                 String modelBody = xmlDBModel.getModel();
 
-                if (modelBody.indexOf("<!DOCTYPE") >= 0) {
-                    
-                    modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
-                    modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
-                }
+//                if (modelBody.indexOf("<!DOCTYPE") >= 0) {
+//                    
+//                    modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
+//                    modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
+//                }
                 
                 String modelId = xmlDBModel.getModelId();
                 
@@ -1393,11 +1394,11 @@ public class OracleXMLDBConnection implements DBConnection {
             String modelBody = xmlDBModel.getModel();
 
             
-            if (modelBody.indexOf("<!DOCTYPE") >= 0) {
-                
-                modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
-                modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
-            }
+//            if (modelBody.indexOf("<!DOCTYPE") >= 0) {
+//                
+//                modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
+//                modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
+//            }
             
 
             XmlDocument dbModel = null;
