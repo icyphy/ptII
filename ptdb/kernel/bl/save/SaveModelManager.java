@@ -670,11 +670,15 @@ public class SaveModelManager {
 
             String modelBody = xmlDBModel.getModel();
             
-            if (modelBody.indexOf("<!DOCTYPE") >= 0) {
-                
-                modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
-                modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
-            }
+            modelBody = removeDTD(modelBody);
+            
+//            System.out.println(modelBody);
+            
+//            if (modelBody.indexOf("<!DOCTYPE") >= 0) {
+//                
+//                modelBody = modelBody.substring(modelBody.indexOf("<!DOCTYPE"));
+//                modelBody = modelBody.substring(modelBody.indexOf(">") + 1);
+//            }
             
             xmlDBModel.setModel(modelBody);
             
@@ -787,5 +791,51 @@ public class SaveModelManager {
 
         CacheManager.removeFromCache(modelsToRemoveList);
 
+    }
+    
+    
+    /**
+     * Remove the DTD from the model content.
+     * @param modelConetnet The model content.
+     * @return The model content after the DTD part is removed.
+     */
+    private String removeDTD(String modelConetnet) {
+        
+        
+        String newModelContent = "";
+        
+        newModelContent = modelConetnet;
+        
+        if (newModelContent.indexOf("<?xml") == 0)
+        {
+            
+            newModelContent = newModelContent.substring(newModelContent.indexOf("<?xml"));
+            
+            newModelContent = newModelContent.substring(newModelContent.indexOf(">") + 1);
+            
+            newModelContent = newModelContent.substring(newModelContent.indexOf("<"));
+            
+            newModelContent.trim();
+
+        }
+        
+        if (newModelContent.indexOf("<!DOCTYPE") == 0)
+        {
+            
+            newModelContent = newModelContent.substring(newModelContent.indexOf("<!DOCTYPE"));
+            
+            newModelContent = newModelContent.substring(newModelContent.indexOf(">") + 1);
+            
+            newModelContent = newModelContent.substring(newModelContent.indexOf("<"));
+            
+            newModelContent.trim();
+            
+
+        }
+        
+        
+        return newModelContent;
+        
+        
     }
 }
