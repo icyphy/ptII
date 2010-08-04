@@ -145,7 +145,7 @@ public class MigrateModelsManager {
 
             // Only files with .xml extension will be considered.
 
-            if (directory.getName().indexOf(".xml") > 0) {
+            if (directory.getName().endsWith(".xml")) {
 
                 modelName = directory.getName().substring(0,
                         directory.getName().indexOf(".xml"));
