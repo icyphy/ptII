@@ -294,7 +294,7 @@ public class RebuildReferenceFile extends OracleXMLDBConnection {
             while (results.hasNext()) {
                 value = results.next();
                 modelName = value.asString();
-                modelName = modelId.substring(modelId.lastIndexOf('/') + 1);
+                modelName = modelName.substring(modelName.lastIndexOf('/') + 1);
             }
         }
         return modelName;
