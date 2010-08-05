@@ -4,13 +4,13 @@
 <class name="dimensionSystem" extends="ptolemy.data.ontologies.Ontology">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 0, 1576, 713}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1361, 604]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="3.0517578125">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{240.75, 191.2604872727273}">
     </property>
     <entity name="Time" class="ptolemy.data.ontologies.Concept">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 190.0]">
@@ -152,7 +152,7 @@
     <entity name="Conflict" class="ptolemy.data.ontologies.Concept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 105.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
         </property>
@@ -181,7 +181,7 @@
     <entity name="Unknown" class="ptolemy.data.ontologies.Concept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 280.0}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
         </property>
