@@ -31,7 +31,9 @@ package ptolemy.cg.kernel.generic.program.procedural;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.cg.kernel.generic.ParseTreeCodeGenerator;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
+import ptolemy.cg.kernel.generic.program.procedural.java.JavaParseTreeCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -76,5 +78,23 @@ public class ProceduralTemplateParser extends TemplateParser {
 
     /** The set of header files that needed to be included. */
     protected Set<String> _includeFiles = new HashSet<String>();
+    
+    /** Generate code that corresponds with the fire() method.
+     *  @return The generated code.
+     */
+    public String generateFireCode() {
+        return "//stuff here";
+    }
+    
+    /** Return a new parse tree code generator to use with expressions.
+     *  @return the parse tree code generator to use with expressions.
+     */
+    public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
+        // FIXME: We need to create new ParseTreeCodeGenerator each time
+        // here or else we get lots of test failures.  It would be better
+        // if we could use the same CParseTreeCodeGenerator over and over.
+        _parseTreeCodeGenerator = new JavaParseTreeCodeGenerator();
+        return _parseTreeCodeGenerator;
+    }
 
 }
