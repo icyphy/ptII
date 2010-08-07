@@ -47,10 +47,21 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.cg.adapter.generic.adapters.ptolemy.actor.Director;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.program.procedural.ProceduralTemplateParser;
+import ptolemy.codegen.kernel.PortCodeGenerator;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
@@ -89,12 +100,197 @@ import ptolemy.util.StringUtilities;
 public class NamedProgramCodeGeneratorAdapter extends
         ProgramCodeGeneratorAdapter {
 
+    /**
+     * This class implements a scope, which is used to generate the parsed
+     * expressions in target language.
+     */
+    protected class VariableScope extends ModelScope {
+        /**
+         * Construct a scope consisting of the variables of the containing actor
+         * and its containers and their scope-extending attributes.
+         */
+        public VariableScope() {
+            _variable = null;
+        }
+
+        /**
+         * Construct a scope consisting of the variables of the container of the
+         * given instance of Variable and its containers and their
+         * scope-extending attributes.
+         * @param variable The variable whose expression is under code
+         * generation using this scope.
+         */
+        public VariableScope(Variable variable) {
+            _variable = variable;
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /**
+         * Look up and return the macro or expression in the target language
+         * corresponding to the specified name in the scope.
+         * @param name The given name string.
+         * @return The macro or expression with the specified name in the scope.
+         * @exception IllegalActionException If thrown while getting buffer
+         * sizes or creating ObjectToken.
+         */
+        public Token get(String name) throws IllegalActionException {
+
+            NamedObj container = getComponent();
+            if (_variable != null) {
+                container = _variable.getContainer();
+            }
+
+            Variable result = getScopedVariable(_variable, container, name);
+
+            if (result != null) {
+                // If the variable found is a modified variable, which means
+                // its value can be directly changed during execution
+                // (e.g., in commit action of a modal controller), then this
+                // variable is declared in the target language and should be
+                // referenced by the name anywhere it is used.
+                if (getCodeGenerator() != null
+                        && getCodeGenerator()._modifiedVariables
+                                .contains(result)) { // figure out how to get the containers code generator that may help
+                    return new ObjectToken(getCodeGenerator()//_codeGenerator
+                            .generateVariableName(result));
+                } else {
+                    // This will lead to recursive call until a variable found
+                    // is either directly specified by a constant or it is a
+                    // modified variable.
+                    PtParser parser = new PtParser();
+                    String parameterValue = getParameterValue(name, result
+                            .getContainer());
+                    try {
+                        ASTPtRootNode parseTree = parser
+                                .generateParseTree(parameterValue);
+
+                        ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
+
+                        return evaluator.evaluateParseTree(parseTree, this);
+                    } catch (IllegalActionException ex) {
+                        // Could not evaluate the expression. This means that
+                        // the parameter value contains a variable expression.
+                        // So, we'll won't try to evaluate it.
+                        return new ObjectToken(parameterValue);
+                    }
+                }
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * Look up and return the type of the attribute with the specified name
+         * in the scope. Return null if such an attribute does not exist.
+         * @param name The name of the attribute to look up.
+         * @return The attribute with the specified name in the scope.
+         * @exception IllegalActionException If a value in the scope exists with
+         * the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            if (_variable != null) {
+                return _variable.getParserScope().getType(name);
+            }
+            return null;
+        }
+
+        /**
+         * Look up and return the type term for the specified name in the scope.
+         * Return null if the name is not defined in this scope, or is a
+         * constant type.
+         * @param name The name of the type term to look up.
+         * @return The InequalityTerm associated with the given name in the
+         * scope.
+         * @exception IllegalActionException If a value in the scope exists with
+         * the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            if (_variable != null) {
+                return _variable.getParserScope().getTypeTerm(name);
+            }
+            return null;
+        }
+
+        /**
+         * Return the list of identifiers within the scope.
+         * @return The list of variable names within the scope.
+         * @exception IllegalActionException If there is a problem getting the
+         * identifier set from the variable.
+         */
+        public Set identifierSet() throws IllegalActionException {
+            if (_variable != null) {
+                return _variable.getParserScope().identifierSet();
+            }
+            return null;
+        }
+
+        public String toString() {
+            return super.toString()
+                    + " variable: "
+                    + _variable
+                    + " variable.parserScope: "
+                    + (_variable == null ? "N/A, _variable is null" : _variable
+                            .getParserScope());
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+
+        /**
+         * If _variable is not null, then the helper scope created is for
+         * parsing the expression specified for this variable and generating the
+         * corresponding code in target language.
+         */
+        private Variable _variable = null;
+    }
+
     /** Construct the code generator adapter associated
      *  with the given component.
      *  @param component The associated component.
      */
     public NamedProgramCodeGeneratorAdapter(NamedObj component) {
         super(component);
+        try {
+            if (getCodeGenerator() == null) {
+                setCodeGenerator(new ProgramCodeGenerator(component, component
+                        .getName(), "java", "j"));
+                if (getCodeGenerator() != null) {
+                    System.out.println("code generator created for "
+                            + component.getFullName());
+                }
+
+                this.setTemplateParser(new ProceduralTemplateParser());
+                _templateParser.init(_component, this);
+
+            } else if (_templateParser == null) {
+                this.setTemplateParser(new ProceduralTemplateParser());
+                _templateParser.init(_component, this);
+
+            }
+        } catch (NameDuplicationException ex) {
+            System.out.println("there was a name duplicationexception ");
+            try {
+                if (getCodeGenerator() == null) {
+                    setCodeGenerator(new ProgramCodeGenerator(component,
+                            component.getName() + "_", "java", "j"));
+
+                    this.setTemplateParser(new ProceduralTemplateParser());
+                    _templateParser.init(_component, this);
+                } else if (_templateParser == null) {
+
+                    this.setTemplateParser(new ProceduralTemplateParser());
+                    _templateParser.init(_component, this);
+                }
+            } catch (NameDuplicationException ex2) {
+            } catch (IllegalActionException ex3) {
+            }
+
+        } catch (IllegalActionException ex) {
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -283,6 +479,25 @@ public class NamedProgramCodeGeneratorAdapter extends
     }
 
     /**
+     * Get the write offset in the buffer of a given channel to which a token
+     * should be put. The channel is given by its containing port and the
+     * channel number in that port.
+     * @param port The given port.
+     * @param channelNumber The given channel number.
+     * @return The offset in the buffer of a given channel to which a token
+     * should be put.
+     * @exception IllegalActionException Thrown if the helper class cannot be
+     * found.
+     * @see #setWriteOffset(IOPort, int, Object)
+     */
+    public Object getWriteOffset(IOPort port, int channelNumber)
+            throws IllegalActionException {
+
+        return ((PortCodeGenerator) getAdapter(port))
+                .getWriteOffset(channelNumber);
+    }
+
+    /**
      * Generate the fire code. In this base class, add the name of the
      * associated component in the comment. It checks the inline parameter
      * of the code generator. If the value is true, it generates the actor
@@ -302,7 +517,7 @@ public class NamedProgramCodeGeneratorAdapter extends
                 + getCodeGenerator().comment(
                         "Fire "
                                 + composite
-                                + NamedProgramCodeGeneratorAdapter
+                                +  NamedProgramCodeGeneratorAdapter
                                         .generateName(getComponent())));
 
         if (getCodeGenerator().inline.getToken() == BooleanToken.TRUE) {
@@ -336,11 +551,11 @@ public class NamedProgramCodeGeneratorAdapter extends
         StringBuffer code = new StringBuffer();
         String fireCode = _generateFireCode();
         String[] splitFireCode = getCodeGenerator()._splitBody(
-                "_" + NamedProgramCodeGeneratorAdapter.generateName(getComponent()) + "_",
+                "_" +  NamedProgramCodeGeneratorAdapter.generateName(getComponent()) + "_",
                 fireCode);
         code.append(splitFireCode[0]);
         code.append(_eol + "void "
-                + NamedProgramCodeGeneratorAdapter.generateName(getComponent())
+                +  NamedProgramCodeGeneratorAdapter.generateName(getComponent())
                 + getCodeGenerator()._getFireFunctionArguments() + " {" + _eol);
         // code.append(_generateFireCode());
         code.append(splitFireCode[1]);
@@ -382,30 +597,6 @@ public class NamedProgramCodeGeneratorAdapter extends
             throws IllegalActionException {
     }
 
-    // /** Generate sanitized name for the given named object. Remove all
-    //  *  underscores to avoid conflicts with systems functions.
-    //  *  @param namedObj The named object for which the name is generated.
-    //  *  @return The sanitized name.
-    //  *  @see #generateSimpleName(NamedObj)
-    //  */
-    // public static String generateName(NamedObj namedObj) {
-    //     // FIXME: cg/kernel/generic/CodeGeneratorAdapter has a duplicate method with this name?
-    //     String name = StringUtilities.sanitizeName(namedObj.getFullName());
-
-    //     // FIXME: Assume that all objects share the same top level. In this case,
-    //     // having the top level in the generated name does not help to
-    //     // expand the name space but merely lengthen the name string.
-    //     //        NamedObj parent = namedObj.toplevel();
-    //     //        if (namedObj.toplevel() == namedObj) {
-    //     //            return "_toplevel_";
-    //     //        }
-    //     //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
-    //     if (name.startsWith("_")) {
-    //         name = name.substring(1, name.length());
-    //     }
-    //     return name.replaceAll("\\$", "Dollar");
-    // }
-
     /**
      * Generate the postfire code. In this base class, do nothing. Subclasses
      * may extend this method to generate the postfire code of the associated
@@ -436,8 +627,8 @@ public class NamedProgramCodeGeneratorAdapter extends
         StringBuffer code = new StringBuffer();
         //Actor actor = (Actor) getComponent();
         //for (IOPort port : (List<IOPort>) actor.inputPortList()) {
-        //    ProgramCodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
-        //    code.append(portAdapter.generatePrefireCode());
+        //  ProgramCodeGeneratorAdapter portAdapter = getCodeGenerator().getAdapter(port);
+        //  code.append(portAdapter.generatePrefireCode());
         //}
         return processCode(code.toString());
     }
@@ -568,6 +759,58 @@ public class NamedProgramCodeGeneratorAdapter extends
         return includeDirectories;
     }
 
+    /**
+     * Return the buffer size of a given port, which is the maximum of the
+     * bufferSizes of all channels of the given port.
+     * @param port The given port.
+     * @return The buffer size of the given port.
+     * @exception IllegalActionException If the
+     * {@link #getBufferSize(IOPort, int)} method throws it.
+     * @see #setBufferSize(IOPort, int, int)
+     */
+    public int getBufferSize(IOPort port) throws IllegalActionException {
+        int bufferSize = 1;
+
+        if (port.getContainer() == getComponent()) {
+            int length = 0;
+
+            if (port.isInput()) {
+                length = port.getWidth();
+            } else {
+                length = port.getWidthInside();
+            }
+
+            for (int i = 0; i < length; i++) {
+                int channelBufferSize = getBufferSize(port, i);
+
+                if (channelBufferSize > bufferSize) {
+                    bufferSize = channelBufferSize;
+                }
+            }
+        } else {
+            NamedProgramCodeGeneratorAdapter actorHelper = (NamedProgramCodeGeneratorAdapter) getAdapter(port
+                    .getContainer());
+            bufferSize = actorHelper.getBufferSize(port);
+        }
+
+        return bufferSize;
+    }
+
+    /**
+     * Get the buffer size of the given port of this actor.
+     * @param port The given port.
+     * @param channelNumber The given channel.
+     * @return The buffer size of the given port and channel.
+     * @exception IllegalActionException If the getBufferSize() method of the
+     * actor helper class throws it.
+     * @see #setBufferSize(IOPort, int, int)
+     */
+    public int getBufferSize(IOPort port, int channelNumber)
+            throws IllegalActionException {
+        return ((PortCodeGenerator) getAdapter(port))
+                .getBufferSize(channelNumber);
+    }
+
     /** Return a set of libraries to link in the generated code.
      *  @return A Set containing the libraries in the actor's
      *   "libraries" block in its template.
@@ -677,6 +920,15 @@ public class NamedProgramCodeGeneratorAdapter extends
         return _templateParser.getParameterValue(name, container);
     }
 
+    /**
+     * Return the associated actor's rates for all configurations of this actor.
+     * In this base class, return null.
+     * @return null
+     */
+    public int[][] getRates() {
+        return null;
+    }
+
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
      *  the form "fullName_parameterName". For a port, the returned string
@@ -693,7 +945,8 @@ public class NamedProgramCodeGeneratorAdapter extends
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
-    final public String getReference(String name, boolean executive) throws IllegalActionException {
+    final public String getReference(String name, boolean executive)
+            throws IllegalActionException {
         boolean isWrite = false;
         return getReference(name, isWrite, executive);
     }
@@ -720,13 +973,13 @@ public class NamedProgramCodeGeneratorAdapter extends
         if (!executive) {
             try {
                 ptolemy.actor.Director director = ((Actor) _component)
-                .getDirector();
+                        .getDirector();
                 Director directorAdapter = (Director) getAdapter(director);
                 return directorAdapter.getReference(name, isWrite, this);
             } catch (Exception ex) {
                 //If we can't find it with the local director, try the executive one. 
                 ptolemy.actor.Director director = ((Actor) _component)
-                .getExecutiveDirector();
+                        .getExecutiveDirector();
                 Director directorAdapter = (Director) getAdapter(director);
                 return directorAdapter.getReference(name, isWrite, this);
             }
@@ -737,18 +990,18 @@ public class NamedProgramCodeGeneratorAdapter extends
             Director directorAdapter = (Director) getAdapter(director);
             return directorAdapter.getReference(name, isWrite, this);
         }
-//        try {
-//            ptolemy.actor.Director director = ((Actor) _component)
-//                    .getDirector();
-//            Director directorAdapter = (Director) getAdapter(director);
-//            return directorAdapter.getReference(name, isWrite, this);
-//        } catch (Exception ex) {
-//            //If we can't find it with the local director, try the executive one. 
-//            ptolemy.actor.Director director = ((Actor) _component)
-//                    .getExecutiveDirector();
-//            Director directorAdapter = (Director) getAdapter(director);
-//            return directorAdapter.getReference(name, isWrite, this);
-//        }
+        //        try {
+        //            ptolemy.actor.Director director = ((Actor) _component)
+        //                    .getDirector();
+        //            Director directorAdapter = (Director) getAdapter(director);
+        //            return directorAdapter.getReference(name, isWrite, this);
+        //        } catch (Exception ex) {
+        //            //If we can't find it with the local director, try the executive one. 
+        //            ptolemy.actor.Director director = ((Actor) _component)
+        //                    .getExecutiveDirector();
+        //            Director directorAdapter = (Director) getAdapter(director);
+        //            return directorAdapter.getReference(name, isWrite, this);
+        //        }
     }
 
     /**
@@ -934,7 +1187,7 @@ public class NamedProgramCodeGeneratorAdapter extends
      * @return The generated code.
      */
     private static String _generateFireInvocation(NamedObj component) {
-        return NamedProgramCodeGeneratorAdapter.generateName(component) + "()";
+        return CodeGeneratorAdapter.generateName(component) + "()";
     }
 
     /**
