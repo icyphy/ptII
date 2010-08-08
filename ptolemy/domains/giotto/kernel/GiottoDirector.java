@@ -178,8 +178,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *   container.
      */
     public void fire() throws IllegalActionException {
-        //System.out
-        //        .println("the fire method for the giotto director was called");
+        if (_debugging) {
+            _debug("the fire method for the giotto director was called");
+        }
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
         if (container == null) {
@@ -286,7 +287,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                             + actor
                             + " now going to check to see if it went over time.");
                 }
-                
 
             }
 
@@ -345,11 +345,10 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         if (_debugging) {
             _debug("done firing for this time unit");
         }
-        //System.out
-        //        .println("end of the call to the fire method for the giotto director");
+        if (_debugging) {
+            _debug("end of the call to the fire method for the giotto director");
+        }
     }
-
-
 
     /** Request a firing of the given actor at the given absolute
      *  time.  This method calculates the period of invocation of
@@ -536,29 +535,30 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /* *//** Handle a model error.
-     *  @param context The object in which the error occurred.
-     *  @param exception An exception that represents the error.
-     *  @return True if the error has been handled, or false if the
-     *   error is not handled.
-     *  @exception IllegalActionException If the handler handles the
-     *   error by throwing an exception.///
-     *//*
+    /* *//** Handle a model error.
+          *  @param context The object in which the error occurred.
+          *  @param exception An exception that represents the error.
+          *  @return True if the error has been handled, or false if the
+          *   error is not handled.
+          *  @exception IllegalActionException If the handler handles the
+          *   error by throwing an exception.///
+          */
+    /*
     public boolean handleModelError(NamedObj context,
-            IllegalActionException exception) throws IllegalActionException {
+         IllegalActionException exception) throws IllegalActionException {
 
-        if (_debugging) {
-            _debug("Handle Model Error Called for GiottoDirector");
-        }
+     if (_debugging) {
+         _debug("Handle Model Error Called for GiottoDirector");
+     }
 
-        NamedObj dummyContainer = this.getContainer();
-        NamedObj parentContainer = dummyContainer.getContainer();
-        if (parentContainer != null) {
-            return parentContainer.handleModelError(context, exception);
-        } else {
-            throw new IllegalActionException(this,
-                    "Unable to set error transition. This is the top most director ");
-        }
+     NamedObj dummyContainer = this.getContainer();
+     NamedObj parentContainer = dummyContainer.getContainer();
+     if (parentContainer != null) {
+         return parentContainer.handleModelError(context, exception);
+     } else {
+         throw new IllegalActionException(this,
+                 "Unable to set error transition. This is the top most director ");
+     }
 
     }*/
 
@@ -980,7 +980,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     + ex.getMessage());
         }
 
-        
     }
 
     // Request that the container of this director be refired in the future.
@@ -1021,20 +1020,23 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      */
     public DecoratedAttributes createDecoratedAttributes(NamedObj target)
             throws IllegalActionException, NameDuplicationException {
+        if (_debugging) {
+            _debug("createDecoratedAttributes method called for Giotto Director");
+        }
         return new GiottoDecoratedAttributesImplementation(target, this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-   /* *//** The errorAction operator.  This is a string-valued attribute
-     *  that defaults to "warn".
-     *//*
+    /* *//** The errorAction operator.  This is a string-valued attribute
+          *  that defaults to "warn".
+          */
+    /*
     public StringParameter errorAction;*/
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The time for next iteration.
     private Time _expectedNextIterationTime;
 
@@ -1068,7 +1070,5 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     //lcm of frequencies see my this director
     private int _lcm;
-    
 
-    
 }
