@@ -76,7 +76,7 @@ public class MonotonicityCounterexamples {
     
     private MultiMap _counterexamples;
     
-    // Class for encapsulating counterexample pairs
+    /** Encapsulate counterexample pairs. */
     public class ConceptPair implements Map.Entry<Concept,Concept> {
         public ConceptPair(Concept l, Concept g) {
             lesser = l; greater = g;
@@ -86,7 +86,7 @@ public class MonotonicityCounterexamples {
         
         
         /**
-         *  @return
+         *  @return The lesser concept.
          *  @see java.util.Map.Entry#getKey()
          */
         @Override
@@ -94,7 +94,7 @@ public class MonotonicityCounterexamples {
             return lesser;
         }
         /**
-         *  @return
+         *  @return The greater concent
          *  @see java.util.Map.Entry#getValue()
          */
         @Override
@@ -103,7 +103,7 @@ public class MonotonicityCounterexamples {
         }
         /**
          *  @param value
-         *  @return
+         *  @return Always return null.
          *  @see java.util.Map.Entry#setValue(java.lang.Object)
          */
         @Override
