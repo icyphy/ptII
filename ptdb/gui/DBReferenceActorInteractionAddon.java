@@ -139,12 +139,9 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * Get an instance of a DBActorController to be used for control of 
      * database reference actors.  This assumes full access.
      * @param controller The associated graph controller.
-     * @param fullAccess Indication if the controller should be instantiated
-     *                  with Full access.
      * @return An instance of the appropriate controller.
      */
     public ActorController getControllerInstance(GraphController controller) {
-
         return new DBActorController(controller, ActorController.FULL);
     }
 
