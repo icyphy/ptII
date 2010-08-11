@@ -141,13 +141,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
     /** The directory in which to put the generated code.
      *  This is a file parameter that must specify a directory.
-     *  The default is $HOME/codegen.
+     *  The default is $HOME/cg.
      */
     public FileParameter codeDirectory;
 
     /** The name of the package in which to look for adapter class
      *  code generators. This is a string that defaults to
-     *  "ptolemy.codegen.java".
+     *  "generic.program.procedural.java"
      */
     public StringParameter generatorPackage;
 
@@ -339,7 +339,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                                         + className + "\" is malformed");
                     } catch (UnsupportedClassVersionError ex) {
                         // This can occur if we have two different
-                        // machines sharing ~/codegen.
+                        // machines sharing ~/cg
                         throw new IllegalActionException(
                                 this,
                                 ex,
@@ -699,7 +699,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     private Object _invokeAdapterMethod(String methodName)
             throws IllegalActionException {
         // We use reflection to avoid a compile time dependency
-        // on the codegen package.
+        // on the cg package.
         String packageName = "ptolemy.cg.adapter."
                 + generatorPackage.stringValue() + ".adapters";
         String adapterClassName = getClass().getName().replaceFirst("ptolemy",
@@ -716,8 +716,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         Method generateMethod = null;
         try {
             // Find the
-            // ptolemy.codegen.java.actor.lib.java.CompiledCompositeActor.generateCode()
-            // method.
+            // ptolemy.cg.adapters.ptolemy ... generateCode() method.
             generateMethod = adapterClass.getMethod(methodName,
                     new Class[] { ptolemy.actor.TypedCompositeActor.class });
         } catch (NoSuchMethodException ex) {
