@@ -499,7 +499,7 @@ public class SDFDirector
     private void _portVariableDeclaration(StringBuffer code, TypedIOPort port)
             throws IllegalActionException {
 
-        code.append("static " + targetType(port.getType()) + " "
+        code.append("public static " + targetType(port.getType()) + " "
                 + NamedProgramCodeGeneratorAdapter.generateName(port));
 
         int bufferSize = _ports.getBufferSize(port);
@@ -603,7 +603,7 @@ public class SDFDirector
                 // avoid duplicate declaration.
                 if (!getCodeGenerator().getModifiedVariables().contains(
                         parameter)) {
-                    code.append("static "
+                    code.append("public static "
                             + targetType(parameter.getType())
                             + " "
                             + getCodeGenerator()
@@ -635,7 +635,7 @@ public class SDFDirector
 
             if (getCodeGenerator().isPrimitive(portType)) {
 
-                code.append("static ");
+                code.append("public static ");
                 code.append(targetType(portType));
                 //getStrategy();
                 code.append(" " + getTypeConvertReference(channel));
