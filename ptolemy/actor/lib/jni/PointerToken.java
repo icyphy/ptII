@@ -305,23 +305,10 @@ public class PointerToken extends Token {
 
     /** Return true if this is a 32bit JVM.
      *  @return true if this is a 32bit JVM.
+     *  @deprecated Call {@link ptolemy.util.JVMBitWidth.is32Bit()}
      */
     public static boolean is32Bit() {
-        String dataModelProperty = StringUtilities
-                .getProperty("sun.arch.data.model");
-        // FIXME: it is difficult to detect if we are under a
-        // 64bit JVM.  See
-        // http://forums.sun.com/thread.jspa?threadID=5306174
-        if (dataModelProperty.indexOf("64") != -1) {
-            return false;
-        } else {
-            String javaVmNameProperty = StringUtilities
-                    .getProperty("java.vm.name");
-            if (javaVmNameProperty.indexOf("64") != -1) {
-                return false;
-            }
-        }
-        return true;
+        return ptolemy.util.JVMBitWidth.is32Bit();
     }
 
     /** The Pointer type: the least upper bound of all the pointer
@@ -336,7 +323,7 @@ public class PointerToken extends Token {
         if (!_checked32Bit) {
             // Check only once if we are on a 32 bit platform.
             _checked32Bit = true;
-            _is32Bit = is32Bit();
+            _is32Bit = ptolemy.util.JVMBitWidth.is32Bit();
         }
         if (!_is32Bit) {
             throw new RuntimeException(
