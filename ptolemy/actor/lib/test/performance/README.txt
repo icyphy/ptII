@@ -61,6 +61,24 @@ $PTII/bin/ptjacl ModularCodeGen.tcl
 ./runModels *ModelMCG*.xml
 ./runModels *ModelMCG*.xml
 
+./runModels *ModelLazyTransparent*.xml
+./runModels *ModelLazyTransparent*.xml
+./runModels *ModelLazyTransparent*.xml
+./runModels *ModelLazyTransparent*.xml
+./runModels *ModelLazyTransparent*.xml
+
+./runModels *ModelLazy_*.xml
+./runModels *ModelLazy_*.xml
+./runModels *ModelLazy_*.xml
+./runModels *ModelLazy_*.xml
+./runModels *ModelLazy_*.xml
+
+./runModels *ModelTransparent*.xml
+./runModels *ModelTransparent*.xml
+./runModels *ModelTransparent*.xml
+./runModels *ModelTransparent*.xml
+./runModels *ModelTransparent*.xml
+
 ./plotPerformance *Model_*.out > comp.plt
 ./plotPerformance *ModelMCG*.out > m.plt
 
