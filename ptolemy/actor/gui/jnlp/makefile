@@ -55,6 +55,7 @@ JSRCS = \
 	HyVisualApplication.java \
 	MenuApplication.java \
 	PtinyApplication.java \
+	PtinyKeplerApplication.java \
 	PtinySandboxApplication.java \
 	SpaceApplication.java \
 	VisualSenseApplication.java
@@ -76,6 +77,7 @@ OTHER_JARS = \
 	FullApplication.jar \
 	HyVisualApplication.jar \
 	PtinyApplication.jar \
+	PtinyKeplerApplication.jar \
 	PtinySandboxApplication.jar \
 	SpaceApplication.jar \
 	VisualSenseApplication.jar
@@ -86,6 +88,7 @@ KRUFT = \
 	FullApplication.jar \
 	HyVisualApplication.jar \
 	PtinyApplication.jar \
+	PtinyKeplerApplication.jar \
 	PtinySandboxApplication.jar \
 	SpaceApplication.jar \
 	VisualSenseApplication.jar
@@ -134,6 +137,18 @@ PtinyApplication.jar: PtinyApplication.class MenuApplication.class
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
 	-cp PtinyApplication.class MenuApplication.class \
+		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
+
+PtinyKeplerApplication.jar: PtinyKeplerApplication.class MenuApplication.class
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	# Copy Application specific classes from this directory
+	mkdir -p $(PTJAR_TMPDIR)/$(ME)
+	-cp PtinyKeplerApplication.class MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
