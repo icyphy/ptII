@@ -29,6 +29,7 @@ package ptolemy.cg.kernel.generic.program.procedural.java;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.TemplateParser;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
+import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
@@ -100,9 +102,6 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         _primitiveTypes = Arrays.asList(new String[] { "Integer", "Double",
                 "String", "Long", "Boolean", "UnsignedByte", "Pointer" });
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     parameters                            ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -503,6 +502,20 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
     }
 
+    /** Generate the package statement, if any.
+     *  @return If the <i>generateInSubdirectory</i> parameter of
+     *  the grandparent is true, then generate a package statement with
+     *  the name of the package being the sanitized model name
+     *  @exception IllegalActionException Thrown if <i>generateInSubdirectory</i>
+     *  cannot be read.
+     */
+    public String generatePackageStatement() throws IllegalActionException {
+        if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+            return "package " + _sanitizedModelName + ";" + _eol;
+        } 
+        return "";
+    }
+
     /** Generate the postfire procedure entry point.
      *  @return a string for the postfire procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -619,6 +632,9 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             StringBuffer declareBlock = new StringBuffer();
             declareBlock.append(typeStreams[i].getCodeBlock("declareBlock"));
             if (declareBlock.length() > 0) {
+                if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+                    declareBlock.insert(0, generatePackageStatement());
+                }
                 _writeCodeFileName(declareBlock, typesArray[i] + ".java",
                         false, true);
             }
@@ -629,11 +645,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
             sharedStream.clear();
             StringBuffer declareTokenBlock = new StringBuffer();
+            if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+                declareTokenBlock.append("package "
+                        + _sanitizedModelName + ";" + _eol);
+            }
             declareTokenBlock.append(sharedStream
                     .getCodeBlock("tokenDeclareBlock"));
 
             if (defineEmptyToken) {
-                sharedStream.append("static Token emptyToken; "
+                sharedStream.append("public static Token emptyToken; "
                         + comment("Used by *_delete() and others.") + _eol);
             }
 
@@ -774,6 +794,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
         code.append(_overloadedFunctions.toString());
 
+        if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+            code.insert(0, "/*" + generatePackageStatement()
+                    + (_typeDeclarations != null ? _typeDeclarations : "") + _eol
+                    + "public class TypeResolution {" + _eol + "*/");
+            code.append("// }" + _eol);
+        }
+
         return code.toString();
     }
 
@@ -799,7 +826,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
 
                 NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(variable
                         .getContainer());
-                code.append("static " + adapter.targetType(variable.getType())
+                code.append("public static " + adapter.targetType(variable.getType())
                         + " " + generateVariableName(variable) + ";" + _eol);
             }
         }
@@ -1105,6 +1132,143 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         }
 
         String[] results = { bodies.toString(), masterBody.toString() };
+        return results;
+    }
+
+    /** Split a long variable declaration body into multiple blocks or
+     *  files.
+     *
+     *  <p>For Java, if the <i>code</i> consists of
+     *  <i>linesPerMethod</i> or fewer lines, then the the first
+     *  element will be the empty string and the second element will
+     *  consist of the value of the code argument.  If the <i>code</i>
+     *  consists of more than <i>linesPerMethod</i> then the first
+     *  element will consist of one or more "import static" statements
+     *  and the second and possibly successive element will consist of
+     *  Java classes that should be written out by 
+     *  {@link #writeVariableDeclarations(List<String)}.
+     *
+     *  @param linesPerMethod The number of lines that should go into
+     *  each method.
+     *  @param prefix The prefix to use when naming functions that
+     *  are created
+     *  @param code The variable declarationsto be split.
+     *  @return A list of at least two elements.  If the code has less than
+     *  _LINES_PER_METHOD lines, then the first element is empty, the
+     *  second element contains the contents of the code parameter.  If
+     *  the code has more lines than _LINES_PER_METHOD, then the first
+     *  element contains the declarations necessary for the include files
+     *  section and the second element and successive elements contain the
+     *  declarations.  Each declaration should be placed into a file
+     *  that corresponds with the include or import listed in the first
+     *  element.
+     *  @exception IOException If thrown while reading the code.
+     */
+    public List<String> splitVariableDeclaration(int linesPerMethod, String prefix, String code)
+            throws IOException {
+        LinkedList<String> results = new LinkedList<String>();
+        // The first element of the list is the declarations, if any.
+        // We add an empty string so that the second and possibly
+        // successive elements will be in the proper location.
+        results.add("");
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new StringReader(code));
+            String line;
+            int methodNumber = 0;
+            // lineNumber keeps track of the number of lines seen
+            // so that we know whether we've reached the linesPerMethod
+            // Note that we don't reset lineNumer in the while loop.
+            int lineNumber = 0;
+            boolean _generateInSubdirectory = false;
+            String topPackageName = prefix + ".";
+            try {
+                if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+                    _generateInSubdirectory = true;
+                    topPackageName = _sanitizedModelName + ".";
+                }
+            } catch (IllegalActionException ex) {
+                throw new InternalErrorException(getComponent(), ex,
+                        "Failed to get the value of the generateInSubdirectory "
+                        + "parameter: " + generateInSubdirectory);
+            }
+            _typeDeclarations = new StringBuffer("import "
+                        + topPackageName + "Token;" + _eol);
+            HashSet<String> functions = _getReferencedFunctions();
+            HashSet<String> types = _getReferencedTypes(functions);
+            Object[] typesArray = types.toArray();
+            // Add imports for non-empty declareBlocks (usually just Array)
+            for (int i = 0; i < typesArray.length; i++) {
+                StringBuffer declareBlock = new StringBuffer();
+                String typesTemplate = "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/" + typesArray[i] + ".j";
+                CodeStream codeStream = new CodeStream(typesTemplate, this);
+                try {
+                    if (codeStream.getCodeBlock("declareBlock").length() > 0) {
+                        _typeDeclarations.append("import "
+                                + topPackageName + typesArray[i] + ";" + _eol);
+                    }
+                } catch (IllegalActionException ex) {
+                    IOException exception = new IOException(
+                            "Failed to get the declare block for "
+                            + typesArray[i] + " from " + typesTemplate);
+                    exception.initCause(ex);
+                    throw exception;
+                }
+            }
+
+            StringBuffer body = new StringBuffer();
+
+            // imports for the classes that define the variables.
+            StringBuffer declarations = new StringBuffer();
+            while ((line = bufferedReader.readLine()) != null) {
+                String className = prefix + ".class" + methodNumber++;
+                lineNumber++;
+                body = new StringBuffer(
+                        line + _eol);
+                for (int i = 0;
+                     i + 1 < linesPerMethod
+                         && line != null; i++) {
+                    lineNumber++;
+                    line = bufferedReader.readLine();
+                    if (line != null) {
+                        body.append(line + _eol);
+                    }
+                }
+
+                // If we have less than linesPerMethod lines, we don't
+                // use body
+                String packageName = className.substring(0, className.lastIndexOf('.'));
+                if (_generateInSubdirectory) {
+                    packageName = _sanitizedModelName + "." + packageName;
+                    className = _sanitizedModelName + "." + className;
+                }
+                declarations.append("import static " + className + ".*;" + _eol);
+
+                String shortClassName = className.substring(
+                        className.lastIndexOf('.') + 1);
+                body.insert(0, "package " + packageName + ";" + _eol
+                        + _typeDeclarations.toString() + _eol
+                        + "public class " + shortClassName + " { " + _eol);
+                body.append("}" + _eol);
+                results.add(body.toString());
+            }
+            results.set(0, _typeDeclarations.toString() + declarations.toString());
+
+            if (lineNumber <= linesPerMethod) {
+                // We must have less than linesPerMethod lines in the body
+                results = new LinkedList<String>();
+                results.add("");
+                results.add(code);
+            }
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ex) {
+                    // Ignore
+                }
+            }
+        }
         return results;
     }
 
@@ -1473,16 +1637,12 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             }
         }
 
-        File codeDirectoryFile = codeDirectory.asFile();
-        if (codeDirectoryFile.isFile()) {
-            throw new IllegalActionException(this, "Error: "
-                    + codeDirectory.stringValue() + " is a file, "
-                    + " it should be a directory.");
-        }
-
-        if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
-            throw new IllegalActionException(this, "Failed to make the \""
-                    + codeDirectory.stringValue() + "\" directory.");
+        File codeDirectoryFile = null;
+        try {
+            codeDirectoryFile = _codeDirectoryAsFile();
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, getComponent(),
+                    "Failed to get the codeDirectory as a parameter");
         }
 
         Map<String, String> substituteMap;
@@ -1506,6 +1666,15 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
             substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
             substituteMap.put("@PTJavaCompiler@", "javac");
+
+            String root = ".";
+            String modelClass = _sanitizedModelName;
+            if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+                root = "..";
+                modelClass = _sanitizedModelName + "." + _sanitizedModelName;
+            }
+            substituteMap.put("@MODELCLASS@", modelClass);
+            substituteMap.put("@ROOT@", root);
 
             String osName = StringUtilities.getProperty("os.name");
             if (osName != null) {
@@ -1533,10 +1702,13 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
                 } else {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
                             "# Unknown java property os.name \"" + osName
-                                    + "\" please edit ptolemy/codegen/c/"
-                                    + "kernel/JavaCodeGenerator.java and "
-                                    + "ptolemy/actor/lib/jni/"
-                                    + "CompiledCompositeActor.java");
+                                    + "\" please edit ptolemy/cg/"
+                                    + "kernel/generic/program/procedural/java/"
+                                    + "JavaCodeGenerator.java and "
+                                    + "ptolemy/cg/adapter/generic/program/"
+                                    + "procedural/java/adapters/ptolemy/cg/"
+                                    + "lib/CompiledCompositeActor.java");
+
                 }
 
             }
@@ -1618,6 +1790,232 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
         if (!success) {
             throw new IllegalActionException(this, errorMessage.toString());
         }
+    }
+
+    /** Write the variable declaration code.
+     *  <p>If the first element is the empty String, then the second
+     *  element contains all of the variable declarations and this method
+     *  does not create files and the value of the second element is returned.
+     *  If the first element is not the empty string, then the second
+     *  and successive elements are written to a file whos name is
+     *  created by parsing the first element.  The first element must
+     *  consist of strings like "import static variables.foo;", the file name
+     *  will be "variables/foo.java".
+     *  @param variableDeclarations A List of two or more elements.
+     *  first element is not empty, then it contains the language
+     *  specific declarations for the variable declarations.  In Java,
+     *  the first element may consist of one or more "import"
+     *  statements.  The second and successive elements contain the
+     *  code to be written to separate files or to be returned as one
+     *  String.
+     *  @return If the first element is empty, then return the value
+     *  of the second element.  If the first element is not empty, then
+     *  files are created and the empty string is returned.
+     *  @exception IllegalActionException Thrown if there is a problem
+     *  writing the files.
+     */
+    protected String _writeVariableDeclarations(List<String> variableDeclarations)
+            throws IllegalActionException {
+        if (variableDeclarations.size() < 2 ) {
+            throw new IllegalActionException(getComponent(),
+                    "_writeVariableDeclarations called "
+                    + "with an list of less than two elements.");
+        }
+        if (variableDeclarations.size() == 2) {
+            if (variableDeclarations.get(0).length() > 0) {
+                throw new IllegalActionException(getComponent(),
+                        "_writeVariableDeclarations called "
+                        + "with a list of two elements but the first element is "
+                        + "non-empty.");
+            } else {
+                return variableDeclarations.get(1);
+            }
+        }
+
+        // Write out the second and successive elements.
+
+        boolean sawTokenImport = false;
+        File codeDirectoryFile = null;
+        try {
+            codeDirectoryFile = _codeDirectoryAsFile();
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, getComponent(),
+                    "Failed to get the codeDirectory as a parameter");
+        }
+        String directoryName = "";
+
+        // For use with Matrix.java, Array.java etc.
+        HashSet<String> functions = _getReferencedFunctions();
+        HashSet<String> types = _getReferencedTypes(functions);
+        types.add("Token");
+        Object[] typesArray = types.toArray();
+
+        BufferedReader importReader = null;
+        StringBuffer result = new StringBuffer();
+        int blockNumber = 0;
+        for (String block : variableDeclarations) {
+            if (++blockNumber == 1) {
+                // The first element contains the import directives
+                importReader = new BufferedReader(new StringReader(block));
+            } else {
+                String importLine = null;
+                try {
+                    importLine = importReader.readLine();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(getComponent(), ex,
+                            "Failed to read a line from the imports in\n"
+                            + block);
+                }
+                if (importLine != null) {
+                    // The first import is of the form "import RepeatVariables.Token;"
+                    // FIXME: This is weak, what happens if the format changes.
+                    for (int i = 0; i < typesArray.length && importLine != null; i++) {
+                        if (importLine.endsWith(".Token;")) {
+                            sawTokenImport = true;
+                        }
+                        if (importLine.endsWith(typesArray[i] + ";")) {
+                            try {
+                                // Reset the loop of types to the
+                                // first element so that we may search
+                                // the new import line.
+                                i = -1;
+                                importLine = importReader.readLine();
+                            } catch (IOException ex) {
+                                throw new IllegalActionException(getComponent(), ex,
+                                        "Failed to read line after \"import ..."
+                                        + typesArray[i] + ";\""
+                                        + "from the imports in\n"
+                                        + block);
+                            }
+                        }
+                    } 
+                    // Second and successive lines are of
+                    // the form "import static RepeatVariables.class0.*;".
+
+                    // Get rid of the ".*;".
+                    if (importLine.lastIndexOf(".*;") == -1) {
+                        throw new InternalErrorException("Import line: "
+                                + importLine + " does not have .*;?");
+                    }
+                    String shortImportLine = importLine.substring(0,
+                            importLine.lastIndexOf(".*;"));
+                    // Find the last space, then get the text up to the last char.
+                    String filepath = shortImportLine.substring(
+                            shortImportLine.lastIndexOf(' ') + 1,
+                            shortImportLine.length()).replace('.', '/');
+                    // Create the directory, if necessary.
+                    directoryName = filepath.replace('.', '/')
+                        .substring(0, filepath.lastIndexOf('/'));
+
+                    if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+                        directoryName = directoryName.substring(
+                                directoryName.indexOf('/'));
+                    }
+                    File directory = new File(codeDirectoryFile, directoryName);
+                    if (!directory.isDirectory()) {
+                        if (!directory.mkdirs()) {
+                            throw new IllegalActionException(getComponent(),
+                                    "Failed to create directory \""
+                                    + directoryName + "\"");
+                        }
+                    }
+
+                    File file = new File(directory, filepath.substring(
+                                    filepath.lastIndexOf("/") + 1) + ".java");
+
+                    FileWriter writer = null;
+                    try {
+                        try {
+                            writer = new FileWriter(file);
+                        } catch (IOException ex) {
+                            throw new IllegalActionException(getComponent(), ex,
+                                    "Failed to open \""
+                                    + file + "\"");
+                        }
+                        try {
+                            writer.write(block);
+                            if (block.indexOf(StaticSchedulingDirector.CURRENTTIME_DECLARATION) != -1) {
+
+                                // Output the currentTime declaration, which is 
+                                // not static because _currentTime might? vary
+                                // between directors?
+                                result.append(StaticSchedulingDirector.CURRENTTIME_DECLARATION + _eol);
+                            }
+                        } catch (IOException ex) {
+                            throw new IllegalActionException(getComponent(), ex,
+                                    "Failed to write "
+                                    + "block " + blockNumber + " to \""
+                                    + file + "\"");
+                        }
+                    } finally {
+                        if (writer != null) {
+                            try {
+                                writer.close();
+                            } catch (IOException ex) {
+                                throw new IllegalActionException(getComponent(), ex,
+                                        "Failed to close \"" + file + "\"");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        HashSet<String> typesAndToken = _getReferencedTypes(functions);
+        CodeStream[] typeStreams = new CodeStream[typesAndToken.size()];
+        if (sawTokenImport) {
+            // Add Token to the set of types so that we only need one loop
+            typesAndToken.add("Token");
+            typeStreams = new CodeStream[typesAndToken.size()];
+        }
+
+        if (!((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+            Object[] typesAndTokenArray = typesAndToken.toArray();
+            for (int i = 0; i < typesAndTokenArray.length; i++) {
+                // Create Array, Matrix or Token.java in the variable directory.
+                StringBuffer declareTypeOrTokenBlock = new StringBuffer();
+
+                CodeStream codeStream = null;
+                if (!typesAndTokenArray[i].equals("Token")) {
+                    // Array or Matrix
+                    codeStream = new CodeStream(
+                            "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/type/"
+                            + typesAndTokenArray[i] + ".j", this);
+                    declareTypeOrTokenBlock.append(codeStream
+                            .getCodeBlock("declareBlock"));
+                } else {
+                    // Token
+                    codeStream = new CodeStream(
+                            "$CLASSPATH/ptolemy/cg/kernel/generic/program/procedural/java/SharedCode.j",
+                            this);
+                    declareTypeOrTokenBlock.append(codeStream
+                            .getCodeBlock("tokenDeclareBlock"));
+                    // FIXME: what about empty tokens
+                    //if (defineEmptyToken) {
+                    //declareTypeOrTokenBlock.append("public static Token emptyToken; "
+                    //        + comment("Used by *_delete() and others.") + _eol);
+                    //}
+                } 
+                if (declareTypeOrTokenBlock.length() > 0) {
+                    declareTypeOrTokenBlock.insert(0,
+                            "package " + directoryName + ";" + _eol);
+                    _writeCodeFileName(declareTypeOrTokenBlock,
+                            codeDirectoryFile.toString() + "/" + directoryName + "/"
+                            + typesAndTokenArray[i] + ".java",
+                            false, true);
+                    // FIXME: we should not be deleting the .java and .class file
+                    // in the top level, instead, we should be writing our code
+                    // into a subdirectory.
+                    File topTokenFile = new File(codeDirectoryFile,
+                            typesAndTokenArray[i] + ".java");
+                    topTokenFile.delete();
+                    File topTokenClass = new File(codeDirectoryFile,
+                            typesAndTokenArray[i] + ".class");
+                    topTokenClass.delete();
+                }
+            }
+        }
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1716,6 +2114,10 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     private CodeStream _overloadedFunctions;
 
     private Set<String> _overloadedFunctionSet;
+
+    /** Java import statements for Token, Array, etc.
+     */   
+    private StringBuffer _typeDeclarations;
 
     /** Set of type/function combinations that are not supported.
      *  We use one method so as to reduce code size.

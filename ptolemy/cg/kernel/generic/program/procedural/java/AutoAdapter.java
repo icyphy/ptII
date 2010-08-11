@@ -84,7 +84,7 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated with the given
      *  component.
-     * @param codeGenerator The code generator with which to associate the adapter.
+     *  @param codeGenerator The code generator with which to associate the adapter.
      *  @param component The associated component.
      */
     public AutoAdapter(ProgramCodeGenerator codeGenerator, TypedAtomicActor component) {
@@ -105,8 +105,9 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * the block or processing the macros.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        // Use the full class name so that we don't have to import the actor.  If we import
-        // the actor, then we cannot have model names with the same name as the actor.
+        // Use the full class name so that we don't have to import the
+        // actor.  If we import the actor, then we cannot have model
+        // names with the same name as the actor.
         String actorClassName = getComponent().getClass().getName();
 
         StringBuffer code = new StringBuffer(
@@ -324,9 +325,11 @@ public class AutoAdapter extends NamedProgramCodeGeneratorAdapter {
      * @return the AutoAdapter or null if object is not assignable
      * from TypedAtomicActor.
      */
-    public static AutoAdapter getAutoAdapter(GenericCodeGenerator codeGenerator, Object object) {
-        // FIXME: I'm not sure if we need this method, but I like calling something
-        // that returns null if the associated actor cannot be found or is of the wrong type.
+    public static AutoAdapter getAutoAdapter(GenericCodeGenerator codeGenerator,
+            Object object) {
+        // FIXME: I'm not sure if we need this method, but I like
+        // calling something that returns null if the associated actor
+        // cannot be found or is of the wrong type.
         try {
             Class typedAtomicActor = Class.forName("ptolemy.actor.TypedAtomicActor");
             if (!typedAtomicActor.isAssignableFrom(object.getClass())) {

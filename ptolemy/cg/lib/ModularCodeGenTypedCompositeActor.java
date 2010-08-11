@@ -465,18 +465,32 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             }
             String className = NamedProgramCodeGeneratorAdapter
                     .generateName(this);
-            Class<?> classInstance = null;
+            String topDirectory = ".";
             URL url = _codeGenerator.codeDirectory.asFile().toURI().toURL();
+            // FIXME: generateInSubdirectory fix
+            if (((BooleanToken) _codeGenerator.generateInSubdirectory.getToken()).booleanValue()) {
+                className = className + "." + className;
+                url = _codeGenerator.codeDirectory.asFile().getParentFile().toURI().toURL();
+            }
+            Class<?> classInstance = null;
+
             URL[] urls = new URL[] { url };
 
             ClassLoader classLoader = new URLClassLoader(urls);
             try {
                 classInstance = classLoader.loadClass(className);
             } catch (ClassNotFoundException ex) {
-                // We couldn't load the class, maybe the code is not generated (for example
-                // the user might have given this model to somebody else. Regenerate it again.
+                // We couldn't load the class, maybe the code is not
+                // generated (for example the user might have given
+                // this model to somebody else. Regenerate it again.
                 _generateCode();
+                try {
                 classInstance = classLoader.loadClass(className);
+                } catch (ClassNotFoundException ex2) {
+                    throw new ClassNotFoundException("Failed to load "
+                            + className + " using URLClassLoader based on "
+                            + url + ".");
+                }
             }
 
             _objectWrapper = classInstance.newInstance();
