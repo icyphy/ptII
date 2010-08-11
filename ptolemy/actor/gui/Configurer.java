@@ -318,8 +318,9 @@ public class Configurer extends JPanel implements CloseListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Return the visible Settables of NamedObj object. When addDecoratedAttributes is true
-     *  we will also return the decorated attributes.
+    /** Return the visible Settables of NamedObj object. When
+     *  addDecoratedAttributes is true we will also return the
+     *  decorated attributes.
      *  @param object The named object for which to show the visible
      *          Settables
      *  @param addDecoratedAttributes A flag that specifies whether
