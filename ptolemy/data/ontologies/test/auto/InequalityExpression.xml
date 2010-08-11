@@ -5,13 +5,13 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 80.0}">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
         <configure>
             <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={645, 289, 815, 507}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={625, 289, 813, 510}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -238,13 +238,13 @@ _
             </entity>
         </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 223, 764, 467}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={521, 472, 670, 460}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[549, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[457, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.5, 175.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{228.5, 175.0}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
@@ -265,6 +265,18 @@ _
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 225.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test Forward Inference with an Inequality">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 20.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The derivativePortTerm of the Integrator has constraints that&#10;are &lt;= instead of ==.  To see this, right click on the &#10;DimensionSystemSolver, select &quot;Open Model&quot; and then&#10;double click on the Integrator Icon.  In the Forward test,&#10;the constraints are ==, in this test, they are &lt;=.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 245.0]">
         </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">

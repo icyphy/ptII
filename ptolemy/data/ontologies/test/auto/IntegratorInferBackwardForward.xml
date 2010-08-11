@@ -15,7 +15,7 @@
         </property>
         <property name="expressionASTNodeConstraintType" class="ptolemy.data.expr.StringParameter" value="parent == child">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 60.0}">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
@@ -248,18 +248,18 @@ _
             </entity>
         </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 92, 707, 545}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={676, 40, 676, 428}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[492, 438]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[463, 318]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.0, 219.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.5, 159.0}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
         </property>
     </property>
     <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="TimedPlotter.input &gt;= Position">
@@ -274,7 +274,13 @@ _
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 105.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Infer Backward and Forward through the Integrator">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 5.0]">
         </property>
     </property>
     <entity name="Integrator" class="ptolemy.domains.continuous.lib.Integrator">
@@ -284,7 +290,7 @@ _
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[193.0, 148.0]">
         </property>
         <port name="derivative" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -321,7 +327,7 @@ _
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.0, 208.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -354,7 +360,7 @@ _
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[328.0, 148.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -374,7 +380,7 @@ _
             <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Position">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[223.0, 278.0]">
         </property>
         <port name="derivative" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -411,7 +417,7 @@ _
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.0, 278.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -444,7 +450,7 @@ _
         </property>
         <property name="useLocalTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[328.0, 213.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -462,7 +468,7 @@ _
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[140.0, 240.0]">
+        <vertex name="vertex1" value="[133.0, 208.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
