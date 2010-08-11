@@ -581,8 +581,9 @@ public class ModularCompiledSDFTypedCompositeActor extends
             try {
                 classInstance = classLoader.loadClass(className);
             } catch (ClassNotFoundException ex) {
-                // We couldn't load the class, maybe the code is not generated (for example
-                // the user might have given this model to somebody else. Regenerate it again.
+                // We couldn't load the class, maybe the code is not
+                // generated (for example the user might have given
+                // this model to somebody else. Regenerate it again.
                 _generateCode();
                 classInstance = classLoader.loadClass(className);
             }
