@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -114,6 +115,10 @@ public abstract class GenericCodeGenerator extends Attribute implements
         new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
 
+        generateInSubdirectory = new Parameter(this, "generateInSubdirectory");
+        generateInSubdirectory.setTypeEquals(BaseType.BOOLEAN);
+        generateInSubdirectory.setExpression("false");
+
         generatorPackage = new StringParameter(this, "generatorPackage");
 
         generatorPackageList = new StringParameter(this, "generatorPackageList");
@@ -169,6 +174,18 @@ public abstract class GenericCodeGenerator extends Attribute implements
      */
     public FileParameter codeDirectory;
 
+    /** If true, then generate code in a subdirectory of <i>codeDirectory</i>.
+     *  The default value is false, indicating that code should be
+     *  generated in the directory named by codeDirectory.
+     *  If the value is true, then code is generated in a <b>subdirectory</b>
+     *  of the directory named by the <i>codeDirectory</i> parameter.
+     *  This is useful for languages such as Java, which means that
+     *  the code will be generated in a package named by the sanitized
+     *  version of the model name.  The default value is a Boolean with
+     *  the value "false".
+     */
+    public Parameter generateInSubdirectory;
+
     /** The name of the package in which to look for adapter class
      *  code generators. The default value of this parameter
      *  is the empty string.  Derived classes may set this parameter
@@ -214,8 +231,26 @@ public abstract class GenericCodeGenerator extends Attribute implements
             // FIXME: This should not be necessary, but if we don't
             // do it, then getBaseDirectory() thinks we are in the current dir.
             codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
-        } else if (attribute == generatorPackageList) {
-            super.attributeChanged(attribute);
+        } else if (attribute == generateInSubdirectory) {
+            // FIXME: we should check to see if generateInSubdirectory is changing
+            // before proceeding.
+            _sanitizedModelName = CodeGeneratorAdapter.generateName(_model);
+            if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+                if (!codeDirectory.asFile().toString().endsWith(_sanitizedModelName)) {
+                    // Add the sanitized model name as a directory
+                    codeDirectory.setExpression(codeDirectory.asFile().toString()
+                            + "/" + _sanitizedModelName);
+                    codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+                }
+            } else {
+                if (codeDirectory.asFile().toString().endsWith(_sanitizedModelName)) {
+                    // Remove the sanitized model name as a directory.
+                    String path = codeDirectory.asFile().toString();
+                    path = path.substring(0, path.indexOf(_sanitizedModelName));
+                    codeDirectory.setExpression(path);
+                    codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+                }
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -1388,7 +1423,8 @@ public abstract class GenericCodeGenerator extends Attribute implements
     protected String _codeFileName = null;
 
     /** The command-line options that are either present or not. */
-    private static String[] _commandFlags = { "-help", "-version", };
+    private static String[] _commandFlags = { "-help", "-generateInSubdirectory",
+                                              "-version", };
 
     /** The command-line options that take arguments. */
     private static String[][] _commandOptions = {

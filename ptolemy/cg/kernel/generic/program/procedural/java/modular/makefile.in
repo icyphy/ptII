@@ -16,7 +16,7 @@ PTCGLIBRARIES = @PTCGLibraries@
 
 CLASSPATHSEPARATOR=@CLASSPATHSEPARATOR@
 
-CLASSPATH = $(PTCGLIBRARIES).
+CLASSPATH = $(PTCGLIBRARIES)$(CLASSPATHSEPARATOR)..
 
 # If the user would like to add compile time options, run with
 # make -f @modelName@.mk USER_CC_FLAGS=xxx

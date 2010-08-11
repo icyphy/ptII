@@ -16,14 +16,18 @@ PTCGLIBRARIES = @PTCGLibraries@
 
 CLASSPATHSEPARATOR=@CLASSPATHSEPARATOR@
 
-CLASSPATH = $(PTCGLIBRARIES).
+ROOT = @ROOT@
+
+CLASSPATH = $(PTCGLIBRARIES)$(CLASSPATHSEPARATOR)$(ROOT)
 
 # If the user would like to add compile time options, run with
 # make -f @modelName@.mk USER_CC_FLAGS=xxx
 USER_JAVAC_FLAGS =
 
+MODELCLASS = @MODELCLASS@
+
 @modelName@.class: @modelName@.java
 	@PTJavaCompiler@ -classpath "$(CLASSPATH)" $(WARNING_CC_FLAGS) $(JAVAC_FLAGS) $(USER_JAVAC_FLAGS) @modelName@.java
 
 run: @modelName@.class
-	"java" -classpath "$(CLASSPATH)" @modelName@
+	"java" -classpath "$(CLASSPATH)" $(MODELCLASS)

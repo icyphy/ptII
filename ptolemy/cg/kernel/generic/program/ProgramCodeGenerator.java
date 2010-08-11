@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -101,6 +102,10 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         inline.setTypeEquals(BaseType.BOOLEAN);
         inline.setExpression("true");
 
+        maximumLinesPerBlock = new Parameter(this, "maximumLinesPerBlock");
+        maximumLinesPerBlock.setTypeEquals(BaseType.INT);
+        maximumLinesPerBlock.setExpression("2500");
+
         measureTime = new Parameter(this, "measureTime");
         measureTime.setTypeEquals(BaseType.BOOLEAN);
         measureTime.setExpression("false");
@@ -130,6 +135,18 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  value false.
      */
     public Parameter inline;
+
+
+    /** The maximum number of lines per block.  Maximum number of
+     *  lines in initialize(), postfire() and wrapup() methods. This
+     *  parameter is used to make smaller methods so that compilers
+     *  take less time to compile.  Most target languages have limits
+     *  to the size of a block or method.  If a block or method has
+     *  more lines than this value, then some code generators may try
+     *  to split of the code.  Note that this is very experimental.
+     *  The default value is an integer with value 2500.
+     */
+    public Parameter maximumLinesPerBlock;
 
     /** If true, generate code to measure the execution time.
      *  The default value is a parameter with the value false.
@@ -387,6 +404,16 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return comment("main exit code");
     }
 
+    /** Generate the package statement, if any.
+     *  Derived classes, such as the Java code generator, might generate
+     *  a package statement here.
+     *  @return In this base class, return the empty string.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePackageStatement() throws IllegalActionException {
+        return "";
+    }
+
     /** Generate into the specified code stream the code associated with
      *  postfiring up the container composite actor. This method calls the
      *  generatePostfireCode() method of the code generator adapter associated
@@ -470,7 +497,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     /** Generate variable name for the given attribute. The reason to append
      *  underscore is to avoid conflict with the names of other objects. For
      *  example, the paired PortParameter and ParameterPort have the same name.
-     *  @param attribute The attribute to generate variable name for.
+     *  @param attribute The attribute to for which to generate a variable name.
      *  @return The generated variable name.
      */
     public String generateVariableName(NamedObj attribute) {
@@ -621,11 +648,11 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
     }
 
     /** Split a long function body into multiple functions.
-
+     *   
      *  <p>In this base class, since we don't know what the target
      *  language will be, the first element is the empty string, the
-     *  second element is the code argument.
-
+     *  second element is the code argument.</p>
+     *
      *  @param linesPerMethod The number of lines that should go into
      *  each method.
      *  @param prefix The prefix to use when naming functions that
@@ -639,11 +666,42 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  the code parameter.  In this base class, the first element
      *  is always the empty string and the second element is the value
      *  of the code parameter.
-     *  @exception IOException If thrown will reading the code.
+     *  @exception IOException If thrown while reading the code.
      */
     public String[] splitLongBody(int linesPerMethod, String prefix, String code)
             throws IOException {
         String[] results = { "", code };
+        return results;
+    }
+
+    /** Split a long variable declaration body into multiple blocks
+     *  or files. 
+     *  <p>In this base class, since we don't know what the target
+     *  language will be, the first element is the empty string, the
+     *  second element is the code argument.</p>
+     *
+     *  @param linesPerMethod The number of lines that should go into
+     *  each method.
+     *  @param prefix The prefix to use when naming functions that
+     *  are created
+     *  @param code The variable declarationsto be split.
+     *  @return A list of at least two elements.  If the code has less
+     *  than the value of the <i>maximumNumberOfLinesPerBLock</i>
+     *  parameter lines, then the first element is empty, the second
+     *  element contains the contents of the code parameter.  If the
+     *  code has more lines than <i>maximumLinesPerBlock</i>,
+     *  then the first element contains the declarations necessary for
+     *  the include files section and the second element and
+     *  successive elements contain the declarations.  Each
+     *  declaration should be placed into a file that corresponds with
+     *  the include or import listed in the first element.
+     *  @exception IOException If thrown while reading the code.
+     */
+    public List<String> splitVariableDeclaration(int linesPerMethod, String prefix, String code)
+            throws IOException {
+        List<String> results = new LinkedList<String>();
+        results.add("");
+        results.add(code);
         return results;
     }
 
@@ -674,6 +732,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String[][] options = {
             { "-generateComment", "   true|false (default: true)" },
             { "-inline", "            true|false (default: false)" },
+            { "-maximumLinesPerBlock", "<an integer, default: 2500)"}, 
             { "-measureTime", "       true|false (default: false)" },
             { "-run", "               true|false (default: true)" },
             { "-verbosity", "         <an integer, try 1 or 10>, (default: 0)"}};
@@ -964,13 +1023,16 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         String closingEntryCode = generateClosingEntryCode();
         String closingExitCode = generateClosingExitCode();
 
-        // Generating variable declarations needs to happen after buffer
-        // sizes are set(?).
-        String variableDeclareCode = generateVariableDeclaration();
         String variableInitCode = generateVariableInitialization();
         // generate type resolution code has to be after
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeConvertCode();
+        // Generating variable declarations needs to happen after buffer
+        // sizes are set(?).  Also, we want to generate the type convert code
+        // so that we know if we need to import Array etc.
+        List<String> variableDeclareCode = _splitVariableDeclaration(
+                "Variables", generateVariableDeclaration());
+
         //String globalCode = generateGlobalCode();
 
         // Include files depends the generated code, so it
@@ -983,18 +1045,25 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // The appending phase.
         code.append(generateCopyright());
 
+        code.append(generatePackageStatement());
+
+        code.append(variableDeclareCode.get(0));
         // FIXME: Some user libraries may depend on our generated
         // code (i.e. definition of "boolean"). So, we need to append
         // these user libraries after the sharedCode. An easy to do
         // this is to separate the standard libraries from user librar,
         // hinted by the angle bracket <> syntax in a #include statement.
         code.append(includeFiles);
+        // Get any include or import lines needed by the variable declarations.
+        code.append(comment("end includeecode"));
         code.append(typeResolutionCode);
+        code.append(comment("end typeResolution code"));
         code.append(sharedCode);
         // Don't use **** in comments, it causes the nightly build to
         // report errors.
         code.append(comment("end shared code"));
-        code.append(variableDeclareCode);
+        code.append(_writeVariableDeclarations(variableDeclareCode));
+        code.append(comment("end variable declaration code"));
         code.append(preinitializeCode);
         code.append(comment("end preinitialize code"));
         //code.append(globalCode);
@@ -1172,6 +1241,42 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         _typeFuncUsed.clear();
     }
 
+    /** Split the variable declaration into possibly two sections.
+     *  @param suffix The suffix to use when naming functions that
+     *  are created.
+     *  @param code The variable declarations to be split.
+     *  @return A list of at least two elements.  If the code has less
+     *  than <i>maximumLinesPerBlock</i> lines, then the first
+     *  element is empty, the second element contains the contents of
+     *  the code parameter.  If the code has more lines than
+     *  <i>maximumLinesPerBlock</i>, then the first element contains the
+     *  declarations necessary for the include files section and the
+     *  second element and successive elements contain the
+     *  declarations.  Each declaration should be placed into a file
+     *  that corresponds with the include or import listed in the
+     *  first element.
+     */
+    protected List<String> _splitVariableDeclaration(String suffix, String code) {
+        // Split the initialize body into multiple methods
+        // so that the compiler has an easier time.
+        List<String> results = new LinkedList<String>();
+        try {
+            results = splitVariableDeclaration(
+                    ((IntToken) maximumLinesPerBlock.getToken()).intValue(),
+                    NamedProgramCodeGeneratorAdapter
+                    .generateName(getContainer()) + suffix,
+                    code);
+        } catch (Exception ex) {
+            // Ignore
+            System.out.println("Warning: Failed to split variable declaration: "
+                    + ex);
+            ex.printStackTrace();
+            results.add("");
+            results.add(code);
+        }
+        return results;
+    }
+
     /** Return the class of the templateParser class. In cse
      *  there isn't one return null.
      *  @return The base class for templateParser.  
@@ -1220,22 +1325,65 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         return result;
     }
 
-    /** Split the code. */
+    /** Split the code.
+     *  @param prefix The prefix to use when naming functions that
+     *  are created
+     *  @param code The method body to be split.
+     *  @return An array of two Strings, where the first element
+     *  is the new definitions (if any), and the second element
+     *  is the new body.  If the number of lines in the code parameter
+     *  is less than linesPerMethod, then the first element will be
+     *  the empty string and the second element will be the value of
+     *  the code parameter.  In this base class, the first element
+     *  is always the empty string and the second element is the value
+     *  of the code parameter.
+     */
     public String[] _splitBody(String prefix, String code) {
         // Split the initialize body into multiple methods
         // so that the compiler has an easier time.
         String[] results = null;
         try {
-            results = splitLongBody(_LINES_PER_METHOD, prefix
-                    + NamedProgramCodeGeneratorAdapter
+            results = splitLongBody(
+                    ((IntToken) maximumLinesPerBlock.getToken()).intValue(),
+                    prefix + NamedProgramCodeGeneratorAdapter
                             .generateName(getContainer()), code);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             // Ignore
             System.out.println("Warning: Failed to split code: " + ex);
             ex.printStackTrace();
             results = new String[] { "", code };
         }
         return results;
+    }
+
+    /** Write the variable declaration code.
+     *  @param variableDeclarations A List of two or more elements.  If
+     *  the first element is the empty String, then the second element
+     *  contains all of the variable declarations.  If the first element
+     *  is not empty, then it contains the language specific declarations
+     *  for the variable declarations.  For example, in C, the first element
+     *  would consist of one or more "#include" statements.  In Java, the
+     *  first element would consist of one or more "import" statements.  The
+     *  second and successive elements contain the code to be written
+     *  to separate files or to be returned as one String.
+     *  @return The variable declarations or the empty string.  In this
+     *  base class, the variable declarations are returned. Derived classes
+     *  may write each element to a separate file and return the empty string.
+     *  @exception IllegalActionException Not thrown in this base class.  Derived
+     *  classes should throw this if there is a problem writing the file(s).
+     */
+    protected String _writeVariableDeclarations(List<String> variableDeclarations) 
+            throws IllegalActionException {
+        StringBuffer result = new StringBuffer();
+        int lineNumber = 0;
+        for (String blocks : variableDeclarations) {
+            // Skip the first element because it includes
+            // the #include or import directives
+            if (lineNumber++ > 0) {
+                result.append(blocks);
+            }
+        }
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1278,11 +1426,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
 
     /** The current indent level when pretty printing code. */
     private int _indent;
-
-    /** Maximum number of lines in initialize(), postfire() and wrapup()
-     *  methods. This variable is used to make smaller methods so that
-     *  compilers take less time.*/
-    private static int _LINES_PER_METHOD = 2500;
 
     /** The extension of the template files.
      *   (for example c in case of C and j in case of Java)

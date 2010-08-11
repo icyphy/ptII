@@ -52,6 +52,7 @@ import ptolemy.cg.lib.ModularCompiledSDFTypedCompositeActor;
 import ptolemy.cg.lib.Profile;
 import ptolemy.cg.lib.Profile.FiringFunction;
 import ptolemy.cg.lib.Profile.FiringFunctionPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.domains.sdf.lib.SampleDelay;
 import ptolemy.kernel.util.IllegalActionException;
@@ -164,7 +165,11 @@ public class ModularSDFCodeGenerator extends JavaCodeGenerator {
         _writeCodeFileName(profileCode, profileClassName + ".java", true, true);
 
         List<String> commands = new LinkedList<String>();
-        commands.add("javac -classpath \"."
+        String topDirectory = ".";
+        if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+            topDirectory = "..";
+        }
+        commands.add("javac -classpath \"" + topDirectory 
                 + StringUtilities.getProperty("path.separator")
                 + StringUtilities.getProperty("ptolemy.ptII.dir") + "\""
                 + profileClassName + ".java");

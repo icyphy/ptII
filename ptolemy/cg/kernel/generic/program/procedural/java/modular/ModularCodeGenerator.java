@@ -43,6 +43,7 @@ import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
 import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
 import ptolemy.cg.lib.Profile;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -155,7 +156,11 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
         _writeCodeFileName(profileCode, profileClassName + ".java", true, true);
 
         List<String> commands = new LinkedList<String>();
-        commands.add("javac -classpath \"."
+        String topDirectory = ".";
+        if (((BooleanToken) generateInSubdirectory.getToken()).booleanValue()) {
+            topDirectory = "..";
+        }
+        commands.add("javac -classpath \"" + topDirectory
                 + StringUtilities.getProperty("path.separator")
                 + StringUtilities.getProperty("ptolemy.ptII.dir") + "\""
                 + profileClassName + ".java");

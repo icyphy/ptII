@@ -39,15 +39,25 @@ if {[string compare test [info procs test]] == 1} then {
 proc testJavaCG {model} {
     testJavaCGInline $model true
     testJavaCGInline $model false
+    testJavaCGInline $model true 1 true
 }
 
-proc testJavaCGInline {model inline} {
+proc testJavaCGInline {model inline {maximumLinesPerBlock 2500} {generateInSubdirectory false}} {
     global PTII	
     set relativeFilename \
 	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
 	    $PTII $model {$PTII}]
-    puts "------------------ JavaCG \$PTII/bin/ptcg -language java -inline $inline $relativeFilename"
-    test "Auto" "Automatic JavaCG \$PTII/bin/ptcg -language java -inline $inline $relativeFilename" {
+    set maxCommand ""
+    if {$maximumLinesPerBlock != 2500} {
+	set maxCommand "-maximumLinesPerBlock $maximumLinesPerBlock"
+    }
+    set generateCommand ""
+    if {$generateInSubdirectory} {
+	set generateCommand "-generateInSubdirectory $generateInSubdirectory"
+    }
+
+    puts "------------------ JavaCG \$PTII/bin/ptcg -language java $generateCommand -inline $inline $maxCommand $relativeFilename"
+    test "Auto" "Automatic JavaCG \$PTII/bin/ptcg -language java $generateCommand -inline $inline $maxCommand $relativeFilename" {
 	# Remove files from ~/cg so as to force building
 	foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
 	foreach javaFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.java] { file delete -force $javaFile}
@@ -56,8 +66,8 @@ proc testJavaCGInline {model inline} {
 	$parser reset
 	$parser purgeAllModelRecords
 
-	set args [java::new {String[]} 5 \
-		  [list "-language" "java" "-inline" $inline $model]]
+	set args [java::new {String[]} 9 \
+		  [list "-language" "java" "-generateInSubdirectory" $generateInSubdirectory "-inline" $inline "-maximumLinesPerBlock" $maximumLinesPerBlock $model]]
 
 	set timeout 500000
 	puts "testJavaCG.tcl: Setting watchdog for [expr {$timeout / 1000}]\

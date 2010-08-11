@@ -295,6 +295,8 @@ test JavaCodeGenerator-3.4 {splitVariableDeclaration code same size one over max
 import static foo.class0.*;
 import static foo.class1.*;
 } {package foo;
+import foo.Token;
+
 public class class0 { 
 line 1;
 line 2;
@@ -303,6 +305,8 @@ line 4;
 line 5;
 }
 } {package foo;
+import foo.Token;
+
 public class class1 { 
 line 6;
 }
@@ -317,6 +321,8 @@ import static foo.class0.*;
 import static foo.class1.*;
 import static foo.class2.*;
 } {package foo;
+import foo.Token;
+
 public class class0 { 
 line 1;
 line 2;
@@ -325,6 +331,8 @@ line 4;
 line 5;
 }
 } {package foo;
+import foo.Token;
+
 public class class1 { 
 line 6;
 line 7;
@@ -333,6 +341,8 @@ line 9;
 line 10;
 }
 } {package foo;
+import foo.Token;
+
 public class class2 { 
 line 11;
 line 12;
@@ -356,14 +366,20 @@ import static foo.class0.*;
 import static foo.class1.*;
 import static foo.class2.*;
 } {package foo;
+import foo.Token;
+
 public class class0 { 
 line 1;
 }
 } {package foo;
+import foo.Token;
+
 public class class1 { 
 line 2;
 }
 } {package foo;
+import foo.Token;
+
 public class class2 { 
 line 3;
 }
