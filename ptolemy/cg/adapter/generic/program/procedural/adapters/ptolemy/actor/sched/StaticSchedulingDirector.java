@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-////StaticSchedulingDirector
+//// StaticSchedulingDirector
 
 /**
  Code generator adapter associated with the StaticSchedulingDirector class.
@@ -108,10 +108,11 @@ public class StaticSchedulingDirector extends Director {
                 .booleanValue();
     }
 
-    /** Create and return the decorated attributes for the corresponding Ptolemy Component.
-     *  @param target The corresponding Ptolemy Component.
-     *  @param genericCodeGenerator The code generator that is the decorator for the
+    /** Create and return the decorated attributes for the
      *  corresponding Ptolemy Component.
+     *  @param target The corresponding Ptolemy Component.
+     *  @param genericCodeGenerator The code generator that is the
+     *  decorator for the corresponding Ptolemy Component.
      *  @return The decorated attributes.
      *  @exception IllegalActionException If the parameter is not of an
      *   acceptable class for the container.
@@ -432,7 +433,8 @@ public class StaticSchedulingDirector extends Director {
      *  a CompositeActor
      * @param isWrite The type of the reference. True if this is
      *  a write reference; otherwise, this is a read reference.  
-     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+     * @param target The ProgramCodeGeneratorAdapter for which code
+     * needs to be generated.
      * @return an unique reference label for the given port channel.
      * @exception IllegalActionException If the adapter throws it while
      *  generating the label.     
@@ -616,7 +618,7 @@ public class StaticSchedulingDirector extends Director {
                         + getCodeGenerator().comment(
                                 "Director has a period attribute,"
                                         + " so we track current time."));
-                variableDeclarations.append("double _currentTime = 0;" + _eol);
+                variableDeclarations.append(CURRENTTIME_DECLARATION);
             }
         }
 
@@ -659,6 +661,8 @@ public class StaticSchedulingDirector extends Director {
         allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
     }
 
+    /** The declaration for the _currentTime variable. */
+    public static final String CURRENTTIME_DECLARATION = "double _currentTime = 0;" + _eol;
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -692,7 +696,8 @@ public class StaticSchedulingDirector extends Director {
      * Return an unique label for the given attribute referenced
      * by the given adapter. Subclass should override this method
      * to generate the desire label according to the given parameters.
-     * @param target The ProgramCodeGeneratorAdapter for which code needs to be generated.
+     * @param target The ProgramCodeGeneratorAdapter for which code
+     * needs to be generated.
      * @param attribute The given attribute.
      * @param channelAndOffset The given channel and offset.
      * @return an unique label for the given attribute.
@@ -727,14 +732,14 @@ public class StaticSchedulingDirector extends Director {
         code.append(_ports.updateConnectedPortsOffset(port, rate));
     }
 
-    /** Update the read offsets of the buffer associated with the given port.
-    *
-    *  @param port The port whose read offset is to be updated.
-    *  @param code The string buffer that the generated code is appended to.
-    *  @param rate The rate, which must be greater than or equal to 0.
-    *  @exception IllegalActionException If thrown while reading or writing
-    *   offsets, or getting the buffer size, or if the rate is less than 0.
-    */
+    /** 
+     *  Update the read offsets of the buffer associated with the given port.
+     *  @param port The port whose read offset is to be updated.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @param rate The rate, which must be greater than or equal to 0.
+     *  @exception IllegalActionException If thrown while reading or writing
+     *   offsets, or getting the buffer size, or if the rate is less than 0.
+     */
     protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
             throws IllegalActionException {
         if (rate == 0) {
@@ -1542,6 +1547,8 @@ public class StaticSchedulingDirector extends Director {
          *  @param channelNumber The number of the channel that is being set.
          *  @param bufferSize The size of the buffer.
          *  @see #getBufferSize(IOPort, int)
+         *  @exception IllegalActionException If thrown while getting the port
+         *  information or while setting the buffer size.
          */
         public void setBufferSize(IOPort port, int channelNumber, int bufferSize) throws IllegalActionException {
             _getPortInfo(port).setBufferSize(channelNumber, bufferSize);
@@ -1644,6 +1651,7 @@ public class StaticSchedulingDirector extends Director {
             return info;
         }
 
+        /** A map from IOPort to PortInfo. */
         protected Map<IOPort, PortInfo> _portInfo = new HashMap<IOPort, PortInfo>();
     }
 
