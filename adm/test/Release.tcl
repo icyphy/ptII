@@ -113,7 +113,6 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
     set result [exec svn status]
     set result1 \
 {M       lib/matlab.jar
-M       ptdb/config/ptdb-params.properties
 ?       ptolemy/matlab/META-INF}
     if { $result == $result1 } {
 	puts "Result was:\n$result\nWhich is ok"
