@@ -100,197 +100,40 @@ import ptolemy.util.StringUtilities;
 public class NamedProgramCodeGeneratorAdapter extends
         ProgramCodeGeneratorAdapter {
 
-    /**
-     * This class implements a scope, which is used to generate the parsed
-     * expressions in target language.
-     */
-    protected class VariableScope extends ModelScope {
-        /**
-         * Construct a scope consisting of the variables of the containing actor
-         * and its containers and their scope-extending attributes.
-         */
-        public VariableScope() {
-            _variable = null;
-        }
-
-        /**
-         * Construct a scope consisting of the variables of the container of the
-         * given instance of Variable and its containers and their
-         * scope-extending attributes.
-         * @param variable The variable whose expression is under code
-         * generation using this scope.
-         */
-        public VariableScope(Variable variable) {
-            _variable = variable;
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /**
-         * Look up and return the macro or expression in the target language
-         * corresponding to the specified name in the scope.
-         * @param name The given name string.
-         * @return The macro or expression with the specified name in the scope.
-         * @exception IllegalActionException If thrown while getting buffer
-         * sizes or creating ObjectToken.
-         */
-        public Token get(String name) throws IllegalActionException {
-
-            NamedObj container = getComponent();
-            if (_variable != null) {
-                container = _variable.getContainer();
-            }
-
-            Variable result = getScopedVariable(_variable, container, name);
-
-            if (result != null) {
-                // If the variable found is a modified variable, which means
-                // its value can be directly changed during execution
-                // (e.g., in commit action of a modal controller), then this
-                // variable is declared in the target language and should be
-                // referenced by the name anywhere it is used.
-                if (getCodeGenerator() != null
-                        && getCodeGenerator()._modifiedVariables
-                                .contains(result)) { // figure out how to get the containers code generator that may help
-                    return new ObjectToken(getCodeGenerator()//_codeGenerator
-                            .generateVariableName(result));
-                } else {
-                    // This will lead to recursive call until a variable found
-                    // is either directly specified by a constant or it is a
-                    // modified variable.
-                    PtParser parser = new PtParser();
-                    String parameterValue = getParameterValue(name, result
-                            .getContainer());
-                    try {
-                        ASTPtRootNode parseTree = parser
-                                .generateParseTree(parameterValue);
-
-                        ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
-
-                        return evaluator.evaluateParseTree(parseTree, this);
-                    } catch (IllegalActionException ex) {
-                        // Could not evaluate the expression. This means that
-                        // the parameter value contains a variable expression.
-                        // So, we'll won't try to evaluate it.
-                        return new ObjectToken(parameterValue);
-                    }
-                }
-            } else {
-                return null;
-            }
-        }
-
-        /**
-         * Look up and return the type of the attribute with the specified name
-         * in the scope. Return null if such an attribute does not exist.
-         * @param name The name of the attribute to look up.
-         * @return The attribute with the specified name in the scope.
-         * @exception IllegalActionException If a value in the scope exists with
-         * the given name, but cannot be evaluated.
-         */
-        public ptolemy.data.type.Type getType(String name)
-                throws IllegalActionException {
-            if (_variable != null) {
-                return _variable.getParserScope().getType(name);
-            }
-            return null;
-        }
-
-        /**
-         * Look up and return the type term for the specified name in the scope.
-         * Return null if the name is not defined in this scope, or is a
-         * constant type.
-         * @param name The name of the type term to look up.
-         * @return The InequalityTerm associated with the given name in the
-         * scope.
-         * @exception IllegalActionException If a value in the scope exists with
-         * the given name, but cannot be evaluated.
-         */
-        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            if (_variable != null) {
-                return _variable.getParserScope().getTypeTerm(name);
-            }
-            return null;
-        }
-
-        /**
-         * Return the list of identifiers within the scope.
-         * @return The list of variable names within the scope.
-         * @exception IllegalActionException If there is a problem getting the
-         * identifier set from the variable.
-         */
-        public Set identifierSet() throws IllegalActionException {
-            if (_variable != null) {
-                return _variable.getParserScope().identifierSet();
-            }
-            return null;
-        }
-
-        public String toString() {
-            return super.toString()
-                    + " variable: "
-                    + _variable
-                    + " variable.parserScope: "
-                    + (_variable == null ? "N/A, _variable is null" : _variable
-                            .getParserScope());
-        }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         private variables                 ////
-
-        /**
-         * If _variable is not null, then the helper scope created is for
-         * parsing the expression specified for this variable and generating the
-         * corresponding code in target language.
-         */
-        private Variable _variable = null;
-    }
-
     /** Construct the code generator adapter associated
      *  with the given component.
      *  @param component The associated component.
      */
     public NamedProgramCodeGeneratorAdapter(NamedObj component) {
         super(component);
-        try {
-            if (getCodeGenerator() == null) {
-                setCodeGenerator(new ProgramCodeGenerator(component, component
-                        .getName(), "java", "j"));
-                if (getCodeGenerator() != null) {
-                    System.out.println("code generator created for "
-                            + component.getFullName());
-                }
+        // try {
+        //     if (getCodeGenerator() == null) {
+        //         setCodeGenerator(new ProgramCodeGenerator(component,
+        //                      component.getName(), "java", "j"));
+        //         setTemplateParser(new ProceduralTemplateParser());
+        //         _templateParser.init(_component, this);
+        //     } else if (_templateParser == null) {
+        //         setTemplateParser(new ProceduralTemplateParser());
+        //         _templateParser.init(_component, this);
+        //     }
+        // } catch (NameDuplicationException ex) {
+        //     // If there is a NameDuplicationException, then try
+        //     // creating a code generator with an underscore.
+        //     // FIXME: Need to document under what circumstances this 
+        //     // situation would occur.
+        //     // FIXME: Why would this work once?  What happens if
+        //     // we have a code generator with a trailing _ in the name?
+        //     if (getCodeGenerator() == null) {
+        //         setCodeGenerator(new ProgramCodeGenerator(component,
+        //                         component.getName() + "_", "java", "j"));
 
-                this.setTemplateParser(new ProceduralTemplateParser());
-                _templateParser.init(_component, this);
-
-            } else if (_templateParser == null) {
-                this.setTemplateParser(new ProceduralTemplateParser());
-                _templateParser.init(_component, this);
-
-            }
-        } catch (NameDuplicationException ex) {
-            System.out.println("there was a name duplicationexception ");
-            try {
-                if (getCodeGenerator() == null) {
-                    setCodeGenerator(new ProgramCodeGenerator(component,
-                            component.getName() + "_", "java", "j"));
-
-                    this.setTemplateParser(new ProceduralTemplateParser());
-                    _templateParser.init(_component, this);
-                } else if (_templateParser == null) {
-
-                    this.setTemplateParser(new ProceduralTemplateParser());
-                    _templateParser.init(_component, this);
-                }
-            } catch (NameDuplicationException ex2) {
-            } catch (IllegalActionException ex3) {
-            }
-
-        } catch (IllegalActionException ex) {
-        }
+        //         setTemplateParser(new ProceduralTemplateParser());
+        //         _templateParser.init(_component, this);
+        //     } else if (_templateParser == null) {
+        //         setTemplateParser(new ProceduralTemplateParser());
+        //         _templateParser.init(_component, this);
+        //     }
+        // }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -488,11 +331,9 @@ public class NamedProgramCodeGeneratorAdapter extends
      * should be put.
      * @exception IllegalActionException Thrown if the helper class cannot be
      * found.
-     * @see #setWriteOffset(IOPort, int, Object)
      */
     public Object getWriteOffset(IOPort port, int channelNumber)
             throws IllegalActionException {
-
         return ((PortCodeGenerator) getAdapter(port))
                 .getWriteOffset(channelNumber);
     }
@@ -766,7 +607,6 @@ public class NamedProgramCodeGeneratorAdapter extends
      * @return The buffer size of the given port.
      * @exception IllegalActionException If the
      * {@link #getBufferSize(IOPort, int)} method throws it.
-     * @see #setBufferSize(IOPort, int, int)
      */
     public int getBufferSize(IOPort port) throws IllegalActionException {
         int bufferSize = 1;
@@ -803,7 +643,6 @@ public class NamedProgramCodeGeneratorAdapter extends
      * @return The buffer size of the given port and channel.
      * @exception IllegalActionException If the getBufferSize() method of the
      * actor helper class throws it.
-     * @see #setBufferSize(IOPort, int, int)
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
@@ -1139,6 +978,9 @@ public class NamedProgramCodeGeneratorAdapter extends
         return getCodeGenerator().targetType(ptType);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /**
      * Generate the fire code. In this base class, add the name of the
      * associated component in the comment. It checks the inline parameter
@@ -1179,6 +1021,161 @@ public class NamedProgramCodeGeneratorAdapter extends
         return _templateParser.generateTypeConvertStatement(source, sink,
                 offset, null);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected inner classes           ////
+
+    /**
+     * This class implements a scope, which is used to generate the parsed
+     * expressions in target language.
+     */
+    protected class VariableScope extends ModelScope {
+        /**
+         * Construct a scope consisting of the variables of the containing actor
+         * and its containers and their scope-extending attributes.
+         */
+        public VariableScope() {
+            _variable = null;
+        }
+
+        /**
+         * Construct a scope consisting of the variables of the container of the
+         * given instance of Variable and its containers and their
+         * scope-extending attributes.
+         * @param variable The variable whose expression is under code
+         * generation using this scope.
+         */
+        public VariableScope(Variable variable) {
+            _variable = variable;
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /**
+         * Look up and return the macro or expression in the target language
+         * corresponding to the specified name in the scope.
+         * @param name The given name string.
+         * @return The macro or expression with the specified name in the scope.
+         * @exception IllegalActionException If thrown while getting buffer
+         * sizes or creating ObjectToken.
+         */
+        public Token get(String name) throws IllegalActionException {
+
+            NamedObj container = getComponent();
+            if (_variable != null) {
+                container = _variable.getContainer();
+            }
+
+            Variable result = getScopedVariable(_variable, container, name);
+
+            if (result != null) {
+                // If the variable found is a modified variable, which means
+                // its value can be directly changed during execution
+                // (e.g., in commit action of a modal controller), then this
+                // variable is declared in the target language and should be
+                // referenced by the name anywhere it is used.
+                if (getCodeGenerator() != null
+                        && getCodeGenerator()._modifiedVariables
+                                .contains(result)) { // figure out how to get the containers code generator that may help
+                    return new ObjectToken(getCodeGenerator()//_codeGenerator
+                            .generateVariableName(result));
+                } else {
+                    // This will lead to recursive call until a variable found
+                    // is either directly specified by a constant or it is a
+                    // modified variable.
+                    PtParser parser = new PtParser();
+                    String parameterValue = getParameterValue(name, result
+                            .getContainer());
+                    try {
+                        ASTPtRootNode parseTree = parser
+                                .generateParseTree(parameterValue);
+
+                        ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
+
+                        return evaluator.evaluateParseTree(parseTree, this);
+                    } catch (IllegalActionException ex) {
+                        // Could not evaluate the expression. This means that
+                        // the parameter value contains a variable expression.
+                        // So, we'll won't try to evaluate it.
+                        return new ObjectToken(parameterValue);
+                    }
+                }
+            } else {
+                return null;
+            }
+        }
+
+        /**
+         * Look up and return the type of the attribute with the specified name
+         * in the scope. Return null if such an attribute does not exist.
+         * @param name The name of the attribute to look up.
+         * @return The attribute with the specified name in the scope.
+         * @exception IllegalActionException If a value in the scope exists with
+         * the given name, but cannot be evaluated.
+         */
+        public ptolemy.data.type.Type getType(String name)
+                throws IllegalActionException {
+            if (_variable != null) {
+                return _variable.getParserScope().getType(name);
+            }
+            return null;
+        }
+
+        /**
+         * Look up and return the type term for the specified name in the scope.
+         * Return null if the name is not defined in this scope, or is a
+         * constant type.
+         * @param name The name of the type term to look up.
+         * @return The InequalityTerm associated with the given name in the
+         * scope.
+         * @exception IllegalActionException If a value in the scope exists with
+         * the given name, but cannot be evaluated.
+         */
+        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            if (_variable != null) {
+                return _variable.getParserScope().getTypeTerm(name);
+            }
+            return null;
+        }
+
+        /**
+         * Return the list of identifiers within the scope.
+         * @return The list of variable names within the scope.
+         * @exception IllegalActionException If there is a problem getting the
+         * identifier set from the variable.
+         */
+        public Set identifierSet() throws IllegalActionException {
+            if (_variable != null) {
+                return _variable.getParserScope().identifierSet();
+            }
+            return null;
+        }
+
+        public String toString() {
+            return super.toString()
+                    + " variable: "
+                    + _variable
+                    + " variable.parserScope: "
+                    + (_variable == null ? "N/A, _variable is null" : _variable
+                            .getParserScope());
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+
+        /**
+         * If _variable is not null, then the helper scope created is for
+         * parsing the expression specified for this variable and generating the
+         * corresponding code in target language.
+         */
+        private Variable _variable = null;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Generate the invocation of the fire function of
@@ -1280,9 +1277,6 @@ public class NamedProgramCodeGeneratorAdapter extends
         }
         sinks.add(sink);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
