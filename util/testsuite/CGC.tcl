@@ -132,11 +132,12 @@ proc CGC_test {file inline {extraArgs {}} } {
 		    puts "Running valgrind $executable"
 
 		    set watchDog [java::new util.testsuite.WatchDog $timeout]
+		    set valgrind ""
 		    catch {set valgrind [exec -stderrok valgrind $executable]} errMsg
 		    $watchDog cancel
 
 		    if {![regexp "ERROR SUMMARY: 0 errors" $valgrind]} {
-			error "Valgrind had a non-zero ERROR SUMMARY\n$valgrind"
+			error "Valgrind had a non-zero ERROR SUMMARY\n$valgrind\n$errMsg"
 		    }
 		}
 	    }
