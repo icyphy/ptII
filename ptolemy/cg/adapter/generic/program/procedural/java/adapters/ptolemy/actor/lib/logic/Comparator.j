@@ -15,7 +15,6 @@ $put(output, $get(left) <= ($get(right) + $val(tolerance)));
 /**/
 
 /*** EQBlock ***/
-$put(output, ($get(left) <= ($get(right) + $val(tolerance)))
-        && ($get(left) >= ($get(right) - $val(tolerance))));
+$put(output, ($get(left) <= ($get(right) + $val(tolerance))) && ($get(left) >= ($get(right) - $val(tolerance))));
 /**/
 
