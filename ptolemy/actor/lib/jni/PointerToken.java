@@ -305,7 +305,7 @@ public class PointerToken extends Token {
 
     /** Return true if this is a 32bit JVM.
      *  @return true if this is a 32bit JVM.
-     *  @deprecated Call {@link ptolemy.util.JVMBitWidth.is32Bit()}
+     *  @deprecated Call {@link ptolemy.util.JVMBitWidth#is32Bit()}
      */
     public static boolean is32Bit() {
         return ptolemy.util.JVMBitWidth.is32Bit();
