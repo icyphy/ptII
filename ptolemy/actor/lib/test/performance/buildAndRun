@@ -21,3 +21,6 @@ do
     $PTII/bin/ptjacl run.tcl $model
 done
 
+$PTII/bin/ptcg -language java -measureTime true hierarchicalModel_2_2.xml 
+
+
