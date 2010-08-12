@@ -206,17 +206,23 @@ public class CompositeEntity extends ComponentEntity {
         return entities;
     }
 
-    /** Return a list that consists of all the non-opaque composite entities in a
-     *  model.  This method differs from allAtomicEntityList() in that
-     *  this method returns CompositeEntities and
-     *  allAtomicEntityList() returns atomic entities.  This method
-     *  differs from {@link #deepEntityList()} in that this method
-     *  returns only CompositeEntities, whereas deepEntityList()
-     *  returns ComponentEntities. The returned list of this method
-     *  does not include any entities that are class definitions.
-     *  @return a List of all Composite entities in the model.
+    /** Return a list that consists of all the transparent composite
+     *  entities in a model.  This method differs from
+     *  allAtomicEntityList() in that this method returns
+     *  CompositeEntities and allAtomicEntityList() returns atomic
+     *  entities.  This method differs from {@link #deepEntityList()}
+     *  in that this method returns only CompositeEntities, whereas
+     *  deepEntityList() returns ComponentEntities. The returned list
+     *  of this method does not include any entities that are class
+     *  definitions.
+     *  @return a List of all transparent composite entities in the
+     *  model.  A transparent composite is a composite that does not
+     *  contain a director.
      */
     public List allCompositeEntityList() {
+	// FIXME: This should be allCompositeTransparentEntityList()
+	// FIXME: There should also be allCompositeOpaqueEntityList()
+	// FIXME: this method should return all transparent and opaque composites
         try {
             _workspace.getReadAccess();
 
@@ -1451,7 +1457,7 @@ public class CompositeEntity extends ComponentEntity {
      *  are listed lazily.
      *  Derived classes may omit from the returned list any class
      *  definitions whose instantiation is deferred.
-     *  @return A list of ComponentEntity objects.
+     *  @return A list of transparent ComponentEntity objects.
      */
     public List lazyAllCompositeEntityList() {
         try {
@@ -1470,10 +1476,47 @@ public class CompositeEntity extends ComponentEntity {
                     ComponentEntity entity = (ComponentEntity) entities.next();
                     if (/*!entity.isClassDefinition()&& */!entity.isOpaque() /*entity instanceof CompositeEntity*/) {
                         result.add(entity);
-                        result.addAll(((CompositeEntity) entity)
-                                .lazyAllCompositeEntityList());
+			result.addAll(((CompositeEntity) entity)
+				      .lazyAllCompositeEntityList());
 
-                    }
+		    }
+                }
+            }
+
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** Return all the transparent and opaque composites.
+     *  In this base class, if any contained composite is lazy, its contents
+     *  are listed lazily.
+     *  Derived classes may omit from the returned list any class
+     *  definitions whose instantiation is deferred.
+     *  @return A list of transparent ComponentEntity objects.
+     */
+    public List lazyAllCompositeTransparentAndOpaqueEntityList() {
+        try {
+            _workspace.getReadAccess();
+
+            LinkedList result = new LinkedList();
+
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                // Note that by directly using _containedEntities rather than
+                // entityList() we are automatically lazy.
+                Iterator entities = _containedEntities.elementList().iterator();
+                while (entities.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity) entities.next();
+                    if (/*!entity.isClassDefinition()&& !entity.isOpaque()*/
+			entity instanceof CompositeEntity) {
+                        result.add(entity);
+			result.addAll(((CompositeEntity) entity)
+				      .lazyAllCompositeTransparentAndOpaqueEntityList());
+
+		    }
                 }
             }
 
@@ -1852,8 +1895,10 @@ public class CompositeEntity extends ComponentEntity {
                         + "\n");
             }
 
+            int compositeEntityCount = 0;
+	    int opaqueCompositeEntityCount = 0;
             List relationList = lazyRelationList();
-            int compositeEntityCount = 0, relationCount = relationList.size();
+	    int relationCount = relationList.size();
             if (clazz != null) {
                 // Search the relations
                 Iterator relations = relationList.iterator();
@@ -1866,13 +1911,15 @@ public class CompositeEntity extends ComponentEntity {
             }
 
             Map<Integer, Integer> compositeEntityDepthMap = new TreeMap<Integer, Integer>();
-            entities = lazyAllCompositeEntityList().iterator();
+            entities = lazyAllCompositeTransparentAndOpaqueEntityList().iterator();
 
             while (entities.hasNext()) {
                 Entity entity = (Entity) entities.next();
                 if (entity instanceof CompositeEntity) {
                     compositeEntityCount++;
-
+		    if (((CompositeEntity)entity).isOpaque()) {
+			opaqueCompositeEntityCount++;
+		    }
                     // Find the depth and add it to the list
                     Integer depth = Integer.valueOf(entity.depthInHierarchy());
                     if (!compositeEntityDepthMap.containsKey(depth)) {
@@ -1918,6 +1965,8 @@ public class CompositeEntity extends ComponentEntity {
                     + entityCount
                     + "\nCompositeEntities: "
                     + compositeEntityCount
+                    + "\nOpaqueCompositeEntities: "
+                    + opaqueCompositeEntityCount
                     + "\nRelations: "
                     + relationCount
                     + "\nAttributes: "
