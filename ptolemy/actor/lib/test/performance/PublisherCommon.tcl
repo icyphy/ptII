@@ -101,11 +101,13 @@ proc nPubSubs {numberOfPubSubs {returnAll 1} {usePubSub 1}} {
 }
 
 # Create a Pub/Sub model
-proc createPubSubModel {numberOfPubSubs {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+proc createPubSubModel {numberOfPubSubs {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"} {opaque true}} {
     set e0 [sdfModel 5]
     $e0 allowLevelCrossingConnect true
-    set sdfDirector [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]
-    [java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+    if {$opaque} {
+	set sdfDirector [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]
+	[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+    }
     for {set i 1} { $i < $numberOfPubSubs} {incr i} {
         set rec [createSubscriber $e0 "PubSub20_$i" "PS20_$i"]
 	set e1 [java::new $typedComposite $e0 "e1-$i"]
@@ -252,20 +254,21 @@ proc plotStats {pubSubStats {levelxingStats {}}} {
 
 # Create a top level composite that uses ports instead of Publisher/Subscriber.
 # This is needed if the inner composites are opaque.
-proc _createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.
-TypedCompositeActor"}} {
+proc _createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"} {opaque true}} {
     puts "_createHierarchicalPubSubModelTop $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub  $typedComposite"
     if {$levelNumber == 1} {
-	_createHierarchichalPubSubModel $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub $typedComposite
+	_createHierarchichalPubSubModel $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub $typedComposite $opaque
 	return
     }
     global pubCount
  	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
             set en [java::new $typedComposite $container "en-$n"]
 	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
-		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
-		[java::field $sdfDirector iterations] setExpression 1
-		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+		if {$opaque} {
+		    set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
+		    [java::field $sdfDirector iterations] setExpression 1
+		    [java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+		}
 		if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
 		    [java::field $en recompileHierarchy] setExpression true
 		    [java::field $en recompileThisLevel] setExpression true
@@ -277,7 +280,7 @@ TypedCompositeActor"}} {
  	    set channel2 "PubSub_[$container getFullName]_${levelNumber}_$n"
 
 	    set nameSuffix [expr {$levelNumber - 1}]
-   	    _createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub ptolemy.actor.TypedCompositeActor
+   	    _createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub $typedComposite $opaque
 	    #puts "---------[$en getFullName] $levelNumber $n\n[$en exportMoML]"
 
 	    set p1 [java::new ptolemy.actor.TypedIOPort $en "p1" false true]
@@ -321,13 +324,13 @@ TypedCompositeActor"}} {
          } 
 }
 
-proc _createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+proc _createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"} {opaque true}} {
     #puts "_createHierarchicalPubSubModel $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub  $typedComposite"
     global pubCount
     if {$levelNumber == 1} {
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
             set en [java::new $typedComposite $container "en-$n"]
-	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
+	    if {$opaque} {
 		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
 		[java::field $sdfDirector iterations] setExpression 1
 		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
@@ -386,7 +389,7 @@ proc _createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNum
     } else {
  	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
             set en [java::new $typedComposite $container "en-$n"]
-	    if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
+	    if {$opaque} {
 		set sdfDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector $en "SDFDirector"]  
 		[java::field $sdfDirector iterations] setExpression 1
 		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
@@ -419,17 +422,19 @@ proc _createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNum
 }
 
 # Internal method that does the actual model creation
-proc _pubSubAggBase {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+proc _pubSubAggBase {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"} {opaque true}} {
     #puts "_pubSubAggBase $numberOfSubsPerLevel $levels $typedComposite"
     global pubCount 
     set pubCount 0
     set e0 [sdfModel 5]
     $e0 allowLevelCrossingConnect true
-    set sdfDirector [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]
-    [java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+    if {$opaque} {
+	set sdfDirector [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e0 getDirector]]
+	[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
+    }
     set returnAll 1
     set usePubSub 1
-    _createHierarchichalPubSubModelTop $e0 $numberOfSubsPerLevel $levels $returnAll $usePubSub $typedComposite
+    _createHierarchichalPubSubModelTop $e0 $numberOfSubsPerLevel $levels $returnAll $usePubSub $typedComposite $opaque
 
     set subscriptionAggregator [java::new ptolemy.actor.lib.SubscriptionAggregator $e0 "subscriptionAggregator"]
     set recorder [java::new ptolemy.actor.lib.Recorder $e0 "recorder"]
@@ -451,9 +456,9 @@ proc _pubSubAggBase {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.
 # Create a Pub/Sub model with a certain number of Subs per level, levels
 # and TypedComposites.
 # This is the primary entry point for creating Pub/Sub models
-proc pubSubAggModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+proc pubSubAggModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.TypedCompositeActor"} {opaque true}} {
     puts "pubSubAggModel $numberOfSubsPerLevel $levels $typedComposite"
-    set e0 [_pubSubAggBase $numberOfSubsPerLevel $levels $typedComposite]
+    set e0 [_pubSubAggBase $numberOfSubsPerLevel $levels $typedComposite $opaque]
     set modelType ""
     if {$typedComposite != "ptolemy.actor.TypedCompositeActor"} {
 	if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
