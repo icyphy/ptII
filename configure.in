@@ -2192,7 +2192,7 @@ else
     fi
 fi
 
-if test -z "$JOGL_DIR"; then
+if test -z "$PTJOGL_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/jogl/"
 fi 
 
