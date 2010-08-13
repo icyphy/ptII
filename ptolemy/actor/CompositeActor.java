@@ -1106,17 +1106,17 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  typically happens before the model is preinitialized,
      *  for example when opening the model. The subscribers
      *  will look for publishers during the preinitialization phase.
-     *  @param name The name is being used in the matching process
-     *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param name The name being used in the matching process
+     *   to match publisher and subscriber.
+     *  @param subscriberPort The subscriber port. 
      *  @param global Specification of whether the data is subscribed
-     *  globally.  If set to true, then subscribers will see values
-     *  published by publishers anywhere in the model that reference
-     *  the same channel by name.  If set to false, then only values
-     *  published by publishers that are fired by the same director
-     *  are seen by this subscriber.
+     *   globally.  If set to true, then subscribers will see values
+     *   published by publishers anywhere in the model that reference
+     *   the same channel by name.  If set to false, then only values
+     *   published by publishers that are fired by the same director
+     *   are seen by this subscriber.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *   as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void linkToPublishedPort(String name, IOPort subscriberPort,
@@ -1133,49 +1133,52 @@ public class CompositeActor extends CompositeEntity implements Actor,
             try {
                 linkToPublishedPort(name, subscriberPort);
             } catch (IllegalActionException e) {
-                if (_debugging) {
-                    _debug("Does not find any publisher at this level" + e);
-                }
-            }
-
-            if (global && this != toplevel()) {
-                String portName = "_subscriber_"
-                        + StringUtilities.sanitizeName(name);
-                IOPort port = (IOPort) getPort(portName);
-                if (port == null) {
-                    port = (IOPort) newPort(portName);
-                    new Parameter(port, "_hide", BooleanToken.TRUE);
-                    port.setPersistent(false);
-                    port.setInput(true);
-                    port.setMultiport(true);
-                    port.setDefaultWidth(0);
-
-                    IORelation relation = null;
-                    //connect the newly created port to the subscriber port
-                    try {
-                        // CompositeActor always creates an IORelation.
-                        relation = (IORelation) newRelation(uniqueName(subscriberPort
-                                .getContainer().getName()
-                                + "subscriberExternalRelationB"));
-                    } catch (NameDuplicationException e) {
-                        // Shouldn't happen.
-                        throw new IllegalStateException(e);
+                if (!global || this == toplevel()) {
+                    throw e;
+                } else {
+                    if (_debugging) {
+                        _debug("Failed to find publisher for channel \""
+                                + name
+                                + "\" in "
+                                + getFullName()
+                                + ". Trying up the hierarchy.");
                     }
-                    // Prevent the relation and its links from being exported.
-                    relation.setPersistent(false);
-                    // Prevent the relation from showing up in vergil.
-                    new Parameter(relation, "_hide", BooleanToken.TRUE);
-                    port.liberalLink(relation);
 
-                    if (!subscriberPort.isLinked(relation)) {
-                        subscriberPort.liberalLink(relation);
+                    String portName = "_subscriber_" + StringUtilities.sanitizeName(name);
+                    IOPort port = (IOPort) getPort(portName);
+                    if (port == null) {
+                        port = (IOPort) newPort(portName);
+                        new Parameter(port, "_hide", BooleanToken.TRUE);
+                        port.setPersistent(false);
+                        port.setInput(true);
+                        port.setMultiport(true);
+                        port.setDefaultWidth(0);
+    
+                        IORelation relation = null;
+                        //connect the newly created port to the subscriber port
+                        try {
+                            // CompositeActor always creates an IORelation.
+                            relation = (IORelation) newRelation(uniqueName(subscriberPort.getContainer().getName()+ "subscriberExternalRelationB"));
+                        } catch (NameDuplicationException ex) {
+                            // Shouldn't happen.
+                            throw new IllegalStateException(ex);
+                        }
+                        // Prevent the relation and its links from being exported.
+                        relation.setPersistent(false);
+                        // Prevent the relation from showing up in vergil.
+                        new Parameter(relation, "_hide", BooleanToken.TRUE);
+                        port.liberalLink(relation);
+    
+                        if (!subscriberPort.isLinked(relation)) {
+                            subscriberPort.liberalLink(relation);
+                        }
                         notifyConnectivityChange();
                     }
-                }
-
-                if (container instanceof CompositeActor) {
-                    ((CompositeActor) container).linkToPublishedPort(name,
-                            port, global);
+    
+                    if (container instanceof CompositeActor) {
+                        ((CompositeActor) container).linkToPublishedPort(name,
+                                port, global);
+                    }
                 }
             }
         }
