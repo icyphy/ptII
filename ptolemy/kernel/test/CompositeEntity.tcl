@@ -137,6 +137,7 @@ test CompositeEntity-3.1.1 {Test allCompositeEntityList} {
 } {C {} {B D} D {Size Statistics for .A
 AtomicEntities: 2
 CompositeEntities: 1
+OpaqueCompositeEntities: 0
 Relations: 0
 Attributes: 2
 Atomic Actor Names and Counts:
@@ -503,6 +504,7 @@ test CompositeEntity-11.1.1 {Test allCompositeEntities and statistics} {
 } {{E1 E2 E5 E6 E8 E9} {E3 E4 E7 E10} {E1 E2 E5 E6 E8 E9} {E1 E2 E5 E6 E8 E9} {Size Statistics for .E0
 AtomicEntities: 6
 CompositeEntities: 4
+OpaqueCompositeEntities: 0
 Relations: 12
 Attributes: 6
 Atomic Actor Names and Counts:
@@ -514,6 +516,7 @@ Depth: 2 # of Composites at that depth: 1
 } {Size Statistics for .E0
 AtomicEntities: 6
 CompositeEntities: 4
+OpaqueCompositeEntities: 0
 Relations: 12
 Attributes: 6
 Entities of type "ptolemy.kernel.CompositeEntity": 4
