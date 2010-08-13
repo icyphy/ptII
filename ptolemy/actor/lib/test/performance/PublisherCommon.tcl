@@ -47,6 +47,10 @@ proc createPublisher {e0 channel nameSuffix {factor 1.1} } {
     set scale [java::new ptolemy.actor.lib.Scale $e0 "scale_$nameSuffix"]
     set publisher [java::new ptolemy.actor.lib.Publisher $e0 "publisher_$nameSuffix"]
 
+    set globalParameter [getParameter $publisher global]
+    $globalParameter setExpression true
+    $publisher attributeChanged $globalParameter
+
     set factorParameter [getParameter $scale factor]
     $factorParameter setExpression $factor
 
@@ -302,6 +306,11 @@ proc createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelN
 
 	    #pub_c
  	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_${levelNumber}_$n"]
+
+	    set globalParameter [getParameter $publisher global]
+	    $globalParameter setExpression true
+	    $publisher attributeChanged $globalParameter
+
  	    set channelParameter [getParameter $publisher channel]
  	    $channelParameter setExpression $channel2
  	    $publisher attributeChanged $channelParameter
@@ -370,6 +379,10 @@ proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumb
 	    # Create the upper publisher and set the channel 
 	    #pub_b
 	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_${levelNumber}_$n"]
+	    set globalParameter [getParameter $publisher global]
+	    $globalParameter setExpression true
+	    $publisher attributeChanged $globalParameter
+
 	    set channelParameter [getParameter $publisher channel]
 	    $channelParameter setExpression $channel2
 	    $publisher attributeChanged $channelParameter
@@ -402,6 +415,10 @@ proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumb
 
 	    #pub_c
  	    set publisher [java::new ptolemy.actor.lib.Publisher $container "pub_${levelNumber}_$n"]
+	    set globalParameter [getParameter $publisher global]
+	    $globalParameter setExpression true
+	    $publisher attributeChanged $globalParameter
+
  	    set channelParameter [getParameter $publisher channel]
  	    $channelParameter setExpression $channel2
  	    $publisher attributeChanged $channelParameter
