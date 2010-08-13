@@ -7,13 +7,14 @@
 rm *.out *.xml *.plt
 rm -rf $HOME/cg/
 # Build the models
-$PTII/bin/ptjacl ModularCodeGen.tcl
+$PTII/bin/ptjacl ModularCodeGenLarge.tcl
 
-models="hierarchicalModel_2_2.xml \
-    hierarchicalModelTransparent_2_2.xml \
-    hierarchicalModelLazy_2_2.xml \
-    hierarchicalModelLazyTransparent_2_2.xml \
-    hierarchicalModelMCG_2_2.xml"
+models="pubSubAggMCG_2_2-clean.xml
+pubSubAggMCG_2_2.xml
+pubSubAgg_2_2-clean.xml
+pubSubAgg_2_2.xml
+pubSubAggother_2_2-clean.xml
+pubSubAggother_2_2.xml"
 
 for model in $models
 do
@@ -21,3 +22,4 @@ do
     $PTII/bin/ptjacl run.tcl $model
 done
 
+$PTII/bin/ptcg -language java -measureTime true pubSubAggMCG_2_2.xml
