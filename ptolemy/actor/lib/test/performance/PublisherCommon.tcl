@@ -382,7 +382,7 @@ proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumb
 	    # Needed for a 2_3 model
 	    set globalParameter [getParameter $publisher global]
 	    $globalParameter setExpression true
-	    $publisher attributeChanged $globalParameter
+	    #$publisher attributeChanged $globalParameter
 
 	    set channelParameter [getParameter $publisher channel]
 	    $channelParameter setExpression $channel2
@@ -419,7 +419,7 @@ proc createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumb
 	    # Needed for 3_4 models
 	    set globalParameter [getParameter $publisher global]
 	    $globalParameter setExpression true
-	    $publisher attributeChanged $globalParameter
+	    #$publisher attributeChanged $globalParameter
 
  	    set channelParameter [getParameter $publisher channel]
  	    $channelParameter setExpression $channel2
