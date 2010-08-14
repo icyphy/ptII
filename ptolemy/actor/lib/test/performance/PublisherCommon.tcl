@@ -47,9 +47,9 @@ proc createPublisher {e0 channel nameSuffix {factor 1.1} } {
     set scale [java::new ptolemy.actor.lib.Scale $e0 "scale_$nameSuffix"]
     set publisher [java::new ptolemy.actor.lib.Publisher $e0 "publisher_$nameSuffix"]
 
-    #set globalParameter [getParameter $publisher global]
-    #$globalParameter setExpression true
-    #$publisher attributeChanged $globalParameter
+    set globalParameter [getParameter $publisher global]
+    $globalParameter setExpression true
+    $publisher attributeChanged $globalParameter
 
     set factorParameter [getParameter $scale factor]
     $factorParameter setExpression $factor
@@ -275,7 +275,12 @@ proc createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel levelN
  	    set channel2 "PubSub_[$container getFullName]_${levelNumber}_$n"
 
 	    set nameSuffix [expr {$levelNumber - 1}]
-   	    createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub ptolemy.actor.TypedCompositeActor $opaque
+
+	    # Only create a few ModalCodeGenTypedComposites at the top.
+	    #set innerTypedComposite ptolemy.actor.TypedCompositeActor
+	    set innerTypedComposite $typedComposite
+
+   	    createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub $innerTypedComposite $opaque
 	    #puts "---------[$en getFullName] $levelNumber $n\n[$en exportMoML]"
 
 	    set p1 [java::new ptolemy.actor.TypedIOPort $en "p1" false true]
@@ -563,7 +568,9 @@ proc createHierarchichalModelSecondLevel {container numberOfPubSubsPerLevel leve
 	    set en [java::new $typedComposite $container "en-$n"]
 
 	    # Only create a few ModalCodeGenTypedComposites at the top.
-	    set innerTypedComposite ptolemy.actor.TypedCompositeActor
+	    #set innerTypedComposite ptolemy.actor.TypedCompositeActor
+	    set innerTypedComposite $typedComposite
+
    	    createHierarchichalModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $innerTypedComposite
 
 	    set upperNameSuffix "${levelNumber}_$n"
