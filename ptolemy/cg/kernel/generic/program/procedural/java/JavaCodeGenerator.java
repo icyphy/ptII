@@ -1146,7 +1146,7 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
      *  element will consist of one or more "import static" statements
      *  and the second and possibly successive element will consist of
      *  Java classes that should be written out by 
-     *  {@link #writeVariableDeclarations(List<String>)}.
+     *  {@link #_writeVariableDeclarations(List)}.
      *
      *  @param linesPerMethod The number of lines that should go into
      *  each method.
