@@ -303,7 +303,7 @@ test Publisher-3.0 {Test no publisher} {
     catch {$manager execute} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: No Publishers were found adjacent to or below .NoPublisher.subagg
-  in .NoPublisher}}
+  in .NoPublisher.subagg}}
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]

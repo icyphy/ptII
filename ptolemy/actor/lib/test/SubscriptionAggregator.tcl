@@ -95,10 +95,34 @@ test SubscriptionAggregator-2.1 {No Publisher} {
     catch {[$e0 getManager] execute} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: No Publishers were found adjacent to or below .top.subagg
-  in .top}}
+  in .top.subagg}}
+
+test SubscriptionAggregator-2.2 {Test no publisher} {
+    set workspace [java::new ptolemy.kernel.util.Workspace "pubWS22"]
+    set parser [java::new ptolemy.moml.MoMLParser $workspace]
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    set url [[java::new java.io.File "NoPublisherSubAgg2.xml"] toURL]
+    $parser purgeModelRecord $url
+    set model [java::cast ptolemy.actor.TypedCompositeActor \
+		   [$parser {parse java.net.URL java.net.URL} \
+			[java::null] $url]]
+    set manager [java::new ptolemy.actor.Manager $workspace "pub22Manager"]
+    $model setManager $manager 
+    catch {$manager execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Failed to find a publisher to match "channel1"
+  in .NoPublisherSubAgg2}}
+
 
 test SubscriptionAggregator-3.0 {Debugging messages} {
     set e3 [sdfModel 5]
+    set sdfDirector [java::cast ptolemy.domains.sdf.kernel.SDFDirector [$e3 getDirector]]
+    [java::field $sdfDirector allowDisconnectedGraphs] setExpression true
 
     set const [java::new ptolemy.actor.lib.Const $e3 const]
     set publisher [java::new ptolemy.actor.lib.Publisher $e3 publisher]
@@ -121,12 +145,16 @@ test SubscriptionAggregator-3.0 {Debugging messages} {
 	[java::field [java::cast ptolemy.actor.lib.Subscriber $subAgg] \
 	     output] \
 	[java::field [java::cast ptolemy.actor.lib.Sink $rec] input]]] setWidth 1
-
+    #puts [$e3 exportMoML]
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
             {java.io.PrintStream java.io.OutputStream} $stream]
     set listener [java::new ptolemy.kernel.util.StreamListener $printStream]
     $subAgg addDebugListener $listener
+
+    # FIXME: I'm not sure why it is necessary to call description here,
+    # but if we don't then we get an error.
+    #$subAgg description
 
     [$e3 getManager] execute
     $subAgg removeDebugListener $listener

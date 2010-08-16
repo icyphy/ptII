@@ -1072,7 +1072,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     // Shouldn't happen.
                     throw new IllegalStateException(e);
                 }
-
                 // Prevent the relation and its links from being exported.
                 relation.setPersistent(false);
                 // Prevent the relation from showing up in vergil.
@@ -1264,17 +1263,26 @@ public class CompositeActor extends CompositeEntity implements Actor,
             ((CompositeActor) container).linkToPublishedPort(pattern,
                     subscriberPort, global);
         } else {
-            if (_publishedPorts != null) {
+            if (_publishedPorts == null) {
+                throw new IllegalActionException(subscriberPort.getContainer(),
+                        "No Publishers were found adjacent to or below "
+                        + subscriberPort.getContainer().getFullName());
+            } else {
+                boolean matched = false;
                 for (String name : _publishedPorts.keySet()) {
                     Matcher matcher = pattern.matcher(name);
                     //System.out.println("Match " + name);
                     if (matcher.matches()) {
+                        matched = true;
                         linkToPublishedPort(name, subscriberPort);
                     }
                 }
-
+                if (!matched) {
+                    throw new IllegalActionException(this,
+                            "Failed to find a publisher to match \"" + pattern
+                            + "\"");
+                }
             }
-
             if (global && this != toplevel()) {
                 String portName = "_subscriber_"
                         + StringUtilities.sanitizeName(pattern.toString());
@@ -2192,9 +2200,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
                                 name, subscribedPort, global);
                         try {
                             subscribedPort.setContainer(null);
-                        } catch (NameDuplicationException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                        } catch (NameDuplicationException ex) {
+                            throw new InternalErrorException(
+                                    subscriberPort.getContainer(), ex,
+                                    "Failed to set the container to null?");
                         }
                     }
                 }
@@ -2290,9 +2299,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
                                 pattern, (TypedIOPort) subscribedPort, global);
                         try {
                             subscribedPort.setContainer(null);
-                        } catch (NameDuplicationException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                        } catch (NameDuplicationException ex) {
+                            throw new InternalErrorException(
+                                    subscriberPort.getContainer(), ex,
+                                    "Failed to set the container to null?");
                         }
                     }
                 }

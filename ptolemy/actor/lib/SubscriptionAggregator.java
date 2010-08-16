@@ -230,7 +230,7 @@ public class SubscriptionAggregator extends Subscriber {
                         _channelPattern, input, _global);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
-                        "Can't link Subscriber with Publisher.");
+                        "Can't link SubscriptionAggregator with Publisher.");
             }
         }
     }
