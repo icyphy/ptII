@@ -294,7 +294,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _entityPortController.setConfiguration(configuration);
         _relationController.setConfiguration(configuration);
         _linkController.setConfiguration(configuration);
-        _dbActorController.setConfiguration(configuration);
+        // Bug 349
+        // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
+        //_dbActorController.setConfiguration(configuration);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -309,7 +311,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _entityController.addHotKeys(jgraph);
         _classDefinitionController.addHotKeys(jgraph);
         _attributeController.addHotKeys(jgraph);
-        _dbActorController.addHotKeys(jgraph);
+        // Bug 349
+        //https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
+        //_dbActorController.addHotKeys(jgraph);
     }
 
     /** Create the controllers for nodes in this graph.
@@ -356,8 +360,10 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 
             } else {
                 
-                _dbActorController =  new ActorInstanceController(this,
-                        AttributeController.PARTIAL);
+                // Bug 349
+                // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
+                //_dbActorController =  new ActorInstanceController(this,
+                //         AttributeController.PARTIAL);
                 
             }
 

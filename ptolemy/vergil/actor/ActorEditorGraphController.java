@@ -376,7 +376,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         super._addHotKeys(jgraph);
 
         _classDefinitionController.addHotKeys(getFrame().getJGraph());
-        _dbActorController.addHotKeys(getFrame().getJGraph());
+        // Bug 349
+        // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
+        // _dbActorController.addHotKeys(getFrame().getJGraph());
 
     }
 
@@ -423,8 +425,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                         .invoke(actorInterationAddon, this);
                     
                 } else {
-                    
-                    _dbActorController =  new ActorInstanceController(this);
+                    // Bug 349
+                    // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
+                    //_dbActorController =  new ActorInstanceController(this);
                     
                 }
 
@@ -434,7 +437,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             
         } else {
             
-            _dbActorController = new ActorInstanceController(this);
+            // Bug 349
+            // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
+            //_dbActorController = new ActorInstanceController(this);
         
         }
         
