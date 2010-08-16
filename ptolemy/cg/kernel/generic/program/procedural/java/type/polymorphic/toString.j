@@ -2,6 +2,9 @@
 /*** toString_Token_Token() ***/
 static Token toString_Token_Token(Token thisToken, Token... otherToken) {
     Token result = null;
+    if (thisToken == null) {
+        return result;
+    }
     switch (thisToken.type) {
 #ifdef PTCG_TYPE_Double
     case TYPE_Double:
