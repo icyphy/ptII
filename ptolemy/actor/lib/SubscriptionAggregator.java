@@ -30,6 +30,7 @@ package ptolemy.actor.lib;
 import java.util.regex.Pattern;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
@@ -131,6 +132,12 @@ public class SubscriptionAggregator extends Subscriber {
                 super.attributeChanged(attribute);
                 _channelPattern = Pattern.compile(_channel);
             }
+        } else if (attribute == global) {
+            _global = ((BooleanToken) global.getToken()).booleanValue();
+            // Do not call SubscriptionAggregator.attributeChanged()
+            // because it will remove the published port name by _channel.
+            // If _channel is set to a real name (not a regex pattern),
+            // Then chaos ensues.  See test 3.0 in SubscriptionAggregator.tcl
         } else {
             super.attributeChanged(attribute);
         }

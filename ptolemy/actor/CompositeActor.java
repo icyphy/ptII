@@ -1263,10 +1263,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
             ((CompositeActor) container).linkToPublishedPort(pattern,
                     subscriberPort, global);
         } else {
-            if (_publishedPorts == null) {
-                throw new IllegalActionException(subscriberPort.getContainer(),
-                        "No Publishers were found adjacent to or below "
-                        + subscriberPort.getContainer().getFullName());
+            if (_publishedPorts == null) { 
+                if (!global || this == toplevel()) {
+                    throw new IllegalActionException(subscriberPort.getContainer(),
+                            "No Publishers were found adjacent to or below "
+                            + subscriberPort.getContainer().getFullName());
+                }
             } else {
                 boolean matched = false;
                 for (String name : _publishedPorts.keySet()) {
@@ -1277,8 +1279,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
                         linkToPublishedPort(name, subscriberPort);
                     }
                 }
-                if (!matched) {
-                    throw new IllegalActionException(this,
+                if (!matched && (!global || this == toplevel())) {
+                    throw new IllegalActionException(subscriberPort.getContainer(),
                             "Failed to find a publisher to match \"" + pattern
                             + "\"");
                 }

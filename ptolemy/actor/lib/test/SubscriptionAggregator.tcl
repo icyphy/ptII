@@ -116,7 +116,7 @@ test SubscriptionAggregator-2.2 {Test no publisher} {
     catch {$manager execute} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Failed to find a publisher to match "channel1"
-  in .NoPublisherSubAgg2}}
+  in .NoPublisherSubAgg2.subagg}}
 
 
 test SubscriptionAggregator-3.0 {Debugging messages} {
