@@ -514,7 +514,8 @@ public class SDFDirector
             Actor actor = (Actor) actors.next();
             NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) codeGenerator
                     .getAdapter(actor);
-            if (actor instanceof CompositeActor) {
+            if (actor instanceof CompositeActor &&
+                    !(actor instanceof ModularCodeGenTypedCompositeActor)) {
                 code.append(adapterObject.generateVariableDeclaration());
             } else {
                 code.append(_generateVariableDeclaration(adapterObject));
