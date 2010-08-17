@@ -591,6 +591,10 @@ public class SDFDirector
                 code.append(actorName + " = new " + className + "();" + _eol);
 
                 code.append(actorName + ".initialize();" + _eol);
+            } else {
+                NamedProgramCodeGeneratorAdapter adapterObject = (NamedProgramCodeGeneratorAdapter) codeGenerator
+                    .getAdapter(actor);
+                code.append(adapterObject.generateVariableInitialization());
             }
         }
 
