@@ -1,0 +1,10 @@
+{--- Syntactic Representation of graph ---}
+    ---- visiting: Ramp
+    ---- visiting: DDFBooleanSelect
+    ---- visiting: BooleanSwitch
+    ---- visiting: Scale
+    ---- visiting: SampleDelay
+    ---- visiting: Outside-the-loop Plotter
+    ---- visiting: Inside-the-loop Plotter
+    ---- visiting: Comparator
+    ---- visiting: Const
