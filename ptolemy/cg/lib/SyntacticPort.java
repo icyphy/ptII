@@ -28,12 +28,15 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.lib;
 
+import java.util.List;
+
 import ptolemy.actor.IOPort;
 import ptolemy.cg.lib.SyntacticNode;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 public class SyntacticPort extends ComponentPort {
@@ -41,7 +44,9 @@ public class SyntacticPort extends ComponentPort {
     /** Construct SyntacticPort. */
     public SyntacticPort() {
         _representedPort = null;
+        _representedChannel = 0;
         _isEmpty = true;
+        _isInput = false;
     }
 
     /** Construct SyntacticPort with given workspace.
@@ -50,7 +55,9 @@ public class SyntacticPort extends ComponentPort {
     public SyntacticPort(Workspace workspace) {
         super(workspace);
         _representedPort = null;
+        _representedChannel = 0;
         _isEmpty = true;
+        _isInput = false;
     }
 
     /** Construct SyntacticPort with given container and name.
@@ -67,6 +74,7 @@ public class SyntacticPort extends ComponentPort {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _representedPort = port;
+        _representedChannel = 0;
         _isEmpty = true;
         _isInput = direction;
         
@@ -83,11 +91,60 @@ public class SyntacticPort extends ComponentPort {
         }
     }
     
+    /** Get the connected port from a given port.
+     *  If the graph is not made bijective this gives the first.
+     *  If there are no ports or no SyntacticPorts null is returned.
+     *  @param port The port to look out from.
+     *  @return An immediately connected port or null.
+     */
+    public SyntacticPort getConnectedPort() {
+        List<Port> rports = connectedPortList();
+        if (rports.size() == 0) return null;
+        
+        Port rport = rports.get(0);
+        if (!(rport instanceof SyntacticPort)) return null;
+        
+        return (SyntacticPort)rport;
+    }
+    
+    /** Get node in which port is contained.
+     *  @return node in which port is contained or null if none.
+     */
+    public SyntacticNode getNode() {
+        NamedObj obj = this.getContainer();
+        if (obj == null || !(obj instanceof SyntacticNode)) return null;
+        return (SyntacticNode)obj;
+    }
+    
+    /** Set the channel of the represented port.
+     *  Each SyntacticPort only represents a single channel of 
+     *  the represented port.
+     *  @param channel The channel of the represented port.
+     */
+    public void setChannel(int channel) {
+        _representedChannel = channel >= 0 ? channel : 0;
+    }
+    
     /** Get the port represented by the Syntactic Port. 
      *  @return represented port.
      *  */
     public Port getRepresentedPort() {
         return _representedPort;
+    }
+    
+    /** Get the channel of the represented port.
+     *  @return represented channel of the port.
+     */
+    public int getChannel() {
+        return _representedChannel;
+    }
+    
+    /** Decide whether the port represents an actual port.
+     *  If false, the port is purely syntactic.
+     *  @return whether the port is representative.
+     */
+    public boolean isRepresentative() {
+        return _representedPort != null;
     }
     
     /** Decide whether the port is representationally an input port.
@@ -120,6 +177,7 @@ public class SyntacticPort extends ComponentPort {
     
     // Port being represented or null if the port is purely Syntactic
     private Port _representedPort;
+    private int _representedChannel;
     
     // Characteristics of represented port
     private boolean _isInput;

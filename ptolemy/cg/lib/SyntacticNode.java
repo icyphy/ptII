@@ -35,12 +35,18 @@ import java.util.LinkedList;
 
 import ptolemy.actor.IOPort;
 import ptolemy.cg.lib.SyntacticPort;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.Token;
+import ptolemy.data.DoubleToken;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -69,17 +75,21 @@ public class SyntacticNode extends ComponentEntity {
         super();
         
         _represented = null;
+        _exteriorPort = null;
         _isRepresented = false;
-        _isRepresentative = true;
         _isInitial = true;
         _isTerminal = true;
         _isIsolated = true;
+        _nodeType = NodeType.UNKNOWN;
+        _visited = false;
+        _marked = false;
         _inputs = new LinkedList();
         _outputs = new LinkedList();
         _inref = new HashMap();
         _outref = new HashMap();
         _numIns = 0;
         _numOuts = 0;
+        _permutation = null;
     }
 
     /** Create new instance of SyntacticNode with no connections.
@@ -89,17 +99,21 @@ public class SyntacticNode extends ComponentEntity {
         super(workspace);
         
         _represented = null;
+        _exteriorPort = null;
         _isRepresented = false;
-        _isRepresentative = true;
         _isInitial = true;
         _isTerminal = true;
         _isIsolated = true;
+        _nodeType = NodeType.UNKNOWN;
+        _visited = false;
+        _marked = false;
         _inputs = new LinkedList();
         _outputs = new LinkedList();
         _inref = new HashMap();
         _outref = new HashMap();
         _numIns = 0;
         _numOuts = 0;
+        _permutation = null;
     }
     
     /** Construct an entity with the given name contained by the specified
@@ -121,17 +135,21 @@ public class SyntacticNode extends ComponentEntity {
         super(container, name);
         
         _represented = null;
+        _exteriorPort = null;
         _isRepresented = false;
-        _isRepresentative = true;
         _isInitial = true;
         _isTerminal = true;
         _isIsolated = true;
+        _nodeType = NodeType.UNKNOWN;
+        _visited = false;
+        _marked = false;
         _inputs = new LinkedList();
         _outputs = new LinkedList();
         _inref = new HashMap();
         _outref = new HashMap();
         _numIns = 0;
         _numOuts = 0;
+        _permutation = null;
     }
     
 
@@ -149,11 +167,13 @@ public class SyntacticNode extends ComponentEntity {
     
         // Represented as an Entity attaching reference.
         _represented = entity;
+        _exteriorPort = null;
         _isRepresented = true;
-        _isRepresentative = true;
         _isInitial = true;
         _isTerminal = true;
         _isIsolated = true;
+        
+        _nodeType = NodeType.REPRESENTATIVE;
         
         // Is a total representation (does not leave out ports)
         boolean totalr = true;
@@ -172,19 +192,29 @@ public class SyntacticNode extends ComponentEntity {
                 if (width < 1) width = 1;
                 
                 if (ioep.isInput()) {
-                    SyntacticPort iport = new SyntacticPort(this, ep, true, "in_ref_" + epname);
                     _inref.put(ep, _numIns);
                     
-                    for (int n = 0; n < width; ++n, ++_numIns) _inputs.add(iport);    
+                    for (int n = 0; n < width; ++n, ++_numIns) {
+                        SyntacticPort iport = new SyntacticPort(this, ep, true, "in_ref_" + n + "_" + epname);
+                        iport.setChannel(n);
+                        _inputs.add(iport);    
+                        StringAttribute cardinal = new StringAttribute(iport, "_cardinal");
+                        cardinal.setExpression("WEST");
+                    }
                     _isInitial = false;
                 }
                 
                 // If port is both create both
                 if (ioep.isOutput()) {
-                    SyntacticPort oport = new SyntacticPort(this, ep, false, "out_ref_" + epname);
                     _outref.put(ep, _numOuts);
                     
-                    for (int n = 0; n < width; ++n, ++_numOuts) _outputs.add(oport);
+                    for (int n = 0; n < width; ++n, ++_numOuts) {
+                        SyntacticPort oport = new SyntacticPort(this, ep, false, "out_ref_" + n + "_" + epname);
+                        oport.setChannel(n);
+                        _outputs.add(oport);
+                        StringAttribute cardinal = new StringAttribute(oport, "_cardinal");
+                        cardinal.setExpression("EAST");
+                    }
                     _isTerminal = false;
                 }
             }
@@ -194,8 +224,61 @@ public class SyntacticNode extends ComponentEntity {
         }
         
         _isIsolated = _isInitial && _isTerminal;
+        _attachText("_iconDescription", _representativeIcon);
         
         return totalr;
+    }
+    
+    /** Represent an exterior port with a purely syntactic Node.
+     * 
+     *  @param port The port to represent on the node. 
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
+    public void representExteriorPort(Port port)
+        throws IllegalActionException, NameDuplicationException {
+       
+        if (port instanceof IOPort) {
+            IOPort ioport = (IOPort)port;
+            int width = 1;//ioport.getWidthInside();
+            _isIsolated = false;
+            if (ioport.isInput()) {
+                for (int n = 0; n < width; ++n) {
+                    SyntacticPort oport = new SyntacticPort(this, ioport, false, "out_" + n + "_external_in");
+                    oport.setChannel(n);
+                    _outputs.add(oport);
+                    _outref.put(port, n);
+                    StringAttribute cardinal = new StringAttribute(oport, "_cardinal");
+                    cardinal.setExpression("EAST");
+                    _attachText("_iconDescription", _inputIcon);
+                }
+                _exteriorPort = port;
+                _isInitial = true;
+                _isTerminal = false;
+                ++_numOuts;
+                
+                _nodeType = NodeType.INPUT;
+            }
+            else if (ioport.isOutput()) {
+                for (int n = 0; n < width; ++n) {
+                    SyntacticPort iport = new SyntacticPort(this, ioport, true, "in_" + n + "_external_out");
+                    iport.setChannel(n);
+                    _inputs.add(iport);
+                    _inref.put(port, n);
+                    StringAttribute cardinal = new StringAttribute(iport, "_cardinal");
+                    cardinal.setExpression("WEST");
+                    _attachText("_iconDescription", _outputIcon);
+                }
+                _exteriorPort = port;
+                _isTerminal = true;
+                _isInitial = false;
+                ++_numIns;
+                
+                _nodeType = NodeType.OUTPUT;
+            }
+            _isIsolated = _isInitial && _isTerminal;
+        }
+        
     }
     
     /** Set node as purely syntactic, not representing any Entity.
@@ -204,36 +287,323 @@ public class SyntacticNode extends ComponentEntity {
      * */
     public void setSyntactic(int inputs, int outputs)
         throws IllegalActionException, NameDuplicationException {
-        _isRepresentative = false;
         _isInitial = inputs == 0;
         _isTerminal = outputs == 0;
         _isIsolated = _isInitial && _isTerminal;
         
         String name = this.getName(); 
         for (int n = 0; n < inputs; ++n, ++_numIns) {
-            SyntacticPort port = new SyntacticPort(this, null, true, "in_" + n + name);
+            SyntacticPort port = new SyntacticPort(this, null, true, "in_" + n + "_" + name);
             _inputs.add(port);
+            StringAttribute cardinal = new StringAttribute(port, "_cardinal");
+            cardinal.setExpression("WEST");
         }
         
         for (int n = 0; n < outputs; ++n, ++_numOuts) {
-            SyntacticPort port = new SyntacticPort(this, null, false, "out_" + n + name);
+            SyntacticPort port = new SyntacticPort(this, null, false, "out_" + n + "_" + name);
             _outputs.add(port);
+            StringAttribute cardinal = new StringAttribute(port, "_cardinal");
+            cardinal.setExpression("EAST");
         }
     }
     
+    /** Set node as an identity. */
+    public void setIdentity() 
+        throws IllegalActionException, NameDuplicationException {
+        setSyntactic(1, 1);
+        _nodeType = NodeType.IDENTITY;
+        _attachText("_iconDescription", _identityIcon);
+    }
+    
+    /** Set node as a feedback node in specified direction, true being feed out.
+     *  @param direction The direction to make the feedback node.
+     */
+    public void setFeedback(boolean direction)  
+        throws IllegalActionException, NameDuplicationException {
+        if (direction) {
+            setSyntactic(1, 0);
+            _attachText("_iconDescription", _sendIcon);
+            _nodeType = NodeType.SEND;
+        }
+        else {
+            setSyntactic(0, 1);
+            _attachText("_iconDescription", _returnIcon);
+            _nodeType = NodeType.RECEIVE;
+        }
+    }
+    
+    /** Set node as a mediator node in specified direction.
+     *  The true direction splits, the false merges.
+     *  @param direction The direction to make the mediator node.
+     *  @param valence The amount of endpoints on the opposite side. 
+     */
+    public void setMediator(boolean direction, int valence)  
+        throws IllegalActionException, NameDuplicationException {
+        if (valence < 2) {
+            throw new IllegalActionException(this, "Cannot mediate less than 2 valence.");
+        }
+        
+        if (direction) {
+            setSyntactic(1, valence);
+            _nodeType = NodeType.SPLIT;
+        }
+        else {
+            setSyntactic(valence, 1);
+            _nodeType = NodeType.MERGE;
+        }
+        
+        _attachText("_iconDescription", _makeMediatorIcon());
+    }
+    
+    /** Set node as a initial or terminal node in specified direction, true being out.
+     *  @param direction The direction to make the cap node.
+     */
+    public void setCap(boolean direction)  
+        throws IllegalActionException, NameDuplicationException {
+        if (direction) setSyntactic(1, 0);
+        else setSyntactic(0, 1);
+        _attachText("_iconDescription", _capIcon);
+        _nodeType = NodeType.CAP;
+    }
+    
+    /** Set node as a bijective permutation node with a specified permutation.
+     *  @param permutation The permutation to represent as the node.
+     */
+    public void setPermutation(int permutation[])  
+        throws IllegalActionException, NameDuplicationException {
+        int plen = permutation.length;
+        setSyntactic(plen, plen);
+        _attachText("_iconDescription", _makePermutationIcon(permutation));
+        _permutation = permutation.clone();
+        _nodeType = NodeType.PERMUTATION;
+    }
+    
+    /** Get the connected node from a given port.
+     *  If the graph is not made bijective this gives the first.
+     *  @param port The port to look out from.
+     *  @return An immediately connected node.
+     */
+    public SyntacticNode getConnectedNode(SyntacticPort port) {
+        SyntacticPort rport = port.getConnectedPort();
+        if (rport == null) return null;
+        
+        NamedObj rent = rport.getContainer();
+        if (!(rent instanceof SyntacticNode)) return null;
+        
+        return (SyntacticNode)rent;
+    }
+    
+    /** Get a unique list of connected nodes from a given list of ports.
+     * @param ports The list of ports to look out from.
+     * @return A set list of immediately connected nodes.
+     */
+    public List<SyntacticNode> getConnectedNode(List<SyntacticPort> ports) {
+        LinkedList<SyntacticNode> outstream = new LinkedList();
+        for (SyntacticPort port : ports) {
+            SyntacticNode rnode = getConnectedNode(port);
+            if (rnode != null && !outstream.contains(rnode)) outstream.add(rnode);
+        }
+        
+        return outstream;
+    }
+    
+    
+    /** Get a list of nodes immediately downstream from outgoing connections. 
+     *  @return A list of immediately downstream nodes.
+     */
+    public List<SyntacticNode> getDownstreamNodes() {
+        return getConnectedNode(getOutputs());
+    }
+
+    /** Get a list of nodes immediately upstream from outgoing connections. 
+     *  @return A list of immediately upstream nodes.
+     */
+    public List<SyntacticNode> getUpstreamNodes() {
+        return getConnectedNode(getInputs());
+    }
+    
+    /** Recalculate properties of node. */
+    public void remark() {
+        _isInitial = _inputs.size() == 0;
+        _isTerminal = _outputs.size() == 0;
+        _isIsolated = _isInitial && _isTerminal;
+    }
+    
+    /** Set the visited marker.
+     *  This marker is used for algorithms that visit nodes.
+     *  @param b State of the visited flag.
+     */
+    public void setVisited(boolean b) {
+        _visited = b;
+    }
+    
+    /** Set the marked marker.
+     *  This marker is used for algorithms that traverse nodes.
+     *  @param b State of the marked flag.
+     */
+    public void setMarked(boolean b) {
+        _marked = b;
+    }
+    
+    /** Set the location of the node in layout.
+     *  @param x The x-coordinate
+     *  @param y The y-coordinate
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
+    public void setLocation(double x, double y)
+        throws IllegalActionException, NameDuplicationException {
+        Location location = (Location)getAttribute("_location");
+        if (location == null) {
+            location = new Location(this, "_location");
+        }
+        
+        if (isPermutation()) {
+            int permlen = 1;
+            if (_permutation != null) {
+                permlen = _permutation.length;
+            }
+            y = permlen*35.0;
+        }
+        
+        double coords[] = {x, y};
+        location.setLocation(coords);
+    }
+    
+    public double getLayoutVerticalSpace() {
+        if (isPermutation()) return 0.0;
+        if (isIdentity()) return 50.0;
+        return 100.0;
+    }
+    
+    public String getIdentifier() {
+        String id = "";
+        if (_nodeType == NodeType.PERMUTATION) {
+            if (_permutation == null) id = "";
+            else if (_permutation.length == 0) id = "[]";
+            else {
+                id += "[" + (_permutation[0] + 1);
+                for (int n = 1; n < _permutation.length; ++n) {
+                    id += " " + (_permutation[n] + 1);
+                }
+                id += "]";
+            }
+        }
+        else if (isMediator()) {
+            if (_nodeType == NodeType.SPLIT) {
+                id += "[ < " + _outputs.size() + " ]";
+            }
+            else if (_nodeType == NodeType.MERGE) {
+                id += "[ " + _inputs.size() + " > ]";
+            }
+        }
+        else if (isCap()) {
+            id += "T";
+        }
+        else if (isIncoming()) {
+            id += "in";
+        }
+        else if (isOutgoing()) {
+            id += "out";
+        }
+        
+        return id;
+    }
+    
+    /** Get whether the node has been visited.
+     *  @return value of the visited flag.
+     */
+    public boolean isVisited() {
+        return _visited;
+    }
+    
+    /** Get whether the node has been marked.
+     *  @return value of the marked flag.
+     */
+    public boolean isMarked() {
+        return _marked;
+    }
+    
+    /** Get index represented by the first channel of given port.
+     *  @param port The Port represented in the node.
+     *  @return base index object or null if not found.
+     */
+    public Integer getPortOutputIndex(Port port) {
+        Integer index = _outref.get(port);
+        return index;
+    }
+    
+    /** Get index represented by the first channel of given port.
+     *  @param port The Port represented in the node.
+     *  @return base index object or null if not found.
+     */
+    public Integer getPortInputIndex(Port port) {
+        Integer index = _inref.get(port);
+        return index;
+    }
     
     /** Get the list of ordered inputs.
      *  @return The list of inputs.   
      */
-    public List getInputs() {
+    public List<SyntacticPort> getInputs() {
         return _inputs;
     }
     
     /** Get the list of ordered outputs.
      *  @return The list of outputs.   
      */
-    public List getOutputs() {
+    public List<SyntacticPort> getOutputs() {
         return _outputs;
+    }
+    
+    /** Get the first input or return null. 
+     *  @return first input or null.
+     */
+    public SyntacticPort getFirstInput() {
+        if (_inputs.size() == 0) return null;
+        return _inputs.getFirst();
+    }
+    
+    /** Get the first output or return null. 
+     *  @return first output or null.
+     */
+    public SyntacticPort getFirstOutput() {
+        if (_outputs.size() == 0) return null;
+        return _outputs.getFirst();
+    }
+    
+    /** Get the relative order of the node by types.
+     *  ... which order?
+     *  @return the order of the node.
+     */
+    public int getOrder() { return _nodeType.getOrder(); }
+    
+    /** Determine whether node represents feedback.
+     *  @return Whether node is a feedback node
+     */
+    public boolean isFeedback() {
+        return _nodeType.isFeedback();
+    }
+    
+    /** Determine whether node represents an identity.
+     *  @return Whether node is identity
+     */
+    public boolean isIdentity() {
+        return _nodeType == NodeType.IDENTITY;
+    }
+    
+    /** Determine whether node represents an exterior port.
+     *  @return Whether node is exterior
+     */
+    public boolean isExterior() {
+        return _nodeType.isExterior();
+    }
+    
+    /** Determine whether node represents a mediator.
+     *  @return Whether node is a mediator
+     */
+    public boolean isMediator() {
+        return _nodeType.isMediator();
     }
     
     /** Determine whether node is initial, having no inputs.
@@ -257,11 +627,53 @@ public class SyntacticNode extends ComponentEntity {
         return _isIsolated;
     }
     
+    /** Determine whether node is a cap.
+     *  @return Whether node is a cap
+     */
+    public boolean isCap() {
+        return _nodeType == NodeType.CAP;
+    }
+    
+    /** Determine whether node is a permutation.
+     *  @return Whether node is a permutation
+     */
+    public boolean isPermutation() {
+        return _nodeType == NodeType.PERMUTATION;
+    }
+    
+    /** Determine whether node is incoming to the expression.
+     *  @return Whether node is incoming
+     */
+    public boolean isIncoming() {
+        return _nodeType.isIncoming();
+    }
+    
+    /** Determine whether node is outgoing to the expression.
+     *  @return Whether node is outgoing
+     */
+    public boolean isOutgoing() {
+        return _nodeType.isOutgoing();
+    }
+    
     /** Get the Entity syntactically represented by the node.
      *  @return Represented Entity.
      */
     public Entity getRepresented() {
         return _represented;
+    }
+    
+    /** Get the exterior Port syntactically represented by the node.
+     *  @return Represented Port.
+     */
+    public Port getExteriorPort() {
+        return _exteriorPort;
+    }
+    
+    /** Get the NodeType.
+     *  @return Represented NodeType.
+     */
+    public NodeType getNodeType() {
+        return _nodeType;
     }
     
     /** Determine whether node represents an Entity or is purely syntactic.
@@ -271,14 +683,14 @@ public class SyntacticNode extends ComponentEntity {
      *  @return Whether node is a representation.
      */
     public boolean isRepresentative() {
-        return _isRepresentative;
+        return _nodeType == NodeType.REPRESENTATIVE;
     }
 
     public String description(String prefix, String suffix) {
         String desc = prefix + "Node: " + getName() + " {" + suffix;
         String indent = "....";
         
-        if (_isRepresentative && _isRepresented) {
+        if (isRepresentative() && _isRepresented) {
             desc += prefix + indent + "Representing: " + _represented.getName() + suffix;
         }
         else {
@@ -286,7 +698,7 @@ public class SyntacticNode extends ComponentEntity {
         }
         
         desc +=
-            prefix + indent + "Initial: " + _isInitial + suffix +
+            prefix + indent + "Initial: "  + _isInitial  + suffix +
             prefix + indent + "Terminal: " + _isTerminal + suffix +
             prefix + indent + "Isolated: " + _isIsolated + suffix;
         
@@ -349,6 +761,66 @@ public class SyntacticNode extends ComponentEntity {
         return sport;
     }
     
+    protected String _makePermutationIcon(int permutation[]) 
+        throws IllegalActionException, NameDuplicationException {
+        
+        int permlen = permutation.length;
+        int pheight = permlen*35;
+        String svgicon =  
+        "<svg>\n" +
+        "<rect x=\"-20\" y=\"" + (-pheight) + "\" width=\"40\" height=\"" + (2*pheight) + "\" style=\"fill:red\"/>\n";
+        
+        for (int n = 0; n < permlen; ++n) {
+            int m = permutation[n];
+            svgicon += "<line x1=\"-18\" y1=\"" + (n*70 + 35 - pheight) 
+                + "\" x2=\"18\" y2=\"" + (m*70 + 35 - pheight)
+                + "\" />\n";
+        }
+        
+        svgicon += "</svg>\n";
+        
+        // Try and set position of ports
+        Token t = new DoubleToken(6.0);
+        
+        for (SyntacticPort port : _inputs) {
+            new Variable(port, "_portSpread", t);
+        }
+        for (SyntacticPort port : _outputs) {
+            new Variable(port, "_portSpread", t);
+        }
+        
+        return svgicon;
+    }
+    
+    protected String _makeMediatorIcon() {
+        String svgicon = "<svg>\n";
+        int ins = _inputs.size();
+        int outs = _outputs.size();
+        
+        if (ins == 1 && outs > 1) {
+            svgicon += "<polygon points=\"20,-20 -20,0 20,20\" style=\"fill:red\"/>\n";
+            double vinc = 30.0/((double)(outs-1));
+            for (int n = 0; n < outs; ++n) {
+                svgicon += "<line x1=\"-18\" y1=\"0\" x2=\"18\" y2=\"" 
+                    + (n*vinc - 15.0) + "\" />\n";
+            }
+        }
+        else if (outs == 1 && ins > 1) {
+            svgicon += "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n";
+            double vinc = 30.0/((double)(ins-1));
+            for (int n = 0; n < ins; ++n) {
+                svgicon += "<line x1=\"-18\" y1=\"" + (n*vinc - 15.0) 
+                    + "\" x2=\"18\" y2=\"0\" />\n";
+            }
+        }
+        else {
+            svgicon += "<rect x=\"-20\" y=\"-20\" width=\"40\" height=\"40\" style=\"fill:green\"/>\n";
+        }
+        
+        svgicon += "</svg>\n";
+        return svgicon;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     
@@ -363,9 +835,6 @@ public class SyntacticNode extends ComponentEntity {
     protected LinkedList<SyntacticPort> _outputs;
     
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     /** Map to base port indexes (offsets are used for multiports) */
@@ -374,17 +843,110 @@ public class SyntacticNode extends ComponentEntity {
     
     /** Represented Entity */
     private Entity _represented;
+    private Port _exteriorPort;
     private boolean _isRepresented;
-    private boolean _isRepresentative;
     
     /** Characteristics of node. */
     private boolean _isInitial;
     private boolean _isTerminal;
     private boolean _isIsolated;
-
+    private NodeType _nodeType;
+    
+    /** Internal markers for iteration. */
+    private boolean _visited;
+    private boolean _marked;
+    
     /** Internal counts of ports */
     private int _numIns;
     private int _numOuts;
+    
+    private int _permutation[]; 
+    
+    private static String _representativeIcon = 
+        "<svg>\n" +
+        "<rect x=\"-30\" y=\"-20\" width=\"60\" height=\"40\" style=\"fill:white\"/>\n" +
+        "<polygon points=\"-10,-10 -10,10 10,10 10,-10\" style=\"fill:orange\"/>\n" +
+        "</svg>\n";
+    
+    private static String _identityIcon = 
+        "<svg>\n" +
+        "<rect x=\"-30\" y=\"-10\" width=\"60\" height=\"20\" style=\"fill:none\"/>\n" +
+        "<polygon points=\"-10,-10 20,0 -10,10\" style=\"fill:blue\"/>\n" +
+        "</svg>\n";
+    
+    private static String _inputIcon = 
+        "<svg>\n" +
+        "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:red\"/>\n" + 
+        "</svg>\n";
+    
+    private static String _outputIcon = 
+        "<svg>\n" +
+        "<polygon points=\"10,-20 -10,0 10,20\" style=\"fill:red\"/>\n" + 
+        "</svg>\n";
+    
+    private static String _returnIcon = 
+        "<svg>\n" +
+        "<polygon points=\"-10,-20 10,0 -10,20\" style=\"fill:gray\"/>\n" + 
+        "</svg>\n";
+    
+    private static String _sendIcon = 
+        "<svg>\n" +
+        "<polygon points=\"10,-20 -10,0 10,20\" style=\"fill:gray\"/>\n" + 
+        "</svg>\n";
+    
+    private static String _capIcon = 
+        "<svg>\n" +
+        "<rect x=\"-20\" y=\"-20\" width=\"40\" height=\"40\" style=\"fill:green\"/>\n" +
+        "</svg>\n";
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         internal classes                  ////
+
+    public enum NodeType {
+        PERMUTATION(0),
+        REPRESENTATIVE(1),  
+        SPLIT(3), MERGE(3), 
+        CAP(4),  
+        INPUT(5), OUTPUT(5), 
+        SEND(6), RECEIVE(6), 
+        IDENTITY(7), 
+        UNKNOWN(100); 
+        
+        private final int order;
+        private NodeType(int order) { this.order = order; }
+        
+        public boolean isUnknown()   { 
+            return this == UNKNOWN; 
+        }
+        
+        public boolean isExterior()  { 
+            return this == INPUT || this == OUTPUT; 
+        }
+        
+        public boolean isFeedback()  { 
+            return this == SEND  || this == RECEIVE; 
+        }
+        
+        public boolean isPure()      { 
+            return this == IDENTITY || this == CAP || this == PERMUTATION || isMediator() || isFeedback(); 
+        }
+        
+        public boolean isMediator()  {
+            return this == SPLIT || this == MERGE;
+        }
+        
+        public boolean isIncoming() {
+            return this == INPUT || this == RECEIVE;
+        }
+        
+        public boolean isOutgoing() {
+            return this == OUTPUT || this == SEND;
+        }
+        
+        public int getOrder() { return order; } 
+        
+    };
+    
     
 }
 
