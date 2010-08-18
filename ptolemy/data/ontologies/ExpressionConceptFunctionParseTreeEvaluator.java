@@ -27,7 +27,6 @@ package ptolemy.data.ontologies;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.ConceptToken;
 import ptolemy.data.expr.ASTPtFunctionApplicationNode;
 import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.Constants;

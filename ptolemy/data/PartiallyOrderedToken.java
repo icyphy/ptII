@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  FIXME: Should this be a class below {@link ptolemy.data.Token} but
    above {@link ptolemy.data.ScalarToken} and
-   {@link ptolemy.data.ConceptToken} rather than an interface?
+   {@link ptolemy.data.ontologies.ConceptToken} rather than an interface?
 
  The default implementation of visitRelationalNode
  {@link ptolemy.data.expr.ParseTreeEvaluator#visitRelationalNode(ASTPtRelationalNode)}

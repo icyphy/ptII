@@ -27,11 +27,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ptolemy.data.ConceptToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptGraph;
+import ptolemy.data.ontologies.ConceptToken;
 import ptolemy.data.ontologies.ExpressionConceptFunctionParseTreeEvaluator;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;

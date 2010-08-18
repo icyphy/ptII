@@ -26,7 +26,6 @@ package ptolemy.data.ontologies;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.ConceptToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.util.IllegalActionException;

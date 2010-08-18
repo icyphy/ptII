@@ -24,9 +24,11 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.data;
+package ptolemy.data.ontologies;
 
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.PartiallyOrderedToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
