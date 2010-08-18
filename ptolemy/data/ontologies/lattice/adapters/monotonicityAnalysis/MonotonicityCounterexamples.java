@@ -89,7 +89,6 @@ public class MonotonicityCounterexamples {
          *  @return The lesser concept.
          *  @see java.util.Map.Entry#getKey()
          */
-        @Override
         public Concept getKey() {
             return lesser;
         }
@@ -97,7 +96,6 @@ public class MonotonicityCounterexamples {
          *  @return The greater concent
          *  @see java.util.Map.Entry#getValue()
          */
-        @Override
         public Concept getValue() {
             return greater;
         }
@@ -106,7 +104,6 @@ public class MonotonicityCounterexamples {
          *  @return Always return null.
          *  @see java.util.Map.Entry#setValue(java.lang.Object)
          */
-        @Override
         public Concept setValue(Concept value) {
             // TODO Auto-generated method stub
             return null;
