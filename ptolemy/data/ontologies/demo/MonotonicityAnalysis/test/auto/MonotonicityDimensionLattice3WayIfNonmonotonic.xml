@@ -54,7 +54,7 @@
             </entity>
         </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={521, 289, 960, 620}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={480, 186, 958, 623}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 513]">
     </property>
@@ -65,7 +65,7 @@
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 70.0}">
         </property>
     </property>
     <property name="monotonicityAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Expression.x &gt;= Monotonic">
@@ -85,7 +85,7 @@
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(x &lt;= Acceleration) ? Velocity :&#10;(x &lt;= Velocity) ? Position :&#10;Conflict">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonmonotonic">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="General">
             </property>
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
@@ -93,9 +93,9 @@
                 <property name="width" class="ptolemy.data.expr.Parameter" value="30">
                 </property>
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Nonmonotonic">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="General">
             </property>
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -110,11 +110,11 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonmonotonic">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="General">
             </property>
-            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
             </property>
-            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Nonmonotonic">
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="General">
             </property>
         </port>
         <port name="x" class="ptolemy.actor.TypedIOPort">
