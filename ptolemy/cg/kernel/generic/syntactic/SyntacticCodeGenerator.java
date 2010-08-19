@@ -123,25 +123,14 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
             code.append("    ---- visiting: " + ent.getName() + _eol);
         }
         
-        //_showGraph();
-        
         _syntaxGraph.makeBijective();
-        //_showGraph();
-        
         _syntaxGraph.removeFeedback();
-        //_showGraph();
-        
         _syntaxGraph.structure();
         _syntaxGraph.insertPermutations();
         _syntaxGraph.layoutGraph();
-        
         _showGraph();
         
-        //code.append(_syntaxGraph.description(" | | | ", _eol));
         code.append(_syntaxGraph.generateCode());
-        
-        //code.append("\n" + _syntaxGraph.exportMoML());
-        
         
         // Generate file in generic super
         return super._generateCode(code);

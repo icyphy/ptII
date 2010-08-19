@@ -68,7 +68,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating red 
  *
  */
-public class SyntacticNode extends ComponentEntity {
+public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
     /** Create new instance of SyntacticNode with no connections. */
     public SyntacticNode() {
@@ -90,6 +90,7 @@ public class SyntacticNode extends ComponentEntity {
         _numIns = 0;
         _numOuts = 0;
         _permutation = null;
+        _label = "";
     }
 
     /** Create new instance of SyntacticNode with no connections.
@@ -114,6 +115,7 @@ public class SyntacticNode extends ComponentEntity {
         _numIns = 0;
         _numOuts = 0;
         _permutation = null;
+        _label = "";
     }
     
     /** Construct an entity with the given name contained by the specified
@@ -150,6 +152,7 @@ public class SyntacticNode extends ComponentEntity {
         _numIns = 0;
         _numOuts = 0;
         _permutation = null;
+        _label = "";
     }
     
 
@@ -445,6 +448,10 @@ public class SyntacticNode extends ComponentEntity {
         _marked = b;
     }
     
+    public void setLabel(String label) {
+        _label = label;
+    }
+    
     /** Set the location of the node in layout.
      *  @param x The x-coordinate
      *  @param y The y-coordinate
@@ -489,23 +496,12 @@ public class SyntacticNode extends ComponentEntity {
                 id += "]";
             }
         }
-        else if (isMediator()) {
-            if (_nodeType == NodeType.SPLIT) {
-                id += "[ < " + _outputs.size() + " ]";
-            }
-            else if (_nodeType == NodeType.MERGE) {
-                id += "[ " + _inputs.size() + " > ]";
-            }
-        }
-        else if (isCap()) {
-            id += "T";
-        }
-        else if (isIncoming()) {
-            id += "in";
-        }
-        else if (isOutgoing()) {
-            id += "out";
-        }
+        else if (_nodeType == NodeType.SPLIT)   id += "[ < " + _outputs.size() + " ]";
+        else if (_nodeType == NodeType.MERGE)   id += "[ " + _inputs.size() + " > ]";
+        else if (isCap())                       id += "T";
+        else if (isIncoming())                  id += "in";
+        else if (isOutgoing())                  id += "out";
+        else if (isRepresentative())            id += _label;
         
         return id;
     }
@@ -528,7 +524,7 @@ public class SyntacticNode extends ComponentEntity {
      *  @param port The Port represented in the node.
      *  @return base index object or null if not found.
      */
-    public Integer getPortOutputIndex(Port port) {
+    public Integer outputPortIndex(Port port) {
         Integer index = _outref.get(port);
         return index;
     }
@@ -537,9 +533,27 @@ public class SyntacticNode extends ComponentEntity {
      *  @param port The Port represented in the node.
      *  @return base index object or null if not found.
      */
-    public Integer getPortInputIndex(Port port) {
+    public Integer inputPortIndex(Port port) {
         Integer index = _inref.get(port);
         return index;
+    }
+    
+    /** Get index represented by the first channel of given port.
+     *  @param port The Port represented in the node.
+     *  @return base index object or null if not found.
+     */
+    public Integer outputIndex(SyntacticPort port) {
+        int index = _outputs.indexOf(port);
+        return index < 0 ? null : index;
+    }
+    
+    /** Get index represented by the first channel of given port.
+     *  @param port The Port represented in the node.
+     *  @return base index object or null if not found.
+     */
+    public Integer inputIndex(SyntacticPort port) {
+        int index = _inputs.indexOf(port);
+        return index < 0 ? null : index;
     }
     
     /** Get the list of ordered inputs.
@@ -655,6 +669,10 @@ public class SyntacticNode extends ComponentEntity {
         return _nodeType.isOutgoing();
     }
     
+    public boolean hasCode() {
+        return !isIdentity();
+    }
+    
     /** Get the Entity syntactically represented by the node.
      *  @return Represented Entity.
      */
@@ -676,6 +694,10 @@ public class SyntacticNode extends ComponentEntity {
         return _nodeType;
     }
     
+    public String getLabel() {
+        return _label;
+    }
+    
     /** Determine whether node represents an Entity or is purely syntactic.
      *  A purely syntactic node represents a relationship in the Ptolemy 
      *  network as a SyntacticNode that can be expressed in syntax as an
@@ -686,6 +708,10 @@ public class SyntacticNode extends ComponentEntity {
         return _nodeType == NodeType.REPRESENTATIVE;
     }
 
+    public String generateCode() {
+        return getIdentifier();
+    };
+    
     public String description(String prefix, String suffix) {
         String desc = prefix + "Node: " + getName() + " {" + suffix;
         String indent = "....";
@@ -851,6 +877,8 @@ public class SyntacticNode extends ComponentEntity {
     private boolean _isTerminal;
     private boolean _isIsolated;
     private NodeType _nodeType;
+    
+    private String _label;
     
     /** Internal markers for iteration. */
     private boolean _visited;

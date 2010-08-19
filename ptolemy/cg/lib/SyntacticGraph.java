@@ -29,8 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.cg.lib;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.LinkedList;
@@ -73,7 +71,8 @@ public class SyntacticGraph extends CompositeEntity {
         _mediators = new LinkedList<SyntacticNode>();
         _feedIns = new LinkedList<SyntacticNode>();
         _feedOuts = new LinkedList<SyntacticNode>();
-        _columns = new LinkedList<LinkedList<SyntacticNode>>();
+        _columns = new LinkedList<SyntacticColumn>();
+        _series = new SyntacticSeries();
         
         _representingNodes = new HashMap();
         _exinNodes = new HashMap();
@@ -97,7 +96,8 @@ public class SyntacticGraph extends CompositeEntity {
         _mediators = new LinkedList<SyntacticNode>();
         _feedIns = new LinkedList<SyntacticNode>();
         _feedOuts = new LinkedList<SyntacticNode>();
-        _columns = new LinkedList<LinkedList<SyntacticNode>>();
+        _columns = new LinkedList<SyntacticColumn>();
+        _series = new SyntacticSeries();
         
         _representingNodes = new HashMap();
         _exinNodes = new HashMap();
@@ -127,7 +127,8 @@ public class SyntacticGraph extends CompositeEntity {
         _mediators = new LinkedList<SyntacticNode>();
         _feedIns = new LinkedList<SyntacticNode>();
         _feedOuts = new LinkedList<SyntacticNode>();
-        _columns = new LinkedList<LinkedList<SyntacticNode>>();
+        _columns = new LinkedList<SyntacticColumn>();
+        _series = new SyntacticSeries();
         
         _representingNodes = new HashMap();
         _exinNodes = new HashMap();
@@ -212,7 +213,7 @@ public class SyntacticGraph extends CompositeEntity {
                     if (!_representingNodes.containsKey(centity)) continue;
                     SyntacticNode cnode = _representingNodes.get(centity);
                     
-                    Integer portBase = cnode.getPortOutputIndex(cport);
+                    Integer portBase = cnode.outputPortIndex(cport);
                     if (portBase == null) continue;
                     
                     // cport --> rport established as relationship, try casting both to IOPorts
@@ -275,7 +276,7 @@ public class SyntacticGraph extends CompositeEntity {
                     if (!_representingNodes.containsKey(centity)) continue;
                     SyntacticNode cnode = _representingNodes.get(centity);
                     
-                    Integer portBase = cnode.getPortInputIndex(cport);
+                    Integer portBase = cnode.inputPortIndex(cport);
                     if (portBase == null) continue;
                     
                     // cport --> rport established as relationship, try casting both to IOPorts
@@ -488,7 +489,7 @@ public class SyntacticGraph extends CompositeEntity {
     
     /** Structure the graph into columns. 
      *  This transformation imposes a partial order on the acyclic graph.
-     *  */
+     */
     public void structure() 
         throws IllegalActionException, NameDuplicationException {
         
@@ -504,31 +505,30 @@ public class SyntacticGraph extends CompositeEntity {
         }
         
         _clearVisited();
+        _series.clear();
         
         boolean nodesLeft = true;
-        LinkedList<SyntacticNode> current = new LinkedList();
+        SyntacticColumn current = new SyntacticColumn();
         for (SyntacticNode node : rootSet) {
             node.setVisited(true);
             current.add(node);
         }
         
-        Collections.sort(current, compareNodes);
-        
-        _columns.add(current);
-        
+        current.sort();
+        _series.add(current);
         while (nodesLeft) {
             boolean isTerminalColumn = true;
             boolean hasTerminals = false;
          
-            LinkedList<SyntacticNode> column = new LinkedList();
-            for (SyntacticPort port : _getColumnOutputs(current)) {
+            SyntacticColumn column = new SyntacticColumn();
+            for (SyntacticPort port : current.getOutputs()) {
                 SyntacticPort rport = port.getConnectedPort();
                 if (rport == null) continue;
                 
                 SyntacticNode rnode = rport.getNode();
                 if (rnode == null || rnode.isVisited()) continue;
                 
-                if (_doesNodeFollowColumn(current, rnode)) {
+                if (current.doesFollow(rnode)) {
                     rnode.setVisited(true);
                     column.add(rnode);
                     
@@ -567,7 +567,10 @@ public class SyntacticGraph extends CompositeEntity {
                 if (hasTerminals && !isTerminalColumn) {
                     LinkedList<SyntacticNode> pushout = new LinkedList();
                     LinkedList<SyntacticNode> removal = new LinkedList();
-                    for (SyntacticNode node : column) {
+                    for (SyntacticTerm term : column) {
+                        if (!(term instanceof SyntacticNode)) continue;
+                        
+                        SyntacticNode node = (SyntacticNode)term;
                         if (!node.isTerminal()) continue;
                         
                         for (SyntacticPort port : node.getInputs()) {
@@ -606,9 +609,8 @@ public class SyntacticGraph extends CompositeEntity {
                     column.addAll(pushout);
                 }
                 
-                Collections.sort(column, compareNodes);
-                
-                _columns.add(column);
+                column.sort();
+                _series.add(column);
                 current = column;
             }
         }
@@ -618,17 +620,17 @@ public class SyntacticGraph extends CompositeEntity {
     /** Insert permutation objects between columns. */
     public void insertPermutations() 
         throws IllegalActionException, NameDuplicationException {
-        if (_columns.size() < 2) return;
+        if (_series.size() < 2) return;
         
-        ListIterator<LinkedList<SyntacticNode>> colIt = _columns.listIterator();
-        LinkedList<SyntacticNode> scol = colIt.next();
+        ListIterator<SyntacticTerm> colIt = _series.listIterator();
+        SyntacticTerm scol = colIt.next();
         while (colIt.hasNext()) {
-            LinkedList<SyntacticNode> permcol = new LinkedList();
+            SyntacticColumn permcol = new SyntacticColumn();
             colIt.add(permcol);
             
-            LinkedList<SyntacticNode> rcol = colIt.next();
-            List<SyntacticPort> sports = _getColumnOutputs(scol);
-            List<SyntacticPort> rports = _getColumnInputs(rcol);
+            SyntacticTerm rcol = colIt.next();
+            List<SyntacticPort> sports = scol.getOutputs();
+            List<SyntacticPort> rports = rcol.getInputs();
             
             int nperm = sports.size();
             int permutation[] = new int[nperm];    
@@ -637,8 +639,8 @@ public class SyntacticGraph extends CompositeEntity {
                 SyntacticPort rport = sport.getConnectedPort();
                 if (rport == null) continue;
                 
-                int rdex = rports.indexOf(rport);
-                if (rdex < 0) continue;
+                Integer rdex = rcol.inputIndex(rport);
+                if (rdex == null) continue;
                 
                 permutation[n] = rdex;
             }
@@ -663,7 +665,6 @@ public class SyntacticGraph extends CompositeEntity {
                 
                 _removeConnection(sport);
                 _removeConnection(rport);
-                
                 _makeConnection(sport, iport);
                 _makeConnection(oport, rport);
             }
@@ -679,37 +680,33 @@ public class SyntacticGraph extends CompositeEntity {
     public void layoutGraph()
         throws IllegalActionException, NameDuplicationException {
         double colpos = 10.0, coldepth = 10.0;
-        for (LinkedList<SyntacticNode> colIt : _columns) {
+        for (SyntacticTerm termIt : _series) {
             coldepth = 10.0;
-            for (SyntacticNode node : colIt) {
+            if (!(termIt instanceof SyntacticColumn)) continue;
+            
+            SyntacticColumn colIt = (SyntacticColumn)termIt; 
+            for (SyntacticTerm term : colIt) {
+                if (!(term instanceof SyntacticNode)) continue;
+                
+                SyntacticNode node = (SyntacticNode)term;
                 node.setLocation(colpos, coldepth);
                 coldepth += node.getLayoutVerticalSpace();
                 
-                
-                
-                if (node.isRepresentative()) {
-                    node.setDisplayName(getLabelFromNode(node));
-                }
-                else {
-                    node.setDisplayName(node.getIdentifier());
-                }
+                node.setDisplayName(node.getIdentifier());
             }
         
             colpos += 180.0;
         }
-    
     }
 
     /** Generate code for model represented by graph. */
     public String generateCode() {
         String code = "";
-    
         for (SyntacticNode node : _nodes) {
             if (node.isRepresentative()) {
                 code += "" + getLabelFromNode(node) + " = \t" + node.getName() + "\n";
             }
         }
-    
         code += "\n";
     
         LinkedList<SyntacticNode> inputs = _getInputs();
@@ -728,42 +725,10 @@ public class SyntacticGraph extends CompositeEntity {
             for (int n = 0; n < stars; ++n) strlst.add("*");
             for (int n = ioffs; n < nins; ++n) strlst.add("" + (n + 1));
             
-            code += "µ =>= [";
-            code += stringJoin(strlst, " ");
-            code += "] =>= ";
+            code += "Fb =>= [" + stringJoin(strlst, " ") + "]\n        =>= ";
         }
         
-        ListIterator<LinkedList<SyntacticNode>> colIt = _columns.listIterator();
-        while (colIt.hasNext()) {
-            LinkedList<SyntacticNode> column = colIt.next();
-        
-            LinkedList<SyntacticNode> shownNodes = new LinkedList();
-            for (SyntacticNode node : column) {
-                if (!node.isIdentity()) shownNodes.add(node);
-            }
-        
-            ListIterator<SyntacticNode> nodeIt = shownNodes.listIterator();
-            while (nodeIt.hasNext()) {
-                SyntacticNode node = nodeIt.next();
-                String name = "";
-                if (node.isRepresentative()) {
-                    name = getLabelFromNode(node);
-                }
-                else {
-                    name = node.getIdentifier();
-                }
-                code += name;
-            
-                if (nodeIt.hasNext()) code += " | ";
-                else break;
-            }
-        
-            if (colIt.hasNext()) code += " =>= ";
-            else break;
-        }
-    
-        code += "\n";
-        return code;
+        return code + _series.generateCode() + "\n";
     }
     
     /** Determine whether feedback has been removed.
@@ -817,17 +782,18 @@ public class SyntacticGraph extends CompositeEntity {
         
         desc += prefix + suffix;
         desc += prefix + "Columns ::::" + suffix;
-        for (List<SyntacticNode> column : _columns) {
+        for (SyntacticColumn column : _columns) {
             desc += prefix + prefix + "Column ::" + suffix;
-            for (SyntacticNode node : column) {
+            for (SyntacticTerm term : column) {
+                if (!(term instanceof SyntacticNode)) continue;
+                
+                SyntacticNode node = (SyntacticNode)term;
                 desc += node.description(prefix + prefix + "......", suffix);
             }
         }
         
         return desc;
     }
-    
-   
     
     /** Get the node associated with a given label or null.
      *  @param label The label given for a node.
@@ -870,6 +836,7 @@ public class SyntacticGraph extends CompositeEntity {
             String label = prefix + _labelCount;
             _nodesToLabels.put(node, label);
             _labelsToNodes.put(label, node);
+            node.setLabel(label);
             ++_labelCount;
             
             return label;
@@ -891,15 +858,10 @@ public class SyntacticGraph extends CompositeEntity {
         return acc;
     }
     
+    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
-    public static final Comparator<SyntacticNode> compareNodes = 
-        new Comparator<SyntacticNode>() {
-            public int compare(SyntacticNode a, SyntacticNode b) {
-                return a.getOrder() - b.getOrder();
-            }
-        };
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1080,10 +1042,16 @@ public class SyntacticGraph extends CompositeEntity {
     
     protected LinkedList<SyntacticNode> _getInputs() {
         LinkedList<SyntacticNode> innodes = new LinkedList();
-        if (_columns.size() >= 1) {
-            for (SyntacticNode node : _columns.getFirst()) {
-                if (node.isIncoming()) innodes.add(node);
-            }
+        if (_series.size() < 1) return innodes;
+        
+        SyntacticTerm sterm = _series.getFirst();
+        if (!(sterm instanceof SyntacticColumn)) return innodes;
+        
+        for (SyntacticTerm term : (SyntacticColumn)sterm) {
+            if (!(term instanceof SyntacticNode)) continue;
+            
+            SyntacticNode node = (SyntacticNode)term;
+            if (node.isIncoming()) innodes.add(node);
         }
         
         return innodes;
@@ -1091,87 +1059,21 @@ public class SyntacticGraph extends CompositeEntity {
     
     protected LinkedList<SyntacticNode> _getOutputs() {
         LinkedList<SyntacticNode> outnodes = new LinkedList();
-        if (_columns.size() >= 1) {
-            for (SyntacticNode node : _columns.getLast()) {
-                if (node.isOutgoing()) outnodes.add(node);
-            }
+        if (_series.size() < 1) return outnodes;
+        
+        SyntacticTerm sterm = _series.getLast();
+        if (!(sterm instanceof SyntacticColumn)) return outnodes;
+        
+        for (SyntacticTerm term : (SyntacticColumn)sterm) {
+            if (!(term instanceof SyntacticNode)) continue;
+            
+            SyntacticNode node = (SyntacticNode)term;
+            if (node.isOutgoing()) outnodes.add(node);
         }
         
         return outnodes;
     }
     
-    /** Get all of the output ports for a column.
-     *  @param column The column of nodes.
-     *  @return A list of input ports for the column.
-     */
-    protected LinkedList<SyntacticPort> _getColumnInputs(List<SyntacticNode> column) {
-        LinkedList<SyntacticPort> columnIns = new LinkedList();
-        for (SyntacticNode node : column) {
-            columnIns.addAll(node.getInputs());
-        }
-        
-        return columnIns;
-    }
-    
-    /** Get all of the output ports for a column.
-     *  @param column The column of nodes.
-     *  @return A list of output ports for the column.
-     */
-    protected LinkedList<SyntacticPort> _getColumnOutputs(List<SyntacticNode> column) {
-        LinkedList<SyntacticPort> columnOuts = new LinkedList();
-        for (SyntacticNode node : column) {
-            columnOuts.addAll(node.getOutputs());
-        }
-        
-        return columnOuts;
-    }
-    
-    /** Decide if given node is in the given column.
-     *  @param column The column of nodes. 
-     *  @param node The node to be found.
-     *  @return Whether the given node is in the given column.
-     */
-    protected boolean _isNodeInColumn(List<SyntacticNode> column, SyntacticNode node) {
-        return column.contains(node);
-    }
-    
-    /** Decide if give port is in the given column.
-     *  @param column The column of nodes.
-     *  @param port The port to be found.
-     *  @return Whether the given port is in the given node.
-     */
-    protected boolean _isPortInColumn(List<SyntacticNode> column, SyntacticPort port) {
-        NamedObj obj = port.getContainer();
-        if (!(obj instanceof SyntacticNode)) return false;
-        
-        SyntacticNode node = (SyntacticNode)obj;
-        return _isNodeInColumn(column, node);
-    }
-    
-    /** Decide if given node follows completely from the given column.
-     *  To be true there must be at least one connection from the column to 
-     *  the node and all incoming connections must follow from this column.
-     *  @param column The column of nodes.
-     *  @param node The node possibly following the column.
-     *  @return Whether the given node follows completely from given column.
-     */
-    protected boolean _doesNodeFollowColumn(List<SyntacticNode> column, SyntacticNode node) {
-        boolean doesFollow = true;
-        boolean isAny = false;
-        for (SyntacticPort iport : node.getInputs()) {
-            SyntacticPort rport = iport.getConnectedPort();
-            if (rport == null) continue;
-            
-            if (_isPortInColumn(column, rport)) {
-                isAny = true;
-            }
-            else {
-                doesFollow = false;
-            }
-        }
-        
-        return isAny && doesFollow;
-    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -1185,7 +1087,8 @@ public class SyntacticGraph extends CompositeEntity {
     private LinkedList<SyntacticNode> _feedOuts;
     
     /** Conjunctive columns of nodes. Used for parallel composition. */
-    private LinkedList<LinkedList<SyntacticNode>> _columns;
+    private LinkedList<SyntacticColumn> _columns;
+    private SyntacticSeries _series;
 
     /** Map between Entities and representative SyntaticNodes. */
     private HashMap<Entity, SyntacticNode> _representingNodes;
@@ -1205,5 +1108,6 @@ public class SyntacticGraph extends CompositeEntity {
     private boolean _canAdd;
     
     private int _pureCount;
+        
      
 }
