@@ -154,7 +154,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
                     return _monotonicConcept;
                 }               
             } 
-            return _nonmonotonicConcept;
+            return _generalConcept;
         }
         
         /** String representation of the operator for the relational node

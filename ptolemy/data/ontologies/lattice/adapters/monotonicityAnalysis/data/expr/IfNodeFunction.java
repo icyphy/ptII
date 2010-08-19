@@ -89,7 +89,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
     throws IllegalActionException {
         _nodeToCounterexamples.remove(_ifNode);
         Concept result = _standardIfAnalysis(inputConceptValues);
-        if (result.isAboveOrEqualTo(_nonmonotonicConcept)) {
+        if (result.isAboveOrEqualTo(_generalConcept)) {
             if (_checkConditionalStructure(inputConceptValues)) {
                 ptolemy.data.expr.ASTPtRelationalNode condition = (ptolemy.data.expr.ASTPtRelationalNode) _ifNode.jjtGetChild(0);
                 Concept constant = _extractConstant(condition);
@@ -253,7 +253,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         }
         if (counterexamples.containsCounterexamples()) {
             _nodeToCounterexamples.put(_ifNode, counterexamples);
-            return _nonmonotonicConcept;
+            return _generalConcept;
         } else {
             return _monotonicConcept;
         }
@@ -315,7 +315,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
             }
         }
 
-        return _nonmonotonicConcept;
+        return _generalConcept;
     }
 
     /** The AST node for the conditional expression that this

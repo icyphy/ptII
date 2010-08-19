@@ -85,10 +85,10 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
                     "Concept Antimonotonic not found in monotonicityAnalysis ontology.");
         }
 
-        _nonmonotonicConcept = (Concept) _monotonicityAnalysisOntology.getEntity("Nonmonotonic");
-        if (_nonmonotonicConcept == null) {
+        _generalConcept = (Concept) _monotonicityAnalysisOntology.getEntity("General");
+        if (_generalConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
-                    "Concept Nonmonotonic not found in monotonicityAnalysis ontology.");
+                    "Concept General not found in monotonicityAnalysis ontology.");
         }
     }
 
@@ -111,6 +111,6 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
     /** The "Antimonotonic" Concept from the monotonicityAnalysis ontology. */
     protected Concept _antimonotonicConcept;
 
-    /** The "Nonmonotonic" Concept from the monotonicityAnalysis ontology. */
-    protected Concept _nonmonotonicConcept;
+    /** The "General" Concept from the monotonicityAnalysis ontology. */
+    protected Concept _generalConcept;
 }
