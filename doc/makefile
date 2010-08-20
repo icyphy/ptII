@@ -230,6 +230,7 @@ CGPACKAGES = \
 	ptolemy.cg.kernel.generic.program.procedural.c.ptidyos \
 	ptolemy.cg.kernel.generic.program.procedural.java \
 	ptolemy.cg.kernel.generic.program.procedural.java.modular \
+	ptolemy.cg.kernel.generic.syntactic \
 	ptolemy.cg.kernel.generic.test.actor \
 	ptolemy.cg.lib
 
