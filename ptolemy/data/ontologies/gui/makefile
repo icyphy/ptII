@@ -52,6 +52,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS =
 
 JSRCS = \
+	DeltaConstraintSolverDisplayActions.java \
 	OntologyDisplayActions.java \
 	OntologySolverGUIFactory.java
 
@@ -65,6 +66,8 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'DeltaConstraintSolverDisplayActions$$DeltaConstraintSolverHighlighterController.class' \
+	'DeltaConstraintSolverDisplayActions$$HighlightConflicts.class' \
 	'OntologyDisplayActions$$ClearDisplay.class' \
 	'OntologyDisplayActions$$ClearProperty.class' \
 	'OntologyDisplayActions$$ConfigureHighlightAction.class' \

@@ -172,7 +172,7 @@ public abstract class OntologyAdapter {
             // Remove all ConceptAttributes.
             if (propertyable instanceof NamedObj) {
                 if (_solver.isSettable(propertyable)) {
-                    _solver.clearResolvedProperty(propertyable);
+                    _solver.clearResolvedConcept(propertyable);
                 }
 
                 /* FIXME: Not doing display for now.
@@ -213,7 +213,7 @@ public abstract class OntologyAdapter {
      * @param property The specified property.
      */
     public void setEquals(Object object, Concept property) {
-        _solver.setResolvedProperty(object, property);
+        _solver.setResolvedConcept(object, property);
         _solver.markAsNonSettable(object);
     }
 

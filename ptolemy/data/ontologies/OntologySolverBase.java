@@ -72,7 +72,7 @@ ontology concepts can be attached.
 This allows every OntologySolver to find other solvers in the model.
 
 <p>Subclasses needs to implement
-{@link ptolemy.data.ontologies.OntologySolverBase#resolveProperties()}
+{@link ptolemy.data.ontologies.OntologySolverBase#resolveConcepts()}
 to specify exactly how to perform the ontology concept resolution. For example,
 one may gather all the constraints from the OntologyAdapters and feed them
 into a constraint solver.
@@ -143,7 +143,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      *
      * @param object The specified object.
      */
-    public void clearResolvedProperty(Object object) {
+    public void clearResolvedConcept(Object object) {
         _resolvedProperties.remove(object);
     }
 
@@ -357,26 +357,15 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
             getOntologySolverUtilities().putAttribute(parseTree, attribute);
         }
         return parseTrees.get(attribute);
-    }
+    }  
 
     /**
-     * Return the property value associated with the specified object.
+     * Return the concept value associated with the specified object.
      * @param object The specified object.
      * @return The property of the specified object.
      */
-    public Concept getProperty(Object object) {
-        return getResolvedProperty(object);
-    }
-
-    /**
-     * Return the resolved property for the specified object. This forces
-     * resolution to happen if the object's property is not present.
-     * @param object The specified object
-     * @return The resolved property for the specified object.
-     * @see #setResolvedProperty
-     */
-    public Concept getResolvedProperty(Object object) {
-        return getResolvedConcept(object, true);
+    public Concept getConcept(Object object) {
+        return getResolvedConcept(object, false);
     }
 
     /**
@@ -412,7 +401,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
             if (resolve
                     && !getOntologySolverUtilities().getRanSolvers().contains(
                             this)) {
-                resolveProperties();
+                resolveConcepts();
             }
         } catch (KernelException ex) {
             throw new InternalErrorException(KernelException
@@ -429,6 +418,16 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public OntologySolverUtilities getOntologySolverUtilities() {
         return _ontologySolverUtilities;
     }
+    
+    /** 
+     * Initialize the solver.  In the base class, only calls reset().  
+     * Subclasses can add functionality. 
+     * @exception IllegalActionException  Thrown if there is a problem 
+     * initializing the solver.
+     */
+    public void initialize() throws IllegalActionException {
+        reset();
+    }
 
     /**
      * Mark the property of the specified object as non-settable. The
@@ -438,9 +437,9 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
     public void markAsNonSettable(Object object) {
         _nonSettables.add(object);
     }
-
+    
     /**
-     * Reset the solver.
+     * Reset the solver.  
      */
     public void reset() {
         _resolvedProperties = new HashMap<Object, Concept>();
@@ -468,16 +467,16 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * Perform property resolution.
      * @exception KernelException Thrown if sub-class throws it.
      */
-    public abstract void resolveProperties() throws KernelException;
+    public abstract void resolveConcepts() throws KernelException;
 
     /**
      * Set the resolved property of the specified object.
-     * (See {@link #getResolvedProperty(Object)}).
+     * (See {@link #getResolvedConcept(Object)}).
      * @param object The specified object.
      * @param property The specified property.
      * @see #getResolvedProperty
      */
-    public void setResolvedProperty(Object object, Concept property) {
+    public void setResolvedConcept(Object object, Concept property) {
         _resolvedProperties.put(object, property);
     }
 

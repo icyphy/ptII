@@ -177,10 +177,10 @@ public class ConceptTermManager implements ConceptTermFactory {
          * @see #setValue(Object)
          */
         public Object getValue() {
-            if (_isEffective) {
-                return _solver.getResolvedProperty(_object);
-            }
-            return null;
+            //if (_isEffective) {
+                return _solver.getConcept(_object);
+           // }
+           // return null;
         }
 
         /** Return this ptolemy.graph.InequalityTerm in an array if this term represent
@@ -237,9 +237,9 @@ public class ConceptTermManager implements ConceptTermFactory {
 
             // FIX: Check with Jackie if this is the right implementation! This fix is for OIL 182.
             if (_object instanceof Concept) {
-                _solver.setResolvedProperty(_object, (Concept) _object);
+                _solver.setResolvedConcept(_object, (Concept) _object);
             } else {
-                _solver.setResolvedProperty(_object, (Concept) property);
+                _solver.setResolvedConcept(_object, (Concept) property);
             }
         }
 
@@ -309,7 +309,7 @@ public class ConceptTermManager implements ConceptTermFactory {
                         "The property is not settable.");
             }
 
-            _solver.setResolvedProperty(_object, (Concept) property);
+            _solver.setResolvedConcept(_object, (Concept) property);
         }
 
         /** Override the base class to give a description of the port

@@ -28,18 +28,21 @@ COPYRIGHTENDKEY
 
 package ptolemy.data.ontologies.lattice;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypeConflictException;
 import ptolemy.data.ontologies.Concept;
-import ptolemy.data.ontologies.ConceptResolutionException;
-import ptolemy.data.properties.PropertyResolutionException;
+import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import util.Set;
 
 ///////////////////////////////////////////////////////////////////
 //// DeltaConstraintSolver
@@ -70,32 +73,41 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
     public DeltaConstraintSolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // TODO Auto-generated constructor stub
+        
+        _identifiedConflicts = new HashMap<Object, Concept>();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Resolve the property values for the toplevel entity that contains this
-     *  solver, given the model analyzer that invokes this.
-     *  @param analyzer The given model analyzer.
-     *  @exception KernelException If the superclass throws it.
+    /** Resolve the concept values for the toplevel entity that contains this
+     *  solver, given the model analyzer that invokes this.  Then, if some
+     *  concepts resolved to unacceptable values, calculate the set of 
+     *  inequality terms that cause the unacceptable values.
+     *  @exception KernelException If the _resolveProperties method throws it.
      */
-    protected void _resolveProperties(NamedObj analyzer) throws KernelException {
-
-        NamedObj toplevel = _toplevel();
-        LatticeOntologyAdapter toplevelHelper = (LatticeOntologyAdapter) getAdapter(toplevel);
+    
+    public void identifyConflicts() throws KernelException {
         
-        toplevelHelper.reinitialize();
+        // Reset the list of resolved constraints before executing the ontology solver resolution. 
+        _clearLists();       
 
-        toplevelHelper
+        // FIXME: The code from here to constraintList() doesn't really
+        // belong here. The constraintList() method of the Adapter should
+        // ensure that the constraint list it returns is valid.
+        NamedObj toplevel = _toplevel();
+        LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
+
+        toplevelAdapter.reinitialize();
+
+        toplevelAdapter
                 ._addDefaultConstraints(_getConstraintType(actorConstraintType
                         .stringValue()));
 
         // FIXME: have to generate the connection every time
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
-        toplevelHelper._setConnectionConstraintType(
+        toplevelAdapter._setConnectionConstraintType(
                 _getConstraintType(connectionConstraintType.stringValue()),
                 _getConstraintType(compositeConnectionConstraintType
                         .stringValue()), _getConstraintType(fsmConstraintType
@@ -104,12 +116,12 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
                         .stringValue()));
 
         // Collect and solve type constraints.
-        List<Inequality> constraintList = toplevelHelper.constraintList();
-
-        if (_resolvePropertiesHasErrors(toplevel, toplevelHelper,
+        List<Inequality> constraintList = toplevelAdapter.constraintList();
+        
+        if (_resolvePropertiesHasErrors(toplevel, toplevelAdapter,
                 constraintList)) {
-            //Only do delta iteration when an error is found.
-            _doDeltaIteration(toplevel, toplevelHelper, constraintList);
+            // Only do delta iteration when an error is found.
+            _doDeltaIteration(toplevel, toplevelAdapter, constraintList);
         }
     }
 
@@ -143,9 +155,11 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
     
     private void _doDeltaIteration(NamedObj toplevel,
             LatticeOntologyAdapter toplevelHelper,
-            List<Inequality> constraintList) throws TypeConflictException,
-            ConceptResolutionException, IllegalActionException {
+            List<Inequality> constraintList) throws TypeConflictException, IllegalActionException {
 
+        // Save original set _resolvedProperties
+        HashMap originalResolvedProperties = new HashMap<Object, Concept>(_resolvedProperties);
+        
         List<Inequality> errorList = constraintList;
         int blockSize = errorList.size() / 2;
 
@@ -176,7 +190,16 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
 
         System.out.println(errorList);
         _resolvedProperties.clear();
-        _resolveProperties(toplevel, toplevelHelper, errorList);
+        // This will store the objects with unacceptable concepts in 
+        // _resolvedProperties.  Save to _identifiedConflicts
+        _resolveConcepts(toplevel, toplevelHelper, errorList);
+        if (_resolvedProperties != null && !_resolvedProperties.isEmpty()){
+            _identifiedConflicts = 
+                new HashMap<Object, Concept>(_resolvedProperties);
+        } 
+        
+        // Restore original set _resolvedProperties
+        _resolvedProperties = originalResolvedProperties;
     }
 
     /** Resolve the properties of the given top-level container,
@@ -187,37 +210,65 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      * @param toplevelHelper Must be toplevel.getHelper()
      * @param constraintList The constraint list that we are solving
      * @return True If the found solution has errors.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException  If the superclass method getAllPropertyables() throws it
+     * @exception OntologyResolutionException  If the superclass method _resolveProperties() throws it
      */
     
     protected boolean _resolvePropertiesHasErrors(NamedObj toplevel,
             LatticeOntologyAdapter toplevelHelper,
-            List<Inequality> constraintList) throws IllegalActionException {
+            List<Inequality> constraintList) throws IllegalActionException 
+    {
         boolean errorOccured = false;
         try {
-            super._resolveProperties(toplevel, toplevelHelper, constraintList);
-        } catch (TypeConflictException ex) {
-            // Thrown in case of conflict in inequalities.
+            super._resolveConcepts(toplevel, toplevelHelper, constraintList);
+        } catch (InternalErrorException ex) {
+            // Thrown when there is a conflict with the concept resolution.
+            errorOccured = true;
+        } catch (OntologyResolutionException ex) {
+            // Beth - is this still the case?  
+            // Thrown when there is a conflict .  FIXME:  Should these exceptions be the other way around??
+            // An ontology resolution exception here really means that the function is not monotonic or there
+            // is some other problem with the way the constraints are specified
             errorOccured = true;
         }
+        
         // Check for unacceptable solution properties.
-        for (Object propertyable : getAllPropertyables()) {
-            // Property property = getProperty(propertyable);
-            Concept concept = getProperty(propertyable);
-            
-            // if (property != null && !property.isAcceptableSolution()) {
-            // See comments for Concept.isValueAcceptable()
-            // Do we want a different implementation of this?
-            // Currently used in situations where we would like to specify global acceptance criteria, 
-            // for example, "Unknown" and "Top" are unacceptable solutions.  But, the constraint solver
-            // does not currently use this information as input -> there ma
-            // For example, we can say var >= Concept as a constraint, and var <= Concept as an acceptance 
-            // criterion, but how do we specify var != Concept?
-            
-            if (concept != null && !concept.isValueAcceptable()) {
-                errorOccured = true;
-            }
+        if (hasUnacceptableTerms())
+        {
+            errorOccured = true;
         }
+                
         return errorOccured;
     }
+    
+    /** Returns the objects (and their concepts) which are the cause of 
+     *  unacceptable concepts in the model.  Can be null.
+     *  
+     * @return  The objects (and their concepts) which are the cause of 
+     *  unacceptable concepts in the model.  Can be null.
+     */
+    public HashMap<Object, Concept> getIdentifiedConflicts()
+    {
+        return _identifiedConflicts;
+    }
+    
+    /** Returns true if unacceptable concepts exist in the model and the 
+     *  causing objects have been identified; false otherwise.
+     *  
+     *  @return True if unacceptable concepts exist in the model and the 
+     *  causing objects have been identified; false otherwise.
+     */
+    public boolean hasIdentifiedConflicts()
+    {
+        if (_identifiedConflicts != null && !_identifiedConflicts.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     *  A set of objects (and their concepts) which are the cause of 
+     *  unacceptable concepts in the model.
+     */
+    private HashMap<Object, Concept> _identifiedConflicts;
 }

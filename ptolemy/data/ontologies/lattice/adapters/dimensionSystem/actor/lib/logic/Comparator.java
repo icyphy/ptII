@@ -97,8 +97,8 @@ public class Comparator extends AtomicActor {
          */
         public Object getValue() throws IllegalActionException {
 
-            Concept leftProperty = getSolver().getProperty(_left);
-            Concept rightProperty = getSolver().getProperty(_right);
+            Concept leftProperty = getSolver().getConcept(_left);
+            Concept rightProperty = getSolver().getConcept(_right);
 
             Concept unknown = _unknownConcept;
 

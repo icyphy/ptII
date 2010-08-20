@@ -46,7 +46,7 @@ import ptolemy.kernel.util.StringAttribute;
  *  on the constraints collected and produces string outputs.
  *  This attribute is meant mainly for testing the LatticeOntologySolver.
  *  
- *  @author Charles Shelton
+ *  @author Charles Shelton, Beth Latronico
  *  @version $Id$
  *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cshelton)
@@ -87,6 +87,13 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
                 trainedResolvedSolverConstraints, "_style");
         resolvedStyle.height.setExpression("10");
         resolvedStyle.width.setExpression("80");
+        
+        unacceptableTerms = new StringAttribute(this, "unacceptableTerms");
+        unacceptableTerms.setExpression("");
+        TextStyle unacceptableTermsStyle = new TextStyle(
+                unacceptableTerms, "_style");
+        unacceptableTermsStyle.height.setExpression("10");
+        unacceptableTermsStyle.width.setExpression("80");
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"120\" height=\"40\" "
@@ -113,6 +120,12 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
      *  the LatticeOntologySolver.
      */
     public StringAttribute trainedResolvedSolverConstraints;
+    
+    /** The string attribute holding the list of terms that resolved to 
+     *  unacceptable concepts for the LatticeOntologySolver.  
+     *  For information only; not checked in the test() method.
+     */
+    public StringAttribute unacceptableTerms;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////    
@@ -181,6 +194,8 @@ public class CollectLatticeOntologySolverDetails extends Attribute implements
         trainedResolvedSolverConstraints
                 .setExpression((String) resolvedSolverInfo
                         .get("resolvedSolverConstraints"));
+        unacceptableTerms
+                .setExpression(_solver.getUnacceptableTermsAsString());
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -25,7 +25,11 @@
  */
 package ptolemy.data.ontologies;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import ptolemy.graph.GraphStateException;
 import ptolemy.kernel.ComponentPort;
@@ -112,6 +116,29 @@ public class Ontology extends CompositeEntity {
             _graphVersion = workspace().getVersion();
         }
         return _graph;
+    }
+    
+    /** Return a set of all concepts which are unacceptable solutions in all situations.
+     *  Here these concepts are undesirable for any user of this ontology, for example,
+     *  "Top" may indicate a conflict for all models using this ontology.
+     *  Ontologies may not contain duplicate concepts, so the collection of
+     *  unacceptable concepts is always a set 
+     * @return  The set of all unacceptable concepts in this ontology.  
+     */
+    public Set getUnacceptableConcepts() {
+        
+        HashSet unacceptableConcepts = new HashSet();
+        
+        List<Concept> concepts = entityList(Concept.class);
+        
+        for (Concept concept : concepts) {
+            if (!concept.isValueAcceptable()) {
+                unacceptableConcepts.add(concept);
+            }
+        }
+        
+        return unacceptableConcepts;
+        
     }
 
     /** Return true if the ontology graph is a lattice.

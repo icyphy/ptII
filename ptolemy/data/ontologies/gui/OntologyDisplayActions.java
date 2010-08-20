@@ -99,7 +99,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
      */
     private class ClearDisplay extends FigureAction {
         public ClearDisplay() {
-            super("Clear Property Display");
+            super("Clear Concept Highlighting");
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -111,7 +111,32 @@ public class OntologyDisplayActions extends NodeControllerFactory {
                     ((OntologySolver) container).getMoMLHandler()
                             .clearDisplay();
                 } catch (IllegalActionException e1) {
-                    MessageHandler.error("Clearing concept display failed", e1);
+                    MessageHandler.error("Clearing concept highlighting failed", e1);
+                }
+            }
+        }
+    }
+    
+    /** The action for the clear concept resolution command to be added to the
+     *  context menu.  This clears the list of resolved concepts (if any)
+     *  and also clears the display.
+     */
+    private class ClearResolution extends FigureAction {
+        public ClearResolution() {
+            super("Clear Concept Resolution");
+        }
+        
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            
+            NamedObj container = getContainer();
+            if (container instanceof OntologySolver) {
+                try {
+                    ((OntologySolver) container).reset();
+                    ((OntologySolver) container).getMoMLHandler()
+                    .clearDisplay();
+                } catch (IllegalActionException e1) {
+                 MessageHandler.error("Clearing concept resolution failed", e1);
                 }
             }
         }
@@ -123,7 +148,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
     private class ConfigureHighlightAction extends FigureAction {
 
         public ConfigureHighlightAction() {
-            super("Property Display");
+            super("Concept Display");
         }
 
         /**
@@ -151,7 +176,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
          *  @param target The object whose parameters are to be edited.
          */
         private void _openDialog(Frame parent, NamedObj target) {
-            new EditHighlightDialog(parent, target, "Highlight properties");
+           new EditHighlightDialog(parent, target, "Configure concept display");
         }
     }
 
@@ -225,12 +250,12 @@ public class OntologyDisplayActions extends NodeControllerFactory {
         }
     }
 
-    /** The action for the highlight property command to be added
+    /** The action for the resolve concepts command to be added
      *  to the context menu.
      */
-    private class HighlightProperty extends FigureAction {
-        public HighlightProperty() {
-            super("Highlight Property");
+    private class ResolveConcepts extends FigureAction {
+        public ResolveConcepts() {
+            super("Resolve Concepts");
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -238,20 +263,14 @@ public class OntologyDisplayActions extends NodeControllerFactory {
 
             NamedObj container = getContainer();
             if (container instanceof OntologySolver) {
-                try {
-                    ((OntologySolver) container).getMoMLHandler()
-                            .highlightProperties();
-                } catch (IllegalActionException e1) {
-                    MessageHandler.error(
-                            "Highlighting with concept color failed", e1);
+                ((OntologySolver) container).getMoMLHandler().invokeSolver();
                 }
-            }
         }
     }
 
     /** The controller that adds commands to the context menu.
      */
-    private static class HighlighterController extends MoMLModelAttributeController {
+    protected static class HighlighterController extends MoMLModelAttributeController {
 
         /** Create a DependencyController that is associated with a controller.
          *  @param displayActions The OntologyDisplayActions object reference.
@@ -263,26 +282,33 @@ public class OntologyDisplayActions extends NodeControllerFactory {
             ClearDisplay clearDisplay = displayActions.new ClearDisplay();
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(clearDisplay));
+            
+            ClearResolution clearResolution = 
+                displayActions.new ClearResolution();
+            _menuFactory
+                    .addMenuItemFactory(new MenuActionFactory(clearResolution));
 
-            ShowProperty showProperty = displayActions.new ShowProperty();
+            HighlightConcepts showProperty = displayActions.new HighlightConcepts();
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(showProperty));
 
-            HighlightProperty highlightProperty = displayActions.new HighlightProperty();
+            ResolveConcepts resolveConcepts = 
+                displayActions.new ResolveConcepts();
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    highlightProperty));
+                    resolveConcepts));
 
-            ConfigureHighlightAction highlight = displayActions.new ConfigureHighlightAction();
+            ConfigureHighlightAction highlight = 
+                displayActions.new ConfigureHighlightAction();
             _configureMenuFactory.addAction(highlight, "Configure");
         }
     }
 
-    /** The action for the show property command to be added
+    /** The action for the highlight concepts command to be added
      *  to the context menu.
      */
-    private class ShowProperty extends FigureAction {
-        public ShowProperty() {
-            super("Show Property");
+    private class HighlightConcepts extends FigureAction {
+        public HighlightConcepts() {
+            super("Highlight Concepts");
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -291,9 +317,9 @@ public class OntologyDisplayActions extends NodeControllerFactory {
             if (container instanceof OntologySolver) {
                 try {
                     ((OntologySolver) container).getMoMLHandler()
-                            .showProperties();
+                            .highlightConcepts();
                 } catch (IllegalActionException e1) {
-                    MessageHandler.error("Showing concept annotations failed",
+                    MessageHandler.error("Highlighting concept annotations failed",
                             e1);
                 }
             }

@@ -67,11 +67,6 @@ public abstract class OntologySolver extends OntologySolverBase implements
         super(container, name);
 
         _momlHandler = new OntologyMoMLHandler(this, "OntologyMoMLHandler");
-
-        // FIXME: We do not want this GUI dependency here...
-        // This attribute should be put in the MoML in the library instead
-        // of here in the Java code.
-        new OntologyDisplayActions(this, "PropertyDisplayActions");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,7 +89,8 @@ public abstract class OntologySolver extends OntologySolverBase implements
         if (!errors.isEmpty()) {
             String errorMessage = errors.toString();
 
-            throw new OntologyResolutionException(this, errorMessage);
+            // FIXME:  Replace with proper error logging.  See java.util.logging
+            // throw new OntologyResolutionException(this, errorMessage);
         }
     }
 
@@ -106,7 +102,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public void checkResolutionErrors() throws IllegalActionException {
         for (Object propertyable : getAllPropertyables()) {
-            _recordUnacceptableSolution(propertyable, getProperty(propertyable));
+            _recordUnacceptableSolution(propertyable, getConcept(propertyable));
         }
         checkErrors();
     }
@@ -145,9 +141,8 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * object. Thrown if an error occurs when creating or setting the value for
      * the highlightColor attribute in the property-able object.
      */
-    public void displayProperties() throws IllegalActionException {
-        _momlHandler.highlightProperties();
-        _momlHandler.showProperties();
+    public void displayConcepts() throws IllegalActionException {
+        _momlHandler.highlightConcepts();
     }
 
     /**
@@ -159,22 +154,41 @@ public abstract class OntologySolver extends OntologySolverBase implements
         return _momlHandler;
     }
 
-    /**
-     * Invoke the solver directly.
+    
+    /** Invoke the solver directly, and display any concepts resolved by this
+     * solver.
      * @return True if the invocation succeeds; otherwise false which means an
      * error has occurred during the process.
      */
-    // FIXME: Why have this method? Why not call resolveProperties() directly?
     public boolean invokeSolver() {
+        return invokeSolver(true);
+    }
+    
+    /**
+     * Invoke the solver directly, with a choice as to whether or not this 
+     * solver should display its resolved concepts.
+     * 
+     * @param displayProperties  True if the solver should display its 
+     *          properties; false otherwise (for example, if it is called
+     *          from another solver)
+     * @return True if the invocation succeeds; otherwise false which means an
+     * error has occurred during the process.
+     */
+    
+    public boolean invokeSolver(boolean displayProperties) {
         boolean success = false;
         try {
-            resolveProperties();
+            initialize();
+            
+            resolveConcepts();
 
-            updateProperties();
+            updateConcepts();
 
             checkErrors();
 
-            displayProperties();
+            if (displayProperties) {
+                 displayConcepts(); 
+            }
 
         } catch (KernelException e) {
             resetAll();
@@ -198,10 +212,12 @@ public abstract class OntologySolver extends OntologySolverBase implements
 
     /**
      * Reset the solver. This removes the internal states of the solver (e.g.
-     * previously recorded properties, statistics, etc.).
+     * previously recorded properties, statistics, etc.).  It also removes
+     * this solver from the list of ran solvers.
      */
     public void reset() {
         super.reset();
+        _ontologySolverUtilities.removeRanSolver(this);
     }
 
     /**
@@ -211,9 +227,9 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * 
      * @throws KernelException If the ontology resolution fails.
      */
-    public void resolveProperties() throws KernelException {
+    public void resolveConcepts() throws KernelException {
         getOntologySolverUtilities().addRanSolvers(this);
-        _resolveProperties();
+        _resolveConcepts();
         checkResolutionErrors();
     }
 
@@ -222,7 +238,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * auxiliary solvers.
      * @exception IllegalActionException If the properties cannot be updated.
      */
-    public void updateProperties() throws IllegalActionException {
+    public void updateConcepts() throws IllegalActionException {
         for (Object propertyable : getAllPropertyables()) {
 
             if (!NamedObj.class.isInstance(propertyable)) {
@@ -235,7 +251,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
             NamedObj namedObj = (NamedObj) propertyable;
 
             // Get the value resolved by the solver.
-            getProperty(namedObj);
+            getConcept(namedObj);
         }
     }
 
@@ -245,7 +261,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
     /** Run the solver.
      *  @exception KernelException If the solver fails.
      */
-    protected abstract void _resolveProperties() throws KernelException;
+    protected abstract void _resolveConcepts() throws KernelException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

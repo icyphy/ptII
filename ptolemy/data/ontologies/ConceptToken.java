@@ -64,13 +64,17 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
     }
 
     /** Compare this ConceptToken to the given argument, and return true if
-     *  they refer to the same concept in the same lattice..
+     *  they refer to the same concept in the same lattice.  If either is null,
+     *  return false.
      *
      *  @param rightArgument The argument.
      *  @return true if the values are the same Concept, or false otherwise.
      */
     public BooleanToken isEqualTo(Token rightArgument) {
-        if (rightArgument instanceof ConceptToken
+        if (this != null && rightArgument != null 
+                && rightArgument instanceof ConceptToken
+                && ((ConceptToken) rightArgument)._concept != null 
+                && _concept != null 
                 && ((ConceptToken) rightArgument)._concept.equals(_concept)) {
             return BooleanToken.TRUE;
         } else {

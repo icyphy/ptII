@@ -74,12 +74,13 @@ public class OntologySolverUtilities {
     }
 
     /**
-     * Mard the given property solver as already activated.
+     * Mark the given property solver as already activated.
      * @param solver The given solver.
      */
     public void addRanSolvers(OntologySolver solver) {
         _ranSolvers.add(solver);
     }
+    
 
     /**
      * Return the map that maps root ast node (keys) to the corresponding
@@ -125,6 +126,16 @@ public class OntologySolverUtilities {
         _errors.clear();
         return result;
     }
+    
+    /**
+     * Removes the specified solver from the set of ran solvers, if this
+     * solver was in the set.  Does nothing otherwise.
+     * @param solver  The solver to remove from the set of ran solvers
+     */
+    public void removeRanSolver(OntologySolver solver) {
+        _ranSolvers.remove(solver);
+    }
+    
 
     /**
      * Clear the states of this shared object. The states include all previously

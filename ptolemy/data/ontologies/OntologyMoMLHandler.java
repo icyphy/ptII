@@ -29,6 +29,7 @@
 package ptolemy.data.ontologies;
 
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.util.Attribute;
@@ -107,61 +108,63 @@ public class OntologyMoMLHandler extends Attribute {
         solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
     }
 
-    /** Highlight all property-able objects with
-     *  the specified colors for their property values.
-     *  @throws IllegalActionException If getting the resolved concept fails.
-     */
-    public void highlightProperties() throws IllegalActionException {
-        // Get the PropertySolver.
-        OntologySolver solver = (OntologySolver) getContainer();
-        for (Object propertyable : solver.getAllPropertyables()) {
-            if (propertyable instanceof NamedObj) {
-                Concept concept = solver.getResolvedConcept(propertyable, true);
-                if (concept != null) {
-                    // Use the color in the concept instance.
-                    List<ColorAttribute> colors = concept
-                            .attributeList(ColorAttribute.class);
-                    if (colors != null && colors.size() > 0) {
-                        // ConceptIcon renders the first found ColorAttribute,
-                        // so we use that one here as well.
-                        ColorAttribute conceptColor = colors.get(0);
-                        String request = "<property name=\"_highlightColor\" "
-                                + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
-                                + conceptColor.getExpression() + "\"/>";
-                        MoMLChangeRequest change = new MoMLChangeRequest(this,
-                                (NamedObj) propertyable, request, false);
-                        ((NamedObj) propertyable).requestChange(change);
-                    }
-                }
-            }
-        }
-        // Force a single repaint after all the above requests have been processed.
-        solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
-    }
-
-    /**
+    /** Highlight concepts that have already been resolved, but do not run solver.
      * If the value of the showText parameter is set to
      * true, show all property values visually.
      * Otherwise, do nothing.
      * @throws IllegalActionException If getting the resolved concept fails.
      */
-    public void showProperties() throws IllegalActionException {
-        // Get the PropertySolver.
-        OntologySolver solver = (OntologySolver) getContainer();
-        for (Object propertyable : solver.getAllPropertyables()) {
-            if (propertyable instanceof NamedObj) {
-                Concept concept = solver.getResolvedConcept(propertyable, true);
-                if (concept != null) {
-                    String request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
-                            + concept.toString() + "\"/>";
-                    MoMLChangeRequest change = new MoMLChangeRequest(this,
-                            (NamedObj) propertyable, request, false);
-                    ((NamedObj) propertyable).requestChange(change);
+    
+    public void highlightConcepts(Set<Object> objects)
+    {
+        if (objects != null)
+        {
+            // Get the PropertySolver.
+            OntologySolver solver = (OntologySolver) getContainer();
+            
+            for (Object object : objects) {
+                if (object instanceof NamedObj) {
+                    Concept concept = solver.getResolvedConcept(object, false);
+                    if (concept != null) {
+                        // Use the color in the concept instance.
+                        List<ColorAttribute> colors = concept
+                                .attributeList(ColorAttribute.class);
+                        if (colors != null && colors.size() > 0) {
+                            // ConceptIcon renders the first found ColorAttribute,
+                            // so we use that one here as well.
+                            ColorAttribute conceptColor = colors.get(0);
+                            String request = "<property name=\"_highlightColor\" "
+                                    + "class=\"ptolemy.actor.gui.ColorAttribute\" value=\""
+                                    + conceptColor.getExpression() + "\"/>";
+                            MoMLChangeRequest change = new MoMLChangeRequest(this,
+                                    (NamedObj) object, request, false);
+                            ((NamedObj) object).requestChange(change);
+                        }
+                    }
                 }
             }
+            // Force a single repaint after all the above requests have been processed.
+            solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
         }
-        // Force a single repaint after all the above requests have been processed.
-        solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
+        
+    }
+    
+    /** Invoke the solver.
+     */
+    
+    public void invokeSolver() {
+        OntologySolver solver = (OntologySolver) getContainer();
+        solver.invokeSolver();
+    }
+    
+    /** Highlight all property-able objects with
+     *  the specified colors for their property values.
+     *  @throws IllegalActionException If getting the resolved concept fails.
+     */
+    public void highlightConcepts() throws IllegalActionException {
+        // Get the PropertySolver.
+        OntologySolver solver = (OntologySolver) getContainer();
+        highlightConcepts(solver.getAllPropertyables());
     }
 
 }

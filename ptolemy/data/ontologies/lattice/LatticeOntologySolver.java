@@ -21,10 +21,13 @@
  */
 package ptolemy.data.ontologies.lattice;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import ptolemy.actor.TypeConflictException;
 import ptolemy.data.StringToken;
@@ -219,9 +222,9 @@ public class LatticeOntologySolver extends OntologySolver {
 
     /**
      * Get the list of affected InequalityTerms from the OntologySolver's
-     * PropertyTermManager.
+     * ConceptTermManager.
      * FIXME: 01/28/10 Charles Shelton - Not really sure what this method is used for. The call to
-     * _propertyTermManager.getAffectedTerms() appears to always return
+     * _conceptTermManager.getAffectedTerms() appears to always return
      * an empty ArrayList.
      * 
      * @param updateTerm This parameter doesn't appear to be used
@@ -259,33 +262,10 @@ public class LatticeOntologySolver extends OntologySolver {
             throws IllegalActionException {
         resetAll();
 
-        NamedObj toplevel = _toplevel();
-        LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
+        initialize();
 
-        // FIXME: The code from here to constraintList() doesn't really
-        // belong here. The constraintList() method of the Adapter should
-        // ensure that the constraint list it returns is valid.
-        toplevelAdapter.reinitialize();
-
-        toplevelAdapter
-                ._addDefaultConstraints(_getConstraintType(actorConstraintType
-                        .stringValue()));
-
-        // FIXME: have to generate the connection every time
-        // because the model structure can changed.
-        // (i.e. adding or removing connections.)
-        toplevelAdapter._setConnectionConstraintType(
-                _getConstraintType(connectionConstraintType.stringValue()),
-                _getConstraintType(compositeConnectionConstraintType
-                        .stringValue()), _getConstraintType(fsmConstraintType
-                        .stringValue()),
-                _getConstraintType(expressionASTNodeConstraintType
-                        .stringValue()));
-        // Collect the constraints in a list
-
-        List<Inequality> constraintList = toplevelAdapter.constraintList();
-
-        String initialSolverConstraints = _getConstraintsAsLogFileString(constraintList);
+        String initialSolverConstraints = 
+            _getConstraintsAsString(_initialConstraintList);
 
         Hashtable initialSolverInfo = new Hashtable();
         initialSolverInfo.put("initialSolverConstraints",
@@ -309,7 +289,7 @@ public class LatticeOntologySolver extends OntologySolver {
             throws IllegalActionException {
         if (_resolvedConstraintList == null) {
             try {
-                resolveProperties();
+                resolveConcepts();
             } catch (KernelException kernelEx) {
                 throw new IllegalActionException(this, kernelEx,
                         "Error while trying to execute LatticeOntologySolver "
@@ -318,7 +298,7 @@ public class LatticeOntologySolver extends OntologySolver {
             }
         }
 
-        String resolvedSolverConstraints = _getConstraintsAsLogFileString(_resolvedConstraintList);
+        String resolvedSolverConstraints = _getConstraintsAsString(_resolvedConstraintList);
 
         Hashtable resolvedSolverInfo = new Hashtable();
         resolvedSolverInfo.put("resolvedSolverConstraints",
@@ -331,10 +311,10 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /**
-     * Returns the adapter that contains property information for the given AST
+     * Returns the adapter that contains concept information for the given AST
      * node.
      * @param node The given ASTPtRootNode.
-     * @return The associated property constraint adapter.
+     * @return The associated concept constraint adapter.
      * @exception IllegalActionException If an exception is thrown in the private
      * _getHelper method
      */
@@ -345,10 +325,10 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /**
-     * Returns the adapter that contains property information for the given
+     * Returns the adapter that contains concept information for the given
      * component.
      * @param component The given component
-     * @return The associated property constraint adapter.
+     * @return The associated concept constraint adapter.
      * @exception IllegalActionException If an exception is thrown in the private
      * _getHelper method
      */
@@ -359,9 +339,9 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /**
-     * Return the property constraint adapter associated with the given object.
+     * Return the concept constraint adapter associated with the given object.
      * @param object The given object.
-     * @return The associated property constraint adapter.
+     * @return The associated concept constraint adapter.
      * @exception IllegalActionException If an exception is thrown in the private
      * _getHelper method
      */
@@ -371,18 +351,21 @@ public class LatticeOntologySolver extends OntologySolver {
         return _getAdapter(object);
     }
 
+    
     /**
-     * Return the property value associated with the specified object.
+     * Return the concept value associated with the specified object.
      * @param object The specified object.
-     * @return The property of the specified object.
+     * @return The concept of the specified object.
      */
-    public Concept getProperty(Object object) {
+    /*
+    public Concept getConcept(Object object) {
         try {
             return (Concept) getConceptTerm(object).getValue();
         } catch (IllegalActionException ex) {
             return null;
         }
     }
+    */
 
     /**
      * Return the concept term from the given object.
@@ -390,20 +373,56 @@ public class LatticeOntologySolver extends OntologySolver {
      * @return The concept term of the given object.
      */
     public ptolemy.graph.InequalityTerm getConceptTerm(Object object) {
-        return getPropertyTermManager().getConceptTerm(object);
+        return getConceptTermManager().getConceptTerm(object);
     }
 
     /**
-     * Return the property term manager that collects and maintains a hash map
+     * Return the concept term manager that collects and maintains a hash map
      * that maps all model objects to their the inequality terms for the OntologySolver.
      * 
-     * @return The property term manager for the OntologySolver
+     * @return The concept term manager for the OntologySolver
      */
-    public ConceptTermFactory getPropertyTermManager() {
+    public ConceptTermFactory getConceptTermManager() {
         if (_conceptTermManager == null) {
-            _conceptTermManager = _getPropertyTermManager();
+            _conceptTermManager = _getConceptTermManager();
         }
         return _conceptTermManager;
+    }
+    
+    /**
+     * Initialize the solver:  Reset the solver (superclass) and then collect 
+     * all of the initial constraints from the model.
+     *  @exception IllegalActionException If an exception occurs when
+     *  collecting the constraints.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        
+        NamedObj toplevel = _toplevel();
+        LatticeOntologyAdapter toplevelAdapter = 
+            (LatticeOntologyAdapter) getAdapter(toplevel);
+
+        // FIXME: The code from here to constraintList() doesn't really
+        // belong here. The constraintList() method of the Adapter should
+        // ensure that the constraint list it returns is valid.
+        toplevelAdapter.reinitialize();
+
+        toplevelAdapter
+                ._addDefaultConstraints(_getConstraintType(actorConstraintType
+                        .stringValue()));
+
+        // FIXME: have to generate the connection every time
+        // because the model structure can changed.
+        // (i.e. adding or removing connections.)
+        toplevelAdapter._setConnectionConstraintType(
+                _getConstraintType(connectionConstraintType.stringValue()),
+                _getConstraintType(compositeConnectionConstraintType
+                        .stringValue()), _getConstraintType(fsmConstraintType
+                        .stringValue()),
+                _getConstraintType(expressionASTNodeConstraintType
+                        .stringValue()));
+        
+        _initialConstraintList = toplevelAdapter.constraintList();
     }
 
     /**
@@ -416,7 +435,7 @@ public class LatticeOntologySolver extends OntologySolver {
     public boolean isAnnotatedTerm(Object object) {
         return _annotatedObjects.contains(object);
     }
-
+    
     /**
      * Reset the solver. This removes the internal states of the
      * solver (e.g.  previously recorded properties, statistics,
@@ -425,6 +444,7 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public void reset() {
         super.reset();
+        _clearLists();
         _conceptTermManager = null;
     }
 
@@ -455,7 +475,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 // cause the test to fail.
                 continue;
             }
-            Concept inferredConcept = getResolvedProperty(conceptable);
+            Concept inferredConcept = getConcept(conceptable);
             if (inferredConcept == null) {
                 throw new IllegalActionException(conceptable,
                         "Testing failure at " + conceptable.toString() + '\n'
@@ -487,7 +507,7 @@ public class LatticeOntologySolver extends OntologySolver {
             resetAll();
             invokeSolver();
             for (NamedObj conceptable : getAllConceptableNamedObjs()) {
-                Concept inferred = getResolvedProperty(conceptable);
+                Concept inferred = getConcept(conceptable);
                 if (inferred == null) {
                     // If we have conceptables that do not resolve to concepts,
                     // simply skip them.
@@ -508,6 +528,107 @@ public class LatticeOntologySolver extends OntologySolver {
         }
     }
 
+    
+    /** Return a string representing the list of terms that resolved to
+     *  unacceptable concepts.  Returns an empty string if the solver has not
+     *  been run, or if all terms were acceptable. 
+     *  
+     *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager} 
+     *  for a definition of acceptable.
+     * 
+     *  @return A string representing the list of terms that resolved to 
+     *          unacceptable concepts.  Can be the empty string.
+     *  @throws IllegalActionException If the string cannot be formed from the 
+     *          list of inequality terms
+     */
+    protected String getUnacceptableTermsAsString() throws IllegalActionException {
+
+        StringBuffer output = new StringBuffer();
+        
+        if (_resolvedUnacceptableList != null 
+                && !_resolvedUnacceptableList.isEmpty())
+        {
+            for (InequalityTerm term : _resolvedUnacceptableList) {
+            output.append(term.toString() + _eol);
+            }
+        }
+
+        return output.toString();
+    }
+    
+    /** Returns true if one or more terms resolved to unacceptable concepts, 
+     *  false otherwise (if the solver has not run, or if all terms have 
+     *  acceptable resolved concepts.   
+     * 
+     * @return  True if one or more terms resolved to unacceptable concepts,
+     *          false otherwise.
+     */
+    protected boolean hasUnacceptableTerms()
+    {
+        if (_resolvedUnacceptableList != null 
+                && !_resolvedUnacceptableList.isEmpty())
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    /** Return the list of inequality terms that resolved to unacceptable
+     *  concepts.  Returns null if the solver has not been run first, or if all 
+     *  terms were acceptable.  
+     *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager} 
+     *  for a definition of acceptable.
+     *  
+     *  @return  The list of inequality terms that resolved to unacceptable 
+     *           concepts.  Can be null.
+     */
+    protected List<InequalityTerm> getUnacceptableTerms() {
+        return _resolvedUnacceptableList;
+    }
+    
+    
+    protected void _isTermAcceptable() {
+        // null is acceptable
+        
+       
+        
+    }
+    
+    // Illegal action exception thrown from getOntology() 
+    
+    // Collect all information related to whether or not terms are unacceptable
+    
+    // For each term, check if its concept is acceptable for that term
+    // The notion of acceptable can currently be defined at three levels:
+    // Per-lattice:  The concept is not acceptable for any term that uses that lattice
+    // Per-container:  The concept is not acceptable for any term in the specified 
+    //  container.  The container can be a whole model.
+    // Per-term:  The concept is not acceptable for the specified term
+    //  (acceptance criteria translate to one or more of these)
+    
+    // Return a list/table of terms, true/false?
+    // Allow checking of an individual term?
+    
+    // Per-lattice
+    
+    
+    // Per-container.  Not implemented currently.
+    
+    // Per-term
+    
+    
+    // collectUnacceptableConcepts(Ontology?)
+    // A concept is deemed acceptable unless explicitly specified otherwise
+    // DO this way, or should ontology provide a list?  Perhaps ontology should provide a list?
+    
+    
+    // collectUnacceptableConcepts(Container?)
+    // collectUnacceptableConcepts(Term?)
+    // call lattice - getUnacceptableConcepts() - for per-lattice - save list
+    // make it a sorted set for easy access
+    // nothing implemented per-container yet
+    // collect all acceptance criteria constraints and determine list for these
+    
     /**
      * Return the LatticeOntologyAdapter for the specified
      * component. This instantiates a new OntologyAdapter if it does
@@ -579,72 +700,60 @@ public class LatticeOntologySolver extends OntologySolver {
     }
 
     /**
-     * Return a new property term manager. Subclass can implements a its own
+     * Return a new concept term manager. Subclass can implements a its own
      * manager and override this method to instantiate a instance of the new
      * class.
-     * @return A property term manager.
+     * @return A concept term manager.
      */
-    protected ConceptTermManager _getPropertyTermManager() {
+    protected ConceptTermManager _getConceptTermManager() {
         //      FIXME: doesn't work for other use-cases!
         //      return new StaticDynamicTermManager(this);
         return new ConceptTermManager(this);
     }
 
+    /** 
+     * Set the resolved constraint list and the list of unacceptable 
+     * inequality terms to null.  Implemented as a protected method so that 
+     * subclasses may call it.  
+     */
+    protected void _clearLists() {
+        _initialConstraintList = null;
+        _resolvedConstraintList = null;
+        _resolvedUnacceptableList = new ArrayList<InequalityTerm>();
+    }
+    
     /**
-     * Resolve the property values for the toplevel entity that contains this
+     * Resolve the concept values for the toplevel entity that contains this
      * solver, given the model analyzer that invokes this.
      * @exception KernelException If there is an exception thrown during the OntologySolver
      * resolution
      */
-    protected void _resolveProperties() throws KernelException {
-        // Reset the list of resolved constraints before executing the ontology solver resolution. 
-        _resolvedConstraintList = null;
-
-        // FIXME: The code from here to constraintList() doesn't really
-        // belong here. The constraintList() method of the Adapter should
-        // ensure that the constraint list it returns is valid.
+    protected void _resolveConcepts() throws KernelException {
+        // Reset the list of resolved constraints and list of acceptable 
+        // inequality terms before executing the ontology solver resolution. 
+        _clearLists();
+        initialize();
+        
         NamedObj toplevel = _toplevel();
-        LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
+        LatticeOntologyAdapter toplevelAdapter = 
+            (LatticeOntologyAdapter) getAdapter(toplevel);
 
-        toplevelAdapter.reinitialize();
-
-        toplevelAdapter
-                ._addDefaultConstraints(_getConstraintType(actorConstraintType
-                        .stringValue()));
-
-        // FIXME: have to generate the connection every time
-        // because the model structure can changed.
-        // (i.e. adding or removing connections.)
-        toplevelAdapter._setConnectionConstraintType(
-                _getConstraintType(connectionConstraintType.stringValue()),
-                _getConstraintType(compositeConnectionConstraintType
-                        .stringValue()),
-                _getConstraintType(fsmConstraintType
-                        .stringValue()),
-                _getConstraintType(expressionASTNodeConstraintType
-                        .stringValue()));
-
-        // Collect and solve type constraints.
-        List<Inequality> constraintList = toplevelAdapter.constraintList();
-
-        _resolveProperties(toplevel, toplevelAdapter, constraintList);
+        _resolveConcepts(toplevel, toplevelAdapter, _initialConstraintList);
     }
 
-    /** Resolve the properties of the given top-level container,
+    /** Resolve the concepts for the given top-level container,
      *  subject to the given constraint list.
      * @param toplevel The top-level container
      * @param toplevelAdapter Must be toplevel.getAdapter()
      * @param constraintList The constraint list that we are solving
-     * @exception TypeConflictException If an unacceptable solution is reached
      * @exception OntologyResolutionException If constraints are unsatisfiable
      */
-    protected void _resolveProperties(NamedObj toplevel,
+    protected void _resolveConcepts(NamedObj toplevel,
             LatticeOntologyAdapter toplevelAdapter,
-            List<Inequality> constraintList) throws TypeConflictException,
-            OntologyResolutionException {
+            List<Inequality> constraintList) 
+        throws OntologyResolutionException {
 
-        List<Inequality> conflicts = new LinkedList<Inequality>();
-        List<Inequality> unacceptable = new LinkedList<Inequality>();
+        List<Inequality> conflicts = new ArrayList<Inequality>();        
 
         try {
             // Check declared properties across all connections.
@@ -703,7 +812,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 // If some inequalities are not satisfied, or type variables
                 // are resolved to unacceptable types, such as
                 // BaseType.UNKNOWN, add the inequalities to the list of
-                // property conflicts.
+                // concept conflicts.
                 for (Inequality inequality : constraintList) {
 
                     if (!inequality.isSatisfied(lattice)) {
@@ -711,29 +820,23 @@ public class LatticeOntologySolver extends OntologySolver {
 
                     } else {
                         // Check if there exist an unacceptable term value.
-                        boolean isAcceptable = true;
-
                         InequalityTerm[] lesserVariables = inequality
                                 .getLesserTerm().getVariables();
 
                         InequalityTerm[] greaterVariables = inequality
                                 .getGreaterTerm().getVariables();
 
+                        // Collect all unacceptable terms from the inequalities
                         for (InequalityTerm variable : lesserVariables) {
                             if (!variable.isValueAcceptable()) {
-                                unacceptable.add(inequality);
-                                isAcceptable = false;
-                                break;
+                                _resolvedUnacceptableList.add(variable);
                             }
                         }
 
-                        if (isAcceptable) {
-                            // Continue checking for unacceptable terms.
-                            for (InequalityTerm variable : greaterVariables) {
-                                if (!variable.isValueAcceptable()) {
-                                    unacceptable.add(inequality);
-                                    break;
-                                }
+                        // Continue checking for unacceptable terms.
+                        for (InequalityTerm variable : greaterVariables) {
+                            if (!variable.isValueAcceptable()) {
+                                _resolvedUnacceptableList.add(variable);
                             }
                         }
                     }
@@ -748,12 +851,14 @@ public class LatticeOntologySolver extends OntologySolver {
                                 + " on the following inequalities:\n"
                                 + conflicts);
             }
+            /*
             if (unacceptable.size() > 0) {
                 throw new TypeConflictException(unacceptable,
                         "Properties resolved to unacceptable types in "
                                 + toplevel.getFullName()
                                 + " due to the following inequalities:");
             }
+            */
 
         } catch (IllegalActionException ex) {
             // This should not happen. The exception means that
@@ -761,7 +866,7 @@ public class LatticeOntologySolver extends OntologySolver {
             // transparent actor.
             throw new OntologyResolutionException(this, toplevel, ex,
                     "Concept resolution failed because of an error "
-                            + "during property inference");
+                            + "during concept inference");
         }
 
     }
@@ -837,7 +942,7 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @return A string representing the list of inequality constraints that can be written to a log file.
      *  @throws IllegalActionException If the string cannot be formed from the list of inequality constraints.
      */
-    private String _getConstraintsAsLogFileString(
+    private String _getConstraintsAsString(
             List<Inequality> constraintList) throws IllegalActionException {
 
         StringBuffer output = new StringBuffer();
@@ -928,7 +1033,15 @@ public class LatticeOntologySolver extends OntologySolver {
     /** The concept term manager that keeps track of all the concept terms in the model for the LatticeOntologySolver. */
     private ConceptTermManager _conceptTermManager;
 
+    /** The list of constraints collected from the model, before resolution.  */
+    private List<Inequality> _initialConstraintList;
+    
     /** The list of constraints after the ontology resolution algorithm has executed. */
     private List<Inequality> _resolvedConstraintList;
+    
+    /** The list of InequalityTerms that have resolved to an unacceptable concept value. 
+     *  See {@linkplain ptolemy.data.ontologies.lattice.ConceptTermManager ConceptTermManager}
+     *  for a definition of unacceptable.  */
+    private List<InequalityTerm> _resolvedUnacceptableList;
 
 }

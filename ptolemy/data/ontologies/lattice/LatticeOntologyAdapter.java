@@ -114,23 +114,6 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     }
 
     /**
-     * Return a list of property-able NamedObj contained by the component. All
-     * ports and parameters are considered property-able.
-     * @return The list of property-able named object.
-     */
-    public List<Object> getPropertyables() {
-        List<Object> list = new ArrayList<Object>();
-
-        // Add all ports.
-        list.addAll(((Entity) getComponent()).portList());
-
-        // Add attributes.
-        list.addAll(_getPropertyableAttributes());
-
-        return list;
-    }
-
-    /**
      * Return the InequalityTerm associated with the given model object.
      * 
      * @param object The given model object for which to find the InequalityTerm in
