@@ -185,9 +185,7 @@ public class ModalModel extends TypedCompositeActor implements ChangeListener {
      */
     public Parameter stateDependentCausality;
 
-    /** Indicate whether or not a model error has occurred in this modal model
-     * */
-
+    /** Indicate whether or not a model error has occurred in this modal model. */
     public Parameter modelError;
 
     ///////////////////////////////////////////////////////////////////

@@ -59,7 +59,6 @@ JSRCS = \
 	ConceptTermManager.java \
 	ConstraintManager.java \
 	DivideConceptFunctionDefinition.java \
-	DeltaConstraintSolver.java \
 	LatticeOntologyAdapter.java \
 	LatticeOntologyASTNodeAdapter.java \
 	LatticeOntologyCompositeAdapter.java \

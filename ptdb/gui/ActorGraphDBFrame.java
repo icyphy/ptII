@@ -325,6 +325,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     //    /** The action for opening the pattern match search frame. */
     //    protected Action _openSearchFrameAction;
 
+    /** The action for renaming a model. */
     protected Action _renameModelAction;
 
     /** The action for saving a model to the database. */

@@ -36,7 +36,7 @@ import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.toolbox.FigureAction;
 
 /**
- * An interface for actor interaction
+ * An interface for actor interaction.
  * 
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
