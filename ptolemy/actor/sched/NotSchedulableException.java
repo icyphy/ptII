@@ -53,6 +53,9 @@ import ptolemy.kernel.util.Nameable;
 public class NotSchedulableException extends InvalidStateException {
     /** Constructs an Exception with only a detail message.
      *  @param detail The message.
+     *  @deprecated Use a NotSchedulableException constructor that
+     *  includes a Nameable so that the exception window includes
+     *  a "Go To Actor" button.
      */
     public NotSchedulableException(String detail) {
         super(detail);

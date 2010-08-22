@@ -57,6 +57,8 @@ import ptolemy.math.Fraction;
 */
 public class SDFModularScheduler extends SDFScheduler {
 
+    // FIXME: This class has lots of duplicate code from SDFScheduler.
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -361,7 +363,7 @@ public class SDFModularScheduler extends SDFScheduler {
             if (count >= 99) {
                 messageBuffer.append("...");
             }
-            throw new NotSchedulableException(messageBuffer.toString());
+            throw new NotSchedulableException(this, messageBuffer.toString());
         }
 
         return entityToFiringsPerIteration;
@@ -759,7 +761,7 @@ public class SDFModularScheduler extends SDFScheduler {
                             clusteredExternalPorts);
                 } else if (!rate.equals(previousRate)) {
                     // The rates don't match.
-                    throw new NotSchedulableException("No solution "
+                    throw new NotSchedulableException(this, "No solution "
                             + "exists for the balance equations.\n"
                             + "Graph is not "
                             + "consistent under the SDF domain "

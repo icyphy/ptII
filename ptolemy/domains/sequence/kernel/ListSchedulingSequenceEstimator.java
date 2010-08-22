@@ -88,7 +88,7 @@ public class ListSchedulingSequenceEstimator extends SequenceEstimator {
 
         _createGraph(independentList);
         if (!_graph.isAcyclic()) {
-            throw new NotSchedulableException(
+            throw new NotSchedulableException(_director,
                     "Cannot estimate sequence for cyclic graphs.");
         }
 

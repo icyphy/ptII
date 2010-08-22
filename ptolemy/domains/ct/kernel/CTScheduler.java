@@ -687,7 +687,7 @@ public class CTScheduler extends Scheduler {
         // FIXME: Why is this disallowed? If we change this, change the class
         // comment (at the end) also.
         if (!dynamicGraph.isAcyclic()) {
-            throw new NotSchedulableException(
+            throw new NotSchedulableException(this,
                     "Loops of dynamic actors (e.g. integrators) "
                             + "are not allowed in the CT domain. You may insert a "
                             + "Scale actor with factor 1.");
@@ -723,7 +723,7 @@ public class CTScheduler extends Scheduler {
                             .getType(inputPort);
 
                     if (inputType == UNKNOWN) {
-                        throw new NotSchedulableException("Cannot resolve "
+                        throw new NotSchedulableException(this, "Cannot resolve "
                                 + "signal type for port "
                                 + inputPort.getFullName()
                                 + ". If you are certain about the signal type"
@@ -753,7 +753,7 @@ public class CTScheduler extends Scheduler {
 
                     if (outputType == UNKNOWN) {
                         if (needManuallySetType) {
-                            throw new NotSchedulableException(
+                            throw new NotSchedulableException(this,
                                     "Cannot resolve "
                                             + "signal type for port "
                                             + outputPort.getFullName()
@@ -1287,7 +1287,8 @@ public class CTScheduler extends Scheduler {
                         .get(port);
 
                 if (previousType != type) {
-                    throw new NotSchedulableException(port.getFullName()
+                    throw new NotSchedulableException(CTScheduler.this,
+                            port.getFullName()
                             + " has a signal type conflict: \n"
                             + "Its signal type was set/resolved to "
                             + signalTypeToString(previousType)
@@ -1338,7 +1339,7 @@ public class CTScheduler extends Scheduler {
                             if ((configuredType.compareToIgnoreCase("UNKNOWN") != 0)
                                     && (propagateType
                                             .compareToIgnoreCase(configuredType) != 0)) {
-                                throw new NotSchedulableException(
+                                throw new NotSchedulableException(CTScheduler.this,
                                         "Signal type conflict: "
                                                 + port.getFullName()
                                                 + " (of type "
@@ -1352,7 +1353,7 @@ public class CTScheduler extends Scheduler {
                                                 + "sequence semantics?");
                             }
                         } catch (IllegalActionException e) {
-                            throw new NotSchedulableException(
+                            throw new NotSchedulableException(CTScheduler.this,
                                     "The signal"
                                             + " type parameter does not contain a valid"
                                             + " value.");
@@ -1405,7 +1406,8 @@ public class CTScheduler extends Scheduler {
                 if (!_map.containsKey(nextPort)) {
                     setType(nextPort, getType(port));
                 } else if (getType(port) != getType(nextPort)) {
-                    throw new NotSchedulableException("Signal type conflict: "
+                    throw new NotSchedulableException(CTScheduler.this,
+                            "Signal type conflict: "
                             + port.getFullName() + " (of type "
                             + signalTypeToString(getType(port)) + ") and "
                             + nextPort.getFullName() + " (of type "

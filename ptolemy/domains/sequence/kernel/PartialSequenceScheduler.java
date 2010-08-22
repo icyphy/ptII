@@ -94,7 +94,7 @@ public class PartialSequenceScheduler extends SequenceScheduler {
         } else if (_actorGraph.isAcyclic()) {
             return _estimator.estimateSequencedSchedule(independentList);
         } else {
-            throw new NotSchedulableException(
+            throw new NotSchedulableException(this,
                     "Cannot estimate schedule for cyclic graphs.");
         }
     }

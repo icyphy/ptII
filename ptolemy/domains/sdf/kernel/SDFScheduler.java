@@ -832,7 +832,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             if (count >= 99) {
                 messageBuffer.append("...");
             }
-            throw new NotSchedulableException(messageBuffer.toString());
+            throw new NotSchedulableException(this, messageBuffer.toString());
         }
 
         return entityToFiringsPerIteration;
@@ -1357,7 +1357,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             clusteredExternalPorts);
                 } else if (!rate.equals(previousRate)) {
                     // The rates don't match.
-                    throw new NotSchedulableException("No solution "
+                    throw new NotSchedulableException(this, "No solution "
                             + "exists for the balance equations.\n"
                             + "Graph is not "
                             + "consistent under the SDF domain "
@@ -1746,7 +1746,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             if (count >= 99) {
                 message.append("...");
             }
-            throw new NotSchedulableException(message.toString());
+            throw new NotSchedulableException(this, message.toString());
         }
 
         if (_debugging) {
