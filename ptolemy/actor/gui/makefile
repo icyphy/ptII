@@ -74,6 +74,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Except: NOTE: HTMLEffigy has to come before Configuration
 # because its inner class, HTMLEffigy$Factory, is referenced.
 JSRCS = \
+	ActorGraphicalMessageHandler.java \
 	AbstractPlaceableActor.java \
 	ArrayOfRecordsPane.java \
 	BrowserEffigy.java \

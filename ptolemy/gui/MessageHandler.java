@@ -133,6 +133,8 @@ public class MessageHandler {
      *  "Throwable".
      */
     public static String shortDescription(Throwable throwable) {
+        new Exception("shortDescription" + throwable).printStackTrace();
+
         String throwableType = null;
 
         if (throwable instanceof Exception) {

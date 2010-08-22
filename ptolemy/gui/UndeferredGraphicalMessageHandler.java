@@ -108,6 +108,24 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return an updated array of button names if the throwable meets
+     *  certain conditions.  In this base class, the options argument
+     *  is returned.  In derived classes, this method could check to
+     *  see if the throwable is a KernelException or
+     *  KernelRuntimeException, then add "Go To Actor" to the options
+     *  array.
+     *  @param options An array of Strings, suitable for passing to
+     *  JOptionPane.showOptionDialog().
+     *  @param throwable The throwable.
+     *  @return An array of Strings.  In this base class, return the value
+     *  of the options parameter.  Derived classes may add a new array
+     *  with an additional String that labels an additional button.
+     */
+    protected Object [] _checkThrowableNameable(Object [] options,
+            Throwable throwable) {
+        return options;
+    }
+
     /** Show the specified error message.
      *  This is deferred to execute in the swing event thread if it is
      *  called outside that thread.
@@ -163,6 +181,12 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
 
         Object[] options = { "Dismiss", "Display Stack Trace" };
 
+        // In this base class, merely return the options array.
+        // Derived classes: If the throwable is a KernelException or
+        // KernelRuntimeException, then add "Go To Actor" to the
+        // options array.
+        options = _checkThrowableNameable(options, throwable);
+
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(getContext(), message,
                 MessageHandler.shortDescription(throwable),
@@ -171,6 +195,9 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
 
         if (selected == 1) {
             _showStackTrace(throwable, info);
+        } else if (selected == 2) {
+            // Derived classes
+            _showNameable(throwable);
         }
     }
 
@@ -190,6 +217,15 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
         JOptionPane.showOptionDialog(getContext(), message, "Message",
                 JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE,
                 null, options, options[0]);
+    }
+
+    /** Open the level of hierarchy of the model that contains the
+     *  Nameable referred to by the KernelException or KernelRuntimeException.
+     *  In this base class, do nothing.
+     *  @param throwable The throwable that may be a KernelException
+     *  or KernelRuntimeException.
+     */
+    protected void _showNameable(Throwable throwable) {
     }
 
     /** Show the specified message in a modal dialog.  If the user
@@ -254,6 +290,11 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
 
         Object[] options = { "OK", "Display Stack Trace", "Cancel" };
 
+        // In a derived class, if the throwable is a KernelException
+        // or KernelRuntimeException, then add "Go To Actor" to the
+        // options array.
+        options = _checkThrowableNameable(options, throwable);
+
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(getContext(), message,
                 "Warning", JOptionPane.YES_NO_OPTION,
@@ -263,6 +304,8 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
             _showStackTrace(throwable, info);
         } else if (selected == 2) {
             throw new ptolemy.util.CancelException();
+        } else if (selected == 3) {
+            _showNameable(throwable);
         }
     }
 
@@ -358,9 +401,24 @@ public class UndeferredGraphicalMessageHandler extends MessageHandler {
                 StringUtilities.ELLIPSIS_LENGTH_LONG));
         message[1] = stext;
 
+        Object[] options = { "OK" };
+
+        // In this base class, merely return the options array.
+        // Derived classes: If the throwable is a KernelException or
+        // KernelRuntimeException, then add "Go To Actor" to the
+        // options array.
+        options = _checkThrowableNameable(options, throwable);
+
         // Show the MODAL dialog
-        JOptionPane.showMessageDialog(getContext(), message, "Stack trace",
-                JOptionPane.ERROR_MESSAGE);
+        int selected = JOptionPane.showOptionDialog(getContext(), message,
+                "Stack trace",
+                JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null,
+                options, options[0]);
+
+        if (selected == 2) {
+            // Derived classes
+            _showNameable(throwable);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

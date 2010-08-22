@@ -45,7 +45,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.expr.Parameter;
-import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.actor.gui.ActorGraphicalMessageHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
@@ -173,7 +173,7 @@ public class VergilApplication extends MoMLApplication {
         // so we do so now so that we are sure
         // the user can see the message.
         // One way to test this is to run vergil -configuration foo
-        MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+        MessageHandler.setMessageHandler(new ActorGraphicalMessageHandler());
 
         MessageHandler.error(argsBuffer.toString(), throwable);
 
