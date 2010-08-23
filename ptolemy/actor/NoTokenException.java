@@ -62,4 +62,15 @@ public class NoTokenException extends KernelRuntimeException {
     public NoTokenException(Nameable object, String message) {
         super(object, message);
     }
+
+
+    /** Construct an exception originating from the given object,
+     *  with the given error message.
+     *  @param object The originating object.
+     *  @param cause The cause of this exception.
+     *  @param message The message.
+     */
+    public NoTokenException(Nameable object, Throwable cause, String detail) {
+        super(object, null, cause, detail);
+    }
 }
