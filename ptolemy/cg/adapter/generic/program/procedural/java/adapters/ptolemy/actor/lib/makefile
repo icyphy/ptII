@@ -72,6 +72,7 @@ JSRCS = \
 	ElementsToArray.java \
 	Expression.java \
 	Limiter.java \
+	LimitedFiringSource.java \
 	Minimum.java \
 	MovingAverage.java \
 	MultiplyDivide.java \

@@ -72,6 +72,7 @@ JSRCS = \
 	LimitedFiringSource.java \
 	Limiter.java \
 	Minimum.java \
+	MovingAverage.java \
 	MultiplyDivide.java \
 	Pulse.java \
 	Recorder.java \
