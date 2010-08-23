@@ -28,6 +28,9 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -39,10 +42,12 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
+import java.util.Iterator;
 ///////////////////////////////////////////////////////////////////
 //// Publisher
 
@@ -121,6 +126,10 @@ public class Publisher extends TypedAtomicActor {
         global.setExpression("false");
         global.setTypeEquals(BaseType.BOOLEAN);
 
+        propagateNameChanges = new Parameter(this, "propagateNameChanges");
+        propagateNameChanges.setExpression("false");
+        propagateNameChanges.setTypeEquals(BaseType.BOOLEAN);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -154,6 +163,32 @@ public class Publisher extends TypedAtomicActor {
      *  and the actor handles creating connections to it.
      */
     public TypedIOPort output;
+
+    /** If true, then propagate channel name changes to any
+     *  Subscribers.  The default value is a BooleanToken with the
+     *  value false, indicating that if the channel name is changed,
+     *  then the channel names of the Subscribers are not changed.  If
+     *  the value is true, then if the channel name is changed, the
+     *  channel names of the connected Subscribers are updated.
+     * 
+     *  <p>If the value is true, then SubscriptionAggregators that
+     *  have the same regular expression as the channel name of the
+     *  Publisher will be updated.  However, SubscriptionAggregators
+     *  usually have regular expressions as channel names, so usually
+     *  the channel name of the SubscriptionAggregator will <b>not</b>
+     *  be updated.</p>
+     *
+     *  <p>Note that if a Publisher is within an Actor Oriented Class
+     *  definition, then any Subscribers with the same channel name in
+     *  Actor Oriented Class definitions will <b>not</b> be updated.
+     *  This is because there is no connection between the Publisher
+     *  in the Actor Oriented Class definition and the Subscriber.
+     *  However, if the channel name in a Publisher in an instance of
+     *  an Actor Oriented Class is updated, then the
+     *  corresponding Subscribers in instances of Actor Oriented Class
+     *  will be updated.</p>
+     */
+    public Parameter propagateNameChanges;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -191,6 +226,15 @@ public class Publisher extends TypedAtomicActor {
                                 }
                             }
                             
+                            if (attribute == channel
+                                    && (!(_channel == null || _channel.trim()
+                                            .equals("")))) {
+                                if (((BooleanToken) propagateNameChanges
+                                                .getToken()).booleanValue()) {
+                                    _updateChannelNameOfConnectedSubscribers(
+                                            _channel, newValue);
+                                }
+                            }
                             ((CompositeActor) container).registerPublisherPort(
                                     newValue, output, globalValue);
                             
@@ -307,6 +351,94 @@ public class Publisher extends TypedAtomicActor {
     protected boolean _global;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private methods                   ////
+
+    /** Update the channel name of any connected Subscribers.
+     *  Note that the channel name of connected Subscription Aggregators
+     *  are not updated.
+     *  @param previousChannelName The previous name of the channel.
+     *  @param newChannelName The new name of the channel.
+     *  @exception IllegalActionException If thrown when a Manager is added to
+     *  the top level, or when the channel name of a Subscriber is changed.
+     */
+    private void _updateChannelNameOfConnectedSubscribers(
+            String previousChannelName, String newChannelName)
+            throws IllegalActionException {
+        // If preinitialize() has not yet been called, then we don't
+        // yet know what Subscribers are using connected to the
+        // Publisher.
+        Manager manager = getManager();
+        if (manager == null) {
+            CompositeActor toplevel = (CompositeActor) (getContainer().toplevel());
+            manager = new Manager(toplevel.workspace(), "PubManager");
+            toplevel.setManager(manager);
+        }
+        try {
+            // Create connections between Publishers and Subscribers.
+            manager.preinitializeAndResolveTypes();
+        } catch (KernelException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to preinitialize() while trying to update the connected"
+                    + " Subscribers.");
+        } finally {
+            try {
+                manager.wrapup();
+            } catch (Throwable throwable) {
+                // The Exit actor causes Manager.wrapup() to throw this.
+                if (!manager.isExitingAfterWrapup()) {
+                    throw new IllegalActionException(this, throwable,
+                            "Manager.wrapup() failed while trying to update the names"
+                            + " of the connected Subscribers.");
+                }
+            }
+        }
+        // For each Subscriber, go and change the channel name
+        //for (IOPort port : output.deepConnectedInPortList()) {
+        Iterator ports = output.sinkPortList().iterator();
+        while (ports.hasNext()) {
+            IOPort port = (IOPort)ports.next();
+            NamedObj container = port.getContainer();
+            if (container instanceof Subscriber) {
+                Subscriber subscriber = (Subscriber)container;
+                if (subscriber.channel.getExpression().equals(previousChannelName)) {
+                    // Avoid updating SubscriptionAggregators that have regular
+                    // expressions that are different than the Publisher channel name.
+                    subscriber.channel.setExpression(newChannelName);
+                    subscriber.attributeChanged(subscriber.channel);
+                }
+            } else {
+                Receiver[][] receivers = port.getRemoteReceivers();
+                if (receivers != null) {
+                    for (int i = 0; i < receivers.length; i++) {
+                        if (receivers[i] != null) {
+                            for (int j = 0; j < receivers[i].length; j++) {
+                                if (receivers[i][j] != null) {
+                                    IOPort remotePort = receivers[i][j].getContainer();
+                                    if (remotePort != null) {
+                                        container = remotePort.getContainer();
+                                        if (container instanceof Subscriber) {
+                                            Subscriber subscriber = (Subscriber)container;
+                                            if (subscriber.channel.getExpression().equals(previousChannelName)) {
+                                                // Avoid updating
+                                                // SubscriptionAggregators
+                                                // that have regular
+                                                // expressions that
+                                                // are different than
+                                                // the Publisher
+                                                // channel name.
+                                                subscriber.channel.setExpression(newChannelName);
+                                                subscriber.attributeChanged(subscriber.channel);
+                                                
+                                            } 
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } 
+    } 
 
 }

@@ -2361,9 +2361,22 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } else {
             if (_publishedPorts != null) {
                 List<IOPort> ports = _publishedPorts.get(name);
-                ports.remove(publisherPort);
-                if (ports.isEmpty()) {
-                    _publishedPorts.remove(name);
+                // if (ports == null) {
+                //     // If we are changing the name of a Publisher channel in an
+                //     // opaque, then ports might be null.
+                //      throw new InternalErrorException("While trying to unregister "
+                //              + "port \"" + name + "\" from port \""
+                //              + publisherPort.getFullName()
+                //              + "\", the port was not found in the map of published "
+                //              + "ports accessible in the container of the port.");
+                // }
+                if (ports != null) {
+                    // If we are changing the name of a Publisher channel in an
+                    // opaque, then ports might be null.
+                    ports.remove(publisherPort);
+                    if (ports.isEmpty()) {
+                        _publishedPorts.remove(name);
+                    }
                 }
             }
 

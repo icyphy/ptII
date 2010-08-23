@@ -41,11 +41,7 @@ if {[info procs jdkCapture] == "" } then {
     source [file join $PTII util testsuite jdktools.tcl]
 }
 
-
-######################################################################
-####
-#
-test Publisher-1.1 {Test class instantiation problem} {
+proc readModel {modelPath} {
     set workspace [java::new ptolemy.kernel.util.Workspace "pubWS"]
     set parser [java::new ptolemy.moml.MoMLParser $workspace]
     $parser setMoMLFilters [java::null]
@@ -54,11 +50,37 @@ test Publisher-1.1 {Test class instantiation problem} {
 
     $parser addMoMLFilter [java::new \
 	    ptolemy.moml.filter.RemoveGraphicalClasses]
-    set url [[java::new java.io.File "auto/PublisherSubscriber2.xml"] toURL]
+    set url [[java::new java.io.File $modelPath] toURL]
+    $parser purgeModelRecord $url
+    return [java::cast ptolemy.actor.TypedCompositeActor \
+		   [$parser {parse java.net.URL java.net.URL} \
+			[java::null] $url]]
+}
+
+proc readModelWorkspace {workspace} {
+    set parser [java::new ptolemy.moml.MoMLParser $workspace]
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    set url [[java::new java.io.File "PublisherSubscriber2class.xml"] toURL]
     $parser purgeModelRecord $url
     set model [java::cast ptolemy.actor.TypedCompositeActor \
 		   [$parser {parse java.net.URL java.net.URL} \
 			[java::null] $url]]
+    return $model
+}
+
+
+
+######################################################################
+####
+#
+test Publisher-1.1 {Test class instantiation problem} {
+    set model [readModel auto/PublisherSubscriber2.xml]
+
     #set manager [java::new ptolemy.actor.Manager $workspace "pubManager"]
     #$model setManager $manager 
     #$manager execute
@@ -69,6 +91,7 @@ test Publisher-1.1 {Test class instantiation problem} {
 test Publisher-1.2 {Convert CompositeActor to class, save the model for later use} {
     # Uses 1.1 above
     set compositeActor [$model getEntity CompositeActor]
+    set workspace [$model workspace]
     set request [java::new ptolemy.moml.MoMLChangeRequest \
 		     $workspace $model \
 		     "<class name=\"[$compositeActor getName]\"/>"]
@@ -114,25 +137,9 @@ test Publisher-1.3 {Convert CompositeActor of our first model to an instance } {
 
 } {PublisherSubscriber2 1}
 
-proc readModel {workspace} {
-    set parser [java::new ptolemy.moml.MoMLParser $workspace]
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
-	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
-
-    $parser addMoMLFilter [java::new \
-	    ptolemy.moml.filter.RemoveGraphicalClasses]
-    set url [[java::new java.io.File "PublisherSubscriber2class.xml"] toURL]
-    $parser purgeModelRecord $url
-    set model [java::cast ptolemy.actor.TypedCompositeActor \
-		   [$parser {parse java.net.URL java.net.URL} \
-			[java::null] $url]]
-    return $model
-}
-
 test Publisher-1.4 {Read in the model created in 1.2 with the class definition} {
     set workspace [java::new ptolemy.kernel.util.Workspace "pubWS"]
-    set model [readModel $workspace]
+    set model [readModelWorkspace $workspace]
     list [$model getName] \
 	[[$model getEntity CompositeActor] isClassDefinition]
 } {PublisherSubscriber2class 1}
@@ -159,7 +166,7 @@ test Publisher-1.6 {Convert CompositeActor to a class } {
     # Uses 1.1, 1.2, 1.3
 
     set workspace [java::new ptolemy.kernel.util.Workspace "pubWS"]
-    set model [readModel $workspace]
+    set model [readModelWorkspace $workspace]
 
     for {set x 0} {$x < 3} {incr x} {   
 
@@ -285,25 +292,86 @@ test Publisher-2.0 {Test deletion of a Publisher} {
 
 
 test Publisher-3.0 {Test no publisher} {
-    set workspace [java::new ptolemy.kernel.util.Workspace "pubWS30"]
-    set parser [java::new ptolemy.moml.MoMLParser $workspace]
-    $parser setMoMLFilters [java::null]
-    $parser addMoMLFilters \
-	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+    set model [readModel "NoPublisher.xml"]
 
-    $parser addMoMLFilter [java::new \
-	    ptolemy.moml.filter.RemoveGraphicalClasses]
-    set url [[java::new java.io.File "NoPublisher.xml"] toURL]
-    $parser purgeModelRecord $url
-    set model [java::cast ptolemy.actor.TypedCompositeActor \
-		   [$parser {parse java.net.URL java.net.URL} \
-			[java::null] $url]]
-    set manager [java::new ptolemy.actor.Manager $workspace "pub30Manager"]
+    set manager [java::new ptolemy.actor.Manager [$model workspace] "p30manager"]
     $model setManager $manager 
     catch {$manager execute} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: No Publishers were found adjacent to or below .NoPublisher.subagg
   in .NoPublisher.subagg}}
+
+
+###############################################################
+# Infrastructure for changing Publisher channel names
+
+proc getPublisherChannel {model publisherName} {
+    return [list $publisherName [[java::field [java::cast ptolemy.actor.lib.Publisher [$model getEntity $publisherName]] channel] getExpression]]
+}
+proc getSubscriberChannel {model subscriberName} {
+    return [list $subscriberName [[java::field [java::cast ptolemy.actor.lib.Subscriber [$model getEntity $subscriberName]] channel] getExpression]]
+}
+proc getChannels {model} {
+    return [list [getPublisherChannel $model Publisher] \
+		[getPublisherChannel $model Publisher2] \
+		[getSubscriberChannel $model Subscriber] \
+		[getSubscriberChannel $model Subscriber2] \
+		[getSubscriberChannel $model SubscriptionAggregator] \
+		[getSubscriberChannel $model SubscriptionAggregator2]]
+}
+
+test Publisher-4.0 {Channel Name Change: the initial values} {
+    set model [readModel PublisherSubscriberChannelChange.xml] 
+
+    set manager [java::new ptolemy.actor.Manager [$model workspace] "p4manager"]
+    $model setManager $manager 
+    $manager execute
+
+    getChannels $model
+} {{Publisher channel3} {Publisher2 foo} {Subscriber channel3} {Subscriber2 foo} {SubscriptionAggregator channel3} {SubscriptionAggregator2 channel.*}}
+
+test Publisher-4.1 {Channel Name Change: change the Publisher name} {
+    set model [readModel PublisherSubscriberChannelChange.xml] 
+
+    # Change the channel of the publisher
+    set publisher [java::cast ptolemy.actor.lib.Publisher [$model getEntity Publisher]]
+    set channel [getParameter $publisher channel]
+    $channel setExpression "channel4"
+    $publisher attributeChanged $channel
+
+    set manager [java::new ptolemy.actor.Manager [$model workspace] "p4manager"]
+    $model setManager $manager 
+    $manager execute
+
+    getChannels $model
+} {{Publisher channel4} {Publisher2 foo} {Subscriber channel4} {Subscriber2 foo} {SubscriptionAggregator channel4} {SubscriptionAggregator2 channel.*}}
+
+
+test Publisher-4.2 {Channel Name Change: change the Publisher name in an Opaque model} {
+    set model [readModel auto/PublisherSubscriberOpaque.xml]
+
+    # Change the channel of the publisher
+    set publisher [java::cast ptolemy.actor.lib.Publisher [$model getEntity CompositeActor.CompositeActor.Publisher]]
+    set propagateNameChanges [getParameter $publisher propagateNameChanges]
+    $propagateNameChanges setExpression true
+    set channel [getParameter $publisher channel]
+    $channel setExpression "channel4"
+    $publisher attributeChanged $channel
+
+
+
+    list [getPublisherChannel $model CompositeActor.CompositeActor.Publisher] \
+	[getSubscriberChannel $model CompositeActor.Subscriber]
+} {{CompositeActor.CompositeActor.Publisher channel4} {CompositeActor.Subscriber channel4}}
+
+test Publisher-4.3 {Channel Name Change: change the Publisher name in an Opaque model} {
+    # Run the model from 4.2
+    set manager [java::new ptolemy.actor.Manager [$model workspace] "p4manager"]
+    $model setManager $manager 
+    $manager execute
+} {}
+
+
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
