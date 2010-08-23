@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains
 
-DIRS =		sdf
+DIRS =		sdf modal
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../..
