@@ -101,4 +101,5 @@ For details, see the SDF chapter in Volume Three of the Ptolemy II design doc at
 Unscheduled actors:
 .partiallyConnected.Const2 
 Scheduled actors:
-.partiallyConnected.Const }}
+.partiallyConnected.Const 
+  in .partiallyConnected.SDF Director.Scheduler}}
