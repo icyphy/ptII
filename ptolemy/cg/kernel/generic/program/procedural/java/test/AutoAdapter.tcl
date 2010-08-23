@@ -53,9 +53,6 @@ if {[info procs testJavaCG] == "" } then {
 #  grep AutoAdapter ~/cg/*.java | awk -F : '{print $1}' | sort | uniq
 
 
-# $PTII/ptolemy/actor/lib/test/auto/Sinewave3.xml Runs, but gets different output?
-#   Caused by: ptolemy.kernel.util.IllegalActionException: Test fails in iteration 2.
-#   Value was: 0.9092974268257. Should have been: 0.908970305448
 # $PTII/ptolemy/actor/lib/comm/test/auto/HammingCodec.xml   Runs, but "Attempt to get data from an empty mailbox." from fire()
 # $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode.xml  Runs, but "Attempt to get data from an empty mailbox."  Uses arrays, fails in SequenceToArray.fire()
 # $PTII/ptolemy/actor/lib/comm/test/auto/Scrambler.xml  Runs, but "Attempt to get data from an empty mailbox." fails in SequenceToArray.fire()
@@ -110,6 +107,7 @@ set models [list \
 		$PTII/ptolemy/actor/lib/test/auto/ReadFile1.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Sinewave.xml \
 		$PTII/ptolemy/actor/lib/test/auto/Sinewave2.xml \
+		$PTII/ptolemy/actor/lib/test/auto/Sinewave3.xml \
 		$PTII/ptolemy/actor/lib/test/auto/UnaryMathFunction.xml \
 		$PTII/ptolemy/actor/lib/test/auto/WallClockTime.xml \
 		$PTII/ptolemy/actor/lib/test/auto/sizedarray1.xml \
