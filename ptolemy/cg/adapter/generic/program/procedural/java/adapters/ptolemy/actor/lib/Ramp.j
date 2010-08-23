@@ -21,38 +21,31 @@ $actorSymbol(state) = $val((String)init);
 
 /***IntegerFireBlock***/
 $put(output, $actorSymbol(state));
-if ($hasToken(step)) {
-        $param(step) = $get(step);
-}
+$param(step) = $val(($cgType(step)) step);
 $actorSymbol(state) += (Integer)$param(step);
 /**/
 
 /***DoubleFireBlock***/
 $put(output, $actorSymbol(state));
-if ($hasToken(step)) {
-        $param(step) = $get(step);
-}
+$param(step) = $val(($cgType(step)) step);
 $actorSymbol(state) += $convert_$cgType(step)_Double($param(step));
 /**/
 
 /***BooleanFireBlock***/
 $put(output, $actorSymbol(state));
-if ($hasToken(step)) {
-        $param(step) = $get(step);
-}
+$param(step) = $val(($cgType(step)) step);
 $actorSymbol(state) |= (Boolean)$param(step);
 /**/
 
 /***StringFireBlock***/
 $put(output, $actorSymbol(state));
+$param(step) = $val(($cgType(step)) step);
 $actorSymbol(state) = $actorSymbol(state) + $param(step);
 /**/
 
 /***TokenFireBlock***/
 $put(output, $actorSymbol(state));
-if ($hasToken(step)) {
-        $param(step) = $get(step);
-}
+$param(step) = $val(($cgType(step)) step);
 $actorSymbol(state) = $add_Token_Token($actorSymbol(state), $param(step));
 /**/
 
