@@ -141,7 +141,22 @@ public abstract class AbstractReceiver implements Receiver {
         }
 
         for (int i = 0; i < numberOfTokens; i++) {
-            _tokenCache[i] = get();
+            try {
+                _tokenCache[i] = get();
+            } catch (NoTokenException ex) {
+                String cardinality = "th";
+                if (i+1 == 1) {
+                    cardinality = "st";
+                } else if (i+1 == 2) {
+                    cardinality = "nd";
+                } else if (i+1 == 3) {
+                    cardinality = "rd";
+                }
+                throw new NoTokenException(getContainer(), ex, "Failed to get the "
+                        + (i+1) + cardinality
+                        + " token of " + numberOfTokens);
+
+            }
         }
 
         return _tokenCache;
