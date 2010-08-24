@@ -3,21 +3,21 @@ rm -f opentime.plt ticks.plt runtime.plt realtime.plt memory.plt
 
 for file in $*
 do
-	size=`echo $file | sed 's/pubsub//' | sed 's/hierarchicalModel[A-Za-z]*//' | sed 's/.out//' | awk -F _ '{print $2 "." $3}'`
+	size=`echo $file | sed 's/pubSubAgg//' | sed 's/pubsub//' | sed 's/hierarchicalModel[A-Za-z]*//' | sed 's/.out//' | awk -F _ '{print $1}'`
 
 	egrep "^Opened" $file |
 	awk -v size="$size" '
 				 {op="p"
-				  print "<" op " x=\"" size "\" y=\"" $3 "\"/>"
+				  print "<" op " x=\"" size "\" y=\"" $4 "\"/>"
 				 }' >> opentime.plt
 
-	grep StatRT $file |
+	awk '{if ($2 == "ms." && $3 == "Memory:") print $0}' $file |
 	awk -v size="$size" '
-				 {op="p"
+                                 {op="p"
                                   print "<" op " x=\"" size "\" y=\"" $1 "\"/>"
 				 }' >> runtime.plt
 
-	grep StatRT $file |
+	awk '{if ($2 == "ms." && $3 == "Memory:") print $0}' $file |
 	awk -v size="$size" ' 	 {mem=substr($4,1,length($4)-1); free=substr($6,1,length($6)-1); sum+=mem-free; 
 				  op="p"
 				  print "<" op " x=\"" size "\" y=\"" mem-free "\"/>"

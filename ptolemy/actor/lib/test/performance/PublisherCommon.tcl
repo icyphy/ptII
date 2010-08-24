@@ -332,7 +332,7 @@ proc _createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel level
 # Create a Pub/Sub model that is not at the top.
 # This proc is called multiple times.
 proc _createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNumber {returnAll 1} {usePubSub 1} {typedComposite "ptolemy.actor.TypedCompositeActor"} {opaque true}} {
-    #puts "createHierarchicalPubSubModel $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub  $typedComposite"
+    #puts "_createHierarchicalPubSubModel $container $numberOfPubSubsPerLevel $levelNumber $returnAll $usePubSub  $typedComposite"
     global pubCount
     if {$levelNumber == 1} {
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
@@ -343,7 +343,7 @@ proc _createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNum
 		#[java::field $sdfDirector iterations] setExpression 1
 		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
 	    }
-	    #puts "createHierarchicalPubSubModel 1 $typedComposite [$container getFullName] \n [$en exportMoML]"
+	    #puts "_createHierarchicalPubSubModel 1 $typedComposite [$container getFullName] \n [$en exportMoML]"
 	    $en allowLevelCrossingConnect true
 	    #set channel "PubSub_[expr {$levelNumber - 1}]_$n"
 	    #set channel2 "PubSub_${levelNumber}_$n"
@@ -407,13 +407,13 @@ proc _createHierarchichalPubSubModel {container numberOfPubSubsPerLevel levelNum
 		#[java::field $sdfDirector iterations] setExpression 1
 		[java::field $sdfDirector allowDisconnectedGraphs] setExpression true
 	    }
-	    #puts "createHierarchicalPubSubModel N $typedComposite [$en exportMoML]"
+	    #puts "_createHierarchicalPubSubModel N $typedComposite [$en exportMoML]"
  	    $en allowLevelCrossingConnect true
  	    set channel "PubSub_[$en getFullName]_[expr {$levelNumber - 1}]_$n"
  	    set channel2 "PubSub_[$container getFullName]_${levelNumber}_$n"
 
 	    set nameSuffix [expr {$levelNumber - 1}]
-   	    createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub $typedComposite
+   	    _createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub $typedComposite
 
 	    #sub_c
  	    set subscriber [java::new ptolemy.actor.lib.Subscriber $container "sub_${levelNumber}_$n"]
@@ -483,8 +483,17 @@ proc pubSubAggModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.
 	if {$typedComposite == "ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"} {
 	    set modelType "MCG"
 	} else { 
-	    set modelType "other"
+	    if {$typedComposite == "ptolemy.actor.LazyTypedCompositeActor"} {
+	    set modelType "Lazy"
+	    } else {
+		set modelType "Other"
+	    }
 	}
+    }
+    if {$opaque == "true"} {
+	set modelType "${modelType}Opaque"
+    } else {
+	set modelType "${modelType}Transparent"
     }
     set filename "pubSubAgg${modelType}_${numberOfSubsPerLevel}_${levels}.xml"
     set fd [open $filename w]
@@ -570,8 +579,8 @@ proc pubSubAggLazyModel {numberOfSubsPerLevel levels} {
 # See README.txt
 
 # Create the second level composites that may have a ModalCodeGenTypedComposite
-proc createHierarchichalModelSecondLevel {container numberOfPubSubsPerLevel levelNumber {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
-    #puts "createHierarchicalModelSecondLevel $numberOfPubSubsPerLevel $levelNumber $typedComposite"
+proc _createHierarchichalModelSecondLevel {container numberOfPubSubsPerLevel levelNumber {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+    #puts "_createHierarchicalModelSecondLevel $numberOfPubSubsPerLevel $levelNumber $typedComposite"
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
 	    set en [java::new $typedComposite $container "en-$n"]
 
@@ -579,7 +588,7 @@ proc createHierarchichalModelSecondLevel {container numberOfPubSubsPerLevel leve
 	    #set innerTypedComposite ptolemy.actor.TypedCompositeActor
 	    set innerTypedComposite $typedComposite
 
-   	    createHierarchichalModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $innerTypedComposite
+   	    _createHierarchichalModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $innerTypedComposite
 
 	    set upperNameSuffix "${levelNumber}_$n"
 
@@ -624,8 +633,8 @@ proc createHierarchichalModelSecondLevel {container numberOfPubSubsPerLevel leve
 
 # Create the inner composites of a model that does not use Publisher/Subscriber
 # This proc usually calls itself multiple times.
-proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
-    #puts "createHierarchicalModel $numberOfPubSubsPerLevel $levelNumber $typedComposite"
+proc _createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber {typedComposite "ptolemy.actor.TypedCompositeActor"}} {
+    #puts "_createHierarchicalModel $numberOfPubSubsPerLevel $levelNumber $typedComposite"
     global pubCount
     if {$levelNumber == 1} {
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
@@ -679,7 +688,7 @@ proc createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber {ty
     } else {
 	for {set n 1} { $n <= $numberOfPubSubsPerLevel} {incr n} {
 	    set en [java::new $typedComposite $container "en-$n"]
-   	    createHierarchichalModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $typedComposite
+   	    _createHierarchichalModel $en $numberOfPubSubsPerLevel [expr {$levelNumber - 1}] $typedComposite
 
 	    set upperNameSuffix "${levelNumber}_$n"
 
@@ -728,7 +737,7 @@ proc modularCodeGenModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.a
     global e0
     set pubCount 0
     set e0 [sdfModel 365]
-    createHierarchichalModelSecondLevel $e0 $numberOfSubsPerLevel $levels $typedComposite
+    _createHierarchichalModelSecondLevel $e0 $numberOfSubsPerLevel $levels $typedComposite
 
 
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 "Ramp"]
