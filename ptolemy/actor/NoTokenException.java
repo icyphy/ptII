@@ -49,6 +49,8 @@ import ptolemy.kernel.util.Nameable;
 public class NoTokenException extends KernelRuntimeException {
     /** Construct an exception with the given message.
      *  @param message The message.
+     *  @deprecated Use NoTokenException(Nameable, String) so
+     *  that the UI can indicate which actor caused the error.
      */
     public NoTokenException(String message) {
         super(message);
@@ -70,7 +72,7 @@ public class NoTokenException extends KernelRuntimeException {
      *  @param cause The cause of this exception.
      *  @param message The message.
      */
-    public NoTokenException(Nameable object, Throwable cause, String detail) {
-        super(object, null, cause, detail);
+    public NoTokenException(Nameable object, Throwable cause, String message) {
+        super(object, null, cause, message);
     }
 }
