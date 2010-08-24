@@ -196,6 +196,9 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.giotto.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.kernel \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib \
         ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib \
@@ -217,6 +220,8 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.logic \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.actor.lib.string \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.cg.lib \
+	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.modal \
+	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.modal.modal.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.java.adapters.ptolemy.domains.sdf.lib \
 	ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptolemy.cg.lib \
