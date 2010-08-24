@@ -100,7 +100,7 @@ public class ActorGraphicalMessageHandler extends GraphicalMessageHandler {
     }
 
     /** Open the level of hierarchy of the model that contains the
-     *  Nameable referred to by the KernelException or KernelRuntimeException
+     *  Nameable referred to by the KernelException or KernelRuntimeException.
      *  @param throwable The throwable that may be a KernelException
      *  or KernelRuntimeException.
      */
