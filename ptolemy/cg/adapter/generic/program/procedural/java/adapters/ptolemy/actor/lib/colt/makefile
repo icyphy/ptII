@@ -58,7 +58,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	ColtBinomial.java \
 	ColtBinomialSelector.java \
-	ColtPoisson.java
+	ColtPoisson.java \
+	ColtRandomSource.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.j)
