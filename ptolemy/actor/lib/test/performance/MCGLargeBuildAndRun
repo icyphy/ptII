@@ -12,8 +12,8 @@ export JAVAFLAGS=-Xmx4000M
 # Build the models
 $PTII/bin/ptjacl ModularCodeGenLarge.tcl
 
-numberOfSubsPerLevel=1
-levels=3
+numberOfSubsPerLevel=3
+levels=5
 models="pubSubAggOpaque_${numberOfSubsPerLevel}_${levels}.xml
 pubSubAggTransparent_${numberOfSubsPerLevel}_${levels}.xml
 pubSubAggLazyOpaque_${numberOfSubsPerLevel}_${levels}.xml

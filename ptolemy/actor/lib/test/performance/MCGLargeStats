@@ -1,0 +1,29 @@
+#!/bin/sh
+rm -f opentime.plt ticks.plt runtime.plt realtime.plt memory.plt
+
+for file in $*
+do
+    type=`echo $file | sed 's/pubSubAgg//' | sed 's/pubsub//' | sed 's/hierarchicalModel[A-Za-z]*//' | sed 's/.out//' | awk -F _ '{print $1}'`
+
+    awk -v type="$type" '
+    $0 ~ /^Opened/ {
+        print "Open", type, $4
+    }
+    $2 == "ms." && $3 == "Memory:" { 
+        if (count++ == 0) {
+            print "FirstRun", type, $1
+            mem = substr($4,1,length($4)-1)
+            free = substr($6,1,length($6)-1)
+            print "FirstMemory", type, mem-free
+        } else {
+            run += $1
+            memory += mem-free
+        }    
+    }
+    END {
+        print "SubsequentRuns", type, run/(count-1)
+        print "SubsequentRuns", type, memory/(count-1)
+    }
+    ' $file  
+done
+
