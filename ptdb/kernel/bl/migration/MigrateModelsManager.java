@@ -66,6 +66,8 @@ public class MigrateModelsManager {
      * @param directoryPath The path on the file system where the models exist.
      * @param migrateFilesInSubDirectories A boolean that indicates if the
      * migration should consider files in sub-directories.
+     * @param checkContent A boolean indicating if the method should check the
+     * file content before creating a model and store it in the database or not.
      * @return A string representing the path to the CSV file the contains the
      * results of the migration.
      * @exception IOException Thrown if there is an error reading or writing
