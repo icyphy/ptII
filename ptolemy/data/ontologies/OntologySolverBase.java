@@ -471,7 +471,6 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
 
     /**
      * Set the resolved property of the specified object.
-     * (See {@link #getResolvedConcept(Object)}).
      * @param object The specified object.
      * @param property The specified property.
      * @see #getResolvedConcept(Object, boolean)
