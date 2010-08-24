@@ -277,8 +277,8 @@ proc _createHierarchichalPubSubModelTop {container numberOfPubSubsPerLevel level
 	    set nameSuffix [expr {$levelNumber - 1}]
 
 	    # Only create a few ModalCodeGenTypedComposites at the top.
-	    #set innerTypedComposite ptolemy.actor.TypedCompositeActor
-	    set innerTypedComposite $typedComposite
+	    set innerTypedComposite ptolemy.actor.TypedCompositeActor
+	    #set innerTypedComposite $typedComposite
 
    	    _createHierarchichalPubSubModel $en $numberOfPubSubsPerLevel $nameSuffix $returnAll $usePubSub $innerTypedComposite $opaque
 	    #puts "---------[$en getFullName] $levelNumber $n\n[$en exportMoML]"
@@ -495,26 +495,30 @@ proc pubSubAggModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.actor.
     } else {
 	set modelType "${modelType}Transparent"
     }
-    set filename "pubSubAgg${modelType}_${numberOfSubsPerLevel}_${levels}.xml"
-    set fd [open $filename w]
+    set baseName "pubSubAgg${modelType}_${numberOfSubsPerLevel}_${levels}"
+    set fileName ${baseName}.xml
+    set fd [open $fileName w]
+    $e0 setName $baseName
     puts $fd [$e0 exportMoML]
     close $fd
-    puts "Created $filename, containing [[$e0 deepOpaqueEntityList] size] actors"
+    puts "Created $fileName, containing [[$e0 deepEntityList] size] actors"
     $e0 setContainer [java::null]
 
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser resetAll
-    set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $filename]]
+    set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $fileName]]
 
-    set filename "pubSubAgg${modelType}_${numberOfSubsPerLevel}_${levels}-clean.xml"
-    set fd [open $filename w]
+    set baseName "pubSubAgg${modelType}_${numberOfSubsPerLevel}_${levels}-clean"
+    set fileName ${baseName}.xml
+    set fd [open $fileName w]
+    $e0 setName $baseName
     puts $fd [$toplevel exportMoML]
     close $fd
     $toplevel setContainer [java::null]
 
     $parser resetAll
-    puts "Parsing $filename"
-    set toplevel2 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $filename]]
+    puts "Parsing $fileName"
+    set toplevel2 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $fileName]]
     puts "BUG: need to expand lazy composites: [$toplevel2 deepGetEntities]"
     set manager [java::new ptolemy.actor.Manager [$toplevel2 workspace] "manager"]
     $toplevel2 setManager $manager
@@ -543,19 +547,19 @@ proc lazyStats {e0} {
 
 proc pubSubAggLazyModel {numberOfSubsPerLevel levels} {
     set e0 [pubSubAggBase $numberOfSubsPerLevel $levels]
-    set filename "pubSubAgg_${numberOfSubsPerLevel}_${levels}.xml"
-    set fd [open $filename w]
+    set fileName "pubSubAgg_${numberOfSubsPerLevel}_${levels}.xml"
+    set fd [open $fileName w]
     puts $fd [$e0 exportMoML]
     close $fd
-    puts "Created $filename, [lazyStats $e0]"
+    puts "Created $fileName, [lazyStats $e0]"
 
     
     jdkCapture {
-	java::new ptolemy.moml.ConvertToLazy $filename 0
+	java::new ptolemy.moml.ConvertToLazy $fileName 0
     } moml2
 
-    set filename "pubSubAggLazy_${numberOfSubsPerLevel}_${levels}.xml"
-    set fd [open $filename w]
+    set fileName "pubSubAggLazy_${numberOfSubsPerLevel}_${levels}.xml"
+    set fd [open $fileName w]
     puts $fd $moml2
     close $fd
 
@@ -564,7 +568,7 @@ proc pubSubAggLazyModel {numberOfSubsPerLevel levels} {
 
     set e1 [java::cast ptolemy.actor.TypedCompositeActor [$parser parse $moml2]]
 
-    puts "Created $filename, [lazyStats $e1]"
+    puts "Created $fileName, [lazyStats $e1]"
 
     set manager [java::new ptolemy.actor.Manager [$e1 workspace] "myManager"]
     $e1 setManager $manager
@@ -810,20 +814,20 @@ proc modularCodeGenModel {numberOfSubsPerLevel levels {typedComposite "ptolemy.a
     # Run the model first so that the saved models don't regenerate code
     $manager execute
 
-    set filename "${basename}.xml"
-    set fd [open $filename w]
+    set fileName "${basename}.xml"
+    set fd [open $fileName w]
     puts $fd [$e0 exportMoML]
     close $fd
 
 
-    puts "Created $filename, containing [[$e0 deepOpaqueEntityList] size] actors"
+    puts "Created $fileName, containing [[$e0 deepOpaqueEntityList] size] actors"
 
 
     # Read in the model so that we generate code with the right names.
     # Otherwise, code for different models will be shared
     #set parser [java::new ptolemy.moml.MoMLParser]
     #$parser resetAll
-    #set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $filename]]
+    #set toplevel [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile $fileName]]
     #set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "manager"]
     #$toplevel setManager $manager
     #$manager execute

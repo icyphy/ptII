@@ -7,23 +7,28 @@ do
 
     awk -v type="$type" '
     $0 ~ /^Opened/ {
-        print "Open", type, $4
+        #print "Open", type, $4
+        open = $4
     }
     $2 == "ms." && $3 == "Memory:" { 
         if (count++ == 0) {
-            print "FirstRun", type, $1
+            #print "FirstRun", type, $1
+            firstRun = $1
             mem = substr($4,1,length($4)-1)
             free = substr($6,1,length($6)-1)
-            print "FirstMemory", type, mem-free
+            #print "FirstMemory", type, mem-free
+            firstMemory = mem-free
         } else {
             run += $1
             memory += mem-free
         }    
     }
     END {
-        print "SubsequentRuns", type, run/(count-1)
-        print "SubsequentRuns", type, memory/(count-1)
+        printf("%20s & %5d ms. & %5d K & %5.0f ms. & %5d K \\\\\n", type, firstRun, firstMemory, run/(count-1), memory/(count-1));
+        #print type, "&", firstRun, "ms. &", firstMemory , "K &",  run/(count-1), " ms. &", memory/(count-1), "K \\\\"
+        #print "SubsequentRuns", type, run/(count-1)
+        #print "SubsequentRuns", type, memory/(count-1)
     }
-    ' $file  
+    ' $file  | sort -nr -k8
 done
 

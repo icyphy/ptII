@@ -13,7 +13,7 @@ export JAVAFLAGS=-Xmx4000M
 $PTII/bin/ptjacl ModularCodeGenLarge.tcl
 
 numberOfSubsPerLevel=3
-levels=5
+levels=3
 models="pubSubAggOpaque_${numberOfSubsPerLevel}_${levels}.xml
 pubSubAggTransparent_${numberOfSubsPerLevel}_${levels}.xml
 pubSubAggLazyOpaque_${numberOfSubsPerLevel}_${levels}.xml
@@ -24,7 +24,7 @@ for model in $models
 do
     echo $model
     #$PTII/bin/ptjacl run.tcl $model
-    $PTII/bin/vergil -run20x $model > `basename $model`.out
+    $PTII/bin/vergil -run20x $model > `basename $model .xml`.out
 done
 
 $PTII/bin/ptcg -language java -measureTime true pubSubAggMCGOpaque_${numberOfSubsPerLevel}_${levels}.xml
