@@ -2386,27 +2386,27 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 }
             }
 
-            List connectedPorts = publisherPort.connectedPortList();
-
             if (_publisherRelations != null) {
                 IORelation relation = _publisherRelations.get(name);
                 if (relation != null) {
+                    if (global && container instanceof CompositeActor) {
+                        for (Object port : relation.linkedPortList(publisherPort)) {
+                            IOPort publishedPort = (IOPort) port;
+                            if (publishedPort.isOutput()) {
+                                ((CompositeActor) container).unregisterPublisherPort(
+                                        name, publishedPort, global);
+                                publishedPort.setContainer(null);
+                            }
+                        }
+                    }
+                    
                     relation.setContainer(null);
                     notifyConnectivityChange();
 
                     _publisherRelations.remove(name);
                 }
             }
-            if (global && container instanceof CompositeActor) {
-                for (Object port : connectedPorts) {
-                    IOPort publishedPort = (IOPort) port;
-                    if (publishedPort.isOutput()) {
-                        ((CompositeActor) container).unregisterPublisherPort(
-                                name, publishedPort, global);
-                        publishedPort.setContainer(null);
-                    }
-                }
-            }
+            
         }
     }
 
