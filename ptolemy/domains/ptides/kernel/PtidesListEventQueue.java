@@ -67,7 +67,10 @@ public class PtidesListEventQueue implements DEEventQueue {
         _listQueue.clear();
     }
 
-    /** Get the smallest event from the event queue. */
+    /** Get the smallest event from the event queue.
+     *  @return a PtidesEvent object.
+     *  @throws InvalidStateException if the getFirst() method of the queue throws it.
+     */
     public PtidesEvent get() throws InvalidStateException {
         PtidesEvent result = (PtidesEvent) _listQueue.getFirst();
         if (_debugging) {
@@ -95,7 +98,10 @@ public class PtidesListEventQueue implements DEEventQueue {
         return _listQueue.isEmpty();
     }
 
-    /** Put the event queue into the event queue, and then sort it by timestamp order. */
+    /** Put the event queue into the event queue, and then sort it by timestamp order. 
+     *  @param event a PtidesEvent object.
+     *  @throws IllegalActionException if the addFirst() method of the queue throws it.
+     */
     public void put(PtidesEvent event) throws IllegalActionException {
         if (_debugging) {
             _debug("+++ putting in queue: " + event);

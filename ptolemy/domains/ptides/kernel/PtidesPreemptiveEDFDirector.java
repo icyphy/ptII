@@ -104,6 +104,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     /** Calculates the deadline for each channel in each input port within the 
      *  composite actor governed by this Ptides director. Deadlines are calculated 
      *  with only model time delays, not worst-case-execution-times (WCET).
+     *  @throws IllegalActionException when ports that are both input/output ports exist.
      */
     protected void _calculateDeadline() throws IllegalActionException {
         // The algorithm used is exactly the same as the one in _calculateMinDelay. The only
@@ -245,6 +246,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
     }
 
     /** Check to see if the current actor is already firing, in which case we should not preempt.
+     *  @param actor  an Actor object.
      *  @return whether the current actor is firing or no.
      */
     protected boolean _currentlyFiring(Actor actor) {
@@ -409,7 +411,7 @@ public class PtidesPreemptiveEDFDirector extends PtidesBasicDirector {
         }
     }
 
-    /** Sets the relativeDeadline parameter for an input port
+    /** Sets the relativeDeadline parameter for an input port.
      * @param inputPort The port to set the parameter.
      * @param dependency The value of the relativeDeadline to be set.
      * @exception IllegalActionException If unsuccessful in getting the attribute.

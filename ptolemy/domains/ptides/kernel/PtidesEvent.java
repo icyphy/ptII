@@ -139,7 +139,7 @@ public class PtidesEvent extends DEEvent {
         return _receiver;
     }
 
-    /** Return the relative deadline of this event
+    /** Return the relative deadline of this event.
      *  @return relative deadline if the event is not a pure event.
      */
     public final Time absoluteDeadline() {

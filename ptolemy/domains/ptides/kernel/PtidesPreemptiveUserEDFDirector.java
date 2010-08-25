@@ -241,6 +241,8 @@ public class PtidesPreemptiveUserEDFDirector extends
      *  to check if there are any events in the same platform that may result in
      *  this event unsafe to process. If so, return false, else return true.
      *  @param event The event of interest.
+     *  @return true if there are no events from the outside of the platform that 
+     *  may result in this event unsafe.
      *  @exception IllegalActionException
      */
     protected boolean _safeToProcess(PtidesEvent event)

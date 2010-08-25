@@ -68,6 +68,9 @@ public class PtidesTopLevelDirector extends DEDirector {
     /** Uses the fireAt() method of the DE Director, compensating the fireAt
      *  time by subtracting the platform synchronization error associated with
      *  the PTIDES actor.
+     *  @param actor  an Actor object.
+     *  @param time   a Time object.
+     *  @throws IllegalActionException if the super method throws it.
      *  @return Time of fireAt.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
@@ -81,6 +84,7 @@ public class PtidesTopLevelDirector extends DEDirector {
 
     /** Return a simulated physical time, which is the current time plus the
      *  synchronization error of that particular PTIDES actor.
+     *  @param ptidesActor  an Actor object.
      *  @return A time object that contains the value of the current time plus
      *  the synchronization error specific to the PTIDES actor.
      */
