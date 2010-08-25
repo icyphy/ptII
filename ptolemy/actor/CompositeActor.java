@@ -2185,7 +2185,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } else {
             // Remove the link to a previous relation, if necessary.
 
-
             IORelation relation = _publisherRelations != null ? _publisherRelations
                     .get(name)
                     : null;
@@ -2218,6 +2217,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                             }
                         }
                         ((IORelation) relationObj).setContainer(null);
+                        notifyConnectivityChange();
                     } catch (NameDuplicationException ex) {
                         throw new InternalErrorException(subscriberPort
                                 .getContainer(), ex,
@@ -2314,10 +2314,19 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
                         IOPort subscribedPort = (IOPort) port;
                         if (subscribedPort.isInput()) {
-                            ((CompositeActor) container).unlinkToPublishedPort(
-                                    pattern, (TypedIOPort) subscribedPort, global);
+                            //if the subscribed port does not connect to any inside port, then unlink the port
+                            Set connectedInsidePort = new HashSet(
+                                    subscribedPort.insidePortList());
+                            connectedInsidePort.remove(subscriberPort);
+                            if (connectedInsidePort.size() == 0) {
+                                ((CompositeActor) container)
+                                        .unlinkToPublishedPort(pattern,
+                                                (TypedIOPort) subscribedPort,
+                                                global);
 
-                            subscribedPort.setContainer(null);
+                                subscribedPort.setContainer(null);
+
+                            }
 
                         }
                     }
@@ -2416,7 +2425,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
 
                     relation.setContainer(null);
-                    notifyConnectivityChange();
 
                     _publisherRelations.remove(name);
                 }
