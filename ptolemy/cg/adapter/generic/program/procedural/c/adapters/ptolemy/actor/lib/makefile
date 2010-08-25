@@ -63,6 +63,7 @@ JSRCS = \
 	Const.java \
 	Differential.java \
 	Discard.java \
+	DiscreteClock.java \
 	Distributor.java \
 	Expression.java \
 	Maximum.java \

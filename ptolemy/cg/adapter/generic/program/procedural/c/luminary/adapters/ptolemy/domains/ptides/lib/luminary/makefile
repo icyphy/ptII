@@ -52,6 +52,7 @@ PTCLASSALLJARS =
 
 JSRCS = \
 	DropSensorInputDevice.java \
+	EncoderInputDevice.java \
 	GPInputDevice.java \
 	GPOutputDevice.java \
 	MotorOutputDevice.java \
@@ -60,6 +61,7 @@ JSRCS = \
 	
 OTHER_FILES_TO_BE_JARED = \
 	DropSensorInputDevice.c \
+	EncoderInputDevice.c \
 	GPInputDevice.c \
 	GPOutputDevice.c \
 	MotorOutputDevice.c \
