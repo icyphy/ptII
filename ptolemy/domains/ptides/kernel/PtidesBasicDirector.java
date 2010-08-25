@@ -900,6 +900,8 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** Clear any highlights on the specified actor.
      *  @param actor The actor to clear.
+     *  @param overwriteHighlight  a boolean -- true if the current highlighting
+     *  color is to be overwritten.
      *  @exception IllegalActionException If the animateExecution
      *   parameter cannot be evaluated.
      */
@@ -946,8 +948,8 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Return whether the two input events are destined to the same equivalence class.
-     *  @param refEvent
-     *  @param event
+     *  @param refEvent The reference event.
+     *  @param event The event to be compared to the refEvent.
      *  @return whether the two input events are destined to the same equivalence class.
      *  @exception IllegalActionException 
      */
@@ -1219,9 +1221,10 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Returns the executionTime parameter.
-     *  @param port
-     *  @return executionTime parameter
-     *  @exception IllegalActionException
+     *  @param port The port at which execution time is denoted.
+     *  @param actor  an Actor object.
+     *  @return executionTime parameter.
+     *  @exception IllegalActionException.
      */
     protected static double _getExecutionTime(IOPort port, Actor actor)
             throws IllegalActionException {
@@ -1254,6 +1257,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param port The port where this minDelay parameter is associated to.
      *  @param channel The channel where this minDelay parameter is associated to.
      *  @return minDelay parameter.
+     *  @param pureEvent  a boolean -- true if the event is a pure event.
      *  @exception IllegalActionException if we cannot get minDelay parameter.
      */
     protected double _getMinDelay(IOPort port, int channel, boolean pureEvent)
@@ -1633,7 +1637,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  @param color The color, given as a string description in
      *   the form "{red, green, blue, alpha}", where each of these
      *   is a number between 0.0 and 1.0.
-     *  @exception IllegalActionException If the animateExecution
+     *  @exception IllegalActionException If the animateExecution is not allowed.
+     *  @param overwriteHighlight  a boolean -- true if the current
+     *  color is to be overwritten.
      *   parameter cannot be evaluated.
      */
     protected void _highlightActor(Actor actor, String color,
@@ -2116,7 +2122,7 @@ public class PtidesBasicDirector extends DEDirector {
                 if (port.hasTokenInside(i)) {
                     // FIXME: we should probably do something else here.
                     throw new IllegalActionException(port,
-                            "missed deadline at the actuator." + "Deadline = "
+                            "missed deadline at the actuator. " + "Deadline = "
                                     + _currentTime
                                     + ", and current physical time = "
                                     + physicalTag.timestamp);
@@ -2683,6 +2689,7 @@ public class PtidesBasicDirector extends DEDirector {
         /** Compares this PortDependency with another. Compares the
          *  dependencies of these two objects.
          *  @param arg0 The object comparing to.
+         *  @return an int representing the compared value.
          */
         public int compareTo(Object arg0) {
             PortDependency portDependency = (PortDependency) arg0;
@@ -2697,6 +2704,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         /** Checks if this PortDependency is the same as another.
          *  @param arg0 The object checking against.
+         *  @return true if the dependencies are equal.
          */
         public boolean equals(Object arg0) {
             // FIXME: FindBugs:
@@ -2763,6 +2771,7 @@ public class PtidesBasicDirector extends DEDirector {
         /** Compares this RealTimeEvent with another. Compares the delivery
          *  times of these two events.
          *  @param other The object comparing to.
+         *  @return an int representing the comparison value.
          */
         public int compareTo(Object other) {
             return deliveryTag.compareTo(((RealTimeEvent) other).deliveryTag);
