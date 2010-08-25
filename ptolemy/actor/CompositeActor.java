@@ -1301,7 +1301,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     port.setMultiport(true);
                     port.setDefaultWidth(0);
                 }
-                
+
                 if (!subscriberPort.connectedPortList().contains(port)) {
                     IORelation relation = null;
                     //connect the newly created port to the subscriber port
@@ -1318,12 +1318,14 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     relation.setPersistent(false);
                     // Prevent the relation from showing up in vergil.
                     new Parameter(relation, "_hide", BooleanToken.TRUE);
+
                     port.liberalLink(relation);
 
                     if (!subscriberPort.isLinked(relation)) {
                         subscriberPort.liberalLink(relation);
                         notifyConnectivityChange();
                     }
+
                 }
 
                 if (container instanceof CompositeActor) {
@@ -2183,7 +2185,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } else {
             // Remove the link to a previous relation, if necessary.
 
-            List connectedPorts = subscriberPort.connectedPortList();
 
             IORelation relation = _publisherRelations != null ? _publisherRelations
                     .get(name)
@@ -2201,18 +2202,26 @@ public class CompositeActor extends CompositeEntity implements Actor,
             }
 
             if (global && container instanceof CompositeActor) {
-                for (Object port : connectedPorts) {
-                    IOPort subscribedPort = (IOPort) port;
-                    if (subscribedPort.isOutput()) {
-                        ((CompositeActor) container).unlinkToPublishedPort(
-                                name, subscribedPort, global);
-                        try {
-                            subscribedPort.setContainer(null);
-                        } catch (NameDuplicationException ex) {
-                            throw new InternalErrorException(subscriberPort
-                                    .getContainer(), ex,
-                                    "Failed to set the container to null?");
+                for (Object relationObj : subscriberPort.linkedRelationList()) {
+                    try {
+                        for (Object port : ((IORelation) relationObj)
+                                .linkedPortList(subscriberPort)) {
+
+                            IOPort subscribedPort = (IOPort) port;
+                            if (subscribedPort.isInput()) {
+                                ((CompositeActor) container)
+                                        .unlinkToPublishedPort(name,
+                                                subscribedPort, global);
+
+                                subscribedPort.setContainer(null);
+
+                            }
                         }
+                        ((IORelation) relationObj).setContainer(null);
+                    } catch (NameDuplicationException ex) {
+                        throw new InternalErrorException(subscriberPort
+                                .getContainer(), ex,
+                                "Failed to set the container to null?");
                     }
                 }
             }
@@ -2252,6 +2261,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     }
                 }
             }
+
         }
     }
 
@@ -2288,8 +2298,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
                     subscriberPort, global);
         } else {
 
-            List connectedPorts = subscriberPort.connectedPortList();
-
             if (_publishedPorts != null) {
                 for (String name : _publishedPorts.keySet()) {
                     Matcher matcher = pattern.matcher(name);
@@ -2299,20 +2307,25 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 }
             }
 
-            if (global && container instanceof CompositeActor) {
-                for (Object port : connectedPorts) {
-                    IOPort subscribedPort = (IOPort) port;
-                    if (subscribedPort.isOutput()) {
-                        ((CompositeActor) container).unlinkToPublishedPort(
-                                pattern, (TypedIOPort) subscribedPort, global);
-                        try {
+            for (Object relationObj : subscriberPort.linkedRelationList()) {
+                try {
+                    for (Object port : ((IORelation) relationObj)
+                            .linkedPortList(subscriberPort)) {
+
+                        IOPort subscribedPort = (IOPort) port;
+                        if (subscribedPort.isInput()) {
+                            ((CompositeActor) container).unlinkToPublishedPort(
+                                    pattern, (TypedIOPort) subscribedPort, global);
+
                             subscribedPort.setContainer(null);
-                        } catch (NameDuplicationException ex) {
-                            throw new InternalErrorException(subscriberPort
-                                    .getContainer(), ex,
-                                    "Failed to set the container to null?");
+
                         }
                     }
+                    ((IORelation) relationObj).setContainer(null);
+                } catch (NameDuplicationException ex) {
+                    throw new InternalErrorException(subscriberPort
+                            .getContainer(), ex,
+                            "Failed to set the container to null?");
                 }
             }
         }
@@ -2390,23 +2403,25 @@ public class CompositeActor extends CompositeEntity implements Actor,
                 IORelation relation = _publisherRelations.get(name);
                 if (relation != null) {
                     if (global && container instanceof CompositeActor) {
-                        for (Object port : relation.linkedPortList(publisherPort)) {
+                        for (Object port : relation
+                                .linkedPortList(publisherPort)) {
                             IOPort publishedPort = (IOPort) port;
                             if (publishedPort.isOutput()) {
-                                ((CompositeActor) container).unregisterPublisherPort(
-                                        name, publishedPort, global);
+                                ((CompositeActor) container)
+                                        .unregisterPublisherPort(name,
+                                                publishedPort, global);
                                 publishedPort.setContainer(null);
                             }
                         }
                     }
-                    
+
                     relation.setContainer(null);
                     notifyConnectivityChange();
 
                     _publisherRelations.remove(name);
                 }
             }
-            
+
         }
     }
 

@@ -124,7 +124,7 @@ public class SubscriptionAggregator extends Subscriber {
                 if (container instanceof CompositeActor
                         && !(_channel == null || _channel.trim().equals(""))) {
                     ((CompositeActor) container).unlinkToPublishedPort(
-                            _channelPattern, input);
+                            _channelPattern, input, _global);
                 }
                 _channel = newValue;
                 // Don't call super here because super.attributeChanged() tries to unlink _channel
