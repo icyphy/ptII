@@ -1,0 +1,8 @@
+#!/bin/sh
+export JAVAFLAGS=-Xmx4000M
+for model in $@
+do
+    echo $model
+    $PTII/bin/ptjacl run.tcl $model > `basename $model .xml`.out
+    #$PTII/bin/vergil -run20x $model > `basename $model .xml`.out
+done

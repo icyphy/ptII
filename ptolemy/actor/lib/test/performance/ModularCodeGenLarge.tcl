@@ -36,7 +36,7 @@
 source PublisherCommon.tcl 
 # 3 6
 set numberOfSubsPerLevel 3
-set levels 3
+set levels 4
 
 set composite ptolemy.actor.TypedCompositeActor
 puts [pubSubAggModel $numberOfSubsPerLevel $levels $composite true] 

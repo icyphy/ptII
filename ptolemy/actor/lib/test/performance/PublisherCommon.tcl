@@ -62,8 +62,8 @@ proc createPublisher {e0 channel nameSuffix {factor 1.1} } {
 	    [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Transformer $scale] input]
 
-    # Insert 25 scales
-    for {set m 1} { $m <= 25} {incr m} {
+    # Insert 100 scales
+    for {set m 1} { $m <= 100} {incr m} {
 	set scaleSuffix "scale_${nameSuffix}_$m"
 	set otherScale [java::new ptolemy.actor.lib.Scale $e0 $scaleSuffix]
 	if {$m == 1} {
@@ -667,8 +667,8 @@ proc _createHierarchichalModel {container numberOfPubSubsPerLevel levelNumber {t
 		$p1 \
 		[java::field [java::cast ptolemy.actor.lib.Transformer $scale] input]
 
-	    # Insert 25 scales
-	    for {set m 1} { $m <= 25} {incr m} {
+	    # Insert 100 scales
+	    for {set m 1} { $m <= 100} {incr m} {
 		set scaleSuffix "scale_${nameSuffix}_$m"
 		set otherScale [java::new ptolemy.actor.lib.Scale $en $scaleSuffix]
 		if {$m == 1} {
