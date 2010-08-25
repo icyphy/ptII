@@ -31,7 +31,7 @@
 
 ME =		ptolemy/cg/lib
 
-DIRS = 		demo test
+DIRS = 		demo syntactic test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -53,10 +53,7 @@ JSRCS = \
 	ModularCodeGenTypedCompositeActor.java \
 	ModularCompiledSDFTypedCompositeActor.java \
 	PointerToken.java \
-	Profile.java \
-	SyntacticGraph.java \
-	SyntacticNode.java \
-	SyntacticPort.java
+	Profile.java
 
 OTHER_FILES_TO_BE_JARED =
 
