@@ -133,7 +133,16 @@ public class SubscriptionAggregator extends Subscriber {
                 _channelPattern = Pattern.compile(_channel);
             }
         } else if (attribute == global) {
-            _global = ((BooleanToken) global.getToken()).booleanValue();
+            boolean newValue = ((BooleanToken) global.getToken()).booleanValue();
+            if(newValue == false && _global == true) {
+                NamedObj container = getContainer();
+                if (container instanceof CompositeActor
+                        && !(_channel == null || _channel.trim().equals(""))) {
+                    ((CompositeActor) container).unlinkToPublishedPort(
+                            _channelPattern, input, _global);
+                }
+            }
+            _global = newValue;
             // Do not call SubscriptionAggregator.attributeChanged()
             // because it will remove the published port name by _channel.
             // If _channel is set to a real name (not a regex pattern),
