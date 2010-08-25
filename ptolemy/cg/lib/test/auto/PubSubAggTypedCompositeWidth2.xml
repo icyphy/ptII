@@ -166,10 +166,27 @@
         <link port="Test2.input" relation="relation3"/>
         <link port="SubscriptionAggregator2.output" relation="relation3"/>
     </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 275.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Publisher.input" relation="relation"/>
+    <link port="Publisher.input" relation="relation2"/>
     <link port="Const.output" relation="relation"/>
+    <link port="Const2.output" relation="relation2"/>
     <property name="SDF Director._ModularCodeGenPubSubAgg3_ModularCodeGenerator" class="ptolemy.kernel.DecoratedAttributesImplementation">
         <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
         </property>
