@@ -54,10 +54,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	de/de.jar \
-	sdf/sdf.jar\
-      giotto/giotto.jar\
-      modal/modal.jar
-
+	giotto/giotto.jar \
+	modal/modal.jar \
+	sdf/sdf.jar
 
 # Keep this list alphabetized.
 JSRCS = 

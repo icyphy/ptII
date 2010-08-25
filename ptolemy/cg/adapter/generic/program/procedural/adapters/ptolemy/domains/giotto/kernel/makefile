@@ -56,7 +56,6 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	GiottoDirector.java \
 	GiottoReceiver.java
 
 OTHER_FILES_TO_BE_JARED = 
