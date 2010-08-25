@@ -24,7 +24,7 @@ do
         }    
     }
     END {
-        printf("%20s & %5d ms. %5d ms. & %5d K & %5.0f ms. & %5d K \\\\\n", type, open, firstRun, firstMemory, run/(count-1), memory/(count-1));
+        printf("%20s & %5d ms. %5d ms. & %5d ms. & %5d K & %5.0f ms. & %5d K \\\\\n", type, open, firstRun, open+firstRun, firstMemory, run/(count-1), memory/(count-1));
         #print type, "&", firstRun, "ms. &", firstMemory , "K &",  run/(count-1), " ms. &", memory/(count-1), "K \\\\"
         #print "SubsequentRuns", type, run/(count-1)
         #print "SubsequentRuns", type, memory/(count-1)
