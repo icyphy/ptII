@@ -56,6 +56,7 @@ JSRCS = \
 	SensorInputDevice.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ActuatorOutputDevice.c \
 	SensorInputDevice.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
