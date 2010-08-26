@@ -52,7 +52,9 @@ PTCLASSJAR = $(PTPACKAGE).jar
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	ASTPtFunctionalIfNode.java
+	ASTPtFunctionalIfNode.java \
+	ASTPtRelationalNode.java \
+	IfNodeFunction.java
 
 EXTRA_SRCS =	$(JSRCS)
 
