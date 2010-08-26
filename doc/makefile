@@ -237,7 +237,8 @@ CGPACKAGES = \
 	ptolemy.cg.kernel.generic.program.procedural.java.modular \
 	ptolemy.cg.kernel.generic.syntactic \
 	ptolemy.cg.kernel.generic.test.actor \
-	ptolemy.cg.lib
+	ptolemy.cg.lib \
+	ptolemy.cg.lib.syntactic
 
 # Codegen packages.  Use this command to update:
 # cd $PTII/ptolemy/codegen; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/codegen" dir}' | sed 's@/@.@g'
