@@ -173,7 +173,10 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
     private Concept _evaluateChild(int childNumber, Concept xValue) throws IllegalActionException {
         ptolemy.data.expr.ASTPtRootNode childNode = (ptolemy.data.expr.ASTPtRootNode) _ifNode.jjtGetChild(childNumber);
 
-        return _evaluateNode(childNode, xValue);
+        Map<String, Concept> arguments = new HashMap<String, Concept>();
+        arguments.put("x", xValue);
+
+        return _evaluateNode(childNode, arguments);
     }
 
     /** Evaluate the given node as a concept expression over the domain
@@ -181,26 +184,15 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  result.
      *  
      *  @param node The Ptolemy AST node to evaluate.
-     *  @param xValue The value of "x" in this evaluation.
+     *  @param bArguments The value of "x" in this evaluation.
      *  @return The computed concept value.
      *  @throws IllegalActionException If there is an error during evaluation.
      */
     private Concept _evaluateNode(ptolemy.data.expr.ASTPtRootNode node,
-            Concept xValue) throws IllegalActionException {
-        // FIXME: Refactor so that we can have multiple argument names,
-        // and not all named "x"
-        List<String> argumentNames = new LinkedList<String>();
-        argumentNames.add("x");
-        List<Concept> argumentValues = new LinkedList<Concept>();
-        argumentValues.add(xValue);
-        List<Ontology> argumentDomains = new LinkedList<Ontology>();
-        argumentDomains.add(_domainOntology);
+            Map<String, Concept> arguments) throws IllegalActionException {
 
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
-                argumentNames,
-                argumentValues,
-                null,
-                argumentDomains);
+                arguments, null, _domainOntology);
         ConceptToken evaluatedToken = (ConceptToken)evaluator.evaluateParseTree(node);
         return evaluatedToken.conceptValue();
     }
@@ -245,8 +237,12 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         // Check for counterexamples
         MonotonicityCounterexamples counterexamples = new MonotonicityCounterexamples();
         for (MonotonicityCounterexamples.ConceptPair pair : toCheck.entrySet()) {
-            Concept fb = _evaluateNode(_ifNode, pair.getKey());
-            Concept fd = _evaluateNode(_ifNode, pair.getValue());
+            Map<String, Concept> bArguments = new HashMap<String, Concept>();
+            bArguments.put("x", pair.getKey());
+            Map<String, Concept> dArguments = new HashMap<String, Concept>();
+            dArguments.put("x", pair.getValue());
+            Concept fb = _evaluateNode(_ifNode, bArguments);
+            Concept fd = _evaluateNode(_ifNode, dArguments);
             if (!fd.isAboveOrEqualTo(fb)) {
                 counterexamples.add(pair.getKey(), pair.getValue());
             } 

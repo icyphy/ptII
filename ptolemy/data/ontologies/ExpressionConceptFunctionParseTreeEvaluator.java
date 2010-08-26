@@ -26,6 +26,7 @@ package ptolemy.data.ontologies;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.data.expr.ASTPtFunctionApplicationNode;
 import ptolemy.data.expr.ASTPtLeafNode;
@@ -76,7 +77,41 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         _typeInference = new ExpressionConceptFunctionParseTreeTypeInference();
         _addConceptConstants();
     }
-
+    
+    /** Construct an ExpressionConceptFunctionParseTreeEvaluator for
+     *  evaluating expressions that represent concept functions.
+     *  
+     *  This constructor can only be used on parse trees whose arguments
+     *  are all drawn from the same ontology.
+     *  
+     *  @param arguments A map of argument names to concept values.
+     *  @param solverModel The ontology solver model that contains the scope
+     *   of other concept functions that can be called in the expression.
+     *  @param argumentDomainOntology The ontology representing the
+     *   domain from which all input arguments are drawn.
+     *  @throws IllegalActionException If there is a problem instantiating
+     *   the parse tree evaluator object.
+     */
+    public ExpressionConceptFunctionParseTreeEvaluator(
+            Map<String, Concept> arguments,
+            OntologySolverModel solverModel,
+            Ontology argumentDomainOntology)
+        throws IllegalActionException {
+        _solverModel = solverModel;
+        _domainOntologies = new LinkedList<Ontology>();
+        _domainOntologies.add(argumentDomainOntology);
+        
+        _argumentNames = new LinkedList<String>();
+        _argumentConceptValues = new LinkedList<Concept>();
+        for (Map.Entry<String, Concept> entry : arguments.entrySet()) {
+            _argumentNames.add(entry.getKey());
+            _argumentConceptValues.add(entry.getValue());
+        }
+        
+        _typeInference = new ExpressionConceptFunctionParseTreeTypeInference();
+        _addConceptConstants();
+    }    
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
