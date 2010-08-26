@@ -6,18 +6,25 @@
 # Clean up
 rm *.out *.xml *.plt
 rm -rf $HOME/cg/
-# Build the models
-$PTII/bin/ptjacl ModularCodeGen.tcl
 
-models="hierarchicalModel_2_2.xml \
-    hierarchicalModelTransparent_2_2.xml \
-    hierarchicalModelLazy_2_2.xml \
-    hierarchicalModelLazyTransparent_2_2.xml \
-    hierarchicalModelMCG_2_2.xml"
+# If you change these, then edit ModularCodeGen2.tcl
+numberOfSubsPerLevel=3
+levels=6
+
+export JAVAFLAGS=-Xmx4000M
+# Build the models
+$PTII/bin/ptjacl ModularCodeGen2.tcl
+
+
+models="hierarchicalModel_${numberOfSubsPerLevel}_${levels}.xml \
+    hierarchicalModelTransparent_${numberOfSubsPerLevel}_${levels}.xml \
+    hierarchicalModelLazy_${numberOfSubsPerLevel}_${levels}.xml \
+    hierarchicalModelLazyTransparent_${numberOfSubsPerLevel}_${levels}.xml \
+    hierarchicalModelMCG_${numberOfSubsPerLevel}_${levels}.xml"
 
 for model in $models
 do
     echo $model
-    $PTII/bin/ptjacl run.tcl $model
+    $PTII/bin/ptjacl run.tcl $model > `basename $model .xml`.out
 done
 
