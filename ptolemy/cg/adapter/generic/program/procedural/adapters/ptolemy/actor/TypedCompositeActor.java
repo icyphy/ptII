@@ -42,6 +42,7 @@ import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.ProceduralCodeGenerator;
 import ptolemy.cg.lib.CompiledCompositeActor;
+import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -173,10 +174,16 @@ public class TypedCompositeActor extends
         Iterator<?> outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().iterator();
 
+        if((getComponent() instanceof ModularCodeGenTypedCompositeActor) &&
+                ((ptolemy.actor.CompositeActor) getComponent())
+                .outputPortList().size() > 0)
+            code.append("if(export) {" + _eol);
+        
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             directorAdapter.generateTransferOutputsCode(outputPort, code);
         }
+        
         return processCode(code.toString());
     }
 
