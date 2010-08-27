@@ -47,6 +47,7 @@ import ptolemy.actor.LazyTypedCompositeActor;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.lib.Publisher;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;
@@ -185,8 +186,10 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                             .setToken(new BooleanToken(true));
                 }
             }
-        } else if (attribute == recompileThisLevel) {
-            populate();
+            //        } else if (attribute == recompileThisLevel) {
+            //            if (((BooleanToken) recompileThisLevel.getToken()).booleanValue()) {
+            //                populate();
+            //            }
         } else if (attribute != recompileThisLevel) {
             // We don't support this yet. Enabling results in a recompilation when
             // opening the model since expressions are lazy, and the notification does
@@ -229,32 +232,29 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
     public List portList() {
         Profile profile = _getProfile();
         if (_USE_PROFILE && profile != null) {
-            List<TypedIOPort> ports = new LinkedList<TypedIOPort>(super
-                    .portList());
-            HashSet<String> portSet = new HashSet<String>();
-            for (Object port : ports) {
-                portSet.add(((NamedObj) port).getName());
-            }
             try {
                 for (Profile.Port port : profile.ports()) {
                     if (port.publisher()) {
-                        if (!portSet.contains(port.name())) {
-                            IOPort newPort = new TypedIOPort(this, port.name());
+                        //                        if (!portSet.contains(port.name())) {
+                        IOPort newPort = (IOPort) getPort(port.name());
+                        if (newPort == null) {
+                            newPort = (IOPort) newPort(port.name());
                             new Parameter(newPort, "_hide", BooleanToken.TRUE);
                             newPort.setInput(port.input());
                             newPort.setOutput(port.output());
-                            ports.add(new TypedIOPort(this, port.name()));
-                            NamedObj container = getContainer();
-                            if (container instanceof CompositeActor) {
-                                ((CompositeActor) container)
-                                        .registerPublisherPort(port
-                                                .getPubSubChannelName(),
-                                                newPort);
-                            }
+                            newPort.setMultiport(port.multiport());
                         }
+                        
+                        
+                        NamedObj container = getContainer();
+                        if (container instanceof CompositeActor) {
+                            ((CompositeActor) container).registerPublisherPort(
+                                    port.getPubSubChannelName(), newPort);
+                        }
+                        //                        }
                     }
                 }
-                return ports;
+                return super.portList();
             } catch (IllegalActionException e) {
                 profile = null;
                 List<?> entities = entityList(ModularCodeGenTypedCompositeActor.class);
@@ -309,6 +309,9 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
             }
 
             List<Object> argList = new LinkedList<Object>();
+            
+            if(outputPortList().size() > 0)
+                argList.add(true);
 
             Iterator<?> inputPorts = inputPortList().iterator();
             while (inputPorts.hasNext()) {
@@ -887,13 +890,14 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
         // FIXME: this method might be slow
         boolean isPublishPort = false;
 
-        if (_publishedPorts != null) {
-            for (List<IOPort> ports : _publishedPorts.values()) {
-                if (ports.contains(port)) {
-                    isPublishPort = true;
-                    break;
-                }
-            }
+        //published ports are in stored in the immediate opaque parent's composite
+        NamedObj container = getContainer();
+        while ((container instanceof CompositeActor)
+                && !((CompositeActor) container).isOpaque())
+            container = ((CompositeActor) container).getContainer();
+
+        if ((container instanceof CompositeActor)) {
+            isPublishPort = ((CompositeActor) container).isPublishedPort(port);
         }
 
         return isPublishPort;
@@ -933,6 +937,7 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 ClassLoader classLoader = new URLClassLoader(urls);
                 classInstance = classLoader.loadClass(className);
                 _profile = (Profile) (classInstance.newInstance());
+                portList();
             }
         } catch (Exception e) {
             try {
@@ -984,12 +989,12 @@ public class ModularCodeGenTypedCompositeActor extends LazyTypedCompositeActor {
                 }
             }
         } else if (publisher) {
-            for (Entry<String, List<IOPort>> element : _publishedPorts
-                    .entrySet()) {
-                if (element.getValue().contains(port)) {
-                    return element.getKey();
-                }
-            }
+            NamedObj container = getContainer();
+            while ((container instanceof CompositeActor)
+                    && !((CompositeActor) container).isOpaque())
+                container = ((CompositeActor) container).getContainer();
+            
+            return ((CompositeActor) container).getPublishedPortChannel(port);
         }
         return "";
     }

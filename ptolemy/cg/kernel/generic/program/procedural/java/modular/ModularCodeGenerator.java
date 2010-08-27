@@ -361,8 +361,12 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             + "model.run();" + _eol + "}" + _eol
                             + "public void run() throws Exception {" + _eol);
         } else {
-            mainEntryCode.append(_eol + _eol + "public Object[] fire (" + _eol);
-
+            if((getContainer() instanceof ModularCodeGenTypedCompositeActor) &&
+                    ((Actor) getContainer()).outputPortList().size() > 0)
+                mainEntryCode.append(_eol + _eol + "public Object[] fire (boolean export, " + _eol);
+            else
+                mainEntryCode.append(_eol + _eol + "public Object[] fire (" + _eol);
+            
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             boolean addComma = false;
@@ -439,9 +443,15 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                     && ((CompositeActor) _model).outputPortList().isEmpty()) {
                 return INDENT1 + "return null;" + _eol + "}" + _eol + "}"
                         + _eol;
+            } else if (_model instanceof ModularCodeGenTypedCompositeActor) {
+                return INDENT1 + INDENT1 + "return tokensToAllOutputPorts;" + _eol +
+                INDENT1 + "} else  {" + _eol
+                + "return null;" + _eol + "}"
+                + _eol + "}"
+                   + _eol + "}" + _eol;
             } else {
                 return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
-                        + _eol + "}" + _eol;
+                    + _eol + "}" + _eol;
             }
         }
     }

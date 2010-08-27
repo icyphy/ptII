@@ -222,7 +222,10 @@ public class SDFDirector
                         }
                     }
 
-                    code.append(actorName + ".fire(");
+                    if(actor.inputPortList().size() > 0)
+                        code.append(actorName + ".fire(false, ");
+                    else
+                        code.append(actorName + ".fire(");
 
                     inputPorts = actor.inputPortList().iterator();
                     boolean addComma = false;
