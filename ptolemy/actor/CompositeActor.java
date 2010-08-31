@@ -708,6 +708,46 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
         return ports;
     }
+    
+    /**
+     * 
+     */
+    public String getPublishedPortChannel(IOPort port) {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor
+                && !((CompositeActor) container).isClassDefinition()) {
+            return ((CompositeActor) container).getPublishedPortChannel(port);
+        } else {
+            if (_publishedPorts != null) {
+                for (String name : _publishedPorts.keySet()) {
+                    if(_publishedPorts.get(name).contains(port))
+                        return name;
+                }
+            }
+        }
+        
+        return "";
+    }
+    
+    /**
+     * 
+     */
+    public String getSubscribedPortChannel(IOPort port) {
+        NamedObj container = getContainer();
+        if (!isOpaque() && container instanceof CompositeActor
+                && !((CompositeActor) container).isClassDefinition()) {
+            return ((CompositeActor) container).getPublishedPortChannel(port);
+        } else {
+            if (_subscribedPorts != null) {
+                for (String name : _publishedPorts.keySet()) {
+                    if(_publishedPorts.get(name).contains(port))
+                        return name;
+                }
+            }
+        }
+        
+        return "";
+    }
 
     /** Determine whether widths are currently being inferred or not.
      *  @return True When widths are currently being inferred.
@@ -912,6 +952,21 @@ public class CompositeActor extends CompositeEntity implements Actor,
      */
     public boolean isOpaque() {
         return _director != null;
+    }
+    
+    /** Return true if a port is in the published port list
+     * at this level.
+     */
+    public boolean isPublishedPort(IOPort port) {
+        if (_publishedPorts != null) {
+            for (List<IOPort> ports : _publishedPorts.values()) {
+                if (ports.contains(port)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     /** If this actor is opaque, invoke the isStrict() method of the local
@@ -2714,6 +2769,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
 
     /** Keep track of all published ports accessable in this container.*/
     protected Map<String, List<IOPort>> _publishedPorts;
+    
+    /** Keep track of all published ports accessable in this container.*/
+    protected Map<String, List<IOPort>> _subscribedPorts;
 
     /** Keep track of all relations with published ports accessable in this container.*/
     protected Map<String, IORelation> _publisherRelations;
