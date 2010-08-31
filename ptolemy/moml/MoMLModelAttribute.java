@@ -29,6 +29,7 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -87,7 +88,19 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     public MoMLModelAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        
+        modelURL = new StringParameter(this, "modelURL");
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** URL from which to get the model. If this is specified,
+     *  then the URL will be referenced in the exported configure tag
+     *  rather than including the MoML for the model in the configure
+     *  tag. This parameter is a string that defaults to empty.
+     */
+    StringParameter modelURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -111,23 +124,33 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     /** Construct and configure the contained model with the specified source and
      *  text. This parses the specified MoML text.
      *  @param base The base URL for relative references, or null if not known.
-     *  @param source The URI of a document providing source, which is ignored in this class.
+     *  @param source The URI of a document providing source, which if specified,
+     *   will be used to obtain the text. In that case, the text argument will be
+     *   ignored.
      *  @param text The MoML description.
      *  @exception Exception If the parsing fails.
      */
     public void configure(URL base, String source, String text)
             throws Exception {
-        if (!text.trim().equals("")) {
+    	_source = null;
+    	if (source != null && !source.trim().equals("")) {
+    		_source = source;
+            MoMLParser parser = new MoMLParser(workspace());
+            _model = parser.parse(base, source);
+    	} else if (!text.trim().equals("")) {
             MoMLParser parser = new MoMLParser(workspace());
             _model = parser.parse(base, null, new StringReader(text));
         }
     }
 
-    /** Return null. This class ignores the source attribute of a configure tag.
-     *  @return The configure source.
+    /** Return the input source that was specified the last time the configure
+     *  method was called.
+     *  @return The string representation of the input URL, or null if the
+     *  no source has been used to configure this object, or null if no
+     *  external source need be used to configure this object.
      */
     public String getConfigureSource() {
-        return null;
+        return _source;
     }
 
     /** Return the MoML description of the model, if there is one, and
@@ -174,5 +197,10 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  can provide a default model.
      */
     protected NamedObj _model;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
+    /** The source specified by the last call to configure(). */
+    private String _source;
 }
