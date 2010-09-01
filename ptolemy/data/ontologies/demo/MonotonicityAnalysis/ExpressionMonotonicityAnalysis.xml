@@ -4,18 +4,18 @@
 <entity name="ExpressionMonotonicityAnalysis" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={141, 22, 837, 787}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={141, 22, 974, 851}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 677]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 734]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1741925867711">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{84.714503323486, 232.716796875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{118.0671198513418, 250.1475249916416}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, -25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, -20.0]">
         </property>
     </property>
     <property name="monotonicityAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="IntegratorConstraintExpression.x &gt;= Monotonic">
@@ -79,36 +79,12 @@
         </property>
     </property>
     <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, -20.0]">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="ptolemy/data/ontologies/demo/MonotonicityAnalysis/DimensionSystemMonotonicitySolverModel.xml">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 50.0]">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
-        <configure>
-            <entity name="" class="ptolemy.data.ontologies.OntologySolverModel">
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={811, 428, 815, 507}, maximized=false}">
-                </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                </property>
-                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-                </property>
-                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
-                </property>
-                <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                    <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In order for the monotonicity analysis to work correctly,&#10;the monotonicityAnalysis lattice must be &quot;in front&quot; of&#10;the other lattice here.">
-                    </property>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 25.0]">
-                    </property>
-                </property>
-                <entity name="dimensionSystem" class="ptolemy.data.ontologies.lattice.adapters.dimensionSystem.dimensionSystem">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 140.0]">
-                    </property>
-                </entity>
-                <entity name="monotonicityAnalysis" class="ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.monotonicityAnalysis">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 140.0]">
-                    </property>
-                </entity>
-            </entity>
-        </configure>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demo of the montonicity analysis algorithm.&#10;&#10;This expression shows the an example taken from a constraint on the&#10;integrator componennt. The analysis correctly infers it as monotonic:">

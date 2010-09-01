@@ -27,6 +27,7 @@ package ptolemy.moml;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import ptolemy.data.expr.StringParameter;
@@ -36,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// MoMLModelAttribute
@@ -105,6 +107,38 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to a change in an attribute. If the modelURL attribute
+     *  changes, reconfigure the MoML model with the new URL string.
+     *  @param attribute The attribute that changed.
+     *  @throws IllegalActionException Thrown if the URL string contained in the
+     *   modelURL attribute is not valid.
+     */
+    public void attributeChanged(Attribute attribute)
+        throws IllegalActionException {
+        
+        if (attribute.equals(modelURL)) {
+            if (modelURL != null && !modelURL.stringValue().equals("")) {                
+                String modelURLString = modelURL.stringValue();
+                
+                // The modelURLString could be either an absolute URL string
+                // or a file location relative to the Ptolemy root directory.
+                // If it is the latter, we need to prepend the Ptolemy root
+                // directory prefix to create an absolute URL.
+                modelURLString = _createAbsoluteModelURLString(modelURLString);
+                
+                try {
+                    configure(null, modelURLString, null);
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex, "Could not " +
+                                "configure the model contents of the " +
+                                "MoMLModelAttribute with the given URL.");
+                }
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+    
     /** Return a clone of this model attribute. This also creates a clone for the
      *  contained model.
      *  @param workspace The workspace for the cloned object.
@@ -133,12 +167,12 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     public void configure(URL base, String source, String text)
             throws Exception {
     	_source = null;
+    	MoMLParser parser = new MoMLParser(workspace());
+    	
     	if (source != null && !source.trim().equals("")) {
-    		_source = source;
-            MoMLParser parser = new MoMLParser(workspace());
-            _model = parser.parse(base, source);
+    	    _source = source;
+            _model = parser.parse(base, new URL(source));
     	} else if (!text.trim().equals("")) {
-            MoMLParser parser = new MoMLParser(workspace());
             _model = parser.parse(base, null, new StringReader(text));
         }
     }
@@ -158,9 +192,14 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  @return The text to include in a configure tag.
      */
     public String getConfigureText() {
-        if (_model != null) {
+        // If the source is not null, there is no need for configure text,
+        // so return null. Otherwise return the model MoML text.        
+        if (_source != null) {
+            return null;
+        } else if (_model != null) {
             return _model.exportMoML();
         }
+        
         return null;
     }
 
@@ -176,6 +215,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
 
     /** Write a MoML description this object, which includes a
      *  MoML description of the contained model within the &lt;configure&gt; tag.
+     *  If the source URL is specified, do not write the MoML description.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
@@ -183,7 +223,7 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
         super._exportMoMLContents(output, depth);
-        if (_model != null) {
+        if (_source == null && _model != null) {
             output.write(_getIndentPrefix(depth) + "<configure>\n");
             _model.exportMoML(output, depth + 1);
             output.write(_getIndentPrefix(depth) + "</configure>\n");
@@ -197,6 +237,36 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
      *  can provide a default model.
      */
     protected NamedObj _model;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    
+    /** Return a string representing the full absolute URL of the contained model.
+     *  If the input string is already an absolute URL, just return it.
+     *  If the input string is a file path location relative to the Ptolemy root
+     *  directory, then prepend the Ptolemy root directory prefix to create an
+     *  absolute URL, and return the string representation.
+     *  
+     *  @param modelURLString The model URL string specified by the modelURL parameter.
+     *  @return A string representing the full absolute URL for the model URL.
+     *  @throws IllegalActionException Thrown if the model URL string is invalid.
+     */
+    private String _createAbsoluteModelURLString(String modelURLString) throws IllegalActionException {
+        try {
+            new URL(modelURLString);
+            return modelURLString;
+        } catch (MalformedURLException e) {
+            try {
+                URL modelURLObject = FileUtilities.nameToURL("$CLASSPATH/" +
+                        modelURLString, null, null);
+                return modelURLObject.toString();
+            } catch (IOException ioe) {
+                throw new IllegalActionException(this, ioe,
+                        "Invalid MoMLModelAttribute model URL: " +
+                        modelURLString);
+            }
+        }
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
