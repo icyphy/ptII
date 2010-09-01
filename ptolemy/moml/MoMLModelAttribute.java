@@ -71,7 +71,7 @@ import ptolemy.util.FileUtilities;
  * </property>
  * </pre>
  *  
- * @author Dai Bui, Edward Lee, Ben Lickly
+ * @author Dai Bui, Edward Lee, Ben Lickly, Charles Shelton
  * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (tfeng)
