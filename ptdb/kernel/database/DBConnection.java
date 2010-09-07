@@ -151,6 +151,16 @@ public interface DBConnection {
     public ArrayList<XMLDBModel> executeFetchHierarchyTask(
             FetchHierarchyTask task) throws DBExecutionException;
 
+    /** 
+     * Retrieve and return the list of all models in the database. 
+     * @return List of models in the database.
+     * @throws DBExecutionException thrown if there is an error while reading 
+     * the model list from the database.
+     */
+    public List<XMLDBModel> executeGetListOfAllModels() 
+            throws DBExecutionException;
+    
+    
     /**
      * Search models that contain the given attributes in the database.
      *

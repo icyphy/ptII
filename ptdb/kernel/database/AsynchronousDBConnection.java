@@ -336,6 +336,21 @@ public class AsynchronousDBConnection implements DBConnection {
                                 + "is not supported by this type of DBConnection");
             
     }
+    
+    /** 
+     * Retrieve and return the list of all models in the database. 
+     * @return List of models in the database.
+     * @throws DBExecutionException thrown if there is an error while reading 
+     * the model list from the database.
+     */
+    public List<XMLDBModel> executeGetListOfAllModels() 
+            throws DBExecutionException {
+        
+        throw new DBExecutionException(
+                "Asynchronous DB Execution error - executeGetListOfAllModels "
+                        + "is not supported by this type of DBConnection");
+        
+    }
 
     /**
      * Search for graph is not supported by the asynchronous connection.

@@ -410,6 +410,43 @@ public class OracleXMLDBConnection implements DBConnection {
         }
         return modelsList;
     }
+    
+    
+    /** 
+     * Retrieve and return the list of all models in the database. 
+     * @return List of models in the database.
+     * @throws DBExecutionException thrown if there is an error while reading 
+     * the model list from the database.
+     */
+    public List<XMLDBModel> executeGetListOfAllModels() throws DBExecutionException {
+        
+        ArrayList<String> modelsList = new ArrayList<String>();
+        
+        String query = "for $model in collection (\""
+                + _params.getContainerName()
+                + "\") return base-uri($model)";
+
+        try {
+            XmlQueryContext context = _xmlManager.createQueryContext();
+            XmlResults results = _xmlManager.query(query, context, null);
+            if (results != null) {
+                XmlValue value;
+                while (results.hasNext()) {
+                    value = results.next();
+                    String modelName = value.asString();
+                    if (!modelName.endsWith(".ptdbxml")) {
+                        modelsList.add(modelName);
+                    }
+                }
+            }
+        } catch (XmlException e) {
+
+            throw new DBExecutionException(
+                    "Failed to execute GetListOfAllModels - "
+                            + e.getMessage(), e);           
+        }
+        return _getDistinctModelsList(modelsList);
+    }
 
     /**
      * Get the attributes defined from the database.
