@@ -28,6 +28,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -45,6 +47,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
 
@@ -95,6 +98,8 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
         _containerModel = model;
         _sourceFrame = frame;
         _configuration = configuration;
+        
+               
         
         String title = "Search Results";
 
@@ -173,6 +178,23 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
             }
 
         });
+        
+        
+        JPanel statusPanel = new JPanel(new BorderLayout());
+        statusPanel.setPreferredSize(new Dimension(outerPanel.WIDTH, 50));
+        
+        outerPanel.add(statusPanel);
+        
+
+        _statusTextField = new JTextField();
+        
+        _statusTextField.setBorder(javax.swing.BorderFactory.createEtchedBorder
+                (javax.swing.border.EtchedBorder.RAISED));
+        _statusTextField.setEditable(false);
+        _statusTextField.setSize(statusPanel.getSize());
+        
+        _statusTextField.setFont(new Font("", Font.BOLD, 12));
+        statusPanel.add(_statusTextField, BorderLayout.SOUTH);
 
     }
 
@@ -253,10 +275,15 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
             } else {
                 if (_resultPanelList.size() == 0) {
                     // No result found. 
-                    JOptionPane.showMessageDialog(this, "No result found.");
+//                    JOptionPane.showMessageDialog(this, "No result found.");
+                    
+                    _statusTextField.setText("No result found.");
+                    _statusTextField.setForeground(Color.RED);
                 } else {
                     // Searching is done. 
-                    JOptionPane.showMessageDialog(this, "Search is done.");
+//                    JOptionPane.showMessageDialog(this, "Search is done.");
+                    _statusTextField.setText("Search is done.");
+                    _statusTextField.setForeground(Color.BLACK);
                 }
                 _cancelButton.setEnabled(false);
             }
@@ -318,11 +345,13 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
             }
             if (importDone) {
                 _sourceFrame.toFront();
-                JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+//                JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+                _statusTextField.setText("Import complete!");
+                _statusTextField.setForeground(Color.BLACK);
             }
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Please select atleast one model to import.");
+                    "Please select at least one model to import.");
         }
     }    
     
@@ -367,7 +396,9 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
             }
 
             _sourceFrame.toFront();
-            JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+//            JOptionPane.showMessageDialog(_sourceFrame, "Import complete!");
+            _statusTextField.setText("Import complete!");
+            _statusTextField.setForeground(Color.BLACK);
         } else {
             JOptionPane.showMessageDialog(this,
                     "Please select atleast one model to import.");
@@ -387,5 +418,6 @@ public class SearchResultsFrame extends JFrame implements Observer, PTDBBasicFra
     private NamedObj _containerModel;
     private JFrame _sourceFrame;
     private Configuration _configuration;
+    private javax.swing.JTextField _statusTextField;
 
 }
