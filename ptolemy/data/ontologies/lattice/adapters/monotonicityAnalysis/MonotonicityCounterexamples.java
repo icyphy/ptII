@@ -149,6 +149,7 @@ public class MonotonicityCounterexamples {
          *  
          *  @return The greater concept
          *  @see java.util.Map.Entry#getValue()
+         *  @see #setValue(Concept)
          */
         public Concept getValue() {
             return greater;
@@ -159,6 +160,7 @@ public class MonotonicityCounterexamples {
          *  @param value Ignored
          *  @return Always return null.
          *  @see java.util.Map.Entry#setValue(java.lang.Object)
+         *  @see #getValue()
          */
         public Concept setValue(Concept value) {
             return null;
