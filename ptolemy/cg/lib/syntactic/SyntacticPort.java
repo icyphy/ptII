@@ -110,7 +110,6 @@ public class SyntacticPort extends ComponentPort {
     /** Get the connected port from a given port.
      *  If the graph is not made bijective this gives the first.
      *  If there are no ports or no SyntacticPorts null is returned.
-     *  @param port The port to look out from.
      *  @return An immediately connected port or null.
      */
     public SyntacticPort getConnectedPort() {
