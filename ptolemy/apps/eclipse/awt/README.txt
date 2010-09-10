@@ -6,6 +6,19 @@ http://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/EclipseAndAWT
 This directory contains files copied from other locations.
 
 It is recommended you look at the files in the order below.
+
+By default, ptolemy/apps/eclipse/awt is excluded from the build path.
+The easiest thing to do is to:
+1) In a shell, find your Ptolemy II installation
+2) export PTII=`pwd`; ./configure
+3) In the package explorer, refresh by hitting F5
+4) Right click on the project, select Build Path | Configure Build Path
+5) Edit the list of excluded directories and *remove* ptolemy/apps/eclipse/awt
+   This will make it so that ptolemy/apps/eclipse/awt gets compiled.
+   
+ NOTE: Under Mac OS X, there are problems with the Plug-in Development Environment
+ (PDE) and Eclipse.  This problem manifests itself in compile errors.
+ 
 It is easiest to run these files inside Eclipse by right clicking
 on the .java file and selecting 'Run As'.
 
