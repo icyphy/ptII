@@ -923,6 +923,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
 
         }
 
+        //Duplicates are now allowed.  This allows OR searches.
+        /*
         if (_attributesListPanel.containsDuplicates()) {
 
             JOptionPane.showMessageDialog(this,
@@ -933,6 +935,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
             return false;
 
         }
+        */
 
         if (!_attributesListPanel.allAttributeNamesSet()) {
 
@@ -961,6 +964,8 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
             DBExecutionException, NameDuplicationException,
             IllegalActionException, MalformedStringException {
 
+        _attributesListPanel.regroup();
+        
         final SearchCriteria searchCriteria = new SearchCriteria();
 
         if (!_attributesListPanel.getModelName().trim().isEmpty()) {

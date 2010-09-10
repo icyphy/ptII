@@ -583,6 +583,123 @@ public class AttributesListPanel extends JPanel {
        
     }
     
+    
+    
+    /** Regroup the attributes displayed alphabetically.
+     * 
+     */
+    public void regroup() {
+
+        ArrayList<ModelAttributePanel> orderedList = new ArrayList();
+
+        // Get a list of all attributes we have displayed.
+        Component[] componentArray1 = _attListPanel.getComponents();
+
+        for (int i = 0; i < componentArray1.length; i++) {
+
+            
+            if (componentArray1[i] instanceof JPanel) {
+
+                
+                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                    .getComponents();
+
+                for (int j = 0; j < componentArray2.length; j++) {
+
+                    
+                    if (componentArray2[j] instanceof ModelAttributePanel) {
+                       
+                        orderedList.add((ModelAttributePanel) componentArray2[j]);
+ 
+                    }
+                   
+                }
+
+            }
+
+        }
+
+        //Sort the panels.  A bubble sort is OK.  They are not likely to have
+        //that many attributes to search on.
+        boolean changeRequired=false;
+        int n = orderedList.size();
+        for (int pass=1; pass < n; pass++) {
+
+            for (int i=0; i < n-pass; i++) {
+                
+                if (orderedList.get(i).getAttributeName()
+                        .compareToIgnoreCase(orderedList.get(i+1).
+                                getAttributeName()) > 0) {
+                    
+                    changeRequired = true;
+                    ModelAttributePanel temp = orderedList.get(i);  
+                    orderedList.set(i, orderedList.get(i+1));  
+                    orderedList.set(i+1, temp);
+                    
+                }
+            }
+        }
+        
+        //If a change was required, remove all panels and re-add the
+        //ordered panels
+        if(changeRequired){
+            
+            _attListPanel.removeAll();
+            _AttDelete.clear();
+            
+            JPanel modelDeletePanel;
+            JButton deleteButton;
+            
+            for(int i = 0; i < orderedList.size(); i++){
+                
+                modelDeletePanel = new JPanel();
+                modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
+                        BoxLayout.X_AXIS));
+                modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
+                modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
+
+                deleteButton = new JButton("Delete");
+                deleteButton.setAlignmentY(TOP_ALIGNMENT);
+                deleteButton.setActionCommand("Delete");
+                deleteButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                
+
+                modelDeletePanel.add(orderedList.get(i));
+                modelDeletePanel.add(deleteButton);
+
+                _AttDelete.put(deleteButton, modelDeletePanel);
+
+                _attListPanel.add(modelDeletePanel);
+                _attListPanel.setMaximumSize(getMinimumSize());
+                
+                deleteButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent event) {
+
+                        _attListPanel
+                                .remove((JPanel) _AttDelete
+                                        .get(event.getSource()));
+                        _AttDelete.remove(event.getSource());
+                        _attListPanel.remove((JButton) event.getSource());
+
+                        validate();
+                        repaint();
+                        
+                        setModified(true);
+
+                    }
+
+                });
+
+                validate();
+                repaint();
+                
+            }
+        
+        }
+        
+    }
+
+    
     /** Set the panel to modified or unmodified.
      * 
      * @param modified True to set to modified.  False to set to unmodified.
