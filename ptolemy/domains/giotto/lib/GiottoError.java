@@ -38,12 +38,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
-This error actor enables the user to specify how an error is handled in 
-C code generated from a Giotto model. In theory it should implement the 
-Model Error Handler interface, however I'm not sure if it is correct to 
-incorporate error handling in the specification and simulation of a Giotto 
-Model since a giotto model only specifies logical execution time.
-
+ An actor that specifies how an error such as a timing overrun is
+ handled in C code generated from a Giotto model.
 
  @author Shanna-Shaye Forbes
  @version $Id$
@@ -51,8 +47,7 @@ Model since a giotto model only specifies logical execution time.
  @Pt.ProposedRating Red (sssf)
  @Pt.AcceptedRating Red (sssf)
  */
-
-public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
+public class GiottoError extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -62,12 +57,13 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
      * is used to specify how simulation should handle
      * timing overruns. 
      *
-     * @param container  a CompositeEntity object
-     * @param name       a String ...
-     * @exception IllegalActionException ...
-     * @exception NameDuplicationException ...
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
-
     public GiottoError(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -87,20 +83,16 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
                 + "Error Actor</text>\n" + "</svg>\n");
     }
 
-    public void preinitialize() {
-        CompositeActor container = (CompositeActor) getContainer();
-        if (_debugging) {
-            _debug("inside Giotto error preinitialize about to register the container as an error handler");
-        }
-        if (container != null) {
-            if (_debugging) {
-                _debug("the model error handler is set to " + getDisplayName()
-                        + " for container " + container.getDisplayName());
-            }
-            container.setModelErrorHandler(this);
-        }
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
 
-    }
+    /** The errorAction operator.  This is a string-valued attribute
+     *  that defaults to "Warn".
+     */
+    public StringParameter errorAction;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Override the base class to determine which comparison is being
      *  specified.  Read the value of the comparison attribute and set
@@ -129,18 +121,6 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
         }
     }
 
-    public void fire() throws IllegalActionException {
-        // System.out.print("fire method called"); 
-    }
-
-    public void initialize() {
-        //System.out.println("Initialize method called");
-
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Handle a model error.
      *  @param context The object in which the error occurred.
      *  @param exception An exception that represents the error.
@@ -151,18 +131,9 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
      */
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
-
-        System.out
-                .println("handleModelError called for the GiottoError Actor with name "
-                        + this.getDisplayName());
-        System.out.println("error action has value " + _errorAction);
         if (_errorAction == ErrorAction.warn) {
-            System.out.println("an error was detected in "
-                    + context.getFullName());
             return true;
         } else if (_errorAction == ErrorAction.timedutilityfunction) {
-            System.out
-                    .println("I should check to see if I'm within the acceptable range for the timed utility function");
             String temp = exception.toString();
             int i, j, k, l = 0;
             i = temp.indexOf("(");
@@ -171,31 +142,39 @@ public class GiottoError extends TypedAtomicActor implements ModelErrorHandler {
             l = temp.lastIndexOf(")");
             double wcet = Double.parseDouble(temp.substring(i + 1, j));
             double periodvalue = Double.parseDouble(temp.substring(k + 1, l));
-            System.out.println("wcet value is " + wcet
-                    + " and period value is " + periodvalue);
             return true;
         } else if (_errorAction == ErrorAction.reset) {
-            System.out.println("I should request a reset to the model");
             throw exception;
 
         }
-
         return false;
     }
 
-    /** The errorAction operator.  This is a string-valued attribute
-     *  that defaults to "warn".
+    /** Set the model handler of the container to this actor.
      */
-    public StringParameter errorAction;
+    public void preinitialize() {
+        CompositeActor container = (CompositeActor) getContainer();
+        if (_debugging) {
+            _debug("inside Giotto error preinitialize about to register the container as an error handler");
+        }
+        if (container != null) {
+            if (_debugging) {
+                _debug("the model error handler is set to " + getDisplayName()
+                        + " for container " + container.getDisplayName());
+            }
+            container.setModelErrorHandler(this);
+        }
 
-    /// Enumeration of the different ways to handle errors
-    private enum ErrorAction {
-        warn, reset, timedutilityfunction
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    //  An indicator for the error action to take.
+
+    /** An indicator for the error action to take. */
     private ErrorAction _errorAction;
 
+    /** Enumeration of the different ways to handle errors. */
+    private enum ErrorAction {
+        warn, reset, timedutilityfunction
+    }
 }
