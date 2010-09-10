@@ -36,7 +36,6 @@ import ptolemy.data.ontologies.ExpressionConceptFunctionParseTreeEvaluator;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityConceptFunction;
 import ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.MonotonicityCounterexamples;
-import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** A representation of the monotonic function used to infer the

@@ -28,7 +28,6 @@
 package ptolemy.domains.ptides.lib;
 
 import ptolemy.actor.lib.TimedSource;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ptides.kernel.PtidesBasicDirector;
 import ptolemy.kernel.CompositeEntity;

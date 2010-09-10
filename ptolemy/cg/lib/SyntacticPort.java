@@ -31,7 +31,6 @@ package ptolemy.cg.lib;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
-import ptolemy.cg.lib.SyntacticNode;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;

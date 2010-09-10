@@ -29,13 +29,13 @@
 //// Recorder
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import ptolemy.actor.lib.Sink;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;

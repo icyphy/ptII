@@ -27,7 +27,6 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
-import ptolemy.data.ontologies.gui.OntologyDisplayActions;
 import ptolemy.domains.tester.lib.Testable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;

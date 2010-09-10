@@ -29,7 +29,6 @@ package ptolemy.actor.gui;
 
 import javax.swing.UIManager;
 
-import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 

@@ -27,8 +27,6 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib;
 
-import java.util.ArrayList;
-
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;

@@ -29,6 +29,8 @@ package ptolemy.data.expr;
 
 import java.io.PrintStream;
 
+import org.python.parser.ast.If;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////

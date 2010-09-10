@@ -36,6 +36,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import ptolemy.actor.gui.ActorGraphicalMessageHandler;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
@@ -45,7 +46,6 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.gui.ActorGraphicalMessageHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;

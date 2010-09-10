@@ -28,8 +28,8 @@
 package ptolemy.actor.gt.gui;
 
 import ptolemy.actor.gui.properties.ComboBox;
-import ptolemy.actor.gui.properties.GUIAction;
 import ptolemy.actor.gui.properties.ComboBox.Item;
+import ptolemy.actor.gui.properties.GUIAction;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

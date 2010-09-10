@@ -30,6 +30,7 @@ package ptolemy.data.type;
 
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.ObjectType.BottomClass;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

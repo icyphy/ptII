@@ -29,21 +29,20 @@ COPYRIGHTENDKEY
 package ptolemy.cg.lib;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.LinkedList;
-import java.util.HashMap;
 import java.util.Stack;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.cg.lib.SyntacticNode;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////

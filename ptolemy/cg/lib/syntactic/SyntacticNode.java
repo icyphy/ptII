@@ -28,16 +28,14 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.lib.syntactic;
 
-import java.lang.String;
 import java.util.HashMap;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.IOPort;
-import ptolemy.cg.lib.syntactic.SyntacticPort;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.Token;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;

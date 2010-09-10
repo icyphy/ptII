@@ -31,7 +31,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.lang.reflect.Field;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;

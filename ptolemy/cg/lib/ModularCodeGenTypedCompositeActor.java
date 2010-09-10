@@ -38,7 +38,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
@@ -47,7 +46,6 @@ import ptolemy.actor.LazyTypedCompositeActor;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
-import ptolemy.actor.lib.Publisher;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator;

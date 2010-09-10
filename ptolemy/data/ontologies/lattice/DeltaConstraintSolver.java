@@ -29,13 +29,13 @@ COPYRIGHTENDKEY
 package ptolemy.data.ontologies.lattice;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypeConflictException;
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.OntologyResolutionException;
+import ptolemy.data.properties.PropertyResolutionException;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;

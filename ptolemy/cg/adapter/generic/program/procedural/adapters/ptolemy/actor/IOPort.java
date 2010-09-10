@@ -35,7 +35,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 ////IOPort

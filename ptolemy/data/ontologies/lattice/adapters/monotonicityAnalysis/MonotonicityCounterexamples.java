@@ -24,8 +24,8 @@ package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.util.MultiHashMap;

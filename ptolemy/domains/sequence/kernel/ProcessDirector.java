@@ -32,7 +32,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 
-import ptolemy.util.MultiHashMap;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
@@ -45,6 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MultiHashMap;
 
 /**
  * The ProcessDirector implements a sequencing model of computation 

@@ -27,23 +27,15 @@ includes a button to open the actor that caused the problem
  */
 package ptolemy.actor.gui;
 
-import java.awt.EventQueue;
-
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import java.util.Iterator;
 
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.gui.GraphicalMessageHandler;
-import ptolemy.gui.Top;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.CancelException;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// GraphicalMessageHandler

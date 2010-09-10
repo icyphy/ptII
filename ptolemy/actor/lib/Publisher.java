@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.Iterator;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
@@ -46,10 +48,6 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-
-import java.util.Iterator;
-///////////////////////////////////////////////////////////////////
-//// Publisher
 
 /**
  This actor publishes input tokens on a named channel. The tokens are

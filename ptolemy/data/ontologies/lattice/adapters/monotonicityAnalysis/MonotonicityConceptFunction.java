@@ -27,8 +27,6 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
-import java.util.List;
-
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.Ontology;

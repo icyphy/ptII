@@ -24,12 +24,8 @@ package ptolemy.data.ontologies.lattice;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
-import ptolemy.actor.TypeConflictException;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.StringParameter;
