@@ -33,6 +33,7 @@ import java.awt.Paint;
 import javax.swing.Icon;
 
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
@@ -54,6 +55,14 @@ import diva.gui.toolbox.FigureIcon;
  of State, and if it is, and if the state is the initial state, then
  the rounded box will be bold. If it is a final state, then it will
  be double.
+ <p>
+ By default, the icon will be filled with color white,
+ unless the refinement name of the containing State is not empty,
+ in which case it returns a light green.
+ However, if this attribute contains a ColorParameter named "fill",
+ then the color of that color parameter is used instead.
+ If not, but if the container is a State and contains a
+ ColorAttribute named "fill", then that color is used..
 
  @author Edward A. Lee
  @version $Id$
@@ -100,8 +109,12 @@ public class StateIcon extends NameIcon {
     ////                         protected methods                 ////
 
     /** Return the paint to use to fill the icon.
-     *  This class returns Color.white, unless the refinement name
+     *  By default, this class returns Color.white, unless the refinement name
      *  is not empty, in which case it returns a light green.
+     *  However, if this attribute contains a ColorParameter named "fill",
+     *  then the color of that color parameter is returned instead.
+     *  In addition, if the container is a State and contains a
+     *  ColorAttribute named "fill", then that color is returned.
      *  @return The paint to use to fill the icon.
      */
     protected Paint _getFill() {
@@ -122,6 +135,10 @@ public class StateIcon extends NameIcon {
                     return color;
                 }
             }
+            ColorAttribute colorAttribute = (ColorAttribute) (getAttribute("fill", ColorAttribute.class));
+            if (colorAttribute != null) {
+                return colorAttribute.asColor();
+            }
         } catch (Throwable t) {
             // Ignore and return the default.
         }
@@ -129,6 +146,11 @@ public class StateIcon extends NameIcon {
         NamedObj container = getContainer();
         if (container instanceof State) {
             try {
+                ColorAttribute colorAttribute = (ColorAttribute) (
+                		container.getAttribute("fill", ColorAttribute.class));
+                if (colorAttribute != null) {
+                    return colorAttribute.asColor();
+                }
                 TypedActor[] refinement = ((State) container).getRefinement();
                 if (refinement != null && refinement.length > 0) {
                     return _REFINEMENT_COLOR;
