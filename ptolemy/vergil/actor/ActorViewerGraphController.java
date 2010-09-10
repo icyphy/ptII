@@ -296,7 +296,23 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _linkController.setConfiguration(configuration);
         // Bug 349
         // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
-        //_dbActorController.setConfiguration(configuration);
+        
+        
+        StringParameter actorInteractionAddon;
+        try {
+            actorInteractionAddon = (StringParameter) this.getConfiguration()
+                .getAttribute("_ActorInteractionAddon", Parameter.class);
+
+            if (actorInteractionAddon != null) {
+
+                _dbActorController.setConfiguration(configuration);
+                
+            }
+            
+        } catch(Exception e){
+            // Ignore it.
+        }
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -313,7 +329,20 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _attributeController.addHotKeys(jgraph);
         // Bug 349
         //https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
-        //_dbActorController.addHotKeys(jgraph);
+        StringParameter actorInteractionAddon;
+        try {
+            actorInteractionAddon = (StringParameter) this.getConfiguration()
+                .getAttribute("_ActorInteractionAddon", Parameter.class);
+
+            if (actorInteractionAddon != null) {
+                
+                _dbActorController.addHotKeys(jgraph);
+                
+            }
+            
+        } catch(Exception e){
+            // Ignore it.
+        }
     }
 
     /** Create the controllers for nodes in this graph.
@@ -357,13 +386,6 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 _dbActorController = 
                     (ActorController) method2
                     .invoke(actorInterationAddon, this, false);
-                
-            } else {
-                
-                // Bug 349
-                // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
-                //_dbActorController =  new ActorInstanceController(this,
-                //         AttributeController.PARTIAL);
                 
             }
 
