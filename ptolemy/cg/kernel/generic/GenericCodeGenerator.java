@@ -242,12 +242,20 @@ public abstract class GenericCodeGenerator extends Attribute implements
                     codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
                 }
             } else {
-                if (codeDirectory.asFile().toString().endsWith(_sanitizedModelName)) {
+                // Dragging a GenericCodeGenerator into an empty model
+                // was resulting in a NullPointerException.
+                // See test GenericCodeGenerator-1.1
+                if (codeDirectory.asFile() != null
+                        && codeDirectory.asFile().toString().endsWith(_sanitizedModelName)) {
                     // Remove the sanitized model name as a directory.
                     String path = codeDirectory.asFile().toString();
                     path = path.substring(0, path.indexOf(_sanitizedModelName));
+                    // If path is the empty string, then codeDirectory.asFile() will
+                    // return null.
                     codeDirectory.setExpression(path);
-                    codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+                    if (codeDirectory.asFile() != null) {
+                        codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+                    }
                 }
             }
         } else {

@@ -61,6 +61,14 @@ test GenericCodeGenerator-1.1 {Instantiate a GenericCodeGenerator, call a few me
 	[$codeGenerator comment {This is a comment}] \
 } {{ptolemy.cg.kernel.generic.test.TestGenericCodeGenerator {.top.myCodeGenerator}} {<TGCFThis is a commentTGCF>}}
 
+test GenericCodeGenerator-1.1 {call attribute changed} {
+     set toplevel1_1 [java::new ptolemy.actor.TypedCompositeActor]
+     set myEmptyCodeGenerator [java::new ptolemy.cg.kernel.generic.test.TestGenericCodeGenerator $toplevel1_1 "myEmptyCodeGenerator"]
+     set param [getParameter $myEmptyCodeGenerator generateInSubdirectory]
+     $myEmptyCodeGenerator attributeChanged $param
+     $myEmptyCodeGenerator setContainer [java::null]
+ } {}
+
 #####
 test GenericCodeGenerator-2.1 {comment} {
     $codeGenerator comment "This is a comment"
