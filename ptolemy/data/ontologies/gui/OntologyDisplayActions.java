@@ -288,9 +288,13 @@ public class OntologyDisplayActions extends NodeControllerFactory {
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(clearResolution));
 
-            HighlightConcepts showProperty = displayActions.new HighlightConcepts();
+            HighlightConcepts highlightConcepts = displayActions.new HighlightConcepts();
             _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(showProperty));
+                    .addMenuItemFactory(new MenuActionFactory(highlightConcepts));
+            
+            ShowConceptAnnotations showConceptAnnotations = displayActions.new ShowConceptAnnotations();
+            _menuFactory
+                    .addMenuItemFactory(new MenuActionFactory(showConceptAnnotations));
 
             ResolveConcepts resolveConcepts = 
                 displayActions.new ResolveConcepts();
@@ -320,6 +324,29 @@ public class OntologyDisplayActions extends NodeControllerFactory {
                             .highlightConcepts();
                 } catch (IllegalActionException e1) {
                     MessageHandler.error("Highlighting concept annotations failed",
+                            e1);
+                }
+            }
+        }
+    }
+    
+    /** The action for the show concept annotations command to be added
+     *  to the context menu.
+     */
+    private class ShowConceptAnnotations extends FigureAction {
+        public ShowConceptAnnotations() {
+            super("Show Concept Annotations");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            NamedObj container = getContainer();
+            if (container instanceof OntologySolver) {
+                try {
+                    ((OntologySolver) container).getMoMLHandler()
+                            .showConceptAnnotations();
+                } catch (IllegalActionException e1) {
+                    MessageHandler.error("Showing concept annotations failed",
                             e1);
                 }
             }

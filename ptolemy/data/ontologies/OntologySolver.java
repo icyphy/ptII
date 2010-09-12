@@ -142,6 +142,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      */
     public void displayConcepts() throws IllegalActionException {
         _momlHandler.highlightConcepts();
+        _momlHandler.showConceptAnnotations();
     }
 
     /**

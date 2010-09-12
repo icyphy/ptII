@@ -113,8 +113,7 @@ public class OntologyMoMLHandler extends Attribute {
      * true, show all property values visually.
      * Otherwise, do nothing.
      * @throws IllegalActionException If getting the resolved concept fails.
-     */
-    
+     */    
     public void highlightConcepts(Set<Object> objects)
     {
         if (objects != null)
@@ -150,8 +149,7 @@ public class OntologyMoMLHandler extends Attribute {
     }
     
     /** Invoke the solver.
-     */
-    
+     */    
     public void invokeSolver() {
         OntologySolver solver = (OntologySolver) getContainer();
         solver.invokeSolver();
@@ -165,6 +163,28 @@ public class OntologyMoMLHandler extends Attribute {
         // Get the PropertySolver.
         OntologySolver solver = (OntologySolver) getContainer();
         highlightConcepts(solver.getAllPropertyables());
+    }
+    
+    /** Show all concept values as text annotations on each model element.
+     *  @throws IllegalActionException If getting the resolved concept fails.
+     */
+    public void showConceptAnnotations() throws IllegalActionException {
+        // Get the PropertySolver.
+        OntologySolver solver = (OntologySolver) getContainer();
+        for (Object propertyable : solver.getAllPropertyables()) {
+            if (propertyable instanceof NamedObj) {
+                Concept concept = solver.getResolvedConcept(propertyable, true);
+                if (concept != null) {
+                    String request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
+                            + concept.toString() + "\"/>";
+                    MoMLChangeRequest change = new MoMLChangeRequest(this,
+                            (NamedObj) propertyable, request, false);
+                    ((NamedObj) propertyable).requestChange(change);
+                }
+            }
+        }
+        // Force a single repaint after all the above requests have been processed.
+        solver.requestChange(new MoMLChangeRequest(this, solver, "<group/>"));
     }
 
 }

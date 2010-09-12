@@ -28,9 +28,11 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -100,7 +102,11 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     /** URL from which to get the model. If this is specified,
      *  then the URL will be referenced in the exported configure tag
      *  rather than including the MoML for the model in the configure
-     *  tag. This parameter is a string that defaults to empty.
+     *  tag. This parameter is a string that defaults to empty. This string
+     *  can either be an absolute, fully-qualified URL, or a URL relative
+     *  to the container model's file location.  A URL relative to the
+     *  system's classpath can also be specified by a string starting with
+     *  <code>$CLASSPATH/{relative URL}</code>.
      */
     StringParameter modelURL;
 
@@ -121,9 +127,8 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
                 String modelURLString = modelURL.stringValue();
                 
                 // The modelURLString could be either an absolute URL string
-                // or a file location relative to the Ptolemy root directory.
-                // If it is the latter, we need to prepend the Ptolemy root
-                // directory prefix to create an absolute URL.
+                // or a file location relative to the container model file location.
+                // If it is the latter, we need to create an absolute URL string.
                 modelURLString = _createAbsoluteModelURLString(modelURLString);
                 
                 try {
@@ -243,22 +248,26 @@ public class MoMLModelAttribute extends Attribute implements Configurable {
     
     /** Return a string representing the full absolute URL of the contained model.
      *  If the input string is already an absolute URL, just return it.
-     *  If the input string is a file path location relative to the Ptolemy root
-     *  directory, then prepend the Ptolemy root directory prefix to create an
-     *  absolute URL, and return the string representation.
+     *  If the input string is a file path location relative to the model's 
+     *  directory, then return the full URL string by constructing the full
+     *  URL from the base model path and the given relative path.
      *  
      *  @param modelURLString The model URL string specified by the modelURL parameter.
      *  @return A string representing the full absolute URL for the model URL.
      *  @throws IllegalActionException Thrown if the model URL string is invalid.
      */
-    private String _createAbsoluteModelURLString(String modelURLString) throws IllegalActionException {
+    private String _createAbsoluteModelURLString(String modelURLString)
+        throws IllegalActionException {
         try {
+            // If the given string is a correctly formed URL, this constructor
+            // will not throw an exception.
             new URL(modelURLString);
             return modelURLString;
         } catch (MalformedURLException e) {
             try {
-                URL modelURLObject = FileUtilities.nameToURL("$CLASSPATH/" +
-                        modelURLString, null, null);
+                URI baseModelURI = URIAttribute.getModelURI(this);                
+                URL modelURLObject = FileUtilities.nameToURL(modelURLString,
+                        baseModelURI, null);
                 return modelURLObject.toString();
             } catch (IOException ioe) {
                 throw new IllegalActionException(this, ioe,
