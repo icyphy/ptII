@@ -88,7 +88,11 @@ public class CalInterpreter extends AbstractCalInterpreter {
         calCode = new StringAttribute(this, "calCode");
         calCode.setExpression(defaultActorText);
         calCode.setVisibility(Settable.EXPERT);
-        _attachActorIcon(name);
+        _updateActor();
+        // Set the name of the icon.  This avoids a
+        // ConcurrentModificationException in
+        // ptolemy/configs/test/allConfigs.tcl
+        _attachActorIcon("CalActor");
     }
 
     /**
@@ -107,29 +111,7 @@ public class CalInterpreter extends AbstractCalInterpreter {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == calCode) {
-            String s = calCode.getExpression();
-            Actor actor;
-
-            try {
-                actor = caltrop.interpreter.util.SourceReader.readActor(s);
-            } catch (Throwable ex) {
-                // FIXME: It would be nice if _stringToActor threw
-                // something other than Throwable here.
-                throw new IllegalActionException(this, ex,
-                        "Failed to read in actor in:\n  " + s
-                                + "\nThis sometimes occurs if saxon8.jar "
-                                + "or saxon8-dom.jar are not in "
-                                + "your classpath.");
-            }
-
-            try {
-                if (actor != null) {
-                    _setupActor(actor);
-                }
-            } catch (Throwable ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to set up actor'" + s + "'");
-            }
+            _updateActor();
         } else {
             super.attributeChanged(attribute);
         }
@@ -142,4 +124,37 @@ public class CalInterpreter extends AbstractCalInterpreter {
 
     /** Default CAL code. */
     protected final static String defaultActorText = "actor CalActor () Input ==> Output : end";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+    /** Update the actor by reading the calCode parameter.
+     */
+    private void _updateActor() throws IllegalActionException {
+        // This method is present so as to avoid a concurrent
+        // modification exception when iterating through the
+        // attributes.  See ptolemy/configs/tests/allCOnfigs.tcl
+        String s = calCode.getExpression();
+        Actor actor;
+
+        try {
+            actor = caltrop.interpreter.util.SourceReader.readActor(s);
+        } catch (Throwable ex) {
+            // FIXME: It would be nice if _stringToActor threw
+            // something other than Throwable here.
+            throw new IllegalActionException(this, ex,
+                    "Failed to read in actor in:\n  " + s
+                    + "\nThis sometimes occurs if saxon8.jar "
+                    + "or saxon8-dom.jar are not in "
+                    + "your classpath.");
+        }
+
+        try {
+            if (actor != null) {
+                _setupActor(actor);
+            }
+        } catch (Throwable ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to set up actor'" + s + "'");
+        }
+    }
 }

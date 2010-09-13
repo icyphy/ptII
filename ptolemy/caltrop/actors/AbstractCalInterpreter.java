@@ -49,6 +49,7 @@ import ptolemy.caltrop.ddi.Dataflow;
 import ptolemy.caltrop.ddi.SDFFactory;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -236,13 +237,23 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     /** Attach the actor icon.
      *  @param name The name of the actor.
      */
-    protected void _attachActorIcon(String name) {
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-20\" y=\"-20\" " + "width=\"60\" height=\"40\" "
-                + "style=\"fill:white\"/>\n" + "<text x=\"-3\" y=\"5\" "
-                + "style=\"font-size:18\">\n" + "CAL\n" + "</text>\n"
-                + "<text x=\"-16\" y=\"17\" " + "style=\"font-size:10\">\n"
-                + name + "\n" + "</text>\n" + "</svg>\n");
+    protected void _attachActorIcon(String name) throws IllegalActionException {
+        String iconText = "<svg>\n"
+            + "<rect x=\"-20\" y=\"-20\" " + "width=\"60\" height=\"40\" "
+            + "style=\"fill:white\"/>\n" + "<text x=\"-3\" y=\"5\" "
+            + "style=\"font-size:18\">\n" + "CAL\n" + "</text>\n"
+            + "<text x=\"-16\" y=\"17\" " + "style=\"font-size:10\">\n"
+            + name + "\n" + "</text>\n" + "</svg>\n";
+        ConfigurableAttribute iconDescription = ((ConfigurableAttribute)getAttribute("_iconDescription", ConfigurableAttribute.class));
+        // Only update the parameter if the new value is different from the
+        // old value.  This avoids a ConcurrentModificationException in
+        // ptolemy/configs/test/allConfigs.tcl
+        if ( iconDescription == null 
+                || !iconDescription.getConfigureText().equals(iconText)) {
+            //System.out.println("AbstractCalInterpreter: iconText:\n " + iconText
+            //        + "\n------\n" + (iconDescription == null ? "null" : iconDescription.getConfigureText()));
+            _attachText("_iconDescription", iconText);
+        }
     }
 
     /** Get the Ptolemy type that corresponds to the given type expression.
@@ -324,7 +335,6 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         if (_actor.getParameters() != null) {
             for (int i = 0; i < _actor.getParameters().length; i++) {
                 String name = _actor.getParameters()[i].getName();
-
                 if (getAttribute(name, ptolemy.data.expr.Parameter.class) == null) {
                     new Parameter(this, name);
                 }
