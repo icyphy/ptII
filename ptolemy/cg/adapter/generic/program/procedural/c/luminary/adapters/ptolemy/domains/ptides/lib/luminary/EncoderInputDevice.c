@@ -32,7 +32,7 @@ SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIO$pad);
 SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
 GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_IN);
 GPIOPinTypeGPIOInput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
-IntPrioritySet(INT_GPIO$pad, 0x20);
+IntPrioritySet(INT_GPIO$pad, 0x40);
 GPIOIntTypeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_RISING_EDGE);  // to set rising edge
 GPIOPinIntEnable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
 
@@ -56,7 +56,7 @@ IntEnable(INT_GPIO$pad);
 saveState();
 // need to push the currentModelTag onto the stack.
 executingModelTag[numStackedModelTag].microstep = currentMicrostep;
-timeSet(currentModelTime, &(executingModelTag[numStackedModelTag].timestamp));
+executingModelTag[numStackedModelTag].timestamp = currentModelTime;
 numStackedModelTag++;
 if (numStackedModelTag > MAX_EVENTS) {
     die("MAX_EVENTS too small for numStackedModelTag");

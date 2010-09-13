@@ -39,10 +39,11 @@ typedef signed char             int8;
 
 // Number of cycles until timer rolls over
 static unsigned long TIMER_ROLLOVER_CYCLES;
+static unsigned long ADJUSTED_TRC;
 
 // amount of delay between when the interrupt occurs and the ISR is entered
 // (assuming no resource contention). In the Luminary case, the latency is 4us. 
-#define INTERRUPT_DELAY 4000
+#define INTERRUPT_DELAY 6000
 
 $super.StructDefBlock();
 /**/
@@ -71,7 +72,7 @@ $super.FuncProtoBlock();
 /*** FuncBlock($dis1, $dis2, $dis3, $dis4, $dis5, $dis6, $dis7, $dis8, 
 $en1, $en2, $en3, $en4, $en5, $en6, $en7, $en8) ***/
 
-#ifdef LCD_DEBUG
+//#ifdef LCD_DEBUG
 //Unsigned long to ASCII; fixed maxiumum output string length of 32 characters
 char *_ultoa(uint32 value, char *string, uint16 radix){
         char digits[32];
@@ -117,11 +118,13 @@ void debugMessage(char * szMsg){
         screenBuffer[index+3] = '\0';
 
         //interruptDisabled = IntMasterDisable();
+        disableInterrupts();
         RIT128x96x4StringDraw("                      ", 0, screenIndex, 15);
         RIT128x96x4StringDraw(screenBuffer, 0, screenIndex, 15);
         /*if (!interruptDisabled) {
                 IntMasterEnable();
         }*/
+        enableInterrupts();
         screenIndex = screenIndex < 88 ? screenIndex + 8 : DBG_STARTLINE * 8;
         eventCount = (eventCount + 1) & 0xFF;
 }
@@ -147,11 +150,11 @@ void debugMessageNumber(char * szMsg, uint32 num){
 
         debugMessage(szResult);
 }
-#else
+//#else
     //Debug messages will have no effect
-    #define debugMessage(x)
-    #define debugMessageNumber(x, y)
-#endif
+//    #define debugMessage(x)
+//    #define debugMessageNumber(x, y)
+//#endif
 
 void exit(int zero) {
         die("program exit?");
@@ -175,7 +178,7 @@ uint32 convertNsecsToCycles(uint32 nsecs) {
 
 /* error printout */
 void die(char *mess) {
-        disableInterrupts();
+        IntMasterDisable();
         //FIXME: Can this be upped to 4KHz?
         RIT128x96x4Init(2000000);
         RIT128x96x4DisplayOn();
@@ -203,17 +206,26 @@ void disableInterrupts(void) {
 	$dis6
 	$dis7
 	$dis8
+	
+	//HACK
+	IntDisable(INT_TIMER2A);
+	IntDisable(INT_TIMER2B);
 }
 // Enable all peripheral and timer interrupts (does not include the systick)
 // IntMasterEnable should not be called here, because the systick handler would be disabled.
 // Instead, we disable each interrupt individually.
 void enableInterrupts(void) {
+	IntMasterDisable();
 	// enable Timer0
 	IntEnable(INT_TIMER0A);
 	IntEnable(INT_TIMER0B);
-	// enable actuation timer	
-	IntEnable(INT_TIMER1A);
-	IntEnable(INT_TIMER1B);
+	// enable actuation timer
+	// FIXME: should probably not have this here....
+	// We have it because there's a bug if this is taken out...
+	if (actuatorRunning != -1) {
+		IntEnable(INT_TIMER1A);
+		IntEnable(INT_TIMER1B);
+	}
 	// enable sensor input peripherals
 	$en1
 	$en2
@@ -223,9 +235,17 @@ void enableInterrupts(void) {
 	$en6
 	$en7
 	$en8
+	
+	//HACK
+	IntEnable(INT_TIMER2A);
+	IntEnable(INT_TIMER2B);
+
+	IntMasterEnable();
 }
 
 //Return the real physical time.
+//external interrupts should be disabled when calling this function
+//(however Systick interrupt should not be disabled.
 void getRealTime(Time * const physicalTime){
     uint32 tick1;
     uint32 tick2;
@@ -239,7 +259,7 @@ void getRealTime(Time * const physicalTime){
     // since systick interrupt could take up to 5us to trigger, to make
 	// sure the tick2 value correspond to the correct _secs and _quarterSecs
 	// values, we do the following check:
-	if (tick2 > (TIMER_ROLLOVER_CYCLES - INTERRUPT_DELAY)) {
+	if (tick2 > ADJUSTED_TRC) {
 		continue;
 	}
     //If the system tick rolls over (the tick counts down) between accessing
@@ -252,6 +272,7 @@ void getRealTime(Time * const physicalTime){
                 case 1:         physicalTime->nsecs = 250000000; break;
                 case 2:         physicalTime->nsecs = 500000000; break;
                 case 3:         physicalTime->nsecs = 750000000; break;
+                default:		die("quarterSecs is wrong");
             }
             // convertCyclesToNsecs assumes 50MHz clock
             physicalTime->nsecs += (convertCyclesToNsecs((TIMER_ROLLOVER_CYCLES >> 2) - tick2));
@@ -297,14 +318,14 @@ void Timer0IntHandler(void) {
 		saveState();
         // need to push the currentModelTag onto the stack.
         executingModelTag[numStackedModelTag].microstep = currentMicrostep;
-        timeSet(currentModelTime, &(executingModelTag[numStackedModelTag].timestamp));
+        executingModelTag[numStackedModelTag].timestamp = currentModelTime;
         numStackedModelTag++;
         if (numStackedModelTag > MAX_EVENTS) {
                 die("MAX_EVENTS too small for numStackedModelTag");
         }
 
         // disable interrupts, then add stack to execute processEvents().
-        timeSet(MAX_TIME, &lastTimerInterruptTime);
+        lastTimerInterruptTime = MAX_TIME;
         TimerDisable(TIMER0_BASE, TIMER_BOTH);
         IntDisable(INT_TIMER0A);
         IntDisable(INT_TIMER0B);
@@ -340,7 +361,7 @@ void setActuationInterrupt(int actuatorToActuate) {
 
         disableInterrupts();
 
-        timeSet(currentModelTime, &actuationTime);
+        actuationTime = currentModelTime;
 
 #ifdef LCD_DEBUG
         debugMessage("set act int");
@@ -359,17 +380,13 @@ void setActuationInterrupt(int actuatorToActuate) {
                 //debugMessageNumber("Act nsecs: ", actuationTime.nsecs);
 #endif
 
-                IntEnable(INT_TIMER1A);
-                IntEnable(INT_TIMER1B);
-                TimerIntEnable(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
-
                 // FIXME: there might be a concurrency issue here, actuatorTimerInterrupt is set to true,
                 // yet we could have another interrupt coming in right after it that tries to set another timer interrupt,
                 // in which case it would try to access the else{} part of this function.
                 // FIXED: this is taken care by all the interrupts having the same priority, thus within this
                 // ISR there wouldn't be any preemption.
                 actuatorRunning = actuatorToActuate;
-                timeSet(actuationTime, &lastActuateTime);
+                lastActuateTime = actuationTime;
 
                 getRealTime(&physicalTime);
                 // FIXME: actually missed a deadline, but sets actuation signal anyway.
@@ -380,6 +397,9 @@ void setActuationInterrupt(int actuatorToActuate) {
                         TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsecs));
                         actuatorTimerInterruptSecsLeft = actuationLeftOverTime.secs;
                 }
+                IntEnable(INT_TIMER1A);
+                IntEnable(INT_TIMER1B);
+                TimerIntEnable(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
                 TimerEnable(TIMER1_BASE, TIMER_BOTH);
 
         } else {        // the timer is already running
@@ -387,10 +407,11 @@ void setActuationInterrupt(int actuatorToActuate) {
                 // Timer already running, check to see if we need to reload timer value.
                 if (timeCompare(lastActuateTime, actuationTime) == MORE) {
 #ifdef LCD_DEBUG
-                        RIT128x96x4StringDraw("replacing timer", 50,64,15);
+                        debugMessage("replacing timer");
 #endif
 
                         TimerDisable(TIMER1_BASE, TIMER_BOTH);
+                        TimerIntDisable(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
                         // replace timer. First, update the actuatorTimeValues of the queue.
                         // put it at the beginning of the queue.
                         // actuatorRunning is the ID of the last running actuator
@@ -403,12 +424,12 @@ void setActuationInterrupt(int actuatorToActuate) {
                                 actuatorArrayHeadPtrs[actuatorRunning]--;       
                         }
                         // set the head to the previous lastActuateTime.
-                        timeSet(lastActuateTime, &(actuatorTimerValues[actuatorRunning][actuatorArrayHeadPtrs[actuatorRunning]]));
+                        actuatorTimerValues[actuatorRunning][actuatorArrayHeadPtrs[actuatorRunning]] = lastActuateTime;
                         actuatorArrayCounts[actuatorRunning]++;
 
                         // replace timer.
                         actuatorRunning = actuatorToActuate;
-                        timeSet(actuationTime, &lastActuateTime);
+                        lastActuateTime = actuationTime;
 
                         getRealTime(&physicalTime);
                         if (timeSub(actuationTime, physicalTime, &actuationLeftOverTime) < 0) {
@@ -418,12 +439,13 @@ void setActuationInterrupt(int actuatorToActuate) {
                                 TimerLoadSet(TIMER1_BASE, TIMER_BOTH, convertNsecsToCycles(actuationLeftOverTime.nsecs));
                                 actuatorTimerInterruptSecsLeft = actuationLeftOverTime.secs;
                         }
+                        TimerIntEnable(TIMER1_BASE, TIMER_TIMA_TIMEOUT);
                         TimerEnable(TIMER1_BASE, TIMER_BOTH);
                 } else {
                         // we don't need to reload the timer, but we need to put this event into the end of the queue.
                         // actuatorToActuate is now the ID of the actuator
                         // FIXME: this assumes each actuator has only one input port...
-                        timeSet(actuationTime, &(actuatorTimerValues[actuatorToActuate][actuatorArrayTailPtrs[actuatorToActuate]]));
+                        actuatorTimerValues[actuatorToActuate][actuatorArrayTailPtrs[actuatorToActuate]] = actuationTime;
                         actuatorArrayCounts[actuatorToActuate]++;
 
                         actuatorArrayTailPtrs[actuatorToActuate]++;
@@ -480,11 +502,11 @@ void Timer1IntHandler(void) {
         actuatorActuations[actuatorRunning]();
 
         // When the timer returns to signal a new interrupt has been written, we need to check to see if we have more interrupts
-        timeSet(MAX_TIME, &lastActuateTime);
+        lastActuateTime = MAX_TIME;
         for (i = 0; i < numActuators; i++) {
                 if (actuatorArrayCounts[i] > 0){
                         if (timeCompare(actuatorTimerValues[i][actuatorArrayHeadPtrs[i]], lastActuateTime) == LESS) {
-                                timeSet(actuatorTimerValues[i][actuatorArrayHeadPtrs[i]], &lastActuateTime);
+                                lastActuateTime = actuatorTimerValues[i][actuatorArrayHeadPtrs[i]];
                                 actuatorRunning = i;
                         }
                 }
@@ -499,7 +521,9 @@ void Timer1IntHandler(void) {
                 // there is another actuation to do.
                 Time actuationLeftOverTime;
 
+				#ifdef LCD_DEBUG
                 debugMessageNumber("next actuator", actuatorRunning);
+                #endif
                 //Setup the interrupts for the timer timeouts
                 //
                 TimerIntEnable(TIMER1_BASE,TIMER_TIMA_TIMEOUT);
@@ -553,10 +577,10 @@ void initializeTimers(void) {
         SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
         SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER1);
 
-        IntPrioritySet(INT_TIMER0A, 0x20);
-        IntPrioritySet(INT_TIMER0B, 0x20);
-        IntPrioritySet(INT_TIMER1A, 0x20);
-        IntPrioritySet(INT_TIMER1B, 0x20);
+        IntPrioritySet(INT_TIMER0A, 0x40);
+        IntPrioritySet(INT_TIMER0B, 0x40);
+        IntPrioritySet(INT_TIMER1A, 0x40);
+        IntPrioritySet(INT_TIMER1B, 0x40);
 }
 
 void initializePDSystem() {
@@ -564,6 +588,8 @@ void initializePDSystem() {
         SysCtlClockSet(SYSCTL_SYSDIV_4 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_8MHZ);
 
         TIMER_ROLLOVER_CYCLES = SysCtlClockGet();
+        
+        ADJUSTED_TRC = (TIMER_ROLLOVER_CYCLES >> 2) - INTERRUPT_DELAY;
 
         // since systick register is only 24 bits, it can only hold values
         // between 0 and 1677xxxx, assuming the main system clock runs at 50MHz,
@@ -573,16 +599,16 @@ void initializePDSystem() {
         IntPrioritySet(FAULT_SYSTICK, 0x00);  
         SysTickEnable();
         IntEnable(FAULT_SYSTICK);  //sys tick vector
-        // SVC should have lower priority than systick, but SVC should have
-        // higher or the same priority than all other peripheral interrupts.
-		IntPrioritySet(FAULT_SVCALL, 0x20);
+        // SVC should have the same priority as systick, so to ensure stack manipulation 
+        // is not preempted.
+		IntPrioritySet(FAULT_SVCALL, 0x00);
         // Initialize LCD at 4 MHz
         RIT128x96x4Init(4000000);
         RIT128x96x4StringDraw("PtidyOSv0.5", 36,  0, 15);
 
 #ifndef LCD_DEBUG
-        RIT128x96x4Disable();
-        RIT128x96x4DisplayOff();
+        //RIT128x96x4Disable();
+        //RIT128x96x4DisplayOff();
 #endif
 }
 

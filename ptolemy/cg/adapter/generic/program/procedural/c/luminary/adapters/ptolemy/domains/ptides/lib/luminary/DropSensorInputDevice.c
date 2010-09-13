@@ -16,15 +16,16 @@ const uint32 timeToDisc[timeToDisc_size] = {
 	260152, 260188, 260222, 260252, 260278, 260302, 260323, 260341, 260355, 260367, 
 	260377, 260383, 260387, 260388};
 
-// static volatile Time g_impactTime;			// System time that a ball will impact the disc
-
 //	Based on dropTime (time it took for the ball to pass through the sensors)
 //	return the time it will take for the ball to reach the disk
 //	Return 0 if dropTime is out-of-bound
 uint32 dropTimeToImpactTime(const uint32 dropTime){
-	uint32 tableIndex = (dropTime-timeToDisc_offset)>>timeToDisc_shift;
-	if(tableIndex > timeToDisc_size)	//Error check, if index is larger than table
-		return 0;
+	uint32 tableIndex = (dropTime-timeToDisc_offset) >> timeToDisc_shift;
+	if(tableIndex > timeToDisc_size) {	//Error check, if index is larger than table
+		IntMasterDisable();
+		debugMessageNumber("index =", tableIndex);
+		while(1);
+	}
 		
 	return timeToDisc[tableIndex];
 }
@@ -36,8 +37,8 @@ uint32 dropTimeToImpactTime(const uint32 dropTime){
 #define DROP_INT				INT_GPIOG
 #define DROP_BASE				GPIO_PORTG_BASE
 #define DROP_PIN				GPIO_PIN_0			// Set G[0] (PG0) as drop sensor input
-
-#define timeToDisc_offset 	15000000 	//minimum allowed drop time (in ns) for this table; index zero offset
+//unlike max, offset is in us.
+#define timeToDisc_offset 	15000 	//minimum allowed drop time (in us) for this table; index zero offset
 #define timeToDisc_max 		78206000 	//maximum allowed drop time (in ns) for this table
 #define timeToDisc_shift 	9 	//amount by which to shift measured drop time to determine table index; log2(dt) (in us)
 #define timeToDisc_size 	124
@@ -50,29 +51,27 @@ uint32 dropTimeToImpactTime(const uint32 dropTime){
 /*** fireBlock ***/
 static uint32 dropCount = 0;										//Number of drop sensor events received
 static Time previousEventTimestamp;
-static Time currentEventTimestamp;
 static Time dropTime;
-getRealTime(&currentEventTimestamp);
-timeSub(currentEventTimestamp, previousEventTimestamp, &dropTime);		// Time it took ball to pass through both sensors
-    
-timeSet(ZERO_TIME, &previousEventTimestamp);
+// Time it took ball to pass through both sensors
+if (-1 == timeSub(currentModelTime, previousEventTimestamp, &dropTime)) {
+	die("timestamp at dropsensor are backwards");
+}
+previousEventTimestamp = ZERO_TIME;
 
 //GPIOPinIntClear(DROP_BASE, GPIOPinIntStatus(DROP_BASE, 0));			// Clear the interrupt
 
-if (dropTime.nsecs < timeToDisc_max && dropTime.nsecs > timeToDisc_offset){			// dropTime is within the range of times that it could take a ball to drop
-    Time currentSysTime;
+if (dropTime.secs == 0 && dropTime.nsecs < timeToDisc_max && dropTime.nsecs > timeToDisc_offset){			// dropTime is within the range of times that it could take a ball to drop
     uint32 timeToImpact;
 
     // FIXME: don't do divisions or multiplications...
     // dropTimeToImpactTime is in us.
 	timeToImpact = dropTimeToImpactTime(dropTime.nsecs / 1000);					// Time ball will be in the air
-    getRealTime(&currentSysTime);
 
 	//FIXME: If dropTime is out of range, dropCount may be erroneous and should be corrected	
     // send an dummy value out of its output port.
 	$put(output#0, timeToImpact);
 }
-previousEventTimestamp = currentEventTimestamp;
+previousEventTimestamp = currentModelTime;
 /**/
 
 /*** initializeGPInput($pad, $pin) ***/
@@ -87,7 +86,7 @@ SysCtlPeripheralDisable(SYSCTL_PERIPH_GPIO$pad);
 SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIO$pad);
 GPIODirModeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_DIR_MODE_IN);
 GPIOPinTypeGPIOInput(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
-IntPrioritySet(INT_GPIO$pad, 0x20);
+IntPrioritySet(INT_GPIO$pad, 0x40);
 GPIOIntTypeSet(GPIO_PORT$pad_BASE, GPIO_PIN_$pin,GPIO_RISING_EDGE);  // to set rising edge
 GPIOPinIntEnable(GPIO_PORT$pad_BASE, GPIO_PIN_$pin);
 IntEnable(INT_GPIO$pad);
@@ -102,7 +101,7 @@ GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_
 
 // need to push the currentModelTag onto the stack.
 executingModelTag[numStackedModelTag].microstep = currentMicrostep;
-timeSet(currentModelTime, &(executingModelTag[numStackedModelTag].timestamp));
+executingModelTag[numStackedModelTag].timestamp = currentModelTime;
 numStackedModelTag++;
 if (numStackedModelTag > MAX_EVENTS) {
     die("MAX_EVENTS too small for numStackedModelTag");

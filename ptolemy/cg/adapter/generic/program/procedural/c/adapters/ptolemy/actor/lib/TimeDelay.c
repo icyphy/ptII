@@ -2,7 +2,7 @@
 int lastMicrostep = currentMicrostep;
 static Time lastModelTime;
 
-timeSet(currentModelTime, &lastModelTime);
+lastModelTime = currentModelTime;
 
 currentModelTime.secs += $intPart;
 currentModelTime.nsecs += $fracPart;
@@ -15,6 +15,6 @@ if (currentModelTime.nsecs >= 1000000000) {
 currentMicrostep = 0;
 $put(output#0, $get(input));
 
-timeSet(lastModelTime, &currentModelTime);
+currentModelTime = lastModelTime;
 currentMicrostep = lastMicrostep;
 /**/

@@ -105,16 +105,6 @@ public class PtidesBasicDirector extends Director {
                         "initPIBlock"));
         code.append(super.generateInitializeCode());
 
-        // if the outside is already a Ptides director (this could only happen if
-        // we have a EmbeddedCodeActor inside of a Ptides director. This case
-        // the EmbeddedCodeActor would also have a Ptides director (in order to
-        // have Ptides receivers). But in this case no shared code needs to be
-        // generated.
-        if (((CompositeActor)getComponent().getContainer()).getExecutiveDirector()
-                instanceof ptolemy.domains.ptides.kernel.PtidesBasicDirector) {
-            return "";
-        }
-
         return code.toString();
     }
 
@@ -150,7 +140,7 @@ public class PtidesBasicDirector extends Director {
         // if the outside is already a Ptides director (this could only happen if
         // we have a EmbeddedCodeActor inside of a Ptides director. This case
         // the EmbeddedCodeActor would also have a Ptides director (in order to
-        // have Ptides receivers). But in this case no shared code needs to be
+        // have Ptides receivers). But in this case no preinit code needs to be
         // generated.
         // Notice here we append code from _generatePtrToEventHeadCodeInputs()
         // because ports inside of the EmbeddedCodeActor needs to have pointers

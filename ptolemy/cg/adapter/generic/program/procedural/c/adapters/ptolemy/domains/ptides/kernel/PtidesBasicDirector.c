@@ -59,7 +59,6 @@ void safeToProcess(const Event* const, Time*);
 void setCurrentModelTag(Event*);
 void timeAdd(const Time, const Time, Time*);
 int timeCompare(const Time, const Time);
-void timeSet(const Time, Time*);
 int timeSub(const Time, const Time, Time*);
 
 /* static variables */
@@ -78,12 +77,12 @@ volatile unsigned long actuatorTimerInterruptSecsLeft;
 volatile int actuatorRunning = -1;
 volatile Time lastActuateTime;
 
-volatile int numStackedDeadline;
+volatile int numStackedDeadline = 0;
 volatile Time executingDeadlines[MAX_EVENTS];
 volatile void (*executingActors[MAX_EVENTS])();
 
 volatile Tag executingModelTag[MAX_EVENTS];
-volatile int numStackedModelTag;
+volatile int numStackedModelTag = 0;
 
 volatile Time lastTimerInterruptTime;
 volatile uint32 _secs = 0;
@@ -110,6 +109,9 @@ static Time ZERO_TIME = {0, 0};
 // deadline, timestamp, microstep, and depth.
 int compareEvents(Event* event1, Event* event2) {
     int compare;
+	if (event1 == NULL || event2 == NULL) {
+		die("compare NULL events");
+	}
     compare = timeCompare(event1->deadline, event2->deadline);
     if (compare != 0) {
         return compare;
@@ -142,6 +144,9 @@ void addEvent(Event* newEvent) {
     disableInterrupts();
     before_deadline  = NULL;
     compare_deadline = DEADLINE_QUEUE_HEAD;
+    if (newEvent == NULL) {
+    	die("NULL new event");
+    }
     while (1) {
         // We've reached the end of the queue.
         if (compare_deadline == NULL) {
@@ -252,14 +257,20 @@ Event* newEvent(void) {
     }
     //      RIT128x96x4StringDraw(itoa(locationCounter,10), 0,0,15);
 	counter = locationCounter;
-    eventMemory[counter].inUse=counter;
+    eventMemory[counter].inUse = locationCounter;
 	enableInterrupts();
     return &eventMemory[counter];
 }
 
 void freeEvent(Event* thisEvent) {
 	disableInterrupts();
-    eventMemory[thisEvent->inUse].inUse = MAX_EVENTS+1;
+    if (thisEvent->inUse == MAX_EVENTS+1) {
+        die("already free");
+	}
+	if (&(eventMemory[thisEvent->inUse]) != thisEvent) {
+		die("wrong event");
+	}
+	thisEvent->inUse = MAX_EVENTS+1;
     enableInterrupts();
 }
 
@@ -283,14 +294,6 @@ int timeCompare(const Time time1, const Time time2) {
         return EQUAL;
     }
     return MORE;       
-}
-
-/* set the value of a time variable to a reference time
- * 
- */
-void timeSet(const Time refTime, Time* time) {
-    time->secs = refTime.secs;
-    time->nsecs = refTime.nsecs;
 }
 
 /* subtract two time values
@@ -367,7 +370,7 @@ void processEvents() {
                 // has passed for it to be
                 // safe to process
                 if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
-                    timeSet(processTime, &lastTimerInterruptTime);
+                    lastTimerInterruptTime = processTime;
                     setTimedInterrupt(&processTime);
                 }
                 // this event is not safe to process, we look at the next one.
@@ -389,7 +392,9 @@ void processEvents() {
     if (numStackedModelTag > 0) {
         numStackedModelTag--;
         currentMicrostep = executingModelTag[numStackedModelTag].microstep;
-        timeSet(executingModelTag[numStackedModelTag].timestamp, &currentModelTime);
+        currentModelTime = executingModelTag[numStackedModelTag].timestamp;
+    } else {
+    	die("cannot restore model tag");
     }
     // This implies within the while loop, if all events cannot be processed, 
     // we need to go through the entire event queue before another event can come in.
@@ -467,7 +472,7 @@ void queuePriority(Event* event) {
 * set the current model time.
 */
 void setCurrentModelTag(Event* currentEvent) {
-    timeSet(currentEvent->tag.timestamp, &currentModelTime);
+    currentModelTime = currentEvent->tag.timestamp;
     currentMicrostep = currentEvent->tag.microstep;
 }
 
@@ -553,7 +558,7 @@ void initializeMemory() {
 }
 
 void initializePISystem() {
-    timeSet(MAX_TIME, &lastTimerInterruptTime);
+    lastTimerInterruptTime = MAX_TIME;
 }
 /**/
 
@@ -611,7 +616,7 @@ void execute() {
                 // has passed for it to be
                 // safe to process
                 if (timeCompare(processTime, lastTimerInterruptTime) == LESS) {
-                    timeSet(processTime, &lastTimerInterruptTime);
+                    lastTimerInterruptTime = processTime;
                     setTimedInterrupt(&processTime);
                 }
                 // this event is not safe to process, we look at the next one.

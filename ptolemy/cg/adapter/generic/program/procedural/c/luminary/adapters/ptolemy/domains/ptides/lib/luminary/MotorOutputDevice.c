@@ -67,8 +67,8 @@ motorOutputPower[motorLastOutput++] = $get(input#0);
 if (motorLastOutput >= NUM_OUTPUTS) {
     motorLastOutput = 0;
 }
-enableInterrupts();
 getRealTime(&currentRealTime);
+enableInterrupts();
 if (timeCompare(currentRealTime, currentModelTime) <= 0) {
 	setActuationInterrupt($actuator);
 } else {

@@ -1,0 +1,78 @@
+{--- Syntactic Representation of graph ---}
+    ---- visiting: Ramp
+    -------------> sn_ref_Ramp
+    -------------> { 
+    ------------->      inputs:
+    ----------------->    out_ref_trigger
+    ----------------->    out_ref_step
+    ------------->      outputs:
+    ----------------->    in_ref_output
+    -------------> } 
+    ---- visiting: DDFBooleanSelect
+    -------------> sn_ref_DDFBooleanSelect
+    -------------> { 
+    ------------->      inputs:
+    ----------------->    out_ref_trueInput
+    ----------------->    out_ref_falseInput
+    ----------------->    out_ref_control
+    ------------->      outputs:
+    ----------------->    in_ref_output
+    -------------> } 
+    ---- visiting: BooleanSwitch
+    -------------> sn_ref_BooleanSwitch
+    -------------> { 
+    ------------->      inputs:
+    ----------------->    out_ref_input
+    ----------------->    out_ref_control
+    ------------->      outputs:
+    ----------------->    in_ref_trueOutput
+    ----------------->    in_ref_falseOutput
+    -------------> } 
+    ---- visiting: Scale
+    -------------> sn_ref_Scale
+    -------------> { 
+    ------------->      inputs:
+    ----------------->    out_ref_input
+    ------------->      outputs:
+    ----------------->    in_ref_output
+    -------------> } 
+    ---- visiting: SampleDelay
+    -------------> sn_ref_SampleDelay
+    -------------> { 
+    ------------->      inputs:
+    ----------------->    out_ref_input
+    ------------->      outputs:
+    ----------------->    in_ref_output
+    -------------> } 
+    ---- visiting: Outside-the-loop Plotter
+    -------------> sn_ref_Outside-the-loop Plotter
+    -------------> { 
+    ------------->      inputs:
+    ----------------->    out_ref_input
+    ----------------->    out_ref_input
+    ------------->      outputs:
+    -------------> } 
+    ---- visiting: Inside-the-loop Plotter
+    -------------> sn_ref_Inside-the-loop Plotter
+    -------------> { 
+    ------------->      inputs:
+    ----------------->    out_ref_input
+    ------------->      outputs:
+    -------------> } 
+    ---- visiting: Comparator
+    -------------> sn_ref_Comparator
+    -------------> { 
+    ------------->      inputs:
+    ----------------->    out_ref_left
+    ----------------->    out_ref_right
+    ------------->      outputs:
+    ----------------->    in_ref_output
+    -------------> } 
+    ---- visiting: Const
+    -------------> sn_ref_Const
+    -------------> { 
+    ------------->      inputs:
+    ----------------->    out_ref_trigger
+    ------------->      outputs:
+    ----------------->    in_ref_output
+    -------------> } 

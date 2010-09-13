@@ -40,7 +40,7 @@ GPIOPinIntClear(GPIO_PORT$pad_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_
 
 // need to push the currentModelTag onto the stack.
 executingModelTag[numStackedModelTag].microstep = currentMicrostep;
-timeSet(currentModelTime, &(executingModelTag[numStackedModelTag].timestamp));
+executingModelTag[numStackedModelTag].timestamp = currentModelTime;
 numStackedModelTag++;
 if (numStackedModelTag > MAX_EVENTS) {
     die("MAX_EVENTS too small for numStackedModelTag");

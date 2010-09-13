@@ -4,7 +4,7 @@
 {
 Time dummyTime;
 Event* event = newEvent();
-timeSet(currentModelTime, &(event->tag.timestamp));
+event->tag.timestamp = currentModelTime;
 event->tag.microstep = currentMicrostep;
 event->depth = $depth;
 dummyTime.secs = $relativeDeadlineSecs;
