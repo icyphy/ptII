@@ -716,6 +716,47 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** List the NamedObjs that are directly or indirectly
+     *  contained by this entity.  The list will be empty if there
+     *  are no such contained NamedObjs. This list does not include
+     *  class definitions nor anything contained by them.
+     *  This method is read-synchronized on the workspace.
+     *  This method differs from deepEntityList() in that deepEntityList()
+     *  does not look inside opaques.
+     *  @return A list of opaque ComponentEntity objects.
+     *  @see #classDefinitionList()
+     *  @see #allAtomicEntityList()
+     */
+    public List deepNamedObjList() {
+        try {
+            _workspace.getReadAccess();
+
+            LinkedList result = new LinkedList();
+
+            // This might be called from within a superclass constructor,
+            // in which case there are no contained entities yet.
+            if (_containedEntities != null) {
+                Iterator entities = _containedEntities.elementList().iterator();
+                while (entities.hasNext()) {
+                    ComponentEntity entity = (ComponentEntity) entities.next();
+
+                    if (!entity.isClassDefinition()) {
+                        // if (entity.isOpaque()) {
+                        result.add(entity);
+                        if (!entity.isOpaque()) {
+                            result.addAll(((CompositeEntity) entity)
+                                    .deepNamedObjList());
+                        }
+                    }
+                }
+            }
+
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Return a set with the relations that are directly or indirectly
      *  contained by this entity.  The set will be empty if there
      *  are no such contained relations.

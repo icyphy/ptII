@@ -65,8 +65,87 @@ proc testSuggestedModalModelDirectors {director} {
     }
 }
 
+# Common code for drop test, used to test drag-n-drop for Actors and Attributes.
+proc _dropTest {toplevel namedObj cloneConfiguration stream printStream isAttribute} {
+    set results ""
+
+    set fullName [[java::cast ptolemy.kernel.util.NamedObj $namedObj] getName $cloneConfiguration]
+
+    # Check for attributes that contain attributes that fail when
+    # put into an unnamed top level.
+    # ptolemy.cg.kernel.generic.GenericCodeGenerator
+    # failed here.
+    regsub -all {\.} $fullName {_}  safeName
+    set toplevel1_1 [java::new ptolemy.actor.TypedCompositeActor]
+    set newNamedObj [java::new [[$namedObj getClass] getName] $toplevel1_1 $safeName]
+    set newNamedObjs [$newNamedObj attributeList]
+    for {set iterator3 [$newNamedObjs iterator]} {[$iterator3 hasNext] == 1} {} {
+	set innerAttribute [java::cast ptolemy.kernel.util.Attribute [$iterator3 next]]
+	if [catch {$newNamedObj attributeChanged $innerAttribute} errMsg] {
+	    puts "_dropTest: $errMsg"
+	    lappend results "Calling [$newNamedObj getFullName] attributeChanged [$innerAttribute getName] failed:\n$errMsg\n[jdkStackTrace]]" 
+	}
+    }
+
+    if {$isAttribute} {
+	$newNamedObj {setContainer {ptolemy.kernel.util.NamedObj}} [java::null]
+	set clone [java::cast ptolemy.kernel.util.Attribute \
+		       [$cloneConfiguration getAttribute $fullName]]
+    } else {	
+	[java::cast ptolemy.kernel.ComponentEntity $newNamedObj] {setContainer {ptolemy.kernel.CompositeEntity}} [java::null]
+	set clone [java::cast ptolemy.actor.TypedAtomicActor \
+		       [$cloneConfiguration getEntity $fullName]]
+    }
+    if {![java::isnull $clone]} {
+	set moml [java::new StringBuffer]
+	# Simulate vergil.basic.EditorDropTarget.drop()
+	$moml append "<group>"
+	$moml append "<group name=\"auto\">"
+	$moml append [$clone exportMoML "dropped_[$nameObj getName]"]
+	$moml append "</group>"
+	$moml append "</group>"
+	
+	# The context of the ChangeRequest is the container
+	# so that we properly evaluate atomic actors in
+	# composite actors like MaximumEntropySpectrum
+	set changeRequest [java::new ptolemy.moml.MoMLChangeRequest \
+			       $toplevel [$clone getContainer] \
+			       [$moml toString]]
+	if [catch {$toplevel requestChange $changeRequest} errMsg] {
+	    # Note that the changeRequest will likely never
+	    # throw an error that will get us to here, we use
+	    # a StreamChangeListener instead
+	    set msg "\n\nIn '$fullName'\n\
+                            the ChangeRequest:\n\
+                            [$moml toString]\n\
+                            failed:\n\
+                            $errMsg\n\
+	                    [jdkStackTrace]\n\
+                            Perhaps there is a typo in the initial\n\
+                            value of a parameter?\n"
+				puts $msg
+	    lappend results $msg
+	}
+		
+	# Flush the listener
+	$printStream flush
+	regsub -all [java::call System getProperty "line.separator"] \
+	    [$stream toString] "\n" output
+	if {[string first "StreamChangeRequest.changeFailed():" \
+		 $output] != -1 } {
+	    # If the listener starts with changedFailed, then we
+	    # have an error
+	    lappend results $output
+	    puts $output
+	}
+	$stream reset
+    }
+    return $results
+}
+
 cd ..
 set configs [glob */*configuration*.xml]
+#set configs full/configuration.xml
 cd test
 
 foreach i $configs {
@@ -97,7 +176,7 @@ foreach i $configs {
     $inputFileNamesToSkip add "/apps/superb/superb.xml"
     $inputFileNamesToSkip add "/attributes/decorative.xml"
     $inputFileNamesToSkip add "/chic/chic.xml"
-    $inputFileNamesToSkip add "/codegen.xml"
+    #$inputFileNamesToSkip add "/codegen.xml"
     $inputFileNamesToSkip add "/configs/ellipse.xml"
     $inputFileNamesToSkip add "/gr.xml"
     $inputFileNamesToSkip add "/io/comm/comm.xml"
@@ -268,7 +347,7 @@ foreach i $configs {
 	set results {}
 	for {set iterator [$entityList iterator]} \
 	    {[$iterator hasNext] == 1} {} {
-	    set entity [$iterator next]
+   	    set entity [$iterator next]
 	    
 	    #puts [$entity toString]
 	    #if [java::instanceof $entity ptolemy.kernel.util.NamedObj] {
@@ -277,56 +356,67 @@ foreach i $configs {
 	    #}
 
 	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
-
 		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		set fullName [$actor getName $configuration]
-	
-		set clone [java::cast ptolemy.actor.TypedAtomicActor \
-			       [$cloneConfiguration getEntity $fullName]]
-		set moml [java::new StringBuffer]
-		# Simulate vergil.basic.EditorDropTarget.drop()
-		$moml append "<group>"
-		$moml append [$clone exportMoML "dropped_[$actor getName]"]
-		$moml append "</group>"
-
-		# The context of the ChangeRequest is the container
-		# so that we properly evaluate atomic actors in
-		# composite actors like MaximumEntropySpectrum
-		set changeRequest [java::new ptolemy.moml.MoMLChangeRequest \
-				       $toplevel [$clone getContainer] \
-				       [$moml toString]]
-		if [catch {$toplevel requestChange $changeRequest} errMsg] {
-		    # Note that the changeRequest will likely never
-		    # throw an error that will get us to here, we use
-		    # a StreamChangeListener instead
-		    set msg "\n\nIn '$fullName'\n\
-                            the ChangeRequest:\n\
-                            [$moml toString]\n\
-                            failed:\n\
-                            $errMsg\n\
-	                    [jdkStackTrace]\n\
-                            Perhaps there is a typo in the initial\n\
-                            value of a parameter?\n"
-		    puts $msg
-		    lappend results $msg
+		#puts "Actor: [$actor getFullName]"
+		if [catch {set r [_dropTest $toplevel $actor $cloneConfiguration $stream $printStream 0]} errMsg] {
+		    lappend results "Drag and Drop test of actor: [$actor getFullName] failed:\n$errMsg\n[jdkStackTrace]"
 		}
-		
-		# Flush the listener
-		$printStream flush
-		regsub -all [java::call System getProperty "line.separator"] \
-		    [$stream toString] "\n" output
-		if {[string first "StreamChangeRequest.changeFailed():" \
-			 $output] != -1 } {
-		    # If the listener starts with changedFailed, then we
-		    # have an error
-		    lappend results $output
-		    puts $output
+		if {[llength $r] != 0} {
+		    lappend results $r
 		}
-		$stream reset
 	    }
-	}
+
+        }
 	list $results
     } {{}}
+
+    test "$i-4.2" "Test to see if $i contains any attributes that might not drag and drop properly by creating ChangeRequests " {
+
+	# Use the baseModel from 4.1 above
+
+	# Set up a StreamChangeListener to listen for errors
+	set stream [java::new java.io.ByteArrayOutputStream]
+	set printStream [java::new \
+		     {java.io.PrintStream java.io.OutputStream} $stream]
+	set listener [java::new ptolemy.kernel.util.StreamChangeListener \
+			  $printStream]
+	$toplevel addChangeListener $listener
+
+	set cloneConfiguration \
+	    [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
+
+	set entityList [$configuration deepNamedObjList]
+	set results {}
+	set count 0
+	for {set iterator [$entityList iterator]} \
+	    {[$iterator hasNext] == 1} {} {
+		set object [$iterator next]
+		#puts "6Attribute: [$object toString]"
+		if [java::instanceof $object ptolemy.moml.EntityLibrary] {
+		    #puts "---------- [$object toString]"
+
+		    # FIXME: I don't understand why I need to expand the entityLibraries
+		    # and get the attributes?
+		    set entityLibrary [java::cast ptolemy.moml.EntityLibrary $object]
+		    #puts [$entityLibrary exportMoML]
+		    set attributes [$entityLibrary attributeList]
+		    #puts [listToFullNames $attributes]
+		    for {set iterator2 [$attributes iterator]} {[$iterator2 hasNext] == 1} {} {
+			set attr [$iterator2 next]
+			#puts "attr: [java::instanceof $attr ptolemy.kernel.util.Attribute] [$attr toString] "
+			
+			set attribute [java::cast ptolemy.kernel.util.Attribute $attr]
+
+			set r [_dropTest $toplevel $attribute $cloneConfiguration $stream $printStream 1]
+			if {[llength $r] != 0} {
+			    lappend results $r
+			}
+		    }
+		}
+	    }
+	list $results
+    } {{}}
+
 
     test "$i-5.1" "Test directors in $i " {
 	#set entityList [$configuration allAtomicEntityList]
@@ -372,6 +462,54 @@ foreach i $configs {
 	}
 	list $results
     } {{}}
+
+    test "$i-6.1" "Test attributeChanged of actors in an empty, unnamed toplevel $i " {
+	set toplevel6_1 [java::new ptolemy.actor.TypedCompositeActor]
+
+	set entityList [$configuration allAtomicEntityList]
+	set results {}
+	set logfile [open logfile2-1 "w"]
+	for {set iterator [$entityList iterator]} \
+		{[$iterator hasNext] == 1} {} {
+	    set entity [$iterator next]
+	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
+		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
+		set className [$actor getClassName]
+		if [java::instanceof $entity $className] {
+		    set realActor [java::cast $className $entity]
+		    set fields [java::info fields $realActor]
+		    # This puts seems to be necessary, or else we get
+		    # field being set to 'tcl.lang.FieldSig@2b6fc7'
+		    # instead of 'factor'
+  		    puts $logfile "actor: $className fields: $fields"
+		    foreach field $fields {
+			# If the field is actually defined in the parent class
+			# then java::field will not find the field
+			set fieldObj [java::null]
+			catch {
+			    # We use -noconvert here in case there is a public
+			    # int or double. hde.ArrayMem has a public int.
+			    set fieldObj [java::field -noconvert \
+				    $realActor $field]
+			}
+			if {![java::isnull $fieldObj]} {
+			    if [java::instanceof $fieldObj ptolemy.data.expr.Parameter] {
+				# Add each actor to the toplevel, call attributeChanged
+				set actorName [[$entity getClass] getName]
+				regsub -all {\.} $actorName {_} safeName
+				set actor [java::new $actorName $toplevel6_1 $safeName]
+				set p [$actor getAttribute $field]
+				set param [java::cast ptolemy.data.expr.Parameter $p]
+				$actor attributeChanged $param
+				$actor setContainer [java::null]
+			    }
+			}
+		    }
+		}
+	    }
+	}
+    } {}
+
 }
 
 # The list of filters is static, so we reset it

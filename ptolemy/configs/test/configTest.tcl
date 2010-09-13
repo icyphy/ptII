@@ -18,7 +18,7 @@ if {[string compare test [info procs test]] == 1} then {
     $inputFileNamesToSkip add "/apps/superb/superb.xml"
     $inputFileNamesToSkip add "/attributes/decorative.xml"
     $inputFileNamesToSkip add "/chic/chic.xml"
-    $inputFileNamesToSkip add "/codegen.xml"
+    #$inputFileNamesToSkip add "/codegen.xml"
     $inputFileNamesToSkip add "/configs/ellipse.xml"
     $inputFileNamesToSkip add "/gr.xml"
     $inputFileNamesToSkip add "/io/comm/comm.xml"
