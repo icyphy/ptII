@@ -367,11 +367,21 @@ Follow the <a href="http://www.eclipse.org/subversive/downloads.php#in_browser" 
   <li> In the "Subversion Connector Discovery" window, what version
   you select depends on what version of svn is installed on your
   machine.
- <br>If <code>svn -version</code> returns 1.4, then install SVN Kit 1.1.7
-  <br>If <code>svn -version</code> returns 1.5, then install SVN Kit 1.2.3
-  <br>If <code>svn -version</code> returns 1.5, then install SVN Kit 1.3.0
+  <br>If <code>svn --version</code> returns 1.4, then install SVN Kit 1.1.7
+  <br>If <code>svn --version</code> returns 1.5, then install SVN Kit 1.2.3
+  <br>If <code>svn --version</code> returns 1.5, then install SVN Kit 1.3.0
+  <p>Note: if you install a more recent version of the plugin than the
+  version of the command line <code>svn</code> tool, then
+  you will not be able to use the command line <code>svn</code> to
+  update or modify the tree that is checked out by Eclipse.
+  <br>If you
+  run <code>svn</code> on a tree checked out by Eclipse and get a message <code> svn: This client is
+  too old to work with working copy '.'; please get a newer Subversion
+  client</code>, then the solution is to <a
+  href="http://subversion.apache.org/packages.html#in_browser">update
+  svn</a>.
 
-  Then do "Finish", "Next", "Next", Accept the license and then
+  <p>Then do "Finish", "Next", "Next", Accept the license and then
   "Finish".
  
   <li>If you get a security warning about unsigned software, click
