@@ -31,6 +31,7 @@
 //// GradientAdaptiveLattice
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Lattice;
 import ptolemy.backtrack.Checkpoint;
