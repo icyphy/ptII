@@ -75,11 +75,13 @@ public class Display3D extends TypedAtomicActor  implements Placeable, GLEventLi
         
         
         /* 
-        *   These methods draw a point at (WIDTH/2, HEIGHT/2). The coordinates are logical 
-        *   coordinates not directly related to the canvas’ size. The width and height in 
-        *   glOrtho() are actual window size. It is the same as WIDTH and HEIGHT at the 
-        *   beginning, but if you reshape the window, they will be different, respectively. 
-        *   Therefore, if we reshape the window, the red point moves. 
+        *   These methods draw a point at (WIDTH/2, HEIGHT/2). The
+        *   coordinates are logical coordinates not directly related
+        *   to the canvas size. The width and height in glOrtho() are
+        *   actual window size. It is the same as WIDTH and HEIGHT at
+        *   the beginning, but if you reshape the window, they will be
+        *   different, respectively.  Therefore, if we reshape the
+        *   window, the red point moves.
         */   
         gl.glPointSize(10); 
         gl.glBegin(GL.GL_POINTS);
