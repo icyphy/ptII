@@ -10,18 +10,40 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 import javax.swing.JFrame;
+
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.AbstractPlaceableActor;
-import ptolemy.data.ObjectToken;
+import ptolemy.actor.gui.Placeable;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import com.sun.opengl.util.Animator;
 
 
-public class Display3D extends AbstractPlaceableActor implements GLEventListener{   
+/**
+ * An actor that is used for displaying 3D animation. 
+ *
+ * @author Yasemin Demir
+ * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
+ */
+public class Display3D extends TypedAtomicActor  implements Placeable, GLEventListener, ViewScreenInterface{   
     
+    /**
+     *  Construct a Display3D object in the given container with the given name.
+     *  If the container argument is null, a NullPointerException will
+     *  be thrown. If the name argument is null, then the name is set
+     *  to the empty string. Increment the version number of the workspace.
+     *
+     *  @param container Container of the director.
+     *  @param name Name of this Display3D.
+     *  @exception IllegalActionException If this actor
+     *  is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *  CompositeActor and the name collides with an entity in the container.
+     */
+
     
     public Display3D(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
@@ -37,25 +59,49 @@ public class Display3D extends AbstractPlaceableActor implements GLEventListener
         
     }
     
-   
-        
-
+    /**
+     * Initialize the display buffer and render the frame by firing the graphics actors in the model,
+     * according to the order given by the scheduler.
+     * 
+     * @param gLDrawable
+     *            The rendering context of the associated OpenGL object.
+     */
     public void display(GLAutoDrawable gLDrawable) {
         
+        final GL gl = gLDrawable.getGL();
         
-        _gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f); 
+        
+        
+        /* 
+        *   These methods draw a point at (WIDTH/2, HEIGHT/2). The coordinates are logical 
+        *   coordinates not directly related to the canvas’ size. The width and height in 
+        *   glOrtho() are actual window size. It is the same as WIDTH and HEIGHT at the 
+        *   beginning, but if you reshape the window, they will be different, respectively. 
+        *   Therefore, if we reshape the window, the red point moves. 
+        */   
+        gl.glPointSize(10); 
+        gl.glBegin(GL.GL_POINTS);
+        gl.glVertex2i(_width / 2, _height / 2);
+        gl.glEnd();
+        gl.glFlush();
            
     }
-
+    
+    /**
+     * Changing devices is not supported.
+     * 
+     * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable,
+     *      boolean, boolean)
+     */
     public void displayChanged(GLAutoDrawable gLDrawable, boolean arg1, boolean arg2) {
         
       
         
     }
 
-    public void init(GLAutoDrawable gLDrawable) {
-        
-       
+    public void init(GLAutoDrawable gLDrawable) {      
         
         _gl.glShadeModel(GL.GL_SMOOTH);              // Enable Smooth Shading
         _gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f);    // Black Background
@@ -66,7 +112,13 @@ public class Display3D extends AbstractPlaceableActor implements GLEventListener
         _gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST); 
        
     }
-
+    
+    /**
+     * Resizes the screen.
+     * 
+     * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable,
+     *      int, int, int, int)
+     */
     public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width, 
             int height) {
        
@@ -90,13 +142,12 @@ public class Display3D extends AbstractPlaceableActor implements GLEventListener
         }
        
      
-        output.send(0, new ObjectToken(_gl));
+        //output.send(0, new ObjectToken(_gl));
     }
 
 
     private Container _container;
 
-    @Override
     public void place(Container container) {
         _container = container;
 
@@ -172,41 +223,61 @@ public class Display3D extends AbstractPlaceableActor implements GLEventListener
          *   display(), and displaychanged()) methods are actually callback functions handling events.  
          */
         _canvas.addGLEventListener(this);
-         
-
+        
+        
        
     }
     
-    /** The input port.  This base class imposes no type constraints except
+    /** 
+     *  The input port.  This base class imposes no type constraints except
      *  that the type of the input cannot be greater than the type of the
      *  output.
      */
     public TypedIOPort input;
-
-    /** The output port. By default, the type of this output is constrained
+    
+    /** 
+     *  The output port. By default, the type of this output is constrained
      *  to be at least that of the input.
      */
     public TypedIOPort output;
     
+    /**
+     *  Height of the frame  
+     * */
     protected int _height = 480;
+    
+    /** 
+     *  Width of the frame 
+     * */
     protected int _width = 640;
-    /* 
-     *   gl is an interface handle to OpenGL methods. All OpenGL
-     *   commands are prefixed with "gl" as well, so you will see
-     *   OpenGL method like gl.glColor().
+    
+    /**
+     *  gl is an interface handle to OpenGL methods. All OpenGL
+     *  commands are prefixed with "gl" as well, so you will see
+     *  OpenGL method like gl.glColor().
+     */    
+    protected GL _gl; 
+    
+    /** 
+     *  Drive display() in a loop 
+     */    
+    protected Animator _animator; 
+    
+    /** 
+     *  Drawable part of the frame 
+     */  
+    protected GLCanvas _canvas;  
+    
+    /**  
+     */ 
+    protected JFrame _frame;    
+    
+    /** 
+     *  Specifies a set of OpenGL capabilities that a rendering 
+     *  context must support,such as color depth and whether stereo 
+     *  is enabled. 
      */
-    
-    protected GL _gl;  
-    
-    protected Animator _animator; // drive display() in a loop 
-  
-    protected GLCanvas _canvas; // drawable in a frame 
-    
-  
-    
-    protected GLCapabilities _capabilities; //Specifies a set of OpenGL capabilities that a rendering context must support, 
-
-    //such as color depth and whether stereo is enabled.
+    protected GLCapabilities _capabilities;
 
 }
    
