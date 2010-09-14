@@ -32,18 +32,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.media.opengl.GL;
-import javax.media.opengl.GLAutoDrawable;
-import javax.media.opengl.GLCapabilities;
-import javax.media.opengl.GLEventListener;
-import javax.media.opengl.glu.GLU;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
@@ -63,9 +56,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
-//////////////////////////////////////////////////////////////////////////
-//// JoglDirector
-
 /**
  * A director for the Jogl Domain.
  * 
@@ -83,9 +73,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating yellow (chf)
  * @Pt.AcceptedRating yellow (vogel)
  */
-
-public class JoglDirector extends StaticSchedulingDirector implements
-        GLEventListener {
+public class JoglDirector extends StaticSchedulingDirector{
 
     /**
      * Construct a director in the default workspace with an empty string as its
@@ -94,9 +82,9 @@ public class JoglDirector extends StaticSchedulingDirector implements
      */
     
     //FIXME: Container and a name
-    public JoglDirector(GLCapabilities capabilities, int width, int height) {        
-            // FIXME: The next line does not compile
-            // addGLEventListener(this);
+    public JoglDirector() {        
+        super();
+        _init();
     }
 
     /**
@@ -157,9 +145,7 @@ public class JoglDirector extends StaticSchedulingDirector implements
      */
     public Parameter iterationTimeLowerBound;
     //FixME: Write comments here
-    public PushMatrix pushMatrix;
-
-    public PopMatrix popMatrix;
+   
 
     ///////////////////////////////////////////////////////////////////
     //// public methods ////
@@ -182,38 +168,6 @@ public class JoglDirector extends StaticSchedulingDirector implements
         return newObject;
     }
 
-    /**
-     * Initialize the display buffer and render the frame by firing the graphics actors in the model,
-     * according to the order given by the scheduler.
-     * 
-     * @param gLDrawable
-     *            The rendering context of the associated OpenGL object.
-     */
-    public void display(GLAutoDrawable gLDrawable) {
-     
-            _gl = gLDrawable.getGL();
-            _gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-            _gl.glLoadIdentity();
-
-            try {
-                _fire();
-            } catch (IllegalActionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-            _gl.glFlush();
-          }
-  
-    /**
-     * Changing devices is not supported.
-     * 
-     * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable,
-     *      boolean, boolean)
-     */
-    public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
-        throw new UnsupportedOperationException("Changing display is not supported.");
-    }
 
     /** In this director, do nothing. Override the super class method. This method does nothing and
      *  everything is postponed to the postfire() method. This assures
@@ -259,13 +213,6 @@ public class JoglDirector extends StaticSchedulingDirector implements
         return time;
 
     }    
-
-    
-
-    public GL getGL() {
-        throw new InternalErrorException("getGL is not implememnted");
-    }
-
 
     /**
      * Initialize all the actors associated with this director. Perform some
@@ -397,27 +344,7 @@ public class JoglDirector extends StaticSchedulingDirector implements
         }
     }
 
-    
-    /**
-     * Resizes the screen.
-     * 
-     * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable,
-     *      int, int, int, int)
-     */
-    public void reshape(GLAutoDrawable gLDrawable, int x, int y, int width,
-            int height) {
-        
-        final GL gl = gLDrawable.getGL();
-        gl.glViewport(0, 0, width, height);
 
-        
-        if (height <= 0) {
-            height = 1;
-        }
-
-
-    }
-    
     
     /**
      * Reset this director to an uninitialized state to prepare for the end of
@@ -446,7 +373,7 @@ public class JoglDirector extends StaticSchedulingDirector implements
 
         if (currentScheduler == null) {
             throw new IllegalActionException(this, "Attempted to fire "
-                    + "GR system with no scheduler");
+                    + "Jogl system with no scheduler");
         }
 
         currentScheduler.getSchedule();
@@ -520,7 +447,7 @@ public class JoglDirector extends StaticSchedulingDirector implements
 
         if (scheduler == null) {
             throw new IllegalActionException(this, "Attempted to fire "
-                    + "GR system with no scheduler");
+                    + "Jogl system with no scheduler");
         }
 
         Schedule schedule = scheduler.getSchedule();
@@ -619,13 +546,7 @@ public class JoglDirector extends StaticSchedulingDirector implements
                     "Cannot create default iterations parameter.");
         }
 
-        try {
-            pushMatrix = new PushMatrix(this);
-            popMatrix = new PopMatrix(this);
-        } catch (Throwable throwable) {
-            throw new InternalErrorException(this, throwable,
-                    "Cannot create the internal pushMatrix and popMatrix actors.");
-        }
+        
 
         _reset();
     }
@@ -655,42 +576,7 @@ public class JoglDirector extends StaticSchedulingDirector implements
 
     private int _stopIteration = 0;
 
-    private GL _gl;
-
-    private static final GLU glu = new GLU();
     
-    private class PopMatrix extends TypedAtomicActor {
-
-        public PopMatrix(JoglDirector director) {
-            _director = director;
-        }
-
-        JoglDirector _director;
-
-        public void fire() throws IllegalActionException {
-            GL gl = _director.getGL();
-            gl.glPopMatrix();
-
-        }
-    }
-
-    private class PushMatrix extends TypedAtomicActor {
-        public PushMatrix(JoglDirector director) {
-            _director = director;
-        }
-
-        JoglDirector _director;
-
-        public void fire() throws IllegalActionException {
-            GL gl = _director.getGL();
-            gl.glPushMatrix();
-        }
-    }
-
-    public void init(GLAutoDrawable arg0) {
-        // TODO Auto-generated method stub
-        
-    }
 
 }
 
