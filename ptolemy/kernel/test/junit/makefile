@@ -36,14 +36,15 @@ ME =		ptolemy/kernel/test/junit
 ROOT =		../../../..
 
 # JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	ExampleSystemJUnitTest.java
+	ExampleSystemJUnitTest.java \
+	JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
@@ -76,7 +77,8 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.kernel.test.junit.ExampleSystemJUnitTest
+	#CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.kernel.test.junit.ExampleSystemJUnitTest
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.kernel.test.junit.JUnitTclTest
 
 test_java: jclass
 
