@@ -51,7 +51,7 @@ public class ExampleSystemJUnitTest {
         ExampleSystem example = new ExampleSystem();
 
         String knownGood =                
-                "---Methods of ComponentRelation----" + _eol
+                "----Methods of ComponentRelation----" + _eol
                 + "linkedPorts:" + _eol
                 + "R1: P1 P0 " + _eol
                 + "R2: P1 P4 P3 " + _eol

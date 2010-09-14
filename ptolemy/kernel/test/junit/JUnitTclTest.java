@@ -81,8 +81,7 @@ public class JUnitTclTest {
         } else {
             if ( ! new File("testDefs.tcl").exists()) {
                 // We might be running from a different directory
-                //String directory = getClass().getPackage().getName().replace('.', '/') + "/..";
-                String directory = "..";
+                String directory = getClass().getPackage().getName().replace('.', '/') + "/..";
                 if (new File(directory + "/testDefs.tcl").exists()) {
                     interp.eval("cd " + directory);
                 }
