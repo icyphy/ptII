@@ -66,9 +66,7 @@ MISC_FILES =    $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'JoglDirector$$PopMatrix.class' \
-	'JoglDirector$$PushMatrix.class'
-
+	
 JCLASS = $(JSRCS:%.java=%.class)
 
 
