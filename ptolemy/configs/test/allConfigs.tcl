@@ -71,13 +71,18 @@ proc _dropTest {toplevel namedObj cloneConfiguration stream printStream isAttrib
 
     set fullName [[java::cast ptolemy.kernel.util.NamedObj $namedObj] getName $cloneConfiguration]
 
+    set className [[$namedObj getClass] getName]
+    if [regexp {\.gui\.} $className] {
+	puts "Skipping $className, it contains .gui., which causes problems in a headless environment"
+	return
+    }
     # Check for attributes that contain attributes that fail when
     # put into an unnamed top level.
     # ptolemy.cg.kernel.generic.GenericCodeGenerator
     # failed here.
     regsub -all {\.} $fullName {_}  safeName
     set toplevel1_1 [java::new ptolemy.actor.TypedCompositeActor]
-    set newNamedObj [java::new [[$namedObj getClass] getName] $toplevel1_1 $safeName]
+    set newNamedObj [java::new $className $toplevel1_1 $safeName]
     set newNamedObjs [$newNamedObj attributeList]
     for {set iterator3 [$newNamedObjs iterator]} {[$iterator3 hasNext] == 1} {} {
 	set innerAttribute [java::cast ptolemy.kernel.util.Attribute [$iterator3 next]]
@@ -462,54 +467,6 @@ foreach i $configs {
 	}
 	list $results
     } {{}}
-
-    test "$i-6.1" "Test attributeChanged of actors in an empty, unnamed toplevel $i " {
-	set toplevel6_1 [java::new ptolemy.actor.TypedCompositeActor]
-
-	set entityList [$configuration allAtomicEntityList]
-	set results {}
-	set logfile [open logfile2-1 "w"]
-	for {set iterator [$entityList iterator]} \
-		{[$iterator hasNext] == 1} {} {
-	    set entity [$iterator next]
-	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
-		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
-		set className [$actor getClassName]
-		if [java::instanceof $entity $className] {
-		    set realActor [java::cast $className $entity]
-		    set fields [java::info fields $realActor]
-		    # This puts seems to be necessary, or else we get
-		    # field being set to 'tcl.lang.FieldSig@2b6fc7'
-		    # instead of 'factor'
-  		    puts $logfile "actor: $className fields: $fields"
-		    foreach field $fields {
-			# If the field is actually defined in the parent class
-			# then java::field will not find the field
-			set fieldObj [java::null]
-			catch {
-			    # We use -noconvert here in case there is a public
-			    # int or double. hde.ArrayMem has a public int.
-			    set fieldObj [java::field -noconvert \
-				    $realActor $field]
-			}
-			if {![java::isnull $fieldObj]} {
-			    if [java::instanceof $fieldObj ptolemy.data.expr.Parameter] {
-				# Add each actor to the toplevel, call attributeChanged
-				set actorName [[$entity getClass] getName]
-				regsub -all {\.} $actorName {_} safeName
-				set actor [java::new $actorName $toplevel6_1 $safeName]
-				set p [$actor getAttribute $field]
-				set param [java::cast ptolemy.data.expr.Parameter $p]
-				$actor attributeChanged $param
-				$actor setContainer [java::null]
-			    }
-			}
-		    }
-		}
-	    }
-	}
-    } {}
-
 }
 
 # The list of filters is static, so we reset it
