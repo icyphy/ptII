@@ -183,7 +183,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  result.
      *  
      *  @param node The Ptolemy AST node to evaluate.
-     *  @param Arguments The value of "x" in this evaluation.
+     *  @param arguments The value of "x" in this evaluation.
      *  @return The computed concept value.
      *  @throws IllegalActionException If there is an error during evaluation.
      */
