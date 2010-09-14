@@ -309,7 +309,7 @@ public class PlotBox extends JPanel implements Printable {
      *  is called once or more, automatic generation of tick marks is
      *  disabled.  The tick mark will appear only if it is within the X
      *  range. 
-     *  <p>Note that if {@link setXLog(boolean)} has been called, then
+     *  <p>Note that if {@link #setXLog(boolean)} has been called, then
      *  the position value should be in log units.
      *  So, addXTick("1K", 3) will display the string <pre>1K</pre>
      *  at the 1000 mark.
@@ -334,7 +334,7 @@ public class PlotBox extends JPanel implements Printable {
      *  is called once or more, automatic generation of tick marks is
      *  disabled.  The tick mark will appear only if it is within the Y
      *  range.
-     *  <p>Note that if {@link setYLog(boolean)} has been called, then
+     *  <p>Note that if {@link #setYLog(boolean)} has been called, then
      *  the position value should be in log units.
      *  So, addYTick("1K", 3) will display the string <pre>1K</pre>
      *  at the 1000 mark.
@@ -1682,7 +1682,7 @@ public class PlotBox extends JPanel implements Printable {
      *  explicitly, then the range is computed automatically from data
      *  available when the plot is drawn.  If min and max
      *  are identical, then the range is arbitrarily spread by 1.
-     *  <p>Note that if {@link setXLog(boolean)} has been called, then
+     *  <p>Note that if {@link #setXLog(boolean)} has been called, then
      *  the min and max values should be in log units.
      *  @param min The left extent of the range.
      *  @param max The right extent of the range.
@@ -1724,7 +1724,7 @@ public class PlotBox extends JPanel implements Printable {
      *  explicitly, then the range is computed automatically from data
      *  available when the plot is drawn.  If min and max are identical,
      *  then the range is arbitrarily spread by 0.1.
-     *  <p>Note that if {@link setYLog(boolean)} has been called, then
+     *  <p>Note that if {@link #setYLog(boolean)} has been called, then
      *  the min and max values should be in log units.
      *  @param min The bottom extent of the range.
      *  @param max The top extent of the range.
