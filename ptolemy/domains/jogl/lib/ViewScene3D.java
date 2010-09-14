@@ -77,7 +77,10 @@ public class ViewScene3D extends AbstractPlaceableActor{
       
         ArrayToken positionToken = ((ArrayToken) position.getToken());
         
-        _canvas.addGLEventListener((JoglDirector)getDirector());
+	if (1==1) {
+	    throw new IllegalActionException("This code does not compile");
+	}
+        //_canvas.addGLEventListener((JoglDirector)getDirector());
         _canvas.setLocation(((DoubleToken) positionToken.getElement(0)).intValue(), 
                 ((DoubleToken) positionToken.getElement(1)).intValue());
         
