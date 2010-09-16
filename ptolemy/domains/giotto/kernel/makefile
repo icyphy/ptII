@@ -52,7 +52,8 @@ JSRCS = \
 	GiottoDecoratedAttributesImplementation.java \
 	GiottoDirector.java \
 	GiottoReceiver.java \
-	GiottoScheduler.java
+	GiottoScheduler.java \
+	GiottoTimingManager.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
