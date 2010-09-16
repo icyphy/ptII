@@ -1443,7 +1443,7 @@ public class Director extends Attribute implements Executable {
      *  @return True if this directory is embedded inside an opaque composite
      *  actor contained by another composite actor.
      */
-    protected boolean _isEmbedded() {
+    public boolean _isEmbedded() {
         return !_isTopLevel();
     }
 
