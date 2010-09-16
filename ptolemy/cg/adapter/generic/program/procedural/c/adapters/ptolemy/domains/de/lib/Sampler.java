@@ -1,4 +1,4 @@
-/* An adapter class for ptolemy.domains.de.lib.Register
+/* An adapter class for ptolemy.domains.de.lib.Sampler
 
  Copyright (c) 2006-2009 The Regents of the University of California.
  All rights reserved.
@@ -28,21 +28,20 @@
 package ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.de.lib;
 
 //////////////////////////////////////////////////////////////////////////
-//// Register
+//// Sampler
 
 /**
- A adapter class for ptolemy.domains.de.lib.Register.
+ A adapter class for ptolemy.domains.de.lib.Sampler.
 
  @author Jeff C. Jensen
 @version $Id: Register.java 57046 2010-01-27 23:35:53Z cxh $
 @since Ptolemy II 8.0
  */
-public class Sampler
-        extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.Sampler {
+public class Sampler 
+        extends ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.de.lib.Sampler{
     /**
-     *  Construct a Register adapter.
-     *  @param actor The given ptolemy.actor.lib.TimeGap actor.
+     *  Construct a Sampler adapter.
+     *  @param actor The given ptolemy.actor.lib.Sampler actor.
      */
     public Sampler(ptolemy.domains.de.lib.Sampler actor) {
         super(actor);

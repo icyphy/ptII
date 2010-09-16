@@ -59,12 +59,14 @@ JSRCS = \
 	PID.java \
 	Register.java \
 	Sampler.java \
+	SingleEvent.java \
 	TimeGap.java
 
 OTHER_FILES_TO_BE_JARED = \
 	PID.c \
 	Register.c \
 	Sampler.c \
+	SingleEvent.c \
 	TimeGap.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
