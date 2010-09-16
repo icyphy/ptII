@@ -99,55 +99,49 @@ public class AttributesListPanel extends JPanel {
         
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JPanel topPanel = new JPanel();
-        JPanel bottomPanel = new JPanel();
-        JPanel innerPanel = new JPanel();
-        JPanel modelNamePanel = new JPanel();
-        JLabel nameLabel = new JLabel("Model Name");
-
         _nameText = new JTextField(model.getName());
         _attListPanel = new JPanel();
         _scrollPane = new JScrollPane(_attListPanel,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        nameLabel.setAlignmentX(LEFT_ALIGNMENT);
-        modelNamePanel.setAlignmentX(LEFT_ALIGNMENT);
-        innerPanel.setAlignmentX(LEFT_ALIGNMENT);
+        _nameLabel.setAlignmentX(LEFT_ALIGNMENT);
+        _modelNamePanel.setAlignmentX(LEFT_ALIGNMENT);
+        _innerPanel.setAlignmentX(LEFT_ALIGNMENT);
         _nameText.setAlignmentX(LEFT_ALIGNMENT);
-        topPanel.setAlignmentX(LEFT_ALIGNMENT);
+        _topPanel.setAlignmentX(LEFT_ALIGNMENT);
         _attListPanel.setAlignmentX(LEFT_ALIGNMENT);
         _scrollPane.setAlignmentX(LEFT_ALIGNMENT);
-        bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
+        _bottomPanel.setAlignmentX(LEFT_ALIGNMENT);
 
-        nameLabel.setAlignmentY(TOP_ALIGNMENT);
-        modelNamePanel.setAlignmentY(TOP_ALIGNMENT);
-        innerPanel.setAlignmentY(TOP_ALIGNMENT);
+        _nameLabel.setAlignmentY(TOP_ALIGNMENT);
+        _modelNamePanel.setAlignmentY(TOP_ALIGNMENT);
+        _innerPanel.setAlignmentY(TOP_ALIGNMENT);
         _nameText.setAlignmentY(TOP_ALIGNMENT);
-        topPanel.setAlignmentY(TOP_ALIGNMENT);
+        _topPanel.setAlignmentY(TOP_ALIGNMENT);
         _attListPanel.setAlignmentY(TOP_ALIGNMENT);
         _scrollPane.setAlignmentY(TOP_ALIGNMENT);
-        bottomPanel.setAlignmentY(TOP_ALIGNMENT);
+        _bottomPanel.setAlignmentY(TOP_ALIGNMENT);
 
-        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        modelNamePanel
-                .setLayout(new BoxLayout(modelNamePanel, BoxLayout.X_AXIS));
-        innerPanel.setLayout(new BoxLayout(innerPanel, BoxLayout.Y_AXIS));
+        _topPanel.setLayout(new BoxLayout(_topPanel, BoxLayout.Y_AXIS));
+        _modelNamePanel
+                .setLayout(new BoxLayout(_modelNamePanel, BoxLayout.X_AXIS));
+        _innerPanel.setLayout(new BoxLayout(_innerPanel, BoxLayout.Y_AXIS));
         _attListPanel.setLayout(new BoxLayout(_attListPanel, BoxLayout.Y_AXIS));
         _scrollPane.setLayout(new ScrollPaneLayout());
         _scrollPane.setPreferredSize(new Dimension(800, 300));
 
-        modelNamePanel.setMaximumSize(new Dimension(300, 20));
+        _modelNamePanel.setMaximumSize(new Dimension(300, 20));
         _nameText.setPreferredSize(new Dimension(100, 20));
-        nameLabel.setPreferredSize(new Dimension(70, 20));
+        _nameLabel.setPreferredSize(new Dimension(70, 20));
 
-        topPanel.setBorder(BorderFactory.createEmptyBorder());
-        nameLabel.setBorder(new EmptyBorder(2, 2, 2, 2));
+        _topPanel.setBorder(BorderFactory.createEmptyBorder());
+        _nameLabel.setBorder(new EmptyBorder(2, 2, 2, 2));
 
-        modelNamePanel.add(nameLabel);
-        modelNamePanel.add(_nameText);
-        innerPanel.add(modelNamePanel);
-        innerPanel.add(_scrollPane);
+        _modelNamePanel.add(_nameLabel);
+        _modelNamePanel.add(_nameText);
+        _innerPanel.add(_modelNamePanel);
+        _innerPanel.add(_scrollPane);
 
         try {
 
@@ -208,10 +202,10 @@ public class AttributesListPanel extends JPanel {
 
         });
 
-        topPanel.add(innerPanel);
-        bottomPanel.add(add_Button);
-        add(topPanel);
-        add(bottomPanel);
+        _topPanel.add(_innerPanel);
+        _bottomPanel.add(add_Button);
+        add(_topPanel);
+        add(_bottomPanel);
         validate();
         repaint();
         
@@ -290,7 +284,7 @@ public class AttributesListPanel extends JPanel {
      * @exception IllegalActionException
      *          Thrown if a problem occurs creating the attribute objects.
      */
-    public ArrayList<Attribute> getAttributes()
+    protected ArrayList<Attribute> getAttributes()
             throws IllegalActionException {
 
         ArrayList<Attribute> returnList = new ArrayList();
@@ -438,7 +432,7 @@ public class AttributesListPanel extends JPanel {
      *           (true they do. false if they do not).
      * 
      */
-    public boolean allAttributeNamesSet() {
+    protected boolean allAttributeNamesSet() {
 
         Component[] componentArray1 = _attListPanel.getComponents();
 
@@ -477,7 +471,7 @@ public class AttributesListPanel extends JPanel {
      *           (true they do. false if they do not).
      * 
      */
-    public boolean allAttributeValuesSet() {
+    protected boolean allAttributeValuesSet() {
 
         Component[] componentArray1 = _attListPanel.getComponents();
 
@@ -735,12 +729,22 @@ public class AttributesListPanel extends JPanel {
     }
 
     ///////////////////////////////////////////////////////////////////
+    //                    protected variables                        ////
+
+
+    protected JPanel _topPanel = new JPanel();
+    protected JPanel _bottomPanel = new JPanel();
+    protected JPanel _innerPanel = new JPanel();
+    protected JPanel _modelNamePanel = new JPanel();
+    protected JLabel _nameLabel = new JLabel("Model Name");
+    protected HashMap _AttDelete;
+    protected JPanel _attListPanel;
+    protected HashMap _aList;
+    
+    ///////////////////////////////////////////////////////////////////
     //                    private variables                        ////
 
-    private JPanel _attListPanel;
-    private HashMap _aList;
     private JScrollPane _scrollPane;
-    private HashMap _AttDelete;
     private NamedObj _model;
     private JTextField _nameText;
     private boolean _modified;

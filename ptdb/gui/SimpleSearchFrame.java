@@ -123,7 +123,7 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
         _sourceFrame = frame;
         _configuration = configuration;
 
-        _attributesListPanel = new AttributesListPanel(new NamedObj());
+        _attributesListPanel = new AttributesSearchListPanel(new NamedObj());
         _saveLocation = null;
         _searchCriteria = new SearchCriteria();
         _baseTableau = tableau;
