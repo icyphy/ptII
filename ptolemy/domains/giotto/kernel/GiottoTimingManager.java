@@ -30,13 +30,16 @@ import java.util.Random;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
 import ptolemy.actor.Initializable;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.SharedParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.Variable;
@@ -413,14 +416,12 @@ public class GiottoTimingManager extends SingletonAttribute implements
                     }
 
                     public void preinitialize() throws IllegalActionException {
-                        /*double wcet = 0;
+                        double wcet = 0;
                         double _periodValue = 0;
 
-                        Attribute dirWCET = container.getAttribute("WCET");
-                        if (dirWCET != null) {
-                            wcet = ((DoubleToken) ((Variable) dirWCET)
-                                    .getToken()).doubleValue();
-                        }
+                        wcet = _getDirectorWCET(container);
+                        _periodValue = _getDirectorPeriod(container);
+
                         if (_debugging) {
                             _debug("the WCET time seen by the director is "
                                     + wcet + " and the period is "
@@ -445,7 +446,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                         } //end of if  
                         if (_debugging) {
                             _debug("at the end of preinitialize in the timing quantity manager.");
-                        }*/
+                        }
                     }
 
                     public void removeInitializable(Initializable initializable) {
@@ -578,6 +579,72 @@ public class GiottoTimingManager extends SingletonAttribute implements
 
     /** Indicator that a new random number is needed. */
     protected boolean _needNew = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
+
+    private double _getDirectorPeriod(NamedObj container)
+            throws IllegalActionException {
+        double thePeriod = 0.0;
+        Director d = ((CompositeActor) container).getDirector();
+        Parameter period = (Parameter) d.getAttribute("period");
+        try {
+            thePeriod = ((DoubleToken) period.getToken()).doubleValue();
+        } catch (IllegalActionException e) {
+
+        }
+        //FIXME: need to check to see if this is an embedded director and if so
+        // modify thePeriod to be periodValue / frequencyValue
+        // currently the isEmbedded method is private to director
+
+        if (d._isEmbedded()) {
+            int frequencyValue = 1;
+            Director executiveDirector = ((CompositeActor) container)
+                    .getExecutiveDirector();
+
+            if (executiveDirector instanceof GiottoDirector) {
+                double periodValue = ((GiottoDirector) executiveDirector)
+                        .getPeriod();
+                Attribute frequency = ((CompositeActor) container)
+                        .getAttribute("frequency");
+
+                if (frequency instanceof Parameter) {
+                    Token result = ((Parameter) frequency).getToken();
+                    if (result instanceof IntToken) {
+                        frequencyValue = ((IntToken) result).intValue();
+                    }
+                }
+
+                thePeriod = periodValue / frequencyValue;
+            }
+        }
+
+        return thePeriod;
+    }
+
+    /**
+     * Return the cumulative WCET of the actors seen by the director
+     * The Worst-Case Execution Time (WCET) of an actor is the  estimated
+     * maximum length of time the task could take to execute on a
+     * particular platform
+     * @return A double containing the WCET of the actors
+     */
+    private double _getDirectorWCET(NamedObj container)
+            throws IllegalActionException {
+
+        // cumulative worst case execution times
+        double actorWorstCaseExecutionTimes = 0;
+
+        List<Actor> entities = ((CompositeActor) container).deepEntityList();
+        for (Actor actor : entities) {
+            Attribute WCET = ((Entity) actor).getAttribute("WCET");
+            actorWorstCaseExecutionTimes += ((DoubleToken) ((Variable) WCET)
+                    .getToken()).doubleValue();
+
+        }
+
+        return actorWorstCaseExecutionTimes;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
