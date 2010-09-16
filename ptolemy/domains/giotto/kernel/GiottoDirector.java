@@ -54,9 +54,8 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
@@ -448,101 +447,17 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         return _periodValue;
     }
 
-    /**
-     * Return the WCET of the actors.
-     * The Worst-Case Execution Time (WCET) of an actor is the maximum length of time 
-     * the task could take to execute on a particular platform
-     * @return A double containing the WCET of the actors
-     * @throws IllegalActionException If an error occurs
-
-     */
-    public double getWCET() throws IllegalActionException {
-        double wcet = 0;
-        double actorFrequency = 0;
-        double actorWCET = 0;
-        int actorCount = 0;
-        //CodeGeneratorHelper  directorHelper;
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) this
-                .getContainer()).deepEntityList()) {
-            actorCount++;
-            Attribute frequency = ((Entity) actor).getAttribute("frequency");
-            //  ptolemy.actor.Director dd =actor.getDirector();
-            Attribute WCET = ((Entity) actor).getAttribute("WCET");
-
-            if (!(actor instanceof ptolemy.domains.giotto.lib.GiottoError)) {
-
-                if (actor instanceof CompositeActor) {
-
-                    if (_debugging) {
-                        _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
-                    }
-                    Director dir = actor.getDirector();
-
-                    if (_debugging) {
-                        _debug(dir.getFullName());
-                    }
-                    if (dir == null) {
-
-                        if (_debugging) {
-                            _debug("no director in composite actor ");
-                        }
-
-                    } else {
-                        double dummyWCET = 0.0011;
-                        Attribute dirWCET = dir.getAttribute("WCET");
-                        if (dirWCET != null) {
-                            dummyWCET = ((DoubleToken) ((Variable) dirWCET)
-                                    .getToken()).doubleValue();
-                        }
-                        if (_debugging) {
-                            _debug("Composite Actor:" + actor.getFullName()
-                                    + " has WCET " + dummyWCET);
-                        }
-                        wcet += dummyWCET;
-                    }
-                } else {
-
-                    if (WCET == null) {
-                        actorWCET = 0.0;
-                    } else {
-                        actorWCET = ((DoubleToken) ((Variable) WCET).getToken())
-                                .doubleValue();
-                    }
-                    if (frequency == null) {
-                        actorFrequency = 1;
-                    } else {
-                        actorFrequency = ((IntToken) ((Variable) frequency)
-                                .getToken()).intValue();
-                    }
-
-                    wcet += (actorFrequency * actorWCET);
-                }
-            }
-            if (_debugging) {
-                _debug("with actor " + actor.getFullName()
-                        + " wect thus far is " + wcet);
-
-                _debug("with actor " + actor.getFullName()
-                        + " wect thus far is " + wcet);
-
-                _debug("actor count is " + actorCount);
-            }
-        }
-
-        return wcet;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /* *//** Handle a model error.
-          *  @param context The object in which the error occurred.
-          *  @param exception An exception that represents the error.
-          *  @return True if the error has been handled, or false if the
-          *   error is not handled.
-          *  @exception IllegalActionException If the handler handles the
-          *   error by throwing an exception.///
-          */
+           *  @param context The object in which the error occurred.
+           *  @param exception An exception that represents the error.
+           *  @return True if the error has been handled, or false if the
+           *   error is not handled.
+           *  @exception IllegalActionException If the handler handles the
+           *   error by throwing an exception.///
+           */
     /*
     public boolean handleModelError(NamedObj context,
          IllegalActionException exception) throws IllegalActionException {
@@ -741,7 +656,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
+        System.out.println("preinitialize method in giotto director called");
         // before initialize the contained actors, reset the period parameter
         // if the model is embedded inside another giotto model.
         CompositeActor compositeActor = (CompositeActor) (getContainer());
@@ -767,31 +682,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
 
         // Actor actor;
-        double wcet = 0;
-        Attribute dirWCET = this.getContainer().getAttribute("WCET");
-        if (dirWCET != null) {
-            wcet = ((DoubleToken) ((Variable) dirWCET).getToken())
-                    .doubleValue();
-        }
-        if (_debugging) {
-            _debug("the WCET time seen by the director is " + wcet
-                    + " and the period is " + _periodValue);
-        }
-        if (wcet > _periodValue) {
 
-            if (_debugging) {
-                _debug("throw an exception");
-            }
-            // this is the static check before execution
-            throw new IllegalActionException(this, "total WCET of (" + wcet
-                    + ") is larger than period (" + _periodValue
-                    + ") for actor "
-                    + ((CompositeActor) (getContainer())).getDisplayName());
-
-        } //end of if  
-        if (_debugging) {
-            _debug("at the end of preinitialize in the giotto director.");
-        }
     }
 
     /** Return an array of suggested directors to be used with
@@ -836,8 +727,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
                 if ((insideReceivers != null) && (insideReceivers[i] != null)) {
                     if (_debugging) {
-                        _debug(getName(), "transferring input from "
-                                + port.getName() + " channel " + i);
+                        _debug(getName(),
+                                "transferring input from " + port.getName()
+                                        + " channel " + i);
                     }
 
                     for (int j = 0; j < insideReceivers[i].length; j++) {
@@ -975,6 +867,11 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     "synchronizeToRealTime", new BooleanToken(false));
 
             timeResolution.setVisibility(Settable.FULL);
+            // this is a temporary addition
+            forJPF = new Parameter(this, "forJPF");
+            forJPF.setTypeEquals(BaseType.BOOLEAN);
+            forJPF.setExpression("false");
+
         } catch (KernelException ex) {
             throw new InternalErrorException("Cannot initialize director: "
                     + ex.getMessage());
@@ -1029,10 +926,11 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
     /* *//** The errorAction operator.  This is a string-valued attribute
-          *  that defaults to "warn".
-          */
+           *  that defaults to "warn".
+           */
     /*
     public StringParameter errorAction;*/
+    public Parameter forJPF;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
