@@ -58,8 +58,7 @@ JSRCS = \
 	Point3D.java \
 	RandomPoints.java \
 	Rotate3D.java \
-	Translate3D.java \
-	ViewScene3D.java 
+	Translate3D.java
 
 EXTRA_SRCS =    $(JSRCS)
 
