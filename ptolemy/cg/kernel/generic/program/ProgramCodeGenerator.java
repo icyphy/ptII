@@ -1051,7 +1051,7 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         // FIXME: Some user libraries may depend on our generated
         // code (i.e. definition of "boolean"). So, we need to append
         // these user libraries after the sharedCode. An easy to do
-        // this is to separate the standard libraries from user librar,
+        // this is to separate the standard libraries from user library,
         // hinted by the angle bracket <> syntax in a #include statement.
         code.append(includeFiles);
         // Get any include or import lines needed by the variable declarations.
