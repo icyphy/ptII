@@ -130,6 +130,10 @@ public class AudioCapture extends LiveSoundActor {
         output.setTypeEquals(BaseType.DOUBLE);
         output.setMultiport(true);
 
+        // Bert Rodiers suggests, "... treat this like the Minimum Actor. See
+        // http://www.eecs.berkeley.edu/Pubs/TechRpts/2010/EECS-2010-120.pdf for details."
+        output.setDefaultWidth(1);
+
         output_tokenProductionRate = new Parameter(output,
                 "tokenProductionRate");
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
