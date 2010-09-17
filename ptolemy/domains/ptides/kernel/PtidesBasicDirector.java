@@ -555,7 +555,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  @return true if this director is at the top level.
      */
     public boolean isTopLevel() {
-        return !_isEmbedded();
+        return !isEmbedded();
     }
 
     /** Return a new receiver of the type PtidesBasicReceiver.
@@ -1658,8 +1658,17 @@ public class PtidesBasicDirector extends DEDirector {
     /** Return false to get the superclass DE director to behave exactly
      *  as if it is executing at the top level.
      *  @return False.
+     * @deprecated Use {@link #isEmbedded()} instead
      */
     protected boolean _isEmbedded() {
+        return isEmbedded();
+    }
+
+    /** Return false to get the superclass DE director to behave exactly
+     *  as if it is executing at the top level.
+     *  @return False.
+     */
+    public boolean isEmbedded() {
         return false;
     }
 
