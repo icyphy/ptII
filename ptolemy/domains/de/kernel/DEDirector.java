@@ -965,7 +965,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // NOTE: Some (weird) directors pretend they are not embedded even
         // if they are (e.g. in Ptides), so we call _isEmbedded() to give
         // the subclass the option of pretending it is not embedded.
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
                 Director executiveDirector = ((CompositeActor) container)
@@ -988,7 +988,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             fireAt((Actor) getContainer(), _stopTime);
         }
 
-        if (_isEmbedded() && !_eventQueue.isEmpty()) {
+        if (isEmbedded() && !_eventQueue.isEmpty()) {
             // If the event queue is not empty and the container is not at
             // the top level, ask the upper level director in the
             // hierarchy to refire the container at the timestamp of
@@ -1061,7 +1061,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             // If the current time is bigger than the stop time,
             // stop the model execution.
             result = false;
-        } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
+        } else if (isEmbedded() && !_eventQueue.isEmpty()) {
             // If the event queue is not empty and the container is an
             // embedded model, ask the upper level director in the
             // hierarchy to refire the container at the timestamp of the
@@ -1070,7 +1070,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             // levels in hierarchy) to keep a relatively short event queue.
             _requestFiring();
         }
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             // Indicate that fireAt() requests should be passed up the
             // hierarchy if they are made before the next iteration.
             _delegateFireAt = true;
@@ -1133,7 +1133,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // if this director is not at the top level.
         boolean result = super.prefire();
         // Have to also do this for the microstep.
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
                 Director executiveDirector = ((CompositeActor) container)
@@ -1623,7 +1623,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
                 }
             }
 
-            if (_isEmbedded()) {
+            if (isEmbedded()) {
                 // If the director is not at the top level.
                 if (_eventQueue.isEmpty()) {
                     // This could happen if the container simply fires
