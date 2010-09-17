@@ -1469,17 +1469,23 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         _hadToken.add(port);
                         result = true;
                     } else {
-                        if (_debugging) {
-                            _debug(getName(), "sending clear from " + port.getName());
-                        }
                         if (!_hadToken.contains(port)) {
+                            if (_debugging) {
+                                _debug(getName(), "sending clear from " + port.getName());
+                            }
                             // only send a clear (=absent) to the port, iff it is ensured that
                             // in the current state, there might not be an enabled transition (now
                             // or later)
                             // that then would produce a token on that port
                             FSMActor controller = getController();
-                            boolean guardsEvaluable = _isSafeToClear(port, controller);
-                            if (guardsEvaluable) {
+                            // If a transition has been chosen, then it is safe to set
+                            // the outputs absent. If no transition has been chosen,
+                            // then we have to check to make sure that sometime later
+                            // in the fixed-point iteration, it will not be possible
+                            // for a transition to become enabled that might send data
+                            // on this port.
+                            if ((controller.getLastChosenTransition() != null) ||
+                                    _isSafeToClear(port, controller)) {
                                 port.send(i, null);
                             }
                         }
