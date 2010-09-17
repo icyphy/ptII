@@ -785,7 +785,7 @@ public class Director extends Attribute implements Executable {
      *  actor contained by another composite actor.
      *  @return True if this directory is embedded inside an opaque composite
      *  actor contained by another composite actor.
-    */
+     */
     public boolean isEmbedded() {
         return !_isTopLevel();
     }
@@ -1452,7 +1452,7 @@ public class Director extends Attribute implements Executable {
      *  @return True if this directory is embedded inside an opaque composite
      *  actor contained by another composite actor.
      * @deprecated Use {@link #isEmbedded()} instead
-    */
+     */
     protected boolean _isEmbedded() {
         return isEmbedded();
     }
