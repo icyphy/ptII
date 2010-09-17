@@ -256,7 +256,7 @@ public class GiottoDecoratedAttributesImplementation2 extends
      *  The result is a DecoratedAttributes object with no container.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If unable to clone 
-     *  from the base class
+     *  from the super class
      *  @return The new Attribute.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
