@@ -444,7 +444,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // enclosing domain that is not continuous are discrete, so we should
         // not read them if the current superdense index is 0. This would
         // violate the piecewise continuity constraint.
-        if (!_redoingSolverIteration && _index == 0 && _isEmbedded()) {
+        if (!_redoingSolverIteration && _index == 0 && isEmbedded()) {
             // Check the input ports to see if any has an input. If
             // it does, set the current step size to zero and execute
             // one round without the input. The input will be read at
@@ -778,7 +778,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // is embedded in a DE model but has no input ports, without the
         // following statements, the composite actor has no chance to be fired.
         // Also, we want to be sure to be fired at the stop time.
-        if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
+        if (isEmbedded() && (_enclosingContinuousDirector() == null)) {
             // In preinitialize(), _startTime was set to the start time of
             // the executive director. However, this invocation of initialize()
             // may be occurring later in the execution of a model, as a result
@@ -895,7 +895,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_enclosingContinuousDirector() != null) {
             // Need to closely coordinate with the enclosing director
             result = result && _postfireWithEnclosingContinuousDirector();
-        } else if (_isEmbedded()) {
+        } else if (isEmbedded()) {
             result = result && _postfireWithEnclosingNonContinuousDirector();
         } else {
             // This director is at the top level.
@@ -925,7 +925,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_enclosingContinuousDirector() != null) {
             // Need to closely coordinate with the enclosing director
             return _prefireWithEnclosingContinuousDirector();
-        } else if (_isEmbedded()) {
+        } else if (isEmbedded()) {
             return _prefireWithEnclosingNonContinuousDirector();
         } else {
             // This director is at the top level.
@@ -1617,7 +1617,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         _maxStepSize = ((DoubleToken) maxStepSize.getToken()).doubleValue();
         _currentStepSize = _initStepSize;
 
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             _startTime = ((Actor) getContainer()).getExecutiveDirector()
                     .getModelStartTime();
         } else {
