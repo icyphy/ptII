@@ -61,6 +61,7 @@ import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
+import ptdb.common.dto.PTDBGenericAttribute;
 import ptdb.common.dto.SaveModelTask;
 import ptdb.common.dto.UpdateAttributeTask;
 import ptdb.common.dto.UpdateParentsToNewVersionTask;
@@ -639,25 +640,34 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(false);
 
         AttributeSearchTask task = new AttributeSearchTask();
-        Attribute attribute = PowerMock.createMock(Attribute.class);
+        PTDBGenericAttribute createdByattribute = new PTDBGenericAttribute();
 
-        Variable variableCreatedBy = new Variable();
-        variableCreatedBy.setClassName("ptolemy.data.expr.StringParameter");
-        variableCreatedBy.setName("CreatedBy");
-        Token tokenCreatedBy = new StringToken("Ashwini Bijwe");
-        variableCreatedBy.setToken(tokenCreatedBy);
+//        Variable variableCreatedBy = new Variable();
+        createdByattribute.setClassName("ptolemy.data.expr.StringParameter");
+        createdByattribute.setAttributeName("CreatedBy");
+        
+        ArrayList<String> values = new ArrayList<String>();
+        values.add("Ashwini Bijwe");
+        createdByattribute.setValues(values);
+        
+        PTDBGenericAttribute modelIdAttribute = new PTDBGenericAttribute();
 
-        Variable variableModelId = new Variable();
-        variableModelId.setClassName("ptolemy.data.expr.Parameter");
-        variableModelId.setName("ModelId");
-        Token tokenModelId = new StringToken("13781");
-        variableModelId.setToken(tokenModelId);
+//        Variable variableModelId = new Variable();
+        modelIdAttribute.setClassName("ptolemy.data.expr.Parameter");
+        modelIdAttribute.setAttributeName("ModelId");
+        
+        ArrayList<String> modelIdValues = new ArrayList<String>();
+        
+        modelIdValues.add("13781");
+        
+        modelIdAttribute.setValues(modelIdValues);
+        
 
-        task.addAttribute(attribute);
-        task.addAttribute(variableCreatedBy);
-        task.addAttribute(variableModelId);
-        task.addAttribute(attribute);
 
+        task.addAttribute(createdByattribute);
+        task.addAttribute(modelIdAttribute);
+        
+        
         try {
 
             ArrayList<XMLDBModel> modelsList = conn
@@ -676,11 +686,11 @@ public class TestOracleXMLDBConnection {
                         "_executeSingleAttributeMatch");
 
                 PowerMock.expectPrivate(mockConn, "_createAttributeClause",
-                        OracleXMLDBConnection.class, variableCreatedBy, false)
-                        .andThrow(new IllegalActionException("Test Exception"));
+                        OracleXMLDBConnection.class, createdByattribute)
+                        .andReturn("Test String");
 
                 PowerMock.expectPrivate(mockConn, "_createAttributeClause",
-                        OracleXMLDBConnection.class, variableModelId, false)
+                        OracleXMLDBConnection.class, modelIdAttribute)
                         .andReturn("Test String");
 
                 PowerMock.expectPrivate(mockConn,
@@ -706,11 +716,135 @@ public class TestOracleXMLDBConnection {
 
             ///////////////////////////////////////////////////////////////////////////////////////
             //0-size attribute list
-            task.setAttributesList(new ArrayList<Attribute>());
+            task.setAttributesList(new ArrayList<PTDBGenericAttribute>());
             modelsList = conn.executeAttributeSearchTask(task);
             assertTrue("Search was performed without attributes list.",
                     modelsList == null);
+            
+            
+            
+            PTDBGenericAttribute multiValueAttribute = new PTDBGenericAttribute();            
+        
+            multiValueAttribute.setClassName("ptolemy.data.expr.StringParameter");
+        
+            multiValueAttribute.setAttributeName("DBModelId");
+        
+        
+            modelIdValues = new ArrayList<String>();
+        
+        
+            modelIdValues.add("X");
+            modelIdValues.add("ModelB");
+            
+        
+        
+            multiValueAttribute.setValues(modelIdValues);
+            
+            ArrayList<PTDBGenericAttribute> attributesList = new ArrayList<PTDBGenericAttribute>();
+            attributesList.add(multiValueAttribute);
+            task.setAttributesList(attributesList);
+            
+            
+            modelsList = conn.executeAttributeSearchTask(task);
+            assertTrue("Number of models should be 2.",
+                    modelsList.size() == 2);
+            
+            
 
+            
+            PTDBGenericAttribute classAndNameOnlyAttribute = new PTDBGenericAttribute();            
+            
+            classAndNameOnlyAttribute.setClassName("ptolemy.data.expr.StringParameter");
+        
+            classAndNameOnlyAttribute.setAttributeName("DBModelId");
+            
+            attributesList = new ArrayList<PTDBGenericAttribute>();
+            attributesList.add(classAndNameOnlyAttribute);
+            task.setAttributesList(attributesList);
+            
+            
+            modelsList = conn.executeAttributeSearchTask(task);
+            assertTrue("Number of models should be greater than 0.",
+                    modelsList.size() > 0);
+            
+            
+            
+            PTDBGenericAttribute nameAndValueAttribute = new PTDBGenericAttribute();            
+        
+            nameAndValueAttribute.setAttributeName("DBModelId");
+                
+            modelIdValues = new ArrayList<String>();
+                
+            modelIdValues.add("X");
+            modelIdValues.add("ModelB");
+            
+                
+            nameAndValueAttribute.setValues(modelIdValues);
+            
+            attributesList = new ArrayList<PTDBGenericAttribute>();
+            attributesList.add(nameAndValueAttribute);
+            task.setAttributesList(attributesList);
+            
+            
+            modelsList = conn.executeAttributeSearchTask(task);
+            assertTrue("Number of models should be greater than 0.",
+                    modelsList.size() > 0);
+            
+            
+            PTDBGenericAttribute nameOnlyAttribute = new PTDBGenericAttribute();            
+            
+            nameOnlyAttribute.setAttributeName("DBModelId");
+                
+            
+            attributesList = new ArrayList<PTDBGenericAttribute>();
+            attributesList.add(nameOnlyAttribute);
+            task.setAttributesList(attributesList);
+            
+            
+            modelsList = conn.executeAttributeSearchTask(task);
+            assertTrue("Number of models should be greater than 0.",
+                    modelsList.size() > 0);
+            
+            
+            
+            PTDBGenericAttribute valueOnlyAttribute = new PTDBGenericAttribute();            
+
+                
+            modelIdValues = new ArrayList<String>();
+                
+            modelIdValues.add("X");
+            modelIdValues.add("ModelB");
+            
+                
+            valueOnlyAttribute.setValues(modelIdValues);
+            
+            attributesList = new ArrayList<PTDBGenericAttribute>();
+            attributesList.add(valueOnlyAttribute);
+            task.setAttributesList(attributesList);
+            
+            
+            modelsList = conn.executeAttributeSearchTask(task);
+            assertTrue("Number of models should be greater than 0.",
+                    modelsList.size() > 0);
+            
+            
+            
+            
+
+            PTDBGenericAttribute classOnlyAttribute = new PTDBGenericAttribute();            
+            
+            classOnlyAttribute.setClassName("ptolemy.data.expr.StringParameter");
+           
+            attributesList = new ArrayList<PTDBGenericAttribute>();
+            attributesList.add(classOnlyAttribute);
+            task.setAttributesList(attributesList);
+            
+            
+            modelsList = conn.executeAttributeSearchTask(task);
+            assertTrue("Number of models should be greater than 0.",
+                    modelsList.size() > 0);
+            
+            
             conn.closeConnection();
         } catch (DBExecutionException e) {
             fail("Unexpected Exception - " + e.getMessage());
@@ -2440,6 +2574,31 @@ public class TestOracleXMLDBConnection {
                 oracleXMLDBConnection.closeConnection();
             }
         }
+    }
+    
+    /**
+     * Test executeGetListOfAllModels method.
+     * @throws Exception Thrown if the test fails and the exception was not handled. 
+     */
+    @Test 
+    public void testExecuteGetListOfAllModels() throws Exception {
+
+        OracleXMLDBConnection oracleXMLDBConnection = (OracleXMLDBConnection) DBConnectorFactory
+        .getSyncConnection(true);
+        
+        
+        try {
+            
+            List<XMLDBModel> allModels = oracleXMLDBConnection.executeGetListOfAllModels();
+            
+          
+            assertTrue("Is number of models returned greater than ZERO?", allModels.size() > 0);
+            
+        } catch (Exception e) {
+            
+            fail("Method threw an Exception - " + e.getMessage());
+        }
+
     }
     
     
