@@ -31,6 +31,7 @@ package ptdb.kernel.database;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -54,6 +55,7 @@ import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
+import ptdb.common.dto.PTDBGenericAttribute;
 import ptdb.common.dto.PTDBSearchAttribute;
 import ptdb.common.dto.RemoveModelsTask;
 import ptdb.common.dto.RenameModelTask;
@@ -420,7 +422,7 @@ public class OracleXMLDBConnection implements DBConnection {
      */
     public List<XMLDBModel> executeGetListOfAllModels() throws DBExecutionException {
         
-        ArrayList<String> modelsList = new ArrayList<String>();
+        ArrayList<XMLDBModel> modelsList = new ArrayList<XMLDBModel>();
         
         String query = "for $model in collection (\""
                 + _params.getContainerName()
@@ -435,7 +437,10 @@ public class OracleXMLDBConnection implements DBConnection {
                     value = results.next();
                     String modelName = value.asString();
                     if (!modelName.endsWith(".ptdbxml")) {
-                        modelsList.add(modelName);
+                        
+                        XMLDBModel model = new XMLDBModel(_extractModelName(
+                                modelName));
+                        modelsList.add(model);
                     }
                 }
             }
@@ -445,7 +450,10 @@ public class OracleXMLDBConnection implements DBConnection {
                     "Failed to execute GetListOfAllModels - "
                             + e.getMessage(), e);           
         }
-        return _getDistinctModelsList(modelsList);
+        
+        Collections.sort(modelsList);
+        
+        return modelsList;
     }
 
     /**
@@ -804,51 +812,50 @@ public class OracleXMLDBConnection implements DBConnection {
 
         ArrayList<XMLDBModel> finalModelsList = new ArrayList<XMLDBModel>();
         ArrayList<String> matchingModelNamesList = null;
-        ArrayList<Attribute> attributesList = task.getAttributesList();
+        ArrayList<PTDBGenericAttribute> attributesList = task.getAttributesList();
 
         if (attributesList != null && attributesList.size() > 0) {
-            for (Attribute attribute : attributesList) {
-                if (attribute instanceof Variable) {
-                    try {
-                        boolean isFromAttributeMatcher = false;
-                        if (attribute instanceof PTDBSearchAttribute) {
-                            isFromAttributeMatcher = true;
-                        }
-                        String attributeClause = _createAttributeClause(
-                                (Variable) attribute, isFromAttributeMatcher);
-                        ArrayList<String> modelNamesList = _executeSingleAttributeMatch(attributeClause);
-                        if (matchingModelNamesList == null) {
-                            matchingModelNamesList = new ArrayList<String>();
-                            matchingModelNamesList.addAll(modelNamesList);
-                        } else {
-                            matchingModelNamesList.retainAll(modelNamesList);
-                        }
-
-                    } catch (IllegalActionException e) {
-
-                        System.out
-                                .println("Exception while retriving value for attribute - "
-                                        + attribute.getName()
-                                        + " - "
-                                        + attribute.getClassName());
-
-                    } catch (XmlException e) {
-
-                        throw new DBExecutionException(
-                                "Error while executing GetAttributesSearch - "
-                                        + e.getMessage(), e);
+            for (PTDBGenericAttribute attribute : attributesList) {
+//                if (attribute instanceof Variable) {
+                try {
+//                    boolean isFromAttributeMatcher = false;
+//                    if (attribute instanceof PTDBSearchAttribute) {
+//                        isFromAttributeMatcher = true;
+//                    }
+                    String attributeClause = _createAttributeClause(attribute);
+                    ArrayList<String> modelNamesList = _executeSingleAttributeMatch(attributeClause);
+                    if (matchingModelNamesList == null) {
+                        matchingModelNamesList = new ArrayList<String>();
+                        matchingModelNamesList.addAll(modelNamesList);
+                    } else {
+                        matchingModelNamesList.retainAll(modelNamesList);
                     }
-                    if (matchingModelNamesList != null
-                            && matchingModelNamesList.size() == 0) {
-                        return finalModelsList;
-                    }
+
+//                } catch (IllegalActionException e) {
+//
+//                    System.out
+//                            .println("Exception while retriving value for attribute - "
+//                                    + attribute.getAttributeName()
+//                                    + " - "
+//                                    + attribute.getClassName());
+
+                } catch (XmlException e) {
+
+                    throw new DBExecutionException(
+                            "Error while executing GetAttributesSearch - "
+                                    + e.getMessage(), e);
                 }
+                if (matchingModelNamesList != null
+                        && matchingModelNamesList.size() == 0) {
+                    return finalModelsList;
+                }
+//                }
             }
 
             if (matchingModelNamesList != null
                     && matchingModelNamesList.size() > 0) {
-
-				return _getDistinctModelsList(matchingModelNamesList);
+                
+                return _getDistinctModelsList(matchingModelNamesList);
             }
         }
         return null;
@@ -1884,44 +1891,62 @@ public class OracleXMLDBConnection implements DBConnection {
     /**
      * Create the attribute sub-query for the given attribute.
      * 
-     * @param attribute Attribute for which the sub-query needs to be created.
+     * @param attribute PTDBGenericAttribute for which the sub-query needs to be created.
      * 
      * @return Sub-query for the given attribute.
-     * @exception IllegalActionException If thrown whie retrieving attribute
-     * data.
      */
-    private String _createAttributeClause(Variable attribute,
-            boolean isFromAttributeMatcher) throws IllegalActionException {
+    private String _createAttributeClause(PTDBGenericAttribute attribute) {
 
         StringBuffer attributesQuery = new StringBuffer();
         boolean isPreviousClauseSet = false;
-        if (attribute.getName() != null
-                && !"".equals(attribute.getName().trim())) {
+        if (attribute.getAttributeName() != null
+                && !"".equals(attribute.getAttributeName().trim())) {
             attributesQuery.append("$const/@name=\"").append(
-                    attribute.getName()).append("\"");
+                    attribute.getAttributeName()).append("\"");
             isPreviousClauseSet = true;
         }
+        
+        ArrayList<String> attributeValues = attribute.getValues();
 
-        if (attribute.getToken() != null) {
+        if (attributeValues != null && attributeValues.size() > 0) {
+                    
             if (isPreviousClauseSet) {
-                attributesQuery.append(" and ");
+                attributesQuery.append(" and ");        
             }
+            
+            String valuesClause = ""; 
+        
+            for(String value : attributeValues) {
+                    
+                valuesClause = valuesClause + "$const/@value[contains(.,\"" 
+                        + value + "\")]" + " or ";
+                
+                    isPreviousClauseSet = true;       
+            }
+            
+            valuesClause = valuesClause.substring(0, 
+                    valuesClause.lastIndexOf(" or "));
+            
+            valuesClause = valuesClause.trim();
+            
+            if (attributeValues.size() > 1) {
+                valuesClause = "(" + valuesClause + ")";
+            }
+            
+            attributesQuery.append(valuesClause);
 
-            attributesQuery.append("$const/@value[contains(.,\"").append(
-                    _removeQuotes(attribute.getToken().toString())).append(
-                    "\")]");
+        } 
 
-            isPreviousClauseSet = true;
-        }
+        String attributeClass = attribute.getClassName();
 
-        if (!isFromAttributeMatcher) {
+        if (attributeClass != null && attributeClass.length() > 0) {
 
             if (isPreviousClauseSet) {
-                attributesQuery.append(" and ");
+                attributesQuery.append(" and ");        
             }
-
-            attributesQuery.append("$const/@class=\"").append(
-                    attribute.getClassName()).append("\"");
+            
+            attributesQuery.append("$const/@class=\"").append(        
+                    attributeClass).append("\"");
         }
 
         return attributesQuery.toString();
