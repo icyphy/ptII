@@ -718,8 +718,8 @@ public class Director extends Attribute implements Executable {
                 Actor actor = (Actor) actors.next();
 
                 if (_debugging) {
-                    _debug("Invoking initialize(): ", ((NamedObj) actor)
-                            .getFullName());
+                    _debug("Invoking initialize(): ",
+                            ((NamedObj) actor).getFullName());
                 }
 
                 initialize(actor);
@@ -779,6 +779,15 @@ public class Director extends Attribute implements Executable {
      *  of the director.
      */
     public void invalidateSchedule() {
+    }
+
+    /** Return true if this director is embedded inside an opaque composite
+     *  actor contained by another composite actor.
+     *  @return True if this directory is embedded inside an opaque composite
+     *  actor contained by another composite actor.
+     */
+    public boolean isEmbedded() {
+        return !_isTopLevel();
     }
 
     /** Return false. This director iterates actors in its fire()
@@ -973,8 +982,8 @@ public class Director extends Attribute implements Executable {
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 if (_debugging) {
-                    _debug("Invoking preinitialize(): ", ((NamedObj) actor)
-                            .getFullName());
+                    _debug("Invoking preinitialize(): ",
+                            ((NamedObj) actor).getFullName());
                 }
                 preinitialize(actor);
             }
@@ -1442,9 +1451,10 @@ public class Director extends Attribute implements Executable {
      *  actor contained by another composite actor.
      *  @return True if this directory is embedded inside an opaque composite
      *  actor contained by another composite actor.
+     * @deprecated Use {@link #_isEmbedded()} instead
      */
-    public boolean _isEmbedded() {
-        return !_isTopLevel();
+    protected boolean _isEmbedded() {
+        return isEmbedded();
     }
 
     /** Return true if this is a top-level director.
@@ -1512,8 +1522,8 @@ public class Director extends Attribute implements Executable {
                     // No inside connection to transfer tokens to.
                     // In this case, consume one input token if there is one.
                     if (_debugging) {
-                        _debug(getName(), "Dropping single input from "
-                                + port.getName());
+                        _debug(getName(),
+                                "Dropping single input from " + port.getName());
                     }
 
                     if (port.hasToken(i)) {
