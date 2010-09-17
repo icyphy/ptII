@@ -66,12 +66,12 @@ public class AttributeSearchTask extends Task {
     /**
      * Add the given attribute to the search attribute list.
      *
-     * @param attribute Attribute to add to the
+     * @param attribute PTDBGenericAttribute to add to the
      * search attribute list.
      */
-    public void addAttribute(Attribute attribute) {
+    public void addAttribute(PTDBGenericAttribute attribute) {
         if (_attributesList == null) {
-            _attributesList = new ArrayList<Attribute>();
+            _attributesList = new ArrayList<PTDBGenericAttribute>();
         }
 
         _attributesList.add(attribute);
@@ -82,7 +82,7 @@ public class AttributeSearchTask extends Task {
      * @see #setAttributesList
      * @return The search attribute list.
      */
-    public ArrayList<Attribute> getAttributesList() {
+    public ArrayList<PTDBGenericAttribute> getAttributesList() {
         return _attributesList;
     }
 
@@ -91,7 +91,7 @@ public class AttributeSearchTask extends Task {
      * @see #getAttributesList
      * @param attributesList List of attributes for search.
      */
-    public void setAttributesList(ArrayList<Attribute> attributesList) {
+    public void setAttributesList(ArrayList<PTDBGenericAttribute> attributesList) {
         _attributesList = attributesList;
     }
 
@@ -100,5 +100,5 @@ public class AttributeSearchTask extends Task {
     /**
      * The search attribute list.
      */
-    private ArrayList<Attribute> _attributesList;
+    private ArrayList<PTDBGenericAttribute> _attributesList;
 }
