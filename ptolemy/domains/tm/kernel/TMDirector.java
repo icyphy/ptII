@@ -481,7 +481,7 @@ public class TMDirector extends Director implements TimedDirector {
             }
         }
 
-        if (_isEmbedded()
+        if (isEmbedded()
                 && (_nextIterationTime.compareTo(Time.POSITIVE_INFINITY) < 0)) {
             _requestFiringAt(_nextIterationTime);
         }
@@ -526,7 +526,7 @@ public class TMDirector extends Director implements TimedDirector {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             _outsideTime = ((CompositeActor) getContainer())
                     .getExecutiveDirector().getModelTime();
         } else {
@@ -537,7 +537,7 @@ public class TMDirector extends Director implements TimedDirector {
         super.initialize();
         _realStartTime = System.currentTimeMillis();
 
-        if (_isEmbedded() && !_interruptQueue.isEmpty()) {
+        if (isEmbedded() && !_interruptQueue.isEmpty()) {
             Time nextPureEventTime = _interruptQueue.get().timeStamp();
             _requestFiringAt(nextPureEventTime);
         }
@@ -569,7 +569,7 @@ public class TMDirector extends Director implements TimedDirector {
      *  of one of the actors throws it.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             _outsideTime = ((CompositeActor) getContainer())
                     .getExecutiveDirector().getModelTime();
         } else {
@@ -584,7 +584,7 @@ public class TMDirector extends Director implements TimedDirector {
                     " current time = " + getModelTime());
         }
 
-        if (!_isEmbedded() && _synchronizeToRealTime) {
+        if (!isEmbedded() && _synchronizeToRealTime) {
             // Wait for real time to cache up.
             long elapsedTime = System.currentTimeMillis() - _realStartTime;
             double elapsedTimeInSeconds = elapsedTime / 1000.0;
@@ -745,7 +745,7 @@ public class TMDirector extends Director implements TimedDirector {
                     " Next iteration time = " + _nextIterationTime);
         }
 
-        if (!_isEmbedded()) {
+        if (!isEmbedded()) {
             if (getModelTime().compareTo(_stopTime) >= 0) {
                 return false;
             }
