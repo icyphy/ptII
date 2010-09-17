@@ -46,13 +46,12 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-////DecoratedAttributesImplementation
+////DecoratedAttributesImplementation2
 // This implementation leverages the code written by Bert Rodiers in DecoratedAttributesImplementation.java
 
 /**
 A class that decorates all the actors seen by the Giotto director.
 This is a modification of Bert's DecoratedAttributesImplementation class. 
-My first attempt at this may be incorrect.
 
 The functionality is divided in two classes (DecoratedAttributes
 and this class) to solve dependency issues.
@@ -109,24 +108,13 @@ public class GiottoDecoratedAttributesImplementation2 extends
                             + " already had wcet parameter appended");
                 }
             }
+
             try {
-                dummyParam = new Parameter(temp, "grace");
+                dummyParam = new Parameter(temp, "executionTime");
                 dummyParam.setTypeEquals(BaseType.DOUBLE);
                 dummyParam.setExpression(Double.toString(0.0));
 
-            } catch (NameDuplicationException e) {
-                if (_debugging) {
-                    _debug(actor.getFullName()
-                            + " already had grace parameter appended");
-                }
-            }
-
-            try {
-                dummyParam = new Parameter(temp, "ET");
-                dummyParam.setTypeEquals(BaseType.DOUBLE);
-                dummyParam.setExpression(Double.toString(0.0));
-
-            } catch (NameDuplicationException e) {// "ET parameter already exists so just determine the value of WCET with _getWCET and set it"
+            } catch (NameDuplicationException e) {// "ExecutionTime parameter already exists so just determine the value of WCET with _getWCET and set it"
 
                 if (_debugging) {
                     _debug(actor.getFullName()
@@ -144,12 +132,17 @@ public class GiottoDecoratedAttributesImplementation2 extends
             if (_debugging) {
                 _debug("the container is "
                         + container.getContainer().getDisplayName()
-                        + "it should get value " + dirWCET);
+                        + " it should get value " + dirWCET);
             }
 
             parentContainer = container.getContainer();
 
-            dummyParam = new Parameter(parentContainer, "ET");
+            if (parentContainer.getClassName().contains("Refinement")) {
+
+                parentContainer = parentContainer.getContainer();
+            }
+
+            dummyParam = new Parameter(parentContainer, "executionTime");
             dummyParam.setTypeEquals(BaseType.DOUBLE);
             dummyParam.setExpression(Double.toString(dirWCET));
 

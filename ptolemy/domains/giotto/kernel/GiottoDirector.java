@@ -96,7 +96,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
-    public GiottoDirector() {
+    public GiottoDirector() throws IllegalActionException {
         super();
         _init();
     }
@@ -125,7 +125,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  Increment the version number of the workspace.
      *  @param workspace The workspace for this object.
      */
-    public GiottoDirector(Workspace workspace) {
+    public GiottoDirector(Workspace workspace) throws IllegalActionException {
         super(workspace);
         _init();
     }
@@ -450,7 +450,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /* *//** Handle a model error.
+    /** Handle a model error.
            *  @param context The object in which the error occurred.
            *  @param exception An exception that represents the error.
            *  @return True if the error has been handled, or false if the
@@ -458,24 +458,24 @@ public class GiottoDirector extends StaticSchedulingDirector implements
            *  @exception IllegalActionException If the handler handles the
            *   error by throwing an exception.///
            */
-    /*
-    public boolean handleModelError(NamedObj context,
-         IllegalActionException exception) throws IllegalActionException {
 
-     if (_debugging) {
-         _debug("Handle Model Error Called for GiottoDirector");
-     }
-
-     NamedObj dummyContainer = this.getContainer();
-     NamedObj parentContainer = dummyContainer.getContainer();
-     if (parentContainer != null) {
-         return parentContainer.handleModelError(context, exception);
-     } else {
-         throw new IllegalActionException(this,
-                 "Unable to set error transition. This is the top most director ");
-     }
-
-    }*/
+    //    public boolean handleModelError(NamedObj context,
+    //         IllegalActionException exception) throws IllegalActionException {
+    //        
+    //     if (_debugging) {
+    //         _debug("Handle Model Error Called for GiottoDirector");
+    //     }
+    //
+    //     NamedObj dummyContainer = this.getContainer();
+    //     NamedObj parentContainer = dummyContainer.getContainer();
+    //     if (parentContainer != null) {
+    //         return parentContainer.handleModelError(context, exception);
+    //     } else {
+    //         throw new IllegalActionException(this,
+    //                 "Unable to set error transition. This is the top most director ");
+    //     }
+    //
+    //    }
 
     /** Initialize the actors associated with this director.
      *  The order in which the actors are initialized is arbitrary.
@@ -656,7 +656,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        System.out.println("preinitialize method in giotto director called");
+        if (_debugging) {
+            _debug("preinitialize method in giotto director called");
+        }
         // before initialize the contained actors, reset the period parameter
         // if the model is embedded inside another giotto model.
         CompositeActor compositeActor = (CompositeActor) (getContainer());
@@ -854,7 +856,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     }
 
     // Initialize the director by creating a scheduler and parameters.
-    private void _init() {
+    private void _init() throws IllegalActionException {
         try {
             GiottoScheduler scheduler = new GiottoScheduler(workspace());
             setScheduler(scheduler);
@@ -867,13 +869,13 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     "synchronizeToRealTime", new BooleanToken(false));
 
             timeResolution.setVisibility(Settable.FULL);
-            // this is a temporary addition
+            // FIXME Remove the forJPF parameter after a JPF codegen target is created.
             forJPF = new Parameter(this, "forJPF");
             forJPF.setTypeEquals(BaseType.BOOLEAN);
             forJPF.setExpression("false");
 
         } catch (KernelException ex) {
-            throw new InternalErrorException("Cannot initialize director: "
+            throw new IllegalActionException("Cannot initialize director: "
                     + ex.getMessage());
         }
 
@@ -925,11 +927,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /* *//** The errorAction operator.  This is a string-valued attribute
-           *  that defaults to "warn".
-           */
-    /*
-    public StringParameter errorAction;*/
+    // boolean parameter that is set if this will be used for a JPF codegen target
+    //FIXME: This parameter will be removed after the JPF codegen target is created.
     public Parameter forJPF;
 
     ///////////////////////////////////////////////////////////////////

@@ -1,4 +1,6 @@
-/* @Copyright (c) 2010 The Regents of the University of California.
+/* An attribute that varies the WCET values of actors.
+ * 
+ @Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -59,36 +61,56 @@ import ptolemy.kernel.util.SingletonAttribute;
 ///////////////////////////////////////////////////////////////////
 //// GiottoTimingManager
 /**
- * An attribute that facilitates management and possible mitigation 
- * of timing errors in a specification that uses timing but has no
+ * An attribute that varies the WCET values of actors and throws a model 
+ * error if the sum of the execution times is larger than the sum of the
+ * worst case execution times. 
+ *  
+ * <p> This attribute helps the user to manage and  mitigate
+ * timing errors in a specification that uses timing but has no
  * mechanisms in its specification for timing error handling. In 
  * this context a timing error occurs if the actor takes more than
  * the specified WCET to execute.
  * 
  * <p> The presence of the timing manager indicates a desire to 
  * incorporate execution timing as well as error handling
- * into a Giotto specification.  This works by piggybacking on the
- * methods of the container to determine execution times and
- * when a timing overrun occurs.  
+ * into a Giotto specification.  
  * 
  * <p> This attribute is a decorator that adds a parameter to each actor at
- * the current level.  The parameter is <i>WCET</i>, which is the Worst 
- * Case Execution Time(WCET) for the actor whose initial default value is 0.0.
+ * the current level.  The parameter is named <i>WCET</i>, which is the Worst 
+ * Case Execution Time (WCET) for the actor whose initial default value is 0.0.
  * This indicates instantaneous execution, however, for each actor this
  * parameter can also be modified by the user with information gained
- * from an WCET analysis tool.
+ * from an external WCET analysis tool.
  *
  * <p> This class simulates timing overruns by varying the execution time
  * of each actor. It currently uses the java.util.Random pseudo random number
  * generator to generate a random execution time in the range [0,2*<i>WCET</i>] 
- * for each iteration of the actor. The random number generator can be seeded 
- * by the <i>seed<\i> parameter in the Timing Manager. The default value of the seed
+ * for each iteration of each actor. The random number generator can be seeded 
+ * by the <i>seed<\i> parameter. The default value of the seed
  * is 0L interpreted as not having a seed. The user also has the option to reset to 
- * the seed on each run by selecting the <i> resetOnEachRun<\i> parameter of the 
- * timing manager. A future modification could include adding a parameter to have
+ * the seed on each run by selecting the <i>resetOnEachRun<\i> parameter. 
+ * A future modification could include adding a parameter to have
  * the user specify what probability distribution they wish to use.
+ * 
+ * <p> This attribute checks for two types of errors. First, it does a static check of 
+ * (a) the sum of the worst case execution times for the actors and compares 
+ * (a) to the {@link ptolemy.domains.giotto.kernel.GiottoDirector#period}
+ * of the Giotto Director. If (a) is larger than the director
+ * period, then the attribute throws an exception notifying the user of the discrepancy
+ * and does not execute the model. Second, during execution the attribute randomly varies 
+ * the execution time of the actors. The attribute then compares (b) the sum of the
+ * actors execution times to (a) the sum of the actors worst case execution 
+ * times. If (a) > (b) then the attribute calls {@link #handleModelError(NamedObj)},
+ *  which throws a model error .
  *  
- * <p>The parameter can be instantinated by instantiating an attribute of type
+ * <p> A model error is an exception that is passed up the containment
+ * hierarchy rather than being immediately thrown. Any container
+ * in the containment hierarchy may choose to handle the error.
+ * By default, containers will pass and delegate the error to their
+ * container, if they have one, and throw an exception if they
+ * don't. But some containers might do more with the error.</p>
+ *  
+ * <p>The attribute can be instantiated by instantiating an attribute of type
  * {@link ptolemy.domains.giotto.kernel.GiottoTimingManager}.</p>
  *
  * @author Shanna-Shaye Forbes. Based on the MonitorReceiverContents.java
@@ -299,6 +321,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
                             if (_debugging) {
                                 _debug("There was a timing overrun");
                             }
+                            System.out.println("There was a timing overrun");
+
                             handleModelError(
                                     container,
                                     new IllegalActionException(
@@ -307,7 +331,7 @@ public class GiottoTimingManager extends SingletonAttribute implements
                                                     + actorExecutionTimes
                                                     + ") is larger than WCET ("
                                                     + actorWorstCaseExecutionTimes
-                                                    + "  for actor "
+                                                    + ")  for actor "
                                                     + container
                                                             .getDisplayName()));
 
@@ -519,22 +543,22 @@ public class GiottoTimingManager extends SingletonAttribute implements
      *  @return True if the error has been handled, or false if the
      *   error is not handled.
      *  @exception IllegalActionException If the handler handles the
-     *   error by throwing an exception.///
+     *   error by throwing an exception.
      */
     public boolean handleModelError(NamedObj context,
             IllegalActionException exception) throws IllegalActionException {
 
         if (_debugging) {
-            _debug("Handle Model Error Called for GiottoDirector");
+            _debug("Handle Model Error Called for Timing Manager");
         }
 
-        NamedObj dummyContainer = this.getContainer();
-        NamedObj parentContainer = dummyContainer.getContainer();
+        NamedObj parentContainer = getContainer().getContainer();
+
         if (parentContainer != null) {
             return parentContainer.handleModelError(context, exception);
         } else {
             throw new IllegalActionException(this,
-                    "Unable to set error transition. This is the top most director ");
+                    "Unable to set error transition. This is the top most level ");
         }
 
     }
@@ -561,7 +585,6 @@ public class GiottoTimingManager extends SingletonAttribute implements
     }
 
     protected void _generateRandomNumber() throws IllegalActionException {
-        // not sure what should go here
 
     }
 
@@ -580,24 +603,25 @@ public class GiottoTimingManager extends SingletonAttribute implements
     /** Indicator that a new random number is needed. */
     protected boolean _needNew = false;
 
+    /**/
+    protected double _current = 0.0;
+
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                  ////
+    /** Determine the period of the director of the associated container.
+     *  @param container The container.
+     *  @exception IllegalActionException If the director or an actor seen 
+     *  by the director does not contain an particular attribute
+     */
 
     private double _getDirectorPeriod(NamedObj container)
             throws IllegalActionException {
         double thePeriod = 0.0;
-        Director d = ((CompositeActor) container).getDirector();
-        Parameter period = (Parameter) d.getAttribute("period");
-        try {
-            thePeriod = ((DoubleToken) period.getToken()).doubleValue();
-        } catch (IllegalActionException e) {
+        Director director = ((CompositeActor) container).getDirector();
+        Parameter period = (Parameter) director.getAttribute("period");
+        thePeriod = ((DoubleToken) period.getToken()).doubleValue();
 
-        }
-        //FIXME: need to check to see if this is an embedded director and if so
-        // modify thePeriod to be periodValue / frequencyValue
-        // currently the isEmbedded method is private to director
-
-        if (d._isEmbedded()) {
+        if (director.isEmbedded()) {
             int frequencyValue = 1;
             Director executiveDirector = ((CompositeActor) container)
                     .getExecutiveDirector();
@@ -607,11 +631,12 @@ public class GiottoTimingManager extends SingletonAttribute implements
                         .getPeriod();
                 Attribute frequency = ((CompositeActor) container)
                         .getAttribute("frequency");
-
-                if (frequency instanceof Parameter) {
-                    Token result = ((Parameter) frequency).getToken();
-                    if (result instanceof IntToken) {
-                        frequencyValue = ((IntToken) result).intValue();
+                if (frequency != null) {
+                    if (frequency instanceof Parameter) {
+                        Token result = ((Parameter) frequency).getToken();
+                        if (result instanceof IntToken) {
+                            frequencyValue = ((IntToken) result).intValue();
+                        }
                     }
                 }
 
@@ -628,18 +653,22 @@ public class GiottoTimingManager extends SingletonAttribute implements
      * maximum length of time the task could take to execute on a
      * particular platform
      * @return A double containing the WCET of the actors
+     * @throws IllegalActionException If and actor does not contain a WCET 
+     * paramtere
      */
     private double _getDirectorWCET(NamedObj container)
             throws IllegalActionException {
 
-        // cumulative worst case execution times
+        // This stores the sum of the worst case execution times
         double actorWorstCaseExecutionTimes = 0;
 
         List<Actor> entities = ((CompositeActor) container).deepEntityList();
         for (Actor actor : entities) {
             Attribute WCET = ((Entity) actor).getAttribute("WCET");
-            actorWorstCaseExecutionTimes += ((DoubleToken) ((Variable) WCET)
-                    .getToken()).doubleValue();
+            if (WCET != null) {
+                actorWorstCaseExecutionTimes += ((DoubleToken) ((Variable) WCET)
+                        .getToken()).doubleValue();
+            }
 
         }
 
