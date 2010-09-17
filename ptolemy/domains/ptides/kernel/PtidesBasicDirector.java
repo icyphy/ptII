@@ -235,7 +235,7 @@ public class PtidesBasicDirector extends DEDirector {
                                 + "needs to be a PtidesTopLevelDirector.");
             }
             tag.timestamp = director.getModelTime();
-            tag.microstep = ((DEDirector)director).getMicrostep();
+            tag.microstep = ((DEDirector) director).getMicrostep();
         }
         return tag;
     }
@@ -854,10 +854,12 @@ public class PtidesBasicDirector extends DEDirector {
                     .deepInsidePortList()) {
                 if (_isNetworkPort(port)) {
                     if (!(sinkPort.getContainer() instanceof NetworkInputDevice)) {
-                        throw new IllegalActionException(port, sinkPort
-                                .getContainer(), "An input network "
-                                + "port must have a NetworkInputDevice as "
-                                + "its sink.");
+                        throw new IllegalActionException(
+                                port,
+                                sinkPort.getContainer(),
+                                "An input network "
+                                        + "port must have a NetworkInputDevice as "
+                                        + "its sink.");
                     }
                     Parameter parameter = (Parameter) ((NamedObj) port)
                             .getAttribute("realTimeDelay");
@@ -1069,9 +1071,9 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         // Register this trigger event.
-        PtidesEvent newEvent = new PtidesEvent(ioPort, ioPort
-                .getChannelForReceiver(receiver), getModelTime(), _microstep,
-                depth, token, receiver);
+        PtidesEvent newEvent = new PtidesEvent(ioPort,
+                ioPort.getChannelForReceiver(receiver), getModelTime(),
+                _microstep, depth, token, receiver);
         _eventQueue.put(newEvent);
     }
 
@@ -1512,7 +1514,8 @@ public class PtidesBasicDirector extends DEDirector {
             // the stack, call fireAt() on the enclosing director,
             // and return null.
 
-            Time expectedCompletionTime = physicalTag.timestamp.add(executionTime);
+            Time expectedCompletionTime = physicalTag.timestamp
+                    .add(executionTime);
             Time fireAtTime = executiveDirector.fireAt(container,
                     expectedCompletionTime);
 
@@ -1719,8 +1722,9 @@ public class PtidesBasicDirector extends DEDirector {
         double minDelay = _getMinDelay(port, ((PtidesEvent) event).channel(),
                 event.isPureEvent());
         Time waitUntilPhysicalTime = event.timeStamp().subtract(minDelay);
-        if (getPhysicalTag().timestamp.subtract(waitUntilPhysicalTime).compareTo(_zero) >= 0
-                &&  (getPhysicalTag().microstep - event.microstep() >= 0)) {
+        if (getPhysicalTag().timestamp.subtract(waitUntilPhysicalTime)
+                .compareTo(_zero) >= 0
+                && (getPhysicalTag().microstep - event.microstep() >= 0)) {
             return true;
         } else {
             _setTimedInterrupt(waitUntilPhysicalTime);
@@ -1953,7 +1957,8 @@ public class PtidesBasicDirector extends DEDirector {
                             realTimeEvent.token);
                 } else {
                     int lastMicrostep = _microstep;
-                    setTag(realTimeEvent.deliveryTag.timestamp.subtract(realTimeDelay),
+                    setTag(realTimeEvent.deliveryTag.timestamp
+                            .subtract(realTimeDelay),
                             realTimeEvent.deliveryTag.microstep);
                     _realTimeInputEventQueue.poll();
                     realTimeEvent.port.sendInside(realTimeEvent.channel,
@@ -1971,8 +1976,8 @@ public class PtidesBasicDirector extends DEDirector {
                 throw new IllegalActionException(realTimeEvent.port,
                         "missed transferring at the sensor. "
                                 + "Should transfer input at time = "
-                                + realTimeEvent.deliveryTag.timestamp
-                                + "." + realTimeEvent.deliveryTag.microstep
+                                + realTimeEvent.deliveryTag.timestamp + "."
+                                + realTimeEvent.deliveryTag.microstep
                                 + ", and current physical time = "
                                 + physicalTag.timestamp + "."
                                 + physicalTag.microstep);
@@ -2015,7 +2020,8 @@ public class PtidesBasicDirector extends DEDirector {
                             Time waitUntilTime = physicalTag.timestamp
                                     .add(realTimeDelay);
                             RealTimeEvent realTimeEvent = new RealTimeEvent(
-                                    port, i, t, new Tag(waitUntilTime, physicalTag.microstep));
+                                    port, i, t, new Tag(waitUntilTime,
+                                            physicalTag.microstep));
                             _realTimeInputEventQueue.add(realTimeEvent);
                             result = true;
 
@@ -2518,8 +2524,8 @@ public class PtidesBasicDirector extends DEDirector {
                                         if (channelDependency == null) {
                                             channelDependency = new HashMap<Integer, SuperdenseDependency>();
                                         }
-                                        channelDependency.put(Integer
-                                                .valueOf(channel),
+                                        channelDependency.put(
+                                                Integer.valueOf(channel),
                                                 prevDependency);
                                         _inputModelTimeDelays.put(sinkPort,
                                                 channelDependency);
@@ -2757,8 +2763,7 @@ public class PtidesBasicDirector extends DEDirector {
          *  @param token The token to be delivered.
          *  @param tag The time of delivery of this token.
          */
-        public RealTimeEvent(IOPort port, int channel, Token token,
-                Tag tag) {
+        public RealTimeEvent(IOPort port, int channel, Token token, Tag tag) {
             this.port = port;
             this.channel = channel;
             this.token = token;
