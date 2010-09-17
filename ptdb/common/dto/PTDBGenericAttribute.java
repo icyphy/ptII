@@ -55,9 +55,12 @@ public class PTDBGenericAttribute {
      */
     public void addValue(String newValue) {
 
-        if (_values != null) {
-            _values.add(newValue);
+        if (_values == null) {
+            _values = new ArrayList<String>();
         }
+
+        _values.add(newValue);
+
     }
 
     /**
