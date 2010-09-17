@@ -577,14 +577,14 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             // iterations limit is reached
             _iterationCount = 0;
 
-            if (_isEmbedded()) {
+            if (isEmbedded()) {
                 return !_stopRequested && !_finishRequested;
             } else {
                 return false;
             }
         } else {
             // continue iterations
-            if (_isEmbedded()) {
+            if (isEmbedded()) {
                 // unless the iteration counts are met,
                 // keep requesting to fire itself.
                 _requestFiring();
@@ -610,7 +610,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If time is set backwards.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
             Time outsideCurrentTime = ((Actor) container)
                     .getExecutiveDirector().getModelTime();
@@ -663,7 +663,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         // if the model is embedded inside another giotto model.
         CompositeActor compositeActor = (CompositeActor) (getContainer());
 
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             Director executiveDirector = compositeActor.getExecutiveDirector();
 
             if (executiveDirector instanceof GiottoDirector) {
