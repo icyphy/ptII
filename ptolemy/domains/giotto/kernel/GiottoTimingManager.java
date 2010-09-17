@@ -653,8 +653,8 @@ public class GiottoTimingManager extends SingletonAttribute implements
      * maximum length of time the task could take to execute on a
      * particular platform
      * @return A double containing the WCET of the actors
-     * @throws IllegalActionException If and actor does not contain a WCET 
-     * paramtere
+     * @exception IllegalActionException If an actor does not contain a WCET 
+     * parameter.
      */
     private double _getDirectorWCET(NamedObj container)
             throws IllegalActionException {
