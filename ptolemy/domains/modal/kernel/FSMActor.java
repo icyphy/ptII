@@ -420,11 +420,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
             // If the current state has no refinement and there are
             // outputs that remain unknown, make them absent.
-            // FIXME: Even if there is a refinement, it might be
+            // NOTE: Even if there is a refinement, it might be
             // reasonable to assert that outputs are absent.
             // We can't do that here, however, because the outputs
-            // from the refinement have not been transferred. Is
-            // this case handled by the FSMDirector?
+            // from the refinement have not been transferred.
+            // This case has to be handled by the FSMDirector.
             if (_currentState.getRefinement() == null) {
                 List<IOPort> outputs = outputPortList();
                 for (IOPort port : outputs) {
