@@ -539,7 +539,7 @@ public class PteraDirector extends Director implements TimedDirector,
      *  @see #setModelTime(Time)
      */
     public Time getModelTime() {
-        if (_delegateFireAt && _isEmbedded()) {
+        if (_delegateFireAt && isEmbedded()) {
             NamedObj container = getContainer();
             if (container instanceof Actor) {
                 return ((Actor) container).getExecutiveDirector()
@@ -630,7 +630,7 @@ public class PteraDirector extends Director implements TimedDirector,
                     TimedEvent event = _eventQueue.get(0);
                     setModelTime(event.timeStamp);
                 }
-                if (_isEmbedded()) {
+                if (isEmbedded()) {
                     _requestFiring();
                     _delegateFireAt = true;
                 }
@@ -937,12 +937,12 @@ public class PteraDirector extends Director implements TimedDirector,
                     null, null, false);
             _addEvent(newEvent);
             _initializedRefinements.add(controller);
-            if (_isEmbedded()) {
+            if (isEmbedded()) {
                 _requestFiring();
             }
         }
 
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             _delegateFireAt = true;
         }
     }
