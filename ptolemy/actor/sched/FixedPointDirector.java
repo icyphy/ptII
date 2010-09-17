@@ -314,7 +314,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
         // NOTE: Some (weird) directors pretend they are not embedded even
         // if they are (e.g. in Ptides), so we call _isEmbedded() to give
         // the subclass the option of pretending it is not embedded.
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             Nameable container = getContainer();
             if (container instanceof CompositeActor) {
                 Director executiveDirector = ((CompositeActor) container)

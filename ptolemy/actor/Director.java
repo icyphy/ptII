@@ -264,7 +264,7 @@ public class Director extends Attribute implements Executable {
      *   and output ports.
      */
     public Dependency defaultDependency() {
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             return ((CompositeActor) getContainer()).getExecutiveDirector()
                     .defaultDependency();
         } else {
@@ -404,7 +404,7 @@ public class Director extends Attribute implements Executable {
         // reasonable, for example, in FSM, DE, SR, CT, or any domain that
         // can safely fire actors other than the one that requested the
         // refiring at the specified time.
-        if (_isEmbedded()) {
+        if (isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
             return container.getExecutiveDirector().fireAt(container, time);
         }
@@ -697,7 +697,7 @@ public class Director extends Attribute implements Executable {
             // NOTE: Some (weird) directors pretend they are not embedded even
             // if they are (e.g. in Ptides), so we call _isEmbedded() to give
             // the subclass the option of pretending it is not embedded.
-            if (_isEmbedded()
+            if (isEmbedded()
                     && (containersContainer instanceof CompositeActor)) {
                 // The container is an embedded model.
                 Time currentTime = ((CompositeActor) containersContainer)
@@ -780,12 +780,12 @@ public class Director extends Attribute implements Executable {
      */
     public void invalidateSchedule() {
     }
-
+   
     /** Return true if this director is embedded inside an opaque composite
      *  actor contained by another composite actor.
      *  @return True if this directory is embedded inside an opaque composite
      *  actor contained by another composite actor.
-     */
+    */
     public boolean isEmbedded() {
         return !_isTopLevel();
     }
@@ -1451,11 +1451,13 @@ public class Director extends Attribute implements Executable {
      *  actor contained by another composite actor.
      *  @return True if this directory is embedded inside an opaque composite
      *  actor contained by another composite actor.
-     * @deprecated Use {@link #_isEmbedded()} instead
-     */
+     * @deprecated Use {@link #isEmbedded()} instead
+    */
     protected boolean _isEmbedded() {
         return isEmbedded();
     }
+
+
 
     /** Return true if this is a top-level director.
      *  Parts of this method is read synchronized on the workspace.
