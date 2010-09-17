@@ -400,6 +400,11 @@ public class RelationWidthInference {
                                         + " can not be uniquely inferred.\n"
                                         + "Please make the width inference deterministic by"
                                         + " explicitly specifying the width of this relation."
+                                        + " In the user interface, right click on the "
+                                        + "relation, select Configure and change the width. "
+                                        + " Note that some actors may need to have their "
+                                        + " Java code updated to call setDefaultWidth(1) "
+                                        + "on the output port. "
                                         + "The relation is deeply connected to these ports:\n"
                                         + portDetails.toString());
                     }
