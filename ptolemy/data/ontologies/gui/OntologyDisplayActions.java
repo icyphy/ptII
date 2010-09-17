@@ -93,29 +93,6 @@ public class OntologyDisplayActions extends NodeControllerFactory {
         //return new ConfigureHighlightController(controller);
         return new HighlighterController(this, controller);
     }
-
-    /** The action for the clear display command to be added
-     *  to the context menu.
-     */
-    private class ClearDisplay extends FigureAction {
-        public ClearDisplay() {
-            super("Clear Concept Highlighting");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            NamedObj container = getContainer();
-            if (container instanceof OntologySolver) {
-                try {
-                    ((OntologySolver) container).getMoMLHandler()
-                            .clearDisplay();
-                } catch (IllegalActionException e1) {
-                    MessageHandler.error("Clearing concept highlighting failed", e1);
-                }
-            }
-        }
-    }
     
     /** The action for the clear concept resolution command to be added to the
      *  context menu.  This clears the list of resolved concepts (if any)
@@ -123,7 +100,7 @@ public class OntologyDisplayActions extends NodeControllerFactory {
      */
     private class ClearResolution extends FigureAction {
         public ClearResolution() {
-            super("Clear Concept Resolution");
+            super("Clear Concepts");
         }
         
         public void actionPerformed(ActionEvent e) {
@@ -136,117 +113,9 @@ public class OntologyDisplayActions extends NodeControllerFactory {
                     ((OntologySolver) container).getMoMLHandler()
                     .clearDisplay();
                 } catch (IllegalActionException e1) {
-                 MessageHandler.error("Clearing concept resolution failed", e1);
+                 MessageHandler.error("Clearing concepts failed", e1);
                 }
             }
-        }
-    }
-
-    /** The action for the highlight configure command to be added
-     *  to the context menu.
-     */
-    private class ConfigureHighlightAction extends FigureAction {
-
-        public ConfigureHighlightAction() {
-            super("Concept Display");
-        }
-
-        /**
-         * Open the dialog for configuring the highlight color
-         * for property values.
-         */
-        public void actionPerformed(ActionEvent e) {
-            // Determine which entity was selected for the look inside action.
-            super.actionPerformed(e);
-
-            NamedObj target = ((OntologySolver) OntologyDisplayActions.this
-                    .getContainer()).getMoMLHandler();
-
-            // Create a dialog for configuring the object.
-            // First, identify the top parent frame.
-            Frame parent = getFrame();
-
-            _openDialog(parent, target);
-        }
-
-        /** Open an edit parameters dialog.  This is a modal dialog, so
-         *  this method returns only after the dialog has been dismissed.
-         *  @param parent A frame to serve as a parent for the dialog, or
-         *  null if there is none.
-         *  @param target The object whose parameters are to be edited.
-         */
-        private void _openDialog(Frame parent, NamedObj target) {
-           new EditHighlightDialog(parent, target, "Configure concept display");
-        }
-    }
-
-    /** The edit highlight dialog.
-     */
-    private static class EditHighlightDialog extends EditParametersDialog {
-
-        /** Construct a dialog with the specified owner and target.
-         *  A "Commit" and a "Cancel" button are added to the dialog.
-         *  The dialog is placed relative to the owner.
-         *  @param owner The object that, per the user, appears to be
-         *   generating the dialog.
-         *  @param target The object whose parameters are being edited.
-         *  @param label The label for the dialog box.
-         */
-        public EditHighlightDialog(Frame owner, NamedObj target, String label) {
-            super(owner, target, label);
-        }
-
-        /** Open a dialog to add a new parameter.
-         *  @param message A message to place at the top, or null if none.
-         *  @param name The default name.
-         *  @param defValue The default value.
-         *  @param className The default class name.
-         *  @return The dialog that is created.
-         */
-        protected ComponentDialog _openAddDialog(String message, String name,
-                String defValue, String className) {
-            // Create a new dialog to add a parameter, then open a new
-            // EditParametersDialog.
-            _query = new Query();
-
-            if (message != null) {
-                _query.setMessage(message);
-            }
-
-            _query.addLine("name", "Property Name", name);
-
-            ComponentDialog dialog = new ComponentDialog(_owner,
-                    "Add a new parameter to " + _target.getFullName(), _query,
-                    null);
-
-            // If the OK button was pressed, then queue a mutation
-            // to create the parameter.
-            // A blank property name is interpreted as a cancel.
-            String newName = _query.getStringValue("name");
-
-            if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
-                String moml = "<property name=\"" + newName + "\" value=\""
-                        + "property value\" class=\""
-                        + "ptolemy.kernel.util.StringAttribute" + "\"/>";
-
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        _target, moml);
-                request.setUndoable(true);
-                _target.requestChange(request);
-
-                moml = "<property name=\"" + newName
-                        + "HighlightColor\" value=\""
-                        + "{1.0, 0.0, 0.0, 1.0}\" class=\""
-                        + "ptolemy.actor.gui.ColorAttribute" + "\"/>";
-
-                _target.addChangeListener(this);
-
-                request = new MoMLChangeRequest(this, _target, moml);
-                request.setUndoable(true);
-                _target.requestChange(request);
-            }
-
-            return dialog;
         }
     }
 
@@ -278,78 +147,17 @@ public class OntologyDisplayActions extends NodeControllerFactory {
          */
         public HighlighterController(OntologyDisplayActions displayActions, GraphController controller) {
             super(controller);
-
-            ClearDisplay clearDisplay = displayActions.new ClearDisplay();
-            _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(clearDisplay));
             
             ClearResolution clearResolution = 
                 displayActions.new ClearResolution();
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(clearResolution));
 
-            HighlightConcepts highlightConcepts = displayActions.new HighlightConcepts();
-            _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(highlightConcepts));
-            
-            ShowConceptAnnotations showConceptAnnotations = displayActions.new ShowConceptAnnotations();
-            _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(showConceptAnnotations));
-
             ResolveConcepts resolveConcepts = 
                 displayActions.new ResolveConcepts();
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     resolveConcepts));
-
-            ConfigureHighlightAction highlight = 
-                displayActions.new ConfigureHighlightAction();
-            _configureMenuFactory.addAction(highlight, "Configure");
         }
     }
 
-    /** The action for the highlight concepts command to be added
-     *  to the context menu.
-     */
-    private class HighlightConcepts extends FigureAction {
-        public HighlightConcepts() {
-            super("Highlight Concepts");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-            NamedObj container = getContainer();
-            if (container instanceof OntologySolver) {
-                try {
-                    ((OntologySolver) container).getMoMLHandler()
-                            .highlightConcepts();
-                } catch (IllegalActionException e1) {
-                    MessageHandler.error("Highlighting concept annotations failed",
-                            e1);
-                }
-            }
-        }
-    }
-    
-    /** The action for the show concept annotations command to be added
-     *  to the context menu.
-     */
-    private class ShowConceptAnnotations extends FigureAction {
-        public ShowConceptAnnotations() {
-            super("Show Concept Annotations");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-            NamedObj container = getContainer();
-            if (container instanceof OntologySolver) {
-                try {
-                    ((OntologySolver) container).getMoMLHandler()
-                            .showConceptAnnotations();
-                } catch (IllegalActionException e1) {
-                    MessageHandler.error("Showing concept annotations failed",
-                            e1);
-                }
-            }
-        }
-    }
 }

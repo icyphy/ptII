@@ -41,10 +41,12 @@ import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
 //// LatticeOntologySolver
@@ -86,6 +88,14 @@ public class LatticeOntologySolver extends OntologySolver {
         // Provide a default model so that this is never empty.
         _model = new OntologySolverModel(this, workspace());
 
+        // Provide a single parameter to set the others, plus a "custom" option
+        // However, for the other parameters, still call setExpression here
+        // in case the solverStrategy was set to custom (for example in 
+        // a saved model) and in case no parameter values were specified.
+        // The "custom" option makes no changes to the other parameters.
+        solverStrategy = new StringParameter(this, "solverStrategy");
+        solverStrategy.setExpression("forward");
+        
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
 
@@ -107,6 +117,8 @@ public class LatticeOntologySolver extends OntologySolver {
                 "expressionASTNodeConstraintType");
         expressionASTNodeConstraintType.setExpression("parent >= child");
 
+        _applySolverStrategy();
+        
         _addChoices();
 
         _attachText("_iconDescription", "<svg>\n"
@@ -202,6 +214,13 @@ public class LatticeOntologySolver extends OntologySolver {
      * </ul>
      */
     public StringParameter solvingFixedPoint;
+    
+    /**
+     * A single parameter for quickly selecting common solving strategies, 
+     * plus a "custom" option to allow a user-defined strategy.
+     */
+    public StringParameter solverStrategy;
+    
 
     /** The string name of the attribute that defines the arithmetic multiply
      *  concept function for this ontology solver.
@@ -216,6 +235,19 @@ public class LatticeOntologySolver extends OntologySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the attributeChanged method so that if the solver
+     *  strategy changes, the other related parameters are updated.
+     *  @param attribute The attribute that has been changed.
+     *  @throws IllegalActionException If there is a problem changing the attribute.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute.equals(solverStrategy)) {
+            _applySolverStrategy();
+        }
+        super.attributeChanged(attribute);
+    }
+    
     /**
      * Get the list of affected InequalityTerms from the OntologySolver's
      * ConceptTermManager.
@@ -582,6 +614,101 @@ public class LatticeOntologySolver extends OntologySolver {
         return _resolvedUnacceptableList;
     }
     
+    /**
+     *  Set the solver's options and the visibility of those options according
+     *  to the value of the solverStrategy parameter.  This should be called 
+     *  whenever the solverStrategy parameter changes.
+     */
+    protected void _applySolverStrategy() {
+        // If solver strategy is not set, do not make any changes
+        if (solverStrategy != null 
+                && !solverStrategy.getValueAsString().isEmpty())
+        {
+            String strategy = solverStrategy.getValueAsString();
+            
+            // For the first three strategies, set parameters to certain
+            // values and set visibility of parameters to not editable
+            if(strategy.contains("forward") || strategy.contains("backward") 
+                    || strategy.contains("bidirectional")) {
+                
+                // Common settings and set visibility to NOT_EDITABLE.               
+                solvingFixedPoint.setExpression("least");
+                
+                actorConstraintType.setVisibility(Settable.NOT_EDITABLE);
+                compositeConnectionConstraintType
+                    .setVisibility(Settable.NOT_EDITABLE);
+                connectionConstraintType.setVisibility(Settable.NOT_EDITABLE);
+                expressionASTNodeConstraintType
+                    .setVisibility(Settable.NOT_EDITABLE);
+                fsmConstraintType.setVisibility(Settable.NOT_EDITABLE);
+                solvingFixedPoint.setVisibility(Settable.NOT_EDITABLE);
+                
+                
+                // Specific settings
+                if (strategy.contains("forward")) {
+                    actorConstraintType.setExpression("out >= in");
+                    compositeConnectionConstraintType
+                        .setExpression("sink >= src");
+                    
+                    connectionConstraintType.setExpression("sink >= src");
+                    expressionASTNodeConstraintType
+                        .setExpression("parent >= child");
+                    fsmConstraintType.setExpression("sink >= src");
+                }
+                else if (strategy.contains("backward")) {
+                    actorConstraintType.setExpression("in >= out");
+                    compositeConnectionConstraintType
+                        .setExpression("src >= sink");
+                    connectionConstraintType.setExpression("src >= sink");
+                    expressionASTNodeConstraintType
+                        .setExpression("child >= parent");
+                    fsmConstraintType.setExpression("src >= sink");
+                }
+                else {
+                    actorConstraintType.setExpression("out == in");
+                    compositeConnectionConstraintType
+                        .setExpression("sink == src");
+                    connectionConstraintType.setExpression("sink == src");
+                    // FIXME:  Test old solver expressions - this was 
+                    // parent >= child previously
+                    expressionASTNodeConstraintType
+                        .setExpression("parent == child");
+                    fsmConstraintType.setExpression("sink == src");
+                }
+                
+                // All of these expressions should be valid
+                try {
+                    actorConstraintType.validate();
+                    compositeConnectionConstraintType.validate();
+                    expressionASTNodeConstraintType.validate();
+                    fsmConstraintType.validate();
+                } catch(IllegalActionException e){};
+            }
+
+            // For the custom strategy, set visibility of parameters to 
+            // editable.  Values are not changed.
+            else if (strategy.contains("custom")) {
+                actorConstraintType.setVisibility(Settable.FULL);
+                compositeConnectionConstraintType.setVisibility(Settable.FULL);
+                connectionConstraintType.setVisibility(Settable.FULL);
+                expressionASTNodeConstraintType.setVisibility(Settable.FULL);
+                fsmConstraintType.setVisibility(Settable.FULL);
+                solvingFixedPoint.setVisibility(Settable.FULL);
+            }
+            // Do nothing if the strategy is none of the above
+        }
+    }
+    
+    /** 
+     * Set the resolved constraint list and the list of unacceptable 
+     * inequality terms to null.  Implemented as a protected method so that 
+     * subclasses may call it.  
+     */
+    protected void _clearLists() {
+        _initialConstraintList = null;
+        _resolvedConstraintList = null;
+        _resolvedUnacceptableList = new ArrayList<InequalityTerm>();
+    }
     
     protected void _isTermAcceptable() {
         // null is acceptable
@@ -705,18 +832,7 @@ public class LatticeOntologySolver extends OntologySolver {
         //      FIXME: doesn't work for other use-cases!
         //      return new StaticDynamicTermManager(this);
         return new ConceptTermManager(this);
-    }
-
-    /** 
-     * Set the resolved constraint list and the list of unacceptable 
-     * inequality terms to null.  Implemented as a protected method so that 
-     * subclasses may call it.  
-     */
-    protected void _clearLists() {
-        _initialConstraintList = null;
-        _resolvedConstraintList = null;
-        _resolvedUnacceptableList = new ArrayList<InequalityTerm>();
-    }
+    }    
     
     /**
      * Resolve the concept values for the toplevel entity that contains this
@@ -873,6 +989,11 @@ public class LatticeOntologySolver extends OntologySolver {
      * or parameters.
      */
     private void _addChoices() throws IllegalActionException {
+        solverStrategy.addChoice("forward");
+        solverStrategy.addChoice("backward");
+        solverStrategy.addChoice("bidirectional");
+        solverStrategy.addChoice("custom");
+        
         solvingFixedPoint.addChoice("least");
         solvingFixedPoint.addChoice("greatest");
 
