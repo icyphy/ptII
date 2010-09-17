@@ -563,7 +563,7 @@ public class DDFDirector extends Director {
         // more tokens into the DDF domain will break the deadlock.
         boolean isDeadlocked = !_firedOne;
 
-        if (isDeadlocked && _isEmbedded()) {
+        if (isDeadlocked && isEmbedded()) {
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
 
