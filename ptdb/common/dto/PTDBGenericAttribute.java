@@ -118,6 +118,79 @@ public class PTDBGenericAttribute {
         _values = values;
     }
 
+    /**
+     * Return the String representation of this attribute.
+     * 
+     * @return The String representation of this attribute.
+     */
+    @Override
+    public String toString() {
+
+        return _attributeName + "@" + _className + "@" + _values.toString();
+    }
+
+    /**
+     * Check whether the given attribute equals to this attribute.
+     * 
+     * @param attribute The given attribute to be checked. 
+     * 
+     * @return true - if the given attribute equals to this attribute.<br>
+     *          false - if the given attribute does not equal to this attribute.
+     */
+    @Override
+    public boolean equals(Object attribute) {
+        PTDBGenericAttribute genericAttribute = (PTDBGenericAttribute) attribute;
+
+        if (_className != null && _attributeName != null && _values != null) {
+            return _className.equals(genericAttribute.getClassName())
+                    && _attributeName.equals(genericAttribute
+                            .getAttributeName())
+                    && _values.equals(genericAttribute.getValues());
+        }
+
+        if (_className == null && _attributeName == null) {
+            return genericAttribute.getClassName() == null
+                    && genericAttribute.getAttributeName() == null
+                    && _values.equals(genericAttribute.getValues());
+        }
+
+        if (_attributeName == null && _values == null) {
+            return genericAttribute.getAttributeName() == null
+                    && genericAttribute.getValues() == null
+                    && _className.equals(genericAttribute.getClassName());
+        }
+
+        if (_values == null && _className == null) {
+            return genericAttribute.getValues() == null
+                    && genericAttribute.getClassName() == null
+                    && _attributeName.equals(genericAttribute
+                            .getAttributeName());
+        }
+
+        if (_className == null) {
+            return genericAttribute.getClassName() == null
+                    && _attributeName.equals(genericAttribute
+                            .getAttributeName())
+                    && _values.equals(genericAttribute.getValues());
+        }
+
+        if (_attributeName == null) {
+            return genericAttribute.getAttributeName() == null
+                    && _className.equals(genericAttribute.getClassName())
+                    && _values.equals(genericAttribute.getValues());
+        }
+
+        if (_values == null) {
+            return genericAttribute.getValues() == null
+                    && _className.equals(genericAttribute.getClassName())
+                    && _attributeName.equals(genericAttribute
+                            .getAttributeName());
+        }
+
+        return false;
+
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////                    private variables                         ////
 

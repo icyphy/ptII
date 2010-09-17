@@ -30,10 +30,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.kernel.bl.search;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ptdb.common.dto.AttributeSearchTask;
+import ptdb.common.dto.PTDBGenericAttribute;
+import ptdb.common.dto.PTDBSearchAttribute;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.exception.DBExecutionException;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
 
 ///////////////////////////////////////////////////////////////////
@@ -59,7 +63,53 @@ public class AttributeSearcher extends AbstractSearcher implements
      */
     public AttributeSearcher(SearchCriteria searchCriteria) {
 
-        _attributesCriteria = searchCriteria.getAttributes();
+        if (searchCriteria.getAttributes() != null
+                && searchCriteria.getAttributes().size() > 0) {
+
+            // Get the attribute list from the search criteria’s attributes list.
+
+            HashMap<String, PTDBGenericAttribute> attributesMap = new HashMap<String, PTDBGenericAttribute>();
+
+            for (Attribute originalAttribute : searchCriteria.getAttributes()) {
+
+                if (!attributesMap.containsKey(originalAttribute.getName())) {
+
+                    PTDBGenericAttribute newAttribute = new PTDBGenericAttribute();
+
+                    // Set the values and class name to newAttribute from 
+                    // originalAttribute.
+                    newAttribute.setAttributeName(originalAttribute.getName());
+                    newAttribute.addValue(((Variable) originalAttribute)
+                            .getValueAsString());
+
+                    if (originalAttribute instanceof PTDBSearchAttribute) {
+                        if (!((PTDBSearchAttribute) originalAttribute)
+                                .isGenericAttribute()) {
+                            newAttribute.setClassName(originalAttribute
+                                    .getClassName());
+                        }
+                    } else {
+                        newAttribute.setClassName(originalAttribute
+                                .getClassName());
+                    }
+
+                    attributesMap.put(newAttribute.getAttributeName(),
+                            newAttribute);
+                } else {
+                    PTDBGenericAttribute attribute = attributesMap
+                            .get(originalAttribute.getName());
+                    attribute.addValue(((Variable) originalAttribute)
+                            .getValueAsString());
+                }
+
+            }
+
+            // Convert the attributes map to list.
+            ArrayList<PTDBGenericAttribute> attributeList = new ArrayList<PTDBGenericAttribute>(
+                    attributesMap.values());
+
+            _attributesCriteria = attributeList;
+        }
 
     }
 
@@ -121,6 +171,6 @@ public class AttributeSearcher extends AbstractSearcher implements
     /**
      * This field contains the search criteria of attributes.
      */
-    private ArrayList<Attribute> _attributesCriteria;
+    private ArrayList<PTDBGenericAttribute> _attributesCriteria;
 
 }

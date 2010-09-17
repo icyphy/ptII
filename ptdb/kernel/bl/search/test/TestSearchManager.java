@@ -26,9 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
-/*
- *
- */
+
 package ptdb.kernel.bl.search.test;
 
 import static org.easymock.EasyMock.expect;
@@ -50,6 +48,7 @@ import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.FetchHierarchyTask;
 import ptdb.common.dto.GraphSearchTask;
 import ptdb.common.dto.ModelNameSearchTask;
+import ptdb.common.dto.PTDBGenericAttribute;
 import ptdb.common.dto.SearchCriteria;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.DBConnectionException;
@@ -68,11 +67,13 @@ import ptdb.kernel.database.DBConnection;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.gt.MatchResultRecorder;
 
@@ -116,8 +117,9 @@ public class TestSearchManager {
         SearchCriteria searchCriteria = new SearchCriteria();
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
-        Attribute attribute = new Attribute();
-        attribute.setName("test name");
+        StringParameter attribute = new StringParameter(new NamedObj(),
+                "test name");
+        //        attribute.setName("test name");
         attributes.add(attribute);
 
         searchCriteria.setAttributes(attributes);
@@ -152,8 +154,14 @@ public class TestSearchManager {
         AttributeSearchTask attributeSearchTaskMock = PowerMock
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
-        attributeSearchTaskMock.setAttributesList(searchCriteria
-                .getAttributes());
+        ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
+        genericAttribute.setAttributeName(attribute.getName());
+        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.setClassName(attribute.getClassName());
+        ptdbGenericAttributes.add(genericAttribute);
+
+        attributeSearchTaskMock.setAttributesList(ptdbGenericAttributes);
 
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
@@ -234,9 +242,9 @@ public class TestSearchManager {
         for (int i = 0; i < 5; i++) {
             CompositeEntity namedObjMock = PowerMock
                     .createMock(CompositeEntity.class);
-            
+
             parserMock.resetAll();
-            
+
             expect(
                     parserMock.parse(patternMatchInitialModels.get(i)
                             .getModel())).andReturn(namedObjMock);
@@ -306,8 +314,9 @@ public class TestSearchManager {
         SearchCriteria searchCriteria = new SearchCriteria();
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
-        Attribute attribute = new Attribute();
-        attribute.setName("test name");
+        StringParameter attribute = new StringParameter(new NamedObj(),
+                "test name");
+        //            attribute.setName("test name");
         attributes.add(attribute);
 
         searchCriteria.setAttributes(attributes);
@@ -360,8 +369,9 @@ public class TestSearchManager {
         SearchCriteria searchCriteria = new SearchCriteria();
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
-        Attribute attribute = new Attribute();
-        attribute.setName("test name");
+        StringParameter attribute = new StringParameter(new NamedObj(),
+                "test name");
+        //        attribute.setName("test name");
         attributes.add(attribute);
 
         searchCriteria.setAttributes(attributes);
@@ -389,8 +399,14 @@ public class TestSearchManager {
         AttributeSearchTask attributeSearchTaskMock = PowerMock
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
-        attributeSearchTaskMock.setAttributesList(searchCriteria
-                .getAttributes());
+        ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
+        genericAttribute.setAttributeName(attribute.getName());
+        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.setClassName(attribute.getClassName());
+        ptdbGenericAttributes.add(genericAttribute);
+
+        attributeSearchTaskMock.setAttributesList(ptdbGenericAttributes);
 
         // DBExecutionException is thrown.
         expect(
@@ -470,7 +486,7 @@ public class TestSearchManager {
         }
 
         Collections.sort(resultsFromXQuery);
-        
+
         expect(
                 dbConnectionXQueryMock
                         .executeGraphSearchTask(graphSearchTaskMock))
@@ -504,9 +520,9 @@ public class TestSearchManager {
         for (int i = 0; i < 5; i++) {
             CompositeEntity namedObjMock = PowerMock
                     .createMock(CompositeEntity.class);
-            
+
             parserMock.resetAll();
-            
+
             expect(
                     parserMock.parse(patternMatchInitialModels.get(i)
                             .getModel())).andReturn(namedObjMock);
@@ -566,9 +582,9 @@ public class TestSearchManager {
         for (int i = 0; i < 5; i++) {
             CompositeEntity namedObjMock = PowerMock
                     .createMock(CompositeEntity.class);
-            
+
             parserMock.resetAll();
-            
+
             expect(
                     parserMock.parse(patternMatchInitialModels.get(i)
                             .getModel())).andReturn(namedObjMock);
@@ -637,8 +653,9 @@ public class TestSearchManager {
         SearchCriteria searchCriteria = new SearchCriteria();
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
-        Attribute attribute = new Attribute();
-        attribute.setName("test name");
+        StringParameter attribute = new StringParameter(new NamedObj(),
+                "test name");
+        //            attribute.setName("test name");
         attributes.add(attribute);
 
         searchCriteria.setAttributes(attributes);
@@ -666,8 +683,14 @@ public class TestSearchManager {
         AttributeSearchTask attributeSearchTaskMock = PowerMock
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
-        attributeSearchTaskMock.setAttributesList(searchCriteria
-                .getAttributes());
+        ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
+        genericAttribute.setAttributeName(attribute.getName());
+        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.setClassName(attribute.getClassName());
+        ptdbGenericAttributes.add(genericAttribute);
+
+        attributeSearchTaskMock.setAttributesList(ptdbGenericAttributes);
 
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
@@ -693,9 +716,7 @@ public class TestSearchManager {
         PowerMock.verifyAll();
 
     }
-    
-    
-    
+
     /**
      * Test the search() method in the case when no model name criteria is 
      * specified. 
@@ -711,8 +732,9 @@ public class TestSearchManager {
         SearchCriteria searchCriteria = new SearchCriteria();
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
-        Attribute attribute = new Attribute();
-        attribute.setName("test name");
+        StringParameter attribute = new StringParameter(new NamedObj(),
+                "test name");
+        //        attribute.setName("test name");
         attributes.add(attribute);
 
         searchCriteria.setAttributes(attributes);
@@ -746,8 +768,14 @@ public class TestSearchManager {
         AttributeSearchTask attributeSearchTaskMock = PowerMock
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
-        attributeSearchTaskMock.setAttributesList(searchCriteria
-                .getAttributes());
+        ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
+        genericAttribute.setAttributeName(attribute.getName());
+        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.setClassName(attribute.getClassName());
+        ptdbGenericAttributes.add(genericAttribute);
+
+        attributeSearchTaskMock.setAttributesList(ptdbGenericAttributes);
 
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
@@ -867,8 +895,6 @@ public class TestSearchManager {
 
     }
 
-    
-    
     /**
      * Test the search() method in the case there is no result found in 
      * the model name searcher. 
@@ -884,8 +910,9 @@ public class TestSearchManager {
         SearchCriteria searchCriteria = new SearchCriteria();
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
-        Attribute attribute = new Attribute();
-        attribute.setName("test name");
+        StringParameter attribute = new StringParameter(new NamedObj(),
+                "test name");
+        //            attribute.setName("test name");
         attributes.add(attribute);
 
         searchCriteria.setAttributes(attributes);
@@ -917,8 +944,14 @@ public class TestSearchManager {
         AttributeSearchTask attributeSearchTaskMock = PowerMock
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
-        attributeSearchTaskMock.setAttributesList(searchCriteria
-                .getAttributes());
+        ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
+        genericAttribute.setAttributeName(attribute.getName());
+        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.setClassName(attribute.getClassName());
+        ptdbGenericAttributes.add(genericAttribute);
+
+        attributeSearchTaskMock.setAttributesList(ptdbGenericAttributes);
 
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
@@ -941,8 +974,7 @@ public class TestSearchManager {
                 dbConnectionAttributeMock
                         .executeModelNameSearchTask(modelNameSearchTaskMock))
                 .andReturn(new ArrayList<XMLDBModel>());
-        
-        
+
         // Testing in XQuery searcher.
 
         dbConnectionAttributeMock.closeConnection();
@@ -960,8 +992,6 @@ public class TestSearchManager {
 
     }
 
-    
-
     /**
      * Test the search() method in the case there is no criteria for
      *  graph search.
@@ -977,8 +1007,9 @@ public class TestSearchManager {
         SearchCriteria searchCriteria = new SearchCriteria();
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
-        Attribute attribute = new Attribute();
-        attribute.setName("test name");
+        StringParameter attribute = new StringParameter(new NamedObj(),
+                "test name");
+        //        attribute.setName("test name");
         attributes.add(attribute);
 
         searchCriteria.setAttributes(attributes);
@@ -997,8 +1028,14 @@ public class TestSearchManager {
         AttributeSearchTask attributeSearchTaskMock = PowerMock
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
-        attributeSearchTaskMock.setAttributesList(searchCriteria
-                .getAttributes());
+        ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
+        genericAttribute.setAttributeName(attribute.getName());
+        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.setClassName(attribute.getClassName());
+        ptdbGenericAttributes.add(genericAttribute);
+
+        attributeSearchTaskMock.setAttributesList(ptdbGenericAttributes);
 
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
@@ -1058,8 +1095,9 @@ public class TestSearchManager {
         SearchCriteria searchCriteria = new SearchCriteria();
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
-        Attribute attribute = new Attribute();
-        attribute.setName("test name");
+        StringParameter attribute = new StringParameter(new NamedObj(),
+                "test name");
+        //            attribute.setName("test name");
         attributes.add(attribute);
 
         searchCriteria.setAttributes(attributes);
@@ -1090,8 +1128,14 @@ public class TestSearchManager {
         AttributeSearchTask attributeSearchTaskMock = PowerMock
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
-        attributeSearchTaskMock.setAttributesList(searchCriteria
-                .getAttributes());
+        ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
+        genericAttribute.setAttributeName(attribute.getName());
+        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.setClassName(attribute.getClassName());
+        ptdbGenericAttributes.add(genericAttribute);
+
+        attributeSearchTaskMock.setAttributesList(ptdbGenericAttributes);
 
         ArrayList<XMLDBModel> resultsFromAttributes = new ArrayList<XMLDBModel>();
 
