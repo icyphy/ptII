@@ -41,7 +41,7 @@
 
 ME =		doc/tutorial
 
-DIRS =
+DIRS = graph
 
 # Root of the Ptolemy II directory
 ROOT =		../..

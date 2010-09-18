@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 25.0]">
         </property>
     </property>
-    <property name="ConnectivityReporter" class="doc.tutorial.ConnectivityReporter">
+    <property name="ConnectivityReporter" class="doc.tutorial.graph.ConnectivityReporter">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 115.0]">
         </property>
     </property>

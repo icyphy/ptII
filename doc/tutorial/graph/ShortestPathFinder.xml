@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 10.0]">
         </property>
     </property>
-    <property name="ShortestPathFinder" class="doc.tutorial.ShortestPathFinder">
+    <property name="ShortestPathFinder" class="doc.tutorial.graph.ShortestPathFinder">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 90.0]">
         </property>
     </property>

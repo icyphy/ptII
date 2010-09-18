@@ -4,7 +4,7 @@
 <entity name="HelloWorld" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="HelloWorld" class="doc.tutorial.HelloWorld">
+    <property name="HelloWorld" class="doc.tutorial.graph.HelloWorld">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 110.0]">
         </property>
     </property>
