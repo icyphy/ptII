@@ -657,7 +657,6 @@ ALLPACKAGES = \
 	ptolemy.kernel.undo \
 	ptolemy.kernel.util \
 	ptolemy.actor \
-	ptolemy.actor.gui \
 	ptolemy.actor.gui.style \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.hoc \
