@@ -1,8 +1,8 @@
-# Makefile for testing the tutorial/graph java files
+# Makefile for the JUnit Tutorial Graph tests
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 59075 2010-09-14 19:14:11Z cxh $
 #
 # @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
@@ -29,61 +29,41 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-#
-
-ME =		doc/tutorial/graph
-
-# $PTII/configure looks for JUnit and sets PTJUNIT_DIR junit if it is found
-DIRS =		$(PTJUNIT_DIR)
+# Location of this directory, relative to the Ptolemy II directory
+ME =		doc/tutorial/graph/junit
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+# JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	graph
-PTCLASSJAR =
-
 JSRCS = \
-	ConnectivityReporter.java \
-	HelloWorld.java \
-	ShortestPathFinder.java
+	ShortestPathFinderTest.java
 
-# Note that the TutorialApplet*.java files get copied to
-# TutorialApplet.java and then made
-EXTRA_SRCS =	$(JSRCS) \
-	ConnectivityReporter.xml \
-	HelloWorld.xml \
-	ShortestPathFinder.xml
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	'ConnectivityReporter$$DoubleClickHandler.class' \
-	'HelloWorld$$DoubleClickHandler.class' \
-	'ShortestPathFinder$$Calculate.class' \
-	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
 
-demo: all
-	$(ROOT)/bin/vergil ConnectivityReporter.xml
-	$(ROOT)/bin/vergil HelloWorld.xml
-	$(ROOT)/bin/vergil ShortestPathFinder.xml
+tests:: $(EXTRA_SRCS) jclass test_java
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore doc.tutorial.graph.junit.ShortestPathFinderTest
+
+test_java: jclass
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
