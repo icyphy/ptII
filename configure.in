@@ -5310,6 +5310,9 @@ AC_SUBST(PTJOYSTICK_DIR)
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJOYSTICK_PACKAGES)
 
+# Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
+AC_SUBST(PTJUNIT_DIR)
+
 # PTJUNIT_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJUNIT_PACKAGES)
 
@@ -5326,21 +5329,6 @@ AC_SUBST(PTJYTHON_PACKAGES)
 # Set to jxta ans used in
 # $PTII/actor/lib/makefile if jxta.jar was found
 AC_SUBST(PTJXTA_DIR)
-
-# Set to opencv and used in 
-# $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
-AC_SUBST(PTOPENCV_DIR)
-
-# PTCGOPENCV_DIR is set to OpenCVTracking and used in 
-# $PTII/ptolemy/codegen/demo/makefile if opencv was found
-AC_SUBST(PTOPENCVCG_DIR)
-
-# Directory that contains cv.h
-AC_SUBST(PTOPENCV_INCLUDE_DIR)
-
-# Ptolemy II packages that use OpenCV
-# PTOPENCV_PACKAGES is used in ptII/doc/makefile
-AC_SUBST(PTOPENCV_PACKAGES)
 
 # Set to kieler and used in
 # $PTII/ptolemy/vergil/basic/layout/makefile if kieler was found
@@ -5388,6 +5376,21 @@ AC_SUBST(PTMATLAB_64LD_ARGS)
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found
 AC_SUBST(PTMESCAL_DIR)
+
+# Set to opencv and used in 
+# $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
+AC_SUBST(PTOPENCV_DIR)
+
+# PTCGOPENCV_DIR is set to OpenCVTracking and used in 
+# $PTII/ptolemy/codegen/demo/makefile if opencv was found
+AC_SUBST(PTOPENCVCG_DIR)
+
+# Directory that contains cv.h
+AC_SUBST(PTOPENCV_INCLUDE_DIR)
+
+# Ptolemy II packages that use OpenCV
+# PTOPENCV_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTOPENCV_PACKAGES)
 
 # Set to pdf and used in ptolemy/vergil/makefile if
 # PDFRenderer.jar is found.

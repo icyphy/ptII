@@ -643,6 +643,9 @@ PTJOYSTICK_DIR =     	@PTJOYSTICK_DIR@
 # PTJOYSTICK_PACKAGES is used in ptII/doc/makefile
 PTJOYSTICK_PACKAGES =	@PTJOYSTICK_PACKAGES@
 
+# Set to junit and used in $PTII/util/testsuite/makefile if junit was found.
+PTJUNIT_DIR =		@PTJUNIT_DIR@
+
 # Packages that have JUnit files.
 PTJUNIT_PACKAGES =	@PTJUNIT_PACKAGES@
 
