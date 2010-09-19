@@ -14,8 +14,6 @@ import javax.swing.JFrame;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Placeable;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -28,7 +26,7 @@ import com.sun.opengl.util.Animator;
  * @author Yasemin Demir
  * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
  */
-public class Display3D extends TypedAtomicActor  implements Placeable, GLEventListener, ViewScreenInterface{   
+public class Display3D extends TypedAtomicActor  implements Placeable, GLEventListener{   
     
     /**
      *  Construct a Display3D object in the given container with the given name.
@@ -50,10 +48,8 @@ public class Display3D extends TypedAtomicActor  implements Placeable, GLEventLi
         super(container, name);
         
         
-        output = new TypedIOPort(this, "output", false, true);
-        
-        output.setTypeEquals(BaseType.OBJECT);
-        
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
         
         
         
@@ -143,8 +139,6 @@ public class Display3D extends TypedAtomicActor  implements Placeable, GLEventLi
             _debug("Called fire()");
         }
        
-     
-        //output.send(0, new ObjectToken(_gl));
     }
 
 
