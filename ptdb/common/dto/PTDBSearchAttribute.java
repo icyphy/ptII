@@ -40,7 +40,7 @@ import ptolemy.data.expr.Variable;
  * frame.
  *
  * @author Alek Wang, Lyle Holsinger
- * @version $Id:$
+ * @version $Id$
  * @since Ptolemy II 8.1
  * @Pt.ProposedRating
  * @Pt.AcceptedRating
@@ -75,7 +75,7 @@ public class PTDBSearchAttribute extends Variable {
     
     /** Get an indication if the attribute is generic.
      * @return Indication if the attribute is generic.
-     * @see #setGenericAttribute()
+     * @see #setGenericAttribute(String)
      */
     public boolean isGenericAttribute(){
         
@@ -98,7 +98,7 @@ public class PTDBSearchAttribute extends Variable {
     
     /** Get the class name for a generic attribute
      * @return the class name.
-     * @see #setGenericClassName()
+     * @see #setGenericClassName(String)
      */
     public String getGenericClassName(){
         
