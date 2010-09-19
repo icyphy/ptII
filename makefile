@@ -284,7 +284,6 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/domains/pdf \
 		ptolemy/domains/gr/lib/Loader3D.* \
 		ptolemy/domains/gr/lib/experimental \
-		ptolemy/domains/gro \
 		ptolemy/domains/tm/lib/PeriodicTrigger* \
 		ptolemy/domains/wireless/demo/Network \
 		ptolemy/domains/wireless/lib/network \
