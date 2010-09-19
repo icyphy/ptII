@@ -610,7 +610,30 @@ proc jdkStackTrace {} {
     puts $errorInfo
 }
 
-
+############################################################################
+#### 
+# Get the names of the nameables associated with the last KernelException, if any.
+proc jdkKernelExceptionNameables {} {
+    global errorCode errorInfo
+    if { [string match {JAVA*} $errorCode] } {
+	set exception [lindex $errorCode 1]
+	if [java::instanceof $exception ptolemy.kernel.util.KernelException] {
+	    set kernelException [java::cast ptolemy.kernel.util.KernelException $exception]
+	    set name1 {}
+	    set nameable1 [$kernelException getNameable1]
+	    if {! [java::isnull $nameable1] } {
+		set name1 [[$kernelException getNameable1] getFullName]
+	    }
+	    set name2 {}
+	    set nameable2 [$kernelException getNameable2]
+	    if {! [java::isnull $nameable2] } {
+		set name2 [[$kernelException getNameable2] getFullName]
+	    }
+	    return [list $name1 $name2]
+	}
+    }
+    return [list {} {}]
+}
 
 ############################################################################
 #### diffText
