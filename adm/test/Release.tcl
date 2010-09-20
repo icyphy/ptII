@@ -68,6 +68,8 @@ contrib.actor.lib.example
 diva.util.java2d.svg
 doc.coding.templates
 doc.tutorial
+doc.tutorial.graph
+doc.tutorial.graph.junit
 ptolemy.actor.corba
 ptolemy.actor.corba.CoordinatorUtil
 ptolemy.actor.corba.CorbaIOUtil
@@ -103,6 +105,7 @@ ptolemy.domains.gr.lib.quicktime
 ptolemy.domains.wireless.lib.network
 ptolemy.domains.wireless.lib.network.mac
 ptolemy.domains.wireless.lib.tinyOS
+ptolemy.kernel.test.junit
 ptolemy.moml.jxta
 ptolemy.plot.servlet}
 
