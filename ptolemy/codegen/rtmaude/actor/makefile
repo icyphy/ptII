@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/rtmaude/actor
 
-DIRS =      lib
+DIRS =      lib parameters
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../..
@@ -50,19 +50,22 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR 
 PTCLASSALLJARS = \
-	lib/lib.jar
+	lib/lib.jar \
+	parameters/parameters.jar
 
 JSRCS = \
 	Director.java \
 	IOPort.java \
 	IORelation.java \
+	TypedAtomicActor.java \
 	TypedCompositeActor.java
-	
+
 OTHER_FILES_TO_BE_JARED = \
 	IOPort.rtmaude \
 	IORelation.rtmaude \
+	TypedAtomicActor.rtmaude \
 	TypedCompositeActor.rtmaude
-	
+
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't

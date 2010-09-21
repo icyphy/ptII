@@ -633,10 +633,10 @@ public class Simulator extends SDFTransformer {
         if (chi.length() == 0) {
             chi = ".";
         }
-	final URI modelURI = URIAttribute.getModelURI(namedObj);
-	final String par = modelURI != null ?
-	    new File(modelURI.getPath()).getParent()
-	    : null;
+        final URI modelURI = URIAttribute.getModelURI(namedObj);
+        final String par = modelURI != null ?
+            new File(modelURI.getPath()).getParent()
+            : null;
         final File fil = new File(par, chi);
         chi = fil.getPath();
         return chi;

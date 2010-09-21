@@ -147,7 +147,7 @@ public class StateIcon extends NameIcon {
         if (container instanceof State) {
             try {
                 ColorAttribute colorAttribute = (ColorAttribute) (
-                		container.getAttribute("fill", ColorAttribute.class));
+                                container.getAttribute("fill", ColorAttribute.class));
                 if (colorAttribute != null) {
                     return colorAttribute.asColor();
                 }

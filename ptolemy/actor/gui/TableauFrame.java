@@ -1044,11 +1044,11 @@ public class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs(String extension) {
-    	URL result = _saveAsHelper(extension);
-    	if (result == null){
-    		return false;
-    	}
-    	return true;
+            URL result = _saveAsHelper(extension);
+            if (result == null){
+                    return false;
+            }
+            return true;
     }
     
     /** Query the user for a filename, save the model to that file,

@@ -351,7 +351,7 @@ test UndoPort-2.1 {Test undoing an actor with two channels} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.2.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
     </entity>
@@ -362,12 +362,8 @@ test UndoPort-2.1 {Test undoing an actor with two channels} {
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation2"/>
@@ -375,6 +371,7 @@ test UndoPort-2.1 {Test undoing an actor with two channels} {
     <link port="Ramp.output" relation="relation"/>
 </entity>
 }
+
 
 ##
 

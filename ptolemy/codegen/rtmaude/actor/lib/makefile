@@ -53,19 +53,27 @@ PTCLASSALLJARS = \
 	gui/gui.jar 
 
 JSRCS = \
+	AddSubtract.java \
 	Clock.java \
+	Const.java \
 	CurrentTime.java \
+	Expression.java \
 	Pulse.java \
 	Ramp.java \
+	Scale.java \
 	SetVariable.java
 
 OTHER_FILES_TO_BE_JARED = \
+	AddSubtract.rtmaude \
 	Clock.rtmaude \
+	Const.rtmaude \
 	CurrentTime.rtmaude \
+	Expression.rtmaude \
 	Pulse.rtmaude \
 	Ramp.rtmaude \
+	Scale.rtmaude \
 	SetVariable.rtmaude
-	
+
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't

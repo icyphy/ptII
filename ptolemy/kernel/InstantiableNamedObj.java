@@ -213,7 +213,7 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-    	    	
+                        
         if (!isClassDefinition()) {
             super.exportMoML(output, depth, name);
             return;

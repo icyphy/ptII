@@ -879,11 +879,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-    	
+            
         // Escape any < character in name. unescapeForXML occurs in 
         // setName(String).
-        name = StringUtilities.escapeForXML(name);    	
-    	
+        name = StringUtilities.escapeForXML(name);            
+            
         try {
             _workspace.getReadAccess();
 

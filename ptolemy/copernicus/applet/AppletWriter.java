@@ -216,22 +216,22 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
         }
 
-	// The URL, usually a URL that refers to the _outputDirectory,
-	// except when we are deploying
-	_ptIILocalURL = PhaseOptions.getString(options,
+        // The URL, usually a URL that refers to the _outputDirectory,
+        // except when we are deploying
+        _ptIILocalURL = PhaseOptions.getString(options,
                 "ptIILocalURL");
-	if (_ptIILocalURL == null) {
-	    try {
-		_ptIILocalURL = new URL(new File(
-					       _outputDirectory).toURI().toURL(), _codeBase).toString();
-		} catch (Exception ex) {
-		throw new InternalErrorException(null, ex,
-						 "Failed to create URL for \"" + _outputDirectory + "\"");
-	    }
-	} else {
-	    System.out.println("AppletWriter: ptIILocalURL = "
-			       + _ptIILocalURL);
-	}
+        if (_ptIILocalURL == null) {
+            try {
+                _ptIILocalURL = new URL(new File(
+                                               _outputDirectory).toURI().toURL(), _codeBase).toString();
+                } catch (Exception ex) {
+                throw new InternalErrorException(null, ex,
+                                                 "Failed to create URL for \"" + _outputDirectory + "\"");
+            }
+        } else {
+            System.out.println("AppletWriter: ptIILocalURL = "
+                               + _ptIILocalURL);
+        }
 
         _ptIIUserDirectory = PhaseOptions.getString(options,
                 "ptIIUserDirectory");
@@ -528,7 +528,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         _substituteMap.put("@outputDirectory@", _outputDirectory);
         _substituteMap.put("@sanitizedModelName@", _sanitizedModelName);
         _substituteMap.put("@ptIIJarsPath@", _ptIIJarsPath);
-	_substituteMap.put("@ptIILocalURL@", _ptIILocalURL);
+        _substituteMap.put("@ptIILocalURL@", _ptIILocalURL);
         _substituteMap.put("@ptIIUserDirectory@", _ptIIUserDirectory);
         _substituteMap.put("@targetPath@", _targetPath);
         _substituteMap.put("@vergilHeight@", Integer.toString(vergilHeight));
@@ -1734,14 +1734,14 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             try {
                 fileInputStream = new FileInputStream(
                         keystorePropertiesFileName);
-		System.out.println("Reading properties file: "
-				   + keystorePropertiesFileName);
+                System.out.println("Reading properties file: "
+                                   + keystorePropertiesFileName);
                 properties.load(fileInputStream);
-		System.out.println("Properties: " + properties);
+                System.out.println("Properties: " + properties);
                 String property = null;
                 if ((property = properties.getProperty("keystoreFileName")) != null) {
                     keystoreFileName = property;
-		    System.out.println("keystoreFileName: " + keystoreFileName);
+                    System.out.println("keystoreFileName: " + keystoreFileName);
                 }
                 storePassword = properties.getProperty("storePassword");
                 keyPassword = properties.getProperty("keyPassword");

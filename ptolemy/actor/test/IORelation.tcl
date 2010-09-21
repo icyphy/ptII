@@ -168,8 +168,10 @@ test IORelation-3.6 {Test getWidth of a port with unspecified relation width. No
     catch {$r1 getWidth} msg
     list $msg    
 } {{ptolemy.kernel.util.IllegalActionException: The width of relation .E1.R1 can not be uniquely inferred.
-Please make the width inference deterministic by explicitly specifying the width of this relation.
+Please make the width inference deterministic by explicitly specifying the width of this relation. In the user interface, right click on the relation, select Configure and change the width.  Note that some actors may need to have their  Java code updated to call setDefaultWidth(1) on the output port. The relation is deeply connected to these ports:
+ptolemy.actor.IOPort {.E1.E2.P1}
   in .E1.R1}}
+
 
 
 # NOTE: This kind of link is now allowed.
@@ -245,9 +247,11 @@ test IORelation-3.11 {Test getWidth of a port with inferred relation width} {
     $r4 setWidth [java::field ptolemy.actor.IORelation WIDTH_TO_INFER]
     $p2 link $r4    
     catch {$r4 getWidth} msg
+
     set widthInferenceNotDeterministic "ptolemy.kernel.util.IllegalActionException: The width of relation * can not be uniquely inferred.
-Please make the width inference deterministic by explicitly specifying the width of this relation.
-  in *"        
+Please make the width inference deterministic by explicitly specifying the width of this relation. In the user interface, right click on the relation, select Configure and change the width.  Note that some actors may need to have their  Java code updated to call setDefaultWidth(1) on the output port. The relation is deeply connected to these ports:
+*
+  in *"
     string match $widthInferenceNotDeterministic $msg
 } {1}
   
@@ -298,7 +302,8 @@ test IORelation-3.13 {Test getWidth of a port with inferred relation width} {
     catch {$r1 getWidth} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: The width of relation .E0.R1 can not be uniquely inferred.
-Please make the width inference deterministic by explicitly specifying the width of this relation.
+Please make the width inference deterministic by explicitly specifying the width of this relation. In the user interface, right click on the relation, select Configure and change the width.  Note that some actors may need to have their  Java code updated to call setDefaultWidth(1) on the output port. The relation is deeply connected to these ports:
+ptolemy.actor.IOPort {.E0.E2.P2}
   in .E0.R1}}
 
 test IORelation-3.14 {No two relations from both inside and outside can be a bus} {
