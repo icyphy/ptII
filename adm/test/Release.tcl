@@ -68,11 +68,6 @@ contrib.actor.lib.example
 diva.util.java2d.svg
 doc.coding.templates
 doc.tutorial
-jni.launcher
-jni.test.jni.meaningOfLife
-jni.test.jni.Streaming
-jni.test.jni.testDeux
-jni.test.jni.testTrois
 ptolemy.actor.corba
 ptolemy.actor.corba.CoordinatorUtil
 ptolemy.actor.corba.CorbaIOUtil
