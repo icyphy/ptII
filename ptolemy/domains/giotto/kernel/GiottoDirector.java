@@ -1,6 +1,6 @@
 /* Director for the Giotto model of computation.
 
- Copyright (c) 2000-2010 The Regents of the University of California.
+ Copyright (c) 2000-2009 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,12 +54,8 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.DecoratedAttributes;
-import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -68,7 +64,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-////GiottoDirector
+//////////////////////////////////////////////////////////////////////////
+//// GiottoDirector
 
 /**
  This class implements a director for the Giotto model of computation
@@ -93,7 +90,7 @@ import ptolemy.kernel.util.Workspace;
  @see GiottoReceiver
  */
 public class GiottoDirector extends StaticSchedulingDirector implements
-        TimedDirector, Decorator {
+        TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -247,15 +244,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
-                if (_debugging) {
-                    _debug("actor to be fired in this iteration has name "
-                            + actor.getFullName());
-                }
-                Time thistime = getModelTime();
 
-                if (_debugging) {
-                    _debug("the current time is " + thistime.toString());
-                }
                 if (_debugging) {
                     _debug("Updating destination receivers of "
                             + ((NamedObj) actor).getFullName());
@@ -266,9 +255,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort) outputPorts.next();
-                    if (_debugging) {
-                        _debug("output port is " + port.getDisplayName());
-                    }
                     Receiver[][] channelArray = port.getRemoteReceivers();
 
                     for (int i = 0; i < channelArray.length; i++) {
@@ -286,7 +272,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
             while (scheduleIterator.hasNext()) {
                 Actor actor = ((Firing) scheduleIterator.next()).getActor();
-                ((Entity) actor).getAttribute("WCET");
 
                 if (_debugging) {
                     _debug("Iterating " + ((NamedObj) actor).getFullName());
@@ -300,23 +285,11 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                             + actor.getFullName() + "\"");
                 }
             }
-            if (_debugging) {
-                _debug("unit index has value " + _unitIndex);
-            }
+
             _unitIndex++;
 
             _expectedNextIterationTime = _expectedNextIterationTime
                     .add(_unitTimeIncrement);
-            //this compensates for rounding errors that may occur  
-            if (_unitIndex == _lcm) {
-                _expectedNextIterationTime = new Time(this, _iterationCount
-                        + (_periodValue * (_unitIndex)));
-                if (_debugging) {
-                    _debug("unit index is equal to lcm");
-                    _debug("iteration count is: " + _iterationCount);
-                }
-
-            }
 
             if (_debugging) {
                 _debug("next Iteration time " + _expectedNextIterationTime
@@ -351,9 +324,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *    permissible (e.g. the given time is in the past).
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
-        if (_debugging) {
-            _debug("fireAt method was called for actor: " + actor.getFullName());
-        }
         // No executive director. Return current time plus the period divided
         // by the frequency of the specified actor,
         // or some multiple of that number.
@@ -363,23 +333,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         // the criterion seems difficult. Hence, we check to be sure
         // that the test is worth doing.
         Time currentTime = getModelTime();
-
         int frequencyValue = _getActorFrequency((NamedObj) actor);
-
         double actorPeriod = _periodValue / frequencyValue;
-        if (_debugging) {
-            _debug("inside fireAt the frequency value is : " + frequencyValue);
-            _debug("inside fireAt the actor period is: " + actorPeriod);
-        }
-
         Time nextFiringTime = currentTime.add(actorPeriod);
-
-        if (_debugging) {
-            _debug("current time is: " + currentTime.getDoubleValue());
-            _debug("next firing time is: " + nextFiringTime.getDoubleValue());
-            _debug("desired firing time is: " + time.getDoubleValue());
-
-        }
         // First check to see whether we are in the initialize phase, in
         // which case, return the start time.
         NamedObj container = getContainer();
@@ -615,8 +571,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
 
-        super.preinitialize();
-
         // before initialize the contained actors, reset the period parameter
         // if the model is embedded inside another giotto model.
         CompositeActor compositeActor = (CompositeActor) (getContainer());
@@ -640,41 +594,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         GiottoScheduler scheduler = (GiottoScheduler) getScheduler();
         _schedule = scheduler.getSchedule();
         _unitTimeIncrement = scheduler._getMinTimeStep(_periodValue);
-
-        double wcet = 0;
-        try {
-            createDecoratedAttributes(this);
-
-        } catch (NameDuplicationException e) {
-            e.printStackTrace();
-        }
-
-        Attribute dirWCET = this.getContainer().getAttribute("WCET");
-        if (dirWCET != null) {
-            wcet = ((DoubleToken) ((Variable) dirWCET).getToken())
-                    .doubleValue();
-        }
-
-        if (wcet > _periodValue) {
-
-            if (_debugging) {
-                _debug("throw an exception");
-            }
-
-            handleModelError(this, new IllegalActionException(this,
-                    "total WCET of ("
-                            + wcet
-                            + ") is larger than period ("
-                            + _periodValue
-                            + ") for actor "
-                            + ((CompositeActor) (getContainer()))
-                                    .getDisplayName()));
-
-        } //end of if  
-        if (_debugging) {
-            _debug("at the end of preinitialize in the giotto director.");
-        }
-
     }
 
     /** Return an array of suggested directors to be used with
@@ -844,91 +763,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         return frequencyValue;
     }
 
-    /**
-     * Return the WCET of the actors.
-     * The Worst-Case Execution Time (WCET) of an actor is the maximum length of time 
-     * the task could take to execute on a particular platform
-     * @return A double containing the WCET of the actors
-     * @throws IllegalActionException If an error occurs
-
-     */
-    public double _getWCET() throws IllegalActionException {
-        double wcet = 0;
-        double actorFrequency = 0;
-        double actorWCET = 0;
-        int actorCount = 0;
-        for (Actor actor : (List<Actor>) ((TypedCompositeActor) this
-                .getContainer()).deepEntityList()) {
-            actorCount++;
-            Attribute frequency = ((Entity) actor).getAttribute("frequency");
-            actor.getDirector();
-            Attribute WCET = ((Entity) actor).getAttribute("WCET");
-            if (!(actor instanceof ptolemy.domains.giotto.lib.GiottoError)) {
-
-                if (actor instanceof CompositeActor) {
-
-                    if (_debugging) {
-                        // _debug("Composite Actor, if it has a director I need to ask it for it's WCET");
-                    }
-                    Director dir = actor.getDirector();
-
-                    if (_debugging) {
-                        //_debug(dir.getFullName());
-                    }
-                    if (dir == null) {
-
-                        if (_debugging) {
-                            //    _debug("no director in composite actor ");
-                        }
-
-                    } else {
-                        double dummyWCET = 0.0011;
-                        Attribute dirWCET = dir.getAttribute("WCET");
-                        if (dirWCET != null) {
-                            dummyWCET = ((DoubleToken) ((Variable) dirWCET)
-                                    .getToken()).doubleValue();
-                        }
-                        if (_debugging) {
-                            // _debug("Composite Actor:"+actor.getFullName()+" has WCET "+ dummyWCET);
-                        }
-                        wcet += dummyWCET;
-                    }
-                } else {
-
-                    if (WCET == null) {
-                        actorWCET = 0.0;
-                    } else {
-                        try {
-
-                            actorWCET = ((DoubleToken) ((Variable) WCET)
-                                    .getToken()).doubleValue();
-                        } catch (Exception e2) { // I don't think this is the right fix.. let's see if it works for now
-                            actorWCET = ((IntToken) ((Variable) WCET)
-                                    .getToken()).intValue();
-                        }
-                    }
-                    if (frequency == null) {
-                        actorFrequency = 1;
-                    } else {
-                        actorFrequency = ((IntToken) ((Variable) frequency)
-                                .getToken()).intValue();
-                    }
-
-                    wcet += (actorFrequency * actorWCET);
-                }
-            }
-            if (_debugging) {
-                //     _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
-
-                // _debug("with actor "+actor.getFullName()+" wect thus far is "+wcet);
-
-                //_debug("actor count is "+actorCount);
-            }
-        }
-
-        return wcet;
-    }
-
     // Initialize the director by creating a scheduler and parameters.
     private void _init() {
         try {
@@ -960,34 +794,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     + _expectedNextIterationTime);
         }
         // Enqueue a refire for the container of this director.
-
         _fireContainerAt(_expectedNextIterationTime);
-    }
-
-    /** Set the current type of the decorated attributes.
-     *  The type information of the parameters are not saved in the
-     *  model hand hence this has to be reset when reading the model
-     *  again.
-     *  @param decoratedAttributes The decorated attributes.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     */
-    public void setTypesOfDecoratedVariables(
-            DecoratedAttributes decoratedAttributes)
-            throws IllegalActionException {
-    }
-
-    /** Return the decorated attributes for the target NamedObj.
-     *  @param target The NamedObj that will be decorated.
-     *  @return The decorated attributes for the target NamedObj. 
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public DecoratedAttributes createDecoratedAttributes(NamedObj target)
-            throws IllegalActionException, NameDuplicationException {
-        return new GiottoDecoratedAttributesImplementation(target, this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1022,7 +829,4 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     // Minimum time step size (a Giotto "unit").
     private double _unitTimeIncrement = 0.0;
-
-    //lcm of frequencies see my this director
-    private int _lcm;
 }

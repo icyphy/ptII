@@ -1,6 +1,6 @@
 /* The scheduler for the Giotto domain.
 
- Copyright (c) 2000-2010 The Regents of the University of California.
+ Copyright (c) 2000-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,6 +27,7 @@
  */
 package ptolemy.domains.giotto.kernel;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -43,7 +44,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-////GiottoScheduler
+//////////////////////////////////////////////////////////////////////////
+//// GiottoScheduler
 
 /**
  This class generates schedules for the actors in a CompositeActor
@@ -133,16 +135,6 @@ public class GiottoScheduler extends Scheduler {
         }
     }
 
-    /**
-     * Returns the LCM value.
-     * @return an int representing the LCM value
-     */
-
-    public int getLCM() {
-        return _lcm;
-
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -199,17 +191,18 @@ public class GiottoScheduler extends Scheduler {
         ListIterator actorListIterator = actorList.listIterator();
 
         int i = 0;
+        int biggestFrequency = _candidateFrequencies[_candidateFrequencies.length - 1];
 
         while (actorListIterator.hasNext()) {
             Actor actor = (Actor) actorListIterator.next();
             int frequency = getFrequency(actor);
 
-            // if (Arrays.binarySearch(_candidateFrequencies, frequency) >= 0) {
-            // this frequency is a good candidate to calculate accurate
-            // _unitTimeIncrement for the director.
-            frequencyArray[i] = frequency;
-            i++;
-            /*} else if (frequency > biggestFrequency) {
+            if (Arrays.binarySearch(_candidateFrequencies, frequency) >= 0) {
+                // this frequency is a good candidate to calculate accurate
+                // _unitTimeIncrement for the director.
+                frequencyArray[i] = frequency;
+                i++;
+            } else if (frequency > biggestFrequency) {
                 throw new NotSchedulableException(
                         this,
                         "The specified frequency "
@@ -231,7 +224,7 @@ public class GiottoScheduler extends Scheduler {
                                 + ", because time cannot be calculated accurately. \n"
                                 + " A good frequency will be of 2^m*5^n, where m and n"
                                 + " are non-negative integers.");
-            }*/
+            }
         }
 
         _lcm = _lcm(frequencyArray);
@@ -304,13 +297,13 @@ public class GiottoScheduler extends Scheduler {
     ////                         private variables                 ////
     // This is a list of frequencies that can be used to calculate
     // _unitTimeIncrement accurately.
-    //    private static int[] _candidateFrequencies = new int[] { 1, 2, 4, 5, 8, 10,
-    //        16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256,
-    //        320, 400, 500, 512, 625, 640, 800, 1000, 1024, 1250, 1280, 1600,
-    //        2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 5000, 5120, 6250,
-    //        6400, 8000, 8192, 10000, 10240, 12500, 12800, 15625, 16000, 16384,
-    //        20000, 20480, 25000, 25600, 31250, 32000, 32768, 40000, 40960,
-    //        50000, 51200, 62500, 64000, 65536, 78125, 80000, 81920, 100000 };
+    private static int[] _candidateFrequencies = new int[] { 1, 2, 4, 5, 8, 10,
+            16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256,
+            320, 400, 500, 512, 625, 640, 800, 1000, 1024, 1250, 1280, 1600,
+            2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 5000, 5120, 6250,
+            6400, 8000, 8192, 10000, 10240, 12500, 12800, 15625, 16000, 16384,
+            20000, 20480, 25000, 25600, 31250, 32000, 32768, 40000, 40960,
+            50000, 51200, 62500, 64000, 65536, 78125, 80000, 81920, 100000 };
 
     private int _giottoSchedulerTime = 0;
 
