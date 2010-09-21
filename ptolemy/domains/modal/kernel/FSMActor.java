@@ -439,8 +439,18 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
+
+        // Thomas Feng writes: "Set the _instantiables in
+        // super.clone() so that it contains the instantiables newly
+        // added, whose setContainer() is called with the cloned
+        // object as its container."
+        // See $PTII/ptolemy/actor/gt/test/auto/InitializationBug.xml
+        List<Initializable> oldInitializables = _initializables;
+        _initializables = null;
         FSMActor newObject = (FSMActor) super.clone(workspace);
-        newObject._initializables = null;
+        _initializables = oldInitializables;
+        // If the next line is uncommented, the IntializationBug.xml fails.
+        // newObject._initializables = null;
 
         newObject._currentState = null;
         newObject._identifierToPort = new HashMap<String, Port>();
@@ -451,6 +461,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             newObject._initialState = (State) newObject.getEntity(_initialState
                     .getName());
         }
+        newObject._portReferencedInTransitionMaps = new HashMap<IOPort, HashMap<Transition, Boolean>>();
 
         newObject._inputPortsVersion = -1;
         newObject._cachedInputPorts = null;
