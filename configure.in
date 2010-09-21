@@ -2961,12 +2961,25 @@ if test ! -d "$JAVA3D_USER_DIR"; then
     so we need not find Java 3D.])
 else
     AC_MSG_CHECKING([for Java 3D])
+    AC_ARG_WITH(java3D, [  --with-java3D=DIR       use j3dcore.jar, j3dutils.jar,
+                          and vecmath.jar from DIR.  Usually Java 3D is
+			  installed in the JDK in jre/lib/ext],
+	JAVA3D_DIR=$withval,
+	JAVA3D_DIR=)
+
+    if test -f "$JAVA3D_DIR/j3dcore.jar" -a -f "$JAVA3D_DIR/j3dutils.jar" -a -f "$JAVA3D_DIR/vecmath.jar"; then
+        JAVA3D_JARS="$JAVA3D_DIR/j3dcore.jar$CLASSPATHSEPARATOR$JAVA3D_DIR/j3dutils.jar$CLASSPATHSEPARATOR$JAVA3D_DIR/vecmath.jar"
+	Java3DJavaC="$JAVAC -classpath $JAVA3D_JARS"
+    else
+	Java3DJavaC="$JAVAC"
+    fi
+
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
     startdir=$PTII
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" java3dTest.java ; then
+    if $Java3DJavaC java3dTest.java ; then
        PT_MSG_RESULT(ok)
        PTJAVA3D_DIR=gr
        PTGRDOMAIN_JAR=gr/gr.jar
@@ -4420,8 +4433,10 @@ else
     if test "$RXTX_PRESENT" = "no"; then
         AC_MSG_WARN([The Java Serial Port Communications API is not installed.
     The X10 Interface requires rxtx to interface to the serial port
-    The commapi can be downloaded from http://java.sun.com/products/javacomm/
-    and placed  in \$PTII/vendors/sun/commapi])
+    The rxtx package can be found at
+    http://rxtx.qbang.org/wiki/index.php/Download
+    and placed in \$PTII/vendors/misc/rxtx so that 
+    \$PTII/vendors/misc/rxtx/RXTXComm.jar exists.])
     else
         AC_MSG_CHECKING([for X10 directory])
         AC_ARG_WITH(x10, [  --with-X10=DIR       use X10 from DIR,
@@ -4657,6 +4672,12 @@ AC_SUBST(JARSIGNER)
 # However, we have to be careful of backslashes and /cygwin
 # Soot uses this variable to find java.lang.Object
 AC_SUBST(JAVA_SYSTEM_JAR)
+
+# JAVA3D_JARS is the jar files to use with Java 3D.  Usually, this is
+# empty, because most installations have Java 3D in the jdk
+# jre/lib/ext directory, but some do not. If --with-java3D was used
+# with configure, then JAVA3D_JARS will be set to include the jars.
+AC_SUBST(JAVA3D_JARS)
 
 # javac binary
 AC_SUBST(JAVAC)

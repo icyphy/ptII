@@ -38,7 +38,12 @@ DIRS =	$(PTQUICKTIME_DIR)
 # Root of the Java directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# JAVA3D_JARS is the jar files to use with Java 3D.  Usually, this is
+# empty, because most installations have Java 3D in the jdk
+# jre/lib/ext directory, but some do not. If --with-java3D was used
+# with configure, then JAVA3D_JARS will be set to include the jars.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(JAVA3D_JARS)
+
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
