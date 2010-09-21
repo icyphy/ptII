@@ -461,7 +461,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             newObject._initialState = (State) newObject.getEntity(_initialState
                     .getName());
         }
-        newObject._portReferencedInTransitionMaps = new HashMap<IOPort, HashMap<Transition, Boolean>>();
+        //newObject._portReferencedInTransitionMaps = new HashMap<IOPort, HashMap<Transition, Boolean>>();
 
         newObject._inputPortsVersion = -1;
         newObject._cachedInputPorts = null;
