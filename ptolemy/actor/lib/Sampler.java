@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This actor generates discrete events by sampling the input signal whenever
- the <i>trigger</i> input is present. 
+ the <i>trigger</i> input is present.
  This sampler will send to the output whatever input occurs
  at a sample time; if the input is absent, the output will be
  absent.

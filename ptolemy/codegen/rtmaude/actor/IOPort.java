@@ -63,12 +63,12 @@ public class IOPort extends RTMaudeAdaptor implements PortCodeGenerator {
         ptolemy.actor.IOPort p = (ptolemy.actor.IOPort) getComponent();
         StringBuffer res = new StringBuffer();
         if (p.getWidth() > 1 && p.isInput()) {
-            String sources = new ListTerm<ptolemy.actor.IOPort>("noPort", " ; ", 
+            String sources = new ListTerm<ptolemy.actor.IOPort>("noPort", " ; ",
                     p.sourcePortList()) {
                 public String item(ptolemy.actor.IOPort port)
                         throws IllegalActionException {
-                    return _generateBlockCode("scopeBlock", 
-                                port.getContainer().getName(), port.getName()); 
+                    return _generateBlockCode("scopeBlock",
+                                port.getContainer().getName(), port.getName());
                 }
             }.generateCode();
             res.append(_generateBlockCode("multiBlock", sources));

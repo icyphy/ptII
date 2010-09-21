@@ -231,7 +231,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
                         frame = tableau.getFrame();
                     }
                 }
-                // Check for supported type of editor 
+                // Check for supported type of editor
                 if (!(frame instanceof ActorGraphFrame)) {
                     String message = "";
                     if (tableauxCount == 0) {
@@ -255,7 +255,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
                             "For now only actor oriented graphs with ports are supported by KIELER layout. "
                             + message
                             + (frame != null
-                                    ? " Details about the frame: " 
+                                    ? " Details about the frame: "
                                     + StringUtilities.ellipsis(frame.toString(), 80)
                                     : ""));
                 } else {
@@ -329,7 +329,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
 
     /** Action to place all items, including attributes.  No routing is done. */
     private class PlaceAllAction extends BaseLayoutAction {
-        /** Construct a PlaceAllAction that has 
+        /** Construct a PlaceAllAction that has
          *  applyEdgeLayout set to false and
          *  boxLayout set to true.
          */
@@ -343,7 +343,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
      * routing is done.
      */
     private class PlaceAction extends BaseLayoutAction {
-        /** Construct a PlaceAction that has 
+        /** Construct a PlaceAction that has
          *  applyEdgeLayout set to false and
          *  boxLayout set to false.
          */
@@ -355,7 +355,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
     /** Place and Route! Inserts new Relation Vertices. (EXPERIMENTAL).
      */
     private class PlaceAndRouteAction extends BaseLayoutAction {
-        /** Construct a PlaceAndRouteAction that has 
+        /** Construct a PlaceAndRouteAction that has
          *  applyEdgeLayout set to true and
          *  boxLayout set to false.
          */
@@ -370,7 +370,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
      * edges and have only 0, 1 or 2 adjacent links.
      */
     private class RemoveVerticesAction extends BaseLayoutAction {
-        /** Construct a PlaceAndRouteAction that has 
+        /** Construct a PlaceAndRouteAction that has
          *  applyEdgeLayout set to true and
          *  boxLayout set to false.
          */

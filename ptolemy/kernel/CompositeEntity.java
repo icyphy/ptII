@@ -1069,7 +1069,7 @@ public class CompositeEntity extends ComponentEntity {
                                 continue;
                             }
                         }
-                        
+
                         // Escape any < character that occurs in name.
                         // setName(String).
                         String escapedName = StringUtilities.escapeForXML(entity.getName());
@@ -2277,8 +2277,8 @@ public class CompositeEntity extends ComponentEntity {
                     if (!_commonImplier(record.relation1, depth
                             + _depthInside(record.relation1), record.port,
                             depth + _depthInside(record.port))) {
-                            
-                        // Escape any < character in name. unescapeForXML occurs in 
+
+                        // Escape any < character in name. unescapeForXML occurs in
                         // setName(String).
                         String escapedRecordPortName = StringUtilities.escapeForXML(record.port.getName(this));
                         String escapedRecordRelation1Name = StringUtilities.escapeForXML(record.relation1.getName(this));
@@ -2294,7 +2294,7 @@ public class CompositeEntity extends ComponentEntity {
                     if (!_commonImplier(record.relation1, depth
                             + _depthInside(record.relation1), record.relation2,
                             depth + _depthInside(record.relation2))) {
-                            
+
                         String escapedRecordRelation1Name = StringUtilities.escapeForXML(record.relation1.getName(this));
                         String escapedRecordRelation2Name = StringUtilities.escapeForXML(record.relation2.getName(this));
 

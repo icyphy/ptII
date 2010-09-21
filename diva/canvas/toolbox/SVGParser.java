@@ -405,8 +405,8 @@ public class SVGParser {
                 // Ignore.  On the Mac, under 1.5.0_22, under an applet,
                 // Color.getColor(String) calls
                 // Integer.getInteger(String), which calls
-                // Integer.getInteger(String, Integer), which calls 
-                // System.getProperty(String), which *fails* in a 
+                // Integer.getInteger(String, Integer), which calls
+                // System.getProperty(String), which *fails* in a
                 // sandbox.  A very poor choice for getColor(String)
             }
             if (c == null) {

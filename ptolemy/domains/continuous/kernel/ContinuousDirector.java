@@ -516,7 +516,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     _resetAllReceivers();
 
                     // Set receivers connected to the inputs to "absent."
-                    // Note that this cannot be done by calling 
+                    // Note that this cannot be done by calling
                     // _transferInputsToInside() because if we are redoing
                     // the solver iteration then there are inputs available,
                     // but they should not be consumed yet.
@@ -1430,7 +1430,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     protected boolean _isInitializing = false;
 
-    /** The current time at the start of the current integration step. 
+    /** The current time at the start of the current integration step.
      */
     protected Time _iterationBeginTime;
 

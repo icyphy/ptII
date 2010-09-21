@@ -54,7 +54,7 @@ public class StaticResult implements PartialResult {
     /** Return true if static.
      *  In this class, false is always returned because this
      *  result is dynamic, not static.
-     *  @return Always return false, indicating that this 
+     *  @return Always return false, indicating that this
      *  result is dynamic.
      */
     public boolean isStatic() {

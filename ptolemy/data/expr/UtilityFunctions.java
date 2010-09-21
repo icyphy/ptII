@@ -1885,7 +1885,7 @@ public class UtilityFunctions {
 
             if (index != -1) {
                 // Everything after the trailing /
-                shortLibraryName = library.substring(index + 1);                
+                shortLibraryName = library.substring(index + 1);
             }
         }
 

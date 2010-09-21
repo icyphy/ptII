@@ -72,14 +72,14 @@ import diva.gui.GUIUtilities;
   &lt;property name="_exportPDFClassName"
             class="ptolemy.data.expr.StringParameter"
             value="ptolemy.vergil.basic.itextpdf.ExportPDFAction"/&gt;
- </pre> 
+ </pre>
  {@link ptolemy.vergil.basic.BasicGraphFrame} checks for this parameter
  and adds the "Export PDF" menu choice if the class named by that parameter exists.
 
  <p>The <code>$PTII/ptolemy/configs/defaultFullConfiguration.xml</code> file
  already has this parameter.  The ptiny configuration does <b>not</b> have
  this parameter so that we have a smaller download and have a non-GPL executable.
-  
+
 
  @author  Edward A. Lee, Christopher Brooks
  @version $Id$

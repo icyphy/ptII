@@ -312,7 +312,7 @@ public class TimedDelay extends DETransformer {
      *  do it at the requested time. This is a convenience method
      *  provided because many actors need it.
      *  <p>
-     *  If the executive director is a Ptides director, use 
+     *  If the executive director is a Ptides director, use
      *  fireAt(Actor, Time, IOPort) method because the pure event this
      *  actor generates is always safe to process.
      *  </p>

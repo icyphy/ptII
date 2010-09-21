@@ -79,8 +79,8 @@ public class IORelation extends RTMaudeAdaptor {
         return rec.toString();
     }
 
-    /** Returns the RTMaude representation of the given port name. 
-     * @param container The object containing the given port 
+    /** Returns the RTMaude representation of the given port name.
+     * @param container The object containing the given port
      * @param port The associated port
      * @return The term representation of the given port id
      * @exception IllegalActionException
@@ -92,7 +92,7 @@ public class IORelation extends RTMaudeAdaptor {
     }
 
     /** Returns the name of the container of the given port
-     * in the RTMaude term representation.   
+     * in the RTMaude term representation.
      * @param container The object containing the given port
      * @param port The associated port
      * @return The name of the container

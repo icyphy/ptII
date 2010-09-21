@@ -81,7 +81,7 @@ public class DecoratedAttributesImplementation extends DecoratedAttributes {
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
      *  WARNING: don't use this constructor director. This should only be used
-     *  by the MoMLParser. 
+     *  by the MoMLParser.
      *  @param containerOfDecorator The container of the decorator.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an

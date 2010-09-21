@@ -85,7 +85,7 @@ public class EntityTreeModel implements TreeModel {
         // This attribute keeps holding some references, so that
         // instances of EntityTreeModel and its sub-classes can not be
         // GCed when a window is open and closed.
-        // 
+        //
         // When it and its sub-classes are used in Kepler,
         // addTreeModelListener() and removeTreeModelListener()
         // functions of EntityTreeModel class are called implicitly.

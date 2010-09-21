@@ -88,7 +88,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  If the director that this is used with supports superdense time
  (like DE, Continuous), then the outputs are normally produced at microstep
- index 1. The reason for producing outputs at index 1 
+ index 1. The reason for producing outputs at index 1
  is to maintain continuity in continuous-time models.
  Specifically, if the signal is absent prior to an output time,
  then it should be absent at index 0 of the time at which it will

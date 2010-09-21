@@ -53,7 +53,7 @@ public class Expression extends TypedAtomicActor {
     public Expression(ptolemy.actor.lib.Expression component) {
         super(component);
     }
-    
+
     /* (non-Javadoc)
      * @see ptolemy.codegen.rtmaude.kernel.Entity#getInfo(java.lang.String, java.util.List)
      */
@@ -63,7 +63,7 @@ public class Expression extends TypedAtomicActor {
             return getTranslatedExpression(
                     ((ptolemy.actor.lib.Expression) getComponent()).expression.getExpression());
         }
-        
+
         return super.getInfo(name, parameters);
     }
 }

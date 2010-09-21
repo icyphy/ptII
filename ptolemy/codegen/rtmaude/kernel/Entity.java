@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (kquine)
  */
 public class Entity extends RTMaudeAdaptor {
-    /** 
+    /**
      * Construct the code generator adaptor associated
      * with the given Entity object.
      * @param component The associated Entity

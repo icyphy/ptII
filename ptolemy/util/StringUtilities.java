@@ -547,7 +547,7 @@ public class StringUtilities {
         // Fix for
         // "ptolemy.util.StringUtilities.mergePropertiesFile() deletes
         // properties" http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3874
-        // It turns out that the problem seems to be that 
+        // It turns out that the problem seems to be that
         // newProperties.putAll(systemProperties) does not work in Kepler.
         Properties newProperties = new Properties(systemProperties);
         String propertyFileName = "$CLASSPATH/lib/ptII.properties";

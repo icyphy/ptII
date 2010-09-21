@@ -111,7 +111,7 @@ public class MatrixPane extends JScrollPane {
     ////                         public variables                  ////
 
     /** The table representing the matrix. Methods in the class
-     *  referred to by this field should only be invoked from the 
+     *  referred to by this field should only be invoked from the
      *  Swing event thread. See SwingUtilities.invokeLater().
      */
     public JTable table;

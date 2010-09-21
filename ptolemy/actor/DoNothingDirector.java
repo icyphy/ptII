@@ -40,8 +40,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  <p>This director is added to models for code generation purposes when
  the model has no useful execution but the code generator runs
- CompositeActor.preinitialize().</p> 
- 
+ CompositeActor.preinitialize().</p>
+
  <p>If this director is used in a model, then adding a <code>_hide</code>
  attribute to the director will make the director invisible to the user.</p>
 

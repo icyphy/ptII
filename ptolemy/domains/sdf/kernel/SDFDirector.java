@@ -324,7 +324,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
 
         super.attributeChanged(attribute);
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -334,7 +334,7 @@ public class SDFDirector extends StaticSchedulingDirector implements
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SDFDirector newObject = (SDFDirector) super.clone(workspace);
-        
+
         // Subclasses may set this to null and handle this themselves.
         try {
             newObject._periodicDirectorHelper = new PeriodicDirectorHelper(newObject);

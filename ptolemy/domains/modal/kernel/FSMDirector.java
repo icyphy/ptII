@@ -913,7 +913,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
 
         // Notify all the refinements of the destination state that they are being
-        // resumed. 
+        // resumed.
         if (_lastChosenTransition != null) {
             State destinationState = _lastChosenTransition.destinationState();
             if (destinationState != null) {

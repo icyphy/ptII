@@ -713,7 +713,7 @@ public class PtolemyModelUtil {
      * String and then carry them out in only one operation whereas possible.
      */
     private StringBuffer _momlChangeRequest;
-    
+
 
     /**
      * Toggle variable to set the hidden status of unnecessary relation vertices.

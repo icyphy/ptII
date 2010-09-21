@@ -42,12 +42,12 @@ void BooleanArray_resize(Token array, int size) {
     } else {
         array.payload.BooleanArray->elements = (boolean*) realloc(
                      array.payload.BooleanArray->elements, size * sizeof(boolean));
-    } 
+    }
 }
 
 // BooleanArray_insert: Append the specified element to the end of an array.
 void BooleanArray_insert(Token array, boolean token) {
-    // FIXME: call this append(), not insert().  
+    // FIXME: call this append(), not insert().
     int oldSize = array.payload.BooleanArray->size;
     BooleanArray_resize(array, oldSize + 1 );
     ((boolean *) array.payload.BooleanArray->elements)[oldSize] = token;

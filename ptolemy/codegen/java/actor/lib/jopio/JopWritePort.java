@@ -79,7 +79,7 @@ public class JopWritePort extends JavaCodeGeneratorHelper {
 
     /**
      * Generate the postfire code.
-     * 
+     *
      * @return The generated postfire code.
      * @exception IllegalActionException If thrown while appending to the the
      * block or processing the macros.

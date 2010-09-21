@@ -589,7 +589,7 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** Get the execution identifier object for a throwable.
-     *   
+     *
      * <p> An execution identifier is an object given to the Manager
      * via setExecutionIdentifier(), and cleared during preinitialize().
      * If the Manager notifies a listener of a model error,
@@ -803,13 +803,13 @@ public class Manager extends NamedObj implements Runnable {
                                         + errorMessage);
                         throwable.printStackTrace();
                     } else {
-                        
+
                         // If the execution id is not null, map the
                         // throwable to the id.
                         if (_executionIdentifier != null) {
                             _throwableToExecutionIdentifier.put(throwable, _executionIdentifier);
                         }
-                        
+
                         ListIterator<WeakReference<ExecutionListener>> listeners = _executionListeners
                                 .listIterator();
 
@@ -946,7 +946,7 @@ public class Manager extends NamedObj implements Runnable {
             _typesResolved = false;
             _iterationCount = 0;
             _executionIdentifier = null;
-            
+
             _resumeNotifyWaiting = false;
 
             // NOTE: Used to call validateSettables() here with the following

@@ -868,7 +868,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                         if ((insideReceivers != null)
                                 && (insideReceivers[i] != null)) {
                             for (int j = 0; j < insideReceivers[i].length; j++) {
-                                //  r45276 removed the code below, which cause 
+                                //  r45276 removed the code below, which cause
                                 // problems with
                                 // ct LevelCrossingDetectorDetectsGlitches.xml.
                                 // However, the change below is not necessary to

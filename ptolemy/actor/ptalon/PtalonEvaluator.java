@@ -240,7 +240,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     momlParser.parse(null, description);
 
                     ComponentEntity entity = null;
-                    // FIXME: reading this code indicates that _actor 
+                    // FIXME: reading this code indicates that _actor
                     // is dereferenced above, so it will be non-null.
                     //if (_actor != null) {
                     entity = _actor.getEntity(uniqueName);

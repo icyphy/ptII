@@ -207,7 +207,7 @@ public class FixedPointDirector extends StaticSchedulingDirector implements
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FixedPointDirector newObject = (FixedPointDirector) super.clone(workspace);
         newObject._receivers = new LinkedList();
-        
+
         newObject._actorsAllowedToFire = new HashSet();
         newObject._actorsFinishedFiring = new HashSet();
         newObject._actorsFired = new HashSet();

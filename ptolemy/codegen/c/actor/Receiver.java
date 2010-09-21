@@ -73,7 +73,7 @@ public class Receiver extends CCodeGeneratorHelper {
         return "1";
     }
 
-    /** 
+    /**
      * Generate code for putting tokens to the receiver.
      * Note the type conversion is also done in this put method.
      * @param token The token to be sent.
@@ -87,7 +87,7 @@ public class Receiver extends CCodeGeneratorHelper {
     }
 
     /** Get the corresponding component.
-     *  @return the component that corresponds with this receiver.   
+     *  @return the component that corresponds with this receiver.
      */
     public ptolemy.actor.Receiver getReceiver() {
         return (ptolemy.actor.Receiver) getObject();

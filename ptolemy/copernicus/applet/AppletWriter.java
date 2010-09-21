@@ -1240,7 +1240,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     }
 
     /** Get the top level documentation.  We reparse the model
-     *  because the filters will have removed the DocAttribute and the Annotations   
+     *  because the filters will have removed the DocAttribute and the Annotations
      *  @return the value DocAttribute.description or the longest
      *  Annotation.text if there is no DocAttribute
      */

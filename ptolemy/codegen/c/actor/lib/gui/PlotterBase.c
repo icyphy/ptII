@@ -39,7 +39,7 @@ which has this license:
                                 OF THE APPLE SOFTWARE, HOWEVER CAUSED AND WHETHER UNDER THEORY OF CONTRACT, TORT
                                 (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN
                                 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-                                
+
 
 */
 
@@ -85,15 +85,15 @@ static void* startupJava(void *options);
 /* This callback is called when the source has fired. */
 void sourceCallBack (  void *info  ) {}
 
-/* 
+/*
    Parses command line options for the VM options, properties,
    main class, and main class args and returns them in the VMLaunchOptions
    structure.
 */
-VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg) 
+VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg)
 {
-    int ArgIndex = 0; 
-    
+    int ArgIndex = 0;
+
     /* The following Strings are used to convert the command line -cp to -Djava.class.path= */
     CFStringRef classPathOption = CFSTR("-cp");
     CFStringRef classPathDefine = CFSTR("-Djava.class.path=");
@@ -102,7 +102,7 @@ VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg)
        creating the JVM
     */
     CFMutableArrayRef vmOptionsCFArrayRef = CFArrayCreateMutable(NULL,0,&kCFTypeArrayCallBacks);
-    
+
     /* mainArgsCFArrayRef will temporarly hold a list of arguments to be passed to the main method of the
        main class
     */
@@ -110,16 +110,16 @@ VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg)
 
     /* Allocated the structure that will be used to return the launch options */
     VMLaunchOptions * vmLaunchOptions = malloc(sizeof(VMLaunchOptions));
-    
+
     /* Start with the first arg, not the path to the tool */
     ArgIndex++;
     currentArg++;
-    
+
     /* JVM options start with - */
     while(ArgIndex < argc && **currentArg == '-') {
         CFMutableStringRef option = CFStringCreateMutable(NULL, 0);
         CFStringAppendCString(option, *currentArg, kCFStringEncodingUTF8);
-        
+
         /* If the option string is '-cp', replace it with '-Djava.class.path=' and append
             then next option which contains the actuall class path.
         */
@@ -128,7 +128,7 @@ VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg)
             /* So the option was -cp, and we replaced it with -Djava.class.path= */
             /* Now append the next option which is the actuall class path */
             currentArg++;
-            ArgIndex++;        
+            ArgIndex++;
             if (ArgIndex < argc) {
                 CFStringAppendCString(option, *currentArg, kCFStringEncodingUTF8);
             } else {
@@ -149,9 +149,9 @@ VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg)
 
         /* On to the next one */
         currentArg++;
-        ArgIndex++;        
+        ArgIndex++;
     }
-    
+
     /* Now we know how many JVM options there are and they are all in a CFArray of CFStrings. */
     vmLaunchOptions->nOptions = CFArrayGetCount(vmOptionsCFArrayRef);
     /* We only need to do this if there are options */
@@ -175,7 +175,7 @@ VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg)
                 exit(-1);
             }
         }
-        
+
     } else {
         vmLaunchOptions->options = NULL;
     }
@@ -188,7 +188,7 @@ VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg)
         char ** arg;
         /* Allocate some memory for the array of char *'s */
         vmLaunchOptions->args = malloc(vmLaunchOptions->numberOfArgs*sizeof(char *));
-                
+
         for(index = 0, arg = vmLaunchOptions->args;index < vmLaunchOptions->numberOfArgs; index++, arg++)
         {
             /* Allocate enough memory for each arg char* to hold the max possible lengh a UTF8 */
@@ -202,10 +202,10 @@ VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg)
                 exit(-1);
             }
         }
-        
+
     } else {
         vmLaunchOptions->args = NULL;
-    }    
+    }
     /* Free the Array's holding our options and args */
     /* Releaseing an array also releases its references to the objects it contains */
     CFRelease(vmOptionsCFArrayRef);
@@ -216,10 +216,10 @@ VMLaunchOptions * NewVMLaunchOptions(int argc, const char **currentArg)
 /* Release the Memory used by the VMLaunchOptions */
 void freeVMLaunchOptions( VMLaunchOptions * vmOptionsPtr) {
     int index = 0;
-    if (vmOptionsPtr != NULL) { 
+    if (vmOptionsPtr != NULL) {
         JavaVMOption * option = vmOptionsPtr->options;
         char ** arg = vmOptionsPtr->args;
-    
+
         /* Itterate through the JVM options, freeing the optionStrings, */
         /* and extraInfo. */
         if (option != NULL) {
@@ -232,7 +232,7 @@ void freeVMLaunchOptions( VMLaunchOptions * vmOptionsPtr) {
             }
             free(vmOptionsPtr->options);
         }
-        
+
         /* Itterate through the args for main, freeing each arg string. */
         if (arg != NULL) {
             for(index = 0; index < vmOptionsPtr->numberOfArgs; index++,option++,arg++) {
@@ -339,26 +339,26 @@ If the environment variable JAVA_JVM_VERSION is not set, and JNI_VERSION_1_4 is 
     CFURLRef    TargetJavaVM;
     UInt8 pathToTargetJVM [PATH_MAX] = "\0";
     struct stat sbuf;
-                
-                
+
+
                 // Look for the JavaVM bundle using its identifier
                 JavaVMBundle = CFBundleGetBundleWithIdentifier(CFSTR("com.apple.JavaVM") );
-                
+
                 if (JavaVMBundle != NULL) {
                         // Get a path for the JavaVM bundle
                         JavaVMBundleURL = CFBundleCopyBundleURL(JavaVMBundle);
                         CFRelease(JavaVMBundle);
-                        
+
                         if (JavaVMBundleURL != NULL) {
                                 // Append to the path the Versions Component
                                 JavaVMBundlerVersionsDirURL = CFURLCreateCopyAppendingPathComponent(kCFAllocatorDefault,JavaVMBundleURL,CFSTR("Versions"),true);
                                 CFRelease(JavaVMBundleURL);
-                                
+
                                 if (JavaVMBundlerVersionsDirURL != NULL) {
                                         // Append to the path the target JVM's Version
                                         TargetJavaVM = CFURLCreateCopyAppendingPathComponent(kCFAllocatorDefault,JavaVMBundlerVersionsDirURL,targetJVM,true);
                                         CFRelease(JavaVMBundlerVersionsDirURL);
-                                        
+
                                         if (TargetJavaVM != NULL) {
                                                 if (CFURLGetFileSystemRepresentation (TargetJavaVM,true,pathToTargetJVM,PATH_MAX )) {
                                                         // Check to see if the directory, or a sym link for the target JVM directory exists, and if so set the
@@ -376,7 +376,7 @@ If the environment variable JAVA_JVM_VERSION is not set, and JNI_VERSION_1_4 is 
                         }
                 }
         }
-        
+
     /* JNI_VERSION_1_4 is used on Mac OS X to indicate the 1.4.x and later JVM's */
     args.version        = JNI_VERSION_1_4;
 
@@ -384,7 +384,7 @@ If the environment variable JAVA_JVM_VERSION is not set, and JNI_VERSION_1_4 is 
     args.options        = launchOptions->options;
     options                = launchOptions->options;
     args.nOptions = launchOptions->nOptions;
-    
+
 /*     if (access("/Users/cxh/ptII/ptolemy/plot/Plot.class", R_OK) == 0) { */
 /*         ((JavaVMOption *)options)[args.nOptions].optionString = "-Djava.class.path=/Users/cxh/ptII"; */
 /*     } else { */
@@ -396,7 +396,7 @@ If the environment variable JAVA_JVM_VERSION is not set, and JNI_VERSION_1_4 is 
     args.ignoreUnrecognized        = JNI_TRUE;
 
 
-    /* start a VM session */    
+    /* start a VM session */
     result = JNI_CreateJavaVM(&theVM, (void**)&env, &args);
 
     if ( result != 0 ) {

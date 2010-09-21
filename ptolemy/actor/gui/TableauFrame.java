@@ -1050,14 +1050,14 @@ public class TableauFrame extends Top {
             }
             return true;
     }
-    
+
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.
      *
      *  @param extension If non-null, then the extension that is
      *  appended to the file name if there is no extension.
      *
-     *  @return URL of the saved file if the save succeeds, null 
+     *  @return URL of the saved file if the save succeeds, null
      *  if save fails.
      */
     protected URL _saveAsHelper(String extension) {

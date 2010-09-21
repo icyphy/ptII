@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  * This actor reads a sequence of input tokens of any type, and writes a
  * sequence of tokens constructed from the input sequence (possibly
  * supplemented with zeros).  The number of input tokens consumed
@@ -126,25 +126,25 @@ public class Chop extends SDFTransformer implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The number of input tokens to read.
      * This is an integer, with default 128.
      */
     public Parameter numberToRead;
 
-    /**     
+    /**
      * The number of tokens to write to the output.
      * This is an integer, with default 64.
      */
     public Parameter numberToWrite;
 
-    /**     
+    /**
      * Start of output block relative to start of input block.
      * This is an integer, with default 0.
      */
     public Parameter offset;
 
-    /**     
+    /**
      * If offset is greater than 0, specify whether to use previously
      * read inputs (otherwise use zeros).
      * This is a boolean, with default true.
@@ -193,7 +193,7 @@ public class Chop extends SDFTransformer implements Rollbackable {
 
     private boolean _pastNeedsInitializing;
 
-    /**     
+    /**
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -221,7 +221,7 @@ public class Chop extends SDFTransformer implements Rollbackable {
         output_tokenProductionRate.setExpression("numberToWrite");
     }
 
-    /**     
+    /**
      * Check the validity of parameter values and using the new
      * values, recompute the size of the internal buffers.
      * @param attribute The attribute that has changed.
@@ -267,7 +267,7 @@ public class Chop extends SDFTransformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Consume the specified number of input tokens, and produce
      * the specified number of output tokens.
      * @exception IllegalActionException If there is no director.
@@ -313,7 +313,7 @@ public class Chop extends SDFTransformer implements Rollbackable {
         output.send(0, $BACKUP$_buffer(), _numberToWrite);
     }
 
-    /**     
+    /**
      * Override the base class to ensure that the past buffer
      * gets initialized.
      * @exception IllegalActionException If the superclass throws it.

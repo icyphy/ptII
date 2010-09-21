@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/** 
+/**
  * <p>A polymorphic switch, which routes inputs to specified output channels.
  * This actor has two input ports, the <i>input</i> port for data,
  * and the <i>control</i> port to select which output channel to use.
@@ -77,9 +77,9 @@ public class Switch extends Transformer implements Rollbackable {
     ////                     ports and parameters                  ////
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /**     
+    /**
      * Input port for control tokens, which specify the output channel
-     * to produce data on.  The type is int. 
+     * to produce data on.  The type is int.
      */
     public TypedIOPort control;
 
@@ -88,7 +88,7 @@ public class Switch extends Transformer implements Rollbackable {
     // The most recently read control token.
     private int _control = 0;
 
-    /**     
+    /**
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -107,7 +107,7 @@ public class Switch extends Transformer implements Rollbackable {
         controlCardinal.setExpression("SOUTH");
     }
 
-    /**     
+    /**
      * Read a control token, if there is one, and transfer an input
      * token, if there is one, to the output channel specified by
      * the most recent control token, if it is in range.
@@ -126,7 +126,7 @@ public class Switch extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Initialize this actor so that channel zero of <i>input</i> is read
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.

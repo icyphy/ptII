@@ -31,7 +31,7 @@ void Array_resize(Token array, int size) {
     } else {
         array.payload.Array->elements = (Token*) realloc(
                      array.payload.Array->elements, size * sizeof(Token));
-    } 
+    }
 }
 
 // Array_insert: Append the specified element to the end of an array.

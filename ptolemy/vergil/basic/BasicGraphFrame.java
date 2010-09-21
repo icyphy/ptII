@@ -2201,7 +2201,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     NamedObj actual = (NamedObj) graphModel
                             .getSemanticObject(userObject);
                     //System.out.println("BasicGraphFrame._getSelectionSet() actual: " + actual.getClass().getName());
-                    //if ( !(actual instanceof PortParameter)) { 
+                    //if ( !(actual instanceof PortParameter)) {
                     nodeSet.add(userObject);
                     namedObjSet.add(actual);
                     //}

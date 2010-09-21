@@ -44,7 +44,7 @@ import ptolemy.moml.MoMLModelAttribute;
  an instance of {@link MoMLModelAttribute}. Put this attribute
  inside such an instance to get the behavior that looking inside
  the attribute opens the contained model.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 8.0

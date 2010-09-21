@@ -212,7 +212,7 @@ public class RelationWidthChanges implements MoMLFilter {
                 } catch (IllegalActionException e) {
                 }
             } else {
-                // If there is no _createdBy attribute, then this might be a 
+                // If there is no _createdBy attribute, then this might be a
                 // copy and paste, in which case we assume we are copying
                 // from the current version.  Note that this might not
                 // be always be true, but it is more likely that we are copying

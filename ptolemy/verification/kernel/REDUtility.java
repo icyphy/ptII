@@ -65,7 +65,7 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * This is an utility for Ptolemy model conversion. It performs a systematic
  * traversal of the system and convert the Ptolemy model into communicating
  * timed automata (CTA) with the format acceptable by model checker RED
- * (Regional Encoding Diagram Verification Engine, v.7.0). 
+ * (Regional Encoding Diagram Verification Engine, v.7.0).
  * <p>
  * The conversion mechanism roughly is based on the technical report UCB/EECS-2008-41
  * with some modifications. Basically, the token would not
@@ -97,7 +97,7 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * restate limitations of the conversion. The designer must understand the
  * boundary of variable domain for the model under conversion. Also, due to
  * the use of complementary edges, complex guard conditions
- * are currently not supported. 
+ * are currently not supported.
  *
  * @author Chih-Hong Cheng, Contributor: Edward A. Lee
  * @version $Id$
@@ -108,7 +108,7 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
 public class REDUtility {
 
     /**
-     * This function generates an equivalent system which is flattened. 
+     * This function generates an equivalent system which is flattened.
      * It would perform a rewriting of each ModalModel with hierarchy to an
      * FSMActor. Note that in our current implementation the rewriting
      * only supports 'state refinements'.
@@ -738,7 +738,7 @@ public class REDUtility {
      * @param entity entity under analysis
      * @return The set of synchronizers used in this entity
      * @exception IllegalActionException If thrown while getting the initial state
-     * of the actor. 
+     * of the actor.
      */
     private static HashSet<String> _decideSynchronizerVariableSet(Entity entity)
             throws IllegalActionException {
@@ -1852,7 +1852,7 @@ public class REDUtility {
 
     /**
      * A private function for generating initial values for the
-     * initial variable set. The current approach is to retrieve them 
+     * initial variable set. The current approach is to retrieve them
      * from the parameter specified in the actor.
      *
      * @param actor
@@ -2403,7 +2403,7 @@ public class REDUtility {
      * @param outputSignalName The output signal
      * @return description of the TimedDelayActor acceptable by model checker
      *         RED.
-     * @exception IllegalActionException If the <i>delay</i> or 
+     * @exception IllegalActionException If the <i>delay</i> or
      * <i>bufferSize</i> parameters of the delayedActor cannot be read.
      */
     private static REDSingleEntityBean _translateBBNondeterministicDelayedActor(
@@ -3028,7 +3028,7 @@ public class REDUtility {
     }
 
     /**
-     * Translate an FSM actor. 
+     * Translate an FSM actor.
      * @param actor The actor to be translated.
      * @param span The size of the span to expand the variable domain. This
      * variable is used to determine the inner variables used by an actor

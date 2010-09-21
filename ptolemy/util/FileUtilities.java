@@ -197,10 +197,10 @@ public class FileUtilities {
      *  <p>Note that "xxxxxxCLASSPATHxxxxxx" is the value of the
      *  globally defined constant $CLASSPATH available in the Ptolemy
      *  II expression language.
-     *  
+     *
      *  <p>If the name begins with $CLASSPATH or "xxxxxxCLASSPATHxxxxxx"
      *  but that name cannot be found in the classpath, the value
-     *  of the ptolemy.ptII.dir property is substituted in. 
+     *  of the ptolemy.ptII.dir property is substituted in.
      *  <p>
      *  The file need not exist for this method to succeed.  Thus,
      *  this method can be used to determine whether a file with a given

@@ -470,7 +470,7 @@ public class ComponentEntity extends Entity {
      *  this entity being garbage collected.
      *  <p>Note that for entities that are created by parsing MoML,
      *  it may be necessary to call MoMLParser.purgeModelRecord().
-     *  This is especially critical when the MoML file imports 
+     *  This is especially critical when the MoML file imports
      *  MoML classes.  See Effigy.setContainer() for details.
      *
      *  <p>Derived classes may further constrain the container

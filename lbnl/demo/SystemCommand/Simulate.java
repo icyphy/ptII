@@ -48,7 +48,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -84,11 +84,11 @@ import java.io.PrintStream;
 
 /** Class that will be called by the SystemCommand actor using
   * a system call to the java virtual machine.
-  * 
+  *
   * This class is used by the Ptolemy example file to demonstrate
-  * how to call a system command using the SystemCommand actor. 
-  * The class expects three arguments: The first argument is time, 
-  * and the second and third argument are x1 and x2. 
+  * how to call a system command using the SystemCommand actor.
+  * The class expects three arguments: The first argument is time,
+  * and the second and third argument are x1 and x2.
   * All three arguments are written to the standard output
   * stream. In addition, x1 and x2 are written to the files
   * outputX1.txt and outputX2.txt

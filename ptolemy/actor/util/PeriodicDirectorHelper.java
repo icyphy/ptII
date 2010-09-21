@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  This is a helper class for directors implementing PeriodicDirector.
  It collects common functionality to avoid code duplication.
- 
+
  @see PeriodicDirector
  @author Edward A. Lee
  @version $Id$

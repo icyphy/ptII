@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
  where <i>dt</i> is the time gap between input events. Output is not generated
  until two inputs have been consumed.
  <p>
- The output of this actor is constrained to be a double, and input must be castable 
+ The output of this actor is constrained to be a double, and input must be castable
  to a double. If the input signal is not left-continuous, the derivative will be either
  infinite or undefined and an exception is thrown.
  <p>

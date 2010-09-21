@@ -99,8 +99,8 @@ public class ListTerm<T> {
 
     /** Returns the term representation of the given element v.
      * By overriding this method, we can define any term representation
-     * for elements in the list. 
-     * 
+     * for elements in the list.
+     *
      * @param v the element
      * @return the string representation of v
      * @exception IllegalActionException An overriding methods may generate this exception.

@@ -195,7 +195,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
         CompositeActor compositeActor = (CompositeActor) getComponent();
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
-        //code.append(_codeGenerator.comment(getClass().getName() + ".generateFireFunctionCode() start")); 
+        //code.append(_codeGenerator.comment(getClass().getName() + ".generateFireFunctionCode() start"));
         code.append(directorHelper.generateFireFunctionCode());
 
         //         code.append(_codeGenerator.comment("TCA: instanceof CCA: "
@@ -232,7 +232,7 @@ public class TypedCompositeActor extends JavaCodeGeneratorHelper {
 
             }
         }
-        //code.append(_codeGenerator.comment(getClass().getName() + ".generateFireFunctionCode() end")); 
+        //code.append(_codeGenerator.comment(getClass().getName() + ".generateFireFunctionCode() end"));
         return processCode(code.toString());
     }
 

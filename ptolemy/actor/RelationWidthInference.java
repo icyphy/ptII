@@ -391,8 +391,8 @@ public class RelationWidthInference {
                         while (deepPorts.hasNext()) {
                             portDetails.append((IOPort)(deepPorts.next()));
                         }
-                        
-                        
+
+
                         throw new IllegalActionException(
                                 relation,
                                 "The width of relation "

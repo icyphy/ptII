@@ -398,7 +398,7 @@ public abstract class PtolemyFrame extends TableauFrame {
                 if (_model == null) {
                     effigy = effigy.topEffigy();
                 } else if ((_query == null)
-                        || ((_model.getContainer() != null) 
+                        || ((_model.getContainer() != null)
                         && (_query.hasEntry("submodel")
                                 && !_query.getBooleanValue("submodel")))) {
                     effigy = effigy.masterEffigy();

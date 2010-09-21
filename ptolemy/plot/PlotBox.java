@@ -308,7 +308,7 @@ public class PlotBox extends JPanel implements Printable {
      *  on the axis at the position given by <i>position</i>. If this
      *  is called once or more, automatic generation of tick marks is
      *  disabled.  The tick mark will appear only if it is within the X
-     *  range. 
+     *  range.
      *  <p>Note that if {@link #setXLog(boolean)} has been called, then
      *  the position value should be in log units.
      *  So, addXTick("1K", 3) will display the string <pre>1K</pre>
@@ -470,7 +470,7 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
-    /** Destroy the plotter.  This method is usually 
+    /** Destroy the plotter.  This method is usually
      *  called by PlotApplet.destroy().  It does
      *  various cleanups to reduce memory usage.
      */

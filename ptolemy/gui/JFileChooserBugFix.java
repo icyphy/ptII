@@ -48,7 +48,7 @@ import javax.swing.text.html.StyleSheet;
  be called so that the background is properly set.  Then, in a finally
  clause, restoreBackground() should be called.  For example:
  <pre>
-   
+
   // Swap backgrounds and avoid white boxes in "common places" dialog
   JFileChooserBugFix jFileChooserBugFix = new JFileChooserBugFix();
   Color background = null;
@@ -96,7 +96,7 @@ public class JFileChooserBugFix {
     }
 
     /** Set the background to the value of the ToolBar.shadow property
-     *  and return the previous background.   
+     *  and return the previous background.
      *  <p>Avoid a problem under Windows where the common places pane
      *  on the left of the file browser dialog has white boxes
      *  because the background is set to white.
@@ -118,7 +118,7 @@ public class JFileChooserBugFix {
                     javax.swing.text.StyleConstants.ResolveAttribute);
             background = styleSheet.getBackground(bodyAttribute);
         } catch (Exception ex) {
-            // Ignore, we just won't set the background. 
+            // Ignore, we just won't set the background.
         }
 
         try {

@@ -94,7 +94,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
 
     /**
      * Negate an object.
-     * A negated object is a NamedObj with a 
+     * A negated object is a NamedObj with a
      * {@link ptolemy.actor.gt.NegationAttribute}.
      * @param name The name of the NamedObj to be negated.
      * @exception PtalonRuntimeException If we are in a transformation
@@ -127,7 +127,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
 
     /**
      * Mark a NamedObj as optional.
-     * An optional object is a NamedObj with an 
+     * An optional object is a NamedObj with an
      * {@link ptolemy.actor.gt.OptionAttribute}.
      * @param name The name of the NamedObj to be marked optional.
      * @exception PtalonRuntimeException If we are in a transformation or if the object has
@@ -160,7 +160,7 @@ public class TransformationEvaluator extends PtalonEvaluator {
 
     /**
      * Preserve an object.
-     * A preserved object is a NamedObj with an 
+     * A preserved object is a NamedObj with an
      * {@link ptolemy.actor.gt.OptionAttribute}.
      * @param name The name of the NamedObj to be preserved
      * @exception PtalonRuntimeException If we are in a transformation or if the object has

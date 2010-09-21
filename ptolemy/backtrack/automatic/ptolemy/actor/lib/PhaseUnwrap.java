@@ -41,7 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** 
+/**
  * This actor unwraps a phase plot, removing discontinuities of
  * magnitude 2*PI. The input is assumed to be a sequence of phases in
  * radians in the range [-PI, PI].  The input and output types
@@ -78,7 +78,7 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
 
     private double _tempPreviousPhaseOutput = 0.0;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -93,7 +93,7 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
-    /**     
+    /**
      * Consume at most one input token and output a value that
      * represents the same angle, but differs from the previous output
      * (or from 0.0, if this is the first output), by less than 2*PI.
@@ -117,7 +117,7 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Reset the state of the actor to assume the most recently seen
      * phase is zero.
      * @exception IllegalActionException If the parent class throws it.
@@ -130,7 +130,7 @@ public class PhaseUnwrap extends Transformer implements Rollbackable {
         $ASSIGN$_tempPreviousPhaseOutput(0.0);
     }
 
-    /**     
+    /**
      * Record the final value of the most recent value of the input,
      * for use in the next phase.
      * @exception IllegalActionException If the base class throws it.

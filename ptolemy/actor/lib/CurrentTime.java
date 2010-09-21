@@ -78,7 +78,7 @@ public class CurrentTime extends TimedSource {
      *  If false (the default), use the model time reported by
      *  the top-level director. Local time may differ
      *  from global time inside modal models and certain domains
-     *  that manipulate time. 
+     *  that manipulate time.
      */
     public Parameter useLocalTime;
 

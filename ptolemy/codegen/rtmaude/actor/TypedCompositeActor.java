@@ -119,9 +119,9 @@ public class TypedCompositeActor extends Entity {
             throws IllegalActionException {
         ptolemy.actor.TypedCompositeActor c_actor = (ptolemy.actor.TypedCompositeActor) getComponent();
 
-        // code for the actor, which is Maude term for the actor.                
+        // code for the actor, which is Maude term for the actor.
         // "entityList" method is used instead of "deepEntityList", because
-        // the hierarchy of actor structure do *not* need to be flattened in the Real-time Maude 
+        // the hierarchy of actor structure do *not* need to be flattened in the Real-time Maude
         if (name.equals("actors")) {
             return new ListTerm<Actor>("none", _eol, c_actor
                     .entityList(Actor.class)) {

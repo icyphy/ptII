@@ -68,7 +68,7 @@ public interface PortCodeGenerator extends ComponentCodeGenerator {
     public String generateCodeForGet(String channel)
             throws IllegalActionException;
 
-    /** 
+    /**
      * Generate code for replacing the send() macro.
      * @param channel The channel for which the send code is generated.
      * @param dataToken The token to be sent

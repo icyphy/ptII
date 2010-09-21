@@ -44,7 +44,7 @@ import ptolemy.codegen.rtmaude.actor.Director;
  * @Pt.AcceptedRating red (kquine)
  */
 public class DEDirector extends Director {
-    /** Construct the code generator adaptor associated with 
+    /** Construct the code generator adaptor associated with
      * the given DE director.
      *  @param director The associated DE director.
      */

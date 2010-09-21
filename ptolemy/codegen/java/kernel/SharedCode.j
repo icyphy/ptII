@@ -14,7 +14,7 @@ public class Token {
     Object payload;
         public Token() {};
         public Short getType() {
-                return type; 
+                return type;
         }
         public Object getPayload() {
                 return payload;

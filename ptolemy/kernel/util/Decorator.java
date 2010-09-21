@@ -58,7 +58,7 @@ public interface Decorator extends Nameable {
 
     /** Return the decorated attributes for the target NamedObj.
      *  @param target The NamedObj that will be decorated.
-     *  @return The decorated attributes for the target NamedObj. 
+     *  @return The decorated attributes for the target NamedObj.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
      *  @exception NameDuplicationException If the name coincides with

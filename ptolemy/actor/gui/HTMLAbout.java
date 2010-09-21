@@ -183,7 +183,7 @@ public class HTMLAbout {
                             + _aboutHTML("ptolemy/configs/doc/docsPtinyKepler.htm")
                             + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm")
                             );
-                            
+
         }
         if (_configurationExists("visualsense")) {
             htmlBuffer

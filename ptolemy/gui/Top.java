@@ -1353,7 +1353,7 @@ public abstract class Top extends JFrame {
         }
     }
 
-    /** Add the name of the last file open or set the name 
+    /** Add the name of the last file open or set the name
      * to the first position if already in the list
      * @param file name of the file to add
      */

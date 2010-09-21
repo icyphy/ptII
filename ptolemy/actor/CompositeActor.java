@@ -980,9 +980,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void linkToPublishedPort(String name, IOPort subscriberPort)
@@ -1042,9 +1042,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param pattern The pattern is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void linkToPublishedPort(Pattern pattern, TypedIOPort subscriberPort)
@@ -1437,7 +1437,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param port The published port. 
+     *  @param port The published port.
      *  @exception NameDuplicationException If the published port
      *          is already registered.
      *  @exception IllegalActionException If the published port can't
@@ -1792,9 +1792,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  will look for publishers during the preinitialization phase.
      *  @param name The name is being used in the matching process
      *          to match publisher and subscriber.
-     *  @param subscriberPort The subscribed port. 
+     *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(String name, IOPort subscriberPort)
@@ -1837,7 +1837,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *          to match publisher and subscriber.
      *  @param subscriberPort The subscribed port.
      *  @exception NameDuplicationException If there are name conflicts
-     *          as a result of the added relations or ports. 
+     *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public void unlinkToPublishedPort(Pattern pattern,

@@ -82,11 +82,11 @@ import ptolemy.util.MessageHandler;
  If there are no command-line arguments at all, then the configuration
  file is augmented by the MoML file ptolemy/configs/full/welcomeWindow.xml</p>
 
- <p>Note that if the configuration starts with "ptiny", then 
+ <p>Note that if the configuration starts with "ptiny", then
  {@link ptolemy.moml.filter.RemoveNonPtinyClasses} is used to remove classes
  such as code generators that might be present in the model but are not part
  of the Ptiny configuration.</p>
- 
+
  @author Edward A. Lee, Steve Neuendorffer, Christopher Hylands, contributor: Chad Berkeley
  @version $Id$
  @since Ptolemy II 1.0

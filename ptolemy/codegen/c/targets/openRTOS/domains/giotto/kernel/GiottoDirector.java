@@ -124,7 +124,7 @@ public class GiottoDirector extends
 
         return code.toString();
 
-        //content moved to _generateActorsCode() which is called in preinitialize b/c code wasn't being generated for 
+        //content moved to _generateActorsCode() which is called in preinitialize b/c code wasn't being generated for
         //nested actors
 
     }
@@ -409,7 +409,7 @@ public class GiottoDirector extends
 
     /**
      * Generate the postfire code.
-     * 
+     *
      * @return The generated postfire code.
      * @exception IllegalActionException If thrown while appending to the the
      * block or processing the macros.
@@ -424,7 +424,7 @@ public class GiottoDirector extends
         //        .getContainer()).deepEntityList()) {
 
         //for each of the actors generate postfire code
-        //code.append(generatePostFireCode(actor)); 
+        //code.append(generatePostFireCode(actor));
         //}
 
         return code.toString();
@@ -493,7 +493,7 @@ public class GiottoDirector extends
         }
 
         /* code.append(_eol+"//about to add semaphores for all the output ports"+_eol);
-            for (Actor actor : (List<Actor>) 
+            for (Actor actor : (List<Actor>)
                     ((TypedCompositeActor) _director.getContainer()).deepEntityList()) {
                 List outputPortList = actor.outputPortList();
                 Iterator outputPorts = outputPortList.iterator();
@@ -502,7 +502,7 @@ public class GiottoDirector extends
                     IOPort outpt = (IOPort)outputPorts.next();
                     args.set(0, _getActorName(actor)+"_"+outpt.getName());
 
-                    code.append(_generateBlockCode("declareSemaphoreHandle", args)+_eol);   
+                    code.append(_generateBlockCode("declareSemaphoreHandle", args)+_eol);
                 }
 
             }
@@ -547,16 +547,16 @@ public class GiottoDirector extends
             }
             // will need to take care of the case of where the output is for a composite actor
             return CodeGeneratorHelper.generateName(port);
-            // return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[0];  
+            // return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[0];
         } else {
             return super.getReference(port, channelAndOffset, forComposite,
                     isWrite, helper);
         }
     }
 
-    /** 
+    /**
      * Return a reference to the driver.
-     * This method is similar to the getReference() method however it it tailored 
+     * This method is similar to the getReference() method however it it tailored
      * for use by a driver method.
      * @param port The port whose information is desired.
      * @param channelAndOffset The given channel and offset.
@@ -579,7 +579,7 @@ public class GiottoDirector extends
             }
             // will need to take care of the case of where the output is for a composite actor
             return CodeGeneratorHelper.generateName(port) + "_PORT";
-            // return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[0];  
+            // return CodeGeneratorHelper.generateName(port)+"_"+channelAndOffset[0];
         } else {
             return super.getReference(port, channelAndOffset, forComposite,
                     isWrite, helper);
@@ -674,7 +674,7 @@ public class GiottoDirector extends
             code.append("if (schedTick %" + (myLCM / i) + " == 0){" + _eol);
 
             for (int j = 0; j < ActorFrequencies[i].size(); j++) {
-                //call generate driver code for each of the actors    
+                //call generate driver code for each of the actors
                 code.append(ActorFrequencies[i].get(j) + "_driver_out();"
                         + _eol);
             }
@@ -918,7 +918,7 @@ public class GiottoDirector extends
         //code.append("scheduler()");
 
         if (_isTopGiottoDirector()) {//if (!_isTopDirectorFSM()) {
-            //top director isn't fsm so close the method that would normally contain the fire code 
+            //top director isn't fsm so close the method that would normally contain the fire code
             //if the inline option was enabled and being used. Inline is invalid for giotto codegen
             code.append(_eol + "}" + _eol);
         }
@@ -1240,7 +1240,7 @@ public class GiottoDirector extends
                             }
                             j++;
 
-                            // temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol; 
+                            // temp+= _generateTypeConvertFireCode(sourcePort,port);//+_eol;
                             if (_debugging) {
                                 _debug("I think the source Reference is "
                                         + srcReference
@@ -1278,7 +1278,7 @@ public class GiottoDirector extends
             }
             code.append("}" + _eol);
 
-        } // end for every actor  
+        } // end for every actor
 
         if (_debugging) {
             _debug("returning: " + _eol + code.toString());
@@ -1300,7 +1300,7 @@ public class GiottoDirector extends
         //        NamedObj parent = namedObj.toplevel();
         //        if (namedObj.toplevel() == namedObj) {
         //            return "_toplevel_";
-        //        }        
+        //        }
         //        String name = StringUtilities.sanitizeName(namedObj.getName(parent));
         if (name.startsWith("_")) {
             name = name.substring(1, name.length());
@@ -1309,11 +1309,11 @@ public class GiottoDirector extends
 
     }
 
-    /** Generate the content of  driver methods. For each actor update it's inputs to the 
+    /** Generate the content of  driver methods. For each actor update it's inputs to the
      *  outputs stored in ports. The PORT allows double buffering, in this case the output
-     *  variable is used as the port. PORT here is simply a common variable, not a PORT in 
+     *  variable is used as the port. PORT here is simply a common variable, not a PORT in
      *  the general Ptolemy II actor sense
-     *  
+     *
      *  NOTE: Duplicate ports connected through a fork are removed. IE. if an input is connected to a fork
      *  and the fork is connected to two other places... it removes the first place from the list of places and keeps the last place
      *  need to ask Jackie if there is a way to work around this b/c Reciever [][] recievers = getRecievers doesn't work.
@@ -1471,8 +1471,8 @@ public class GiottoDirector extends
                 }
 
                 if (actor instanceof CompositeActor) {
-                    // It is not necessary to generate transfer out code, 
-                    //since the fanout actor drivers will read the necessary values from the ports                    
+                    // It is not necessary to generate transfer out code,
+                    //since the fanout actor drivers will read the necessary values from the ports
                     //GiottoDirector directorHelper = (GiottoDirector) _getHelper(actor.getDirector());
                     //directorHelper._generateTransferOutputsCode(port, transferOut);
 
@@ -1480,7 +1480,7 @@ public class GiottoDirector extends
                     //transferOut.append("//should transfer input for this actor to from inside to outside"+_eol);
                 }
 
-                i++; // increment the ofset variable // not sure if this is correct since we're using iterators 
+                i++; // increment the ofset variable // not sure if this is correct since we're using iterators
             }
             if (_debugging) {
                 _debug("actorDriverCode is now:");
@@ -1795,9 +1795,9 @@ public class GiottoDirector extends
     }
 
     /**
-     * Generates  a set of the different frequencies seen by 
-     * this Giotto Director 
-     * @return a Hashset of integers containing the frequencies seen 
+     * Generates  a set of the different frequencies seen by
+     * this Giotto Director
+     * @return a Hashset of integers containing the frequencies seen
      * by the Giotto director
      * @exception IllegalActionException
      */
@@ -1811,7 +1811,7 @@ public class GiottoDirector extends
             i++;
             frequencies.add(attributueValue);
 
-            //come back and figure out how to keep a list of all 
+            //come back and figure out how to keep a list of all
             //the actors at each of the frequencies so you can call the right
             //methods from the threads
             // frequencies.add(_getFrequency(actor));
@@ -1905,7 +1905,7 @@ public class GiottoDirector extends
             return periodValue;
         }
 
-        // Get the frequency.  
+        // Get the frequency.
         // Ben I'm not sure why you originally called get frequency here
         int frequency = _getFrequency((Actor) _director.getContainer());
         return ((GiottoDirector) _getHelper(director))._getPeriod() / frequency;
@@ -1969,9 +1969,9 @@ public class GiottoDirector extends
     ////                         private methods                   ////
     //// this piece of code was copied from the Giotto Scheduler method
     /** This method was copied from the GiottoScheduler method. It determines
-     * the least common multiple of the numbers passed in in array and returns 
+     * the least common multiple of the numbers passed in in array and returns
      * the value
-     * 
+     *
      */
     private int _lcm(int[] array) {
         int count = array.length;
@@ -2001,12 +2001,12 @@ public class GiottoDirector extends
     }
 
     /**
-     * Determines which type conversion is necessary when going from the source to 
+     * Determines which type conversion is necessary when going from the source to
      * the sink port
      * @param source - the source port
      * @param sink - the sink port
      * @return a string indicating which type of conversion needs to happen
-     *         i.e. InttoDouble, etc. 
+     *         i.e. InttoDouble, etc.
      */
     private String _typeConversion(TypedIOPort source, TypedIOPort sink) {
         String sourceType;

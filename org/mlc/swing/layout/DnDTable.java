@@ -62,7 +62,7 @@ import com.jgoodies.forms.layout.CellConstraints;
  * I'm creating a table subclass to make it easier to handle dragging and
  * dropping
  * http://www.hut.fi/~landerso/cccp/src/java/cccp/mappingtool/util/MTTable.java
- * 
+ *
  * @author Michael Connor
  * @version $Id$
  * @since Ptolemy II 8.0

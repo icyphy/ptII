@@ -48,7 +48,7 @@ modification, are permitted provided that the following conditions are met:
    3. Neither the name of the University of California, Lawrence
       Berkeley National Laboratory, U.S. Dept. of Energy nor the names
       of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission. 
+      derived from this software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
@@ -83,7 +83,7 @@ derivative works thereof, in binary and source code form.
 ///         using BSD sockets.
 ///
 /// \author Michael Wetter,
-///         Simulation Research Group, 
+///         Simulation Research Group,
 ///         LBNL,
 ///         MWetter@lbl.gov
 ///
@@ -94,7 +94,7 @@ derivative works thereof, in binary and source code form.
 /// This file provides methods that allow clients to
 /// establish a socket connection. Clients typically call
 /// the method \c establishclientsocket()
-/// once, and then call the method 
+/// once, and then call the method
 /// \c exchangedoubleswithsocket() in each time step.
 /// At the end of the simulation, a client should call
 /// \c closeipc() to close the socket connection.
@@ -127,7 +127,7 @@ int save_append(char* *buffer, const char *toAdd, int *bufLen){
   const int nBufCha = strlen(*buffer);
   // reallocate memory if needed
   if ( *bufLen < nNewCha + nBufCha + 1){
-    *bufLen = *bufLen + size * (((nNewCha + nBufCha) / size)+1); 
+    *bufLen = *bufLen + size * (((nNewCha + nBufCha) / size)+1);
     *buffer = realloc(*buffer, *bufLen);
     if (*buffer == NULL) {
       perror("Realloc failed in save_append.");
@@ -185,27 +185,27 @@ int assembleBuffer(int flag,
     sprintf(temCha, "%d ", nBoo);
     retVal = save_append(buffer, temCha, bufLen);
     if ( retVal != 0 ) return retVal;
-    sprintf(temCha,"%20.15e ", curSimTim); 
+    sprintf(temCha,"%20.15e ", curSimTim);
     retVal = save_append(buffer, temCha, bufLen);
     if ( retVal != 0 ) return retVal;
     // add values to buffer
     for(i = 0; i < nDbl; i++){
-      sprintf(temCha,"%20.15e ", dblVal[i]); 
+      sprintf(temCha,"%20.15e ", dblVal[i]);
       retVal = save_append(buffer, temCha, bufLen);
       if ( retVal != 0 ) return retVal;
     }
     for(i = 0; i < nInt; i++){
-      sprintf(temCha,"%d ", intVal[i]); 
+      sprintf(temCha,"%d ", intVal[i]);
       retVal = save_append(buffer, temCha, bufLen);
       if ( retVal != 0 ) return retVal;
     }
     for(i = 0; i < nBoo; i++){
-      sprintf(temCha,"%d ", booVal[i]); 
+      sprintf(temCha,"%d ", booVal[i]);
       retVal = save_append(buffer, temCha, bufLen);
       if ( retVal != 0 ) return retVal;
     }
   }
-  // For the Java server to read the line, the line 
+  // For the Java server to read the line, the line
   // needs to be terminated with '\n'
   sprintf(temCha,"\n");
   retVal = save_append(buffer, temCha, bufLen);
@@ -218,7 +218,7 @@ int assembleBuffer(int flag,
 /// Gets an integer and does the required error checking.
 ///
 ///\param nptr Pointer to character buffer that contains the number.
-///\param endptr After return, this variable contains a pointer to the 
+///\param endptr After return, this variable contains a pointer to the
 ///            character after the last character of the number.
 ///\param base Base for the integer.
 ///\param The value contained in the character buffer.
@@ -226,7 +226,7 @@ int assembleBuffer(int flag,
 int getIntCheckError(const char *nptr, char **endptr, const int base,
                       int* val){
   errno = 0; // must reset errno to 0
-  *val = strtol(nptr, endptr, base);  
+  *val = strtol(nptr, endptr, base);
   /////////////////////////////////////////////////////////////////
   // do error checking
   if ((errno == ERANGE)
@@ -252,14 +252,14 @@ int getIntCheckError(const char *nptr, char **endptr, const int base,
 /// Gets a double and does the required error checking.
 ///
 ///\param nptr Pointer to character buffer that contains the number.
-///\param endptr After return, this variable contains a pointer to the 
+///\param endptr After return, this variable contains a pointer to the
 ///            character after the last character of the number.
 ///\param The value contained in the character buffer.
 ///\return 0 if no error occurred.
-int getDoubleCheckError(const char *nptr, char **endptr, 
+int getDoubleCheckError(const char *nptr, char **endptr,
                         double* val){
   errno = 0; // must reset errno to 0
-  *val = strtod(nptr, endptr);  
+  *val = strtod(nptr, endptr);
   /////////////////////////////////////////////////////////////////
   // do error checking
   if ((errno == ERANGE && (*val == HUGE_VAL || *val == -HUGE_VAL))
@@ -317,13 +317,13 @@ int disassembleBuffer(const char* buffer,
     return retVal;
   // number of doubles, integers and booleans
   retVal = getIntCheckError(endptr, &endptr, base, nDbl);
-  if ( retVal ) 
+  if ( retVal )
     return retVal;
   retVal = getIntCheckError(endptr, &endptr, base, nInt);
-  if ( retVal ) 
+  if ( retVal )
     return retVal;
   retVal = getIntCheckError(endptr, &endptr, base, nBoo);
-  if ( retVal ) 
+  if ( retVal )
     return retVal;
   // current simulation time
   retVal = getDoubleCheckError(endptr, &endptr, curSimTim);
@@ -472,19 +472,19 @@ int establishclientsocket(const char *const docname){
 #endif
   if ( portNo < 0 ){
     fprintf(stderr, "Error: Could not obtain socket port number. Return value = %d.\n", portNo);
-#ifdef NDEBUG  
+#ifdef NDEBUG
     fprintf(f1, "Error: Could not obtain socket port number. Return value = %d.\n", portNo);
 #endif
     return portNo;
   }
-#ifdef NDEBUG  
+#ifdef NDEBUG
     fprintf(f1, "Socket port number = %d.\n", portNo);
 #endif
   //////////////////////////////////////////////////////
   // get the socket host name
   retVal = getsockethost(docname, hostname);
   if ( retVal < 0 ){
-#ifdef NDEBUG  
+#ifdef NDEBUG
     fprintf(f1, "Error: Could not obtain socket hostname. Return value = %d.\n", retVal);
 #endif
     return retVal;
@@ -496,7 +496,7 @@ int establishclientsocket(const char *const docname){
   if ( retVal != 0 ) {
    /* Tell the user that we could not find a usable */
    /* WinSock DLL.                                  */
-#ifdef NDEBUG  
+#ifdef NDEBUG
     fprintf(f1, "Error: Could not find a usable WinSock DLL.\n");
     fprintf(f1, "WSAGetLastError = %d\n", WSAGetLastError());
 #endif
@@ -511,13 +511,13 @@ int establishclientsocket(const char *const docname){
        HIBYTE( wsaData.wVersion ) != 2 ) {
     /* Tell the user that we could not find a usable */
     /* WinSock DLL.                                  */
-#ifdef NDEBUG  
+#ifdef NDEBUG
     fprintf(f1, "Error: Could not find a usable WinSock DLL for requested version.\n");
 #endif
     WSACleanup( );
-    return -1; 
+    return -1;
   }
-#ifdef NDEBUG  
+#ifdef NDEBUG
   fprintf(f1, "WinSock DLL is acceptable.\n");
 #endif
   /* The WinSock DLL is acceptable. Proceed. */
@@ -539,7 +539,7 @@ int establishclientsocket(const char *const docname){
 #endif
         return -1;
       }
-  
+
   if (sockfd < 0){
 #ifdef NDEBUG
     fprintf(f1, "Error opening socket\n");
@@ -593,7 +593,7 @@ int establishclientsocket(const char *const docname){
 ///\param boolValWri Boolean values to write.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send, or a negative value if an error occured.
-int writetosocket(const int *sockfd, 
+int writetosocket(const int *sockfd,
                   const int *flaWri,
                   const int *nDblWri, const int *nIntWri, const int *nBooWri,
                   double *curSimTim,
@@ -601,7 +601,7 @@ int writetosocket(const int *sockfd,
 {
   int retVal;
   // buffer used to exchange data
-  char *buffer; 
+  char *buffer;
   int bufLen = BUFFER_LENGTH;
 
 #ifdef NDEBUG
@@ -641,11 +641,11 @@ if (*sockfd < 0 ){
   }
   //////////////////////////////////////////////////////
   // copy arguments to buffer
-  retVal = assembleBuffer(*flaWri, *nDblWri, *nIntWri, *nBooWri, 
+  retVal = assembleBuffer(*flaWri, *nDblWri, *nIntWri, *nBooWri,
                           *curSimTim,
-                          dblValWri, intValWri, booValWri, 
+                          dblValWri, intValWri, booValWri,
                           &buffer, &bufLen);
-  
+
   if (retVal != 0 ){
     fprintf(stderr, "Error: Failed to allocate memory for buffer before writing to socket.\n");
     fprintf(stderr, "       retVal : %d\n",  retVal);
@@ -702,7 +702,7 @@ if (*sockfd < 0 ){
 /// +1: simulation reached end time.
 /// -1: simulation terminates due to an (unspecified) error.
 /// -10: simulation terminates due to error during initialization.
-/// -20: simulation terminates due to error during time integration. 
+/// -20: simulation terminates due to error during time integration.
 ///
 ///\deprecated Use \c sendclientmessage instead
 ///
@@ -713,14 +713,14 @@ int sendclientmessage(const int *sockfd, const int *flaWri){
   int retVal = 0;
   double zD = 0;
   int bufLen = BUFFER_LENGTH;
-  char inpBuf[BUFFER_LENGTH]; 
+  char inpBuf[BUFFER_LENGTH];
   memset(inpBuf, 0, BUFFER_LENGTH);
 
   if ( *sockfd >= 0 ){
     retVal = writetosocket(sockfd, flaWri, &zI, &zI, &zI, &zD,
                            NULL, NULL, NULL);
 #ifdef NDEBUG
-    fprintf(f1, "sendclientmessage wrote flag %d, return value = %d.\n", 
+    fprintf(f1, "sendclientmessage wrote flag %d, return value = %d.\n",
             *flaWri, retVal);
 #endif
     if ( retVal >= 0 ){
@@ -750,14 +750,14 @@ int sendclientmessage(const int *sockfd, const int *flaWri){
 ///\param intValRea Integer values read from socket.
 ///\param boolValRea Boolean values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
-int readfromsocket(const int *sockfd, int *flaRea, 
+int readfromsocket(const int *sockfd, int *flaRea,
                    int *nDblRea, int *nIntRea, int *nBooRea,
                    double *curSimTim,
                    double dblValRea[], int intValRea[], int booValRea[])
 {
   int retVal, i;
   int bufLen = BUFFER_LENGTH;
-  char inpBuf[BUFFER_LENGTH]; 
+  char inpBuf[BUFFER_LENGTH];
   memset(inpBuf, 0, BUFFER_LENGTH);
 
   /////////////////////////////////////////////////////
@@ -794,7 +794,7 @@ if (*sockfd < 0 ){
 
   retVal = disassembleBuffer(inpBuf,
                              flaRea,
-                             nDblRea, nIntRea, nBooRea, 
+                             nDblRea, nIntRea, nBooRea,
                              curSimTim,
                              dblValRea, intValRea, booValRea);
 #ifdef NDEBUG
@@ -851,7 +851,7 @@ int readbufferfromsocket(const int *sockfd, char *buffer, int *bufLen){
 ///\param boolValRea Boolean values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
-int exchangewithsocket(const int *sockfd, 
+int exchangewithsocket(const int *sockfd,
                        const int *flaWri, int *flaRea,
                        const int *nDblWri, const int *nIntWri, const int *nBooWri,
                        int *nDblRea, int *nIntRea, int *nBooRea,
@@ -872,7 +872,7 @@ int exchangewithsocket(const int *sockfd,
   fprintf(f1, "*************************.\n", *simTimWri);
   fprintf(f1, "Writing to socket at time = %e\n", *simTimWri);
 #endif
-  retVal = writetosocket(sockfd, flaWri, 
+  retVal = writetosocket(sockfd, flaWri,
                          nDblWri, nIntWri, nBooWri,
                          simTimWri,
                          dblValWri, intValWri, booValWri);
@@ -908,7 +908,7 @@ int exchangewithsocket(const int *sockfd,
 ///\param dblValRea Double values read from socket.
 ///\sa int establishclientsocket(uint16_t *portNo)
 ///\return The exit value of \c send or \c read, or a negative value if an error occured.
-int exchangedoubleswithsocket(const int *sockfd, 
+int exchangedoubleswithsocket(const int *sockfd,
                        const int *flaWri, int *flaRea,
                        const int *nDblWri,
                        int *nDblRea,
@@ -921,7 +921,7 @@ int exchangedoubleswithsocket(const int *sockfd,
   int nBooRea;
   int intValRea[1]; // allocate array of non-zero size
   int booValRea[1]; // allocate array of non-zero size
-  return exchangewithsocket(sockfd, 
+  return exchangewithsocket(sockfd,
                             flaWri, flaRea,
                             nDblWri, &zer, &zer,
                             nDblRea, &nIntRea, &nBooRea,

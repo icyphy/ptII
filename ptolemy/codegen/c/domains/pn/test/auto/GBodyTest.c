@@ -1267,9 +1267,9 @@ void GBodyTest_Expression2(void) {
     GBodyTest_MultiplyDivide_divide[0][(GBodyTest_MultiplyDivide_divide_writeOffset + 0)&7] = ((GBodyTest_Expression2_in[GBodyTest_Expression2_in_readOffset&7] == 0) ? 1 : (multiply_Double_Double(multiply_Double_Double(GBodyTest_Expression2_in[GBodyTest_Expression2_in_readOffset&7], GBodyTest_Expression2_in[GBodyTest_Expression2_in_readOffset&7]), GBodyTest_Expression2_in[GBodyTest_Expression2_in_readOffset&7])));
 }
 void GBodyTest_SampleDelay(void) {
-    
+
     GBodyTest_AddSubtract2_plus[0] = GBodyTest_Scale2_input = GBodyTest_SampleDelay_input;
-    
+
 }
 void GBodyTest_AddSubtract2(void) {
     GBodyTest_AddSubtract2__result = GBodyTest_AddSubtract2_plus[0];
@@ -1287,9 +1287,9 @@ void GBodyTest_AddSubtract3(void) {
     GBodyTest_SampleDelay2_input = GBodyTest_AddSubtract3__result;
 }
 void GBodyTest_SampleDelay2(void) {
-    
+
     GBodyTest_AddSubtract3_plus[0] = GBodyTest_Test_input[0] = GBodyTest_SampleDelay2_input;
-    
+
 }
 void GBodyTest_Scale2(void) {
     GBodyTest_AddSubtract3_plus[1] = multiply_DoubleArray_Double(GBodyTest_Scale2_input, 0.01);
@@ -1431,10 +1431,10 @@ void initialize(void) {
     /* The initialization of the director. */
     /* initialize SampleDelay */
     GBodyTest_AddSubtract2_plus[0] = GBodyTest_Scale2_input = convert_IntArray_DoubleArray(IntArray_new(3, 3, 0, 0, 0));
-    
+
     /* initialize SampleDelay2 */
     GBodyTest_AddSubtract3_plus[0] = GBodyTest_Test_input[0] = convert_IntArray_DoubleArray(IntArray_new(3, 3, 0, 0, 0));
-    
+
     GBodyTest_FIR___taps = GBodyTest_FIR_taps_;
     /* initFIR */
     GBodyTest_FIR___zero = zero_Double(DoubleArray_get(GBodyTest_FIR___taps, 0));

@@ -60,7 +60,7 @@ import ptolemy.kernel.util.Workspace;
  derivative component of the output, <i>Kd</i> is the derivative gain, and
  <i>dt</i> is the time differential between input events events x[n] and x[n-1].
  <p>
- The output of this actor is constrained to be a double, and input must be castable 
+ The output of this actor is constrained to be a double, and input must be castable
  to a double. If the input signal is not left-continuous and the derivative constant
  is nonzero, then this actor will throw an exception as the derivative will be either infinite
  or undefined. If the derivative constant is zero, then this actor may recieve
@@ -108,7 +108,7 @@ public class PID extends DETransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////   
+    ////                         public methods                    ////
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the ports.
      *  @param workspace The workspace for the new object.

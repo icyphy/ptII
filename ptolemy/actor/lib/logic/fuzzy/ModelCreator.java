@@ -51,19 +51,19 @@ Parse the XML output from the Trade Space Specification Tool
 and create a MoML representation of the architecture model.
 <p>
 The Trade Space Specification Tool (TSST) is currently under development
-in the Rapid Prototyping group at the NASA Jet Propulsion Laboratory in 
-Pasedena CA. The Trade Space Specification tool allows the user to 
+in the Rapid Prototyping group at the NASA Jet Propulsion Laboratory in
+Pasedena CA. The Trade Space Specification tool allows the user to
 evaluate various component combinations (i.e. solar power vs. nuclear
 power) necessary in space craft design. </p>
 <p>
-This class is as stand alone application that prompts the user for a 
+This class is as stand alone application that prompts the user for a
 filename which should be an xml file produced by the Trade Space
-Specification Tool. This application produces a MoML representation of the 
+Specification Tool. This application produces a MoML representation of the
 Architecture model that includes instantiations of the
 {@link  ptolemy.actor.lib.logic.fuzzy.FuzzyLogic} actor.</p>
 <p>
-If the input file name is <code><i>filename</i>.xml</code>, the output 
-file name will be <code><i>filename</i>Model.xml</code>.</p> 
+If the input file name is <code><i>filename</i>.xml</code>, the output
+file name will be <code><i>filename</i>Model.xml</code>.</p>
 
 @author Shanna-Shaye Forbes
 @version $Id$
@@ -86,8 +86,8 @@ public class ModelCreator extends DefaultHandler {
     /**
      *  Construct a CombinedFile object, parse the specified file,
      *  and create the Ptolemy II model.
-     *  It is expected that this application is run from the $PTII 
-     *  directory and it prepends the location 
+     *  It is expected that this application is run from the $PTII
+     *  directory and it prepends the location
      *  "ptolemy/actor/lib/logic/fuzzy/" to the filename.
      *  @param filename The name of the XML file to be parsed
      *  @exception Exception If the input file cannot be read or
@@ -112,19 +112,19 @@ public class ModelCreator extends DefaultHandler {
             handler._outputFileName = _outputFileName;
             xmlReader.setContentHandler(handler);
             xmlReader.setErrorHandler(handler);
-            reader = new FileReader("ptolemy/actor/lib/logic" 
+            reader = new FileReader("ptolemy/actor/lib/logic"
                     + "/fuzzy/"+ filename);
             xmlReader.parse(new InputSource(reader));
 
         } catch (Exception ex) {
-            throw new IllegalActionException(null, ex, "Failed to parse " 
+            throw new IllegalActionException(null, ex, "Failed to parse "
                     + filename + ".");
         } finally{
             if (reader!=null) {
                 try {
                     reader.close();
                 } catch (IOException ex) {
-                    throw new IllegalActionException(null, ex, 
+                    throw new IllegalActionException(null, ex,
                             "Failed to close " + filename + ".");
                 }
             }
@@ -137,7 +137,7 @@ public class ModelCreator extends DefaultHandler {
     /** Called by the SAX parser to report regular characters.
      * @param ch The array containing characters
      * @param start Is the starting point in the character array
-     * @param length Is length of the character array 
+     * @param length Is length of the character array
      * */
     public void characters(char ch[], int start, int length) {
         if (_startArchitecture == true) {
@@ -212,7 +212,7 @@ public class ModelCreator extends DefaultHandler {
     }
 
     /**
-     * Called once when the SAX driver sees the end of a document, 
+     * Called once when the SAX driver sees the end of a document,
      * even if errors occurred.
      * */
     public void endDocument() {
@@ -221,7 +221,7 @@ public class ModelCreator extends DefaultHandler {
     /** Called each time the SAX parser sees the end of an element.
      * @param uri The Namespace Uniform Resource Identifier(URI)
      * @param name Is the elements local name
-     * @param qName Is the XML 1.0 name 
+     * @param qName Is the XML 1.0 name
      * */
     public void endElement(String uri, String name, String qName) {
         if ("".equals(uri)) {
@@ -297,7 +297,7 @@ public class ModelCreator extends DefaultHandler {
      * This indicates that a processing instruction (other than the XML
      * declaration) has been encountered.
      * @param target <code>String</code> target of PI
-     * @param data <code>String</code containing all data sent to the PI. 
+     * @param data <code>String</code containing all data sent to the PI.
      * This typically looks like one or more attribute value pairs.
      * @exception <code>SAXException</code> when things go wrong
      */
@@ -316,9 +316,9 @@ public class ModelCreator extends DefaultHandler {
      * <pre>
      *  java -classpath $PTII ptolemy.actor.lib.logic.fuzzy.CombinedFile TSSTOutput.xml
      * </pre>
-     *  where <code>TSSTOutput.xml</code> is the output from the Trade 
+     *  where <code>TSSTOutput.xml</code> is the output from the Trade
      *  Space Specification Tool.
-     *  Note: This argument is optional. If it is not provided the user 
+     *  Note: This argument is optional. If it is not provided the user
      *  will be prompted for a filename.
      * </p>
      * @param args with inputs to the main method.
@@ -336,13 +336,13 @@ public class ModelCreator extends DefaultHandler {
                     reader = new BufferedReader(new InputStreamReader(System.in));
                     fileName = reader.readLine();
                 } catch (IOException ex) {
-                    throw new IllegalActionException(null, ex, "Failed to parse input."); 
+                    throw new IllegalActionException(null, ex, "Failed to parse input.");
                 } finally{
                     if (reader!=null) {
                         try {
                             reader.close();
                         } catch (IOException ex) {
-                            throw new IllegalActionException(null, ex, 
+                            throw new IllegalActionException(null, ex,
                             "Failed to close buffered reader which reads input.");
                         }
                     }
@@ -366,7 +366,7 @@ public class ModelCreator extends DefaultHandler {
                     reader.close();
                 } catch (IOException ex) {
 
-                    throw new IllegalActionException(null, ex, 
+                    throw new IllegalActionException(null, ex,
                             "Failed to close " + fileName + ".");
                 }
             }
@@ -380,13 +380,13 @@ public class ModelCreator extends DefaultHandler {
     /** Called each time the SAX parser sees the beginning of an element.
      * @param uri The Namespace Uniform Resource Identifier(URI)
      * @param name Is the elements local name
-     * @param qName Is the XML 1.0 name 
+     * @param qName Is the XML 1.0 name
      * @param atts  An Attributes object
      * */
     public void startElement(String uri, String name, String qName,
             Attributes atts) {
-        // Note: The method names and the parameters match those in the 
-        // DefaultHandler class 
+        // Note: The method names and the parameters match those in the
+        // DefaultHandler class
         if ("".equals(uri)) {
             if (_debugging) {
                 System.out.println("Start element: " + qName);
@@ -422,9 +422,9 @@ public class ModelCreator extends DefaultHandler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////               protected classes                        ////   
+    ////               protected classes                        ////
     /**
-     * Private architecture class to recreate a textual representation 
+     * Private architecture class to recreate a textual representation
      * of the architecture from a XML file.
      */
     protected class Architecture {
@@ -448,8 +448,8 @@ public class ModelCreator extends DefaultHandler {
         /**
          * Return an array list consisting of the components/options
          * in the architecture.
-         * @return An array list consisting of the components/options 
-         * in the architecture. 
+         * @return An array list consisting of the components/options
+         * in the architecture.
          * */
         public ArrayList<String> getComponents() {
             ArrayList<String> componentNames = new ArrayList<String>();
@@ -498,7 +498,7 @@ public class ModelCreator extends DefaultHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /**
-     *  Read the TSST xml file and produce the MoML xml file with the 
+     *  Read the TSST xml file and produce the MoML xml file with the
      *  Ptolemy II model. The Ptolemy II model is placed in $PTII/
      *  "ptolemy/actor/lib/logic/fuzzy/".
      */
@@ -506,14 +506,14 @@ public class ModelCreator extends DefaultHandler {
         ArrayList<String> componentNames = new ArrayList<String>();
         StringBuffer output=new StringBuffer(
                 "<?xml version= \"1.0\" standalone=\"no\"?>"+_eol
-                +"<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD " 
+                +"<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD "
                 +"MoML 1//EN\""+ _eol
                 +"    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/"
                 +"MoML_1.dtd\">"+ _eol
-                +"<entity name=\"dummy\" class=\"ptolemy.actor.Typed" 
+                +"<entity name=\"dummy\" class=\"ptolemy.actor.Typed"
                 +"CompositeActor\">"+_eol
-                + "<property name=\"_createdBy\" class=\"ptolemy." 
-                +"kernel.attributes.VersionAttribute\" " 
+                + "<property name=\"_createdBy\" class=\"ptolemy."
+                +"kernel.attributes.VersionAttribute\" "
                 +"value=\"8.0.beta\">"+ _eol
                 +"</property>"+ _eol
                 +"<property name=\"SDF Director\" class=\"ptolemy."
@@ -521,7 +521,7 @@ public class ModelCreator extends DefaultHandler {
                 +"<property name=\"iterations\" class=\"ptolemy."
                 +"data.expr.Parameter\" value=\"1\">"
                 +"     </property>"+_eol
-                +"</property>"+ _eol); 
+                +"</property>"+ _eol);
 
         try {
             Option option;
@@ -533,7 +533,7 @@ public class ModelCreator extends DefaultHandler {
             if (_debugging) {
                 System.out.println("There are currently "
                         + _architecture.myOptions.size()
-                        + " components with this architecture " 
+                        + " components with this architecture "
                         + "named "+ _architecture.getName());
                 System.out.println("There were " + componentNames.size()
                         + " components ");
@@ -541,17 +541,17 @@ public class ModelCreator extends DefaultHandler {
             for (int i = 0; i < componentNames.size(); i++) {
                 output.append("<entity name=\""
                         + componentNames.get(i)
-                        + "\" class=\"ptolemy.actor.lib.logic.fuzzy." 
+                        + "\" class=\"ptolemy.actor.lib.logic.fuzzy."
                         +"FuzzyLogic\">"
-                        +"<property name=\"rulesFileName\" " 
-                        +"class=\"ptolemy.data.expr.Parameter\"" 
+                        +"<property name=\"rulesFileName\" "
+                        +"class=\"ptolemy.data.expr.Parameter\""
                         +" value=\""
                         + ((Option) (_architecture.myOptions.get(i))).
                         _relatedDimensions.get(0)
                         + ".xml\">"
                         +"</property>"
-                        +"<property name=\"componentType\" " 
-                        +"class=\"ptolemy.data.expr.Parameter" 
+                        +"<property name=\"componentType\" "
+                        +"class=\"ptolemy.data.expr.Parameter"
                         +"\" value=\""
                         + ((Option) (_architecture.myOptions.get(i))).
                         _name + "\">"
@@ -562,7 +562,7 @@ public class ModelCreator extends DefaultHandler {
             output.append(" <entity name=\"AddSubtract\" class=\"ptolemy.actor." +
                     "lib.AddSubtract\">"+_eol+
             " </entity>");
-            output.append("<entity name=\"CumulativeCostDisplay\" class=\"ptolemy." 
+            output.append("<entity name=\"CumulativeCostDisplay\" class=\"ptolemy."
                     +"actor.lib.gui.Display\">" + _eol
                     +"</entity>"+_eol);
 
@@ -577,13 +577,13 @@ public class ModelCreator extends DefaultHandler {
             }
 
             int relationNumber = 0;
-            for (int i = 0; i < componentNames.size(); i++) {                        
+            for (int i = 0; i < componentNames.size(); i++) {
 
                 // Cost
                 output.append("<link port=\"" + componentNames.get(i)
                         + ".output\" relation=\"relation" + relationNumber
                         +"\"/>"+_eol
-                        +"<link port=\""+ "AddSubtract.plus\""  
+                        +"<link port=\""+ "AddSubtract.plus\""
                         +" relation=\"relation" + relationNumber
                         +"\"/>"
                         +_eol);
@@ -598,7 +598,7 @@ public class ModelCreator extends DefaultHandler {
                 output.append("<link port=\""
                         + "AddSubtract.output\" relation=\"relation"
                         + relationNumber + "\"/>"+ _eol
-                        +"<link port=\"CumulativeCostDisplay.input\" relation=\"" 
+                        +"<link port=\"CumulativeCostDisplay.input\" relation=\""
                         +"relation" +relationNumber + "\"/>"+ _eol);
                 relationNumber++;
 
@@ -640,15 +640,15 @@ public class ModelCreator extends DefaultHandler {
     ////                         private variables                 ////
 
     /**
-     * A TSST may contain multiple architectures where an architecture 
+     * A TSST may contain multiple architectures where an architecture
      * is a possible combination of components.
-     * Currently, the MoML representation is limited to a single 
+     * Currently, the MoML representation is limited to a single
      * architecture.
      */
     private Architecture _architecture;
 
 
-    //these variables are used in the class 
+    //these variables are used in the class
     private Option _option;
     private String _outputFileName;
     //these variables are constants used throught the class

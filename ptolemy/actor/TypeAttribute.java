@@ -191,7 +191,7 @@ public class TypeAttribute extends Parameter {
             throws IllegalActionException {
         if ( (container != null) && !(container instanceof TypedIOPort)) {
             // FIXME: this is a bit of hack brought on by
-            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4767 
+            // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4767
             if (!container.getClass().getName().equals("org.kepler.moml.PortAttribute")) {
                 throw new IllegalActionException(container, this,
                         "TypeAttribute can only be contained by instances "
@@ -199,6 +199,6 @@ public class TypeAttribute extends Parameter {
 
             }
 
-        } 
+        }
     }
 }

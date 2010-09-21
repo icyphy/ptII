@@ -230,7 +230,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
               }
           }
         }
-        
+
     }
 
     /** Write a MoML description of this object with the specified

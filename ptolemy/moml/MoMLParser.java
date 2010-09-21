@@ -4023,7 +4023,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     //                                     container,
                     //                                     "Cannot create entity named \"" + entityName
                     //                                             + "\" because a subclass or instance in \""
-                    //                                             + container.getFullName() 
+                    //                                             + container.getFullName()
                     //                                             + "\" contains an entity with the same name \""
                     //                                             + derived.getEntity(entityName).getFullName() + "\".");
                     //                         }
@@ -4130,7 +4130,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     //                                     container,
                     //                                     "Cannot create entity named \"" + entityName
                     //                                             + "\" because a subclass or instance in \""
-                    //                                             + container.getFullName() 
+                    //                                             + container.getFullName()
                     //                                             + "\" contains an entity with the same name \""
                     //                                             + derived.getEntity(entityName).getFullName() + "\".");
                     //                         }

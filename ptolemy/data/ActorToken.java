@@ -121,7 +121,7 @@ public class ActorToken extends Token implements Cloneable {
      *  @param epsilon This argument is ignored in this method.
      *  @return A true-valued token if the first argument is equal to
      *  this token.
-     *  @exception IllegalActionException If thrown by 
+     *  @exception IllegalActionException If thrown by
      *  {@link #isEqualTo(Token)}.
      */
     public BooleanToken isCloseTo(Token rightArgument, double epsilon)
