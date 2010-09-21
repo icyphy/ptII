@@ -163,6 +163,7 @@ EXTRA_SRCS = \
 	ptolemy32bw.bin \
 	ptolemy32bw.bmp \
 	ptolemyII480x240plain.gif \
+	ptolemyMacIcon.tif \
 	spacer4.gif \
 	up.gif
 
