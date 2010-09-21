@@ -32,7 +32,7 @@ ME =		ptolemy/domains/giotto
 
 
 # cgc is on a separate line so we can exclude it while building a release.
-DIRS =		kernel lib demo doc \
+DIRS =		kernel demo doc \
 		cgc \
 		test
 
@@ -51,8 +51,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
                 cgc/cgc.jar \
-		kernel/kernel.jar \
-		lib/lib.jar
+		kernel/kernel.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
