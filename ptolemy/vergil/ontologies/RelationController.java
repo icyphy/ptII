@@ -29,7 +29,9 @@ package ptolemy.vergil.ontologies;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.List;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ontologies.ConceptRelation;
 import ptolemy.kernel.util.IllegalActionException;
@@ -150,6 +152,12 @@ public class RelationController extends TransitionController {
                     }
 
                     c.setAngle(exitAngle);
+                    
+                    List<ColorAttribute> colors = relation.attributeList(ColorAttribute.class);
+                    if (colors != null && colors.size() > 0) {
+                        // Use the first color only if there is more than one.
+                        c.setStrokePaint(colors.get(0).asColor());
+                    }
                 } catch (IllegalActionException ex) {
                     // Ignore, accepting the default.
                     // This exception should not occur.
