@@ -36,7 +36,7 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-proc testJavaCG {model {cleanCG 1}} {
+proc testJavaCG {model} {
     testJavaCGInline $model true
     testJavaCGInline $model false
     testJavaCGInline $model true 1 true
@@ -59,11 +59,9 @@ proc testJavaCGInline {model inline {maximumLinesPerBlock 2500} {generateInSubdi
     puts "------------------ JavaCG \$PTII/bin/ptcg -language java $generateCommand -inline $inline $maxCommand $relativeFilename"
     test "Auto" "Automatic JavaCG \$PTII/bin/ptcg -language java $generateCommand -inline $inline $maxCommand $relativeFilename" {
 	# Remove files from ~/cg so as to force building
-	if {$cleanCG == 1} {
-	    foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
-	    foreach javaFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.java] { file delete -force $javaFile}
-	    foreach mkFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.mk] { file delete -force $mkFile}
-	}
+	foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
+	foreach javaFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.java] { file delete -force $javaFile}
+	foreach mkFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.mk] { file delete -force $mkFile}
 	set parser [java::new ptolemy.moml.MoMLParser]
 	$parser reset
 	$parser purgeAllModelRecords
