@@ -31,7 +31,7 @@
 
 ME =        ptolemy/codegen/rtmaude/actor
 
-DIRS =      lib parameters
+DIRS =      lib
 
 # Root of the Ptolemy II directory
 ROOT =      ../../../..
@@ -50,8 +50,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR 
 PTCLASSALLJARS = \
-	lib/lib.jar \
-	parameters/parameters.jar
+	lib/lib.jar
 
 JSRCS = \
 	Director.java \
