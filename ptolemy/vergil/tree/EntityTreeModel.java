@@ -27,6 +27,7 @@
  */
 package ptolemy.vergil.tree;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -54,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
  entities.  It does not include entities that are class definitions.
  Derived classes represent more (or less) of the Ptolemy II model.
 
- @author Steve Neuendorffer and Edward A. Lee
+ @author Steve Neuendorffer and Edward A. Lee, Contributor: Jianwu Wang
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (eal)
@@ -78,7 +79,20 @@ public class EntityTreeModel implements TreeModel {
      *  @see #removeTreeModelListener(TreeModelListener)
      */
     public void addTreeModelListener(TreeModelListener listener) {
-        _listenerList.add(listener);
+        // In http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4801,
+        // Jianwu Wang found that the _listenerList attribute in
+        // ptolemy.vergil.tree.EntityTreeModel was leaking memory.
+        // This attribute keeps holding some references, so that
+        // instances of EntityTreeModel and its sub-classes can not be
+        // GCed when a window is open and closed.
+        // 
+        // When it and its sub-classes are used in Kepler,
+        // addTreeModelListener() and removeTreeModelListener()
+        // functions of EntityTreeModel class are called implicitly.
+        // Jianwu did not find a good way to clean up after a window
+        // is closed.  Changing the _listenerList attribute using
+        // WeakReference fixe the leak.
+        _listenerList.add(new WeakReference(listener));
     }
 
     /** Get the child of the given parent at the given index.
@@ -172,7 +186,7 @@ public class EntityTreeModel implements TreeModel {
      *  @see #addTreeModelListener(TreeModelListener)
      */
     public void removeTreeModelListener(TreeModelListener listener) {
-        _listenerList.remove(listener);
+        _listenerList.remove(new WeakReference(listener));
     }
 
     /** Notify listeners that the object at the given path has changed.
@@ -184,7 +198,7 @@ public class EntityTreeModel implements TreeModel {
         TreeModelEvent event = new TreeModelEvent(this, path);
 
         while (listeners.hasNext()) {
-            TreeModelListener listener = (TreeModelListener) listeners.next();
+            TreeModelListener listener = (TreeModelListener) ((WeakReference)listeners.next()).get();
             listener.treeStructureChanged(event);
         }
     }
@@ -259,7 +273,7 @@ public class EntityTreeModel implements TreeModel {
     ////                         private variables                 ////
 
     /** The list of listeners. */
-    private List _listenerList = new LinkedList();
+    private List _listenerList = new LinkedList<WeakReference>();
 
     /** The model listener. */
     private ChangeListener _rootListener = new TreeUpdateListener();
