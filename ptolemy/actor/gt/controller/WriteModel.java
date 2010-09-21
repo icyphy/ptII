@@ -93,6 +93,10 @@ public class WriteModel extends GTEvent {
         CompositeEntity model = getModelParameter().getModel();
         Writer writer = modelFile.openForWriting();
         try {
+            if (modelFile == null) {
+                throw new IllegalActionException(this, 
+                        "You must set the modelFile parameter before running");
+            }
             String fileName = modelFile.asFile().getName();
             int period = fileName.indexOf('.');
             String modelName;
