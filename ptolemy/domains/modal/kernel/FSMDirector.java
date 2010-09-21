@@ -345,7 +345,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             // If the current (preempted) state has a refinement, then we know
             // it cannot produce any outputs. All outputs of this state must be cleared
             // so that at least they not remain unknown in the end of the fixed point iteration.
-            // If an output port is known because this preempted transition alreay set it
+            // If an output port is known because this preempted transition already set it
             // we do not send a clear.
             if (controller._currentState.getRefinement() != null) {
                 TypedActor[] refinements = controller._currentState.getRefinement();
@@ -375,6 +375,24 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         if (controller.foundUnknown()) {
             // ATTENTION: It seems we canNOT assume anything about absent outputs yet.
             // This is because we don't know anything about the relation of input and output ports.
+            // FIXME: This is premature. Something may be known about the outputs if
+            // neither the refinements nor the transitions can emit something. We want
+            // something like the following:
+            /*
+            Actor[] stateRefinements = currentState.getRefinement();
+            if (stateRefinements != null) {
+                for (int i = 0; i < stateRefinements.length; ++i) {
+                    Director refinementDirector = stateRefinements[i].getDirector();
+                    if (refinementDirector instanceof FSMDirector) {
+                        // NOTE: This will use _isSafeToClear() and/or
+                        // _assertAbsentOutputs(), but these methods need careful
+                        // examination so they become a well-documented method of
+                        // FSMDirector.
+                        ((FSMDirector)refinementDirector)._assertAbsentOutputs();
+                    }
+                }
+            }
+            */
             return;
         }
 
@@ -434,97 +452,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         }
     }
 
-    /**
-     * It might be possible to assert that certain outputs are absent. This methods helps finding
-     * these outputs and clears them.
-     * 
-     * @param controller
-     *            the controller
-     * @param checkRefinement
-     *            the check refinement
-     * @return true, if successful
-     * @throws IllegalActionException
-     *             the illegal action exception
-     */
-    private boolean _assertAbsentOutputs(FSMActor controller, boolean checkRefinement)
-            throws IllegalActionException {
-        // Next, for each output port, we need to check whether
-        // it is possible for an output to be produced on that port.
-        // It will not be possible iff ALL transitions that can produce
-        // the output have guards that evaluate to false.
-        List<IOPort> outputs = controller.outputPortList();
-        // FIXME: maybe ask refinements too and send a clear out ONLY
-
-        boolean foundAbsentOutputs = false;
-
-        for (IOPort port : outputs) {
-
-            for (int channel = 0; channel < port.getWidth(); channel++) {
-                if (!port.isKnown(channel)) {
-                    // Check all transitions. If no transition can
-                    // possibly produce this output, set the output absent.
-                    boolean isSafeToClear = true;
-
-                    // Only check refinements iff non-preemptive transition (weak abort).
-                    // For strong aborts this method should be called w/ checkRefinement==false!
-                    if (checkRefinement && controller._currentState.getRefinement() != null) {
-                        // this states has a refinement
-                        // in addition to the check below it is required that the refinement
-                        // has also cleared a port
-                        TypedActor[] refinements = controller._currentState.getRefinement();
-                        // do the following for all refinements
-                        for (Actor refinementActor : refinements) {
-                            if (refinementActor instanceof CompositeActor) {
-                                CompositeActor refinement = (CompositeActor) refinementActor;
-                                for (IOPort refinementPort : ((List<IOPort>) refinement
-                                        .outputPortList())) {
-                                    if (!refinementPort.getName().equals(port.getName())) {
-                                        // if not the same port name, don't inspect channels
-                                        continue;
-                                    }
-                                    // if the correct port name, get the right channel
-                                    for (int refinementChannel = 0; refinementChannel < refinementPort
-                                            .getWidth(); refinementChannel++) {
-                                        if (refinementChannel == channel) {
-                                            // this is the corresponding refinement port and channel
-                                            // check whether it is known (=> !cleared). if not,
-                                            // prevent
-                                            // clearing by setting guardsEvaluable to false
-                                            if (!refinementPort.isKnown()) {
-                                                // only if it is really cleared (= not known because
-                                                // of a token)
-                                                isSafeToClear = false;
-                                            }
-                                        }// end if channel and port fits
-                                    }// end for all channels
-                                }// end for all ports
-                            }// end if CompositeActor
-                        }// end for all refinements
-                    }// end if has refinement
-
-                    // Reason for "&&":
-                    // If we know already that a refinement didn't cleared
-                    // this channel[port], then we don't need to inspect any further
-                    // because this already prevents us from clearing the channel safely.
-                    isSafeToClear = isSafeToClear && _isSafeToClear(port, controller);
-                    if (isSafeToClear) {
-                        foundAbsentOutputs = true;
-                        port.send(channel, null);
-                        _debug("Asserting absence and clearing port " + port.getName());
-                    }
-                } else {
-                    if (port.isInput() && port.hasToken(0)) {
-                        _debug("Token at port " + port.getName());
-                    } else {
-                        _debug("Unknown token or output port " + port.getName());
-                    }
-                }
-            }
-        }
-
-        // return if something has changed
-        return foundAbsentOutputs;
-    }
 
     /**
      * Schedule a firing of the given actor at the given time. If there exists an executive
@@ -1353,7 +1280,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * @exception IllegalActionException
      *                If there is no controller.
      */
-    public Transition _getLastChosenTransition() throws IllegalActionException {
+    protected Transition _getLastChosenTransition() throws IllegalActionException {
         FSMActor controller = getController();
 
         if (controller != null) {
@@ -1637,8 +1564,105 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     /** Transition refinements to postfire(), as determined by the fire() method. */
     protected List<Actor> _transitionRefinementsToPostfire = new LinkedList<Actor>();
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+    
+    /**
+     * It might be possible to assert that certain outputs are absent. This methods helps finding
+     * these outputs and clears them.
+     * 
+     * @param controller The controller FSM.
+     * @param checkRefinement True to recursively descend through refinements of states.
+     * @return True if at least one output was asserted absent.
+     * @throws IllegalActionException If something goes wrong.
+     */
+    private boolean _assertAbsentOutputs(FSMActor controller, boolean checkRefinement)
+            throws IllegalActionException {
+        // Next, for each output port, we need to check whether
+        // it is possible for an output to be produced on that port.
+        // It will not be possible iff ALL transitions that can produce
+        // the output have guards that evaluate to false.
+        List<IOPort> outputs = controller.outputPortList();
+        // FIXME: maybe ask refinements too and send a clear out ONLY
+
+        boolean foundAbsentOutputs = false;
+
+        for (IOPort port : outputs) {
+
+            for (int channel = 0; channel < port.getWidth(); channel++) {
+                if (!port.isKnown(channel)) {
+                    // Check all transitions. If no transition can
+                    // possibly produce this output, set the output absent.
+                    boolean isSafeToClear = true;
+
+                    // Only check refinements iff non-preemptive transition (weak abort).
+                    // For strong aborts that are known to be enabled
+                    // this method should be called w/ checkRefinement==false!
+                    if (checkRefinement && controller._currentState.getRefinement() != null) {
+                        // this states has a refinement
+                        // in addition to the check below it is required that the refinement
+                        // has also cleared a port
+                        TypedActor[] refinements = controller._currentState.getRefinement();
+                        // do the following for all refinements
+                        for (Actor refinementActor : refinements) {
+                            if (refinementActor instanceof CompositeActor) {
+                                CompositeActor refinement = (CompositeActor) refinementActor;
+                                // FIXME: This should check to see whether the director
+                                // of the refinement implements StaticallyAnalyzable, and
+                                // if so, do a recursive call.
+                                
+                                // FIXME: Look up the port by name rather than searching
+                                // all ports until the name matches.
+                                for (IOPort refinementPort : ((List<IOPort>) refinement
+                                        .outputPortList())) {
+                                    if (!refinementPort.getName().equals(port.getName())) {
+                                        // if not the same port name, don't inspect channels
+                                        continue;
+                                    }
+                                    // if the correct port name, get the right channel
+                                    for (int refinementChannel = 0; refinementChannel < refinementPort
+                                            .getWidth(); refinementChannel++) {
+                                        if (refinementChannel == channel) {
+                                            // this is the corresponding refinement port and channel
+                                            // check whether it is known (=> !cleared). if not,
+                                            // prevent
+                                            // clearing by setting guardsEvaluable to false
+                                            if (!refinementPort.isKnown()) {
+                                                // only if it is really cleared (= not known because
+                                                // of a token)
+                                                isSafeToClear = false;
+                                            }
+                                        }// end if channel and port fits
+                                    }// end for all channels
+                                }// end for all ports
+                            }// end if CompositeActor
+                        }// end for all refinements
+                    }// end if has refinement
+
+                    // Reason for "&&":
+                    // If we know already that a refinement didn't cleared
+                    // this channel[port], then we don't need to inspect any further
+                    // because this already prevents us from clearing the channel safely.
+                    isSafeToClear = isSafeToClear && _isSafeToClear(port, controller);
+                    if (isSafeToClear) {
+                        foundAbsentOutputs = true;
+                        port.send(channel, null);
+                        _debug("Asserting absence and clearing port " + port.getName());
+                    }
+                } else {
+                    if (port.isInput() && port.hasToken(0)) {
+                        _debug("Token at port " + port.getName());
+                    } else {
+                        _debug("Unknown token or output port " + port.getName());
+                    }
+                }
+            }
+        }
+
+        // return if something has changed
+        return foundAbsentOutputs;
+    }
+
     private void _checkActorsForReceiver(TypedActor[] actors, Nameable cont, Receiver receiver,
             List resultsList) {
         if (actors != null) {
