@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchicalTrafficLight" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 22, 1030, 704}, maximized=false}">
     </property>
@@ -234,9 +234,11 @@
         </property>
         <property name="Safety Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[] ~ ('HierarchicalTrafficLight | ('Pgrn = # 1, 'Cgrn = # 1) )">
         </property>
-        <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[]&lt;&gt; ('HierarchicalTrafficLight | ('Pgrn = # 1, 'Cgrn = # 0)) /\ []&lt;&gt; ('HierarchicalTrafficLight | ('Pgrn = # 0, 'Cgrn = # 1))">
+        <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'HierarchicalTrafficLight : ([]&lt;&gt; (this | ('Pgrn = # 1, 'Cgrn = # 0)) /\ []&lt;&gt; (this | ('Pgrn = # 0, 'Cgrn = # 1)))">
         </property>
         <property name="Safety (by state prop)" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'HierarchicalTrafficLight : ([] ~ ('TrafficLight @ 'normal /\  'TrafficLight . 'normal : ('CarLightNormal @ 'Cgrn /\  'PedestrianLightNormal @ 'Pgreen)))">
+        </property>
+        <property name="Error handling" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'HierarchicalTrafficLight : (     [] ('Decision | (port 'Error is present) -&gt; (          &lt;&gt; ((this | ('Pgrn = # 0, 'Cgrn = # 0)) U ('Decision | (port 'Ok is present))))  ))">
         </property>
     </property>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">

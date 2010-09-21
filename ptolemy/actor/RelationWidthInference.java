@@ -30,6 +30,7 @@ package ptolemy.actor;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -384,14 +385,28 @@ public class RelationWidthInference {
                             relation._setInferredWidth(1);
                         }
                     } else {
+                        StringBuffer portDetails = new StringBuffer();
                         IORelation relation = unspecifiedSet.iterator().next();
+                        Iterator deepPorts = relation.deepLinkedPortList().iterator();
+                        while (deepPorts.hasNext()) {
+                            portDetails.append((IOPort)(deepPorts.next()));
+                        }
+                        
+                        
                         throw new IllegalActionException(
                                 relation,
                                 "The width of relation "
                                         + relation.getFullName()
                                         + " can not be uniquely inferred.\n"
                                         + "Please make the width inference deterministic by"
-                                        + " explicitly specifying the width of this relation.");
+                                        + " explicitly specifying the width of this relation."
+                                        + " In the user interface, right click on the "
+                                        + "relation, select Configure and change the width. "
+                                        + " Note that some actors may need to have their "
+                                        + " Java code updated to call setDefaultWidth(1) "
+                                        + "on the output port. "
+                                        + "The relation is deeply connected to these ports:\n"
+                                        + portDetails.toString());
                     }
                 }
 

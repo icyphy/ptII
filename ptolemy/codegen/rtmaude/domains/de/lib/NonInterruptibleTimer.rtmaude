@@ -4,103 +4,75 @@ wait-queue : emptyList/**/
 
 /***semantics_NonInterruptibleTimer***/
 (tomod NONINTERRUPTIBLE-TIMER  is
-  inc ACTOR .
+  inc TIMER .
 
-  class NonInterruptibleTimer |
-        processing : Bool,
-        wait-queue : TimeList .
-    subclass NonInterruptibleTimer < Actor .
-  eq ^ NonInterruptibleTimer = Actor .
+  class NonInterruptibleTimer | processing : Bool, wait-queue : TimeList .
+    subclass NonInterruptibleTimer < Timer .
+  eq ^ NonInterruptibleTimer = Timer .
 
   sort TimeList .
   subsort Time < TimeList .
   op emptyList : -> TimeList .
   op __ : TimeList TimeList -> TimeList [ctor assoc id: emptyList] .
 
-  vars PORTS : Configuration . vars PI PI' : PortId . var PS : PortStatus .
-  var REST : ObjectConfiguration . vars O : Oid .
+---------------------------------------------------------------------
+--- Variable Declaration
+---------------------------------------------------------------------
+
+  vars PORTS PARAMS : Configuration . var REST : ObjectConfiguration .
+  var PS : PortStatus . vars O : Oid .
   var V : Value .  vars T  : Time . vars TL UQ : TimeList .
-  var AM : AssignMap . var MEM : Memory .
-  var NV : NumberValue . var E : Exp .
-  var FLAG : Bool .
+  var NV : NumberValue . var FLAG : Bool .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  --- set each status of ports to 'unknown'
-  eq prefire(NonInterruptibleTimer, 
-    < O : NonInterruptibleTimer | 
-      parameters : 'value |-> E ; AM
-    >)
-   = prefire(^ NonInterruptibleTimer, 
-     < O : NonInterruptibleTimer | 
-       store : 'value |-> k(E)
-     >) .
+*** 0] init
 
-  eq portFixPoints(
-     < O : NonInterruptibleTimer |
-        status : enabled,
-        ports :  < PI : OutPort | status : unknown > PORTS
-    >
-    REST)
-   = portFixPoints(
-     < O : NonInterruptibleTimer |
-        ports : < PI : OutPort | status : absent > PORTS
-    >
-    REST) .
+*** 1] prefire
 
+*** 2] portFixPoints 
+
+*** 3] postfire
+  --- NOT call the postfire for Timer to avoid duplicated events.
+  
   ceq postfire(NonInterruptibleTimer,
-    < O : NonInterruptibleTimer |
-        processing : true,
-        wait-queue : TL,
-        store : 'value |-> V ; MEM,
-        ports : (
-            < 'input : InPort | status : PS, value : NV >
-            < 'output : OutPort | status : present >
-            PORTS)
-    >)
-  = if UQ =/= emptyList then
-        relative-evt(event(O ! 'output, V), first(UQ))
-        postfire(^ NonInterruptibleTimer,
-        < O : NonInterruptibleTimer |
-            wait-queue : rest(UQ)
-        >)
-    else
-        postfire(^ NonInterruptibleTimer,
-        < O : NonInterruptibleTimer |
-            processing : false
-        >)
-    fi
+       < O : NonInterruptibleTimer |
+          processing : true,
+          wait-queue : TL,
+          parameters : < 'value : Parameter | value : V > PARAMS,         
+          ports : < 'input : InPort | status : PS, value : NV >
+                  < 'output : OutPort | status : present > PORTS >)
+  =
+      if UQ =/= emptyList then
+          relative-evt(event(O ! 'output, V), first(UQ))
+          postfire(Actor, < O : NonInterruptibleTimer | wait-queue : rest(UQ) >)
+      else
+          postfire(Actor, < O : NonInterruptibleTimer | processing : false >)
+      fi
   if UQ := (if PS == present then (TL toTime(NV)) else TL fi) .
 
   eq postfire(NonInterruptibleTimer,
-    < O : NonInterruptibleTimer |
-        processing : FLAG,
-        wait-queue : TL,
-        store : 'value |-> V ; MEM,
-        ports : (
-            < 'input : InPort | status : present, value : NV >
-            < 'output : OutPort | status : absent >
-            PORTS)
-    >)
-  = if FLAG then
-        postfire(^ NonInterruptibleTimer,
-        < O : NonInterruptibleTimer |
-            wait-queue : (TL toTime(NV))
-        >)
-    else
-        relative-evt(event(O ! 'output, V), toTime(NV))
-        postfire(^ NonInterruptibleTimer,
-        < O : NonInterruptibleTimer |
-            processing : true
-        >)
-    fi .
+      < O : NonInterruptibleTimer |
+         processing : FLAG,
+         wait-queue : TL,
+         parameters : < 'value : Parameter | value : V > PARAMS,         
+         ports : < 'input : InPort | status : present, value : NV >
+                 < 'output : OutPort | status : absent > PORTS >)
+  = 
+     if FLAG then
+         postfire(Actor, < O : NonInterruptibleTimer | wait-queue : (TL toTime(NV)) >)
+     else
+         relative-evt(event(O ! 'output, V), toTime(NV))
+         postfire(Actor, < O : NonInterruptibleTimer | processing : true >)
+     fi .
 
   op first : TimeList ~> Time .
   eq first(T TL) = T .
 
   op rest : TimeList ~> TimeList .
   eq rest(T TL) = TL .
+
 endtom)
 /**/

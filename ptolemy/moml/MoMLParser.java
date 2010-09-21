@@ -1235,7 +1235,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  on the local file system, using the specified base
      *  to expand any relative references within the MoML file.
      *  If the <i>input</i> URL has already been parsed, then
-     *  return the model that previously parsed.  Note that this
+     *  return the model that was previously parsed.  Note that this
      *  means that an application that opens and then closes
      *  a model and expects to re-parse the XML when re-opening
      *  must call purgeModelRecord() when closing it.

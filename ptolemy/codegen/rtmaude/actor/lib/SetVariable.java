@@ -29,7 +29,7 @@ package ptolemy.codegen.rtmaude.actor.lib;
 
 import java.util.List;
 
-import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class SetVariable extends Entity {
+public class SetVariable extends TypedAtomicActor {
     /**
      * Constructor method for the SetVariable adapter.
      * @param component The associated SetVariable actor

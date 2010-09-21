@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.rtmaude.actor.lib;
 
-import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// Ramp
@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class Ramp extends Entity {
+public class Ramp extends TypedAtomicActor {
     /**
      * Constructor method for the Ramp adapter.
      * @param component The associated Ramp actor

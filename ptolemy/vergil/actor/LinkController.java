@@ -189,12 +189,37 @@ public class LinkController extends BasicEdgeController {
     /** Render a visual representation of a link. */
     public static class LinkRenderer implements EdgeRenderer {
 
-        /** Render a visual representation of the given edge. If the
-         *  StringAttribute or ColorAttribute named
-         *  _color of the edge is set then use that
-         *  color to draw the line. If the StringAttribute
-         *  _explanation of the edge is set then use it to set the
-         *  tooltip.
+        /** Render a visual representation of the given edge.
+         *
+         *  <p>If a StringAttribute named "_color", or a
+         *  ColorAttribute named "color" of the edge is set then use
+         *  that color to draw the line.</p>
+         *
+         *  <p>If the attribute is named "_color", then the value of
+         *  the attribute is passed to
+         *  {@link diva.canvas.toolbox.SVGUtilities#getColor(String)}, which
+         *  has accepts the following format: If the first character
+         *  is "#" or "0", then the value of the attribute is expected
+         *  to be in a format suitable for java.awt.Color.decode().
+         *  Otherwise, the value of the attribute is passed to checked
+         *  against a list of color names defined in 
+         *  {@link diva.canvas.toolbox.SVGUtilities}, if the color name is
+         *  not found, then the value of the attribute is passed to
+         *  java.awt.Color.getColor(String) and if there is no match,
+         *  then the color black is used.</p>
+         *
+         *  <p>If the attribute is named "color" and is a
+         *  {@link ptolemy.actor.gui.ColorAttribute}, then the
+         *  javax.swing.JColorChooser gui will be offered as a way to
+         *  edit the color.</p>
+         * 
+         *  <p>If the StringAttribute "_explanation" of the edge is set
+         *  then use it to set the tooltip.</p>
+         * 
+         *  <p>If the "_linkBendRadius" preference is read from the 
+         *  {@link ptolemy.actor.gui.PtolemyPreferences} and used to set
+         *  the bend radius.  The default bend radius is 20.</p>
+         *
          *  @param edge The edge.
          *  @param tailSite The tail site.
          *  @param headSite The head site.
@@ -241,7 +266,7 @@ public class LinkController extends BasicEdgeController {
                     // Ignore;
                 }
                 try {
-                    // FIXME: This isn't quite right for relation groups.
+                     // FIXME: This isn't quite right for relation groups.
                     ColorAttribute colorAttribute = (ColorAttribute) (relation
                             .getAttribute("color", ColorAttribute.class));
 

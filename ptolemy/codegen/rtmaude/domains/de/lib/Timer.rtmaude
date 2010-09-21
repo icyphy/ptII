@@ -1,44 +1,46 @@
 /***semantics_Timer***/
 (tomod TIMER is
-  inc ACTOR .
+  inc ATOMIC-ACTOR .
 
-  class Timer .  subclass Timer < Actor .
-  eq ^ Timer = Actor .
+  class Timer .  subclass Timer < AtomicActor .
+  eq ^ Timer = AtomicActor .
 
-  vars PORTS : Configuration . vars PI PI' : PortId .
-  var O : Oid . var REST : ObjectConfiguration .
-  var E : Exp . vars V TV : Value . 
-  var AM : AssignMap . var MEM : Memory . var VM : ValueMap .  
+---------------------------------------------------------------------
+--- Variable Declaration
+---------------------------------------------------------------------
+
+  vars PORTS PARAMS : Configuration . var REST : ObjectConfiguration .
+  var O : Oid . vars V TV : Value . 
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  --- set each status of ports to 'unknown'
-  eq prefire(Timer, 
-    < O : Timer | 
-      parameters : ('value |-> E ; AM) >) 
-   = prefire(Actor, 
-    < O : Timer | store : 'value |-> k(E) >) .
+*** 0] init
+
+*** 1] prefire
+
+*** 2] portFixPoints 
 
   eq portFixPoints(
-     < O : Timer |
-       status : enabled,
-       ports :  < PI : OutPort | status : unknown > PORTS
-    >
-    REST)
+      < O : Timer |
+         status : enabled,
+         ports :  < 'output : OutPort | status : unknown > PORTS >
+      REST)
    = portFixPoints(
-     < O : Timer |
-       ports : < PI : OutPort | status : absent > PORTS
-    >
-    REST) .
+      < O : Timer |
+         ports : < 'output : OutPort | status : absent > PORTS >
+      REST) .
+
+*** 3] postfire
 
   eq postfire(Timer,
-    < O : Timer |
-      store : 'value |-> V ; MEM,
-      ports : < 'input : InPort | status : present, value : TV > PORTS
-    >)
-  = relative-evt(event(O ! 'output, V), toTime(TV))
-    postfire(^ Timer, < O : Timer | >) .
+      < O : Timer |
+         parameters : < 'value : Parameter | value : V > PARAMS,
+         ports : < 'input : InPort | status : present, value : TV > PORTS >)
+  = 
+     relative-evt(event(O ! 'output, V), toTime(TV))
+     postfire(Actor, < O : Timer | >) .
+    
 endtom)
 /**/

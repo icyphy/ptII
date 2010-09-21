@@ -299,6 +299,39 @@ public class Simulator extends SDFTransformer {
         // send output token
         output.send(0, outTok);
     }
+    
+    /** Output the first token during initialize.
+     *  @throws IllegalActionException 
+     */
+    protected void _outputInitToken() throws IllegalActionException {
+        double[] dblRea = server.getDoubleArray();
+        if ( server.getClientFlag() == 1){
+            final String em = "Actor " + this.getFullName() + ": " + LS
+                + "When trying to read from server, at time "
+                + getDirector().getModelTime().getDoubleValue() + "," 
+                + "client sent flag " + server.getClientFlag() + "," + LS 
+                + "which indicates that it reached the end of its simulation." + LS
+                + "This should not happen during the initialization of this actor.";
+            throw new IllegalActionException(em);
+        }
+        else
+            if ( server.getClientFlag() != 0){
+            final String em = "Actor " + this.getFullName() + ": " + LS
+                + "When trying to read from server, at time "
+                + getDirector().getModelTime().getDoubleValue() + "," 
+                + "client sent flag " + server.getClientFlag() + "," + LS 
+                + "which indicates a problem in the client.";
+            throw new IllegalActionException(em);
+        }
+        if ( dblRea == null ){
+            final String em = "Actor " + this.getFullName() + ": " + LS
+                + "When trying to read from server, obtained 'null' at time "
+                + getDirector().getModelTime().getDoubleValue();
+            throw new IllegalActionException(em);
+        }
+        outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
+        output.send(0, outTok);
+    }
 
     /** Write the data to the server instance, which will send it to
      * the client program.
@@ -306,7 +339,7 @@ public class Simulator extends SDFTransformer {
      * @exception IllegalActionException If there was an error when
      * writing to the server.
      */
-    private void _writeToServer() throws IllegalActionException {
+    protected void _writeToServer() throws IllegalActionException {
 
         //////////////////////////////////////////////////////
         // Write data to server
@@ -331,7 +364,7 @@ public class Simulator extends SDFTransformer {
      * @exception IllegalActionException If there was an error when
      * reading from the server.
      */
-    private void _readFromServer() throws IllegalActionException {
+    protected void _readFromServer() throws IllegalActionException {
         //////////////////////////////////////////////////////
         // Read data from server
         try {
@@ -614,7 +647,7 @@ public class Simulator extends SDFTransformer {
      *  @exception IllegalActionException If the simulation process arguments
      *                           are invalid.
      */
-    private void _startSimulation() throws IllegalActionException {
+    protected void _startSimulation() throws IllegalActionException {
         //////////////////////////////////////////////////////////////        
         // Construct the argument list for the process builder
         List<String> com = new ArrayList<String>();
@@ -702,44 +735,8 @@ public class Simulator extends SDFTransformer {
         // New code since 2008-01-05
         // Send initial output token. See also domains/sdf/lib/SampleDelay.java
         _readFromServer();
-        double[] dblRea = server.getDoubleArray();
-        final int serFla = server.getClientFlag();
-        if (serFla != 0) {
-            String em = "Actor " + this.getFullName() + ": " + LS
-                    + "When trying to read from server, at time "
-                    + getDirector().getModelTime().getDoubleValue() + ", "
-                    + "client sent flag " + server.getClientFlag() + "," + LS;
-            // Add specifics of error message.
-            switch (serFla) {
-            case 1:
-                em += "which indicates that it reached the end of its simulation."
-                        + LS
-                        + "This should not happen during the initialization of this actor.";
-                break;
-            case -10:
-                em += "which indicates a problem in the client during its initialization.";
-                break;
-            case -20:
-                em += "which indicates a problem in the client during its time integration.";
-                break;
-            default: // used for -1 and other (undefined) flags
-                em += "which indicates a problem in the client.";
-                break;
-            }
-            throw new IllegalActionException(em);
-        }
-        // Check for null to avoid a NullPointerException
-        if (dblRea == null) {
-            final String em = "Actor "
-                    + this.getFullName()
-                    + ": "
-                    + LS
-                    + "When trying to read from server, obtained 'null' at time "
-                    + getDirector().getModelTime().getDoubleValue();
-            throw new IllegalActionException(em);
-        }
-        outTok = new DoubleMatrixToken(dblRea, dblRea.length, 1);
-        output.send(0, outTok);
+        
+        _outputInitToken();
     }
 
     /** Closes sockets and shuts down the simulator.
@@ -787,7 +784,7 @@ public class Simulator extends SDFTransformer {
      * @return the double[] array with the elements of the Token
      * @exception IllegalActionException If the base class throws it.
      */
-    private double[] _getDoubleArray(ptolemy.data.Token t)
+    protected double[] _getDoubleArray(ptolemy.data.Token t)
             throws IllegalActionException {
         final DoubleMatrixToken arrTok = (DoubleMatrixToken) t;
         final int n = arrTok.getRowCount();
@@ -881,19 +878,21 @@ public class Simulator extends SDFTransformer {
      */
     protected boolean isHeadless;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-    /** Flag that is true during the first firing of this actor */
-    private boolean firstFire;
+    /** Flag that is true during the first firing of this actor/. */
+    protected boolean firstFire;
 
-    /** System dependent line separator */
-    private final static String LS = System.getProperty("line.separator");
-
+    /** System dependent line separator. */
+    protected final static String LS = System.getProperty("line.separator");
+    
     /** Time of token that will be written to the client.
 
         This is equal to the Ptolemy time minus one time step, because at time t_k,
         a client gets the output of other clients at t_{k-1}, which allows the client to
         compute the states and outputs at t_k
     */
-    private double tokTim;
+    protected double tokTim;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
 }

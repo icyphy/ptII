@@ -5,10 +5,8 @@ expression is already correct.
 ---)----------------------------------
 
 --- Identifiers for variable 
-fmod PTOLEMY-ID is
-  protecting QID .
+fmod PTOLEMY-ID is protecting QID .
   sort VarId .
-  subsort Qid < VarId .
 endfm
 
 --- Values of Ptolemy expression
@@ -16,9 +14,7 @@ endfm
 --- In this module, basic and structured values are defined
 fmod PTOLEMY-VALUE is
   protecting CONVERSION .
-  protecting RAT .
-  protecting FLOAT .
-  protecting STRING .
+  protecting RAT + FLOAT + STRING .
   protecting PTOLEMY-ID .
 
   --- basic values one of rational number, float point number, and boolean.
@@ -83,12 +79,6 @@ fmod PTOLEMY-EXP is
   sort ProperExp .
   subsort VarId < ProperExp < Exp . --- variable is not a value
 
-  --- function definition (closure). closure is also value
-  --- FIXME: free variables in exp is ignored. Usually,
-  ---  variable environments are closed together, but in Ptolemy,
-  ---  it is complicated because of ancestors' environments
-  op function(_)_ : VarIdList Exp -> Value .	
-
 --- binary operators
   sort BinaryOp .
   op ___ : Exp BinaryOp Exp -> ProperExp .
@@ -110,6 +100,9 @@ fmod PTOLEMY-EXP is
   --- explist contains arguments for a function
   op _(_) : Exp ExpList -> ProperExp [prec 10] .   --- function/array/matrix app
   op _.._(_) : Exp VarId ExpList -> ProperExp [prec 12] .   --- method call
+
+--- function definition (FIXME: () is not VaIdList) 
+  op function(_)_ : VarIdList Exp -> ProperExp .	
 
 --- data types
   op {_} : ExpList -> Exp .		   --- array
@@ -168,59 +161,129 @@ fmod PTOLEMY-EXP is
   op _;_ : ProperMatrix Matrix -> ProperMatrix [ditto] .
 endfm
 
---- K-computation of ptolemy expression.
---- Basic definition for continuation-passing style
---- semantics of Ptolemy Expression
+fmod PTOLEMY-ASSIGNMAP is
+  protecting PTOLEMY-EXP .
+
+--- exp assignment
+  sort VarAssignment .
+  op _|->_ : VarId Exp -> VarAssignment [ctor prec 80] .
+
+  sort AssignMap .    --- set of variable assignments
+  subsort VarAssignment < AssignMap .
+  op emptyMap : -> AssignMap [ctor] .
+  op _;_ : AssignMap AssignMap -> AssignMap
+        [ctor assoc comm id: emptyMap prec 90] .
+
+--- value assignment
+  sort ValueAssignment .
+  subsort ValueAssignment < VarAssignment .
+  op _|->_ : VarId Value -> ValueAssignment [ctor ditto] .
+
+  sort ValueMap .
+  subsort ValueAssignment < ValueMap < AssignMap .
+  op emptyMap : -> ValueMap [ctor] .
+  op _;_ : ValueMap ValueMap -> ValueMap [ctor ditto] .
+
+--- check membership
+  op _in_ : VarId AssignMap ~> Bool .
+  eq I in (I |-> E1 ; AM) = true .
+  eq I in AM = false [owise] .
+
+--- adding new item
+  op _[_] : AssignMap VarAssignment -> AssignMap .
+
+  var AM : AssignMap . vars E1 E2 : Exp . var I : VarId .
+
+  eq ((I |-> E1) ; AM) [I |-> E2] = (I |-> E2) ; AM .
+  eq AM [I |-> E1] = AM ; (I |-> E1) [owise] .
+endfm
+
+---------------------------------
+--- Closure and Free Variables
+---------------------------------
+
+fmod PTOLEMY-FUNCTION-CLOSURE is
+  protecting PTOLEMY-EXP .
+  protecting PTOLEMY-ASSIGNMAP .
+
+--- function closure : all free variables in exp are included in value map
+  op closure : VarIdList ValueMap Exp -> Value .
+
+--- lifted function 
+  op func(_|_)_ : VarIdList VarIdSet Exp -> ProperExp .	
+
+  eq function(VIL) E1 = func(VIL | #FV(E1) \\ VIL) E1 .
+
+--- var id set
+  sort VarIdSet .
+  subsort VarId < VarIdSet .
+  op empty : -> VarIdSet [ctor] .
+  op _;;_ : VarIdSet VarIdSet -> VarIdSet [ctor comm assoc id: empty] .
+  eq VI ;; VI = VI .
+
+--- var id set minus
+  op _\_ : VarIdSet VarIdSet -> VarIdSet .
+  eq (VI ;; VIS) \ (VI ;; VIS') = VIS \ VIS' .
+  eq VIS \ VIS' = VIS [owise] .
+
+  var VI : VarId . vars VIS VIS' : VarIdSet .  vars VIL VIL' : VarIdList . 
+  var V : Value .  vars E1 E2 E3 : Exp . 
+  var EL : ExpList . var ER : ExpRow . var EM : Matrix .
+  var UO : UnaryOp . var BO : BinaryOp .
+
+--- var id set minus var id list
+--- NOTE: () is not VarIdList 
+  op _\\_ : VarIdSet VarIdList -> VarIdSet .
+  eq (VI ;; VIS) \\ (VI, VIL) = VIS \\ VIL .
+  eq VIS \\ (VI, VIL) = VIS \\ VIL [owise] .
+  eq (VI ;; VIS) \\ VI = VIS .
+  eq VIS \\ VI = VIS [owise] .
+  eq VIS \\ () = VIS .
+
+--- auxiliary function : get a list of free variable
+  op #FV : Exp -> VarIdSet .
+  eq #FV(V) = empty .
+  eq #FV(VI) = VI .
+  eq #FV(E1 BO E2) = #FV(E1) ;; #FV(E2) .
+  eq #FV(UO E1) = #FV(E1) .
+  eq #FV(E1 ? E2 : E3) = #FV(E1) ;; #FV(E2) ;; #FV(E3) .
+  eq #FV(E1(EL)) = #FV(E1) ;; #FV(EL) .
+  eq #FV(E1 .. VI(EL)) = #FV(E1) ;; #FV(EL) .
+  eq #FV(function(VIL) E1) = #FV(E1) \ #FV(VIL) .
+  eq #FV({EL}) = #FV(EL) .
+  eq #FV({VI <- E1, ER}) = #FV(E1) ;; #FV({ER}) .
+  eq #FV({{}}) = empty .
+  eq #FV([EL ; EM]) = #FV(EL) ;; #FV([EM]) .
+  eq #FV([Z]) = empty .
+
+  op #FV : ExpList -> VarIdSet .
+  eq #FV((E1, EL)) = #FV(E1) ;; #FV(EL) .
+  eq #FV(()) = empty .
+endfm
+
+--- simple K-computation definition
 fmod K-COMPUTATION is
-  sort K KLabel KResult KProper .
-  subsort KLabel KResult KProper < K .
+  protecting PTOLEMY-ASSIGNMAP .
+
+--- K configuration
+  sorts KItem KConfig .
+  subsort KItem < KConfig .
+  op empty : -> KConfig [ctor] .
+  op __ : KConfig KConfig -> KConfig [ctor comm assoc id: empty] .
+
+--- K computation
+  op k : K -> KItem [ctor] .
+
+  sort KLabel .
+  sorts K KProper KResult .
+  subsorts KLabel KProper KResult < K .
 
   op .K : -> K .
   op _->_ : K K -> K [prec 50 assoc id: .K] .
   op _->_ : KProper K -> KProper [ditto] .
 
-  sort Computation .
-  op k : K -> KResult .
-endfm
-
---- A Ptolemy Exp environment is a map from
---- variable id to value (ValueMap).  Also, extended version
---- of ValueMap is defined for a later use.
-fmod EXP-ENVIRONMENT is
-  protecting PTOLEMY-EXP .
-
-  sort VarAssignment ValueAssignment .
-  subsort ValueAssignment < VarAssignment .
-  op _|->_ : VarId Exp -> VarAssignment [ctor prec 80] .
-  op _|->_ : VarId Value -> ValueAssignment [ditto] .
-
-  sort AssignMap ValueMap .    --- set of variable assignments
-  subsort ValueAssignment < VarAssignment ValueMap < AssignMap .
-  op emptyMap : -> ValueMap [ctor] .
-  op _;_ : AssignMap AssignMap -> AssignMap 
-	[ctor assoc comm id: emptyMap prec 90] .
-  op _;_ : ValueMap ValueMap -> ValueMap [ditto] .
-
-  vars V V' : Value .  var VL : ValueList .  
-  var I : VarId . var IL : VarIdList . 
-  vars VM VM' : ValueMap . vars AM1 AM2 : AssignMap .  vars E1 E2 : Exp .
-
-  --- Extended notion of mapping.
-  --- "I1, I2, I3, ... In |-> E1, E2, ..., En" is equivalent to
-  --- "I1 |-> E1 ; ... ; In |-> En"
-  op _|->_ : VarIdList ValueList -> ValueMap [ditto] .
-  eq (I, IL) |-> (V, VL) = (I |-> V) ; (IL |-> VL) .
-  eq () |-> VL = emptyMap .
-
-  --- check that a variable with a varId is defined in Memory
-  op _in_ : VarId ValueMap -> Bool .
-  eq I in ((I |-> V) ; VM) = true .
-  eq I in VM = false [owise] .
-
-  --- overwrite a value map
-  op _<+_ : ValueMap ValueMap -> ValueMap .
-  eq ((I |-> V) ; VM) <+ ((I |-> V') ; VM') = ((I |-> V) ; VM) <+ VM' .
-  eq VM <+ VM' = VM ; VM' [owise] .
+--- K env
+  op env : ValueMap -> KItem [ctor] .
 endfm
 
 --- Heating and Cooling of Ptolemy expression.
@@ -230,6 +293,7 @@ endfm
 fmod PTOLEMY-STRICTNESS is
   protecting K-COMPUTATION .
   protecting PTOLEMY-EXP .
+  protecting PTOLEMY-FUNCTION-CLOSURE .
 
   subsort Value < KResult .
   subsort ProperExp < KProper .
@@ -238,9 +302,8 @@ fmod PTOLEMY-STRICTNESS is
   var K : K .  var I : VarId .  var Bop : BinaryOp . var Uop : UnaryOp .
   var E1 E2 : Exp .  var P1 P2 : ProperExp .  var V1 V2 : Value .
   var EL EL' : ExpList . var ER : ExpRow . var EM EM' : Matrix .
-  var PL : ProperExpList . var VL : ValueList .
-
-  eq k(V1) = V1 .
+  var PL : ProperExpList . var VL : ValueList . var VM : ValueMap .
+  var VIL : VarIdList . var VIS : VarIdSet . var VR : ValueRow .
 
 --- binary and unary ops
   op []__ : BinaryOp Exp -> KProper .
@@ -264,21 +327,35 @@ fmod PTOLEMY-STRICTNESS is
 --- conditional expression
   op []?_:_ : Exp Exp -> KProper .
 
-  eq k(     P1 ? E1 : E2 -> K)
-   = k(P1 -> []? E1 : E2 -> K) .
-  eq k(V1 -> []? E1 : E2 -> K)
-   = k(     V1 ? E1 : E2 -> K) .
+  eq k(     (P1 ? E1 : E2) -> K)
+   = k(P1 -> ([]? E1 : E2) -> K) .
+  eq k(V1 -> ([]? E1 : E2) -> K)
+   = k(     (V1 ? E1 : E2) -> K) .
+
+--- function definition : construct closure
+  op @closing : -> KLabel [ctor] .
+
+  eq k(                    func(VIL | VIS) E1 -> K)
+   = k({{}} -> @closing -> func(VIL | VIS) E1 -> K) .
+
+  eq k({VR} ->         @closing -> func(VIL | I ;; VIS) E1 -> K)
+   = k({I <- I, VR} -> @closing -> func(VIL | VIS) E1      -> K) .
+  eq k({VR}         -> @closing -> func(VIL | empty) E1    -> K)
+   = k({VR}         -> @closing -> closure(VIL, emptyMap, E1)    -> K) .
+
+  eq k({I <- V1, VR} -> @closing -> closure(VIL, VM, E1)              -> K) 
+   = k({VR} ->          @closing -> closure(VIL, (I |-> V1 ; VM), E1) -> K) .
+  eq k({{}} -> @closing -> closure(VIL, VM, E1) -> K)
+   = k(closure(VIL, VM, E1) -> K) .
 
 --- function expression
   op _(_[]_) : Exp ExpList ExpList -> KProper .  
   op [](_) : ExpList -> KProper .
 
-  --- FIXME: free variable of function clousre should be heated?!
-
   eq k(      P1(EL) -> K)
    = k(P1 -> [](EL) -> K) .
-  eq k(V1 -> [](E1) -> K)
-   = k(      V1(E1) -> K) .
+  eq k(V1 -> [](EL) -> K)
+   = k(      V1(EL) -> K) .
   eq k(    E1(EL, P2, EL') -> K)
    = k(P2 -> E1(EL [] EL') -> K) .
   eq k(V1 -> E1(EL [] EL') -> K)
@@ -319,13 +396,43 @@ fmod PTOLEMY-STRICTNESS is
 endfm
 
 --- Computation of each expression.
-fmod PTOLEMY-EXP-DEFINITION is
-  inc PTOLEMY-EXP .
+fmod PTOLEMY-EXP-SEMANTICS is
+  inc PTOLEMY-STRICTNESS .
 
-  var I : VarId . vars V1 V2 : Value .  vars E E1 E2 : Exp . 
+  var I : VarId . var IL : VarIdList .
+  vars V1 V2 : Value .  vars E E1 E2 : Exp . 
+  vars VL VL' : ValueList .  
   var N1 N2 : Nat . vars R1 R2 : Rat . vars F1 F2 : Float . vars B1 B2 : Bool .
   vars EL : ExpList . var ER : ExpRow . var EM : Matrix .
   var FNV : FiniteNumber .
+  var K : K . vars VM VM' : ValueMap .
+
+-----------------------------
+--- variables
+-----------------------------
+
+  eq k(I  -> K) env(I |-> V1 ; VM)
+   = k(V1 -> K) env(I |-> V1 ; VM) .
+
+-----------------------------
+--- function call (closure)
+-----------------------------
+
+  op @restore : ValueMap -> KLabel [ctor] .
+  op @bind : VarIdList ValueList -> KLabel [ctor] .
+
+  eq k(closure(IL,VM,E1)(VL) -> K) env(VM')
+   = k(@bind(IL,VL) -> E1 -> @restore(VM') -> K) env(VM) .
+
+  eq k(@bind((I, IL), (V1, VL)) -> K) env(VM)
+   = k(@bind(IL,VL)             -> K) env(VM[I |-> V1]) .
+  eq k(@bind(I, V1) -> K) env(VM)
+   = k(                K) env(VM[I |-> V1]) .	--- FIXME: () is not IL
+  eq k(@bind((),()) -> K) env(VM)
+   = k(                K) env(VM) .
+
+  eq k(V1 -> @restore(VM') -> K) env(VM)
+   = k(V1                  -> K) env(VM') .
 
 -----------------------------
 --- comparison operators
@@ -419,10 +526,11 @@ fmod PTOLEMY-EXP-DEFINITION is
   eq #(false) ? E1 : E2 = E2 .
 
 -----------------------------
---- function expression
+--- default functions
 -----------------------------
-  
+
   --- default functions 
+  subsort Qid < VarId .
 
   ---FIXME : 'sin is not a value. closure?
   --- defined as base library

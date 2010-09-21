@@ -6,82 +6,59 @@ $index |-> $value/**/
 
 /***semantics_Pulse***/
 (tomod PULSE is
-  inc ACTOR .
+  inc ATOMIC-ACTOR .
 
   class Pulse | current-index : Nat .
-    subclass Pulse < Actor .
-  eq ^ Pulse = Actor .
+    subclass Pulse < AtomicActor .
+  eq ^ Pulse = AtomicActor .
 
-  var O : Oid . var REST : ObjectConfiguration .
-  var PORTS : Configuration .  vars PI PI' : PortId .
-  var AM : AssignMap . var MEM : Memory .
-  var VI VV : Value . var EI EV : Exp .
-  var V V' : Value . var VL VL' : ValueList .
-  vars N : Nat .
+---------------------------------------------------------------------
+--- Variable Declaration
+---------------------------------------------------------------------
+
+  vars PORTS PARAMS : Configuration . var REST : ObjectConfiguration .
+  var O : Oid . vars N : Nat .
+  var VI VV : Value . var V V' : Value . var VL VL' : ValueList .
+  
   
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
-  --- set each status of ports to 'unknown'
-  eq prefire(Pulse, 
-    < O : Pulse | 
-      parameters : ('indexes |-> EI ; 'values |-> EV ; AM)
-    >) 
-   = prefire(^ Pulse, 
-    < O : Pulse | 
-      store : 'indexes |-> k(EI) ; 'values |-> k(EV)
-    >) .
+*** 0] init
+
+*** 1] prefire
+
+*** 2] portFixPoints 
 
   eq portFixPoints(
-     < O : Pulse |
-       status : enabled,
-       ports :
-         < PI : InPort | status : absent >
-         < PI' : OutPort | status : unknown >
-         PORTS
-     > REST)
+      < O : Pulse |
+         status : enabled,
+         current-index : N,
+         parameters : < 'indexes : Parameter | value : VI >
+                      < 'values : Parameter | value : VV > PARAMS, 
+         ports : < 'trigger : InPort | status : present >
+                 < 'output : OutPort | status : unknown > PORTS > 
+      REST)
    = portFixPoints(
-     < O : Pulse |
-       ports :
-         < PI : InPort | >
-         < PI' : OutPort | status : absent >
-         PORTS
-     > REST) .
-
-  eq portFixPoints(
-     < O : Pulse |
-       status : enabled,
-       current-index : N,
-       store : ('indexes |-> VI ; 'values |-> VV ; MEM),
-       ports :
-         < PI : InPort | status : present >
-         < PI' : OutPort | status : unknown >
-         PORTS
-     > REST)
-   = portFixPoints(
-     < O : Pulse |
-       ports :
-         < PI : InPort | >
-         < PI' : OutPort | status : present, 
-                           value : cMap(VI, VV, N) >
-         PORTS
-     > REST) .
+      < O : Pulse |
+         ports : < 'trigger : InPort | > 
+                 < 'output : OutPort | status : present, value : cMap(VI, VV, N) > PORTS > 
+      REST) .
      
   op cMap : Value Value Nat -> Value .
   eq cMap({V, VL}, {V', VL'}, N)
-   = if (V equals # N) == # true then V' 
-     else cMap({VL},{VL'},N) fi .
+   = if (V equals # N) == # true then V' else cMap({VL},{VL'},N) fi .
   eq cMap({()}, {VL}, N) = # 0 .
 
+*** 3] postfire
+
   eq postfire(Pulse,
-    < O : Pulse |
-      current-index : N ,
-      ports : < PI : InPort | status : present > PORTS
-    >)
-  = postfire(^ Pulse,
-    < O : Pulse |
-      current-index : s(N)
-    >) .
+      < O : Pulse | current-index : N ,
+                    ports : < 'trigger : InPort | status : present > PORTS >)
+  = 
+     postfire(Actor,
+      < O : Pulse | current-index : s(N)>) .
+      
 endtom)
 /**/

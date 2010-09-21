@@ -211,6 +211,14 @@ public class RelationWidthChanges implements MoMLFilter {
                             .isLessThan(new VersionAttribute("7.2.devel"));
                 } catch (IllegalActionException e) {
                 }
+            } else {
+                // If there is no _createdBy attribute, then this might be a 
+                // copy and paste, in which case we assume we are copying
+                // from the current version.  Note that this might not
+                // be always be true, but it is more likely that we are copying
+                // from a version recent version than a pre 7.2.devel version.
+                // See http://bugzilla.ecoinformatics.org/show_bug.cgi?id=4804
+                return false;
             }
         }
         return true;

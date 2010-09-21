@@ -6,13 +6,17 @@ transitions : ($indent( $info(transitions) ))/**/
 /***semantics_FSMActor***/
 (tomod FSM-ACTOR is 
   inc ACTOR .
-  pr PORTS .
 
   class FSM-Actor | currState : Location, 
                     initState : Location,
                     transitions : TransitionSet .
     subclass FSM-Actor < Actor .
   eq ^ FSM-Actor = Actor .
+
+  --- stable FSM-Actor
+  mb (< O : FSM-Actor | 
+         ports : SPORTS:StableConfiguration,
+         parameters : SPARAMS:StableConfiguration >) : StableObject .
 
   --- Location is a name of a state
   sort Location .
@@ -23,7 +27,8 @@ transitions : ($indent( $info(transitions) ))/**/
   
   sort Transition TransitionSet .
   subsort Transition < TransitionSet .
-  op _:_-->_`{_`} : TransitionId Location Location TransBody -> Transition [ctor] .
+  op _:_-->_`{_`} : TransitionId Location Location TransBody 
+                                                    -> Transition [ctor] .
   op emptyTransitionSet : -> TransitionSet [ctor] .
   op _;_ : TransitionSet TransitionSet -> TransitionSet
                                [ctor assoc comm id: emptyTransitionSet] .
@@ -32,191 +37,196 @@ transitions : ($indent( $info(transitions) ))/**/
   sort TransBody .
   op guard:_output:_set:_ : Exp AssignMap AssignMap -> TransBody [ctor] .
 
-----------------------
+  --- exp assignment
+  sorts VarAssignment AssignMap .
+  subsorts VarAssignment < AssignMap .
+  op _|->_ : VarId Exp -> VarAssignment [ctor prec 80] .
+  op emptyMap : -> AssignMap [ctor] .
+  op _;_ : AssignMap AssignMap -> AssignMap 
+            [ctor assoc comm id: emptyMap prec 90] .
 
-  vars CF PORTS PORTS' : Configuration .  vars O O' QUE : Oid .
+---------------------------------------------------------------------
+--- Variable Declaration
+---------------------------------------------------------------------
+
+  vars CF PORTS PORTS' PARAMS : Configuration .  
   vars REST : ObjectConfiguration .
-  vars PI PI' : PortId .  var PS : PortStatus .
-  vars L STATE STATE' STATE'' : Location . var TI : TransitionId .
-  var VM : ValueMap .  var AM OL AL VAL : AssignMap .
-  var MEM MEM' : Memory . var CP : Computation .
-  var VA : ValueAssignment .  var BODY : TransBody .
-  var VI : VarId . vars V : Value .  var VM : ValueMap .
-  var TRANSSET : TransitionSet .  vars E TG : Exp .
+  vars O O' QUE : Oid . var RI : ParamId . vars PI PI' : PortId .
+
+  var TRANSSET : TransitionSet . var BODY : TransBody . var TI : TransitionId .
+  vars L STATE STATE' STATE'' : Location . 
+  vars E TG : Exp . var OL AL : AssignMap .
+
+  var VI : VarId . vars V : Value . var VREC : ValueRow .
+  var ENV : EnvMap .
 
 ---------------------------------------------------------------------
 --- Semantics Steps
 ---------------------------------------------------------------------
 
+*** 0] init
+
+*** 1] prefire
+
+*** 2] portFixPoints
+
+  --- ASSUME: FSM actor has at least one output port.
+
+----- A] compute guards -----
   --- set to calculate the guards of transitions from the current state
-  eq prefire(FSM-Actor, 
-    < O : FSM-Actor | 
-      store : MEM,
-      currState : STATE,
-      transitions : TRANSSET
-    >)
-   = prefire(^ FSM-Actor, 
-    < O : FSM-Actor | 
-      store : evalGuards(STATE, TRANSSET) ; MEM
-    >) .
-
-  op @guard : TransitionId -> MemoryId . 
-  op evalGuards : Location TransitionSet -> Memory .
-
-  eq evalGuards(STATE, 
-        (TI : STATE --> STATE' {guard: TG output: OL set: AL}) ; TRANSSET)
-   = @guard(TI) |-> k(TG) ; evalGuards(STATE, TRANSSET) .
-  eq evalGuards(STATE, TRANSSET) = emptyMap [owise] .
-
---- During fix-computation of FSM-actor, several informations,
---- such as guard and next state, will be stored to the memory
---- Such information will be written to the actor during executeStep
-
-  op @next : Location -> MemoryItem .        --- next state
-  op @out : PortId -> MemoryId .            --- output(port) result
-  op @set : VarId -> MemoryId .            --- set(variable) result
-
-  --- Take and compute a transition whose guard condition is true
-  ---FIXME: Order conflict
-  ---        Down & Up of CompositeActor should be computed first
-  ---FIXME: only one transition should be possible
+  --- we set to compute ALL guards here.
   eq portFixPoints(
-    < O : FSM-Actor | 
-      status : enabled,
-      ports : < PI : InPort | status : present > PORTS,       
-      store : @guard(TI) |-> # true ; MEM,
-      transitions : (
+      < O : FSM-Actor | 
+         status : enabled,
+         currState : STATE, 
+         transitions : TRANSSET,
+         parameters : PARAMS,
+         ports : < PI : InPort | status : present > 
+                 < PI' : OutPort | status : unknown > PORTS,
+         computation : noComputation > 
+      REST)
+  = 
+     portFixPoints(
+      < O : FSM-Actor | 
+         computation : #guards / k({guardExps(STATE, TRANSSET)}) 
+                            portParamEnv(< PI : InPort | > PORTS, PARAMS) >
+      REST) .
+
+  op #guards : -> ComputationID [ctor] .
+  op @guard : TransitionId -> VarId [ctor] .
+
+  op guardExps : Location TransitionSet ~> ExpRow .
+  eq guardExps(STATE, 
         (TI : STATE --> STATE' {guard: TG output: OL set: AL}) ; TRANSSET)
-    > REST) 
-  =  portFixPoints(
-    < O : FSM-Actor |
-      ports : < PI : InPort | > PORTS,
-      store : @next(STATE') ; evalOut(OL) ; evalSet(AL) ; clearGuards(MEM)
-    > REST) .
-    
+   = @guard(TI) <- TG, guardExps(STATE, TRANSSET) .
+  eq guardExps(STATE, TRANSSET) = {} [owise] .
+
+----- B-1] Take a transition -----
+  --- Take a transition and compute its outputs,
+  --- if only one guard condition is true
+  ceq portFixPoints(
+       < O : FSM-Actor |
+          ports : PORTS,
+          computation : #guards / k({@guard(TI) <- # true, VREC}) env(ENV),
+          transitions : (TI : STATE --> STATE' 
+                         {guard: TG output: OL set: AL}) ; TRANSSET > 
+       REST)
+  = 
+      portFixPoints(
+       < O : FSM-Actor |
+          ports : updateOutPorts(OL, PORTS),
+          computation : noComputation > 
+       REST)
+   if noGuardExpTrue(VREC) .
+
+  op noGuardExpTrue : ValueRow ~> Bool .
+  eq noGuardExpTrue((@guard(TI) <- # true, VREC)) = false .
+  eq noGuardExpTrue(VREC) = true [owise] .
+
+  op updateOutPorts : AssignMap Configuration ~> Configuration .
+  eq updateOutPorts(VI |-> E ; OL, < VI : OutPort | status : unknown > PORTS)
+   = updateOutPorts(OL, < VI : OutPort | status : present, value : E > PORTS) .
+  eq updateOutPorts(OL, PORTS) = setUnknownOutPortsAbsent(PORTS) [owise] .
+
+----- B-2] no transition -----
   --- if no transition is applicable, set every outport absent.
   ceq portFixPoints(
-    < O : FSM-Actor |
-      status : enabled,
-      ports : < PI : InPort | status : present > PORTS,      
-      store : @guard(TI) |-> # false ; MEM
-    > REST)
-  =  portFixPoints(
-    < O : FSM-Actor |
-      ports : < PI : InPort | > setUnknownOutPortsAbsent(PORTS),      
-      store : clearGuards(MEM)
-    > REST)
-   if allGuardsFalse(MEM) .
-   
-  --- if every input port is absent, set every output absent as well.
+       < O : FSM-Actor |
+          ports :  PORTS,
+          computation : #guards / k({VREC}) env(ENV) >
+       REST)
+  =  
+      portFixPoints(
+       < O : FSM-Actor |
+          ports : setUnknownOutPortsAbsent(PORTS),
+          computation : noComputation >
+       REST)
+   if noGuardExpTrue(VREC) .
+
+----- B-3] no input
+  --- if all input ports in FSM actors are absent, 
+  --- then every unknown out port is absent.
+  --- NOTE: FSMActor is *not* atomic in Ptolemy II.
   ceq portFixPoints(
-    < O : FSM-Actor |
-      status : enabled,
-      ports : < PI : InPort | status : absent > 
-              < PI : OutPort | status : unknown > PORTS
-    > REST)
-  =  portFixPoints(
-    < O : FSM-Actor |
-      ports : < PI : InPort | > 
-              < PI : OutPort | status : absent > 
-              setUnknownOutPortsAbsent(PORTS)    
-    > REST)
-   if allInputPortsAbsent(PORTS) .
-   
-  op setUnknownOutPortsAbsent : Configuration -> Configuration .
-  eq setUnknownOutPortsAbsent(< PI : OutPort | status : unknown > PORTS)
-   = < PI : OutPort | status : absent > setUnknownOutPortsAbsent(PORTS) .
-  eq setUnknownOutPortsAbsent(PORTS) = PORTS [owise] .
-  
-  op allInputPortsAbsent : Configuration -> Bool .
-  eq allInputPortsAbsent(< PI : OutPort | status : absent > PORTS) = true .
-  eq allInputPortsAbsent(PORTS) = false [owise] .
-  
-  op allGuardsFalse : Memory -> Bool .
-  ceq allGuardsFalse(@guard(TI) |-> KR:KResult ; MEM) = false
-   if KR:KResult =/= # false .
-  eq allGuardsFalse(MEM) = true [owise] .
+       < O : FSM-Actor | 
+          ports : < PI' : InPort | status : absent >
+                  < PI : OutPort | status : unknown > PORTS > 
+       REST)
+  =
+      portFixPoints(
+       < O : FSM-Actor |
+          ports : < PI' : InPort | status : absent >
+                  < PI : OutPort | status : absent >
+                  setUnknownOutPortsAbsent(PORTS) > 
+       REST)
+   if allInputPortsAbsent?(PORTS) .
 
-  op clearGuards : Memory -> Memory .
-  eq clearGuards(@guard(TI) |-> KR:KResult ; MEM) = clearGuards(MEM) .
-  eq clearGuards(MEM) = MEM [owise] .
 
-  op evalOut : AssignMap -> Memory .
-  eq evalOut((VI |-> E) ; AM) = @out(VI) |-> k(E) ; evalOut(AM) .
-  eq evalOut(emptyMap) = emptyMap .
-
-  op evalSet : AssignMap -> Memory .
-  eq evalSet((VI |-> E) ; AM) = @set(VI) |-> k(E) ; evalOut(AM) .
-  eq evalSet(emptyMap) = emptyMap .
-
-  --- write output result of transition to ports
-  eq portFixPoints(
-    < O : FSM-Actor | 
-      ports : 
-        < PI' : InPort | status : present >  
-        < PI : OutPort | > PORTS,
-      store : @out(PI) |-> V ; MEM 
-    >
-    REST)
-   = portFixPoints(
-    < O : FSM-Actor | 
-      ports : 
-        < PI' : InPort | > 
-        < PI : OutPort | status : present, value : V >
-        if noOutValue(MEM) then setUnknownOutPortsAbsent(PORTS) else PORTS fi,
-      store : MEM 
-    >
-    REST) .
-    
-  --- if there is no output action, but a transition taken.
-  ceq portFixPoints(
-    < O : FSM-Actor |
-      ports : < PI' : InPort | status : present >
-              < PI : OutPort | status : unknown >
-      		 PORTS,
-      store : @next(STATE') ; MEM
-    >
-    REST)
-   = portFixPoints(
-    < O : FSM-Actor |
-      ports : < PI' : InPort | >
-              < PI : OutPort | status : absent >
-              setUnknownOutPortsAbsent(PORTS),
-      store : @next(STATE') ; MEM
-    >
-    REST) 
-   if noOutValue(MEM) .
-    
-  op noOutValue : Memory -> Bool .
-  eq noOutValue(@out(PI) |-> V ; MEM) = false .
-  eq noOutValue(MEM) = true [owise] .
+*** 2] postfire
 
   *** FSM-Actor does NOT generate events in our first version, only changes
   *** the internal state/valuation as a result of applying one transition ...
 
-  --- computation result of states and variables is written
+  --- compute guards again, if there is a present port.
   eq postfire(FSM-Actor,
-    < O : FSM-Actor | 
-      status : enabled,
-      ports : < PI' : InPort | status : present > PORTS, 
-      parameters : VAL, 
-      currState : STATE,
-      store : MEM
-    >)
-  =  postfire(^ FSM-Actor,
-    < O : FSM-Actor | 
-      parameters : updateVars(VAL, MEM), 
-      currState : updateState(STATE, MEM)
-    >) .
-    
-  op updateVars : AssignMap Memory -> AssignMap .
-  eq updateVars((VI |-> E) ; AM, (@set(VI) |-> V) ; MEM)
-   = (VI |-> V) ; updateVars(AM, MEM) .
-  eq updateVars(AM, MEM) = AM [owise] .
+      < O : FSM-Actor | 
+         status : enabled,
+         currState : STATE, 
+         transitions : TRANSSET,
+         parameters : PARAMS,
+         ports : < PI : InPort | status : present > PORTS,
+         computation : noComputation >)
+  = 
+     postfire(FSM-Actor,
+      < O : FSM-Actor | 
+         computation : #guards / k({guardExps(STATE,TRANSSET)}) 
+                            portParamEnv(< PI : InPort | > PORTS, PARAMS) >) .
 
-  op updateState : Location Memory -> Location .
-  eq updateState(STATE, @next(STATE') ; MEM) = STATE' .
-  eq updateState(STATE, MEM) = STATE [owise] .
+  --- if only one guard is true, take the transition, compute its set actions,
+  --- and update the state.
+  ceq postfire(FSM-Actor,
+       < O : FSM-Actor |
+          parameters : PARAMS,
+          computation : #guards / k({@guard(TI) <- # true, VREC}) env(ENV),
+          transitions : (TI : STATE --> STATE' 
+                         {guard: TG output: OL set: AL}) ; TRANSSET >)
+  = 
+      postfire(Actor,
+       < O : FSM-Actor |
+          currState : STATE', 
+          parameters : setActions(AL, PARAMS),
+          computation : noComputation >)
+   if noGuardExpTrue(VREC) .
+
+  --- if no transition is applicable, just clear computation. 
+  ceq postfire(FSM-Actor, 
+        < O : FSM-Actor | computation : #guards / k({VREC}) env(ENV) >)
+  = 
+      postfire(Actor, < O : FSM-Actor | computation : noComputation >)
+   if noGuardExpTrue(VREC) .
+
+  --- NOTE: if all ports are absent, defalut postfire called 
+  ---       since there is no computation.
+
+  op setActions : AssignMap Configuration ~> Configuration .
+  eq setActions(VI |-> E ; AL, < VI : Parameter | > PARAMS) 
+   = < VI : Parameter | exp : E, status : invalid > setActions(AL, PARAMS) .
+  eq setActions(AL, PARAMS) = PARAMS [owise] .
+
+  ---------------------------------------------------------------------
+  --- Computation
+  ---------------------------------------------------------------------
+
+  op isPresent : PortId -> ProperExp [ctor] .   --- true if given port present
+
+  var DPS : DetPortStatus . var CI : ComputationID . var K : K .
+
+  eq < O : FSM-Actor |
+      ports : < PI : Port | status : DPS > PORTS,
+      computation : CI / k(isPresent(PI) -> K) env(ENV) > 
+  =
+   < O : FSM-Actor |
+      computation : CI / k(#(DPS == present) -> K) env(ENV) > .
 endtom)
 /**/
 
@@ -225,9 +235,10 @@ endtom)
   pr FSM-ACTOR .
   pr CHECK-ACTOR .
 
-  var CF : Configuration .  var O : Oid .   var L : Location . 
+  var CF : Configuration .  var O : Oid .   vars L L' : Location . 
 
-  op @_ : Location -> ActorPattern [ctor] .
-  eq {< O : FSM-Actor | currState : L > CF} |= O @ L = true .
+  op @_ : Location -> PropPattern [ctor] .
+  eq < O : FSM-Actor | currState : L > prop-query(O @ L') 
+   = < O : FSM-Actor | > prop-result(L == L') .
 endtom)
 /**/

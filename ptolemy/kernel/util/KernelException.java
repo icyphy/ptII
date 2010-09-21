@@ -457,11 +457,19 @@ public class KernelException extends Exception {
     // The detail message
     private String _message;
 
+
+    // Jianwu Wang writes:
+    // "When implementing remote execution interfaces, such as
+    // java.rmi.Remote, IllegalActionException and KernelException can
+    // not be thrown since the _object1 and _object2 variables in
+    // ptolemy.kernel.util.KernelException may not be realizable"
+    // The fix is to make them transient.
+
     // The first nameable, if any, that was passed in.
-    private Nameable _object1;
+    private transient Nameable _object1;
 
     // The second nameable, if any, that was passed in.
-    private Nameable _object2;
+    private transient Nameable _object2;
 
     // The cause of this exception.
     private Throwable _cause;

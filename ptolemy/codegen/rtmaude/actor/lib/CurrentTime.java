@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.rtmaude.actor.lib;
 
-import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// CurrentTime
@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class CurrentTime extends Entity {
+public class CurrentTime extends TypedAtomicActor {
     /**
      * Constructor method for the CurrentTime adapter.
      * @param component The associated CurrentTime actor

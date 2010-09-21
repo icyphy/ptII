@@ -153,7 +153,7 @@ public class Server {
             strBuf.append(" ");
         }
         // add line termination for parsing in client
-        strBuf.append("\n");
+        strBuf.append(System.getProperty("line.separator"));
         _write(strBuf);
     }
 
@@ -234,7 +234,7 @@ public class Server {
             Integer.parseInt(ele[4]);
             simTimRea = Double.parseDouble(ele[5]);
             dblVal = new double[nDbl];
-            // check sufficient array lenght
+            // check sufficient array length
             if (nDbl != dblVal.length) {
                 throw new IOException("Received " + nDbl
                         + " doubles, but expected " + dblVal.length

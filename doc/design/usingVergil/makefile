@@ -52,9 +52,10 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	index.htm \
 	index_frames.htm \
-	usingVergil.pdf
+        usingVergil.pdf
 
 EXTRA_SRCS = \
+	usingVergil.pdf \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't

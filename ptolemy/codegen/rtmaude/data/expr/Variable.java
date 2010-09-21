@@ -27,7 +27,10 @@
  */
 package ptolemy.codegen.rtmaude.data.expr;
 
+import java.util.List;
+
 import ptolemy.codegen.rtmaude.kernel.RTMaudeAdaptor;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 ////PropertyParameter
@@ -51,6 +54,19 @@ public class Variable extends RTMaudeAdaptor {
      */
     public Variable(ptolemy.data.expr.Variable component) {
         super(component);
+    }
+    
+    /* (non-Javadoc)
+     * @see ptolemy.codegen.rtmaude.kernel.Entity#getInfo(java.lang.String, java.util.List)
+     */
+    protected String getInfo(String name, List<String> parameters)
+            throws IllegalActionException {        
+        if (name.equals("evaluatedValue")) {
+            return this.getTranslatedExpression(
+                    ((ptolemy.data.expr.Variable) getComponent()).getValueAsString());
+        }
+ 
+        return super.getInfo(name, parameters);
     }
 
 }

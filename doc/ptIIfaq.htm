@@ -1022,10 +1022,29 @@ transform models.
 <p>The MoML dtd may be found at
   <a href="http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd" target="_top"><code>http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd</code></a></p>
 
-<p>In addition, MoML is registered as a MIME type, see
-  <a href="http://www.iana.org/assignments/media-types/model/vnd.moml+xml"><code>http://www.iana.org/assignments/media-types/model/vnd.moml+xml</code></a></p>
+<p> MoML files can have &lt;configure&gt ... &lt;configure&gt; tags in
+ them that are not part of the dtd and thus a validating parser may
+ fail.  One workaround is to remove the configure tags with a script
+ before validating, see <code>$PTII/ptolemy/moml/test/removeconfigure</code>.
 
 <p>To remove location information from a model, see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/moml/filter/RemoveGraphicalClasses.html" target="_top"><code>ptolemy/moml/filter/RemoveGraphicalClasses.java</code></a>.</p>
+
+<p>MoML files do not contain information about port direction and
+  such.  This is intentional because the actors are defined elsewhere in Java
+  or in other MoML files.  These definitions may be overridden
+  The easiest way to get all the information from a model is to parse
+  the xml file and then traverse the model in Java and write out
+  information of interest.  For example, see the
+  <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/kernel/CompositeEntity.html#deepEntityList()" target="_top"><code>ptolemy.kernel.CompositeEntity.deepEntityList()</code></a>
+  and
+    <a
+  href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/kernel/CompositeEntity.html#exportMoML(java.io.Writer, int, java.lang.String)" target="_top"><code>ptolemy.kernel.CompositeEntity.exportMoML()</code></a> methods.
+  There may be some code at
+ <a href="https://code.kepler-project.org/code/kepler/trunk/modules/moml2graphviz/" target="_top">https://code.kepler-project.org/code/kepler/trunk/modules/moml2graphviz/</a>
+  that is of interest.</p>
+
+  <p>In addition, MoML is registered as a MIME type, see
+<a href="http://www.iana.org/assignments/media-types/model/vnd.moml+xml"><code>http://www.iana.org/assignments/media-types/model/vnd.moml+xml</code></a></p>
 
 <dt> <a name="Scripting"><b>5.8 Is there a scripting interface to Ptolemy II ?</b></a>
 

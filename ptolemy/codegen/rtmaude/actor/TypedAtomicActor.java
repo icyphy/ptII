@@ -1,4 +1,4 @@
-/* RTMaude Code generator helper class for the Clock class.
+/* RTMaude Code generator helper for typed composite actor.
 
  Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
@@ -25,29 +25,29 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.rtmaude.actor.lib;
+package ptolemy.codegen.rtmaude.actor;
 
-import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
+import ptolemy.codegen.rtmaude.kernel.Entity;
 
 //////////////////////////////////////////////////////////////////////////
-//// Clock
+////TypedAtomicActor
 
 /**
- * Generate RTMaude code for a Clock actor in DE domain.
+ * Generate RTMaude code for a typed atomic actor.
  *
- * @see ptolemy.actor.lib.Clock
+ * @see ptolemy.actor.TypedAtomicActor
  * @author Kyungmin Bae
- * @version $Id$
  * @since Ptolemy II 8.0
+ * @version $Id$
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class Clock extends TypedAtomicActor {
-    /**
-     * Constructor method for the Clock adapter.
-     * @param component The associated Clock actor
+public class TypedAtomicActor extends Entity {
+    /** Construct the code generator helper associated
+     *  with the given TypedAtomicActor.
+     *  @param component The associated TypedCompositeActor.
      */
-    public Clock(ptolemy.actor.lib.Clock component) {
+    public TypedAtomicActor(ptolemy.actor.TypedAtomicActor component) {
         super(component);
     }
 }

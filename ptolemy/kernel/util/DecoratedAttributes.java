@@ -35,24 +35,24 @@ import java.io.Writer;
 ////DecoratedAttributes
 
 /**
-An abstract class that represents a number of decorated attributed.
+An abstract class that represents a number of decorated attributes.
 
-A NamedObj can contain DecoratedAttributes. These are attributes that are
+<p>A NamedObj can contain DecoratedAttributes. These are attributes that are
 added by another NamedObj, called a decorator to this NamedObj.
-An example is for example a code generator. This one has specific attributes
-for for example the generated code of the director in a model. These attributes
-are added by the Decorator (the code generator), to the director ("this" object).
-These attributes are stored seperately and can be retrieved by using
+An example is a code generator that has specific attributes such as
+parameters that control the code code generator. These attributes
+are added by the Decorator (the code generator), to the director (the "this" object).
+These attributes are stored separately and can be retrieved by using
 {@link NamedObj#getDecoratorAttributes(Decorator)} or
-{@link NamedObj#getDecoratorAttributes(Decorator)}.
+{@link NamedObj#getDecoratorAttributes(Decorator)}.</p>
 
-A DecoratedAttributes instance has a decorator and  
-attributes, the decorated attributes.
-The container of this class is the object that is being decorated.
+<p>A DecoratedAttributes instance has a decorator and  
+decoratored attributes.
+The container of this class is the object that is being decorated.</p>
 
+<p>The implementation class is {@link ptolemy.kernel.DecoratedAttributesImplementation},
+the functionality is divided in two classes to solve dependency issues.
 
-The implementation class is DecoratedAttributesImplementation, the
-functionality is divided in two classes to solve dependency issues.
 @author Bert Rodiers
 @version $Id$
 @since Ptolemy II 8.0
@@ -62,12 +62,13 @@ functionality is divided in two classes to solve dependency issues.
 
 public abstract class DecoratedAttributes extends Attribute {
 
-    /** Construct a DecoratedAttributes instance with the given name and the container of the decorator.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This attribute will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
+    /** Construct a DecoratedAttributes instance with the given name
+     *  and the container of the decorator.  The container argument
+     *  must not be null, or a NullPointerException will be thrown.
+     *  This attribute will use the workspace of the container for
+     *  synchronization and version counts.  If the name argument is
+     *  null, then the name is set to the empty string.  Increment the
+     *  version of the workspace.
      *  @param container The container of this object.
      *  @param name The name of this attribute.
      *  @exception IllegalActionException If the attribute is not of an
@@ -143,9 +144,10 @@ public abstract class DecoratedAttributes extends Attribute {
      */
     protected abstract StringAttribute _decoratorPath();
 
-    /** Register this attribute again to the container. This is necessary, since when
-     *  opening the model, the decorator is not directly know, the container doesn't
-     *  have the mapping between attribute and decorator.
+    /** Register this attribute again to the container. This is
+     *  necessary, since when opening the model, the decorator is not
+     *  directly know, the container doesn't have the mapping between
+     *  attribute and decorator.
      *  @exception NameDuplicationException If the container already
      *   has an attribute with the same name.
      *  @exception IllegalActionException If the attribute is not an

@@ -14,7 +14,7 @@
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={239, 135, 934, 550}, maximized=false}">
     </property>
@@ -379,11 +379,15 @@
         </property>
         <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
         </property>
+        <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 240.0]">
         </property>
         <property name="Safety Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[] ~ ('DE_SimpleTrafficLight | ('Pgrn = # 1, 'Cgrn = # 1))">
         </property>
-        <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="[]&lt;&gt; ('DE_SimpleTrafficLight | ('Pgrn = # 1, 'Cgrn = # 0)) /\ []&lt;&gt; ('DE_SimpleTrafficLight | ('Pgrn = # 0, 'Cgrn = # 1))">
+        <property name="Alternation Property" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'DE_SimpleTrafficLight : ([]&lt;&gt; ( this | ('Pgrn = # 1, 'Cgrn = # 0)) /\ []&lt;&gt; (this | ('Pgrn = # 0, 'Cgrn = # 1)))">
+        </property>
+        <property name="Pairing" class="ptolemy.codegen.rtmaude.data.expr.PropertyParameter" value="'DE_SimpleTrafficLight : ([]('CarLightNormal | (port 'Pgo is present) -&gt;('CarLightNormal | (port 'Pstop is absent) U ('PedestrianLightNormal | (port 'Pgrn is present)))))">
         </property>
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
@@ -399,13 +403,21 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 85.0]">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={385, 48, 813, 511}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
         <port name="Pgrn" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 85.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 140.0]">
             </property>
         </port>
         <port name="Pred" class="ptolemy.actor.TypedIOPort">
@@ -414,7 +426,7 @@
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 140.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 180.0]">
             </property>
         </port>
         <port name="Sec" class="ptolemy.actor.TypedIOPort">
@@ -423,21 +435,21 @@
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 195.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 175.0]">
             </property>
         </port>
         <port name="Pgo" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, 150.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 135.0]">
             </property>
         </port>
         <port name="Pstop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 100.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 95.0]">
             </property>
         </port>
         <entity name="Pinit" class="ptolemy.domains.fsm.kernel.State">
@@ -445,19 +457,19 @@
             </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 95.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 90.0}">
             </property>
         </entity>
         <entity name="Pgreen" class="ptolemy.domains.fsm.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 200.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 270.0]">
             </property>
         </entity>
         <entity name="Pred" class="ptolemy.domains.fsm.kernel.State">
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 200.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 165.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -465,7 +477,7 @@
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Pgo_isPresent">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred=0; Pgrn = 1">
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred=0;&#10;            Pgrn = 1">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
@@ -485,7 +497,7 @@
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Pstop_isPresent">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred = 1; Pgrn = 0">
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred = 1;&#10;            Pgrn = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
@@ -505,7 +517,7 @@
             </property>
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred = 1; Pgrn = 0">
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred = 1; &#10;            Pgrn = 0">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>

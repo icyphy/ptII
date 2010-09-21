@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.rtmaude.domains.de.lib;
 
-import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedDelay
@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class TimedDelay extends Entity {
+public class TimedDelay extends TypedAtomicActor {
     /**
      * Constructor method for the TimedDelay adapter.
      * @param component The associated TimedDelay

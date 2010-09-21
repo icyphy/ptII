@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.rtmaude.domains.de.lib;
 
-import ptolemy.codegen.rtmaude.kernel.Entity;
+import ptolemy.codegen.rtmaude.actor.TypedAtomicActor;
 
 //////////////////////////////////////////////////////////////////////////
 //// Timer
@@ -42,7 +42,7 @@ import ptolemy.codegen.rtmaude.kernel.Entity;
  * @Pt.ProposedRating red (kquine)
  * @Pt.AcceptedRating red (kquine)
  */
-public class Timer extends Entity {
+public class Timer extends TypedAtomicActor {
     /**
      * Constructor method for the Timer adapter.
      * @param component The associated actor

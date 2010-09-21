@@ -194,7 +194,7 @@ public class IIR extends Transformer implements Rollbackable {
             newObject.output.setTypeAtLeast(ArrayType.elementType(newObject.denominator));
             newObject.input.setTypeAtLeast(newObject.output);
             newObject.output.setTypeAtLeast(newObject.input);
-            ArrayToken numeratorValue = (ArrayToken)newObject.numerator.getToken();
+            ArrayToken numeratorValue = (ArrayToken)numerator.getToken();
             newObject.$ASSIGN$_numerator(numeratorValue.arrayValue());
             ArrayToken denominatorValue = (ArrayToken)denominator.getToken();
             newObject.$ASSIGN$_denominator(denominatorValue.arrayValue());

@@ -127,7 +127,7 @@ import ptolemy.util.StringUtilities;
  are added by the Decorator (the code generator), to the director ("this" object).
  These attributes are stored seperately and can be retrieved by using
  {@link #getDecoratorAttributes(Decorator)} or
- {@link #getDecoratorAttributes(Decorator)}.
+ {@link #getDecoratorAttribute(Decorator, String)}.
   
  @author Mudit Goel, Edward A. Lee, Neil Smyth, Contributor: Bert Rodiers
  @version $Id$
@@ -1093,7 +1093,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     }
 
     /** Return the decorated attributes of this Named Object, decorated by decorator.
-     *  TODO: what is decorated attribute, what is the use-case?
+     *  DecoratedAttributes are attributes that have been added by calling
+     *  {@link #_addAttribute(Attribute)}.
+     *  If the DecoratedAttributes for this NamedObj do not contain the
+     *  decorated named by the <i>decorator</i> parameter, then the a
+     *  DecoratedAttribute is created, see
+     *  {@link ptolemy.kernel.util.Decorator#createDecoratedAttributes(NamedObj)}.
      *  @param decorator The decorator.
      *  @return The decorated attributes. 
      */
@@ -1102,25 +1107,30 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             if (_decoratedAttributes.containsKey(decorator)) {
                 return _decoratedAttributes.get(decorator);
             } else {
+                // FIXME: It seems odd to create the DecoratedAttribute here.
                 try {
                     DecoratedAttributes attributes = decorator
                             .createDecoratedAttributes(this);
                     _decoratedAttributes.put(decorator, attributes);
                     return attributes;
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
+                } catch (Exception ex) {
+                    throw new InternalErrorException(this, ex,
+                            "Failed to get decorator attribute \"" +
+                            decorator + "\"");
                 }
             }
         }
     }
 
     /** Return the decorated attribute with the given name for the decorator.
-     *  If the attribute can't be found null be returned.
+     *  Return null if the attribute cannot be found.
      *  @param decorator The decorator.
      *  @param name The name of the attribute.
-     *  @return The attribute with the given name for the decorator. 
+     *  @return The attribute with the given name for the decorator. .
+     *  @see #getDecoratorAttributes(Decorator)
      */
     public Attribute getDecoratorAttribute(Decorator decorator, String name) {
+        // FIXME: Note that this will add the decorator?
         DecoratedAttributes attributes = getDecoratorAttributes(decorator);
         for (Object attribute : attributes.attributeList()) {
             if (((Attribute) attribute).getName().equals(name)) {
@@ -2132,21 +2142,30 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  Derived classes may further constrain the class of the attribute.
      *  To do this, they should override this method to throw an exception
      *  when the argument is not an instance of the expected class.
-     *  This method is write-synchronized on the workspace and increments its
-     *  version number.
-     *  @param p The attribute to be added.
+     *
+     *  <p>If the attribute is an instance of {@link DecoratedAttributes},
+     *  then it is added to the Map of decorators for this NamedObj.  The
+     *  key in the map is the {@link Decorator} for the attribute, the value
+     *  is the attribute.  The DecoratedAttribute may be read using
+     *  {@link #getDecoratorAttributes(Decorator)} or
+     *  {@link #getDecoratorAttribute(Decorator, String)}.</p>
+     *  
+     *  <p>This method is write-synchronized on the workspace and increments its
+     *  version number.</p>
+     *  
+     *  @param attribute The attribute to be added.
      *  @exception NameDuplicationException If this object already
      *   has an attribute with the same name.
      *  @exception IllegalActionException If the attribute is not an
      *   an instance of the expect class (in derived classes).
      */
-    protected void _addAttribute(Attribute p) throws NameDuplicationException,
+    protected void _addAttribute(Attribute attribute) throws NameDuplicationException,
             IllegalActionException {
         try {
             _workspace.getWriteAccess();
 
-            if (p instanceof DecoratedAttributes) {
-                DecoratedAttributes decoratedAttributes = (DecoratedAttributes) p;
+            if (attribute instanceof DecoratedAttributes) {
+                DecoratedAttributes decoratedAttributes = (DecoratedAttributes) attribute;
                 Decorator decorator = decoratedAttributes.getDecorator();
 
                 // When you are constructing the model, the decorator might
@@ -2162,7 +2181,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                     _attributes = new NamedList();
                 }
 
-                _attributes.append(p);
+                _attributes.append(attribute);
             } catch (IllegalActionException ex) {
                 // This exception should not be thrown.
                 throw new InternalErrorException(null, ex,
@@ -2170,7 +2189,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
 
             if (_debugging) {
-                _debug("Added attribute", p.getName(), "to", getFullName());
+                _debug("Added attribute", attribute.getName(), "to", getFullName());
             }
         } finally {
             _workspace.doneWriting();
