@@ -3,7 +3,7 @@ rm -f opentime.plt ticks.plt runtime.plt realtime.plt memory.plt
 
 for file in $*
 do
-    type=`echo $file | sed 's/pubSubAgg//' | sed 's/pubsub//' | sed 's/hierarchicalModel[A-Za-z]*//' | sed 's/.out//' | awk -F _ '{print $1}'`
+    type=`echo $file | sed 's/pubSubAgg//' | sed 's/pubsub//' | sed 's/hierarchicalModel//' | sed 's/.out//' | awk -F _ '{print $1}'`
 
     awk -v type="$type" '
     $0 ~ /^Opened/ {

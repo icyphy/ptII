@@ -102,6 +102,7 @@ EXTRA_SRCS = \
 	.classpath.in \
 	.eclipse.epf \
 	README.txt \
+	Vergil.app \
 	copyright.htm \
 	copyright.txt \
 	configure.in \
@@ -123,6 +124,7 @@ MISC_FILES = \
 	$(DIRS) \
 	bin \
 	config \
+	lbnl \
 	lib \
 	mk \
 	ptKeystore.properties

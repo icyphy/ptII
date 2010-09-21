@@ -55,6 +55,12 @@ if {[info procs testJavaCG] == "" } then {
 
 # $PTII/lbnl/test/auto/CRoom.xml Hangs
 
+# Incorrect results:
+# ptolemy/actor/lib/colt/test/auto/AllColt.xml Incorrect results
+# $PTII/ptolemy/actor/lib/colt/test/auto/LazyVariableBug.xml Incorrect results
+
+# Fails to compile:
+# $PTII/ptolemy/actor/lib/comm/test/auto/HadamardCode1.xml
 
 set models [list \
 $PTII/ptolemy/actor/lib/colt/test/auto/AllColt.xml \
