@@ -986,6 +986,8 @@ public class Manager extends NamedObj implements Runnable {
             executeChangeRequests();
 
             // Infer widths (if not already done)
+            // NOTE: This has most likely already been done, since it is done
+            // when receivers are created, which occurs earlier in preinitialize().
             if (IORelation._USE_NEW_WIDTH_INFERENCE_ALGO) {
                 _inferWidths();
             }

@@ -171,6 +171,9 @@ public class ConstVariableModelAnalysis {
             CompositeActor toplevel = (CompositeActor) object.toplevel();
             Manager manager = toplevel.getManager();
 
+            if (manager == null) {
+                throw new IllegalActionException(object, "No Manager found?");
+            }
             ConstVariableModelAnalysis analysis = (ConstVariableModelAnalysis) manager
                     .getAnalysis("ConstVariableModelAnalysis");
 

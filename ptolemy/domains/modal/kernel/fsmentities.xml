@@ -1,9 +1,0 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity SYSTEM "../../../moml/moml.dtd">
-<class name="fsm" extends="ptolemy.domains.modal.kernel.FSMActor">
-  <doc>
-	FSM entities
-  </doc>
-  <entity name="State" class="ptolemy.domains.modal.kernel.State">
-  </entity>
-</class>

@@ -753,73 +753,77 @@ public class TransformationEditor extends GTFrame implements ActionListener,
                     objects = set;
                 }
 
+                ButtonGroup group = new ButtonGroup();
+                JMenuItem hiddenItem = _add(submenu,
+                        new FigureAction("hidden"), true);
+                hiddenItem.setVisible(false);
+                group.add(hiddenItem);
+
+                int num = 0;
+                MatchingAttributeAction[] radioActions;
                 if (!(object instanceof Port)) {
-                    ButtonGroup group = new ButtonGroup();
-                    JMenuItem hiddenItem = _add(submenu, new FigureAction(
-                            "hidden"), true);
-                    hiddenItem.setVisible(false);
-                    group.add(hiddenItem);
-
-                    MatchingAttributeAction[] radioActions = new MatchingAttributeAction[4];
-                    radioActions[0] = new CreationAttributeAction("Created",
-                            radioActions);
-                    radioActions[1] = new IgnoringAttributeAction("Ignored",
-                            radioActions);
-                    radioActions[2] = new NegationAttributeAction("Negated",
-                            radioActions);
-                    radioActions[3] = new PreservationAttributeAction(
+                    radioActions = new MatchingAttributeAction[4];
+                    radioActions[num++] = new CreationAttributeAction(
+                            "Created", radioActions);
+                    radioActions[num++] = new IgnoringAttributeAction(
+                            "Ignored", radioActions);
+                    radioActions[num++] = new NegationAttributeAction(
+                            "Negated", radioActions);
+                    radioActions[num++] = new PreservationAttributeAction(
                             "Preserved", radioActions);
-                    JMenuItem[] radioItems = new JMenuItem[radioActions.length];
-                    int i = 0;
-                    for (Action radioAction : radioActions) {
-                        radioItems[i] = _add(submenu, radioAction, true);
-                        group.add(radioItems[i]);
-                        i++;
-                    }
-
-                    JMenuItem noneItem = _add(submenu,
-                            new MatchingAttributeAction("None", radioActions),
-                            true);
-                    group.add(noneItem);
-
-                    boolean setHidden = false;
-                    Class<? extends MatchingAttribute> attributeClass = null;
-                    i = 0;
-                    for (Object childObject : objects) {
-                        NamedObj child = (NamedObj) childObject;
-                        MatchingAttribute attribute = _getRadioAttribute(child,
-                                radioActions);
-                        if (attributeClass == null && attribute != null
-                                && i == 0) {
-                            attributeClass = attribute.getClass();
-                        } else if (attributeClass == null && attribute != null
-                                || attributeClass != null
-                                && !attributeClass.isInstance(attribute)) {
-                            hiddenItem.setSelected(true);
-                            attributeClass = null;
-                            setHidden = true;
-                            break;
-                        }
-                        i++;
-                    }
-                    if (!setHidden) {
-                        if (attributeClass == null) {
-                            noneItem.setSelected(true);
-                        } else {
-                            i = 0;
-                            for (MatchingAttributeAction radioAction : radioActions) {
-                                if (radioAction.getAttributeClass().equals(
-                                        attributeClass)) {
-                                    radioItems[i].setSelected(true);
-                                    break;
-                                }
-                                i++;
-                            }
-                        }
-                    }
-
-                    submenu.addSeparator();
+                } else {
+                    radioActions = new MatchingAttributeAction[2];
+                    radioActions[num++] = new IgnoringAttributeAction(
+                            "Ignored", radioActions);
+                    radioActions[num++] = new NegationAttributeAction(
+                            "Negated", radioActions);
                 }
+                JMenuItem[] radioItems = new JMenuItem[num];
+                for (int i = 0; i < num; i++) {
+                    radioItems[i] = _add(submenu, radioActions[i], true);
+                    group.add(radioItems[i]);
+                }
+
+                JMenuItem noneItem = _add(submenu, new MatchingAttributeAction(
+                        "None", radioActions), true);
+                group.add(noneItem);
+
+                boolean setHidden = false;
+                Class<? extends MatchingAttribute> attributeClass = null;
+                int i = 0;
+                for (Object childObject : objects) {
+                    NamedObj child = (NamedObj) childObject;
+                    MatchingAttribute attribute = _getRadioAttribute(child,
+                            radioActions);
+                    if (attributeClass == null && attribute != null && i == 0) {
+                        attributeClass = attribute.getClass();
+                    } else if (attributeClass == null && attribute != null
+                            || attributeClass != null
+                            && !attributeClass.isInstance(attribute)) {
+                        hiddenItem.setSelected(true);
+                        attributeClass = null;
+                        setHidden = true;
+                        break;
+                    }
+                    i++;
+                }
+                if (!setHidden) {
+                    if (attributeClass == null) {
+                        noneItem.setSelected(true);
+                    } else {
+                        i = 0;
+                        for (MatchingAttributeAction radioAction : radioActions) {
+                            if (radioAction.getAttributeClass().equals(
+                                    attributeClass)) {
+                                radioItems[i].setSelected(true);
+                                break;
+                            }
+                            i++;
+                        }
+                    }
+                }
+
+                submenu.addSeparator();
 
                 OptionAttributeAction action = new OptionAttributeAction(
                         "Optional", null);

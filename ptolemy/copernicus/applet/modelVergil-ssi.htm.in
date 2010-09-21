@@ -3,8 +3,8 @@
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<link href="@codeBase@/doc/default.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<link href="@codeBase@/doc/default.css" rel="stylesheet" type="text/css"/>
 <title>@sanitizedModelName@</title>
 <!-- /head -->
 <!-- body -->
@@ -17,12 +17,11 @@
 This page contains an applet that should appear as a separate window.
 <p>@documentation@</p>
 
-<p>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
-<CENTER>
+<center>
 <!-- PT SIMPLE APPLET CONVERTER -->
-<APPLET 
+<applet
  code = "ptolemy.vergil.VergilApplet"
  codebase = "@codeBase@"
   archive = "@modelJarFiles@,@vergilJarFiles@"
@@ -30,17 +29,17 @@ applet is displayed on a XGA screen-->
   height = "@appletHeight@"
   >
  <!-- PARAM name="jnlp_href" value="@targetPath@@sanitizedModelName@.jnlp" -->
- <PARAM NAME = "commandLineArguments" VALUE = "@configurationName@ @sanitizedModelName@.xml">
- <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@" >
- <PARAM NAME = "background" VALUE = "#ffffff" >
- <PARAM NAME = "controls" VALUE = "buttons" >
- <PARAM NAME = "orientation" VALUE = "vertical" > \
- <PARAM NAME = "modelURL" VALUE = "@sanitizedModelName@.xml" > \
- <a href="@sanitizedModelName@.xml">MoML specification for this model.</a> \
-</APPLET>
+ <param name = "commandLineArguments" value = "@configurationName@ @sanitizedModelName@.xml"/>
+ <param name = "NAME" value = "@sanitizedModelName@"/>
+ <param name = "background" value = "#ffffff"/>
+ <param name = "controls" value = "buttons"/>
+ <param name = "orientation" value = "vertical"/>
+ <param name = "modelURL" value = "@sanitizedModelName@.xml"/>
+ <a href="@sanitizedModelName@.xml">MoML specification for this model.</a>
+</applet>
 <!-- /PT SIMPLE APPLET CONVERTER -->
-</CENTER>
-</p>
+</center>
+
 <!-- /body -->
 <!-- /html -->
 <!--#include virtual="/ssi/bottom.htm" -->

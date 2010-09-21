@@ -48,44 +48,12 @@ set oldIsRunningNightlyBuild \
      "ptolemy.ptII.isRunningNightlyBuild"]
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" ""
 
-proc test_java_cg {model} {
-    global PTII	
-    set relativeFilename \
-	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
-	    $PTII $model {$PTII}]
-    puts "------------------ Java ptolemy/cg testing $relativeFilename"
-    test "Auto" "Automatic Java ptolemy/cg test in file $relativeFilename" {
-	# Remove files from ~/cg so as to force building
-	foreach classFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.class] { file delete -force $classFile}
-	foreach javaFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.java] { file delete -force $javaFile}
-	foreach mkFile [glob -nocomplain [java::call System getProperty "user.home"]/cg/*.mk] { file delete -force $mkFile}
-	set parser [java::new ptolemy.moml.MoMLParser]
-	$parser reset
-	$parser purgeAllModelRecords
-
-	set args [java::new {String[]} 3 \
-		  [list "-generatorPackage" "ptolemy.cg.kernel.generic.program.procedural.java" $model]]
-
-	set timeout 60000
-	puts "JavaCGAuto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
-                  seconds at [clock format [clock seconds]]"
-	set watchDog [java::new util.testsuite.WatchDog $timeout]
-
-	set returnValue 0
-	if [catch {set returnValue \
-		       [java::call ptolemy.cg.kernel.generic.GenericCodeGenerator \
-			    generateCode $args]} errMsg] {
-	    $watchDog cancel
-	    error "$errMsg\n[jdkStackTrace]"
-	} else {
-	    $watchDog cancel
-	}
-	list $returnValue
-    } {0}
+if {[info procs testJavaCG] == "" } then {
+    source [file join $PTII util testsuite testJavaCG.tcl]
 }
 
 foreach file [glob auto/*.xml] {
-    test_java_cg $file
+    testJavaCG $file
 }
 
 # Reset the isRunningNightlyBuild property

@@ -50,7 +50,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
-import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -781,8 +780,6 @@ public class LazyTypedCompositeActor extends TypedCompositeActor implements
                 }
             }
         } catch (Exception ex) {
-            MessageHandler.error("Failed to populate contents.", ex);
-
             // Oddly, under JDK1.3.1, we may see the line
             // "Exception occurred during event dispatching:"
             // in the console window, but there is no stack trace.

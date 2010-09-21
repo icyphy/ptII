@@ -143,7 +143,8 @@ public class ParseTreeDumper extends AbstractParseTreeVisitor {
     /** Display the given node with the current prefix, recursing into
      *  the children of the node.
      *  @param node The node to be displayed.
-     *  @exception If there is a problem displaying the children.
+     *  @exception IllegalActionException If there is a problem
+     *  displaying the children.
      */
     protected void _displayNode(ASTPtRootNode node)
             throws IllegalActionException {
