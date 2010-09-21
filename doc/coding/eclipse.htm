@@ -35,18 +35,30 @@ Other local pages:
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org#in_browser" target="_top">http://www.eclipse.org</a>.
- <br>In May, 2010, we chose
- <B>Eclipse for RCP/Plug-in Developers</B>, which is 184Mb.
-The <B>Eclipse for RCP/Plug-in Developers</B> version includes the
+ <br>In September, 2010, we chose
+ <B>Eclipse for RCP and RAP Developers</B>, which is 190Mb.
+The <B>Eclipse for RCP and RAP Developers</B> version includes the
 plug-in development environment (PDE), which is needed by the backtrack
 facility, which is an optional part of Ptolemy II that allows models to
 restore their old state.  If the version of Eclipse that you install
 does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
 <li> (<i>Mac OS X</i>):
-See <a href="http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html#in_browser" target="_top"><code>http://blog.zvikico.com/2009/06/eclipse-galileo-for-mac-cocoa-or-carbon.html</a></code> about choosing between "Mac OS X (Carbon)", "Mac OS X (Cocoa)" and "Mac OS X 64 bit (Cocoa)".
-  
-<br>Most Mac users will download "Mac OS X (Cocoa)" in to <code>/Applications</code>, which will create <code>/Applications/eclipse/Eclipse.app</code>.
+For Mac OS 10.5 and 10.6, most users will want to select the
+  "Mac OS X 64 bit" version because we use JDK 1.6, which is 64 bit.
+<br>Download
+  <code>eclipse-rcp-helios-macosx-cocoa-x86_64.tar.gz</code>,
+  uncompress it and move <code>eclipse/</code> into <code>/Applications</code>, which
+  will create <code>/Applications/eclipse/Eclipse.app</code>.
+  <br>Firefox Mac OS X Details: <ol>
+    <li>Firefox will download the file into a directory, which may be
+    <code>/Downloads</code>
+    <li>Double click on
+    <code>eclipse-rcp-helios-macosx-cocoa-x86_64.tar.gz</code> which
+    will create the <code>eclipse</code> directory.
+    <li> Drag the <code>eclipse</code> directory to your
+    <code>Applications</code> directory.
+    </ol>
 
 <br> (<i>Windows</i>): 
 Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
@@ -55,11 +67,9 @@ be that the security policy on your machine is preventing the creation
 of <code>.exe</code> files.  If this is the case, then try running
 <code>unzip</code> from the command line.
 
-<li>Finish the installation by
-running <code>/Applications/eclipse/Eclipse.app</code> (<i>Mac OS X</i>)
-or <CODE>eclipse/eclipse.exe</CODE> (<i>Windows</i>).
+<li>Finish the installation by double click <code>/Applications/eclipse/Eclipse.app</code> or <CODE>eclipse/eclipse.exe</CODE>.
 <br>The first time this is run it will complete the installation process.
-<br> (<i>Windows</i>): (<i>Mac OS X</i>)
+<br> (<i>Windows</i>): 
 If Eclipse fails to start with the message "Windows cannot access the specified device, path or file. You may not have the appropriate permisions to access the item", then it may be necessary to make 
 <code>eclipse.exe</code> and a dll executable:
 <pre>
@@ -81,7 +91,10 @@ The default configuration of Eclipse has some difficulties with Ptolemy II,
 so a few changes are necessary.
 <ol>
 <li>(<i>Mac OS X</i>):
-  There is usuall no need to set the memory size for Eclipse under Mac OS X.  By default, it is set to 512 megabytes.  
+  <i>Optional</i>: In <code>Applications/eclipse</code>, drag the
+  <code>Eclipse.app</code> icon to the Finder Dock on the edge of your
+  screen.  This will give you fast access to starting Eclipse.
+  <br>There is usually no need to set the memory size for Eclipse under Mac OS X.  By default, it is set to 512 megabytes.  
   For details about setting the memory size, see:
   <a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.user/tasks/running_eclipse.htm#in_browser" target="_top">Eclipse Workbench User Guide/Tasks/Running Eclipse</a>.
   
@@ -164,35 +177,29 @@ to format comments.  We hope to change this policy in the future.
  </ol>
 
 <li>
-Ptolemy II uses some features of Java 5.0.
+Ptolemy II 8.0 uses some features of Java 5.0.
 In particular, <CODE>ptolemy/actor/ptalon</CODE> uses generics,
 which require Java 5.0 or later.
-<br>Set Eclipse to use Java 5.0 or later source code compliance.
+<p>However, the Ptolemy II development trunk that includes changes after
+Ptolemy II 8.0 uses some features of Java 1.6, which is also known as Java
+ 6.0.
+In particular, <code>ptdb</code> to uses javax.swing.GroupLayout.
+ which requires Java 1.6 (also known as 6.0) or later.
+
+<p>So, it is best to set Eclipse to use Java 1.6 or 6.0 or later source code compliance.
+
 <ol>
  <li> While still in the preferences window
   <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
   <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
   <br> expand <code>Java</code> | <code>Compiler</code>
- <li> Make sure that Set "Compiler compliance level" is "1.5", "5.0"
+ <li> Make sure that Set "Compiler compliance level" is "1.6", or "6.0"
  or later.
-<i>Note that Java 1.5 is the same as Java 5.0</i>.  What we don't want
-is "1.4" or "4.0". 
+<i>Note that Java 1.6 is the same as Java 6.0</i>.  What we don't want
+is "1.4" or "4.0".   If you plan on using the the Ptolemy II development
+tree after Ptolemy II 8.0. then you don't want "1.5" or "5.0".
  <li> Click Apply. 
 </ol>
-
-Note the following restrictions about versions of Java and Eclipse
-under Mac OS X:
-<menu>
-<li>Eclipse 3.4.0 will not start up for me under Java 1.6.0_05 on the Mac.
-  This means that if "java -version" returns 1.6.0_05, then Eclipse
-  failed to start for me.
-<li> Within Eclipse 3.4.0 which was started with Java 1.5.0_13, you can
-  compile and run your project with either Java 1.5.0_13 or
-  Java 1.6.0_13.
-<li>Eclipse 3.4.0 Java Projects that include Eclipse Plug-ins don't work
-  under either Java 1.5.0_13 or Java 1.6.0_05 on the Mac
-  For details, see <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac#in_browser" target="_top"><code>http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac</code></a>.
-</menu>
 
 <li> Eclipse has very good compiler error/warning.  One of the
 warnings complains if a Serializable class does not have
@@ -212,7 +219,7 @@ if you are tightly managing serialization, we turn it off:
   <li> Click Apply.  If you are prompted for a full rebuild, click Yes.
  </ol>
 
-<li> The PtDoc Doclet in <code>$PTII/doc/doclets/PtDoclet.java</code>
+<li> (<i>Windows</i>:) The PtDoc Doclet in <code>$PTII/doc/doclets/PtDoclet.java</code>
 requires <code>tools.jar</code>, which is only in the Java Development
 Kit (JDK), not the Java Runtime Environment (JRE).  So, be sure that a
 JDK is selected for building, not a JRE.
@@ -221,7 +228,7 @@ JDK is selected for building, not a JRE.
 <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <ol>
 <li> Select <code>Java</code> | <code>Installed JREs</code>
-<br>(<i>Mac OS X</i>):  select <code>JVM 1.5.0 (Mac OS X Default)</code>.
+<br>(<i>Mac OS X</i>):  select <code>JVM 1.6.0</code>.
 
 <li> Verify that the checked line corresponds with a JDK, not
 a JRE.
@@ -346,58 +353,47 @@ Follow the <a href="http://www.eclipse.org/subversive/downloads.php#in_browser" 
 <br><i>Mac OS X</i>:
 <br>The first time software is to be added the menu will be:
  <code>Help</code> | <code>Install New Software</code> 
-<br>After a package is added, the menu will be:
- <code>Help</code> | <code>Software Updates</code> | <code>Available Software</code>.  
 <br><i>Windows</i>:
- <code>Help</code> | <code>Software Updates</code> | <code>Available Software</code>.  
-<li>In the "Work with" field, select "Galileo - http://download.eclipse.org/releases/galileo" from the drop down.
+ <code>Help<code> | <code>Software Updates</code> | <code>Available Software</code>.  
+<li>In the "Work with" field, select "Helios - http://download.eclipse.org/releases/helios" from the drop down.
 <br>Expand the "Collaboration" tab and check the box next to
   "Subversive SVN Team Provider (Incubation)"
  
-<li>Then click <code>Next</code>, <code>Next</code> again and click through the license agreement.  
-<li>When you are prompted to restart, click <code>No</code>, we will restart later
+<li>Then click <code>Next</code>, <code>Next</code> again and click
+  through the license agreement and hit <code>Finish</code.  
+<li> When the "Software Updates" window appears and asks about a
+  restart, select "Restart Now" and restart.
+<li> When Eclipse restarts, bring up the preferences window:
+  <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
+  <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
+  <br> Then do <code>Team</code> | <code>SVN</code>.  When you click
+  on the <code>SVN</code>, the "Subversion Connector Discovery" window
+  will pop up.  (See <a
+  href="http://www.polarion.com/products/svn/subversive/connector_discovery.php#in_browser">http://www.polarion.com/products/svn/subversive/connector_discovery.php</code></a>
+  for details.)
+  <li> In the "Subversion Connector Discovery" window, what version
+  you select depends on what version of svn is installed on your
+  machine.
+  <br>If <code>svn --version</code> returns 1.4, then install SVN Kit 1.1.7
+  <br>If <code>svn --version</code> returns 1.5, then install SVN Kit 1.2.3
+  <br>If <code>svn --version</code> returns 1.5, then install SVN Kit 1.3.0
+  <p>Note: if you install a more recent version of the plugin than the
+  version of the command line <code>svn</code> tool, then
+  you will not be able to use the command line <code>svn</code> to
+  update or modify the tree that is checked out by Eclipse.
+  <br>If you
+  run <code>svn</code> on a tree checked out by Eclipse and get a message <code> svn: This client is
+  too old to work with working copy '.'; please get a newer Subversion
+  client</code>, then the solution is to <a
+  href="http://subversion.apache.org/packages.html#in_browser">update
+  svn</a>.
 
-<li>It is <b>required</b> that a second package, the <code>Subversive SVN Connectors plug-in</code> be installed.  To do this, go back to
- <code>Help</code> | <code>Software Updates</code> | <code>Available Software</code>
-  <code>Help</code> | <code>Install New Software</code>, Click on
-  "Add" and then in the "Add Site" window, enter the Name "Polarion" and the location
-<pre>
-http://community.polarion.com/projects/subversive/download/eclipse/2.0/galileo-site/
-</pre>
-Hit OK
-<li>In the Available Software window:
-<br><i>Mac OS X</i>: There is no need to install JavaHL, in fact JavaHL will likely cause problems
-<br>Under Subversive SVN Connectors, select this package:
-<pre>
-Subversive SVN Connectors
-SVNKit 1.3.0 Implementation (Optional)
-</pre>
-<p><i>Windows</i>: <b>Note: select only one <code>JavaHL</code> Win32 binary</b>.  If both
-JavaHL 1.5.4 and JavaHL 1.6.0 are installed, then Eclipse will have
-problems.  The version of JavaHL is dependent on the version of command line <code>svn</code> that is installed on your machine.
-<br>If <code>svn --version</code> returns 1.5, then install JavaHL 1.5.4
-<br>If <code>svn --version</code> returns 1.6, then install JavaHL 1.6.0
-<p>If you will be updating the ptII svn repository, then add include
-<code>SVNKit 1.3.0 Implementation (Optional)</code>.
-
-<p>For svn 1.5 under , select these packages:
-<pre>
-JavaHL 1.5.4 Win32 Binaries(Optional)
-Native JavaHL 1.5 Implementation (Optional)
-SVNKit 1.3.0 Implementation (Optional)
-Subversive SVN Connectors
-</pre>
-<br><b>or</b>
-<br>For svn 1.6, select these packages:
-<pre>
-JavaHL 1.6 Win32 Binaries(Optional)
-Native JavaHL 1.6 Implementation (Optional)
-SVNKit 1.3.0 Implementation (Optional)
-Subversive SVN Connectors
-</pre>
-
-<li>Click on <code>Next</code> and click through the rest of the installation.
-<li>When prompted to restart Eclipse, do so.
+  <p>Then do "Finish", "Next", "Next", Accept the license and then
+  "Finish".
+ 
+  <li>If you get a security warning about unsigned software, click
+  "OK".
+  <li> When prompted for a restart, select "Restart Now".
 </ol>
 
 <h3>Setup the Subversion Configuration to Sane setting</h3>
@@ -655,7 +651,7 @@ settings, and have Cygwin ssh installed, then
 is called.
 
 <p>The fix is to set Subversive to use SVNKit
-<code>Window</code> | <code>Preferences</code> | <code>Team</code> | <code>SVN</code> | <code>SVN interface</code> | <code>SVNKit 1.3.0 Implementation</code>
+<code>Window</code> | <code>Preferences</code> | <code>Team</code> | <code>SVN</code> | <code>SVN interface</code> | <code>SVNKit (Pure Java)</code>
 | <code>OK</code>
 
 
