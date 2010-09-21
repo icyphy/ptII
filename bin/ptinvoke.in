@@ -1355,6 +1355,11 @@ if [ "$error" = "none" ]; then
 		(cd $MACAPP_APP; cp -r ../macContents/Contents .; find . -name ".svn" -exec rm -rf {} \;)
 	    fi
 		
+	    if [ -f /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub ]; then
+		echo "Updating JavaApplicationStub from /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub"
+                cp /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub $MACAPP_APP/Contents/MacOS/
+            fi		     
+
 	    cat >$MACAPP_PLIST <<EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
