@@ -35,8 +35,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.tdl.kernel.TDLModule;
-import ptolemy.domains.tdl.kernel.TDLModuleDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -202,10 +200,6 @@ public class PtidesActorProperties {
      */
     public static double getWCET(Actor actor) {
         try {
-            if (actor instanceof TDLModule) {
-                return ((TDLModuleDirector) ((TDLModule) actor).getDirector())
-                        .getWCET();
-            }
             Parameter parameter = (Parameter) ((NamedObj) actor)
                     .getAttribute("WCET");
 
@@ -287,8 +281,7 @@ public class PtidesActorProperties {
      * @return True if given port is a trigger port.
      */
     public static boolean portIsTriggerPort(IOPort port) {
-        return !(port instanceof ParameterPort)
-                && !(port.getContainer() instanceof TDLModule);
+        return !(port instanceof ParameterPort);
     }
 
     /**
