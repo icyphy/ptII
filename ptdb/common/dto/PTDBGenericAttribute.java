@@ -44,6 +44,16 @@ import java.util.ArrayList;
  *
  */
 public class PTDBGenericAttribute {
+    
+    /**
+     * Construct the PTDBGenericAttribute class. 
+     * 
+     * @param attributeName The name of the attribute. 
+     * 
+     */
+    public PTDBGenericAttribute(String attributeName) {
+        _attributeName = attributeName;
+    }
 
     //////////////////////////////////////////////////////////////////////
     ////                    public methods                            ////

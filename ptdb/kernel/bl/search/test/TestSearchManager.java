@@ -155,8 +155,9 @@ public class TestSearchManager {
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
         ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
-        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
-        genericAttribute.setAttributeName(attribute.getName());
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
+                attribute.getName());
+        //        genericAttribute.setAttributeName(attribute.getName());
         genericAttribute.addValue(attribute.getValueAsString());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
@@ -400,8 +401,9 @@ public class TestSearchManager {
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
         ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
-        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
-        genericAttribute.setAttributeName(attribute.getName());
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
+                attribute.getName());
+        //        genericAttribute.setAttributeName(attribute.getName());
         genericAttribute.addValue(attribute.getValueAsString());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
@@ -684,8 +686,9 @@ public class TestSearchManager {
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
         ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
-        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
-        genericAttribute.setAttributeName(attribute.getName());
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
+                attribute.getName());
+        //        genericAttribute.setAttributeName(attribute.getName());
         genericAttribute.addValue(attribute.getValueAsString());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
@@ -769,8 +772,9 @@ public class TestSearchManager {
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
         ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
-        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
-        genericAttribute.setAttributeName(attribute.getName());
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
+                attribute.getName());
+        //        genericAttribute.setAttributeName(attribute.getName());
         genericAttribute.addValue(attribute.getValueAsString());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
@@ -945,8 +949,9 @@ public class TestSearchManager {
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
         ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
-        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
-        genericAttribute.setAttributeName(attribute.getName());
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
+                attribute.getName());
+        //        genericAttribute.setAttributeName(attribute.getName());
         genericAttribute.addValue(attribute.getValueAsString());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
@@ -1029,8 +1034,9 @@ public class TestSearchManager {
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
         ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
-        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
-        genericAttribute.setAttributeName(attribute.getName());
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
+                attribute.getName());
+        //        genericAttribute.setAttributeName(attribute.getName());
         genericAttribute.addValue(attribute.getValueAsString());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
@@ -1129,8 +1135,9 @@ public class TestSearchManager {
                 .createMockAndExpectNew(AttributeSearchTask.class);
 
         ArrayList<PTDBGenericAttribute> ptdbGenericAttributes = new ArrayList<PTDBGenericAttribute>();
-        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute();
-        genericAttribute.setAttributeName(attribute.getName());
+        PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
+                attribute.getName());
+        //        genericAttribute.setAttributeName(attribute.getName());
         genericAttribute.addValue(attribute.getValueAsString());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);

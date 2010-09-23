@@ -74,11 +74,11 @@ public class AttributeSearcher extends AbstractSearcher implements
 
                 if (!attributesMap.containsKey(originalAttribute.getName())) {
 
-                    PTDBGenericAttribute newAttribute = new PTDBGenericAttribute();
+                    PTDBGenericAttribute newAttribute = new PTDBGenericAttribute(originalAttribute.getName());
 
                     // Set the values and class name to newAttribute from 
                     // originalAttribute.
-                    newAttribute.setAttributeName(originalAttribute.getName());
+//                    newAttribute.setAttributeName(originalAttribute.getName());
                     newAttribute.addValue(((Variable) originalAttribute)
                             .getValueAsString());
 

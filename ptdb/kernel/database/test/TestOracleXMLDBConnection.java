@@ -640,20 +640,20 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(false);
 
         AttributeSearchTask task = new AttributeSearchTask();
-        PTDBGenericAttribute createdByattribute = new PTDBGenericAttribute();
+        PTDBGenericAttribute createdByattribute = new PTDBGenericAttribute("ptolemy.data.expr.StringParameter");
 
 //        Variable variableCreatedBy = new Variable();
-        createdByattribute.setClassName("ptolemy.data.expr.StringParameter");
+//        createdByattribute.setClassName("ptolemy.data.expr.StringParameter");
         createdByattribute.setAttributeName("CreatedBy");
         
         ArrayList<String> values = new ArrayList<String>();
         values.add("Ashwini Bijwe");
         createdByattribute.setValues(values);
         
-        PTDBGenericAttribute modelIdAttribute = new PTDBGenericAttribute();
+        PTDBGenericAttribute modelIdAttribute = new PTDBGenericAttribute("ptolemy.data.expr.Parameter");
 
 //        Variable variableModelId = new Variable();
-        modelIdAttribute.setClassName("ptolemy.data.expr.Parameter");
+//        modelIdAttribute.setClassName("ptolemy.data.expr.Parameter");
         modelIdAttribute.setAttributeName("ModelId");
         
         ArrayList<String> modelIdValues = new ArrayList<String>();
@@ -723,9 +723,9 @@ public class TestOracleXMLDBConnection {
             
             
             
-            PTDBGenericAttribute multiValueAttribute = new PTDBGenericAttribute();            
+            PTDBGenericAttribute multiValueAttribute = new PTDBGenericAttribute("ptolemy.data.expr.StringParameter");            
         
-            multiValueAttribute.setClassName("ptolemy.data.expr.StringParameter");
+//            multiValueAttribute.setClassName("ptolemy.data.expr.StringParameter");
         
             multiValueAttribute.setAttributeName("DBModelId");
         
@@ -752,9 +752,9 @@ public class TestOracleXMLDBConnection {
             
 
             
-            PTDBGenericAttribute classAndNameOnlyAttribute = new PTDBGenericAttribute();            
+            PTDBGenericAttribute classAndNameOnlyAttribute = new PTDBGenericAttribute("ptolemy.data.expr.StringParameter");            
             
-            classAndNameOnlyAttribute.setClassName("ptolemy.data.expr.StringParameter");
+//            classAndNameOnlyAttribute.setClassName("ptolemy.data.expr.StringParameter");
         
             classAndNameOnlyAttribute.setAttributeName("DBModelId");
             
@@ -769,9 +769,9 @@ public class TestOracleXMLDBConnection {
             
             
             
-            PTDBGenericAttribute nameAndValueAttribute = new PTDBGenericAttribute();            
+            PTDBGenericAttribute nameAndValueAttribute = new PTDBGenericAttribute("DBModelId");            
         
-            nameAndValueAttribute.setAttributeName("DBModelId");
+//            nameAndValueAttribute.setAttributeName("DBModelId");
                 
             modelIdValues = new ArrayList<String>();
                 
@@ -791,9 +791,9 @@ public class TestOracleXMLDBConnection {
                     modelsList.size() > 0);
             
             
-            PTDBGenericAttribute nameOnlyAttribute = new PTDBGenericAttribute();            
+            PTDBGenericAttribute nameOnlyAttribute = new PTDBGenericAttribute("DBModelId");            
             
-            nameOnlyAttribute.setAttributeName("DBModelId");
+//            nameOnlyAttribute.setAttributeName("DBModelId");
                 
             
             attributesList = new ArrayList<PTDBGenericAttribute>();
@@ -807,7 +807,7 @@ public class TestOracleXMLDBConnection {
             
             
             
-            PTDBGenericAttribute valueOnlyAttribute = new PTDBGenericAttribute();            
+            PTDBGenericAttribute valueOnlyAttribute = new PTDBGenericAttribute(null);            
 
                 
             modelIdValues = new ArrayList<String>();
@@ -831,7 +831,7 @@ public class TestOracleXMLDBConnection {
             
             
 
-            PTDBGenericAttribute classOnlyAttribute = new PTDBGenericAttribute();            
+            PTDBGenericAttribute classOnlyAttribute = new PTDBGenericAttribute(null);            
             
             classOnlyAttribute.setClassName("ptolemy.data.expr.StringParameter");
            
