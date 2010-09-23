@@ -3,7 +3,7 @@ $Id$
 
 This directory is for interface libraries for x10.
 To download them, go to:
-   http://x10.homelinux.org/download.html
+   http://www.agaveblue.org/projects/x10/download.html
 and download tjx10p-13.zip. (Version 1.3) Unzip this file 
 in this directory ($PTII/vendors/misc/x10/)
 and rerun configure.
