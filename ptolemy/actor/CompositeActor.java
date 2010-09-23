@@ -720,7 +720,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } else {
             if (_publishedPorts != null) {
                 for (String name : _publishedPorts.keySet()) {
-                    if(_publishedPorts.get(name).contains(port))
+                    if (_publishedPorts.get(name).contains(port))
                         return name;
                 }
             }
@@ -740,7 +740,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         } else {
             if (_subscribedPorts != null) {
                 for (String name : _publishedPorts.keySet()) {
-                    if(_publishedPorts.get(name).contains(port))
+                    if (_publishedPorts.get(name).contains(port))
                         return name;
                 }
             }
@@ -765,8 +765,9 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  Infer the width of the relations for which no width has been
      *  specified yet.
      *  The specified actor must be the top level container of the model.
-     *  @exception IllegalActionException If the widths of the relations at port are not consistent
-     *                  or if the width cannot be inferred for a relation.
+     *  @exception IllegalActionException If the widths of the
+     *  relations at port are not consistent or if the width cannot be
+     *  inferred for a relation.
      */
     public void inferWidths() throws IllegalActionException {
         RelationWidthInference relationWidthInference = _getWidthInferenceAlgorithm();
@@ -2226,7 +2227,6 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *  @exception NameDuplicationException If there are name conflicts
      *          as a result of the added relations or ports. 
      *  @exception IllegalActionException If the published port cannot be found.
-     * @throws NameDuplicationException 
      */
     public void unlinkToPublishedPort(String name, IOPort subscriberPort,
             boolean global) throws IllegalActionException {
@@ -2407,8 +2407,10 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *          to match publisher and subscriber. This will be the port
      *          that should be removed
      *  @param publisherPort The publisher port.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+     *  @exception IllegalActionException If the container of the port cannot
+     *  be set.
+     *  @exception NameDuplicationException If the container of the port cannot
+     *  be set
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort)
             throws IllegalActionException, NameDuplicationException {
@@ -2428,12 +2430,13 @@ public class CompositeActor extends CompositeEntity implements Actor,
      *          that should be removed
      *  @param publisherPort The publisher port.
      *  @param global If true, unregister the port all the way up the hierarchy.
-     * @throws NameDuplicationException 
-     * @throws IllegalActionException 
+     *  @exception IllegalActionException If the container of the port cannot
+     *  be set.
+     *  @exception NameDuplicationException If the container of the port cannot
+     *  be set
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort,
-            boolean global) throws IllegalActionException,
-            NameDuplicationException {
+					boolean global) throws IllegalActionException, NameDuplicationException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
@@ -2745,7 +2748,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables               ////
+    ////                         public variables                  ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
