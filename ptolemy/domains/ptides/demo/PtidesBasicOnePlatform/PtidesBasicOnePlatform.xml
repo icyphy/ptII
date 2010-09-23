@@ -17,7 +17,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee, Slobodan Matic, and Jia Zou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 355.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 525.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -25,21 +25,21 @@
         </property>
         <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A &quot;Hello World&quot; PTIDES program. The DE director outside simulates the passage of&#10;physical time, while the PTIDES director inside simulates the application.&#10;The application simply adds up the incoming events in time stamp order.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A &quot;Hello World&quot; Ptides program.&#10;&#10;Ptides is a programming model that is based on Discrete Event (DE) semantics. In&#10;fact, if the PtidesBasicDirector is replaced with a DEDirector, this model would&#10;exhibit the same behavior. Unlike DE, Ptides relates physical time of the physical&#10;world to the model time (timestamp of events). This is done through sensors and&#10;actuators, which are abstracted with input/output ports in the Ptides level. See&#10;&quot;Execution Strategies for PTIDES, a Programming Model for Distributed, Embedded&#10;Systems&quot;.&#10;&#10;The DE director outside simulates the passage of physical time, while the PTIDES&#10;director inside simulates the application.&#10;&#10;The application simply adds up the incoming events in time stamp order, and&#10;produce results at the output.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 295.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 290.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 143, 813, 510}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={377, 74, 817, 704}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[594, 590]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.0, 295.0}">
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 200.0]">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="minDelay = &#10;3.0">
@@ -227,7 +227,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 160.0]">
         </property>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
@@ -238,7 +238,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 225.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -246,7 +246,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 200.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
