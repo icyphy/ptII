@@ -51,7 +51,6 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
      *  @param node Term to add to the composition.
      *  @return whether node was added.
      */
-    @Override
     public boolean add(SyntacticTerm term) {
         SyntacticRank rank = term.rank();
         if (rank != null) {
@@ -83,7 +82,6 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return changed;
     }
     
-    @Override
     public void add(int index, SyntacticTerm term) {
         SyntacticRank rank = term.rank();
         if (rank != null) {
@@ -104,7 +102,6 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
      *  @param node Term to be removed from the composition.
      *  @return whether term was removed.
      */
-    @Override
     public boolean remove(Object ot) {
         if (!(ot instanceof SyntacticTerm) || !contains(ot)) return false;
         
@@ -122,7 +119,6 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return true;
     }
 
-    @Override
     public void clear() {
         super.clear();
         _inputs.clear();
@@ -130,7 +126,6 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         _rank = null;
     }
 
-    @Override
     public SyntacticTerm set(int index, SyntacticTerm term) {
         SyntacticTerm cterm = get(index);
         if (cterm == null) return null;
@@ -151,7 +146,6 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return null;
     }
 
-    @Override
     public SyntacticTerm remove(int index) {
         // TODO Auto-generated method stub
         return null;
@@ -160,7 +154,6 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
     /** Get all of the output ports for a column.
      *  @return A list of input ports for the column.
      */
-    @Override
     public List<SyntacticPort> getInputs() {
         return _inputs;
     }
@@ -168,22 +161,18 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
     /** Get all of the output ports for a column.
      *  @return A list of input ports for the column.
      */
-    @Override
     public List<SyntacticPort> getOutputs() {
         return _outputs;
     }
 
-    @Override
     public int sizeInputs() {
         return _inputs.size();
     }
 
-    @Override
     public int sizeOutputs() {
         return _outputs.size();
     }
 
-    @Override
     public SyntacticRank rank() {
         return _rank;
     }
@@ -194,7 +183,6 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
      *  @param port Port to find the index of.
      *  @return index of the port or null.
      */
-    @Override
     public Integer inputIndex(SyntacticPort port) {
         int index = _inputs.indexOf(port);
         return index < 0 ? null : index;
@@ -206,23 +194,19 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
      *  @param port Port to find the index of.
      *  @return index of the port or null.
      */
-    @Override
     public Integer outputIndex(SyntacticPort port) {
         int index = _outputs.indexOf(port);
         return index < 0 ? null : index;
     }
 
-    @Override
     public String generateCode() {
         return "";
     }
 
-    @Override
     public int getOrder() {
         return 99;
     }
 
-    @Override
     public boolean hasCode() {
         return true;
     }
