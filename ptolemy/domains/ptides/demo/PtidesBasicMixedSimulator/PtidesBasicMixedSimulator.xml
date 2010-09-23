@@ -15,7 +15,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Slobodan Matic and Jia Zou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 495.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 470.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -25,19 +25,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A mixed simulator that combines PTIDES with DE and Continuous directors.&#10;The PTIDES model is a simple proportional controller, which provides output&#10;depending on the difference between the current actual input and desired input.&#10;The Continuous model implements a plant model. The DE director on the outside&#10;simulates the passage of physical time.&#10;&#10;As we can see, the actual output tracks the desired output, which is the output&#10;of the Clock actor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 355.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 335.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 143, 823, 514}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 83, 819, 626}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[606, 516]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.829714137551">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.5703125, 268.3125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{303.0, 258.0}">
     </property>
     <entity name="Plant Model" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.5, 180.0]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -97,7 +97,7 @@
         <link port="PeriodicSampler2.output" relation="relation3"/>
     </entity>
     <entity name="Platform" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 245.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 235.0]">
         </property>
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
@@ -272,11 +272,11 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 0, 0, 0, 0, 0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 290.0]">
         </property>
     </entity>
     <entity name="Network Model" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 115.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.5, 105.0]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -327,17 +327,19 @@
         <link port="TimedDelay.output" relation="relation2"/>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={764, 338, 516, 357}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={797, 191, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 315.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 240.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
 <xRange min="0.0" max="5.0"/>
 <yRange min="-0.015649249276067836" max="1.0"/>
 </plot>?>
@@ -346,19 +348,19 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{170.0, 115.0}">
+        <vertex name="vertex1" value="[60.5, 105.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{295.0, 190.0}">
+        <vertex name="vertex1" value="[165.0, 180.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{315.0, 255.0}">
+        <vertex name="vertex1" value="[165.0, 290.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
