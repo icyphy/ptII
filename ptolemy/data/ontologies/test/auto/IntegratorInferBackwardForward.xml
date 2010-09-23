@@ -7,6 +7,8 @@
     <property name="DimensionSystemSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
         <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/dimensionSystem/DimensionSystemSolverModel.xml">
         </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="bidirectional">
+        </property>
         <property name="actorConstraintType" class="ptolemy.data.expr.StringParameter" value="out == in">
         </property>
         <property name="connectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
@@ -22,7 +24,7 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={676, 40, 678, 467}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={676, 40, 676, 460}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[463, 350]">
     </property>
