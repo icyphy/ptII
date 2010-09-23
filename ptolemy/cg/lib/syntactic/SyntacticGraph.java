@@ -29,20 +29,22 @@ COPYRIGHTENDKEY
 package ptolemy.cg.lib.syntactic;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.Stack;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.cg.lib.syntactic.SyntacticNode;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -70,8 +72,10 @@ public class SyntacticGraph extends CompositeEntity {
         _mediators = new LinkedList<SyntacticNode>();
         _feedIns = new LinkedList<SyntacticNode>();
         _feedOuts = new LinkedList<SyntacticNode>();
+        _representors = new LinkedList();
         _series = new SyntacticSeries();
         _contraction = null;
+        _representedModel = null;
         _exprName = new SyntacticName();
         
         _representingNodes = new HashMap();
@@ -79,6 +83,7 @@ public class SyntacticGraph extends CompositeEntity {
         _exoutNodes = new HashMap();
         _labelsToNodes = new HashMap();
         _nodesToLabels = new HashMap();
+        _representees = new HashMap();
         
         _feedbackRemoved = false;
         _madeBijective = false;
@@ -98,13 +103,16 @@ public class SyntacticGraph extends CompositeEntity {
         _feedOuts = new LinkedList<SyntacticNode>();
         _series = new SyntacticSeries();
         _contraction = null;
+        _representedModel = null;
         _exprName = new SyntacticName();
+        _representors = new LinkedList();
         
         _representingNodes = new HashMap();
         _exinNodes = new HashMap();
         _exoutNodes = new HashMap();
         _labelsToNodes = new HashMap();
         _nodesToLabels = new HashMap();
+        _representees = new HashMap();
         
         _feedbackRemoved = false;
         _madeBijective = false;
@@ -129,7 +137,9 @@ public class SyntacticGraph extends CompositeEntity {
         _feedIns = new LinkedList<SyntacticNode>();
         _feedOuts = new LinkedList<SyntacticNode>();
         _series = new SyntacticSeries();
+        _representors = new LinkedList();
         _contraction = null;
+        _representedModel = null;
         _exprName = new SyntacticName();
         
         _representingNodes = new HashMap();
@@ -137,6 +147,7 @@ public class SyntacticGraph extends CompositeEntity {
         _exoutNodes = new HashMap();
         _labelsToNodes = new HashMap();
         _nodesToLabels = new HashMap();
+        _representees = new HashMap();
         
         _feedbackRemoved = false;
         _madeBijective = false;
@@ -145,15 +156,67 @@ public class SyntacticGraph extends CompositeEntity {
         _labelCount = 0;
     }
     
+    
+    
+    public boolean build(CompositeEntity model)
+        throws IllegalActionException, NameDuplicationException {
+        
+        _representedModel = model;
+        
+        List<ComponentEntity> ents = model.entityList();
+        for (ComponentEntity ent : ents) {
+            addNode(ent);
+            /*
+            System.out.print("Entity: " + ent.getName() + "\n");
+            List<Port> ports = (List<Port>)ent.portList();
+            for (Port port : ports) {
+                SyntacticPort.IOType type = SyntacticPort.portType(port, model);
+                Integer width = SyntacticPort.portWidth(port);
+                System.out.print("    Port: " + port.getName() + "(" + type + ": " + width + ") => \n");
+                List<Port> rports = (List<Port>)port.connectedPortList();
+                for (Port rport : rports) {
+                    SyntacticPort.IOType rtype = SyntacticPort.portType(rport, model);
+                    Integer rwidth = SyntacticPort.portWidth(rport);
+                    System.out.print("      -> " + rport.getName() + "(" + rtype + ": " + rwidth + ")\n");
+                }
+                
+            }
+            */
+        }
+        
+        makeBijective();
+        removeFeedback();
+        structure();
+        insertPermutations();
+        layoutGraph();
+        
+        return true;
+    }
+    
+    public void addNode2(Entity entity)
+            throws IllegalActionException, NameDuplicationException {
+        
+        int repcount = _representors.size();
+        SyntacticNode node = new SyntacticNode(this, "rep_" + repcount);
+        node.representEntity(entity);
+        _representors.add(node);
+        _representees.put(entity, node);
+    }
+    
     /** Add entity to the syntactic graph wrapping with syntactic node.
      *  @param entity Entity to add to the graph.
      */
     public void addNode(Entity entity) 
-        throws IllegalActionException, NameDuplicationException {
-        SyntacticNode node = new SyntacticNode((CompositeEntity)this, "sn_ref_" + entity.getName());
+            throws IllegalActionException, NameDuplicationException {
+        
+        int repcount = _representors.size();
+        SyntacticNode node = new SyntacticNode((CompositeEntity)this, "rep_" + repcount);
         node.representEntity(entity);
+        _representors.add(node);
+        _representees.put(entity, node);
         addNode(node);
     }
+    
     
     /** Add a SyntacticNode to the Graph. 
      *  Nodes are either purely syntactic nodes or nodes that
@@ -175,7 +238,7 @@ public class SyntacticGraph extends CompositeEntity {
         for (SyntacticPort port : inputs) {
             // Terminate empty ports syntactically
             if (port.isEmpty()) {
-                SyntacticNode interm = new SyntacticNode(this, "term_" + _pureCount + "_" + port.getName());
+                SyntacticNode interm = new SyntacticNode(this, "term_" + _pureCount);
                 ++_pureCount;
                 interm.setCap(false);
                 
@@ -198,7 +261,7 @@ public class SyntacticGraph extends CompositeEntity {
                     if (!(centity_ob instanceof Entity)) continue;
                     
                     Entity centity = (Entity)centity_ob;
-                    if (centity instanceof CompositeEntity) {
+                    if (centity instanceof CompositeEntity && centity == _representedModel) {
                         if (!(cport instanceof IOPort && ((IOPort)cport).isInput())) continue;
                         
                         SyntacticNode exin = new SyntacticNode(this, "exin_" + _pureCount);
@@ -239,7 +302,7 @@ public class SyntacticGraph extends CompositeEntity {
             
             // Terminate empty ports syntactically
             if (port.isEmpty()) {
-                SyntacticNode outterm = new SyntacticNode(this, "init_" + _pureCount + "_" + port.getName());
+                SyntacticNode outterm = new SyntacticNode(this, "init_" + _pureCount);
                 ++_pureCount;
                 outterm.setCap(true);
                 
@@ -262,7 +325,7 @@ public class SyntacticGraph extends CompositeEntity {
                     if (!(centity_ob instanceof Entity)) continue;
                     
                     Entity centity = (Entity)centity_ob;
-                    if (centity instanceof CompositeEntity) {
+                    if (centity instanceof CompositeEntity && centity == _representedModel) {
                         if (!(cport instanceof IOPort && ((IOPort)cport).isOutput())) continue;
                         
                         SyntacticNode exout = new SyntacticNode(this, "exout_" + _pureCount);
@@ -298,6 +361,7 @@ public class SyntacticGraph extends CompositeEntity {
         
         _addRepresentativeNode(node);
     }
+    
     
     /** Make SyntacticGraph bijective by adding pure nodes.
      *  Pure nodes are added to mediate multiply connected nodes.
@@ -399,6 +463,7 @@ public class SyntacticGraph extends CompositeEntity {
         _nodes.addAll(_mediators);
     }
     
+    
     /** Remove feedback from graph and draw connections out to periphery.
      *  This can only be done when the graph is bijective, though this
      *  might still work with more constraints given a multiply connected 
@@ -409,8 +474,11 @@ public class SyntacticGraph extends CompositeEntity {
         Collection<SyntacticNode> rootSet = _getRootSet();
         if (rootSet.size() == 0) {
             // Here I should preload a node at random?
-            System.out.print("The graph is compact.\n");
-            return;
+            System.out.print("The graph is compact. A root node is being chosen.\n");
+            if (_nodes.isEmpty()) return;
+            
+            // Loading the first node in the set as the root.
+            rootSet.add(_nodes.getFirst());
         }
         
         _clearVisited();
@@ -489,6 +557,7 @@ public class SyntacticGraph extends CompositeEntity {
         
     }
     
+    
     /** Structure the graph into columns. 
      *  This transformation imposes a partial order on the acyclic graph.
      */
@@ -501,8 +570,8 @@ public class SyntacticGraph extends CompositeEntity {
         }
         
         Collection<SyntacticNode> rootSet = _getRootSet();
-        if (rootSet.size() == 0) {
-            System.out.print("The graph is compact.\n");
+        if (rootSet.isEmpty()) {
+            System.out.print("The graph is without boundaries.\n");
             return;
         }
         
@@ -634,6 +703,7 @@ public class SyntacticGraph extends CompositeEntity {
             List<SyntacticPort> sports = scol.getOutputs();
             List<SyntacticPort> rports = rcol.getInputs();
             
+            boolean isordered = true;
             int nperm = sports.size();
             int permutation[] = new int[nperm];    
             for (int n = 0; n < nperm; ++n) {
@@ -645,34 +715,37 @@ public class SyntacticGraph extends CompositeEntity {
                 if (rdex == null) continue;
                 
                 permutation[n] = rdex;
+                if (n != rdex) isordered = false;
             }
             
-            SyntacticNode permnode = new SyntacticNode(this, "perm_" + _pureCount);
-            ++_pureCount;
-            permnode.setPermutation(permutation);
+            if (!isordered) {
+                SyntacticNode permnode = new SyntacticNode(this, "perm_" + _pureCount);
+                ++_pureCount;
+                permnode.setPermutation(permutation);
             
-            List<SyntacticPort> iports = permnode.getInputs();
-            List<SyntacticPort> oports = permnode.getOutputs();
-            int osize = oports.size();
-            if (osize != iports.size()) return;
+                List<SyntacticPort> iports = permnode.getInputs();
+                List<SyntacticPort> oports = permnode.getOutputs();
+                int osize = oports.size();
+                if (osize != iports.size()) return;
             
-            for (int n = 0; n < nperm; ++n) {
-                int rdex = permutation[n];
-                if (rdex >= osize) continue;
+                for (int n = 0; n < nperm; ++n) {
+                    int rdex = permutation[n];
+                    if (rdex >= osize) continue;
                 
-                SyntacticPort sport = sports.get(n);
-                SyntacticPort rport = rports.get(rdex);
-                SyntacticPort iport = permnode.getInputs().get(n);
-                SyntacticPort oport = permnode.getOutputs().get(rdex);
+                    SyntacticPort sport = sports.get(n);
+                    SyntacticPort rport = rports.get(rdex);
+                    SyntacticPort iport = permnode.getInputs().get(n);
+                    SyntacticPort oport = permnode.getOutputs().get(rdex);
                 
-                _removeConnection(sport);
-                _removeConnection(rport);
-                _makeConnection(sport, iport);
-                _makeConnection(oport, rport);
-            }
+                    _removeConnection(sport);
+                    _removeConnection(rport);
+                    _makeConnection(sport, iport);
+                    _makeConnection(oport, rport);
+                }
          
-            permcol.add(permnode);   
-            _addExteriorNode(permnode);
+                permcol.add(permnode);   
+                _addExteriorNode(permnode);
+            }
             scol = rcol;
         }
         
@@ -689,6 +762,8 @@ public class SyntacticGraph extends CompositeEntity {
             if (!(termIt instanceof SyntacticColumn)) continue;
             
             SyntacticColumn colIt = (SyntacticColumn)termIt; 
+            if (colIt.isEmpty()) continue;
+            
             for (SyntacticTerm term : colIt) {
                 if (!(term instanceof SyntacticNode)) continue;
                 
@@ -708,7 +783,7 @@ public class SyntacticGraph extends CompositeEntity {
         String code = "";
         for (SyntacticNode node : _nodes) {
             if (node.isRepresentative()) {
-                code += "" + getLabelFromNode(node) + " = \t" + node.getName() + "\n";
+                code += "" + getLabelFromNode(node) + " = \t" + node.getRepresented().getName() + "\n";
             }
         }
         code += "\n";
@@ -728,24 +803,27 @@ public class SyntacticGraph extends CompositeEntity {
         return code + _exprName.generateDefinitionCode() + "\n";
     }
     
+    
     /** Determine whether feedback has been removed.
      *  Feedback is transformed into named pairs of initial and
      *  terminal syntactic nodes.
      *  @return Whether feedback has been removed.
-     * */
+     */
     public boolean isFeedbackRemoved() {
         return _feedbackRemoved;
     }
+    
     
     /** Determine whether the graph has been made completely bijective.
      *  Multiple relations are either removed in the nodes by repeating 
      *  multivalent ports as series of single ports, or removed in the
      *  graph by representing splits and merges as purely syntactic nodes.
      *  @return Whether graph has been made bijective.
-     * */
+     */
     public boolean isBijective() {
         return _madeBijective;
     }
+    
     
     /** Print description of Syntactic Graph.
      * @param prefix Line prefix for embedding description
@@ -800,6 +878,7 @@ public class SyntacticGraph extends CompositeEntity {
         return desc;
     }
     
+    
     /** Get the node associated with a given label or null.
      *  @param label The label given for a node.
      *  @return The node associated with the given label or null.
@@ -809,6 +888,7 @@ public class SyntacticGraph extends CompositeEntity {
         return _labelsToNodes.get(label);
     }
     
+    
     /** Get the label associated with a give node.
      *  @param node The node give for a label.
      *  @return The label associated with the given node or null.
@@ -817,6 +897,7 @@ public class SyntacticGraph extends CompositeEntity {
         if (!_nodesToLabels.containsKey(node)) return null;
         return _nodesToLabels.get(node);
     }
+    
     
     /** Add a unique label to given node or return its current label.
      *  @param node The node to give a label to.
@@ -868,8 +949,6 @@ public class SyntacticGraph extends CompositeEntity {
         return acc;
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -892,6 +971,7 @@ public class SyntacticGraph extends CompositeEntity {
         }
     }
     
+    
     /** Add node that represents an exterior port.
      *  If the node is does not have an exterior port it will not be
      *  added to the map between ports and nodes.
@@ -903,6 +983,7 @@ public class SyntacticGraph extends CompositeEntity {
         _nodes.add(node);
         addLabelFromNode(node);
     }
+    
     
     /** Make connection between SyntacticPorts in Syntactic Nodes.
      * 
@@ -919,6 +1000,7 @@ public class SyntacticGraph extends CompositeEntity {
                          "::"   + in.getName() + "\n");
     }
     
+    
     /** Remove connection from SyntacticPorts in Syntactic Nodes.
      * 
      *  @param port The port to disconnect.
@@ -928,6 +1010,7 @@ public class SyntacticGraph extends CompositeEntity {
         throws IllegalActionException {
         port.unlinkAll();
     }
+    
     
     /** Get the input channel connected to in a given port from a given output port and channel.
      *  If no connection is found null is returned.
@@ -970,6 +1053,7 @@ public class SyntacticGraph extends CompositeEntity {
         
         return ichan;
     }
+    
     
     /** Get the output channel connected to in a given port from a given input port and channel.
      *  If no connection is found null is returned.
@@ -1017,6 +1101,7 @@ public class SyntacticGraph extends CompositeEntity {
         return ochan;
     }
     
+    
     /** Get the set of initial nodes as a Collection.
      * 
      *  @return A Collection containing the initial nodes in the graph.
@@ -1030,6 +1115,7 @@ public class SyntacticGraph extends CompositeEntity {
         return rootSet;
     }
     
+    
     /** Clear all the visited flags in the nodes.
      *  This is used for visiting algorithms.
      */
@@ -1039,6 +1125,7 @@ public class SyntacticGraph extends CompositeEntity {
         }
     }
     
+    
     /** Clear all the visited flags in the nodes.
      *  This is used for visiting algorithms.
      */
@@ -1047,6 +1134,7 @@ public class SyntacticGraph extends CompositeEntity {
             node.setMarked(false);
         }
     }
+    
     
     /** Get list of input ports for model.
      *  @return List of input ports. 
@@ -1067,6 +1155,7 @@ public class SyntacticGraph extends CompositeEntity {
         
         return innodes;
     }
+    
     
     /** Get list of output ports for model.
      *  @return List of output ports.
@@ -1091,6 +1180,10 @@ public class SyntacticGraph extends CompositeEntity {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    private LinkedList<SyntacticNode> _representors;
+    private HashMap<Entity, SyntacticNode> _representees;
+    private CompositeEntity _representedModel;
     
     /** List of nodes in the Graph. */
     private LinkedList<SyntacticNode> _nodes;

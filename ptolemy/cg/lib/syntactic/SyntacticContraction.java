@@ -35,6 +35,7 @@ public class SyntacticContraction implements SyntacticTerm {
     public SyntacticContraction(int degree) {
         _degree = degree > 0 ? degree : 0;
         _kernel = null;
+        _rank = null;
     }
     
     public List<SyntacticPort> getInputs() {
@@ -57,8 +58,8 @@ public class SyntacticContraction implements SyntacticTerm {
         return _kernel == null ? 0 : (_kernel.sizeOutputs() - _degree);
     }
     
-    public Rank rank() {
-        return null;
+    public SyntacticRank rank() {
+        return _rank;
     }
     
     public Integer inputIndex(SyntacticPort port) {
@@ -72,25 +73,22 @@ public class SyntacticContraction implements SyntacticTerm {
     }
     
     public boolean setKernel(SyntacticTerm term) {
-        int termIns = term.sizeInputs();
-        int termOuts = term.sizeOutputs();
+        SyntacticRank rank  = term.rank();
+        SyntacticRank crank = SyntacticRank.contract(rank, _degree);
+        
+        if (crank == null) return false;
+        _rank = crank;
+        _kernel = term;
         
         System.out.print("\nSetting Kernel with degree "
-            + _degree + " and boundary " + termIns + " => " + termOuts + ".\n");
+            + _degree + " and boundary " + crank.generateCode() + ".\n");
         
-        if (_degree > termIns || _degree > termOuts) return false;
-        
-        _kernel = term;
         return true;
     }
     
     public String generateCode() {
-        return "{" + _degree + ": " + 
-            (_kernel == null ? "" : _kernel.generateCode()) + "}";
-    }
-    
-    public String boundaryCode() {
-        return "";
+        if (_kernel == null) return "{}";
+        else return "{" + _degree + ": " + _kernel.generateCode() + "}";
     }
     
     public int getOrder() {
@@ -113,5 +111,6 @@ public class SyntacticContraction implements SyntacticTerm {
     
     private SyntacticTerm _kernel;
     private int _degree;
+    private SyntacticRank _rank;
     
 }

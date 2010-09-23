@@ -52,8 +52,11 @@ public class SyntacticName implements SyntacticTerm {
         return _term == null ? 0 : _term.sizeOutputs();
     }
     
-    public Rank rank() {
-        return new SyntacticTerm.Rank(sizeOutputs(), 0, sizeInputs(), 0);
+    public SyntacticRank rank() {
+        if (_term == null) return null;
+        
+        SyntacticRank rank = _term.rank();
+        return rank == null ? null : rank.copy();
     }
     
     public Integer inputIndex(SyntacticPort port) {
@@ -64,12 +67,13 @@ public class SyntacticName implements SyntacticTerm {
         return _term == null ? null : _term.outputIndex(port);
     }
     
-    public String boundaryCode() {
-        return "" + sizeInputs() + " --> " + sizeOutputs();
-    }
-    
     public String generateCode() {
-        return _name + (_term == null ? "<>" : _term.boundaryCode());
+        String boundary = SyntacticRank.noCode();
+        if (_term != null) {
+            SyntacticRank rank = _term.rank(); 
+            if (rank != null) boundary = rank.generateCode();
+        }
+        return _name + boundary;
     }
     
     public String generateDefinitionCode() {

@@ -28,14 +28,16 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.lib.syntactic;
 
+import java.lang.String;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.LinkedList;
 
 import ptolemy.actor.IOPort;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
+import ptolemy.cg.lib.syntactic.SyntacticPort;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.Token;
+import ptolemy.data.DoubleToken;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -181,6 +183,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         
         List<Port> ports = entity.portList();
         for (Port ep : ports) {
+            
             // Only case at the present
             if (ep instanceof IOPort) {
                 IOPort ioep = (IOPort)ep;
@@ -228,6 +231,31 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         _attachText("_iconDescription", _representativeIcon);
         
         return totalr;
+    }
+    
+    public int addPorts(Port port, boolean isin) 
+            throws IllegalActionException, NameDuplicationException {
+        String prefix = (isin ? "in_" : "out_");
+        List<SyntacticPort> portset = isin ? _inputs : _outputs;
+        String cardinality = isin ? "WEST" : "EAST";
+        
+        int width = SyntacticPort.portWidth(port);
+        int index = portset.size();
+        
+        (isin ? _inref : _outref).put(port, index);
+        
+        for (int n = index; n < width + index; ++n, ++_numOuts) {
+            SyntacticPort rport = new SyntacticPort(this, port, isin, prefix + n);
+            rport.setChannel(n);
+            portset.add(rport);
+            StringAttribute cardinal = new StringAttribute(rport, "_cardinal");
+            cardinal.setExpression(cardinality);
+        }
+        
+        if (isin) _numIns += width;
+        else _numOuts += width;
+        
+        return width;
     }
     
     /** Represent an exterior port with a purely syntactic Node.
@@ -600,8 +628,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Get the Syntactic rank of the node.
      *  @return rank of the node.
      */
-    public Rank rank() {
-        return new SyntacticTerm.Rank(sizeOutputs(), 0, sizeInputs(), 0);
+    public SyntacticRank rank() {
+        return new SyntacticRank(sizeOutputs(), 0, sizeInputs(), 0);
     }
 
     /** Generate a string signifying the boundary of a node.

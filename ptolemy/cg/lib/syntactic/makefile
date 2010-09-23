@@ -55,7 +55,8 @@ JSRCS = \
 	SyntacticNode.java \
 	SyntacticPort.java \
 	SyntacticSeries.java \
-	SyntacticTerm.java
+	SyntacticTerm.java \
+	SyntacticTermList.java
 
 OTHER_FILES_TO_BE_JARED =
 

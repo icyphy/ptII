@@ -47,86 +47,47 @@ public interface SyntacticTerm {
     /** Return list of input Syntactic Ports to term. 
      *  @return list of inputs.
      */
-    public List<SyntacticPort> getInputs();
+    public abstract List<SyntacticPort> getInputs();
     
     /** Return list of output Syntactic Ports to term. 
      *  @return list of outputs.
      */
-    public List<SyntacticPort> getOutputs();
+    public abstract List<SyntacticPort> getOutputs();
     
     /** Get number of inputs to term. 
      *  @return number of inputs. 
      */
-    public int sizeInputs();
+    public abstract int sizeInputs();
     
     /** Get number of outputs to term. 
      *  @return number of outputs.
      */
-    public int sizeOutputs();
+    public abstract int sizeOutputs();
     
     /** Get rank of term. 
      *  @return rank of term.
      */
-    public Rank rank();
+    public abstract SyntacticRank rank();
     
     /** Get index of given port or null.
      *  @param port to get the index of. 
      *  @return index of given port or null
      */
-    public Integer inputIndex(SyntacticPort port);
+    public abstract Integer inputIndex(SyntacticPort port);
     
     /** Get index of given port or null.
      *  @param port to get the index of. 
      *  @return index of given port or null
      */
-    public Integer outputIndex(SyntacticPort port);
+    public abstract Integer outputIndex(SyntacticPort port);
     
     /** Generate code for given term.
      *  @return generated code string.
      */
-    public String generateCode();
+    public abstract String generateCode();
     
-    /** Generate boundary code for given term.
-     *  @return boundary code string.
-     */
-    public String boundaryCode();
-    
-    public int getOrder();
-    public boolean hasCode();
-    
-    public class Rank {
-        public Rank(int fo, int ro, int fi, int ri) {
-            _rank = new int[_dimension];
-            _rank[_forwardOut] = fo;
-            _rank[_reverseOut] = ro;
-            _rank[_forwardIn]  = fi;
-            _rank[_reverseIn]  = ri;
-        }
-        
-        int forwardOut() {
-            return _rank[_forwardOut];
-        }
-        
-        int reverseOut() {
-            return _rank[_reverseOut];
-        }
-        
-        int forwardIn() {
-            return _rank[_forwardIn];
-        }
-        
-        int reverseIn() {
-            return _rank[_reverseIn];
-        }
-        
-        private static final int _forwardOut = 0;
-        private static final int _reverseOut = 1;
-        private static final int _forwardIn  = 2;
-        private static final int _reverseIn  = 3;
-        private static final int _dimension  = 4;
-        
-        private int _rank[];
-    }
+    public abstract int getOrder();
+    public abstract boolean hasCode();
     
 }
 

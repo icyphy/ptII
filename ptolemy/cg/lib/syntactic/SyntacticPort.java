@@ -31,7 +31,9 @@ package ptolemy.cg.lib.syntactic;
 import java.util.List;
 
 import ptolemy.actor.IOPort;
+import ptolemy.cg.lib.syntactic.SyntacticNode;
 import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -60,8 +62,10 @@ public class SyntacticPort extends ComponentPort {
     public SyntacticPort() {
         _representedPort = null;
         _representedChannel = 0;
+        _representedWidth = 0;
         _isEmpty = true;
         _isInput = false;
+        _iotype = IOType.none;
     }
 
     /** Construct SyntacticPort with given workspace.
@@ -71,8 +75,10 @@ public class SyntacticPort extends ComponentPort {
         super(workspace);
         _representedPort = null;
         _representedChannel = 0;
+        _representedWidth = 0;
         _isEmpty = true;
         _isInput = false;
+        _iotype = IOType.none;
     }
 
     /** Construct SyntacticPort with given container and name.
@@ -90,20 +96,12 @@ public class SyntacticPort extends ComponentPort {
         super(container, name);
         _representedPort = port;
         _representedChannel = 0;
-        _isEmpty = true;
-        _isInput = direction;
         
-        // If representing an actual port
-        if (port != null) {
-            if (port instanceof IOPort) {
-                IOPort ioport = (IOPort)port;
-                _isEmpty = ioport.getWidth() == 0;
-                
-                
-            }
-            
-            
-        }
+        Integer width = portWidth(port);
+        _representedWidth = width == null ? 0 : width;
+        _isEmpty = _representedWidth == 0;
+        _isInput = direction;
+        _iotype = portType(port);
     }
     
     /** Get the connected port from a given port.
@@ -182,6 +180,51 @@ public class SyntacticPort extends ComponentPort {
         return _isEmpty;
     }
     
+    public IOType getType() {
+        return _iotype;
+    }
+    
+    static public IOType portType(Port port) {
+        if (!(port instanceof IOPort)) return IOType.none;
+        
+        IOPort ioport = (IOPort)port;
+        boolean isin  = ioport.isInput();
+        boolean isout = ioport.isOutput();
+        
+        if (isin && isout) return IOType.io;
+        else if (isin)     return IOType.in;
+        else if (isout)    return IOType.out;
+        else               return IOType.none;
+    }
+    
+    static public boolean isPortExterior(Port port, CompositeEntity entity) {
+        return port.getContainer() == (NamedObj)entity;
+    }
+    
+    static public IOType portType(Port port, CompositeEntity entity) {
+        IOType type = portType(port);
+        return isPortExterior(port, entity) ? type.reverse() : type;
+    }
+    
+    static public Integer portWidth(Port port)
+        throws IllegalActionException {
+        if (!(port instanceof IOPort)) return null;
+        
+        IOPort ioport = (IOPort)port;
+        int width = ioport.getWidth();
+        return width;
+    }
+    
+    public enum IOType { 
+        in, out, io, none; 
+        
+        public IOType reverse() {
+            return this == in  ? out 
+                 : this == out ? in 
+                 : this;
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
@@ -191,6 +234,9 @@ public class SyntacticPort extends ComponentPort {
     /** Channel represented of the represented port. */
     private int _representedChannel;
     
+    /** Total width of the represented port. */
+    private int _representedWidth;
+    
     /** True if Syntactic Port is an input port. */
     private boolean _isInput;
     //private boolean _isOutput;
@@ -198,4 +244,6 @@ public class SyntacticPort extends ComponentPort {
     /** True if Syntactic Port is not pointing to a represented port. */
     private boolean _isEmpty;
 
+    /** Syntactic direction of connection. */
+    private IOType _iotype;
 }

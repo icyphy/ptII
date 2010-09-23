@@ -30,47 +30,75 @@ package ptolemy.cg.lib.syntactic;
 
 import java.util.LinkedList;
 
-public class SyntacticSeries 
-extends LinkedList<SyntacticTerm> implements SyntacticTerm {
+public class SyntacticSeries extends SyntacticTermList {
 
     public SyntacticSeries() {
         super();
-        _inputs = new LinkedList();
-        _outputs = new LinkedList();
     }
 
     public boolean add(SyntacticTerm term) {
         if (contains(term)) return false;
+        
+        SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank.compose(this, term);
+        if (rank == null) return false;
+        
         if (!super.add(term)) return false;
 
-        if (this.size() == 1) {
+        if (size() == 1) {
             _inputs.clear();
             _inputs.addAll(term.getInputs());
         }
 
         _outputs.clear();
         _outputs.addAll(term.getOutputs());
+        
+        _rank = rank.copy();
         return true;
     }
-
-    public void add(int index, SyntacticTerm term) {
+    
+    public void push(SyntacticTerm term) {
         if (contains(term)) return;
-        super.add(index, term);
+        
+        SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank.compose(term, this);
+        if (rank == null) return;
+        
+        super.push(term);
 
-        int size = this.size();
-        if (index == 0) {
-            _inputs.clear();
-            _inputs.addAll(term.getInputs());
-        }
-
-        else if (index == size - 1) {
+        if (size() == 1) {
             _outputs.clear();
             _outputs.addAll(term.getOutputs());
         }
+        
+        _inputs.clear();
+        _inputs.addAll(term.getInputs());
+        
+        _rank = rank.copy();
     }
 
+    public void add(int index, SyntacticTerm term) {
+        if (contains(term) || index < 0 || index > size()) return;
+        
+        if (index == size()) { // append case
+            add(term);
+            return;
+        }
+        
+        else if (index == 0) { // prepend case
+            push(term);
+            return;
+        }
+        
+        else { // middle case
+            SyntacticTerm tF = get(index), tP = get(index-1);
+            if (SyntacticRank.compose(tP, term) == null || SyntacticRank.compose(term, tF) == null) {
+                super.add(index, term);
+            }
+        }
+    }
+
+    // [TODO] : add rank logic
     public boolean remove(SyntacticTerm term) {
-        if (contains(term)) return false;
+        if (!contains(term)) return false;
         int index = this.indexOf(term);
         int size = this.size();
 
@@ -93,34 +121,6 @@ extends LinkedList<SyntacticTerm> implements SyntacticTerm {
         return true;
     }
 
-    public void clear() {
-        super.clear();
-        _inputs.clear();
-        _outputs.clear();
-    }
-
-    public Integer inputIndex(SyntacticPort port) {
-        int dex = _inputs.indexOf(port);
-        return dex < 0 ? null : dex;
-    }
-
-    public Integer outputIndex(SyntacticPort port) {
-        int dex = _outputs.indexOf(port);
-        return dex < 0 ? null : dex;
-    }
-    
-    public Rank rank() {
-        return new SyntacticTerm.Rank(sizeOutputs(), 0, sizeInputs(), 0);
-    }
-
-    public int getOrder() {
-        return 101;
-    }
-
-    public boolean hasCode() {
-        return true;
-    }
-
     public void intercolatePermutations() {
 
     }
@@ -134,38 +134,7 @@ extends LinkedList<SyntacticTerm> implements SyntacticTerm {
         return SyntacticGraph.stringJoin(termStrs, "\n        =>= ");
     }
 
-    /** Get all of the output ports for a column.
-     *  @return A list of input ports for the column.
-     */
-    public LinkedList<SyntacticPort> getInputs() {
-        return _inputs;
-    }
-
-    /** Get all of the output ports for a column.
-     *  @return A list of input ports for the column.
-     */
-    public LinkedList<SyntacticPort> getOutputs() {
-        return _outputs;
-    }
-
-    public int sizeInputs() {
-        //return _inputs == null ? 0 : _inputs.size();
-        return this.size() > 0 ? this.getFirst().sizeInputs() : 0;
-    }
-    
-    public int sizeOutputs() {
-        //return _outputs == null ? 0 : _outputs.size();
-        return this.size() > 0 ? this.getLast().sizeOutputs() : 0;
-    }
-
-    public String boundaryCode() {
-        return "" + sizeInputs() + " --> " + sizeOutputs();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private LinkedList<SyntacticPort> _inputs;
-    private LinkedList<SyntacticPort> _outputs;
 
 }

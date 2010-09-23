@@ -44,77 +44,11 @@ import java.util.LinkedList;
  *  @Pt.AcceptedRating red 
  *
  */
-public class SyntacticColumn 
-    extends LinkedList<SyntacticTerm> implements SyntacticTerm {
+public class SyntacticColumn extends SyntacticTermList {
 
     /** Create new empty Syntactic Column. */
     public SyntacticColumn() {
         super();
-        _inputs = new LinkedList();
-        _outputs = new LinkedList();
-    }
-
-    /** Add a Syntactic Term to the column.
-     *  Inputs and outputs are added to the total 
-     *  inputs and outputs of the composition.
-     *  <p>
-     *  This method overrides the LinkedList add.
-     *  <p>
-     *  @param node Term to add to the composition.
-     *  @return whether node was added.
-     */
-    public boolean add(SyntacticTerm node) {
-        if (contains(node)) return false;
-        super.add(node);
-        _inputs.addAll(node.getInputs());
-        _outputs.addAll(node.getOutputs());
-        return true;
-    }
-
-    /** Remove a Syntactic Term from column.
-     *  Inputs and outputs are removed from the 
-     *  total inputs and outputs.
-     *  <p>
-     *  This method overrides the LinkedList remove.
-     *  <p>
-     *  @param node Term to be removed from the composition.
-     *  @return whether term was removed.
-     */
-    public boolean remove(SyntacticTerm node) {
-        if (contains(node)) return false;
-        _inputs.removeAll(node.getInputs());
-        _outputs.removeAll(node.getOutputs());
-        super.remove(node);
-        return true;
-    }
-
-    /** Clear column */
-    public void clear() {
-        super.clear();
-        _inputs.clear();
-        _outputs.clear();
-    }
-
-    /** Get the index of the syntactic input port in the column.
-     *  If the given port is not in the inputs for the 
-     *  column null is returned.
-     *  @param port Port to find the index of.
-     *  @return index of the port or null.
-     */
-    public Integer inputIndex(SyntacticPort port) {
-        int dex = _inputs.indexOf(port);
-        return dex < 0 ? null : dex;
-    }
-
-    /** Get the index of the syntactic output port in the column.
-     *  If the given port is not in the outputs for the 
-     *  column null is returned.
-     *  @param port Port to find the index of.
-     *  @return index of the port or null.
-     */
-    public Integer outputIndex(SyntacticPort port) {
-        int dex = _outputs.indexOf(port);
-        return dex < 0 ? null : dex;
     }
 
     /** Decide if given node follows completely from this column.
@@ -151,22 +85,7 @@ public class SyntacticColumn
         };
 
         Collections.sort(this, compareNodes);
-        _inputs.clear();
-        _outputs.clear();
-
-        for (SyntacticTerm node : this) {
-            _inputs.addAll(node.getInputs());
-            _outputs.addAll(node.getOutputs());
-        }
-
-    }
-
-    public int getOrder() {
-        return 100;
-    }
-
-    public boolean hasCode() {
-        return true;
+        _refreshPorts();
     }
 
     public String generateCode() {
@@ -177,51 +96,10 @@ public class SyntacticColumn
 
         return SyntacticGraph.stringJoin(termStrs, " | ");
     }
-
-    /** Get all of the output ports for a column.
-     *  @return A list of input ports for the column.
-     */
-    public LinkedList<SyntacticPort> getInputs() {
-        return _inputs;
-    }
-
-    /** Get all of the output ports for a column.
-     *  @return A list of input ports for the column.
-     */
-    public LinkedList<SyntacticPort> getOutputs() {
-        return _outputs;
-    }
-
-    public int sizeInputs() {
-        //return _inputs == null ? 0 : _inputs.size();
-        int nins = 0;
-        for (SyntacticTerm term : this) {
-            nins += term.sizeInputs();
-        }
-        return nins;
+    
+    public boolean hasCode() {
+        return !isEmpty();
     }
     
-    public int sizeOutputs() {
-        //return _outputs == null ? 0 : _outputs.size();
-        int nouts = 0;
-        for (SyntacticTerm term : this) {
-            nouts += term.sizeOutputs();
-        }
-        return nouts;
-    }
-    
-    public Rank rank() {
-        return new SyntacticTerm.Rank(sizeOutputs(), 0, sizeInputs(), 0);
-    }
-    
-    public String boundaryCode() {
-        return "" + sizeInputs() + " --> " + sizeOutputs();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private LinkedList<SyntacticPort> _inputs;
-    private LinkedList<SyntacticPort> _outputs;
 
 }
