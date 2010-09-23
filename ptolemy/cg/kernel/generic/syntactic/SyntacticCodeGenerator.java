@@ -28,13 +28,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.syntactic;
 
-import java.util.List;
-
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.lib.SyntacticGraph;
-import ptolemy.kernel.ComponentEntity;
+import ptolemy.cg.lib.syntactic.SyntacticGraph;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -75,8 +72,9 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
         
         generatorPackageList.setExpression("");
         
-        _syntaxGraph = new SyntacticGraph();
-        _syntaxGraph.setName("syntaxGraph");
+        _graphCount = 0;
+        _syntaxGraph = null;//new SyntacticGraph();
+        //_syntaxGraph.setName("syntaxGraph");
     }
 
     /** Format a string as a code comment. 
@@ -116,18 +114,12 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
     protected int _generateCode(StringBuffer code) throws KernelException {
         code.append("{--- Syntactic Representation of graph ---}" + _eol);
         
+        _syntaxGraph = new SyntacticGraph();
+        _syntaxGraph.setName("syntaxGraph" + (++_graphCount));
+        
         // Get top level actor
         CompositeEntity container = ((CompositeEntity) getContainer());
-        for (ComponentEntity ent : (List<ComponentEntity>)(container.entityList())) {
-            _syntaxGraph.addNode(ent);
-            code.append("    ---- visiting: " + ent.getName() + _eol);
-        }
-        
-        _syntaxGraph.makeBijective();
-        _syntaxGraph.removeFeedback();
-        _syntaxGraph.structure();
-        _syntaxGraph.insertPermutations();
-        _syntaxGraph.layoutGraph();
+        _syntaxGraph.build(container);
         _showGraph();
         
         code.append(_syntaxGraph.generateCode());
@@ -160,5 +152,6 @@ public class SyntacticCodeGenerator extends GenericCodeGenerator {
     
     private SyntacticGraph _syntaxGraph;
     private Tableau _syntaxTableau;
+    private int _graphCount;
     
 }
