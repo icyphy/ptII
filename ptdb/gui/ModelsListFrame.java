@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManager;
@@ -87,9 +88,11 @@ public class ModelsListFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         _setTableData();
-        _setPageNumbers();
+        _setPageNumbers();        
         jScrollPane1.setViewportView(_modelsListTable);
-        _modelsListTable.getColumnModel().getColumn(0).setPreferredWidth(20);
+        
+//        _modelsListTable.getColumnModel().getColumn(0).setPreferredWidth(20);
+        
         _modelsListTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
@@ -142,7 +145,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
                                         .addComponent(
                                                 _noOfModelsLable,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
-                                                18,
+                                                50,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED,
@@ -400,7 +403,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
             }
 
             _modelsListTable.setModel(new javax.swing.table.DefaultTableModel(modelData,
-                    new String[] { "#", "Model Name" }) {
+                    new String[] { " # ", "Model Name" }) {
                 Class[] types = new Class[] { java.lang.Long.class,
                         java.lang.String.class };
                 boolean[] canEdit = new boolean[] { false, false };
@@ -414,8 +417,9 @@ public class ModelsListFrame extends javax.swing.JFrame {
                 }
             });
 
-            _modelsListTable.getColumn("#").setMaxWidth(5);
-            _modelsListTable.getColumn("#").setPreferredWidth(5);
+            _modelsListTable.getColumn(" # ").setMinWidth(40);
+            _modelsListTable.getColumn(" # ").setMaxWidth(40);
+            _modelsListTable.getColumn(" # ").setPreferredWidth(40);
             _checkButtonsAndPageNumber();
         } catch (Exception e) {
             MessageHandler.error("Could not load the models list. ", e);
@@ -432,10 +436,10 @@ public class ModelsListFrame extends javax.swing.JFrame {
         }
         _pageNumberCombo.setModel(new javax.swing.DefaultComboBoxModel(pages));
     }
-/*
-    *//**
+
+    /**
     * @param args the command line arguments
-    *//*
+    */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -443,7 +447,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
             }
         });
     }
-*/
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button _previousPageButton;
     private java.awt.Button _nextPageButton;
