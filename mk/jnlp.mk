@@ -498,6 +498,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/psdf/demo/demo.jar \
 	ptolemy/domains/psdf/doc/doc.jar \
 	lib/mapss.jar \
+	ptolemy/domains/ptides/ptides.jar \
+	ptolemy/domains/ptides/demo/demo.jar \
 	ptolemy/domains/sdf/lib/vq/vq.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/tester/tester.jar \
