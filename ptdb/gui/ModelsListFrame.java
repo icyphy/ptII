@@ -437,16 +437,17 @@ public class ModelsListFrame extends javax.swing.JFrame {
         _pageNumberCombo.setModel(new javax.swing.DefaultComboBoxModel(pages));
     }
 
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModelsListFrame(null).setVisible(true);
-            }
-        });
-    }
+//    /*
+//    /**
+//    * @param args the command line arguments
+//    */
+//    public static void main(String args[]) {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new ModelsListFrame(null).setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Button _previousPageButton;
