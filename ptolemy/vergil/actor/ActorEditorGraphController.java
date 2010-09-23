@@ -377,8 +377,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
         _classDefinitionController.addHotKeys(getFrame().getJGraph());
         // Bug 349
-        // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
-        
+        // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349
+
         StringParameter actorInteractionAddon;
         try {
             actorInteractionAddon = (StringParameter) this.getConfiguration()
@@ -387,13 +387,13 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             if (actorInteractionAddon != null) {
 
                 _dbActorController.addHotKeys(getFrame().getJGraph());
-                
+
             }
-            
-        } catch(Exception e){
+
+        } catch (Exception e) {
             // Ignore it.
         }
-     
+
     }
 
     /** Create the controllers for nodes in this graph.
@@ -421,31 +421,31 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 if (actorInteractionAddon != null) {
                     String actorInteractionAddonClassName = actorInteractionAddon
                             .stringValue();
-                    
+
                     Class actorInteractionAddonClass = Class
                         .forName(actorInteractionAddonClassName);
-                    
+
                     ActorInteractionAddon actorInterationAddon =
                         (ActorInteractionAddon) actorInteractionAddonClass
                         .newInstance();
 
-                    Method method2 = 
+                    Method method2 =
                         actorInteractionAddonClass
-                        .getMethod("getControllerInstance", 
+                        .getMethod("getControllerInstance",
                                 GraphController.class);
-                    
-                    _dbActorController = 
+
+                    _dbActorController =
                         (ActorController) method2
                         .invoke(actorInterationAddon, this);
-                     
+
                 }
 
             } catch (Exception e) {
                 // Just ignore it.
             }
-        
+
         }
-        
+
         if (_config != null) {
             /*
              * If _alternateActorInstanceController is set in the config, use that

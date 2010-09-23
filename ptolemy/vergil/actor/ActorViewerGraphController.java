@@ -209,63 +209,63 @@ public class ActorViewerGraphController extends RunnableGraphController {
             Object semanticObject = getGraphModel().getSemanticObject(object);
 
             if (semanticObject instanceof Entity) {
-                
-                boolean isDatabaseReferenceActor = false;            
+
+                boolean isDatabaseReferenceActor = false;
 
                 StringParameter actorInteractionAddon;
                 try {
-                    actorInteractionAddon = (StringParameter) 
+                    actorInteractionAddon = (StringParameter)
                         this.getConfiguration()
-                        .getAttribute("_ActorInteractionAddon", 
+                        .getAttribute("_ActorInteractionAddon",
                                 Parameter.class);
 
                     if (actorInteractionAddon != null) {
-                        String actorInteractionAddonClassName = 
+                        String actorInteractionAddonClassName =
                             actorInteractionAddon.stringValue();
-                        
+
                             Class actorInteractionAddonClass = Class
                                 .forName(actorInteractionAddonClassName);
-                            
+
                             ActorInteractionAddon actorInterationAddon =
-                                (ActorInteractionAddon) 
+                                (ActorInteractionAddon)
                                 actorInteractionAddonClass.newInstance();
-                            
+
                             Method method1 = actorInteractionAddonClass
                                 .getMethod("isActorOfInterestForAddonController"
                                         , NamedObj.class);
 
-                            if(((Boolean) method1
-                                    .invoke(actorInterationAddon, 
-                                    semanticObject)).booleanValue()){
+                            if (((Boolean) method1
+                                    .invoke(actorInterationAddon,
+                                    semanticObject)).booleanValue()) {
 
                                 isDatabaseReferenceActor = true;
-                         
-                                   
+
+
                             }
-                        
-                                
+
+
                         }
 
                 } catch (Exception e) {
                     // Just ignore it.
                 }
-                
+
                 // In the viewer, there will not be a class definition
                 // controller that is distinct from the entity controller.
                 // In the edit, there will be.
                 if ((_classDefinitionController != null)
                         && ((Entity) semanticObject).isClassDefinition()) {
-                    
+
                     return _classDefinitionController;
-                    
+
                 } else if (isDatabaseReferenceActor) {
 
                     return _dbActorController;
-                    
+
                 } else {
-                    
+
                     return _entityController;
-                
+
                 }
             } else if (semanticObject instanceof Attribute) {
                 return _attributeController;
@@ -295,9 +295,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _relationController.setConfiguration(configuration);
         _linkController.setConfiguration(configuration);
         // Bug 349
-        // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
-        
-        
+        // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349
+
+
         StringParameter actorInteractionAddon;
         try {
             actorInteractionAddon = (StringParameter) this.getConfiguration()
@@ -306,13 +306,13 @@ public class ActorViewerGraphController extends RunnableGraphController {
             if (actorInteractionAddon != null) {
 
                 _dbActorController.setConfiguration(configuration);
-                
+
             }
-            
-        } catch(Exception e){
+
+        } catch (Exception e) {
             // Ignore it.
         }
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -328,19 +328,19 @@ public class ActorViewerGraphController extends RunnableGraphController {
         _classDefinitionController.addHotKeys(jgraph);
         _attributeController.addHotKeys(jgraph);
         // Bug 349
-        //https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349 
+        //https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349
         StringParameter actorInteractionAddon;
         try {
             actorInteractionAddon = (StringParameter) this.getConfiguration()
                 .getAttribute("_ActorInteractionAddon", Parameter.class);
 
             if (actorInteractionAddon != null) {
-                
+
                 _dbActorController.addHotKeys(jgraph);
-                
+
             }
-            
-        } catch(Exception e){
+
+        } catch (Exception e) {
             // Ignore it.
         }
     }
@@ -361,7 +361,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
         // ClassDefinitionController because access is only PARTIAL.
         _classDefinitionController = new ClassDefinitionController(this,
                 AttributeController.PARTIAL);
-        
+
         StringParameter actorInteractionAddon;
         try {
             actorInteractionAddon = (StringParameter) this.getConfiguration()
@@ -370,29 +370,29 @@ public class ActorViewerGraphController extends RunnableGraphController {
             if (actorInteractionAddon != null) {
                 String actorInteractionAddonClassName = actorInteractionAddon
                         .stringValue();
-                
+
                 Class actorInteractionAddonClass = Class
                     .forName(actorInteractionAddonClassName);
-                
+
                 ActorInteractionAddon actorInterationAddon =
                     (ActorInteractionAddon) actorInteractionAddonClass
                     .newInstance();
 
-                Method method2 = 
+                Method method2 =
                     actorInteractionAddonClass
-                    .getMethod("getControllerInstance", 
+                    .getMethod("getControllerInstance",
                             GraphController.class, Boolean.TYPE);
-                
-                _dbActorController = 
+
+                _dbActorController =
                     (ActorController) method2
                     .invoke(actorInterationAddon, this, false);
-                
+
             }
 
         } catch (Exception e) {
             // Just ignore it.
         }
-        
+
         _entityController = new ActorInstanceController(this,
                 AttributeController.PARTIAL);
         _entityPortController = new IOPortController(this,
@@ -432,7 +432,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
     /** The database reference controller. */
     protected ActorController _dbActorController;
-    
+
     /** The entity controller. */
     protected ActorController _entityController;
 

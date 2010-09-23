@@ -36,7 +36,7 @@ import diva.graph.GraphController;
 
 /**
  * An interface for actor interaction.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -46,42 +46,42 @@ import diva.graph.GraphController;
 public interface ActorInteractionAddon {
 
     /** Determine of a given actor is of interest for a desired action.
-     * 
+     *
      * @param actor The actor of interest.
      * @return True if the actor is of interest for the "Look Inside" action for
      * actors, False otherwise.
      */
     abstract boolean isActorOfInterestForLookInside(NamedObj actor);
-    
+
     /**
      * The action to be taken when looking inside an actor.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
-     * @throws IllegalActionException Thrown for illegal action.
-     * @throws NameDuplicationException Thrown for name duplication.
+     * @exception IllegalActionException Thrown for illegal action.
+     * @exception NameDuplicationException Thrown for name duplication.
      */
-    abstract void lookInsideAction(FigureAction figureAction, NamedObj actor) 
+    abstract void lookInsideAction(FigureAction figureAction, NamedObj actor)
     throws IllegalActionException, NameDuplicationException;
-    
-    
+
+
     /** Determine of a given actor is of interest for a desired action.
-     * 
+     *
      * @param actor The actor of interest.
      * @return True if the actor is of interest for the "Open Instance" action for
      * actors, False otherwise.
      */
     abstract boolean isActorOfInterestForOpenInstance(NamedObj actor);
-    
+
     /**
      * The action to be taken when looking inside an actor.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
-     * @throws IllegalActionException  Thrown for illegal action.
-     * @throws NameDuplicationException  Thrown for name duplication.
+     * @exception IllegalActionException  Thrown for illegal action.
+     * @exception NameDuplicationException  Thrown for name duplication.
      */
-    abstract void openInstanceAction(FigureAction figureAction, NamedObj actor) 
+    abstract void openInstanceAction(FigureAction figureAction, NamedObj actor)
         throws IllegalActionException, NameDuplicationException;
-    
+
     /**
      * Get an instance of the controller for a given actor.  This assumes
      * Full access.
@@ -89,7 +89,7 @@ public interface ActorInteractionAddon {
      * @return An instance of the appropriate controller.
      */
     abstract ActorController getControllerInstance(GraphController controller);
-    
+
     /**
      * Get an instance of the controller for a given actor.  This assumes
      * full access.
@@ -99,14 +99,14 @@ public interface ActorInteractionAddon {
      * @return An instance of the appropriate controller.
      */
     abstract ActorController getControllerInstance(GraphController controller, boolean fullAccess);
-    
-    
+
+
     /** Determine of a given actor is of interest for a desired action.
-     * 
+     *
      * @param actor The actor of interest.
      * @return True if the actor is of interest for use of a special controller,
      * False otherwise.
      */
     abstract boolean isActorOfInterestForAddonController(NamedObj actor);
-    
+
 }

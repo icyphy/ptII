@@ -202,7 +202,7 @@ public class LinkController extends BasicEdgeController {
          *  is "#" or "0", then the value of the attribute is expected
          *  to be in a format suitable for java.awt.Color.decode().
          *  Otherwise, the value of the attribute is passed to checked
-         *  against a list of color names defined in 
+         *  against a list of color names defined in
          *  {@link diva.canvas.toolbox.SVGUtilities}, if the color name is
          *  not found, then the value of the attribute is passed to
          *  java.awt.Color.getColor(String) and if there is no match,
@@ -212,11 +212,11 @@ public class LinkController extends BasicEdgeController {
          *  {@link ptolemy.actor.gui.ColorAttribute}, then the
          *  javax.swing.JColorChooser gui will be offered as a way to
          *  edit the color.</p>
-         * 
+         *
          *  <p>If the StringAttribute "_explanation" of the edge is set
          *  then use it to set the tooltip.</p>
-         * 
-         *  <p>If the "_linkBendRadius" preference is read from the 
+         *
+         *  <p>If the "_linkBendRadius" preference is read from the
          *  {@link ptolemy.actor.gui.PtolemyPreferences} and used to set
          *  the bend radius.  The default bend radius is 20.</p>
          *
