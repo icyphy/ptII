@@ -75,7 +75,7 @@ public class PTDBSearchAttribute extends Variable {
     
     /** Get an indication if the attribute is generic.
      * @return Indication if the attribute is generic.
-     * @see #setGenericAttribute(String)
+     * @see #setGenericAttribute(boolean)
      */
     public boolean isGenericAttribute(){
         
