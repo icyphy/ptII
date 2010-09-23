@@ -61,6 +61,7 @@ JSRCS = \
 	GetReferenceStringTask.java \
 	GraphSearchTask.java \
 	ModelNameSearchTask.java \
+	PTDBGenericAttribute.java \
 	PTDBSearchAttribute.java \
 	PTDBSearchComponentEntity.java \
 	RemoveModelsTask.java \
