@@ -67,6 +67,7 @@ public class PTDBGenericAttribute {
      * Get the name of this attribute. 
      * 
      * @return The name of the attribute. 
+     * @see #setAttributeName(String)
      */
     public String getAttributeName() {
         return _attributeName;
@@ -76,6 +77,7 @@ public class PTDBGenericAttribute {
      * Get the class name of this attribute. 
      * 
      * @return The class name of this attribute. 
+     * @see #setClassName(String)
      */
     public String getClassName() {
         return _className;
@@ -86,6 +88,7 @@ public class PTDBGenericAttribute {
      * 
      * @return The values of the attributes. All the values share the "OR"
      *  relationship. 
+     * @see #setValues(ArrayList)
      */
     public ArrayList<String> getValues() {
         return _values;
@@ -94,16 +97,18 @@ public class PTDBGenericAttribute {
     /**
      * Set the name of the attribute. 
      * 
-     * @param attriubteName The name to be set for the attribute. 
+     * @param attributeName The name to be set for the attribute. 
+     * @see #getAttributeName()
      */
-    public void setAttributeName(String attriubteName) {
-        _attributeName = attriubteName;
+    public void setAttributeName(String attributeName) {
+        _attributeName = attributeName;
     }
 
     /**
      * Set the class name of this attribute. 
      * 
      * @param className The class name to be set for this attribute. 
+     * @see #getClassName()
      */
     public void setClassName(String className) {
         _className = className;
@@ -113,6 +118,7 @@ public class PTDBGenericAttribute {
      * Set the values of the attribute. 
      * 
      * @param values The values to be set for the attribute. 
+     * @see #getValues()
      */
     public void setValues(ArrayList<String> values) {
         _values = values;
