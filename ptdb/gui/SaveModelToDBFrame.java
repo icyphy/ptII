@@ -29,6 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -63,6 +64,7 @@ import ptdb.common.exception.DBConnectionException;
 import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.IllegalNameException;
 import ptdb.common.exception.ModelAlreadyExistException;
+import ptdb.common.exception.UnSavedParentModelsException;
 import ptdb.common.util.Utilities;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -442,188 +444,231 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                     throw e;
                 }
 
-                // Update the parent models that are opened already. 
-                // Update those parents with unchanged sub model first. 
-                if (parentsMaintainOldVersion != null
-                        && parentsMaintainOldVersion.size() > 0) {
+                //                // Update the parent models that are opened already. 
+                //                // Update those parents with unchanged sub model first. 
+                //                if (parentsMaintainOldVersion != null
+                //                        && parentsMaintainOldVersion.size() > 0) {
+                //
+                //                    XMLDBModel newVersionModel = DBModelFetcher
+                //                            .load(newVersionName);
+                //
+                //                    for (String parentName : parentsMaintainOldVersion) {
+                //
+                //                        if (_source.getConfiguration().getDirectory()
+                //                                .getEntity(parentName) != null) {
+                //                            // This parent model is opened. 
+                //
+                //                            PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
+                //                                    .getConfiguration().getDirectory()
+                //                                    .getEffigy(parentName);
+                //
+                //                            boolean modifiedFlag = parentModelEffigy
+                //                                    .isModified();
+                //
+                //                            for (Object entity : ((CompositeEntity) parentModelEffigy
+                //                                    .getModel()).entityList()) {
+                //
+                //                                ComponentEntity componentEntity = (ComponentEntity) entity;
+                //
+                //                                if (Utilities.getIdFromModel(componentEntity) != null
+                //                                        && Utilities.getIdFromModel(
+                //                                                componentEntity)
+                //                                                .equals(modelId)) {
+                //                                    // Update the original model id to the new 
+                //                                    // version model id.
+                //                                    StringParameter modelIdAttribute = (StringParameter) componentEntity
+                //                                            .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR);
+                //
+                //                                    modelIdAttribute
+                //                                            .setExpression(newVersionModel
+                //                                                    .getModelId());
+                //                                    componentEntity.setName(parentModelEffigy
+                //                                            .getModel().uniqueName(
+                //                                                    newVersionModel
+                //                                                            .getModelName()));
+                //
+                //                                    String momlString = componentEntity
+                //                                            .exportMoML();
+                //                                    //                                    componentEntity.setContainer(null);
+                //                                    if (componentEntity instanceof CompositeEntity) {
+                //                                        CompositeEntity compositeEntity = (CompositeEntity) componentEntity;
+                //                                        compositeEntity.removeAllEntities();
+                //                                    }
+                //
+                //                                    // Update the MoML of the opened parent
+                //                                    MoMLChangeRequest change = new MoMLChangeRequest(
+                //                                            null, parentModelEffigy.getModel(),
+                //                                            momlString);
+                //
+                //                                    change.setUndoable(true);
+                //                                    parentModelEffigy.getModel().requestChange(
+                //                                            change);
+                //
+                //                                }
+                //                            }
+                //
+                //                            // If that model hasn't changed, set the changed
+                //                            // to false. 
+                //                            if (!modifiedFlag) {
+                //                                parentModelEffigy.setModified(false);
+                //                            }
+                //
+                //                        }
+                //
+                //                    }
+                //                }
 
-                    XMLDBModel newVersionModel = DBModelFetcher
-                            .load(newVersionName);
+                //                // Update the parent models that want to maintain the reference.
+                //                if (_parentValidateFrame != null) {
+                //                    ArrayList<String> parentsModelsMaintainReferences = _parentValidateFrame
+                //                            ._getParentsMaintainReferences();
+                //                    if (parentsModelsMaintainReferences != null
+                //                            && parentsModelsMaintainReferences.size() > 0) {
+                //
+                //                        // fetch the saved sub model from the database, to 
+                //                        // update the information in the parent model. 
+                //                        XMLDBModel savedModel = DBModelFetcher
+                //                                .loadUsingId(modelId);
+                //
+                //                        MoMLParser parser = new MoMLParser();
+                //                        parser.resetAll();
+                //
+                //                        Entity savedSubModel = (Entity) parser.parse(savedModel
+                //                                .getModel());
+                //
+                //                        StringParameter referenceAttribute = null;
+                //
+                //                        if (savedSubModel
+                //                                .getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
+                //
+                //                            referenceAttribute = (StringParameter) savedSubModel
+                //                                    .getAttribute(XMLDBModel.DB_REFERENCE_ATTR);
+                //
+                //                        } else {
+                //                            referenceAttribute = new StringParameter(
+                //                                    savedSubModel, XMLDBModel.DB_REFERENCE_ATTR);
+                //
+                //                        }
+                //
+                //                        referenceAttribute.setExpression("TRUE");
+                //
+                //                        for (String parentName : parentsModelsMaintainReferences) {
+                //                            if (_source.getConfiguration().getDirectory()
+                //                                    .getEntity(parentName) != null) {
+                //                                // This parent model is opened. 
+                //
+                //                                PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
+                //                                        .getConfiguration().getDirectory()
+                //                                        .getEffigy(parentName);
+                //
+                //                                boolean modifiedFlag = parentModelEffigy
+                //                                        .isModified();
+                //
+                //                                for (Object entity : ((CompositeEntity) parentModelEffigy
+                //                                        .getModel()).entityList()) {
+                //
+                //                                    ComponentEntity componentEntity = (ComponentEntity) entity;
+                //
+                //                                    if (Utilities
+                //                                            .getIdFromModel(componentEntity) != null
+                //                                            && Utilities.getIdFromModel(
+                //                                                    componentEntity).equals(
+                //                                                    modelId)) {
+                //                                        // Update the moml of that sub model.
+                //                                        savedSubModel.setName(componentEntity
+                //                                                .getName());
+                //
+                //                                        // Set the location attribute.
+                //                                        Location location = (Location) savedSubModel
+                //                                                .getAttribute("_location");
+                //                                        if (location == null) {
+                //                                            location = new Location(
+                //                                                    savedSubModel, "_location");
+                //                                        }
+                //
+                //                                        location
+                //                                                .setExpression(((Location) componentEntity
+                //                                                        .getAttribute("_location"))
+                //                                                        .getExpression());
+                //
+                //                                        String newMoml = savedSubModel
+                //                                                .exportMoML();
+                //
+                //                                        if (componentEntity instanceof CompositeEntity) {
+                //                                            CompositeEntity compositeEntity = (CompositeEntity) componentEntity;
+                //                                            compositeEntity.removeAllEntities();
+                //                                        }
+                //
+                //                                        MoMLChangeRequest change = new MoMLChangeRequest(
+                //                                                null, parentModelEffigy
+                //                                                        .getModel(), newMoml);
+                //
+                //                                        change.setUndoable(true);
+                //                                        parentModelEffigy.getModel()
+                //                                                .requestChange(change);
+                //
+                //                                    }
+                //                                }
+                //
+                //                                // If that model hasn't changed, set the changed
+                //                                // to false. 
+                //                                if (!modifiedFlag) {
+                //                                    parentModelEffigy.setModified(false);
+                //                                }
+                //
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                ArrayList<String> openedParents = null;
 
-                    for (String parentName : parentsMaintainOldVersion) {
-
-                        if (_source.getConfiguration().getDirectory()
-                                .getEntity(parentName) != null) {
-                            // This parent model is opened. 
-
-                            PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
-                                    .getConfiguration().getDirectory()
-                                    .getEffigy(parentName);
-
-                            boolean modifiedFlag = parentModelEffigy
-                                    .isModified();
-
-                            for (Object entity : ((CompositeEntity) parentModelEffigy
-                                    .getModel()).entityList()) {
-
-                                ComponentEntity componentEntity = (ComponentEntity) entity;
-
-                                if (Utilities.getIdFromModel(componentEntity) != null
-                                        && Utilities.getIdFromModel(
-                                                componentEntity)
-                                                .equals(modelId)) {
-                                    // Update the original model id to the new 
-                                    // version model id.
-                                    StringParameter modelIdAttribute = (StringParameter) componentEntity
-                                            .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR);
-
-                                    modelIdAttribute
-                                            .setExpression(newVersionModel
-                                                    .getModelId());
-                                    componentEntity.setName(parentModelEffigy
-                                            .getModel().uniqueName(
-                                                    newVersionModel
-                                                            .getModelName()));
-
-                                    String momlString = componentEntity
-                                            .exportMoML();
-                                    //                                    componentEntity.setContainer(null);
-                                    if (componentEntity instanceof CompositeEntity) {
-                                        CompositeEntity compositeEntity = (CompositeEntity) componentEntity;
-                                        compositeEntity.removeAllEntities();
-                                    }
-
-                                    // Update the MoML of the opened parent
-                                    MoMLChangeRequest change = new MoMLChangeRequest(
-                                            null, parentModelEffigy.getModel(),
-                                            momlString);
-
-                                    change.setUndoable(true);
-                                    parentModelEffigy.getModel().requestChange(
-                                            change);
-
-                                }
-                            }
-
-                            // If that model hasn't changed, set the changed
-                            // to false. 
-                            if (!modifiedFlag) {
-                                parentModelEffigy.setModified(false);
-                            }
-
-                        }
-
-                    }
-                }
-
-                // Update the parent models that want to maintain the reference.
                 if (_parentValidateFrame != null) {
-                    ArrayList<String> parentsModelsMaintainReferences = _parentValidateFrame
-                            ._getParentsMaintainReferences();
-                    if (parentsModelsMaintainReferences != null
-                            && parentsModelsMaintainReferences.size() > 0) {
+                    openedParents = new ArrayList<String>();
 
-                        // fetch the saved sub model from the database, to 
-                        // update the information in the parent model. 
-                        XMLDBModel savedModel = DBModelFetcher
-                                .loadUsingId(modelId);
+                    for (String openedParentModelName : _parentValidateFrame
+                            ._getOpenedParents()) {
 
-                        MoMLParser parser = new MoMLParser();
-                        parser.resetAll();
-
-                        Entity savedSubModel = (Entity) parser.parse(savedModel
-                                .getModel());
-
-                        StringParameter referenceAttribute = null;
-
-                        if (savedSubModel
-                                .getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-
-                            referenceAttribute = (StringParameter) savedSubModel
-                                    .getAttribute(XMLDBModel.DB_REFERENCE_ATTR);
-
-                        } else {
-                            referenceAttribute = new StringParameter(
-                                    savedSubModel, XMLDBModel.DB_REFERENCE_ATTR);
-
-                        }
-
-                        referenceAttribute.setExpression("TRUE");
-
-                        for (String parentName : parentsModelsMaintainReferences) {
-                            if (_source.getConfiguration().getDirectory()
-                                    .getEntity(parentName) != null) {
-                                // This parent model is opened. 
-
-                                PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
-                                        .getConfiguration().getDirectory()
-                                        .getEffigy(parentName);
-
-                                boolean modifiedFlag = parentModelEffigy
-                                        .isModified();
-
-                                for (Object entity : ((CompositeEntity) parentModelEffigy
-                                        .getModel()).entityList()) {
-
-                                    ComponentEntity componentEntity = (ComponentEntity) entity;
-
-                                    if (Utilities
-                                            .getIdFromModel(componentEntity) != null
-                                            && Utilities.getIdFromModel(
-                                                    componentEntity).equals(
-                                                    modelId)) {
-                                        // Update the moml of that sub model.
-                                        savedSubModel.setName(componentEntity
-                                                .getName());
-
-                                        // Set the location attribute.
-                                        Location location = (Location) savedSubModel
-                                                .getAttribute("_location");
-                                        if (location == null) {
-                                            location = new Location(
-                                                    savedSubModel, "_location");
-                                        }
-
-                                        location
-                                                .setExpression(((Location) componentEntity
-                                                        .getAttribute("_location"))
-                                                        .getExpression());
-
-                                        String newMoml = savedSubModel
-                                                .exportMoML();
-
-                                        if (componentEntity instanceof CompositeEntity) {
-                                            CompositeEntity compositeEntity = (CompositeEntity) componentEntity;
-                                            compositeEntity.removeAllEntities();
-                                        }
-
-                                        MoMLChangeRequest change = new MoMLChangeRequest(
-                                                null, parentModelEffigy
-                                                        .getModel(), newMoml);
-
-                                        change.setUndoable(true);
-                                        parentModelEffigy.getModel()
-                                                .requestChange(change);
-
-                                    }
-                                }
-
-                                // If that model hasn't changed, set the changed
-                                // to false. 
-                                if (!modifiedFlag) {
-                                    parentModelEffigy.setModified(false);
-                                }
-
-                            }
-                        }
+                        openedParents.add(openedParentModelName);
                     }
                 }
 
                 _source.setModified(false);
+
                 if (_parentValidateFrame != null) {
                     _parentValidateFrame.dispose();
                 }
                 dispose();
+
+                // Reload the opened parent models. 
+                if (openedParents != null) {
+
+                    for (String openedParentModelName : openedParents) {
+
+                        // Close the opened parent models first.
+                        PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
+                                .getConfiguration().getDirectory().getEffigy(
+                                        openedParentModelName);
+                        parentModelEffigy.closeTableaux();
+                        
+                        parentModelEffigy.setContainer(null);
+
+                        // Reload the model from the Database.
+                        PtolemyEffigy updatedParentModelEffigy = LoadManager
+                                .loadModel(openedParentModelName, _source
+                                        .getConfiguration());
+
+                        if (updatedParentModelEffigy != null) {
+
+                            updatedParentModelEffigy.showTableaux();
+
+                        }
+                    }
+
+                }
+
+                // Display the saved sub model to the front. 
+                _source.getConfiguration().getDirectory().getEffigy(
+                        _xmlModel.getModelName()).showTableaux();
 
             } else {
 
@@ -674,7 +719,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
         }
 
         if (_hasParentFlag == true && _parentModels == null) {
-            // Hasn�t verified whether the saving model has parents yet. 
+            // Has not verified whether the saving model has parents yet. 
             if (Utilities.getIdFromModel(_modelToSave) != null) {
                 _parentModels = _saveModelManager
                         .getFirstLevelParents(_xmlModel);
@@ -878,6 +923,13 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                     + "will result in a circular dependency.  Examine "
                     + "the referenced models to determine the cause.",
                     "Save Error", JOptionPane.INFORMATION_MESSAGE, null);
+
+            _rollbackModel();
+
+        } catch (UnSavedParentModelsException e) {
+
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Save Error",
+                    JOptionPane.INFORMATION_MESSAGE, null);
 
             _rollbackModel();
 
@@ -1298,22 +1350,41 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
             return parents;
         }
 
-        private ArrayList<String> _getParentsMaintainReferences() {
+        private ArrayList<String> _getOpenedParents() {
 
-            ArrayList<String> parents = null;
+            ArrayList<String> parents = new ArrayList<String>();
 
-            if (_parentModelsPanels != null) {
-                parents = new ArrayList<String>();
+            for (ParentModelItemPanel parentModelPanel : _parentModelsPanels) {
+                String parentModelName = parentModelPanel.getParentModelName();
 
-                for (ParentModelItemPanel parentModelItemPanel : _parentModelsPanels) {
-                    if (parentModelItemPanel.isSelected()) {
-                        parents.add(parentModelItemPanel.getParentModelName());
-                    }
+                // If the parent model is opened. 
+                if (_source.getConfiguration().getDirectory().getEntity(
+                        parentModelName) != null) {
+
+                    parents.add(parentModelName);
+
                 }
             }
 
             return parents;
         }
+
+        //        private ArrayList<String> _getParentsMaintainReferences() {
+        //
+        //            ArrayList<String> parents = null;
+        //
+        //            if (_parentModelsPanels != null) {
+        //                parents = new ArrayList<String>();
+        //
+        //                for (ParentModelItemPanel parentModelItemPanel : _parentModelsPanels) {
+        //                    if (parentModelItemPanel.isSelected()) {
+        //                        parents.add(parentModelItemPanel.getParentModelName());
+        //                    }
+        //                }
+        //            }
+        //
+        //            return parents;
+        //        }
 
         /**
          * Check whether there is any parent being chosen to have a new 
@@ -1343,8 +1414,39 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
          *       False - if some data is invalid.
          * @exception IllegalNameException Thrown if the new version name is 
          * illegal. 
+         * @exception UnSavedParentModelsException Thrown if this model has 
+         * some unsaved parents opening there. 
          */
-        private boolean _isValid() throws IllegalNameException {
+        private boolean _isValid() throws IllegalNameException,
+                UnSavedParentModelsException {
+
+            StringBuffer unsavedModelsBuffer = new StringBuffer("");
+            boolean hasUnsavedParent = false;
+
+            // Verify whether there is any unsaved parent model opening there. 
+            for (String parentModelName : _getOpenedParents()) {
+
+                PtolemyEffigy parentModelEffigy = (PtolemyEffigy) _source
+                        .getConfiguration().getDirectory().getEffigy(
+                                parentModelName);
+
+                // If the parent model is unsaved. 
+                if (parentModelEffigy.isModified()) {
+                    unsavedModelsBuffer.append(parentModelName + "; ");
+                    hasUnsavedParent = true;
+                }
+
+            }
+
+            if (hasUnsavedParent) {
+                throw new UnSavedParentModelsException(
+                        "The following parent model(s) contain(s) unsaved "
+                                + "changes, please save these parent models "
+                                + "first: " + unsavedModelsBuffer.toString());
+            }
+
+            // Verify whether the new name for the new version of model meets
+            // the name convention requirement.
             if (_hasParentsWithNewVersion()) {
 
                 Utilities.checkModelName(_newModelNameTextField.getText());
