@@ -574,8 +574,7 @@ public class LatticeOntologySolver extends OntologySolver {
         StringBuffer output = new StringBuffer();
         
         if (_resolvedUnacceptableList != null 
-                && !_resolvedUnacceptableList.isEmpty())
-        {
+                && !_resolvedUnacceptableList.isEmpty()) {
             for (InequalityTerm term : _resolvedUnacceptableList) {
             output.append(term.toString() + _eol);
             }
@@ -594,8 +593,7 @@ public class LatticeOntologySolver extends OntologySolver {
     protected boolean hasUnacceptableTerms()
     {
         if (_resolvedUnacceptableList != null 
-                && !_resolvedUnacceptableList.isEmpty())
-        {
+                && !_resolvedUnacceptableList.isEmpty()) {
             return true;
         }
         return false;
@@ -622,8 +620,7 @@ public class LatticeOntologySolver extends OntologySolver {
     protected void _applySolverStrategy() {
         // If solver strategy is not set, do not make any changes
         if (solverStrategy != null 
-                && !solverStrategy.getValueAsString().isEmpty())
-        {
+                && solverStrategy.getValueAsString().length() != 0) {
             String strategy = solverStrategy.getValueAsString();
             
             // For the first three strategies, set parameters to certain
