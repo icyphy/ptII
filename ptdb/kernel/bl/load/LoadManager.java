@@ -28,6 +28,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.kernel.bl.load;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ptdb.common.dto.GetReferenceStringTask;
 import ptdb.common.dto.XMLDBModel;
 import ptdb.common.exception.CircularDependencyException;
@@ -250,6 +253,88 @@ public class LoadManager {
 
    }
 
+    /** 
+     * Get the list of models for the given page number.
+     * 
+     * @param pageNumber Page number of the page whose models need to be fetched.
+     * @return List of models from the given page.
+     * @throws DBConnectionException If thrown while connecting to the database.
+     * @throws DBExecutionException If thrown while executing query in the
+     * database.
+     */
+    public List<XMLDBModel> getAllModelsFromDatabase(int pageNumber)
+            throws DBConnectionException, DBExecutionException {
+        List<XMLDBModel> modelsList = new ArrayList<XMLDBModel>();
+        if (!_isFetched) {
+            getAllModelsFromDatabase();
+        }
+
+        if (_noOfPages > 0) {
+            int endIndex = pageNumber * NO_OF_ITEMS_PER_PAGE;
+            int startIndex = endIndex - NO_OF_ITEMS_PER_PAGE;
+            if (endIndex > _allModelsList.size()) {
+                endIndex = _allModelsList.size();
+            }
+            for (int i = startIndex; i < endIndex; i++) {
+                modelsList.add(_allModelsList.get(i));
+            }
+        }
+
+        return modelsList;
+    }
+
+    /** Fetch and store locally the list of all models in the database.
+     * 
+     * @throws DBConnectionException If thrown while connecting to the 
+     * database.
+     * @throws DBExecutionException  If thrown while executing the 
+     * query in the database.
+     * 
+     */
+    public void getAllModelsFromDatabase() throws DBConnectionException,
+            DBExecutionException {
+        DBConnection conn = DBConnectorFactory.getSyncConnection(false);
+        _allModelsList = conn.executeGetListOfAllModels();
+        if (_allModelsList != null) {
+            _noOfPages = _allModelsList.size() / NO_OF_ITEMS_PER_PAGE + 1;
+        } else
+            _noOfPages = 0;
+        _isFetched = true;
+    }
+
+    /** Get the total number of models in the database.
+     * 
+     * @return Total number of models in the database.
+     * @throws DBConnectionException If thrown while connecting to the 
+     * database.
+     * @throws DBExecutionException  If thrown while executing the 
+     * query in the database.
+     */
+    public int getTotalNumberOfModels() throws DBConnectionException,
+            DBExecutionException {
+        if (!_isFetched) {
+            getAllModelsFromDatabase();
+        }
+        return _allModelsList != null ? _allModelsList.size() : 0;
+    }
+
+    /** Get the total number of pages required to display the 
+     * models list.
+     * 
+     * @return Total number of pages in the models list.
+     * @throws DBConnectionException If thrown while connecting to the 
+     * database.
+     * @throws DBExecutionException  If thrown while executing the 
+     * query in the database.
+     */
+    public int getNoOfPages() throws DBConnectionException,
+            DBExecutionException {
+        if (!_isFetched) {
+            getAllModelsFromDatabase();
+        }
+        return _noOfPages;
+    }
+
     /**
      * Create a Ptolemy Effigy from the given XMLDBModel.
      * 
@@ -390,5 +475,15 @@ public class LoadManager {
         return entity;
 
     }
+    /** List of all the XMLDBModel names in the database. */
+    private List<XMLDBModel> _allModelsList;
     
+    /** Number of results displayed per page on the models list page. */
+    public static int NO_OF_ITEMS_PER_PAGE = 25;
+    
+    /** Number of pages that can filled with the given number of results. */
+    private int _noOfPages;
+    
+    /** Boolean that describes if the list of models has been fetched or not. */
+    private boolean _isFetched;
 }
