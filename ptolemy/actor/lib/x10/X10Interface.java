@@ -74,11 +74,13 @@ import x10.Controller;
  Derived classes must implement send and receive functionality.
  Furthermore, this class requires the x10 library (jar), which can
  be obtained from
- <a href="http://x10.homelinux.org/download.html">http://x10.homelinux.org/download.html</a>.
- Unzip the file tjx10p-12.zip (Version 1.2) and install it in
- $PTII/vendors/misc/x10. Then re-run configure in $PTII and rebuild to
+ <a href="http://www.agaveblue.org/projects/x10/download.html">http://www.agaveblue.org/projects/x10/download.html</a>.
+ Unzip the file tjx10p-13.zip (Version 1.3) and install it in
+ $PTII/vendors/misc/x10.
+ Then re-run configure in $PTII and rebuild to
  compile the actors in the x10 library.
- The configure script looks for the library in tjx10p-12/lib/x10.jar
+ The configure script looks for the library in tjx10p-13/lib/x10.jar,
+ tjx10p-12/lib/x10.jar
  and for tjx10p-11/lib/x10.jar.
  <p>After installing the serial communication and X10 packages,
  rerun configure:
