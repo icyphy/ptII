@@ -141,6 +141,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         _openDatabaseSetupAction = new DatabaseSetupAction();
         _simpleSearchAction = new SimpleSearchAction(getModel(), this,
                 getConfiguration());
+        _openAllModelListAction = new AllModelsListAction(getConfiguration()); 
         _configureAttributesAction = new ConfigureAttributesAction();
 
         _openModelMigrationFrameAction = new OpenModelMigrationFrameAction();
@@ -164,7 +165,9 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
             _dbMenu = new JMenu("Database");
             _dbMenu.setMnemonic(KeyEvent.VK_B);
             _menubar.add(_dbMenu);
-
+            
+            GUIUtilities.addMenuItem(_dbMenu, _openAllModelListAction);
+            
             JMenu recentModelMenu = new JMenu("Recently Opened Models");
             recentModelMenu.setMnemonic(KeyEvent.VK_R);
             _dbMenu.add(recentModelMenu);
@@ -340,6 +343,8 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
     /** The action for opening the model migration frame. */
     protected Action _openModelMigrationFrameAction;
 
+    /** The action to view all models in the database. */
+    protected Action _openAllModelListAction;
     ///////////////////////////////////////////////////////////////////
     ////                private inner classes                      ////
 
@@ -455,7 +460,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
         public void actionPerformed(ActionEvent e) {
 
-            if (_saveModelToDBFrame == null) {
+            
                 _saveModelToDBFrame = new SaveModelToDBFrame(getModel(),
                         _source);
 
@@ -463,7 +468,7 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
 
                 _saveModelToDBFrame.pack();
                 _saveModelToDBFrame.setLocationRelativeTo(_source);
-            }
+            
 
             _saveModelToDBFrame.setVisible(true);
 
@@ -579,7 +584,36 @@ public class ActorGraphDBFrame extends ActorGraphFrame implements
         }
 
     }
-
+    ///////////////////////////////////////////////////////////////////
+    //// AllModelsListAction
+    /**
+     * Open list of all models in the database.
+     */
+    private class AllModelsListAction extends AbstractAction{
+        
+        /**
+         * Create an instance of AllModelsListAction.
+         * @param configuration Configuration to open a model from the list.
+         */
+        public AllModelsListAction(Configuration configuration) {
+            super("List All Database Models");
+            _configuration = configuration;
+        }
+        
+        /**
+         * Open the models list frame. 
+         */
+        public void actionPerformed(ActionEvent e) {
+            JFrame frame = new ModelsListFrame(_configuration);
+            frame.pack();
+            frame.setVisible(true);
+        }
+        
+        /**
+         * Configuration to open a model from the list. 
+         */
+        private Configuration _configuration;
+    }
     ///////////////////////////////////////////////////////////////////
     //// SimpleSearchAction
 
