@@ -56,7 +56,6 @@ PTCLASSALLJARS = \
 	PtidesBasicPowerPlant/PtidesBasicPowerPlant.jar \
 	PtidesBasicTwoPlatformsNetworkSensorEvents/PtidesBasicTwoPlatformsNetworkSensorEvents.jar \
 	PtidesPreemptEDFOnePlatformThreePathsRealDelay/PtidesPreemptEDFOnePlatformThreePathsRealDelay.jar \
-	PtidesSimulator/PtidesSimulator.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
