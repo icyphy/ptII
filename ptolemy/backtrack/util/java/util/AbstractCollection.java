@@ -103,11 +103,11 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * limitations on what may be added.
      * @param o the object to add
      * @return true if the add operation caused the Collection to change
-     * @throws UnsupportedOperationException if the add operation is not
+     * @exception UnsupportedOperationException if the add operation is not
      * supported on this collection
-     * @throws NullPointerException if the collection does not support null
-     * @throws ClassCastException if the object is of the wrong type
-     * @throws IllegalArgumentException if some aspect of the object prevents
+     * @exception NullPointerException if the collection does not support null
+     * @exception ClassCastException if the object is of the wrong type
+     * @exception IllegalArgumentException if some aspect of the object prevents
      * it from being added
      */
     public boolean add(Object o) {
@@ -125,14 +125,14 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * collection.
      * @param c the collection to add the elements of to this collection
      * @return true if the add operation caused the Collection to change
-     * @throws UnsupportedOperationException if the add operation is not
+     * @exception UnsupportedOperationException if the add operation is not
      * supported on this collection
-     * @throws NullPointerException if the specified collection is null
-     * @throws ClassCastException if the type of any element in c is
+     * @exception NullPointerException if the specified collection is null
+     * @exception ClassCastException if the type of any element in c is
      * not a valid type for addition.
-     * @throws IllegalArgumentException if some aspect of any element
+     * @exception IllegalArgumentException if some aspect of any element
      * in c prevents it being added.
-     * @throws NullPointerException if any element in c is null and this
+     * @exception NullPointerException if any element in c is null and this
      * collection doesn't allow null values.
      * @see #add(Object)
      */
@@ -153,7 +153,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * UnsupportedOperationException if the Iterator's remove method does)
      * until there are no more elements to remove.
      * Many implementations will have a faster way of doing this.
-     * @throws UnsupportedOperationException if the Iterator returned by
+     * @exception UnsupportedOperationException if the Iterator returned by
      * iterator does not provide an implementation of remove
      * @see Iterator#remove()
      */
@@ -195,7 +195,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * @param c the collection to test against
      * @return true if this collection contains all the elements in the given
      * collection
-     * @throws NullPointerException if the given collection is null
+     * @exception NullPointerException if the given collection is null
      * @see #contains(Object)
      */
     public boolean containsAll(Collection c) {
@@ -233,7 +233,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * @param o the object to remove from this collection
      * @return true if the remove operation caused the Collection to change, or
      * equivalently if the collection did contain o.
-     * @throws UnsupportedOperationException if this collection's Iterator
+     * @exception UnsupportedOperationException if this collection's Iterator
      * does not support the remove method
      * @see Iterator#remove()
      */
@@ -258,9 +258,9 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * Iterator's remove method does).
      * @param c the collection to remove the elements of
      * @return true if the remove operation caused the Collection to change
-     * @throws UnsupportedOperationException if this collection's Iterator
+     * @exception UnsupportedOperationException if this collection's Iterator
      * does not support the remove method
-     * @throws NullPointerException if the collection, c, is null.
+     * @exception NullPointerException if the collection, c, is null.
      * @see Iterator#remove()
      */
     public boolean removeAll(Collection c) {
@@ -277,9 +277,9 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * which cannot publicly override removeAll but can optimize this call.
      * @param c the collection to remove the elements of
      * @return true if the remove operation caused the Collection to change
-     * @throws UnsupportedOperationException if this collection's Iterator
+     * @exception UnsupportedOperationException if this collection's Iterator
      * does not support the remove method
-     * @throws NullPointerException if the collection, c, is null.
+     * @exception NullPointerException if the collection, c, is null.
      * @see Iterator#remove()
      */
     // Package visible for use throughout java.util.
@@ -305,9 +305,9 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * the Iterator's remove method does).
      * @param c the collection to retain the elements of
      * @return true if the remove operation caused the Collection to change
-     * @throws UnsupportedOperationException if this collection's Iterator
+     * @exception UnsupportedOperationException if this collection's Iterator
      * does not support the remove method
-     * @throws NullPointerException if the collection, c, is null.
+     * @exception NullPointerException if the collection, c, is null.
      * @see Iterator#remove()
      */
     public boolean retainAll(Collection c) {
@@ -325,9 +325,9 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * this call.
      * @param c the collection to retain the elements of
      * @return true if the remove operation caused the Collection to change
-     * @throws UnsupportedOperationException if this collection's Iterator
+     * @exception UnsupportedOperationException if this collection's Iterator
      * does not support the remove method
-     * @throws NullPointerException if the collection, c, is null.
+     * @exception NullPointerException if the collection, c, is null.
      * @see Iterator#remove()
      */
     // Package visible for use throughout java.util.
@@ -379,8 +379,8 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      * elements.
      * @param a the array to copy into, or of the correct run-time type
      * @return the array that was produced
-     * @throws NullPointerException if the given array is null
-     * @throws ArrayStoreException if the type of the array precludes holding
+     * @exception NullPointerException if the given array is null
+     * @exception ArrayStoreException if the type of the array precludes holding
      * one of the elements of the Collection
      */
     public Object[] toArray(Object[] a) {

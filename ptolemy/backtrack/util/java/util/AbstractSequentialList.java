@@ -86,7 +86,7 @@ public abstract class AbstractSequentialList extends AbstractList implements
      * Subclasses must provide an implementation of this method.
      * @param index the starting position of the list
      * @return the list iterator
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
      */
     public abstract ListIterator listIterator(int index);
 
@@ -98,14 +98,14 @@ public abstract class AbstractSequentialList extends AbstractList implements
      * uses listIterator(index).add(o).
      * @param index the location to insert the item
      * @param o the object to insert
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * add operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-     * @throws ClassCastException if o cannot be added to this list due to its
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception ClassCastException if o cannot be added to this list due to its
      * type
-     * @throws IllegalArgumentException if o cannot be added to this list for
+     * @exception IllegalArgumentException if o cannot be added to this list for
      * some other reason.
-     * @throws NullPointerException if o is null and the list does not permit
+     * @exception NullPointerException if o is null and the list does not permit
      * the addition of null values.
      */
     public void add(int index, Object o) {
@@ -127,15 +127,15 @@ public abstract class AbstractSequentialList extends AbstractList implements
      * @param c the collection to insert
      * @return true if the list was modified by this action, that is, if c is
      * non-empty
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * addAll operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-     * @throws ClassCastException if some element of c cannot be added to this
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     * @exception ClassCastException if some element of c cannot be added to this
      * list due to its type
-     * @throws IllegalArgumentException if some element of c cannot be added
+     * @exception IllegalArgumentException if some element of c cannot be added
      * to this list for some other reason
-     * @throws NullPointerException if the specified collection is null
-     * @throws NullPointerException if an object, o, in c is null and the list
+     * @exception NullPointerException if the specified collection is null
+     * @exception NullPointerException if an object, o, in c is null and the list
      * does not permit the addition of null values.
      * @see #add(int, Object)
      */
@@ -154,7 +154,7 @@ public abstract class AbstractSequentialList extends AbstractList implements
      * returns listIterator(index).next().
      * @param index the index of the element to be returned
      * @return the element at index index in this list
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      */
     public Object get(int index) {
         // This is a legal listIterator position, but an illegal get.
@@ -180,9 +180,9 @@ public abstract class AbstractSequentialList extends AbstractList implements
      * implementation uses listIterator(index) and ListIterator.remove().
      * @param index the position within the list of the object to remove
      * @return the object that was removed
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * remove operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
      */
     public Object remove(int index) {
         // This is a legal listIterator position, but an illegal remove.
@@ -202,14 +202,14 @@ public abstract class AbstractSequentialList extends AbstractList implements
      * @param index the position within this list of the element to be replaced
      * @param o the object to replace it with
      * @return the object that was replaced
-     * @throws UnsupportedOperationException if this list does not support the
+     * @exception UnsupportedOperationException if this list does not support the
      * set operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-     * @throws ClassCastException if o cannot be added to this list due to its
+     * @exception IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     * @exception ClassCastException if o cannot be added to this list due to its
      * type
-     * @throws IllegalArgumentException if o cannot be added to this list for
+     * @exception IllegalArgumentException if o cannot be added to this list for
      * some other reason
-     * @throws NullPointerException if o is null and the list does not allow
+     * @exception NullPointerException if o is null and the list does not allow
      * a value to be set to null.
      */
     public Object set(int index, Object o) {

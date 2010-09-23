@@ -1045,7 +1045,7 @@ public class TableauFrame extends Top {
      */
     protected boolean _saveAs(String extension) {
             URL result = _saveAsHelper(extension);
-            if (result == null){
+            if (result == null) {
                     return false;
             }
             return true;

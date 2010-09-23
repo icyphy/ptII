@@ -37,7 +37,7 @@ if ($actorSymbol(trialsRemaining) > $actorSymbol(sourcePool)) {
    $actorSymbol(trialsRemaining) = (int)($actorSymbol(sourcePool));
 }
 
-while($actorSymbol(trialsRemaining) > 0) {
+while ($actorSymbol(trialsRemaining) > 0) {
 /**/
 
 /*** binomialSelectorBlock($num) ***/

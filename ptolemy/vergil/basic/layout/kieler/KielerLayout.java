@@ -165,11 +165,11 @@ public class KielerLayout extends AbstractGlobalLayout {
         this.setModel(ptolemyContainer);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Layout the given composite. Main entry point for the layout action.
@@ -404,7 +404,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                 KPort kSourcePort = kEdge.getSourcePort();
                 KNode kNode = kEdge.getSource();
                 NamedObj removedLink = _replaceRelation(kSourcePort, kNode, relationName, oldRelation);
-                if(removedLink != null){
+                if (removedLink != null) {
                     removedLinkTargets.add(removedLink);
                 }
             }
@@ -425,7 +425,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             KPort kTargetPort = kEdge.getTargetPort();
             KNode kNode = kEdge.getTarget();
             NamedObj removedLink = _replaceRelation(kTargetPort, kNode, previousRelation, oldRelation);
-            if(removedLink != null){
+            if (removedLink != null) {
                 removedLinkTargets.add(removedLink);
             }
         }
@@ -433,7 +433,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         // here we cannot ask the Relation itself as all unlinks are buffered
         // and haven't been executed yet. So we must do our own bookkeeping.
         for (Object linkedObject : oldRelation.linkedObjectsList()) {
-            if(!removedLinkTargets.contains(linkedObject)){
+            if (!removedLinkTargets.contains(linkedObject)) {
                 return null;
             }
         }
@@ -1371,8 +1371,8 @@ public class KielerLayout extends AbstractGlobalLayout {
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
 
     /**

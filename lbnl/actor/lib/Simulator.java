@@ -301,11 +301,11 @@ public class Simulator extends SDFTransformer {
     }
 
     /** Output the first token during initialize.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected void _outputInitToken() throws IllegalActionException {
         double[] dblRea = server.getDoubleArray();
-        if ( server.getClientFlag() == 1){
+        if ( server.getClientFlag() == 1) {
             final String em = "Actor " + this.getFullName() + ": " + LS
                 + "When trying to read from server, at time "
                 + getDirector().getModelTime().getDoubleValue() + ","
@@ -315,7 +315,7 @@ public class Simulator extends SDFTransformer {
             throw new IllegalActionException(em);
         }
         else
-            if ( server.getClientFlag() != 0){
+            if ( server.getClientFlag() != 0) {
             final String em = "Actor " + this.getFullName() + ": " + LS
                 + "When trying to read from server, at time "
                 + getDirector().getModelTime().getDoubleValue() + ","
@@ -323,7 +323,7 @@ public class Simulator extends SDFTransformer {
                 + "which indicates a problem in the client.";
             throw new IllegalActionException(em);
         }
-        if ( dblRea == null ){
+        if ( dblRea == null ) {
             final String em = "Actor " + this.getFullName() + ": " + LS
                 + "When trying to read from server, obtained 'null' at time "
                 + getDirector().getModelTime().getDoubleValue();

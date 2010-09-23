@@ -23,7 +23,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Generate code for a model that has an SDF Director &#10;iterations parameter of 0.&#10;Formerly, this code would fail to compile because&#10;code after the while(true) loop was unreachable.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Generate code for a model that has an SDF Director &#10;iterations parameter of 0.&#10;Formerly, this code would fail to compile because&#10;code after the while (true) loop was unreachable.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 230.0]">
         </property>

@@ -235,50 +235,50 @@ public class FuzzyLogic extends TypedAtomicActor{
     throws IllegalActionException {
         if (attribute == numOutputs) {
             int tempCount = 0;
-            if(_debugging){
+            if (_debugging) {
                 _debug("the number of outputs has been changed.");
             }
             tempCount = Integer.parseInt(numOutputs.getExpression().trim());
-            if(_debugging){
+            if (_debugging) {
                 _debug("Number of Outputs specified: "+tempCount);
             }
-            if(tempCount>_numOutputs)
+            if (tempCount>_numOutputs)
             {
-                if(_debugging){
+                if (_debugging) {
                     _debug(" need to create more output ports");
                     _debug("tempCount is "+tempCount+" number of Outputs is "+_numOutputs);
                 }
-                for(int i =  _numOutputs; i < tempCount; i++){
-                    try{
+                for (int i =  _numOutputs; i < tempCount; i++) {
+                    try {
                         tempOutputPort = new TypedIOPort(this,"output"+i,false,true);
                         tempOutputPort.setTypeEquals(BaseType.DOUBLE);
                         outputPorts.addElement(tempOutputPort);
-                    }catch(NameDuplicationException e){
+                    } catch (NameDuplicationException e) {
                     }
                 }
                 _numOutputs = tempCount;
 
             }
-        }else if(attribute == numInputs){
+        }else if (attribute == numInputs) {
             int tempCount = 0;
-            if(_debugging){
+            if (_debugging) {
                 _debug("the number of inputs has been changed.");
             }
             tempCount = Integer.parseInt(numInputs.getExpression().trim());
-            if(_debugging){
+            if (_debugging) {
                 _debug("Number of Inputs specified: "+tempCount);
             }
-            if(tempCount>_numInputs)
+            if (tempCount>_numInputs)
             {
-                if(_debugging){
+                if (_debugging) {
                     _debug(" need to create more input ports");
                 }
-                for(int i =  _numInputs; i < tempCount; i++){
-                    try{
+                for (int i =  _numInputs; i < tempCount; i++) {
+                    try {
                         tempInputPort = new TypedIOPort(this,"input"+i,true,false);
                         tempInputPort.setTypeEquals(BaseType.DOUBLE);
                         inputPorts.addElement(tempInputPort);
-                    }catch(NameDuplicationException e){
+                    } catch (NameDuplicationException e) {
                     }
                 }
                 _numInputs = tempCount;
@@ -348,7 +348,7 @@ public class FuzzyLogic extends TypedAtomicActor{
         }
 
         double [] myOutputs = new double [_numOutputs];
-        if(_debugging){
+        if (_debugging) {
             _debug("number of outputs is : "+_numOutputs );
         }
         Token token = null;
@@ -358,10 +358,10 @@ public class FuzzyLogic extends TypedAtomicActor{
             // read the values from the input ports
             // set the input values here
 
-            for(int i = 0; i< _numInputs; i++){
+            for (int i = 0; i< _numInputs; i++) {
                 if (inputPorts.get(i).isOutsideConnected()) {
                     if (inputPorts.get(i).hasToken(0)) {
-                        if(_debugging){
+                        if (_debugging) {
                             _debug("i is "+i);
                         }
                         token = inputPorts.get(i).get(0);
@@ -378,14 +378,14 @@ public class FuzzyLogic extends TypedAtomicActor{
 
             ArrayList<Integer> indicesToDefuzzify = _fuzzyParser.getIndicesToDefuzzify();
 
-            for(int i = 0; i< indicesToDefuzzify.size(); i++){
+            for (int i = 0; i< indicesToDefuzzify.size(); i++) {
                 myOutputs[i] = _linguisticVariableArray.get(indicesToDefuzzify.get(i))
                 .defuzzify();
             }
 
 
             if (_debugging) {
-                for(int i = 0; i< _numOutputs; i++)
+                for (int i = 0; i< _numOutputs; i++)
                     _debug("result "+i+ " is: " +myOutputs[i]);
             }
 
@@ -396,7 +396,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                     + "for defuzzification.");
         }
 
-        for(int i = 0; i< _numOutputs; i++){
+        for (int i = 0; i< _numOutputs; i++) {
             outputPorts.get(i).send(0, new DoubleToken(myOutputs[i]));
         }
 
@@ -489,7 +489,7 @@ public class FuzzyLogic extends TypedAtomicActor{
          * Called once when the SAX driver sees the end of a document, even if errors occurred.
          * */
         public void endDocument() {
-            if(_debugging){
+            if (_debugging) {
                 _debug("saw the end of the document");
             }
         }
@@ -502,7 +502,7 @@ public class FuzzyLogic extends TypedAtomicActor{
         public void endElement(String uri, String name, String qName) {
             if ("".equals(uri)) {
                 if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
-                    if(_debugging){
+                    if (_debugging) {
                         _debug("saw end of fuzzify or defuzzify");
                     }
                     _startVar = false;
@@ -513,7 +513,7 @@ public class FuzzyLogic extends TypedAtomicActor{
                     }
                 }
                 if ("RULEBLOCK".equals(qName)) {
-                    if(_debugging){
+                    if (_debugging) {
                         _debug("saw end of ruleblock");
                     }
                 }
@@ -560,7 +560,7 @@ public class FuzzyLogic extends TypedAtomicActor{
          * Called once when the SAX driver sees the beginning of a document.
          * */
         public void startDocument() {
-            if(_debugging){
+            if (_debugging) {
                 _debug("saw the start of the document");
             }
         }
@@ -580,26 +580,26 @@ public class FuzzyLogic extends TypedAtomicActor{
             String tempString;
             if ("".equals(uri)) {
 
-                if("VAR_INPUT".equals(qName)){
+                if ("VAR_INPUT".equals(qName)) {
 
                     int index = atts.getIndex("NAME");
-                    if(_debugging){
+                    if (_debugging) {
                         _debug(" found an input variable");
                         _debug(atts.getValue(index));
                     }
 
                 }
-                if("VAR_OUTPUT".equals(qName)){
+                if ("VAR_OUTPUT".equals(qName)) {
 
                     int index = atts.getIndex("NAME");
-                    if(_debugging){
+                    if (_debugging) {
                         _debug(" found an output variable with name ");
                         _debug(atts.getValue(index));
                     }
                 }
 
                 if ("FUZZIFY".equals(qName) || "DEFUZZIFY".equals(qName)) {
-                    if(_debugging){
+                    if (_debugging) {
                         _debug("saw start of defuzzyfy or fuzzify");
                     }
                     _startVar = true;
