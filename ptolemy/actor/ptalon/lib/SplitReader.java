@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
 /**
  Read a file a file or URL, one line at a time, and output each line
  as a string.  This actor has multiple outputs, and emits blocks of
- lines to each output at each firing, splitting the lines as chuncks
+ lines to each output at each firing, splitting the lines as chunks
  of data for distributed processing.
 
  <p>
