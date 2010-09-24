@@ -61,8 +61,7 @@ public interface ActorInteractionAddon {
      * @exception NameDuplicationException Thrown for name duplication.
      */
     abstract void lookInsideAction(FigureAction figureAction, NamedObj actor)
-    throws IllegalActionException, NameDuplicationException;
-
+            throws IllegalActionException, NameDuplicationException;
 
     /** Determine of a given actor is of interest for a desired action.
      *
@@ -80,7 +79,7 @@ public interface ActorInteractionAddon {
      * @exception NameDuplicationException  Thrown for name duplication.
      */
     abstract void openInstanceAction(FigureAction figureAction, NamedObj actor)
-        throws IllegalActionException, NameDuplicationException;
+            throws IllegalActionException, NameDuplicationException;
 
     /**
      * Get an instance of the controller for a given actor.  This assumes
@@ -98,8 +97,8 @@ public interface ActorInteractionAddon {
      *                  with Full access.
      * @return An instance of the appropriate controller.
      */
-    abstract ActorController getControllerInstance(GraphController controller, boolean fullAccess);
-
+    abstract ActorController getControllerInstance(GraphController controller,
+            boolean fullAccess);
 
     /** Determine of a given actor is of interest for a desired action.
      *

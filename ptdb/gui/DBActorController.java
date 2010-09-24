@@ -147,7 +147,6 @@ public class DBActorController extends ActorController {
      */
     protected OpenActorFromDB _openActorFromDB = new OpenActorFromDB();
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -192,19 +191,19 @@ public class DBActorController extends ActorController {
 
             if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
 
-                if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR)
-                        instanceof StringConstantParameter && ((StringParameter) object
-                        .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                        .getExpression().equals("TRUE")) {
+                if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
+                        && ((StringParameter) object
+                                .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                                .getExpression().equals("TRUE")) {
 
                     try {
 
-                        PtolemyEffigy effigy =
-                            LoadManager
-                            .loadModelUsingId
-                            (((StringParameter) object
-                                    .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
-                                    .getExpression(), _configuration);
+                        PtolemyEffigy effigy = LoadManager
+                                .loadModelUsingId(
+                                        ((StringParameter) object
+                                                .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
+                                                .getExpression(),
+                                        _configuration);
 
                         if (effigy != null) {
 
@@ -212,10 +211,9 @@ public class DBActorController extends ActorController {
 
                         } else {
 
-                            JOptionPane
-                            .showMessageDialog(this.getFrame(),
-                                    "The specified model could " +
-                                    "not be found in the database.",
+                            JOptionPane.showMessageDialog(this.getFrame(),
+                                    "The specified model could "
+                                            + "not be found in the database.",
                                     "Load Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
 
@@ -223,18 +221,18 @@ public class DBActorController extends ActorController {
 
                     } catch (DBConnectionException e1) {
 
-                        MessageHandler
-                            .error("Cannot load the specified model. ", e1);
+                        MessageHandler.error(
+                                "Cannot load the specified model. ", e1);
 
                     } catch (DBExecutionException e1) {
 
-                        MessageHandler
-                            .error("Cannot load the specified model. ", e1);
+                        MessageHandler.error(
+                                "Cannot load the specified model. ", e1);
 
                     } catch (Exception e1) {
 
-                        MessageHandler
-                            .error("Cannot load the specified model. ", e1);
+                        MessageHandler.error(
+                                "Cannot load the specified model. ", e1);
 
                     }
 

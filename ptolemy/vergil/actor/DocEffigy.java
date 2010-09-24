@@ -141,8 +141,8 @@ public class DocEffigy extends Effigy {
                             "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML",
                             null)) {
                         // This is a doc file.
-                        DocEffigy effigy = new DocEffigy(container, container
-                                .uniqueName("effigy"));
+                        DocEffigy effigy = new DocEffigy(container,
+                                container.uniqueName("effigy"));
                         effigy.uri.setURL(input);
                         return effigy;
                     }

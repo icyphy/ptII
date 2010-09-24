@@ -171,9 +171,9 @@ public class DocViewer extends HTMLViewer {
                 DocAttribute attribute = (DocAttribute) docAttributes
                         .get(docAttributes.size() - 1);
                 Effigy effigy = getEffigy();
-                DocEffigy newEffigy = new DocEffigy((CompositeEntity) effigy
-                        .getContainer(), effigy.getContainer().uniqueName(
-                        "parentClass"));
+                DocEffigy newEffigy = new DocEffigy(
+                        (CompositeEntity) effigy.getContainer(), effigy
+                                .getContainer().uniqueName("parentClass"));
                 newEffigy.setDocAttribute(attribute);
                 DocTableau tableau = new DocTableau(newEffigy, "docTableau");
                 tableau.show();
@@ -267,9 +267,8 @@ public class DocViewer extends HTMLViewer {
                 if (!bounds.isEmpty()) {
                     Dimension size = jgraph.getSize();
                     Rectangle2D viewSize = new Rectangle2D.Double(_PADDING,
-                            _PADDING, size.getWidth() - 2 * _PADDING, size
-                                    .getHeight()
-                                    - 2 * _PADDING);
+                            _PADDING, size.getWidth() - 2 * _PADDING,
+                            size.getHeight() - 2 * _PADDING);
                     AffineTransform newTransform = CanvasUtilities
                             .computeFitTransform(bounds, viewSize);
                     JCanvas canvas = graphPane.getCanvas();
@@ -602,8 +601,7 @@ public class DocViewer extends HTMLViewer {
                 buffer.append(parent.getElementName());
                 buffer.append(" name=\"");
                 buffer.append(parent.getName());
-                buffer
-                        .append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"true\"/></");
+                buffer.append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"true\"/></");
                 buffer.append(parent.getElementName());
                 buffer.append(">");
             }
@@ -759,9 +757,7 @@ public class DocViewer extends HTMLViewer {
         };
         _graphPane = new GraphPane(controller, graphModel);
         _jgraph = new JGraph(_graphPane);
-        _jgraph
-                .setBorder(BorderFactory
-                        .createEtchedBorder(EtchedBorder.RAISED));
+        _jgraph.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         // The icon window is fixed size.
         _jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH,
                 _ICON_WINDOW_HEIGHT));
@@ -869,8 +865,7 @@ public class DocViewer extends HTMLViewer {
             buffer.append(target.getElementName());
             buffer.append(" name=\"");
             buffer.append(target.getName());
-            buffer
-                    .append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"false\"/></");
+            buffer.append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"false\"/></");
             buffer.append(target.getElementName());
             buffer.append(">");
 

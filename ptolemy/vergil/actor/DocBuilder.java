@@ -220,9 +220,9 @@ public class DocBuilder extends Attribute {
             }
 
             if (applicationName == null) {
-                File ptIImk = new File(StringUtilities
-                        .getProperty("ptolemy.ptII.dir")
-                        + "/mk/ptII.mk");
+                File ptIImk = new File(
+                        StringUtilities.getProperty("ptolemy.ptII.dir")
+                                + "/mk/ptII.mk");
                 if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {
                     commands.add("rm -rf codeDoc");
                 }
@@ -231,29 +231,24 @@ public class DocBuilder extends Attribute {
                     commands.add("make codeDoc/ptolemy/actor/lib/Ramp.xml");
                     commands.add("make codeDoc/ptolemy/actor/lib/RampIdx.xml");
                 } else {
-                    ptII = new File(StringUtilities
-                            .getProperty("ptolemy.ptII.dir"));
+                    ptII = new File(
+                            StringUtilities.getProperty("ptolemy.ptII.dir"));
                     _executeCommands.setWorkingDirectory(ptII);
                     _executeCommands
                             .updateStatusBar("When creating docs, warnings are ok.");
 
                     commands.add(_compilePtDoclet(ptII));
-                    commands
-                            .add("javadoc -classpath \""
-                                    + StringUtilities
-                                            .getProperty("java.class.path")
-                                    + "\" -J-Xmx512m -d doc/codeDoc "
-                                    + "-doclet doc.doclets.PtDoclet "
-                                    + "-subpackages com:diva:jni:org:ptolemy:thales "
-                                    + "-exclude ptolemy.apps:ptolemy.copernicus:diva.util.java2d.svg");
-                    commands
-                            .add("java -Xmx256m -classpath \""
-                                    + StringUtilities
-                                            .getProperty("java.class.path")
-                                    + "\" ptolemy.moml.filter.ActorIndex doc/codeDoc/allNamedObjs.txt "
-                                    + "\""
-                                    + ptII
-                                    + "/ptolemy/configs/doc/models.txt\" doc/codeDoc");
+                    commands.add("javadoc -classpath \""
+                            + StringUtilities.getProperty("java.class.path")
+                            + "\" -J-Xmx512m -d doc/codeDoc "
+                            + "-doclet doc.doclets.PtDoclet "
+                            + "-subpackages com:diva:jni:org:ptolemy:thales "
+                            + "-exclude ptolemy.apps:ptolemy.copernicus:diva.util.java2d.svg");
+                    commands.add("java -Xmx256m -classpath \""
+                            + StringUtilities.getProperty("java.class.path")
+                            + "\" ptolemy.moml.filter.ActorIndex doc/codeDoc/allNamedObjs.txt "
+                            + "\"" + ptII
+                            + "/ptolemy/configs/doc/models.txt\" doc/codeDoc");
                 }
             } else {
                 if (((BooleanToken) cleanFirst.getToken()).booleanValue()) {

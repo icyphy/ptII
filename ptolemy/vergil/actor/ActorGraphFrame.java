@@ -383,11 +383,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
                                     .getContainer();
 
                             // Create a new text effigy inside this one.
-                            Effigy textEffigy = new TextEffigy(effigy, effigy
-                                    .uniqueName("debug listener"));
+                            Effigy textEffigy = new TextEffigy(effigy,
+                                    effigy.uniqueName("debug listener"));
                             DebugListenerTableau tableau = new DebugListenerTableau(
-                                    textEffigy, textEffigy
-                                            .uniqueName("debugListener"));
+                                    textEffigy,
+                                    textEffigy.uniqueName("debugListener"));
                             tableau.setDebuggable(director);
                             success = true;
                         }
@@ -409,8 +409,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
                         // Dialog to ask for a delay time.
                         Query query = new Query();
                         query.addLine("delay",
-                                "Time (in ms) to hold highlight", Long
-                                        .toString(_lastDelayTime));
+                                "Time (in ms) to hold highlight",
+                                Long.toString(_lastDelayTime));
 
                         ComponentDialog dialog = new ComponentDialog(
                                 ActorGraphFrame.this, "Delay for Animation",

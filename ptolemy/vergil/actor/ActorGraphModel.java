@@ -1069,9 +1069,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             // Create the relation.
             moml.append("<relation name=\"" + newRelationName + "\">\n");
-            moml
-                    .append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\""
-                            + " value=\"" + width + "\"></property>");
+            moml.append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\""
+                    + " value=\"" + width + "\"></property>");
             moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
             moml.append(x + ", " + y);
             moml.append("}\"/>\n");
@@ -1094,8 +1093,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             if (oldHeadSemantic != null) {
                 int headRelationIndex = (oldHeadSemantic instanceof IOPort) ? IOPort
                         .getRelationIndex((IOPort) oldHeadSemantic, relation,
-                                headIsActorPort)
-                        : -1;
+                                headIsActorPort) : -1;
                 _linkWithRelation(moml, failmoml, container, oldHeadSemantic,
                         headRelationIndex, newRelationName);
             }
@@ -1105,8 +1103,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             if (oldTailSemantic != null) {
                 int tailRelationIndex = (oldTailSemantic instanceof IOPort) ? IOPort
                         .getRelationIndex((IOPort) oldTailSemantic, relation,
-                                tailIsActorPort)
-                        : -1;
+                                tailIsActorPort) : -1;
 
                 _linkWithRelation(moml, failmoml, container, oldTailSemantic,
                         tailRelationIndex, newRelationName);

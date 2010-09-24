@@ -129,8 +129,8 @@ public class DocBuilderGUI extends PtolemyFrame {
                     // FIXME: Help should bring this up as well.
                     URL infoURL = Thread.currentThread()
                             .getContextClassLoader().getResource(infoFile);
-                    configuration.openModel(null, infoURL, infoURL
-                            .toExternalForm());
+                    configuration.openModel(null, infoURL,
+                            infoURL.toExternalForm());
                 } catch (Exception ex) {
                     throw new InternalErrorException(docBuilder, ex,
                             "Failed to open " + infoFile);

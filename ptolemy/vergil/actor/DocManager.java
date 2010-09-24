@@ -278,8 +278,8 @@ public class DocManager extends HandlerBase {
             throws XmlException {
         if (name == null) {
             throw new XmlException("Attribute has no name",
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _parser.getLineNumber(),
+                    _parser.getColumnNumber());
         }
 
         // NOTE: value may be null if attribute default is #IMPLIED.
@@ -795,8 +795,7 @@ public class DocManager extends HandlerBase {
                     && ((Instantiable) _target).getParent() != null
                     && ((NamedObj) ((Instantiable) _target).getParent())
                             .attributeList(DocAttribute.class).size() > 0) {
-                result
-                        .append("<li><a href=\"#parentClass\">Class documentation</a></li>");
+                result.append("<li><a href=\"#parentClass\">Class documentation</a></li>");
             }
             // Get either the PtDoc, javadoc, or source.
             URL toRead = docClassNameToURL(_configuration, className, true,
@@ -1114,8 +1113,8 @@ public class DocManager extends HandlerBase {
             } else {
                 String msg = "XML element \"" + elementName
                         + "\" triggers exception:\n  " + ex.toString();
-                throw new XmlException(msg, _currentExternalEntity(), _parser
-                        .getLineNumber(), _parser.getColumnNumber());
+                throw new XmlException(msg, _currentExternalEntity(),
+                        _parser.getLineNumber(), _parser.getColumnNumber());
             }
         }
         _attributes.clear();
@@ -1153,8 +1152,8 @@ public class DocManager extends HandlerBase {
     protected void _checkForNull(Object object, String message)
             throws XmlException {
         if (object == null) {
-            throw new XmlException(message, _currentExternalEntity(), _parser
-                    .getLineNumber(), _parser.getColumnNumber());
+            throw new XmlException(message, _currentExternalEntity(),
+                    _parser.getLineNumber(), _parser.getColumnNumber());
         }
     }
 

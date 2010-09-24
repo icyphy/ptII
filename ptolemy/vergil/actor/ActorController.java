@@ -737,8 +737,8 @@ public abstract class ActorController extends AttributeController {
                 // child of the model window. So, we create a new text
                 // effigy inside this one. Specify model's effigy as
                 // a container for this new effigy.
-                Effigy textEffigy = new TextEffigy(effigy, effigy
-                        .uniqueName("debugListener" + object.getName()));
+                Effigy textEffigy = new TextEffigy(effigy,
+                        effigy.uniqueName("debugListener" + object.getName()));
 
                 DebugListenerTableau debugTableau = new DebugListenerTableau(
                         textEffigy, textEffigy.uniqueName("debugListener"
@@ -803,40 +803,33 @@ public abstract class ActorController extends AttributeController {
             StringParameter actorInteractionAddon;
             try {
                 actorInteractionAddon = (StringParameter) _configuration
-                    .getAttribute("_ActorInteractionAddon", Parameter.class);
+                        .getAttribute("_ActorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddon != null) {
                     String actorInteractionAddonClassName = actorInteractionAddon
                             .stringValue();
 
-                        Class actorInteractionAddonClass = Class
+                    Class actorInteractionAddonClass = Class
                             .forName(actorInteractionAddonClassName);
 
-                        ActorInteractionAddon actorInterationAddon =
-                            (ActorInteractionAddon) actorInteractionAddonClass
+                    ActorInteractionAddon actorInterationAddon = (ActorInteractionAddon) actorInteractionAddonClass
                             .newInstance();
 
-                        Method method1 = actorInteractionAddonClass
-                            .getMethod("isActorOfInterestForLookInside",
-                                    NamedObj.class);
+                    Method method1 = actorInteractionAddonClass.getMethod(
+                            "isActorOfInterestForLookInside", NamedObj.class);
 
-                        if (((Boolean) method1
-                                .invoke(actorInterationAddon, object))
-                                .booleanValue()) {
+                    if (((Boolean) method1.invoke(actorInterationAddon, object))
+                            .booleanValue()) {
 
-                            Method method2 =
-                                actorInteractionAddonClass
-                                .getMethod("lookInsideAction",
-                                        FigureAction.class,
-                                        NamedObj.class);
+                        Method method2 = actorInteractionAddonClass.getMethod(
+                                "lookInsideAction", FigureAction.class,
+                                NamedObj.class);
 
-                            method2.invoke(actorInterationAddon, this,
-                                    object);
-
-                        }
-
+                        method2.invoke(actorInterationAddon, this, object);
 
                     }
+
+                }
 
             } catch (Exception e) {
                 // Just ignore it.
@@ -882,40 +875,33 @@ public abstract class ActorController extends AttributeController {
             StringParameter actorInteractionAddon;
             try {
                 actorInteractionAddon = (StringParameter) _configuration
-                    .getAttribute("_ActorInteractionAddon", Parameter.class);
+                        .getAttribute("_ActorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddon != null) {
-                    String actorInteractionAddonClassName
-                        = actorInteractionAddon
+                    String actorInteractionAddonClassName = actorInteractionAddon
                             .stringValue();
 
-                        Class actorInteractionAddonClass = Class
+                    Class actorInteractionAddonClass = Class
                             .forName(actorInteractionAddonClassName);
 
-                        ActorInteractionAddon actorInterationAddon =
-                            (ActorInteractionAddon) actorInteractionAddonClass
+                    ActorInteractionAddon actorInterationAddon = (ActorInteractionAddon) actorInteractionAddonClass
                             .newInstance();
 
-                        Method method1 = actorInteractionAddonClass
-                            .getMethod("isActorOfInterestForOpenInstance",
-                                    NamedObj.class);
+                    Method method1 = actorInteractionAddonClass.getMethod(
+                            "isActorOfInterestForOpenInstance", NamedObj.class);
 
-                        if (((Boolean) method1.invoke(actorInterationAddon,
-                                object)).booleanValue()) {
+                    if (((Boolean) method1.invoke(actorInterationAddon, object))
+                            .booleanValue()) {
 
-                            Method method2 =
-                                actorInteractionAddonClass
-                                .getMethod("lookInsideAction",
-                                        FigureAction.class,
-                                        NamedObj.class);
+                        Method method2 = actorInteractionAddonClass.getMethod(
+                                "lookInsideAction", FigureAction.class,
+                                NamedObj.class);
 
-                            method2.invoke(actorInterationAddon, this,
-                                    object);
-
-                        }
-
+                        method2.invoke(actorInterationAddon, this, object);
 
                     }
+
+                }
 
             } catch (Exception e) {
                 // Just ignore it.
@@ -933,9 +919,9 @@ public abstract class ActorController extends AttributeController {
                 // open the source code as a last resort.
                 Frame parent = getFrame();
                 DialogTableau dialogTableau = DialogTableau.createDialog(
-                        parent, _configuration, ((TableauFrame) parent)
-                                .getEffigy(), OpenInstanceDialog.class,
-                        (Entity) object);
+                        parent, _configuration,
+                        ((TableauFrame) parent).getEffigy(),
+                        OpenInstanceDialog.class, (Entity) object);
 
                 if (dialogTableau != null) {
                     dialogTableau.show();

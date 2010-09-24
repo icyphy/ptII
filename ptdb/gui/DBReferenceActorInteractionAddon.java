@@ -31,8 +31,6 @@ package ptdb.gui;
 
 import javax.swing.JOptionPane;
 
-import diva.graph.GraphController;
-
 import ptdb.common.dto.XMLDBModel;
 import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.data.expr.StringParameter;
@@ -42,7 +40,9 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorInteractionAddon;
+import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.graph.GraphController;
 
 /**
  * Implementation of interface for interaction with actors.  This
@@ -65,11 +65,10 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
 
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
 
-            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR)
-                instanceof StringConstantParameter &&
-                ((StringParameter) actor
-                .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                .getExpression().equals("TRUE")) {
+            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
+                    && ((StringParameter) actor
+                            .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                            .getExpression().equals("TRUE")) {
 
                 return true;
 
@@ -92,21 +91,19 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
             throws IllegalActionException, NameDuplicationException {
 
         JOptionPane.showMessageDialog(figureAction.getFrame(),
-                "Changes to this actor will not " +
-                "be saved to the database.  " +
-                "To make changes to the " +
-                "referenced model, open " +
-                "it from the database.",
-                "Open Actor",
+                "Changes to this actor will not "
+                        + "be saved to the database.  "
+                        + "To make changes to the " + "referenced model, open "
+                        + "it from the database.", "Open Actor",
                 JOptionPane.WARNING_MESSAGE, null);
 
-        String referenceTag = "<property name=\"" +
-            ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" " +
-            "class=\"ptolemy.data.expr.StringConstantParameter\" " +
-            "value=\"TRUE\"></property>";
+        String referenceTag = "<property name=\""
+                + ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" "
+                + "class=\"ptolemy.data.expr.StringConstantParameter\" "
+                + "value=\"TRUE\"></property>";
 
-        MoMLChangeRequest change = new MoMLChangeRequest(null,
-                actor, referenceTag);
+        MoMLChangeRequest change = new MoMLChangeRequest(null, actor,
+                referenceTag);
 
         change.setUndoable(true);
         actor.requestChange(change);
@@ -121,15 +118,17 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      *                  with Full access.
      * @return An new instance a DBActorController.
      */
-    public ActorController getControllerInstance(GraphController controller, boolean fullAccess) {
+    public ActorController getControllerInstance(GraphController controller,
+            boolean fullAccess) {
 
         if (fullAccess) {
 
-            return new DBActorController(controller, ActorController.FULL);
+            return new DBActorController(controller, AttributeController.FULL);
 
         } else {
 
-            return new DBActorController(controller, ActorController.PARTIAL);
+            return new DBActorController(controller,
+                    AttributeController.PARTIAL);
 
         }
 
@@ -142,7 +141,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * @return An instance of the appropriate controller.
      */
     public ActorController getControllerInstance(GraphController controller) {
-        return new DBActorController(controller, ActorController.FULL);
+        return new DBActorController(controller, AttributeController.FULL);
     }
 
     /** Determine of a given actor is a database reference actor.
@@ -154,11 +153,10 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
 
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
 
-            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR)
-                instanceof StringConstantParameter &&
-                ((StringParameter) actor
-                .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                .getExpression().equals("TRUE")) {
+            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
+                    && ((StringParameter) actor
+                            .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                            .getExpression().equals("TRUE")) {
 
                 return true;
 
@@ -181,21 +179,19 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
     public void openInstanceAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException {
         JOptionPane.showMessageDialog(figureAction.getFrame(),
-                "Changes to this instance will not " +
-                "be saved to the database.  " +
-                "To make changes to the " +
-                "referenced model, open " +
-                "it from the database.",
-                "Open Instance",
+                "Changes to this instance will not "
+                        + "be saved to the database.  "
+                        + "To make changes to the " + "referenced model, open "
+                        + "it from the database.", "Open Instance",
                 JOptionPane.WARNING_MESSAGE, null);
 
-        String referenceTag = "<property name=\"" +
-        ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" " +
-        "class=\"ptolemy.data.expr.StringConstantParameter\" " +
-        "value=\"TRUE\"></property>";
+        String referenceTag = "<property name=\""
+                + ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" "
+                + "class=\"ptolemy.data.expr.StringConstantParameter\" "
+                + "value=\"TRUE\"></property>";
 
-        MoMLChangeRequest change = new MoMLChangeRequest(null,
-                actor, referenceTag);
+        MoMLChangeRequest change = new MoMLChangeRequest(null, actor,
+                referenceTag);
 
         change.setUndoable(true);
         actor.requestChange(change);
@@ -211,11 +207,10 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
 
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
 
-            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR)
-                instanceof StringConstantParameter &&
-                ((StringParameter) actor
-                .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                .getExpression().equals("TRUE")) {
+            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
+                    && ((StringParameter) actor
+                            .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
+                            .getExpression().equals("TRUE")) {
 
                 return true;
 

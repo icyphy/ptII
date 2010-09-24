@@ -216,8 +216,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
             putValue("tooltip", "Control-click to create a new relation");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_R));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_R));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -382,7 +382,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         StringParameter actorInteractionAddon;
         try {
             actorInteractionAddon = (StringParameter) this.getConfiguration()
-                .getAttribute("_ActorInteractionAddon", Parameter.class);
+                    .getAttribute("_ActorInteractionAddon", Parameter.class);
 
             if (actorInteractionAddon != null) {
 
@@ -415,28 +415,24 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         if (_config != null) {
             StringParameter actorInteractionAddon;
             try {
-                actorInteractionAddon = (StringParameter) _config
-                    .getAttribute("_ActorInteractionAddon", Parameter.class);
+                actorInteractionAddon = (StringParameter) _config.getAttribute(
+                        "_ActorInteractionAddon", Parameter.class);
 
                 if (actorInteractionAddon != null) {
                     String actorInteractionAddonClassName = actorInteractionAddon
                             .stringValue();
 
                     Class actorInteractionAddonClass = Class
-                        .forName(actorInteractionAddonClassName);
+                            .forName(actorInteractionAddonClassName);
 
-                    ActorInteractionAddon actorInterationAddon =
-                        (ActorInteractionAddon) actorInteractionAddonClass
-                        .newInstance();
+                    ActorInteractionAddon actorInterationAddon = (ActorInteractionAddon) actorInteractionAddonClass
+                            .newInstance();
 
-                    Method method2 =
-                        actorInteractionAddonClass
-                        .getMethod("getControllerInstance",
-                                GraphController.class);
+                    Method method2 = actorInteractionAddonClass.getMethod(
+                            "getControllerInstance", GraphController.class);
 
-                    _dbActorController =
-                        (ActorController) method2
-                        .invoke(actorInterationAddon, this);
+                    _dbActorController = (ActorController) method2.invoke(
+                            actorInterationAddon, this);
 
                 }
 
@@ -614,10 +610,10 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 Site tailSite;
 
                 // Temporary sites.  One of these will get blown away later.
-                headSite = new AutonomousSite(layer, event.getLayerX(), event
-                        .getLayerY());
-                tailSite = new AutonomousSite(layer, event.getLayerX(), event
-                        .getLayerY());
+                headSite = new AutonomousSite(layer, event.getLayerX(),
+                        event.getLayerY());
+                tailSite = new AutonomousSite(layer, event.getLayerX(),
+                        event.getLayerY());
 
                 // Render the edge.
                 Connector c = getEdgeController(link).render(link, layer,
