@@ -1,4 +1,4 @@
-/* A top-level dialog window for controlling the Kieler graph layout algorithm.
+/*  A top-level dialog window for controlling the Kieler graph layout algorithm.
 
  Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
@@ -46,8 +46,10 @@ import javax.swing.JTextArea;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -62,116 +64,138 @@ import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 
-///////////////////////////////////////////////////////////////////
-//// KielerLayoutGUI
-
 /**
  A top-level dialog window for controlling the Kieler graph layout algorithm.
 
- @author Christopher Brooks, based on CodeGeneratorGUI by Edward A. Lee.
+ @author Christopher Brooks, based on JVMTableau.
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class KielerLayoutGUI extends PtolemyFrame {
-
+public class KielerLayoutTableau extends Tableau {
     /** Construct a frame to control layout of graphical elements
-     *  using the Kieler algoriths for the specified Ptolemy II model.
-     *  After constructing this, it is necessary to call
-     *  setVisible(true) to make the frame appear.  This is typically
-     *  accomplished by calling show() on enclosing tableau.
+     *  using the Kieler algorithms for the specified Ptolemy II model.
      *
-     *  @param model The model to be laid out, or null if none.
-     *  @param tableau The tableau responsible for this frame.
-     *  @exception IllegalActionException If the model rejects the
-     *   configuration attribute.
-     *  @exception NameDuplicationException If a name collision occurs.
+     *  @param container The containing effigy.
+     *  @param name The name of this tableau within the specified effigy.
+     *  @exception IllegalActionException If the tableau is not acceptable
+     *   to the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
-    public KielerLayoutGUI(final NamedObj model, Tableau tableau)
+    public KielerLayoutTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(model, tableau);
-        setTitle("Layout of " + model.getName());
+        super(container, name);
+        NamedObj model = container.getModel();
+        _frame = new KielerLayoutFrame((CompositeEntity) model, this);
+        setFrame(_frame);
+    }
 
-        // Caveats panel.
-        JPanel caveatsPanel = new JPanel();
-        caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        caveatsPanel.setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
-        JTextArea messageArea = new JTextArea(
-                "Use the buttons below to control the Kieler automatic layout algorithm",
-                2, 10);
-        messageArea.setEditable(false);
-        messageArea.setBorder(BorderFactory.createEtchedBorder());
-        messageArea.setLineWrap(true);
-        messageArea.setWrapStyleWord(true);
-        caveatsPanel.add(messageArea);
+    /** The frame that is created by an instance of KielerLayoutTableau.
+     */
+    public class KielerLayoutFrame extends PtolemyFrame {
+        /** Construct a frame to display Kieler layout controls.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear.
+         *  This is typically accomplished by calling show() on
+         *  enclosing tableau.
+         *  @param model The model to put in this frame, or null if none.
+         *  @param tableau The tableau responsible for this frame.
+         *  @exception IllegalActionException If the model rejects the
+         *   configuration attribute.
+         *  @exception NameDuplicationException If a name collision occurs.
+         */
+        public KielerLayoutFrame(final CompositeEntity model, Tableau tableau)
+                throws IllegalActionException, NameDuplicationException {
+            super(model, tableau);
+            setTitle("Layout of " + model.getName());
 
-        JButton moreInfoButton = new JButton("More Info");
-        moreInfoButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                String infoResource = "ptolemy/vergil/basic/layout/package.html";
-                try {
-                    Configuration configuration = getConfiguration();
+            // Caveats panel.
+            JPanel caveatsPanel = new JPanel();
+            caveatsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+            caveatsPanel
+                    .setLayout(new BoxLayout(caveatsPanel, BoxLayout.X_AXIS));
 
-                    // Use Thread.currentThread() so that this code will
-                    // work under WebStart.
-                    URL infoURL = Thread.currentThread()
-                            .getContextClassLoader().getResource(infoResource);
-                    configuration.openModel(null, infoURL, infoURL
-                            .toExternalForm());
-                } catch (Exception ex) {
-                    throw new InternalErrorException(model, ex,
-                            "Failed to open " + infoResource + ": ");
+            JTextArea messageArea = new JTextArea(
+                    "Use the buttons below to control the Kieler automatic layout algorithm",
+                    2, 10);
+            messageArea.setEditable(false);
+            messageArea.setBorder(BorderFactory.createEtchedBorder());
+            messageArea.setLineWrap(true);
+            messageArea.setWrapStyleWord(true);
+            caveatsPanel.add(messageArea);
+
+            JButton moreInfoButton = new JButton("More Info");
+            moreInfoButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    String infoResource = "ptolemy/vergil/basic/layout/package.html";
+                    try {
+                        Configuration configuration = getConfiguration();
+
+                        // Use Thread.currentThread() so that this code will
+                        // work under WebStart.
+                        URL infoURL = Thread.currentThread()
+                                .getContextClassLoader()
+                                .getResource(infoResource);
+                        configuration.openModel(null, infoURL,
+                                infoURL.toExternalForm());
+                    } catch (Exception ex) {
+                        throw new InternalErrorException(model, ex,
+                                "Failed to open " + infoResource + ": ");
+                    }
                 }
+            });
+            caveatsPanel.add(moreInfoButton);
+            JPanel upper = new JPanel();
+            upper.setLayout(new BoxLayout(upper, BoxLayout.Y_AXIS));
+            //caveatsPanel.setMaximumSize(new Dimension(500, 100));
+            upper.add(caveatsPanel);
+
+            // Panel for push buttons.
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new GridLayout(1, 4));
+
+            String[][] buttons = new String[][] {
+                    { "Place All", "placeall.gif",
+                            "Automatic layout. Places all items including attributes. No routing is done." },
+                    { "Place", "place.gif",
+                            "Automatic layout. Only places connected items. No routing is done." },
+                    { "Place and Route", "placeandroute.gif",
+                            "Place and Route! Inserts new Relation Vertices. (EXPERIMENTAL)" },
+                    { "Remove Vertices", "removevertices.gif",
+                            "Remove unnecessary relation vertices." },
+                    { "Hide/Show Vertices", "hidevertices.gif",
+                            "Toggle hide/show unnecessary relation vertices" },
+                    { "Classic Layout", "classic.gif", "Older layout style" } };
+
+            AbstractAction[] actions = new AbstractAction[] {
+                    new PlaceAllAction(), new PlaceAction(),
+                    new PlaceAndRouteAction(), new RemoveVerticesAction(),
+                    new HideVerticesAction(), new PtolemyLayoutAction() };
+
+            for (int i = 0; i < buttons.length; i++) {
+                JButton button;
+                URL url = getClass().getResource(
+                        "/ptolemy/vergil/basic/layout/img/" + buttons[i][1]);
+                if (url == null) {
+                    button = new JButton(buttons[i][0]);
+                } else {
+                    button = new JButton(new ImageIcon(url));
+                }
+                button.setToolTipText(buttons[i][2]);
+                buttonPanel.add(button);
+                button.addActionListener(actions[i]);
             }
-        });
-        caveatsPanel.add(moreInfoButton);
-        JPanel upper = new JPanel();
-        upper.setLayout(new BoxLayout(upper, BoxLayout.Y_AXIS));
-        //caveatsPanel.setMaximumSize(new Dimension(500, 100));
-        upper.add(caveatsPanel);
 
-        // Panel for push buttons.
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 4));
-
-        String[][] buttons = new String[][] {
-                { "Place All", "placeall.gif",
-                        "Automatic layout. Places all items including attributes. No routing is done." },
-                { "Place", "place.gif",
-                        "Automatic layout. Only places connected items. No routing is done." },
-                { "Place and Route", "placeandroute.gif",
-                        "Place and Route! Inserts new Relation Vertices. (EXPERIMENTAL)" },
-                { "Remove Vertices", "removevertices.gif",
-                        "Remove unnecessary relation vertices." },
-                { "Hide/Show Vertices", "hidevertices.gif",
-                        "Toggle hide/show unnecessary relation vertices" },
-                { "Classic Layout", "classic.gif", "Older layout style" } };
-
-        AbstractAction[] actions = new AbstractAction[] { new PlaceAllAction(),
-                new PlaceAction(), new PlaceAndRouteAction(),
-                new RemoveVerticesAction(), new HideVerticesAction(),
-                new PtolemyLayoutAction() };
-
-        for (int i = 0; i < buttons.length; i++) {
-            JButton button;
-            URL url = getClass().getResource(
-                    "/ptolemy/vergil/basic/layout/img/" + buttons[i][1]);
-            if (url == null) {
-                button = new JButton(buttons[i][0]);
-            } else {
-                button = new JButton(new ImageIcon(url));
-            }
-            button.setToolTipText(buttons[i][2]);
-            buttonPanel.add(button);
-            button.addActionListener(actions[i]);
+            //buttonPanel.setMaximumSize(new Dimension(500, 50));
+            upper.add(buttonPanel);
+            upper.setPreferredSize(new Dimension(200, 100));
+            getContentPane().add(upper, BorderLayout.CENTER);
         }
-
-        //buttonPanel.setMaximumSize(new Dimension(500, 50));
-        upper.add(buttonPanel);
-        upper.setPreferredSize(new Dimension(200, 100));
-        getContentPane().add(upper, BorderLayout.CENTER);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -212,20 +236,22 @@ public class KielerLayoutGUI extends PtolemyFrame {
             NamedObj model = null;
             try {
                 // Get the frame and the current model here.
-                model = getModel();
+                model = _frame.getModel();
                 if (!(model instanceof CompositeActor)) {
                     throw new InternalErrorException(
                             "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                            + "The model \"" + model.getFullName() + "\" was a "
-                            + model.getClass().getName()
-                            + " which is not an instance of CompositeActor.");
+                                    + "The model \""
+                                    + model.getFullName()
+                                    + "\" was a "
+                                    + model.getClass().getName()
+                                    + " which is not an instance of CompositeActor.");
                 }
                 JFrame frame = null;
                 int tableauxCount = 0;
-                Iterator tableaux = Configuration.findEffigy(model).entityList(
-                                Tableau.class).iterator();
+                Iterator tableaux = Configuration.findEffigy(model)
+                        .entityList(Tableau.class).iterator();
                 while (tableaux.hasNext()) {
-                    Tableau tableau = (Tableau)(tableaux.next());
+                    Tableau tableau = (Tableau) (tableaux.next());
                     tableauxCount++;
                     if (tableau.getFrame() instanceof ActorGraphFrame) {
                         frame = tableau.getFrame();
@@ -236,28 +262,32 @@ public class KielerLayoutGUI extends PtolemyFrame {
                     String message = "";
                     if (tableauxCount == 0) {
                         message = "findEffigy() found no Tableaux?  There should have been one "
-                           + "ActorGraphFrame.";
+                                + "ActorGraphFrame.";
                     } else {
-                        JFrame firstFrame = ((Tableau) Configuration.findEffigy(model).entityList(
-                                        Tableau.class).get(0)).getFrame();
-                        if (firstFrame instanceof KielerLayoutGUI) {
+                        JFrame firstFrame = ((Tableau) Configuration
+                                .findEffigy(model).entityList(Tableau.class)
+                                .get(0)).getFrame();
+                        if (firstFrame instanceof KielerLayoutFrame) {
                             message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
-                                + "please save the model before running the layout mechanism.";
+                                    + "please save the model before running the layout mechanism.";
                         } else {
                             message = "The first frame of "
-                                + tableauxCount + " found by findEffigy() is a \""
-                                + firstFrame.getClass().getName()
-                                + "\", which is not an instance of ActorGraphFrame."
-                                + " None of the other frames were ActorGraphFrames either.";
+                                    + tableauxCount
+                                    + " found by findEffigy() is a \""
+                                    + firstFrame.getClass().getName()
+                                    + "\", which is not an instance of ActorGraphFrame."
+                                    + " None of the other frames were ActorGraphFrames either.";
                         }
                     }
-                    throw new InternalErrorException(model, null,
+                    throw new InternalErrorException(
+                            model,
+                            null,
                             "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                            + message
-                            + (frame != null
-                                    ? " Details about the frame: " 
-                                    + StringUtilities.ellipsis(frame.toString(), 80)
-                                    : ""));
+                                    + message
+                                    + (frame != null ? " Details about the frame: "
+                                            + StringUtilities.ellipsis(
+                                                    frame.toString(), 80)
+                                            : ""));
                 } else {
                     if (_removeUnnecessaryRelations) {
                         PtolemyModelUtil
@@ -292,9 +322,10 @@ public class KielerLayoutGUI extends PtolemyFrame {
                 // If we do not catch exceptions here, then they
                 // disappear to stdout, which is bad if we launched
                 // where there is no stdout visible.
-                MessageHandler.error("Failed to layout \""
-                        + (model == null ? "name not found" :
-                                (model.getFullName())) + "\"", ex);
+                MessageHandler.error(
+                        "Failed to layout \""
+                                + (model == null ? "name not found" : (model
+                                        .getFullName())) + "\"", ex);
             }
         }
 
@@ -308,7 +339,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
     private class PtolemyLayoutAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
             // Get the frame and the current model here.
-            NamedObj model = getModel();
+            NamedObj model = _frame.getModel();
             List tableaux = Configuration.findEffigy(model).entityList(
                     Tableau.class);
             JFrame frame = ((Tableau) tableaux.get(0)).getFrame();
@@ -378,4 +409,7 @@ public class KielerLayoutGUI extends PtolemyFrame {
             super(false, false, true, false);
         }
     }
+
+    /** The Kieler Layout Frame, needed so that we can call getModel(). */
+    private KielerLayoutFrame _frame;
 }

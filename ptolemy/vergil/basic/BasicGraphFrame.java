@@ -90,11 +90,12 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.gui.properties.ToolBar;
@@ -685,8 +686,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             // Generate the MoML to carry out the deletion.
 
-            moml.append(_deleteMoML(graphModel, selection
-                    .toArray(new Object[] {}), model));
+            moml.append(_deleteMoML(graphModel,
+                    selection.toArray(new Object[] {}), model));
 
             moml.append("<entity name=\"" + compositeActorName
                     + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
@@ -999,17 +1000,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             .forName(layoutGraphDialogClassName);
                     List layoutFactories = getModel().attributeList(
                             layoutGraphDialogClass);
-                    EditorFactory editorFactory = null;
+                    TableauFactory tableauFactory = null;
                     if (layoutFactories.size() > 0) {
-                        editorFactory = (EditorFactory) layoutFactories.get(0);
+                        tableauFactory = (TableauFactory) layoutFactories
+                                .get(0);
                     } else {
                         Constructor layoutGraphDialogConstructor = layoutGraphDialogClass
                                 .getDeclaredConstructor(NamedObj.class,
                                         String.class);
-                        editorFactory = (EditorFactory) layoutGraphDialogConstructor
+                        tableauFactory = (TableauFactory) layoutGraphDialogConstructor
                                 .newInstance(getModel(), "layoutGraphFactory");
                     }
-                    editorFactory.createEditor(getModel(), this);
+                    Tableau kielerTableau = tableauFactory.createTableau(
+                    //getModel(), this);
+                            (PtolemyEffigy) getTableau().getContainer());
+                    kielerTableau.show();
                     success = true;
                 } catch (Throwable throwable) {
                     new Exception(
@@ -1080,8 +1085,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             moml.append("</group>\n");
 
             // Push the undo entry onto the stack
-            MoMLUndoEntry undoEntry = new MoMLUndoEntry(composite, moml
-                    .toString());
+            MoMLUndoEntry undoEntry = new MoMLUndoEntry(composite,
+                    moml.toString());
             UndoStackAttribute undoInfo = UndoStackAttribute
                     .getUndoInfo(composite);
             undoInfo.push(undoEntry);
@@ -1593,9 +1598,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             if (pan != null) {
                 ArrayToken panToken = (ArrayToken) pan.getToken();
-                Point2D center = new Point2D.Double(((DoubleToken) panToken
-                        .getElement(0)).doubleValue(), ((DoubleToken) panToken
-                        .getElement(1)).doubleValue());
+                Point2D center = new Point2D.Double(
+                        ((DoubleToken) panToken.getElement(0)).doubleValue(),
+                        ((DoubleToken) panToken.getElement(1)).doubleValue());
                 setCenter(center);
 
                 // Make sure the visibility is only expert.
@@ -1964,20 +1969,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // We don't want it always enabled because ptiny, the applets and
         // Web Start should not included this AGPL'd piece of software
 
-//         if (_exportPDFAction == null) {
-//             //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
-//             String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
-//             try {
-//                 Class exportPDFActionClass = Class
-//                 .forName(exportPDFActionClassName);
-//                 Constructor exportPDFActionConstructor = exportPDFActionClass.getDeclaredConstructor(BasicGraphFrame.class);
-//                 _exportPDFAction = (AbstractAction) exportPDFActionConstructor.newInstance(this);
-//             } catch (Throwable throwable) {
-//                 new InternalErrorException(null, throwable, "Failed to construct export PDF class \""
-//                         + exportPDFActionClassName
-//                         + "\", which was read from the configuration.");
-//             }
-//         }
+        if (_exportPDFAction == null) {
+            //String exportPDFActionClassName = exportPDFActionClassNameParameter.stringValue();
+            String exportPDFActionClassName = "ptolemy.vergil.basic.itextpdf.ExportPDFAction";
+            try {
+                Class exportPDFActionClass = Class
+                        .forName(exportPDFActionClassName);
+                Constructor exportPDFActionConstructor = exportPDFActionClass
+                        .getDeclaredConstructor(BasicGraphFrame.class);
+                _exportPDFAction = (AbstractAction) exportPDFActionConstructor
+                        .newInstance(this);
+            } catch (Throwable throwable) {
+                new InternalErrorException(null, throwable,
+                        "Failed to construct export PDF class \""
+                                + exportPDFActionClassName
+                                + "\", which was read from the configuration.");
+            }
+        }
         // End of block to uncomment.
 
         if (_exportPDFAction != null) {
@@ -2699,8 +2707,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             };
 
             action.putValue("tooltip", "Get Documentation.");
-            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_D));
+            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_D));
             return menu.add(action, (String) action.getValue(Action.NAME));
         }
     }
@@ -3241,8 +3249,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             };
 
             action.putValue("tooltip", "Open library for editing.");
-            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_O));
+            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_O));
             return menu.add(action, (String) action.getValue(Action.NAME));
         }
     }
@@ -3300,11 +3308,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         public RedoAction() {
             super("Redo");
             putValue("tooltip", "Redo the last change undone.");
-            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
-                    .getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_R));
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_R));
         }
 
         /**
@@ -3370,11 +3378,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         public UndoAction() {
             super("Undo");
             putValue("tooltip", "Undo the last change.");
-            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
-                    .getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
-                    .valueOf(KeyEvent.VK_U));
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_U));
         }
 
         /**
@@ -3420,8 +3428,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // work, so we have to do it this way.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()
-                            | Event.SHIFT_MASK));
+                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
@@ -3505,8 +3512,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue("tooltip", description + " (Ctrl+Shift+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()
-                            | Event.SHIFT_MASK));
+                            .getMenuShortcutKeyMask() | Event.SHIFT_MASK));
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 

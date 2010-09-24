@@ -56,8 +56,8 @@ PTCLASSALLJARS = \
 	kieler/kieler.jar
 
 JSRCS = \
-	KielerLayoutGUI.java \
-	KielerLayoutGUIFactory.java \
+	KielerLayoutTableau.java \
+	KielerLayoutTableauFactory.java
 
 OTHER_FILES_TO_BE_JARED =
 
@@ -70,14 +70,16 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'KielerLayoutGUI$$1.class' \
-	'KielerLayoutGUI$$BaseLayoutAction.class' \
-	'KielerLayoutGUI$$HideVerticesAction.class' \
-	'KielerLayoutGUI$$PlaceAction.class' \
-	'KielerLayoutGUI$$PlaceAllAction.class' \
-	'KielerLayoutGUI$$PlaceAndRouteAction.class' \
-	'KielerLayoutGUI$$PtolemyLayoutAction.class' \
-	'KielerLayoutGUI$$RemoveVerticesAction.class'
+	'KielerLayoutTableau$$1.class' \
+	'KielerLayoutTableau$$BaseLayoutAction.class' \
+	'KielerLayoutTableau$$HideVerticesAction.class' \
+	'KielerLayoutTableau$$PlaceAction.class' \
+	'KielerLayoutTableau$$PlaceAllAction.class' \
+	'KielerLayoutTableau$$PlaceAndRouteAction.class' \
+	'KielerLayoutTableau$$PtolemyLayoutAction.class' \
+	'KielerLayoutTableau$$RemoveVerticesAction.class' \
+	'KielerLayoutTableau$$KielerLayoutFrame$$1.class' \
+	'KielerLayoutTableau$$KielerLayoutFrame.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
