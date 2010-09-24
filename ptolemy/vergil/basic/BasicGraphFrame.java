@@ -91,10 +91,12 @@ import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.UserActorLibrary;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.gui.properties.ToolBar;
@@ -999,17 +1001,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             .forName(layoutGraphDialogClassName);
                     List layoutFactories = getModel().attributeList(
                             layoutGraphDialogClass);
-                    EditorFactory editorFactory = null;
+                    TableauFactory tableauFactory = null;
                     if (layoutFactories.size() > 0) {
-                        editorFactory = (EditorFactory) layoutFactories.get(0);
+                        tableauFactory = (TableauFactory) layoutFactories
+                                .get(0);
                     } else {
                         Constructor layoutGraphDialogConstructor = layoutGraphDialogClass
                                 .getDeclaredConstructor(NamedObj.class,
                                         String.class);
-                        editorFactory = (EditorFactory) layoutGraphDialogConstructor
+                        tableauFactory = (TableauFactory) layoutGraphDialogConstructor
                                 .newInstance(getModel(), "layoutGraphFactory");
                     }
-                    editorFactory.createEditor(getModel(), this);
+                    Tableau kielerTableau = tableauFactory.createTableau(
+                    //getModel(), this);
+                            (PtolemyEffigy) getTableau().getContainer());
+                    kielerTableau.show();
                     success = true;
                 } catch (Throwable throwable) {
                     new Exception(
