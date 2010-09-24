@@ -52,6 +52,7 @@ JSRCS = \
 	ClassUtilities.java \
 	ExecuteCommands.java \
 	FileUtilities.java \
+	JVMBitWidth.java \
 	MessageHandler.java \
 	MultiHashMap.java \
 	MultiMap.java \

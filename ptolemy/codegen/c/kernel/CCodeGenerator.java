@@ -59,6 +59,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.JVMBitWidth;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -1359,7 +1360,11 @@ public class CCodeGenerator extends CodeGenerator {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
                 } else if (osName.startsWith("Mac OS X")) {
-                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-dynamiclib");
+                    String widthFlag = "";
+                    if (!JVMBitWidth.is32Bit()) {
+                        widthFlag = "-m64 ";
+                    }
+                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", widthFlag + "-dynamiclib");
                     // Need when we call the plotter from generated C code.
                     substituteMap.put("@PTJNI_PLATFORM_LDFLAG@",
                             "-framework JavaVM -framework CoreFoundation");
