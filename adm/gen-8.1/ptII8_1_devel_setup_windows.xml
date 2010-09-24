@@ -20,7 +20,7 @@
         <appversion>8.1.devel</appversion>
 	<appsubpath>Ptolemy/ptII8.1.devel</appsubpath>
         <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
-	<javaversion>1.5</javaversion>
+	<javaversion>1.6</javaversion>
     </info>
     
     <!-- 
