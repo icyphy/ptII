@@ -210,7 +210,12 @@ public class Connector extends MoMLApplication {
                 throw new IllegalActionException(null, e,
                         "Unable to open model.");
             }
-            runModels();
+            try {
+                runModels();
+            } catch (KernelException ex) {
+                throw new IllegalActionException(null, ex,
+                        "Failed to run models");
+            }
             System.out.println("Model execution started.");
             break;
 
