@@ -85,7 +85,7 @@ public class EntityTreeModel implements TreeModel {
         // This attribute keeps holding some references, so that
         // instances of EntityTreeModel and its sub-classes can not be
         // GCed when a window is open and closed.
-        //
+        // 
         // When it and its sub-classes are used in Kepler,
         // addTreeModelListener() and removeTreeModelListener()
         // functions of EntityTreeModel class are called implicitly.
@@ -198,8 +198,10 @@ public class EntityTreeModel implements TreeModel {
         TreeModelEvent event = new TreeModelEvent(this, path);
 
         while (listeners.hasNext()) {
-            TreeModelListener listener = (TreeModelListener) ((WeakReference)listeners.next()).get();
-            listener.treeStructureChanged(event);
+        	Object listener = ((WeakReference)listeners.next()).get();
+        	if (listener != null) {
+                    ((TreeModelListener)listener).treeStructureChanged(event);
+                }
         }
     }
 
