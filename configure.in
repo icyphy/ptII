@@ -2269,7 +2269,7 @@ if test ! -d "$JUNIT_USER_DIR"; then
     so we need not find JUnit - the Java Unit Testing Framework.])
 else
     AC_MSG_CHECKING([for the JUnit - the Java Unit Testing Framework])
-    AC_ARG_WITH(jxl, [  --with-junit=JARFILE       use JUnit Testing Framework from JARFILE,
+    AC_ARG_WITH(junit, [  --with-junit=JARFILE       use JUnit Testing Framework from JARFILE,
                           defaults to \$PTII/lib/junit-4.8.2.jar],
 	JUNIT_JAR=$withval,
 	JUNIT_JAR=$PTII/lib/junit-4.8.2.jar)
@@ -3827,7 +3827,7 @@ if test ! -d "$POWERMOCK_USER_DIR"; then
     so we need not find PowerMock])
 else
     AC_MSG_CHECKING([for PowerMock test harness])
-    AC_ARG_WITH(jxl, [  --with-powermock=DIR       use PowerMock test harness from DIR,
+    AC_ARG_WITH(ptpowermock, [  --with-powermock=DIR       use PowerMock test harness from DIR,
                           defaults to \$PTII/vendors/misc/powermock-easymock-junit-1.3.8],
 	POWERMOCK_DIR=$withval,
 	POWERMOCK_DIR=$PTII/vendors/misc/powermock-easymock-junit-1.3.8)
