@@ -1364,9 +1364,9 @@ public class CCodeGenerator extends CodeGenerator {
                     if (!JVMBitWidth.is32Bit()) {
                         widthFlag = "-m64 ";
                     }
-                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", widthFlag + "-dynamiclib");
+                    substituteMap.put("@PTJNI_GCC_SHARED_FLAG@", "-dynamiclib");
                     // Need when we call the plotter from generated C code.
-                    substituteMap.put("@PTJNI_PLATFORM_LDFLAG@",
+                    substituteMap.put("@PTJNI_PLATFORM_LDFLAG@", widthFlag +
                             "-framework JavaVM -framework CoreFoundation");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dylib");
