@@ -585,6 +585,7 @@ public class AttributesListPanel extends JPanel {
     public void regroup() {
 
         ArrayList<ModelAttributePanel> orderedList = new ArrayList();
+        ArrayList<GenericAttributePanel> orderedListGeneric = new ArrayList();
 
         // Get a list of all attributes we have displayed.
         Component[] componentArray1 = _attListPanel.getComponents();
@@ -605,6 +606,10 @@ public class AttributesListPanel extends JPanel {
                        
                         orderedList.add((ModelAttributePanel) componentArray2[j]);
  
+                    } else if (componentArray2[j] instanceof GenericAttributePanel) {
+
+                        orderedListGeneric.add((GenericAttributePanel) componentArray2[j]);
+                        
                     }
                    
                 }
@@ -634,9 +639,29 @@ public class AttributesListPanel extends JPanel {
             }
         }
         
+        //Sort the Generic panels.
+        boolean changeRequiredGeneric =false;
+        int m = orderedListGeneric.size();
+        for (int pass=1; pass < m; pass++) {
+
+            for (int i=0; i < m-pass; i++) {
+                
+                if (orderedListGeneric.get(i).getAttributeName()
+                        .compareToIgnoreCase(orderedListGeneric.get(i+1).
+                                getAttributeName()) > 0) {
+                    
+                    changeRequiredGeneric = true;
+                    GenericAttributePanel temp = orderedListGeneric.get(i);  
+                    orderedListGeneric.set(i, orderedListGeneric.get(i+1));  
+                    orderedListGeneric.set(i+1, temp);
+                    
+                }
+            }
+        }
+        
         //If a change was required, remove all panels and re-add the
         //ordered panels
-        if(changeRequired){
+        if(changeRequired || changeRequiredGeneric){
             
             _attListPanel.removeAll();
             _AttDelete.clear();
@@ -659,6 +684,52 @@ public class AttributesListPanel extends JPanel {
                 
 
                 modelDeletePanel.add(orderedList.get(i));
+                modelDeletePanel.add(deleteButton);
+
+                _AttDelete.put(deleteButton, modelDeletePanel);
+
+                _attListPanel.add(modelDeletePanel);
+                _attListPanel.setMaximumSize(getMinimumSize());
+                
+                deleteButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent event) {
+
+                        _attListPanel
+                                .remove((JPanel) _AttDelete
+                                        .get(event.getSource()));
+                        _AttDelete.remove(event.getSource());
+                        _attListPanel.remove((JButton) event.getSource());
+
+                        validate();
+                        repaint();
+                        
+                        setModified(true);
+
+                    }
+
+                });
+
+                validate();
+                repaint();
+                
+            }
+            
+            
+            for(int i = 0; i < orderedListGeneric.size(); i++){
+                
+                modelDeletePanel = new JPanel();
+                modelDeletePanel.setLayout(new BoxLayout(modelDeletePanel,
+                        BoxLayout.X_AXIS));
+                modelDeletePanel.setAlignmentX(LEFT_ALIGNMENT);
+                modelDeletePanel.setAlignmentY(TOP_ALIGNMENT);
+
+                deleteButton = new JButton("Delete");
+                deleteButton.setAlignmentY(TOP_ALIGNMENT);
+                deleteButton.setActionCommand("Delete");
+                deleteButton.setHorizontalTextPosition(SwingConstants.CENTER);
+                
+
+                modelDeletePanel.add(orderedListGeneric.get(i));
                 modelDeletePanel.add(deleteButton);
 
                 _AttDelete.put(deleteButton, modelDeletePanel);
