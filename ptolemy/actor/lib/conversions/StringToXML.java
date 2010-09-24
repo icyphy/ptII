@@ -36,13 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// StringToXml
+//// StringToXML
 
 /**
- <p>This actor converts a string token to an xml token.
-
- </p><p>FIXME: The type of the output ports is set to XmlTOken for now.
- It should ???.</p>
+ Convert a string token to an xml token.
 
  @author Yang Zhao
  @version $Id$
@@ -51,6 +48,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (liuj)
  */
 public class StringToXML extends Transformer {
+    //FIXME: The type of the output ports is set to XmlTOken for now.
+    // It should ???
+
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,6 +71,10 @@ public class StringToXML extends Transformer {
         // Set the type of the output port.
         output.setMultiport(true);
         output.setTypeEquals(BaseType.XMLTOKEN);
+
+        // Bert Rodiers suggests, "... treat this like the Minimum Actor. See
+        // http://www.eecs.berkeley.edu/Pubs/TechRpts/2010/EECS-2010-120.pdf for details."
+        output.setDefaultWidth(1);
     }
 
     ///////////////////////////////////////////////////////////////////
