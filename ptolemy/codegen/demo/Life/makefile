@@ -53,7 +53,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	Life.xml \
-	LifeCG.xml \
+	LifeNoCG.xml \
 	LifeCGAVR.xml \
 	LifePtalon.ptln \
 	CycleLEDs.mk.in \

@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LifePtalonCGAVR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 104, 815, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 104, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -49,7 +49,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 265, 330, 237}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={194, 265, 322, 226}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
         </property>
@@ -68,7 +68,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-15.0, 205.0}">
         </property>
         <configure>
-            <ptalon file="ptolemy.actor.ptalon.test.GameOfLife">
+            <ptalon file="ptolemy.actor.ptalon.demo.GameOfLife.GameOfLife">
+                <ptalonParameter name="delay" value="ptolemy.domains.sdf.lib.SampleDelay"/>
+                <ptalonParameter name="expression" value="ptolemy.actor.lib.Expression"/>
                 <ptalonExpressionParameter name="rows" value="5"/>
                 <ptalonExpressionParameter name="columns" value="5"/>
                 <ptalonExpressionParameter name="initialStates" value="[0,0,0,0,0;0,0,0,0,0;0,1,1,1,0;0,0,0,0,0;0,0,0,0,0]"/>

@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Ramp" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 72, 815, 657}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 72, 813, 660}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 550]">
     </property>
@@ -147,7 +147,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is a simple example of the code generator.&#10;Double click on the blue StaticSchedulingCodeGenerator&#10;and then click on the Generate button.&#10;&#10;The code that is generated runs and then starts up &#10;a plotter to display the results.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 10.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -155,7 +155,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this demo to work you will need:&#10;* make and a compiler.  Under Windows, you may need to install Cygwin,&#10;  see http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm&#10;  Under Windows, you may need to add C:\cygwin\bin to your path.&#10;* This model uses the plotter, so it requires that jvm.dll be in your path.&#10;  This file can be found in the jre/bin/client directory of the JDK, so you&#10;  may need to add a director like&#10;  c:\Progra~1\Java\jdk1.5.0_14\jre\bin\client&#10;  to your path.  Ptolemy attempts to temporarily add the proper directory&#10;  to your path, but it might not always succeed.  If the generated executable&#10;  starts up and then exits, you may need to the directory that contains &#10;  libjvm.dll directly to your path and then run the generated executable.&#10;* Under Windows, you may need to add c:\Cygwin\bin to your path to avoid&#10;  the &quot;impure_ptr&quot; message.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this demo to work you will need:&#10;* make and a compiler.  Under Windows, you may need to install Cygwin,&#10;  see http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm&#10;  Under Windows, you may need to add C:\cygwin\bin to your path.&#10;* This model uses the plotter, so it requires that jvm.dll be in your path.&#10;  This file can be found in the jre/bin/client directory of the JDK, so you&#10;  may need to add a director like&#10;  c:\Progra~1\Java\jdk1.5.0_14\jre\bin\client&#10;  to your path.  Ptolemy attempts to temporarily add the proper directory&#10;  to your path, but it might not always succeed.  If the generated executable&#10;  starts up and then exits, you may need to the directory that contains &#10;  libjvm.dll directly to your path and then run the generated executable.&#10;* Under Windows, you may need to add c:\Cygwin\bin to your path to avoid&#10;  the &quot;impure_ptr&quot; message.&#10;&#10;* This demo does not work under Mac OS X with 64 bit Java 1.6.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 290.0]">
         </property>
@@ -165,7 +165,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gang Zhou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 520.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
