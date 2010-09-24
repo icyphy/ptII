@@ -28,12 +28,17 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptdb.common.exception;
 
+import java.util.Collection;
+
+import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.NamedObj;
+
 ///////////////////////////////////////////////////////////////
 //// UnSavedParentModelsException
 
 /**
  * Exception when there is parent model opening and unsaved, while the user
- *  wants to save the sub model. 
+ * wants to save the sub model. 
  * 
  * @author Alek Wang
  * @version $Id$
@@ -42,45 +47,18 @@ package ptdb.common.exception;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class UnSavedParentModelsException extends Exception {
-    
+public class UnSavedParentModelsException extends KernelRuntimeException {
+
     /**
-     * Create a new UnSavedParentModelsException with the given message.
+     * Create a new UnSavedParentModelsException with the caused NamedObjs and 
+     * given message.
      * 
+     * @param namedObjects The instances of NamedObj that cause this exception.
      * @param message The given message for the exception. 
      */
-    public UnSavedParentModelsException(String message) {
-
-        super(message);
-
+    public UnSavedParentModelsException(Collection<NamedObj> namedObjects,
+            String message) {
+        super(namedObjects, null, message);
     }
 
-    /**
-     * Create an instance to wrap other exceptions.
-     * 
-     * @param message The exception message.
-     * @param cause The original exception.
-     */
-    public UnSavedParentModelsException(String message, Throwable cause) {
-        super(message, cause);
-        _cause = cause;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /**
-     * Return the underlying cause for the exception.
-     *
-     * @return The cause of the exception.
-     */
-    public Throwable getCause() {
-        return _cause;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private Throwable _cause;
-    
 }

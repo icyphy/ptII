@@ -38,6 +38,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 import javax.swing.BorderFactory;
@@ -649,7 +650,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                                 .getConfiguration().getDirectory().getEffigy(
                                         openedParentModelName);
                         parentModelEffigy.closeTableaux();
-                        
+
                         parentModelEffigy.setContainer(null);
 
                         // Reload the model from the Database.
@@ -1420,7 +1421,7 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
         private boolean _isValid() throws IllegalNameException,
                 UnSavedParentModelsException {
 
-            StringBuffer unsavedModelsBuffer = new StringBuffer("");
+            Collection<NamedObj> unSavedModels = new ArrayList<NamedObj>();
             boolean hasUnsavedParent = false;
 
             // Verify whether there is any unsaved parent model opening there. 
@@ -1432,17 +1433,17 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
 
                 // If the parent model is unsaved. 
                 if (parentModelEffigy.isModified()) {
-                    unsavedModelsBuffer.append(parentModelName + "; ");
+                    unSavedModels.add(parentModelEffigy.getModel());
                     hasUnsavedParent = true;
                 }
 
             }
 
             if (hasUnsavedParent) {
-                throw new UnSavedParentModelsException(
-                        "The following parent model(s) contain(s) unsaved "
+                throw new UnSavedParentModelsException(unSavedModels,
+                        "There are parent model(s) contain(s) unsaved "
                                 + "changes, please save these parent models "
-                                + "first: " + unsavedModelsBuffer.toString());
+                                + "first.");
             }
 
             // Verify whether the new name for the new version of model meets
