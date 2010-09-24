@@ -198,8 +198,10 @@ public class EntityTreeModel implements TreeModel {
         TreeModelEvent event = new TreeModelEvent(this, path);
 
         while (listeners.hasNext()) {
-            TreeModelListener listener = (TreeModelListener) ((WeakReference)listeners.next()).get();
-            listener.treeStructureChanged(event);
+        	Object listener = ((WeakReference)listeners.next()).get();
+        	if (listener != null) {
+                    ((TreeModelListener)listener).treeStructureChanged(event);
+                }
         }
     }
 
