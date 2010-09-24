@@ -29,8 +29,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptdb.common.exception;
 
 import java.util.Collection;
-
-import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////
@@ -47,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
  * @Pt.AcceptedRating red (wenjiaow)
  *
  */
-public class UnSavedParentModelsException extends KernelRuntimeException {
+public class UnSavedParentModelsException extends KernelException {
 
     /**
      * Create a new UnSavedParentModelsException with the caused NamedObjs and 
@@ -58,7 +57,7 @@ public class UnSavedParentModelsException extends KernelRuntimeException {
      */
     public UnSavedParentModelsException(Collection<NamedObj> namedObjects,
             String message) {
-        super(namedObjects, null, message);
+        super(null, null, generateMessage(namedObjects, null, message));
     }
 
 }
