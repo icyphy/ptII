@@ -668,8 +668,11 @@ public class SaveModelToDBFrame extends JFrame implements PTDBBasicFrame {
                 }
 
                 // Display the saved sub model to the front. 
-                _source.getConfiguration().getDirectory().getEffigy(
-                        _xmlModel.getModelName()).showTableaux();
+                if (_source.getConfiguration().getDirectory().getEffigy(
+                        _xmlModel.getModelName()) != null) {
+                    _source.getConfiguration().getDirectory().getEffigy(
+                            _xmlModel.getModelName()).showTableaux();
+                }
 
             } else {
 
