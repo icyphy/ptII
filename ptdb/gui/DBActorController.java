@@ -62,10 +62,10 @@ import diva.gui.GUIUtilities;
  * A controller for database reference actors.  They are rendered with a green
  * box.  Additionally, a menu item is added to allow opening the referenced
  * model for editing.  Changes made with the actor opened from the database can
- * be propagated to all other parents that include it by reference.  If 
+ * be propagated to all other parents that include it by reference.  If
  * modifications are only made from the instance that is opened, the changes
  * are not saved.  This preserves data intergrity.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -73,7 +73,7 @@ import diva.gui.GUIUtilities;
  * @Pt.AcceptedRating red (lholsing)
  */
 public class DBActorController extends ActorController {
-    
+
     /** Create a controller for database reference actors.
      * @param controller The graph controller.
      */
@@ -91,7 +91,7 @@ public class DBActorController extends ActorController {
         if (access == FULL) {
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     _openActorFromDB));
-            
+
         }
 
     }
@@ -141,8 +141,8 @@ public class DBActorController extends ActorController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
-    /** 
+
+    /**
      * The action for selection of the "Open Actor From Database" menu item.
      */
     protected OpenActorFromDB _openActorFromDB = new OpenActorFromDB();
@@ -162,7 +162,7 @@ public class DBActorController extends ActorController {
 
     ///////////////////////////////////////////////////////////////////
     //// OpenActorFromDatabase
-    
+
     /**
      *  An action to open a model from the database.
      */
@@ -178,7 +178,7 @@ public class DBActorController extends ActorController {
         }
 
         public void actionPerformed(ActionEvent e) {
-            
+
             if (_configuration == null) {
                 MessageHandler.error("Cannot open an actor "
                         + "without a configuration.");
@@ -189,58 +189,58 @@ public class DBActorController extends ActorController {
             super.actionPerformed(e);
 
             NamedObj object = getTarget();
-            
-            if(object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-                
-                if(object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) 
+
+            if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
+
+                if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR)
                         instanceof StringConstantParameter && ((StringParameter) object
                         .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                         .getExpression().equals("TRUE")) {
-  
+
                     try {
-                        
-                        PtolemyEffigy effigy = 
+
+                        PtolemyEffigy effigy =
                             LoadManager
                             .loadModelUsingId
                             (((StringParameter) object
                                     .getAttribute(XMLDBModel.DB_MODEL_ID_ATTR))
                                     .getExpression(), _configuration);
-    
-                        if(effigy != null){
-                            
+
+                        if (effigy != null) {
+
                             effigy.showTableaux();
-                            
+
                         } else {
-                            
+
                             JOptionPane
                             .showMessageDialog(this.getFrame(),
                                     "The specified model could " +
                                     "not be found in the database.",
                                     "Load Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
-                            
+
                         }
-                        
+
                     } catch (DBConnectionException e1) {
-                            
+
                         MessageHandler
                             .error("Cannot load the specified model. ", e1);
-    
+
                     } catch (DBExecutionException e1) {
-                        
+
                         MessageHandler
                             .error("Cannot load the specified model. ", e1);
-    
+
                     } catch (Exception e1) {
-    
+
                         MessageHandler
                             .error("Cannot load the specified model. ", e1);
-    
+
                     }
-                    
+
                 }
             }
-            
+
         }
     }
 }

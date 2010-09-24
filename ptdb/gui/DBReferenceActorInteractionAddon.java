@@ -45,9 +45,9 @@ import ptolemy.vergil.actor.ActorInteractionAddon;
 import ptolemy.vergil.toolbox.FigureAction;
 
 /**
- * Implementation of interface for interaction with actors.  This 
+ * Implementation of interface for interaction with actors.  This
  * implementation defines how to interact with database reference actors.
- * 
+ *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
  * @version $Id$
@@ -57,50 +57,50 @@ import ptolemy.vergil.toolbox.FigureAction;
 public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
 
     /** Determine of a given actor is a database reference actor.
-     * 
+     *
      * @param actor The actor of interest.
      * @return True if the actor is a database reference actor, False otherwise.
      */
     public boolean isActorOfInterestForLookInside(NamedObj actor) {
-        
-        if(actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
 
-            if(actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) 
-                instanceof StringConstantParameter && 
+        if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
+
+            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR)
+                instanceof StringConstantParameter &&
                 ((StringParameter) actor
                 .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                 .getExpression().equals("TRUE")) {
-                            
+
                 return true;
-                   
+
             }
-               
+
         }
-        
+
         return false;
     }
 
     /**
-     * Show a dialog box warning the user that changes will not be propagated 
+     * Show a dialog box warning the user that changes will not be propagated
      * to the database reference model.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
-     * @throws IllegalActionException Thrown for illegal action.
-     * @throws NameDuplicationException Thrown for name duplication.
+     * @exception IllegalActionException Thrown for illegal action.
+     * @exception NameDuplicationException Thrown for name duplication.
      */
-    public void lookInsideAction(FigureAction figureAction, NamedObj actor) 
-            throws IllegalActionException, NameDuplicationException {      
-        
-        JOptionPane.showMessageDialog(figureAction.getFrame(), 
+    public void lookInsideAction(FigureAction figureAction, NamedObj actor)
+            throws IllegalActionException, NameDuplicationException {
+
+        JOptionPane.showMessageDialog(figureAction.getFrame(),
                 "Changes to this actor will not " +
                 "be saved to the database.  " +
                 "To make changes to the " +
                 "referenced model, open " +
-                "it from the database.", 
+                "it from the database.",
                 "Open Actor",
                 JOptionPane.WARNING_MESSAGE, null);
-        
-        String referenceTag = "<property name=\"" + 
+
+        String referenceTag = "<property name=\"" +
             ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" " +
             "class=\"ptolemy.data.expr.StringConstantParameter\" " +
             "value=\"TRUE\"></property>";
@@ -114,8 +114,8 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
     }
 
     /**
-     * Get an instance of a DBActorController to be used for control of 
-     * database reference actors. 
+     * Get an instance of a DBActorController to be used for control of
+     * database reference actors.
      * @param controller The associated graph controller.
      * @param fullAccess Indication if the controller should be instantiated
      *                  with Full access.
@@ -123,20 +123,20 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      */
     public ActorController getControllerInstance(GraphController controller, boolean fullAccess) {
 
-        if(fullAccess){
-        
+        if (fullAccess) {
+
             return new DBActorController(controller, ActorController.FULL);
-        
+
         } else {
 
             return new DBActorController(controller, ActorController.PARTIAL);
-            
+
         }
-    
+
     }
 
     /**
-     * Get an instance of a DBActorController to be used for control of 
+     * Get an instance of a DBActorController to be used for control of
      * database reference actors.  This assumes full access.
      * @param controller The associated graph controller.
      * @return An instance of the appropriate controller.
@@ -146,83 +146,83 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
     }
 
     /** Determine of a given actor is a database reference actor.
-     * 
+     *
      * @param actor The actor of interest.
      * @return True if the actor is a database reference actor, False otherwise.
      */
     public boolean isActorOfInterestForOpenInstance(NamedObj actor) {
-        
-        if(actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
 
-            if(actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) 
-                instanceof StringConstantParameter && 
+        if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
+
+            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR)
+                instanceof StringConstantParameter &&
                 ((StringParameter) actor
                 .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                 .getExpression().equals("TRUE")) {
-                            
+
                 return true;
-                   
+
             }
-               
+
         }
-        
+
         return false;
-    
+
     }
 
     /**
-     * Show a dialog box warning the user that changes will not be propagated 
+     * Show a dialog box warning the user that changes will not be propagated
      * to the database reference model.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
-     * @throws IllegalActionException Thrown for illegal action.
-     * @throws NameDuplicationException Thrown for name duplication.
+     * @exception IllegalActionException Thrown for illegal action.
+     * @exception NameDuplicationException Thrown for name duplication.
      */
-    public void openInstanceAction(FigureAction figureAction, NamedObj actor) 
+    public void openInstanceAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException {
-        JOptionPane.showMessageDialog(figureAction.getFrame(), 
+        JOptionPane.showMessageDialog(figureAction.getFrame(),
                 "Changes to this instance will not " +
                 "be saved to the database.  " +
                 "To make changes to the " +
                 "referenced model, open " +
-                "it from the database.", 
+                "it from the database.",
                 "Open Instance",
                 JOptionPane.WARNING_MESSAGE, null);
-        
-        String referenceTag = "<property name=\"" + 
+
+        String referenceTag = "<property name=\"" +
         ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" " +
         "class=\"ptolemy.data.expr.StringConstantParameter\" " +
         "value=\"TRUE\"></property>";
 
         MoMLChangeRequest change = new MoMLChangeRequest(null,
                 actor, referenceTag);
-    
+
         change.setUndoable(true);
         actor.requestChange(change);
-    
+
     }
-    
+
     /** Determine of a given actor is a database reference actor.
-     * 
+     *
      * @param actor The actor of interest.
      * @return True if the actor is a database reference actor, False otherwise.
      */
     public boolean isActorOfInterestForAddonController(NamedObj actor) {
-        
-        if(actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
 
-            if(actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) 
-                instanceof StringConstantParameter && 
+        if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
+
+            if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR)
+                instanceof StringConstantParameter &&
                 ((StringParameter) actor
                 .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                 .getExpression().equals("TRUE")) {
-                            
+
                 return true;
-                   
+
             }
-               
+
         }
-        
+
         return false;
     }
 
