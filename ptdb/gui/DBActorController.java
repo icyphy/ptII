@@ -91,9 +91,7 @@ public class DBActorController extends ActorController {
         if (access == FULL) {
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     _openActorFromDB));
-
         }
-
     }
 
     /** Add hot keys to the actions in the given JGraph.
@@ -101,7 +99,6 @@ public class DBActorController extends ActorController {
      */
     public void addHotKeys(JGraph jgraph) {
         super.addHotKeys(jgraph);
-
         GUIUtilities.addHotKey(jgraph, _openActorFromDB);
     }
 
@@ -132,10 +129,8 @@ public class DBActorController extends ActorController {
                 }
                 cf.add(index, bf);
             }
-
             return cf;
         }
-
         return nf;
     }
 
@@ -177,7 +172,6 @@ public class DBActorController extends ActorController {
         }
 
         public void actionPerformed(ActionEvent e) {
-
             if (_configuration == null) {
                 MessageHandler.error("Cannot open an actor "
                         + "without a configuration.");
@@ -190,14 +184,11 @@ public class DBActorController extends ActorController {
             NamedObj object = getTarget();
 
             if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-
                 if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                         && ((StringParameter) object
                                 .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                                 .getExpression().equals("TRUE")) {
-
                     try {
-
                         PtolemyEffigy effigy = LoadManager
                                 .loadModelUsingId(
                                         ((StringParameter) object
@@ -206,39 +197,26 @@ public class DBActorController extends ActorController {
                                         _configuration);
 
                         if (effigy != null) {
-
                             effigy.showTableaux();
-
                         } else {
-
                             JOptionPane.showMessageDialog(this.getFrame(),
                                     "The specified model could "
                                             + "not be found in the database.",
                                     "Load Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
-
                         }
-
                     } catch (DBConnectionException e1) {
-
                         MessageHandler.error(
                                 "Cannot load the specified model. ", e1);
-
                     } catch (DBExecutionException e1) {
-
                         MessageHandler.error(
                                 "Cannot load the specified model. ", e1);
-
                     } catch (Exception e1) {
-
                         MessageHandler.error(
                                 "Cannot load the specified model. ", e1);
-
                     }
-
                 }
             }
-
         }
     }
 }

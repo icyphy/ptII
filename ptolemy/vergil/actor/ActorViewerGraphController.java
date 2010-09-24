@@ -234,13 +234,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
                         if (((Boolean) method1.invoke(actorInterationAddon,
                                 semanticObject)).booleanValue()) {
-
                             isDatabaseReferenceActor = true;
-
                         }
-
                     }
-
                 } catch (Exception e) {
                     // Just ignore it.
                 }
@@ -250,17 +246,11 @@ public class ActorViewerGraphController extends RunnableGraphController {
                 // In the edit, there will be.
                 if ((_classDefinitionController != null)
                         && ((Entity) semanticObject).isClassDefinition()) {
-
                     return _classDefinitionController;
-
                 } else if (isDatabaseReferenceActor) {
-
                     return _dbActorController;
-
                 } else {
-
                     return _entityController;
-
                 }
             } else if (semanticObject instanceof Attribute) {
                 return _attributeController;
@@ -296,17 +286,12 @@ public class ActorViewerGraphController extends RunnableGraphController {
         try {
             actorInteractionAddon = (StringParameter) this.getConfiguration()
                     .getAttribute("_ActorInteractionAddon", Parameter.class);
-
             if (actorInteractionAddon != null) {
-
                 _dbActorController.setConfiguration(configuration);
-
             }
-
         } catch (Exception e) {
             // Ignore it.
         }
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -327,13 +312,9 @@ public class ActorViewerGraphController extends RunnableGraphController {
         try {
             actorInteractionAddon = (StringParameter) this.getConfiguration()
                     .getAttribute("_ActorInteractionAddon", Parameter.class);
-
             if (actorInteractionAddon != null) {
-
                 _dbActorController.addHotKeys(jgraph);
-
             }
-
         } catch (Exception e) {
             // Ignore it.
         }
@@ -360,24 +341,18 @@ public class ActorViewerGraphController extends RunnableGraphController {
         try {
             actorInteractionAddon = (StringParameter) this.getConfiguration()
                     .getAttribute("_ActorInteractionAddon", Parameter.class);
-
             if (actorInteractionAddon != null) {
                 String actorInteractionAddonClassName = actorInteractionAddon
                         .stringValue();
-
                 Class actorInteractionAddonClass = Class
                         .forName(actorInteractionAddonClassName);
-
                 ActorInteractionAddon actorInterationAddon = (ActorInteractionAddon) actorInteractionAddonClass
                         .newInstance();
-
                 Method method2 = actorInteractionAddonClass.getMethod(
                         "getControllerInstance", GraphController.class,
                         Boolean.TYPE);
-
                 _dbActorController = (ActorController) method2.invoke(
                         actorInterationAddon, this, false);
-
             }
 
         } catch (Exception e) {

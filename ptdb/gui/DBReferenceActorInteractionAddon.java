@@ -62,20 +62,14 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * @return True if the actor is a database reference actor, False otherwise.
      */
     public boolean isActorOfInterestForLookInside(NamedObj actor) {
-
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-
             if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                     && ((StringParameter) actor
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                             .getExpression().equals("TRUE")) {
-
                 return true;
-
             }
-
         }
-
         return false;
     }
 
@@ -107,7 +101,6 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
 
         change.setUndoable(true);
         actor.requestChange(change);
-
     }
 
     /**
@@ -120,18 +113,12 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      */
     public ActorController getControllerInstance(GraphController controller,
             boolean fullAccess) {
-
         if (fullAccess) {
-
             return new DBActorController(controller, AttributeController.FULL);
-
         } else {
-
             return new DBActorController(controller,
                     AttributeController.PARTIAL);
-
         }
-
     }
 
     /**
@@ -150,22 +137,15 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * @return True if the actor is a database reference actor, False otherwise.
      */
     public boolean isActorOfInterestForOpenInstance(NamedObj actor) {
-
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-
             if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                     && ((StringParameter) actor
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                             .getExpression().equals("TRUE")) {
-
                 return true;
-
             }
-
         }
-
         return false;
-
     }
 
     /**
@@ -195,7 +175,6 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
 
         change.setUndoable(true);
         actor.requestChange(change);
-
     }
 
     /** Determine of a given actor is a database reference actor.
@@ -204,21 +183,14 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * @return True if the actor is a database reference actor, False otherwise.
      */
     public boolean isActorOfInterestForAddonController(NamedObj actor) {
-
         if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
-
             if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                     && ((StringParameter) actor
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
                             .getExpression().equals("TRUE")) {
-
                 return true;
-
             }
-
         }
-
         return false;
     }
-
 }

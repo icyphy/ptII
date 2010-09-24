@@ -177,7 +177,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         Public Inner Classes              ////
 
     ///////////////////////////////////////////////////////////////////
     //// NewRelationAction
@@ -368,6 +368,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Add hot keys to the actions in the given JGraph.
      *
      *  @param jgraph The JGraph to which hot keys are to be added.
@@ -383,13 +386,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         try {
             actorInteractionAddon = (StringParameter) this.getConfiguration()
                     .getAttribute("_ActorInteractionAddon", Parameter.class);
-
             if (actorInteractionAddon != null) {
-
                 _dbActorController.addHotKeys(getFrame().getJGraph());
-
             }
-
         } catch (Exception e) {
             // Ignore it.
         }
@@ -421,21 +420,15 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 if (actorInteractionAddon != null) {
                     String actorInteractionAddonClassName = actorInteractionAddon
                             .stringValue();
-
                     Class actorInteractionAddonClass = Class
                             .forName(actorInteractionAddonClassName);
-
                     ActorInteractionAddon actorInterationAddon = (ActorInteractionAddon) actorInteractionAddonClass
                             .newInstance();
-
                     Method method2 = actorInteractionAddonClass.getMethod(
                             "getControllerInstance", GraphController.class);
-
                     _dbActorController = (ActorController) method2.invoke(
                             actorInterationAddon, this);
-
                 }
-
             } catch (Exception e) {
                 // Just ignore it.
             }
@@ -457,16 +450,11 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         }
 
         if (_alternateActorInstanceClassName == null) {
-            //System.out.println("Using standard ActorInstanceController");
-
-            //default to the normal ActorInstanceController
+            // Default to the normal ActorInstanceController.
             _entityController = new ActorInstanceController(this);
         } else {
             try {
-                //try to load the alternate class
-
-                //System.out.println("Using _alternateActorInstanceController: " +
-                //  _alternateActorInstanceClassName);
+                // Try to load the alternate class.
                 Class _alternateActorInstanceClass = Class
                         .forName(_alternateActorInstanceClassName);
                 Class[] argsClass = new Class[] { diva.graph.GraphController.class };
@@ -515,9 +503,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
     /** Initialize all interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass.
      *  This initialization cannot be done in the constructor because
@@ -525,6 +510,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      *  at that time.
      */
     protected void initializeInteraction() {
+        // FIXME: why is this protected, but does not have a leading underscore
+        // how is this different from _initializeInteraction above?
         super.initializeInteraction();
 
         GraphPane pane = getGraphPane();
@@ -585,6 +572,9 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                             GUIUtilities.SELECTED_ICON } });
 
     //   private LinkCreator _linkCreator2;  // For shift-click
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         Protected Inner Classes           ////
 
     /** This class is an interactor that interactively drags edges from
      *  one terminal to another, creating a link to connect them.
@@ -743,10 +733,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     { "/ptolemy/vergil/actor/img/single_out_on.gif",
                             GUIUtilities.SELECTED_ICON } });
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    ///////////////////////////////////////////////////////////////////
-    //// LinkCreator
 
     /** The port dialog factory. */
     private PortDialogAction _portDialogAction;
@@ -767,9 +753,10 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     .getMenuShortcutKeyMask(), Toolkit.getDefaultToolkit()
                     .getMenuShortcutKeyMask());
 
-    ///////////////////////////////////////////////////////////////////
-    //// RelationCreator
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+ 
     ///////////////////////////////////////////////////////////////////
     //// ListenToActorFactory
     private class ListenToActorFactory implements MenuItemFactory {
