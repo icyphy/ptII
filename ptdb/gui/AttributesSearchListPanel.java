@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NamedObj;
  * 
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
- * @version $Id:$
+ * @version $Id$
  * @Pt.ProposedRating red (lholsing)
  * @Pt.AcceptedRating red (lholsing)
  * 
@@ -164,17 +164,37 @@ public class AttributesSearchListPanel extends AttributesListPanel {
 
                           try {
                               
-                              PTDBSearchAttribute attribute = new PTDBSearchAttribute(((
-                                      (GenericAttributePanel) componentArray2[j])
+                              PTDBSearchAttribute attribute = 
+                                  new PTDBSearchAttribute();
+                              
+                              attribute.setGenericAttribute(true);
+                              
+                              if((((GenericAttributePanel) componentArray2[j])
+                                      .getAttributeClass()).length()>0){
+                                  attribute.setGenericClassName
+                                  ((((GenericAttributePanel) componentArray2[j])
                                       .getAttributeClass()));
+                              }
                               
                               attribute.setName((
                                       (GenericAttributePanel) 
                                       componentArray2[j]).getAttributeName());
-                              attribute.setExpression((
-                                      (GenericAttributePanel) 
-                                      componentArray2[j]).getValue());
+                              
+                              
+                              if((((GenericAttributePanel) componentArray2[j])
+                                      .getValue()).length()>0){
+                                  attribute.setExpression((
+                                          (GenericAttributePanel) 
+                                          componentArray2[j]).getValue());
+                              }
 
+
+                              System.out.println("Attname:" + attribute.getName());
+
+                              System.out.println("value:" + attribute.getExpression());
+
+                              System.out.println("class:" + attribute.getGenericClassName());
+                              
                               returnList.add(attribute);
                               
                           } catch (NameDuplicationException e) {
@@ -233,44 +253,4 @@ public class AttributesSearchListPanel extends AttributesListPanel {
         return true;
     }
     
-    /** Get an indication if all attributes in the panel have values.
-     * @return
-     *          An indication if all attributes in the panel have values.
-     *           (true they do. false if they do not).
-     * 
-     */
-    protected boolean allAttributeValuesSet() {
-
-        if(!super.allAttributeValuesSet()) return false;
-        
-        Component[] componentArray1 = _attListPanel.getComponents();
-
-        for (int i = 0; i < componentArray1.length; i++) {
-
-            if (componentArray1[i] instanceof JPanel) {
-
-                Component[] componentArray2 = ((JPanel) componentArray1[i])
-                        .getComponents();
-
-                for (int j = 0; j < componentArray2.length; j++) {
-
-                    if (componentArray2[j] instanceof GenericAttributePanel) {
-
-                        if (((GenericAttributePanel) componentArray2[j])
-                                .getValue().equals("")) {
-
-                            return false;
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        return true;
-    }
 }

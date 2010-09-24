@@ -57,18 +57,6 @@ public class PTDBSearchAttribute extends Variable {
         _isGenericAttribute = false;
         
     }
-
-    /**
-     * Constructor for a generic attribute PTDBSearchAttribute.
-     * @param genericClassName Name of the Attribute class.
-     */
-    public PTDBSearchAttribute(String genericClassName) {
-        
-        super();
-        _isGenericAttribute = true;
-        _genericClassName = genericClassName;
-        
-    }
     
     ///////////////////////////////////////////////////////////////////
     //                    public methods                           ////

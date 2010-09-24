@@ -79,14 +79,26 @@ public class AttributeSearcher extends AbstractSearcher implements
                     // Set the values and class name to newAttribute from 
                     // originalAttribute.
 //                    newAttribute.setAttributeName(originalAttribute.getName());
+                    
+                    
+                    //newAttribute.addValue(((Variable) originalAttribute)
+                    //        .getValueAsString());
                     newAttribute.addValue(((Variable) originalAttribute)
-                            .getValueAsString());
+                                    .getExpression());
 
                     if (originalAttribute instanceof PTDBSearchAttribute) {
                         if (!((PTDBSearchAttribute) originalAttribute)
                                 .isGenericAttribute()) {
+                            System.out.println("got here");
                             newAttribute.setClassName(originalAttribute
                                     .getClassName());
+                        }
+                        else {
+                                
+                            newAttribute.setClassName(
+                                    ((PTDBSearchAttribute) originalAttribute)
+                                    .getGenericClassName());
+                        
                         }
                     } else {
                         newAttribute.setClassName(originalAttribute
