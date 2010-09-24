@@ -89,7 +89,7 @@ public class AttributeSearcher extends AbstractSearcher implements
                     if (originalAttribute instanceof PTDBSearchAttribute) {
                         if (!((PTDBSearchAttribute) originalAttribute)
                                 .isGenericAttribute()) {
-                            System.out.println("got here");
+                            
                             newAttribute.setClassName(originalAttribute
                                     .getClassName());
                         }

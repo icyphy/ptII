@@ -188,13 +188,6 @@ public class AttributesSearchListPanel extends AttributesListPanel {
                                           componentArray2[j]).getValue());
                               }
 
-
-                              System.out.println("Attname:" + attribute.getName());
-
-                              System.out.println("value:" + attribute.getExpression());
-
-                              System.out.println("class:" + attribute.getGenericClassName());
-                              
                               returnList.add(attribute);
                               
                           } catch (NameDuplicationException e) {
