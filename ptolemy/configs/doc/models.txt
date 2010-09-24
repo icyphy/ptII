@@ -304,6 +304,9 @@ $CLASSPATH/ptolemy/domains/pthales/demo/AdaptiveBeamForming/AdaptiveBeamForming.
 $CLASSPATH/ptolemy/domains/pthales/demo/FFT/FFT.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/HelloWorld/HelloWorld.xml
 $CLASSPATH/ptolemy/domains/pthales/demo/Illustrative/Illustrative.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicMixedSimulator/PtidesBasicMixedSimulator.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicOnePlatform/PtidesBasicOnePlatform.xml
+$CLASSPATH/ptolemy/domains/ptides/demo/PtidesBasicPowerPlant/PtidesBasicPowerPlant.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Sequencing/Sequencing.xml
