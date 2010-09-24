@@ -258,8 +258,8 @@ public class LoadManager {
      * 
      * @param pageNumber Page number of the page whose models need to be fetched.
      * @return List of models from the given page.
-     * @throws DBConnectionException If thrown while connecting to the database.
-     * @throws DBExecutionException If thrown while executing query in the
+     * @exception DBConnectionException If thrown while connecting to the database.
+     * @exception DBExecutionException If thrown while executing query in the
      * database.
      */
     public List<XMLDBModel> getAllModelsFromDatabase(int pageNumber)
@@ -269,7 +269,7 @@ public class LoadManager {
             getAllModelsFromDatabase();
         }
 
-        if (_noOfPages > 0) {
+        if (_numberOfPages > 0) {
             int endIndex = pageNumber * NO_OF_ITEMS_PER_PAGE;
             int startIndex = endIndex - NO_OF_ITEMS_PER_PAGE;
             if (endIndex > _allModelsList.size()) {
@@ -285,9 +285,9 @@ public class LoadManager {
 
     /** Fetch and store locally the list of all models in the database.
      * 
-     * @throws DBConnectionException If thrown while connecting to the 
+     * @exception DBConnectionException If thrown while connecting to the 
      * database.
-     * @throws DBExecutionException  If thrown while executing the 
+     * @exception DBExecutionException  If thrown while executing the 
      * query in the database.
      * 
      */
@@ -296,18 +296,18 @@ public class LoadManager {
         DBConnection conn = DBConnectorFactory.getSyncConnection(false);
         _allModelsList = conn.executeGetListOfAllModels();
         if (_allModelsList != null) {
-            _noOfPages = _allModelsList.size() / NO_OF_ITEMS_PER_PAGE + 1;
+            _numberOfPages = _allModelsList.size() / NO_OF_ITEMS_PER_PAGE + 1;
         } else
-            _noOfPages = 0;
+            _numberOfPages = 0;
         _isFetched = true;
     }
 
     /** Get the total number of models in the database.
      * 
      * @return Total number of models in the database.
-     * @throws DBConnectionException If thrown while connecting to the 
+     * @exception DBConnectionException If thrown while connecting to the 
      * database.
-     * @throws DBExecutionException  If thrown while executing the 
+     * @exception DBExecutionException  If thrown while executing the 
      * query in the database.
      */
     public int getTotalNumberOfModels() throws DBConnectionException,
@@ -322,9 +322,9 @@ public class LoadManager {
      * models list.
      * 
      * @return Total number of pages in the models list.
-     * @throws DBConnectionException If thrown while connecting to the 
+     * @exception DBConnectionException If thrown while connecting to the 
      * database.
-     * @throws DBExecutionException  If thrown while executing the 
+     * @exception DBExecutionException  If thrown while executing the 
      * query in the database.
      */
     public int getNoOfPages() throws DBConnectionException,
@@ -332,7 +332,7 @@ public class LoadManager {
         if (!_isFetched) {
             getAllModelsFromDatabase();
         }
-        return _noOfPages;
+        return _numberOfPages;
     }
 
     /**
@@ -482,7 +482,7 @@ public class LoadManager {
     public static int NO_OF_ITEMS_PER_PAGE = 25;
     
     /** Number of pages that can filled with the given number of results. */
-    private int _noOfPages;
+    private int _numberOfPages;
     
     /** Boolean that describes if the list of models has been fetched or not. */
     private boolean _isFetched;
