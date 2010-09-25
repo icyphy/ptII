@@ -46,9 +46,9 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
      *  Inputs and outputs are added to the total 
      *  inputs and outputs of the composition.
      *  <p>
-     *  This method overrides the LinkedList add.
-     *  <p>
-     *  @param node Term to add to the composition.
+     *  This method overrides the LinkedList add().
+     * 
+     *  @param term Term to add to the composition.
      *  @return whether node was added.
      */
     public boolean add(SyntacticTerm term) {
@@ -98,8 +98,8 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
      *  total inputs and outputs.
      *  <p>
      *  This method overrides the LinkedList remove.
-     *  <p>
-     *  @param node Term to be removed from the composition.
+     *
+     *  @param ot Term to be removed from the composition.
      *  @return whether term was removed.
      */
     public boolean remove(Object ot) {
