@@ -135,8 +135,9 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter animateExecution;
     
-    /** If true, then modify the icon for the direcotr to indicate
-     *  which actors have model time delays associated with them. 
+    /** If true, then modify the icon for all deeply contained actors
+     *  that has non-zero model time delays (including actors that only 
+     *  introduce microstep delays).
      *  This is a boolean that defaults to false.
      */
     public Parameter animateModelTimeDelay; 
@@ -583,6 +584,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  However we use the DEListEventQueue instead of the calendar queue because we need
      *  to access to not just the first event in the event queue.
      *  Also parameters minDelay is calculated here.
+     *  Finally if animateModelTimeDelay parameter is checked, then we annotate all the model
+     *  time delay actors in the model.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -598,7 +601,7 @@ public class PtidesBasicDirector extends DEDirector {
         _checkSensorActuatorNetworkConsistency();
 
         if (((BooleanToken)animateModelTimeDelay.getToken()).booleanValue()) {
-            _annotateModelDelays((CompositeActor) getContainer());
+            _annotateModelDelays((CompositeActor) getContainer(), false);
         }
     }
 
@@ -689,8 +692,8 @@ public class PtidesBasicDirector extends DEDirector {
         setMicrostep(microstep);
     }
 
-    /** Override the base class to reset the icon idle if animation
-     *  is turned on.
+    /** Override the base class to reset the icon idle if animation for
+     *  model time delay or for execution is turned on.
      *  @exception IllegalActionException If the wrapup() method of
      *  one of the associated actors throws it.
      */
@@ -699,6 +702,9 @@ public class PtidesBasicDirector extends DEDirector {
         _setIcon(_getIdleIcon(), false);
         if (_lastExecutingActor != null) {
             _clearHighlight(_lastExecutingActor, false);
+        }
+        if (((BooleanToken)animateModelTimeDelay.getToken()).booleanValue()) {
+            _annotateModelDelays((CompositeActor) getContainer(), true);
         }
     }
 
@@ -2223,8 +2229,10 @@ public class PtidesBasicDirector extends DEDirector {
     /** For all deeply contained actors, if the actor has a dependency that
      *  is not equal to the OTimesIdenty, then we annotate this actor with
      *  a certain color. We repeat this process recursively.
+     *  If clearModelDelay is set, then instead of highlighting actors, instead
+     *  the highlighting is cleared.
      */
-    private void _annotateModelDelays(CompositeActor compositeActor)
+    private void _annotateModelDelays(CompositeActor compositeActor, boolean clearModelDelay)
             throws IllegalActionException {
         for (Actor actor : (List<Actor>) (compositeActor.deepEntityList())) {
             boolean annotateThisActor = false;
@@ -2249,10 +2257,14 @@ public class PtidesBasicDirector extends DEDirector {
                 }
             }
             if (annotateThisActor) {
-                _highlightActor(actor, "{0.0, 1.0, 1.0, 1.0}", true);
+                if (clearModelDelay) {
+                    _clearHighlight(actor, true);
+                } else {
+                    _highlightActor(actor, "{0.0, 1.0, 1.0, 1.0}", true);
+                }
             }
             if (actor instanceof CompositeActor) {
-                _annotateModelDelays((CompositeActor) actor);
+                _annotateModelDelays((CompositeActor) actor, clearModelDelay);
             }
         }
     }
