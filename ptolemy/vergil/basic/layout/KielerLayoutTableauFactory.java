@@ -26,13 +26,30 @@
  */
 package ptolemy.vergil.basic.layout;
 
+import java.util.Iterator;
+
+import javax.swing.JFrame;
+
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.basic.BasicLayoutTarget;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.layout.KielerLayoutTableau.KielerLayoutFrame;
+import ptolemy.vergil.basic.layout.kieler.KielerLayout;
+import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
 
 /**
    A factory that creates a control panel to display Kieler layout controls.
@@ -74,16 +91,127 @@ public class KielerLayoutTableauFactory extends TableauFactory {
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
         if (effigy instanceof PtolemyEffigy) {
-            // First see whether the effigy already contains a tableau.
-            KielerLayoutTableau tableau = (KielerLayoutTableau) effigy
-                    .getEntity("KielerLayoutTableau");
+            // possibly pass on no dialog option
+            boolean noDialog = false;
+            if (this.getName().equals("NODIALOG")) {
+                noDialog = true;
+            }
+            
+            KielerLayoutTableau returnTableau = null;
+            if (noDialog) {
+                
+                NamedObj model = null;
+                try {
+                    // Get the frame and the current model here.
+                    model = ((PtolemyEffigy) effigy).getModel();
+                    try {
+                        if (!(model instanceof CompositeActor)) {
+                            throw new InternalErrorException(
+                                    "For now only actor oriented graphs with ports are supported by KIELER layout. "
+                                            + "The model \""
+                                            + model.getFullName()
+                                            + "\" was a "
+                                            + model.getClass().getName()
+                                            + " which is not an instance of CompositeActor.");
+                        }
+                        JFrame frame = null;
+                        int tableauxCount = 0;
+                        Iterator tableaux = Configuration.findEffigy(model)
+                                .entityList(Tableau.class).iterator();
+                        while (tableaux.hasNext()) {
+                            Tableau tableau = (Tableau) (tableaux.next());
+                            tableauxCount++;
+                            if (tableau.getFrame() instanceof ActorGraphFrame) {
+                                frame = tableau.getFrame();
+                            }
+                        }
+                        // Check for supported type of editor 
+                        if (!(frame instanceof ActorGraphFrame)) {
+                            String message = "";
+                            if (tableauxCount == 0) {
+                                message = "findEffigy() found no Tableaux?  There should have been one "
+                                        + "ActorGraphFrame.";
+                            } else {
+                                JFrame firstFrame = ((Tableau) Configuration
+                                        .findEffigy(model).entityList(Tableau.class)
+                                        .get(0)).getFrame();
+                                if (firstFrame instanceof KielerLayoutFrame) {
+                                    message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
+                                            + "please save the model before running the layout mechanism.";
+                                } else {
+                                    message = "The first frame of "
+                                            + tableauxCount
+                                            + " found by findEffigy() is a \""
+                                            + firstFrame.getClass().getName()
+                                            + "\", which is not an instance of ActorGraphFrame."
+                                            + " None of the other frames were ActorGraphFrames either.";
+                                }
+                            }
+                            throw new InternalErrorException(
+                                    model,
+                                    null,
+                                    "For now only actor oriented graphs with ports are supported by KIELER layout. "
+                                            + message
+                                            + (frame != null ? " Details about the frame: "
+                                                    + StringUtilities.ellipsis(
+                                                            frame.toString(), 80)
+                                                    : ""));
+                        } else {
+                                BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
 
-            if (tableau == null) {
-                tableau = new KielerLayoutTableau((PtolemyEffigy) effigy,
-                        "KielerLayoutTableau");
+                                // fetch everything needed to build the LayoutTarget
+                                GraphController graphController = graphFrame
+                                        .getJGraph().getGraphPane()
+                                        .getGraphController();
+                                GraphModel graphModel = graphFrame.getJGraph()
+                                        .getGraphPane().getGraphController()
+                                        .getGraphModel();
+                                BasicLayoutTarget layoutTarget = new BasicLayoutTarget(
+                                        graphController);
+
+                                // create Kieler layouter for this layout target
+                                KielerLayout layout = new KielerLayout(layoutTarget);
+                                layout.setModel((CompositeActor) model);
+                                layout.setApplyEdgeLayout(false);
+                                layout.setApplyEdgeLayoutBendPointAnnotation(true);
+                                layout.setBoxLayout(false);
+                                layout.setTop(graphFrame);
+
+                                layout.layout(graphModel.getRoot());
+                        }
+                    } catch (Exception ex) {
+                        // If we do not catch exceptions here, then they
+                        // disappear to stdout, which is bad if we launched
+                        // where there is no stdout visible.
+                        MessageHandler.error(
+                                "Failed to layout \""
+                                        + (model == null ? "name not found" : (model
+                                                .getFullName())) + "\"", ex);
+                    }
+                } catch (Exception ex) {
+                    // If we do not catch exceptions here, then they
+                    // disappear to stdout, which is bad if we launched
+                    // where there is no stdout visible.
+                    MessageHandler.error(
+                            "Failed to layout \""
+                                    + (model == null ? "name not found" : (model
+                                            .getFullName())) + "\"", ex);
+                }
+
+                
+            }
+            else {
+                // First see whether the effigy already contains a tableau.
+                returnTableau = (KielerLayoutTableau) effigy
+                        .getEntity("KielerLayoutTableau");
+                if (returnTableau == null) {
+                    returnTableau = new KielerLayoutTableau((PtolemyEffigy) effigy,
+                            "KielerLayoutTableau");
+                }
+                
             }
 
-            return tableau;
+            return returnTableau;
         } else {
             return null;
         }
