@@ -550,7 +550,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             // apply edge layout - bend points (cmot)
             if (_doApplyEdgeLayoutBendPointAnnotation) {
                 for (KEdge kedge : _kieler2PtolemyDivaEdges.keySet()) {
-                    _applyEdgeLayout(kedge);
+                    _applyEdgeLayoutBendPointAnnotation(kedge);
                 }
             }
         }
