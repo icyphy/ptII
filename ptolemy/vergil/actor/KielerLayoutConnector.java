@@ -88,9 +88,11 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
         // parse the bend points if existing
         List<Point2D> bendPointList = null;
         Object object = this.getUserObject();
+        Link link = null;
+        Relation relation = null;
         if (object instanceof Link) {
-            Link link = (Link) object;
-            Relation relation = link.getRelation();
+            link = (Link) object;
+            relation = link.getRelation();
 
             if (isModified(relation, link)) {
                 try {
@@ -125,31 +127,59 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
             setShape(poly);
         } else {
             GeneralPath path = new GeneralPath();
-            path.moveTo((float) poly.getX(0), (float) poly.getY(0));
 
-            double prevX = poly.getX(0);
-            double prevY = poly.getY(0);
+            double startX = poly.getX(0);
+            double startY = poly.getY(0);
+            double prevX = startX;
+            double prevY = startY;
             double endX = (float) poly.getX(poly.getVertexCount() - 1);
             double endY = (float) poly.getY(poly.getVertexCount() - 1);
-            
+
             boolean considerBendPoints = bendPointList != null && bendPointList.size() > 0;
 
             if (considerBendPoints) {
+                boolean isVertexConnected = relation.exportMoMLPlain().contains("<vertex");
+
                 // in this case we have bend points provided e.g., by a layouter.
                 // we will consider these instead of doing the originally manhatten routing.
                 boolean reverseOrder = false;
                 if (bendPointList.size() > 1) {
-                    reverseOrder = isReversedOrder(new Point2D.Double(prevX, prevY),
+                    reverseOrder = isReversedOrder(new Point2D.Double(startX, startY),
                             new Point2D.Double(endX, endY), bendPointList);
                 }
+
+                // the following is a workaround because vertex "port position" seem to adapt
+                // the older ptolemy layout so we replace the first position!
+                if (isVertexConnected) {
+                    // in this case the reverse order does not matter, we seem always to draw from
+                    // the vertex as a starting point
+                    double sX = startX;
+                    double sY = startY;
+                    double bX = bendPointList.get(0).getX();
+                    double bY = bendPointList.get(0).getY();
+
+                    double marging = 20;
+                    if (!reverseOrder) {
+                        if ((sY < bY + marging) && (sY > bY - marging)) {
+                            startY = bY;
+                            prevY = startY;
+                        } else {
+                            startX = bX;
+                            prevX = startX;
+                        }
+                    }
+                }
+                
+                // start drawing the line
+                path.moveTo(startX, startY);
 
                 // add the start point and end point to the bendPointList in order to get the
                 // curveTo-effect working.
                 if (!reverseOrder) {
-                    bendPointList.add(0, new Point2D.Double(poly.getX(0), poly.getY(0)));
+                    bendPointList.add(0, new Point2D.Double(startX, startY));
                     bendPointList.add(new Point2D.Double(endX, endY));
                 } else {
-                    bendPointList.add(new Point2D.Double(poly.getX(0), poly.getY(0)));
+                    bendPointList.add(new Point2D.Double(startX, startY));
                     bendPointList.add(0, new Point2D.Double(endX, endY));
                 }
 
@@ -168,8 +198,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                     }
 
                     // consider triplets of coordinates
-                    double x0 = prevX; // poly.getX(i-2);
-                    double y0 = prevY; // poly.getY(i-2);
+                    double x0 = prevX; 
+                    double y0 = prevY; 
                     double x1 = bendPointList.get(i0).getX();
                     double y1 = bendPointList.get(i0).getY();
 
@@ -248,7 +278,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
     // // private methods ////
 
     /**
-     * Checks whether one of the end point actors of a link has been moved. 
+     * Checks whether one of the end point actors of a link has been moved.
      * 
      * @param relation
      *            the relation
