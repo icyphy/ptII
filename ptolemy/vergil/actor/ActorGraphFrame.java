@@ -309,8 +309,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
         return new BasicGraphPane(_controller, graphModel, entity);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // protected variables ////
+    ///////////////////////////////////////////////////////////////////
+    ///                    protected variables                     ////
 
     /** The graph controller. This is created in _createGraphPane(). */
     protected ActorEditorGraphController _controller;
@@ -342,8 +342,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
     /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
 
-    // /////////////////////////////////////////////////////////////////
-    // private variables ////
+    ////////////////////////////////////////////////////////////////////
+    ////                      private variables                     ////
 
     /** The most recent class name for instantiating an attribute. */
     private String _lastAttributeClassName = "ptolemy.vergil.kernel.attributes.EllipseAttribute";
@@ -357,8 +357,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
 
-    // /////////////////////////////////////////////////////////////////
-    // // public inner classes ////
+    ///////////////////////////////////////////////////////////////////
+    ////                      public inner classes                 ////
 
     // NOTE: The following class is very similar to the inner class
     // in FSMGraphFrame. Is there some way to merge these?
@@ -467,11 +467,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
         private Director _listeningTo;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private inner classes ////
+    ////////////////////////////////////////////////////////////////////
+    ////                  private inner classes                     ////
 
-    // /////////////////////////////////////////////////////////////////
-    // // CreateHierarchy
+    ////////////////////////////////////////////////////////////////////
+    //// CreateHierarchy
 
     /**
      * Action to create a typed composite actor that contains the the selected actors.
@@ -497,8 +497,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // ImportLibraryAction
+    ///////////////////////////////////////////////////////////////////
+    //// ImportLibraryAction
 
     /** An action to import a library of components. */
     private class ImportLibraryAction extends AbstractAction {
@@ -550,8 +550,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // InstantiateAttributeAction
+    ////////////////////////////////////////////////////////////////////
+    //// InstantiateAttributeAction
 
     /** An action to instantiate an entity given a class name. */
     private class InstantiateAttributeAction extends AbstractAction {
@@ -608,8 +608,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // InstantiateEntityAction
+    ///////////////////////////////////////////////////////////////////
+    //// InstantiateEntityAction
 
     /** An action to instantiate an entity given a class name. */
     private class InstantiateEntityAction extends AbstractAction {
@@ -676,8 +676,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // LayoutAction
+    ///////////////////////////////////////////////////////////////////
+    //// LayoutAction
 
     /** Action to automatically lay out the graph. */
     private class LayoutAction extends AbstractAction {
@@ -693,92 +693,15 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
         /** Lay out the graph. */
         public void actionPerformed(ActionEvent e) {
             try {
-                NamedObj model = null;
-                try {
-                    // Get the frame and the current model here.
-                    model = getModel();
-                    if (!(model instanceof CompositeActor)) {
-                        throw new InternalErrorException(
-                                "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                                        + "The model \"" + model.getFullName() + "\" was a "
-                                        + model.getClass().getName()
-                                        + " which is not an instance of CompositeActor.");
-                    }
-                    JFrame frame = null;
-                    int tableauxCount = 0;
-                    Iterator tableaux = Configuration.findEffigy(model).entityList(Tableau.class)
-                            .iterator();
-                    while (tableaux.hasNext()) {
-                        Tableau tableau = (Tableau) (tableaux.next());
-                        tableauxCount++;
-                        if (tableau.getFrame() instanceof ActorGraphFrame) {
-                            frame = tableau.getFrame();
-                        }
-                    }
-                    // Check for supported type of editor
-                    if (!(frame instanceof ActorGraphFrame)) {
-                        String message = "";
-                        if (tableauxCount == 0) {
-                            message = "findEffigy() found no Tableaux?  There should have been one "
-                                    + "ActorGraphFrame.";
-                        } else {
-                            JFrame firstFrame = ((Tableau) Configuration.findEffigy(model)
-                                    .entityList(Tableau.class).get(0)).getFrame();
-			    
-                            //if (firstFrame instanceof KielerLayoutFrame) {
-                            //    message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
-                            //            + "please save the model before running the layout mechanism.";
-                            //} else {
-                                message = "The first frame of " + tableauxCount
-                                        + " found by findEffigy() is a \""
-                                        + firstFrame.getClass().getName()
-                                        + "\", which is not an instance of ActorGraphFrame."
-                                        + " None of the other frames were ActorGraphFrames either.";
-				//}
-                        }
-                        throw new InternalErrorException(model, null,
-                                "For now only actor oriented graphs with ports are supported by KIELER layout. "
-                                        + message
-                                        + (frame != null ? " Details about the frame: "
-                                                + StringUtilities.ellipsis(frame.toString(), 80)
-                                                : ""));
-                    } else {
-                        BasicGraphFrame graphFrame = (BasicGraphFrame) frame;
-
-                        // fetch everything needed to build the LayoutTarget
-                        GraphController graphController = graphFrame.getJGraph().getGraphPane()
-                                .getGraphController();
-                        GraphModel graphModel = graphFrame.getJGraph().getGraphPane()
-                                .getGraphController().getGraphModel();
-                        BasicLayoutTarget layoutTarget = new BasicLayoutTarget(graphController);
-
-                        // create Kieler layouter for this layout target
-//                         KielerLayout layout = new KielerLayout(layoutTarget);
-//                         layout.setModel((CompositeActor) model);
-//                         layout.setApplyEdgeLayout(false);
-//                         layout.setApplyEdgeLayoutBendPointAnnotation(true);
-//                         layout.setBoxLayout(false);
-//                         layout.setTop(graphFrame);
-
-//                         layout.layout(graphModel.getRoot());
-                    }
-                } catch (Exception ex) {
-                    // If we do not catch exceptions here, then they
-                    // disappear to stdout, which is bad if we launched
-                    // where there is no stdout visible.
-                    MessageHandler
-                            .error("Failed to layout \""
-                                    + (model == null ? "name not found" : (model.getFullName()))
-                                    + "\"", ex);
-                }
+                layoutGraph(true);
             } catch (Exception ex) {
                 MessageHandler.error("Layout failed", ex);
             }
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // AdvancedLayoutDialogAction
+    ///////////////////////////////////////////////////////////////////
+    //// AdvancedLayoutDialogAction
 
     /** Action to automatically lay out the graph. */
     private class AdvancedLayoutDialogAction extends AbstractAction {
@@ -795,15 +718,15 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
         /** Lay out the graph. */
         public void actionPerformed(ActionEvent e) {
             try {
-                layoutGraph();
+                layoutGraph(false);
             } catch (Exception ex) {
                 MessageHandler.error("Layout failed", ex);
             }
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // SaveInLibraryAction
+    ///////////////////////////////////////////////////////////////////
+    //// SaveInLibraryAction
 
     /** An action to save the current model in a library. */
     private class SaveInLibraryAction extends AbstractAction {
