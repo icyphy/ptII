@@ -131,8 +131,10 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
             double prevY = poly.getY(0);
             double endX = (float) poly.getX(poly.getVertexCount() - 1);
             double endY = (float) poly.getY(poly.getVertexCount() - 1);
+            
+            boolean considerBendPoints = bendPointList != null && bendPointList.size() > 0;
 
-            if (bendPointList != null && bendPointList.size() > 0) {
+            if (considerBendPoints) {
                 // in this case we have bend points provided e.g., by a layouter.
                 // we will consider these instead of doing the originally manhatten routing.
                 boolean reverseOrder = false;
@@ -212,24 +214,23 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
 
                 // now set the shape
                 setShape(path);
+
+                // Move the label
+                repositionLabel();
+
+                repaint();
             } else {
                 // in this case we have no bend point annotations available so we use the normal
                 // draw functionality
                 super.route();
             }
         }
-
-        // Move the label
-        repositionLabel();
-
-        repaint();
     }
 
     /**
      * Tell the connector to reposition the text label.
      */
     public void repositionLabel() {
-        super.repositionLabel();
         if (_labelLocation == null) {
             route();
 
