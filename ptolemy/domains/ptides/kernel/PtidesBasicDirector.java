@@ -111,6 +111,10 @@ public class PtidesBasicDirector extends DEDirector {
         animateExecution.setExpression("false");
         animateExecution.setTypeEquals(BaseType.BOOLEAN);
 
+        animateModelTimeDelay = new Parameter(this, "animateModelTimeDelay");
+        animateModelTimeDelay.setExpression("false");
+        animateModelTimeDelay.setTypeEquals(BaseType.BOOLEAN);
+
         actorsReceiveEventsInTimestampOrder = new Parameter(this,
                 "actorsReceiveEventsInTimestampOrder");
         actorsReceiveEventsInTimestampOrder.setExpression("false");
@@ -130,6 +134,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  the state of execution. This is a boolean that defaults to false.
      */
     public Parameter animateExecution;
+    
+    /** If true, then modify the icon for the direcotr to indicate
+     *  which actors have model time delays associated with them. 
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter animateModelTimeDelay; 
 
     /** If true, then it can be assumed that actors receive events in timestamp
      *  order. This simplifies the safe to process analysis.
@@ -587,7 +597,9 @@ public class PtidesBasicDirector extends DEDirector {
         stopWhenQueueIsEmpty.setExpression("false");
         _checkSensorActuatorNetworkConsistency();
 
-        _annotateModelDelays((CompositeActor) getContainer());
+        if (((BooleanToken)animateModelTimeDelay.getToken()).booleanValue()) {
+            _annotateModelDelays((CompositeActor) getContainer());
+        }
     }
 
     /** Return false if there are no more actors to be fired or the stop()
