@@ -9,7 +9,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 75.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 95.0}">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -17,7 +17,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee, Slobodan Matic, and Jia Zou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 525.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 545.0}">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -27,25 +27,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A &quot;Hello World&quot; Ptides program.&#10;&#10;Ptides is a programming model that is based on Discrete Event (DE) semantics. In&#10;fact, if the PtidesBasicDirector is replaced with a DEDirector, this model would&#10;exhibit the same behavior. Unlike DE, Ptides relates physical time of the physical&#10;world to the model time (timestamp of events). This is done through sensors and&#10;actuators, which are abstracted with input/output ports in the Ptides level. See&#10;&quot;Execution Strategies for PTIDES, a Programming Model for Distributed, Embedded&#10;Systems&quot;.&#10;&#10;The DE director outside simulates the passage of physical time, while the PTIDES&#10;director inside simulates the application.&#10;&#10;The application simply adds up the incoming events in time stamp order, and&#10;produce results at the output.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 310.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={377, 74, 817, 704}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 143, 745, 655}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[594, 590]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 541]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.0, 295.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.9995777027027, 307.9630489864865}">
     </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 200.0]">
-        </property>
-        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="minDelay = &#10;3.0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 205.0}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 220.0}">
         </property>
         <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WCET = 0.4">
@@ -65,7 +59,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 160.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 117, 823, 514}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={123, 219, 823, 514}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -76,11 +70,11 @@
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 55.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 45.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -89,6 +83,18 @@
                     <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
                     </property>
                 </property>
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="center" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="We allow users to visually see the execution of actors under the Ptides environment&#10;by highlighting current actors that are executing. To enable this highlighting,&#10;check animateExecution as well as synchronizeToRealTime parameters. Also, &#10;animateModelTimeDelay parameter can be checked to indicate which actors in the&#10;graph introduce model time delay in the Ptides model.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 350.0]">
             </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -159,7 +165,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 135.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 135.0}">
             </property>
             <property name="WCET" class="ptolemy.data.expr.Parameter" value=".5">
             </property>
@@ -227,7 +233,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 180.0}">
         </property>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
@@ -238,15 +244,15 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 245.0}">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={738, 255, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={576, 187, 516, 357}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 220.0}">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -257,7 +263,7 @@
 <yLabel></yLabel>
 <xRange min="2.0" max="10.0"/>
 <yRange min="0.0" max="1.0"/>
-<default marks="dots"/>
+<default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
