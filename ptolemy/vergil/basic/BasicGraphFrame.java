@@ -984,6 +984,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  {@link #layoutGraphWithPtolemyLayout()} is used.
      *  @param noDialog True if no diealog should appear and for the shortcut version
      */
+    public void layoutGraph() {
+       // by default layout the graph w/o a dialog
+       layoutGraph(true);
+    }
     public void layoutGraph(boolean noDialog) {
         boolean success = false;
         try {
