@@ -88,6 +88,7 @@ public class KielerLayoutTableau extends Tableau {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         NamedObj model = container.getModel();
+        
         _frame = new KielerLayoutFrame((CompositeEntity) model, this);
         setFrame(_frame);
     }
@@ -112,6 +113,7 @@ public class KielerLayoutTableau extends Tableau {
         public KielerLayoutFrame(final CompositeEntity model, Tableau tableau)
                 throws IllegalActionException, NameDuplicationException {
             super(model, tableau);
+            
             setTitle("Layout of " + model.getName());
 
             // Caveats panel.
@@ -239,6 +241,20 @@ public class KielerLayoutTableau extends Tableau {
             try {
                 // Get the frame and the current model here.
                 model = _frame.getModel();
+                actionPerformed(e, model);
+            } catch (Exception ex) {
+                // If we do not catch exceptions here, then they
+                // disappear to stdout, which is bad if we launched
+                // where there is no stdout visible.
+                MessageHandler.error(
+                        "Failed to layout \""
+                                + (model == null ? "name not found" : (model
+                                        .getFullName())) + "\"", ex);
+            }
+        }
+        
+        public void actionPerformed(ActionEvent e, NamedObj model) {
+            try {
                 if (!(model instanceof CompositeActor)) {
                     throw new InternalErrorException(
                             "For now only actor oriented graphs with ports are supported by KIELER layout. "
