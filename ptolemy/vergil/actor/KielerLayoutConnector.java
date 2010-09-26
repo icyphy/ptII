@@ -216,54 +216,6 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                 // in this case we have no bend point annotations available so we use the normal
                 // draw functionality
                 super.route();
-                // for (int i = 2; i < poly.getVertexCount(); i++) {
-                // // consider triplets of coordinates
-                // double x0 = prevX; // poly.getX(i-2);
-                // double y0 = prevY; // poly.getY(i-2);
-                // double x1 = poly.getX(i - 1);
-                // double y1 = poly.getY(i - 1);
-                // double x2 = poly.getX(i);
-                // double y2 = poly.getY(i);
-                //
-                // // midpoints
-                // x2 = (x1 + x2) / 2;
-                // y2 = (y1 + y2) / 2;
-                //
-                // // first make sure that the radius is not
-                // // bigger than half one of the arms of the triplets
-                // double d0 = Math.sqrt(((x1 - x0) * (x1 - x0)) + ((y1 - y0) * (y1 - y0)));
-                // double d1 = Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
-                // double r = Math.min(_bendRadius, d0);
-                // r = Math.min(r, d1);
-                //
-                // // The degenerate case of a direct line.
-                // if ((d0 == 0.0) || (d1 == 0.0)) {
-                // path.lineTo((float) x1, (float) y1);
-                // } else {
-                // // next calculate the intermediate points
-                // // that define the bend.
-                // double intX0 = x1 + ((r / d0) * (x0 - x1));
-                // double intY0 = y1 + ((r / d0) * (y0 - y1));
-                // double intX1 = x1 + ((r / d1) * (x2 - x1));
-                // double intY1 = y1 + ((r / d1) * (y2 - y1));
-                //
-                // // next draw the line from the previous
-                // // coord to the intermediate coord, and
-                // // curve around the corner
-                // path.lineTo((float) intX0, (float) intY0);
-                // path.curveTo((float) x1, (float) y1, (float) x1, (float) y1, (float) intX1,
-                // (float) intY1);
-                // prevX = x2;
-                // prevY = y2;
-                // }
-                // }
-                //
-                // // finally close the last segment with a line.
-                // path.lineTo((float) poly.getX(poly.getVertexCount() - 1),
-                // (float) poly.getY(poly.getVertexCount() - 1));
-                //
-                // // now set the shape
-                // setShape(path);
             }
         }
 
@@ -277,6 +229,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
      * Tell the connector to reposition the text label.
      */
     public void repositionLabel() {
+        super.repositionLabel();
         if (_labelLocation == null) {
             route();
 
@@ -294,7 +247,7 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
     // // private methods ////
 
     /**
-     * Checks whether modified is true.
+     * Checks whether one of the end point actors of a link has been moved. 
      * 
      * @param relation
      *            the relation
