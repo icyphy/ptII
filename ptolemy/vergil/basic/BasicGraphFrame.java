@@ -982,8 +982,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  that takes a Frame argument. If the parameter cannot
      *  be read, then the default Ptolemy layout mechanism in
      *  {@link #layoutGraphWithPtolemyLayout()} is used.
+     *  @param noDialog True if no diealog should appear and for the shortcut version
      */
-    public void layoutGraph() {
+    public void layoutGraph(boolean noDialog) {
         boolean success = false;
         try {
             Configuration configuration = getConfiguration();
@@ -1011,10 +1012,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         tableauFactory = (TableauFactory) layoutGraphDialogConstructor
                                 .newInstance(getModel(), "layoutGraphFactory");
                     }
+                    // FIXME: Passing parameter like this seems currently to be more a hack
+                    if (noDialog) {
+                        tableauFactory.setName("NODIALOG");
+                    }
+                    else {
+                        tableauFactory.setName("DIALOG");
+                    }
                     Tableau kielerTableau = tableauFactory.createTableau(
                     //getModel(), this);
                             (PtolemyEffigy) getTableau().getContainer());
-                    kielerTableau.show();
+                    
+                    // do not try to show the dialog if it has not been created
+                    if (!noDialog) {
+                        kielerTableau.show();
+                    }
                     success = true;
                 } catch (Throwable throwable) {
                     new Exception(
