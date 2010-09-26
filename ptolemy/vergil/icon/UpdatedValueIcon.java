@@ -161,7 +161,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
         }
     }
 
-    /** React to the specified Settable has changing by requesting a
+    /** React to the specified Settable changing by requesting a
      *  repaint of the most recently constructed figures.
      *  @param settable The object that has changed value.
      */
