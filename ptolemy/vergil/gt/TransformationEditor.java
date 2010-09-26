@@ -2110,7 +2110,7 @@ public class TransformationEditor extends GTFrame implements ActionListener,
          */
         public void actionPerformed(ActionEvent e) {
             try {
-                layoutGraph();
+                layoutGraph(true);
             } catch (Exception ex) {
                 MessageHandler.error("Layout failed", ex);
             }
