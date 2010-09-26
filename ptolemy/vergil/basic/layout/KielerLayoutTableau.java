@@ -67,7 +67,7 @@ import diva.graph.basic.BasicLayoutTarget;
 /**
  A top-level dialog window for controlling the Kieler graph layout algorithm.
 
- @author Christopher Brooks, based on JVMTableau.
+ @author Christopher Brooks, based on JVMTableau. Christian Motika <cmot@informatik.uni-kiel.de>
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (cxh)
@@ -209,13 +209,14 @@ public class KielerLayoutTableau extends Tableau {
     private class BaseLayoutAction extends AbstractAction {
         /** Construction an action for placing layout.
          *  @param applyEdgeLayout true if the edge layout should be applied.
+         *  @param bendPointAnnotation true if the new layout hints should be annotated instead of adding dummy layout relations
          *  @param boxLayout true if the box layout should be applied.
          *  @param removeUnnecessaryRelations true if we are to remove unnecessary relation
          *  vertices.
          *  @param showUnnecessaryRelationsToggle true if we are to toggle between showing
          *  and hiding unnecessary relation vertices.
          */
-        public BaseLayoutAction(boolean applyEdgeLayout, boolean boxLayout,
+        public BaseLayoutAction(boolean applyEdgeLayout, boolean bendPointAnnotation, boolean boxLayout,
                 boolean removeUnnecessaryRelations,
                 boolean showUnnecessaryRelationsToggle) {
             if (((applyEdgeLayout || boxLayout) && (removeUnnecessaryRelations || showUnnecessaryRelationsToggle))
@@ -226,7 +227,8 @@ public class KielerLayoutTableau extends Tableau {
                                 + "must be false.  Also, only one of "
                                 + "removeUnnecessaryRelations and showUnnecessaryRelationsToggle can be true.");
             }
-            _applyEdgeLayout = applyEdgeLayout;
+            _applyEdgeLayout = applyEdgeLayout && !bendPointAnnotation;
+            _applyEdgeLayoutBendPointAnnotation = applyEdgeLayout && bendPointAnnotation;
             _boxLayout = boxLayout;
             _removeUnnecessaryRelations = removeUnnecessaryRelations;
             _showUnnecessaryRelationsToggle = showUnnecessaryRelationsToggle;
@@ -312,6 +314,7 @@ public class KielerLayoutTableau extends Tableau {
                         KielerLayout layout = new KielerLayout(layoutTarget);
                         layout.setModel((CompositeActor) model);
                         layout.setApplyEdgeLayout(_applyEdgeLayout);
+                        layout.setApplyEdgeLayoutBendPointAnnotation(_applyEdgeLayoutBendPointAnnotation);
                         layout.setBoxLayout(_boxLayout);
                         layout.setTop(graphFrame);
 
@@ -330,6 +333,7 @@ public class KielerLayoutTableau extends Tableau {
         }
 
         public boolean _applyEdgeLayout;
+        public boolean _applyEdgeLayoutBendPointAnnotation;
         public boolean _boxLayout;
         public boolean _removeUnnecessaryRelations;
         public boolean _showUnnecessaryRelationsToggle;
@@ -347,6 +351,16 @@ public class KielerLayoutTableau extends Tableau {
             graphFrame.layoutGraphWithPtolemyLayout();
         }
     }
+    
+    /** New automatic layout option placing all connected nodes and annotating relations with bend point positions of connected links.
+     */
+    private class PlaceAndRouteAnnotationAction extends BaseLayoutAction {
+        /** Construct a HideAndRouteAction.
+         */
+        public PlaceAndRouteAnnotationAction() {
+            super(true, true, false, false, false);
+        }
+    }    
 
     /** Toggle between showing and hiding of unnecessary relation vertices.
      */
@@ -354,7 +368,7 @@ public class KielerLayoutTableau extends Tableau {
         /** Construct a HideAndRouteAction.
          */
         public HideVerticesAction() {
-            super(false, false, false, true);
+            super(false, false,false, false, true);
         }
     }
 
@@ -366,7 +380,7 @@ public class KielerLayoutTableau extends Tableau {
          */
         public PlaceAllAction() {
             // applyEdgeLayout = false, boxLayout = true
-            super(false, true, false, false);
+            super(false, false,true, false, false);
         }
     }
 
@@ -379,7 +393,7 @@ public class KielerLayoutTableau extends Tableau {
          *  boxLayout set to false.
          */
         public PlaceAction() {
-            super(false, false, false, false);
+            super(false, false,false, false, false);
         }
     }
 
@@ -391,7 +405,7 @@ public class KielerLayoutTableau extends Tableau {
          *  boxLayout set to false.
          */
         public PlaceAndRouteAction() {
-            super(true, false, false, false);
+            super(true, false,false, false, false);
         }
     }
 
@@ -406,7 +420,7 @@ public class KielerLayoutTableau extends Tableau {
          *  boxLayout set to false.
          */
         public RemoveVerticesAction() {
-            super(false, false, true, false);
+            super(false, false,false, true, false);
         }
     }
 
