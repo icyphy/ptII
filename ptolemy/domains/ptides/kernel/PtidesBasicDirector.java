@@ -136,7 +136,7 @@ public class PtidesBasicDirector extends DEDirector {
     public Parameter animateExecution;
     
     /** If true, then modify the icon for all deeply contained actors
-     *  that has non-zero model time delays (including actors that only 
+     *  that have non-zero model time delays (including actors that only 
      *  introduce microstep delays).
      *  This is a boolean that defaults to false.
      */
