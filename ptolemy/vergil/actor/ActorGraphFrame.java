@@ -71,10 +71,10 @@ import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import ptolemy.vergil.basic.layout.KielerLayoutTableau;
-import ptolemy.vergil.basic.layout.KielerLayoutTableau.KielerLayoutFrame;
-import ptolemy.vergil.basic.layout.kieler.KielerLayout;
-import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
+//import ptolemy.vergil.basic.layout.KielerLayoutTableau;
+//import ptolemy.vergil.basic.layout.KielerLayoutTableau.KielerLayoutFrame;
+//import ptolemy.vergil.basic.layout.kieler.KielerLayout;
+//import ptolemy.vergil.basic.layout.kieler.PtolemyModelUtil;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
@@ -724,16 +724,17 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
                         } else {
                             JFrame firstFrame = ((Tableau) Configuration.findEffigy(model)
                                     .entityList(Tableau.class).get(0)).getFrame();
-                            if (firstFrame instanceof KielerLayoutFrame) {
-                                message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
-                                        + "please save the model before running the layout mechanism.";
-                            } else {
+			    
+                            //if (firstFrame instanceof KielerLayoutFrame) {
+                            //    message = "Internal Error: findEffigy() returned a KielerLayoutGUI, "
+                            //            + "please save the model before running the layout mechanism.";
+                            //} else {
                                 message = "The first frame of " + tableauxCount
                                         + " found by findEffigy() is a \""
                                         + firstFrame.getClass().getName()
                                         + "\", which is not an instance of ActorGraphFrame."
                                         + " None of the other frames were ActorGraphFrames either.";
-                            }
+				//}
                         }
                         throw new InternalErrorException(model, null,
                                 "For now only actor oriented graphs with ports are supported by KIELER layout. "
@@ -752,14 +753,14 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements ActionListene
                         BasicLayoutTarget layoutTarget = new BasicLayoutTarget(graphController);
 
                         // create Kieler layouter for this layout target
-                        KielerLayout layout = new KielerLayout(layoutTarget);
-                        layout.setModel((CompositeActor) model);
-                        layout.setApplyEdgeLayout(false);
-                        layout.setApplyEdgeLayoutBendPointAnnotation(true);
-                        layout.setBoxLayout(false);
-                        layout.setTop(graphFrame);
+//                         KielerLayout layout = new KielerLayout(layoutTarget);
+//                         layout.setModel((CompositeActor) model);
+//                         layout.setApplyEdgeLayout(false);
+//                         layout.setApplyEdgeLayoutBendPointAnnotation(true);
+//                         layout.setBoxLayout(false);
+//                         layout.setTop(graphFrame);
 
-                        layout.layout(graphModel.getRoot());
+//                         layout.layout(graphModel.getRoot());
                     }
                 } catch (Exception ex) {
                     // If we do not catch exceptions here, then they
