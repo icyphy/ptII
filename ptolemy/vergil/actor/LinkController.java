@@ -227,7 +227,7 @@ public class LinkController extends BasicEdgeController {
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             Link link = (Link) edge;
-            ManhattanConnector connector = new LinkManhattanConnector(tailSite,
+            ManhattanConnector connector = new KielerLayoutConnector(tailSite,
                     headSite, link);
 
             if ((link.getHead() != null) && (link.getTail() != null)) {
