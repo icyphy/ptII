@@ -258,8 +258,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
 
         newObject._currentOffset = null;
 
-        newObject._portReferencedInTransitionMaps = new HashMap<IOPort, HashMap<Transition, Boolean>>();
-
         return newObject;
     }
 
@@ -1213,16 +1211,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * If the execution stops, that should result in clearing the HashMaps because the user might
-     * change the model (transition-labels).
-     */
-    public void stop() {
-        // FIXME: This is not the right way to do this!!!
-        super.stop();
-        this._portReferencedInTransitionMaps.clear();
-    }
-
-    /**
      * Return the enabled transition among the given list of transitions. Throw an exception if
      * there is more than one transition enabled. This method is called by subclasses of FSMDirector
      * in other packages.
@@ -1412,7 +1400,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             // for a transition to become enabled that might send data
                             // on this port.
                             if ((controller.getLastChosenTransition() != null) ||
-                                    _isSafeToClear(port, controller)) {
+                                    _isSafeToClear(port, i, controller)) {
                                 port.send(i, null);
                             }
                         }
@@ -1426,100 +1414,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         return result;
     }
 
-    /**
-     * Grab the HashMap for all transitions where this port is referenced in the output actions.
-     * 
-     * @param port
-     *            the IOPort in question
-     * @return the transition map
-     */
-    protected HashMap<Transition, Boolean> _getTransitionMap(IOPort port) {
-        HashMap transitionMap = null;
-        if (_portReferencedInTransitionMaps.containsKey(port)) {
-            transitionMap = _portReferencedInTransitionMaps.get(port);
-        } else {
-            transitionMap = new HashMap<Transition, Boolean>();
-            _portReferencedInTransitionMaps.put(port, transitionMap);
-        }
-        return transitionMap;
-    }
-
-    /**
-     * Search the current state (controller level) for any outgoing
-     * transition that could possibly output a token on the
-     * port. Return true if there is any such transition, i.e., a
-     * transition with a guard that cannot be evaluated to false (yet)
-     * and an output action writing to the specific port. Return false
-     * iff it safe to send a clear for this port (according to the
-     * current hierarchy level). Note that refinements could possibly
-     * have to be evaluated also.
-     * 
-     * <p>ATTENTION: This method should only be called if there are NO
-     * enabled transitions.</p>
-     * 
-     * <p>FIXME: The implementation should not re-parse the output
-     * actions and get the information from the parsed AST.</p>
-     * 
-     * @param port the IOPort in question
-     * @param controller the controller for considering the current state
-     * @return true, if successful
-     */
-    protected boolean _isSafeToClear(IOPort port, FSMActor controller) {
-        if (_debugging) {
-            _debug("Calling _isGuardsEvaluable on port: " + port.getFullName());
-        }
-        boolean isSafeToClear = true;
-        // grab the HashMap for all transitions where this port is referenced
-        // in the output actions
-        HashMap transitionMap = _getTransitionMap(port);
-
-        List<Transition> transitionList = controller._currentState.outgoingPort
-                .linkedRelationList();
-        for (Transition transition : transitionList) {
-            // Determine whether the transition includes an assignment
-            // to this port.  Use a HashMap for each port to save
-            // booleans for each transition
-            Boolean matches;
-            if (false && transitionMap.containsKey(transition)) {
-                matches = (Boolean) transitionMap.get(transition);
-            } else {
-                String outputActionsExpression = transition.outputActions.getExpression();
-                String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "\\s*=[^=](.|\\s)*";
-                matches = (outputActionsExpression.trim().matches(regexp));
-                transitionMap.put(transition, matches);
-            }
-            if (matches) {
-                // Next check to see whether the guard evaluates to false.
-                try {
-                    if (!transition.isEnabled()) {
-                        // if the transition is not enabled and NO
-                        // unknown-variable-error occurs this means
-                        // the transition guard could (already) be
-                        // evaluated to false => from this perspective
-                        // it is okay to clear outputs (so don't
-                        // prevent that) guardsEvaluable = false;
-                        // break;
-                    } else if (transition.isEnabled()) {
-                        // in this case the transition is for sure
-                        // evaluable BUT not "possibly".  because the
-                        // trigger is true, we must not set port to
-                        // absent
-                        isSafeToClear = false;
-                        break;
-                    }
-                } catch (IllegalActionException ex) {
-                    // Guard cannot be evaluated. Cannot set this port
-                    // to absent (yet).
-                    isSafeToClear = false;
-                    break;
-                }
-            }
-        }
-        return isSafeToClear;
-    }
-
-    // /////////////////////////////////////////////////////////////////
-    // // protected variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                   protected variables                     ////
 
     /**
      * Map from input ports of the modal model to the local receivers for the current state.
@@ -1550,14 +1446,6 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      */
     protected Map _localReceiverMaps = new HashMap();
 
-    /**
-     * A HashMap of transition-boolean-pairs for each port indicating if the port is contained in an
-     * output action of the specific transition. This information is lazily inserted into the
-     * HashMap during the simulation for performance reasons. It is not pre-done because during a
-     * run we may never traverse all nodes defined.
-     */
-    protected HashMap<IOPort, HashMap<Transition, Boolean>> _portReferencedInTransitionMaps = new HashMap<IOPort, HashMap<Transition, Boolean>>();
-
     /** State refinements to postfire(), as determined by the fire() method. */
     protected List<Actor> _stateRefinementsToPostfire = new LinkedList<Actor>();
 
@@ -1568,98 +1456,128 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     ////                     private methods                       ////
     
     /**
-     * It might be possible to assert that certain outputs are absent. This methods helps finding
-     * these outputs and clears them.
+     * For the given controller FSM, set all outputs that are
+     * currently unknown to absent if it
+     * can be determined to be absent given the current state and possibly
+     * partial information about the inputs (some of the inputs may be
+     * unknown). If the <i>checkRefinements</i> argument is true,
+     * then this method first explores any refinements of the current
+     * state. If those refinements are all FSMs and they are all able
+     * to assert that an output is absent, then explore this FSM
+     * to determine whether it also can assert that the output is absent.
+     * If all the refinements and the specified FSM agree that an
+     * output is absent, then this method sets it to absent.
+     * Otherwise, it leaves it unknown.
+     * For each output port, this method calls
+     * {@link #_isSafeToClear(IOPort, FSMActor)} to determine whether
+     * this FSM can assert that an output port is absent.
      * 
      * @param controller The controller FSM.
      * @param checkRefinement True to recursively descend through refinements of states.
-     * @return True if at least one output was asserted absent.
+     * @return True if after this method is called, any output port is absent.
      * @throws IllegalActionException If something goes wrong.
      */
     private boolean _assertAbsentOutputs(FSMActor controller, boolean checkRefinement)
             throws IllegalActionException {
-        // Next, for each output port, we need to check whether
-        // it is possible for an output to be produced on that port.
-        // It will not be possible iff ALL transitions that can produce
-        // the output have guards that evaluate to false.
-        List<IOPort> outputs = controller.outputPortList();
-        // FIXME: maybe ask refinements too and send a clear out ONLY
-
+        
+        // First, check the refinements.
+        if (checkRefinement) {
+            TypedActor[] refinements = controller._currentState.getRefinement();
+            if (refinements != null) {
+                for (Actor refinementActor : refinements) {
+                    Director refinementDirector = refinementActor.getDirector();
+                    // The second check below guards against a refinement with no director.
+                    if (refinementDirector instanceof FSMDirector
+                            && refinementDirector != this) {
+                        // The refinement is an FSM, so we perform analysis
+                        // to identify outputs that can be determined to be absent.
+                        FSMActor refinementController = ((FSMDirector)refinementDirector).getController();
+                        if (!_assertAbsentOutputs(refinementController, checkRefinement)) {
+                            // The refinement has no absent outputs (they are all either
+                            // unknown or present), therefore we cannot assert any outputs
+                            // to be absent at this level either.
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        // At this point, if there are any refinements that
+        // are FSMs, those refinements have asserted outputs
+        // to be absent if they have been able to conclude
+        // that they must be absent.
+        
+        // We now iterate over all output ports of the container
+        // of this director, and for each such output port p,
+        // on each channel c,
+        // if all the refinements and the controller FSM agree that
+        // p on c is absent, then we assert it to be absent.
+        Actor container = (Actor)getContainer();
+        List<IOPort> outputs = container.outputPortList();
+        if (outputs.size() == 0) {
+            // There are no outputs, so in effect, all outputs
+            // are absent !!
+            return true;
+        }
         boolean foundAbsentOutputs = false;
-
         for (IOPort port : outputs) {
-
-            for (int channel = 0; channel < port.getWidth(); channel++) {
-                if (!port.isKnown(channel)) {
-                    // Check all transitions. If no transition can
-                    // possibly produce this output, set the output absent.
-                    boolean isSafeToClear = true;
-
-                    // Only check refinements iff non-preemptive transition (weak abort).
-                    // For strong aborts that are known to be enabled
-                    // this method should be called w/ checkRefinement==false!
-                    if (checkRefinement && controller._currentState.getRefinement() != null) {
-                        // this states has a refinement
-                        // in addition to the check below it is required that the refinement
-                        // has also cleared a port
-                        TypedActor[] refinements = controller._currentState.getRefinement();
-                        // do the following for all refinements
-                        for (Actor refinementActor : refinements) {
-                            if (refinementActor instanceof CompositeActor) {
-                                CompositeActor refinement = (CompositeActor) refinementActor;
-                                // FIXME: This should check to see whether the director
-                                // of the refinement implements StaticallyAnalyzable, and
-                                // if so, do a recursive call.
-                                
-                                // FIXME: Look up the port by name rather than searching
-                                // all ports until the name matches.
-                                for (IOPort refinementPort : ((List<IOPort>) refinement
-                                        .outputPortList())) {
-                                    if (!refinementPort.getName().equals(port.getName())) {
-                                        // if not the same port name, don't inspect channels
-                                        continue;
-                                    }
-                                    // if the correct port name, get the right channel
-                                    for (int refinementChannel = 0; refinementChannel < refinementPort
-                                            .getWidth(); refinementChannel++) {
-                                        if (refinementChannel == channel) {
-                                            // this is the corresponding refinement port and channel
-                                            // check whether it is known (=> !cleared). if not,
-                                            // prevent
-                                            // clearing by setting guardsEvaluable to false
-                                            if (!refinementPort.isKnown()) {
-                                                // only if it is really cleared (= not known because
-                                                // of a token)
-                                                isSafeToClear = false;
-                                            }
-                                        }// end if channel and port fits
-                                    }// end for all channels
-                                }// end for all ports
-                            }// end if CompositeActor
-                        }// end for all refinements
-                    }// end if has refinement
-
-                    // Reason for "&&":
-                    // If we know already that a refinement didn't cleared
-                    // this channel[port], then we don't need to inspect any further
-                    // because this already prevents us from clearing the channel safely.
-                    isSafeToClear = isSafeToClear && _isSafeToClear(port, controller);
-                    if (isSafeToClear) {
+            IOPort[] refinementPorts = null;
+            TypedActor[] refinements = controller._currentState.getRefinement();
+            if (refinements != null) {
+                refinementPorts = new IOPort[refinements.length];
+                int i = 0;
+                for (TypedActor refinement : refinements) {
+                    refinementPorts[i++] = (IOPort)((Entity)refinement).getPort(port.getName());
+                }
+            }
+            for (int channel = 0; channel < port.getWidthInside(); channel++) {
+                // If the channel is known, we don't need to do any
+                // further checks.
+                if (!port.isKnownInside(channel)) {
+                    // First check whether all refinements agree that the channel is
+                    // absent.
+                    boolean channelIsAbsent = true;
+                    if (refinementPorts != null) {
+                        for (int i = 0; i < refinementPorts.length; i++) {
+                            // Note that _transferOutputs(refinementPorts[i]
+                            // has not been called, or the inside of port would
+                            // be known and we would not be here. Hence, we
+                            // have to check the inside of this refinement port.
+                            if (channel < refinementPorts[i].getWidthInside()
+                                    && (!refinementPorts[i].isKnownInside(channel)
+                                       || refinementPorts[i].hasTokenInside(channel))) {
+                                // A refinement has either unknown or non-absent
+                                // output. Give up on this channel. It cannot be
+                                // asserted absent.
+                                channelIsAbsent = false;
+                            }
+                        }
+                    }
+                    if (!channelIsAbsent) {
+                        // A refinement has either unknown or non-absent
+                        // output. Give up on this channel. It cannot be
+                        // asserted absent.
+                        break;
+                    }
+                    // If we get here, all refinements (if any) agree that
+                    // the current channel of the current port is absent. See
+                    // whether this controller FSM also agrees.
+                    IOPort controllerPort = (IOPort)controller.getPort(port.getName());
+                    channelIsAbsent = _isSafeToClear(controllerPort, channel, controller);
+                    if (channelIsAbsent) {
                         foundAbsentOutputs = true;
-                        port.send(channel, null);
-                        _debug("Asserting absence and clearing port " + port.getName());
+                        controllerPort.send(channel, null);
+                        _debug("Asserting absence and clearing port: " + port.getName());
                     }
                 } else {
-                    if (port.isInput() && port.hasToken(0)) {
-                        _debug("Token at port " + port.getName());
-                    } else {
-                        _debug("Unknown token or output port " + port.getName());
+                    if (!port.hasTokenInside(channel)) {
+                        foundAbsentOutputs = true;
                     }
                 }
             }
         }
 
-        // return if something has changed
+        // Return true if any output channel is absent.
         return foundAbsentOutputs;
     }
 
@@ -1704,6 +1622,73 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             return environmentTime;
         }
         return getModelTime();
+    }
+
+    /**
+     * Given an output port, channel, and a controller (an FSM) with a current state,
+     * determine whether the output port must be absent on the specified
+     * channel, given whatever
+     * current information about the inputs is available (the inputs
+     * may be known or unknown).
+     * <p>
+     * The way this works is that it examines all the outgoing
+     * transitions of the current state. If none of them mentions
+     * the output port in its output actions, then we can safely
+     * assert that the output is absent. If all of them that do
+     * mention the port have guards that evaluate to false,
+     * given current information about the inputs, then it is
+     * also safe to assert that the output is absent.
+     * <p>
+     * This method ignores any state refinements, and consequently
+     * its analysis is valid only if all state refinements also assert
+     * that the output is absent.
+     * 
+     * @param port The IOPort in question.
+     * @param channel The channel in question.
+     * @param controller The controller for considering the current state.
+     * @return True, if successful.
+     */
+    private boolean _isSafeToClear(IOPort port, int channel, FSMActor controller) {
+        if (_debugging) {
+            _debug("Calling _isSafeToClear() on port: " + port.getFullName());
+        }
+        boolean isSafeToClear = true;
+
+        List<Transition> transitionList = controller._currentState.outgoingPort
+                .linkedRelationList();
+        for (Transition transition : transitionList) {
+            // Determine whether the transition includes an assignment
+            // to this port in its output actions.
+            // FIXME: The implementation should not re-parse the output
+            // actions and get the information from the parsed AST.
+            // This code already exists somewhere... Where?
+            String outputActionsExpression = transition.outputActions.getExpression();
+            String regexp = "(^|((.|\\s)*\\W))" + port.getName() + "\\s*=[^=](.|\\s)*";
+            boolean transitionWritesToThePort = outputActionsExpression.trim().matches(regexp);
+            
+            if (transitionWritesToThePort) {
+                // Next check to see whether the guard evaluates to false.
+                try {
+                    // Attempt to evaluate the guard. This will throw
+                    // an exception if there is not enough information
+                    // about the inputs.
+                    if (transition.isEnabled()) {
+                        // Guard evaluates to true, so it is not
+                        // safe to set the output to absent.
+                        isSafeToClear = false;
+                        // No need to check additional transitions.
+                        break;
+                    }
+                } catch (IllegalActionException ex) {
+                    // Guard cannot be evaluated. Cannot set this port
+                    // to absent (yet).
+                    isSafeToClear = false;
+                    // No need to check additional transitions.
+                    break;
+                }
+            }
+        }
+        return isSafeToClear;
     }
 
     /**
