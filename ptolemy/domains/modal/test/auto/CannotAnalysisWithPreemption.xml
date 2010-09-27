@@ -1,22 +1,24 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="MustCannotAnalysisWithPrreemption" class="ptolemy.actor.TypedCompositeActor">
+<entity name="CannotAnalysisWithPreemption" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="statesignals" class="ptolemy.kernel.util.StringAttribute" value="[L_model_1893289564]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 390.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={368, 353, 733, 437}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={368, 353, 731, 460}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[518, 330]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[518, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{486.9545454545454, 486.1502525252524}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{486.9545454545454, 496.1502525252524}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
@@ -27,7 +29,7 @@
         </property>
     </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
-        <property name="source" class="ptolemy.data.expr.FileParameter" value="MustCannotAnalysisWithPrreemption.gif">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="CannotAnalysisWithPreemption.gif">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 440.0]">
         </property>
@@ -56,7 +58,7 @@
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.modal.modal.ModalController">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={312, 195, 815, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 194, 813, 511}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
