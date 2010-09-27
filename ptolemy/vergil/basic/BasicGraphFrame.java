@@ -981,6 +981,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
        // by default layout the graph w/o a dialog
        layoutGraph(true);
     }
+    
     /** Layout the graph view.
      *  If the configuration contains a parameter named
      *  _layoutGraphDialog, the that parameter is assumed
