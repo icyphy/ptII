@@ -126,6 +126,7 @@ EXTRA_SRCS = \
 	ptII$(PTVERSION).release.htm \
 	ptII$(PTVERSION).releaseHyVisual.htm \
 	ptIIfaq.htm \
+	ptinyBcvtb.awk \
 	ptinyKepler.awk \
 	removeasd \
 	toc.css \
@@ -183,6 +184,52 @@ OPTIONAL_FILES = \
 COMPACKAGES = \
 	com.JLex \
 	com.microstar.xml
+
+COREPACKAGE = \
+	ptolemy.kernel \
+	ptolemy.kernel.attributes \
+	ptolemy.kernel.undo \
+	ptolemy.kernel.util \
+	ptolemy.actor \
+	ptolemy.actor.gui.style \
+	ptolemy.actor.lib.hoc \
+	ptolemy.actor.sched \
+	ptolemy.actor.util \
+	ptolemy.data \
+	ptolemy.data.expr \
+	ptolemy.data.type \
+	ptolemy.data.unit \
+	ptolemy.graph \
+	ptolemy.graph.analysis \
+	ptolemy.graph.analysis.analyzer \
+	ptolemy.graph.analysis.strategy \
+	ptolemy.graph.mapping \
+	ptolemy.graph.sched \
+	ptolemy.gui \
+	ptolemy.math \
+	ptolemy.media \
+	ptolemy.moml \
+	ptolemy.moml.filter \
+	ptolemy.moml.unit \
+	ptolemy.plot \
+	ptolemy.plot.plotml \
+	ptolemy.plot.compat \
+	ptolemy.vergil \
+	ptolemy.vergil.actor \
+	ptolemy.vergil.actor.lib \
+	ptolemy.vergil.basic \
+	ptolemy.vergil.basic.layout \
+	ptolemy.vergil.basic.layout.kieler \
+	ptolemy.vergil.debugger \
+	ptolemy.vergil.icon \
+	ptolemy.vergil.modal \
+	ptolemy.vergil.modal.fmv \
+	ptolemy.vergil.modal.ia \
+	ptolemy.vergil.kernel \
+	ptolemy.vergil.kernel.attributes \
+	ptolemy.vergil.toolbox \
+	ptolemy.vergil.tree \
+	ptolemy.vergil.unit \
 
 # CG Codegen packages
 # cd $PTII/ptolemy/cg; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/cg" dir}' | sed 's@/@.@g'
@@ -468,10 +515,8 @@ GRAPHTRANSFORMATIONPACKAGES = \
 	ptolemy.actor.gt.util \
 	ptolemy.vergil.gt
 
-# Packages used by HyVisual
-HYVISUALPACKAGES = \
-	$(PTCOLT_PACKAGES) \
-	$(PTJYTHON_PACKAGES) \
+# Packages used by BCVTB: continuous, sdf and modal
+BCVTBPACKAGES = \
 	ptolemy.actor.lib.javasound \
 	ptolemy.actor.lib \
 	ptolemy.actor.lib.comm \
@@ -494,6 +539,29 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.continuous.kernel \
 	ptolemy.domains.continuous.kernel.solver \
 	ptolemy.domains.continuous.lib \
+	ptolemy.domains.modal.kernel \
+	ptolemy.domains.modal.kernel.ia \
+	ptolemy.domains.modal.modal \
+	ptolemy.domains.sdf.kernel \
+	ptolemy.domains.sdf.lib \
+	ptolemy.domains.sdf.lib.vq \
+	ptolemy.matlab \
+	ptolemy.media.javasound \
+	ptolemy.util \
+	ptolemy.vergil.modal.modal
+
+# All the BCVTB generated documentation
+BCVTB_DOCS = \
+	codeDocBcvtb/doc/codeDoc/tree.html \
+	codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
+	codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
+
+
+# Packages used by HyVisual
+HYVISUALPACKAGES = \
+	$(BCVTBPACKAGES) \
+	$(PTCOLT_PACKAGES) \
+	$(PTJYTHON_PACKAGES) \
 	ptolemy.domains.ct.kernel \
 	ptolemy.domains.ct.kernel.solver \
 	ptolemy.domains.ct.lib \
@@ -502,21 +570,10 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.fsm.kernel \
 	ptolemy.domains.fsm.kernel.ia \
 	ptolemy.domains.fsm.modal \
-	ptolemy.domains.modal.kernel \
-	ptolemy.domains.modal.kernel.ia \
-	ptolemy.domains.modal.modal \
-	ptolemy.domains.sdf.kernel \
-	ptolemy.domains.sdf.lib \
-	ptolemy.domains.sdf.lib.vq \
 	ptolemy.domains.sdf.optimize \
 	ptolemy.domains.sdf.optimize.lib \
 	ptolemy.hsif \
-	ptolemy.matlab \
-	ptolemy.media.javasound \
-	ptolemy.util \
-	ptolemy.vergil.fsm.modal \
-	ptolemy.vergil.modal.modal
-
+	ptolemy.vergil.fsm.modal
 
 # All the HyVisual generated documentation
 HYVISUAL_DOCS = \
@@ -611,6 +668,7 @@ USER_PACKAGES =
 # All the packages
 ALLPACKAGES = \
 	$(CGPACKAGES) \
+	$(COREPACKAGES) \
 	$(CODEGENPACKAGES) \
 	$(COMPACKAGES) \
 	$(COPERNICUSPACKAGES) \
@@ -649,23 +707,11 @@ ALLPACKAGES = \
 	$(PTPTALON_PACKAGES) \
 	$(USER_PACKAGES) \
 	doc.doclets \
-	ptolemy.plot \
-	ptolemy.plot.plotml \
-	ptolemy.plot.compat \
-	ptolemy.kernel \
-	ptolemy.kernel.attributes \
-	ptolemy.kernel.undo \
-	ptolemy.kernel.util \
-	ptolemy.actor \
-	ptolemy.actor.gui.style \
 	ptolemy.actor.process \
-	ptolemy.actor.lib.hoc \
 	ptolemy.actor.lib.jni \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.video \
 	ptolemy.actor.lib.vhdl \
-	ptolemy.actor.sched \
-	ptolemy.actor.util \
 	ptolemy.caltrop \
 	ptolemy.caltrop.actors \
 	ptolemy.caltrop.ddi \
@@ -707,46 +753,14 @@ ALLPACKAGES = \
 	ptolemy.domains.tester.lib \
 	ptolemy.domains.tm.kernel \
 	ptolemy.domains.tm.lib \
-	ptolemy.data \
-	ptolemy.data.expr \
-	ptolemy.data.type \
-	ptolemy.data.unit \
-	ptolemy.graph \
-	ptolemy.graph.analysis \
-	ptolemy.graph.analysis.analyzer \
-	ptolemy.graph.analysis.strategy \
-	ptolemy.graph.mapping \
-	ptolemy.graph.sched \
-	ptolemy.gui \
-	ptolemy.math \
-	ptolemy.media \
-	ptolemy.moml \
-	ptolemy.moml.filter \
-	ptolemy.moml.unit \
-	ptolemy.vergil \
-	ptolemy.vergil.actor \
-	ptolemy.vergil.actor.lib \
-	ptolemy.vergil.basic \
-	ptolemy.vergil.basic.layout \
-	ptolemy.vergil.basic.layout.kieler \
-	ptolemy.vergil.debugger \
-	ptolemy.vergil.icon \
 	ptolemy.vergil.fsm \
 	ptolemy.vergil.fsm.fmv \
 	ptolemy.vergil.fsm.ia \
-	ptolemy.vergil.modal \
-	ptolemy.vergil.modal.fmv \
-	ptolemy.vergil.modal.ia \
-	ptolemy.vergil.kernel \
-	ptolemy.vergil.kernel.attributes \
 	ptolemy.vergil.ontologies \
 	ptolemy.vergil.pdfrenderer \
 	ptolemy.vergil.properties \
 	ptolemy.vergil.ptera \
 	ptolemy.vergil.tdl \
-	ptolemy.vergil.toolbox \
-	ptolemy.vergil.tree \
-	ptolemy.vergil.unit \
 	ptolemy.verification.gui \
 	ptolemy.verification.kernel \
 	ptolemy.verification.kernel.maude \
@@ -763,6 +777,7 @@ FULL_DOCS = \
 # 'make clean' removes files listed in $(KRUFT)
 KRUFT = \
 	codeDoc.jar \
+	codeDocBcvtb.jar \
 	codeDocHyVisual.jar \
 	codeDocVisualSense.jar \
 	codeDocViptos.jar \
@@ -779,7 +794,7 @@ all: suball whatsnew.htm whatsnewVergil.htm
 	@echo "   run \"make install\""
 
 # Building the jar files also builds javadoc, PtDoclet and actor indices
-install: all jars codeDoc.jar \
+install: all jars codeDoc.jar codeDocBcvtb.jar \
 		codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar
 
 # Build with all common packages
@@ -1074,6 +1089,54 @@ codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt \
 
 
 #############################################################################
+# Bcvtb
+
+bcvtb_docs: $(BCVTB_DOCS)
+
+# Note that we change into the codeDocBcvtb directory
+# so that the jar file is created with a subset of the full set of docs
+# so that we can use this smaller jar file instead of the full codeDoc.jar
+codeDocBcvtb.jar: $(BCVTB_DOCS)
+	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocBcvtb doc/codeDoc
+
+# We do something crafty here and create a tree of html files
+# that we can substitute in for the usual doc/codeDoc tree in the
+# Bcvtb webstart
+codeDocBcvtb/doc/codeDoc/tree.html:
+	if [ ! -d codeDocBcvtb ]; then mkdir -p codeDocBcvtb; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocBcvtb/doc/codeDoc $(BCVTBPACKAGES) $(COREPACKAGES) )
+
+# Rules to build for Bcvtb
+codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" -J-Xmx512m \
+			-d doc/codeDocBcvtb/doc/codeDoc \
+			$(PTDOCLET) \
+			$(BCVTBPACKAGES) )
+
+# All the namedObjs for which we have documentation.
+codeDocBcvtb/doc/codeDoc/allNamedObjs.txt: \
+		codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
+
+# Build the index of actors 
+codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocBcvtb/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/bcvtb/bcvtbModels.txt
+	@echo "# Create the actor index."  
+	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	"$(JAVA)" -Xmx512m \
+		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		ptolemy.moml.filter.ActorIndex \
+		codeDocBcvtb/doc/codeDoc/allNamedObjs.txt \
+		"../ptolemy/configs/bcvtb/bcvtbModels.txt" \
+		codeDocBcvtb/doc/codeDoc
+
+../ptolemy/configs/bcvtb/bcvtbModels.txt: \
+		$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
+		../ptolemy/configs/bcvtb/intro.htm
+	(cd ../ptolemy/configs/bcvtb; make bcvtbModels.txt)
+
+#############################################################################
 # HyVisual
 
 hyvisual_docs: $(HYVISUAL_DOCS)
@@ -1091,7 +1154,7 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 	if [ ! -d codeDocHyVisual ]; then mkdir -p codeDocHyVisual; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
-	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) $(COREPACKAGES) )
 
 # Rules to build for HyVisual
 codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
@@ -1147,7 +1210,7 @@ codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 		"$(JAVADOC)" -J-Xmx512m \
 			-d doc/codeDocViptos/doc/codeDoc \
 			$(PTDOCLET) \
-	$(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
+	$(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
 
 # All the namedObjs for which we have documentation.
 codeDocViptos/doc/codeDoc/allNamedObjs.txt: codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
@@ -1188,7 +1251,7 @@ codeDocVisualSense/doc/codeDoc/tree.html:
 	if [ ! -d codeDocVisualSense ]; then mkdir -p codeDocVisualSense; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
-	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocVisualSense/doc/codeDoc $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocVisualSense/doc/codeDoc $(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
 
 # Run PtDoclet
 codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
@@ -1196,7 +1259,7 @@ codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 		"$(JAVADOC)" -J-Xmx512m \
 			-d doc/codeDocVisualSense/doc/codeDoc \
 			$(PTDOCLET) \
-		$(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
+		$(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
 
 # All the namedObjs for which we have documentation.
 codeDocVisualSense/doc/codeDoc/allNamedObjs.txt: codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml

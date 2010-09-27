@@ -54,10 +54,13 @@ JSRCS =
 
 # HTML Files that are derived from other HTML files.
 DERIVED_FILES = \
+	completeDemosBcvtb.htm \
 	completeDemosPtiny.htm \
 	completeDemosPtinyKepler.htm \
 	demosPtiny.htm \
+	demosBcvtb.htm \
 	demosPtinyKepler.htm \
+	docsBcvtb.htm \
 	docsPtiny.htm \
 	docsPtinyKepler.htm \
 	models.txt
@@ -114,17 +117,29 @@ completeDemosPtiny.htm: completeDemos.htm
 completeDemosPtinyKepler.htm: completeDemosPtiny.htm
 	$(GAWK) -f $(ROOT)/doc/ptinyKepler.awk completeDemosPtiny.htm | sed 's/demosPtiny.htm/demosPtinyKepler.htm/' > $@  
 
+# Generate a file that consists of only the text within
+# <!--bcvtbDocs--> ... <!--/bcvtbDocs--> blocks
+completeDemosBcvtb.htm: completeDemosPtiny.htm
+	$(GAWK) -f $(ROOT)/doc/ptinyBcvtb.awk completeDemosPtiny.htm | sed 's/demosPtiny.htm/demosPtinyKepler.htm/' > $@  
+
 demosPtiny.htm: demos.htm
 	$(GAWK) -f $(ROOT)/doc/javahtml.awk demos.htm | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 
+demosBcvtb.htm: demosPtiny.htm
+	$(GAWK) -f $(ROOT)/doc/ptinyBcvtb.awk demosPtiny.htm | sed 's/completeDemosPtiny.htm/completeDemosBcvtb.htm/' > $@  
+
 demosPtinyKepler.htm: demosPtiny.htm
 	$(GAWK) -f $(ROOT)/doc/ptinyKepler.awk demosPtiny.htm | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
+
+docsBcvtb.htm: docsPtiny.htm
+	$(GAWK) -f $(ROOT)/doc/ptinyBcvtb.awk docsPtiny.htm | sed 's/introPtiny.htm/intro.htm/' | sed 's/completeDemosPtiny.htm/completeDemosBcvtb.htm/' | sed 's@/codeDoc/index.html@/codeDocBcvtb/doc/codeDoc/index.html@'> $@  
 
 docsPtiny.htm: docs.htm
 	$(GAWK) -f $(ROOT)/doc/javahtml.awk docs.htm | sed 's/intro.htm/introPtiny.htm/' | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 
 docsPtinyKepler.htm: docsPtiny.htm
 	$(GAWK) -f $(ROOT)/doc/ptinyKepler.awk docsPtiny.htm | sed 's/introPtiny.htm/introPtinyKepler.htm/' | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
+
 
 # models.txt contains a list of model file names
 # Use AUXCLASSPATH so that we work under codecoverage with JavaScope

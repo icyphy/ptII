@@ -13,7 +13,7 @@
   <!-- Specify the help file to open. -->
   <property name="_help"
             class="ptolemy.data.expr.FileParameter"
-            value="$CLASSPATH/ptolemy/configs/doc/docsPtiny.htm"/>
+            value="$CLASSPATH/ptolemy/configs/doc/docsBcvtb.htm"/>
 
   <!-- The directory of open models, each represented by an effigy. -->
   <!-- Note that this begins empty. -->

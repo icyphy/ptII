@@ -216,13 +216,16 @@ BCVTB_JNLP_JARS =	\
 	lib/kieler.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
+	ptolemy/domains/continuous.jar \
+	ptolemy/domains/continuous/demo/demo.jar \
 	ptolemy/domains/sdf.jar \
+	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/modal.jar \
+	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
 	$(MATLAB_JARS) \
 	ptolemy/ptsupport.jar \
-	$(DOC_CODEDOC_JAR)
-
+	doc/codeDocBcvtb.jar
 
 #######
 # HyVisual - HybridSystenms

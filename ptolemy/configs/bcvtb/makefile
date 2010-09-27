@@ -53,7 +53,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS =
 
 # HTML Files that are derived from other HTML files.
-DERIVED_FILES =
+DERIVED_FILES = \
+	bcvtbModels.txt
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
@@ -83,6 +84,16 @@ all: jclass $(DERIVED_FILES)
 
 install: all jars
 	@echo "nothing need be done for make install in this directory"
+
+# bcvtbModels.txt contains a list of model file names
+# Use AUXCLASSPATH so that we work under codecoverage with JavaScope
+bcvtbModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class ../doc/completeDemosBcvtb.htm
+	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
+		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
+		ptolemy.actor.gui.HTMLAbout ../doc/completeDemosBcvtb.htm $@
+
+../doc/completeDemosBcvtb.htm: ../doc/completeDemos.htm
+	(cd ../doc; $(MAKE) completeDemosBcvtb.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
