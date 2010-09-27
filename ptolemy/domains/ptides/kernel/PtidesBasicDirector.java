@@ -135,9 +135,13 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter animateExecution;
     
-    /** If true, then modify the icon for all deeply contained actors
-     *  that have non-zero model time delays (including actors that only 
-     *  introduce microstep delays).
+    /** If true, then for all deeply contained actors that have non-zero 
+     *  model time delays (including actors that only introduce microstep
+     *  delays), the actor icons are highlighted.
+     *  The icons are highlighted when the model is run.
+     *  The actor icons will still be highlighted after the model finishes
+     *  running. To clear the highlighting, re-run the model with this 
+     *  parameter set to false.
      *  This is a boolean that defaults to false.
      */
     public Parameter animateModelTimeDelay; 
@@ -600,9 +604,8 @@ public class PtidesBasicDirector extends DEDirector {
         stopWhenQueueIsEmpty.setExpression("false");
         _checkSensorActuatorNetworkConsistency();
 
-        if (((BooleanToken)animateModelTimeDelay.getToken()).booleanValue()) {
-            _annotateModelDelays((CompositeActor) getContainer(), false);
-        }
+        _annotateModelDelays((CompositeActor) getContainer(),
+                ((BooleanToken)animateModelTimeDelay.getToken()).booleanValue());
     }
 
     /** Return false if there are no more actors to be fired or the stop()
@@ -703,9 +706,11 @@ public class PtidesBasicDirector extends DEDirector {
         if (_lastExecutingActor != null) {
             _clearHighlight(_lastExecutingActor, false);
         }
+        /*
         if (((BooleanToken)animateModelTimeDelay.getToken()).booleanValue()) {
             _annotateModelDelays((CompositeActor) getContainer(), true);
         }
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -933,6 +938,7 @@ public class PtidesBasicDirector extends DEDirector {
             MoMLChangeRequest request = new MoMLChangeRequest(this,
                     (NamedObj) actor, completeMoML);
             Actor container = (Actor) getContainer();
+            request.setPersistent(false);
             ((TypedCompositeActor) container).requestChange(request);
         }
     }
@@ -1671,6 +1677,7 @@ public class PtidesBasicDirector extends DEDirector {
                     + color + "\"/>";
             MoMLChangeRequest request = new MoMLChangeRequest(this,
                     (NamedObj) actor, completeMoML);
+            request.setPersistent(false);
             Actor container = (Actor) getContainer();
             ((TypedCompositeActor) container).requestChange(request);
         }
@@ -1771,6 +1778,7 @@ public class PtidesBasicDirector extends DEDirector {
             }
             MoMLChangeRequest request = new MoMLChangeRequest(this, this,
                     completeMoML);
+            request.setPersistent(false);
             Actor container = (Actor) getContainer();
             ((TypedCompositeActor) container).requestChange(request);
         }
@@ -2226,13 +2234,13 @@ public class PtidesBasicDirector extends DEDirector {
         return _lastAbsoluteDeadline.add(timeDiff);
     }
 
-    /** For all deeply contained actors, if the actor has a dependency that
-     *  is not equal to the OTimesIdenty, then we annotate this actor with
-     *  a certain color. We repeat this process recursively.
-     *  If clearModelDelay is set, then instead of highlighting actors, instead
+    /** For all deeply contained actors, if annotateModelDelay is true,
+     *  the actor has a dependency that is not equal to the OTimesIdenty is
+     *  annotated with a certain color. We repeat this process recursively.
+     *  If annotateModelDelay is false, then instead of highlighting actors,
      *  the highlighting is cleared.
      */
-    private void _annotateModelDelays(CompositeActor compositeActor, boolean clearModelDelay)
+    private void _annotateModelDelays(CompositeActor compositeActor, boolean annotateModelDelay)
             throws IllegalActionException {
         for (Actor actor : (List<Actor>) (compositeActor.deepEntityList())) {
             boolean annotateThisActor = false;
@@ -2257,14 +2265,14 @@ public class PtidesBasicDirector extends DEDirector {
                 }
             }
             if (annotateThisActor) {
-                if (clearModelDelay) {
-                    _clearHighlight(actor, true);
-                } else {
+                if (annotateModelDelay) {
                     _highlightActor(actor, "{0.0, 1.0, 1.0, 1.0}", true);
+                } else {
+                    _clearHighlight(actor, true);
                 }
             }
             if (actor instanceof CompositeActor) {
-                _annotateModelDelays((CompositeActor) actor, clearModelDelay);
+                _annotateModelDelays((CompositeActor) actor, annotateModelDelay);
             }
         }
     }

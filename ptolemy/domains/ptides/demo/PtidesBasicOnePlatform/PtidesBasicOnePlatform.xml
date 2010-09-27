@@ -70,11 +70,11 @@
         <property name="PtidesBasicDirector" class="ptolemy.domains.ptides.kernel.PtidesBasicDirector">
             <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="animateModelTimeDelay" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="animateModelTimeDelay" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 45.0]">
             </property>
