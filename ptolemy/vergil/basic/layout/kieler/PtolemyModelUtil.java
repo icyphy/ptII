@@ -99,6 +99,13 @@ public class PtolemyModelUtil {
         return relationName;
     }
 
+    /**
+     * Returns the a computed link id. It is computed by the unique name of the
+     * two objects.
+     * 
+     * @param link the link
+     * @return the link id
+     */
     public static String getLinkId(Link link) {
         Object object1 = link.getTail();
         Object object2 = link.getHead();
@@ -113,6 +120,12 @@ public class PtolemyModelUtil {
         return (obj1Id + obj2Id);
     }
 
+    /**
+     * Returns the modification marker value.
+     * 
+     * @param link the link
+     * @return the modification marker
+     */
     public static String getModificationMarker(Link link) {
         NamedObj source = null;
         NamedObj target = null;
