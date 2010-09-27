@@ -982,7 +982,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  that takes a Frame argument. If the parameter cannot
      *  be read, then the default Ptolemy layout mechanism in
      *  {@link #layoutGraphWithPtolemyLayout()} is used.
-     *  @param noDialog True if no diealog should appear and for the shortcut version
+     *  @param noDialog True if no dialog should appear and for the shortcut version
      */
     public void layoutGraph() {
        // by default layout the graph w/o a dialog
