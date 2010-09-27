@@ -211,10 +211,11 @@ public class KielerLayoutTableau extends Tableau {
     private class BaseLayoutAction extends AbstractAction {
         /** Construction an action for placing layout.
          *  @param applyEdgeLayout true if the edge layout should be applied.
-         *  @param bendPointAnnotation true if the new layout hints should be annotated instead of adding dummy layout relations
+         *  @param bendPointAnnotation true if the new layout hints should be
+         *         annotated instead of adding dummy layout relations
          *  @param boxLayout true if the box layout should be applied.
-         *  @param removeUnnecessaryRelations true if we are to remove unnecessary relation
-         *  vertices.
+         *  @param removeUnnecessaryRelations true if we are to remove
+         *         unnecessary relation vertices.
          *  @param showUnnecessaryRelationsToggle true if we are to toggle between showing
          *  and hiding unnecessary relation vertices.
          */
@@ -368,7 +369,8 @@ public class KielerLayoutTableau extends Tableau {
         }
     }
     
-    /** New automatic layout option placing all connected nodes and annotating relations with bend point positions of connected links.
+    /** New automatic layout option placing all connected nodes and annotating 
+     * relations with bend point positions of connected links.
      */
     private class PlaceAndRouteAnnotationAction extends BaseLayoutAction {
         /** Construct a HideAndRouteAction.
