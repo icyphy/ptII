@@ -148,8 +148,9 @@ public class PtolemyModelUtil {
      * To flush the request, the method
      * {@link #_performChangeRequest(CompositeActor)} must be called.
      * 
-     * @param name Name of the new StringAttribute which needs to be unique
-     * @param value Value of the StringAttribute
+     * @param relationName Name of the relation in question
+     * @param link the link in question
+     * @param hints String of layout hints
      * @return name of newly created StringAttribute
      */
     public String _layoutHints(String relationName, Link link, String hints) {
