@@ -974,6 +974,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
+    /** Layout the graph view. See {@link #layoutGraph(boolean)} for more
+     *  details. By default layout the graph w/o a dialog.
+     */
+    public void layoutGraph() {
+       // by default layout the graph w/o a dialog
+       layoutGraph(true);
+    }
     /** Layout the graph view.
      *  If the configuration contains a parameter named
      *  _layoutGraphDialog, the that parameter is assumed
@@ -984,10 +991,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  {@link #layoutGraphWithPtolemyLayout()} is used.
      *  @param noDialog True if no dialog should appear and for the shortcut version
      */
-    public void layoutGraph() {
-       // by default layout the graph w/o a dialog
-       layoutGraph(true);
-    }
     public void layoutGraph(boolean noDialog) {
         boolean success = false;
         try {
