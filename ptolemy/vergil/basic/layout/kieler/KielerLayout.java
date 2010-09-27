@@ -466,7 +466,6 @@ public class KielerLayout extends AbstractGlobalLayout {
      * 
      * @param kEdge The Kieler KEdge that hold the precomupted layout
      *            information, i.e. bend point positions
-     * @return The old Relation if it is safe to delete it.
      * @exception IllegalActionException Exception will be thrown if replacing
      *                of original relation is not possible, i.e. if unlink() or
      *                link() methods fail.
