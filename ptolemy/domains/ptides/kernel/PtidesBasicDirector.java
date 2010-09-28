@@ -167,11 +167,28 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == highlightModelTimeDelays) {
-            // need to do a preinitialize first, otherwise all actors will start with
+            // need to do a preinitialize for all actors first, otherwise all actors will start with
             // defaultDependency, which, in this case means all actors have zero model delays.
-            if (!_preinitializeCalled) {
+            if (!_preinitializeCalled || _lastWorkspaceVersion != _workspace.getVersion()) {
                 _preinitializeCalled = true;
-                preinitialize();
+                _lastWorkspaceVersion = _workspace.getVersion();
+                // cannot simply call preinitialize(), this results in an infinite loop.
+                // instead, simply preinitialize all actors.
+                //preinitialize();
+                // preinitialize all the contained actors.
+                Nameable container = getContainer();
+                if (container instanceof CompositeActor) {
+                    Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+                            .iterator();
+                    while (actors.hasNext()) {
+                        Actor actor = (Actor) actors.next();
+                        if (_debugging) {
+                            _debug("Invoking preinitialize(): ",
+                                    ((NamedObj) actor).getFullName());
+                        }
+                        preinitialize(actor);
+                    }
+                }
             }
             if (highlightModelTimeDelays.getExpression().equals("true")) {
                 _highlightModelDelays((CompositeActor) getContainer(), true);
@@ -2266,7 +2283,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  If annotateModelDelay is false, then instead of highlighting actors,
      *  the highlighting is cleared.
      */
-    private void _highlightModelDelays(CompositeActor compositeActor, boolean annotateModelDelay)
+    private void _highlightModelDelays(CompositeActor compositeActor, boolean highlightModelDelay)
             throws IllegalActionException {
 
         for (Actor actor : (List<Actor>) (compositeActor.deepEntityList())) {
@@ -2292,14 +2309,14 @@ public class PtidesBasicDirector extends DEDirector {
                 }
             }
             if (annotateThisActor) {
-                if (annotateModelDelay) {
+                if (highlightModelDelay) {
                     _highlightActor(actor, "{0.0, 1.0, 1.0, 1.0}", true);
                 } else {
                     _clearHighlight(actor, true);
                 }
             }
             if (actor instanceof CompositeActor) {
-                _highlightModelDelays((CompositeActor) actor, annotateModelDelay);
+                _highlightModelDelays((CompositeActor) actor, highlightModelDelay);
             }
         }
     }
@@ -2680,6 +2697,8 @@ public class PtidesBasicDirector extends DEDirector {
     /** The timestamp of the last executing event.
      */
     private Time _lastTimestamp;
+    
+    private long _lastWorkspaceVersion = -1;
     
     /** Whether preinitialize has been called once before.
      */
