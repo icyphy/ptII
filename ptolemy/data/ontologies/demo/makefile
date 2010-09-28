@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data/ontologies
 
-DIRS = 		CarTracking MonotonicityAnalysis
+DIRS = 		CarTracking MonotonicityAnalysis ConstNonconst
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
