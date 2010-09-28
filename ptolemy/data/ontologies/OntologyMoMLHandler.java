@@ -83,7 +83,7 @@ public class OntologyMoMLHandler extends Attribute {
         OntologySolver solver = (OntologySolver) getContainer();
         for (Object propertyable : solver.getAllPropertyables()) {
             if (propertyable instanceof NamedObj) {
-                FiniteConcept concept = solver
+                Concept concept = solver
                         .getResolvedConcept(propertyable, false);
                 if (concept != null
                         || ((((NamedObj) propertyable)
@@ -123,7 +123,7 @@ public class OntologyMoMLHandler extends Attribute {
             
             for (Object object : objects) {
                 if (object instanceof NamedObj) {
-                    FiniteConcept concept = solver.getResolvedConcept(object, false);
+                    Concept concept = solver.getResolvedConcept(object, false);
                     if (concept != null) {
                         // Use the color in the concept instance.
                         List<ColorAttribute> colors = concept
@@ -173,7 +173,7 @@ public class OntologyMoMLHandler extends Attribute {
         OntologySolver solver = (OntologySolver) getContainer();
         for (Object propertyable : solver.getAllPropertyables()) {
             if (propertyable instanceof NamedObj) {
-                FiniteConcept concept = solver.getResolvedConcept(propertyable, true);
+                Concept concept = solver.getResolvedConcept(propertyable, true);
                 if (concept != null) {
                     String request = "<property name=\"_showInfo\" class=\"ptolemy.data.expr.StringParameter\" value=\""
                             + concept.toString() + "\"/>";

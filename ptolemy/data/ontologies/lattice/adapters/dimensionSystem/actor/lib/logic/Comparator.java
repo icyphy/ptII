@@ -30,7 +30,7 @@ package ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.lib.logic
 import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ontologies.FiniteConcept;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
 import ptolemy.data.ontologies.lattice.adapters.dimensionSystem.actor.AtomicActor;
 import ptolemy.data.properties.lattice.MonotonicFunction;
@@ -97,10 +97,10 @@ public class Comparator extends AtomicActor {
          */
         public Object getValue() throws IllegalActionException {
 
-            FiniteConcept leftProperty = getSolver().getConcept(_left);
-            FiniteConcept rightProperty = getSolver().getConcept(_right);
+            Concept leftProperty = getSolver().getConcept(_left);
+            Concept rightProperty = getSolver().getConcept(_right);
 
-            FiniteConcept unknown = _unknownConcept;
+            Concept unknown = _unknownConcept;
 
             if (leftProperty == unknown || rightProperty == unknown) {
                 return unknown;

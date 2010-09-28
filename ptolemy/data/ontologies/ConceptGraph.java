@@ -156,8 +156,8 @@ public class ConceptGraph extends DirectedAcyclicGraph {
                     + " concept1 = " + concept1 + ", concept2 = " + concept2);
         }
 
-        FiniteConcept t1Rep = _toRepresentative((FiniteConcept) concept1);
-        FiniteConcept t2Rep = _toRepresentative((FiniteConcept) concept2);
+        Concept t1Rep = _toRepresentative((Concept) concept1);
+        Concept t2Rep = _toRepresentative((Concept) concept2);
 
         /* FIXME: Support structured concepts using something like this:
         if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredProperty) {
@@ -188,7 +188,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @param p The specified concept for which to return a representative.
      *  @return The representative for the specified concept.
      */
-    private FiniteConcept _toRepresentative(FiniteConcept p) {
+    private Concept _toRepresentative(Concept p) {
         /* FIXME: Support structured concepts using something like this:
         if (p instanceof StructuredProperty) {
             return ((StructuredProperty) p).getRepresentative();

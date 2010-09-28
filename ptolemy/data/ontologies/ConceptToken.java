@@ -103,8 +103,8 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
             throw new IllegalActionException(
             "Cannot compare Concept with non-Concept.");
         }
-        FiniteConcept rightConcept = ((ConceptToken) rightArgument).conceptValue();
-        FiniteConcept leftConcept = this.conceptValue();
+        Concept rightConcept = ((ConceptToken) rightArgument).conceptValue();
+        Concept leftConcept = this.conceptValue();
 
         boolean lessThanOrEqual = rightConcept.isAboveOrEqualTo(leftConcept);
         boolean equal = leftConcept.equals(rightConcept);

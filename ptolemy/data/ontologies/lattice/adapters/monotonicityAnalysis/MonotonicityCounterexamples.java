@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.util.MultiHashMap;
 import ptolemy.data.ontologies.util.MultiMap;
@@ -60,7 +61,7 @@ public class MonotonicityCounterexamples {
      *  @param x1 The lesser concept.
      *  @param x2 The greater concept.
      */
-    public void add(FiniteConcept x1, FiniteConcept x2) {
+    public void add(Concept x1, Concept x2) {
         _counterexamples.remove(x1, x2);
         _counterexamples.put(x1, x2);
     }

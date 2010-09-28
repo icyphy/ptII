@@ -92,7 +92,7 @@ public class Ontology extends CompositeEntity {
             // Construct the graph.
             _graph = new ConceptGraph();
             List<FiniteConcept> concepts = entityList(FiniteConcept.class);
-            for (FiniteConcept concept : concepts) {
+            for (Concept concept : concepts) {
                 _graph.addNodeWeight(concept);
             }
             for (FiniteConcept concept : concepts) {
@@ -129,7 +129,7 @@ public class Ontology extends CompositeEntity {
         
         List<FiniteConcept> concepts = entityList(FiniteConcept.class);
         
-        for (FiniteConcept concept : concepts) {
+        for (Concept concept : concepts) {
             if (!concept.isValueAcceptable()) {
                 unacceptableConcepts.add(concept);
             }
@@ -156,7 +156,7 @@ public class Ontology extends CompositeEntity {
                 _debug("This is not a lattice. Cannot find a unique top element.");
                 return false;
             } else {
-                FiniteConcept top = (FiniteConcept) _graph.top();
+                Concept top = (Concept) _graph.top();
                 _debug("Top is: " + top.toString());
             }
         } catch (GraphStateException e) {
@@ -168,7 +168,7 @@ public class Ontology extends CompositeEntity {
             _debug("This is not a lattice. Cannot find a unique bottom element.");
             return false;
         } else {
-            FiniteConcept bottom = (FiniteConcept) _graph.bottom();
+            Concept bottom = (Concept) _graph.bottom();
             _debug("Bottom is: " + bottom.toString());
         }
 
@@ -177,7 +177,7 @@ public class Ontology extends CompositeEntity {
         // This is the same check done in ptolemy.graph.DirectedAcyclicGraph.
         for (int i = 0; i < ontologyConcepts.size() - 1; i++) {
             for (int j = i + 1; j < ontologyConcepts.size(); j++) {
-                FiniteConcept lub = (FiniteConcept) _graph.leastUpperBound(ontologyConcepts
+                Concept lub = (Concept) _graph.leastUpperBound(ontologyConcepts
                         .get(i), ontologyConcepts.get(j));
 
                 if (lub == null) {

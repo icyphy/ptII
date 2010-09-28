@@ -142,7 +142,7 @@ public abstract class ConceptFunction {
                 // Check each concept argument value to make sure it is either null or
                 // contained in the ontology domain for that argument.
                 int index = 0;
-                for (FiniteConcept argument : inputArgumentList) {
+                for (Concept argument : inputArgumentList) {
                     if (argument != null
                         && !_argumentDomainOntologies.get(index).entityList(
                                 FiniteConcept.class).contains(argument)) {

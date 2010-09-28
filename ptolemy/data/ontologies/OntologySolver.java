@@ -290,7 +290,7 @@ public abstract class OntologySolver extends OntologySolverBase implements
      * @param property The concept attached to the model object.
      */
     private void _recordUnacceptableSolution(Object propertyable,
-            FiniteConcept property) {
+            Concept property) {
 
         // Check for unacceptable solution.
         if (property != null && !property.isValueAcceptable()) {

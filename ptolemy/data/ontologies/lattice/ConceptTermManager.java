@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -272,7 +273,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
-            FiniteConcept property = (FiniteConcept) getValue();
+            Concept property = (Concept) getValue();
 
             if (property == null) {
                 return true;

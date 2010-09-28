@@ -225,7 +225,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         for (Ontology domainOntology : _domainOntologies) {
             for (Object entity : domainOntology.allAtomicEntityList()) {
                 if (entity instanceof FiniteConcept) {
-                    Constants.add(((FiniteConcept) entity).getName(),
+                    Constants.add(((Concept) entity).getName(),
                             new ConceptToken((FiniteConcept)entity));
                 }
             }

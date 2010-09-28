@@ -29,7 +29,7 @@ import java.util.List;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.ontologies.FiniteConcept;
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.data.ontologies.OntologySolver;
@@ -503,7 +503,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 // cause the test to fail.
                 continue;
             }
-            FiniteConcept inferredConcept = getConcept(conceptable);
+            Concept inferredConcept = getConcept(conceptable);
             if (inferredConcept == null) {
                 throw new IllegalActionException(conceptable,
                         "Testing failure at " + conceptable.toString() + '\n'
@@ -535,7 +535,7 @@ public class LatticeOntologySolver extends OntologySolver {
             resetAll();
             invokeSolver();
             for (NamedObj conceptable : getAllConceptableNamedObjs()) {
-                FiniteConcept inferred = getConcept(conceptable);
+                Concept inferred = getConcept(conceptable);
                 if (inferred == null) {
                     // If we have conceptables that do not resolve to concepts,
                     // simply skip them.

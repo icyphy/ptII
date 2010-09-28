@@ -30,6 +30,7 @@ package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis.data.expr;
 
 import java.util.List;
 
+import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
@@ -134,8 +135,8 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
         protected FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
                 throws IllegalActionException {
 
-            FiniteConcept lhs = inputConceptValues.get(0);
-            FiniteConcept rhs = inputConceptValues.get(1);
+            Concept lhs = inputConceptValues.get(0);
+            Concept rhs = inputConceptValues.get(1);
             if (_constantConcept.isAboveOrEqualTo(lhs) && _constantConcept.isAboveOrEqualTo(rhs)) {
                 return _constantConcept;
             }
