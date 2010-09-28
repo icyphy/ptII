@@ -1918,19 +1918,28 @@ public class OracleXMLDBConnection implements DBConnection {
         
             for(String value : attributeValues) {
                     
-                valuesClause = valuesClause + "$const/@value[contains(.,\"" 
-                        + value + "\")]" + " or ";
+                if (value != null && value.length() > 0) {
                 
-                    isPreviousClauseSet = true;       
+                    valuesClause = valuesClause + "$const/@value[contains(.,\"" 
+                        + value + "\")]" + " or ";
+                } else {
+                    valuesClause = "";
+                    break;
+                }
+                
+                isPreviousClauseSet = true;       
             }
             
-            valuesClause = valuesClause.substring(0, 
-                    valuesClause.lastIndexOf(" or "));
-            
-            valuesClause = valuesClause.trim();
-            
-            if (attributeValues.size() > 1) {
-                valuesClause = "(" + valuesClause + ")";
+            if (valuesClause != null && valuesClause.length() > 0) {
+                
+                valuesClause = valuesClause.substring(0, valuesClause
+                        .lastIndexOf(" or "));
+                
+                valuesClause = valuesClause.trim();
+                
+                if (attributeValues.size() > 1) {
+                    valuesClause = "(" + valuesClause + ")";
+                }
             }
             
             attributesQuery.append(valuesClause);
