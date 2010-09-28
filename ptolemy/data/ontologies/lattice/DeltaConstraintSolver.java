@@ -33,7 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypeConflictException;
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.data.properties.PropertyResolutionException;
 import ptolemy.graph.Inequality;
@@ -73,7 +73,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        _identifiedConflicts = new HashMap<Object, Concept>();
+        _identifiedConflicts = new HashMap<Object, FiniteConcept>();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,7 +157,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
             List<Inequality> constraintList) throws TypeConflictException, IllegalActionException {
 
         // Save original set _resolvedProperties
-        HashMap originalResolvedProperties = new HashMap<Object, Concept>(_resolvedProperties);
+        HashMap originalResolvedProperties = new HashMap<Object, FiniteConcept>(_resolvedProperties);
         
         List<Inequality> errorList = constraintList;
         int blockSize = errorList.size() / 2;
@@ -194,7 +194,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
         _resolveConcepts(toplevel, toplevelHelper, errorList);
         if (_resolvedProperties != null && !_resolvedProperties.isEmpty()){
             _identifiedConflicts = 
-                new HashMap<Object, Concept>(_resolvedProperties);
+                new HashMap<Object, FiniteConcept>(_resolvedProperties);
         } 
         
         // Restore original set _resolvedProperties
@@ -246,7 +246,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      * @return  The objects (and their concepts) which are the cause of 
      *  unacceptable concepts in the model.  Can be null.
      */
-    public HashMap<Object, Concept> getIdentifiedConflicts()
+    public HashMap<Object, FiniteConcept> getIdentifiedConflicts()
     {
         return _identifiedConflicts;
     }
@@ -269,5 +269,5 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
      *  A set of objects (and their concepts) which are the cause of 
      *  unacceptable concepts in the model.
      */
-    private HashMap<Object, Concept> _identifiedConflicts;
+    private HashMap<Object, FiniteConcept> _identifiedConflicts;
 }

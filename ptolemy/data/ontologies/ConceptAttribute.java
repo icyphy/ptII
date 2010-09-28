@@ -123,7 +123,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * contained by the ConceptAttribute.
      * @see #setConcept
      */
-    public Concept getConcept() {
+    public FiniteConcept getConcept() {
         return _concept;
     }
 
@@ -161,7 +161,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      * contained by the ConceptAttribute.
      * @see #getConcept
      */
-    public void setConcept(Concept concept) {
+    public void setConcept(FiniteConcept concept) {
         _concept = concept;
     }
 
@@ -195,7 +195,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
     }
 
     /** The Concept contained by the ConceptAtribute. */
-    protected Concept _concept;
+    protected FiniteConcept _concept;
 
     //    private Visibility _visibility = Settable.NONE;
 

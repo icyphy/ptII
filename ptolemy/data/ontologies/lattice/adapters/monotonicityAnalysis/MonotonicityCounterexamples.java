@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.util.MultiHashMap;
 import ptolemy.data.ontologies.util.MultiMap;
 
@@ -60,7 +60,7 @@ public class MonotonicityCounterexamples {
      *  @param x1 The lesser concept.
      *  @param x2 The greater concept.
      */
-    public void add(Concept x1, Concept x2) {
+    public void add(FiniteConcept x1, FiniteConcept x2) {
         _counterexamples.remove(x1, x2);
         _counterexamples.put(x1, x2);
     }
@@ -84,8 +84,8 @@ public class MonotonicityCounterexamples {
      */
     public Set<ConceptPair> entrySet() {
         Set<ConceptPair> entrySet = new HashSet<ConceptPair>();
-        for (Concept lesser : (Set<Concept>)_counterexamples.keySet()) {
-            for (Concept greater : (Collection<Concept>)_counterexamples.get(lesser)) {
+        for (FiniteConcept lesser : (Set<FiniteConcept>)_counterexamples.keySet()) {
+            for (FiniteConcept greater : (Collection<FiniteConcept>)_counterexamples.get(lesser)) {
                 entrySet.add(new ConceptPair(lesser, greater));
             }
         }
@@ -98,7 +98,7 @@ public class MonotonicityCounterexamples {
      */
     public String toString() {
         String result = "{";
-        for (Entry<Concept, Concept> pair : entrySet()) {
+        for (Entry<FiniteConcept, FiniteConcept> pair : entrySet()) {
             result += "(" + pair.getKey().toString() + "," + pair.getValue() + ")";
         }
         return result  + "}";
@@ -119,22 +119,22 @@ public class MonotonicityCounterexamples {
      *  Thus, these pairs prove as counterexamples to the
      *  monotonicity of f.
      */
-    public class ConceptPair implements Map.Entry<Concept,Concept> {
+    public class ConceptPair implements Map.Entry<FiniteConcept,FiniteConcept> {
         /** Create a counterexample pair given both of the concepts that  make
          *  up the counterexample.
          *
          *  @param l The lesser concept, i.e. x1
          *  @param g The greater concept, i.e. x2
          */
-        public ConceptPair(Concept l, Concept g) {
+        public ConceptPair(FiniteConcept l, FiniteConcept g) {
             lesser = l; greater = g;
         }
         /** The lesser of the concepts (i.e. x1)
          */
-        public Concept lesser;
+        public FiniteConcept lesser;
         /** The greater of the concepts (i.e. x2)
          */
-        public Concept greater;
+        public FiniteConcept greater;
         
         
         /** Return the lesser concept of the counterexample.
@@ -142,16 +142,16 @@ public class MonotonicityCounterexamples {
          *  @return The lesser concept.
          *  @see java.util.Map.Entry#getKey()
          */
-        public Concept getKey() {
+        public FiniteConcept getKey() {
             return lesser;
         }
         /** Return the greater concept of the counterexample.
          *  
          *  @return The greater concept
          *  @see java.util.Map.Entry#getValue()
-         *  @see #setValue(Concept)
+         *  @see #setValue(FiniteConcept)
          */
-        public Concept getValue() {
+        public FiniteConcept getValue() {
             return greater;
         }
         /** Do nothing.
@@ -162,7 +162,7 @@ public class MonotonicityCounterexamples {
          *  @see java.util.Map.Entry#setValue(java.lang.Object)
          *  @see #getValue()
          */
-        public Concept setValue(Concept value) {
+        public FiniteConcept setValue(FiniteConcept value) {
             return null;
         }  
     }

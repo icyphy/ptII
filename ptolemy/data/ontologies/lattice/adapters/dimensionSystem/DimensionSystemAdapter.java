@@ -27,7 +27,7 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.dimensionSystem;
 
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.data.ontologies.lattice.LatticeOntologyAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
@@ -94,48 +94,48 @@ public class DimensionSystemAdapter extends LatticeOntologyAdapter {
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the dimensionSystem ontology
         // Throw an exception if any of them are not found
-        _unknownConcept = (Concept) _dimensionSystemOntology
+        _unknownConcept = (FiniteConcept) _dimensionSystemOntology
                 .getEntity("Unknown");
         if (_unknownConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Unknown not found in dimensionSystem ontology.");
         }
 
-        _dimensionlessConcept = (Concept) getSolver().getOntology().getEntity(
+        _dimensionlessConcept = (FiniteConcept) getSolver().getOntology().getEntity(
                 "Dimensionless");
         if (_dimensionlessConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Dimensionless not found in dimensionSystem ontology.");
         }
 
-        _timeConcept = (Concept) getSolver().getOntology().getEntity("Time");
+        _timeConcept = (FiniteConcept) getSolver().getOntology().getEntity("Time");
         if (_timeConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Time not found in dimensionSystem ontology.");
         }
 
-        _positionConcept = (Concept) getSolver().getOntology().getEntity(
+        _positionConcept = (FiniteConcept) getSolver().getOntology().getEntity(
                 "Position");
         if (_positionConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Position not found in dimensionSystem ontology.");
         }
 
-        _velocityConcept = (Concept) getSolver().getOntology().getEntity(
+        _velocityConcept = (FiniteConcept) getSolver().getOntology().getEntity(
                 "Velocity");
         if (_velocityConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Velocity not found in dimensionSystem ontology.");
         }
 
-        _accelerationConcept = (Concept) getSolver().getOntology().getEntity(
+        _accelerationConcept = (FiniteConcept) getSolver().getOntology().getEntity(
                 "Acceleration");
         if (_accelerationConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
                     "Concept Acceleration not found in dimensionSystem ontology.");
         }
 
-        _conflictConcept = (Concept) getSolver().getOntology().getEntity(
+        _conflictConcept = (FiniteConcept) getSolver().getOntology().getEntity(
                 "Conflict");
         if (_conflictConcept == null) {
             throw new IllegalActionException(_dimensionSystemOntology,
@@ -154,23 +154,23 @@ public class DimensionSystemAdapter extends LatticeOntologyAdapter {
     // Get all the Concepts from the ontology to use in all the dimensionSystem adapters   
 
     /** The "Unknown" Concept from the dimensionSystem ontology. */
-    protected Concept _unknownConcept;
+    protected FiniteConcept _unknownConcept;
 
     /** The "Dimensionless" Concept from the dimensionSystem ontology. */
-    protected Concept _dimensionlessConcept;
+    protected FiniteConcept _dimensionlessConcept;
 
     /** The "Time" Concept from the dimensionSystem ontology. */
-    protected Concept _timeConcept;
+    protected FiniteConcept _timeConcept;
 
     /** The "Position" Concept from the dimensionSystem ontology. */
-    protected Concept _positionConcept;
+    protected FiniteConcept _positionConcept;
 
     /** The "Velocity" Concept from the dimensionSystem ontology. */
-    protected Concept _velocityConcept;
+    protected FiniteConcept _velocityConcept;
 
     /** The "Acceleration" Concept from the dimensionSystem ontology. */
-    protected Concept _accelerationConcept;
+    protected FiniteConcept _accelerationConcept;
 
     /** The "Conflict" Concept from the dimensionSystem ontology. */
-    protected Concept _conflictConcept;
+    protected FiniteConcept _conflictConcept;
 }

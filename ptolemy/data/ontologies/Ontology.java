@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Workspace;
  * between concepts contained by this ontology.
  * 
  * @see ConceptGraph
- * @see Concept
+ * @see FiniteConcept
  * @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 8.0
@@ -91,11 +91,11 @@ public class Ontology extends CompositeEntity {
         if (workspace().getVersion() != _graphVersion) {
             // Construct the graph.
             _graph = new ConceptGraph();
-            List<Concept> concepts = entityList(Concept.class);
-            for (Concept concept : concepts) {
+            List<FiniteConcept> concepts = entityList(FiniteConcept.class);
+            for (FiniteConcept concept : concepts) {
                 _graph.addNodeWeight(concept);
             }
-            for (Concept concept : concepts) {
+            for (FiniteConcept concept : concepts) {
                 List<ConceptRelation> relationLinks = concept.abovePort
                         .linkedRelationList();
                 for (ConceptRelation link : relationLinks) {
@@ -127,9 +127,9 @@ public class Ontology extends CompositeEntity {
         
         HashSet unacceptableConcepts = new HashSet();
         
-        List<Concept> concepts = entityList(Concept.class);
+        List<FiniteConcept> concepts = entityList(FiniteConcept.class);
         
-        for (Concept concept : concepts) {
+        for (FiniteConcept concept : concepts) {
             if (!concept.isValueAcceptable()) {
                 unacceptableConcepts.add(concept);
             }
@@ -156,7 +156,7 @@ public class Ontology extends CompositeEntity {
                 _debug("This is not a lattice. Cannot find a unique top element.");
                 return false;
             } else {
-                Concept top = (Concept) _graph.top();
+                FiniteConcept top = (FiniteConcept) _graph.top();
                 _debug("Top is: " + top.toString());
             }
         } catch (GraphStateException e) {
@@ -168,16 +168,16 @@ public class Ontology extends CompositeEntity {
             _debug("This is not a lattice. Cannot find a unique bottom element.");
             return false;
         } else {
-            Concept bottom = (Concept) _graph.bottom();
+            FiniteConcept bottom = (FiniteConcept) _graph.bottom();
             _debug("Bottom is: " + bottom.toString());
         }
 
-        List<Concept> ontologyConcepts = entityList(Concept.class);
+        List<FiniteConcept> ontologyConcepts = entityList(FiniteConcept.class);
 
         // This is the same check done in ptolemy.graph.DirectedAcyclicGraph.
         for (int i = 0; i < ontologyConcepts.size() - 1; i++) {
             for (int j = i + 1; j < ontologyConcepts.size(); j++) {
-                Concept lub = (Concept) _graph.leastUpperBound(ontologyConcepts
+                FiniteConcept lub = (FiniteConcept) _graph.leastUpperBound(ontologyConcepts
                         .get(i), ontologyConcepts.get(j));
 
                 if (lub == null) {

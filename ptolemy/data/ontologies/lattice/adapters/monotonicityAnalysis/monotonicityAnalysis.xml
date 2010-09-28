@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{250.5, 190.0038581010101}">
     </property>
-    <entity name="Monotonic" class="ptolemy.data.ontologies.Concept">
+    <entity name="Monotonic" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 190.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -39,7 +39,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Antimonotonic" class="ptolemy.data.ontologies.Concept">
+    <entity name="Antimonotonic" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 190.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -66,7 +66,7 @@
             </property>
         </property>
     </entity>
-    <entity name="General" class="ptolemy.data.ontologies.Concept">
+    <entity name="General" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 130.0}">
@@ -95,7 +95,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Constant" class="ptolemy.data.ontologies.Concept">
+    <entity name="Constant" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 250.0]">

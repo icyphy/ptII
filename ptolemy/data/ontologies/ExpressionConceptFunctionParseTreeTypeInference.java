@@ -52,6 +52,6 @@ public class ExpressionConceptFunctionParseTreeTypeInference extends
      *   method.
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
-        _setType(node, new ObjectType(Concept.class));        
+        _setType(node, new ObjectType(FiniteConcept.class));        
     }
 }

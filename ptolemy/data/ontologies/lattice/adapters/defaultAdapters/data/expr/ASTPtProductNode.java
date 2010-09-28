@@ -34,7 +34,7 @@ import java.util.List;
 
 import ptolemy.data.expr.PtParserConstants;
 import ptolemy.data.expr.Token;
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
@@ -176,7 +176,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
          *  @return The concept value that is output from this function. 
          *  @throws IllegalActionException If there is a problem evaluating the function
          */
-        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
+        protected FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
                 throws IllegalActionException {
             // Updated by Charles Shelton 12/15/09:
             // Created a general function that covers any combination of multiplication
@@ -199,7 +199,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
             // get the least upper bound of the concepts.
 
             // Initialize the result to the first node in the product node
-            Concept result = inputConceptValues.get(0);
+            FiniteConcept result = inputConceptValues.get(0);
 
             // Iterate through the operator tokens
             Iterator lexicalTokenIterator = _operatorTokenList.iterator();
@@ -207,8 +207,8 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
             for (int i = 1; i < inputConceptValues.size(); i++) {
                 if (lexicalTokenIterator.hasNext()) {
                     Token lexicalToken = (Token) lexicalTokenIterator.next();
-                    Concept nodeChildConcept = inputConceptValues.get(i);
-                    List<Concept> conceptInputs = new ArrayList<Concept>(2);
+                    FiniteConcept nodeChildConcept = inputConceptValues.get(i);
+                    List<FiniteConcept> conceptInputs = new ArrayList<FiniteConcept>(2);
                     conceptInputs.add(result);
                     conceptInputs.add(nodeChildConcept);
 
@@ -218,7 +218,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                             result = _multiplyFunction
                                     .evaluateFunction(conceptInputs);
                         } else {
-                            result = (Concept) _outputRangeOntology.getGraph()
+                            result = (FiniteConcept) _outputRangeOntology.getGraph()
                                     .leastUpperBound(result, nodeChildConcept);
                         }
 
@@ -228,7 +228,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                             result = _divideFunction
                                     .evaluateFunction(conceptInputs);
                         } else {
-                            result = (Concept) _outputRangeOntology.getGraph()
+                            result = (FiniteConcept) _outputRangeOntology.getGraph()
                                     .leastUpperBound(result, nodeChildConcept);
                         }
                     }

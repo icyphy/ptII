@@ -29,7 +29,7 @@ import java.util.List;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.OntologyAdapter;
 import ptolemy.data.ontologies.OntologyResolutionException;
 import ptolemy.data.ontologies.OntologySolver;
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Settable;
  * and default constraints. The LatticeOntologySolver
  * contains an {@linkplain ptolemy.data.ontologies.Ontology Ontology} whose
  * ConceptGraph must be a lattice.  It uses the
- * Rehof-Mogensen algorithm to resolve which {@linkplain ptolemy.data.ontologies.Concept Concepts}
+ * Rehof-Mogensen algorithm to resolve which {@linkplain ptolemy.data.ontologies.FiniteConcept Concepts}
  * are assigned to model components.
  * <p>
  * This class is based on the PropertyConstraintSolver in the properties package
@@ -503,7 +503,7 @@ public class LatticeOntologySolver extends OntologySolver {
                 // cause the test to fail.
                 continue;
             }
-            Concept inferredConcept = getConcept(conceptable);
+            FiniteConcept inferredConcept = getConcept(conceptable);
             if (inferredConcept == null) {
                 throw new IllegalActionException(conceptable,
                         "Testing failure at " + conceptable.toString() + '\n'
@@ -535,7 +535,7 @@ public class LatticeOntologySolver extends OntologySolver {
             resetAll();
             invokeSolver();
             for (NamedObj conceptable : getAllConceptableNamedObjs()) {
-                Concept inferred = getConcept(conceptable);
+                FiniteConcept inferred = getConcept(conceptable);
                 if (inferred == null) {
                     // If we have conceptables that do not resolve to concepts,
                     // simply skip them.

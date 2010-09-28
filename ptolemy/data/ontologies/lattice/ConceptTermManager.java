@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
@@ -229,17 +229,17 @@ public class ConceptTermManager implements ConceptTermFactory {
                                 + "Cannot initialize a constant property.");
             }
 
-            if (!(property instanceof Concept)) {
+            if (!(property instanceof FiniteConcept)) {
                 throw new IllegalActionException(
                         "ptolemy.graph.InequalityTerm.initialize: "
                                 + "The argument is not a Concept.");
             }
 
             // FIX: Check with Jackie if this is the right implementation! This fix is for OIL 182.
-            if (_object instanceof Concept) {
-                _solver.setResolvedConcept(_object, (Concept) _object);
+            if (_object instanceof FiniteConcept) {
+                _solver.setResolvedConcept(_object, (FiniteConcept) _object);
             } else {
-                _solver.setResolvedConcept(_object, (Concept) property);
+                _solver.setResolvedConcept(_object, (FiniteConcept) property);
             }
         }
 
@@ -272,7 +272,7 @@ public class ConceptTermManager implements ConceptTermFactory {
          *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
-            Concept property = (Concept) getValue();
+            FiniteConcept property = (FiniteConcept) getValue();
 
             if (property == null) {
                 return true;
@@ -309,7 +309,7 @@ public class ConceptTermManager implements ConceptTermFactory {
                         "The property is not settable.");
             }
 
-            _solver.setResolvedConcept(_object, (Concept) property);
+            _solver.setResolvedConcept(_object, (FiniteConcept) property);
         }
 
         /** Override the base class to give a description of the port

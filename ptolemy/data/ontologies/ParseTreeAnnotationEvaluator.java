@@ -85,8 +85,8 @@ public class ParseTreeAnnotationEvaluator extends AbstractParseTreeVisitor {
 
         node.getExpressionTree().visit(this);
 
-        if (_evaluatedObject instanceof Concept) {
-            _adapter.setEquals(object, (Concept) _evaluatedObject);
+        if (_evaluatedObject instanceof FiniteConcept) {
+            _adapter.setEquals(object, (FiniteConcept) _evaluatedObject);
         } else {
             throw _unsupportedVisitException("Unknown assignment object: "
                     + _evaluatedObject);

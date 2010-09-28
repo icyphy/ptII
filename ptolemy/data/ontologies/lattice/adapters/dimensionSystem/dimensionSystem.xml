@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{240.75, 191.2604872727273}">
     </property>
-    <entity name="Time" class="ptolemy.data.ontologies.Concept">
+    <entity name="Time" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 190.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -39,7 +39,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Dimensionless" class="ptolemy.data.ontologies.Concept">
+    <entity name="Dimensionless" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 190.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -66,7 +66,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Acceleration" class="ptolemy.data.ontologies.Concept">
+    <entity name="Acceleration" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 190.0]">
@@ -95,7 +95,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Velocity" class="ptolemy.data.ontologies.Concept">
+    <entity name="Velocity" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 190.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -122,7 +122,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Position" class="ptolemy.data.ontologies.Concept">
+    <entity name="Position" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 190.0]">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -149,7 +149,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Conflict" class="ptolemy.data.ontologies.Concept">
+    <entity name="Conflict" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 105.0]">
@@ -178,7 +178,7 @@
             </property>
         </property>
     </entity>
-    <entity name="Unknown" class="ptolemy.data.ontologies.Concept">
+    <entity name="Unknown" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="isAcceptable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 280.0}">

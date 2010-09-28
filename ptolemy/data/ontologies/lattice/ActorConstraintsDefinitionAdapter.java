@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.ExpressionConceptFunction;
@@ -337,7 +337,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
             // If the right term is an attribute or port in the actor,
             // check to make sure it is not set to be ignored for the
             // ontology analysis.
-            if (RHSTerm != null && !(RHSTerm instanceof Concept)) {
+            if (RHSTerm != null && !(RHSTerm instanceof FiniteConcept)) {
                 for (StringParameter constraintExpression : _constraintTermExpressions) {
                     if (getActorElementName(constraintExpression).equals(objName)) {
                         if (isActorElementIgnored(constraintExpression)) {
@@ -385,8 +385,8 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                     setAtMost(actorElement, RHSTerm);
                 }
             } else if (constraintDir.equals(EQ)) {
-                if (RHSTerm instanceof Concept) {
-                    setEquals(actorElement, (Concept) RHSTerm);
+                if (RHSTerm instanceof FiniteConcept) {
+                    setEquals(actorElement, (FiniteConcept) RHSTerm);
                 } else {
                     setSameAs(actorElement, RHSTerm);
                 }

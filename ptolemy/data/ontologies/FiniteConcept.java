@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @Pt.ProposedRating Red (blickly)
  * @Pt.AcceptedRating Red (blickly)
  */
-public class Concept extends ComponentEntity implements InequalityTerm,
+public class FiniteConcept extends ComponentEntity implements InequalityTerm,
         Flowable {
 
     /** Create a new concept with the specified name and the specified
@@ -67,7 +67,7 @@ public class Concept extends ComponentEntity implements InequalityTerm,
      *   concept with the specified name.
      *  @exception IllegalActionException If the base class throws it.
      */
-    public Concept(CompositeEntity ontology, String name)
+    public FiniteConcept(CompositeEntity ontology, String name)
             throws NameDuplicationException, IllegalActionException {
         super(ontology, name);
 
@@ -135,11 +135,11 @@ public class Concept extends ComponentEntity implements InequalityTerm,
     /** Return the concepts that are directly above this one.
      *  @return A set of concepts that strictly dominate this one.
      */
-    public Set<Concept> getStrictDominators() {
-        Set<Concept> dominators = new HashSet<Concept>();
+    public Set<FiniteConcept> getStrictDominators() {
+        Set<FiniteConcept> dominators = new HashSet<FiniteConcept>();
         List<ComponentPort> ports = abovePort.deepConnectedPortList();
         for (ComponentPort port : ports) {
-            dominators.add((Concept) port.getContainer());
+            dominators.add((FiniteConcept) port.getContainer());
         }
         return dominators;
     }
@@ -147,11 +147,11 @@ public class Concept extends ComponentEntity implements InequalityTerm,
     /** Return the concepts that are directly below this one.
      *  @return A set of concepts that are strictly dominated by this one.
      */
-    public Set<Concept> getStrictPostdominators() {
-        Set<Concept> postdominators = new HashSet<Concept>();
+    public Set<FiniteConcept> getStrictPostdominators() {
+        Set<FiniteConcept> postdominators = new HashSet<FiniteConcept>();
         List<ComponentPort> ports = belowPort.deepConnectedPortList();
         for (ComponentPort port : ports) {
-            postdominators.add((Concept) port.getContainer());
+            postdominators.add((FiniteConcept) port.getContainer());
         }
         return postdominators;
     }
@@ -194,7 +194,7 @@ public class Concept extends ComponentEntity implements InequalityTerm,
      *  @exception IllegalActionException If the specified concept
      *   does not have the same ontology as this one.
      */
-    public boolean isAboveOrEqualTo(Concept concept)
+    public boolean isAboveOrEqualTo(FiniteConcept concept)
             throws IllegalActionException {
         if (!(concept.getContainer().equals(getContainer()))) {
             throw new IllegalActionException(this,

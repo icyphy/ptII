@@ -66,11 +66,11 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(List<String> argumentNames,
-            List<Concept> argumentConceptValues, OntologySolverModel solverModel,
+            List<FiniteConcept> argumentConceptValues, OntologySolverModel solverModel,
             List<Ontology> argumentDomainOntologies)
         throws IllegalActionException {
         _argumentNames = new LinkedList<String>(argumentNames);
-        _argumentConceptValues = new LinkedList<Concept>(argumentConceptValues);
+        _argumentConceptValues = new LinkedList<FiniteConcept>(argumentConceptValues);
         _solverModel = solverModel;
         _domainOntologies = new LinkedList<Ontology>(argumentDomainOntologies);
 
@@ -93,7 +93,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(
-            Map<String, Concept> arguments,
+            Map<String, FiniteConcept> arguments,
             OntologySolverModel solverModel,
             Ontology argumentDomainOntology)
         throws IllegalActionException {
@@ -102,8 +102,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         _domainOntologies.add(argumentDomainOntology);
         
         _argumentNames = new LinkedList<String>();
-        _argumentConceptValues = new LinkedList<Concept>();
-        for (Map.Entry<String, Concept> entry : arguments.entrySet()) {
+        _argumentConceptValues = new LinkedList<FiniteConcept>();
+        for (Map.Entry<String, FiniteConcept> entry : arguments.entrySet()) {
             _argumentNames.add(entry.getKey());
             _argumentConceptValues.add(entry.getValue());
         }
@@ -141,7 +141,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
-        List<Concept> argValues = new LinkedList<Concept>();
+        List<FiniteConcept> argValues = new LinkedList<FiniteConcept>();
 
         // First try to find a signature using argument token values.
         for (int i = 0; i < argCount; i++) {
@@ -153,7 +153,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
 
         if (node.getFunctionName().compareTo("lub") == 0) {
             ConceptGraph g = ((Ontology) argValues.get(0).getContainer()).getGraph();
-            Concept bound = (Concept) g.leastUpperBound(argValues.toArray());
+            FiniteConcept bound = (FiniteConcept) g.leastUpperBound(argValues.toArray());
             _evaluatedChildToken = new ConceptToken(bound);
             return;
         }
@@ -224,9 +224,9 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     protected void _addConceptConstants() throws IllegalActionException {
         for (Ontology domainOntology : _domainOntologies) {
             for (Object entity : domainOntology.allAtomicEntityList()) {
-                if (entity instanceof Concept) {
-                    Constants.add(((Concept) entity).getName(),
-                            new ConceptToken((Concept)entity));
+                if (entity instanceof FiniteConcept) {
+                    Constants.add(((FiniteConcept) entity).getName(),
+                            new ConceptToken((FiniteConcept)entity));
                 }
             }
         }
@@ -260,12 +260,12 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  @return The concept with the specified name if it is found.
      *  @throws IllegalActionException If the concept cannot be found.
      */
-    protected Concept _getNamedConcept(String conceptName)
+    protected FiniteConcept _getNamedConcept(String conceptName)
         throws IllegalActionException {
 
-        Concept outputConcept = null;
+        FiniteConcept outputConcept = null;
         for (Ontology domainOntology : _domainOntologies) {
-            outputConcept = (Concept) domainOntology.getEntity(conceptName);
+            outputConcept = (FiniteConcept) domainOntology.getEntity(conceptName);
             if (outputConcept != null) {
                 break;
             }
@@ -309,7 +309,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     /** The list of concept values to which the arguments are
      *  currently set.
      */
-    private List<Concept> _argumentConceptValues;
+    private List<FiniteConcept> _argumentConceptValues;
 
     /** The list of argument names that are used in the concept
      *  function expression.

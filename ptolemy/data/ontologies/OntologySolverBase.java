@@ -364,7 +364,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * @param object The specified object.
      * @return The property of the specified object.
      */
-    public Concept getConcept(Object object) {
+    public FiniteConcept getConcept(Object object) {
         return getResolvedConcept(object, false);
     }
 
@@ -374,10 +374,10 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * @param object The specified object.
      * @param resolve Whether or not to force resolution.
      * @return The resolved property for the specified object.
-     * @see #setResolvedConcept(Object, Concept)
+     * @see #setResolvedConcept(Object, FiniteConcept)
      */
-    public Concept getResolvedConcept(Object object, boolean resolve) {
-        Concept property = _resolvedProperties.get(object);
+    public FiniteConcept getResolvedConcept(Object object, boolean resolve) {
+        FiniteConcept property = _resolvedProperties.get(object);
 
         // See if it is already resolved.
         if (property != null) {
@@ -442,7 +442,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * Reset the solver.  
      */
     public void reset() {
-        _resolvedProperties = new HashMap<Object, Concept>();
+        _resolvedProperties = new HashMap<Object, FiniteConcept>();
         _nonSettables = new HashSet<Object>();
         _adapterStore = new HashMap<Object, OntologyAdapter>();
     }
@@ -475,7 +475,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * @param property The specified property.
      * @see #getResolvedConcept(Object, boolean)
      */
-    public void setResolvedConcept(Object object, Concept property) {
+    public void setResolvedConcept(Object object, FiniteConcept property) {
         _resolvedProperties.put(object, property);
     }
 
@@ -643,7 +643,7 @@ public abstract class OntologySolverBase extends MoMLModelAttribute {
      * Property values.  Each mapping is a pair of Object and
      * Property.
      */
-    protected HashMap<Object, Concept> _resolvedProperties = new HashMap<Object, Concept>();
+    protected HashMap<Object, FiniteConcept> _resolvedProperties = new HashMap<Object, FiniteConcept>();
 
     /**
      * The utilities shared between all solvers.

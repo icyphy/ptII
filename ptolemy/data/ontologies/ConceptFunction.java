@@ -115,7 +115,7 @@ public abstract class ConceptFunction {
      *  @exception IllegalActionException If there is an error with
      *   the input argument array or evaluating the function.
      */
-    public Concept evaluateFunction(List<Concept> inputArgumentList)
+    public FiniteConcept evaluateFunction(List<FiniteConcept> inputArgumentList)
             throws IllegalActionException {
         if (inputArgumentList == null) {
             throw new IllegalActionException(
@@ -142,10 +142,10 @@ public abstract class ConceptFunction {
                 // Check each concept argument value to make sure it is either null or
                 // contained in the ontology domain for that argument.
                 int index = 0;
-                for (Concept argument : inputArgumentList) {
+                for (FiniteConcept argument : inputArgumentList) {
                     if (argument != null
                         && !_argumentDomainOntologies.get(index).entityList(
-                                Concept.class).contains(argument)) {
+                                FiniteConcept.class).contains(argument)) {
                         throw new IllegalActionException("The input value "
                             + argument + " at argument index " + index
                             + " to the ConceptFunction " + this
@@ -157,11 +157,11 @@ public abstract class ConceptFunction {
             }
         }
 
-        Concept outputValue = _evaluateFunction(inputArgumentList);
+        FiniteConcept outputValue = _evaluateFunction(inputArgumentList);
 
         // Check that the output is either null or in the output range ontology
         if (outputValue != null
-                && !_outputRangeOntology.entityList(Concept.class).contains(
+                && !_outputRangeOntology.entityList(FiniteConcept.class).contains(
                         outputValue)) {
             throw new IllegalActionException("The ConceptFunction " + this
                     + " has evaluated to the value " + outputValue
@@ -251,7 +251,7 @@ public abstract class ConceptFunction {
      *  @return The concept output result of the function.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
-    protected abstract Concept _evaluateFunction(List<Concept> inputConceptValues)
+    protected abstract FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
             throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////

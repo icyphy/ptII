@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 8.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
- @see Concept
+ @see FiniteConcept
  @see Ontology
  */
 public class ConceptRelation extends ComponentRelation {
@@ -151,12 +151,12 @@ public class ConceptRelation extends ComponentRelation {
      *  @param port The port to be checked to see if the relation
      *  can be attached
      *  @exception IllegalActionException If the port's container
-     *   is not a {@link Concept}.
+     *   is not a {@link FiniteConcept}.
      */
     protected void _checkPort(Port port) throws IllegalActionException {
         super._checkPort(port);
 
-        if (!(port.getContainer() instanceof Concept)) {
+        if (!(port.getContainer() instanceof FiniteConcept)) {
             throw new IllegalActionException(this, port.getContainer(),
                     "ConceptRelation can only connect to instances of Concept.");
         }

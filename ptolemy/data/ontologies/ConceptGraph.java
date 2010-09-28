@@ -86,10 +86,10 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @param weight The concept.
      *  @return The constructed node in the graph.
      *  @exception IllegalArgumentException If the argument is not
-     *   an instance of {@link Concept}.
+     *   an instance of {@link FiniteConcept}.
      */
     public Node addNodeWeight(Object weight) {
-        if (!(weight instanceof Concept)) {
+        if (!(weight instanceof FiniteConcept)) {
             throw new IllegalArgumentException(
                     "Attempt to add a non-Concept to an Ontology graph.");
         }
@@ -138,26 +138,26 @@ public class ConceptGraph extends DirectedAcyclicGraph {
     */
 
     /** Compare two concepts in the ontology. The arguments must be
-     *  instances of {@link Concept}, otherwise an exception will be thrown.
+     *  instances of {@link FiniteConcept}, otherwise an exception will be thrown.
      *  This method returns one of ptolemy.graph.CPO.LOWER, ptolemy.graph.CPO.SAME,
      *  ptolemy.graph.CPO.HIGHER, ptolemy.graph.CPO.INCOMPARABLE, indicating the
      *  first argument is lower than, equal to, higher than, or incomparable with
      *  the second argument in the property hierarchy, respectively.
-     *  @param concept1 An instance of {@link Concept}.
-     *  @param concept2 An instance of {@link Concept}.
+     *  @param concept1 An instance of {@link FiniteConcept}.
+     *  @param concept2 An instance of {@link FiniteConcept}.
      *  @return One of CPO.LOWER, CPO.SAME, CPO.HIGHER, CPO.INCOMPARABLE.
      *  @exception IllegalArgumentException If one or both arguments are not
-     *   instances of {@link Concept}.
+     *   instances of {@link FiniteConcept}.
      */
     public int compare(Object concept1, Object concept2) {
-        if (!(concept1 instanceof Concept) || !(concept2 instanceof Concept)) {
+        if (!(concept1 instanceof FiniteConcept) || !(concept2 instanceof FiniteConcept)) {
             throw new IllegalArgumentException("ConceptGraph.compare: "
                     + "Arguments are not instances of Concept: "
                     + " concept1 = " + concept1 + ", concept2 = " + concept2);
         }
 
-        Concept t1Rep = _toRepresentative((Concept) concept1);
-        Concept t2Rep = _toRepresentative((Concept) concept2);
+        FiniteConcept t1Rep = _toRepresentative((FiniteConcept) concept1);
+        FiniteConcept t2Rep = _toRepresentative((FiniteConcept) concept2);
 
         /* FIXME: Support structured concepts using something like this:
         if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredProperty) {
@@ -188,7 +188,7 @@ public class ConceptGraph extends DirectedAcyclicGraph {
      *  @param p The specified concept for which to return a representative.
      *  @return The representative for the specified concept.
      */
-    private Concept _toRepresentative(Concept p) {
+    private FiniteConcept _toRepresentative(FiniteConcept p) {
         /* FIXME: Support structured concepts using something like this:
         if (p instanceof StructuredProperty) {
             return ((StructuredProperty) p).getRepresentative();

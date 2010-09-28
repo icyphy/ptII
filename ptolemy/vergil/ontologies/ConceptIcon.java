@@ -30,7 +30,7 @@ import java.util.List;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -89,9 +89,9 @@ public class ConceptIcon extends StateIcon {
      */
     protected float _getLineWidth() {
         NamedObj container = getContainer();
-        if (container instanceof Concept) {
+        if (container instanceof FiniteConcept) {
             try {
-                Concept element = (Concept) container;
+                FiniteConcept element = (FiniteConcept) container;
 
                 boolean isAcceptable = ((BooleanToken) element.isAcceptable
                         .getToken()).booleanValue();

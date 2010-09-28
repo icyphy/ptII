@@ -27,7 +27,7 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.util.IllegalActionException;
@@ -65,25 +65,25 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
         // FIXME: Should we hard code all the Concept name strings here?
         // Instantiate all the concepts for the monotonicityAnalysis ontology
         // Throw an exception if any of them are not found
-        _constantConcept = (Concept) _monotonicityAnalysisOntology.getEntity("Constant");
+        _constantConcept = (FiniteConcept) _monotonicityAnalysisOntology.getEntity("Constant");
         if (_constantConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept Constant not found in monotonicityAnalysis ontology.");
         }
 
-        _monotonicConcept = (Concept) _monotonicityAnalysisOntology.getEntity("Monotonic");
+        _monotonicConcept = (FiniteConcept) _monotonicityAnalysisOntology.getEntity("Monotonic");
         if (_monotonicConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept Monotonic not found in monotonicityAnalysis ontology.");
         }
 
-        _antimonotonicConcept = (Concept) _monotonicityAnalysisOntology.getEntity("Antimonotonic");
+        _antimonotonicConcept = (FiniteConcept) _monotonicityAnalysisOntology.getEntity("Antimonotonic");
         if (_antimonotonicConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept Antimonotonic not found in monotonicityAnalysis ontology.");
         }
 
-        _generalConcept = (Concept) _monotonicityAnalysisOntology.getEntity("General");
+        _generalConcept = (FiniteConcept) _monotonicityAnalysisOntology.getEntity("General");
         if (_generalConcept == null) {
             throw new IllegalActionException(_monotonicityAnalysisOntology,
                     "Concept General not found in monotonicityAnalysis ontology.");
@@ -101,14 +101,14 @@ public abstract class MonotonicityConceptFunction extends ConceptFunction {
     // Get all the Concepts from the ontology to use in all the monotonicityAnalysis adapters   
 
     /** The "Constant" Concept from the monotonicityAnalysis ontology. */
-    protected Concept _constantConcept;
+    protected FiniteConcept _constantConcept;
 
     /** The "Monotonic" Concept from the monotonicityAnalysis ontology. */
-    protected Concept _monotonicConcept;
+    protected FiniteConcept _monotonicConcept;
 
     /** The "Antimonotonic" Concept from the monotonicityAnalysis ontology. */
-    protected Concept _antimonotonicConcept;
+    protected FiniteConcept _antimonotonicConcept;
 
     /** The "General" Concept from the monotonicityAnalysis ontology. */
-    protected Concept _generalConcept;
+    protected FiniteConcept _generalConcept;
 }

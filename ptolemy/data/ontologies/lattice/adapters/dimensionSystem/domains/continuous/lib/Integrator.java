@@ -30,7 +30,7 @@ package ptolemy.data.ontologies.lattice.adapters.dimensionSystem.domains.continu
 import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.data.ontologies.Concept;
+import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
@@ -137,10 +137,10 @@ public class Integrator extends DimensionSystemAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function.
          */
-        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
+        protected FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
                 throws IllegalActionException {
 
-            Concept derivativeProperty = inputConceptValues.get(0);
+            FiniteConcept derivativeProperty = inputConceptValues.get(0);
 
             if (derivativeProperty == _velocityConcept) {
                 return _positionConcept;
@@ -188,10 +188,10 @@ public class Integrator extends DimensionSystemAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function.
          */
-        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
+        protected FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
                 throws IllegalActionException {
 
-            Concept stateProperty = inputConceptValues.get(0);
+            FiniteConcept stateProperty = inputConceptValues.get(0);
 
             if (stateProperty == _positionConcept) {
                 return _velocityConcept;
