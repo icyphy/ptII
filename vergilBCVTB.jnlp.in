@@ -26,9 +26,6 @@
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
-  <resources os="Mac OS X">
-  	<nativelib href="signed/lib/bcvtbMacOSX.jar"/>
-  </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.BCVTBApplication">
 	<argument>-bcvtb</argument>
   </application-desc>
