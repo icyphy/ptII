@@ -142,7 +142,7 @@ import diva.graph.modular.EdgeModel;
 public class KielerLayout extends AbstractGlobalLayout {
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public methods                     ////
+    ////                         public methods                    ////
 
     /**
      * Construct an instance taking a LayoutTarget for specifying some methods
@@ -373,7 +373,7 @@ public class KielerLayout extends AbstractGlobalLayout {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /**
      * Apply precomputed routing of edges to the Ptolemy model by insertion of
@@ -1425,7 +1425,7 @@ public class KielerLayout extends AbstractGlobalLayout {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     /**
      * Default size of a port that will be used in Kieler layout if no explicit

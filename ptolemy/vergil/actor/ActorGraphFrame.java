@@ -152,7 +152,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    protected methods                      ////
+    ////                         protected methods                 ////
 
     /**
      * Initialize this class. In this base class, the help file is set, and
@@ -353,8 +353,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
     /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
 
-    ////////////////////////////////////////////////////////////////////
-    ////                      private variables                     ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The most recent class name for instantiating an attribute. */
     private String _lastAttributeClassName = "ptolemy.vergil.kernel.attributes.EllipseAttribute";
@@ -492,10 +492,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         private Director _listeningTo;
     }
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                  private inner classes                     ////
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// CreateHierarchy
 
     /**
@@ -579,7 +579,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         }
     }
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// InstantiateAttributeAction
 
     /** An action to instantiate an entity given a class name. */

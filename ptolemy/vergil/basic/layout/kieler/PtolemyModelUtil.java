@@ -49,7 +49,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.kernel.Link;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// PtolemyModelUtil
 /**
  * Class containing methods for manipulating Ptolemy models for the purpose of
@@ -68,7 +68,7 @@ import ptolemy.vergil.kernel.Link;
 public class PtolemyModelUtil {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /**
      * Construct an instance and initialize the internal request buffer.
@@ -748,7 +748,7 @@ public class PtolemyModelUtil {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
+    ////                         protected methods                 ////
 
     /**
      * Return a string that is identical to the specified string except any
@@ -821,7 +821,7 @@ public class PtolemyModelUtil {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
     
     /**
      * Flag indicating whether there have been any MoMLChangeRequests processed
