@@ -1910,9 +1910,7 @@ public class OracleXMLDBConnection implements DBConnection {
 
         if (attributeValues != null && attributeValues.size() > 0) {
                     
-            if (isPreviousClauseSet) {
-                attributesQuery.append(" and ");        
-            }
+            
             
             String valuesClause = ""; 
         
@@ -1927,7 +1925,7 @@ public class OracleXMLDBConnection implements DBConnection {
                     break;
                 }
                 
-                isPreviousClauseSet = true;       
+                       
             }
             
             if (valuesClause != null && valuesClause.length() > 0) {
@@ -1940,10 +1938,16 @@ public class OracleXMLDBConnection implements DBConnection {
                 if (attributeValues.size() > 1) {
                     valuesClause = "(" + valuesClause + ")";
                 }
-            }
-            
-            attributesQuery.append(valuesClause);
-
+                
+                if (isPreviousClauseSet) {
+                    attributesQuery.append(" and ");        
+                }
+                
+                attributesQuery.append(valuesClause);
+                
+                isPreviousClauseSet = true;
+            } 
+           
         } 
 
         String attributeClass = attribute.getClassName();
