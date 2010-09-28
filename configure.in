@@ -4818,7 +4818,7 @@ else
 fi
 
 if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
-   if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
+   if test -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX2}" -o -f "$LIBEXPAT_LIB_DIR/libexpat.${PTJNI_SHAREDLIBRARY_SUFFIX}.a"; then
       # Used in $PTII/lbnl/lib/util/makefile
       PTLIBEXPAT_DIR=util
       # Used in $PTII/makefile
@@ -5289,6 +5289,9 @@ AC_SUBST(PTJNI_SHAREDLIBRARY_PREFIX)
 
 # JNI shared library suffix, under Windows this would be dll.
 AC_SUBST(PTJNI_SHAREDLIBRARY_SUFFIX)
+
+# JNI shared library suffix, under Mac OS X, this would by dylib
+AC_SUBST(PTJNI_SHAREDLIBRARY_SUFFIX2)
 
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
 AC_SUBST(PTJNI_LIBRARIES)

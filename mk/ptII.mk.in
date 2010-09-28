@@ -623,6 +623,9 @@ PTJNI_SHAREDLIBRARY_PREFIX =	@PTJNI_SHAREDLIBRARY_PREFIX@
 # JNI shared library suffix, under Windows this would be dll.
 PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
 
+# JNI shared library suffix, under Mac OS X, this would by dylib
+PTJNI_SHAREDLIBRARY_SUFFIX2 =	@PTJNI_SHAREDLIBRARY_SUFFIX2@
+
 # JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
 PTJNI_LIBRARIES = @PTJNI_LIBRARIES@
 
