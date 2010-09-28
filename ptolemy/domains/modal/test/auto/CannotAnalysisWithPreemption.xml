@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 390.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={368, 353, 731, 460}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={401, 83, 803, 597}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[518, 350]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[590, 487]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{486.9545454545454, 496.1502525252524}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{522.9545454545454, 564.6502525252524}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
@@ -32,6 +32,12 @@
         <property name="source" class="ptolemy.data.expr.FileParameter" value="CannotAnalysisWithPreemption.gif">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 440.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test current fails because&#10;the refinement director is not an&#10;FSMDirector, and cannot analysis is&#10;currently only performed with FSMDirector&#10;refinements. However, it could probably&#10;be easily performed with SRDirector refinements&#10;by simply firing the refinement.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 625.0]">
         </property>
     </property>
     <entity name="model_1893289564_region_1" class="ptolemy.domains.modal.modal.ModalModel">
