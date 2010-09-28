@@ -1,5 +1,4 @@
-/**
- * An element in an ontology.
+/** A concept in a finite ontology.
  * 
  * Copyright (c) 2007-2010 The Regents of the University of California. All
  * rights reserved. Permission is hereby granted, without written agreement and
@@ -21,7 +20,6 @@
  * 
  * PT_COPYRIGHT_VERSION_2 COPYRIGHTENDKEY
  * 
- * 
  */
 package ptolemy.data.ontologies;
 
@@ -29,29 +27,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.graph.CPO;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentPort;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Flowable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// Concept
+//// FiniteConcept
 
-/**
- * A concept in an ontology.
- * An instance of this class is always associated with
- * a particular ontology, which is specified in the constructor.
+/** A concept in a finite ontology.
+ *  The fact that the concept is part of a finite ontology allows
+ *  us to do things like draw every concept in a GUI, do graph
+ *  traversal algorithms with an adjacency matrix that is finite,
+ *  and similar useful conveniences.
  * 
- * @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
- * @version $Id$
- * @since Ptolemy II 8.0
- * @Pt.ProposedRating Red (blickly)
- * @Pt.AcceptedRating Red (blickly)
+ *  @author Edward A. Lee, Ben Lickly, Dai Bui, Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (blickly)
+ *  @Pt.AcceptedRating Red (blickly)
  */
 public class FiniteConcept extends Concept implements Flowable {
 

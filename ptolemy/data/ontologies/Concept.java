@@ -3,15 +3,24 @@ package ptolemy.data.ontologies;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.graph.CPO;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Flowable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
+/** A concept in an ontology.
+ *  An instance of this class is always associated with
+ *  a particular ontology, which is specified in the constructor.
+ *  
+ *  Note that this is an abstract class.  Any concrete instance must be
+ *  either a FiniteConcept or an InfiniteConcept.
+ * 
+ *  @author Ben Lickly, Edward A. Lee, Dai Bui, Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 8.0
+ *  @Pt.ProposedRating Red (blickly)
+ *  @Pt.AcceptedRating Red (blickly)
+ */
 public abstract class Concept extends ComponentEntity implements InequalityTerm {
     
     /** Create a new concept with the specified name and the specified
@@ -57,6 +66,10 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         return null;
     }
     
+    /** Return the ontology to which this concept belongs.
+    *
+    *   @return This concept's ontology.
+    */
     public abstract Ontology getOntology();
 
     /** Return the current value of the inequality term. Since a concept
@@ -136,6 +149,12 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
         throw new IllegalActionException(this,
                 "Cannot set an ontology concept.");
     }
+    
+    /** Return the (unique) string representation of this concept.
+     * 
+     * @return The string representation of this concept.
+     */
+    public abstract String toString();
 
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
