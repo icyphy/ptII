@@ -169,25 +169,13 @@ public class PtidesBasicDirector extends DEDirector {
         if (attribute == highlightModelTimeDelays) {
             // need to do a preinitialize for all actors first, otherwise all actors will start with
             // defaultDependency, which, in this case means all actors have zero model delays.
-            if (!_preinitializeCalled || _lastWorkspaceVersion != _workspace.getVersion()) {
-                _preinitializeCalled = true;
-                _lastWorkspaceVersion = _workspace.getVersion();
-                // cannot simply call preinitialize(), this results in an infinite loop.
-                // instead, simply preinitialize all actors.
-                //preinitialize();
-                // preinitialize all the contained actors.
-                Nameable container = getContainer();
-                if (container instanceof CompositeActor) {
-                    Iterator<?> actors = ((CompositeActor) container).deepEntityList()
-                            .iterator();
-                    while (actors.hasNext()) {
-                        Actor actor = (Actor) actors.next();
-                        if (_debugging) {
-                            _debug("Invoking preinitialize(): ",
-                                    ((NamedObj) actor).getFullName());
-                        }
-                        preinitialize(actor);
-                    }
+            if (!_inPreinitialize && _lastWorkspaceVersion != _workspace.getVersion()) {
+                try {
+                    _inPreinitialize = true;
+                    _lastWorkspaceVersion = _workspace.getVersion();
+                    preinitialize();
+                } finally {
+                    _inPreinitialize = false;
                 }
             }
             if (highlightModelTimeDelays.getExpression().equals("true")) {
@@ -2702,7 +2690,7 @@ public class PtidesBasicDirector extends DEDirector {
     
     /** Whether preinitialize has been called once before.
      */
-    private boolean _preinitializeCalled = false;
+    private boolean _inPreinitialize = false;
 
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.
