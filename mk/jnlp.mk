@@ -463,6 +463,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
+	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	vendors/misc/rxtx/RXTXcomm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
