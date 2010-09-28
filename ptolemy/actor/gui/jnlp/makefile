@@ -50,7 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	BcvtbApplication.jar \
+	BCVTBApplication.java \
 	DSPApplication.java \
 	FullApplication.java \
 	HyVisualApplication.java \
@@ -74,7 +74,7 @@ OPTIONAL_FILES = $(OTHER_JARS)
 JCLASS = $(JSRCS:%.java=%.class)
 
 OTHER_JARS = \
-	BcvtbApplication.jar \
+	BCVTBApplication.jar \
 	DSPApplication.jar \
 	FullApplication.jar \
 	HyVisualApplication.jar \
@@ -86,23 +86,16 @@ OTHER_JARS = \
 
 # make clean removes $(KRUFT)
 KRUFT = \
-	DSPApplication.jar \
-	FullApplication.jar \
-	HyVisualApplication.jar \
-	PtinyApplication.jar \
-	PtinyKeplerApplication.jar \
-	PtinySandboxApplication.jar \
-	SpaceApplication.jar \
-	VisualSenseApplication.jar
+	$(OTHER_JARS)
 
 all: jclass $(OTHER_JARS)
 install: all
-BcvtbApplication.jar: BcvtbApplication.class MenuApplication.class
+BCVTBApplication.jar: BCVTBApplication.class MenuApplication.class
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	# Copy Application specific classes from this directory
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
-	-cp BcvtbApplication.class MenuApplication.class \
+	-cp BCVTBApplication.class MenuApplication.class \
 		$(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
 	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)

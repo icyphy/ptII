@@ -57,7 +57,7 @@ package ptolemy.actor.gui.jnlp;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class BcvtbApplication extends MenuApplication {
+public class BCVTBApplication extends MenuApplication {
     /** Main method that sets user.dir as necessary and calls
      *  MenuApplication.main().
      *  @param args Arguments to be passed on to MenuApplication.main()

@@ -158,6 +158,15 @@ public class HTMLAbout {
                             + _aboutHTML("ptolemy/configs/doc/whatsNew3.0.2.htm"));
         }
 
+        if (_configurationExists("bcvtb")) {
+            htmlBuffer
+                    .append("<tr rowspan=4><center><b>BCVTB</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/bcvtb/intro.htm")
+                            + _aboutHTML("ptolemy/configs/doc/completeDemosBcvtb.htm")
+                            + _aboutHTML("ptolemy/configs/doc/demosBcvtb.htm")
+                            + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm")
+                            );
+        }
         // Don't include DSP here, it uses the Ptiny demos anyway.
         if (_configurationExists("hyvisual")) {
             htmlBuffer
