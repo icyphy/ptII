@@ -115,8 +115,20 @@ or accessed from within Ptolemy II. Here, we illustrate some such frameworks.
 Stochastic hybrid systems add random behavior to continuous-time models mixed
 with discrete events. The
 <a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
-(and <a href="../../domains/continuous/demo/Noise/NoiseSpectrum.xml">Noise Spectrum</a>,
-<a href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid In Noise</a>) models
+<!--/bcvtbDocs-->
+<!-- NoiseSpectrum uses DEDirector, which is not shipped with bcvtb -->
+(and <a
+ href="../../domains/continuous/demo/Noise/NoiseSpectrum.xml">Noise
+ Spectrum</a>
+
+<!-- SinusoidInNoise includes continuous.lib.ContinuousSpectrum, which -->
+<!-- uses DEDirectory, which is not shipped with BCVTB -->
+,
+<a
+  href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid
+  In Noise</a>
+<!--bcvtbDocs-->
+) models
 show bandlimited Gaussian noise processe.
     <a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
 models spontaneous mode transitions governed by a Poisson process.
@@ -196,18 +208,23 @@ events in time.
   
 <!--bcvtbDocs-->
   <li><i>Mixed-Signal Modeling</i>:
+<!--/bcvtbDocs-->
+<!-- SigmaDelta uses DEDirector, which is not in bcvtb -->
     <a href="../../domains/continuous/demo/SigmaDelta/SigmaDelta.xml">
-SigmaDelta</a> (see also
-    <a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>)
+SigmaDelta</a>
     <br>
-
-
 This example shows how to combine continuous-time modeling
 with discrete-event modeling to get mixed-signal modeling.
 The example models a MEMS accelerometer where a digital circuit
 implements feedback control and A/D conversion (a design due to
 Mark Lemkin).
 
+   (see also
+<!--bcvtbDocs-->
+   <a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>
+<!--/bcvtbDocs-->
+)
+<!--bcvtbDocs-->
   </li>
 
 </ul>
@@ -275,11 +292,10 @@ signals.
 (see also
 
 <!--ptinyKeplerDocs-->
-
-    <a href="../../data/type/demo/Router/Router.xml">Router</a>,
 <!--/bcvtbDocs-->
+<!-- Router uses DEDirector, which is not in bcvtb -->
+    <a href="../../data/type/demo/Router/Router.xml">Router</a>,
 and <a href="../../domains/de/demo/TimingParadox/TimingParadox.xml">TimingParadox</a>
-<!--bcvtbDocs-->
 ).
 
     <br>
@@ -294,12 +310,13 @@ in various ways.
 
 
     <br>
-
+<!--/bcvtbDocs-->
 
 
   </li>
 <!-- Ptiny does not include Ptera -->
 <!--vergilDocs-->
+
 
   <li><i>Process Networks</i>:
     <a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
@@ -413,8 +430,10 @@ do this.
 
   <li><i>Matlab Integration</i>:
     <a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">
-MatlabExpression</a> (see also
-    <a href="../../matlab/demo/MatlabCT/MatlabCT.xml">Matlab in CT</a>).
+MatlabExpression</a>
+(see also
+    <a href="../../matlab/demo/MatlabContinuous/MatlabContinuous.xml">Matlab in Continuous</a>).
+
     <br>
 
 
@@ -433,10 +452,15 @@ to plot a 3-D surface. This works only if Matlab is installed locally.
     <a href="ClassesIllustrated.xml">
 ClassesIllustrated</a> (see also
     <a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">
-Noisy sinewaves</a> and
+Noisy sinewaves</a>
+<!--/bcvtbDocs-->
+<!-- Rijndael includes domains.fsm, which is not shipped with bcvtb -->
+and
     <a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">
-Rijndael Encryption</a>).
-    <br>
+Rijndael Encryption</a>
+<!--bcvtbDocs-->  
+).
+   <br>
 
 
 Actor-oriented classes, subclasses, and
@@ -454,12 +478,17 @@ track any changes that are made to the class.
   </li>
 
   <li><i>Model Animations</i>:
+<!--/bcvtbDocs-->
+<!-- Bouncer uses DEDirector -->
     <a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>
 (see also
+<!--bcvtbDocs-->
     <a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">
 AnimateVergil</a>
 <!--vergilDocs-->
+<!--/bcvtbDocs-->
 ).
+<!--bcvtbDocs-->
     <br>
 
 
@@ -478,9 +507,13 @@ of one of its own actors.
 
   <li><i>Statically Checked Units System</i>:
     <a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">
-StaticUnits</a> (see also
+StaticUnits</a>
+<!--/bcvtbDocs-->
+<!-- Units includes ct.lib.Integrator, which is not shipped with BCVTB -->
+  (see also
     <a href="../../data/unit/demo/Units/Units.xml">Units</a>, the
 dynamically checked units system).
+<!--bcvtbDocs-->
     <br>
 
 
@@ -537,6 +570,7 @@ It illustrates the audio capabilities of Ptolemy II.
 
 
 <!--ptinyKeplerDocs-->
+<!--bcvtbDocs-->
 
 <!--vergilDocs-->
 

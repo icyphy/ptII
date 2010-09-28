@@ -15,6 +15,12 @@
             class="ptolemy.data.expr.FileParameter"
             value="$CLASSPATH/ptolemy/configs/doc/docsBcvtb.htm"/>
 
+  <property name="_classesToRemove" 
+            class="ptolemy.data.expr.Parameter"
+            value="{&quot;ptolemy.codegen.kernel.StaticSchedulingCodeGenerator&quot;,&quot;ptolemy.codegen.c.kernel.CCodeGenerator&quot;}">
+	    <doc>An array of Strings, where each element names a class to be removed by the MoMLFilter.</doc>
+  </property>
+
   <!-- The directory of open models, each represented by an effigy. -->
   <!-- Note that this begins empty. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">

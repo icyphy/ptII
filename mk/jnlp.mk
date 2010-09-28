@@ -205,30 +205,44 @@ DSP_JNLP_JARS =	\
 # Building Controls Virtual Test Bed (https://gaia.lbl.gov/bcvtb)
 #
 BCVTB_ONLY_JNLP_JARS = \
-	doc/design/usingVergil/usingVergil.jar 
+	doc/codeDocBcvtb.jar \
+	lbnl/lbnl.jar \
+	lbnl/demo/demo.jar
+
+SDF_DEMO_JARS = \
+	ptolemy/actor/lib/comm/demo/demo.jar \
+	ptolemy/actor/lib/hoc/demo/demo.jar \
+	ptolemy/actor/lib/javasound/demo/demo.jar \
+	ptolemy/data/type/demo/demo.jar \
+	ptolemy/data/unit/demo/demo.jar \
+	ptolemy/moml/demo/demo.jar \
+	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
 BCVTB_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/BCVTBApplication.jar
 
 BCVTB_JNLP_JARS =	\
+	$(BCVTB_MAIN_JAR) \
+	$(BCVTB_ONLY_JNLP_JARS) \
+	doc/design/usingVergil/usingVergil.jar \
 	doc/docConfig.jar \
 	lib/diva.jar \
 	lib/kieler.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
-	ptolemy/domains/continuous.jar \
+	ptolemy/domains/continuous/continuous.jar \
 	ptolemy/domains/continuous/demo/demo.jar \
-	ptolemy/domains/sdf.jar \
+	ptolemy/domains/sdf/sdf.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
-	ptolemy/domains/modal.jar \
+	ptolemy/domains/modal/modal.jar \
 	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
 	$(MATLAB_JARS) \
-	ptolemy/ptsupport.jar \
-	doc/codeDocBcvtb.jar
+	$(SDF_DEMO_JARS)
+
 
 #######
-# HyVisual - HybridSystenms
+# HyVisual - HybridSystems
 #
 # Jar files that will appear in a HyVisual only JNLP Ptolemy II Runtime.
 # This list is used to create the ptII/signed directory, so each
@@ -307,17 +321,13 @@ PTINY_ONLY_JNLP_JARS = \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/colt/colt.jar \
 	ptolemy/actor/lib/colt/demo/demo.jar \
-	ptolemy/actor/lib/comm/demo/demo.jar \
-	ptolemy/actor/lib/hoc/demo/demo.jar \
-	ptolemy/actor/lib/javasound/demo/demo.jar \
 	ptolemy/actor/lib/jni/demo/demo.jar \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
+	$(SDF_DEMO_JARS) \
 	$(PTALON_JARS) \
 	$(HYBRID_SYSTEMS_DEMO_AND_DOC_JARS) \
-	ptolemy/data/type/demo/demo.jar \
-	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ddf/demo/demo.jar \
 	ptolemy/domains/ddf/doc/doc.jar \
 	ptolemy/domains/de/demo/demo.jar \
@@ -330,8 +340,6 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/rendezvous/doc/doc.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
-	ptolemy/moml/demo/demo.jar \
-	ptolemy/vergil/kernel/attributes/demo/demo.jar
 
 PTINY_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/PtinyApplication.jar
@@ -455,7 +463,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
-	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	vendors/misc/rxtx/RXTXcomm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
@@ -680,7 +687,8 @@ KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
 MKJNLP =		$(PTII)/bin/mkjnlp
 
 # JNLP files that do the actual installation
-JNLPS =	vergilDSP.jnlp \
+JNLPS =	vergilBCVTB.jnlp \
+	vergilDSP.jnlp \
 	vergilHyVisual.jnlp \
 	vergilPtiny.jnlp \
 	vergilPtinyKepler.jnlp \
@@ -731,6 +739,42 @@ $(KEYSTORE):
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD); \
 	fi
+
+# Web Start: BCVTB version of Vergil - No sources or build env.
+# In the sed statement, we use # instead of % as a delimiter in case
+# PTII_LOCALURL has spaces in it that get converted to %20
+vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
+	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
+		-e 's#@PTVERSION@#$(PTVERSION)#' \
+			vergilBCVTB.jnlp.in > $@
+	if [ ! -f $(SIGNED_DIR)/$(BCVTB_MAIN_JAR) ]; then \
+		echo "$(SIGNED_DIR)$(BCVTB_MAIN_JAR) does not"; \
+		echo "   exist yet, but we need the size"; \
+		echo "   so copy it now and sign it later"; \
+		mkdir -p $(SIGNED_DIR)/`dirname $(BCVTB_MAIN_JAR)`; \
+		cp -p $(BCVTB_MAIN_JAR) `dirname $(SIGNED_DIR)/$(BCVTB_MAIN_JAR)`;\
+	fi
+	@echo "# Adding jar files to $@"
+	-chmod a+x "$(MKJNLP)"
+	"$(MKJNLP)" $@ \
+		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
+		$(SIGNED_DIR) \
+		$(BCVTB_MAIN_JAR) \
+		$(BCVTB_JNLP_JARS)
+	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
+	rm -rf JNLP-INF
+	mkdir JNLP-INF
+	cp $@ JNLP-INF/APPLICATION.JNLP
+	@echo "# $(BCVTB_MAIN_JAR) contains the main class"
+	"$(JAR)" -uf $(BCVTB_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	rm -rf JNLP-INF
+	mkdir -p $(SIGNED_DIR)/`dirname $(BCVTB_MAIN_JAR)`; \
+	cp -p $(BCVTB_MAIN_JAR) `dirname $(SIGNED_DIR)/$(BCVTB_MAIN_JAR)`; \
+	"$(JARSIGNER)" \
+		-keystore "$(KEYSTORE)" \
+		$(STOREPASSWORD) \
+		$(KEYPASSWORD) \
+		"$(SIGNED_DIR)/$(BCVTB_MAIN_JAR)" "$(KEYALIAS)"
 
 # Web Start: DSP version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case

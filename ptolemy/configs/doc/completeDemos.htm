@@ -171,7 +171,10 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li><a href="../../domains/continuous/demo/Lorenz/Lorenz.xml">Lorenz Attractor</a>
 <li><a href="../../domains/continuous/demo/Lorenz/LorenzDifferentialSystem.xml">Lorenz Attractor made with Differential System</a> 
 <li><a href="../../matlab/demo/MatlabContinuous/MatlabContinuous.xml">Matlab in Continuous</a> (Requires that Matlab be installed locally) 
+<!--/bcvtbDocs-->
+<!-- SigmaDelta uses DEDirector, which is not in bcvtb -->
 <li><a href="../../domains/continuous/demo/SigmaDelta/SigmaDelta.xml">MEMS accelerometer</a> 
+<!--bcvtbDocs-->
 <li><a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradle.xml">Newtons Cradle</a>
 
 <!--/vergilDocs-->
@@ -184,7 +187,11 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li><a href="../../domains/continuous/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml">Newton's Cradle with Balls Having Different Masses</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>) 
 <!--vergilDocs-->
 <li><a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a> 
+<!--/bcvtbDocs-->
+<!-- NoiseSpectrum uses DEDirector, which is not shipped with bcvtb -->
 <li><a href="../../domains/continuous/demo/Noise/NoiseSpectrum.xml">Noise Spectrum</a> 
+<!--bcvtbDocs-->
+
 <!--/vergilDocs-->
 <!-- Pendulum3D uses PDFAttribute, which is not shipped in ptiny -->
 <li><a href="../../domains/continuous/demo/Pendulum3D/Pendulum3D.xml">3D Pendulum</a> (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>) 
@@ -194,7 +201,13 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li><a href="../../domains/continuous/demo/SampledClocks/SampledClocks.xml">Sampled Clocks</a> 
 <li><a href="../../domains/continuous/demo/Satellite/Satellite.xml">Satellite</a> 
 <li><a href="../../domains/continuous/demo/Sinusoid/Sinusoid.xml">Sinusoid</a>
+
+<!--/bcvtbDocs-->
+<!-- SinusoidInNoise includes continuous.lib.ContinuousSpectrum, which -->
+<!-- uses DEDirectory, which is not shipped with BCVTB -->
 <li><a href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid In Noise</a>) 
+<!--bcvtbDocs-->
+
 <li><a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">Static Units</a>
 <!--/vergilDocs-->
 <!-- SinuBouncingBall uses PDFAttribute, which is not shipped in ptiny -->
@@ -282,7 +295,12 @@ An earlier implementation of Continuous Time semantics, for use with the <a href
 <li><a href="../../domains/ct/demo/Thermostat/Thermostat.xml">Thermostat</a>
 <li><a href="../../domains/ct/demo/Transmission/Transmission.xml">Transmission</a>
 <li><a href="../../domains/ct/demo/ContinuousClock/TriggeredContinuousClock.xml">Triggered Continuous Clock</a>
+
+<!--/bcvtbDocs-->
+<!-- Units includes ct.lib.Integrator, which is not shipped with BCVTB -->
 <li><a href="../../data/unit/demo/Units/Units.xml">Units</a>
+<!--bcvtbDocs-->
+
 <li><a href="../../domains/ct/demo/V2V/V2V.xml">Vehicle 2 Vehicle</a>
 <!-- jspaces -->
 <!--vergilDocs-->
@@ -451,15 +469,25 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <!--ptinyKeplerDocs-->
 <!--bcvtbDocs-->
 <h3><a name="modal">Modal</a></h3>
-A work-in-progress implementation of Modal semantics, for use with the <a href="#continuous">continuous</a> domain.
+A newer implementation of Modal semantics, for use with the <a href="#continuous">continuous</a> domain.
 <ul>
+  
+<!--/bcvtbDocs-->
+<!-- ABP includes DEDirector, which is not shipped with BCVTB -->
 <li><a href="../../domains/modal/demo/ABP/ABP.xml">ABP</a> 
+<!--bcvtbDocs-->
+  
 <li><a href="../../domains/modal/demo/Blending/Blending.xml">Blending</a> 
 <li><a href="../../domains/modal/demo/Case/Case.xml">Case</a> 
 <li><a href="../../domains/modal/demo/ChainedTransitions/ChainedTransitions.xml">Chained Transitions</a> 
 <li><a href="../../domains/modal/demo/ModalBSC/ModalBSC.xml">ModalBSC</a> 
 <li><a href="../../domains/modal/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a> 
+
+<!--/bcvtbDocs-->
+<!-- StateTracker includes DEDirector, which is not shipped with BCVTB -->
 <li><a href="../../domains/modal/demo/StateTracker/StateTracker.xml">StateTracker</a> 
+<!--bcvtbDocs-->
+
 <!-- SystemLevelType demos are below -->
 </ul>
 <!--/bcvtbDocs-->
@@ -667,7 +695,10 @@ requires that JMF be installed:
 <!--ptinyKeplerDocs-->
 <!--bcvtbDocs-->
 
+<!--/bcvtbDocs-->
+<!-- Rijndael includes domains.fsm, which is not shipped with bcvtb -->
 <li><a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">Rijndael Encryption</a>
+<!--bcvtbDocs-->
 
 <!--/vergilDocs-->
 <!--Ptiny does not include sdf/optimize-->

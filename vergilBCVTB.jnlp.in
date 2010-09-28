@@ -10,7 +10,7 @@
 <jnlp codebase="@PTII_LOCALURL@"
       href="@PTII_LOCALURL@/vergilBCVTB.jnlp"> 
   <information>
-	  <title>Ptolemy II @PTVERSION@DSP </title>
+	  <title>Ptolemy II @PTVERSION@ BCVTB </title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
 	  <description kind="tooltip">Building Controls Virtual Test Bed Release of the Simulation Environment</description>
 	  <icon href="doc/img/PtolemyIISmall.gif"/>
@@ -26,8 +26,11 @@
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
-  <application-desc main-class="ptolemy.actor.gui.jnlp.DSPApplication">
-	<argument>-dsp</argument>
+  <resources os="Mac OS X">
+  	<nativelib href="signed/lib/bcvtbMacOSX.jar"/>
+  </resources>
+  <application-desc main-class="ptolemy.actor.gui.jnlp.BCVTBApplication">
+	<argument>-bcvtb</argument>
   </application-desc>
   <!-- Need to deal with Java 3D -->
 </jnlp>

@@ -8,8 +8,9 @@
   <property name="_libraryMarker"
             class="ptolemy.kernel.util.SingletonAttribute"/>
 
-  <!-- Default utilities library. -->
-  <input source="ptolemy/configs/utilitiesLibrary.xml"/>
+  <!-- Default utilities library. Don't include
+       configs/utilitiesLibrary.xml, it includes domains.fsm -->
+  <input source="ptolemy/configs/hyvisual/utilitiesLibrary.xml"/>
 
   <!-- Default director library. -->
   <!-- This uses configure so that directors are not instantiated -->
@@ -18,6 +19,7 @@
     <configure>
       <?moml
         <group>
+	   <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector"/>
 	   <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
 	   <property name="FSM Director" class="ptolemy.domains.modal.kernel.FSMDirector"/>
         </group>

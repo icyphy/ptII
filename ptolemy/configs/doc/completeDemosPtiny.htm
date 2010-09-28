@@ -97,14 +97,24 @@ An recent implementation of Continuous Time semantics, for use with the <a href=
 <li><a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a> 
 <!--vergilDocs-->
 <li><a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a> 
+<!--/bcvtbDocs-->
+<!-- NoiseSpectrum uses DEDirector, which is not shipped with bcvtb -->
 <li><a href="../../domains/continuous/demo/Noise/NoiseSpectrum.xml">Noise Spectrum</a> 
+<!--bcvtbDocs-->
+
 <!--vergilDocs-->
 <li><a href="../../domains/continuous/demo/Poisson/Poisson.xml">Poisson</a>,
  <a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a> 
 <li><a href="../../domains/continuous/demo/SampledClocks/SampledClocks.xml">Sampled Clocks</a> 
 <li><a href="../../domains/continuous/demo/Satellite/Satellite.xml">Satellite</a> 
 <li><a href="../../domains/continuous/demo/Sinusoid/Sinusoid.xml">Sinusoid</a>
+
+<!--/bcvtbDocs-->
+<!-- SinusoidInNoise includes continuous.lib.ContinuousSpectrum, which -->
+<!-- uses DEDirectory, which is not shipped with BCVTB -->
 <li><a href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid In Noise</a>) 
+<!--bcvtbDocs-->
+
 <li><a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">Static Units</a>
 <!--vergilDocs-->
 <li><a href="../../domains/continuous/demo/SquareWave/SquareWave.xml">Square Wave Response</a> 
@@ -218,15 +228,25 @@ An earlier implementation of Finite State Machine semantics, for use with the <a
 <!--ptinyKeplerDocs-->
 <!--bcvtbDocs-->
 <h3><a name="modal">Modal</a></h3>
-A work-in-progress implementation of Modal semantics, for use with the <a href="#continuous">continuous</a> domain.
+A newer implementation of Modal semantics, for use with the <a href="#continuous">continuous</a> domain.
 <ul>
+  
+<!--/bcvtbDocs-->
+<!-- ABP includes DEDirector, which is not shipped with BCVTB -->
 <li><a href="../../domains/modal/demo/ABP/ABP.xml">ABP</a> 
+<!--bcvtbDocs-->
+  
 <li><a href="../../domains/modal/demo/Blending/Blending.xml">Blending</a> 
 <li><a href="../../domains/modal/demo/Case/Case.xml">Case</a> 
 <li><a href="../../domains/modal/demo/ChainedTransitions/ChainedTransitions.xml">Chained Transitions</a> 
 <li><a href="../../domains/modal/demo/ModalBSC/ModalBSC.xml">ModalBSC</a> 
 <li><a href="../../domains/modal/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a> 
+
+<!--/bcvtbDocs-->
+<!-- StateTracker includes DEDirector, which is not shipped with BCVTB -->
 <li><a href="../../domains/modal/demo/StateTracker/StateTracker.xml">StateTracker</a> 
+<!--bcvtbDocs-->
+
 <!-- SystemLevelType demos are below -->
 </ul>
 <!--/bcvtbDocs-->
@@ -331,7 +351,10 @@ A work-in-progress implementation of Modal semantics, for use with the <a href="
 <!--ptinyKeplerDocs-->
 <!--bcvtbDocs-->
 
+<!--/bcvtbDocs-->
+<!-- Rijndael includes domains.fsm, which is not shipped with bcvtb -->
 <li><a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">Rijndael Encryption</a>
+<!--bcvtbDocs-->
 
 <!--vergilDocs-->
 

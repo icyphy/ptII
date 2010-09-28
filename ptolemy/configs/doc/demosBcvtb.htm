@@ -9,7 +9,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<!-- $Id: demos.htm 57418 2010-03-05 01:59:01Z cxh $ --><!--
+<!-- $Id: demos.htm 59290 2010-09-27 23:28:12Z cxh $ --><!--
 
 demosPtiny.htm is derived from this file by including
 anything between the tags vergilDoc and /vergilDoc.
@@ -114,8 +114,8 @@ or accessed from within Ptolemy II. Here, we illustrate some such frameworks.
 Stochastic hybrid systems add random behavior to continuous-time models mixed
 with discrete events. The
 <a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
-(and <a href="../../domains/continuous/demo/Noise/NoiseSpectrum.xml">Noise Spectrum</a>,
-<a href="../../domains/continuous/demo/Noise/SinusoidInNoise.xml">Sinusoid In Noise</a>) models
+<!--bcvtbDocs-->
+) models
 show bandlimited Gaussian noise processe.
     <a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>
 models spontaneous mode transitions governed by a Poisson process.
@@ -169,18 +169,9 @@ These examples illustrate some of these capabilities.
 
 <!--bcvtbDocs-->
   <li><i>Mixed-Signal Modeling</i>:
-    <a href="../../domains/continuous/demo/SigmaDelta/SigmaDelta.xml">
-SigmaDelta</a> (see also
-    <a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>)
-    <br>
-
-
-This example shows how to combine continuous-time modeling
-with discrete-event modeling to get mixed-signal modeling.
-The example models a MEMS accelerometer where a digital circuit
-implements feedback control and A/D conversion (a design due to
-Mark Lemkin).
-
+<!--bcvtbDocs-->
+   <a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>
+<!--bcvtbDocs-->
   </li>
 
 </ul>
@@ -244,98 +235,6 @@ signals.
   </li>
 <!--bcvtbDocs-->
 <!--ptinyKeplerDocs-->
-
-    <a href="../../data/type/demo/Router/Router.xml">Router</a>,
-<!--bcvtbDocs-->
-).
-
-    <br>
-
- This example shows
-a famous paradox in probability called the inspection paradox.
-It illustrates use of the <i>discrete-event</i> (DE) domain, where
-events occur on a time line and are processed chronologically.
-In this example, random
-data stimulates a model and statistics are collected and reported
-in various ways.
-
-
-    <br>
-
-
-
-  </li>
-<!-- Ptiny does not include Ptera -->
-<!--vergilDocs-->
-
-  <li><i>Process Networks</i>:
-    <a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
-OrderedMerge</a> (see also
-    <a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>,
-    <a href="../../domains/pn/demo/QR/QR.xml">QR</a>).
-    <br>
-
-
-The process networks (PN) domain follows the semantics given by Kahn and MacQueen in 1977
-to get processes with their own threads of control that send messages to one another
-and achieve deterministic computation.
-The <a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
-OrderedMerge</a> example implements an example given by Kahn and MacQueen
-that calculates numbers whose prime
-factors are 2, 3, and 5, only, and produces
-them in an ordered sequence.
-As of version 5.0, we have extended this model of computation with a
-nondeterministic merge actor, illustrated in
-    <a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>.
-
-    <br>
-
-
-
-<!--/ptinyKeplerDocs-->
-  </li>
-
-  <li><i>Rendezvous</i>:
-    <a href="../../domains/rendezvous/demo/Barrier/Barrier.xml">Barrier</a>
-(see also
-    <a href="../../domains/rendezvous/demo/ResourcePool/ResourcePool.xml">ResourcePool</a>,
-    <a href="../../domains/rendezvous/demo/Sequencing/Sequencing.xml">ResourcePool</a>,
-    <a href="../../domains/rendezvous/demo/WriteRegulator/WriteRegulator.xml">WriteRegulator</a>).
-    <br>
-<!--ptinyKeplerDocs-->
-<!--vergilDocs-->
-    <br>
-
-
-
-<!--/ptinyKeplerDocs-->
-  </li>
-
-  <li><i>Synchronous/Reactive Modeling</i>:
-    <a href="../../domains/sr/demo/TokenRing/TokenRing.xml">
-TokenRing</a> (see also
-    <a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">
-TrafficLight</a> and
-    <a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">
-GuardedCount</a>).
-    <br>
-
-
-The synchronous/reactive (SR) domain,
-which is inspired by the synchronous languages Esterel, Lustre, and Signal,
-realizes a concurrency model where actors react instantaneously and simultaneously
-at ticks of a logical clock.
-The <a href="../../domains/sr/demo/TokenRing/TokenRing.xml">
-TokenRing</a>
-example uses the fixed-point semantics of SR to arbitrate access
-to a shared medium using a token-ring protocol.
-<!--ptinyKeplerDocs-->
-
-
-  </li>
-
-</ul>
-
 <!--bcvtbDocs-->
 
 <h2>
@@ -394,8 +293,10 @@ do this.
 
   <li><i>Matlab Integration</i>:
     <a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">
-MatlabExpression</a> (see also
-    <a href="../../matlab/demo/MatlabCT/MatlabCT.xml">Matlab in CT</a>).
+MatlabExpression</a>
+(see also
+    <a href="../../matlab/demo/MatlabContinuous/MatlabContinuous.xml">Matlab in Continuous</a>).
+
     <br>
 
 
@@ -414,10 +315,10 @@ to plot a 3-D surface. This works only if Matlab is installed locally.
     <a href="ClassesIllustrated.xml">
 ClassesIllustrated</a> (see also
     <a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">
-Noisy sinewaves</a> and
-    <a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">
-Rijndael Encryption</a>).
-    <br>
+Noisy sinewaves</a>
+<!--bcvtbDocs-->  
+).
+   <br>
 
 
 Actor-oriented classes, subclasses, and
@@ -435,12 +336,11 @@ track any changes that are made to the class.
   </li>
 
   <li><i>Model Animations</i>:
-    <a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>
-(see also
+<!--bcvtbDocs-->
     <a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">
 AnimateVergil</a>
 <!--vergilDocs-->
-).
+<!--bcvtbDocs-->
     <br>
 
 
@@ -459,9 +359,8 @@ of one of its own actors.
 
   <li><i>Statically Checked Units System</i>:
     <a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">
-StaticUnits</a> (see also
-    <a href="../../data/unit/demo/Units/Units.xml">Units</a>, the
-dynamically checked units system).
+StaticUnits</a>
+<!--bcvtbDocs-->
     <br>
 
 
@@ -518,22 +417,7 @@ It illustrates the audio capabilities of Ptolemy II.
 
 
 <!--/ptinyKeplerDocs-->
-
-  </li>
-
-  <li><i>Python Integration</i>:
-    <a href="../../actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml">Ptolemnizer</a>
-(see also <a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">PythonScale</a>).
-    <br>
-
-Python is a popular interpreted programming language that has
-been integrated into Ptolemy II using the jython Java implementation of Python.
-This example shows that use of Python to alter a string entered by the user
-to modify any word that begins with "t" so that it begins with "pt".
-This leverages the excellent string processing capabilities in Python.
-Python can also be used to prototype
-actors by defining their functionality in Python.
-<!--ptinyKeplerDocs-->
+<!--bcvtbDocs-->
 
 <!--vergilDocs-->
 
