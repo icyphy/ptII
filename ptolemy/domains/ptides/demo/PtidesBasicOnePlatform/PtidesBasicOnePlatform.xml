@@ -74,6 +74,8 @@
             </property>
             <property name="animateExecution" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="highlightModelTimeDelay" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="animateModelTimeDelay" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 45.0]">

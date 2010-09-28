@@ -66,6 +66,7 @@ import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.modal.modal.RefinementPort;
 import ptolemy.domains.ptides.lib.NetworkInputDevice;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -111,9 +112,9 @@ public class PtidesBasicDirector extends DEDirector {
         animateExecution.setExpression("false");
         animateExecution.setTypeEquals(BaseType.BOOLEAN);
 
-        animateModelTimeDelay = new Parameter(this, "animateModelTimeDelay");
-        animateModelTimeDelay.setExpression("false");
-        animateModelTimeDelay.setTypeEquals(BaseType.BOOLEAN);
+        highlightModelTimeDelays = new Parameter(this, "highlightModelTimeDelay");
+        highlightModelTimeDelays.setExpression("false");
+        highlightModelTimeDelays.setTypeEquals(BaseType.BOOLEAN);
 
         actorsReceiveEventsInTimestampOrder = new Parameter(this,
                 "actorsReceiveEventsInTimestampOrder");
@@ -135,16 +136,13 @@ public class PtidesBasicDirector extends DEDirector {
      */
     public Parameter animateExecution;
     
-    /** If true, then for all deeply contained actors that have non-zero 
-     *  model time delays (including actors that only introduce microstep
-     *  delays), the actor icons are highlighted.
-     *  The icons are highlighted when the model is run.
-     *  The actor icons will still be highlighted after the model finishes
-     *  running. To clear the highlighting, re-run the model with this 
-     *  parameter set to false.
+    /** When set to true, highlight all deeply contained actors
+     *  that have non-zero model time delays (including
+     *  actors that only introduce microstep delays).
+     *  When set to false, remove any such highlighting.
      *  This is a boolean that defaults to false.
      */
-    public Parameter animateModelTimeDelay; 
+    public Parameter highlightModelTimeDelays;
 
     /** If true, then it can be assumed that actors receive events in timestamp
      *  order. This simplifies the safe to process analysis.
@@ -159,6 +157,39 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to update local variables.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If timeResolution is
+     *   being changed and the model is executing (and not in
+     *   preinitialize()).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        super.attributeChanged(attribute);
+        if (attribute == highlightModelTimeDelays) {
+            // need to do a preinitialize first, otherwise all actors will start with
+            // defaultDependency, which, in this case means all actors have zero model delays.
+            if (!_preinitializeCalled) {
+                _preinitializeCalled = true;
+                preinitialize();
+            }
+            if (highlightModelTimeDelays.getExpression().equals("true")) {
+                _highlightModelDelays((CompositeActor) getContainer(), true);
+                _timeDelayHighlighted = true;
+            } else if (highlightModelTimeDelays.getExpression().equals("false")) {
+                if (_timeDelayHighlighted) {
+                    _timeDelayHighlighted = false;
+                    _highlightModelDelays((CompositeActor) getContainer(), false);
+                }
+            } else {
+                throw new IllegalActionException(this, "Attribute change for " +
+                        "highlightModelTimeDelay" +
+                        ", but the attributed changed to a value that cannot be " +
+                        "dealt with: " + highlightModelTimeDelays.getExpression());
+            }
+        }
+    }
+    
     /**
      * Return the default dependency between input and output ports which for
      * the Ptides domain is a SuperdenseDependency.
@@ -588,8 +619,6 @@ public class PtidesBasicDirector extends DEDirector {
      *  However we use the DEListEventQueue instead of the calendar queue because we need
      *  to access to not just the first event in the event queue.
      *  Also parameters minDelay is calculated here.
-     *  Finally if animateModelTimeDelay parameter is checked, then we annotate all the model
-     *  time delay actors in the model.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -603,9 +632,6 @@ public class PtidesBasicDirector extends DEDirector {
         // In Ptides, we should never stop when queue is empty...
         stopWhenQueueIsEmpty.setExpression("false");
         _checkSensorActuatorNetworkConsistency();
-
-        _annotateModelDelays((CompositeActor) getContainer(),
-                ((BooleanToken)animateModelTimeDelay.getToken()).booleanValue());
     }
 
     /** Return false if there are no more actors to be fired or the stop()
@@ -2240,8 +2266,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  If annotateModelDelay is false, then instead of highlighting actors,
      *  the highlighting is cleared.
      */
-    private void _annotateModelDelays(CompositeActor compositeActor, boolean annotateModelDelay)
+    private void _highlightModelDelays(CompositeActor compositeActor, boolean annotateModelDelay)
             throws IllegalActionException {
+
         for (Actor actor : (List<Actor>) (compositeActor.deepEntityList())) {
             boolean annotateThisActor = false;
             CausalityInterface causalityInterface = actor
@@ -2272,7 +2299,7 @@ public class PtidesBasicDirector extends DEDirector {
                 }
             }
             if (actor instanceof CompositeActor) {
-                _annotateModelDelays((CompositeActor) actor, annotateModelDelay);
+                _highlightModelDelays((CompositeActor) actor, annotateModelDelay);
             }
         }
     }
@@ -2653,6 +2680,10 @@ public class PtidesBasicDirector extends DEDirector {
     /** The timestamp of the last executing event.
      */
     private Time _lastTimestamp;
+    
+    /** Whether preinitialize has been called once before.
+     */
+    private boolean _preinitializeCalled = false;
 
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.
@@ -2671,6 +2702,10 @@ public class PtidesBasicDirector extends DEDirector {
      *  the platform, but are not yet visible to the platform (because of real time delay d_o)
      */
     private PriorityQueue _realTimeInputEventQueue;
+    
+    /** Keeps track of whether time delay actors have been highlighted.
+     */
+    private boolean _timeDelayHighlighted = false;
 
     /** A set that keeps track of visited actors during minDelay calculation.
      */
