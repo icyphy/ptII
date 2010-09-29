@@ -91,7 +91,7 @@ import diva.gui.GUIUtilities;
  * an instance of ActorEditorGraphController.
  * 
  * @see ActorEditorGraphController
- * @author Steve Neuendorffer, Contributor: Edward A. Lee
+ * @author Steve Neuendorffer, Contributor: Edward A. Lee, KIELER Layout: Christian Motika <cmot@informatik.uni-kiel.de>
  * @version $Id$
  * @since Ptolemy II 2.0
  * @Pt.ProposedRating Red (neuendor)
@@ -729,7 +729,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         /** Lay out the graph. */
         public void actionPerformed(ActionEvent e) {
             try {
-                layoutGraph(true);
+                layoutGraph();
             } catch (Exception ex) {
                 MessageHandler.error("Layout failed", ex);
             }
@@ -754,7 +754,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame implements
         /** Lay out the graph. */
         public void actionPerformed(ActionEvent e) {
             try {
-                layoutGraph(false);
+                layoutGraphDialog();
             } catch (Exception ex) {
                 MessageHandler.error("Layout failed", ex);
             }
