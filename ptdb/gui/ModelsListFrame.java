@@ -62,7 +62,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
     }
     /** Create new form ModelsListFrame */
     public ModelsListFrame(Configuration configuration) {
-        this.setTitle("List of All Models in the Database");
+        setTitle("List of All Models in the Database");
         _initModelsList();
         initComponents();
         _configuration = configuration;
@@ -81,7 +81,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
         _modelsListTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         _totalModelsLabel = new java.awt.Label();
-        _noOfModelsLabel = new java.awt.Label();
+        _numberOfModelsLabel = new java.awt.Label();
         _previousPageButton = new java.awt.Button();
         _pageNumberCombo = new javax.swing.JComboBox();
         _nextPageButton = new java.awt.Button();
@@ -115,8 +115,8 @@ public class ModelsListFrame extends javax.swing.JFrame {
         _totalModelsLabel.setName(""); // NOI18N
         _totalModelsLabel.setText("Total number of models:");
 
-        _noOfModelsLabel.setName("noOfModels"); // NOI18N
-        _noOfModelsLabel.setText(Integer.toString(_noOfModels));
+        _numberOfModelsLabel.setName("noOfModels"); // NOI18N
+        _numberOfModelsLabel.setText(Integer.toString(_noOfModels));
 
         _previousPageButton.setLabel("<< ");
         _previousPageButton
@@ -150,7 +150,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(
-                                                _noOfModelsLabel,
+                                                _numberOfModelsLabel,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 50,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -186,7 +186,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(
-                                                                _noOfModelsLabel,
+                                                                _numberOfModelsLabel,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -467,7 +467,7 @@ public class ModelsListFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable _modelsListTable;
     private java.awt.Label _totalModelsLabel;
-    private java.awt.Label _noOfModelsLabel;
+    private java.awt.Label _numberOfModelsLabel;
     private java.awt.Label _hintLabel;
     // End of variables declaration//GEN-END:variables
     
