@@ -39,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import ptdb.common.dto.PTDBSearchAttribute;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -145,12 +146,49 @@ public class AttributesSearchListPanel extends AttributesListPanel {
     protected ArrayList<Attribute> getAttributes()
         throws IllegalActionException {
         
-        ArrayList<Attribute> returnList = super.getAttributes();
+        //ArrayList<Attribute> returnList = super.getAttributes();
+
+        ArrayList<Attribute> returnList = new ArrayList();
 
         // Get a list of all attributes we have displayed.
         Component[] componentArray1 = _attListPanel.getComponents();
 
-          for (int i = 0; i < componentArray1.length; i++) {
+        for (int i = 0; i < componentArray1.length; i++) {
+
+            if (componentArray1[i] instanceof JPanel) {
+
+                Component[] componentArray2 = ((JPanel) componentArray1[i])
+                        .getComponents();
+
+                for (int j = 0; j < componentArray2.length; j++) {
+
+                    if (componentArray2[j] instanceof ModelAttributePanel) {
+
+                        try {
+
+                            StringParameter stringParameter;
+                            stringParameter = new StringParameter(
+                                    new NamedObj(),
+                                    ((ModelAttributePanel) componentArray2[j])
+                                            .getAttributeName());
+                            stringParameter
+                            .setExpression(((ModelAttributePanel) componentArray2[j])
+                                    .getValue());
+                            returnList.add(stringParameter);
+                            
+                        } catch (NameDuplicationException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        for (int i = 0; i < componentArray1.length; i++) {
 
             if (componentArray1[i] instanceof JPanel) {
 
@@ -181,19 +219,17 @@ public class AttributesSearchListPanel extends AttributesListPanel {
                                       componentArray2[j]).getAttributeName());
                               
                               
-                              if((((GenericAttributePanel) componentArray2[j])
-                                      .getValue()).length()>0){
+                              //if((((GenericAttributePanel) componentArray2[j])
+                              //        .getValue()).length()>0){
                                   attribute.setExpression((
                                           (GenericAttributePanel) 
                                           componentArray2[j]).getValue());
-                              }
+                              //}
 
                               returnList.add(attribute);
                               
                           } catch (NameDuplicationException e) {
-                              // Ignore.  We are not actually adding this 
-                              // attribute to a container.  It is just being 
-                              // added to a list for searching.
+                              e.printStackTrace();
                           }
                       
                     }
