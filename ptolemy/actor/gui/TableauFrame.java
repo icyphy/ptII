@@ -1263,7 +1263,7 @@ public class TableauFrame extends Top {
     /** File filter that filters out files that do not have one of a
      *  pre-specified list of extensions.
      */
-    protected static class ExtensionFileFilter extends FileFilter {
+    public static class ExtensionFileFilter extends FileFilter {
         // NetBeans wants this protected.  If it is package visibility,
         // then there are problems accessing it from the same package
         // but a different jar.
