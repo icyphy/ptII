@@ -79,14 +79,13 @@ import ptolemy.kernel.util.Workspace;
  takes over the control of the actors contained by this actor.
  <P>
  This actor is based on the
- {@link ptolemy.domains.ct.lib.LinearStateSpace} actor by Jie Liu.
+ ptolemy.domains.ct.lib.LinearStateSpace actor by Jie Liu.
 
- @author Jie Liu
+ @author Edward A. Lee, Contributor: Jie Liu
  @version $Id$
  @since Ptolemy II 8.0
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (cxh)
- @see ptolemy.domains.ct.kernel.CTBaseIntegrator
  */
 public class LinearStateSpace extends TypedCompositeActor {
     /** Construct the composite actor with a name and a container.

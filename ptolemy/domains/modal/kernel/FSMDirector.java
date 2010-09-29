@@ -1446,7 +1446,7 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * output is absent, then this method sets it to absent.
      * Otherwise, it leaves it unknown.
      * For each output port, this method calls
-     * {@link #_isSafeToClear(IOPort, FSMActor)} to determine whether
+     * {@link #_isSafeToClear(IOPort, int, FSMActor)} to determine whether
      * this FSM can assert that an output port is absent.
      * 
      * @param controller The controller FSM.

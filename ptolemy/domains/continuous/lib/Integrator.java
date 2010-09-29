@@ -100,12 +100,13 @@ public class Integrator extends ContinuousIntegrator {
     // it appear in the lib package.
 
     /** Construct an integrator.
-     * @see ptolemy.domains.ct.kernel.CTBaseIntegrator
-     * @param container The container.
-     * @param name The name.
-     * @exception NameDuplicationException If another star already had
-     * this name.
-     * @exception IllegalActionException If there was an internal problem.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception NameDuplicationException If the name is used by
+     *  another actor in the container.
+     *  @exception IllegalActionException If ports can not be created, or
+     *   thrown by the super class.
+     *  @see ptolemy.domains.continuous.kernel.ContinuousIntegrator
      */
     public Integrator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
