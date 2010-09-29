@@ -140,6 +140,31 @@ tag specially.
     <td><a href="about:links#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew3.0.2.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
+<tr rowspan=4><center><b>BCVTB</b></center></tr>
+  <tr>
+    <code>ptolemy/configs/bcvtb/intro.htm</code>
+    <td><a href="about:demos#ptolemy/configs/bcvtb/intro.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/bcvtb/intro.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/bcvtb/intro.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/completeDemosBcvtb.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/completeDemosBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/demosBcvtb.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/demosBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
+  <tr>
+    <code>ptolemy/configs/doc/docsBcvtb.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/docsBcvtb.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+  </tr>
 <tr rowspan=4><center><b>HyVisual</b></center></tr>
   <tr>
     <code>ptolemy/configs/hyvisual/intro.htm</code>
