@@ -38,9 +38,10 @@
 
   <!-- Use the Kieler graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->
+  <!--  Disabled because it leaves attribute in model! 
   <property name="_layoutGraphDialog"
             class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.layout.KielerLayoutTableauFactory"/>
+            value="ptolemy.vergil.basic.layout.KielerLayoutTableauFactory"/> -->
 
   <!-- Use the Kieler graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->
