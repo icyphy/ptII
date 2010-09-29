@@ -1,6 +1,6 @@
 /* The default KIELER layout with place and route.
 
- Copyright (c) 1998-2010 The Regents of the University of California.
+ Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,18 +56,26 @@ import ptolemy.vergil.basic.layout.kieler.KielerLayout;
 //// KielerLayoutAction
 
 /**
-This is a Vergil GUI action that will trigger the KIELER place and route
-automatic dataflow layout algorithm. It will operate on the current model
-and hence needs this as an input in the doAction() method.
+Trigger the KIELER place and route automatic dataflow layout algorithm
+from withing the Vergil GUI. Operate on the current model, hence the
+model needs to be an input in the doAction() method.
 
-@author  Christian Motika <cmot@informatik.uni-kiel.de>
+@author  Christian Motika
 @version $Id: IGuiAction.java 59288 2010-09-27 19:39:22Z cmot $
-@since Ptolemy II 2.0
+@since Ptolemy II 2.1
 @Pt.ProposedRating Red (cmot)
+@Pt.AcceptedRating Red (cmot)
 */
 public class KielerLayoutAction extends Object implements IGuiAction {
 
-
+    /**
+     * Layout the graph if the model is a CompositeActor. Otherwise throw an 
+     * exception. The frame type must be ActorGraphFrame. The KIELER layouter
+     * is called with placing and routing. The routing uses bend point 
+     * annotations.
+     * 
+     * @param model the model
+     */
     public void doAction(NamedObj model) {
                 try {
                     if (!(model instanceof CompositeActor)) {
@@ -154,7 +162,6 @@ public class KielerLayoutAction extends Object implements IGuiAction {
                                     + (model == null ? "name not found"
                                             : (model.getFullName())) + "\"", ex);
                 }
-
     }
 
 }
