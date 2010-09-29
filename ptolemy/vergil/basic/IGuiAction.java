@@ -1,6 +1,6 @@
 /* A simple interface for Vergil GUI actions performed on the model.
 
- Copyright (c) 1998-2010 The Regents of the University of California.
+ Copyright (c) 2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,13 +39,20 @@ operate on the model. Vergil needs no specific dependencies on
 the class implementing the actions but can just call doAction
 to trigger it.
 
-@author  Christian Motika <cmot@informatik.uni-kiel.de>
+@author  Christian Motika
 @version $Id: IGuiAction.java 59288 2010-09-27 19:39:22Z cmot $
-@since Ptolemy II 2.0
+@since Ptolemy II 2.1
 @Pt.ProposedRating Red (cmot)
+@Pt.AcceptedRating Red (cmot)
 */
 public interface IGuiAction {
     
+    /**
+     * Perform the action/modification on the current model triggered
+     * by a Vergil GUI action. 
+     * 
+     * @param model the current Ptolemy model
+     */
     public void doAction(NamedObj model);
 
 }
