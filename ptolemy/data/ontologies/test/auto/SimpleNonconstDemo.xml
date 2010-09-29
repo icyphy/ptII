@@ -14,13 +14,13 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 22, 1034, 839}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={198, 150, 1036, 846}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 729]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1514313919052">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.2102194787379, 257.2499999999998}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.2102194787379, 257.2499999999997}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates the constant-nonconstant analysis.">
@@ -270,7 +270,7 @@
         <port name="divide" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">

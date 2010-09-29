@@ -14,7 +14,7 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={183, 36, 1034, 839}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={183, 36, 1036, 846}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 729]">
     </property>
@@ -31,7 +31,7 @@
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 85.0}">
         </property>
     </property>
     <property name="dimensionSystem::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Const.value &gt;= Velocity">
@@ -152,7 +152,7 @@
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 374, 832, 519}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 374, 834, 526}, maximized=false}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -313,7 +313,7 @@
             <port name="divide" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
+                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -441,7 +441,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 65.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 64, 1034, 638}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 64, 1036, 645}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 528]">
         </property>
@@ -758,7 +758,7 @@
             <port name="divide" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
-                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Nonconstant">
+                <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Constant">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">

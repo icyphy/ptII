@@ -95,10 +95,10 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
             divideFunction = divideDefinition.createConceptFunction();
         }
 
-        if (multiplyFunction == null) {
-            setAtLeast(actor.multiply, actor.output);
-            setAtLeast(actor.multiply, actor.divide);
-        } else {
+        // If the multiplyFunction is not defined in the ontology solver model
+        // then by default do not set up any constraints for the multiply
+        // input.
+        if (multiplyFunction != null) {
             setAtLeast(actor.multiply, new ConceptFunctionInequalityTerm(
                     multiplyFunction, new InequalityTerm[] {
                             getPropertyTerm(actor.output),
@@ -106,10 +106,10 @@ public class MultiplyDivide extends LatticeOntologyAdapter {
         }
 
         if (divideFunction == null) {
+            // Use these default constraints if the divideFunction is not
+            // defined in the ontology solver model.
             setAtLeast(actor.output, actor.multiply);
             setAtLeast(actor.output, actor.divide);
-            setAtLeast(actor.divide, actor.multiply);
-            setAtLeast(actor.divide, actor.output);
         } else {
             setAtLeast(actor.output, new ConceptFunctionInequalityTerm(
                     divideFunction, new InequalityTerm[] {
