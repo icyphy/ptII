@@ -185,7 +185,7 @@ COMPACKAGES = \
 	com.JLex \
 	com.microstar.xml
 
-COREPACKAGE = \
+COREPACKAGES = \
 	ptolemy.kernel \
 	ptolemy.kernel.attributes \
 	ptolemy.kernel.undo \
