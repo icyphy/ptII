@@ -38,9 +38,10 @@
 
   <!-- Use the Kieler graph layout algorithms. -->
   <!--  Used in BasicGraphFrame.java-->
-  <property name="_layoutGraphDialog"
+  <!-- Disabled Kieler because it is leaving properties in files -->
+  <!-- property name="_layoutGraphDialog"
             class="ptolemy.data.expr.StringParameter"
-            value="ptolemy.vergil.basic.layout.KielerLayoutTableauFactory"/>
+            value="ptolemy.vergil.basic.layout.KielerLayoutTableauFactory"/ -->
 
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->
