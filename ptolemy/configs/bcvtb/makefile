@@ -91,6 +91,8 @@ bcvtbModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class ../doc/completeDemosB
 	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
 		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
 		ptolemy.actor.gui.HTMLAbout ../doc/completeDemosBcvtb.htm $@
+	LC_ALL=C sort -f $@  > $@.sorted
+	mv $@.sorted $@
 
 ../doc/completeDemosBcvtb.htm: ../doc/completeDemos.htm
 	(cd ../doc; $(MAKE) completeDemosBcvtb.htm
