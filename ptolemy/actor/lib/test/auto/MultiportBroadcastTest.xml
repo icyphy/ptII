@@ -24,19 +24,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 90.0]">
         </property>
     </property>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 230.0]">
-        </property>
-    </entity>
     <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{200, 230}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 320.0]">
         </property>
     </entity>
     <entity name="Discard" class="ptolemy.actor.lib.Discard">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 345.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -45,12 +40,37 @@
             </property>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+            <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+            </property>
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;!DOCTYPE entity PUBLIC &quot;-//UC Berkeley//DTD MoML 1//EN&quot;&#10;    &quot;http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd&quot;&gt;&#10;&lt;entity name=&quot;model&quot; class=&quot;ptolemy.actor.TypedCompositeActor&quot;&gt;&#10;&lt;/entity&gt;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 220.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Ramp.output" relation="relation2"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="StringToXML.input" relation="relation2"/>
     <link port="StringToXML.output" relation="relation"/>
     <link port="Discard.input" relation="relation"/>
+    <link port="StringConst.output" relation="relation2"/>
 </entity>
