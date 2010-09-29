@@ -110,8 +110,10 @@ public class AttributeSearcher extends AbstractSearcher implements
                 } else {
                     PTDBGenericAttribute attribute = attributesMap
                             .get(originalAttribute.getName());
+                    //attribute.addValue(((Variable) originalAttribute)
+                    //        .getValueAsString());
                     attribute.addValue(((Variable) originalAttribute)
-                            .getValueAsString());
+                            .getExpression());
                 }
 
             }
