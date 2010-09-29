@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SmallWorldPtalonActor" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 926, 604}, maximized=false}">
     </property>
@@ -302,6 +302,22 @@ Based on $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml</text></s
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 440.0]">
         </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,0.8,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click on the Yellow Icon to see the Ptalon file.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 325.0]">
+        </property>
+    </property>
+    <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 375.0]">
+        </property>
+    </property>
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.ptln">
     </property>
     <entity name="SmallWorld" class="ptolemy.actor.ptalon.PtalonActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 210.0]">
