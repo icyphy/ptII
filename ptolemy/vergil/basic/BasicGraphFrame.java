@@ -174,7 +174,7 @@ import diva.util.java2d.ShapeUtilities;
  the hierarchy of a ptolemy model as a diva graph.  Cut, copy and
  paste operations are supported using MoML.
 
- @author  Steve Neuendorffer, Edward A. Lee, Contributors: Chad Berkeley (Kepler), Ian Brown (HSBC), Bert Rodiers
+ @author  Steve Neuendorffer, Edward A. Lee, Contributors: Chad Berkeley (Kepler), Ian Brown (HSBC), Bert Rodiers, Christian Motika
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (neuendor)
@@ -974,14 +974,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    /** Layout the graph view. See {@link #layoutGraph(boolean)} for more
-     *  details. By default layout the graph w/o a dialog.
-     */
-    public void layoutGraph() {
-       // by default layout the graph w/o a dialog
-       layoutGraph(true);
-    }
-    
     /** Layout the graph view.
      *  If the configuration contains a parameter named
      *  _layoutGraphDialog, the that parameter is assumed
@@ -990,9 +982,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  that takes a Frame argument. If the parameter cannot
      *  be read, then the default Ptolemy layout mechanism in
      *  {@link #layoutGraphWithPtolemyLayout()} is used.
-     *  @param noDialog True if no dialog should appear and for the shortcut version
      */
-    public void layoutGraph(boolean noDialog) {
+    public void layoutGraphDialog() {
         boolean success = false;
         try {
             Configuration configuration = getConfiguration();
@@ -1020,26 +1011,70 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         tableauFactory = (TableauFactory) layoutGraphDialogConstructor
                                 .newInstance(getModel(), "layoutGraphFactory");
                     }
-                    // FIXME: Passing parameter like this seems currently to be more a hack
-                    if (noDialog) {
-                        tableauFactory.setName("NODIALOG");
-                    }
-                    else {
-                        tableauFactory.setName("DIALOG");
-                    }
                     Tableau kielerTableau = tableauFactory.createTableau(
                     //getModel(), this);
                             (PtolemyEffigy) getTableau().getContainer());
                     
-                    // do not try to show the dialog if it has not been created
-                    if (!noDialog) {
-                        kielerTableau.show();
-                    }
+                    kielerTableau.show();
                     success = true;
                 } catch (Throwable throwable) {
                     new Exception(
                             "Failed to invoke layout graph dialog class \""
                                     + layoutGraphDialogClassName
+                                    + "\", which was read from the configuration.",
+                            throwable).printStackTrace();
+                    layoutGraphWithPtolemyLayout();
+                }
+            }
+        } catch (Throwable throwable) {
+            new Exception(
+                    "Failed to read _layoutGraphDialogParameter from configuration",
+                    throwable).printStackTrace();
+            if (!success) {
+                layoutGraphWithPtolemyLayout();
+            }
+        }
+    }
+
+    /** Layout the automatically using the KIELER dataflow layout algorithm
+     *  with place and route.
+     *  _layoutGraphAction, the that parameter is assumed
+     *  to name a class that executes the automatic layout action.
+     *  If the parameter cannot be read, then the default Ptolemy layout mechanism
+     *  in {@link #layoutGraphWithPtolemyLayout()} is used.
+     */
+    public void layoutGraph() {
+        boolean success = false;
+        try {
+            Configuration configuration = getConfiguration();
+            StringParameter layoutGraphActionParameter = (StringParameter) configuration
+                    .getAttribute("_layoutGraphAction", Parameter.class);
+            if (layoutGraphActionParameter == null) {
+                layoutGraphWithPtolemyLayout();
+                success = true;
+            } else {
+                String layoutGraphActionClassName = layoutGraphActionParameter
+                        .stringValue();
+                try {
+                    Class layoutGraphActionClass = Class
+                            .forName(layoutGraphActionClassName);
+                    Object layoutAction = null;
+                    
+                    Constructor layoutGraphActionConstructor = layoutGraphActionClass
+                            .getDeclaredConstructor();         
+                    
+                  layoutAction = (Object) layoutGraphActionConstructor
+                  .newInstance();
+                  
+                  if (layoutAction instanceof IGuiAction) {
+                      ((IGuiAction)layoutAction).doAction(getModel());
+                  }
+                  
+                    success = true;
+                } catch (Throwable throwable) {
+                    new Exception(
+                            "Failed to invoke layout graph dialog class \""
+                                    + layoutGraphActionClassName
                                     + "\", which was read from the configuration.",
                             throwable).printStackTrace();
                     layoutGraphWithPtolemyLayout();
