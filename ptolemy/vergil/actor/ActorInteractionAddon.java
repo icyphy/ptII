@@ -35,7 +35,10 @@ import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.GraphController;
 
 /**
- * An interface for actor interaction.
+ * An interface for defining additional gui interaction for specific actor types.
+ * Once the interface is implemented, it can be used by adding an 
+ * _actorInteractionAddon parameter to the configuration and setting the value
+ * to the name of the class that implements this interface.
  *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
@@ -57,8 +60,15 @@ public interface ActorInteractionAddon {
      * The action to be taken when looking inside an actor.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
+<<<<<<< .mine
+     * @exception IllegalActionException If the container is incompatible
+     *   with this attribute.
+     * @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+=======
      * @exception IllegalActionException Thrown for illegal action.
      * @exception NameDuplicationException Thrown for name duplication.
+>>>>>>> .r59346
      */
     abstract void lookInsideAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException;
@@ -75,14 +85,23 @@ public interface ActorInteractionAddon {
      * The action to be taken when looking inside an actor.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
+<<<<<<< .mine
+     * @exception IllegalActionException If the container is incompatible
+     *   with this attribute.
+     * @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
+=======
      * @exception IllegalActionException  Thrown for illegal action.
      * @exception NameDuplicationException  Thrown for name duplication.
+>>>>>>> .r59346
      */
     abstract void openInstanceAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException;
 
     /**
-     * Get an instance of the controller for a given actor.  This assumes
+     * Get an instance of the 
+     * {@link ptolemy.vergil.actor.ActorController ActorController} 
+     * for a given actor.  This assumes
      * Full access.
      * @param controller The associated graph controller.
      * @return An instance of the appropriate controller.
@@ -90,8 +109,9 @@ public interface ActorInteractionAddon {
     abstract ActorController getControllerInstance(GraphController controller);
 
     /**
-     * Get an instance of the controller for a given actor.  This assumes
-     * full access.
+     * Get an instance of the 
+     * {@link ptolemy.vergil.actor.ActorController ActorController} 
+     * for a given actor.
      * @param controller The associated graph controller.
      * @param fullAccess Indication if the controller should be instantiated
      *                  with Full access.

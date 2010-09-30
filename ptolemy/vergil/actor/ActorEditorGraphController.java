@@ -379,18 +379,18 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         super._addHotKeys(jgraph);
 
         _classDefinitionController.addHotKeys(getFrame().getJGraph());
-        // Bug 349
-        // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=349
 
-        StringParameter actorInteractionAddon;
         try {
+            
+            StringParameter actorInteractionAddon;
             actorInteractionAddon = (StringParameter) this.getConfiguration()
-                    .getAttribute("_ActorInteractionAddon", Parameter.class);
+                .getAttribute("_actorInteractionAddon", Parameter.class);
+
             if (actorInteractionAddon != null) {
-                _dbActorController.addHotKeys(getFrame().getJGraph());
+                _addonActorController.addHotKeys(getFrame().getJGraph());
             }
         } catch (Exception e) {
-            // Ignore it.
+            e.printStackTrace();
         }
 
     }
@@ -412,25 +412,29 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         _classDefinitionController = new ClassDefinitionController(this);
 
         if (_config != null) {
-            StringParameter actorInteractionAddon;
-            try {
-                actorInteractionAddon = (StringParameter) _config.getAttribute(
-                        "_ActorInteractionAddon", Parameter.class);
 
-                if (actorInteractionAddon != null) {
-                    String actorInteractionAddonClassName = actorInteractionAddon
-                            .stringValue();
+            try {
+                
+                StringParameter actorInteractionAddonParameter;
+                actorInteractionAddonParameter = (StringParameter) _config
+                    .getAttribute("_actorInteractionAddon", Parameter.class);
+
+                if (actorInteractionAddonParameter != null) {
+                    String actorInteractionAddonClassName = 
+                        actorInteractionAddonParameter.stringValue();
                     Class actorInteractionAddonClass = Class
-                            .forName(actorInteractionAddonClassName);
-                    ActorInteractionAddon actorInterationAddon = (ActorInteractionAddon) actorInteractionAddonClass
-                            .newInstance();
-                    Method method2 = actorInteractionAddonClass.getMethod(
-                            "getControllerInstance", GraphController.class);
-                    _dbActorController = (ActorController) method2.invoke(
-                            actorInterationAddon, this);
+                        .forName(actorInteractionAddonClassName);
+                    
+                    ActorInteractionAddon actorInteractionAddon =
+                        (ActorInteractionAddon) actorInteractionAddonClass
+                        .newInstance();
+
+                    _addonActorController = 
+                        actorInteractionAddon.getControllerInstance(this);
+                    
                 }
             } catch (Exception e) {
-                // Just ignore it.
+                e.printStackTrace();
             }
 
         }

@@ -737,8 +737,8 @@ public abstract class ActorController extends AttributeController {
                 // child of the model window. So, we create a new text
                 // effigy inside this one. Specify model's effigy as
                 // a container for this new effigy.
-                Effigy textEffigy = new TextEffigy(effigy,
-                        effigy.uniqueName("debugListener" + object.getName()));
+                Effigy textEffigy = new TextEffigy(effigy, effigy
+                        .uniqueName("debugListener" + object.getName()));
 
                 DebugListenerTableau debugTableau = new DebugListenerTableau(
                         textEffigy, textEffigy.uniqueName("debugListener"
@@ -800,41 +800,32 @@ public abstract class ActorController extends AttributeController {
 
             NamedObj object = getTarget();
 
-            StringParameter actorInteractionAddon;
             try {
-                actorInteractionAddon = (StringParameter) _configuration
-                        .getAttribute("_ActorInteractionAddon", Parameter.class);
+                StringParameter actorInteractionAddonParameter;
+                actorInteractionAddonParameter = (StringParameter) _configuration
+                    .getAttribute("_actorInteractionAddon", Parameter.class);
 
-                if (actorInteractionAddon != null) {
-                    String actorInteractionAddonClassName = actorInteractionAddon
+                if (actorInteractionAddonParameter != null) {
+                    String actorInteractionAddonClassName = actorInteractionAddonParameter
                             .stringValue();
-
-                    Class actorInteractionAddonClass = Class
+                    
+                        Class actorInteractionAddonClass = Class
                             .forName(actorInteractionAddonClassName);
-
-                    ActorInteractionAddon actorInterationAddon = (ActorInteractionAddon) actorInteractionAddonClass
+                        
+                        ActorInteractionAddon actorInteractionAddon =
+                            (ActorInteractionAddon) actorInteractionAddonClass
                             .newInstance();
-
-                    Method method1 = actorInteractionAddonClass.getMethod(
-                            "isActorOfInterestForLookInside", NamedObj.class);
-
-                    if (((Boolean) method1.invoke(actorInterationAddon, object))
-                            .booleanValue()) {
-
-                        Method method2 = actorInteractionAddonClass.getMethod(
-                                "lookInsideAction", FigureAction.class,
-                                NamedObj.class);
-
-                        method2.invoke(actorInterationAddon, this, object);
-
+                        
+                        if(actorInteractionAddon.isActorOfInterestForAddonController(object)){
+                            actorInteractionAddon.lookInsideAction(this, object);
+                        }                    
+                            
                     }
 
-                }
-
             } catch (Exception e) {
-                // Just ignore it.
+                e.printStackTrace();
             }
-
+            
             // NOTE: Used to open source code here if the object
             // was not a CompositeEntity. But this made it impossible
             // to associate a custom tableau with an atomic entity.
@@ -872,41 +863,33 @@ public abstract class ActorController extends AttributeController {
             super.actionPerformed(event);
             NamedObj object = getTarget();
 
-            StringParameter actorInteractionAddon;
             try {
-                actorInteractionAddon = (StringParameter) _configuration
-                        .getAttribute("_ActorInteractionAddon", Parameter.class);
+                StringParameter actorInteractionAddonParameter;
+                actorInteractionAddonParameter = (StringParameter) _configuration
+                    .getAttribute("_actorInteractionAddon", Parameter.class);
 
-                if (actorInteractionAddon != null) {
-                    String actorInteractionAddonClassName = actorInteractionAddon
+                if (actorInteractionAddonParameter != null) {
+                    String actorInteractionAddonClassName 
+                        = actorInteractionAddonParameter
                             .stringValue();
 
-                    Class actorInteractionAddonClass = Class
+                        Class actorInteractionAddonClass = Class
                             .forName(actorInteractionAddonClassName);
-
-                    ActorInteractionAddon actorInterationAddon = (ActorInteractionAddon) actorInteractionAddonClass
+                        
+                        ActorInteractionAddon actorInteractionAddon =
+                            (ActorInteractionAddon) actorInteractionAddonClass
                             .newInstance();
 
-                    Method method1 = actorInteractionAddonClass.getMethod(
-                            "isActorOfInterestForOpenInstance", NamedObj.class);
-
-                    if (((Boolean) method1.invoke(actorInterationAddon, object))
-                            .booleanValue()) {
-
-                        Method method2 = actorInteractionAddonClass.getMethod(
-                                "lookInsideAction", FigureAction.class,
-                                NamedObj.class);
-
-                        method2.invoke(actorInterationAddon, this, object);
-
+                        if(actorInteractionAddon.isActorOfInterestForAddonController(object)){
+                            actorInteractionAddon.openInstanceAction(this, object);
+                        }                   
+                            
                     }
 
-                }
-
             } catch (Exception e) {
-                // Just ignore it.
+                e.printStackTrace();
             }
-
+            
             if (object instanceof CompositeEntity) {
                 try {
                     _configuration.openInstance(object);
@@ -919,9 +902,9 @@ public abstract class ActorController extends AttributeController {
                 // open the source code as a last resort.
                 Frame parent = getFrame();
                 DialogTableau dialogTableau = DialogTableau.createDialog(
-                        parent, _configuration,
-                        ((TableauFrame) parent).getEffigy(),
-                        OpenInstanceDialog.class, (Entity) object);
+                        parent, _configuration, ((TableauFrame) parent)
+                                .getEffigy(), OpenInstanceDialog.class,
+                        (Entity) object);
 
                 if (dialogTableau != null) {
                     dialogTableau.show();
