@@ -32,12 +32,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import ptdb.common.dto.XMLDBModel;
-import ptdb.common.exception.DBConnectionException;
-import ptdb.common.exception.DBExecutionException;
 import ptdb.kernel.bl.load.LoadManager;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.StringConstantParameter;
@@ -60,11 +57,12 @@ import diva.gui.GUIUtilities;
 
 /**
  * A controller for database reference actors.  They are rendered with a green
- * box.  Additionally, a menu item is added to allow opening the referenced
+ * box.  Additionally, when the user right clicks on the composite actor,
+ * a menu item is added to the context menu that allows opening the referenced
  * model for editing.  Changes made with the actor opened from the database can
  * be propagated to all other parents that include it by reference.  If
  * modifications are only made from the instance that is opened, the changes
- * are not saved.  This preserves data intergrity.
+ * are not saved.  This preserves data integrity.
  *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
@@ -95,6 +93,7 @@ public class DBActorController extends ActorController {
     }
 
     /** Add hot keys to the actions in the given JGraph.
+     * The hot key to open the referenced model from the database is Ctrl-D.
      *  @param jgraph The JGraph to which hot keys are to be added.
      */
     public void addHotKeys(JGraph jgraph) {
@@ -106,13 +105,12 @@ public class DBActorController extends ActorController {
     ////                         protected methods                 ////
 
     /** Draw the node at its location. This overrides the base class
-     *  to highlight the actor to indicate that it is a class definition.
+     *  to highlight the actor to indicate that it is a DB reference actor.
      */
     protected Figure _renderNode(Object node) {
         Figure nf = super._renderNode(node);
 
         if (nf instanceof CompositeFigure) {
-            // This cast should be safe...
             CompositeFigure cf = (CompositeFigure) nf;
             Figure backgroundFigure = cf.getBackgroundFigure();
 
@@ -145,9 +143,7 @@ public class DBActorController extends ActorController {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** A fourth argument would make this highlight translucent, which enables
-     * combination with other highlights. However, this forces printing
-     * to PDF to rasterize the image, which results in far lower quality.
+    /** The color of the box rendered around the DB reference actor.
      */
     private static Color _HIGHLIGHT_COLOR = Color.green;
 
@@ -155,7 +151,7 @@ public class DBActorController extends ActorController {
     ////                         inner classes                     ////
 
     ///////////////////////////////////////////////////////////////////
-    //// OpenActorFromDatabase
+    //// OpenActorFromDB
 
     /**
      *  An action to open a model from the database.
@@ -183,11 +179,13 @@ public class DBActorController extends ActorController {
 
             NamedObj object = getTarget();
 
+            //FIXME: DB Reference Parameters use StringParameter class.
+            //  Consider changing to a more generic Parameter.
             if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) != null) {
                 if (object.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                         && ((StringParameter) object
                                 .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                                .getExpression().equals("TRUE")) {
+                                .getExpression().equalsIgnoreCase("TRUE")) {
                     try {
                         PtolemyEffigy effigy = LoadManager
                                 .loadModelUsingId(
@@ -199,18 +197,15 @@ public class DBActorController extends ActorController {
                         if (effigy != null) {
                             effigy.showTableaux();
                         } else {
-                            JOptionPane.showMessageDialog(this.getFrame(),
+                            MessageHandler.error("The specified model could "
+                                            + "not be found in the database.");
+                            /*JOptionPane.showMessageDialog(this.getFrame(),
                                     "The specified model could "
                                             + "not be found in the database.",
                                     "Load Error",
                                     JOptionPane.INFORMATION_MESSAGE, null);
+                            */
                         }
-                    } catch (DBConnectionException e1) {
-                        MessageHandler.error(
-                                "Cannot load the specified model. ", e1);
-                    } catch (DBExecutionException e1) {
-                        MessageHandler.error(
-                                "Cannot load the specified model. ", e1);
                     } catch (Exception e1) {
                         MessageHandler.error(
                                 "Cannot load the specified model. ", e1);

@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import ptdb.common.dto.XMLDBModel;
 import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.util.MessageHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -47,6 +48,11 @@ import diva.graph.GraphController;
 /**
  * Implementation of interface for interaction with actors.  This
  * implementation defines how to interact with database reference actors.
+ * In this case, the behavior of the "Open Actor" and "Open Instance" dropdown
+ * options are defined to warn the user that changes will not be persistent
+ * unless the reference model is opened from the database.  To use this class,
+ * it must be defined as the value of a _actorInteractionAddon parameter in the
+ * Configuration.
  *
  * @author Lyle Holsinger
  * @since Ptolemy II 8.1
@@ -66,7 +72,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
             if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                     && ((StringParameter) actor
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                            .getExpression().equals("TRUE")) {
+                            .getExpression().equalsIgnoreCase("TRUE")) {
                 return true;
             }
         }
@@ -78,29 +84,20 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * to the database reference model.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
-     * @exception IllegalActionException Thrown for illegal action.
-     * @exception NameDuplicationException Thrown for name duplication.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public void lookInsideAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException {
 
-        JOptionPane.showMessageDialog(figureAction.getFrame(),
-                "Changes to this actor will not "
-                        + "be saved to the database.  "
-                        + "To make changes to the " + "referenced model, open "
-                        + "it from the database.", "Open Actor",
-                JOptionPane.WARNING_MESSAGE, null);
-
-        String referenceTag = "<property name=\""
-                + ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" "
-                + "class=\"ptolemy.data.expr.StringConstantParameter\" "
-                + "value=\"TRUE\"></property>";
-
-        MoMLChangeRequest change = new MoMLChangeRequest(null, actor,
-                referenceTag);
-
-        change.setUndoable(true);
-        actor.requestChange(change);
+        handleActorOpenRequest("Changes to this actor will not "
+                            + "be saved to the database.  "
+                            + "To make changes to the "
+                            + "referenced model, open " 
+                            + "it from the database.", actor);
+        
     }
 
     /**
@@ -141,7 +138,7 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
             if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                     && ((StringParameter) actor
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                            .getExpression().equals("TRUE")) {
+                            .getExpression().equalsIgnoreCase("TRUE")) {
                 return true;
             }
         }
@@ -153,28 +150,19 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
      * to the database reference model.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
-     * @exception IllegalActionException Thrown for illegal action.
-     * @exception NameDuplicationException Thrown for name duplication.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public void openInstanceAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException {
-        JOptionPane.showMessageDialog(figureAction.getFrame(),
-                "Changes to this instance will not "
-                        + "be saved to the database.  "
-                        + "To make changes to the " + "referenced model, open "
-                        + "it from the database.", "Open Instance",
-                JOptionPane.WARNING_MESSAGE, null);
-
-        String referenceTag = "<property name=\""
-                + ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" "
-                + "class=\"ptolemy.data.expr.StringConstantParameter\" "
-                + "value=\"TRUE\"></property>";
-
-        MoMLChangeRequest change = new MoMLChangeRequest(null, actor,
-                referenceTag);
-
-        change.setUndoable(true);
-        actor.requestChange(change);
+        
+        handleActorOpenRequest("Changes to this instance will not "
+                + "be saved to the database.  "
+                + "To make changes to the " 
+                + "referenced model, open "
+                + "it from the database.", actor);
     }
 
     /** Determine of a given actor is a database reference actor.
@@ -187,10 +175,27 @@ public class DBReferenceActorInteractionAddon implements ActorInteractionAddon {
             if (actor.getAttribute(XMLDBModel.DB_REFERENCE_ATTR) instanceof StringConstantParameter
                     && ((StringParameter) actor
                             .getAttribute(XMLDBModel.DB_REFERENCE_ATTR))
-                            .getExpression().equals("TRUE")) {
+                            .getExpression().equalsIgnoreCase("TRUE")) {
                 return true;
             }
         }
         return false;
+    }
+    
+    private void handleActorOpenRequest(String message, NamedObj actor){
+        
+        MessageHandler.message(message);
+
+        String referenceTag = "<property name=\""
+                + ActorGraphDBFrame.DB_NO_EDIT_ATTR + "\" "
+                + "class=\"ptolemy.data.expr.StringConstantParameter\" "
+                + "value=\"TRUE\"></property>";
+
+        MoMLChangeRequest change = new MoMLChangeRequest(null, actor,
+                referenceTag);
+
+        change.setUndoable(true);
+        actor.requestChange(change);
+        
     }
 }
