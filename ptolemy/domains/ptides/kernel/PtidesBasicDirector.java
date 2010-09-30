@@ -802,6 +802,9 @@ public class PtidesBasicDirector extends DEDirector {
         // does this algorithm work?
         // initialize all port model delays to infinity.
         _portDelays = new HashMap<IOPort, SuperdenseDependency>();
+        if (getContainer() instanceof TypedCompositeActor) {
+            // If we are expanding the configuration, then the container might
+            // be an EntityLibrary.  See ptolemy/configs/test/
         for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
                 .deepEntityList())) {
             for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
@@ -867,6 +870,7 @@ public class PtidesBasicDirector extends DEDirector {
                 }
             }
         }
+        }
 
         // inputModelTimeDelays is the delays as calculated through shortest path algorithm. Now we
         // need to use these delays to calculate the minDelay, which is calculated as follows:
@@ -902,6 +906,9 @@ public class PtidesBasicDirector extends DEDirector {
     protected void _checkSensorActuatorNetworkConsistency()
             throws IllegalActionException {
         // These checks are constantly being updated. It is not yet complete.
+        if (getContainer() instanceof TypedCompositeActor) {
+            // If we are expanding the configuration, then the container might
+            // be an EntityLibrary.  See ptolemy/configs/test/
         for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
                 .inputPortList())) {
             for (TypedIOPort sinkPort : (List<TypedIOPort>) port
@@ -952,6 +959,7 @@ public class PtidesBasicDirector extends DEDirector {
                 }
             }
         }
+        }
     }
 
     /** Clear any highlights on the specified actor.
@@ -983,6 +991,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  @exception IllegalActionException
      */
     protected void _clearMinDelayOffsets() throws IllegalActionException {
+        if (getContainer() instanceof TypedCompositeActor) {
+            // If we are expanding the configuration, then the container might
+            // be an EntityLibrary.  See ptolemy/configs/test/
         for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
                 .deepEntityList())) {
             for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
@@ -1001,6 +1012,7 @@ public class PtidesBasicDirector extends DEDirector {
                     }
                 }
             }
+        }
         }
     }
 
