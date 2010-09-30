@@ -31,11 +31,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** An interface for tokens that can be partially ordered.
 
- FIXME: Should this be a class below {@link ptolemy.data.Token} but
-   above {@link ptolemy.data.ScalarToken} and
-   {@link ptolemy.data.ontologies.ConceptToken} rather than an interface?
-
- The default implementation of visitRelationalNode
+ <p>The default implementation of visitRelationalNode
  {@link ptolemy.data.expr.ParseTreeEvaluator#visitRelationalNode(ASTPtRelationalNode)}
  uses this interface, so any tokens that implement this interface can be used
  with the inequality operators (<, <=, >, and >=) in the Ptolemy expression
@@ -47,6 +43,10 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (blickly)
  */
 public interface PartiallyOrderedToken {
+    // FIXME: Should this be a class below ptolemy.data.Token but
+    // above ptolemy.data.ScalarToken and
+    // ptolemy.data.ontologies.ConceptToken} rather than an interface?
+
     /** Check whether the value of this token is strictly less than that of the
      *  argument token.
      *  

@@ -47,7 +47,6 @@ import diva.gui.GUIUtilities;
 /**
  * A controller that provides binding of an attribute and a refinement model.
  * 
- * @see ptolemy.vergil.properties.ModelAttributeControllerFactory
  * @author Dai Bui
  * @version $Id$
  * @since Ptolemy II 8.0

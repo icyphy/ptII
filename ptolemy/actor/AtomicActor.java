@@ -672,7 +672,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  cases where output ports do not depend at all on input ports.
      *  @exception IllegalActionException Thrown by subclasses if causality interface
      *  cannot be computed.
-     *  @see ptolemy.domains.de.lib.TimedDelay
      *  @see #removeDependency(IOPort, IOPort)
      *  @see #getCausalityInterface()
      *  @deprecated There is no need to override this method anymore.

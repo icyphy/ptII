@@ -250,8 +250,18 @@ public class ConfigurationApplication implements ExecutionListener {
                             .getPtolemyPreferencesWithinConfiguration(_configuration);
                     preferences.backgroundColor
                             .setExpression("{1.0, 1.0, 1.0, 1.0}");
+
                 }
-                runModels();
+                if (_run20x) {
+                    for (int i = 1; i <= 20; i++) {
+                        // Use Manager.execute()
+                        _runModels(false);
+                    } 
+                } else {
+                    // Use Manager.startRun() and run the model in
+                    // a new thread.
+                    _runModels(true);
+                }
 
                 if (_exit) {
                     // In vergil, this gets called in the
@@ -472,38 +482,10 @@ public class ConfigurationApplication implements ExecutionListener {
     }
 
     /** Start the models running, each in a new thread, then return.
-     *  @exception IllegalActionException If the manager throws it.
+     *  @exception KernelException If the manager throws it.
      */
-    public void runModels() throws IllegalActionException {
-        Iterator models = models().iterator();
-
-        while (models.hasNext()) {
-            NamedObj model = (NamedObj) models.next();
-
-            if (model instanceof CompositeActor) {
-                CompositeActor actor = (CompositeActor) model;
-
-                if (_statistics) {
-                    System.out.println("Statistics for " + model.getFullName());
-                    System.out.println(((CompositeEntity) model)
-                            .statistics(null));
-                }
-
-                // Create a manager if necessary.
-                Manager manager = actor.getManager();
-
-                if (manager == null) {
-                    manager = new Manager(actor.workspace(), "manager");
-                    actor.setManager(manager);
-                }
-
-                manager.addExecutionListener(this);
-                _activeCount++;
-
-                // Run the model in a new thread.
-                manager.startRun();
-            }
-        }
+    public void runModels() throws KernelException {
+        _runModels(true);
     }
 
     /** Given the name of a file or a URL, convert it to a URL.
@@ -933,6 +915,11 @@ public class ConfigurationApplication implements ExecutionListener {
         } else if (arg.equals("-runThenExit")) {
             _run = true;
             _exit = true;
+        } else if (arg.equals("-run20x")) {
+            _run = true;
+            _run20x = true;
+            _exit = true;
+            Manager.minimumStatisticsTime = 1;
         } else if (arg.equals("-statistics")) {
             _statistics = true;
         } else if (arg.equals("-test")) {
@@ -1347,6 +1334,7 @@ public class ConfigurationApplication implements ExecutionListener {
             { "-help", "Print this help message" },
             { "-printPDF", "Print to a PDF printer" },
             { "-run", "Run the models" },
+            { "-run20x", "Run the models 20 times, then exit" },
             { "-runThenExit",
                     "Run the models, then exit after the models finish." },
             { "-statistics", "Open the model, print statistics and exit." },
@@ -1375,6 +1363,9 @@ public class ConfigurationApplication implements ExecutionListener {
 
     /** If true, then -run was specified on the command line. */
     protected boolean _run = false;
+
+    /** If true, then -run20x was specified on the command line. */
+    protected boolean _run20x = false;
 
     /** If true, then -statistics was specified on the command line. */
     protected boolean _statistics = false;
@@ -1453,7 +1444,52 @@ public class ConfigurationApplication implements ExecutionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
+
+    /** Start the models running, each in a new thread, then return.
+     *  @param useStartRun True if Manager.startRun() should be called,
+     *  false if Manager.executeShould be called.
+     *  @exception KernelException If the manager throws it.
+     */
+    private void _runModels(boolean useStartRun) throws KernelException {
+        Iterator models = models().iterator();
+
+        while (models.hasNext()) {
+            NamedObj model = (NamedObj) models.next();
+
+            if (model instanceof CompositeActor) {
+                CompositeActor actor = (CompositeActor) model;
+
+                if (_statistics) {
+                    System.out.println("Statistics for " + model.getFullName());
+                    System.out.println(((CompositeEntity) model)
+                            .statistics(null));
+                }
+
+                // Create a manager if necessary.
+                Manager manager = actor.getManager();
+
+                if (manager == null) {
+                    manager = new Manager(actor.workspace(), "manager");
+                    actor.setManager(manager);
+                }
+
+                manager.addExecutionListener(this);
+                _activeCount++;
+
+                if (useStartRun) {
+                    // Run the model in a new thread.
+                    manager.startRun();
+                } else {
+                    manager.execute();
+                }
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     // The count of currently executing runs.
     private volatile int _activeCount = 0;
 

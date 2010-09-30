@@ -42,7 +42,6 @@ package ptolemy.actor;
  semantics, which means that when a get method is called on the receiver,
  the current token is returned and it is also removed from the receiver.
 
- @see ptolemy.domains.giotto.kernel.GiottoReceiver
  @author Haiyang Zheng
  @version $Id$
  @since Ptolemy II 4.1
