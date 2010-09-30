@@ -1290,13 +1290,21 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         // Call the preinitialize method of the super class.
         super.preinitialize();
 
-        // Do this here so that performance measurements
-        // clearly indicate that the cost is in static analysis
-        // done in preinitialize.
-        CompositeActor container = (CompositeActor) getContainer();
-        CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
+	if (getContainer() instanceof CompositeActor) {
+	    // Tests in ptolemy/configs/test expand the configuration which
+	    // results in the ModelDirectory getting expanded.  In the
+	    // ModelDirectory, the container might be an EntityLibrary.
+	    // The Ptides director is calling preinitialize() in
+	    // attributeChanged(), which means that this code gets called.
+
+	    // Do this here so that performance measurements
+	    // clearly indicate that the cost is in static analysis
+	    // done in preinitialize.
+	    CompositeActor container = (CompositeActor) getContainer();
+	    CausalityInterfaceForComposites causality = (CausalityInterfaceForComposites) container
                 .getCausalityInterface();
-        causality.checkForCycles();
+	    causality.checkForCycles();
+	}
 
         if (_debugging && _verbose) {
             _debug("## Depths assigned to actors and ports:");
