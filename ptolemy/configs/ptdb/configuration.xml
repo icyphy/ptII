@@ -6,7 +6,7 @@
   <doc>Configuration for ptdb.</doc>
              
    <!-- Specify class for actor interaction addons -->
-   <property name="_ActorInteractionAddon"
+   <property name="_actorInteractionAddon"
              class="ptolemy.data.expr.StringParameter"
              value="ptdb.gui.DBReferenceActorInteractionAddon"/>
 
