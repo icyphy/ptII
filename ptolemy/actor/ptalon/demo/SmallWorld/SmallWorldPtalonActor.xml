@@ -317,7 +317,7 @@ Based on $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml</text></s
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 375.0]">
         </property>
     </property>
-    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="/Users/cxh/ptII/ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.ptln">
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.ptln">
     </property>
     <entity name="SmallWorld" class="ptolemy.actor.ptalon.PtalonActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 210.0]">
