@@ -205,7 +205,9 @@ DSP_JNLP_JARS =	\
 # Building Controls Virtual Test Bed (https://gaia.lbl.gov/bcvtb)
 #
 BCVTB_ONLY_JNLP_JARS = \
-	doc/codeDocBcvtb.jar \
+	doc/codeDocBcvtb.jar
+
+LBNL_JARS = \
 	lbnl/lbnl.jar \
 	lbnl/demo/demo.jar
 
@@ -224,6 +226,7 @@ BCVTB_MAIN_JAR = \
 BCVTB_JNLP_JARS =	\
 	$(BCVTB_MAIN_JAR) \
 	$(BCVTB_ONLY_JNLP_JARS) \
+	$(LBNL_JARS) \
 	doc/design/usingVergil/usingVergil.jar \
 	doc/docConfig.jar \
 	lib/diva.jar \
@@ -238,7 +241,8 @@ BCVTB_JNLP_JARS =	\
 	ptolemy/domains/modal/demo/demo.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
 	$(MATLAB_JARS) \
-	$(SDF_DEMO_JARS)
+	$(SDF_DEMO_JARS) \
+	$(PTDATABASE_JNLP_JARS)
 
 
 #######
@@ -459,7 +463,6 @@ FULL_ONLY_JNLP_JARS = \
 	doc/design/design.jar \
 	doc/img/img.jar \
 	$(PTJACL_JARS) \
-	lbnl/lbnl.jar \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
@@ -536,6 +539,7 @@ FULL_MAIN_JAR = \
 
 FULL_JNLP_JARS = \
 	$(FULL_MAIN_JAR) \
+	$(LBNL_JARS) \
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR) \
 	$(DSP_ONLY_JNLP_JARS) \
