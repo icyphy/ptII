@@ -132,7 +132,7 @@ demosPtinyKepler.htm: demosPtiny.htm
 	$(GAWK) -f $(ROOT)/doc/ptinyKepler.awk demosPtiny.htm | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
 
 docsBcvtb.htm: docsPtiny.htm
-	$(GAWK) -f $(ROOT)/doc/ptinyBcvtb.awk docsPtiny.htm | sed 's/introPtiny.htm/intro.htm/' | sed 's/completeDemosPtiny.htm/completeDemosBcvtb.htm/' | sed 's@/codeDoc/index.html@/codeDocBcvtb/doc/codeDoc/index.html@'> $@  
+	$(GAWK) -f $(ROOT)/doc/ptinyBcvtb.awk docsPtiny.htm | sed 's/introPtiny.htm/intro.htm/' | sed 's/completeDemosPtiny.htm/completeDemosBcvtb.htm/' > $@
 
 docsPtiny.htm: docs.htm
 	$(GAWK) -f $(ROOT)/doc/javahtml.awk docs.htm | sed 's/intro.htm/introPtiny.htm/' | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
