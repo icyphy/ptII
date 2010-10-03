@@ -28,17 +28,8 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-
 #
-# To compile the tutorial files, consult the Ptolemy II Design Document.
-#
-# Basically, each *.java file gets copied to TutorialApplet.java
-# and then run:
-#
-# cp TutorialApplet1.java TutorialApplet.java
-# javac -classpath ../.. TutorialApplet.java
-# appletviewer -classpath ../../tutorial.htm
-
+# To run the demos, run "make demo"
 ME =		doc/tutorial
 
 DIRS = 		domains graph gui
