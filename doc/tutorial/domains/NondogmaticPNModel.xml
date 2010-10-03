@@ -4,7 +4,7 @@
 <entity name="NondogmaticPNModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="NondogmaticPNDirector" class="doc.tutorial.director.NondogmaticPNDirector">
+    <property name="NondogmaticPNDirector" class="doc.tutorial.domains.NondogmaticPNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
         </property>
     </property>

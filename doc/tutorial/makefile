@@ -41,7 +41,7 @@
 
 ME =		doc/tutorial
 
-DIRS = 		director graph gui
+DIRS = 		domains graph gui
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -84,15 +84,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'AmorphousDirector$$DelegatingReceiver.class' \
-	'LeftRightDirector$$LeftRightScheduler.class' \
-	'LeftRightDirector$$LeftRightScheduler$$LeftRightComparator.class' \
-	'NondogmaticPNDirector$$FlexibleReceiver.class' \
-	'TableDisplay$$1.class' \
-	'TableDisplayWithConfigure$$Factory$$1.class' \
-	'TableDisplayWithConfigure$$Factory.class' \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR) \
+	$(PTCLASSALLJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 

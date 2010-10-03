@@ -1,4 +1,4 @@
-# Makefile for directory tutorial
+# Makefile for domains tutorial
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		doc/tutorial/director
+ME =		doc/tutorial/domains
 
 DIRS =
 
@@ -46,7 +46,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	director
+PTPACKAGE = 	domains
 PTCLASSJAR =
 
 JSRCS = \

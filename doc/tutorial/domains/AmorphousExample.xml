@@ -8,7 +8,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="AmorphousDirector" class="doc.tutorial.director.AmorphousDirector">
+    <property name="AmorphousDirector" class="doc.tutorial.domains.AmorphousDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
         </property>
     </property>

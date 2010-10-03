@@ -1,11 +1,16 @@
+<!-- $Id$ -->
 <html>
 <head>
-<!-- $Id$ -->
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Domain Overview</title>
+<link href="../../default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
 <h1>Domain Overview</h1>
 <p>
 <ul>
 <li><i>Synchronous Dataflow (SDF)</i>:
-<a href="../../ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>:
+<a href="../../../ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>:
 In SDF, the firing of actors is statically scheduled, and at the start of execution,
 consistency and deadlock conditions are checked. SDF is suitable for applications
 with simple, data-independent control flow. Actors produce and consume a fixed
@@ -20,16 +25,16 @@ In DDF, the firing of actors is dynamically scheduled. Each actor
 asserts its "firing rules," specifying the number of input tokens it requires
 on each input port in order to be fired next time. This can be used to make
 data-dependent control flow, mimicking
-<a href="../../ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.xml">if-then-else</a>,
-<a href="../../ptolemy/domains/ddf/demo/Loop/Loop.xml">do-while</a>,
+<a href="../../../ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.xml">if-then-else</a>,
+<a href="../../../ptolemy/domains/ddf/demo/Loop/Loop.xml">do-while</a>,
 and even
-<a href="../../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml">recursion</a>.
+<a href="../../../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml">recursion</a>.
 More interestingly, dynamic dataflow models balance data-driven and demand-driven
 computation to get sophisticated data-dependent control flow, as illustrated
 for example in 
-<a href="../../ptolemy/domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>.
+<a href="../../../ptolemy/domains/ddf/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>.
 It can be combined with SDF to get the best of both worlds, as illustrated in
-<a href="../../ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.xml">RandomWalk</a>.
+<a href="../../../ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.xml">RandomWalk</a>.
 Unlike synchronous dataflow, the DDF model of computation is Turing
 complete, and questions of deadlock and boundedness are undecidable.
 Nonetheless, given a model that can execute without deadlock and with
@@ -49,7 +54,7 @@ Modal models can be used to change these patterns.
 Although HDF can express many data-dependent computations that cannot
 be represented by SDF, it is not Turing complete.  Consequently, deadlock
 and boundedness remain decidable.
-The <a href="../../ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
+The <a href="../../../ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
 example uses this mechanism in a clever way to extract a Fibonacci sequence
 from a counting sequence.
 
@@ -59,11 +64,11 @@ from a counting sequence.
 In PN, each actor is wrapped in a thread, and all actors execute concurrently.
 PN can be used whereever DDF would be used, but unlike DDF, it is harder to
 control the duration of a run. The
-<a href="../../ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.xml">
+<a href="../../../ptolemy/domains/pn/demo/OrderedMerge/OrderedMerge.xml">
 OrderedMerge</a> example illustrates a starvation strategy to get the model
 to stop executing.
 More interesting, PN can be used to achieve a
-<a href="../../ptolemy/domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>.
+<a href="../../../ptolemy/domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>.
 In PN, actors can send data at any time, and it is queued until the recipient reads it.
 A sophisticated algorithm is used to ensure that queues remain bounded if this
 possible given the model.
@@ -75,9 +80,9 @@ The Rendezvous director also wraps each actor in a thread, but unlike PN,
 when a sending actor sends data, it blocks until the receiving actor
 is ready to receive it. This model of computation is useful for
 coordinating asynchronous actions, as in the
-<a href="../../ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml">Barrier</a>
+<a href="../../../ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml">Barrier</a>
 example, or for modeling resource management, as in the
-<a href="../../ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml">ResourcePool</a>
+<a href="../../../ptolemy/domains/rendezvous/demo/ResourcePool/ResourcePool.xml">ResourcePool</a>
 example.
 
 <br><br>
@@ -88,11 +93,11 @@ and events are processed in chronological order. DE is useful
 for modeling timed systems, such as communication networks, computer
 hardware, business processes, etc.
 The
-<a href="../../ptolemy/domains/de/demo/QueueAndServer/QueueAndServer.xml">QueueAndServer</a>
+<a href="../../../ptolemy/domains/de/demo/QueueAndServer/QueueAndServer.xml">QueueAndServer</a>
 example gives a model of a simple queueing system.
 DE has been extended to explicitly model wireless communication,
 as illustrated in the
-<a href="../../ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
+<a href="../../../ptolemy/domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
 WirelessSoundDetection</a> example.
 
 <br><br>
@@ -101,9 +106,9 @@ WirelessSoundDetection</a> example.
 In CT, communication between actors is via continuous-time signals.
 CT is useful for modeling ordinary differential equations, as
 illustrated in the
-<a href="../../ptolemy/domains/ct/demo/Lorenz/Lorenz.xml">
+<a href="../../../ptolemy/domains/ct/demo/Lorenz/Lorenz.xml">
 Lorenz</a> example, and
-<a href="../../ptolemy/domains/gr/demo/StickyMasses/StickyMasses.xml">hybrid systems</a>,
+<a href="../../../ptolemy/domains/gr/demo/StickyMasses/StickyMasses.xml">hybrid systems</a>,
 which combine CT with FSMs.
 
 <br><br>
@@ -115,7 +120,7 @@ In SR,
 which is inspired by the synchronous languages Esterel, Lustre, and Signal,
 actors react instantaneously and simultaneously
 at ticks of a logical clock.
-The <a href="../../ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml">
+The <a href="../../../ptolemy/domains/sr/demo/GuardedCount/GuardedCount.xml">
 GuardedCount</a> example illustrates the ability to use subclocks,
 in the manner of Lustre.
 
@@ -131,7 +136,7 @@ combined hierarchically with other models. A state in the FSM represents
 a mode of operation, and can have a refinement that gives the behavior
 in that mode.
 The refinement can be another FSM or some other model using some other
-Ptolemy domain. The <a href="../../ptolemy/domains/de/demo/ModalModel/ModalModel.xml">
+Ptolemy domain. The <a href="../../../ptolemy/domains/de/demo/ModalModel/ModalModel.xml">
 ModalModel</a> example combines DE, FSM, and SDF to model a
 system where regularly sampled signals are perturbed by irregular
 events in time.
@@ -142,7 +147,7 @@ events in time.
 The GR domain provides 3-D animation capabilities based on the Java3D API.
 The director optimizes the scheduling of actors so that graphics are re-generated
 only when changes have been made. See the
-<a href="../../ptolemy/domains/gr/demo/Helen/Helen.xml">Helen</a> example.
+<a href="../../../ptolemy/domains/gr/demo/Helen/Helen.xml">Helen</a> example.
 </ul>
 </body>
 </html>

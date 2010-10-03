@@ -24,7 +24,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
-package doc.tutorial.director;
+package doc.tutorial.domains;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
