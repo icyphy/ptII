@@ -4,7 +4,7 @@
 <entity name="LeftRightModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="LeftRightDirector" class="doc.tutorial.LeftRightDirector">
+    <property name="LeftRightDirector" class="doc.tutorial.director.LeftRightDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
         </property>
     </property>

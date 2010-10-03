@@ -41,7 +41,7 @@
 
 ME =		doc/tutorial
 
-DIRS = graph
+DIRS = 		director graph gui
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -60,11 +60,6 @@ PTPACKAGE = 	tutorial
 PTCLASSJAR =
 
 JSRCS = \
-	AmorphousDirector.java \
-	LeftRightDirector.java \
-	NondogmaticPNDirector.java \
-	TableDisplay.java \
-	TableDisplayWithConfigure.java \
 	TutorialApplet1.java \
 	TutorialApplet2.java \
 	TutorialApplet3.java
@@ -72,11 +67,7 @@ JSRCS = \
 # Note that the TutorialApplet*.java files get copied to
 # TutorialApplet.java and then made
 EXTRA_SRCS =	$(JSRCS) \
-	AmorphousExample.xml \
-	InconsistentModel.xml \
-	LeftRightModel.xml \
-	NondogmaticPNModel.xml \
-	README \
+	README.txt \
 	TableDisplayModel.xml \
 	TutorialApplet1.htm \
 	TutorialApplet2.htm \
