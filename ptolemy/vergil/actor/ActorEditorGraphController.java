@@ -36,7 +36,6 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import javax.swing.Action;
@@ -79,7 +78,6 @@ import diva.canvas.interactor.ActionInteractor;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Interactor;
-import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeRenderer;

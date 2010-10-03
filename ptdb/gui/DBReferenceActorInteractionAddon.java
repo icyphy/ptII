@@ -29,8 +29,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptdb.gui;
 
-import javax.swing.JOptionPane;
-
 import ptdb.common.dto.XMLDBModel;
 import ptolemy.data.expr.StringConstantParameter;
 import ptolemy.data.expr.StringParameter;

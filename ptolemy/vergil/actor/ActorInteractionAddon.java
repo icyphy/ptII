@@ -60,15 +60,10 @@ public interface ActorInteractionAddon {
      * The action to be taken when looking inside an actor.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
-<<<<<<< .mine
      * @exception IllegalActionException If the container is incompatible
      *   with this attribute.
      * @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-=======
-     * @exception IllegalActionException Thrown for illegal action.
-     * @exception NameDuplicationException Thrown for name duplication.
->>>>>>> .r59346
      */
     abstract void lookInsideAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException;
@@ -85,15 +80,10 @@ public interface ActorInteractionAddon {
      * The action to be taken when looking inside an actor.
      * @param figureAction The FigureAction from which the call is being made.
      * @param actor The actor being opened.
-<<<<<<< .mine
      * @exception IllegalActionException If the container is incompatible
      *   with this attribute.
      * @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-=======
-     * @exception IllegalActionException  Thrown for illegal action.
-     * @exception NameDuplicationException  Thrown for name duplication.
->>>>>>> .r59346
      */
     abstract void openInstanceAction(FigureAction figureAction, NamedObj actor)
             throws IllegalActionException, NameDuplicationException;

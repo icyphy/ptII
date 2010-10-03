@@ -199,12 +199,7 @@ public class DBActorController extends ActorController {
                         } else {
                             MessageHandler.error("The specified model could "
                                             + "not be found in the database.");
-                            /*JOptionPane.showMessageDialog(this.getFrame(),
-                                    "The specified model could "
-                                            + "not be found in the database.",
-                                    "Load Error",
-                                    JOptionPane.INFORMATION_MESSAGE, null);
-                            */
+
                         }
                     } catch (Exception e1) {
                         MessageHandler.error(

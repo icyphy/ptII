@@ -27,8 +27,6 @@
  */
 package ptolemy.vergil.actor;
 
-import java.lang.reflect.Method;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.gui.Configuration;
@@ -51,7 +49,6 @@ import ptolemy.vergil.kernel.RelationController;
 import diva.canvas.Figure;
 import diva.canvas.interactor.SelectionDragger;
 import diva.graph.EdgeController;
-import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.graph.NodeController;

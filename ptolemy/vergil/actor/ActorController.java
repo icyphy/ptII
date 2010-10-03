@@ -35,7 +35,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.lang.reflect.Method;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
