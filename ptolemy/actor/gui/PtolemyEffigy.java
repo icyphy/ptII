@@ -313,6 +313,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  'PUBLIC \"-//UC Berkeley//DTD MoML"'.
          *  The specified base is used to expand any relative file references
          *  within the URL.
+         *  If the input URL contains a "#", then the fragment after
+         *  the "#" assumed to be a dot separated path to an inner model
+         *  and the inner model is opened.
          *  @param container The container for the effigy.
          *  @param base The base for relative file references, or null if
          *   there are no relative file references.
@@ -433,12 +436,20 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         }
 
                         if (toplevel != null) {
+                            NamedObj model = toplevel;
+                            int index = -1 ;
+                            if ((index = input.toString().indexOf("#")) != -1) {
+                                String fullName = input.toString().substring(index+1, input.toString().length());
+                                if (toplevel instanceof CompositeEntity) {
+                                    model = ((CompositeEntity)toplevel).getEntity(fullName);
+                                }
+                            }
                             try {
                                 String entityClassName = StringUtilities
                                         .getProperty("entityClassName");
                                 if ((entityClassName.length() > 0 || endTime > startTime
                                         + Manager.minimumStatisticsTime)
-                                        && toplevel instanceof CompositeEntity) {
+                                        && model instanceof CompositeEntity) {
                                     System.out
                                             .println("Opened "
                                                     + input
@@ -450,7 +461,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                     long statisticsStartTime = System
                                             .currentTimeMillis();
                                     System.out
-                                            .println(((CompositeEntity) toplevel)
+                                            .println(((CompositeEntity) model)
                                                     .statistics(entityClassName));
                                     long statisticsEndTime = System
                                             .currentTimeMillis();
@@ -467,7 +478,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                                 + " failed to read the entityClassName"
                                                 + " property (-sandbox always causes this)");
                             }
-                            effigy.setModel(toplevel);
+                            effigy.setModel(model);
 
                             // A MoMLFilter may have modified the model
                             // as it was being parsed.
