@@ -1,3 +1,5 @@
+$CLASSPATH/lbnl/demo/CRoom/CRoom.xml
+$CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
 $CLASSPATH/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimizationDDF.xml
