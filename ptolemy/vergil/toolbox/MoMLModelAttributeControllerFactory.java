@@ -34,6 +34,7 @@ import diva.graph.GraphController;
 
 /**
   * A factory attribute that creates MoMLModelAttributeControllers.
+  * @see ptolemy.vergil.properties.ModelAttributeController
   * @author Dai Bui.  Based on code by Man-Kit Leung
   * @version $Id$
   * @since Ptolemy II 8.0
