@@ -155,19 +155,6 @@ public class Sensor extends TypedAtomicActor {
         (new SingletonParameter(signal, "_hide")).setToken(BooleanToken.TRUE);
     }
 
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> or <i>signal</i>
-     *  ports in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(input, output, 0.0);
-        declareDelayDependency(signal, output, 0.0);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -209,6 +196,18 @@ public class Sensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> or <i>signal</i>
+     *  ports in a firing.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(input, output, 0.0);
+        _declareDelayDependency(signal, output, 0.0);
+    }
+    
     /** When it receives token from the signal port, which is
      *  used to receive signal from the pursuer or the evader.
      *  it tells what the signal is from by checking the signal header.

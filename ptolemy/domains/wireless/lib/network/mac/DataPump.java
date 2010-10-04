@@ -159,6 +159,20 @@ public class DataPump extends MACActorBase {
         return newObject;
     }
 
+    /** Override the base class to declare that the <i>TXTXConfirm</i>
+     *  and <i>RXTXConfirm</i> output ports do not
+     *  depend on the <i>TXTXRequest</i> and <i>RXTXRequest</i>
+     *  in a firing.
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(TXTXRequest, TXTXConfirm, 0.0);
+        _declareDelayDependency(RXTXRequest, RXTXConfirm, 0.0);
+        _declareDelayDependency(TXTXRequest, RXTXConfirm, 0.0);
+        _declareDelayDependency(RXTXRequest, TXTXConfirm, 0.0);
+    }
+    
     /** The main function
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.
@@ -263,21 +277,6 @@ public class DataPump extends MACActorBase {
         //_message = null;
         _messageType = UNKNOWN;
         _pdu = null;
-    }
-
-    /** Override the base class to declare that the <i>TXTXConfirm</i>
-     *  and <i>RXTXConfirm</i> output ports do not
-     *  depend on the <i>TXTXRequest</i> and <i>RXTXRequest</i>
-     *  in a firing.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(TXTXRequest, TXTXConfirm, 0.0);
-        declareDelayDependency(RXTXRequest, RXTXConfirm, 0.0);
-        declareDelayDependency(TXTXRequest, RXTXConfirm, 0.0);
-        declareDelayDependency(RXTXRequest, TXTXConfirm, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

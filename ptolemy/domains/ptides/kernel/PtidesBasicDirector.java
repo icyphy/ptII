@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -167,15 +168,9 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == highlightModelTimeDelays) {
-            // need to do a preinitialize for all actors first, otherwise all actors will start with
-            // defaultDependency, which, in this case means all actors have zero model delays.
-            if (!_inPreinitialize && _lastWorkspaceVersion != _workspace.getVersion()) {
-                try {
-                    _inPreinitialize = true;
-                    _lastWorkspaceVersion = _workspace.getVersion();
-                    preinitialize();
-                } finally {
-                    _inPreinitialize = false;
+            for (Actor actor : (List<Actor>)((CompositeEntity)getContainer()).deepEntityList()) {
+                if (actor instanceof AtomicActor) {
+                    ((AtomicActor)actor).declareDelayDependency();
                 }
             }
             if (highlightModelTimeDelays.getExpression().equals("true")) {
@@ -2697,12 +2692,6 @@ public class PtidesBasicDirector extends DEDirector {
     /** The timestamp of the last executing event.
      */
     private Time _lastTimestamp;
-    
-    private long _lastWorkspaceVersion = -1;
-    
-    /** Whether preinitialize has been called once before.
-     */
-    private boolean _inPreinitialize = false;
 
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.

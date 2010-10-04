@@ -216,6 +216,18 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         return newObject;
     }
 
+    /** Override the base class to declare that the dummy port
+     *  returned by getChannelPort() does not depend on itself
+     *  in a firing. This port is both an input and an output,
+     *  so by default there would be a self dependency.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(_channelPort, _channelPort, 0.0);
+    }
+    
     /** Return a channel port that can be used to set type constraints
      *  between senders and receivers. An channel contains a single port,
      *  which is an instance of ChannelPort. The port is merely used to
@@ -330,19 +342,6 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         } finally {
             workspace().doneReading();
         }
-    }
-
-    /** Override the base class to declare that the dummy port
-     *  returned by getChannelPort() does not depend on itself
-     *  in a firing. This port is both an input and an output,
-     *  so by default there would be a self dependency.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(_channelPort, _channelPort, 0.0);
     }
 
     /** Register a property transformer for transmissions from the specified

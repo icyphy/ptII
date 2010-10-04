@@ -115,6 +115,16 @@ public class Timer extends DETransformer {
         return newObject;
     }
 
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        _declareDelayDependency(input, output, 0.0);
+    }
+    
     /** Read one token from the input. Send out a token that is scheduled
      *  to produce at the current time to the output.
      *
@@ -205,17 +215,6 @@ public class Timer extends DETransformer {
         }
 
         return super.postfire();
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(input, output, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

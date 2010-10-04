@@ -183,6 +183,16 @@ public class Queue extends Transformer {
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
+    
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        _declareDelayDependency(input, output, 0.0);
+    }
 
     /** Put a new input token on the queue and/or produce output
      *  data from the queue.  Specifically, if there is a new token
@@ -299,17 +309,6 @@ public class Queue extends Transformer {
         }
 
         return hasInput || hasTrigger;
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(input, output, 0.0);
     }
 
     /** Clear the queue tokens.

@@ -147,7 +147,19 @@ public class ResettableTimer extends Transformer {
         newObject.output.setTypeSameAs(newObject.value);
         return newObject;
     }
-
+    
+    /** Overwrites the base class to declare delay dependency between
+     *  input and output ports.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(input, output, 0.0);
+    }
+    
     /** If an output is scheduled to be produced, then produce it.
      *  @exception IllegalActionException If there is no director, or can not
      *  send or get tokens from ports.
@@ -388,9 +400,6 @@ public class ResettableTimer extends Transformer {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(input, output, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

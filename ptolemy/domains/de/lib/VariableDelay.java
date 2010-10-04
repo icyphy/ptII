@@ -80,6 +80,20 @@ public class VariableDelay extends TimedDelay {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> and <i>delay</i> in a firing.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the delay input
+        // and the input port,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(delay.getPort(), output, 0.0);
+        _declareDelayDependency(input, output, 0.0);
+    }
+    
     /** Update the delay parameter from the delay port and ensure the delay
      *  is not negative. Call the fire method of super class to consume
      *  inputs and generate outputs.
@@ -101,19 +115,6 @@ public class VariableDelay extends TimedDelay {
         // We leave the model designers to decide whether the
         // zero delay is really what they want.
         super.fire();
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>delay</i> port in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the delay input
-        // and the input port,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(delay.getPort(), output, 0.0);
-        declareDelayDependency(input, output, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

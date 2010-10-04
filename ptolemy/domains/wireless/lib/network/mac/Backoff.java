@@ -135,6 +135,17 @@ public class Backoff extends MACActorBase {
         return newObject;
     }
 
+    /** Override the base class to declare that the <i>BKDone</i>
+     *  output port does not depend on the <i>getBackoff</i>
+     *  of <i>fromDataPump</i> input ports in a firing.
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(getBackoff, BKDone, 0.0);
+        _declareDelayDependency(fromDataPump, BKDone, 0.0);
+    }
+    
     /** The main function
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.
@@ -281,18 +292,6 @@ public class Backoff extends MACActorBase {
             throw new IllegalActionException("the MAC compositor "
                     + "dosen't contain a parameter named mBkIP");
         }
-    }
-
-    /** Override the base class to declare that the <i>BKDone</i>
-     *  output port does not depend on the <i>getBackoff</i>
-     *  of <i>fromDataPump</i> input ports in a firing.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(getBackoff, BKDone, 0.0);
-        declareDelayDependency(fromDataPump, BKDone, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

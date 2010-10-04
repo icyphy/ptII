@@ -79,6 +79,18 @@ public class DEMessageSource extends RandomSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to declare that the <i>output</i>
+     *  and <i>request</i> ports do not depend on the <i>next</i>
+     *  port in a firing.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(next, output, 0.0);
+        _declareDelayDependency(next, request, 0.0);
+    }
+    
     /** Schedule the first fire after a random delay between zero and MaxDelay.
      *  @exception IllegalActionException If there is no director.
      */
@@ -146,19 +158,6 @@ public class DEMessageSource extends RandomSource {
             // this refire should be discarded
             return;
         }
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  and <i>request</i> ports do not depend on the <i>next</i>
-     *  port in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(next, output, 0.0);
-        declareDelayDependency(next, request, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -202,23 +202,14 @@ public class ContinuousTimeDelay extends Transformer {
         return newObject;
     }
 
-    /** Initialize the states of this actor. Place initial output
-     *  token on the input buffer.
-     *  @exception IllegalActionException If a derived class throws it.
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
      */
-    public void initialize() throws IllegalActionException {
-        Token initialToken = initialOutput.getToken();
-        super.initialize();
-        _currentOutput = null;
-        _inputBuffer = new CalendarQueue(new TimedEvent.TimeComparator());
-        _discarded = null;
-        _nextFireAt = new Time(getDirector(), 0);
-
-        //Place the initial token in the input buffer
-        if (initialToken != null) {
-            Time modelStartTime = getDirector().getModelStartTime();
-            _inputBuffer.put(new TimedEvent(modelStartTime, initialToken));
-        }
+    public void declareDelayDependency() throws IllegalActionException {
+        _declareDelayDependency(input, output, _delay);
     }
 
     /*
@@ -360,6 +351,25 @@ public class ContinuousTimeDelay extends Transformer {
         // left continuity of an input signal.
     }
 
+    /** Initialize the states of this actor. Place initial output
+     *  token on the input buffer.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        Token initialToken = initialOutput.getToken();
+        super.initialize();
+        _currentOutput = null;
+        _inputBuffer = new CalendarQueue(new TimedEvent.TimeComparator());
+        _discarded = null;
+        _nextFireAt = new Time(getDirector(), 0);
+
+        //Place the initial token in the input buffer
+        if (initialToken != null) {
+            Time modelStartTime = getDirector().getModelStartTime();
+            _inputBuffer.put(new TimedEvent(modelStartTime, initialToken));
+        }
+    }
+    
     /** Schedule the next output event.
      *  @exception IllegalActionException 
      */
@@ -382,15 +392,6 @@ public class ContinuousTimeDelay extends Transformer {
         }
 
         return super.postfire();
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        declareDelayDependency(input, output, _delay);
     }
 
     /** Override the base class to declare that the actor is nonstrict

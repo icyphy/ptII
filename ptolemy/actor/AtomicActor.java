@@ -235,36 +235,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
         }
     }
 
-    /** Set the dependency that the specified output port has
-     *  on the specified input port to represent a time
-     *  delay with the specified value. By default, each
-     *  output port is assumed to have a dependency on all input
-     *  ports. Subclasses can call this method in preinitialize()
-     *  instead of implementing a custom {@link CausalityInterface}
-     *  for the cases where output ports depend on input ports with
-     *  a time delay. If the time delay is 0.0, this method nonetheless
-     *  assumes that the output port does not (immediately) depend on
-     *  the input port (this amounts to a superdense time delay of
-     *  (0.0, 1)). There should be one such call for each
-     *  input, output pair that does not have a dependency.
-     *  @param input The input port.
-     *  @param output The output port with a time delay dependency on the
-     *   input port.
-     *  @param timeDelay The time delay.
-     *  @exception IllegalActionException Thrown if causality interface
-     *  cannot be computed.
-     *  @see #getCausalityInterface()
-     */
-    public void declareDelayDependency(IOPort input, IOPort output,
-            double timeDelay) throws IllegalActionException {
-        CausalityInterface causality = getCausalityInterface();
-        if (timeDelay == 0.0) {
-            causality.declareDelayDependency(input, output, 0.0, 1);
-        } else {
-            causality.declareDelayDependency(input, output, timeDelay, 0);
-        }
-    }
-
     /** Do nothing.  Derived classes override this method to define their
      *  primary run-time action.
      *
@@ -283,7 +253,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  This declares that all output ports of the actor depend on all input
      *  ports, unless the actor calls
      *  {@link #removeDependency(IOPort, IOPort)} or
-     *  {@link #declareDelayDependency(IOPort, IOPort, double)}.
+     *  {@link #_declareDelayDependency(IOPort, IOPort, double)}.
      *  If this is called multiple times, the same object is returned each
      *  time unless the director has changed since the last call, in
      *  which case a new object is returned.
@@ -307,6 +277,26 @@ public class AtomicActor extends ComponentEntity implements Actor,
                 defaultDependency);
         _causalityInterfaceDirector = director;
         return _causalityInterface;
+    }
+    
+    /** Set the dependency between all output ports and all input
+     *  ports of this actor. By default, each
+     *  output port is assumed to have a dependency on all input
+     *  ports. Since this is the assumed behavior, this method
+     *  does thing by default.
+     *  
+     *  However, for subclasses such as TimeDelay {@link TimeDelay},
+     *  where output ports depend on input ports with a time delay,  
+     *  this method should be overwritten.
+     *  protected method _declareDelayDependency() should be used
+     *  to declare dependency between input and output ports for 
+     *  this actor. 
+     *  @exception IllegalActionException Thrown if causality interface
+     *   cannot be computed.
+     *  @see #getCausalityInterface()
+     *  @see #_declareDelayDependency(IOPort, IOPort, double)
+     */
+    public void declareDelayDependency() throws IllegalActionException {
     }
 
     /** Return the director responsible for the execution of this actor.
@@ -630,7 +620,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
         return true;
     }
 
-    /** Create receivers. Derived classes
+    /** Create receivers and declare delay dependencies. Derived classes
      *  can override this method to perform additional initialization
      *  functions, but they should call this base class methods or
      *  create the receivers themselves.
@@ -652,6 +642,11 @@ public class AtomicActor extends ComponentEntity implements Actor,
         // that override pruneDependencies() to alter their
         // causality interface, call it here.
         pruneDependencies();
+        
+        // declare dependency for this actor. For actors such as
+        // TimeDelay, the delay dependency between input and output
+        // ports are declared.
+        declareDelayDependency();
 
         // First invoke initializable methods.
         if (_initializables != null) {
@@ -897,6 +892,38 @@ public class AtomicActor extends ComponentEntity implements Actor,
         }
 
         super._addPort(port);
+    }
+    
+
+    /** Set the dependency that the specified output port has
+     *  on the specified input port to represent a time
+     *  delay with the specified value. By default, each
+     *  output port is assumed to have a dependency on all input
+     *  ports. Subclasses can call this method in public method
+     *  declareDelayDependency()
+     *  instead of implementing a custom {@link CausalityInterface}
+     *  for the cases where output ports depend on input ports with
+     *  a time delay. If the time delay is 0.0, this method nonetheless
+     *  assumes that the output port does not (immediately) depend on
+     *  the input port (this amounts to a superdense time delay of
+     *  (0.0, 1)). There should be one such call for each
+     *  input, output pair that does not have a dependency.
+     *  @param input The input port.
+     *  @param output The output port with a time delay dependency on the
+     *   input port.
+     *  @param timeDelay The time delay.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    protected void _declareDelayDependency(IOPort input, IOPort output,
+            double timeDelay) throws IllegalActionException {
+        CausalityInterface causality = getCausalityInterface();
+        if (timeDelay == 0.0) {
+            causality.declareDelayDependency(input, output, 0.0, 1);
+        } else {
+            causality.declareDelayDependency(input, output, timeDelay, 0);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

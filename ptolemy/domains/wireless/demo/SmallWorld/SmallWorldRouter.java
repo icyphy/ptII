@@ -278,6 +278,16 @@ public class SmallWorldRouter extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(input, output, 0.0);
+    }
+    
     /** Check whether it is the destination of the massage, if so,
      *  change the color of the icon to red and schedule
      *  another firing after 1.0 time unit to change it back to white.
@@ -466,17 +476,6 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
         //_isRed = false;
         //_values = new Token[4];
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(input, output, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

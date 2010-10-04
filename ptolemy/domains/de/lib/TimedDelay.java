@@ -173,6 +173,16 @@ public class TimedDelay extends DETransformer {
         return newObject;
     }
 
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        _declareDelayDependency(input, output, _delay);
+    }
+    
     /** Read one token from the input. Send out a token that is scheduled
      *  to produce at the current time to the output.
      *  @exception IllegalActionException If there is no director, or the
@@ -254,15 +264,6 @@ public class TimedDelay extends DETransformer {
         }
 
         return super.postfire();
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        declareDelayDependency(input, output, _delay);
     }
 
     ///////////////////////////////////////////////////////////////////

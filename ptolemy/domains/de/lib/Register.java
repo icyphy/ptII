@@ -100,6 +100,22 @@ public class Register extends Sampler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> in a firing.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input.
+        _declareDelayDependency(input, output, 0.0);
+        // Note the dependency between trigger and output port is not
+        // declared. This is because declaring a dependency
+        // of 0.0 really means (0.0, 1) (i.e., the output does not
+        // immediately depend on the trigger). However, in this case the
+        // output could immediately depend on the trigger port.
+    }
+    
     /** If there is a token in the <i>trigger</i> port, emit the previously
      *  seen inputs from the <i>input</i> port. If there has been no
      *  previous input tokens, but the <i>initialValue</i> parameter
@@ -163,20 +179,5 @@ public class Register extends Sampler {
         }
 
         return writeRequest || super.prefire();
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input.
-        declareDelayDependency(input, output, 0.0);
-        // Note the dependency between trigger and output port is not
-        // declared. This is because declaring a dependency
-        // of 0.0 really means (0.0, 1) (i.e., the output does not
-        // immediately depend on the trigger). However, in this case the
-        // output could immediately depend on the trigger port.
     }
 }

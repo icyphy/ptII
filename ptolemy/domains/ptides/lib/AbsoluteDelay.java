@@ -90,6 +90,20 @@ public class AbsoluteDelay extends TimeDelay {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>outputTime</i> and <i>input</i> \
+     *  port in a firing.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the delay input
+        // and the input port,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(outputTime, output, 0.0);
+        _declareDelayDependency(input, output, 0.0);
+    }
+    
     /** Update the delay parameter from the delay port and ensure the delay
      *  is not negative. Call the fire method of super class to consume
      *  inputs and generate outputs.
@@ -153,17 +167,10 @@ public class AbsoluteDelay extends TimeDelay {
         return super.postfire();
     }
 
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>delay</i> port in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
+    /** Declare _outputTime parameter to be of Time with default value 0.0
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        // Declare that output does not immediately depend on the delay input
-        // and the input port,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(outputTime, output, 0.0);
-        declareDelayDependency(input, output, 0.0);
         _outputTime = new Time(getDirector(), 0.0);
     }
 

@@ -192,6 +192,21 @@ public class PHY extends NetworkActorBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+
+    /** Override the base class to declare that the <i>fromMAC</i>
+     *  output port does not
+     *  depend on the <i>toMAC</i>, <i>channelStatus</i>
+     *  and <i>PHYConfirm</i> ports in a firing.
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(fromMAC, toMAC, 0.0);
+        _declareDelayDependency(fromMAC, channelStatus, 0.0);
+        _declareDelayDependency(fromMAC, PHYConfirm, 0.0);
+    }
+    
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -491,20 +506,6 @@ public class PHY extends NetworkActorBase {
         } else {
             super.attributeChanged(attribute);
         }
-    }
-
-    /** Override the base class to declare that the <i>fromMAC</i>
-     *  output port does not
-     *  depend on the <i>toMAC</i>, <i>channelStatus</i>
-     *  and <i>PHYConfirm</i> ports in a firing.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(fromMAC, toMAC, 0.0);
-        declareDelayDependency(fromMAC, channelStatus, 0.0);
-        declareDelayDependency(fromMAC, PHYConfirm, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////

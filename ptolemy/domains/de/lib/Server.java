@@ -178,6 +178,19 @@ public class Server extends DETransformer {
         return newObject;
     }
 
+    /** Override the base class to declare that the <i>output</i>
+     *  does not depend on the <i>input</i> and <i>serviceTime</i> in a firing.
+     *  @exception IllegalActionException Thrown if causality interface
+     *  cannot be computed.
+     *  @see #getCausalityInterface()
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+        // Declare that output does not immediately depend on the input,
+        // though there is no lower bound on the time delay.
+        _declareDelayDependency(input, output, 0.0);
+        _declareDelayDependency(serviceTime.getPort(), output, 0.0);
+    }
+    
     /** If there is input, read it and put it in the queue.
      *  If the service time has expired for a token currently
      *  in the queue, then send that token on the output.
@@ -230,19 +243,6 @@ public class Server extends DETransformer {
             _fireAt(_nextTimeFree);
         }
         return super.postfire();
-    }
-
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> or <i>serviceTime</i>
-     *  in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        // Declare that output does not immediately depend on the input,
-        // though there is no lower bound on the time delay.
-        declareDelayDependency(input, output, 0.0);
-        declareDelayDependency(serviceTime.getPort(), output, 0.0);
     }
 
     ///////////////////////////////////////////////////////////////////
