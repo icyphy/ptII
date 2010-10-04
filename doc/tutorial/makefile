@@ -59,12 +59,10 @@ JSRCS = \
 # TutorialApplet.java and then made
 EXTRA_SRCS =	$(JSRCS) \
 	README.txt \
-	TableDisplayModel.xml \
 	TutorialApplet1.htm \
 	TutorialApplet2.htm \
 	TutorialApplet3.htm \
 	TutorialApplet4.htm \
-	domainOverview.htm \
 	index.htm
 
 # Sources that may or may not be present, but if they are present, we don't
