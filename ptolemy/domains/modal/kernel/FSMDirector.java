@@ -69,17 +69,23 @@ import ptolemy.kernel.util.Workspace;
 //// FSMDirector
 
 /**
- * An FSMDirector governs the execution of a modal model. A modal model is a TypedCompositeActor
- * with a FSMDirector as local director. The mode control logic is captured by a mode controller, an
- * instance of FSMActor contained by the composite actor. Each state of the mode controller
- * represents a mode of operation and can be refined by an opaque CompositeActor contained by the
- * same composite actor.
- * <p>
- * The mode controller contains a set of states and transitions. A transition has a <i>guard
- * expression</i>, any number of <i>output actions</i>, and any number of <i>set actions</i>. It has
- * an <i>initial state</i>, which is the unique state whose <i>isInitialState</i> parameter is true.
- * The states and transitions can have <i>refinements</i>, which are composite actors. In outline, a
- * firing of this director is a sequence of steps:
+ * An FSMDirector governs the execution of a modal model. A modal
+ * model is a TypedCompositeActor with a FSMDirector as local
+ * director. The mode control logic is captured by a mode controller,
+ * an instance of FSMActor contained by the composite actor. Each
+ * state of the mode controller represents a mode of operation and can
+ * be refined by an opaque CompositeActor contained by the same
+ * composite actor.
+
+ * <p> The mode controller contains a set of states and transitions. A
+ * transition has a <i>guard expression</i>, any number of <i>output
+ * actions</i>, and any number of <i>set actions</i>. It has an
+ * <i>initial state</i>, which is the unique state whose
+ * <i>isInitialState</i> parameter is true.  The states and
+ * transitions can have <i>refinements</i>, which are composite
+ * actors. In outline, a firing of this director is a sequence of
+ * steps:
+ *
  * <ol>
  * <li>Read inputs.
  * <li>Evaluate the guards of preemptive transition out of the current state.
@@ -95,62 +101,83 @@ import ptolemy.kernel.util.Workspace;
  * In postfire, the following steps are performed:
  * <ol>
  * <li>Postfire the refinements of the current state if they were fired.
- * <li>Initialize the refinements of the destination state if the transition is a reset transition.
+ * <li>Initialize the refinements of the destination state if the transition is a reset
+ * transition.
  * <li>Execute the set actions of the chosen transition.
  * <li>Postfire the transition refinements of the chosen transition.
  * <li>Change the current state to the destination of the chosen transition.
  * </ol>
- * Since this director makes no persistent state changes in its fire() method, it conforms with the
- * <i>actor abstract semantics</i>. Assuming the state and transition refinements also conform, this
- * director can be used inside any Ptolemy II actor model of computation. How it behaves in each
- * domain, however, can be somewhat subtle, particularly with domains that have fixed-point
- * semantics and when nondeterministic transitions are used. The details are given below.
- * <p>
- * When a modal model is fired, this director first transfers the input tokens from the outside
- * domain to the mode controller and the refinement of its current state. The preemptive transitions
- * from the current state of the mode controller are examined. If there is more than one transition
- * enabled, and any of the enabled transitions is not marked nondeterministic, an exception is
- * thrown. If there is exactly one preemptive transition enabled then it is chosen. The choice
- * actions (outputActions) contained by the transition are executed. Any output token produced by
- * the mode controller is transferred to both the output ports of the modal model and the input
- * ports of the mode controller. Then the refinements associated with the enabled transition are
- * executed. Any output token produced by the refinements is transferred to both the output ports of
- * the modal model and the input ports of the mode controller. The refinements of the current state
- * will not be fired.
- * <p>
- * If no preemptive transition is enabled, the refinements of the current state are fired. Any
- * output token produced by the refinements is transferred to both the output ports of the modal
- * model and the input ports of the mode controller. After this, the non-preemptive transitions from
- * the current state of the mode controller are examined. If there is more than one transition
- * enabled, and any of the enabled transitions is not marked nondeterministic, an exception is
- * thrown. If there is exactly one non-preemptive transition enabled then it is chosen and the
- * choice actions contained by the transition are executed. Any output token produced by the mode
- * controller is transferred to the output ports of the modal model and the input ports of the mode
- * controller. Then, the refinements of the enabled transition are executed. Any output token
- * produced by the refinements is transferred to both the output ports of the modal model and the
- * input ports of the mode controller.
- * <p>
- * In a firing, it is possible that the current state refinement produces an output, and a
- * transition that is taken also produces an output on the same port. In this case, only the second
- * of these outputs will appear on the output of the composite actor containing this director.
- * However, the first of these output values, the one produced by the refinement, may affect whether
- * the transition is taken. That is, it can affect the guard. If in addition a transition refinement
- * writes to the output, then that value will be produced, overwriting the value produced either by
- * the state refinement or the output action on the transition.
- * <p>
- * At the end of one firing, the modal model transfers its outputs to the outside model. The mode
- * controller does not change state during successive firings in one iteration of the top level in
- * order to support upper level domains that iterate to a fixed point.
- * <p>
- * When the modal model is postfired, the chosen transition of the latest firing is committed. The
- * commit actions contained by the transition are executed and the current state of the mode
- * controller is set to the destination state of the transition.
+
+ * Since this director makes no persistent state changes in its fire()
+ * method, it conforms with the <i>actor abstract
+ * semantics</i>. Assuming the state and transition refinements also
+ * conform, this director can be used inside any Ptolemy II actor
+ * model of computation. How it behaves in each domain, however, can
+ * be somewhat subtle, particularly with domains that have fixed-point
+ * semantics and when nondeterministic transitions are used. The
+ * details are given below.</p>
+ *
+ * <p> When a modal model is fired, this director first transfers the
+ * input tokens from the outside domain to the mode controller and the
+ * refinement of its current state. The preemptive transitions from
+ * the current state of the mode controller are examined. If there is
+ * more than one transition enabled, and any of the enabled
+ * transitions is not marked nondeterministic, an exception is
+ * thrown. If there is exactly one preemptive transition enabled then
+ * it is chosen. The choice actions (outputActions) contained by the
+ * transition are executed. Any output token produced by the mode
+ * controller is transferred to both the output ports of the modal
+ * model and the input ports of the mode controller. Then the
+ * refinements associated with the enabled transition are
+ * executed. Any output token produced by the refinements is
+ * transferred to both the output ports of the modal model and the
+ * input ports of the mode controller. The refinements of the current
+ * state will not be fired.</p>
+ *
+ * <p> If no preemptive transition is enabled, the refinements of the
+ * current state are fired. Any output token produced by the
+ * refinements is transferred to both the output ports of the modal
+ * model and the input ports of the mode controller. After this, the
+ * non-preemptive transitions from the current state of the mode
+ * controller are examined. If there is more than one transition
+ * enabled, and any of the enabled transitions is not marked
+ * nondeterministic, an exception is thrown. If there is exactly one
+ * non-preemptive transition enabled then it is chosen and the choice
+ * actions contained by the transition are executed. Any output token
+ * produced by the mode controller is transferred to the output ports
+ * of the modal model and the input ports of the mode
+ * controller. Then, the refinements of the enabled transition are
+ * executed. Any output token produced by the refinements is
+ * transferred to both the output ports of the modal model and the
+ * input ports of the mode controller.</p>
+ *
+ * <p> In a firing, it is possible that the current state refinement
+ * produces an output, and a transition that is taken also produces an
+ * output on the same port. In this case, only the second of these
+ * outputs will appear on the output of the composite actor containing
+ * this director.  However, the first of these output values, the one
+ * produced by the refinement, may affect whether the transition is
+ * taken. That is, it can affect the guard. If in addition a
+ * transition refinement writes to the output, then that value will be
+ * produced, overwriting the value produced either by the state
+ * refinement or the output action on the transition.</p>
+ *
+ * <p> At the end of one firing, the modal model transfers its outputs
+ * to the outside model. The mode controller does not change state
+ * during successive firings in one iteration of the top level in
+ * order to support upper level domains that iterate to a fixed
+ * point.</p>
+ *
+ * <p> When the modal model is postfired, the chosen transition of the
+ * latest firing is committed. The commit actions contained by the
+ * transition are executed and the current state of the mode
+ * controller is set to the destination state of the transition.</p>
  * 
- * FIXME: If a state has multiple refinements, they are fired in the order defined.
+ * <p>FIXME: If a state has multiple refinements, they are fired in the order defined.
  * If they write to the same output, then the "last one wins." It will be its value
  * produced. It might make more sense to require them to be consistent, giving something
  * closer to SR semantics. The same argument could apply when both a refinement and
- * a transition produce outputs.
+ * a transition produce outputs.</p>
  * 
  * @author Xiaojun Liu, Haiyang Zheng, Edward A. Lee
  * @version $Id$
@@ -162,8 +189,9 @@ import ptolemy.kernel.util.Workspace;
 public class FSMDirector extends Director implements ExplicitChangeContext,
         QuasiTransparentDirector, SuperdenseTimeDirector {
     /**
-     * Construct a director in the default workspace with an empty string as its name. The director
-     * is added to the list of objects in the workspace. Increment the version number of the
+     * Construct a director in the default workspace with an empty
+     * string as its name. The director is added to the list of
+     * objects in the workspace. Increment the version number of the
      * workspace.
      */
     public FSMDirector() {
@@ -172,11 +200,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Construct a director in the workspace with an empty name. The director is added to the list
-     * of objects in the workspace. Increment the version number of the workspace.
+     * Construct a director in the workspace with an empty name. The
+     * director is added to the list of objects in the
+     * workspace. Increment the version number of the workspace.
      * 
-     * @param workspace
-     *            The workspace of this director.
+     * @param workspace The workspace of this director.
      */
     public FSMDirector(Workspace workspace) {
         super(workspace);
@@ -184,23 +212,21 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Construct a director in the given container with the given name. The container argument must
-     * not be null, or a NullPointerException will be thrown. If the name argument is null, then the
-     * name is set to the empty string. Increment the version number of the workspace.
+     * Construct a director in the given container with the given
+     * name. The container argument must not be null, or a
+     * NullPointerException will be thrown. If the name argument is
+     * null, then the name is set to the empty string. Increment the
+     * version number of the workspace.
      * 
-     * @param container
-     *            Container of this director.
-     * @param name
-     *            Name of this director.
-     * @exception IllegalActionException
-     *                If the name has a period in it, or the director is not compatible with the
-     *                specified container.
-     * @exception NameDuplicationException
-     *                If the container not a CompositeActor and the name collides with an entity in
-     *                the container.
+     * @param container Container of this director.
+     * @param name Name of this director.
+     * @exception IllegalActionException If the name has a period in it, or the director
+     * is not compatible with the specified container.
+     * @exception NameDuplicationException If the container not a CompositeActor and the
+     * name collides with an entity in the container.
      */
-    public FSMDirector(CompositeEntity container, String name) throws IllegalActionException,
-            NameDuplicationException {
+    public FSMDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _createAttribute();
     }
@@ -209,9 +235,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     // // public variables ////
 
     /**
-     * Attribute specifying the name of the mode controller in the container of this director. This
-     * director must have a mode controller that has the same container as this director, otherwise
-     * an IllegalActionException will be thrown when action methods of this director are called.
+     * Attribute specifying the name of the mode controller in the
+     * container of this director. This director must have a mode
+     * controller that has the same container as this director,
+     * otherwise an IllegalActionException will be thrown when action
+     * methods of this director are called.
      */
     public StringAttribute controllerName = null;
 
@@ -219,13 +247,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     // // public methods ////
 
     /**
-     * React to a change in an attribute. If the changed attribute is the <i>controllerName</i>
-     * attribute, then make note that this has changed.
-     * 
-     * @param attribute
-     *            The attribute that changed.
-     * @exception IllegalActionException
-     *                If thrown by the superclass attributeChanged() method.
+     * React to a change in an attribute. If the changed attribute is
+     * the <i>controllerName</i> attribute, then make note that this
+     * has changed.
+     * @param attribute The attribute that changed.
+     * @exception IllegalActionException If thrown by the superclass attributeChanged()
+     * method.
      */
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         super.attributeChanged(attribute);
@@ -236,14 +263,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Clone the director into the specified workspace. This calls the base class and then sets the
-     * attribute public members to refer to the attributes of the new director.
+     * Clone the director into the specified workspace. This calls the
+     * base class and then sets the attribute public members to refer
+     * to the attributes of the new director.
      * 
-     * @param workspace
-     *            The workspace for the new director.
+     * @param workspace The workspace for the new director.
      * @return A new director.
-     * @exception CloneNotSupportedException
-     *                If a derived class contains an attribute that cannot be cloned.
+     * @exception CloneNotSupportedException If a derived class contains an attribute that
+     * cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         FSMDirector newObject = (FSMDirector) super.clone(workspace);
@@ -268,9 +295,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return a default dependency to use between input input ports and output ports. This overrides
-     * the base class so that if there is an executive director, then we get the default dependency
-     * from it.
+     * Return a default dependency to use between input input ports
+     * and output ports. This overrides the base class so that if
+     * there is an executive director, then we get the default
+     * dependency from it.
      * 
      * @see Dependency
      * @see CausalityInterface
@@ -286,15 +314,18 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Fire the modal model for one iteration. If there is a preemptive transition enabled, execute
-     * its choice actions (outputActions). Otherwise, fire the refinement of the current state.
-     * After this firing, if there is a transition enabled, execute its choice actions. If any
-     * tokens are produced during this iteration, they are sent to both the output ports of the
+     * Fire the modal model for one iteration. If there is a
+     * preemptive transition enabled, execute its choice actions
+     * (outputActions). Otherwise, fire the refinement of the current
+     * state.  After this firing, if there is a transition enabled,
+     * execute its choice actions. If any tokens are produced during
+     * this iteration, they are sent to both the output ports of the
      * model model but also the input ports of the mode controller.
      * 
-     * @exception IllegalActionException
-     *                If there is more than one transition enabled and nondeterminism is not
-     *                permitted, or there is no controller, or it is thrown by any choice action.
+     * @exception IllegalActionException If there is more than one
+     *                transition enabled and nondeterminism is not
+     *                permitted, or there is no controller, or it is
+     *                thrown by any choice action.
      */
     public void fire() throws IllegalActionException {
         Time environmentTime = _getEnvironmentTime();
@@ -313,11 +344,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         List<Transition> enabledPreemptiveTransitions = controller.enabledTransitions(currentState
                 .preemptiveTransitionList());
         if (enabledPreemptiveTransitions.size() > 0) {
-            // Do not call the following unless there is actually a preemptive transition enabled
-            // because in a fixed-point iteration you could get an exception if you call
-            // chooseTransition
-            // with the list of preemptive transitions after a non-preemptive transition was already
-            // discovered to be enabled.
+            // Do not call the following unless there is actually a
+            // preemptive transition enabled because in a fixed-point
+            // iteration you could get an exception if you call
+            // chooseTransition with the list of preemptive
+            // transitions after a non-preemptive transition was
+            // already discovered to be enabled.
             _lastChosenTransition = controller.chooseTransition(enabledPreemptiveTransitions);
             if (_debugging) {
                 _debug("Preemptive transition enabled:", _lastChosenTransition.getName());
@@ -346,11 +378,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
             // FIXME: Next line needed?
             setModelTime(environmentTime);
 
-            // If the current (preempted) state has a refinement, then we know
-            // it cannot produce any outputs. All outputs of this state must be cleared
-            // so that at least they not remain unknown in the end of the fixed point iteration.
-            // If an output port is known because this preempted transition already set it
-            // we do not send a clear.
+            // If the current (preempted) state has a refinement, then
+            // we know it cannot produce any outputs. All outputs of
+            // this state must be cleared so that at least they not
+            // remain unknown in the end of the fixed point iteration.
+            // If an output port is known because this preempted
+            // transition already set it we do not send a clear.
             if (controller._currentState.getRefinement() != null) {
                 TypedActor[] refinements = controller._currentState.getRefinement();
                 // do the following for all refinements
@@ -444,22 +477,22 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
      * director, this method delegates to the fireAt() method of the executive director by
      * requesting a firing of the container of this director at the given time adjusted by the
      * current offset between local time and the environment time.
-     * <p>
-     * If there is no executive director, then the request results in model time of this director
-     * being set to the specified time. The reason for this latter behavior is to support models
-     * where FSM is at the top level. A director inside the state refinements could be timed, and
-     * expects time to advance in its environment between firings. It typically makes a call to
-     * fireAt() at the conclusion of each iteration to specify the time value it expects to next
-     * see. Such directors can thus be used inside top-level FSM models. For example, the DEDirector
-     * and SDFDirector behave exactly this way.
+     *
+     * <p> If there is no executive director, then the request results
+     * in model time of this director being set to the specified
+     * time. The reason for this latter behavior is to support models
+     * where FSM is at the top level. A director inside the state
+     * refinements could be timed, and expects time to advance in its
+     * environment between firings. It typically makes a call to
+     * fireAt() at the conclusion of each iteration to specify the
+     * time value it expects to next see. Such directors can thus be
+     * used inside top-level FSM models. For example, the DEDirector
+     * and SDFDirector behave exactly this way.</p>
      * 
-     * @param actor
-     *            The actor scheduled to be fired.
-     * @param time
-     *            The scheduled time.
+     * @param actor The actor scheduled to be fired.
+     * @param time The scheduled time.
      * @return The time at which the actor passed as an argument will be fired.
-     * @exception IllegalActionException
-     *                If thrown by the executive director.
+     * @exception IllegalActionException If thrown by the executive director.
      */
     public Time fireAt(Actor actor, Time time) throws IllegalActionException {
         // Note that the actor parameter is ignored, because it does not
@@ -485,13 +518,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return the mode controller of this director. The name of the mode controller is specified by
-     * the <i>controllerName</i> attribute. The mode controller must have the same container as this
-     * director. This method is read-synchronized on the workspace.
+     * Return the mode controller of this director. The name of the
+     * mode controller is specified by the <i>controllerName</i>
+     * attribute. The mode controller must have the same container as
+     * this director. This method is read-synchronized on the
+     * workspace.
      * 
      * @return The mode controller of this director.
-     * @exception IllegalActionException
-     *                If no controller is found.
+     * @exception IllegalActionException If no controller is found.
      */
     public FSMActor getController() throws IllegalActionException {
         if (_controllerVersion == workspace().getVersion()) {
@@ -544,8 +578,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Override the base class so that if any outgoing transition has a guard that evaluates to
-     * true, then return the current time. Otherwise, delegate to the enclosing director.
+     * Override the base class so that if any outgoing transition has
+     * a guard that evaluates to true, then return the current
+     * time. Otherwise, delegate to the enclosing director.
      */
     public Time getModelNextIterationTime() {
         try {
@@ -568,14 +603,15 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return a list of variables that are modified in a modal model. The variables are assumed to
-     * have a change context of the container of this director. This class returns all variables
-     * that are assigned in the actions of transitions.
+     * Return a list of variables that are modified in a modal
+     * model. The variables are assumed to have a change context of
+     * the container of this director. This class returns all
+     * variables that are assigned in the actions of transitions.
      * 
      * @return A list of variables.
-     * @exception IllegalActionException
-     *                If no controller can be found, or the variables to be assigned by the actions
-     *                can not be found.
+     * @exception IllegalActionException If no controller can be
+     *                found, or the variables to be assigned by the
+     *                actions can not be found.
      */
     public List getModifiedVariables() throws IllegalActionException {
         List list = new LinkedList();
@@ -622,9 +658,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return the parse tree evaluator used to evaluate guard expressions. In this base class, an
-     * instance of {@link ParseTreeEvaluator} is returned. The derived classes may need to override
-     * this method to return different parse tree evaluators.
+     * Return the parse tree evaluator used to evaluate guard
+     * expressions. In this base class, an instance of {@link
+     * ParseTreeEvaluator} is returned. The derived classes may need
+     * to override this method to return different parse tree
+     * evaluators.
      * 
      * @return ParseTreeEvaluator used to evaluate guard expressions.
      */
@@ -633,9 +671,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return a superdense time index for the current time. This method delegates to the executive
-     * director, if there is one that implements SuperdenseTimeDirector, and returns current time
-     * with index 0 otherwise.
+     * Return a superdense time index for the current time. This
+     * method delegates to the executive director, if there is one
+     * that implements SuperdenseTimeDirector, and returns current
+     * time with index 0 otherwise.
      * 
      * @return A superdense time index.
      * @see #setIndex(int)
@@ -650,28 +689,31 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return true if the model errors are handled. Otherwise, return false and the model errors are
-     * passed to the higher level in hierarchy.
-     * <p>
-     * In this method, model errors including multipleEnabledTransitionException and
-     * InvariantViolationException are handled.
-     * <p>
-     * In the current design, if multiple enabled transitions are detected, an exception will be
-     * thrown. For future designs, different ways to handle this situation will be introduced here.
-     * <p>
-     * When an invariant is violated, this method checks whether there exists an enabled
-     * (non-preemptive) transition. If there is one, the model error is ignored and this director
-     * will handle the enabled transition later. Otherwise, an exception will be thrown.
+     * Return true if the model errors are handled. Otherwise, return
+     * false and the model errors are passed to the higher level in
+     * hierarchy.
+     *
+     * <p> In this method, model errors including
+     * multipleEnabledTransitionException and
+     * InvariantViolationException are handled.</p>
+     *
+     * <p> In the current design, if multiple enabled transitions are
+     * detected, an exception will be thrown. For future designs,
+     * different ways to handle this situation will be introduced
+     * here.</p>
+     *
+     * <p> When an invariant is violated, this method checks whether
+     * there exists an enabled (non-preemptive) transition. If there
+     * is one, the model error is ignored and this director will
+     * handle the enabled transition later. Otherwise, an exception
+     * will be thrown.</p>
      * 
-     * @param context
-     *            The context where the model error happens.
-     * @param exception
-     *            An exception that represents the model error.
-     * @return True if the error has been handled, false if the model error is passed to the higher
-     *         level.
-     * @exception IllegalActionException
-     *                If multiple enabled transition is detected, or mode controller can not be
-     *                found, or can not read outputs from refinements.
+     * @param context The context where the model error happens.
+     * @param exception An exception that represents the model error.
+     * @return True if the error has been handled, false if the model error is passed
+     * to the higher level.
+     * @exception IllegalActionException If multiple enabled transition is detected,
+     * or mode controller can not be found, or can not read outputs from refinements.
      */
     public boolean handleModelError(NamedObj context, IllegalActionException exception)
             throws IllegalActionException {
@@ -715,7 +757,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
         return false;
     }
 
-    /** Return true if all state refinements have directors that implement the strict actor semantics.
+    /** Return true if all state refinements have directors that
+     *  implement the strict actor semantics.
      *  @return True if the director exports strict actor semantics.
      */
     public boolean implementsStrictActorSemantics() {
@@ -733,11 +776,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                 if (refinements != null) {
                     for (int i = 0; i < refinements.length; i++) {
                         Director director = refinements[i].getDirector();
-                        // Added director != this since it might be possible that the refinement
-                        // is a Modal Model without its own director. In this case director == this,
-                        // and the call director.implementsStrictActorSemantics() would lead to a
-                        // infinite
-                        // loop.
+                        // Added director != this since it might be
+                        // possible that the refinement is a Modal
+                        // Model without its own director. In this
+                        // case director == this, and the call
+                        // director.implementsStrictActorSemantics()
+                        // would lead to a infinite loop.
                         if (director != null && director != this
                                 && !director.implementsStrictActorSemantics()) {
                             return false;
@@ -752,13 +796,15 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Initialize the mode controller and all the refinements by calling the initialize() method in
-     * the super class. Build the local maps for receivers. Suspend all the refinements of states
+     * Initialize the mode controller and all the refinements by
+     * calling the initialize() method in the super class. Build the
+     * local maps for receivers. Suspend all the refinements of states
      * that are not the current state.
      * 
-     * @exception IllegalActionException
-     *                If thrown by the initialize() method of the super class, or can not find mode
-     *                controller, or can not find refinement of the current state.
+     * @exception IllegalActionException If thrown by the initialize()
+     *                method of the super class, or can not find mode
+     *                controller, or can not find refinement of the
+     *                current state.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -784,11 +830,13 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Indicate that a schedule for the model may no longer be valid, if there is a schedule. This
-     * method should be called when topology changes are made, or for that matter when any change
-     * that may invalidate the schedule is made. In this class, delegate to the executive director.
-     * This is because changes in the FSM may affect the causality interface of the FSM, which may
-     * be used in scheduling by the enclosing director.
+     * Indicate that a schedule for the model may no longer be valid,
+     * if there is a schedule. This method should be called when
+     * topology changes are made, or for that matter when any change
+     * that may invalidate the schedule is made. In this class,
+     * delegate to the executive director.  This is because changes in
+     * the FSM may affect the causality interface of the FSM, which
+     * may be used in scheduling by the enclosing director.
      */
     public void invalidateSchedule() {
         Director executiveDirector = ((Actor) getContainer()).getExecutiveDirector();
@@ -798,8 +846,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return false. This director checks inputs to see whether they are known before evaluating
-     * guards, so it can fired even if it has unknown inputs.
+     * Return false. This director checks inputs to see whether they
+     * are known before evaluating guards, so it can fired even if it
+     * has unknown inputs.
      * 
      * @return False.
      * @exception IllegalActionException
@@ -808,20 +857,25 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     public boolean isStrict() throws IllegalActionException {
         return false;
         /*
-         * NOTE: This used to return a value as follows based on the causality interface. But this
-         * is conservative and prevents using the director in some models. Actor container =
-         * (Actor)getContainer(); CausalityInterface causality = container.getCausalityInterface();
-         * int numberOfOutputs = container.outputPortList().size(); Collection<IOPort> inputs =
-         * container.inputPortList(); for (IOPort input : inputs) { // If the input is also output,
-         * skip it. // This is the output of a refinement. if (input.isOutput()) { continue; } try {
-         * if (causality.dependentPorts(input).size() < numberOfOutputs) { return false; } } catch
-         * (IllegalActionException e) { throw new InternalErrorException(e); } } return true;
+         * NOTE: This used to return a value as follows based on the
+         * causality interface. But this is conservative and prevents
+         * using the director in some models. Actor container =
+         * (Actor)getContainer(); CausalityInterface causality =
+         * container.getCausalityInterface(); int numberOfOutputs =
+         * container.outputPortList().size(); Collection<IOPort>
+         * inputs = container.inputPortList(); for (IOPort input :
+         * inputs) { // If the input is also output, skip it. // This
+         * is the output of a refinement. if (input.isOutput()) {
+         * continue; } try { if
+         * (causality.dependentPorts(input).size() < numberOfOutputs)
+         * { return false; } } catch (IllegalActionException e) {
+         * throw new InternalErrorException(e); } } return true;
          */
     }
 
     /**
-     * Return a receiver that is a one-place buffer. A token put into the receiver will override any
-     * token already in the receiver.
+     * Return a receiver that is a one-place buffer. A token put into
+     * the receiver will override any token already in the receiver.
      * 
      * @return A receiver that is a one-place buffer.
      */
@@ -830,16 +884,19 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Invoke postfire() on any state refinements that were fired, then execute the commit actions
-     * contained by the last chosen transition, if any, then invoke postfire() on any transition
-     * refinements that were fired, and finally set the current state to the destination state of
-     * the transition. This will return false if any refinement that is postfired returns false.
-     * <p>
-     * If any transition was taken in this iteration, and if there is an executive director, and if
-     * there is a transition from the new state that is currently enabled, then this method calls
-     * fireAtCurrentTime(Actor) on that executive director (this call occurs indirectly in the
-     * FSMActor controller). If there is an enabled transition, then the current state is transient,
-     * and we will want to spend zero time in it.
+     * Invoke postfire() on any state refinements that were fired,
+     * then execute the commit actions contained by the last chosen
+     * transition, if any, then invoke postfire() on any transition
+     * refinements that were fired, and finally set the current state
+     * to the destination state of the transition. This will return
+     * false if any refinement that is postfired returns false.  <p>
+     * If any transition was taken in this iteration, and if there is
+     * an executive director, and if there is a transition from the
+     * new state that is currently enabled, then this method calls
+     * fireAtCurrentTime(Actor) on that executive director (this call
+     * occurs indirectly in the FSMActor controller). If there is an
+     * enabled transition, then the current state is transient, and we
+     * will want to spend zero time in it.
      * 
      * @return True if the mode controller wishes to be scheduled for another iteration.
      * @exception IllegalActionException
@@ -922,10 +979,12 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return true if the mode controller is ready to fire. If this model is not at the top level
-     * and the current time of this director lags behind that of the executive director, update the
-     * current time to that of the executive director. Record whether the refinements of the current
-     * state of the mode controller are ready to fire.
+     * Return true if the mode controller is ready to fire. If this
+     * model is not at the top level and the current time of this
+     * director lags behind that of the executive director, update the
+     * current time to that of the executive director. Record whether
+     * the refinements of the current state of the mode controller are
+     * ready to fire.
      * 
      * @exception IllegalActionException
      *                If there is no controller.
@@ -942,15 +1001,16 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     /**
      * If the container is not null, register this director as the model error handler.
      * 
-     * @param container
-     *            The proposed container.
-     * @exception IllegalActionException
-     *                If the action would result in a recursive containment structure, or if this
-     *                entity and container are not in the same workspace, or if the protected method
-     *                _checkContainer() throws it, or if a contained Settable becomes invalid and
-     *                the error handler throws it.
-     * @exception NameDuplicationException
-     *                If the name of this entity collides with a name already in the container.
+     * @param container The proposed container.
+     * @exception IllegalActionException If the action would result in
+     *                a recursive containment structure, or if this
+     *                entity and container are not in the same
+     *                workspace, or if the protected method
+     *                _checkContainer() throws it, or if a contained
+     *                Settable becomes invalid and the error handler
+     *                throws it.
+     * @exception NameDuplicationException If the name of this entity
+     * collides with a name already in the container.
      */
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
@@ -962,8 +1022,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Set the superdense time index by delegating to the directors of the refinements of the
-     * current state, if any. This should only be called by an enclosing director.
+     * Set the superdense time index by delegating to the directors of
+     * the refinements of the current state, if any. This should only
+     * be called by an enclosing director.
      * 
      * @exception IllegalActionException
      *                Not thrown in this base class.
@@ -988,8 +1049,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Set a new value to the current time of the model, where the new time can be earlier than the
-     * current time. It allows the set time to be earlier than the current time. This feature is
+     * Set a new value to the current time of the model, where the new
+     * time can be earlier than the current time. It allows the set
+     * time to be earlier than the current time. This feature is
      * needed when switching between timed and untimed models.
      * 
      * @param newTime
@@ -1005,12 +1067,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Transfer data from the input port of the container to the ports connected to the inside of
-     * the input port and on the mode controller or the refinement of its current state. This method
-     * will transfer exactly one token on each input channel that has at least one token available.
-     * The port argument must be an opaque input port. If any channel of the input port has no data,
-     * then that channel is ignored. Any token left not consumed in the ports to which data are
-     * transferred is discarded.
+     * Transfer data from the input port of the container to the ports
+     * connected to the inside of the input port and on the mode
+     * controller or the refinement of its current state. This method
+     * will transfer exactly one token on each input channel that has
+     * at least one token available.  The port argument must be an
+     * opaque input port. If any channel of the input port has no
+     * data, then that channel is ignored. Any token left not consumed
+     * in the ports to which data are transferred is discarded.
      * 
      * @param port
      *            The input port to transfer tokens from.
@@ -1188,9 +1252,10 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return the enabled transition among the given list of transitions. Throw an exception if
-     * there is more than one transition enabled. This method is called by subclasses of FSMDirector
-     * in other packages.
+     * Return the enabled transition among the given list of
+     * transitions. Throw an exception if there is more than one
+     * transition enabled. This method is called by subclasses of
+     * FSMDirector in other packages.
      * 
      * @param transitionList
      *            A list of transitions.
@@ -1210,8 +1275,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Return the receivers contained by ports connected to the inside of the given input port and
-     * on the mode controller or the refinement of its current state.
+     * Return the receivers contained by ports connected to the inside
+     * of the given input port and on the mode controller or the
+     * refinement of its current state.
      * 
      * @param port
      *            An input port of the container of this director.
@@ -1228,8 +1294,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * If the specified actor is currently enabled (because it previously returned false from
-     * postfire), then re-enable it. This is called by FSMActor upon taking a reset transition.
+     * If the specified actor is currently enabled (because it
+     * previously returned false from postfire), then re-enable
+     * it. This is called by FSMActor upon taking a reset transition.
      * 
      * @param actor
      *            The actor to re-enable.
@@ -1271,8 +1338,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Set the value of the shadow variables for input ports of the controller actor that are
-     * defined by output ports of the refinement.
+     * Set the value of the shadow variables for input ports of the
+     * controller actor that are defined by output ports of the
+     * refinement.
      * 
      * @exception IllegalActionException
      *                If a shadow variable cannot take the token read from its corresponding channel
@@ -1287,12 +1355,14 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Set the map from input ports to boolean flags indicating whether a channel is connected to an
-     * output port of the refinement of the current state. This method is called by HDFFSMDirector.
+     * Set the map from input ports to boolean flags indicating
+     * whether a channel is connected to an output port of the
+     * refinement of the current state. This method is called by
+     * HDFFSMDirector.
      * 
-     * @exception IllegalActionException
-     *                If the refinement specified for one of the states is not valid, or if there is
-     *                no controller.
+     * @exception IllegalActionException If the refinement specified
+     *                for one of the states is not valid, or if there
+     *                is no controller.
      */
     protected void _setCurrentConnectionMap() throws IllegalActionException {
         FSMActor controller = getController();
@@ -1323,16 +1393,17 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * Transfer at most one data token from the given output port of the container to the ports it
-     * is connected to on the outside. If the receiver is known to be empty, then send a clear. If
-     * the receiver status is not known, do nothing.
+     * Transfer at most one data token from the given output port of
+     * the container to the ports it is connected to on the
+     * outside. If the receiver is known to be empty, then send a
+     * clear. If the receiver status is not known, do nothing.
      * 
+     * @param port The port to transfer tokens from.
+     * @return True if the port has an inside token that was
+     *         successfully transferred. Otherwise return false (or
+     *         throw an exception).
      * @exception IllegalActionException
      *                If the port is not an opaque output port.
-     * @param port
-     *            The port to transfer tokens from.
-     * @return True if the port has an inside token that was successfully transferred. Otherwise
-     *         return false (or throw an exception).
      * 
      */
     protected boolean _transferOutputs(IOPort port) throws IllegalActionException {
@@ -1356,8 +1427,9 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                                     + port.getName());
                         }
                         port.send(i, t);
-                        // mark this port as we sent a token to prevent sending a clear afterwards
-                        // in this fixed point iteration
+                        // mark this port as we sent a token to
+                        // prevent sending a clear afterwards in this
+                        // fixed point iteration
                         _hadToken.add(port);
                         result = true;
                     } else {
@@ -1365,10 +1437,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
                             if (_debugging) {
                                 _debug(getName(), "sending clear from " + port.getName());
                             }
-                            // only send a clear (=absent) to the port, iff it is ensured that
-                            // in the current state, there might not be an enabled transition (now
-                            // or later)
-                            // that then would produce a token on that port
+                            // only send a clear (=absent) to the
+                            // port, iff it is ensured that in the
+                            // current state, there might not be an
+                            // enabled transition (now or later) that
+                            // then would produce a token on that port
                             FSMActor controller = getController();
                             // If a transition has been chosen, then it is safe to set
                             // the outputs absent. If no transition has been chosen,
@@ -1395,7 +1468,8 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     ////                   protected variables                     ////
 
     /**
-     * Map from input ports of the modal model to the local receivers for the current state.
+     * Map from input ports of the modal model to the local receivers
+     * for the current state.
      */
     protected Map _currentLocalReceiverMap = null;
 
@@ -1411,15 +1485,17 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     protected List _enabledRefinements;
 
     /**
-     * The _indexOffset is set by FSMActor during initialization of destination refinements upon
-     * committing to a reset transition in order to ensure that the destination refinement views its
+     * The _indexOffset is set by FSMActor during initialization of
+     * destination refinements upon committing to a reset transition
+     * in order to ensure that the destination refinement views its
      * index as one larger than the current index.
      */
     protected int _indexOffset = 0;
 
     /**
-     * Stores for each state of the mode controller the map from input ports of the modal model to
-     * the local receivers when the mode controller is in that state.
+     * Stores for each state of the mode controller the map from input
+     * ports of the modal model to the local receivers when the mode
+     * controller is in that state.
      */
     protected Map _localReceiverMaps = new HashMap();
 
@@ -1710,9 +1786,11 @@ public class FSMDirector extends Director implements ExplicitChangeContext,
     }
 
     /**
-     * If the specified refinement implements Suspendable, then set its current time equal to the
-     * current environment time minus the refinement's total accumulated suspension time. Otherwise,
-     * set current time to match that of the environment. If there is no environment, do nothing.
+     * If the specified refinement implements Suspendable, then set
+     * its current time equal to the current environment time minus
+     * the refinement's total accumulated suspension time. Otherwise,
+     * set current time to match that of the environment. If there is
+     * no environment, do nothing.
      * 
      * @param refinement
      *            The refinement.
