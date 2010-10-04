@@ -960,7 +960,7 @@ public class PtidesBasicDirector extends DEDirector {
     /** Clear any highlights on the specified actor.
      *  @param actor The actor to clear.
      *  @param overwriteHighlight  a boolean -- true if the current highlighting
-     *  color is to be overwritten.
+     *  color is to be overridden.
      *  @exception IllegalActionException If the animateExecution
      *   parameter cannot be evaluated.
      */
@@ -1656,7 +1656,7 @@ public class PtidesBasicDirector extends DEDirector {
     }
 
     /** Return the next event we want to process. Notice this event returned must
-     *  be safe to process. Any overwriting method must ensure this is true (by
+     *  be safe to process. Any overriding method must ensure this is true (by
      *  calling some version of _safeToProcess().
      *  <p>
      *  Notice if there are multiple
@@ -2104,7 +2104,7 @@ public class PtidesBasicDirector extends DEDirector {
         return result;
     }
 
-    /** Overwrite the _transferOutputs() function.
+    /** Override the _transferOutputs() function.
      *  First, for tokens that are stored in the actuator event queue and
      *  send them to the outside of the platform if physical time has arrived.
      *  The second step is to check if this port is a networkedOutput port, if it is, transfer

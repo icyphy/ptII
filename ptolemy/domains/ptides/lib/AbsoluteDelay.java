@@ -91,9 +91,10 @@ public class AbsoluteDelay extends TimeDelay {
     ////                         public methods                    ////
 
     /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>outputTime</i> and <i>input</i> \
+     *  does not depend on the <i>outputTime</i> and <i>input</i>
      *  port in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException Thrown if the causality interface
+     *  cannot be computed.
      *  @see #getCausalityInterface()
      */
     public void declareDelayDependency() throws IllegalActionException {

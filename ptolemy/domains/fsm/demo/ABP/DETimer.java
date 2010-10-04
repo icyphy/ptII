@@ -73,7 +73,8 @@ public class DETimer extends TypedAtomicActor {
 
     /** Override the base class to declare that the <i>expired</i>
      *  port does not depend on the <i>set</i> port in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException Thrown if the causality interface
+     *  cannot be computed.
      */
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,

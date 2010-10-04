@@ -280,7 +280,8 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException Thrown if the causality interface
+     *  cannot be computed.
      */
     public void declareDelayDependency() throws IllegalActionException {
         // Declare that output does not immediately depend on the input,

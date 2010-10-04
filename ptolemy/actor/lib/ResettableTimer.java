@@ -148,8 +148,7 @@ public class ResettableTimer extends Transformer {
         return newObject;
     }
     
-    /** Overwrites the base class to declare delay dependency between
-     *  input and output ports.
+    /** Declare that the output does not immediately depend on the input.
      *  @exception IllegalActionException Thrown if causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()

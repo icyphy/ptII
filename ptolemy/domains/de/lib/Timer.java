@@ -115,9 +115,9 @@ public class Timer extends DETransformer {
         return newObject;
     }
 
-    /** Override the base class to declare that the <i>output</i>
+    /** Declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException Thrown if causality interface
+     *  @exception IllegalActionException Thrown if the causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */

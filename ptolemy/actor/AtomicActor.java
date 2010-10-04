@@ -234,6 +234,27 @@ public class AtomicActor extends ComponentEntity implements Actor,
             }
         }
     }
+    
+    /** Set the dependency between all output ports and all input
+     *  ports of this actor. By default, each
+     *  output port is assumed to have a dependency on all input
+     *  ports. Since this is the assumed behavior, this method
+     *  does nothing by default.
+     *  
+     *  However, for subclasses such as {@link ptolemy.actor.lib.TimeDelay},
+     *  where output ports depend on input ports with a time delay,  
+     *  this method should be overridden.
+     *  Protected method _declareDelayDependency() should be used
+     *  to declare dependency between input and output ports for 
+     *  this actor. 
+     *  @exception IllegalActionException Not thrown in this base 
+     *  class, derived classes should throw this exception if the 
+     *  delay dependency cannot be computed.
+     *  @see #getCausalityInterface()
+     *  @see #_declareDelayDependency(IOPort, IOPort, double)
+     */
+    public void declareDelayDependency() throws IllegalActionException {
+    }
 
     /** Do nothing.  Derived classes override this method to define their
      *  primary run-time action.
@@ -277,26 +298,6 @@ public class AtomicActor extends ComponentEntity implements Actor,
                 defaultDependency);
         _causalityInterfaceDirector = director;
         return _causalityInterface;
-    }
-    
-    /** Set the dependency between all output ports and all input
-     *  ports of this actor. By default, each
-     *  output port is assumed to have a dependency on all input
-     *  ports. Since this is the assumed behavior, this method
-     *  does thing by default.
-     *  
-     *  However, for subclasses such as TimeDelay {@link TimeDelay},
-     *  where output ports depend on input ports with a time delay,  
-     *  this method should be overwritten.
-     *  protected method _declareDelayDependency() should be used
-     *  to declare dependency between input and output ports for 
-     *  this actor. 
-     *  @exception IllegalActionException Thrown if causality interface
-     *   cannot be computed.
-     *  @see #getCausalityInterface()
-     *  @see #_declareDelayDependency(IOPort, IOPort, double)
-     */
-    public void declareDelayDependency() throws IllegalActionException {
     }
 
     /** Return the director responsible for the execution of this actor.
@@ -643,7 +644,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
         // causality interface, call it here.
         pruneDependencies();
         
-        // declare dependency for this actor. For actors such as
+        // Declare dependency for this actor. For actors such as
         // TimeDelay, the delay dependency between input and output
         // ports are declared.
         declareDelayDependency();
@@ -895,15 +896,13 @@ public class AtomicActor extends ComponentEntity implements Actor,
     }
     
 
-    /** Set the dependency that the specified output port has
-     *  on the specified input port to represent a time
-     *  delay with the specified value. By default, each
-     *  output port is assumed to have a dependency on all input
-     *  ports. Subclasses can call this method in public method
-     *  declareDelayDependency()
+    /** Set the dependency between the input and output port to
+     *  represent a time delay with the specified value. 
+     *  Subclasses can call this method
      *  instead of implementing a custom {@link CausalityInterface}
      *  for the cases where output ports depend on input ports with
-     *  a time delay. If the time delay is 0.0, this method nonetheless
+     *  a time delay. 
+     *  If the time delay is 0.0, this method nonetheless
      *  assumes that the output port does not (immediately) depend on
      *  the input port (this amounts to a superdense time delay of
      *  (0.0, 1)). There should be one such call for each

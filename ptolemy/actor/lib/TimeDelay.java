@@ -193,9 +193,8 @@ public class TimeDelay extends Transformer {
         return newObject;
     }
 
-    /** Override the base class to declare that the <i>output</i>
-     *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException Thrown if causality interface
+    /** Declare that the output does not depend on the input in a firing.
+     *  @exception IllegalActionException Thrown if the causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
