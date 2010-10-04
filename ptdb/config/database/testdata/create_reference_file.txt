@@ -1,142 +1,26 @@
 putDocument ReferenceFile.ptdbxml '<reference>
-	<entity DBModelId="A.xml" name="A.xml">
-		<entity DBModelId="B.xml" name="B.xml">
-			<entity DBModelId="C.xml" name="C.xml">
-				<entity DBModelId="D.xml" name="D.xml">
-					<entity DBModelId="H.xml" name="H.xml">
-					</entity>				
-				</entity>	
-				<entity DBModelId="D.xml" name="D.xml">
-					<entity DBModelId="H.xml" name="H.xml">
-					</entity>
-				</entity>
-				<entity DBModelId="I.xml" name="I.xml">
-					<entity DBModelId="H.xml" name="H.xml">
-					</entity>				
-				</entity>			
-			</entity>
-		</entity>		
-		<entity DBModelId="C.xml" name="C.xml">
-			<entity DBModelId="D.xml" name="D.xml">
-				<entity DBModelId="H.xml" name="H.xml">
-				</entity>
-			</entity>	
-			<entity DBModelId="D.xml" name="D.xml">
-				<entity DBModelId="H.xml" name="H.xml">
-				</entity>
-			</entity>
-			<entity DBModelId="I.xml" name="I.xml">
-				<entity DBModelId="H.xml" name="H.xml">
-				</entity>				
-			</entity>				
-		</entity>
-		<entity DBModelId="E.xml" name="E.xml">
-			<entity DBModelId="D.xml" name="D.xml">
-				<entity DBModelId="H.xml" name="H.xml">
-				</entity>
-			</entity>				
-		</entity>
-	</entity>
-	<entity DBModelId="B.xml" name="B.xml">
-		<entity DBModelId="C.xml" name="C.xml">
-			<entity DBModelId="D.xml" name="D.xml">
-				<entity DBModelId="H.xml" name="H.xml">
-				</entity>
-			</entity>				
-		</entity>
-		<entity DBModelId="D.xml" name="D.xml">
-			<entity DBModelId="H.xml" name="H.xml">
-			</entity>
-		</entity>
-		<entity DBModelId="I.xml" name="I.xml">
-			<entity DBModelId="H.xml" name="H.xml">
-			</entity>				
-		</entity>	
-	</entity>		
-	<entity DBModelId="C.xml" name="C.xml">
-		<entity DBModelId="D.xml" name="D.xml">
-			<entity DBModelId="H.xml" name="H.xml">
-			</entity>
-		</entity>				
-		<entity DBModelId="D.xml" name="D.xml">
-			<entity DBModelId="H.xml" name="H.xml">
-			</entity>
-		</entity>
-		<entity DBModelId="I.xml" name="I.xml">
-			<entity DBModelId="H.xml" name="H.xml">
-			</entity>				
-		</entity>	
-	</entity>
-	<entity DBModelId="E.xml" name="E.xml">
-		<entity DBModelId="D.xml" name="D.xml">
-			<entity DBModelId="H.xml" name="H.xml">
-			</entity>
-		</entity>				
-	</entity>
-	<entity DBModelId="D.xml" name="D.xml">
-		<entity DBModelId="H.xml" name="H.xml">
-		</entity>
-	</entity>				
-	<entity DBModelId="E.xml" name="E.xml">
-		<entity DBModelId="B.xml" name="B.xml">
-			<entity DBModelId="C.xml" name="C.xml">
-				<entity DBModelId="D.xml" name="D.xml">
-					<entity DBModelId="H.xml" name="H.xml">
-					</entity>			
-				</entity>				
-			</entity>
-			<entity DBModelId="D.xml" name="D.xml">
-				<entity DBModelId="H.xml" name="H.xml">
-				</entity>
-			</entity>		
-			<entity DBModelId="I.xml" name="I.xml">
-				<entity DBModelId="H.xml" name="H.xml">
-				</entity>				
-			</entity>				
-		</entity>
-	</entity>		
-	<entity DBModelId="K.xml" name="K.xml">
-		<entity DBModelId="B.xml" name="B.xml">
-			<entity DBModelId="C.xml" name="C.xml">
-				<entity DBModelId="D.xml" name="D.xml">
-					<entity DBModelId="H.xml" name="H.xml">
-					</entity>
-				</entity>				
-				<entity DBModelId="D.xml" name="D.xml">
-					<entity DBModelId="H.xml" name="H.xml">
-					</entity>
-				</entity>
-				<entity DBModelId="I.xml" name="I.xml">
-					<entity DBModelId="H.xml" name="H.xml">
-					</entity>				
-				</entity>	
-			</entity>
-		</entity>		
-		<entity DBModelId="X.xml" name="X.xml">
-			<entity DBModelId="F.xml" name="F.xml">
-				<entity DBModelId="G.xml" name="G.xml">
-				</entity>				
-			</entity>
-		</entity>		
-	</entity>
-	<entity DBModelId="H.xml" name="H.xml"/>
-	<entity DBModelId="NoReferences" name="NoReferences">
-	</entity>
-	<entity DBModelId="modeltt" name="modeltt">
-		<entity DBModelId="CompositeActor" name="CompositeActor">
-		</entity>
-	</entity>
-	<entity DBModelId="X" name="X">
-		<entity DBModelId="Y" name="Y">
-		</entity>
-	</entity>
+<entity DBModelId="CompositeActor_123" name="CompositeActor"/>
+<entity DBModelId="newModel_1279245716984" name="newModel">
 	<entity DBModelId="Adder" name="Adder"/>
-	<entity DBModelId="modeltt1000_123" name="modeltt1000">
-		<entity DBModelId="CompositeActor_123" name="CompositeActor">
-		</entity>
-	</entity>
-	<entity DBModelId="newModel_1279249394703" name="newModel">
-		<entity DBModelId="Adder" name="Adder"/>
-		<entity DBModelId="Adder" name="Adder"/>
-	</entity>
+	<entity DBModelId="Adder" name="Adder"/>
+</entity>
+<entity DBModelId="NoNamesNoValues" name="NoNamesNoValues"/>
+<entity DBModelId="Adder" name="Adder"/>
+<entity DBModelId="ContainsOneNameValue" name="ContainsOneNameValue"/>
+<entity DBModelId="ModelB" name="ModelB"/>
+<entity DBModelId="ModelA" name="ModelA"/>
+<entity DBModelId="modelWithTwoAdders" name="modelWithTwoAdders">
+	<entity DBModelId="Adder" name="Adder"/>
+	<entity DBModelId="Adder" name="Adder"/>
+</entity>
+<entity DBModelId="ContainsBothNamesButExchangedValues" name="ContainsBothNamesButExchangedValues"/>
+<entity DBModelId="ContainsBothNamesOneValue" name="ContainsBothNamesOneValue"/>
+<entity DBModelId="ModelContainsBothAttributes" name="ModelContainsBothAttributes"/>
+<entity DBModelId="Y" name="Y"/>
+<entity DBModelId="NoNamesAllValues" name="NoNamesAllValues"/>
+<entity DBModelId="NoReferences" name="NoReferences"/>
+<entity DBModelId="modelWithOneAdder" name="modelWithOneAdder">
+	<entity DBModelId="Adder" name="Adder"/>
+	<entity DBModelId="Adder" name="Adder"/>
+</entity>
 </reference>'
