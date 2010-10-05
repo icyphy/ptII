@@ -197,8 +197,9 @@ public class PtidesActorProperties {
      *            The actor for which the worst case execution time is
      *            requested.
      * @return The worst case execution time.
+     * @throws IllegalActionException Thrown if WCET is not a double.
      */
-    public static double getWCET(Actor actor) {
+    public static double getWCET(Actor actor) throws IllegalActionException {
         try {
             Parameter parameter = (Parameter) ((NamedObj) actor)
                     .getAttribute("WCET");
@@ -211,9 +212,13 @@ public class PtidesActorProperties {
                 return 0.0;
             }
         } catch (ClassCastException ex) {
-            return 0.0;
+            throw new IllegalActionException(actor,
+                    "Actor has an attribute WCET, but "
+                            + "it is not a Parameter or its value is not"
+                            + " a double. It is: "
+                            + ((NamedObj) actor).getAttribute("WCET"));
         } catch (IllegalActionException ex) {
-            return 0.0;
+            throw ex;
         }
     }
 
@@ -225,8 +230,9 @@ public class PtidesActorProperties {
      *            The port for which the worst case execution time is
      *            requested.
      * @return The worst case execution time.
+     * @throws IllegalActionException Thrown if the parameter is not a double.
      */
-    public static Double getWCET(IOPort port) {
+    public static Double getWCET(IOPort port) throws IllegalActionException {
         try {
             Parameter parameter = (Parameter) ((NamedObj) port)
                     .getAttribute("WCET");
@@ -239,9 +245,13 @@ public class PtidesActorProperties {
                 return null;
             }
         } catch (ClassCastException ex) {
-            return null;
+            throw new IllegalActionException(port,
+                    "Actor has an attribute WCET, but "
+                            + "it is not a Parameter or its value is not"
+                            + " a double. It is: "
+                            + ((NamedObj) port).getAttribute("WCET"));
         } catch (IllegalActionException ex) {
-            return null;
+            throw ex;
         }
     }
 
