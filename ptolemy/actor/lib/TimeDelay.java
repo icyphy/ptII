@@ -194,7 +194,7 @@ public class TimeDelay extends Transformer {
     }
 
     /** Declare that the output does not depend on the input in a firing.
-     *  @exception IllegalActionException Thrown if the causality interface
+     *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */

@@ -720,7 +720,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  @param input The input port.
      *  @param output The output port that does not depend on the
      *   input port.
-     *  @exception IllegalActionException Thrown if causality interface
+     *  @exception IllegalActionException If causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */
@@ -911,7 +911,7 @@ public class AtomicActor extends ComponentEntity implements Actor,
      *  @param output The output port with a time delay dependency on the
      *   input port.
      *  @param timeDelay The time delay.
-     *  @exception IllegalActionException Thrown if causality interface
+     *  @exception IllegalActionException If causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */

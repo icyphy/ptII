@@ -220,7 +220,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  returned by getChannelPort() does not depend on itself
      *  in a firing. This port is both an input and an output,
      *  so by default there would be a self dependency.
-     *  @exception IllegalActionException Thrown if the causality interface
+     *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
     public void declareDelayDependency() throws IllegalActionException {

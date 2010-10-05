@@ -149,7 +149,7 @@ public class ResettableTimer extends Transformer {
     }
     
     /** Declare that the output does not immediately depend on the input.
-     *  @exception IllegalActionException Thrown if causality interface
+     *  @exception IllegalActionException If causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */

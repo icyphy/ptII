@@ -198,7 +198,7 @@ public class PHY extends NetworkActorBase {
      *  output port does not
      *  depend on the <i>toMAC</i>, <i>channelStatus</i>
      *  and <i>PHYConfirm</i> ports in a firing.
-     *  @exception IllegalActionException Thrown if the causality interface
+     *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
     public void declareDelayDependency() throws IllegalActionException {

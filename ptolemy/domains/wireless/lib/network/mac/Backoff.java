@@ -138,7 +138,7 @@ public class Backoff extends MACActorBase {
     /** Override the base class to declare that the <i>BKDone</i>
      *  output port does not depend on the <i>getBackoff</i>
      *  of <i>fromDataPump</i> input ports in a firing.
-     *  @exception IllegalActionException Thrown if the causality interface
+     *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
     public void declareDelayDependency() throws IllegalActionException {

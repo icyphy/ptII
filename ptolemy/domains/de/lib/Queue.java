@@ -186,7 +186,7 @@ public class Queue extends Transformer {
     
     /** Declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
-     *  @exception IllegalActionException Thrown if the causality interface
+     *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      *  @see #getCausalityInterface()
      */

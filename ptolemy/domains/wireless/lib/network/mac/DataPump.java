@@ -163,7 +163,7 @@ public class DataPump extends MACActorBase {
      *  and <i>RXTXConfirm</i> output ports do not
      *  depend on the <i>TXTXRequest</i> and <i>RXTXRequest</i>
      *  in a firing.
-     *  @exception IllegalActionException Thrown if the causality interface
+     *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
     public void declareDelayDependency() throws IllegalActionException {
