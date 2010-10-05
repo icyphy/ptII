@@ -37,7 +37,7 @@ DIRS =		demo
 ROOT =          ../../../../..
 
 # We use rxtx, which should be in the ext directory
-CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)
+CLASSPATH =     $(ROOT)$(CLASSPATHSEPARATOR)$(RXTX_JAR)
 
 # Get configuration info
 CONFIG =        $(ROOT)/mk/ptII.mk
