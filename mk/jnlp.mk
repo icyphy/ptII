@@ -207,10 +207,6 @@ DSP_JNLP_JARS =	\
 BCVTB_ONLY_JNLP_JARS = \
 	doc/codeDocBcvtb.jar
 
-LBNL_JARS = \
-	lbnl/lbnl.jar \
-	lbnl/demo/demo.jar
-
 SDF_DEMO_JARS = \
 	ptolemy/actor/lib/comm/demo/demo.jar \
 	ptolemy/actor/lib/hoc/demo/demo.jar \
@@ -223,10 +219,11 @@ SDF_DEMO_JARS = \
 BCVTB_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/BCVTBApplication.jar
 
+# PTLBNL_JARS is set by configure in ptII/mk/ptII.mk if libexpat was found
 BCVTB_JNLP_JARS =	\
 	$(BCVTB_MAIN_JAR) \
 	$(BCVTB_ONLY_JNLP_JARS) \
-	$(LBNL_JARS) \
+	$(PTLBNL_JARS) \
 	doc/design/usingVergil/usingVergil.jar \
 	doc/docConfig.jar \
 	lib/diva.jar \
@@ -539,7 +536,7 @@ FULL_MAIN_JAR = \
 
 FULL_JNLP_JARS = \
 	$(FULL_MAIN_JAR) \
-	$(LBNL_JARS) \
+	$(PTLBNL_JARS) \
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR) \
 	$(DSP_ONLY_JNLP_JARS) \
@@ -1329,6 +1326,14 @@ clean_exes:
 
 DOC_JNLP_JARS = \
 	ptolemy/ptsupport.jar
+
+bcvtb_l4j.xml: $(MKL4J)
+	$(MKL4J) bcvtb ptolemy.vergil.VergilApplication \
+		doc/img/ptiny.ico \
+		-bcvtb $(BCVTB_JNLP_JARS) > $@
+bcvtb.exe: bcvtb_l4j.xml
+	"$(L4JC)" `$(PTCYGPATH) bcvtb_l4j.xml`
+
 designdocv1_l4j.xml:
 	$(MKL4J) designdocv1 ptolemy.actor.gui.BrowserLauncher \
 		 doc/img/pdf.ico \

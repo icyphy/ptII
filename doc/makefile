@@ -516,7 +516,9 @@ GRAPHTRANSFORMATIONPACKAGES = \
 	ptolemy.vergil.gt
 
 # Packages used by BCVTB: continuous, sdf and modal
+# PTLBNL_PACKAGES is set by configure in ptII/mk/ptII.mk if libexpat is found.
 BCVTBPACKAGES = \
+	$(PTLBNL_PACKAGES) \
 	ptolemy.actor.lib.javasound \
 	ptolemy.actor.lib \
 	ptolemy.actor.lib.comm \
@@ -580,12 +582,6 @@ HYVISUAL_DOCS = \
 	codeDocHyVisual/doc/codeDoc/tree.html \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
 	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
-
-LBNL_PACKAGES = \
-	lbnl.actor.lib \
-	lbnl.actor.lib.net \
-	lbnl.lib.labview \
-	lbnl.util
 
 # Currently, there are no .java files in fsm.lib
 #			ptolemy.domains.fsm.lib
@@ -677,7 +673,6 @@ ALLPACKAGES = \
 	$(DIVAPACKAGES) \
 	$(EXPERIMENTALPACKAGES) \
 	$(GRAPHTRANSFORMATIONPACKAGES) \
-	$(LBNL_PACKAGES) \
 	$(PTBACKTRACK_PACKAGES) \
 	$(PTBSH_PACKAGES) \
 	$(PTDATABASE_PACKAGES) \
@@ -695,6 +690,7 @@ ALLPACKAGES = \
 	$(PTJOGL_PACKAGES) \
 	$(PTJOYSTICK_PACKAGES) \
 	$(PTJUNIT_PACKAGES) \
+	$(PTLBNL_PACKAGES) \
 	$(PTOPENCV_PACKAGES) \
 	$(PTQUICKTIME_PACKAGES) \
 	$(PTRXTX_PACKAGES) \

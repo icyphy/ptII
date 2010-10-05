@@ -818,6 +818,8 @@ PTJXTA_DIR
 PTKIELER_DIR
 PTKVM_DIR
 PTLBNL_DIR
+PTLBNL_JARS
+PTLBNL_PACKAGES
 PTLEGO_DIR
 PTLEJOS_DIR
 PTLIBEXPAT_DIR
@@ -12012,6 +12014,10 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
       PTLIBEXPAT_DIR=util
       # Used in $PTII/makefile
       PTLBNL_DIR=lbnl
+      # Used in jnlp.mk
+      PTLBNL_JARS="lbnl/lbnl.jar lbnl/demo/demo.jar"
+      # Used in doc/makefile
+      PTLBNL_PACKAGES="lbnl.actor.lib lbnl.actor.lib.net lbnl.lib.labview lbnl.util"
    fi
 fi
 
@@ -12531,6 +12537,14 @@ fi
 
 
 # Set to lbnl and used in $PTII/makefile if libexpat was found.
+
+
+# Set to the lbnl jars that need to be signed if libexpat was found
+# and used in jnlp.mk
+
+
+# PTLBNL_PACKAGES is set if libexpat was found and
+# used in ptII/doc/makefile
 
 
 # Set to lego and used in
@@ -13654,6 +13668,8 @@ PTJXTA_DIR!$PTJXTA_DIR$ac_delim
 PTKIELER_DIR!$PTKIELER_DIR$ac_delim
 PTKVM_DIR!$PTKVM_DIR$ac_delim
 PTLBNL_DIR!$PTLBNL_DIR$ac_delim
+PTLBNL_JARS!$PTLBNL_JARS$ac_delim
+PTLBNL_PACKAGES!$PTLBNL_PACKAGES$ac_delim
 PTLEGO_DIR!$PTLEGO_DIR$ac_delim
 PTLEJOS_DIR!$PTLEJOS_DIR$ac_delim
 PTLIBEXPAT_DIR!$PTLIBEXPAT_DIR$ac_delim
@@ -13710,7 +13726,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 64; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 66; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

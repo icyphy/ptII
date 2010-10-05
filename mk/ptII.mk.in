@@ -690,6 +690,14 @@ PTKIELER_DIR =	@PTKIELER_DIR@
 # Set to lbnl and used in $PTII/makefile if libxpat was found.
 PTLBNL_DIR = 	@PTLBNL_DIR@
 
+# Set to the lbnl jars that need to be signed if libexpat was found
+# and used in jnlp.mk.
+PTLBNL_JARS =	@PTLBNL_JARS@
+
+# PTLBNL_PACKAGES is set if libexpat was found and
+# used in ptII/doc/makefile
+PTLBNL_PACKAGES =	@PTLBNL_PACKAGES@
+
 # Set to lego and used in $PTII/ptolemy/apps/makefile if
 # the Java Communications API was found
 PTLEGO_DIR =	@PTLEGO_DIR@
