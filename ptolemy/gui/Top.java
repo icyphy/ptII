@@ -67,7 +67,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
-import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -1398,7 +1397,7 @@ public abstract class Top extends JFrame {
             }
         }
         if (history == null) {
-            throw new KernelRuntimeException(
+            throw new RuntimeException(
                     "Unexpected loss of Recent Files menu.");
         }
         HistoryMenuListener listener = new HistoryMenuListener();
