@@ -113,8 +113,8 @@ public class TestSearchByAttributeIntegration {
         SearchCriteria searchCriteria = new SearchCriteria();
         SearchResultBuffer searchResultBuffer = new SearchResultBuffer();
 
-        StringParameter criteriaVariable = new StringParameter(new Entity(), "new_countries");
-        criteriaVariable.setToken("India");
+        StringParameter criteriaVariable = new StringParameter(new Entity(), "CreatedBy");
+        criteriaVariable.setToken("Ashwini Bijwe");
 
 
         ArrayList<Attribute> attributesList = new ArrayList<Attribute>();
@@ -125,7 +125,15 @@ public class TestSearchByAttributeIntegration {
 
         ArrayList<XMLDBModel> resultModels = searchResultBuffer.getResults();
 
-        assertEquals("modeltt1000", resultModels.get(0).getModelName());
+        boolean doesExist = false;
+        
+        for(XMLDBModel model :resultModels) {
+            if (model.getModelName().equals("ModelB")) {
+                doesExist = true;
+                break;
+            }
+        }
+        assertTrue(doesExist);
 
     }
 
