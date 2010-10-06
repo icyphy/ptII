@@ -28,6 +28,7 @@ import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.FiniteConcept;
 import ptolemy.data.ontologies.InfiniteConcept;
 import ptolemy.data.ontologies.Ontology;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -59,10 +60,8 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  @throws IllegalActionException
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
-    public boolean isAboveOrEqualTo(Concept concept)
-            throws IllegalActionException {
-        // TODO Auto-generated method stub
-        return false;
+    public int compare(Concept concept) throws IllegalActionException {
+        return CPO.INCOMPARABLE;
     }
 
     /**

@@ -76,6 +76,29 @@ public class FiniteConcept extends Concept implements Flowable {
     /** The port linked to concepts below this one in the lattice. */
     public ComponentPort belowPort;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+    
+    /** Compare of this concept with the given concept.
+     *  Returns an int value that corresponds to the ordering between
+     *  the elements as given in the CPO interface.
+     * 
+     *  @param rhs The concept with which we are comparing.
+     *  @return CPO.HIGHER if this concept is above the given concept,
+     *          CPO.LOWER if this concept is below the given concept,
+     *          CPO.SAME if both concepts are the same,
+     *      and CPO.INCOMPARABLE if concepts are incomparable.
+     *  @exception IllegalActionException If the specified concept
+     *          does not have the same ontology as this one.
+     */
+    public int compare(Concept concept) throws IllegalActionException {
+        if (concept == null || !(concept.getOntology().equals(getOntology()))) {
+            throw new IllegalActionException(this,
+                    "Attempt to compare elements from two distinct ontologies");
+        }
+        return getOntology().getGraph().compare(this, concept);
+    }
+
     /** Return the ontology that contains this concept.
      *
      *  @return The containing ontology.
@@ -124,26 +147,6 @@ public class FiniteConcept extends Concept implements Flowable {
             postdominators.add((FiniteConcept) port.getContainer());
         }
         return postdominators;
-    }
-    
-    /** Return true if this concept is greater than or equal to the
-     *  specified concept in the partial ordering.
-     *  @param concept The concept to compare.
-     *  @return True if this concept is greater than or equal to the
-     *   specified concept.
-     *  @exception IllegalActionException If the specified concept
-     *   does not have the same ontology as this one.
-     */
-    public boolean isAboveOrEqualTo(Concept concept)
-            throws IllegalActionException {
-        if (concept == null) {
-            return false;
-        } else if (!(concept.getOntology().equals(getOntology()))) {
-            throw new IllegalActionException(this,
-                    "Attempt to compare elements from two distinct ontologies");
-        }
-        int comparisonResult = getOntology().getGraph().compare(this, concept);
-        return comparisonResult == CPO.SAME || comparisonResult == CPO.HIGHER;
     }
 
     /**
