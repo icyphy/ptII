@@ -591,7 +591,7 @@ public class TestOracleXMLDBConnection {
         
         try {
             
-            XMLDBModel model = new XMLDBModel("H.xml");
+            XMLDBModel model = new XMLDBModel("Adder");
             GetFirstLevelParentsTask task = new GetFirstLevelParentsTask(model);
             List<XMLDBModel> parentsList = conn
                     .executeGetFirstLevelParents(task);
@@ -599,21 +599,21 @@ public class TestOracleXMLDBConnection {
             assertTrue("No parents returned.", parentsList != null);
 
             assertTrue("Invalid parents returned - "
-                    + parentsList.get(0).getModelName(), "D.xml"
+                    + parentsList.get(0).getModelName(), "newModel"
                     .equals(parentsList.get(0).getModelName()));
 
             assertTrue("Invalid parents returned - "
-                    + parentsList.get(0).getModelId(), "D.xml"
+                    + parentsList.get(0).getModelId(), "newModel_1279245716984"
                     .equals(parentsList.get(0).getModelId()));
 
-            model = new XMLDBModel("D.xml");
+            model = new XMLDBModel("Adder");
             task = new GetFirstLevelParentsTask(model);
             parentsList = conn.executeGetFirstLevelParents(task);
 
             assertTrue("No parents returned. " + parentsList.size(),
                     parentsList != null && parentsList.size() == 3);
 
-            model = new XMLDBModel("K.xml");
+            model = new XMLDBModel("ModelB");
             task = new GetFirstLevelParentsTask(model);
             parentsList = conn.executeGetFirstLevelParents(task);
 
@@ -733,7 +733,7 @@ public class TestOracleXMLDBConnection {
             modelIdValues = new ArrayList<String>();
         
         
-            modelIdValues.add("X");
+            modelIdValues.add("Y");
             modelIdValues.add("ModelB");
             
         
@@ -864,8 +864,8 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(false);
 
         FetchHierarchyTask task = new FetchHierarchyTask();
-        XMLDBModel dbModel = new XMLDBModel("D.xml");
-        dbModel.setModelId("D.xml");
+        XMLDBModel dbModel = new XMLDBModel("Adder");
+        dbModel.setModelId("Adder");
         ArrayList<XMLDBModel> list = new ArrayList<XMLDBModel>();
         list.add(dbModel);
         task.setModelsList(list);
@@ -877,7 +877,7 @@ public class TestOracleXMLDBConnection {
             int hierarchySize = dbModel.getParents().size();
 
             assertTrue("Wrong number of hierarchies returned - "
-                    + hierarchySize, hierarchySize == 5);
+                    + hierarchySize, hierarchySize == 3);
 
         } catch (DBExecutionException e) {
             e.printStackTrace();
@@ -1137,7 +1137,7 @@ public class TestOracleXMLDBConnection {
         .getSyncConnection(false);
         
         try {
-            XMLDBModel existingModel = new XMLDBModel("X");
+            XMLDBModel existingModel = new XMLDBModel("Y");
             boolean doesExist = oracleXMLDBConnection.doesModelExist(existingModel);
             assertTrue("An existing model is flagged as does not exist.", doesExist == true);
         } catch (DBExecutionException e) {
@@ -1442,7 +1442,7 @@ public class TestOracleXMLDBConnection {
 
         
 
-        String modelId = "modeltt1000_123";
+        String modelId = "Y";
 
         GetModelTask task = new GetModelTask(null);
         task.setModelId(modelId);
@@ -1452,12 +1452,12 @@ public class TestOracleXMLDBConnection {
 
             XMLDBModel model = oracleXMLDBConnection.executeGetModelTask(task);
 
-            if (model != null && model.getModelName().equals("modeltt1000")) {
+            if (model != null && model.getModelName().equals("Y")) {
                 
                 
                 assertTrue("Model was retrieved successfully.", true);
                 
-            } else if (model != null && !model.getModelName().equals("modeltt1000")) {
+            } else if (model != null && !model.getModelName().equals("Y")) {
                 
                 fail("Different model was retrieved. " + model.getModelName());
                 
@@ -1731,7 +1731,7 @@ public class TestOracleXMLDBConnection {
 
         
 
-        String modelName = "modeltt1000";
+        String modelName = "modelWithTwoAdders";
 
         GetModelTask task = new GetModelTask(modelName);
 
