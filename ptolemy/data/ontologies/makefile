@@ -63,6 +63,7 @@ JSRCS = \
 	ConceptRelation.java \
 	ExpressionConceptFunction.java \
 	ExpressionConceptFunctionParseTreeEvaluator.java \
+	InfiniteConcept.java \
 	Ontology.java \
 	OntologyAdapter.java \
 	OntologyAnnotationAttribute.java \

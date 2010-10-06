@@ -52,7 +52,9 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-MonotonicityConceptFunction.java
+MonotonicityConcept.java \
+MonotonicityConceptFunction.java \
+MonotonicityCounterexamples.java
 
 OTHER_FILES_TO_BE_JARED = \
 	monotonicityAnalysis.xml 
