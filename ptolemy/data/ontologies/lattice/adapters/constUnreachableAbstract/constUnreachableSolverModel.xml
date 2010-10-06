@@ -1,0 +1,172 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="constUnreachableSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 206, 815, 517}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.8906250000001, 196.5203598484849}">
+    </property>
+    <property name="AddSubtractActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.AddSubtract">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.AddSubtract">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-20" y="-20" width="40" height="40" style="fill:white"></rect>
+<text x="-13" y="-5" style="font-size:18">
++ 
+</text>
+<text x="-13" y="7" style="font-size:18">
+_ 
+</text>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 50.0]">
+        </property>
+        <property name="plusPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="minusPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="NO_CONSTRAINTS">
+        </property>
+    </property>
+    <property name="MultiplyDivideActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.MultiplyDivide">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-20" y="-20" width="40" height="40" style="fill:white"></rect>
+<line x1="-15" y1="-15" x2="-5" y2="-5"></line><line x1="-15" y1="-5" x2="-5" y2="-15"></line><line x1="-15" y1="10" x2="-5" y2="10"></line><circle cx="-10" cy="6" r="1" style="fill:black"></circle>
+<circle cx="-10" cy="14" r="1" style="fill:black"></circle>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 130.0]">
+        </property>
+        <property name="multiplyPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="dividePortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= divideFunction(multiply, divide)">
+        </property>
+    </property>
+    <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == UnreachableConstZero || factor2 == UnreachableConstZero ? UnreachableConstZero :&#10; factor1 == ConstZero &amp;&amp; factor2 &lt;= UnreachableNonConst || factor2 == ConstZero &amp;&amp; factor1 &lt;= UnreachableNonConst ? UnreachableConstZero :&#10;  factor1 == ConstZero &amp;&amp; factor2 &gt;= ReachableUnknown || factor2 == ConstZero &amp;&amp; factor1 &gt;= ReachableUnknown ? ConstZero :&#10;   factor1 == UnreachableUnknown || factor2 == UnreachableUnknown ? UnreachableUnknown :&#10;    factor1 == ReachableUnknown || factor2 == ReachableUnknown ? ReachableUnknown :&#10;     factor1 == factor2 &amp;&amp; (factor1 == UnreachableConstPositive || factor1 == UnreachableConstNegative) ? UnreachableConstPositive :&#10;      factor1 == UnreachableConstPositive &amp;&amp; factor2 == ConstPositive || factor2 == UnreachableConstPositive &amp;&amp; factor1 == ConstPositive ? UnreachableConstPositive :&#10;	   factor1 == UnreachableConstNegative &amp;&amp; factor2 == ConstNegative || factor2 == UnreachableConstNegative &amp;&amp; factor1 == ConstNegative ? UnreachableConstPositive :&#10;        (factor1 == UnreachableConstPositive &amp;&amp; (factor2 == UnreachableConstNegative || factor2 == ConstNegative)) || (factor2 == UnreachableConstPositive &amp;&amp; (factor1 == UnreachableConstNegative || factor1 == ConstNegative)) ? UnreachableConstNegative :&#10;	     (factor1 == UnreachableConstNegative &amp;&amp; (factor2 == UnreachableConstPositive || factor2 == ConstPositive)) || (factor2 == UnreachableConstNegative &amp;&amp; (factor1 == UnreachableConstPositive || factor1 == ConstPositive)) ? UnreachableConstNegative :&#10;	      factor1 == ConstZero &amp;&amp; factor2 &lt;= UnreachableNonConst || factor2 == ConstZero &amp;&amp; factor1 &lt;= UnreachableNonConst ? UnreachableConstZero :&#10;           factor1 == factor2 &amp;&amp; (factor1 == ConstPositive || factor1 == ConstNegative) ? ConstPositive :&#10;            (factor1 == ConstPositive &amp;&amp; factor2 == ConstNegative) || (factor2 == ConstPositive &amp;&amp; factor1 == ConstNegative) ? ConstNegative :   &#10;             factor1 &lt;= UnreachableConstUnknown &amp;&amp; factor2 &lt;= ConstUnknown || factor2 &lt;= UnreachableConstUnknown &amp;&amp; factor1 &lt;= ConstUnknown ? UnreachableConstUnknown :&#10;              factor1 &lt;= ConstUnknown &amp;&amp; factor2 &lt;= ConstUnknown ? ConstUnknown :&#10;               factor1 &lt;= UnreachableNonConst || factor2 &lt;= UnreachableNonConst ? UnreachableNonConst :&#10;                NonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constUnreachableAbstract">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 200.0]">
+        </property>
+    </property>
+    <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="dividend == UnreachableUnknown || divisor == UnreachableUnknown ? UnreachableUnknown :&#10; dividend == ReachableUnknown || divisor == ReachableUnknown ? ReachableUnknown :&#10;  divisor == UnreachableConstZero ? UnreachableUnknown :&#10;   dividend == UnreachableConstZero ? UnreachableConstZero :&#10;    dividend == divisor &amp;&amp; (dividend == UnreachableConstPositive || dividend == UnreachableConstNegative) ? UnreachableConstPositive :&#10;	 dividend == UnreachableConstPositive &amp;&amp; divisor == ConstPositive || divisor == UnreachableConstPositive &amp;&amp; dividend == ConstPositive ? UnreachableConstPositive :&#10;	  dividend == UnreachableConstNegative &amp;&amp; divisor == ConstNegative || divisor == UnreachableConstNegative &amp;&amp; dividend == ConstNegative ? UnreachableConstPositive :&#10;      (dividend == UnreachableConstPositive &amp;&amp; (divisor == UnreachableConstNegative || divisor == ConstNegative)) || (dividend == UnreachableConstNegative &amp;&amp; (divisor == UnreachableConstPositive || divisor == ConstPositive)) ? UnreachableConstNegative :&#10;	   (dividend == UnreachableConstNegative &amp;&amp; (divisor == UnreachableConstPositive || divisor == ConstPositive)) || (dividend == UnreachableConstPositive &amp;&amp; (divisor == UnreachableConstNegative || divisor == ConstNegative)) ? UnreachableConstNegative :&#10;        divisor == ConstZero &amp;&amp; dividend &gt;= ReachableUnknown ? ReachableUnknown :&#10;	     divisor == ConstZero &amp;&amp; dividend &lt;= UnreachableNonConst ? UnreachableUnknown :&#10;          dividend == ConstZero &amp;&amp; (divisor == ConstPositive || divisor == ConstNegative) ? ConstZero :&#10;		   dividend == ConstZero &amp;&amp; (divisor == UnreachableConstPositive || divisor == UnreachableConstNegative) ? UnreachableConstZero :&#10;            dividend == divisor &amp;&amp; (dividend == ConstPositive || dividend == ConstNegative) ? ConstPositive :&#10;             (dividend == ConstPositive &amp;&amp; divisor == ConstNegative) || (dividend == ConstNegative &amp;&amp; divisor == ConstPositive) ? ConstNegative :&#10;              dividend &lt;= UnreachableConstUnknown &amp;&amp; divisor &lt;= ConstUnknown || divisor &lt;= UnreachableConstUnknown &amp;&amp; dividend &lt;= ConstUnknown ? UnreachableConstUnknown :&#10;               dividend &lt;= ConstUnknown &amp;&amp; divisor &lt;= ConstUnknown ? ConstUnknown :&#10;                dividend &lt;= UnreachableNonConst || divisor &lt;= UnreachableNonConst ? UnreachableNonConst :&#10;                 NonConst">
+        </property>
+        <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constUnreachableAbstract">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 265.0]">
+        </property>
+    </property>
+    <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Const">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="0" y="0" width="60" height="20" style="fill:white"></rect>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 260.0]">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= value">
+        </property>
+        <property name="triggerPortTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="firingCountLimitAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="NONEAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="valueAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+    </property>
+    <property name="DisplayActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.gui.Display">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.gui.Display">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-20" y="-15" width="40" height="30" style="fill:lightGrey"></rect>
+<rect x="-15" y="-10" width="30" height="20" style="fill:white"></rect>
+<line x1="-13" y1="-6" x2="-4" y2="-6" style="stroke:grey"></line>
+<line x1="-13" y1="-2" x2="0" y2="-2" style="stroke:grey"></line>
+<line x1="-13" y1="2" x2="-8" y2="2" style="stroke:grey"></line>
+<line x1="-13" y1="6" x2="4" y2="6" style="stroke:grey"></line>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 345.0]">
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= ReachableUnknown">
+        </property>
+        <property name="rowsDisplayedAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="columnsDisplayedAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="suppressBlankLinesAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="titleAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="promoteReachability" class="ptolemy.data.ontologies.ConceptFunctionDefinitionAttribute">
+        <property name="constrainFunctionToBeMonotonic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="outputRangeOntologyName" class="ptolemy.data.expr.StringParameter" value="constUnreachableAbstract">
+        </property>
+        <property name="argumentNames" class="ptolemy.data.expr.Parameter" value="{ &quot;knownReachabilityConcept&quot; }">
+        </property>
+        <property name="argumentDomainOntologies" class="ptolemy.data.expr.Parameter" value="{ &quot;constUnreachableAbstract&quot; }">
+        </property>
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="knownReachabilityConcept &lt;= UnreachableNonConst ? UnreachableUnknown :&#10; ReachableUnknown">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 325.0]">
+        </property>
+    </property>
+    <property name="MultiplyDivideActorConstraints2" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.Scale">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<polygon points="-30,-20 30,-4 30,4 -30,20" style="fill:white"></polygon>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 200.0]">
+        </property>
+        <property name="inputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= multiplyFunction(input, factor)">
+        </property>
+        <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <entity name="constUnreachableAbstract" class="ptolemy/data.ontologies.lattice.adapters.constUnreachableAbstract.constUnreachableAbstract">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 85.0]">
+        </property>
+    </entity>
+</entity>

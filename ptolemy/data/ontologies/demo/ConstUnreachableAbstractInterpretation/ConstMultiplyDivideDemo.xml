@@ -1,0 +1,1591 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstMultiplyDivideDemo" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="ConstUnreachableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constUnreachableAbstract/constUnreachableSolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="custom">
+        </property>
+        <property name="solvingFixedPoint" class="ptolemy.data.expr.StringParameter" value="least">
+        </property>
+        <property name="actorConstraintType" class="ptolemy.data.expr.StringParameter" value="out == in">
+        </property>
+        <property name="connectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
+        </property>
+        <property name="compositeConnectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
+        </property>
+        <property name="fsmConstraintType" class="ptolemy.data.expr.StringParameter" value="sink == src">
+        </property>
+        <property name="expressionASTNodeConstraintType" class="ptolemy.data.expr.StringParameter" value="parent &gt;= child">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 55.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={339, 88, 1192, 885}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[977, 768]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{484.959595959596, 378.6715593434344}">
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 50.0}">
+        </property>
+    </property>
+    <property name="constUnreachableAbstract::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant1 &gt;= UnreachableConstPositive">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 55.0]">
+        </property>
+    </property>
+    <property name="constUnreachableAbstract::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant2 &gt;= UnreachableConstPositive">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 75.0]">
+        </property>
+    </property>
+    <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
+        </property>
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+        </property>
+    </property>
+    <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
+        </property>
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+        </property>
+    </property>
+    <property name="CollectLatticeOntologySolverDetails" class="ptolemy.data.ontologies.lattice.CollectLatticeOntologySolverDetails">
+        <property name="solverName" class="ptolemy.data.expr.StringParameter" value="ConstUnreachableSolver">
+        </property>
+        <property name="trainedInitialSolverConstraints" class="ptolemy.kernel.util.StringAttribute" value="UnreachableConstPositive &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, null)&#13;&#10;UnreachableConstPositive &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, null)&#13;&#10;UnreachableConstZero &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null)&#13;&#10;UnreachableConstNegative &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, null)&#13;&#10;UnreachableConstNegative &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display.input}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display.input}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const2.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const2.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const3.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const3.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const4.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const4.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display2.input}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display2.input}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const5.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const5.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const6.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const6.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const7.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const7.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const8.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const8.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display3.input}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display3.input}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const9.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const9.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const10.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const10.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const11.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const11.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const12.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const12.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display4.input}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display4.input}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const13.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const13.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const14.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const14.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const15.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const15.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const16.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const16.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display5.input}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display5.input}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const17.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const17.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const18.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const18.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const19.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const19.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const20.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const20.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display6.input}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display6.input}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const21.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const21.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const22.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const22.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const23.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const23.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const24.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const24.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display7.input}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display7.input}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const25.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const25.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const26.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const26.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const27.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.multiply}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.multiply}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const27.output}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const28.output}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.divide}, null)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.divide}, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const28.output}, null)&#13;&#10;(PtLeafNode:true:null:10:null, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, null)&#13;&#10;(PtLeafNode:true:null:20:null, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, null)&#13;&#10;(PtLeafNode:true:null:0:null, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null)&#13;&#10;(PtLeafNode:true:null:-67:null, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, null)&#13;&#10;(PtLeafNode:true:null:-34:null, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, null)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display.input}, null)&#13;&#10;(MultiplyDivide_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.multiply}, null)&#13;&#10;(MultiplyDivide_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.divide}, null)&#13;&#10;(MultiplyDivide_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const.value} 10, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const.output}, null)&#13;&#10;(Const_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const.value} 10, null)&#13;&#10;(PtLeafNode:false:null:null:Constant1, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const.value} 10, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, null) &lt;= (PtLeafNode:false:null:null:Constant1, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const2.value} 20, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const2.output}, null)&#13;&#10;(Const2_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const2.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const2.value} 20, null)&#13;&#10;(PtLeafNode:false:null:null:Constant2, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const2.value} 20, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, null) &lt;= (PtLeafNode:false:null:null:Constant2, null)&#13;&#10;(MultiplyDivide2_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.multiply}, null)&#13;&#10;(MultiplyDivide2_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.divide}, null)&#13;&#10;(MultiplyDivide2_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const3.value} 10, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const3.output}, null)&#13;&#10;(Const3_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const3.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const3.value} 10, null)&#13;&#10;(PtLeafNode:false:null:null:Constant1, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const3.value} 10, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, null) &lt;= (PtLeafNode:false:null:null:Constant1, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const4.value} 20, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const4.output}, null)&#13;&#10;(Const4_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const4.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const4.value} 20, null)&#13;&#10;(PtLeafNode:false:null:null:Constant2, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const4.value} 20, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, null) &lt;= (PtLeafNode:false:null:null:Constant2, null)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display2.input}, null)&#13;&#10;(MultiplyDivide3_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.multiply}, null)&#13;&#10;(MultiplyDivide3_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.divide}, null)&#13;&#10;(MultiplyDivide3_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const5.value} 0, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const5.output}, null)&#13;&#10;(Const5_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const5.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const5.value} 0, null)&#13;&#10;(PtLeafNode:false:null:null:Constant3, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const5.value} 0, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null) &lt;= (PtLeafNode:false:null:null:Constant3, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const6.value} 20, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const6.output}, null)&#13;&#10;(Const6_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const6.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const6.value} 20, null)&#13;&#10;(PtLeafNode:false:null:null:Constant2, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const6.value} 20, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, null) &lt;= (PtLeafNode:false:null:null:Constant2, null)&#13;&#10;(MultiplyDivide4_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.multiply}, null)&#13;&#10;(MultiplyDivide4_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.divide}, null)&#13;&#10;(MultiplyDivide4_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const7.value} 0, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const7.output}, null)&#13;&#10;(Const7_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const7.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const7.value} 0, null)&#13;&#10;(PtLeafNode:false:null:null:Constant3, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const7.value} 0, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null) &lt;= (PtLeafNode:false:null:null:Constant3, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const8.value} 20, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const8.output}, null)&#13;&#10;(Const8_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const8.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const8.value} 20, null)&#13;&#10;(PtLeafNode:false:null:null:Constant2, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const8.value} 20, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, null) &lt;= (PtLeafNode:false:null:null:Constant2, null)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display3.input}, null)&#13;&#10;(MultiplyDivide5_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.multiply}, null)&#13;&#10;(MultiplyDivide5_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.divide}, null)&#13;&#10;(MultiplyDivide5_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const9.value} -67, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const9.output}, null)&#13;&#10;(Const9_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const9.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const9.value} -67, null)&#13;&#10;(PtLeafNode:false:null:null:Constant4, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const9.value} -67, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, null) &lt;= (PtLeafNode:false:null:null:Constant4, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const10.value} -34, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const10.output}, null)&#13;&#10;(Const10_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const10.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const10.value} -34, null)&#13;&#10;(PtLeafNode:false:null:null:Constant5, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const10.value} -34, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, null) &lt;= (PtLeafNode:false:null:null:Constant5, null)&#13;&#10;(MultiplyDivide6_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.multiply}, null)&#13;&#10;(MultiplyDivide6_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.divide}, null)&#13;&#10;(MultiplyDivide6_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const11.value} -67, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const11.output}, null)&#13;&#10;(Const11_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const11.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const11.value} -67, null)&#13;&#10;(PtLeafNode:false:null:null:Constant4, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const11.value} -67, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, null) &lt;= (PtLeafNode:false:null:null:Constant4, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const12.value} -34, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const12.output}, null)&#13;&#10;(Const12_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const12.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const12.value} -34, null)&#13;&#10;(PtLeafNode:false:null:null:Constant5, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const12.value} -34, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, null) &lt;= (PtLeafNode:false:null:null:Constant5, null)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display4.input}, null)&#13;&#10;(MultiplyDivide7_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.multiply}, null)&#13;&#10;(MultiplyDivide7_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.divide}, null)&#13;&#10;(MultiplyDivide7_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const13.value} 10, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const13.output}, null)&#13;&#10;(Const13_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const13.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const13.value} 10, null)&#13;&#10;(PtLeafNode:false:null:null:Constant1, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const13.value} 10, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, null) &lt;= (PtLeafNode:false:null:null:Constant1, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const14.value} -67, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const14.output}, null)&#13;&#10;(Const14_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const14.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const14.value} -67, null)&#13;&#10;(PtLeafNode:false:null:null:Constant4, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const14.value} -67, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, null) &lt;= (PtLeafNode:false:null:null:Constant4, null)&#13;&#10;(MultiplyDivide8_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.multiply}, null)&#13;&#10;(MultiplyDivide8_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.divide}, null)&#13;&#10;(MultiplyDivide8_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const15.value} 10, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const15.output}, null)&#13;&#10;(Const15_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const15.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const15.value} 10, null)&#13;&#10;(PtLeafNode:false:null:null:Constant1, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const15.value} 10, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, null) &lt;= (PtLeafNode:false:null:null:Constant1, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const16.value} -67, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const16.output}, null)&#13;&#10;(Const16_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const16.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const16.value} -67, null)&#13;&#10;(PtLeafNode:false:null:null:Constant4, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const16.value} -67, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, null) &lt;= (PtLeafNode:false:null:null:Constant4, null)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display5.input}, null)&#13;&#10;(MultiplyDivide9_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.multiply}, null)&#13;&#10;(MultiplyDivide9_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.divide}, null)&#13;&#10;(MultiplyDivide9_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const17.value} 0, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const17.output}, null)&#13;&#10;(Const17_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const17.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const17.value} 0, null)&#13;&#10;(PtLeafNode:false:null:null:Constant3, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const17.value} 0, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null) &lt;= (PtLeafNode:false:null:null:Constant3, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const18.value} -34, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const18.output}, null)&#13;&#10;(Const18_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const18.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const18.value} -34, null)&#13;&#10;(PtLeafNode:false:null:null:Constant5, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const18.value} -34, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, null) &lt;= (PtLeafNode:false:null:null:Constant5, null)&#13;&#10;(MultiplyDivide10_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.multiply}, null)&#13;&#10;(MultiplyDivide10_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.divide}, null)&#13;&#10;(MultiplyDivide10_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const19.value} 0, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const19.output}, null)&#13;&#10;(Const19_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const19.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const19.value} 0, null)&#13;&#10;(PtLeafNode:false:null:null:Constant3, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const19.value} 0, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null) &lt;= (PtLeafNode:false:null:null:Constant3, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const20.value} -34, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const20.output}, null)&#13;&#10;(Const20_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const20.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const20.value} -34, null)&#13;&#10;(PtLeafNode:false:null:null:Constant5, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const20.value} -34, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, null) &lt;= (PtLeafNode:false:null:null:Constant5, null)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display6.input}, null)&#13;&#10;(MultiplyDivide11_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.multiply}, null)&#13;&#10;(MultiplyDivide11_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.divide}, null)&#13;&#10;(MultiplyDivide11_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const21.value} 10, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const21.output}, null)&#13;&#10;(Const21_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const21.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const21.value} 10, null)&#13;&#10;(PtLeafNode:false:null:null:Constant1, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const21.value} 10, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, null) &lt;= (PtLeafNode:false:null:null:Constant1, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const22.value} 0, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const22.output}, null)&#13;&#10;(Const22_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const22.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const22.value} 0, null)&#13;&#10;(PtLeafNode:false:null:null:Constant3, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const22.value} 0, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null) &lt;= (PtLeafNode:false:null:null:Constant3, null)&#13;&#10;(MultiplyDivide12_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.multiply}, null)&#13;&#10;(MultiplyDivide12_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.divide}, null)&#13;&#10;(MultiplyDivide12_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const23.value} 10, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const23.output}, null)&#13;&#10;(Const23_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const23.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const23.value} 10, null)&#13;&#10;(PtLeafNode:false:null:null:Constant1, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const23.value} 10, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, null) &lt;= (PtLeafNode:false:null:null:Constant1, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const24.value} 0, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const24.output}, null)&#13;&#10;(Const24_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const24.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const24.value} 0, null)&#13;&#10;(PtLeafNode:false:null:null:Constant3, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const24.value} 0, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null) &lt;= (PtLeafNode:false:null:null:Constant3, null)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display7.input}, null)&#13;&#10;(MultiplyDivide13_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.multiply}, null)&#13;&#10;(MultiplyDivide13_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.divide}, null)&#13;&#10;(MultiplyDivide13_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const25.value} -34, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const25.output}, null)&#13;&#10;(Const25_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const25.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const25.value} -34, null)&#13;&#10;(PtLeafNode:false:null:null:Constant5, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const25.value} -34, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, null) &lt;= (PtLeafNode:false:null:null:Constant5, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const26.value} 0, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const26.output}, null)&#13;&#10;(Const26_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const26.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const26.value} 0, null)&#13;&#10;(PtLeafNode:false:null:null:Constant3, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const26.value} 0, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null) &lt;= (PtLeafNode:false:null:null:Constant3, null)&#13;&#10;(MultiplyDivide14_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.multiply}, null)&#13;&#10;(MultiplyDivide14_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.output}, null)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.divide}, null)&#13;&#10;(MultiplyDivide14_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.multiply}, null), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.divide}, null)), NonConst) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.output}, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const27.value} -34, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const27.output}, null)&#13;&#10;(Const27_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const27.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const27.value} -34, null)&#13;&#10;(PtLeafNode:false:null:null:Constant5, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const27.value} -34, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, null) &lt;= (PtLeafNode:false:null:null:Constant5, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const28.value} 0, null) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const28.output}, null)&#13;&#10;(Const28_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const28.output}, null)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const28.value} 0, null)&#13;&#10;(PtLeafNode:false:null:null:Constant3, null) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const28.value} 0, null)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, null) &lt;= (PtLeafNode:false:null:null:Constant3, null)&#13;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="trainedResolvedSolverConstraints" class="ptolemy.kernel.util.StringAttribute" value="UnreachableConstPositive &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, UnreachableConstPositive)&#13;&#10;UnreachableConstPositive &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, UnreachableConstPositive)&#13;&#10;UnreachableConstZero &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero)&#13;&#10;UnreachableConstNegative &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, UnreachableConstNegative)&#13;&#10;UnreachableConstNegative &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display.input}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display.input}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const.output}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.multiply}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.multiply}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const.output}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const2.output}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.divide}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.divide}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const2.output}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const3.output}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.multiply}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.multiply}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const3.output}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const4.output}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.divide}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.divide}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const4.output}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display2.input}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display2.input}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const5.output}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.multiply}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.multiply}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const5.output}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const6.output}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.divide}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.divide}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const6.output}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const7.output}, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.multiply}, UnreachableConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.multiply}, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const7.output}, UnreachableConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const8.output}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.divide}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.divide}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const8.output}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display3.input}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display3.input}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const9.output}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.multiply}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.multiply}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const9.output}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const10.output}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.divide}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.divide}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const10.output}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const11.output}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.multiply}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.multiply}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const11.output}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const12.output}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.divide}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.divide}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const12.output}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display4.input}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display4.input}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const13.output}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.multiply}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.multiply}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const13.output}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const14.output}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.divide}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.divide}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const14.output}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const15.output}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.multiply}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.multiply}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const15.output}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const16.output}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.divide}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.divide}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const16.output}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display5.input}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display5.input}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const17.output}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.multiply}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.multiply}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const17.output}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const18.output}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.divide}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.divide}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const18.output}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const19.output}, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.multiply}, UnreachableConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.multiply}, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const19.output}, UnreachableConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const20.output}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.divide}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.divide}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const20.output}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display6.input}, ReachableUnknown)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display6.input}, ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, ReachableUnknown)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const21.output}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.multiply}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.multiply}, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const21.output}, ConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const22.output}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.divide}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.divide}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const22.output}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const23.output}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.multiply}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.multiply}, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const23.output}, UnreachableConstPositive)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const24.output}, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.divide}, UnreachableConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.divide}, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const24.output}, UnreachableConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display7.input}, ReachableUnknown)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display7.input}, ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, ReachableUnknown)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const25.output}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.multiply}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.multiply}, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const25.output}, ConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const26.output}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.divide}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.divide}, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const26.output}, ConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const27.output}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.multiply}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.multiply}, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const27.output}, UnreachableConstNegative)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const28.output}, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.divide}, UnreachableConstZero)&#13;&#10;(ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.divide}, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const28.output}, UnreachableConstZero)&#13;&#10;(PtLeafNode:true:null:10:null, UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, UnreachableConstPositive)&#13;&#10;(PtLeafNode:true:null:20:null, UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, UnreachableConstPositive)&#13;&#10;(PtLeafNode:true:null:0:null, UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero)&#13;&#10;(PtLeafNode:true:null:-67:null, UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, UnreachableConstNegative)&#13;&#10;(PtLeafNode:true:null:-34:null, UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, UnreachableConstNegative)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display.input}, ConstPositive)&#13;&#10;(MultiplyDivide_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, ConstPositive)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.multiply}, ConstPositive)&#13;&#10;(MultiplyDivide_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, ConstPositive)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.divide}, ConstPositive)&#13;&#10;(MultiplyDivide_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.multiply}, ConstPositive), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.divide}, ConstPositive)), ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide.output}, ConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const.value} 10, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const.output}, ConstPositive)&#13;&#10;(Const_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const.output}, ConstPositive)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const.value} 10, ConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant1, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const.value} 10, ConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant1, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const2.value} 20, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const2.output}, ConstPositive)&#13;&#10;(Const2_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const2.output}, ConstPositive)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const2.value} 20, ConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant2, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const2.value} 20, ConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant2, UnreachableConstPositive)&#13;&#10;(MultiplyDivide2_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.output}, UnreachableConstPositive)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.multiply}, UnreachableConstPositive)&#13;&#10;(MultiplyDivide2_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.output}, UnreachableConstPositive)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.divide}, UnreachableConstPositive)&#13;&#10;(MultiplyDivide2_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.multiply}, UnreachableConstPositive), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.divide}, UnreachableConstPositive)), UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide2.output}, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const3.value} 10, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const3.output}, UnreachableConstPositive)&#13;&#10;(Const3_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const3.output}, UnreachableConstPositive)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const3.value} 10, UnreachableConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant1, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const3.value} 10, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant1, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const4.value} 20, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const4.output}, UnreachableConstPositive)&#13;&#10;(Const4_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const4.output}, UnreachableConstPositive)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const4.value} 20, UnreachableConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant2, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const4.value} 20, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant2, UnreachableConstPositive)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display2.input}, ConstZero)&#13;&#10;(MultiplyDivide3_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.multiply}, ConstZero)&#13;&#10;(MultiplyDivide3_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.divide}, ConstPositive)&#13;&#10;(MultiplyDivide3_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.multiply}, ConstZero), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.divide}, ConstPositive)), ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide3.output}, ConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const5.value} 0, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const5.output}, ConstZero)&#13;&#10;(Const5_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const5.output}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const5.value} 0, ConstZero)&#13;&#10;(PtLeafNode:false:null:null:Constant3, UnreachableConstZero) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const5.value} 0, ConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero) &lt;= (PtLeafNode:false:null:null:Constant3, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const6.value} 20, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const6.output}, ConstPositive)&#13;&#10;(Const6_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const6.output}, ConstPositive)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const6.value} 20, ConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant2, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const6.value} 20, ConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant2, UnreachableConstPositive)&#13;&#10;(MultiplyDivide4_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.output}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.multiply}, UnreachableConstZero)&#13;&#10;(MultiplyDivide4_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.output}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.divide}, UnreachableConstPositive)&#13;&#10;(MultiplyDivide4_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.multiply}, UnreachableConstZero), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.divide}, UnreachableConstPositive)), UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide4.output}, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const7.value} 0, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const7.output}, UnreachableConstZero)&#13;&#10;(Const7_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const7.output}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const7.value} 0, UnreachableConstZero)&#13;&#10;(PtLeafNode:false:null:null:Constant3, UnreachableConstZero) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const7.value} 0, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero) &lt;= (PtLeafNode:false:null:null:Constant3, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const8.value} 20, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const8.output}, UnreachableConstPositive)&#13;&#10;(Const8_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const8.output}, UnreachableConstPositive)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const8.value} 20, UnreachableConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant2, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const8.value} 20, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant2} 20, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant2, UnreachableConstPositive)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display3.input}, ConstPositive)&#13;&#10;(MultiplyDivide5_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, ConstPositive)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.multiply}, ConstNegative)&#13;&#10;(MultiplyDivide5_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, ConstPositive)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.divide}, ConstNegative)&#13;&#10;(MultiplyDivide5_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.multiply}, ConstNegative), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.divide}, ConstNegative)), ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide5.output}, ConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const9.value} -67, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const9.output}, ConstNegative)&#13;&#10;(Const9_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const9.output}, ConstNegative)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const9.value} -67, ConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant4, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const9.value} -67, ConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant4, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const10.value} -34, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const10.output}, ConstNegative)&#13;&#10;(Const10_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const10.output}, ConstNegative)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const10.value} -34, ConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant5, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const10.value} -34, ConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant5, UnreachableConstNegative)&#13;&#10;(MultiplyDivide6_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.output}, UnreachableConstPositive)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.multiply}, UnreachableConstNegative)&#13;&#10;(MultiplyDivide6_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.output}, UnreachableConstPositive)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.divide}, UnreachableConstNegative)&#13;&#10;(MultiplyDivide6_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.multiply}, UnreachableConstNegative), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.divide}, UnreachableConstNegative)), UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide6.output}, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const11.value} -67, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const11.output}, UnreachableConstNegative)&#13;&#10;(Const11_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const11.output}, UnreachableConstNegative)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const11.value} -67, UnreachableConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant4, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const11.value} -67, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant4, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const12.value} -34, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const12.output}, UnreachableConstNegative)&#13;&#10;(Const12_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const12.output}, UnreachableConstNegative)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const12.value} -34, UnreachableConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant5, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const12.value} -34, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant5, UnreachableConstNegative)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display4.input}, ConstNegative)&#13;&#10;(MultiplyDivide7_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, ConstNegative)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.multiply}, ConstPositive)&#13;&#10;(MultiplyDivide7_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, ConstNegative)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.divide}, ConstNegative)&#13;&#10;(MultiplyDivide7_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.multiply}, ConstPositive), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.divide}, ConstNegative)), ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide7.output}, ConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const13.value} 10, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const13.output}, ConstPositive)&#13;&#10;(Const13_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const13.output}, ConstPositive)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const13.value} 10, ConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant1, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const13.value} 10, ConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant1, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const14.value} -67, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const14.output}, ConstNegative)&#13;&#10;(Const14_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const14.output}, ConstNegative)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const14.value} -67, ConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant4, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const14.value} -67, ConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant4, UnreachableConstNegative)&#13;&#10;(MultiplyDivide8_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.output}, UnreachableConstNegative)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.multiply}, UnreachableConstPositive)&#13;&#10;(MultiplyDivide8_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.output}, UnreachableConstNegative)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.divide}, UnreachableConstNegative)&#13;&#10;(MultiplyDivide8_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.multiply}, UnreachableConstPositive), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.divide}, UnreachableConstNegative)), UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide8.output}, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const15.value} 10, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const15.output}, UnreachableConstPositive)&#13;&#10;(Const15_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const15.output}, UnreachableConstPositive)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const15.value} 10, UnreachableConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant1, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const15.value} 10, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant1, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const16.value} -67, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const16.output}, UnreachableConstNegative)&#13;&#10;(Const16_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const16.output}, UnreachableConstNegative)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const16.value} -67, UnreachableConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant4, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const16.value} -67, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant4} -67, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant4, UnreachableConstNegative)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display5.input}, ConstZero)&#13;&#10;(MultiplyDivide9_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.multiply}, ConstZero)&#13;&#10;(MultiplyDivide9_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.divide}, ConstNegative)&#13;&#10;(MultiplyDivide9_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.multiply}, ConstZero), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.divide}, ConstNegative)), ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide9.output}, ConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const17.value} 0, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const17.output}, ConstZero)&#13;&#10;(Const17_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const17.output}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const17.value} 0, ConstZero)&#13;&#10;(PtLeafNode:false:null:null:Constant3, UnreachableConstZero) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const17.value} 0, ConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero) &lt;= (PtLeafNode:false:null:null:Constant3, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const18.value} -34, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const18.output}, ConstNegative)&#13;&#10;(Const18_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const18.output}, ConstNegative)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const18.value} -34, ConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant5, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const18.value} -34, ConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant5, UnreachableConstNegative)&#13;&#10;(MultiplyDivide10_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.output}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.multiply}, UnreachableConstZero)&#13;&#10;(MultiplyDivide10_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.output}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.divide}, UnreachableConstNegative)&#13;&#10;(MultiplyDivide10_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.multiply}, UnreachableConstZero), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.divide}, UnreachableConstNegative)), UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide10.output}, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const19.value} 0, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const19.output}, UnreachableConstZero)&#13;&#10;(Const19_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const19.output}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const19.value} 0, UnreachableConstZero)&#13;&#10;(PtLeafNode:false:null:null:Constant3, UnreachableConstZero) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const19.value} 0, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero) &lt;= (PtLeafNode:false:null:null:Constant3, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const20.value} -34, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const20.output}, UnreachableConstNegative)&#13;&#10;(Const20_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const20.output}, UnreachableConstNegative)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const20.value} -34, UnreachableConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant5, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const20.value} -34, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant5, UnreachableConstNegative)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display6.input}, ReachableUnknown)&#13;&#10;(MultiplyDivide11_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, ReachableUnknown)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.multiply}, ConstPositive)&#13;&#10;(MultiplyDivide11_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, ReachableUnknown)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.divide}, ConstZero)&#13;&#10;(MultiplyDivide11_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.multiply}, ConstPositive), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.divide}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide11.output}, ReachableUnknown)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const21.value} 10, ConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const21.output}, ConstPositive)&#13;&#10;(Const21_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const21.output}, ConstPositive)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const21.value} 10, ConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant1, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const21.value} 10, ConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant1, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const22.value} 0, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const22.output}, ConstZero)&#13;&#10;(Const22_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const22.output}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const22.value} 0, ConstZero)&#13;&#10;(PtLeafNode:false:null:null:Constant3, UnreachableConstZero) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const22.value} 0, ConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero) &lt;= (PtLeafNode:false:null:null:Constant3, UnreachableConstZero)&#13;&#10;(MultiplyDivide12_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.output}, UnreachableUnknown)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.multiply}, UnreachableConstPositive)&#13;&#10;(MultiplyDivide12_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.output}, UnreachableUnknown)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.divide}, UnreachableConstZero)&#13;&#10;(MultiplyDivide12_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.multiply}, UnreachableConstPositive), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.divide}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide12.output}, UnreachableUnknown)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const23.value} 10, UnreachableConstPositive) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const23.output}, UnreachableConstPositive)&#13;&#10;(Const23_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const23.output}, UnreachableConstPositive)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const23.value} 10, UnreachableConstPositive)&#13;&#10;(PtLeafNode:false:null:null:Constant1, UnreachableConstPositive) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const23.value} 10, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant1} 10, UnreachableConstPositive) &lt;= (PtLeafNode:false:null:null:Constant1, UnreachableConstPositive)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const24.value} 0, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const24.output}, UnreachableConstZero)&#13;&#10;(Const24_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const24.output}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const24.value} 0, UnreachableConstZero)&#13;&#10;(PtLeafNode:false:null:null:Constant3, UnreachableConstZero) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const24.value} 0, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero) &lt;= (PtLeafNode:false:null:null:Constant3, UnreachableConstZero)&#13;&#10;ReachableUnknown &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Display7.input}, ReachableUnknown)&#13;&#10;(MultiplyDivide13_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, ReachableUnknown)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.multiply}, ConstNegative)&#13;&#10;(MultiplyDivide13_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, ReachableUnknown)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.divide}, ConstZero)&#13;&#10;(MultiplyDivide13_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.multiply}, ConstNegative), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.divide}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide13.output}, ReachableUnknown)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const25.value} -34, ConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const25.output}, ConstNegative)&#13;&#10;(Const25_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const25.output}, ConstNegative)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const25.value} -34, ConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant5, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const25.value} -34, ConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant5, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const26.value} 0, ConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const26.output}, ConstZero)&#13;&#10;(Const26_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const26.output}, ConstZero)), ReachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const26.value} 0, ConstZero)&#13;&#10;(PtLeafNode:false:null:null:Constant3, UnreachableConstZero) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const26.value} 0, ConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero) &lt;= (PtLeafNode:false:null:null:Constant3, UnreachableConstZero)&#13;&#10;(MultiplyDivide14_multiply_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.output}, UnreachableUnknown)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.multiply}, UnreachableConstNegative)&#13;&#10;(MultiplyDivide14_divide_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.output}, UnreachableUnknown)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.divide}, UnreachableConstZero)&#13;&#10;(MultiplyDivide14_output_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.multiply}, UnreachableConstNegative), (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.divide}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.MultiplyDivide14.output}, UnreachableUnknown)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const27.value} -34, UnreachableConstNegative) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const27.output}, UnreachableConstNegative)&#13;&#10;(Const27_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const27.output}, UnreachableConstNegative)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const27.value} -34, UnreachableConstNegative)&#13;&#10;(PtLeafNode:false:null:null:Constant5, UnreachableConstNegative) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const27.value} -34, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant5} -34, UnreachableConstNegative) &lt;= (PtLeafNode:false:null:null:Constant5, UnreachableConstNegative)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const28.value} 0, UnreachableConstZero) &lt;= (ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const28.output}, UnreachableConstZero)&#13;&#10;(Const28_value_ConstraintFunction((ptolemy.actor.TypedIOPort {.ConstMultiplyDivideDemo.Const28.output}, UnreachableConstZero)), UnreachableUnknown) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const28.value} 0, UnreachableConstZero)&#13;&#10;(PtLeafNode:false:null:null:Constant3, UnreachableConstZero) &lt;= (ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Const28.value} 0, UnreachableConstZero)&#13;&#10;(ptolemy.data.expr.Parameter {.ConstMultiplyDivideDemo.Constant3} 0, UnreachableConstZero) &lt;= (PtLeafNode:false:null:null:Constant3, UnreachableConstZero)&#13;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 55.0]">
+        </property>
+    </property>
+    <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
+        </property>
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+        </property>
+    </property>
+    <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 110.0]">
+        </property>
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+        </property>
+    </property>
+    <property name="constUnreachableAbstract::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant3 &gt;= UnreachableConstZero">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 95.0]">
+        </property>
+    </property>
+    <property name="constUnreachableAbstract::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant4 &gt;= UnreachableConstNegative">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 115.0]">
+        </property>
+    </property>
+    <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 130.0]">
+        </property>
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+        </property>
+    </property>
+    <property name="constUnreachableAbstract::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant5 &gt;= UnreachableConstNegative">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 135.0]">
+        </property>
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 245.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 245.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 210.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 285.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 405.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 345.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const4" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 440.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 540.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide3" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 540.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const5" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 505.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const6" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 580.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 700.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const7" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 640.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const8" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 735.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 225.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide5" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 225.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const9" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 190.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const10" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 265.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide6" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 385.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const11" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 325.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const12" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 420.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 540.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide7" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 540.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const13" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 505.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const14" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 580.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide8" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 700.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const15" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 640.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const16" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 735.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display5" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[402.25, 822.5]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide9" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 825.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const17" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 790.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const18" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 865.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide10" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 985.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const19" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 925.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const20" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 1020.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display6" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[927.25, 837.5]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ReachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide11" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[717.25, 837.5]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ReachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const21" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[537.25, 802.5]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const22" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[532.25, 877.5]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide12" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[717.25, 997.5]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const23" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[537.25, 937.5]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const24" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[532.25, 1032.5]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Display7" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1417.75, 830.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ReachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide13" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1207.75, 830.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ReachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const25" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1027.75, 795.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const26" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1022.75, 870.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="MultiplyDivide14" class="ptolemy.actor.lib.MultiplyDivide">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1207.75, 990.0]">
+        </property>
+        <port name="multiply" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="divide" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const27" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1027.75, 930.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <entity name="Const28" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1022.75, 1025.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation28" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation29" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation30" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation31" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation33" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation34" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation35" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display.input" relation="relation3"/>
+    <link port="MultiplyDivide.multiply" relation="relation"/>
+    <link port="MultiplyDivide.divide" relation="relation2"/>
+    <link port="MultiplyDivide.output" relation="relation3"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="Const2.output" relation="relation2"/>
+    <link port="MultiplyDivide2.multiply" relation="relation4"/>
+    <link port="MultiplyDivide2.divide" relation="relation5"/>
+    <link port="Const3.output" relation="relation4"/>
+    <link port="Const4.output" relation="relation5"/>
+    <link port="Display2.input" relation="relation6"/>
+    <link port="MultiplyDivide3.multiply" relation="relation8"/>
+    <link port="MultiplyDivide3.divide" relation="relation7"/>
+    <link port="MultiplyDivide3.output" relation="relation6"/>
+    <link port="Const5.output" relation="relation8"/>
+    <link port="Const6.output" relation="relation7"/>
+    <link port="MultiplyDivide4.multiply" relation="relation10"/>
+    <link port="MultiplyDivide4.divide" relation="relation9"/>
+    <link port="Const7.output" relation="relation10"/>
+    <link port="Const8.output" relation="relation9"/>
+    <link port="Display3.input" relation="relation11"/>
+    <link port="MultiplyDivide5.multiply" relation="relation13"/>
+    <link port="MultiplyDivide5.divide" relation="relation12"/>
+    <link port="MultiplyDivide5.output" relation="relation11"/>
+    <link port="Const9.output" relation="relation13"/>
+    <link port="Const10.output" relation="relation12"/>
+    <link port="MultiplyDivide6.multiply" relation="relation15"/>
+    <link port="MultiplyDivide6.divide" relation="relation14"/>
+    <link port="Const11.output" relation="relation15"/>
+    <link port="Const12.output" relation="relation14"/>
+    <link port="Display4.input" relation="relation16"/>
+    <link port="MultiplyDivide7.multiply" relation="relation18"/>
+    <link port="MultiplyDivide7.divide" relation="relation17"/>
+    <link port="MultiplyDivide7.output" relation="relation16"/>
+    <link port="Const13.output" relation="relation18"/>
+    <link port="Const14.output" relation="relation17"/>
+    <link port="MultiplyDivide8.multiply" relation="relation20"/>
+    <link port="MultiplyDivide8.divide" relation="relation19"/>
+    <link port="Const15.output" relation="relation20"/>
+    <link port="Const16.output" relation="relation19"/>
+    <link port="Display5.input" relation="relation21"/>
+    <link port="MultiplyDivide9.multiply" relation="relation23"/>
+    <link port="MultiplyDivide9.divide" relation="relation22"/>
+    <link port="MultiplyDivide9.output" relation="relation21"/>
+    <link port="Const17.output" relation="relation23"/>
+    <link port="Const18.output" relation="relation22"/>
+    <link port="MultiplyDivide10.multiply" relation="relation25"/>
+    <link port="MultiplyDivide10.divide" relation="relation24"/>
+    <link port="Const19.output" relation="relation25"/>
+    <link port="Const20.output" relation="relation24"/>
+    <link port="Display6.input" relation="relation26"/>
+    <link port="MultiplyDivide11.multiply" relation="relation28"/>
+    <link port="MultiplyDivide11.divide" relation="relation27"/>
+    <link port="MultiplyDivide11.output" relation="relation26"/>
+    <link port="Const21.output" relation="relation28"/>
+    <link port="Const22.output" relation="relation27"/>
+    <link port="MultiplyDivide12.multiply" relation="relation30"/>
+    <link port="MultiplyDivide12.divide" relation="relation29"/>
+    <link port="Const23.output" relation="relation30"/>
+    <link port="Const24.output" relation="relation29"/>
+    <link port="Display7.input" relation="relation31"/>
+    <link port="MultiplyDivide13.multiply" relation="relation33"/>
+    <link port="MultiplyDivide13.divide" relation="relation32"/>
+    <link port="MultiplyDivide13.output" relation="relation31"/>
+    <link port="Const25.output" relation="relation33"/>
+    <link port="Const26.output" relation="relation32"/>
+    <link port="MultiplyDivide14.multiply" relation="relation35"/>
+    <link port="MultiplyDivide14.divide" relation="relation34"/>
+    <link port="Const27.output" relation="relation35"/>
+    <link port="Const28.output" relation="relation34"/>
+</entity>

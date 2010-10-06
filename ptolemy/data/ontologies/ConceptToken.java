@@ -107,7 +107,7 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
         Concept leftConcept = this.conceptValue();
 
         boolean lessThanOrEqual = rightConcept.isAboveOrEqualTo(leftConcept);
-        boolean equal = leftConcept.equals(rightConcept);
+        boolean equal = leftConcept != null && rightConcept != null && leftConcept.equals(rightConcept);
         return new BooleanToken(lessThanOrEqual && !equal);
     }
 

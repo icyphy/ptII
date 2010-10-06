@@ -136,7 +136,9 @@ public class FiniteConcept extends Concept implements Flowable {
      */
     public boolean isAboveOrEqualTo(Concept concept)
             throws IllegalActionException {
-        if (!(concept.getOntology().equals(getOntology()))) {
+        if (concept == null) {
+            return false;
+        } else if (!(concept.getOntology().equals(getOntology()))) {
             throw new IllegalActionException(this,
                     "Attempt to compare elements from two distinct ontologies");
         }

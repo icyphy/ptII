@@ -215,6 +215,11 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                                         + actorElementInExpressionName + " in the actor "
                                         + getComponent() + ".");
                     }
+                    
+                    /* 10/5/10 Charles Shelton - I don't think it is wrong for a constraint function
+                     * to refer to the element being constrained.  It could be used for recursion
+                     * or promoting an element to a concept value higher in the lattice than its current
+                     * one based on the concept value of another element. So I am commenting out this exception.
                     if (argument.equals(actorElement)) {
                         throw new IllegalActionException(actorElement,
                                 "Error parsing actor constraint function in the actor "
@@ -223,6 +228,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                                         + actorElement.getName() + " cannot refer to itself in the "
                                         + "concept function.");
                     }
+                    */
                     argumentList.add(getPropertyTerm(argument));
                 }
             }
