@@ -968,11 +968,11 @@ public class TestOracleXMLDBConnection {
                 .getSyncConnection(true);
 
         
-        XMLDBModel xmlModel = new XMLDBModel("modeltt");
+        XMLDBModel xmlModel = new XMLDBModel("Y");
 
         xmlModel.setIsNew(true);
        
-        xmlModel.setModel("<entity name=\"modeltt\" " 
+        xmlModel.setModel("<entity name=\"Y\" " 
                 + "class=\"test.class\"></entity>");
 
         CreateModelTask task = new CreateModelTask(xmlModel);
