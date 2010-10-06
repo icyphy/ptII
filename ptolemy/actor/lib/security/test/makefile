@@ -104,7 +104,7 @@ initialize_key:
 	@echo "If you get 'Provider fully qualified class name:', then check"
 	@echo "which version of keytool you are running.  You should be "
 	@echo "running a Sun version, the GNU gcj version will _not_ work" 
-	$(KEYTOOL) -list -keystore auto/foo.keystore \
+	"$(KEYTOOL)" -list -keystore auto/foo.keystore \
                 -storepass  this.is.the.storePassword,change.it \
 		-storetype JCEKS
 	ls -l auto/foo.keystore
