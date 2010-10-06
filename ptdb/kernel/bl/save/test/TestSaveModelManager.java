@@ -186,15 +186,19 @@ public class TestSaveModelManager {
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 dBConnectionMock);
 
-        XMLDBModel modelMock = PowerMock.createPartialMock(XMLDBModel.class,
-                "getIsNew");
+        XMLDBModel xmlDBModel = new XMLDBModel(Utilities.generateId("test"));
 
-        EasyMock.expect(modelMock.getIsNew()).andReturn(true);
+        xmlDBModel.setIsNew(true);
 
+        xmlDBModel.setModel("<entity name=\"" + xmlDBModel.getModelName()
+                + "\"></entity>");
+        
+        
+        
         CreateModelTask createModelTaskMock = PowerMock
                 .createMock(CreateModelTask.class);
 
-        PowerMock.expectNew(CreateModelTask.class, modelMock).andReturn(
+        PowerMock.expectNew(CreateModelTask.class, xmlDBModel).andReturn(
                 createModelTaskMock);
 
         //createModelTaskMock.setXMLDBModel(modelMock);
@@ -219,7 +223,7 @@ public class TestSaveModelManager {
 
         try {
 
-            saveManager.save(modelMock);
+            saveManager.save(xmlDBModel);
 
         } catch (DBExecutionException e) {
 
@@ -335,15 +339,19 @@ public class TestSaveModelManager {
         EasyMock.expect(DBConnectorFactory.getSyncConnection(true)).andReturn(
                 dBConnectionMock);
 
-        XMLDBModel modelMock = PowerMock.createPartialMock(XMLDBModel.class,
-                "getIsNew");
+        XMLDBModel xmlDBModel = new XMLDBModel(Utilities.generateId("test"));
 
-        EasyMock.expect(modelMock.getIsNew()).andReturn(false);
+        xmlDBModel.setIsNew(false);
+
+        xmlDBModel.setModel("<entity name=\"" + xmlDBModel.getModelName()
+                + "\"></entity>");
+
+//        EasyMock.expect(xmlDBModel.getIsNew()).andReturn(false);
 
         SaveModelTask saveModelTaskMock = PowerMock
                 .createMock(SaveModelTask.class);
 
-        PowerMock.expectNew(SaveModelTask.class, modelMock).andReturn(
+        PowerMock.expectNew(SaveModelTask.class, xmlDBModel).andReturn(
                 saveModelTaskMock);
 
         //saveModelTaskMock.setXMLDBModel(modelMock);
@@ -368,7 +376,7 @@ public class TestSaveModelManager {
 
         try {
 
-            saveManager.save(modelMock);
+            saveManager.save(xmlDBModel);
 
         } catch (DBExecutionException e) {
 
@@ -837,6 +845,9 @@ public class TestSaveModelManager {
         modelToBeSaved.setModelId(Utilities.generateId("ModelToBeSaved"));
 
         modelToBeSaved.setIsNew(false);
+        
+        modelToBeSaved.setModel("<entity name=\"" + modelToBeSaved.getModelName()
+                + "\"></entity>");
 
         FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                 .createMock(FetchHierarchyTask.class);
@@ -923,6 +934,9 @@ public class TestSaveModelManager {
         modelToBeSaved.setModelId(Utilities.generateId("ModelToBeSaved"));
 
         modelToBeSaved.setIsNew(true);
+        
+        modelToBeSaved.setModel("<entity name=\"" + modelToBeSaved.getModelName()
+                + "\"></entity>");
 
         FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                 .createMock(FetchHierarchyTask.class);
@@ -1017,6 +1031,9 @@ public class TestSaveModelManager {
         modelToBeSaved.setModelId(Utilities.generateId("ModelToBeSaved"));
 
         modelToBeSaved.setIsNew(false);
+        
+        modelToBeSaved.setModel("<entity name=\"" + modelToBeSaved.getModelName()
+                + "\"></entity>");
 
         FetchHierarchyTask fetchHierarchyTaskMock = PowerMock
                 .createMock(FetchHierarchyTask.class);
