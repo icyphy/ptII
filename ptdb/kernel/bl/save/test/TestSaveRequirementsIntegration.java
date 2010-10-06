@@ -337,7 +337,7 @@ public class TestSaveRequirementsIntegration {
         SaveModelManager saveModelManager = new SaveModelManager();
         XMLDBModel originalModel = new XMLDBModel("Adder");
         try {
-            saveModelManager.renameModel(originalModel, "X");
+            saveModelManager.renameModel(originalModel, "Y");
             fail("Model already exists exception not thrown.");
         } catch (ModelAlreadyExistException e) {
 
@@ -347,7 +347,7 @@ public class TestSaveRequirementsIntegration {
         }
 
         try {
-            saveModelManager.renameModel(new XMLDBModel(null), "X");
+            saveModelManager.renameModel(new XMLDBModel(null), "Y");
             fail("Illegal argument exception not thrown.");
         } catch (IllegalArgumentException e) {
 
