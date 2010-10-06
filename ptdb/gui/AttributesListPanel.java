@@ -802,14 +802,37 @@ public class AttributesListPanel extends JPanel {
     ///////////////////////////////////////////////////////////////////
     //                    protected variables                        ////
 
-
+    /*
+     * Top display panel.
+     */
     protected JPanel _topPanel = new JPanel();
+    /*
+     * Bottom display panel.
+     */
     protected JPanel _bottomPanel = new JPanel();
+    /*
+     * Inner display panel.
+     */
     protected JPanel _innerPanel = new JPanel();
+    /*
+     * Panel displaying model name.
+     */
     protected JPanel _modelNamePanel = new JPanel();
+    /*
+     * Label displaying the string "Model Name".
+     */
     protected JLabel _nameLabel = new JLabel("Model Name");
+    /*
+     * Map between attributes and their delete buttons.
+     */
     protected HashMap _AttDelete;
+    /*
+     * The panel containing attributes.
+     */
     protected JPanel _attListPanel;
+    /*
+     * Map between attribute names and their display panel.
+     */
     protected HashMap _aList;
     
     ///////////////////////////////////////////////////////////////////

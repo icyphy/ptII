@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 
 import ptdb.common.dto.XMLDBModel;
 import ptdb.kernel.bl.load.LoadManager;
@@ -56,11 +55,15 @@ import ptolemy.util.MessageHandler;
  */
 public class ModelsListFrame extends javax.swing.JFrame {
     
-    /** */
+    /**
+     * Create new form ModelsListFrame.
+     */
     public ModelsListFrame() {
         
     }
-    /** Create new form ModelsListFrame */
+    /** Create new form ModelsListFrame.
+     * @param configuration The configuration under which Ptolemy is running.
+     * */
     public ModelsListFrame(Configuration configuration) {
         setTitle("List of All Models in the Database");
         _initModelsList();

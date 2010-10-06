@@ -84,7 +84,7 @@ public class PTDBSearchAttribute extends Variable {
         
     }
     
-    /** Get the class name for a generic attribute
+    /** Get the class name for a generic attribute.
      * @return the class name.
      * @see #setGenericClassName(String)
      */
@@ -97,7 +97,7 @@ public class PTDBSearchAttribute extends Variable {
     /** Set the attribute class name for a generic attribute.
      * 
      * @param genericClassName The attribute class name
-     * 
+     * @see #getGenericClassName()
      */
     public void setGenericClassName(String genericClassName){
         
