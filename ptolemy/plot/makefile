@@ -47,7 +47,7 @@ PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    PlotBox.java,
 #    doc/main.htm, doc/changes.htm, doc/install.htm, doc/download/index.htm
-PTVERSION =	5.8.beta
+PTVERSION =	5.8
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR =
 
@@ -560,7 +560,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	cp "$(PTII)/ptolemy/util/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	egrep -v "ExecuteCommands|OrderedResourceBundle|StreamExec|StringBufferExec.java|XSLTUtilities" \
+	egrep -v "ExecuteCommands|JVMBitWidth|MultiHashMap|MultiMap|OrderedResourceBundle|RUnnableExceptionCatcher|StreamExec|StringBufferExec.java|XSLTUtilities" \
 		"$(PTII)/ptolemy/util/makefile" | \
 		sed "s/ test / /" | \
 		sed "s/\ttest/\t/" > \
