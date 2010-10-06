@@ -1,5 +1,6 @@
 $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
+$CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/Scrambler/Scrambler.xml
 $CLASSPATH/ptolemy/actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml
