@@ -123,6 +123,8 @@ public class PtidesEvent extends DEEvent {
         // override hashCode(); Therefore, the class may violate the
         // invariant that equal objects must have equal hashcodes."
         boolean result = super.equals(object);
+        // FIXME: We need to check if the other fields (_receiver, _isPureEvent,
+        // _ioPort, _absoluteDeadline) are == as well.
         if (result == true && ((PtidesEvent) object).token() == _token) {
             return true;
         } else {
