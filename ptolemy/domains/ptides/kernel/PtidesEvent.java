@@ -101,15 +101,17 @@ public class PtidesEvent extends DEEvent {
         _isPureEvent = false;
     }
 
-    /** Return the channel.
+    /** Return the channel this event is destined to.
      *  @return The channel.
      */
     public final int channel() {
         return _channel;
     }
 
-    /** Indicate whether some the super class returns they are equal
-     *  and their tokens are equal.
+    /** Indicate whether some other object is equal to this PtidesEvent.
+     *  PtidesEvents are equal if the super class indicates they are equal
+     *  and their tokens, receiver, channel, absoluteDeadline,
+     *  as well as indication whether they are pure events are all equal.
      *  @param object The object with which to compare.
      *  @return true if the object is a DEEvent and the fields of
      *  the object and of this object are equal.
@@ -119,17 +121,20 @@ public class PtidesEvent extends DEEvent {
         if (!(object instanceof PtidesEvent)) {
             return false;
         }
-        //FIXME: FindBugs: "This class overrides equals(Object), but does not
-        // override hashCode(); Therefore, the class may violate the
-        // invariant that equal objects must have equal hashcodes."
-        boolean result = super.equals(object);
-        // FIXME: We need to check if the other fields (_receiver, _isPureEvent,
-        // _ioPort, _absoluteDeadline) are == as well.
-        if (result == true && ((PtidesEvent) object).token() == _token) {
-            return true;
-        } else {
-            return false;
-        }
+        return (super.equals(object) && 
+                ((PtidesEvent) object).token() == _token &&
+                ((PtidesEvent) object).isPureEvent() == _isPureEvent &&
+                ((PtidesEvent) object).receiver() == _receiver &&
+                ((PtidesEvent) object).channel() == _channel &&
+                ((PtidesEvent) object).absoluteDeadline() == _absoluteDeadline);
+    }
+
+    /** Return the hash code for the event object.
+     *  @return The hash code for the event object.
+     *  @see #equals(Object)
+     */
+    public int hashCode() {
+        return super.hashCode();
     }
 
     /** Return true if this event is a pure event.
@@ -140,15 +145,15 @@ public class PtidesEvent extends DEEvent {
         return _isPureEvent;
     }
 
-    /** Return the receiver.
+    /** Return the receiver this event is destined to.
      *  @return The receiver.
      */
     public final Receiver receiver() {
         return _receiver;
     }
 
-    /** Return the relative deadline of this event.
-     *  @return relative deadline if the event is not a pure event.
+    /** Return the absolute deadline of this event.
+     *  @return absolute deadline if the event is not a pure event.
      */
     public final Time absoluteDeadline() {
         if (!isPureEvent()) {
@@ -159,7 +164,7 @@ public class PtidesEvent extends DEEvent {
         return _absoluteDeadline;
     }
 
-    /** Return the token.
+    /** Return the token (value) of this event.
      *  @return The token.
      */
     public final Token token() {
@@ -202,13 +207,13 @@ public class PtidesEvent extends DEEvent {
     /** The channel this event is destined to */
     private int _channel;
 
-    /** Boolean indicating whether this event is a pure event */
+    /** Indicates whether this event is a pure event */
     private boolean _isPureEvent;
 
-    /** The receiver this token is destined at. */
+    /** The receiver the token variable of this event is destined to. */
     private Receiver _receiver;
 
-    /** The relative deadline of this event. This field is used only when the
+    /** The absolute deadline of this event. This field is used only when this
      *  event is a pure event.
      */
     private Time _absoluteDeadline;
