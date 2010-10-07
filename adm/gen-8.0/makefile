@@ -191,10 +191,10 @@ release_fortytwo_remote4_test:
 # Build the release on sisyphus as cxh so that we can copy from
 # both a Linux box and a Windows box to update the web pages.
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.1 PTIIADM=/home/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.1 PTIIADM=/home/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar clean all src.jar setup setup_mac_app_tar
 
 release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.1 PTIIADM=/home/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup
+	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.1 PTIIADM=/home/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar setup setup_mac_app_tar
 
 release_sisyphus_remote4_test:
 	make USER=cxh PTIIHOME=/home/cxh/ptII8.0.1 PTIIADM=/home/cxh/ptII8.0.1/adm TAR=/bin/tar JAR=/usr/java/default/bin/jar remote4_test
@@ -897,7 +897,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
-	scp -p $(PTII_FULL) $(PTII_SRC) \
+	scp -p $(PTII_FULL) $(PTII_SRC) $(PTSETUP_MAC).app.tar.gz \
 		bennett:$(PTII_FTP)
 untar:
 	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
@@ -2500,7 +2500,7 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
 	    sed -e 's@<!-- Vergil.app -->@<file src="src/ptII8.0.1/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/JavaApplicationStub"/>@' \
 	    -e 's@<!-- Ptiny.app -->@<file src="src/ptII8.0.1/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/JavaApplicationStub"/>@' \
-	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
+	    -e 's@../../ptolemy/matlab/ptmatlab.dll@../../lib/libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
 
@@ -2530,9 +2530,11 @@ IZPACK2APP=$(IZPACKDIR)/utils/wrappers/izpack2app/izpack2app.py
 setup_mac_app: $(PTSETUP_MAC).app
 $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
-	#cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
-	
+	# cp $(PTII)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
 
+setup_mac_app_tar: $(PTSETUP_MAC).app.tar.gz
+$(PTSETUP_MAC).app.tar.gz: $(PTSETUP_MAC).app
+	tar -zcf $@ $<
 ######################################################################
 # Web Start Applets
 #
