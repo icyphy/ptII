@@ -1,8 +1,8 @@
 <launch4jConfig>
   <headerType>gui</headerType>
   <dontWrapJar>false</dontWrapJar>
-  <jar>ptII8_0_1_setup.jar</jar>
-  <outfile>ptII8_0_1_setup.exe</outfile>
+  <jar>ptII8_0_1_setup_windows.jar</jar>
+  <outfile>ptII8_0_1_setup_windows.exe</outfile>
   <errTitle>ptIIsetup</errTitle>
   <chdir>.</chdir>
   <cmdLine></cmdLine>
