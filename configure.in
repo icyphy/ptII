@@ -2967,11 +2967,18 @@ else
 	JAVA3D_DIR=$withval,
 	JAVA3D_DIR=)
 
-    if test -f "$JAVA3D_DIR/j3dcore.jar" -a -f "$JAVA3D_DIR/j3dutils.jar" -a -f "$JAVA3D_DIR/vecmath.jar"; then
-        JAVA3D_JARS="$JAVA3D_DIR/j3dcore.jar$CLASSPATHSEPARATOR$JAVA3D_DIR/j3dutils.jar$CLASSPATHSEPARATOR$JAVA3D_DIR/vecmath.jar"
-	Java3DClasspath="-classpath $JAVA3D_JARS"
+    # We want to use -classpath, which overrides $CLASSPATH
+    if test -z "$CLASSPATH"; then
+        tmpClasspath="."
     else
-	Java3DClasspath=
+        tmpClasspath="$CLASSPATH"
+    fi
+
+    if test -f "$JAVA3D_DIR/j3dcore.jar" -a -f "$JAVA3D_DIR/j3dutils.jar" -a -f "$JAVA3D_DIR/vecmath.jar"; then
+        JAVA3D_JARS="$JAVA3D_DIR/j3dcore.jar$CLASSPATHSEPARATOR$JAVA3D_DIR/j3dutils.jar$CLASSPATHSEPARATOR$JAVA3D_DIR/vecmath.jar$CLASSPATHSEPARATOR"
+	Java3DClasspath="$JAVA3D_JARS"
+    else
+	Java3DClasspath="$tmpClasspath"
     fi
 
     # We need to run javac in the config directory so that javac from jdk1.1.6
@@ -2979,18 +2986,21 @@ else
     startdir=$PTII
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" $Java3DClasspath java3dTest.java ; then
+    if "$JAVAC" -classpath "$Java3DClasspath" java3dTest.java ; then
        PT_MSG_RESULT(ok)
        PTJAVA3D_DIR=gr
        PTGRDOMAIN_JAR=gr/gr.jar
        # PTGR_PACKAGES is used in ptII/doc/makefile
        PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
-       AC_MSG_WARN(['"$JAVAC" $Java3DClasspath java3dTest.java' failed.
-    http://java.sun.com/products/java-media/3D/download.html
+       AC_MSG_WARN(['"$JAVAC" -classpath "$Java3DClasspath" java3dTest.java' failed.
+    Java 3D may be found at http://java.sun.com/products/java-media/3D/download.html
     Java 3D is only needed if you want to build in
     $JAVA3D_USER_DIR,
-    otherwise the build will proceed fine without Java 3D.])
+    otherwise the build will proceed fine without Java 3D.
+    If your Java 3D installation is in a non-standard place, use  --with-java3d=DIR
+    where DIR contains j3dcore.jar, j3dutils.jar and vecmath.jar, for example:
+    ./configure --with-java3D=/usr/java/j3d-1_5_2-linux-amd64/lib/ext])
     fi
     cd "$startdir"
 fi
