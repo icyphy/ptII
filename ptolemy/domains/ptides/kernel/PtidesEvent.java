@@ -201,22 +201,16 @@ public class PtidesEvent extends DEEvent {
         if (_actor != null) {
             name = ((NamedObj) _actor).getFullName();
         }
-        if (!_isPureEvent) {
-            return "PtidesEvent(time = " + _timestamp + ", microstep = "
-                    + _microstep + ", depth = " + _depth
-                    + ", token = " + _token
-                    + ", absoluteDeadline = " + _absoluteDeadline
-                + ", dest = " + name + "."
-                + (_ioPort == null ? "null" : _ioPort.getName())
-                    + "." + _channel + ").";
-        } else {
-            return "PtidesEvent(time = " + _timestamp + ", microstep = "
-                    + _microstep + ", depth = " + _depth + ", token = "
-                    + ", token = " + _token
-                    + ", absoluteDeadline = " + _absoluteDeadline
-                    + ", dest = " + name + ", isPureEvent = "
-                    + _isPureEvent + ")" + " -- A PURE EVENT.";
-        }
+        return "PtidesEvent{time = " + _timestamp + ", microstep = "
+            + _microstep + ", depth = " + _depth
+            + ", token = " + _token
+            + ", absoluteDeadline = " + _absoluteDeadline
+            + ", dest = " + name + "."
+            + (_ioPort == null ? "null" : _ioPort.getName())
+            + "." + _channel
+            + ", isPureEvent = "
+            + _isPureEvent
+            + "}";
     }
 
     ///////////////////////////////////////////////////////////////////

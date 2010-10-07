@@ -52,7 +52,7 @@ test PtidesEvent-1.1 {Test the Actor constructor with nulls} {
     set null [java::null]
     set event1 [java::new {ptolemy.domains.ptides.kernel.PtidesEvent ptolemy.actor.Actor ptolemy.actor.IOPort ptolemy.actor.util.Time int int ptolemy.actor.util.Time} $null $null $null 1 2 $null]
     list [$event1 toString]
-} {{PtidesEvent(time = null, microstep = 1, depth = 2, token = , token = null, absoluteDeadline = null, dest = null, isPureEvent = true) -- A PURE EVENT.}}
+} {{PtidesEvent{time = null, microstep = 1, depth = 2, token = null, absoluteDeadline = null, dest = null.null.0, isPureEvent = true}}}
 
 test PtidesEvent-1.2 {Test the Actor constructor with an actor} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -71,7 +71,7 @@ test PtidesEvent-1.2 {Test the Actor constructor with an actor} {
 		    $actor1 $port1 $time1 3 4 $time2]
 
     list [$event2 toString]    
-} {{PtidesEvent(time = 5.0, microstep = 3, depth = 4, token = , token = null, absoluteDeadline = 6.0, dest = ..actor1, isPureEvent = true) -- A PURE EVENT.}}
+} {{PtidesEvent{time = 5.0, microstep = 3, depth = 4, token = null, absoluteDeadline = 6.0, dest = ..actor1.port1.0, isPureEvent = true}}}
 
 test PtidesEvent-1.3 {Test the accessors} {
     # Use 1.2 above
@@ -89,7 +89,7 @@ test PtidesEvent-2.1 {Test the IOPort constructor} {
 		      {ptolemy.domains.ptides.kernel.PtidesEvent ptolemy.actor.IOPort int ptolemy.actor.util.Time int int ptolemy.data.Token ptolemy.actor.Receiver} \
 		  $null 0 $null 1 2 $null $null]
     list [$event2_1 toString]
-} {{PtidesEvent(time = null, microstep = 1, depth = 2, token = null, absoluteDeadline = null, dest = null.null.0).}}
+} {{PtidesEvent{time = null, microstep = 1, depth = 2, token = null, absoluteDeadline = null, dest = null.null.0, isPureEvent = false}}}
 
 test PtidesEvent-2.2 {Test the IOPort constructor with an ioport} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -105,7 +105,7 @@ test PtidesEvent-2.2 {Test the IOPort constructor with an ioport} {
 		      {ptolemy.domains.ptides.kernel.PtidesEvent ptolemy.actor.IOPort int ptolemy.actor.util.Time int int ptolemy.data.Token ptolemy.actor.Receiver} \
 		  $port1 0 $time2 1 2 $null $null]
     list [$event2_2 toString]    
-} {{PtidesEvent(time = 7.0, microstep = 1, depth = 2, token = null, absoluteDeadline = null, dest = ..actor1.port1.0).}}
+} {{PtidesEvent{time = 7.0, microstep = 1, depth = 2, token = null, absoluteDeadline = null, dest = ..actor1.port1.0, isPureEvent = false}}}
 
 test PtidesEvent-2.3 {Test the accessors} {
     # Use 2.2 above
