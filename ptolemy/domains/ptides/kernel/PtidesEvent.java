@@ -1,6 +1,6 @@
-/* A DE event that saves the token as well as the timestamp.
+/* A PtidesEvent event that saves the token as well as the timestamp.
 
- Copyright (c) 1998-2010 The Regents of the University of California.
+ Copyright (c) 2009-2010 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -70,6 +70,8 @@ public class PtidesEvent extends DEEvent {
     public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp,
             int microstep, int depth, Time absoluteDeadline)
             throws IllegalActionException {
+        // FIXME: update the method documentation to describe precisely what
+        // a pure event is.
         super(actor, timeStamp, microstep, depth);
         _ioPort = ioPort;
         _channel = 0;
@@ -114,6 +116,9 @@ public class PtidesEvent extends DEEvent {
      *  @see #hashCode()
      */
     public boolean equals(Object object) {
+        if (!(object instanceof PtidesEvent)) {
+            return false;
+        }
         //FIXME: FindBugs: "This class overrides equals(Object), but does not
         // override hashCode(); Therefore, the class may violate the
         // invariant that equal objects must have equal hashcodes."
@@ -125,10 +130,11 @@ public class PtidesEvent extends DEEvent {
         }
     }
 
-    /** Return the receiver.
-     *  @return The receiver.
+    /** Return true if this event is a pure event.
+     *  @return True if this event is a pure event.
      */
     public final boolean isPureEvent() {
+        // FIXME: What is a pure event?
         return _isPureEvent;
     }
 
@@ -163,19 +169,27 @@ public class PtidesEvent extends DEEvent {
      *  @return The token as a string with the time stamp.
      */
     public String toString() {
+        // FIXME: shouldn't we show the receiver?
+        // FIXME: Ideally, this would be in a format that could be easily parsed
+        // by the expression language, such as a record format.
         String name = "null";
         if (_actor != null) {
             name = ((NamedObj) _actor).getFullName();
         }
         if (!_isPureEvent) {
-            return "DEEvent(time = " + _timestamp + ", microstep = "
-                    + _microstep + ", depth = " + _depth + ", token = "
-                    + _token + ", dest = " + name + "." + _ioPort.getName()
+            return "PtidesEvent(time = " + _timestamp + ", microstep = "
+                    + _microstep + ", depth = " + _depth
+                    + ", token = " + _token
+                    + ", absoluteDeadline = " + _absoluteDeadline
+                + ", dest = " + name + "."
+                + (_ioPort == null ? "null" : _ioPort.getName())
                     + "." + _channel + ").";
         } else {
-            return "DEEvent(time = " + _timestamp + ", microstep = "
+            return "PtidesEvent(time = " + _timestamp + ", microstep = "
                     + _microstep + ", depth = " + _depth + ", token = "
-                    + _token + ", dest = " + name + ", isPureEvent = "
+                    + ", token = " + _token
+                    + ", absoluteDeadline = " + _absoluteDeadline
+                    + ", dest = " + name + ", isPureEvent = "
                     + _isPureEvent + ")" + " -- A PURE EVENT.";
         }
     }
