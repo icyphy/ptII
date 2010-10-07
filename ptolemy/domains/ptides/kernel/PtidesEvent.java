@@ -101,12 +101,28 @@ public class PtidesEvent extends DEEvent {
         _isPureEvent = false;
     }
 
+    /** Return the absolute deadline of this event.
+     *  @return absolute deadline if the event is not a pure event.
+     */
+    public final Time absoluteDeadline() {
+        if (!isPureEvent()) {
+            throw new InternalErrorException("Event is not a pure event, "
+                    + "in which case the absolute deadline should be obtained "
+                    + "from the destination port of the event.");
+        }
+        return _absoluteDeadline;
+    }
+
+
     /** Return the channel this event is destined to.
      *  @return The channel.
      */
     public final int channel() {
         return _channel;
     }
+
+    // FIXME: We need a compareTo() method that overrides the superclass
+    // and compares at least the absoluteDeadline fields.
 
     /** Indicate whether some other object is equal to this PtidesEvent.
      *  PtidesEvents are equal if the super class indicates they are equal
@@ -121,6 +137,10 @@ public class PtidesEvent extends DEEvent {
         if (!(object instanceof PtidesEvent)) {
             return false;
         }
+        // FIXME: Do we really want to use == as a comparison here for the
+        // Tokens.  If two PtidesEvents have tokens that are different,
+        // (not ==) but the tokens have the same values, then are the PtidesEvents
+        // equal?
         return (super.equals(object) && 
                 ((PtidesEvent) object).token() == _token &&
                 ((PtidesEvent) object).isPureEvent() == _isPureEvent &&
@@ -134,6 +154,9 @@ public class PtidesEvent extends DEEvent {
      *  @see #equals(Object)
      */
     public int hashCode() {
+        // FIXME: hashCode should take into account the fields added by
+        // this class.  Otherwise, two objects that are not equal will have
+        // the same hash.  This is permitted, but is less efficient.
         return super.hashCode();
     }
 
@@ -150,18 +173,6 @@ public class PtidesEvent extends DEEvent {
      */
     public final Receiver receiver() {
         return _receiver;
-    }
-
-    /** Return the absolute deadline of this event.
-     *  @return absolute deadline if the event is not a pure event.
-     */
-    public final Time absoluteDeadline() {
-        if (!isPureEvent()) {
-            throw new InternalErrorException("Event is not a pure event, "
-                    + "in which case the absolute deadline should be obtained "
-                    + "from the destination port of the event.");
-        }
-        return _absoluteDeadline;
     }
 
     /** Return the token (value) of this event.

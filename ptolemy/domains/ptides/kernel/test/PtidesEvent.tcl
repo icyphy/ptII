@@ -248,6 +248,30 @@ test PtidesEvent-4.2 {equals, with a different time } {
 	[$event4_2 compareTo $event4_2]
 } {0 0 0 0 1 0 0 0 0 0}
 
+test PtidesEvent-4.2.1 {equals, with tokens that have the same value } {
+
+    set actor4_2_1 [java::new ptolemy.actor.AtomicActor $e3_1 actor4_2_1]
+    set port4_2_1 [java::new ptolemy.actor.IOPort $actor4_2 port4_2_1]
+    set token4_2_1 [java::new {ptolemy.data.IntToken int} 421]
+    set token4_2_1b [java::new {ptolemy.data.IntToken int} 421]
+
+    # FIXME: should use something other than null for the last arg
+    set event4_2_1 [java::new \
+		      {ptolemy.domains.ptides.kernel.PtidesEvent ptolemy.actor.IOPort int ptolemy.actor.util.Time int int ptolemy.data.Token ptolemy.actor.Receiver} \
+		  $port4_2 0 $time3_1 12 13 $token4_2_1 $null]
+
+    set event4_2_1b [java::new \
+		      {ptolemy.domains.ptides.kernel.PtidesEvent ptolemy.actor.IOPort int ptolemy.actor.util.Time int int ptolemy.data.Token ptolemy.actor.Receiver} \
+		  $port4_2 0 $time3_1 12 13 $token4_2_1b $null]
+
+    list \
+	[$token4_2_1 equals $token4_2_1b] \
+	[$event4_2_1 equals $event4_2_1b] \
+	[$event4_2_1b equals $event4_2_1] \
+	[$event4_2_1b compareTo $event4_2_1] \
+	[$event4_2_1 compareTo $event4_2_1b] \
+} {1 1 1 0 0}
+
 test PtidesEvent-4.3 {equals on a null} {
     # Uses 3.1 above
     # The Javadoc for java.lang.Comparable says: "Note that null
