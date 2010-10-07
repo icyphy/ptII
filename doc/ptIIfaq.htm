@@ -1178,9 +1178,13 @@ to it as the "codegen" code generator.
     The code generator functions (as in Giotto) to coordinate the
     components.  This effort is focused on efficiency. Our objective
     is to generate zero-overhead C code. 
-    We have simple demo systems and a limited actor library.
+    We have simple demo systems and a limited actor library.</p>
 
- <p><b>viptos</b>
+    <p>We've had various efforts in the codegen code generator to
+    generate C code for PN models and to generate VHDL code, but
+    nothing has been completed.</p>
+
+<p><b>viptos</b>
  <br> We had a project to produce NesC/TinyOS code from
    Ptolemy II models. We created a tool based on Ptolemy
    called 
@@ -1202,8 +1206,25 @@ to it as the "codegen" code generator.
     generation for large systems.   For details about cg, download
     the Ptolemy II development tree (see 
     <a href="http://chess.eecs.berkeley.edu/ptexternal"target="_top"><code>http://chess.eecs.berkeley.edu/ptexternal</code></a>) 
-    and then see <code>$PTII/ptolemy/cg/README.html</code>.
+    and then see <code>$PTII/ptolemy/cg/README.html</code>.</p>
  
+    <p>The cg code generator works best generating Java code for SDF
+    models.</p>
+
+    <p>The Java cg code generator can generate code for models
+    that use actors for which we have no code generation templates.
+    The way this works is the actor is wrapped in an opaque
+    TypedCompositeActor and calls are made to the Ptolemy runtime.
+    This is slower than a pure code generation solution, where all
+    the actors have code generation templates, but it allows easy
+    access to user defined actors.</p>
+
+    <p>The cg code generator also supports models that have actors
+    that have method bodies written in C.  See the
+   EmbeddedCodeActor.</p>
+
+    <p>Generating C code is possible as well, it just requires
+    porting the templates that we have for Java actors.</p>
 
 <p> In addition, Xilinx research labs has an ongoing effort to synthesize FPGA
     configurations from Ptolemy II models. They use actor libraries
