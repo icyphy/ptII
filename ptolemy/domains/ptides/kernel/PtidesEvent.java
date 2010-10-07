@@ -105,6 +105,9 @@ public class PtidesEvent extends DEEvent {
      *  @return absolute deadline if the event is not a pure event.
      */
     public final Time absoluteDeadline() {
+        // FIXME: Update the method documentation to describe what pure event.
+        // FIXME: This should throw an IllegalActionException because the
+        // exception is detectable by the caller.
         if (!isPureEvent()) {
             throw new InternalErrorException("Event is not a pure event, "
                     + "in which case the absolute deadline should be obtained "
@@ -137,16 +140,20 @@ public class PtidesEvent extends DEEvent {
         if (!(object instanceof PtidesEvent)) {
             return false;
         }
+        PtidesEvent event = (PtidesEvent) object;
         // FIXME: Do we really want to use == as a comparison here for the
         // Tokens.  If two PtidesEvents have tokens that are different,
         // (not ==) but the tokens have the same values, then are the PtidesEvents
         // equal?
-        return (super.equals(object) && 
-                ((PtidesEvent) object).token() == _token &&
-                ((PtidesEvent) object).isPureEvent() == _isPureEvent &&
-                ((PtidesEvent) object).receiver() == _receiver &&
-                ((PtidesEvent) object).channel() == _channel &&
-                ((PtidesEvent) object).absoluteDeadline() == _absoluteDeadline);
+
+        return (super.equals(object)
+                && event.token() == _token
+                && event.isPureEvent() == _isPureEvent
+                && event.receiver() == _receiver
+                && event.channel() == _channel
+                // Only call absoluteEvent if the event is a Pure Event.
+                && ((event.isPureEvent() && event.absoluteDeadline() == _absoluteDeadline)
+                        || !event.isPureEvent()));
     }
 
     /** Return the hash code for the event object.
