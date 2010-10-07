@@ -158,7 +158,7 @@ public class TestSearchManager {
         PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
                 attribute.getName());
         //        genericAttribute.setAttributeName(attribute.getName());
-        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.addValue(attribute.getExpression());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
 
@@ -404,7 +404,7 @@ public class TestSearchManager {
         PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
                 attribute.getName());
         //        genericAttribute.setAttributeName(attribute.getName());
-        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.addValue(attribute.getExpression());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
 
@@ -689,7 +689,7 @@ public class TestSearchManager {
         PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
                 attribute.getName());
         //        genericAttribute.setAttributeName(attribute.getName());
-        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.addValue(attribute.getExpression());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
 
@@ -775,7 +775,7 @@ public class TestSearchManager {
         PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
                 attribute.getName());
         //        genericAttribute.setAttributeName(attribute.getName());
-        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.addValue(attribute.getExpression());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
 
@@ -952,7 +952,7 @@ public class TestSearchManager {
         PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
                 attribute.getName());
         //        genericAttribute.setAttributeName(attribute.getName());
-        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.addValue(attribute.getExpression());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
 
@@ -1037,7 +1037,7 @@ public class TestSearchManager {
         PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
                 attribute.getName());
         //        genericAttribute.setAttributeName(attribute.getName());
-        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.addValue(attribute.getExpression());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
 
@@ -1138,7 +1138,7 @@ public class TestSearchManager {
         PTDBGenericAttribute genericAttribute = new PTDBGenericAttribute(
                 attribute.getName());
         //        genericAttribute.setAttributeName(attribute.getName());
-        genericAttribute.addValue(attribute.getValueAsString());
+        genericAttribute.addValue(attribute.getExpression());
         genericAttribute.setClassName(attribute.getClassName());
         ptdbGenericAttributes.add(genericAttribute);
 
