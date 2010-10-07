@@ -249,7 +249,6 @@ test PtidesEvent-4.2 {equals, with a different time } {
 } {0 0 0 0 1 0 0 0 0 0}
 
 test PtidesEvent-4.2.1 {equals, with tokens that have the same value } {
-
     set actor4_2_1 [java::new ptolemy.actor.AtomicActor $e3_1 actor4_2_1]
     set port4_2_1 [java::new ptolemy.actor.IOPort $actor4_2 port4_2_1]
     set token4_2_1 [java::new {ptolemy.data.IntToken int} 421]
@@ -264,6 +263,7 @@ test PtidesEvent-4.2.1 {equals, with tokens that have the same value } {
 		      {ptolemy.domains.ptides.kernel.PtidesEvent ptolemy.actor.IOPort int ptolemy.actor.util.Time int int ptolemy.data.Token ptolemy.actor.Receiver} \
 		  $port4_2 0 $time3_1 12 13 $token4_2_1b $null]
 
+    # FIXME: events that have tokens on the same value should probably be equal.
     list \
 	[$token4_2_1 equals $token4_2_1b] \
 	[$event4_2_1 equals $event4_2_1b] \
