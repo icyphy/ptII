@@ -629,6 +629,11 @@ test_c_cg:
 test_java_cg:
 	$(JTCLSH) $(ROOT)/util/testsuite/JavaCGAuto.tcl
 
+# Run the junit tests
+test_junit:
+	if [ -d junit ]; then \
+	    (cd junit; $(MAKE)); \
+	fi
 
 test_properties:
 	$(JTCLSH) $(ROOT)/util/testsuite/properties.tcl

@@ -32,6 +32,9 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/domains/ptides/kernel/test
 
+# PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
+DIRS =		$(PTJUNIT_DIR)
+
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
@@ -77,7 +80,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_auto test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java test_auto test_jsimple test_junit
 
 test_java: jclass
 
