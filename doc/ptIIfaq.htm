@@ -73,6 +73,7 @@ This FAQ can be found at:
 	<li> <a href="#multiportComposites"><b>4.5 I have a Composite with a Multiport, but it only sees one channel?</b></a>
 	<li> <a href="#powerpoint"><b>4.6 How do I put a model into a PowerPoint Deck?</b></a>
   	<li> <a href="#pdf"><b>4.7 How do I create a PDF of a model?</b></a>
+  	<li> <a href="#multicore"><b>4.8 What about multicore?</b></a>
 	</menu>
 
 <li> <a href="#ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a>
@@ -866,6 +867,28 @@ If need be, edit the results in Adobe Illustrator, including combining figures
     Tools -&gt; Advanced Editing -&gt; Crop Tool,
     then double clicking in the interior of the crop region to
     bring up the Crop Pages dialog and hit OK.
+
+    	<li> 
+<dt> <a name="multicore"><b>4.8 What about multicore?</b></a>
+<dd> If you use the Kahn Process Network (PN) model of computation, then each actor
+  is a thread and, in principle, each thread will run on a separate
+  core.
+
+  <p>An alternative is to use the ThreadedComposite actor, see
+  Edward A. Lee, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html">ThreadedComposite: A Mechanism for Building
+  Concurrent and Parallel Ptolemy II Models,</a>" EECS Department,
+  University of California, Berkeley, Technical Report
+  No. UCB/EECS-2008-151, December 7, 2008.</p>
+
+  <p>See the Higher Order Component demos in
+  <code>$PTII/ptolemy/actor/lib/hoc/demo</code> or
+  <a
+  href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII8.0.beta/ptolemy/actor/lib/hoc/doc/"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII8.0.beta/ptolemy/actor/lib/hoc/doc/</code></a>.
+  See especially the Parallel Execution demo.
+  
+  
+  See also <a href="#CodeGen"><b>5.9 What about Code Generation?</b></a>.
+
 </dl>
 
 <h2><a name="ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a></h2>
@@ -1072,31 +1095,48 @@ and avoiding the usual edit/compile/run loop.
 
 <dt> <a name="CodeGen"><b>5.9 What about Code Generation?</b></a>
 
-Certain versions of Ptolemy II before Ptolemy 8.0 included the Copernicus
+<dd> Certain versions of Ptolemy II before Ptolemy 8.0 included the Copernicus
   code generator, which is described below.  Portions of the Copernicus code generator
   was removed between Ptolemy II 7.0.1 and Ptolemy II 8.0.beta because
   it stopped passing its tests and extending it to support use of Java Generics
-  in the Ptolemy kernel was seen as being a large task.
+  in the Ptolemy kernel was seen as being a large task.  The Copernicus
+  code generator is no longer being developed, its features are
+  described below.
 
-  <dd>Ptolemy II includes a code generator developed by Stephen Neuendorffer
-that reads non-hierarchical SDF models and generates Java .class files.
-This code generator is called Copernicus.  We call this 
-the <I>deep</I> code generator.
+ <p><b>Copernicus</b>
+  <br>The Copernicus Ptolemy II code generator developed by Stephen Neuendorffer
+read non-hierarchical SDF models and generated Java .class files.
+We call this the <I>deep</I> Copernicus code generator.
 The code that is produced by deep codegen uses very little of the
 Ptolemy infrastructure.  The ptolemy.math package is used sometimes.
-The deep code generator was removed between Ptolemy II 7.0.1
+The Copernicus deep code generator was removed between Ptolemy II 7.0.1
     and Ptolemy II 8.0.beta.
 
  <p>In addition, Copernicus can read in models from other domains
 and generate a .class file that uses much more of the Ptolemy infrastructure.
-We call this the <I>shallow</I> code generator.   
-
+We call this the <I>shallow</I> Copernicus code generator.   The
+shallow Copernicus code generator is present in Ptolemy II 8.0 and later.
+    
+<pre>
+    $PTII/bin/copernicus -codeGenerator shallow ~/ptII/ptolemy/actor/lib/test/auto/IIR.xml
+</pre>
+A class file will be generated as
+    <code>ptolemy/copernicus/shallow/cg/IIR/IIR/CGIIR.class</code>
+To see the Java code, do:
+<pre>
+cd $PTII/ptolemy/copernicus/shallow/cg/IIR
+make jodeDecompile
+</pre>
+    
  <p>Copernicus can also read in models and generate applets.
  <br>To generate an applet within the Ptolemy II tree, try
 <pre>
+cd $PTII
+make install >& install.out
 cd $PTII/ptolemy/domains/sdf/demo
 mkdir ButterflyTest
 cp Butterfly/Butterfly.xml ButterflyTest/ButterFlyTest.xml
+cd ButterFlyTest
 $PTII/bin/copernicus -codeGenerator applet -targetPath ptolemy/domains/sdf/demo/ButterflyTest ButterflyTest.xml
 </pre>
 
@@ -1119,17 +1159,18 @@ models.  This C code generator is still very experimental and
  <br>and
  <br>Stephen Neuendorffer, <a href="http://ptolemy.eecs.berkeley.edu/publications/papers/04/StevesThesis"><i>Actor-Oriented Metaprogramming</i></a>, PhD Thesis, University of California, Berkeley, December 21, 2004.
  <br>and
- <br>Ankush Varma, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/03/java-2-C">Retargetable Optimizing Java-to-C Compiler for Embedded Systems</a>," Master's Report, Department of Electrical and Computer Engineering, University of Maryland, College Park, MD, 2003.
+ <br>Ankush Varma, <a href="http://ptolemy.eecs.berkeley.edu/publications/papers/03/java-2-C">Retargetable Optimizing Java-to-C Compiler for Embedded Systems</a>, Master's Report, Department of Electrical and Computer Engineering, University of Maryland, College Park, MD, 2003.
 
 
-
- <p>As of Ptolemy II 4.0, no further development is occuring in 
+ <p><b>codegen</b>
+ <br>As of Ptolemy II 4.0, no further development is occuring in 
 Copernicus.  However, the Ptolemy group is developing a 
 Ptolemy Classic style code generator that uses template files
 to build C files.  This code generator first shipped in
-Ptolemy II 6.0.
+Ptolemy II 6.0 in <code>ptolemy/codegen</code> and we refer
+to it as the "codegen" code generator.
 
-    <p>The current template effort synthesizes C code from certain
+    <p>The codegen template effort synthesizes C code from certain
     Ptolemy II models (synchronous dataflow and heterochronous dataflow
     are functional, SR, and DE are being planned). In this
     technology, we define "adapter" classes associated with Ptolemy II
@@ -1139,18 +1180,32 @@ Ptolemy II 6.0.
     is to generate zero-overhead C code. 
     We have simple demo systems and a limited actor library.
 
-<p> We have an ongoing project to produce NesC/TinyOS code from
-    Ptolemy II models. We have created a tool based on Ptolemy
-    called 
+ <p><b>viptos</b>
+ <br> We had a project to produce NesC/TinyOS code from
+   Ptolemy II models. We created a tool based on Ptolemy
+   called 
 <a href="http://ptolemy.eecs.berkeley.edu/viptos" target="_top">VIPTOS</a>
-    where designers jointly design code for sensor
-    network "motes" and use the Ptolemy II wireless systems modeling
-    environment (called 
+   where designers jointly design code for sensor
+   network "motes" and use the Ptolemy II wireless systems modeling
+   environment (called 
 <a href="http://ptolemy.eecs.berkeley.edu/visualsense" target="_top">VisualSense</a>)
-    to create models of the wireless
-    networking environment for the motes.
+   to create models of the wireless
+   networking environment for the motes.
 
-<p> Xilinx research labs has an ongoing effort to synthesize FPGA
+ <p><b>cg</b> 
+ <br> Our currently active code generation effort may be found in the
+    development tree in <code>ptolemy/cg</code>, we call it the "cg"
+    code generator.  We took the lessons learned from codegen
+    and applied them to cg.  In particular, cg more easily supports
+    multiple backends with less code duplication.  The cg code
+    generator is under active development, we are working on code
+    generation for large systems.   For details about cg, download
+    the Ptolemy II development tree (see 
+    <a href="http://chess.eecs.berkeley.edu/ptexternal"target="_top"><code>http://chess.eecs.berkeley.edu/ptexternal</code></a>) 
+    and then see <code>$PTII/ptolemy/cg/README.html</code>.
+ 
+
+<p> In addition, Xilinx research labs has an ongoing effort to synthesize FPGA
     configurations from Ptolemy II models. They use actor libraries
     defined in
     <a href="http://embedded.eecs.berkeley.edu/caltrop/" target="_top">Cal</a>,
