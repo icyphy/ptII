@@ -126,7 +126,7 @@ public class PtidesEvent extends DEEvent {
         return _channel;
     }
 
-    /** The compareTo method should not override the compareTo of the super class.
+    /** The compareTo method of the super class should not overridden.
      *  This is because in most cases comparison between PtidesEvent's are
      *  for all fields other than the absoluteDeadline. Only for certain classes
      *  of schedulers, and when a pure event is present, do we compare events
