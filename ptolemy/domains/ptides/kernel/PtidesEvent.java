@@ -58,6 +58,8 @@ import ptolemy.kernel.util.NamedObj;
 public class PtidesEvent extends DEEvent {
     /** Construct a pure event with the specified destination actor,
      *  timestamp, microstep, depth, and minDelay offset.
+     *  A pure event is one that does not contained a token (value) that 
+     *  is destined to an input port.
      *  @param actor The destination actor
      *  @param ioPort The causally related IO port.
      *  @param timeStamp The time when the event occurs.
@@ -70,8 +72,6 @@ public class PtidesEvent extends DEEvent {
     public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp,
             int microstep, int depth, Time absoluteDeadline)
             throws IllegalActionException {
-        // FIXME: update the method documentation to describe precisely what
-        // a pure event is.
         super(actor, timeStamp, microstep, depth);
         _ioPort = ioPort;
         _channel = 0;
@@ -102,10 +102,12 @@ public class PtidesEvent extends DEEvent {
     }
 
     /** Return the absolute deadline of this event.
+     *  A pure event is one that does not contained a token (value) that 
+     *  is destined to an input port.
      *  @return absolute deadline if the event is not a pure event.
+     *  @exception InternalErrorException If event is not a pure event.
      */
     public final Time absoluteDeadline() {
-        // FIXME: Update the method documentation to describe what pure event.
         // FIXME: This should throw an IllegalActionException because the
         // exception is detectable by the caller.
         if (!isPureEvent()) {
@@ -124,8 +126,16 @@ public class PtidesEvent extends DEEvent {
         return _channel;
     }
 
-    // FIXME: We need a compareTo() method that overrides the superclass
-    // and compares at least the absoluteDeadline fields.
+    /** The compareTo method should not override the compareTo of the super class.
+     *  This is because in most cases comparison between PtidesEvent's are
+     *  for all fields other than the absoluteDeadline. Only for certain classes
+     *  of schedulers, and when a pure event is present, do we compare events
+     *  using absoluteDeadline as a metric. Those cases should be taken care of
+     *  independently within those schedulers.
+     */
+    public int compareTo(DEEvent event) {
+        return super.compareTo(event);
+    }
 
     /** Indicate whether some other object is equal to this PtidesEvent.
      *  PtidesEvents are equal if the super class indicates they are equal
@@ -141,18 +151,15 @@ public class PtidesEvent extends DEEvent {
             return false;
         }
         PtidesEvent event = (PtidesEvent) object;
-        // FIXME: Do we really want to use == as a comparison here for the
-        // Tokens.  If two PtidesEvents have tokens that are different,
-        // (not ==) but the tokens have the same values, then are the PtidesEvents
-        // equal?
 
         return (super.equals(object)
-                && event.token() == _token
+                && event.token().equals(_token)
                 && event.isPureEvent() == _isPureEvent
                 && event.receiver() == _receiver
                 && event.channel() == _channel
                 // Only call absoluteEvent if the event is a Pure Event.
-                && ((event.isPureEvent() && event.absoluteDeadline() == _absoluteDeadline)
+                && ((event.isPureEvent() && 
+                        event.absoluteDeadline().equals(_absoluteDeadline))
                         || !event.isPureEvent()));
     }
 
@@ -168,10 +175,11 @@ public class PtidesEvent extends DEEvent {
     }
 
     /** Return true if this event is a pure event.
+     *  A pure event is one that does not contained a token that is destined
+     *  to an input port.
      *  @return True if this event is a pure event.
      */
     public final boolean isPureEvent() {
-        // FIXME: What is a pure event?
         return _isPureEvent;
     }
 
@@ -194,7 +202,6 @@ public class PtidesEvent extends DEEvent {
      *  @return The token as a string with the time stamp.
      */
     public String toString() {
-        // FIXME: shouldn't we show the receiver?
         // FIXME: Ideally, this would be in a format that could be easily parsed
         // by the expression language, such as a record format.
         String name = "null";
@@ -210,6 +217,10 @@ public class PtidesEvent extends DEEvent {
             + "." + _channel
             + ", isPureEvent = "
             + _isPureEvent
+            + (_receiver == null ? "null" : getClass().getName() + " {"
+                    + (_receiver.getContainer() != null ? 
+                    _receiver.getContainer().getFullName() : "")
+                    + ".receiver }")
             + "}";
     }
 

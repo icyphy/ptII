@@ -99,10 +99,10 @@ public class PtidesListEventQueue implements DEEventQueue {
     }
 
     /** Put the event queue into the event queue, and then sort it by timestamp order. 
-     *  @param event a PtidesEvent object.
+     *  @param event a DEEvent object.
      *  @throws IllegalActionException if the addFirst() method of the queue throws it.
      */
-    public void put(PtidesEvent event) throws IllegalActionException {
+    public void put(DEEvent event) throws IllegalActionException {
         if (_debugging) {
             _debug("+++ putting in queue: " + event);
         }
@@ -236,8 +236,4 @@ public class PtidesListEventQueue implements DEEventQueue {
 
     /** The queue as represented by a linked list. */
     private LinkedList _listQueue;
-
-    public void put(DEEvent event) throws IllegalActionException {
-        put((PtidesEvent) event);
-    }
 }
