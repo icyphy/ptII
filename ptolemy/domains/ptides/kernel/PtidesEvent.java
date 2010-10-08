@@ -133,9 +133,10 @@ public class PtidesEvent extends DEEvent {
      *  using absoluteDeadline as a metric. Those cases should be taken care of
      *  independently within those schedulers.
      */
-    public int compareTo(DEEvent event) {
-        return super.compareTo(event);
-    }
+    // FIXME: commented out because DEEvent.compareTo() is final.
+    //public int compareTo(DEEvent event) {
+    //    return super.compareTo(event);
+    //}
 
     /** Indicate whether some other object is equal to this PtidesEvent.
      *  PtidesEvents are equal if the super class indicates they are equal
