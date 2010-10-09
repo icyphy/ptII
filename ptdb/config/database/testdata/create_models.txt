@@ -4,6 +4,7 @@ putdocument ModelContainsBothAttributes '<?xml version="1.0" standalone="no"?>
     </property>
 	<property name="DBModelId" value="ModelContainsBothAttributes" class="ptolemy.data.expr.StringParameter">
         </property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -62,6 +63,7 @@ putdocument Y '<entity name="Y" class="ptolemy.actor.TypedCompositeActor">
     </property>
         <property name="DBModelId" value="Y" class="ptolemy.data.expr.StringParameter">
         </property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 127, 823, 514}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -108,6 +110,7 @@ putdocument NoNamesNoValues '<?xml version="1.0" standalone="no"?>
     </property>
         <property name="DBModelId" value="NoNamesNoValues" class="ptolemy.data.expr.StringParameter">
         </property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="CreatedBy_Temp" class="ptolemy.data.expr.StringParameter" value="Ashwini Vikram">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -167,6 +170,7 @@ putDocument  ContainsBothNamesButExchangedValues '<?xml version="1.0" standalone
     </property>
     <property name="DBModelId" value="ContainsBothNamesButExchangedValues" class="ptolemy.data.expr.StringParameter">
         </property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="13781">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -226,6 +230,7 @@ putDocument ContainsBothNamesOneValue '<?xml version="1.0" standalone="no"?>
     </property>
     <property name="DBModelId" value="ContainsBothNamesOneValue" class="ptolemy.data.expr.StringParameter">
         </property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -285,6 +290,7 @@ putDocument ContainsOneNameValue '<?xml version="1.0" standalone="no"?>
     </property>
      <property name="DBModelId" value="ContainsOneNameValue" class="ptolemy.data.expr.StringParameter">
         </property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -324,6 +330,7 @@ putDocument NoNamesAllValues '<?xml version="1.0" standalone="no"?>
     </property>
      <property name="DBModelId" value="NoNamesAllValues" class="ptolemy.data.expr.StringParameter">
         </property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="CreatedBy_Temp" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -384,6 +391,7 @@ putdocument ModelB '<?xml version="1.0" standalone="no"?>
     </property>
      <property name="DBModelId" value="ModelB" class="ptolemy.data.expr.StringParameter">
         </property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="CreatedBy" class="ptolemy.data.expr.StringParameter" value="Ashwini Bijwe">
         <display name="Created By"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -440,6 +448,7 @@ putdocument ModelB '<?xml version="1.0" standalone="no"?>
 putDocument ModelA '<?xml version="1.0" standalone="no"?>
 <entity name="ModelA" class="ptolemy.actor.TypedCompositeActor">
 	<property name="DBModelId" value="ModelA" class="ptolemy.data.expr.StringParameter"></property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -621,6 +630,7 @@ putDocument ModelA '<?xml version="1.0" standalone="no"?>
 putDocument NoReferences '<?xml version="1.0" standalone="no"?>
 <entity name="NoReferences" class="ptolemy.actor.TypedCompositeActor">
 	<property name="DBModelId" value="NoReferences" class="ptolemy.data.expr.StringParameter"></property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.1">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 20, 815, 516}, maximized=false}">
@@ -662,6 +672,7 @@ putDocument NoReferences '<?xml version="1.0" standalone="no"?>
 putDocument CompositeActor '<entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
 
 		<property name="DBModelId" class="ptolemy.data.expr.StringParameter" value="CompositeActor_123"></property>
+		<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
@@ -802,6 +813,7 @@ putDocument Adder '<entity name="Adder" class="ptolemy.actor.TypedCompositeActor
 </entity>'
 putDocument modelWithOneAdder '<entity name="modelWithOneAdder" class="ptolemy.actor.TypedCompositeActor">
     <property name="DBModelId" value="modelWithOneAdder" class="ptolemy.data.expr.StringParameter"></property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
 	<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -1095,6 +1107,7 @@ putDocument modelWithOneAdder '<entity name="modelWithOneAdder" class="ptolemy.a
 </entity>'
 putDocument modelWithTwoAdders '<entity name="modelWithTwoAdders" class="ptolemy.actor.TypedCompositeActor">
     <property name="DBModelId" value="modelWithTwoAdders" class="ptolemy.data.expr.StringParameter"></property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
 	<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -1391,6 +1404,7 @@ putDocument newModel '<?xml version="1.0" standalone="no"?>
 <entity name="newModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="DBModelId" class="ptolemy.data.expr.StringConstantParameter" value="newModel_1279245716984">
     </property>
+	<property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE"></property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
