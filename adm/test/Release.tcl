@@ -68,8 +68,10 @@ contrib.actor.lib.example
 diva.util.java2d.svg
 doc.coding.templates
 doc.tutorial
+doc.tutorial.domains
 doc.tutorial.graph
 doc.tutorial.graph.junit
+doc.tutorial.gui
 ptolemy.actor.corba
 ptolemy.actor.corba.CoordinatorUtil
 ptolemy.actor.corba.CorbaIOUtil
@@ -102,6 +104,7 @@ ptolemy.copernicus.interpreted
 ptolemy.copernicus.kernel.fragment
 ptolemy.domains.gr.lib.experimental
 ptolemy.domains.gr.lib.quicktime
+ptolemy.domains.ptides.kernel.test.junit
 ptolemy.domains.wireless.lib.network
 ptolemy.domains.wireless.lib.network.mac
 ptolemy.domains.wireless.lib.tinyOS
