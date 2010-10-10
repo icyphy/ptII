@@ -4833,6 +4833,8 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
       PTLIBEXPAT_DIR=util
       # Used in $PTII/makefile
       PTLBNL_DIR=lbnl
+      # Used in $PTII/doc/makefile
+      PTLBNL_JARS="lbnl.actor.lib lbnl.actor.lib.net lbnl.lib.labview lbnl.util"
    fi
 fi
 
@@ -5353,6 +5355,10 @@ AC_SUBST(PTKVM_DIR)
 
 # Set to lbnl and used in $PTII/makefile if libexpat was found.
 AC_SUBST(PTLBNL_DIR)
+
+# Set to the lbnl jars that need to be signed if libexpat was found
+# and used in jnlp.mk and $PTII/doc/makefile.
+AC_SUBST(PTLBNL_JARS)
 
 # Set to lego and used in
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
