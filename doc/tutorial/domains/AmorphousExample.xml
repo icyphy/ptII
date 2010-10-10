@@ -16,6 +16,12 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example uses a mailbox receiver (a one-place buffer)&#10;on the connection between Ramp and Repeat. It uses a&#10;queue on the connection between Repeat and&#10;SequencePlotter. To see how these are specified, right&#10;click on the input ports and select Configure.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 15.0]">
+        </property>
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -285,7 +291,7 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 165.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -298,8 +304,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequencePlotter</title>
-<xRange min="0.0" max="145729.0"/>
-<yRange min="0.0" max="72864.0"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 </plot>?>
         </configure>
     </entity>
