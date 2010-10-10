@@ -516,9 +516,9 @@ GRAPHTRANSFORMATIONPACKAGES = \
 	ptolemy.vergil.gt
 
 # Packages used by BCVTB: continuous, sdf and modal
-# PTLBNL_JARS set by configure in ptII/mk/ptII.mk if libexpat is found.
+# PTLBNL_PACKAGES set by configure in ptII/mk/ptII.mk if libexpat is found.
 BCVTBPACKAGES = \
-	$(PTLBNL_JARS) \
+	$(PTLBNL_PACKAGES) \
 	ptolemy.actor.lib.javasound \
 	ptolemy.actor.lib \
 	ptolemy.actor.lib.comm \
