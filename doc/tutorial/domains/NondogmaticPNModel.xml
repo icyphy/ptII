@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="NondogmaticPNDirector" class="doc.tutorial.domains.NondogmaticPNDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 259, 813, 510}, maximized=false}">
@@ -15,6 +15,12 @@
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Illustration of the NondogmaticPNDirector. This model&#10;is nondeterminate, because the AddSubtract actor adds whatever&#10;tokens are available at its inputs when it fires, and the director&#10;fires it repeatedly in its own thread.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 25.0]">
+        </property>
     </property>
     <entity name="SensorModel" class="SensorModel" source="http://embedded.eecs.berkeley.edu/concurrency/models/SensorModel.xml">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 150.0]">
