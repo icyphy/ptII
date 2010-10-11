@@ -460,6 +460,7 @@ GRAPHTRANSFORMATIONPACKAGES = \
 	ptolemy.vergil.gt
 
 # Packages used by HyVisual
+# PTMATLAB_PACKAGES is set by configure in $PTII/mk/ptII.mk
 HYVISUALPACKAGES = \
 	$(PTCOLT_PACKAGES) \
 	$(PTJYTHON_PACKAGES) \
@@ -500,7 +501,7 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.sdf.lib \
 	ptolemy.domains.sdf.lib.vq \
 	ptolemy.hsif \
-	ptolemy.matlab \
+	$(PTMATLAB_PACKAGES) \
 	ptolemy.media.javasound \
 	ptolemy.util \
 	ptolemy.vergil.fsm.modal \
@@ -973,7 +974,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/graph/analysis/*.java \
 			../ptolemy/gui/*.java \
 			../ptolemy/math/*.java \
-			../ptolemy/matlab/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java \
 			../ptolemy/moml/filter/*.java \

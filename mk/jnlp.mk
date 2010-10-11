@@ -145,12 +145,6 @@ NATIVE_SIGNED_LIB_JARS = \
 	lib/rxtxMacOSX.jar \
 	lib/rxtxWindows.jar 
 
-# Not all hosts have matlab
-MATLAB_JARS = \
-	ptolemy/matlab/matlab.jar \
-	ptolemy/matlab/demo/demo.jar \
-	lib/matlab.jar
-
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
 			lib/kieler.jar \
@@ -172,6 +166,7 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 999
 # HyVisual has its own set of core jars
 
 # Order matters here, include the most important jars first
+# PTMATLAB_JARS is set by configure in $PTII/mk/ptII.mk
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
 	lib/diva.jar \
@@ -180,7 +175,7 @@ CORE_JNLP_JARS = \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
-	$(MATLAB_JARS)
+	$(PTMATLAB_JARS)
 
 #######
 # DSP - The smallest runtime
@@ -210,6 +205,7 @@ BCVTB_ONLY_JNLP_JARS = \
 BCVTB_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/BCVTBApplication.jar
 
+# PTMATLAB_JARS is set by configure in $PTII/mk/ptII.mk
 BCVTB_JNLP_JARS =	\
 	doc/docConfig.jar \
 	lib/diva.jar \
@@ -219,7 +215,7 @@ BCVTB_JNLP_JARS =	\
 	ptolemy/domains/sdf.jar \
 	ptolemy/domains/modal.jar \
 	ptolemy/actor/parameters/demo/demo.jar \
-	$(MATLAB_JARS) \
+	$(PTMATLAB_JARS) \
 	ptolemy/ptsupport.jar \
 	$(DOC_CODEDOC_JAR)
 
@@ -278,6 +274,7 @@ HYBRID_SYSTEMS_DEMO_AND_DOC_JARS = \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar
 
+# PTMATLAB_JARS is set by configure in $PTII/mk/ptII.mk
 HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
@@ -288,7 +285,7 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
-	$(MATLAB_JARS) 
+	$(PTMATLAB_JARS) 
 
 PTALON_JARS = \
 	ptolemy/actor/ptalon/antlr/antlr.jar \

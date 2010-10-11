@@ -2730,7 +2730,11 @@ else
     if test "$RXTX_PRESENT" = "no"; then
         AC_MSG_WARN([Perhaps rxtx is not installed?
     You need not download rxtx unless you plan the actors in actor.lib.comm.
-    The rxtx package can be found at http://rxtx.qbang.org/wiki/index.php/Download])
+    The rxtx package can be found at
+    http://rxtx.qbang.org/wiki/index.php/Download
+    and placed in \$PTII/vendors/misc/rxtx so that 
+    \$PTII/vendors/misc/rxtx/RXTXComm.jar exists.])
+
     fi
 fi
 
@@ -3613,6 +3617,12 @@ fi
 
 if test -z "$PTMATLAB_DIR"; then
     ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/matlab/"
+else
+    # Set to the matlab jars that need to be signed if matlab was found.
+    # Used in jnlp.mk
+    PTMATLAB_JARS="ptolemy/matlab/matlab.jar ptolemy/matlab/demo/demo.jar lib/matlab.jar"
+    # Used in $PTII/doc/makefile
+    PTMATLAB_PACKAGES=ptolemy.matlab
 fi 
 
 
@@ -4606,6 +4616,11 @@ if test -f "$LIBEXPAT_INCLUDE_DIR/expat.h"; then
       PTLIBEXPAT_DIR=util
       # Used in $PTII/makefile
       PTLBNL_DIR=lbnl
+      # Set to the lbnl jars that need to be signed if libexpat was found
+      # and used in jnlp.mk.
+      PTLBNL_JARS="lbnl/lbnl.jar lbnl/demo/demo.jar"
+      # Used in $PTII/doc/makefile
+      PTLBNL_PACKAGES="lbnl.actor.lib lbnl.actor.lib.net lbnl.lib.labview lbnl.util"
    fi
 fi
 
@@ -5120,6 +5135,14 @@ AC_SUBST(PTKVM_DIR)
 # Set to lbnl and used in $PTII/makefile if libexpat was found.
 AC_SUBST(PTLBNL_DIR)
 
+# Set to the lbnl jars that need to be signed if libexpat was found
+# and used in jnlp.mk and $PTII/doc/makefile.
+AC_SUBST(PTLBNL_JARS)
+
+# PTLBNL_PACKAGES is set to the packages in lbnl if libexpat was found and
+# used in ptII/doc/makefile.
+AC_SUBST(PTLBNL_PACKAGES)
+
 # Set to lego and used in
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 AC_SUBST(PTLEGO_DIR)
@@ -5144,6 +5167,10 @@ AC_SUBST(PTMATLAB_CC_FLAGS)
 # $PTII/ptolemy/makefile if the Matlab was found.
 AC_SUBST(PTMATLAB_DIR)
 
+# Set to the matlab jars that need to be signed if matlab was found.
+# Used in jnlp.mk
+AC_SUBST(PTMATLAB_JARS)
+
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
 AC_SUBST(PTMATLAB_LD_ARGS)
@@ -5151,6 +5178,9 @@ AC_SUBST(PTMATLAB_LD_ARGS)
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
 AC_SUBST(PTMATLAB_64LD_ARGS)
+
+# Used in $PTII/doc/makefile
+AC_SUBST(PTMATLAB_PACKAGES)
 
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found

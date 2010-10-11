@@ -664,6 +664,14 @@ PTKIELER_DIR =	@PTKIELER_DIR@
 # Set to lbnl and used in $PTII/makefile if libxpat was found.
 PTLBNL_DIR = 	@PTLBNL_DIR@
 
+# Set to the lbnl jars that need to be signed if libexpat was found
+# and used in jnlp.mk.
+PTLBNL_JARS =	@PTLBNL_JARS@
+
+# PTLBNL_PACKAGES is set if libexpat was found and
+# used in ptII/doc/makefile
+PTLBNL_PACKAGES =	@PTLBNL_PACKAGES@
+
 # Set to lego and used in $PTII/ptolemy/apps/makefile if
 # the Java Communications API was found
 PTLEGO_DIR =	@PTLEGO_DIR@
@@ -687,6 +695,10 @@ PTMATLAB_CC_FLAGS = @PTMATLAB_CC_FLAGS@
 # matlab was found.
 PTMATLAB_DIR =	@PTMATLAB_DIR@
 
+# Set to the matlab jars that need to be signed if matlab was found.
+# Used in jnlp.mk
+PTMATLAB_JARS = @PTMATLAB_JARS@
+
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
 PTMATLAB_LD_ARGS = @PTMATLAB_LD_ARGS@
@@ -694,6 +706,9 @@ PTMATLAB_LD_ARGS = @PTMATLAB_LD_ARGS@
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile (64 bit)
 PTMATLAB_64LD_ARGS = @PTMATLAB_64LD_ARGS@
+
+# Used in $PTII/doc/makefile
+PTMATLAB_PACKAGES = @PTMATLAB_PACKAGES@
 
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found
