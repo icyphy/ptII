@@ -54,7 +54,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.DecoratedAttributes;
@@ -95,6 +94,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @exception IllegalActionException If there are any issues when 
+     *  attempting to initialize a GiottoDirector.
      */
     public GiottoDirector() throws IllegalActionException {
         super();
@@ -124,6 +125,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace for this object.
+     *  @exception IllegalActionException If there are any issues when 
+     *  attempting to initialize a GiottoDirector.
      */
     public GiottoDirector(Workspace workspace) throws IllegalActionException {
         super(workspace);
@@ -869,11 +872,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                     "synchronizeToRealTime", new BooleanToken(false));
 
             timeResolution.setVisibility(Settable.FULL);
-            // FIXME Remove the forJPF parameter after a JPF codegen target is created.
-            forJPF = new Parameter(this, "forJPF");
-            forJPF.setTypeEquals(BaseType.BOOLEAN);
-            forJPF.setExpression("false");
-
         } catch (KernelException ex) {
             throw new IllegalActionException("Cannot initialize director: "
                     + ex.getMessage());
@@ -924,12 +922,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         }
         return new GiottoDecoratedAttributesImplementation(target, this);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-    // boolean parameter that is set if this will be used for a JPF codegen target
-    //FIXME: This parameter will be removed after the JPF codegen target is created.
-    public Parameter forJPF;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
