@@ -1008,7 +1008,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/graph/analysis/*.java \
 			../ptolemy/gui/*.java \
 			../ptolemy/math/*.java \
-			../ptolemy/matlab/*.java \
 			../ptolemy/media/*.java \
 			../ptolemy/moml/*.java \
 			../ptolemy/moml/filter/*.java \
