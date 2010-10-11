@@ -462,6 +462,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/vergil/ptera"/>
             <file src="../../jar_dist/ptolemy/vergil/fsm/fmv/fmv.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/fsm/fmv"/>
+            <file src="../../jar_dist/ptolemy/vergil/modal/fmv/fmv.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/vergil/modal/fmv"/>
             <file src="../../jar_dist/ptolemy/vergil/gt/gt.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/gt"/>
             <file src="../../jar_dist/ptolemy/vergil/tdl/tdl.jar"
