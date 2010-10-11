@@ -57,7 +57,8 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class PtidesEvent extends DEEvent {
     /** Construct a pure event with the specified destination actor,
-     *  timestamp, microstep, depth, and minDelay offset.
+     *  timestamp, microstep, depth, and absoluteDeadline.
+     *  This constructor should be used if this event is a pure event.
      *  A pure event is one that does not contained a token (value) that 
      *  is destined to an input port.
      *  @param actor The destination actor
@@ -81,6 +82,8 @@ public class PtidesEvent extends DEEvent {
 
     /** Construct a trigger event with the specified destination IO port,
      *  timestamp, microstep, and depth.
+     *  This constructor should be used if the event is a trigger event
+     *  (an event that is destined to a port).
      *  @param ioPort The destination IO port.
      *  @param channel The channel the event is destined to.
      *  @param timeStamp The time when the event occurs.
@@ -101,10 +104,11 @@ public class PtidesEvent extends DEEvent {
         _isPureEvent = false;
     }
 
-    /** Return the absolute deadline of this event.
+    /** Return the absolute deadline of this event if the event is a
+     *  pure event.
      *  A pure event is one that does not contained a token (value) that 
      *  is destined to an input port.
-     *  @return absolute deadline if the event is not a pure event.
+     *  @return absolute deadline if the event is a pure event.
      *  @exception InternalErrorException If event is not a pure event.
      */
     public final Time absoluteDeadline() {
@@ -216,12 +220,13 @@ public class PtidesEvent extends DEEvent {
             + ", dest = " + name + "."
             + (_ioPort == null ? "null" : _ioPort.getName())
             + "." + _channel
-            + ", isPureEvent = "
-            + _isPureEvent
+            + ", receiver = "
             + (_receiver == null ? "null" : getClass().getName() + " {"
                     + (_receiver.getContainer() != null ? 
                     _receiver.getContainer().getFullName() : "")
                     + ".receiver }")
+            + ", isPureEvent = "
+            + _isPureEvent
             + "}";
     }
 
