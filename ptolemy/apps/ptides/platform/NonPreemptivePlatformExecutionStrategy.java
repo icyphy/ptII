@@ -41,6 +41,7 @@ import ptolemy.actor.util.TimedEvent;
 import ptolemy.apps.ptides.lib.ScheduleListener.ScheduleEventType;
 import ptolemy.domains.ptides.kernel.PtidesActorProperties;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 /**
  * An implementation of a non-preemptive platform execution strategy.
@@ -97,8 +98,18 @@ public class NonPreemptivePlatformExecutionStrategy extends
             Actor actor2 = event2.contents instanceof IOPort ? (Actor) ((IOPort) event2.contents)
                     .getContainer()
                     : (Actor) event2.contents;
-            double wcet1 = PtidesActorProperties.getWCET(actor1);
-            double wcet2 = PtidesActorProperties.getWCET(actor2);
+
+            double wcet1 = 0.0;
+            double wcet2 = 0.0;
+            try {
+            	wcet1 = PtidesActorProperties.getWCET(actor1);
+            	wcet2 = PtidesActorProperties.getWCET(actor2);
+            } catch (IllegalActionException ex) {
+            	// FIXME: this seems wrong, but compare() does not throw IllegalActionException
+            	throw new InternalErrorException(actor1, ex, "Can't get the wcet of "
+            				+ actor1.getFullName() + " or " + actor2.getFullName()
+            				+ ".");
+            }
             Time time1 = event1.timeStamp;
             Time time2 = event2.timeStamp;
             boolean fireAtRT1 = PtidesActorProperties
