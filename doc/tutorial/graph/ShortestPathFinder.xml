@@ -1,0 +1,73 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ShortestPathFinder" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={313, 195, 813, 510}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The attribute to the left illustrates how to create&#10;a visual object in a Ptolemy II model that performs&#10;some action when the user double clicks on it.&#10;This example reports the shortest path from a&#10;start actor to an end actor, where the user specifies&#10;the actors. This is calculated using Dijstra's algorithm.&#10;&#10;Control-L (or Command-L) will display the source code.&#10;Double click on it to see what it does.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 10.0]">
+        </property>
+    </property>
+    <property name="ShortestPathFinder" class="doc.tutorial.graph.ShortestPathFinder">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 90.0]">
+        </property>
+    </property>
+    <entity name="A" class="ptolemy.actor.TypedAtomicActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 250.0]">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="B" class="ptolemy.actor.TypedAtomicActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 210.0}">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="C" class="ptolemy.actor.TypedAtomicActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 255.0}">
+        </property>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="A.out" relation="relation"/>
+    <link port="A.out" relation="relation5"/>
+    <link port="B.in" relation="relation"/>
+    <link port="B.out" relation="relation2"/>
+    <link port="C.in" relation="relation2"/>
+    <link port="C.in" relation="relation5"/>
+</entity>

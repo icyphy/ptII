@@ -24,7 +24,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
-package doc.tutorial;
+package doc.tutorial.domains;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
@@ -35,21 +35,46 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+/** This director modifies the PNDirector to support
+ *  nonblocking reads. Specifically, it modifies the
+ *  receiver so that hasToken() returns true only if the
+ *  receiver has a token, unlike the original PNReceiver,
+ *  where hasToken() always returns true. The price we
+ *  pay for this flexibility is that models are no longer
+ *  determinate.
+ *  @author Edward A. Lee
+ */
 public class NondogmaticPNDirector extends PNDirector {
 
+    /** Constructor. A director is an Attribute.
+     *  @param container The container for the director.
+     *  @param name The name of the director.
+     *  @throws IllegalActionException If the container cannot
+     *   contain this director.
+     *  @throws NameDuplicationException If the container already
+     *   contains an Attribute with the same name.
+     */
     public NondogmaticPNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    /** Return a new instance of the specialized receiver used by
+     *  this director.
+     */
     public Receiver newReceiver() {
         return new FlexibleReceiver();
     }
 
+    /** Inner class defining the specialized receiver used by
+     *  this director. This receiver overrides hasToken() to
+     *  "tell the truth" about whether a token is present.
+     */
     public static class FlexibleReceiver extends PNQueueReceiver {
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
 
+        /** Override the base class to return true only if the
+         *  receiver actually has a token.
+         */
         public boolean hasToken() {
             IOPort port = getContainer();
             Attribute attribute = port.getAttribute("tellTheTruth");

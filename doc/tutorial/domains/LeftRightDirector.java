@@ -24,10 +24,9 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
-package doc.tutorial;
+package doc.tutorial.domains;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -43,58 +42,88 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
+/** Fire actors in left-to-right order. This director is a simple
+ *  illustration of how to construct schedules for firing. It examines
+ *  the location of the actor in a Vergil window, and on each
+ *  invocation of the fire() method, fires each actor once,
+ *  starting with the leftmost one and ending with the rightmost one.
+ *  If two actors have the same horizontal position, then the order
+ *  of their firings is arbitrary.
+ *  <p>
+ *  Note that this director will fire the actors forever. It may
+ *  be difficult to stop the model executing.
+ *  @author Edward A. Lee
+ */
 public class LeftRightDirector extends StaticSchedulingDirector {
 
+    /** Constructor. A director is an Attribute.
+     *  @param container The container for the director.
+     *  @param name The name of the director.
+     *  @throws IllegalActionException If the container cannot contain this director.
+     *  @throws NameDuplicationException If the container already contains an
+     *   Attribute with this name.
+     */
     public LeftRightDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        // Set the scheduler.
         setScheduler(new LeftRightScheduler(this, "LeftRightScheduler"));
     }
 
+    /** Inner class defining the scheduler.
+     */
     public static class LeftRightScheduler extends Scheduler {
 
+        /** Constructor. A Scheduler is an Attribute, normally contained by a director.
+         *  @param director The director that will use this scheduler.
+         *  @param name The name of the scheduler.
+         *  @throws IllegalActionException If the director cannot use this scheduler.
+         *  @throws NameDuplicationException If the director already contains an
+         *   Attribute with this name.
+         */
         public LeftRightScheduler(LeftRightDirector director, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(director, name);
         }
 
+        /** Return a left-to-right schedule. */
         protected Schedule _getSchedule() throws IllegalActionException,
                 NotSchedulableException {
-            StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
-            CompositeActor compositeActor = (CompositeActor) (director
-                    .getContainer());
-            List actors = compositeActor.deepEntityList();
-            Iterator actorIterator = actors.iterator();
-            TreeSet sortedActors = new TreeSet(new LeftRightComparator());
-            while (actorIterator.hasNext()) {
-                Actor actor = (Actor) actorIterator.next();
-                sortedActors.add(actor);
-            }
+            // Get the director.
+            NamedObj director = getContainer();
+            // Get the container of the director.
+            CompositeActor compositeActor = (CompositeActor) (director.getContainer());
+            // Get the actors to be fired by the director.
+            List<Actor> actors = compositeActor.deepEntityList();
+            // Create a sorted list of actors, sorted by a speciallized comparator.
+            TreeSet<Actor> sortedActors = new TreeSet(new LeftRightComparator());
+            sortedActors.addAll(actors);
+            // Construct a Schedule from the sorted list.
             Schedule schedule = new Schedule();
-            Iterator sortedActorsIterator = sortedActors.iterator();
-            while (sortedActorsIterator.hasNext()) {
-                Actor actor = (Actor) sortedActorsIterator.next();
-                Firing firing = new Firing();
-                firing.setActor(actor);
+            for (Actor actor : sortedActors) {
+                Firing firing = new Firing(actor);
                 schedule.add(firing);
             }
-
             return schedule;
         }
 
-        public/*static*/class LeftRightComparator implements Comparator {
-            // FindBugs suggests making this class static so as to decrease
-            // the size of instances and avoid dangling references.
-            // However, hashCode() calls attributeList() on this,
-            // so this class cannot be static.
-
+        /** Inner class that implements a specialized comparator that compares
+         *  the horizontal positions of the two arguments, which are assumed to
+         *  actors.
+         */
+        public static class LeftRightComparator implements Comparator {
             public int compare(Object o1, Object o2) {
+                // In case there is no location for an actor, provide a default.
                 double[] location1 = { Double.NEGATIVE_INFINITY,
                         Double.NEGATIVE_INFINITY };
                 double[] location2 = { Double.NEGATIVE_INFINITY,
                         Double.NEGATIVE_INFINITY };
-
+                // The location of the actor in Vergil is stored in an
+                // Attribute that implements the Locatable interface.
+                // Get a list of all such attributes, and use the first one
+                // (normally there will be only one).
                 List locations = ((Entity) o1).attributeList(Locatable.class);
                 if (locations.size() > 0) {
                     location1 = ((Locatable) locations.get(0)).getLocation();
@@ -108,28 +137,16 @@ public class LeftRightDirector extends StaticSchedulingDirector {
                 } else if (location1[0] > location2[0]) {
                     return 1;
                 } else {
-                    return 0;
+                    // NOTE: It is not correct to return 0 if the x
+                    // locations are the same because the actors may
+                    // not be the same actor. A comparator has to be
+                    // consistent with equals. We arbitrarily return -1,
+                    // unless they are equal.
+                    if (o1.equals(o2)) {
+                        return 0;
+                    }
+                    return -1;
                 }
-            }
-
-            public boolean equals(Object o) {
-                if (compare(this, o) == 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            public int hashCode() {
-                // Findbugs says if we have an equals(), we need a hashCode().
-                double[] location1 = { Double.NEGATIVE_INFINITY,
-                        Double.NEGATIVE_INFINITY };
-                List locations = attributeList(Locatable.class);
-                if (locations.size() > 0) {
-                    location1 = ((Locatable) locations.get(0)).getLocation();
-                }
-                // Return the bitwise xor
-                return (int) location1[0] ^ (int) location1[1];
             }
         }
     }

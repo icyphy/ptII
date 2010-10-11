@@ -1,10 +1,10 @@
-# Makefile for testing the tutorial java files
+# Makefile for the JUnit Tutorial Graph tests
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2000-2009 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,64 +28,42 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#
-# To run the demos, run "make demo"
-ME =		doc/tutorial
 
-DIRS = 		domains graph gui
+# Location of this directory, relative to the Ptolemy II directory
+ME =		doc/tutorial/graph/junit
 
 # Root of the Ptolemy II directory
-ROOT =		../..
+ROOT =		../../../..
 
-# These classes use ptolemy/actor/gui/PlotTableauFrame.java which requires
-# diva.jar, so we add diva.jar to the CLASSPATH in case PlotTableauFrame.java
-# has not yet been compiled.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# JUNIT_JAR is searched for by $PTII/configure and set in $PTII/mk/ptII.mk
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	tutorial
-PTCLASSJAR =
-
 JSRCS = \
-	TutorialApplet1.java \
-	TutorialApplet2.java \
-	TutorialApplet3.java
+	ShortestPathFinderTest.java
 
-# Note that the TutorialApplet*.java files get copied to
-# TutorialApplet.java and then made
-EXTRA_SRCS =	$(JSRCS) \
-	README.txt \
-	TutorialApplet1.htm \
-	TutorialApplet2.htm \
-	TutorialApplet3.htm \
-	TutorialApplet4.htm \
-	index.htm
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+JCLASS =	$(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
 
-demo: all
-	appletviewer TutorialApplet1.htm
-	appletviewer TutorialApplet2.htm
-	appletviewer TutorialApplet3.htm
-	appletviewer TutorialApplet4.htm
+tests:: $(EXTRA_SRCS) jclass test_java
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore doc.tutorial.graph.junit.ShortestPathFinderTest
+
+test_java: jclass
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

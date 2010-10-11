@@ -24,7 +24,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
-package doc.tutorial;
+package doc.tutorial.domains;
 
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Director;
@@ -40,32 +40,56 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+/** Director implementing "amorphous heterogeneity," where each
+ *  connection between actors can use a different communication
+ *  protocol. This is a demonstration class that shows how
+ *  the Receiver class controls the communication between actors.
+ *  By default, this director uses an SDFReceiver, which implements
+ *  an unbounded FIFO queue. If any input port, however, has a
+ *  StringParameter named "receiverClass", then the value of
+ *  that parameter gives the class name of a receiver to use
+ *  instead of the SDFReceiver.
+ *  @author Edward A. Lee
+ */
 public class AmorphousDirector extends Director {
 
+    /** Constructor. A director is an Attribute.
+     *  @param container The container for the director.
+     *  @param name The name of the director.
+     *  @throws IllegalActionException If the container cannot
+     *   contain this director.
+     *  @throws NameDuplicationException If the container already
+     *   contains an Attribute with the same name.
+     */
     public AmorphousDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
+    /** Return a Receiver that can delegate to another receiver. */
     public Receiver newReceiver() {
         return new DelegatingReceiver();
     }
 
+    /** Inner class defining a receiver that can delegate to
+     *  another receiver.
+     */
     public static class DelegatingReceiver extends AbstractReceiver {
 
+        /** The receiver to which to delegate. */
         private Receiver _receiver;
 
+        /** Constructor. This creates the default SDFReceiver. */
         public DelegatingReceiver() {
             super();
             _receiver = new SDFReceiver();
         }
 
-        public DelegatingReceiver(IOPort container)
-                throws IllegalActionException {
-            super(container);
-            _receiver = new SDFReceiver(container);
-        }
-
+        /** Whenever the receiver is cleared, check the container
+         *  to see whether a receiver class is specified. If it is,
+         *  the create an instance of the receiver whose class name
+         *  is given, replacing the current receiver.
+         */
         public void clear() throws IllegalActionException {
             IOPort container = getContainer();
             if (container != null) {
@@ -74,38 +98,46 @@ public class AmorphousDirector extends Director {
                 if (receiverClass != null) {
                     String className = ((StringToken) receiverClass.getToken())
                             .stringValue();
-                    try {
-                        Class desiredClass = Class.forName(className);
-                        _receiver = (Receiver) desiredClass.newInstance();
-                    } catch (Exception e) {
-                        throw new IllegalActionException(container, e,
-                                "Invalid class for receiver: " + className);
+                    if (!className.equals(_receiver.getClass().toString())) {
+                        try {
+                            Class desiredClass = Class.forName(className);
+                            _receiver = (Receiver) desiredClass.newInstance();
+                        } catch (Exception e) {
+                            throw new IllegalActionException(container, e,
+                                    "Invalid class for receiver: " + className);
+                        }
                     }
                 }
             }
             _receiver.clear();
         }
 
+        /** Delegate to the specified receiver. */
         public Token get() throws NoTokenException {
             return _receiver.get();
         }
 
+        /** Delegate to the specified receiver. */
         public boolean hasRoom() {
             return _receiver.hasRoom();
         }
 
+        /** Delegate to the specified receiver. */
         public boolean hasRoom(int numberOfTokens) {
             return _receiver.hasRoom(numberOfTokens);
         }
 
+        /** Delegate to the specified receiver. */
         public boolean hasToken() {
             return _receiver.hasToken();
         }
 
+        /** Delegate to the specified receiver. */
         public boolean hasToken(int numberOfTokens) {
             return _receiver.hasToken(numberOfTokens);
         }
 
+        /** Delegate to the specified receiver. */
         public void put(Token token) throws NoRoomException,
                 IllegalActionException {
             _receiver.put(token);

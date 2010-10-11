@@ -1,10 +1,10 @@
-# Makefile for testing the tutorial java files
+# Makefile for testing the tutorial/graph java files
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2000-2009 The Regents of the University of California.
+# @Copyright (c) 2010 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,42 +28,38 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#
-# To run the demos, run "make demo"
-ME =		doc/tutorial
 
-DIRS = 		domains graph gui
+#
+
+ME =		doc/tutorial/graph
+
+# $PTII/configure looks for JUnit and sets PTJUNIT_DIR junit if it is found
+DIRS =		$(PTJUNIT_DIR)
 
 # Root of the Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
 
-# These classes use ptolemy/actor/gui/PlotTableauFrame.java which requires
-# diva.jar, so we add diva.jar to the CLASSPATH in case PlotTableauFrame.java
-# has not yet been compiled.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	tutorial
+PTPACKAGE = 	graph
 PTCLASSJAR =
 
 JSRCS = \
-	TutorialApplet1.java \
-	TutorialApplet2.java \
-	TutorialApplet3.java
+	ConnectivityReporter.java \
+	HelloWorld.java \
+	ShortestPathFinder.java
 
 # Note that the TutorialApplet*.java files get copied to
 # TutorialApplet.java and then made
 EXTRA_SRCS =	$(JSRCS) \
-	README.txt \
-	TutorialApplet1.htm \
-	TutorialApplet2.htm \
-	TutorialApplet3.htm \
-	TutorialApplet4.htm \
-	index.htm
+	ConnectivityReporter.xml \
+	HelloWorld.xml \
+	ShortestPathFinder.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,6 +69,10 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	junit \
+	'ConnectivityReporter$$DoubleClickHandler.class' \
+	'HelloWorld$$DoubleClickHandler.class' \
+	'ShortestPathFinder$$Calculate.class' \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR)
 
@@ -82,10 +82,9 @@ all: jclass
 install: jclass jars
 
 demo: all
-	appletviewer TutorialApplet1.htm
-	appletviewer TutorialApplet2.htm
-	appletviewer TutorialApplet3.htm
-	appletviewer TutorialApplet4.htm
+	$(ROOT)/bin/vergil ConnectivityReporter.xml
+	$(ROOT)/bin/vergil HelloWorld.xml
+	$(ROOT)/bin/vergil ShortestPathFinder.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
