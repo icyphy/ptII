@@ -517,6 +517,7 @@ GRAPHTRANSFORMATIONPACKAGES = \
 
 # Packages used by BCVTB: continuous, sdf and modal
 # PTLBNL_PACKAGES set by configure in ptII/mk/ptII.mk if libexpat is found.
+# PTMATLAB_PACKAGES is set by configure in $PTII/mk/ptII.mk
 BCVTBPACKAGES = \
 	$(PTLBNL_PACKAGES) \
 	ptolemy.actor.lib.javasound \
@@ -547,6 +548,7 @@ BCVTBPACKAGES = \
 	ptolemy.domains.sdf.kernel \
 	ptolemy.domains.sdf.lib \
 	ptolemy.domains.sdf.lib.vq \
+	$(PTMATLAB_PACKAGES) \
 	ptolemy.matlab \
 	ptolemy.media.javasound \
 	ptolemy.util \

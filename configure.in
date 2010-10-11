@@ -3757,6 +3757,12 @@ fi
 
 if test -z "$PTMATLAB_DIR"; then
     ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/matlab/"
+else
+    # Set to the matlab jars that need to be signed if matlab was found.
+    # Used in jnlp.mk
+    PTMATLAB_JARS="ptolemy/matlab/matlab.jar ptolemy/matlab/demo/demo.jar lib/matlab.jar"
+    # Used in $PTII/doc/makefile
+    PTMATLAB_PACKAGES=ptolemy.matlab
 fi 
 
 
@@ -5391,6 +5397,10 @@ AC_SUBST(PTMATLAB_CC_FLAGS)
 # $PTII/ptolemy/makefile if the Matlab was found.
 AC_SUBST(PTMATLAB_DIR)
 
+# Set to the matlab jars that need to be signed if matlab was found.
+# Used in jnlp.mk
+AC_SUBST(PTMATLAB_JARS)
+
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
 AC_SUBST(PTMATLAB_LD_ARGS)
@@ -5398,6 +5408,9 @@ AC_SUBST(PTMATLAB_LD_ARGS)
 # Linker args for Matlab
 # $PTII/ptolemy/matlab/makefile
 AC_SUBST(PTMATLAB_64LD_ARGS)
+
+# Used in $PTII/doc/makefile
+AC_SUBST(PTMATLAB_PACKAGES)
 
 # Set to mescal and used in $PTII/makefile 
 # if $PTII/mescal was found
