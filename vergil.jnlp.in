@@ -24,7 +24,7 @@
   <resources>
          <!-- Bump maximum heap size to 768Mb, use JVM Props. to confirm -->
 	 <!-- Possibly require 32bit for shared libraries  java-vm-args="-d64" -->
-   	<j2se version="1.5" max-heap-size="768m"/>
+   	<j2se version="1.5+" max-heap-size="768m"/>
         <extension href="http://download.java.net/media/java3d/webstart/release/java3d-latest.jnlp"/>
 	<extension href="http://download.java.net/media/jai/webstart/release/jai-1.1.3-latest.jnlp"/>
 	<!-- Start Jars -->
