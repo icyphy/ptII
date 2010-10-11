@@ -48,6 +48,17 @@ import ptolemy.kernel.util.NamedObj;
  *  Note in PtidesEvent, unlike DEEvent, the IOPort parameter is special, in that
  *  it's not necessarily the port the event is destined to, but the port where this
  *  event is causally related with.
+ *  <p>
+ *  The semantics of equals() and compareTo() in this method are tricky.
+ *  The compareTo() method does not override that of the super class.
+ *  The semantics of the compareTo() is such that two events are equal 
+ *  if the timestamps, microstep, depth, and priority fields indicate they
+ *  are equal. Note
+ *  CompareTo() should be called by Ptides directors that try to order
+ *  events based on event's timestamps.
+ *  If the Ptides director wishes to order events based on deadlines, it
+ *  should check event deadlines first. Only in the case when deadlines
+ *  of events are equal, should compareTo() be called.
  *
  *  @author Jia Zou, Slobodan Matic
  *  @version $Id$
@@ -112,8 +123,6 @@ public class PtidesEvent extends DEEvent {
      *  @exception InternalErrorException If event is not a pure event.
      */
     public final Time absoluteDeadline() {
-        // FIXME: This should throw an IllegalActionException because the
-        // exception is detectable by the caller.
         if (!isPureEvent()) {
             throw new InternalErrorException("Event is not a pure event, "
                     + "in which case the absolute deadline should be obtained "
@@ -129,18 +138,6 @@ public class PtidesEvent extends DEEvent {
     public final int channel() {
         return _channel;
     }
-
-    /** The compareTo method of the super class should not overridden.
-     *  This is because in most cases comparison between PtidesEvent's are
-     *  for all fields other than the absoluteDeadline. Only for certain classes
-     *  of schedulers, and when a pure event is present, do we compare events
-     *  using absoluteDeadline as a metric. Those cases should be taken care of
-     *  independently within those schedulers.
-     */
-    // FIXME: commented out because DEEvent.compareTo() is final.
-    //public int compareTo(DEEvent event) {
-    //    return super.compareTo(event);
-    //}
 
     /** Indicate whether some other object is equal to this PtidesEvent.
      *  PtidesEvents are equal if the super class indicates they are equal
@@ -158,7 +155,9 @@ public class PtidesEvent extends DEEvent {
         PtidesEvent event = (PtidesEvent) object;
 
         return (super.equals(object)
-                && event.token().equals(_token)
+                && ((!event.isPureEvent() && 
+                        event.token().equals(_token))
+                        || event.isPureEvent())
                 && event.isPureEvent() == _isPureEvent
                 && event.receiver() == _receiver
                 && event.channel() == _channel
@@ -173,10 +172,11 @@ public class PtidesEvent extends DEEvent {
      *  @see #equals(Object)
      */
     public int hashCode() {
-        // FIXME: hashCode should take into account the fields added by
-        // this class.  Otherwise, two objects that are not equal will have
-        // the same hash.  This is permitted, but is less efficient.
-        return super.hashCode();
+        int primitiveFieldHash = super.hashCode() >>> _channel;
+        int objectFieldHash = (isPureEvent() ? 
+                _absoluteDeadline.hashCode() : 
+                    (_token.hashCode()) >>> _receiver.hashCode());
+        return primitiveFieldHash >>> objectFieldHash;
     }
 
     /** Return true if this event is a pure event.
