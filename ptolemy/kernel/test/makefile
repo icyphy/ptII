@@ -32,6 +32,9 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/kernel/test
 
+# PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
+DIRS =		$(PTJUNIT_DIR)
+
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
