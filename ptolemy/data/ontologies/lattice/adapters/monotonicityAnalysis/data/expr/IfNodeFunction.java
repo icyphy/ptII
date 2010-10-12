@@ -85,9 +85,11 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  @exception IllegalActionException If there is an error evaluating the function.
      *  @see ptolemy.data.ontologies.ConceptFunction#_evaluateFunction(java.util.List)
      */
-    protected FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
-    throws IllegalActionException {
+    protected Concept _evaluateFunction(List<Concept> inputConceptValues)
+            throws IllegalActionException {
         _nodeToCounterexamples.remove(_ifNode);
+        // FIXME: Reimplement monotonicity analysis!
+        /*
         FiniteConcept result = _standardIfAnalysis(inputConceptValues);
         if (result.isAboveOrEqualTo(_generalConcept)) {
             if (_checkConditionalStructure(inputConceptValues)) {
@@ -96,7 +98,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
                 result = _specialIfAnalysis(constant);
             }
         }
-        return result;
+        return result;*/ return null;
     }
 
     /** Check that an expression is of the form:
@@ -132,7 +134,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         List<Ontology> argumentDomains = new LinkedList<Ontology>();
         argumentDomains.add(_domainOntology);
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
-                new LinkedList<String>(), new LinkedList<FiniteConcept>(), null,
+                new LinkedList<String>(), new LinkedList<Concept>(), null,
                 argumentDomains);
         Token rhsToken = evaluator.evaluateParseTree(rhs);    
         if (!(rhsToken instanceof ConceptToken)) {
@@ -153,7 +155,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         List<Ontology> argumentDomains = new LinkedList<Ontology>();
         argumentDomains.add(_domainOntology);
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
-                new LinkedList<String>(), new LinkedList<FiniteConcept>(), null,
+                new LinkedList<String>(), new LinkedList<Concept>(), null,
                 argumentDomains);
         Token rhsToken = evaluator.evaluateParseTree(rhs);
         Concept constant = ((ConceptToken)rhsToken).conceptValue();
@@ -173,7 +175,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
     private Concept _evaluateChild(int childNumber, FiniteConcept xValue) throws IllegalActionException {
         ptolemy.data.expr.ASTPtRootNode childNode = (ptolemy.data.expr.ASTPtRootNode) _ifNode.jjtGetChild(childNumber);
 
-        Map<String, FiniteConcept> arguments = new HashMap<String, FiniteConcept>();
+        Map<String, Concept> arguments = new HashMap<String, Concept>();
         arguments.put("x", xValue);
 
         return _evaluateNode(childNode, arguments);
@@ -189,7 +191,7 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
      *  @throws IllegalActionException If there is an error during evaluation.
      */
     private Concept _evaluateNode(ptolemy.data.expr.ASTPtRootNode node,
-            Map<String, FiniteConcept> arguments) throws IllegalActionException {
+            Map<String, Concept> arguments) throws IllegalActionException {
 
         ParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 arguments, null, _domainOntology);
@@ -237,9 +239,9 @@ public class IfNodeFunction extends MonotonicityConceptFunction {
         // Check for counterexamples
         MonotonicityCounterexamples counterexamples = new MonotonicityCounterexamples();
         for (MonotonicityCounterexamples.ConceptPair pair : toCheck.entrySet()) {
-            Map<String, FiniteConcept> bArguments = new HashMap<String, FiniteConcept>();
+            Map<String, Concept> bArguments = new HashMap<String, Concept>();
             bArguments.put("x", pair.getKey());
-            Map<String, FiniteConcept> dArguments = new HashMap<String, FiniteConcept>();
+            Map<String, Concept> dArguments = new HashMap<String, Concept>();
             dArguments.put("x", pair.getValue());
             Concept fb = _evaluateNode(_ifNode, bArguments);
             Concept fd = _evaluateNode(_ifNode, dArguments);

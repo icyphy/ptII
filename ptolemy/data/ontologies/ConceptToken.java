@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
  Concepts are partially ordered immutable values that belong to an
  ontology. Most of the functionality of this token class is is simply
  inherited from Concept.
- {@link ptolemy.data.ontologies.FiniteConcept}
+ {@link ptolemy.data.ontologies.Concept}
 
  @author Ben Lickly
  @since Ptolemy II 9.0
@@ -49,7 +49,7 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
     /** Create a ConceptToken from a given Concept.
      *  @param c The given Concept
      */
-    public ConceptToken(FiniteConcept c) {
+    public ConceptToken(Concept c) {
         _concept = c;
     }
 
@@ -59,7 +59,7 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
     /** Return the concept encapsulated by this token.
      *  @return The concept value.
      */
-    public FiniteConcept conceptValue() {
+    public Concept conceptValue() {
         return _concept;
     }
 
@@ -116,6 +116,6 @@ public class ConceptToken extends Token implements PartiallyOrderedToken {
 
     /** The concept encapsulated by this token
      */
-    private FiniteConcept _concept;
+    private Concept _concept;
 
 }

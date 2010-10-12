@@ -110,14 +110,14 @@ public abstract class ConceptFunction {
     ////                         public methods                    ////
 
     /** Return the output of the concept function based on the concept inputs.
-     *  @param inputArgumentList The list of concept inputs to the function.
+     *  @param argValues The list of concept inputs to the function.
      *  @return The concept output result of the function.
      *  @exception IllegalActionException If there is an error with
      *   the input argument array or evaluating the function.
      */
-    public FiniteConcept evaluateFunction(List<FiniteConcept> inputArgumentList)
+    public Concept evaluateFunction(List<Concept> argValues)
             throws IllegalActionException {
-        if (inputArgumentList == null) {
+        if (argValues == null) {
             throw new IllegalActionException(
                     "The input array to the ConceptFunction " + this
                             + " is null.");
@@ -130,19 +130,19 @@ public abstract class ConceptFunction {
         // its own check depending on how it implements a variable argument
         // concept function.
         } else if (_numArgsIsFixed) {
-            if (inputArgumentList.size() != getNumberOfArguments()) {
+            if (argValues.size() != getNumberOfArguments()) {
                 throw new IllegalActionException(
                     "The input array to the ConceptFunction "
                             + this
                             + " has the "
                             + "wrong number of arguments. Expected number of arguments: "
                             + getNumberOfArguments() + ", size of the input argument array: "
-                            + inputArgumentList.size());
+                            + argValues.size());
             } else {
                 // Check each concept argument value to make sure it is either null or
                 // contained in the ontology domain for that argument.
                 int index = 0;
-                for (Concept argument : inputArgumentList) {
+                for (Concept argument : argValues) {
                     if (argument != null
                         && !_argumentDomainOntologies.get(index).entityList(
                                 FiniteConcept.class).contains(argument)) {
@@ -157,12 +157,11 @@ public abstract class ConceptFunction {
             }
         }
 
-        FiniteConcept outputValue = _evaluateFunction(inputArgumentList);
+        Concept outputValue = _evaluateFunction(argValues);
 
         // Check that the output is either null or in the output range ontology
         if (outputValue != null
-                && !_outputRangeOntology.entityList(FiniteConcept.class).contains(
-                        outputValue)) {
+                && _outputRangeOntology.equals(outputValue.getOntology())) {
             throw new IllegalActionException("The ConceptFunction " + this
                     + " has evaluated to the value " + outputValue
                     + " which is not in the expected ontology range "
@@ -247,11 +246,11 @@ public abstract class ConceptFunction {
     /** Return the output of the concept function based on the concept
      *  inputs. Derived classes must implement this method to provide
      *  the definition of the concept function.
-     *  @param inputConceptValues The list of concept inputs to the function.
+     *  @param argValues The list of concept inputs to the function.
      *  @return The concept output result of the function.
      *  @exception IllegalActionException If there is an error evaluating the function.
      */
-    protected abstract FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
+    protected abstract Concept _evaluateFunction(List<Concept> argValues)
             throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////

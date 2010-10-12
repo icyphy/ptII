@@ -132,7 +132,7 @@ public class ASTPtRelationalNode extends LatticeOntologyASTNodeAdapter {
          *  @exception IllegalActionException If there is an error evaluating the function.
          *  @see ptolemy.data.ontologies.ConceptFunction#_evaluateFunction(java.util.List)
          */
-        protected FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
+        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
 
             Concept lhs = inputConceptValues.get(0);

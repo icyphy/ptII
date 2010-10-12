@@ -56,7 +56,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *  evaluating expressions that represent concept functions.
      *  @param argumentNames The array of argument names used in the
      *   concept function expression.
-     *  @param argumentConceptValues The array of concept values to which the
+     *  @param inputConceptValues The array of concept values to which the
      *   arguments are set.
      *  @param solverModel The ontology solver model that contains the scope
      *   of other concept functions that can be called in the expression.
@@ -66,11 +66,11 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(List<String> argumentNames,
-            List<FiniteConcept> argumentConceptValues, OntologySolverModel solverModel,
+            List<Concept> inputConceptValues, OntologySolverModel solverModel,
             List<Ontology> argumentDomainOntologies)
         throws IllegalActionException {
         _argumentNames = new LinkedList<String>(argumentNames);
-        _argumentConceptValues = new LinkedList<FiniteConcept>(argumentConceptValues);
+        _argumentConceptValues = new LinkedList<Concept>(inputConceptValues);
         _solverModel = solverModel;
         _domainOntologies = new LinkedList<Ontology>(argumentDomainOntologies);
 
@@ -93,7 +93,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
      *   the parse tree evaluator object.
      */
     public ExpressionConceptFunctionParseTreeEvaluator(
-            Map<String, FiniteConcept> arguments,
+            Map<String, Concept> arguments,
             OntologySolverModel solverModel,
             Ontology argumentDomainOntology)
         throws IllegalActionException {
@@ -102,8 +102,8 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         _domainOntologies.add(argumentDomainOntology);
         
         _argumentNames = new LinkedList<String>();
-        _argumentConceptValues = new LinkedList<FiniteConcept>();
-        for (Map.Entry<String, FiniteConcept> entry : arguments.entrySet()) {
+        _argumentConceptValues = new LinkedList<Concept>();
+        for (Map.Entry<String, Concept> entry : arguments.entrySet()) {
             _argumentNames.add(entry.getKey());
             _argumentConceptValues.add(entry.getValue());
         }
@@ -141,7 +141,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
-        List<FiniteConcept> argValues = new LinkedList<FiniteConcept>();
+        List<Concept> argValues = new LinkedList<Concept>();
 
         // First try to find a signature using argument token values.
         for (int i = 0; i < argCount; i++) {
@@ -309,7 +309,7 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     /** The list of concept values to which the arguments are
      *  currently set.
      */
-    private List<FiniteConcept> _argumentConceptValues;
+    private List<Concept> _argumentConceptValues;
 
     /** The list of argument names that are used in the concept
      *  function expression.

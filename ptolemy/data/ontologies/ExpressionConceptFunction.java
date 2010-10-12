@@ -131,7 +131,7 @@ public class ExpressionConceptFunction extends ConceptFunction {
      *  @exception IllegalActionException If there is an error
      *  evaluating the function.
      */
-    protected FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
+    protected Concept _evaluateFunction(List<Concept> inputConceptValues)
             throws IllegalActionException {
         // Get the shared parser.
         PtParser parser = new PtParser();
@@ -146,7 +146,7 @@ public class ExpressionConceptFunction extends ConceptFunction {
                 _argumentDomainOntologies);
         ConceptToken conceptToken = (ConceptToken) evaluator
                 .evaluateParseTree(parseTree);        
-        FiniteConcept output = conceptToken.conceptValue();
+        Concept output = conceptToken.conceptValue();
         
         if (output == null) {
             throw new IllegalActionException("Error evaluating ExpressionConceptFunction:" +

@@ -123,11 +123,11 @@ public class ConceptFunctionInequalityTerm implements InequalityTerm {
      *  @see #setValue(Object)
      */
     public Object getValue() throws IllegalActionException {
-        List<FiniteConcept> inputConcepts = new ArrayList<FiniteConcept>();
+        List<Concept> inputConcepts = new ArrayList<Concept>();
 
         // Get the concept values currently held by all the input terms.
         for (InequalityTerm inputTerm : _dependentTerms) {
-            inputConcepts.add((FiniteConcept) inputTerm.getValue());
+            inputConcepts.add((Concept) inputTerm.getValue());
         }
 
         // Return the current value of the function based on the

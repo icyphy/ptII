@@ -138,7 +138,7 @@ public class Integrator extends DimensionSystemAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function.
          */
-        protected FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
+        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
 
             Concept derivativeProperty = inputConceptValues.get(0);
@@ -189,7 +189,7 @@ public class Integrator extends DimensionSystemAdapter {
          *  @return The concept value that is output from this function.
          *  @exception IllegalActionException If there is a problem evaluating the function.
          */
-        protected FiniteConcept _evaluateFunction(List<FiniteConcept> inputConceptValues)
+        protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
 
             Concept stateProperty = inputConceptValues.get(0);
