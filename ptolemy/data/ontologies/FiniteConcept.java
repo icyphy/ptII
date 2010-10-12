@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.graph.CPO;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.util.Flowable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -83,7 +82,7 @@ public class FiniteConcept extends Concept implements Flowable {
      *  Returns an int value that corresponds to the ordering between
      *  the elements as given in the CPO interface.
      * 
-     *  @param rhs The concept with which we are comparing.
+     *  @param concept The concept with which we are comparing.
      *  @return CPO.HIGHER if this concept is above the given concept,
      *          CPO.LOWER if this concept is below the given concept,
      *          CPO.SAME if both concepts are the same,
