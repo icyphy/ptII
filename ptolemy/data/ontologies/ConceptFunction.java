@@ -161,7 +161,7 @@ public abstract class ConceptFunction {
 
         // Check that the output is either null or in the output range ontology
         if (outputValue != null
-                && _outputRangeOntology.equals(outputValue.getOntology())) {
+                && !_outputRangeOntology.equals(outputValue.getOntology())) {
             throw new IllegalActionException("The ConceptFunction " + this
                     + " has evaluated to the value " + outputValue
                     + " which is not in the expected ontology range "
