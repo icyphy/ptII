@@ -4,7 +4,7 @@
 <entity name="ConstUnreachableSolverModel" class="ptolemy.data.ontologies.OntologySolverModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 206, 815, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={184, 206, 813, 510}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -61,7 +61,7 @@ _
         </property>
     </property>
     <property name="multiplyFunction" class="ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition">
-        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 == UnreachableConstZero || factor2 == UnreachableConstZero ? UnreachableConstZero :&#10; factor1 == ConstZero &amp;&amp; factor2 &lt;= UnreachableNonConst || factor2 == ConstZero &amp;&amp; factor1 &lt;= UnreachableNonConst ? UnreachableConstZero :&#10;  factor1 == ConstZero &amp;&amp; factor2 &gt;= ReachableUnknown || factor2 == ConstZero &amp;&amp; factor1 &gt;= ReachableUnknown ? ConstZero :&#10;   factor1 == UnreachableUnknown || factor2 == UnreachableUnknown ? UnreachableUnknown :&#10;    factor1 == ReachableUnknown || factor2 == ReachableUnknown ? ReachableUnknown :&#10;     factor1 == factor2 &amp;&amp; (factor1 == UnreachableConstPositive || factor1 == UnreachableConstNegative) ? UnreachableConstPositive :&#10;      factor1 == UnreachableConstPositive &amp;&amp; factor2 == ConstPositive || factor2 == UnreachableConstPositive &amp;&amp; factor1 == ConstPositive ? UnreachableConstPositive :&#10;	   factor1 == UnreachableConstNegative &amp;&amp; factor2 == ConstNegative || factor2 == UnreachableConstNegative &amp;&amp; factor1 == ConstNegative ? UnreachableConstPositive :&#10;        (factor1 == UnreachableConstPositive &amp;&amp; (factor2 == UnreachableConstNegative || factor2 == ConstNegative)) || (factor2 == UnreachableConstPositive &amp;&amp; (factor1 == UnreachableConstNegative || factor1 == ConstNegative)) ? UnreachableConstNegative :&#10;	     (factor1 == UnreachableConstNegative &amp;&amp; (factor2 == UnreachableConstPositive || factor2 == ConstPositive)) || (factor2 == UnreachableConstNegative &amp;&amp; (factor1 == UnreachableConstPositive || factor1 == ConstPositive)) ? UnreachableConstNegative :&#10;	      factor1 == ConstZero &amp;&amp; factor2 &lt;= UnreachableNonConst || factor2 == ConstZero &amp;&amp; factor1 &lt;= UnreachableNonConst ? UnreachableConstZero :&#10;           factor1 == factor2 &amp;&amp; (factor1 == ConstPositive || factor1 == ConstNegative) ? ConstPositive :&#10;            (factor1 == ConstPositive &amp;&amp; factor2 == ConstNegative) || (factor2 == ConstPositive &amp;&amp; factor1 == ConstNegative) ? ConstNegative :   &#10;             factor1 &lt;= UnreachableConstUnknown &amp;&amp; factor2 &lt;= ConstUnknown || factor2 &lt;= UnreachableConstUnknown &amp;&amp; factor1 &lt;= ConstUnknown ? UnreachableConstUnknown :&#10;              factor1 &lt;= ConstUnknown &amp;&amp; factor2 &lt;= ConstUnknown ? ConstUnknown :&#10;               factor1 &lt;= UnreachableNonConst || factor2 &lt;= UnreachableNonConst ? UnreachableNonConst :&#10;                NonConst">
+        <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="factor1 &lt;= ReachableUnknown || factor2 &lt;= ReachableUnknown ? UnreachableUnknown :&#10;factor1 &lt;= ConstZero || factor2 &lt;= ConstZero ? UnreachableConstZero :&#10;(factor1 &lt;= ConstPositive &amp;&amp; factor2 &lt;= ConstPositive) || (factor1 &lt;= ConstNegative &amp;&amp; factor2 &lt;= ConstNegative) ? UnreachableConstPositive :&#10;(factor1 &lt;= ConstPositive &amp;&amp; factor2 &lt;= ConstNegative) || (factor2 &lt;= ConstPositive &amp;&amp; factor1 &lt;= ConstNegative) ? UnreachableConstNegative :&#10;factor1 &lt;= ConstUnknown &amp;&amp; factor2 &lt;= ConstUnknown ? UnreachableConstUnknown :&#10;UnreachableNonConst">
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constUnreachableAbstract">
         </property>
@@ -166,7 +166,7 @@ _
         </property>
     </property>
     <entity name="constUnreachableAbstract" class="ptolemy/data.ontologies.lattice.adapters.constUnreachableAbstract.constUnreachableAbstract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 85.0}">
         </property>
     </entity>
 </entity>
