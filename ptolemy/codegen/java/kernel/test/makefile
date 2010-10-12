@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/codegen/c/kernel/test
+ME =		ptolemy/codegen/java/kernel/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..

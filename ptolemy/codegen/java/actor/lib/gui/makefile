@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/codegen/c/actor/lib/gui
+ME =		ptolemy/codegen/java/actor/lib/gui
 
 DIRS =		test
 
