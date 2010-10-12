@@ -21,8 +21,9 @@
  */
 package ptolemy.data.ontologies.lattice.adapters.monotonicityAnalysis;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.FiniteConcept;
@@ -53,6 +54,9 @@ public class MonotonicityConcept extends InfiniteConcept {
         super(ontology, name);
         // TODO Auto-generated constructor stub
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                          public methods                   ////
 
     /**
      *  @param concept
@@ -61,7 +65,46 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
     public int compare(Concept concept) throws IllegalActionException {
-        return CPO.INCOMPARABLE;
+        if (!(concept.getOntology().equals(getOntology()))) {
+            throw new IllegalActionException(this,
+                    "Attempt to compare elements from two distinct ontologies");
+        }
+        if (concept instanceof FiniteConcept) {
+            return CPO.INCOMPARABLE;
+        }
+        MonotonicityConcept righthandSide = (MonotonicityConcept) concept;
+
+        Set<String> keys = _variableToMonotonicity.keySet();
+        keys.addAll(righthandSide._variableToMonotonicity.keySet());
+        
+        boolean seenHigher = false;
+        boolean seenLower = false;
+        boolean seenIncomparable = false;
+        for (String key : keys) {
+            int result = monotonicityOfVariable(key)
+                    .compare(righthandSide.monotonicityOfVariable(key));
+            switch (result) {
+            case CPO.HIGHER:       seenHigher = true; break;
+            case CPO.LOWER:        seenLower = true; break;
+            case CPO.INCOMPARABLE: seenIncomparable = true; break;
+            }
+        }
+        if (!seenHigher && !seenLower && !seenIncomparable) {
+            return CPO.SAME;
+        } else if (seenHigher && !seenLower && !seenIncomparable) {
+            return CPO.HIGHER;
+        } else if (seenLower && !seenHigher && !seenIncomparable) {
+            return CPO.LOWER;
+        } else {
+            return CPO.INCOMPARABLE;            
+        }
+    }
+    
+    public FiniteConcept monotonicityOfVariable(String variableName) {
+        if (_variableToMonotonicity.containsKey(variableName)) {
+            return _variableToMonotonicity.get(variableName);
+        }
+        return (FiniteConcept)getOntology().getGraph().bottom();
     }
 
     /**
@@ -69,11 +112,25 @@ public class MonotonicityConcept extends InfiniteConcept {
      *  @see ptolemy.data.ontologies.Concept#toString()
      */
     public String toString() {
-        // TODO Auto-generated method stub
-        return null;
+        StringBuffer result = new StringBuffer("{ ");
+        for (String key : _variableToMonotonicity.keySet()) {
+            result.append(key);
+            result.append(":");
+            result.append(monotonicityOfVariable(key));
+            result.append(' ');
+        }
+        result.append('}');
+        return result.toString();
     }
     
-    private Map<String, FiniteConcept> variableToMonotonicity =
-        new HashMap<String, FiniteConcept>();
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** Mapping of free variable names to monotonicity values.
+     *  The map must be sorted to ensure that the toString method
+     *  returns a unique representation of the concept.
+     */
+    private SortedMap<String, FiniteConcept> _variableToMonotonicity =
+        new TreeMap<String, FiniteConcept>();
 
 }
