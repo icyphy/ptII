@@ -143,6 +143,10 @@ public class PtidesEvent extends DEEvent {
      *  PtidesEvents are equal if the super class indicates they are equal
      *  and their tokens, receiver, channel, absoluteDeadline,
      *  as well as indication whether they are pure events are all equal.
+     *  <p>
+     *  A RuntimeException is thrown in the following cases:
+     *  1. If the event is a pure event, and absoluteDeadline field is null,
+     *  2. If the event is not a pure event, and token field is null, 
      *  @param object The object with which to compare.
      *  @return true if the object is a DEEvent and the fields of
      *  the object and of this object are equal.
@@ -153,6 +157,15 @@ public class PtidesEvent extends DEEvent {
             return false;
         }
         PtidesEvent event = (PtidesEvent) object;
+        
+        if (!event.isPureEvent() && event.token() == null) {
+            throw new InternalErrorException(" A trigger event should " +
+            		"not have a token field that is null");
+        }
+        if (event.isPureEvent() && event.absoluteDeadline() == null) {
+            throw new InternalErrorException(" A trigger event should " +
+                        "not have a token field that is null");
+        }
 
         return (super.equals(object)
                 && ((!event.isPureEvent() && 
