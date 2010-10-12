@@ -709,9 +709,11 @@ public class CompositeActor extends CompositeEntity implements Actor,
         return ports;
     }
     
-    /**
-     * 
+    /** Get the channel name of a published port
+     * @param port The published port.
+     * @return The name of the channel of the published port.
      */
+    
     public String getPublishedPortChannel(IOPort port) {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
@@ -728,10 +730,12 @@ public class CompositeActor extends CompositeEntity implements Actor,
         
         return "";
     }
-    
-    /**
-     * 
+
+    /** Get the name of the channel that the port wants to subscribed to.
+     * @param port The subscribed port.
+     * @return The name of the channel.
      */
+    
     public String getSubscribedPortChannel(IOPort port) {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
@@ -739,8 +743,8 @@ public class CompositeActor extends CompositeEntity implements Actor,
             return ((CompositeActor) container).getPublishedPortChannel(port);
         } else {
             if (_subscribedPorts != null) {
-                for (String name : _publishedPorts.keySet()) {
-                    if (_publishedPorts.get(name).contains(port))
+                for (String name : _subscribedPorts.keySet()) {
+                    if (_subscribedPorts.get(name).contains(port))
                         return name;
                 }
             }
