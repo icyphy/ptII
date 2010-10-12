@@ -1354,6 +1354,22 @@ if [ "$error" = "none" ]; then
 		mkdir $MACAPP_APP
 		(cd $MACAPP_APP; cp -r ../macContents/Contents .; find . -name ".svn" -exec rm -rf {} \;)
 	    fi
+	    if [ "$MACAPP_APP" = "Vergil.app" ]; then
+		# See
+		# http://developer.apple.com/java/faq/development.html
+		# "The naming convention for JNI libraries is
+		# libXXX.jnilib, where XXX is the name of your JNI
+		# library as specified by your Java code’s
+		# System.loadLibrary call. jnilibs belong in the
+		# Contents/Resources/Java subdirectory of an
+		# application bundle or in one of the extension
+		# directories recommended in Technical Q&A QA1170.
+		mkdir $MACAPP_APP/Contents/Resources/Java
+		cp $PTII/lib/*.jnilib $MACAPP_APP/Contents/Resources/Java
+		if [ -f "$PTII/vendors/misc/rxtx/Mac_OS_X/librxtxSerial.jnilib" ]; then
+		    cp $PTII/vendors/misc/rxtx/Mac_OS_X/librxtxSerial.jnilib $MACAPP_APP/Contents/Resources/Java
+                fi		    
+	    fi
 		
 	    if [ -f /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub ]; then
 		echo "Updating JavaApplicationStub from /System/Library/Frameworks/JavaVM.framework/Resources/MacOS/JavaApplicationStub"
