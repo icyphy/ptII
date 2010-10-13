@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SimplePassPointer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.1">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={29, 27, 986, 511}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 30, 891, 518}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[773, 401]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[678, 408]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.5, 200.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.0, 204.0}">
     </property>
     <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
         <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
@@ -58,7 +58,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 190.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model only works on a 32-bit JVM because&#10;the pointer type is only present on 32-bit JVMs.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 20.0]">
+        </property>
+    </property>
     <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
+        <display name="CCompiledCompositeActor"/>
         <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies***/&#10;/**/&#10;&#10;/***preinitBlock***/&#10;int * $actorSymbol(ptr);&#10;/**/&#10;&#10;/***initBlock***/&#10;$actorSymbol(ptr) = (int *) malloc(sizeof(int));&#10;*$actorSymbol(ptr) = 199;&#10;/**/&#10;&#10;/***fireBlock***/&#10;$ref(ptr) = $actorSymbol(ptr);&#10;$ref(value) = *$actorSymbol(ptr);&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
@@ -134,6 +145,7 @@
         </property>
     </entity>
     <entity name="EmbeddedCActor2" class="ptolemy.actor.lib.jni.EmbeddedCActor">
+        <display name="CCompiledCompositeActor"/>
         <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies***/&#10;/**/&#10;&#10;/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;$ref(ptr) = $ref(in);&#10;$ref(value) = *((int*) $ref(in));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
@@ -216,7 +228,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.5, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 100.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
