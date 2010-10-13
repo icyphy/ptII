@@ -65,7 +65,7 @@ _
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constUnreachableAbstract">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 185.0]">
         </property>
     </property>
     <property name="divideFunction" class="ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition">
@@ -73,7 +73,7 @@ _
         </property>
         <property name="functionOntologyName" class="ptolemy.data.expr.StringParameter" value="constUnreachableAbstract">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 250.0]">
         </property>
     </property>
     <property name="ConstActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
@@ -140,7 +140,7 @@ _
         </property>
         <property name="conceptFunctionExpression" class="ptolemy.data.expr.StringParameter" value="knownReachabilityConcept &lt;= UnreachableNonConst ? UnreachableUnknown :&#10; ReachableUnknown">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 310.0]">
         </property>
     </property>
     <property name="MultiplyDivideActorConstraints2" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
@@ -163,6 +163,38 @@ _
         <property name="factorAttrTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
         </property>
         <property name="scaleOnLeftAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+    </property>
+    <property name="ComparatorActorConstraints" class="ptolemy.data.ontologies.lattice.ActorConstraintsDefinitionAttribute">
+        <property name="actorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.logic.Comparator">
+        </property>
+        <property name="foundActorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.logic.Comparator">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg>
+<rect x="-30" y="-15" width="60" height="30" style="fill:white"/>
+<polyline points="-30,-10, -10,-10, -10,0" style="stroke:grey"/>
+<polyline points="-30,10, 10,10, 10,0" style="stroke:grey"/>
+</svg>
+</configure>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 50.0]">
+        </property>
+        <property name="leftPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="rightPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= promoteReachability(output)">
+        </property>
+        <property name="outputPortTerm" class="ptolemy.data.expr.StringParameter" value="&gt;= left == ReachableUnknown || right == ReachableUnknown ? ReachableUnknown :&#10;    left == ConstPositive &amp;&amp; (right == ConstZero || right == ConstNegative) ? ConstTrue :&#10;     left == ConstZero &amp;&amp; right == ConstNegative ? ConstTrue :&#10;      (left == ConstZero || left == ConstNegative) &amp;&amp; right == ConstPositive ? ConstFalse :&#10;       left == ConstNegative &amp;&amp; (right == ConstZero || right == ConstPositive) ? ConstFalse :&#10;        left == right &amp;&amp; left == ConstZero ? ConstFalse :&#10;         left &lt;= ConstUnknown &amp;&amp; right &lt;= ConstUnknown ? ConstUnknown :&#10;          NonConst">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+        </property>
+        <property name="comparisonAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
+        </property>
+        <property name="toleranceAttrTerm" class="ptolemy.data.expr.StringParameter" value="IGNORE_ELEMENT">
         </property>
     </property>
     <entity name="constUnreachableAbstract" class="ptolemy/data.ontologies.lattice.adapters.constUnreachableAbstract.constUnreachableAbstract">
