@@ -65,8 +65,6 @@ $CLASSPATH/ptolemy/caltrop/demo/FunctionDefinition/FunctionDefinition.xml
 $CLASSPATH/ptolemy/caltrop/demo/Primes/Primes.xml
 $CLASSPATH/ptolemy/caltrop/demo/SDFDDI/SDFDDI.xml
 $CLASSPATH/ptolemy/codegen/c/domains/fsm/demo/Mod4Counter/Mod4Counter.xml
-$CLASSPATH/ptolemy/codegen/c/domains/pn/demo/Gravitation/Gravitation.xml
-$CLASSPATH/ptolemy/codegen/c/domains/pn/demo/PNButterfly/PNButterfly.xml
 $CLASSPATH/ptolemy/codegen/demo/Butterfly/Butterfly.xml
 $CLASSPATH/ptolemy/codegen/demo/Life/Life.xml
 $CLASSPATH/ptolemy/codegen/java/actor/lib/embeddedJava/demo/CompiledCompositeActor/CompiledCompositeActor.xml
