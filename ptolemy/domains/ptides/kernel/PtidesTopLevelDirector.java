@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *
  */
 public class PtidesTopLevelDirector extends DEDirector {
-    /** Construct a director with the specified container and name.
+    /** Construct a PtidesTopLevelDirector with the specified container and name.
      *  @param container The container
      *  @param name The name
      *  @exception IllegalActionException If the superclass throws it.

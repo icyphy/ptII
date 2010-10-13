@@ -80,7 +80,7 @@ import ptolemy.moml.MoMLChangeRequest;
  *  enclosing director. The enclosing director's time
  *  represents physical time, whereas this time represents model
  *  time in the Ptides model.
- *  Assume the incoming event always has higher priority, so preemption always occurs.
+ *  Preemption is disallowed in this scheduler.
  *  <p>
  *  The receiver used in this case is the PtidesBasicReceiver.
  *  @see PtidesBasicReceiver
@@ -94,7 +94,8 @@ import ptolemy.moml.MoMLChangeRequest;
  */
 public class PtidesBasicDirector extends DEDirector {
 
-    /** Construct a director with the specified container and name.
+    /** Construct a PtidesBasicDirector with the specified container and name.
+     *  Parameters for this director are created an initialized.
      *  @param container The container
      *  @param name The name
      *  @exception IllegalActionException If the superclass throws it.
@@ -104,16 +105,12 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        //        for (Actor actor : (List<Actor>)((CompositeActor)getContainer()).deepEntityList()) {
-        //            // this will update the causality interface of the contained actors.
-        //            actor.getDirector().getCausalityInterface();
-        //        }
-
         animateExecution = new Parameter(this, "animateExecution");
         animateExecution.setExpression("false");
         animateExecution.setTypeEquals(BaseType.BOOLEAN);
 
-        highlightModelTimeDelays = new Parameter(this, "highlightModelTimeDelay");
+        highlightModelTimeDelays = new Parameter(this,
+                "highlightModelTimeDelay");
         highlightModelTimeDelays.setExpression("false");
         highlightModelTimeDelays.setTypeEquals(BaseType.BOOLEAN);
 
@@ -136,7 +133,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the state of execution. This is a boolean that defaults to false.
      */
     public Parameter animateExecution;
-    
+
     /** When set to true, highlight all deeply contained actors
      *  that have non-zero model time delays (including
      *  actors that only introduce microstep delays).
@@ -152,6 +149,11 @@ public class PtidesBasicDirector extends DEDirector {
 
     /** A parameter that stores the synchronization error in the platform governed
      *  by this Ptides director.
+     *  In a distributed Ptides environment, each distributed platform is modeled 
+     *  by a composite actor that is governed by a PtidesBasicDirector 
+     *  (or its subclass). In reality, these platforms will have (physical) time
+     *  synchronization errors between them, and this error is captured within
+     *  this parameter.  
      */
     public Parameter syncError;
 
@@ -168,9 +170,10 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == highlightModelTimeDelays) {
-            for (Actor actor : (List<Actor>)((CompositeEntity)getContainer()).deepEntityList()) {
+            for (Actor actor : (List<Actor>) ((CompositeEntity) getContainer())
+                    .deepEntityList()) {
                 if (actor instanceof AtomicActor) {
-                    ((AtomicActor)actor).declareDelayDependency();
+                    ((AtomicActor) actor).declareDelayDependency();
                 }
             }
             if (highlightModelTimeDelays.getExpression().equals("true")) {
@@ -179,17 +182,21 @@ public class PtidesBasicDirector extends DEDirector {
             } else if (highlightModelTimeDelays.getExpression().equals("false")) {
                 if (_timeDelayHighlighted) {
                     _timeDelayHighlighted = false;
-                    _highlightModelDelays((CompositeActor) getContainer(), false);
+                    _highlightModelDelays((CompositeActor) getContainer(),
+                            false);
                 }
             } else {
-                throw new IllegalActionException(this, "Attribute change for " +
-                        "highlightModelTimeDelay" +
-                        ", but the attributed changed to a value that cannot be " +
-                        "dealt with: " + highlightModelTimeDelays.getExpression());
+                throw new IllegalActionException(
+                        this,
+                        "Attribute change for "
+                                + "highlightModelTimeDelay"
+                                + ", but the attributed changed to a value that cannot be "
+                                + "dealt with: "
+                                + highlightModelTimeDelays.getExpression());
             }
         }
     }
-    
+
     /**
      * Return the default dependency between input and output ports which for
      * the Ptides domain is a SuperdenseDependency.
@@ -504,6 +511,13 @@ public class PtidesBasicDirector extends DEDirector {
                     }
                 }
             } while (refire); // close the do {...} while () loop
+            
+
+            // There may be an event destined to an actuator port (an output port
+            // of the containing composite), If that output token is ready to put
+            // transferred to the outside, make the token ready.
+            _getNextActuationEvent();
+            
             // NOTE: On the above, it would be nice to be able to
             // check _stopFireRequested, but this doesn't actually work.
             // In particular, firing an actor may trigger a call to stopFire(),
@@ -800,71 +814,76 @@ public class PtidesBasicDirector extends DEDirector {
         if (getContainer() instanceof TypedCompositeActor) {
             // If we are expanding the configuration, then the container might
             // be an EntityLibrary.  See ptolemy/configs/test/
-        for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
-                .deepEntityList())) {
-            for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
+            for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
+                    .deepEntityList())) {
+                for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
+                        .inputPortList())) {
+                    _portDelays.put(inputPort,
+                            SuperdenseDependency.OPLUS_IDENTITY);
+                }
+                for (TypedIOPort outputPort : (List<TypedIOPort>) (actor
+                        .outputPortList())) {
+                    _portDelays.put(outputPort,
+                            SuperdenseDependency.OPLUS_IDENTITY);
+                }
+            }
+
+            for (TypedIOPort inputPort : (List<TypedIOPort>) (((Actor) getContainer())
                     .inputPortList())) {
-                _portDelays.put(inputPort, SuperdenseDependency.OPLUS_IDENTITY);
+                SuperdenseDependency startDelay;
+                // if the start port is a network port, the delay we start with is the
+                // network delay, otherwise the port is a sensor port, and the delay
+                // we start with is the realTimeDelay.
+                if (_isNetworkPort(inputPort)) {
+                    startDelay = SuperdenseDependency.valueOf(
+                            -_getNetworkDelay(inputPort), 0);
+                } else {
+                    startDelay = SuperdenseDependency.valueOf(
+                            -_getRealTimeDelay(inputPort), 0);
+                }
+                _portDelays.put(inputPort, startDelay);
             }
-            for (TypedIOPort outputPort : (List<TypedIOPort>) (actor
-                    .outputPortList())) {
-                _portDelays
-                        .put(outputPort, SuperdenseDependency.OPLUS_IDENTITY);
+            // Now start from each sensor (input port at the top level), traverse through all
+            // ports.
+            for (TypedIOPort startPort : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
+                    .inputPortList())) {
+                _traverseToCalcMinDelay(startPort);
             }
-        }
 
-        for (TypedIOPort inputPort : (List<TypedIOPort>) (((Actor) getContainer())
-                .inputPortList())) {
-            SuperdenseDependency startDelay;
-            // if the start port is a network port, the delay we start with is the
-            // network delay, otherwise the port is a sensor port, and the delay
-            // we start with is the realTimeDelay.
-            if (_isNetworkPort(inputPort)) {
-                startDelay = SuperdenseDependency.valueOf(
-                        -_getNetworkDelay(inputPort), 0);
-            } else {
-                startDelay = SuperdenseDependency.valueOf(
-                        -_getRealTimeDelay(inputPort), 0);
-            }
-            _portDelays.put(inputPort, startDelay);
-        }
-        // Now start from each sensor (input port at the top level), traverse through all
-        // ports.
-        for (TypedIOPort startPort : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                .inputPortList())) {
-            _traverseToCalcMinDelay(startPort);
-        }
-
-        // for all unvisited actors, the sink port that's connected to its output ports
-        // should be annotated with dependency SuperdenseDependency.OPLUS_IDENTITY,
-        // because events arriving at these ports are always safe to process.
-        for (Actor actor : (List<Actor>) ((CompositeActor) getContainer())
-                .deepEntityList()) {
-            if (!_visitedActors.contains(actor)) {
-                for (IOPort port : (List<IOPort>) actor.outputPortList()) {
-                    Receiver[][] remoteReceivers = port.getRemoteReceivers();
-                    for (int i = 0; i < remoteReceivers.length; i++) {
-                        if (remoteReceivers[0] != null) {
-                            for (int j = 0; j < remoteReceivers[i].length; j++) {
-                                Receiver receiver = remoteReceivers[i][j];
-                                IOPort receivePort = receiver.getContainer();
-                                int channel = receivePort
-                                        .getChannelForReceiver(receiver);
-                                Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
-                                        .get(receivePort);
-                                if (channelDependency == null) {
-                                    channelDependency = new HashMap<Integer, SuperdenseDependency>();
+            // for all unvisited actors, the sink port that's connected to its output ports
+            // should be annotated with dependency SuperdenseDependency.OPLUS_IDENTITY,
+            // because events arriving at these ports are always safe to process.
+            for (Actor actor : (List<Actor>) ((CompositeActor) getContainer())
+                    .deepEntityList()) {
+                if (!_visitedActors.contains(actor)) {
+                    for (IOPort port : (List<IOPort>) actor.outputPortList()) {
+                        Receiver[][] remoteReceivers = port
+                                .getRemoteReceivers();
+                        for (int i = 0; i < remoteReceivers.length; i++) {
+                            if (remoteReceivers[0] != null) {
+                                for (int j = 0; j < remoteReceivers[i].length; j++) {
+                                    Receiver receiver = remoteReceivers[i][j];
+                                    IOPort receivePort = receiver
+                                            .getContainer();
+                                    int channel = receivePort
+                                            .getChannelForReceiver(receiver);
+                                    Map<Integer, SuperdenseDependency> channelDependency = (Map<Integer, SuperdenseDependency>) _inputModelTimeDelays
+                                            .get(receivePort);
+                                    if (channelDependency == null) {
+                                        channelDependency = new HashMap<Integer, SuperdenseDependency>();
+                                    }
+                                    channelDependency
+                                            .put(
+                                                    Integer.valueOf(channel),
+                                                    SuperdenseDependency.OPLUS_IDENTITY);
+                                    _inputModelTimeDelays.put(receivePort,
+                                            channelDependency);
                                 }
-                                channelDependency.put(Integer.valueOf(channel),
-                                        SuperdenseDependency.OPLUS_IDENTITY);
-                                _inputModelTimeDelays.put(receivePort,
-                                        channelDependency);
                             }
                         }
                     }
                 }
             }
-        }
         }
 
         // inputModelTimeDelays is the delays as calculated through shortest path algorithm. Now we
@@ -904,56 +923,54 @@ public class PtidesBasicDirector extends DEDirector {
         if (getContainer() instanceof TypedCompositeActor) {
             // If we are expanding the configuration, then the container might
             // be an EntityLibrary.  See ptolemy/configs/test/
-        for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
-                .inputPortList())) {
-            for (TypedIOPort sinkPort : (List<TypedIOPort>) port
-                    .deepInsidePortList()) {
-                if (_isNetworkPort(port)) {
-                    if (!(sinkPort.getContainer() instanceof NetworkInputDevice)) {
-                        throw new IllegalActionException(
-                                port,
-                                sinkPort.getContainer(),
-                                "An input network "
-                                        + "port must have a NetworkInputDevice as "
-                                        + "its sink.");
-                    }
-                    Parameter parameter = (Parameter) ((NamedObj) port)
-                            .getAttribute("realTimeDelay");
-                    if (parameter != null) {
-                        throw new IllegalActionException(
-                                port,
-                                "A network input "
-                                        + "port must not have a realTimeDelay annotated "
-                                        + "on it. Either this port is a not a network port "
-                                        + "with realTimeDelay, or it should be a network"
-                                        + "port with networkDelay. ");
-                    }
-                } else {
-                    // port is a sensor port.
-                    if (sinkPort.getContainer() instanceof NetworkInputDevice) {
-                        throw new IllegalActionException(
-                                port,
-                                sinkPort.getContainer(),
-                                "An input sensor "
-                                        + "port should not be connected to a "
-                                        + "NetworkInputDevice. Either denote this port as "
-                                        + "a network port, or remove the NetworkInputDevice "
-                                        + "connected to it.");
-                    }
-                    Parameter parameter = (Parameter) ((NamedObj) port)
-                            .getAttribute("networkDelay");
-                    if (parameter != null) {
-                        throw new IllegalActionException(
-                                port,
-                                "A sensor input "
-                                        + "port must not have a networkDelay annotated "
-                                        + "on it. Either this port is a not a network port "
-                                        + "with realTimeDelay, or it should be a network"
-                                        + "port with networkDelay. ");
+            for (TypedIOPort port : (List<TypedIOPort>) (((TypedCompositeActor) getContainer())
+                    .inputPortList())) {
+                for (TypedIOPort sinkPort : (List<TypedIOPort>) port
+                        .deepInsidePortList()) {
+                    if (_isNetworkPort(port)) {
+                        if (!(sinkPort.getContainer() instanceof NetworkInputDevice)) {
+                            throw new IllegalActionException(port, sinkPort
+                                    .getContainer(), "An input network "
+                                    + "port must have a NetworkInputDevice as "
+                                    + "its sink.");
+                        }
+                        Parameter parameter = (Parameter) ((NamedObj) port)
+                                .getAttribute("realTimeDelay");
+                        if (parameter != null) {
+                            throw new IllegalActionException(
+                                    port,
+                                    "A network input "
+                                            + "port must not have a realTimeDelay annotated "
+                                            + "on it. Either this port is a not a network port "
+                                            + "with realTimeDelay, or it should be a network"
+                                            + "port with networkDelay. ");
+                        }
+                    } else {
+                        // port is a sensor port.
+                        if (sinkPort.getContainer() instanceof NetworkInputDevice) {
+                            throw new IllegalActionException(
+                                    port,
+                                    sinkPort.getContainer(),
+                                    "An input sensor "
+                                            + "port should not be connected to a "
+                                            + "NetworkInputDevice. Either denote this port as "
+                                            + "a network port, or remove the NetworkInputDevice "
+                                            + "connected to it.");
+                        }
+                        Parameter parameter = (Parameter) ((NamedObj) port)
+                                .getAttribute("networkDelay");
+                        if (parameter != null) {
+                            throw new IllegalActionException(
+                                    port,
+                                    "A sensor input "
+                                            + "port must not have a networkDelay annotated "
+                                            + "on it. Either this port is a not a network port "
+                                            + "with realTimeDelay, or it should be a network"
+                                            + "port with networkDelay. ");
+                        }
                     }
                 }
             }
-        }
         }
     }
 
@@ -989,25 +1006,25 @@ public class PtidesBasicDirector extends DEDirector {
         if (getContainer() instanceof TypedCompositeActor) {
             // If we are expanding the configuration, then the container might
             // be an EntityLibrary.  See ptolemy/configs/test/
-        for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
-                .deepEntityList())) {
-            for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
-                    .inputPortList())) {
-                Parameter parameter = (Parameter) (inputPort)
-                        .getAttribute("minDelay");
-                if (parameter != null) {
-                    int channels = inputPort.getWidth();
-                    if (channels > 0) {
-                        Token[] tokens = new Token[channels];
-                        for (int i = 0; i < channels; i++) {
-                            tokens[i] = new DoubleToken(
-                                    Double.POSITIVE_INFINITY);
+            for (Actor actor : (List<Actor>) (((TypedCompositeActor) getContainer())
+                    .deepEntityList())) {
+                for (TypedIOPort inputPort : (List<TypedIOPort>) (actor
+                        .inputPortList())) {
+                    Parameter parameter = (Parameter) (inputPort)
+                            .getAttribute("minDelay");
+                    if (parameter != null) {
+                        int channels = inputPort.getWidth();
+                        if (channels > 0) {
+                            Token[] tokens = new Token[channels];
+                            for (int i = 0; i < channels; i++) {
+                                tokens[i] = new DoubleToken(
+                                        Double.POSITIVE_INFINITY);
+                            }
+                            parameter.setToken(new ArrayToken(tokens));
                         }
-                        parameter.setToken(new ArrayToken(tokens));
                     }
                 }
             }
-        }
         }
     }
 
@@ -1133,9 +1150,9 @@ public class PtidesBasicDirector extends DEDirector {
         }
 
         // Register this trigger event.
-        PtidesEvent newEvent = new PtidesEvent(ioPort,
-                ioPort.getChannelForReceiver(receiver), getModelTime(),
-                _microstep, depth, token, receiver);
+        PtidesEvent newEvent = new PtidesEvent(ioPort, ioPort
+                .getChannelForReceiver(receiver), getModelTime(), _microstep,
+                depth, token, receiver);
         _eventQueue.put(newEvent);
     }
 
@@ -1631,6 +1648,32 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
+    /** Among all events in the event queue, find the first event that
+     *  is destined to an output port of the containing composite actor.
+     *  This event is taken from the event queue, and the token is sent
+     *  to the actuator/network output port.
+     *  @return the containing composite actor.
+     */
+    protected boolean _getNextActuationEvent() {
+        boolean result = false;
+        int eventIndex = 0;
+        synchronized(_eventQueue) {
+            while (eventIndex < _eventQueue.size()) {
+                PtidesEvent nextEvent = ((PtidesListEventQueue) _eventQueue)
+                        .get(eventIndex);
+                if (nextEvent.ioPort() != null &&
+                    //(nextEvent.ioPort().getContainer() == getContainer()) &&
+                    nextEvent.ioPort().isOutput()) {
+                        ((PtidesListEventQueue)_eventQueue).take(eventIndex);
+                        result = true;
+                        continue;
+                }
+                eventIndex++;
+            }
+        }
+        return result;
+    }
+
     /** Return the actor associated with the events. All events should point to the same actor.
      *  @param events list of events that are destined for the
      *  same actor and of the same tag.
@@ -1743,7 +1786,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  This base class returns false, indicating that the currently
      *  executing actor is never preempted.
      *  @return False.
-     * @exception IllegalActionException
+     *  @exception IllegalActionException If false
      */
     protected boolean _preemptExecutingActor() throws IllegalActionException {
         return false;
@@ -1760,7 +1803,8 @@ public class PtidesBasicDirector extends DEDirector {
      *
      *  @param event The event checked for safe to process
      *  @return True if the event is safe to process, otherwise return false.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If port is null and event is not a pure
+     *          event.
      *  @see #_setTimedInterrupt(Time)
      */
     protected boolean _safeToProcess(PtidesEvent event)
@@ -2278,8 +2322,8 @@ public class PtidesBasicDirector extends DEDirector {
      *  If annotateModelDelay is false, then instead of highlighting actors,
      *  the highlighting is cleared.
      */
-    private void _highlightModelDelays(CompositeActor compositeActor, boolean highlightModelDelay)
-            throws IllegalActionException {
+    private void _highlightModelDelays(CompositeActor compositeActor,
+            boolean highlightModelDelay) throws IllegalActionException {
 
         for (Actor actor : (List<Actor>) (compositeActor.deepEntityList())) {
             boolean annotateThisActor = false;
@@ -2311,7 +2355,8 @@ public class PtidesBasicDirector extends DEDirector {
                 }
             }
             if (actor instanceof CompositeActor) {
-                _highlightModelDelays((CompositeActor) actor, highlightModelDelay);
+                _highlightModelDelays((CompositeActor) actor,
+                        highlightModelDelay);
             }
         }
     }
@@ -2595,8 +2640,8 @@ public class PtidesBasicDirector extends DEDirector {
                                         if (channelDependency == null) {
                                             channelDependency = new HashMap<Integer, SuperdenseDependency>();
                                         }
-                                        channelDependency.put(
-                                                Integer.valueOf(channel),
+                                        channelDependency.put(Integer
+                                                .valueOf(channel),
                                                 prevDependency);
                                         _inputModelTimeDelays.put(sinkPort,
                                                 channelDependency);
@@ -2710,7 +2755,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  the platform, but are not yet visible to the platform (because of real time delay d_o)
      */
     private PriorityQueue _realTimeInputEventQueue;
-    
+
     /** Keeps track of whether time delay actors have been highlighted.
      */
     private boolean _timeDelayHighlighted = false;

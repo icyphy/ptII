@@ -85,6 +85,10 @@ public class PtidesEvent extends DEEvent {
             int microstep, int depth, Time absoluteDeadline)
             throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
+        if (absoluteDeadline == null) {
+            throw new InternalErrorException("a pure event should not " +
+                        "have a null absoluteDeadline.");
+        }
         _ioPort = ioPort;
         _channel = 0;
         _isPureEvent = true;
@@ -94,7 +98,8 @@ public class PtidesEvent extends DEEvent {
     /** Construct a trigger event with the specified destination IO port,
      *  timestamp, microstep, and depth.
      *  This constructor should be used if the event is a trigger event
-     *  (an event that is destined to a port).
+     *  (a non-pure event that is destined to a port).
+     *  To construct trigger event, neither _token nor _receiver should be null.
      *  @param ioPort The destination IO port.
      *  @param channel The channel the event is destined to.
      *  @param timeStamp The time when the event occurs.
@@ -109,6 +114,10 @@ public class PtidesEvent extends DEEvent {
             int microstep, int depth, Token token, Receiver receiver)
             throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
+        if (token == null || receiver == null) {
+            throw new InternalErrorException("a non-pure event should not " +
+            		"have either null token or a null receiver.");
+        }
         _channel = channel;
         _token = token;
         _receiver = receiver;
@@ -120,13 +129,18 @@ public class PtidesEvent extends DEEvent {
      *  A pure event is one that does not contained a token (value) that 
      *  is destined to an input port.
      *  @return absolute deadline if the event is a pure event.
-     *  @exception InternalErrorException If event is not a pure event.
+     *  @exception InternalErrorException If event is not a pure event,
+     *          or the event is a pure event and absoluteDeadline is null.
      */
     public final Time absoluteDeadline() {
         if (!isPureEvent()) {
             throw new InternalErrorException("Event is not a pure event, "
                     + "in which case the absolute deadline should be obtained "
                     + "from the destination port of the event.");
+        }
+        if (isPureEvent() && _absoluteDeadline == null) {
+            throw new InternalErrorException(" A pure event should " +
+                    "not have a token field that is null");
         }
         return _absoluteDeadline;
     }
@@ -141,12 +155,9 @@ public class PtidesEvent extends DEEvent {
 
     /** Indicate whether some other object is equal to this PtidesEvent.
      *  PtidesEvents are equal if the super class indicates they are equal
-     *  and their tokens, receiver, channel, absoluteDeadline,
-     *  as well as indication whether they are pure events are all equal.
-     *  <p>
-     *  A RuntimeException is thrown in the following cases:
-     *  1. If the event is a pure event, and absoluteDeadline field is null,
-     *  2. If the event is not a pure event, and token field is null, 
+     *  and the event types (pure vs. non-pure) are the same, and
+     *  their receivers are the same object, and the channels, tokens, 
+     *  and absoluteDeadlines values are the same.
      *  @param object The object with which to compare.
      *  @return true if the object is a DEEvent and the fields of
      *  the object and of this object are equal.
@@ -157,15 +168,6 @@ public class PtidesEvent extends DEEvent {
             return false;
         }
         PtidesEvent event = (PtidesEvent) object;
-        
-        if (!event.isPureEvent() && event.token() == null) {
-            throw new InternalErrorException(" A trigger event should " +
-            		"not have a token field that is null");
-        }
-        if (event.isPureEvent() && event.absoluteDeadline() == null) {
-            throw new InternalErrorException(" A trigger event should " +
-                        "not have a token field that is null");
-        }
 
         return (super.equals(object)
                 && ((!event.isPureEvent() && 
@@ -205,13 +207,22 @@ public class PtidesEvent extends DEEvent {
      *  @return The receiver.
      */
     public final Receiver receiver() {
+        if (!isPureEvent() && (_receiver == null)) {
+            throw new InternalErrorException(" A non-pure event should " +
+                        "not have a receiver field that is null");
+        }
         return _receiver;
     }
 
     /** Return the token (value) of this event.
      *  @return The token.
+     *  @exception If event is not a pure event and token field is null.
      */
     public final Token token() {
+        if (!isPureEvent() && (_token == null)) {
+            throw new InternalErrorException(" A non-pure event should " +
+                        "not have a token field that is null");
+        }
         return _token;
     }
 
