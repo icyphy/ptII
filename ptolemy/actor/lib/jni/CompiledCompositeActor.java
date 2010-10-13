@@ -461,8 +461,14 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         List commands = new LinkedList();
 
+        // Generate byte code for the same version of Java as is running
+        // Vergil.  This issue can come up if we are running a 1.5 JDK, but
+        // the 1.6 JDK is first in path.
+        String specificationVersion = "-target "
+                + StringUtilities.getProperty("java.specification.version");
+
         // Create the .class file.
-        commands.add("javac -classpath . " + _sanitizedActorName + ".java");
+        commands.add("javac " + specificationVersion + " -classpath . " + _sanitizedActorName + ".java");
 
         // Create the .h file.
         commands.add("javah -classpath . " + _sanitizedActorName);
