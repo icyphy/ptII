@@ -46,7 +46,7 @@ Code generator helper for modal controller.
 */
 public class State
         extends
-        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.modal.modal.State {
+        NamedProgramCodeGeneratorAdapter  {
 
     public State(ptolemy.domains.modal.kernel.State component) {
         super(component);
