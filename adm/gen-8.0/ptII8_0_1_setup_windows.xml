@@ -312,6 +312,10 @@ The Ptiny pack is required.
 	      -->
             <file src="../../jar_dist/ptolemy/codegen/codegen.jar"
                   targetdir="$INSTALL_PATH/ptolemy/codegen"/>
+            <file src="../../ptolemy/codegen/c/lib/win/jvm.def"
+                  targetdir="$INSTALL_PATH/ptolemy/codegen/c/lib/win"/>
+            <file src="../../ptolemy/codegen/c/lib/win/libjvm.dll.a"
+                  targetdir="$INSTALL_PATH/ptolemy/codegen/c/lib/win"/>
             <file src="../../jar_dist/ptolemy/codegen/c/vergil/vergil.jar"
                   targetdir="$INSTALL_PATH/ptolemy/codegen/c/vergil"/>
             <file src="../../jar_dist/ptolemy/codegen/demo/demo.jar"
@@ -512,6 +516,16 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/pn"/>
             <file src="../../jar_dist/ptolemy/domains/sdf/sdf.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/sdf"/>
+	    <!-- hyvisual -->
+            <file src="../../jar_dist/ptolemy/hsif/hsif.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/hsif"/>
+            <file src="../../jar_dist/ptolemy/hsif/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/hsif/demo"/>
+	    <!-- hyvisual imports sdf/kernel/kernel.jar and lib.jar -->
+            <file src="../../jar_dist/ptolemy/domains/sdf/lib/lib.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/lib"/>
+            <file src="../../jar_dist/ptolemy/domains/sdf/kernel/kernel.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/sdf/kernel"/>
             <file src="../../jar_dist/ptolemy/domains/sr/sr.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/sr"/>
             <file src="../../jar_dist/ptolemy/domains/wireless/wireless.jar"
