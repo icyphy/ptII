@@ -542,8 +542,10 @@ The Ptiny pack is required.
             <file src="../../designdocv2.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../designdocv3.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../hyvisualdoc.exe" targetdir="$INSTALL_PATH"/>
+            <file src="../../ptinydoc.exe" targetdir="$INSTALL_PATH"/>
             <file src="../../doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
 <!--MacOSInclude-->
+            <file src="../../doc/design/ptinydoc.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/ptIIdesign1-intro.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/ptIIdesign2-software.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
             <file src="../../doc/design/ptIIdesign3-domains.pdf" targetdir="$INSTALL_PATH/doc/design/"/>
