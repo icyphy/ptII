@@ -709,7 +709,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         return ports;
     }
     
-    /** Get the channel name of a published port
+    /** Get the channel name of a published port.
      * @param port The published port.
      * @return The name of the channel of the published port.
      */
@@ -731,7 +731,7 @@ public class CompositeActor extends CompositeEntity implements Actor,
         return "";
     }
 
-    /** Get the name of the channel that the port wants to subscribed to.
+    /** Get the name of the channel that the port subscribes to.
      * @param port The subscribed port.
      * @return The name of the channel.
      */
