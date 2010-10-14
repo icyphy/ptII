@@ -40,17 +40,29 @@ import ptolemy.kernel.util.NamedObj;
 ///////////////////////////////////////////////////////////////////
 //// PtidesEvent
 
-/** A Ptides event that saves the token, as well as the receiver this token is destined
- *  at, in addition to the information that is stored in the super class, such as
- *  the timestamp, etc. This class is used
- *  in the PTIDES domain, because events may arrive out of timestamp order.
+/** This class defines the structure of events in the Ptides domain.
+ *  Conceptually, a Ptides event is the same as a DE event {@link DEEvent}.
+ *  However, scheduling in Ptides is more flexible than in DE. In
+ *  order to support this flexibility, fields such as token, receiver,
+ *  and absoluteDeadline are added.
  *  <p>
- *  Note in PtidesEvent, unlike DEEvent, the IOPort parameter is special, in that
- *  it's not necessarily the port the event is destined to, but the port where this
- *  event is causally related with.
+ *  A Ptides event can be of two kinds. A pure event, or a non-pure 
+ *  (trigger) event. For all pure events, the absolute deadline of 
+ *  this event is saved. For all non-pure events, the token as well
+ *  as the destination receiver is saved. These information are saved
+ *  in addition to the information that is stored in the super class, 
+ *  such as the timestamp, etc. This class is used in the Ptides domain.
+ *  <p>
+ *  Note in PtidesEvent, unlike DEEvent, the ioPort parameter is overloaded.
+ *  If the event is not a pure event, then ioPort indicate the destination
+ *  port for this event. However, if the event is a pure event, then ioPort
+ *  is the source input port for this event.
  *  <p>
  *  The semantics of equals() and compareTo() in this method are tricky.
- *  The compareTo() method does not override that of the super class.
+ *  equals() indicates two Ptides events are equal if all fields in this
+ *  class and the superclass are equal (including absoluteDeadline, token, 
+ *  channel, and receiver, etc).
+ *  However, the compareTo() method does not override that of the super class.
  *  The semantics of the compareTo() is such that two events are equal 
  *  if the timestamps, microstep, depth, and priority fields indicate they
  *  are equal. Note
@@ -78,17 +90,15 @@ public class PtidesEvent extends DEEvent {
      *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination actor.
      *  @param absoluteDeadline The absolute deadline of this pure event.
+     *          This field should not be null.
      *  @exception IllegalActionException If the actor has a priority parameter,
-     *  but its value cannot be obtained, which should be an integer.
+     *          but its value cannot be obtained, which should be an integer.
      */
     public PtidesEvent(Actor actor, IOPort ioPort, Time timeStamp,
             int microstep, int depth, Time absoluteDeadline)
             throws IllegalActionException {
         super(actor, timeStamp, microstep, depth);
-        if (absoluteDeadline == null) {
-            throw new InternalErrorException("a pure event should not " +
-                        "have a null absoluteDeadline.");
-        }
+        assert absoluteDeadline != null;
         _ioPort = ioPort;
         _channel = 0;
         _isPureEvent = true;
@@ -105,8 +115,10 @@ public class PtidesEvent extends DEEvent {
      *  @param timeStamp The time when the event occurs.
      *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination IO Port.
-     *  @param token The token associated with the event.
-     *  @param receiver The Receiver the event is destined to.
+     *  @param token The token associated with the event. This field should
+     *          not be null.
+     *  @param receiver The Receiver the event is destined to. This field 
+     *          should not be null.
      *  @exception IllegalActionException If the actor has a priority parameter,
      *  but its value cannot be obtained, which should be an integer.
      */
@@ -114,10 +126,7 @@ public class PtidesEvent extends DEEvent {
             int microstep, int depth, Token token, Receiver receiver)
             throws IllegalActionException {
         super(ioPort, timeStamp, microstep, depth);
-        if (token == null || receiver == null) {
-            throw new InternalErrorException("a non-pure event should not " +
-            		"have either null token or a null receiver.");
-        }
+        assert (token != null && receiver != null);
         _channel = channel;
         _token = token;
         _receiver = receiver;
@@ -134,20 +143,18 @@ public class PtidesEvent extends DEEvent {
      */
     public final Time absoluteDeadline() {
         if (!isPureEvent()) {
-            throw new InternalErrorException("Event is not a pure event, "
+            throw new InternalErrorException("This event is not a pure event, "
                     + "in which case the absolute deadline should be obtained "
                     + "from the destination port of the event.");
-        }
-        if (isPureEvent() && _absoluteDeadline == null) {
-            throw new InternalErrorException(" A pure event should " +
-                    "not have a token field that is null");
+        } else {
+            assert (_absoluteDeadline == null);
         }
         return _absoluteDeadline;
     }
 
 
-    /** Return the channel this event is destined to.
-     *  @return The channel.
+    /** Return the destination channel for this event.
+     *  @return The channel The destination channel for this event.
      */
     public final int channel() {
         return _channel;
@@ -157,7 +164,7 @@ public class PtidesEvent extends DEEvent {
      *  PtidesEvents are equal if the super class indicates they are equal
      *  and the event types (pure vs. non-pure) are the same, and
      *  their receivers are the same object, and the channels, tokens, 
-     *  and absoluteDeadlines values are the same.
+     *  and absoluteDeadline values are the same.
      *  @param object The object with which to compare.
      *  @return true if the object is a DEEvent and the fields of
      *  the object and of this object are equal.
@@ -168,18 +175,15 @@ public class PtidesEvent extends DEEvent {
             return false;
         }
         PtidesEvent event = (PtidesEvent) object;
-
-        return (super.equals(object)
-                && ((!event.isPureEvent() && 
-                        event.token().equals(_token))
-                        || event.isPureEvent())
-                && event.isPureEvent() == _isPureEvent
+        boolean result = super.equals(object);
+        if (!event.isPureEvent()) {
+            result = result && event.token().equals(_token);
+        } else {
+            result = result && event.absoluteDeadline().equals(_absoluteDeadline);
+        }
+        return result && event.isPureEvent() == _isPureEvent
                 && event.receiver() == _receiver
-                && event.channel() == _channel
-                // Only call absoluteEvent if the event is a Pure Event.
-                && ((event.isPureEvent() && 
-                        event.absoluteDeadline().equals(_absoluteDeadline))
-                        || !event.isPureEvent()));
+                && event.channel() == _channel;
     }
 
     /** Return the hash code for the event object.
@@ -203,13 +207,12 @@ public class PtidesEvent extends DEEvent {
         return _isPureEvent;
     }
 
-    /** Return the receiver this event is destined to.
-     *  @return The receiver.
+    /** Return the destination receiver for this event.
+     *  @return The destination receiver for this event.
      */
     public final Receiver receiver() {
-        if (!isPureEvent() && (_receiver == null)) {
-            throw new InternalErrorException(" A non-pure event should " +
-                        "not have a receiver field that is null");
+        if (!isPureEvent()) {
+            assert (_receiver != null);
         }
         return _receiver;
     }
@@ -220,14 +223,14 @@ public class PtidesEvent extends DEEvent {
      */
     public final Token token() {
         if (!isPureEvent() && (_token == null)) {
-            throw new InternalErrorException(" A non-pure event should " +
+            throw new InternalErrorException("A non-pure event should " +
                         "not have a token field that is null");
         }
         return _token;
     }
 
     /** Return a description of the event, including the the tag, depth,
-     *  the token, and destination information.
+     *  the token, absolute deadline, and destination information.
      *  @return The token as a string with the time stamp.
      */
     public String toString() {
@@ -240,7 +243,8 @@ public class PtidesEvent extends DEEvent {
         return "PtidesEvent{time = " + _timestamp + ", microstep = "
             + _microstep + ", depth = " + _depth
             + ", token = " + _token
-            + ", absoluteDeadline = " + _absoluteDeadline
+            + ", absoluteDeadline = " 
+            + (_absoluteDeadline == null ? "null" : _absoluteDeadline.toString())
             + ", dest = " + name + "."
             + (_ioPort == null ? "null" : _ioPort.getName())
             + "." + _channel
@@ -257,13 +261,13 @@ public class PtidesEvent extends DEEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The channel this event is destined to */
+    /** The destination channel for this event. */
     private int _channel;
 
-    /** Indicates whether this event is a pure event */
+    /** Indicates whether this event is a pure event. */
     private boolean _isPureEvent;
 
-    /** The receiver the token variable of this event is destined to. */
+    /** The destination receiver for the token variable of this event. */
     private Receiver _receiver;
 
     /** The absolute deadline of this event. This field is used only when this
