@@ -46,6 +46,7 @@ PTPACKAGE = 	design
 PTCLASSJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
+	ptiny.pdf \
 	ptIIdesign1-intro.pdf \
 	ptIIdesign2-software.pdf \
 	ptIIdesign3-domains.pdf
