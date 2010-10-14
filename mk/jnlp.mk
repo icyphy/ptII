@@ -1198,7 +1198,7 @@ L4JC=$(L4J_DIR)/launch4j
 
 # .exe files to be created by Launch4J
 L4J_DOC_EXES = 		designdocv1.exe designdocv2.exe designdocv3.exe \
-				hyvisualdoc.exe visualsensedoc.exe
+				hyvisualdoc.exe ptinydoc.exe visualsensedoc.exe
 L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe \
 				visualsense.exe
 L4J_PTPLOT_EXES = 	histogram.exe ptplot.exe
@@ -1272,6 +1272,14 @@ hyvisualdoc_l4j.xml:
 	chmod a+x doc/design/hyvisual.pdf
 hyvisualdoc.exe: hyvisualdoc_l4j.xml
 	"$(L4JC)" `$(PTCYGPATH) hyvisualdoc_l4j.xml`
+
+ptinydoc_l4j.xml:
+	$(MKL4J) ptinydoc ptolemy.actor.gui.BrowserLauncher \
+		doc/img/pdf.ico \
+		doc/design/ptiny.pdf $(DOC_JNLP_JARS) > $@
+	chmod a+x doc/design/ptiny.pdf
+ptinydoc.exe: ptinydoc_l4j.xml
+	"$(L4JC)" `$(PTCYGPATH) ptinydoc_l4j.xml`
 
 ptiny_l4j.xml: $(MKL4J)
 	$(MKL4J) ptiny ptolemy.vergil.VergilApplication \
