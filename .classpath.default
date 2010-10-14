@@ -17,6 +17,7 @@
     <classpathentry kind="lib" path="lib/mapss.jar"/>
     <classpathentry kind="lib" path="lib/sootclasses.jar"/>
     <classpathentry kind="lib" path="lib/jasminclasses.jar"/>
+    <classpathentry kind="lib" path="lib/junit-4.8.2.jar"/>
     <classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
     <classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-ext.jar"/>
     <classpathentry kind="lib" path="ptolemy/distributed/jini/jar/sun-util.jar"/>

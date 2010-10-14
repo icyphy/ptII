@@ -2157,6 +2157,54 @@ fi
 
 
 #--------------------------------------------------------------------
+#       JUnit is the Java Unit testing framework
+#--------------------------------------------------------------------
+
+# PTJUNIT_DIR is set to junit and used in
+# $PTII/util/testsuite/makefile if junit was found
+PTJUNIT_DIR=
+
+# Used in many test/makefiles
+JUNIT_JAR=
+
+# We only need to look for JUnit if this directory is present
+JUNIT_USER_DIR="$PTII/doc/tutorial/graph/junit"
+
+if test ! -d "$JUNIT_USER_DIR"; then
+    PT_MSG_STATUS([$JUNIT_USER_DIR is not present,
+    so we need not find JUnit - the Java Unit Testing Framework.])
+else
+    AC_MSG_CHECKING([for the JUnit - the Java Unit Testing Framework])
+    AC_ARG_WITH(junit, [  --with-junit=JARFILE       use JUnit Testing Framework from JARFILE,
+                          defaults to \$PTII/lib/junit-4.8.2.jar],
+	JUNIT_JAR=$withval,
+	JUNIT_JAR=$PTII/lib/junit-4.8.2.jar)
+
+    if test -f "$JUNIT_JAR"; then
+	PT_MSG_RESULT([$PTJUNIT_JAR])
+	PTJUNIT_DIR=junit
+        # PTJUNIT_PACKAGES is used in ptII/doc/makefile
+	PTJUNIT_PACKAGES=util.testsuite.junit
+    fi	
+
+    if test "$PTJUNIT_DIR" = ""; then
+        AC_MSG_WARN([Failed to find junit-4.8.2.jar
+    as $PTJUNIT_JAR.
+    Perhaps the JUnit Java Unit Testing Framework is not installed?
+    You need not download JUnit unless you want to run the unit tests.])
+	# Note that we don't substitute in the ${PTII} here
+	PTJUNIT_JAR='${PTII}/lib/junit-4.8.2.jar'
+    fi
+fi
+
+if test -z "$PTJUNIT_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|util/testsuite/junit"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$JUNIT_JAR\"/>"
+fi 
+
+#--------------------------------------------------------------------
 #       JXL is the Java Excel library, which is GPL'd.
 #	For more information, see 
 #       http://jexcelapi.sourceforge.net/
