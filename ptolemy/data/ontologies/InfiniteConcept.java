@@ -1,4 +1,4 @@
-/* 
+/* A concept that is not part of a finite ontology.
  * 
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
@@ -26,7 +26,20 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** A concept that is not part of a finite ontology.
+ *  This class represents Concepts that, rather than being drawn from
+ *  a fixed finite set of the elements in a ConceptGraph, is drawn
+ *  from a potentially infinite set, such as those used to represent
+ *  structured datatypes like records, concepts parametrized over values,
+ *  and other situations where enumerating all possible concepts beforehand
+ *  is not feasible.
+ *  
+ *  Since this class aims to be a general superclass of any type of infinite
+ *  concept, it does not provide any implementations that may be particular
+ *  to a particular style of infinite concepts, and is abstract.
+ *  Subclasses are responsible for determining exactly what type of infinite
+ *  concept they will support.
+ *
  *  @author Ben Lickly
  *  @version $Id$
  *  @since Ptolemy II 9.0
@@ -36,11 +49,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public abstract class InfiniteConcept extends Concept {
 
-    /**
-     *  @param ontology
-     *  @param name
-     *  @throws NameDuplicationException
-     *  @throws IllegalActionException
+    /** Construct a new concept in the given ontology.
+     *  Clearly, this individual concept is a finite object,
+     *  but the set of possible concepts from which it is
+     *  drawn may be infinite.
+     * 
+     *  @param ontology The ontology to which this concept belongs.
+     *  @param name The name of this concept (necessary?)
+     *  @exception NameDuplicationException If the ontology already contains a
+     *   concept with the specified name.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public InfiniteConcept(Ontology ontology, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -52,16 +70,24 @@ public abstract class InfiniteConcept extends Concept {
         isAcceptable = new Parameter(this, "isAcceptable");
         isAcceptable.setTypeEquals(BaseType.BOOLEAN);
         isAcceptable.setExpression("true");
-    }
-    
-    /**
-     *  @return
-     *  @see ptolemy.data.ontologies.Concept#getOntology()
-     */
+    } 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the ontology to which this concept belongs.
+    *
+    *   @return This concept's ontology.
+    */
     public Ontology getOntology() {
         return _ontology;
     }
-    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    /** The ontology to which this concept belongs.
+     */
     private Ontology _ontology;
 
 }
