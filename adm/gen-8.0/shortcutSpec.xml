@@ -96,6 +96,22 @@
   </shortcut>
 
    <shortcut
+     name="Ptiny Document"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$INSTALL_PATH\doc\design\ptiny.pdf"
+     commandLine=""
+     iconFile="$INSTALL_PATH\doc\img\pdf.ico"
+     iconIndex="0"
+     description="This opens Adobe (Acrobat) Reader (if available) to look into or print Volume 1 - Introduction - of the Ptolemy 8.0.1 Design Document (PDF)"
+     >
+     <createForPack name="Docs" />
+   </shortcut>
+
+   <shortcut
      name="Design Document Vol 1 - Intro"
      programGroup="yes"
      desktop="no"
