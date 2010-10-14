@@ -8,7 +8,7 @@
 <body>
 <h1>Setting up Ptolemy II and Eclipse</h1>
 <p>
-These instructions assume you are using Eclipse Galileo under 
+These instructions assume you are using Eclipse Helios under 
 Windows or Mac OS X.
 Other ways of setting up and building Ptolemy II are described on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#in_browser" target="_top">Ptolemy II install page</a>. 
@@ -62,9 +62,12 @@ For Mac OS 10.5 and 10.6, most users will want to select the
 
 <br> (<i>Windows</i>): 
 Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
+
 <br>If <code>eclipse\eclipse.exe</code> is not created, then it could
 be that the security policy on your machine is preventing the creation
-of <code>.exe</code> files.  If this is the case, then try running
+of <code>.exe</code> files.  If this is the case, then try right
+clicking on the zip file, select "Properties" and then at the bottom,
+hit "Unblock" and then "Apply". Or try running
 <code>unzip</code> from the command line.
 
 <li>Finish the installation by double click <code>/Applications/eclipse/Eclipse.app</code> or <CODE>eclipse/eclipse.exe</CODE>.
@@ -137,6 +140,8 @@ follows:
 <li> Deselect <code>Build automatically</code>.
 <li> Click Apply. 
 </ol>
+
+<br><img src="../img/eclipsePreferencesGeneralWorkspace.png" alt="Eclipse Preferemces General Workspace" width="624" height="537">
 <p>
 <li>
 
@@ -284,16 +289,141 @@ and don't want to update regularly
 
 <li> Download a ptII source tree from
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest#in_browser" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest</CODE></a>
+<br> The Windows and Mac OS X installers include the source, or you may
+install a separate source-only download.
 
-<li>Configure the .classpath and .project files. See <a href="#.classpath.default"><CODE>.classpath.default</CODE></a>. below.
-<li>Create the ptII project
-<ul>
- <li> In <code>File</code> | <code>New</code> | <code>Project</code>,
-select 'Java project'.
-In the 'Contents' box, click on 'Create project from existing source'
-and browse to the PTII directory. Finish.
+<li>Eclipse uses the .classpath file to set paths and exclude files.
+  There are two choices:
+  <ol>
+    <li> Copy <code>.classpath.default</code> to <code>.classpath</code>.
+      This choice is the simpler choice, but might exclude optional third
+      party packages.
+    <li> Run <code>./configure</code>.  This choice is more complex,
+      especially for Windows users.  However, this choice will include
+      optional third party software that is already installed on your machine
+  </ol>
 
+  Choose <b>one</b> of the options below
+   <h4>1. Copy .classpath to .classpath.default</h4>
+   <br>(<i>Mac OS X</i>): 
+     Unfortunately, by default the Mac OS X Finder hides files whose names
+     begin with a period, such as <code>.classpath</code>.  One solution
+ is to follow th instructions from:
+  <a href="http://www.macworld.com/article/51830/2006/07/showallfinder.html"><code>http://www.macworld.com/article/51830/2006/07/showallfinder.html</code></a>:
+     <ol>
+       <li>Start up the Terminal application, which may be found as
+        <code>/Utilities/Terminal.app</code>.  Enter:
+	 <pre>
+	   defaults write com.apple.Finder AppleShowAllFiles YES
+	 </pre>
+        <li> Restart the Finder by holding down the Option key, then
+	  clicking and holding on the Finder icon in the Dock.  Then, 
+	  select "Relaunch".  Or, log out and log back in again.
+     </ol>  
+
+     <h5>Mac OS X: Using the Terminal to copy files</h5>
+     <ol>
+       <li>Start up the Terminal application, which may be found as
+        <code>/Utilities/Terminal.app</code>
+       <li>In the Terminal, change to the directory where the Ptolemy II
+	 source code was installed.  For example:
+	 <pre>
+	   cd /Applications/Ptolemy/ptII8.0.1
+	 </pre>  
+       <li> Copy the files:
+         <pre>
+           cp .classpath.default .classpath
+         </pre>
+     </ol>
+
+   <h4>Or. 2. Run ./configure</h4> 
+    A slightly more complex choice is to run <code>./configure</code>.
+      The advantage to this method is that it searches the environment for
+      third party software and configures your environment.  
+     <h5>Mac OS X: Using the Terminal to run configure</h5>
+     <ol>
+       <li>Start up the Terminal application, which may be found as
+        <code>/Utilities/Terminal.app</code>
+       <li>In the Terminal, change to the directory where the Ptolemy II
+	 source code was installed.  For example:
+	 <pre>
+	   cd /Applications/Ptolemy/ptII8.0.1
+	 </pre>  
+       <li> Set <code>$PTII</code> to the location of the source tree:
+	 <pre>
+	   export PTII=`pwd`  
+	 </pre>  
+       <li> Run <code>./configure</code>
+         <pre>
+	   ./configure
+         </pre>
+     </ol>
+
+   <h5>Windows: Install Cygwin and run configure</h5>
+   Unfortunately Windows does not ship with Unix shell
+     commands like <code>make</code>.  The workaround is to install Cygwin,
+     see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</code></a>
+      <h6>Windows: Using Cygwin to run configure</h6>
+      <ol>
+	<li> Start up the Cygwin Bash shell: Start | Run | Cygwin
+	<li> Change to the directory where the Ptolemy II source code was
+	  installed.  For example:
+	  <pre>
+	    cd c:/Ptolemy/ptII8.0.1
+          </pre>
+	<li> Set <code>$PTII</code> to the location of the Ptolemy II source tree:
+	  <pre>
+	    export PTII=c:/Ptolemy/ptII8.0.1
+	  </pre>
+	<li>  Run:
+	  <pre>
+	    ./configure
+	  </pre>  
+      </ol>
+
+
+ <li> Start up Eclipse
+ <li> Eclipse has the notion of a workspace, which is a collection of
+one or more projects.  Ptolemy II is a project. 
+<br>When the "Select a workspace" window comes up, either stick with the default
+or choose a new directory.  Note that the projects can be located outside
+of the workspace directory.  One caveat is that Eclipse will not permit
+the project directory to be a parent of the workspace directory, so placing the
+workspace in a subdirectory such as the default location is best.
+<br>Click "OK" to create the workspace and open Eclipse.
+<br>Below is the Workspace Launcher Window:
+<br><img src="../img/eclipseWorkspaceLauncher.png" alt="Eclipse Workspace Launcher" width="597" height="244">
+
+ <li> In Eclipse, do  <code>File</code> | <code>New</code> | <code>Project</code>.
+ <li> In the "New Project" window, select "Java" &gt; "Java project", Click Next.
+<br><img src="../img/eclipseNewProject.png" alt="Eclipse New Project" width="525" height="500">
+
+<li>In the "New Java Project" window:
+   <br> In "Project Name", enter any project name,  <code>ptII</code>
+  is a common choice.
+   <br> Uncheck "Use default location" and browse to the location of
+  the source tree.
+  <br>(<i>Mac OS X</i>):  For example, browse to <code>/Applications/Ptolemy/ptII8.0.1</code>
+  <!-- In "Project Layout", check "Use project folder as root for
+  source and class files".  If "Project Layout" is not selectable, then
+  that means that there is already a <code>.eclipse.epf</code> file in the
+  default location.  This is usually not a problem, but to be safe,
+  exit Eclipse, remove the file and restart Eclipse. -->
+  <br> Press "Next".
+  <br> Below is the New Java Project window:
+  <br><img src="../img/eclipseNewJavaProject.png" alt="Eclipse New Java Project" width="603" height="704">
+<li> If the "Setting Build Paths" window comes up with a message
+  "The output folder has changed. Do you want to remove all generated resources
+  from the old location ptII/bin", then the problem is that the
+  <code>.classpath</code> file was not found.  It is best if you exit
+  Eclipse, create the <code>.classpath</code> file and redo the above steps.
+<li> In the "New Java Project" window, select
+ "Allow output folders for source folder", then click "Finish"
+  <br> Below is the second New Java Project window:
+<br><img src="../img/eclipseNewJavaProject2.png" alt="Eclipse New Java Project" width="603" height="704">
 <li>When asked if you want to shift to the Java perspective, click on Yes.
+<li>Under the "Project" menu choice, select "Build All" and then "Build Automatically"
+<li>The workspace will take a few minutes to build.
 </ul>
 </ol>
 <h3>OR</h3>
@@ -948,7 +1078,9 @@ appear if you have already run Eclipse.  <b>Note that removing the
 <code>workspace</code> directory will cause Eclipse to 'forget'
 about any projects that you may have set up</b>
 
-
+<h3>Build Error: Assert cannot be resolved</h3>
+<p>If, when building, the Problem tab shows "Assert cannot be resolved",
+then the problem is that Junit is not being found
 <h3>Rebuilding Briefly flashes a window</h3> 
 <p>If you have problems where clicking on build briefly flashes up
 a window, look in <code>$PTII/.classpath</code> for and empty
