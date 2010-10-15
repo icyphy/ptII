@@ -44,7 +44,7 @@ import java.util.ArrayList;
  *
  */
 public class PTDBGenericAttribute {
-    
+
     /**
      * Construct the PTDBGenericAttribute class. 
      * 
@@ -155,6 +155,11 @@ public class PTDBGenericAttribute {
      */
     @Override
     public boolean equals(Object attribute) {
+
+        if (!(attribute instanceof PTDBGenericAttribute)) {
+            return false;
+        }
+
         PTDBGenericAttribute genericAttribute = (PTDBGenericAttribute) attribute;
 
         if (_className != null && _attributeName != null && _values != null) {
@@ -204,6 +209,36 @@ public class PTDBGenericAttribute {
         }
 
         return false;
+
+    }
+
+    /**
+     * Calculate the hash code for this PTDBGenericAttribute instance. 
+     * 
+     * @return Return the calculated hash code. 
+     */
+    @Override
+    public int hashCode() {
+        StringBuffer summaryStringBuffer = new StringBuffer("");
+
+        if (_className != null) {
+            summaryStringBuffer.append(_className);
+        }
+
+        summaryStringBuffer.append(":");
+
+        if (_attributeName != null) {
+            summaryStringBuffer.append(_attributeName);
+        }
+
+        summaryStringBuffer.append(":");
+
+        if (_values != null) {
+            summaryStringBuffer.append(_values.toString());
+
+        }
+
+        return summaryStringBuffer.toString().hashCode();
 
     }
 
