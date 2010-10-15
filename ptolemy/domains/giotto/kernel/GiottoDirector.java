@@ -866,7 +866,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     *  @exception NameDuplicationException If the container reports an entity
     *  that duplicates an existing name during initialization.
     *  @exception IllegalActionException If the initializing call to setToken 
-    *  returns and exception
+    *  returns an exception
     */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
