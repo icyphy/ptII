@@ -4,8 +4,8 @@
 <entity name="ConstComparatorLessThanDemo" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="ConstUnreachableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constUnreachableAbstract/ConstUnreachableSolverModel.xml">
+    <property name="ConstUnobservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constAbsIntObservable/ConstAbsIntObservableSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="custom">
         </property>
@@ -42,7 +42,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 50.0}">
         </property>
     </property>
-    <property name="constUnreachableAbstract::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant1 &gt;= UnreachableConstPositive">
+    <property name="constAbsIntObservable::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant1 &gt;= UnobservableConstPositive">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -57,7 +57,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 30.0]">
         </property>
     </property>
-    <property name="constUnreachableAbstract::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant2 &gt;= UnreachableConstPositive">
+    <property name="constAbsIntObservable::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant2 &gt;= UnobservableConstPositive">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -90,7 +90,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstPositive">
         </property>
     </property>
     <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
@@ -111,7 +111,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstPositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstPositive">
         </property>
     </property>
     <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
@@ -132,7 +132,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstZero">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstZero">
         </property>
     </property>
     <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
@@ -153,10 +153,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 110.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstNegative">
         </property>
     </property>
-    <property name="constUnreachableAbstract::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant3 &gt;= UnreachableConstZero">
+    <property name="constAbsIntObservable::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant3 &gt;= UnobservableConstZero">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -171,7 +171,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 70.0]">
         </property>
     </property>
-    <property name="constUnreachableAbstract::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant4 &gt;= UnreachableConstNegative">
+    <property name="constAbsIntObservable::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant4 &gt;= UnobservableConstNegative">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -204,10 +204,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 130.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableConstNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstNegative">
         </property>
     </property>
-    <property name="constUnreachableAbstract::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant5 &gt;= UnreachableConstNegative">
+    <property name="constAbsIntObservable::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant5 &gt;= UnobservableConstNegative">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -228,15 +228,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 725.0]">
@@ -270,7 +270,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -296,7 +296,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -343,15 +343,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 415.0]">
@@ -385,7 +385,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -411,7 +411,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -458,15 +458,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1380.0, 420.0]">
@@ -500,7 +500,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -526,7 +526,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -573,15 +573,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1375.0, 275.0]">
@@ -615,7 +615,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -641,7 +641,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -688,15 +688,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 570.0]">
@@ -730,7 +730,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -756,7 +756,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -803,15 +803,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 415.0]">
@@ -845,7 +845,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -871,7 +871,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -918,15 +918,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 570.0]">
@@ -960,7 +960,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -986,7 +986,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -1033,15 +1033,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 265.0]">
@@ -1075,7 +1075,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -1101,7 +1101,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -1148,15 +1148,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 270.0]">
@@ -1190,7 +1190,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>
@@ -1216,7 +1216,7 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
             </property>
         </port>
     </entity>

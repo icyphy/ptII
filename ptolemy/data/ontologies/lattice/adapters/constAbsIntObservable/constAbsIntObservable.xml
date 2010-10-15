@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="constUnreachableAbstract" extends="ptolemy.data.ontologies.Ontology">
+<class name="constAbsIntObservable" extends="ptolemy.data.ontologies.Ontology">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
@@ -9,7 +9,7 @@
 		<entity name="library" class="ptolemy.data.ontologies.Ontology"><input source="ptolemy/data/ontologies/ontologyLibrary.xml"></input></entity>
 	      </configure>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 41, 1284, 854}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 30, 1284, 854}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1069, 737]">
     </property>
@@ -17,7 +17,8 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{534.5, 368.5}">
     </property>
-    <entity name="UnreachableUnknown" class="ptolemy.data.ontologies.FiniteConcept">
+    <entity name="UnobservableUnknown" class="ptolemy.data.ontologies.FiniteConcept">
+        <display name="UnobservableUnknown"/>
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,0.4}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -27,7 +28,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 690.0]">
         </property>
     </entity>
-    <entity name="UnreachableConstPositive" class="ptolemy.data.ontologies.FiniteConcept">
+    <entity name="UnobservableConstPositive" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,0.4,0.4}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -37,7 +38,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 470.0]">
         </property>
     </entity>
-    <entity name="UnreachableConstZero" class="ptolemy.data.ontologies.FiniteConcept">
+    <entity name="UnobservableConstZero" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.2,0.4}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -47,7 +48,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 470.0]">
         </property>
     </entity>
-    <entity name="UnreachableConstNegative" class="ptolemy.data.ontologies.FiniteConcept">
+    <entity name="UnobservableConstNegative" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,0.4}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -57,7 +58,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 465.0]">
         </property>
     </entity>
-    <entity name="UnreachableConstTrue" class="ptolemy.data.ontologies.FiniteConcept">
+    <entity name="UnobservableConstTrue" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.6,0.0,0.4}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -87,7 +88,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 225.0]">
         </property>
     </entity>
-    <entity name="UnreachableConstFalse" class="ptolemy.data.ontologies.FiniteConcept">
+    <entity name="UnobservableConstFalse" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,0.4}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -137,7 +138,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 220.0}">
         </property>
     </entity>
-    <entity name="UnreachableConstUnknown" class="ptolemy.data.ontologies.FiniteConcept">
+    <entity name="UnobservableConstUnknown" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.6,0.4}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -147,7 +148,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[785.0, 245.0]">
         </property>
     </entity>
-    <entity name="UnreachableNonConst" class="ptolemy.data.ontologies.FiniteConcept">
+    <entity name="UnobservableNonConst" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,0.4}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -167,7 +168,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 110.0]">
         </property>
     </entity>
-    <entity name="ReachableUnknown" class="ptolemy.data.ontologies.FiniteConcept">
+    <entity name="ObservableUnknown" class="ptolemy.data.ontologies.FiniteConcept">
         <property name="solutionColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
         <property name="LatticeElementIcon" class="ptolemy.vergil.ontologies.ConceptIcon">
@@ -375,32 +376,32 @@
         <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.6589155094815962">
         </property>
     </relation>
-    <link port="UnreachableUnknown.abovePort" relation="relation17"/>
-    <link port="UnreachableUnknown.abovePort" relation="relation18"/>
-    <link port="UnreachableUnknown.abovePort" relation="relation19"/>
-    <link port="UnreachableUnknown.abovePort" relation="relation20"/>
-    <link port="UnreachableUnknown.abovePort" relation="relation21"/>
-    <link port="UnreachableUnknown.abovePort" relation="relation25"/>
-    <link port="UnreachableConstPositive.belowPort" relation="relation17"/>
-    <link port="UnreachableConstPositive.abovePort" relation="relation7"/>
-    <link port="UnreachableConstPositive.abovePort" relation="relation16"/>
-    <link port="UnreachableConstZero.belowPort" relation="relation18"/>
-    <link port="UnreachableConstZero.abovePort" relation="relation8"/>
-    <link port="UnreachableConstZero.abovePort" relation="relation15"/>
-    <link port="UnreachableConstNegative.belowPort" relation="relation19"/>
-    <link port="UnreachableConstNegative.abovePort" relation="relation9"/>
-    <link port="UnreachableConstNegative.abovePort" relation="relation14"/>
-    <link port="UnreachableConstTrue.belowPort" relation="relation20"/>
-    <link port="UnreachableConstTrue.abovePort" relation="relation10"/>
-    <link port="UnreachableConstTrue.abovePort" relation="relation13"/>
+    <link port="UnobservableUnknown.abovePort" relation="relation17"/>
+    <link port="UnobservableUnknown.abovePort" relation="relation18"/>
+    <link port="UnobservableUnknown.abovePort" relation="relation19"/>
+    <link port="UnobservableUnknown.abovePort" relation="relation20"/>
+    <link port="UnobservableUnknown.abovePort" relation="relation21"/>
+    <link port="UnobservableUnknown.abovePort" relation="relation25"/>
+    <link port="UnobservableConstPositive.belowPort" relation="relation17"/>
+    <link port="UnobservableConstPositive.abovePort" relation="relation7"/>
+    <link port="UnobservableConstPositive.abovePort" relation="relation16"/>
+    <link port="UnobservableConstZero.belowPort" relation="relation18"/>
+    <link port="UnobservableConstZero.abovePort" relation="relation8"/>
+    <link port="UnobservableConstZero.abovePort" relation="relation15"/>
+    <link port="UnobservableConstNegative.belowPort" relation="relation19"/>
+    <link port="UnobservableConstNegative.abovePort" relation="relation9"/>
+    <link port="UnobservableConstNegative.abovePort" relation="relation14"/>
+    <link port="UnobservableConstTrue.belowPort" relation="relation20"/>
+    <link port="UnobservableConstTrue.abovePort" relation="relation10"/>
+    <link port="UnobservableConstTrue.abovePort" relation="relation13"/>
     <link port="NonConst.belowPort" relation="relation22"/>
     <link port="NonConst.belowPort" relation="relation23"/>
     <link port="ConstFalse.belowPort" relation="relation11"/>
     <link port="ConstFalse.belowPort" relation="relation30"/>
     <link port="ConstFalse.abovePort" relation="relation6"/>
-    <link port="UnreachableConstFalse.belowPort" relation="relation21"/>
-    <link port="UnreachableConstFalse.abovePort" relation="relation11"/>
-    <link port="UnreachableConstFalse.abovePort" relation="relation12"/>
+    <link port="UnobservableConstFalse.belowPort" relation="relation21"/>
+    <link port="UnobservableConstFalse.abovePort" relation="relation11"/>
+    <link port="UnobservableConstFalse.abovePort" relation="relation12"/>
     <link port="ConstTrue.belowPort" relation="relation10"/>
     <link port="ConstTrue.belowPort" relation="relation29"/>
     <link port="ConstTrue.abovePort" relation="relation5"/>
@@ -413,15 +414,15 @@
     <link port="ConstPositive.belowPort" relation="relation7"/>
     <link port="ConstPositive.belowPort" relation="relation26"/>
     <link port="ConstPositive.abovePort" relation="relation2"/>
-    <link port="UnreachableConstUnknown.belowPort" relation="relation12"/>
-    <link port="UnreachableConstUnknown.belowPort" relation="relation13"/>
-    <link port="UnreachableConstUnknown.belowPort" relation="relation14"/>
-    <link port="UnreachableConstUnknown.belowPort" relation="relation15"/>
-    <link port="UnreachableConstUnknown.belowPort" relation="relation16"/>
-    <link port="UnreachableConstUnknown.abovePort" relation="relation"/>
-    <link port="UnreachableConstUnknown.abovePort" relation="relation24"/>
-    <link port="UnreachableNonConst.belowPort" relation="relation"/>
-    <link port="UnreachableNonConst.abovePort" relation="relation23"/>
+    <link port="UnobservableConstUnknown.belowPort" relation="relation12"/>
+    <link port="UnobservableConstUnknown.belowPort" relation="relation13"/>
+    <link port="UnobservableConstUnknown.belowPort" relation="relation14"/>
+    <link port="UnobservableConstUnknown.belowPort" relation="relation15"/>
+    <link port="UnobservableConstUnknown.belowPort" relation="relation16"/>
+    <link port="UnobservableConstUnknown.abovePort" relation="relation"/>
+    <link port="UnobservableConstUnknown.abovePort" relation="relation24"/>
+    <link port="UnobservableNonConst.belowPort" relation="relation"/>
+    <link port="UnobservableNonConst.abovePort" relation="relation23"/>
     <link port="ConstUnknown.belowPort" relation="relation2"/>
     <link port="ConstUnknown.belowPort" relation="relation3"/>
     <link port="ConstUnknown.belowPort" relation="relation4"/>
@@ -429,10 +430,10 @@
     <link port="ConstUnknown.belowPort" relation="relation6"/>
     <link port="ConstUnknown.belowPort" relation="relation24"/>
     <link port="ConstUnknown.abovePort" relation="relation22"/>
-    <link port="ReachableUnknown.belowPort" relation="relation25"/>
-    <link port="ReachableUnknown.abovePort" relation="relation26"/>
-    <link port="ReachableUnknown.abovePort" relation="relation27"/>
-    <link port="ReachableUnknown.abovePort" relation="relation28"/>
-    <link port="ReachableUnknown.abovePort" relation="relation29"/>
-    <link port="ReachableUnknown.abovePort" relation="relation30"/>
+    <link port="ObservableUnknown.belowPort" relation="relation25"/>
+    <link port="ObservableUnknown.abovePort" relation="relation26"/>
+    <link port="ObservableUnknown.abovePort" relation="relation27"/>
+    <link port="ObservableUnknown.abovePort" relation="relation28"/>
+    <link port="ObservableUnknown.abovePort" relation="relation29"/>
+    <link port="ObservableUnknown.abovePort" relation="relation30"/>
 </class>
