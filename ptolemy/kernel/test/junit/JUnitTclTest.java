@@ -30,6 +30,7 @@ package ptolemy.kernel.test.junit;
 
 import tcl.lang.Interp;
 import java.io.File;
+import util.testsuite.junit.JUnitTclTestBase;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest
@@ -64,7 +65,7 @@ import java.io.File;
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */ 
-public class JUnitTclTest {
+public class JUnitTclTest extends JUnitTclTestBase {
     /** Run a test.
      *  <p>If the fileName JVM property is set, then the file named by
      *  that property is sourced.  Otherwise, the testDefs.tcl file
@@ -74,25 +75,6 @@ public class JUnitTclTest {
      */ 
     @org.junit.Test 
     public void run() throws Exception {
-        String fileName = System.getProperty("fileName");
-        Interp interp = new Interp();
-        if (fileName != null) {
-            interp.evalFile(fileName);
-        } else {
-            if ( ! new File("testDefs.tcl").exists()) {
-                // We might be running from a different directory
-                String directory = getClass().getPackage().getName().replace('.', '/') + "/..";
-                if (new File(directory + "/testDefs.tcl").exists()) {
-                    interp.eval("cd " + directory);
-                } else {
-		    directory = "..";
-		    if (new File(directory + "/testDefs.tcl").exists()) {
-			interp.eval("cd " + directory);
-		    }
-		}
-            }
-            interp.evalFile("testDefs.tcl");
-            interp.eval("doAllTests");
-        }
+        super.run();
     }
 }

@@ -78,7 +78,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
 	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.domains.ptides.kernel.test.junit.PtidesEventJUnitTest
-	#CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.domains.ptides.kernel.test.junit.JUnitTclTest
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.domains.ptides.kernel.test.junit.JUnitTclTest
 
 test_java: jclass
 

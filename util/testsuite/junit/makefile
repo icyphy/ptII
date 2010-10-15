@@ -42,7 +42,8 @@ include $(CONFIG)
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	JUnitTclTest.java
+	JUnitTclTest.java \
+	JUnitTclTestBase.java
 
 TCL_SRCS = \
 

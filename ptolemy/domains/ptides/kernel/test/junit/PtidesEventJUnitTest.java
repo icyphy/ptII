@@ -50,7 +50,8 @@ public class PtidesEventJUnitTest {
     public void constructorWithNulls() throws Exception {
         PtidesEvent event = new PtidesEvent(null, null, null, 1, 2, null);
 
-        String knownGood = "PtidesEvent(time = null, microstep = 1, depth = 2, token = , token = null, absoluteDeadline = null, dest = null, isPureEvent = true) -- A PURE EVENT.";
+        String knownGood = "PtidesEvent{time = null, microstep = 1, depth = 2, token = null, absoluteDeadline = null, dest = null.null.0, receiver = null, isPureEvent = true}";
+        //System.out.println("-->" +  event.toString() + "<--");
         assertArrayEquals(event.toString().getBytes(), knownGood.getBytes());
     }
 
