@@ -43,17 +43,32 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class MonotonicityConcept extends InfiniteConcept {
 
-    /**
+    /** 
+     * 
      *  @param ontology
      *  @param name
      *  @throws NameDuplicationException
      *  @throws IllegalActionException
      */
-    public MonotonicityConcept(Ontology ontology, String name)
-            throws NameDuplicationException, IllegalActionException {
-        super(ontology, name);
-        // TODO Auto-generated constructor stub
+    public MonotonicityConcept(Ontology ontology)
+            throws IllegalActionException, NameDuplicationException {
+          super(ontology, "InfiniteMonotonicityConcept_" + _conceptNumber);
+          ++_conceptNumber;
     }
+    
+    public static MonotonicityConcept createMonotonicityConcept(Ontology ontology)
+            throws IllegalActionException {
+        try {
+            return new MonotonicityConcept(ontology);
+        } catch (NameDuplicationException e) {
+            throw new IllegalActionException(
+                    "Name conflict with automatically generated infinite concept name.\n"
+                  + "This should never happen."
+                  + "Original exception:" + e.toString());
+        }
+    }
+    
+    private static int _conceptNumber = 0;
     
     ///////////////////////////////////////////////////////////////////
     ////                          public methods                   ////
@@ -81,8 +96,8 @@ public class MonotonicityConcept extends InfiniteConcept {
         boolean seenLower = false;
         boolean seenIncomparable = false;
         for (String key : keys) {
-            int result = monotonicityOfVariable(key)
-                    .compare(righthandSide.monotonicityOfVariable(key));
+            int result = getMonotonicity(key)
+                    .compare(righthandSide.getMonotonicity(key));
             switch (result) {
             case CPO.HIGHER:       seenHigher = true; break;
             case CPO.LOWER:        seenLower = true; break;
@@ -100,13 +115,21 @@ public class MonotonicityConcept extends InfiniteConcept {
         }
     }
     
-    public FiniteConcept monotonicityOfVariable(String variableName) {
+    public FiniteConcept getMonotonicity(String variableName) {
         if (_variableToMonotonicity.containsKey(variableName)) {
             return _variableToMonotonicity.get(variableName);
         }
         return (FiniteConcept)getOntology().getGraph().bottom();
     }
 
+    public void putMonotonicity(String variable, FiniteConcept monotonicity) {
+        if (monotonicity.equals((FiniteConcept)getOntology().getGraph().bottom())) {
+            _variableToMonotonicity.remove(monotonicity);
+        } else {
+            _variableToMonotonicity.put(variable, monotonicity);
+        }
+    }
+    
     /**
      *  @return
      *  @see ptolemy.data.ontologies.Concept#toString()
@@ -116,7 +139,7 @@ public class MonotonicityConcept extends InfiniteConcept {
         for (String key : _variableToMonotonicity.keySet()) {
             result.append(key);
             result.append(":");
-            result.append(monotonicityOfVariable(key));
+            result.append(getMonotonicity(key));
             result.append(' ');
         }
         result.append('}');
