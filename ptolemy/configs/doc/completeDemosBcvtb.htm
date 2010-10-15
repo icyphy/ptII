@@ -8,7 +8,7 @@
      to update the derived files and check them in to cvs. -->
 <html>
 <head>
-<!-- $Id: completeDemosPtiny.htm 59392 2010-10-05 15:23:49Z cxh $ -->
+<!-- $Id: completeDemos.htm 59391 2010-10-05 15:23:42Z cxh $ -->
 <!--
 
 demosPtinyKepler.htm is derived from this file by including
@@ -20,6 +20,15 @@ file and generate demosPtinyKepler.htm.
 NOTE: Every demo should only be mentioned and listed by their
 top-level domain. The only exception is GR, which in practice
 is not used as a top-level domain.
+
+The $PTII/ptolemy/configs/doc/completeDemos.htm file is used
+to generate various files that are used by the documention system.
+
+For example, the Ptolemy actor documentation includes links to
+models that use each actor.  How this is generated is as follows:
+
+$PTII/ptolemy/configs/doc/completeDemos.htm is read and 
+$PTII/ptolem/configs/doc/models.txt is created by running make
 
 -->
 <link href="../../../doc/default.css" rel="stylesheet" type="text/css">

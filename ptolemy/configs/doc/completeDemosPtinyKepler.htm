@@ -21,6 +21,15 @@ NOTE: Every demo should only be mentioned and listed by their
 top-level domain. The only exception is GR, which in practice
 is not used as a top-level domain.
 
+The $PTII/ptolemy/configs/doc/completeDemos.htm file is used
+to generate various files that are used by the documention system.
+
+For example, the Ptolemy actor documentation includes links to
+models that use each actor.  How this is generated is as follows:
+
+$PTII/ptolemy/configs/doc/completeDemos.htm is read and 
+$PTII/ptolem/configs/doc/models.txt is created by running make
+
 -->
 <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
