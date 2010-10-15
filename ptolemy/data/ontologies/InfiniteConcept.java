@@ -66,19 +66,15 @@ public abstract class InfiniteConcept extends Concept {
         
         _name = name;
         _ontology = ontology;
-
-        isAcceptable = new Parameter(this, "isAcceptable");
-        isAcceptable.setTypeEquals(BaseType.BOOLEAN);
-        isAcceptable.setExpression("true");
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the ontology to which this concept belongs.
-    *
-    *   @return This concept's ontology.
-    */
+     *
+     *  @return This concept's ontology.
+     */
     public Ontology getOntology() {
         return _ontology;
     }
