@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * Convert an input OpenCV object into an AWT image.
  * FIXME: What does this really mean? Current frame? What's "current"?
- * @author Edward A. Lee, Jan Reineke, Christopher Brooks
+ * @author Dorsa Sadigh, Steve Bako, Edward A. Lee, Jan Reineke, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)

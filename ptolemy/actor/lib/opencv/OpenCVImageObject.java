@@ -37,7 +37,7 @@ import processing.core.PImage;
 
 /**
  * Object to contain an OpenCV object combined with a PImage object
- * @author Marc Geilen
+ * @author Marc Geilen, Dorsa Sadigh, Steve Bako
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)

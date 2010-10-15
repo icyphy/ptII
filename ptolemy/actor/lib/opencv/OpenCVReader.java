@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  * A simple actor starts a video capture process using
  * the Open Computer Vision (OpenCV) Library.
- * @author Edward A. Lee, Christopher Brooks
+ * @author Dorsa Sadigh, Steve Bako, Edward A. Lee, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)

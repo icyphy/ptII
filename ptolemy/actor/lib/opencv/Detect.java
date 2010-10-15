@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * An actor that uses OpenCV to detect objects in a video stream.
  * The input is an OpenCV object wrapped in an ObjectToken.
  * The output is an array of arrays of ints.
- * @author Edward A. Lee, Christopher Brooks
+ * @author Dorsa Sadigh, Steve Bako, Edward A. Lee, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)

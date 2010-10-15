@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  * Blend two PImage objects together using the subtract method
- * @author Edward A. Lee, Jan Reineke, Christopher Brooks
+ * @author Dorsa Sadigh, Steve Bako, Edward A. Lee, Jan Reineke, Christopher Brooks
  * @version $Id: OpenCVToAWTImage.java 57204 2010-02-12 00:56:07Z eal $
  * @since Ptolemy II 7.1
  * @Pt.ProposedRating Red (cxh)
