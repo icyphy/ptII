@@ -84,7 +84,12 @@ public class JUnitTclTest {
                 String directory = getClass().getPackage().getName().replace('.', '/') + "/..";
                 if (new File(directory + "/testDefs.tcl").exists()) {
                     interp.eval("cd " + directory);
-                }
+                } else {
+		    directory = "..";
+		    if (new File(directory + "/testDefs.tcl").exists()) {
+			interp.eval("cd " + directory);
+		    }
+		}
             }
             interp.evalFile("testDefs.tcl");
             interp.eval("doAllTests");

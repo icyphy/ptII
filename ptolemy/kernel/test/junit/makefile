@@ -77,7 +77,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	#CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.kernel.test.junit.ExampleSystemJUnitTest
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.kernel.test.junit.ExampleSystemJUnitTest
 	CLASSPATH="$(CLASSPATH)" "$(JAVA)" org.junit.runner.JUnitCore ptolemy.kernel.test.junit.JUnitTclTest
 
 test_java: jclass
