@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NamedObj;
  * 
  *  @author Charles Shelton
  *  @version $Id$
- *  @since Ptolemy II 8.0
+ *  @since Ptolemy II 8.1
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
