@@ -60,7 +60,6 @@ import ptolemy.kernel.util.DecoratedAttributes;
 import ptolemy.kernel.util.Decorator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -97,7 +96,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If there are any issues when 
      *  attempting to initialize a GiottoDirector.
      */
-    public GiottoDirector() throws IllegalActionException {
+    public GiottoDirector() throws IllegalActionException,
+            NameDuplicationException {
         super();
         _init();
     }
@@ -113,7 +113,8 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If the director is not compatible
      *   with the specified container.
      *  @exception NameDuplicationException If the name collides with an
-     *   attribute in the container.
+     *   attribute in the container or if there is a name duplication during 
+     *   initialization.
      */
     public GiottoDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -125,10 +126,13 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace for this object.
-     *  @exception IllegalActionException If there are any issues when 
-     *  attempting to initialize a GiottoDirector.
+     *  @exception IllegalActionException If there is an exception thrown by 
+     *  the super class or while initializing parameters.
+     *  @exception NameDuplicationException If the container reports an entity
+     *  that duplicates an existing name during initialization.
      */
-    public GiottoDirector(Workspace workspace) throws IllegalActionException {
+    public GiottoDirector(Workspace workspace) throws IllegalActionException,
+            NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -858,25 +862,25 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         return frequencyValue;
     }
 
-    // Initialize the director by creating a scheduler and parameters.
-    private void _init() throws IllegalActionException {
-        try {
-            GiottoScheduler scheduler = new GiottoScheduler(workspace());
-            setScheduler(scheduler);
+    /* Initialize the director by creating a scheduler and parameters.
+    *  @exception NameDuplicationException If the container reports an entity
+    *  that duplicates an existing name during initialization.
+    *  @exception IllegalActionException If the initializing call to setToken 
+    *  returns and exception
+    */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+        GiottoScheduler scheduler = new GiottoScheduler(workspace());
+        setScheduler(scheduler);
 
-            period = new Parameter(this, "period");
-            period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
-            iterations = new Parameter(this, "iterations", new IntToken(0));
+        period = new Parameter(this, "period");
+        period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
+        iterations = new Parameter(this, "iterations", new IntToken(0));
 
-            synchronizeToRealTime = new Parameter(this,
-                    "synchronizeToRealTime", new BooleanToken(false));
+        synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime",
+                new BooleanToken(false));
 
-            timeResolution.setVisibility(Settable.FULL);
-        } catch (KernelException ex) {
-            throw new IllegalActionException("Cannot initialize director: "
-                    + ex.getMessage());
-        }
-
+        timeResolution.setVisibility(Settable.FULL);
     }
 
     // Request that the container of this director be refired in the future.
