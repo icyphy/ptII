@@ -29,6 +29,7 @@ import java.util.List;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
 //// ExpressionConceptFunction
@@ -86,6 +87,7 @@ public class ExpressionConceptFunction extends ConceptFunction {
      *  @param solverModel The ontology solver model that contains
      *   other concept function definitions that could be called by
      *   the function defined in this expression.
+     *  @param functionScopeModelElement knk.
      *  @exception IllegalActionException If the ontology inputs are null
      *   or the length of the array of domain ontologies does not
      *   match the number of arguments for the function.
@@ -93,7 +95,8 @@ public class ExpressionConceptFunction extends ConceptFunction {
     public ExpressionConceptFunction(String name, boolean numArgsIsFixed,
             List<Ontology> argumentDomainOntologies, Ontology outputRangeOntology,
             List<String> argumentNames, String conceptFunctionExpression,
-            OntologySolverModel solverModel) throws IllegalActionException {
+            OntologySolverModel solverModel, NamedObj functionScopeModelElement)
+        throws IllegalActionException {
 
         super(name, numArgsIsFixed, argumentDomainOntologies, outputRangeOntology);
         _argumentNames = new LinkedList<String>(argumentNames);
@@ -117,7 +120,13 @@ public class ExpressionConceptFunction extends ConceptFunction {
                     "The conceptFunctionExpression cannot be null.");
         }
 
-        _solverModel = solverModel;
+        _solverModel = solverModel;  
+        
+        if (functionScopeModelElement != null) {
+            _functionScope = new ActorModelScope(functionScopeModelElement);
+        } else {
+            _functionScope = null;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -144,8 +153,15 @@ public class ExpressionConceptFunction extends ConceptFunction {
         ExpressionConceptFunctionParseTreeEvaluator evaluator = new ExpressionConceptFunctionParseTreeEvaluator(
                 _argumentNames, inputConceptValues, _solverModel,
                 _argumentDomainOntologies);
-        ConceptToken conceptToken = (ConceptToken) evaluator
-                .evaluateParseTree(parseTree);        
+        
+        ConceptToken conceptToken = null;
+        if (_functionScope != null) {
+            conceptToken = (ConceptToken) evaluator
+                .evaluateParseTree(parseTree, _functionScope);
+        } else {
+            conceptToken = (ConceptToken) evaluator
+                .evaluateParseTree(parseTree);
+        }        
         Concept output = conceptToken.conceptValue();
         
         if (output == null) {
@@ -173,4 +189,7 @@ public class ExpressionConceptFunction extends ConceptFunction {
      *  concept functions that could be called in this expression.
      */
     private OntologySolverModel _solverModel;
+    
+    /** The Ptolemy element scope for the concept function expression. */
+    private ActorModelScope _functionScope;
 }

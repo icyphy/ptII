@@ -30,6 +30,7 @@ import java.util.Map;
 
 import ptolemy.data.expr.ASTPtFunctionApplicationNode;
 import ptolemy.data.expr.ASTPtLeafNode;
+import ptolemy.data.expr.ASTPtMethodCallNode;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -195,7 +196,19 @@ public class ExpressionConceptFunctionParseTreeEvaluator extends
     public void visitLeafNode(ASTPtLeafNode node) 
             throws IllegalActionException {
         _evaluatedChildToken = null;        
-        String nodeLabel = _getNodeLabel(node);        
+        String nodeLabel = _getNodeLabel(node);
+        
+        // If the leaf node's parent is a method call node, then
+        // we are calling a Java method on an object, and we
+        // reuse the normal expression parser to evaluate it.
+        // The scope of which java objects are valid
+        // for concept functions is defined by the
+        // ExpressionConceptFunctionParserScope class that is a subclass
+        // of ModelScope which implements the ParserScope interface.
+        if (node.jjtGetParent() instanceof ASTPtMethodCallNode) {
+            super.visitLeafNode(node);
+            return;
+        }
 
         // If the node is an argument in the function evaluate it to
         // the name of the concept it holds.

@@ -249,7 +249,7 @@ public class ActorConstraintsDefinitionAdapter extends LatticeOntologyAdapter {
                         + actorElement.getName()
                         + "_ConstraintFunction", true, domainOntologies,
                 functionOntology, argumentNameList, functionString,
-                (OntologySolverModel) getSolver().getContainedModel());
+                (OntologySolverModel) getSolver().getContainedModel(), actorElement);
 
         ConceptFunctionInequalityTerm functionTerm = new ConceptFunctionInequalityTerm(
                 function, argumentTerms);

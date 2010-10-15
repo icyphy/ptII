@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ConstComparatorDemo" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ConstComparatorGreaterThanDemo" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
     <property name="ConstUnreachableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
@@ -28,13 +28,13 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 106, 1008, 798}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 106, 1012, 810}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[793, 681]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[797, 693]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{473.564393939394, 395.8465909090909}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{476.4545454545454, 412.9985795454545}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
@@ -1044,7 +1044,7 @@
             <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnreachableUnknown">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 265.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1299,8 +1299,6 @@
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
@@ -1310,6 +1308,8 @@
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Display8.input" relation="relation36"/>
     <link port="Const29.output" relation="relation38"/>

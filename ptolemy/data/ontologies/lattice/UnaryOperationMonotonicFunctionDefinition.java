@@ -1,4 +1,4 @@
-/* Concept function definition attribute for any binary operation.
+/* Concept function definition attribute for any unary operation.
 
  Copyright (c) 2003-2010 The Regents of the University of California.
  All rights reserved.
@@ -42,9 +42,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
-//// BinaryOperationMonotonicFunctionDefinition
+//// UnaryConceptFunctionDefinition
 
-/** Concept function definition attribute for any binary operation.
+/** Concept function definition attribute for any unary operation.
  *  
  *  @author Charles Shelton
  *  @version $Id$
@@ -52,10 +52,10 @@ import ptolemy.kernel.util.Settable;
  *  @Pt.ProposedRating Red (cshelton)
  *  @Pt.AcceptedRating Red (cshelton)
  */
-public class BinaryOperationMonotonicFunctionDefinition extends
+public class UnaryOperationMonotonicFunctionDefinition extends
         ConceptFunctionDefinitionAttribute {
 
-    /** Construct the BinaryOperationConceptFunctionDefinition attribute
+    /** Construct the UnaryOperationConceptFunctionDefinition attribute
      *  with the given container and name.
      *  @param container The container.
      *  @param name The name of this attribute.
@@ -64,7 +64,7 @@ public class BinaryOperationMonotonicFunctionDefinition extends
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public BinaryOperationMonotonicFunctionDefinition(
+    public UnaryOperationMonotonicFunctionDefinition(
             CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -81,18 +81,22 @@ public class BinaryOperationMonotonicFunctionDefinition extends
         functionOntologyName = new StringParameter(this, "functionOntologyName");
         functionOntologyName.setExpression("");
         
-        // Constrain argument list to have only 2 arguments.
-        argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 2));
-        argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING, 2));
+        // Constrain argument list to have only 1 argument.
+        argumentNames.setTypeEquals(new ArrayType(BaseType.STRING, 1));
+        argumentDomainOntologies.setTypeEquals(new ArrayType(BaseType.STRING, 1));
         argumentDomainOntologies.setVisibility(Settable.NONE);
+        
+        Token[] argNamesArray = new Token[]{(Token) new StringToken("arg")};
+        argumentNames.setToken(new ArrayToken(argNamesArray));
+        argumentNames.setVisibility(Settable.NOT_EDITABLE);
 
         outputRangeOntologyName.setVisibility(Settable.NONE);
 
         _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" width=\"60\" height=\"20\" "
+                + "<rect x=\"-50\" y=\"-20\" width=\"40\" height=\"20\" "
                 + "style=\"fill:white\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
-                + "f(c0, c1)</text></svg>");
+                + "f(c0)</text></svg>");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,7 +122,7 @@ public class BinaryOperationMonotonicFunctionDefinition extends
             outputRangeOntologyName.setToken(ontologyNameToken);
             
             ArrayToken domainOntologiesToken =
-                new ArrayToken(new Token[]{(Token) ontologyNameToken, (Token) ontologyNameToken});
+                new ArrayToken(new Token[]{(Token) ontologyNameToken});
             argumentDomainOntologies.setToken(domainOntologiesToken);
         }
 

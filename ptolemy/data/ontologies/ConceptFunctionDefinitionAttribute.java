@@ -202,7 +202,7 @@ public class ConceptFunctionDefinitionAttribute extends Attribute {
                     getName(), ((BooleanToken) numberOfArgumentsIsFixed.getToken()).booleanValue(),
                     argDomainOntologies, outputRangeOntology, argNameList,
                     conceptFunctionExpression.getExpression(),
-                    (OntologySolverModel) getContainer());
+                    (OntologySolverModel) getContainer(), null);
 
         if (((BooleanToken) constrainFunctionToBeMonotonic.getToken()).booleanValue()) {
             if (!newConceptFunction.isMonotonic()) {
