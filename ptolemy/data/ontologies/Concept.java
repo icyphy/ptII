@@ -55,7 +55,7 @@ public abstract class Concept extends ComponentEntity implements InequalityTerm 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** Compare of this concept with the given concept.
+    /** Compare this concept with the given concept.
      *  Returns an int value that corresponds to the ordering between
      *  the elements as given in the CPO interface.
      * 

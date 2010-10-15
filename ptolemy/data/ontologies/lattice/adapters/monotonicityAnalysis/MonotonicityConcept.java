@@ -1,4 +1,4 @@
-/* 
+/* A concept that represents the monotoncity of an expression.
  * 
  * Copyright (c) 2010 The Regents of the University of California. All
  * rights reserved.
@@ -33,7 +33,28 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**
+/** A concept that represents the monotoncity of an expression.
+ *  
+ *  Note that for an arbitrary expression, it will not have a
+ *  monotonicity concept of simply Monotonic, Constant, etc.
+ *  Rather, the expression will have a monotonicity that depends
+ *  on it's free variables.  For example, an expression of the form
+ *  <code>
+ *    (x &lt;= Concept1) ? Bottom :
+ *    (y &lt;= Concept2) ? Top :
+ *    Concept1
+ *  </code>
+ *  may have a monotonicity that is monotonic with respect to the
+ *  variable x, but antimonotonic with respect to y (and constant
+ *  with respect to all other variables).
+ *  
+ *  This class represents exactly such concepts, representing them as
+ *  { x : Monotonic, y : Antimonotonic }, in a manner and syntax
+ *  similar to records of the Ptolemy II type system.  In records,
+ *  however, accessing an undefined tag is an error, whereas in
+ *  expressions, they are simply constant with respect to any
+ *  variables that are not free.
+ *  
  *  @author Ben Lickly
  *  @version $Id$
  *  @since Ptolemy II 9.0
@@ -43,19 +64,19 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class MonotonicityConcept extends InfiniteConcept {
 
-    /** 
-     * 
-     *  @param ontology
-     *  @param name
-     *  @throws NameDuplicationException
-     *  @throws IllegalActionException
-     */
-    public MonotonicityConcept(Ontology ontology)
-            throws IllegalActionException, NameDuplicationException {
-          super(ontology, "InfiniteMonotonicityConcept_" + _conceptNumber);
-          ++_conceptNumber;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                    constructors/factories                 ////
     
+    /** Create a new monotonicity concept, belonging to the given
+     *  ontology.
+     * 
+     *  @param ontology The finite ontology to which this belongs.
+     *    This should be the 4 element monotonicity lattice if we
+     *    are really going to be doing inference on monotonicity
+     *    of expressions.
+     *  @return The newly created MonotonicityConcept.
+     *  @throws IllegalActionException If the base class throws it.
+     */
     public static MonotonicityConcept createMonotonicityConcept(Ontology ontology)
             throws IllegalActionException {
         try {
@@ -68,15 +89,20 @@ public class MonotonicityConcept extends InfiniteConcept {
         }
     }
     
-    private static int _conceptNumber = 0;
-    
     ///////////////////////////////////////////////////////////////////
     ////                          public methods                   ////
 
-    /**
-     *  @param concept
-     *  @return
-     *  @throws IllegalActionException
+    /** Compare this concept with the given concept.
+     *  Returns an int value that corresponds to the ordering between
+     *  the elements as given in the CPO interface.
+     * 
+     *  @param concept The concept with which we are comparing.
+     *  @return CPO.HIGHER if this concept is above the given concept,
+     *          CPO.LOWER if this concept is below the given concept,
+     *          CPO.SAME if both concepts are the same,
+     *      and CPO.INCOMPARABLE if concepts are incomparable.
+     *  @exception IllegalActionException If the specified concept
+     *          does not have the same ontology as this one.
      *  @see ptolemy.data.ontologies.Concept#isAboveOrEqualTo(ptolemy.data.ontologies.Concept)
      */
     public int compare(Concept concept) throws IllegalActionException {
@@ -115,6 +141,22 @@ public class MonotonicityConcept extends InfiniteConcept {
         }
     }
     
+    /** Get the monotonicity of this concept with respect to a specific
+     *  variable.  While the overall monotonicity of an expression
+     *  cannot be represented so simply, the monotonicity with
+     *  respect to a single variable can be represented as one
+     *  of:
+     *  <ul>
+     *    <li>Constant</li>
+     *    <li>Monotonic</li>
+     *    <li>Antimonotonic</li>
+     *    <li>General</li>
+     *  </ul>
+     *  This method returns one these concepts.
+     *  @param variableName The variable whose monotonicity we are querying.
+     *  @return The monotonicity of this concept with respect to the given
+     *    variable; one of Constant, Monotonic, Antimonotonic, or General.
+     */
     public FiniteConcept getMonotonicity(String variableName) {
         if (_variableToMonotonicity.containsKey(variableName)) {
             return _variableToMonotonicity.get(variableName);
@@ -122,6 +164,14 @@ public class MonotonicityConcept extends InfiniteConcept {
         return (FiniteConcept)getOntology().getGraph().bottom();
     }
 
+    /** Set the monotonicity of this concept with respect to a specific
+     *  variable.
+     *
+     *  @param variable The variable whose monotonicity we are querying.
+     *  @param monotonicity The monotonicity of this concept with respect
+     *    to the given variable.
+     *  @see MonotonicityConcept#getMonotonicity(String)
+     */
     public void putMonotonicity(String variable, FiniteConcept monotonicity) {
         if (monotonicity.equals((FiniteConcept)getOntology().getGraph().bottom())) {
             _variableToMonotonicity.remove(monotonicity);
@@ -130,9 +180,11 @@ public class MonotonicityConcept extends InfiniteConcept {
         }
     }
     
-    /**
-     *  @return
-     *  @see ptolemy.data.ontologies.Concept#toString()
+    /** Return the string representation of this monotonicity concept.
+     *  Note that the syntax here is similar to that used for records
+     *  (e.g. { x : Monotonic, y : Antimonotonic }).
+     *  
+     *  @return The string representation of this concept.
      */
     public String toString() {
         StringBuffer result = new StringBuffer("{ ");
@@ -145,6 +197,25 @@ public class MonotonicityConcept extends InfiniteConcept {
         result.append('}');
         return result.toString();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                    protected constructors                 ////
+
+    /** Create a new Monotonicity concept, belonging to the given
+     *  ontology.
+     * 
+     *  @param ontology The finite ontology to which this belongs.
+     *    This should be the 4 element monotonicity lattice if we
+     *    are really going to be doing inference on monotonicity
+     *    of expressions.
+     *  @throws NameDuplicationException Should never be thrown.
+     *  @throws IllegalActionException If the base class throws it.
+     */
+    protected MonotonicityConcept(Ontology ontology)
+            throws IllegalActionException, NameDuplicationException {
+          super(ontology, "InfiniteMonotonicityConcept_" + _conceptNumber);
+          ++_conceptNumber;
+    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -155,5 +226,11 @@ public class MonotonicityConcept extends InfiniteConcept {
      */
     private SortedMap<String, FiniteConcept> _variableToMonotonicity =
         new TreeMap<String, FiniteConcept>();
+    
+
+    /** Used for internal bookkeeping to make sure that generated
+     *  concept names are unique.
+     */
+    private static int _conceptNumber = 0;
 
 }
