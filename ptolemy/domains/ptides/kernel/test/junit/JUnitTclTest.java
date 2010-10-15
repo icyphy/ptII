@@ -30,7 +30,7 @@ package ptolemy.domains.ptides.kernel.test.junit;
 
 import tcl.lang.Interp;
 import java.io.File;
-import util.testsuite.junit.JUnitTclTestBase;
+import ptolemy.util.test.junit.JUnitTclTestBase;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest

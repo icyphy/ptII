@@ -26,11 +26,12 @@
 
  */
 
-package ptolemy.kernel.test.junit;
+package ptolemy.util.test.junit;
+
+import java.io.File;
 
 import tcl.lang.Interp;
-import java.io.File;
-import ptolemy.util.test.junit.JUnitTclTestBase;
+import tcl.lang.TclException;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitTclTest
@@ -65,16 +66,32 @@ import ptolemy.util.test.junit.JUnitTclTestBase;
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */ 
-public class JUnitTclTest extends JUnitTclTestBase {
+public class JUnitTclTest {
     /** Run a test.
      *  <p>If the fileName JVM property is set, then the file named by
      *  that property is sourced.  Otherwise, the testDefs.tcl file
      *  is sourced and the doallTests Tcl proc that is defined
      *  in $PTII/util/testsuite/testDefs.tcl is invoked and then
      *  any models in the auto/ directory are invoked.
+     *  @exception TclException If thrown while evaluating the Tcl test code.
      */ 
     @org.junit.Test 
-    public void run() throws Exception {
-        super.run();
+    public void run() throws TclException {
+        String fileName = System.getProperty("fileName");
+        Interp interp = new Interp();
+        if (fileName != null) {
+            interp.evalFile(fileName);
+        } else {
+            if ( ! new File("testDefs.tcl").exists()) {
+                // We might be running from a different directory
+                String directory = getClass().getPackage().getName().replace('.', '/');
+                if (new File(directory + "/testDefs.tcl").exists()) {
+                    System.out.println(directory + "/testDefs.tcl exists");
+                    interp.eval("cd " + directory);
+                }
+            }
+            interp.evalFile("testDefs.tcl");
+            interp.eval("doAllTests");
+        }
     }
 }
