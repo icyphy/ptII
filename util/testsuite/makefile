@@ -34,7 +34,7 @@ ROOT =		../..
 
 ME =		util/testsuite
 
-DIRS =		junit
+DIRS =
 
 CLASSPATH =	$(ROOT)
 
