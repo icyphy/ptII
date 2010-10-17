@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -46,7 +45,6 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CausalityMarker;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
@@ -71,7 +69,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -330,245 +327,11 @@ public class PtidesBasicDirector extends DEDirector {
             _debug("========= PtidesBasicDirector fires at " + getModelTime()
                     + "  with microstep as " + _microstep);
         }
-
-        // NOTE: This fire method does not call super.fire()
-        // because this method is very different from that of the super class.
-        // A BIG while loop that handles all events with the same tag.
-        while (true) {
-            // Find the next actor to be fired.
-            Actor actorToFire = _getNextActorToFire();
-
-            // Check whether the actor to be fired is null.
-            // -- If the actor to be fired is null,
-            // There are two conditions that the actor to be fired
-            // can be null.
-            if (actorToFire == null) {
-                if (_isTopLevel()) {
-                    // Case 1:
-                    // If this director is an executive director at
-                    // the top level, a null actor means that there are
-                    // no events in the event queue.
-                    if (_debugging) {
-                        _debug("No more events in the event queue.");
-                    }
-
-                    // Setting the following variable to true makes the
-                    // postfire method return false.
-                    // Do not do this if _stopFireRequested is true,
-                    // since there may in fact be actors to fire, but
-                    // their firing has been deferred.
-                    if (!_stopFireRequested) {
-                        _noMoreActorsToFire = true;
-                    }
-                } else {
-                    // Case 2:
-                    // If this director belongs to an opaque composite model,
-                    // which is not at the top level, the director may be
-                    // invoked by an update of an external parameter port.
-                    // Therefore, no actors contained by the composite model
-                    // need to be fired.
-                    // NOTE: There may still be events in the event queue
-                    // of this director that are scheduled for future firings.
-                    if (_debugging) {
-                        _debug("No actor requests to be fired "
-                                + "at the current tag.");
-                    }
-                }
-                // Nothing more needs to be done in the current iteration.
-                // Simply return.
-                // Since we are now actually stopping the firing, we can set this false.
-                _stopFireRequested = false;
-                return;
-            }
-
-            // -- If the actor to be fired is not null.
-            // If the actor to be fired is the container of this director,
-            // the next event to be processed is in an inside receiver of
-            // an output port of the container. In this case, this method
-            // simply returns, and gives the outside domain a chance to react
-            // to that event.
-            // NOTE: Topological sort always assigns the composite actor the
-            // lowest priority. This guarantees that all the inside actors
-            // have fired (reacted to their triggers) before the composite
-            // actor fires.
-            if (actorToFire == getContainer()) {
-                // Since we are now actually stopping the firing, we can set this false.
-                _stopFireRequested = false;
-                return;
-            }
-
-            if (_debugging) {
-                _debug("****** Actor to fire: " + actorToFire.getFullName());
-            }
-
-            // Keep firing the actor to be fired until there are no more input
-            // tokens available in any of its input ports with the same tag, or its prefire()
-            // method returns false.
-            boolean refire;
-
-            do {
-                refire = false;
-
-                // NOTE: There are enough tests here against the
-                // _debugging variable that it makes sense to split
-                // into two duplicate versions.
-                if (_debugging) {
-                    // Debugging. Report everything.
-                    // If the actor to be fired is not contained by the container,
-                    // it may just be deleted. Put this actor to the
-                    // list of disabled actors.
-                    if (!((CompositeEntity) getContainer())
-                            .deepContains((NamedObj) actorToFire)) {
-                        _debug("Actor no longer under the control of this director. Disabling actor.");
-                        _disableActor(actorToFire);
-                        break;
-                    }
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.BEFORE_PREFIRE));
-
-                    if (!actorToFire.prefire()) {
-                        _debug("*** Prefire returned false.");
-                        break;
-                    }
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.AFTER_PREFIRE));
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.BEFORE_FIRE));
-                    actorToFire.fire();
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.AFTER_FIRE));
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.BEFORE_POSTFIRE));
-
-                    if (!actorToFire.postfire()) {
-                        _debug("*** Postfire returned false:",
-                                ((Nameable) actorToFire).getName());
-
-                        // This actor requests not to be fired again.
-                        _disableActor(actorToFire);
-                        break;
-                    }
-
-                    _debug(new FiringEvent(this, actorToFire,
-                            FiringEvent.AFTER_POSTFIRE));
-                } else {
-                    // No debugging.
-                    // If the actor to be fired is not contained by the container,
-                    // it may just be deleted. Put this actor to the
-                    // list of disabled actors.
-                    if (!((CompositeEntity) getContainer())
-                            .deepContains((NamedObj) actorToFire)) {
-                        _disableActor(actorToFire);
-                        break;
-                    }
-
-                    if (!actorToFire.prefire()) {
-                        break;
-                    }
-
-                    actorToFire.fire();
-
-                    // NOTE: It is the fact that we postfire actors now that makes
-                    // this director not comply with the actor abstract semantics.
-                    // However, it's quite a redesign to make it comply, and the
-                    // semantics would not be backward compatible. It really needs
-                    // to be a new director to comply.
-                    if (!actorToFire.postfire()) {
-                        // This actor requests not to be fired again.
-                        _disableActor(actorToFire);
-                        break;
-                    }
-                }
-
-                // Check all the input ports of the actor to see whether there
-                // are more input tokens to be processed.
-                // FIXME: This particular situation can only occur if either the
-                // actor failed to consume a token, or multiple
-                // events with the same destination were queued with the same tag.
-                // In theory, both are errors. One possible fix for the latter
-                // case would be to requeue the token with a larger microstep.
-                // A possible fix for the former (if we can detect it) would
-                // be to throw an exception. This would be far better than
-                // going into an infinite loop.
-                Iterator<?> inputPorts = actorToFire.inputPortList().iterator();
-
-                while (inputPorts.hasNext() && !refire) {
-                    IOPort port = (IOPort) inputPorts.next();
-
-                    // iterate all the channels of the current input port.
-                    for (int i = 0; i < port.getWidth(); i++) {
-                        if (port.hasToken(i)) {
-                            refire = true;
-
-                            // Found a channel that has input data,
-                            // jump out of the for loop.
-                            break;
-                        }
-                    }
-                }
-            } while (refire); // close the do {...} while () loop
-            
-
-            // There may be an event destined to an actuator port (an output port
-            // of the containing composite), If that output token is ready to put
-            // transferred to the outside, make the token ready.
-            _getNextActuationEvent();
-            
-            // NOTE: On the above, it would be nice to be able to
-            // check _stopFireRequested, but this doesn't actually work.
-            // In particular, firing an actor may trigger a call to stopFire(),
-            // for example if the actor makes a change request, as for example
-            // an FSM actor will do.  This will prevent subsequent firings,
-            // incorrectly.
-
-            // The following code enforces that a firing of a
-            // DE director only handles events with the same tag.
-            // If the earliest event in the event queue is in the future,
-            // this code terminates the current iteration.
-            // This code is applied on both embedded and top-level directors.
-            synchronized (_eventQueue) {
-                if (!_eventQueue.isEmpty()) {
-                    PtidesEvent next = (PtidesEvent) _eventQueue.get();
-
-                    if ((next.timeStamp().compareTo(getModelTime()) != 0)) {
-                        // If the next event is in the future time,
-                        // jump out of the big while loop and
-                        // proceed to postfire().
-                        // NOTE: we reset the microstep to 0 because it is
-                        // the contract that if the event queue has some events
-                        // at a time point, the first event must have the
-                        // microstep as 0. See the
-                        // _enqueueEvent(Actor actor, Time time) method.
-                        _microstep = 0;
-                        break;
-                    } else if (next.microstep() != _microstep) {
-                        // If the next event is has a different microstep,
-                        // jump out of the big while loop and
-                        // proceed to postfire().
-                        break;
-                    } else {
-                        // The next event has the same tag as the current tag,
-                        // indicating that at least one actor is going to be
-                        // fired at the current iteration.
-                        // Continue the current iteration.
-                    }
-                }
-            }
-        } // Close the BIG while loop.
-
-        // Since we are now actually stopping the firing, we can set this false.
-        _stopFireRequested = false;
-
+        
+        super.fire();
+        
         // At the end of firing, clear the private variables used to keep track of
         // the consumed event.
-        _lastAbsoluteDeadline = null;
-        _lastDependency = null;
-        _lastSourcePort = null;
-        _lastTimestamp = null;
 
         if (_debugging) {
             _debug("PtidesBasicDirector fired!");
@@ -586,13 +349,12 @@ public class PtidesBasicDirector extends DEDirector {
         _realTimeInputEventQueue = new PriorityQueue<RealTimeEvent>();
         _realTimeOutputEventQueue = new PriorityQueue<RealTimeEvent>();
         _lastConsumedTag = new HashMap<NamedObj, Tag>();
+        _pureEventDeadlines = new HashMap<NamedObj, Time>();
+        _pureEventDelays = new HashMap<NamedObj, Time>();
+        _pureEventSourcePorts = new HashMap<NamedObj, IOPort>();
         _physicalTimeExecutionStarted = null;
 
-        _lastAbsoluteDeadline = null;
-        _lastDependency = null;
         _lastExecutingActor = null;
-        _lastSourcePort = null;
-        _lastTimestamp = null;
 
         super.initialize();
 
@@ -906,6 +668,43 @@ public class PtidesBasicDirector extends DEDirector {
         }
     }
 
+    protected boolean _checkForNextEvent() throws IllegalActionException {
+        // The following code enforces that a firing of a
+        // DE director only handles events with the same tag.
+        // If the earliest event in the event queue is in the future,
+        // this code terminates the current iteration.
+        // This code is applied on both embedded and top-level directors.
+        synchronized (_eventQueue) {
+            if (!_eventQueue.isEmpty()) {
+                PtidesEvent next = (PtidesEvent) _eventQueue.get();
+
+                if ((next.timeStamp().compareTo(getModelTime()) != 0)) {
+                    // If the next event is in the future time,
+                    // jump out of the big while loop and
+                    // proceed to postfire().
+                    // NOTE: we reset the microstep to 0 because it is
+                    // the contract that if the event queue has some events
+                    // at a time point, the first event must have the
+                    // microstep as 0. See the
+                    // _enqueueEvent(Actor actor, Time time) method.
+                    _microstep = 0;
+                    return false;
+                } else if (next.microstep() != _microstep) {
+                    // If the next event is has a different microstep,
+                    // jump out of the big while loop and
+                    // proceed to postfire().
+                    return false;
+                } else {
+                    // The next event has the same tag as the current tag,
+                    // indicating that at least one actor is going to be
+                    // fired at the current iteration.
+                    // Continue the current iteration.
+                }
+            }
+        }
+        return true;
+    }
+
     /** Check the consistency of input/output ports. The following things are checked.
      *  <p>
      *  If an input port is a sensor port (no annotation), then it should not be connected
@@ -1105,7 +904,7 @@ public class PtidesBasicDirector extends DEDirector {
 
         IOPort causalPort = _getCausalPortForThisPureEvent(actor);
 
-        Time absoluteDeadline = _absoluteDeadlineForPureEvent(time);
+        Time absoluteDeadline = _absoluteDeadlineForPureEvent(actor, time);
 
         PtidesEvent newEvent = new PtidesEvent(actor, causalPort, time,
                 microstep, depth, absoluteDeadline);
@@ -1314,7 +1113,7 @@ public class PtidesBasicDirector extends DEDirector {
             result = PtidesActorProperties.getExecutionTime(port);
         }
         if (result != null) {
-            return result;
+            return result.doubleValue();
         } else {
             return PtidesActorProperties.getExecutionTime(actor);
         }
@@ -1387,8 +1186,8 @@ public class PtidesBasicDirector extends DEDirector {
                 return token.doubleValue();
             } else {
                 throw new IllegalActionException(port,
-                        "minDelay parameter is needed" + "for channel, "
-                                + "but it does not exist.");
+                        "minDelay parameter is needed for channel " + channel
+                                + ", but it does not exist.");
             }
         } else {
             throw new IllegalActionException(port,
@@ -1496,8 +1295,10 @@ public class PtidesBasicDirector extends DEDirector {
                 // Request a refiring so we can process the next event
                 // on the event queue at the current physical time.
                 executiveDirector.fireAtCurrentTime((Actor) container);
+                
+                _lastActorFired = _getActorFromEventList((List<PtidesEvent>) currentEventList.contents);
 
-                return _getActorFromEventList((List<PtidesEvent>) currentEventList.contents);
+                return _lastActorFired;
             } else {
                 Time nextEventOnStackFireTime = _currentlyExecutingStack.peek().remainingExecutionTime;
                 Time expectedCompletionTime = nextEventOnStackFireTime
@@ -1586,6 +1387,8 @@ public class PtidesBasicDirector extends DEDirector {
             // Request a refiring so we can process the next event
             // on the event queue at the current physical time.
             executiveDirector.fireAtCurrentTime((Actor) container);
+            
+            _lastActorFired = actorToFire;
 
             return actorToFire;
         } else {
@@ -1639,6 +1442,12 @@ public class PtidesBasicDirector extends DEDirector {
                     timeStampOfEventFromQueue, microstepOfEventFromQueue,
                     eventsToProcess, executionTime));
             _physicalTimeExecutionStarted = physicalTag.timestamp;
+            if (_debugging) {
+                _debug("Actor "
+                        + actorToFire.toString()
+                        + " starts executing at physical time "
+                        + physicalTag.timestamp);
+            }
 
             // Animate if appropriate.
             _setIcon(_getExecutingIcon(actorToFire), false);
@@ -1654,8 +1463,7 @@ public class PtidesBasicDirector extends DEDirector {
      *  to the actuator/network output port.
      *  @return the containing composite actor.
      */
-    protected boolean _getNextActuationEvent() {
-        boolean result = false;
+    protected void _actorFired() {
         int eventIndex = 0;
         synchronized(_eventQueue) {
             while (eventIndex < _eventQueue.size()) {
@@ -1665,13 +1473,20 @@ public class PtidesBasicDirector extends DEDirector {
                     //(nextEvent.ioPort().getContainer() == getContainer()) &&
                     nextEvent.ioPort().isOutput()) {
                         ((PtidesListEventQueue)_eventQueue).take(eventIndex);
-                        result = true;
                         continue;
                 }
                 eventIndex++;
             }
         }
-        return result;
+        
+        
+        
+        // Now need to clear _pureEvent* if an actor has finished firing.
+        if (_lastActorFired != null) {
+            _pureEventDeadlines.remove(_lastActorFired);
+            _pureEventDelays.remove(_lastActorFired);
+            _pureEventSourcePorts.remove(_lastActorFired);
+        }
     }
 
     /** Return the actor associated with the events. All events should point to the same actor.
@@ -1823,9 +1638,13 @@ public class PtidesBasicDirector extends DEDirector {
         // port is an output port, this could only happen if it is the output port
         // of a composite actor. Thus transferOutput should take care of this, and
         // we say it's always safe to process.
+        // This should actually never happen, since _getNextActuationEvent() should
+        // move all actuation events to the outputs.
+        assert(!port.isOutput());
+        /*
         if (port.isOutput()) {
             return true;
-        }
+        }*/
         double minDelay = _getMinDelay(port, ((PtidesEvent) event).channel(),
                 event.isPureEvent());
         Time waitUntilPhysicalTime = event.timeStamp().subtract(minDelay);
@@ -2291,29 +2110,32 @@ public class PtidesBasicDirector extends DEDirector {
      *  pure event, then the formula is the same, only \delta == 0;
      *  @see #_saveEventInformation(List)
      */
-    private Time _absoluteDeadlineForPureEvent(Time nextTimestamp) {
+    private Time _absoluteDeadlineForPureEvent(Actor actor, Time nextTimestamp) {
+        
+        Time timeDiff = (Time)_pureEventDelays.get(actor);
+        Time lastAbsoluteDeadline = (Time)_pureEventDeadlines.get(actor);
         // This could happen during initialization, and a modal model calls fireAt() in order
         // to be initialized. In which case we give it the highest priority because it is
         // an initialization event.
-        if (_lastTimestamp == null || _lastDependency == null) {
+        if (timeDiff == null) {
             return Time.NEGATIVE_INFINITY;
         }
-        Time timeDiff = (nextTimestamp.subtract(_lastTimestamp))
-                .subtract(_lastDependency.timeValue());
-        // if the difference between the new timestamp and the old timestamp is 
+        timeDiff = nextTimestamp.subtract(timeDiff);
+        // If the difference between the new timestamp and the old timestamp is 
         // less than the minimum model time delay, then the absolute deadline is
-        // simply that of the trigger event. This case could happen if a pure event
+        // simply that of the trigger event. 
+        // This case could happen if a pure event
         // is produced, which later triggers another firing of the actor, and produces
         // an event that is of timestamp greater than or equal to the minimum model
         // time delay.
         if (timeDiff.compareTo(_zero) < 0) {
-            return _lastAbsoluteDeadline;
+            return lastAbsoluteDeadline;
             //            throw new InternalErrorException("While computing the absolute deadline" +
             //                            "of a new pure event, the difference between the new " +
             //                            "timestamp and the old timestamp is less than the minimum" +
             //                            "model time delay");
         }
-        return _lastAbsoluteDeadline.add(timeDiff);
+        return lastAbsoluteDeadline.add(timeDiff);
     }
 
     /** For all deeply contained actors, if annotateModelDelay is true,
@@ -2413,13 +2235,18 @@ public class PtidesBasicDirector extends DEDirector {
             throws IllegalActionException {
         CausalityMarker causalityMarker = (CausalityMarker) ((NamedObj) actor)
                 .getAttribute("causalityMarker");
+        // Last last source port is gotten. However, we do not remove the last
+        // source port from the hashmap, because more than one pure events can
+        // be produced during one firing. In which case, the last source port
+        // can be used again.
+        IOPort lastSourcePort = (IOPort)_pureEventSourcePorts.get(actor);
         // causality marker does not exist, we take the conservative approach, and say all inputs
         // causally affect the pure event.
         if (causalityMarker == null) {
-            return _lastSourcePort;
+            return lastSourcePort;
         }
-        if (causalityMarker.containsPort(_lastSourcePort)) {
-            return _lastSourcePort;
+        if (causalityMarker.containsPort(lastSourcePort)) {
+            return lastSourcePort;
         } else {
             return null;
         }
@@ -2493,19 +2320,19 @@ public class PtidesBasicDirector extends DEDirector {
         // The firing of this event is from this port. If the firing resulted in the production
         // of a pure event, then that pure event is causally related to all events coming from
         // this input port (and those in its equivalence class).
-        _lastSourcePort = eventsToProcess.get(0).ioPort();
+        Actor actorToFire = eventsToProcess.get(0).actor();
 
         // If the firing of this event triggered another pure event, we need to calculate the
         // deadline of the pure event through the use of the last timestamp, the (smallest) 
         // deadline of the last event(s), and the (smallest) \delta of the causality delays.
         // which we save here.
-        _lastTimestamp = eventsToProcess.get(0).timeStamp();
-        _lastAbsoluteDeadline = Time.POSITIVE_INFINITY;
+        Time lastTimestamp = eventsToProcess.get(0).timeStamp();
+        Time lastAbsoluteDeadline = Time.POSITIVE_INFINITY;
         List<IOPort> inputPorts = new ArrayList<IOPort>();
         for (PtidesEvent event : eventsToProcess) {
             Time absoluateDeadline = _getAbsoluteDeadline(event);
-            if (absoluateDeadline.compareTo(_lastAbsoluteDeadline) < 0) {
-                _lastAbsoluteDeadline = absoluateDeadline;
+            if (absoluateDeadline.compareTo(lastAbsoluteDeadline) < 0) {
+                lastAbsoluteDeadline = absoluateDeadline;
             }
             IOPort port = event.ioPort();
             if (port != null) {
@@ -2516,21 +2343,26 @@ public class PtidesBasicDirector extends DEDirector {
         // Now get the minimum dependency of all output ports. If the last executing event
         // is a pure event, then the last dependency is 0.
         // @see #_absoluteDeadlineForPureEvent()
+        SuperdenseDependency lastDependency;
         if (eventsToProcess.get(0).isPureEvent()) {
-            _lastDependency = SuperdenseDependency.OTIMES_IDENTITY;
+            lastDependency = SuperdenseDependency.OTIMES_IDENTITY;
         } else {
-            _lastDependency = SuperdenseDependency.OPLUS_IDENTITY;
+            lastDependency = SuperdenseDependency.OPLUS_IDENTITY;
             for (IOPort inputPort : inputPorts) {
                 Collection<IOPort> finiteDependentPorts = _finiteDependentPorts(inputPort);
                 for (IOPort outputPort : finiteDependentPorts) {
                     SuperdenseDependency newDependency = (SuperdenseDependency) _getDependency(
                             inputPort, outputPort);
-                    if (newDependency.compareTo(_lastDependency) < 0) {
-                        _lastDependency = newDependency;
+                    if (newDependency.compareTo(lastDependency) < 0) {
+                        lastDependency = newDependency;
                     }
                 }
             }
         }
+        _pureEventSourcePorts.put(actorToFire, eventsToProcess.get(0).ioPort());
+        _pureEventDelays.put(actorToFire, 
+                lastTimestamp.add(lastDependency.timeValue()));
+        _pureEventDeadlines.put(actorToFire, lastAbsoluteDeadline);
     }
 
     /** Set the minDelay of a port to an array of minDelay values.
@@ -2706,10 +2538,12 @@ public class PtidesBasicDirector extends DEDirector {
      *  to calculate the minDelay parameter, which is used for safe to process analysis.
      */
     private Map _inputModelTimeDelays;
-
-    /** The absolute deadline of the last executing event.
+    
+    /** Saves the last actor that was fired by this director. If null, the after
+     *  actor firing, values saved in _pureEventDeadlines, _pureEventDelays, and
+     *  _pureEventSourcePorts that are associated with this actor should be removed.
      */
-    private Time _lastAbsoluteDeadline;
+    private Actor _lastActorFired;
 
     /** Each actor keeps track of the tag of the last event that was consumed when this
      *  actor fired. This helps to identify cases where safe-to-process analysis failed
@@ -2717,26 +2551,12 @@ public class PtidesBasicDirector extends DEDirector {
      */
     private HashMap<NamedObj, Tag> _lastConsumedTag;
 
-    /** The dependency between the destination input ports of the last executing event
-     *  and the next input event.
-     */
-    private SuperdenseDependency _lastDependency;
-
     /** Last executing actor
      *  Keeps track of the last actor with non-zero executing time that was executing
      *  This helps to clear the highlighting of that actor when executing stops.
      */
     private Actor _lastExecutingActor;
 
-    /** Each event (pure or trigger) has a source port associated with it. This value stores
-     *  the source port of the last event. This is used to determine the causality information
-     *  of the correspondingly produced pure event due to the processing of the last event.
-     */
-    private IOPort _lastSourcePort;
-
-    /** The timestamp of the last executing event.
-     */
-    private Time _lastTimestamp;
 
     /** The physical time at which the currently executing actor, if any,
      *  last resumed execution.
@@ -2746,6 +2566,22 @@ public class PtidesBasicDirector extends DEDirector {
     /** Maps ports to dependencies. Used to determine minDelay parameter
      */
     private Map _portDelays;
+    
+    /** Stores absolute deadline information for pure events that will be produced
+     *  in the future.
+     */
+    private Map _pureEventDeadlines;
+    
+    private Map _pureEventDelays;
+    
+    /** Stores source port information for pure events that will be produced
+     *  in the future.
+     *  This variable maps the next actor to be fired to the source input port of the 
+     *  last event. This is used to determine the causality information
+     *  of the pure event that is to be produced.
+
+     */
+    private Map _pureEventSourcePorts;
 
     /** a sorted queue of RealTimeEvents that buffer events before they are sent to the output.
      */
@@ -2842,28 +2678,17 @@ public class PtidesBasicDirector extends DEDirector {
          *  @return true if the dependencies are equal.
          */
         public boolean equals(Object arg0) {
-            // FIXME: FindBugs:
-            // "This class overrides equals(Object), but does not
-            // override hashCode(), and inherits the implementation of
-            // hashCode() from java.lang.Object (which returns
-            // the identity hash code, an arbitrary value assigned to the object
-            // by the VM).&nbsp; Therefore, the class is very likely to violate the
-            // invariant that equal objects must have equal hashcodes.
-            //
-            // If you don't think instances of this class will ever be
-            // inserted into a HashMap/HashTable, the recommended
-            // hashCode implementation to use is:
-            //
-            // public int hashCode() {
-            // assert false : "hashCode not designed";
-            // return 42; // any arbitrary constant will do 
-            // }
-
-            if (compareTo(arg0) == 0) {
-                return true;
-            } else {
+            if (!(arg0 instanceof PortDependency)) {
                 return false;
             }
+            return (compareTo(arg0) == 0);
+        }
+        
+        /** Hashcode for this class.
+         *  @return hashcode for this class.
+         */
+        public int hashCode() {
+            return port.hashCode() >>> dependency.hashCode();
         }
     }
 
