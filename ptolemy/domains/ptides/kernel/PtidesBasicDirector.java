@@ -77,10 +77,14 @@ import ptolemy.moml.MoMLChangeRequest;
  *  enclosing director. The enclosing director's time
  *  represents physical time, whereas this time represents model
  *  time in the Ptides model.
+ *  <p>
  *  Preemption is disallowed in this scheduler.
  *  <p>
  *  The receiver used in this case is the PtidesBasicReceiver.
  *  @see PtidesBasicReceiver
+ *  <p>
+ *  This director deals with pure events differently than DEDirector.
+ *  @see PtidesEvent
  *
  *  @author Patricia Derler, Edward A. Lee, Ben Lickly, Isaac Liu, Slobodan Matic, Jia Zou
  *  @version $Id$
@@ -529,6 +533,22 @@ public class PtidesBasicDirector extends DEDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** An actor has just been fired. An actuation event could have been
+     *  produced, so we transfer that event to the outside. Also, we clear 
+     *  bookkeeping structures that keeps track of what actor has just fired.
+     */
+    protected void _actorFired() {
+        
+        _getNextActuationEvent();
+
+        // Now need to clear _pureEvent* if an actor has finished firing.
+        if (_lastActorFired != null) {
+            _pureEventDeadlines.remove(_lastActorFired);
+            _pureEventDelays.remove(_lastActorFired);
+            _pureEventSourcePorts.remove(_lastActorFired);
+        }
+    }
+    
     /** Causality analysis that happens at the preinitialization phase.
      *  The goal is to annotate each port with a minDelay parameter,
      *  which is the offset used for safe to process analysis.
@@ -1461,9 +1481,9 @@ public class PtidesBasicDirector extends DEDirector {
      *  is destined to an output port of the containing composite actor.
      *  This event is taken from the event queue, and the token is sent
      *  to the actuator/network output port.
-     *  @return the containing composite actor.
      */
-    protected void _actorFired() {
+    
+    protected void _getNextActuationEvent() {
         int eventIndex = 0;
         synchronized(_eventQueue) {
             while (eventIndex < _eventQueue.size()) {
@@ -1477,15 +1497,6 @@ public class PtidesBasicDirector extends DEDirector {
                 }
                 eventIndex++;
             }
-        }
-        
-        
-        
-        // Now need to clear _pureEvent* if an actor has finished firing.
-        if (_lastActorFired != null) {
-            _pureEventDeadlines.remove(_lastActorFired);
-            _pureEventDelays.remove(_lastActorFired);
-            _pureEventSourcePorts.remove(_lastActorFired);
         }
     }
 

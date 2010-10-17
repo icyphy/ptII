@@ -431,6 +431,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
             if (result == 1) {
                 continue;
             } else if (result == -1) {
+                _getNextActuationEvent();
                 return;
             } // else if 0, keep executing
 
@@ -1997,6 +1998,11 @@ public class DEDirector extends Director implements SuperdenseTimeDirector,
         return actorToFire;
     }
 
+    /** Place holder that gets the next actuation event. This method does nothing
+     *  here. It's used for the Ptides subclass.
+     */
+    protected void _getNextActuationEvent() {
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
