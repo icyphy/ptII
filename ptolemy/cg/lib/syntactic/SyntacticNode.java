@@ -94,7 +94,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     }
 
     /** Create new instance of SyntacticNode with no connections.
-     *  @param workspace
+     *  @param workspace Workspace in which to create the node.
      */
     public SyntacticNode(Workspace workspace) {
         super(workspace);
@@ -158,7 +158,9 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
 
     /** Represent an Entity and its ports for use in a SyntacticGraph.
      *  @param entity The Entity to be represented with the SyntacticNode 
-     *  @return if the representation is total
+     *  @return if the representation is total.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public boolean representEntity(Entity entity)
         throws IllegalActionException, NameDuplicationException {
@@ -233,6 +235,19 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         return totalr;
     }
     
+    /** Add a port node with a directionality.
+     *  Given port is represented by constructed SyntacticPorts
+     *  then added to the node in this form. The number of 
+     *  ports added from the given port is the width of the 
+     *  given port. Each channel is represented by a SyntacticPort
+     *  and pointed back to the given Port.
+     * 
+     *  @param port Port to add
+     *  @param isin True if input, False if output.
+     *  @return number of SyntacticPorts added (= width).
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
     public int addPorts(Port port, boolean isin) 
             throws IllegalActionException, NameDuplicationException {
         String prefix = (isin ? "in_" : "out_");
@@ -313,6 +328,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Set node as purely syntactic, not representing any Entity.
      *  @param inputs Number of inputs.
      *  @param outputs Number of outputs.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      * */
     public void setSyntactic(int inputs, int outputs)
         throws IllegalActionException, NameDuplicationException {
@@ -336,7 +353,11 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
         }
     }
     
-    /** Set node as an identity. */
+    /** Set node as an identity. 
+     * 
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
     public void setIdentity() 
         throws IllegalActionException, NameDuplicationException {
         setSyntactic(1, 1);
@@ -365,6 +386,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  The true direction splits, the false merges.
      *  @param direction The direction to make the mediator node.
      *  @param valence The amount of endpoints on the opposite side. 
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public void setMediator(boolean direction, int valence)  
         throws IllegalActionException, NameDuplicationException {
@@ -386,6 +409,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     
     /** Set node as a initial or terminal node in specified direction, true being out.
      *  @param direction The direction to make the cap node.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public void setCap(boolean direction)  
         throws IllegalActionException, NameDuplicationException {
@@ -397,6 +422,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     
     /** Set node as a bijective permutation node with a specified permutation.
      *  @param permutation The permutation to represent as the node.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public void setPermutation(int permutation[])  
         throws IllegalActionException, NameDuplicationException {
@@ -476,6 +503,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     
     /** Set the label used to lexically represent the node.
      *  @param label Label to set for node. 
+     *  @see #getLabel
      */
     public void setLabel(String label) {
         _label = label;
@@ -771,6 +799,7 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     
     /** Get the label of the node.
      *  @return label of the node.
+     *  #see setLabel
      */
     public String getLabel() {
         return _label;
@@ -876,6 +905,8 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
     /** Generate icon for permutation node.
      *  @param permutation Array of permutation values.
      *  @return svg code for generated icon.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     protected String _makePermutationIcon(int permutation[]) 
         throws IllegalActionException, NameDuplicationException {
@@ -1053,46 +1084,101 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  how they are ordered, compared, and categorized.
      */
     public enum NodeType {
+        /** Permutation node */
         PERMUTATION(0),
+        
+        /** Representative node */
         REPRESENTATIVE(1),  
-        SPLIT(3), MERGE(3), 
+        
+        /** Split mediator */
+        SPLIT(3), 
+        
+        /** Merge mediator */
+        MERGE(3), 
+        
+        /** Cap node */
         CAP(4),  
-        SEND(5), RECEIVE(5), 
-        INPUT(6), OUTPUT(6), 
+        
+        /** Feedback send */ 
+        SEND(5), 
+        
+        /** Feedback receive */
+        RECEIVE(5), 
+        
+        /** Input node */
+        INPUT(6), 
+        
+        /** Output node */
+        OUTPUT(6), 
+        
+        /** Identity node */
         IDENTITY(7), 
+        
+        /** Other node type */
         UNKNOWN(100); 
         
+        /** Constant sort order of the node. */
         private final int order;
+        
+        /** Make a new node type enum with a given order.
+         *  @param sort order of node.
+         */
         private NodeType(int order) { this.order = order; }
         
+        /** Decide whether type is unknown.
+         *  @return whether type is unknown.
+         */
         public boolean isUnknown()   { 
             return this == UNKNOWN; 
         }
         
+        /** Decide whether type is an input or output.
+         *  @return whether type is input or output.
+         */
         public boolean isExterior()  { 
             return this == INPUT || this == OUTPUT; 
         }
         
+        /** Decide whether type is feedback in or out.
+         *  @return whether type is feedback in or out.
+         */
         public boolean isFeedback()  { 
             return this == SEND  || this == RECEIVE; 
         }
         
+        /** Decide whether type is a purely syntactic one.
+         *  @return whether type is a purely syntactic one.
+         */
         public boolean isPure()      { 
             return this == IDENTITY || this == CAP || this == PERMUTATION || isMediator() || isFeedback(); 
         }
         
+        /** Decide whether type is a mediator. 
+         *  @return whether type is a mediator.
+         */
         public boolean isMediator()  {
             return this == SPLIT || this == MERGE;
         }
         
+        /** Decide whether type is incoming.
+         *  True if an input or feedback input.
+         *  @return whether type is incoming.
+         */
         public boolean isIncoming() {
             return this == INPUT || this == RECEIVE;
         }
         
+        /** Decide whether type is outgoing.
+         *  True if an output or feedback output.
+         *  @return whether type is outgoing.
+         */
         public boolean isOutgoing() {
             return this == OUTPUT || this == SEND;
         }
         
+        /** Sort order of type.
+         *  @return sort order of type.
+         */
         public int getOrder() { return order; } 
         
     };

@@ -93,7 +93,7 @@ public class SyntacticGraph extends CompositeEntity {
     }
 
     /** Create new instance of SyntacticGraph in a given workspace.
-     *  @param workspace
+     *  @param workspace Workspace in which to create the syntactic graph.
      */
     public SyntacticGraph(Workspace workspace) {
         super(workspace);
@@ -124,9 +124,9 @@ public class SyntacticGraph extends CompositeEntity {
     /** Construct an instance of SyntacticGraph in a given container.
      *  @param container The container entity.
      *  @param name The name of the entity.
-     *  @exception IllegalActionException If the entity cannot be contained
+     *  @throws IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException If the name coincides with
+     *  @throws NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
     public SyntacticGraph(CompositeEntity container, String name)
@@ -156,8 +156,23 @@ public class SyntacticGraph extends CompositeEntity {
         _labelCount = 0;
     }
     
-    
-    
+    /** Build the syntactic graph from the given model.
+     *  Model is constructed by going through the total set of 
+     *  steps necessary to establish a representative graph:
+     *  
+     *      -- add entities to graph,
+     *      -- make graph bijective,
+     *      -- remove feedback loops,
+     *      -- order graph topologically,
+     *      -- insert permutation operators,
+     *      -- add layout information to display 
+     *         generated graph.
+     * 
+     * @param model Model to represent with graph.
+     * @return whether graph was successively produced.
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
     public boolean build(CompositeEntity model)
         throws IllegalActionException, NameDuplicationException {
         
@@ -193,6 +208,13 @@ public class SyntacticGraph extends CompositeEntity {
         return true;
     }
     
+    /** Add entity to the syntactic graph wrapping with syntactic node.
+     *  Beginning of an alternative. Not currently used.
+     * 
+     *  @param entity Entity to add to the graph.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
     public void addNode2(Entity entity)
             throws IllegalActionException, NameDuplicationException {
         
@@ -204,7 +226,10 @@ public class SyntacticGraph extends CompositeEntity {
     }
     
     /** Add entity to the syntactic graph wrapping with syntactic node.
+     * 
      *  @param entity Entity to add to the graph.
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public void addNode(Entity entity) 
             throws IllegalActionException, NameDuplicationException {
@@ -221,9 +246,11 @@ public class SyntacticGraph extends CompositeEntity {
     /** Add a SyntacticNode to the Graph. 
      *  Nodes are either purely syntactic nodes or nodes that
      *  represent Entities.
+     *  
      *  @param node Node to add to the Graph.
      *  @throws IllegalActionException on attempts to add nodes
      *  after certain transformations are done to the graph.
+     *  @throws NameDuplicationException if duplicate names are used.
      */
     public void addNode(SyntacticNode node) 
         throws IllegalActionException, NameDuplicationException {
@@ -365,6 +392,9 @@ public class SyntacticGraph extends CompositeEntity {
     
     /** Make SyntacticGraph bijective by adding pure nodes.
      *  Pure nodes are added to mediate multiply connected nodes.
+     *  
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public void makeBijective() 
         throws IllegalActionException, NameDuplicationException {
@@ -468,6 +498,9 @@ public class SyntacticGraph extends CompositeEntity {
      *  This can only be done when the graph is bijective, though this
      *  might still work with more constraints given a multiply connected 
      *  graph.
+     *  
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public void removeFeedback() 
         throws IllegalActionException, NameDuplicationException {
@@ -560,6 +593,9 @@ public class SyntacticGraph extends CompositeEntity {
     
     /** Structure the graph into columns. 
      *  This transformation imposes a partial order on the acyclic graph.
+     *  
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
      */
     public void structure() 
         throws IllegalActionException, NameDuplicationException {
@@ -688,7 +724,11 @@ public class SyntacticGraph extends CompositeEntity {
         
     }
     
-    /** Insert permutation objects between columns. */
+    /** Insert permutation objects between columns.  
+     * 
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
     public void insertPermutations() 
         throws IllegalActionException, NameDuplicationException {
         if (_series.size() < 2) return;
@@ -753,7 +793,11 @@ public class SyntacticGraph extends CompositeEntity {
         _exprName.setName("Expression");
     }
     
-    /** Layout graph for display in columns. */
+    /** Layout graph for display in columns. 
+     * 
+     *  @throws IllegalActionException
+     *  @throws NameDuplicationException
+     */
     public void layoutGraph()
         throws IllegalActionException, NameDuplicationException {
         double colpos = 10.0, coldepth = 10.0;
@@ -778,7 +822,10 @@ public class SyntacticGraph extends CompositeEntity {
         }
     }
 
-    /** Generate code for model represented by graph. */
+    /** Generate code for model represented by graph. 
+     * 
+     *  @return code generated from syntactic graph.
+     */
     public String generateCode() {
         String code = "";
         for (SyntacticNode node : _nodes) {
