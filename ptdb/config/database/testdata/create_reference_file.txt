@@ -23,4 +23,9 @@ putDocument ReferenceFile.ptdbxml '<reference>
 	<entity DBModelId="Adder" name="Adder"/>
 	<entity DBModelId="Adder" name="Adder"/>
 </entity>
+<entity DBModelId="DD_1287442736015" name="DD"/>
+<entity DBModelId="MM_1287442785812" name="MM"/>
+<entity DBModelId="CC_1287442853046" name="CC">
+	<entity DBModelId="MM_1287442785812" name="MM"/>
+</entity>
 </reference>'
