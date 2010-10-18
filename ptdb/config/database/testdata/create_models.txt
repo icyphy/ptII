@@ -1698,3 +1698,119 @@ putDocument newModel '<?xml version="1.0" standalone="no"?>
     <link port="AddSubtract.minus" relation="relation7"/>
     <link port="AddSubtract.output" relation="relation5"/>
 </entity>'
+
+putDocument DD '<entity name="DD" class="ptolemy.actor.TypedCompositeActor"><property name="DBModelId" class="ptolemy.data.expr.StringConstantParameter" value="DD_1287442736015"/>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE">
+    </property>
+    <port name="port" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+        </property>
+    </port>
+    <port name="port2" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+        </property>
+    </port>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{245, 190}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="port" relation="relation"/>
+    <link port="port2" relation="relation2"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Const.trigger" relation="relation"/>
+</entity>'
+
+putDocument MM '<entity name="MM" class="ptolemy.actor.TypedCompositeActor"><property name="DBModelId" class="ptolemy.data.expr.StringConstantParameter" value="MM_1287442785812"/>
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="DBReference" class="ptolemy.data.expr.StringConstantParameter" value="FALSE">
+    </property>
+    <port name="port" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+        </property>
+    </port>
+    <port name="port2" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+        </property>
+    </port>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 225}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="port" relation="relation"/>
+    <link port="port2" relation="relation2"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Const.trigger" relation="relation"/>
+</entity>'
+
+putDocument CC '<entity class="ptolemy.actor.TypedCompositeActor" name="CC">
+    <property class="ptolemy.kernel.attributes.VersionAttribute" name="_createdBy" value="8.1.devel">
+    </property>
+    <property class="ptolemy.data.expr.StringConstantParameter" name="DBReference" value="FALSE">
+    </property>
+    <property class="ptolemy.data.expr.StringConstantParameter" name="DBModelId" value="CC_1287442853046">
+    </property>
+    <entity DBModelId="MM_1287442785812" class="ptolemy.actor.TypedCompositeActor" name="MM"><property class="ptolemy.data.expr.StringConstantParameter" name="DBModelId" value="MM_1287442785812">
+        </property><property class="ptolemy.kernel.attributes.VersionAttribute" name="_createdBy" value="8.1.devel">
+        </property><property class="ptolemy.data.expr.StringConstantParameter" name="DBReference" value="TRUE">
+        </property><property class="ptolemy.kernel.util.Location" name="_location" value="[265.0, 160.0]">
+        </property></entity>
+    <entity class="ptolemy.actor.lib.gui.Display" name="Display">
+        <property class="ptolemy.actor.gui.WindowPropertiesAttribute" name="_windowProperties">
+        </property>
+        <property class="ptolemy.actor.gui.SizeAttribute" name="_paneSize">
+        </property>
+        <property class="ptolemy.kernel.util.Location" name="_location" value="{425, 140}">
+        </property>
+    </entity>
+    <entity class="ptolemy.actor.lib.Const" name="Const">
+        <doc>
+Create a constant sequence.</doc>
+        <property class="ptolemy.vergil.icon.BoxedValueIcon" name="_icon">
+            <property class="ptolemy.kernel.util.StringAttribute" name="attributeName" value="value">
+            </property>
+            <property class="ptolemy.data.expr.Parameter" name="displayWidth" value="60">
+            </property>
+        </property>
+        <property class="ptolemy.kernel.util.Location" name="_location" value="{35, 135}">
+        </property>
+    </entity>
+    <relation class="ptolemy.actor.TypedIORelation" name="relation">
+    </relation>
+    <relation class="ptolemy.actor.TypedIORelation" name="relation2">
+    </relation>
+    <link port="MM.port" relation="relation2"/>
+    <link port="MM.port2" relation="relation"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="Const.output" relation="relation2"/>
+</entity>'
