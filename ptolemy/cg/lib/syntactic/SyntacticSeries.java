@@ -62,7 +62,11 @@ public class SyntacticSeries extends SyntacticTermList {
         SyntacticRank rank = _rank == null ? term.rank() : SyntacticRank.compose(term, this);
         if (rank == null) return;
         
-        super.push(term);
+        // Java 1.5 does not have push(), but
+        // http://download.oracle.com/javase/6/docs/api/java/util/LinkedList.html#push%28E%29
+        // says "This method is equivalent to addFirst(E)."
+        // super.push(term);
+        addFirst(term);
 
         if (size() == 1) {
             _outputs.clear();

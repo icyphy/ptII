@@ -177,7 +177,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                 }
 
                 // Start drawing the line.
-                path.moveTo(startX, startY);
+                // Under Java 1.5, we only have moveTo(float, float).
+                path.moveTo((float)startX, (float)startY);
 
                 // Add the start point and end point to the bendPointList in 
                 // order to get the curveTo-effect working.
@@ -248,7 +249,8 @@ public class KielerLayoutConnector extends LinkManhattanConnector {
                 }
 
                 // Finally close the last segment with a line.
-                path.lineTo(endX, endY);
+                // Under Java 1.5, we only have moveTo(float, float).
+                path.lineTo((float)endX, (float)endY);
 
                 // Now set the shape.
                 setShape(path);
