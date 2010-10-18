@@ -505,8 +505,8 @@ public class TestOracleXMLDBConnection {
 
         }
 
-        XMLDBModel oldModel = new XMLDBModel("D.xml");
-        XMLDBModel newModel = new XMLDBModel("Adder");
+        XMLDBModel oldModel = new XMLDBModel("MM");
+        XMLDBModel newModel = new XMLDBModel("DD");
 
         task.setNewModel(newModel);
         try {
@@ -525,37 +525,37 @@ public class TestOracleXMLDBConnection {
         }
 
         ArrayList<String> parentsList = new ArrayList<String>();
-        parentsList.add("C.xml");
+        parentsList.add("CC");
         task.setParentsList(parentsList);
         try {
             conn.executeUpdateParentsToNewVersion(task);
-            GetReferenceStringTask task1 = new GetReferenceStringTask("C.xml");
+            GetReferenceStringTask task1 = new GetReferenceStringTask("CC");
             String referenceString = conn.executeGetReferenceStringTask(task1);
 
             assertTrue("Updation Incorrect - New model not found.",
-                    referenceString.indexOf("Adder") != -1);
+                    referenceString.indexOf("DD") != -1);
             assertTrue("Updation Incorrect - Old model still present.",
-                    referenceString.indexOf("D.xml") == -1);
+                    referenceString.indexOf("MM") == -1);
 
-            oldModel = new XMLDBModel("Adder", "Adder");
-            newModel = new XMLDBModel("D.xml", "D.xml");
+            oldModel = new XMLDBModel("DD");
+            newModel = new XMLDBModel("MM");
 
             task = new UpdateParentsToNewVersionTask();
             task.setNewModel(newModel);
             task.setOldModel(oldModel);
             parentsList = new ArrayList<String>();
-            parentsList.add("C.xml");
+            parentsList.add("CC");
             task.setParentsList(parentsList);
 
             conn.executeUpdateParentsToNewVersion(task);
-            task1 = new GetReferenceStringTask("C.xml");
+            task1 = new GetReferenceStringTask("CC");
 
             referenceString = conn.executeGetReferenceStringTask(task1);
 
-            assertTrue("Updation Incorrect - New model(D.xml) not found.",
-                    referenceString.indexOf("D.xml") != -1);
-            assertTrue("Updation Incorrect - Old model(Adder) still present.",
-                    referenceString.indexOf("Adder") == -1);
+            assertTrue("Updation Incorrect - New model(MM) not found.",
+                    referenceString.indexOf("MM") != -1);
+            assertTrue("Updation Incorrect - Old model(DD) still present.",
+                    referenceString.indexOf("DD") == -1);
 
             newModel = new XMLDBModel("DoesNotExist.xml", "DoesNotExist.xml");
             task.setNewModel(newModel);
