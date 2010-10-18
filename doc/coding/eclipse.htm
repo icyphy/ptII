@@ -30,6 +30,7 @@ Other local pages:
 <menu>
 <li><a href="performance.htm#Eclipse">Profiling using TPTP</a>
 </menu>
+
 <h2><a name="Installing">Install Eclipse</a></h2>
 <ol>
 <li>
@@ -43,25 +44,99 @@ facility, which is an optional part of Ptolemy II that allows models to
 restore their old state.  If the version of Eclipse that you install
 does not have the PDE, then there will be build errors, which can be fixed by
 excluding <CODE>ptolemy/backtrack/</CODE> from the build.
+
+<p>Eclipse is available as both 32-bit and 64-bit binaries.  Deciding
+which one to download can be complex.  See below for details.
+The basic idea is that to use a 64-bit version of Eclipse, you must
+have a 64-bit JVM and an operating system that will support 64-bit
+applications.  When in doubt, choose the 32-bit version of Eclipse,
+it is more likely to work than the 64-bit version.
+</p>
+
+<h3>32-bit or 64-bit?</h3>
+<ul>
+<li>(<i>Linux</i>): Run <code>uname -a</code>.  If the result
+ contains <code>x64</code>, you are running a 64-bit version of Linux and 
+would select the 64-bit version of Eclipse..  Also,
+ try <code>java -version</code>.  Below is a run on a 64-bit Linux
+ machine:
+<pre>
+-bash-3.2$ uname -a
+Linux sisyphus.eecs.berkeley.edu 2.6.18-164.11.1.el5xen #1 SMP Wed Jan 6 13:43:33 EST 2010 x86_64 x86_64 x86_64 GNU/Linux
+-bash-3.2$ java -version
+java version "1.5.0_22"
+Java(TM) 2 Runtime Environment, Standard Edition (build 1.5.0_22-b03)
+Java HotSpot(TM) 64-Bit Server VM (build 1.5.0_22-b03, mixed mode)
+</pre>
+
 <li> (<i>Mac OS X</i>):
-For Mac OS 10.5 and 10.6, most users will want to select the
-  "Mac OS X 64 bit" version because we use JDK 1.6, which is 64 bit.
+Under Mac OS X 10.5 and 10.6, the default JVM is 1.6, which is 64-bit.  However,
+Java 1.6.0_20 does not work well with Eclipse.  The issue is that
+the following stack trace appears:
+<pre>
+2010-10-10 11:50:02.263 java[7823:613] java.lang.NullPointerException
+at apple.awt.CToolkit.postEvent(CToolkit.java:1086)
+at apple.awt.EventFactoryProxy.forwardEvent(EventFactoryProxy.java:53)
+</pre>
+See:
+<a href="http://lists.apple.com/archives/java-dev/2010/May/msg00140.html"><code>http://lists.apple.com/archives/java-dev/2010/May/msg00140.html</code></a>.
+
+<br>So, at this time, we are recommending the 32-bit version with Java 1.5.
+
 <br>Download
-  <code>eclipse-rcp-helios-macosx-cocoa-x86_64.tar.gz</code>,
+  <code>eclipse-rcp-helios-SR1-macosx-cocoa.tar.gz</code>
   uncompress it and move <code>eclipse/</code> into <code>/Applications</code>, which
   will create <code>/Applications/eclipse/Eclipse.app</code>.
-  <br>Firefox Mac OS X Details: <ol>
+  <br>Firefox Mac OS X Details:
+    <ol>
     <li>Firefox will download the file into a directory, which may be
     <code>/Downloads</code>
     <li>Double click on
-    <code>eclipse-rcp-helios-macosx-cocoa-x86_64.tar.gz</code> which
-    will create the <code>eclipse</code> directory.
+    <code>eclipse-rcp-helios-SR1-macosx-cocoa.tar.gz</code>
+    which will create the <code>eclipse</code> directory.
     <li> Drag the <code>eclipse</code> directory to your
     <code>Applications</code> directory.
     </ol>
 
-<br> (<i>Windows</i>): 
-Unzip the download file into an appropriate place, such as <code>C:\Program Files</code>, which will create <code>C:\Program Files\eclipse\eclipse.exe</code>.
+  <br>The next step on the Mac is to force Eclipse to use Java 1.5 by
+    editing <code>eclipse.ini</code>.
+   <ol>
+    <li> In the Finder, go to <code>/Applications/eclipse</code>,
+      find the <code>Eclipse</code> executable and right click (Control + click)
+      and choose "Show Package Contents".
+    <li> Browse to <code>Contents/MacOS</code> and double click on
+      <code>eclipse.ini</code>, which will open up the file in TextEdit
+    <li> Edit the file and insert
+      <pre>
+-vm /System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java
+      </pre>
+    <li>Save the file and exit TextEdit.
+      
+  </ol>
+  For details about <code>eclipse.ini</code>, see
+  <a href="http://wiki.eclipse.org/Eclipse.ini#in_browser">http://wiki.eclipse.org/Eclipse.ini</a>
+
+
+<li> (<i>Windows</i>): Determine whether you are running a 32-bit or
+    64-bit version of the OS.
+<ul>
+<li><i>Windows 7 or Vista</i>:  "Start", then right click on
+"Computer", then click on "Properties".  Under System, you
+should see the system type.  The 64-bit version of Windows 7 will
+say "64-bit Operating System".  See
+<a href="http://windows.microsoft.com/en-US/windows7/32-bit-and-64-bit-Windows-frequently-asked-questions"><code>http://windows.microsoft.com/en-US/windows7/32-bit-and-64-bit-Windows-frequently-asked-questions</code></a>.
+for details.
+
+<li><i>Windows XP</i>: "Start", then right click on "My Computer",
+and then click on "Properties". Under "System", if you see "x64
+Edition", then you are running a 64-bit version of Windows.  If "x64
+Edition" is <b>not</b> listed, then you are running a 32-bit version of Windows.
+</ul>
+
+<br>After determining whether to download the 32-bit or 64-bit version
+of Eclipse, download the file and unzip the download file into an
+appropriate place, such as <code>C:\Program Files</code>, which will
+create <code>C:\Program Files\eclipse\eclipse.exe</code>.
 
 <br>If <code>eclipse\eclipse.exe</code> is not created, then it could
 be that the security policy on your machine is preventing the creation
@@ -70,9 +145,12 @@ clicking on the zip file, select "Properties" and then at the bottom,
 hit "Unblock" and then "Apply". Or try running
 <code>unzip</code> from the command line.
 
-<li>Finish the installation by double click <code>/Applications/eclipse/Eclipse.app</code> or <CODE>eclipse/eclipse.exe</CODE>.
+</ul>
+
+<li>(<i>All Platforms</i>): Finish the installation by double click <code>/Applications/eclipse/Eclipse.app</code> or <CODE>eclipse/eclipse.exe</CODE>.
 <br>The first time this is run it will complete the installation process.
-<br> (<i>Windows</i>): 
+<ul>
+<li> (<i>Windows</i>): 
 If Eclipse fails to start with the message "Windows cannot access the specified device, path or file. You may not have the appropriate permisions to access the item", then it may be necessary to make 
 <code>eclipse.exe</code> and a dll executable:
 <pre>
@@ -84,34 +162,51 @@ in the <code>eclipse</code> directory.
 find . -name *.dll -exec chmod a+x {} \;
 </pre>
 <br>After the first run, normal start-up will occur whenever it is started.
-
+</ul>
 
 </ol>
 
 <h2><a name="Preferences">Eclipse Preferences for Ptolemy II</a></h2>
 <p>
+Eclipse has the notion of a workspace, which is a collection of
+one or more projects.  Ptolemy II is a project. 
+
+<br>When the "Select a workspace" window comes up, either stick with the default
+or choose a new directory.  Note that the projects can be located outside
+of the workspace directory.  One caveat is that Eclipse will not permit
+the project directory to be a parent of the workspace directory, so placing the
+workspace in a subdirectory such as the default location is best.
+<br>Click "OK" to create the workspace and open Eclipse.
+<br>Below is the Workspace Launcher Window:
+<center><p><img src="../img/eclipseWorkspaceLauncher.png" alt="Eclipse Workspace Launcher" width="597" height="244"></p></center>
+
 The default configuration of Eclipse has some difficulties with Ptolemy II,
 so a few changes are necessary.
 <ol>
+<li>(<i>Optional</i>): Short cuts and Memory Size
+<ul>
 <li>(<i>Mac OS X</i>):
-  <i>Optional</i>: In <code>Applications/eclipse</code>, drag the
+  In <code>Applications/eclipse</code>, drag the
   <code>Eclipse.app</code> icon to the Finder Dock on the edge of your
   screen.  This will give you fast access to starting Eclipse.
   <br>There is usually no need to set the memory size for Eclipse under Mac OS X.  By default, it is set to 512 megabytes.  
   For details about setting the memory size, see:
-  <a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.user/tasks/running_eclipse.htm#in_browser" target="_top">Eclipse Workbench User Guide/Tasks/Running Eclipse</a>.
+  <a href="http://help.eclipse.org/helios/topic/org.eclipse.platform.doc.user/tasks/running_eclipse.htm#in_browser" target="_top">Eclipse Workbench User Guide/Tasks/Running Eclipse</a>.
   
 <li>(<i>Windows</i>): 
-  There is usually no need to set the memory size for Eclipse.  By default, it is set to 512 megabytes in the
-  <code>eclipse.ini</code> file.
 
-<p>In Windows,  create a shortcut to <code>eclipse.exe</code> by going to the 
+  In Windows,  create a shortcut to <code>eclipse.exe</code> by going to the 
 directory where Eclipse is installed, right clicking on eclipse.exe 
 and selecting <code>Create Shortcut</code>. 
 
-<p>To add Eclipse to the start menu, right click on the shortcut and 
+  <br>There is usually no need to set the memory size for Eclipse.  By default, it is set to 512 megabytes in the
+  <code>eclipse.ini</code> file.
+
+
+   <br>To add Eclipse to the start menu, right click on the shortcut and 
 select <code>Pin to Start Menu</code>
-<p>
+</ul>
+
 <li>Eclipse requires some customization to build Ptolemy II
 and to keep the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/style.htm#in_browser" target="_top">Ptolemy II coding style</a>.
 In the steps below, we
@@ -140,8 +235,10 @@ follows:
 <li> Deselect <code>Build automatically</code>.
 <li> Click Apply. 
 </ol>
-
-<br><img src="../img/eclipsePreferencesGeneralWorkspace.png" alt="Eclipse Preferemces General Workspace" width="624" height="537">
+Below is the <code>General</code> | <code>Workspace</code> window:
+<center>
+<p><img src="../img/eclipsePreferencesGeneralWorkspace.png" alt="Eclipse Preferemces General Workspace" width="624" height="537"></p>
+</center>
 <p>
 <li>
 
@@ -182,25 +279,35 @@ to format comments.  We hope to change this policy in the future.
  </ol>
 
 <li>
-Ptolemy II 8.0 uses some features of Java 5.0.
+Ptolemy II 8.0 uses some features of Java 1.5, which is also known as Java 5.0.
 In particular, <CODE>ptolemy/actor/ptalon</CODE> uses generics,
-which require Java 5.0 or later.
+which require Java 1.5 (aka Java 5.0) or later.
 <p>However, the Ptolemy II development trunk that includes changes after
-Ptolemy II 8.0 uses some features of Java 1.6, which is also known as Java
- 6.0.
+Ptolemy II 8.0 uses some features of Java 1.6 (aka Java 6.0).
+
 In particular, <code>ptdb</code> to uses javax.swing.GroupLayout.
  which requires Java 1.6 (also known as 6.0) or later.
 
-<p>So, it is best to set Eclipse to use Java 1.6 or 6.0 or later source code compliance.
+<ul>
+<li>(<i>Mac OS X</i>): It is best to set Eclipse to use Java 1.5 or 5.0
+or later source code compliance.
+
+<li>(<i>Windows</i>): It is best to set Eclipse to use Java 1.6 or 6.0
+or later source code compliance.
+</ul>
 
 <ol>
  <li> While still in the preferences window
   <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
   <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
   <br> expand <code>Java</code> | <code>Compiler</code>
- <li> Make sure that Set "Compiler compliance level" is "1.6", or "6.0"
- or later.
-<i>Note that Java 1.6 is the same as Java 6.0</i>.  What we don't want
+ <li> Make sure that Set "Compiler compliance level":
+<ul>
+<li>(<i>Mac OS X</i>): "1.5" or "5.0"
+<li>(<i>Windows</i>): "1.6" or "6.0"
+</ul>
+
+<i>Note that Java 1.5 is the same as Java 5.0 and Java 1.6 is the same as Java 6.0</i>.  What we don't want
 is "1.4" or "4.0".   If you plan on using the the Ptolemy II development
 tree after Ptolemy II 8.0. then you don't want "1.5" or "5.0".
  <li> Click Apply. 
@@ -228,27 +335,27 @@ if you are tightly managing serialization, we turn it off:
 requires <code>tools.jar</code>, which is only in the Java Development
 Kit (JDK), not the Java Runtime Environment (JRE).  So, be sure that a
 JDK is selected for building, not a JRE.
-<br>While still in the preferences window 
+<br>While still in the preferences window: 
 <br> (<i>Mac OS X</i>: <code>Eclipse</code> | <code>Preferences</code>)
 <br> (<i>Windows</i>: <code>Window</code> | <code>Preferences</code>)
 <ol>
 <li> Select <code>Java</code> | <code>Installed JREs</code>
-<br>(<i>Mac OS X</i>):  select <code>JVM 1.6.0</code>.
+<br>(<i>Mac OS X</i>):  select <code>JVM 1.5.0</code>.
+<br>(<i>Windows</i>):  select <code>JVM 1.6.0</code>.
 
 <li> Verify that the checked line corresponds with a JDK, not
 a JRE.
 </ol>
 
-Under Java 1.6, <code>tools.jar</code> must be added the external jars:
-<ol>
-<li>Windows -> Preferences -> Java -> Installed JREs
-<li>Select the default JRE -> Edit -> Add External Jars -> <code></i>Path to JDK</i>/lib/tools.jar</code>
-</ol>
+<li> (<i>Windows</i>): While in the "Installed JREs" window, under Java 1.6,
+<code>tools.jar</code> must be added the external jars:
+
+<li>Select the default JRE | <code>Edit</code> | <code>Add External Jars</code>  <code></i>Path to JDK</i>/lib/tools.jar</code>
+
 
 <li> Click OK  in the Preferences window to apply all of the above changes.
-</menu>
-
 </ol>
+
 
 <h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
 
@@ -258,20 +365,20 @@ the ptII project.  There several ways to set up the ptII project,
 
 <li> <a href="#NoSVN">Eclipse is unaware of the version control aspects of the project.</a>
 <br>If you are downloading the source from major Ptolemy release,
-and don't want to update regularly, then use this choice
+and don't want to update regularly, then use this choice.
 
 <br>(No Eclipse Subversion plug-in (Subversive),
- No Subversion (<code>svn</code>) from the command line)
+ No Subversion (<code>svn</code>) from the command line).
 
 <li> <a href="#NoSubversive">Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a>
 
 <br>(No Eclipse Subversion plug-in (Subversive),
- use Subversion (<code>svn</code>) from the command line)
+ use Subversion (<code>svn</code>) from the command line).
 
 <li> <a href="#Subversive">Eclipse is aware of the Subversion aspects of the project.</a> 
 You can use both Eclipse and shell version of Subversion to update the tree.
 <br>(Use both the Eclipse Subversion plug-in (Subversive) and the
-shell <code>svn</code> command)
+shell <code>svn</code> command).
 
 </ol>
 
@@ -292,20 +399,26 @@ and don't want to update regularly
 <br> The Windows and Mac OS X installers include the source, or you may
 install a separate source-only download.
 
-<li>Eclipse uses the .classpath file to set paths and exclude files.
+<li>Eclipse uses the <code>.classpath</code> file to set paths and exclude files.
   There are two choices:
   <ol>
-    <li> Copy <code>.classpath.default</code> to <code>.classpath</code>.
-      This choice is the simpler choice, but might exclude optional third
-      party packages.
+
+    <li> In the Ptolemy II source tree,
+      copy <code>.classpath.default</code> to <code>.classpath</code>.
+      This choice is the simpler choice, but might exclude optional
+      third party packages.
+
     <li> Run <code>./configure</code>.  This choice is more complex,
       especially for Windows users.  However, this choice will include
-      optional third party software that is already installed on your machine
+      optional third party software that is already installed on your
+      machine.
+
   </ol>
 
   Choose <b>one</b> of the options below
    <h4>1. Copy .classpath to .classpath.default</h4>
-   <br>(<i>Mac OS X</i>): 
+   <ul>
+   <li>(<i>Mac OS X</i>): 
      Unfortunately, by default the Mac OS X Finder hides files whose names
      begin with a period, such as <code>.classpath</code>.  One solution
  is to follow th instructions from:
@@ -319,10 +432,7 @@ install a separate source-only download.
         <li> Restart the Finder by holding down the Option key, then
 	  clicking and holding on the Finder icon in the Dock.  Then, 
 	  select "Relaunch".  Or, log out and log back in again.
-     </ol>  
 
-     <h5>Mac OS X: Using the Terminal to copy files</h5>
-     <ol>
        <li>Start up the Terminal application, which may be found as
         <code>/Utilities/Terminal.app</code>
        <li>In the Terminal, change to the directory where the Ptolemy II
@@ -335,12 +445,23 @@ install a separate source-only download.
            cp .classpath.default .classpath
          </pre>
      </ol>
-
+   <li>(<i>Windows</i>): 
+     <ol>
+     <li>Find the Ptolemy II source distribution,
+     which by default would be <code>c:\Ptolemy\ptII8.0.1</code>.
+     <li>Right click on <code>.classpath</code> and select delete.
+     <li>Right click on <code>.classpath.default</code>, select copy.
+     <li>Select paste and paste a copy of the file.
+     <li>Right click on the copy, select rename and rename the file
+       to <code>.classpath.default</code>.
+     </ol>
+   </ul>
    <h4>Or. 2. Run ./configure</h4> 
     A slightly more complex choice is to run <code>./configure</code>.
       The advantage to this method is that it searches the environment for
       third party software and configures your environment.  
-     <h5>Mac OS X: Using the Terminal to run configure</h5>
+    <ul>
+     <li>(<i>Mac OS X</i>): Using the Terminal to run configure
      <ol>
        <li>Start up the Terminal application, which may be found as
         <code>/Utilities/Terminal.app</code>
@@ -359,11 +480,10 @@ install a separate source-only download.
          </pre>
      </ol>
 
-   <h5>Windows: Install Cygwin and run configure</h5>
-   Unfortunately Windows does not ship with Unix shell
-     commands like <code>make</code>.  The workaround is to install Cygwin,
+   <li>(<i>Windows</i>): Install Cygwin and run configure
+
+   Unfortunately Windows does not ship with Unix shell commands like <code>make</code>.  The workaround is to install Cygwin,
      see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm</code></a>
-      <h6>Windows: Using Cygwin to run configure</h6>
       <ol>
 	<li> Start up the Cygwin Bash shell: Start | Run | Cygwin
 	<li> Change to the directory where the Ptolemy II source code was
@@ -380,23 +500,15 @@ install a separate source-only download.
 	    ./configure
 	  </pre>  
       </ol>
+    </ul>
 
-
- <li> Start up Eclipse
- <li> Eclipse has the notion of a workspace, which is a collection of
-one or more projects.  Ptolemy II is a project. 
-<br>When the "Select a workspace" window comes up, either stick with the default
-or choose a new directory.  Note that the projects can be located outside
-of the workspace directory.  One caveat is that Eclipse will not permit
-the project directory to be a parent of the workspace directory, so placing the
-workspace in a subdirectory such as the default location is best.
-<br>Click "OK" to create the workspace and open Eclipse.
-<br>Below is the Workspace Launcher Window:
-<br><img src="../img/eclipseWorkspaceLauncher.png" alt="Eclipse Workspace Launcher" width="597" height="244">
+ <li> If Eclipse is not running, start up Eclipse
 
  <li> In Eclipse, do  <code>File</code> | <code>New</code> | <code>Project</code>.
  <li> In the "New Project" window, select "Java" &gt; "Java project", Click Next.
-<br><img src="../img/eclipseNewProject.png" alt="Eclipse New Project" width="525" height="500">
+<center>
+<p><img src="../img/eclipseNewProject.png" alt="Eclipse New Project" width="525" height="500"></p>
+</center>
 
 <li>In the "New Java Project" window:
    <br> In "Project Name", enter any project name,  <code>ptII</code>
@@ -411,8 +523,10 @@ workspace in a subdirectory such as the default location is best.
   exit Eclipse, remove the file and restart Eclipse. -->
   <br> Press "Next".
   <br> Below is the New Java Project window:
-  <br><img src="../img/eclipseNewJavaProject.png" alt="Eclipse New Java Project" width="603" height="704">
-<li> If the "Setting Build Paths" window comes up with a message
+  <center>
+  <p><img src="../img/eclipseNewJavaProject.png" alt="Eclipse New Java Project" width="603" height="704"></p>
+  </center>
+  <b>Warning</b>: If the "Setting Build Paths" window comes up with a message
   "The output folder has changed. Do you want to remove all generated resources
   from the old location ptII/bin", then the problem is that the
   <code>.classpath</code> file was not found.  It is best if you exit
@@ -420,50 +534,63 @@ workspace in a subdirectory such as the default location is best.
 <li> In the "New Java Project" window, select
  "Allow output folders for source folder", then click "Finish"
   <br> Below is the second New Java Project window:
-<br><img src="../img/eclipseNewJavaProject2.png" alt="Eclipse New Java Project" width="603" height="704">
+  <center>
+  <p><img src="../img/eclipseNewJavaProject2.png" alt="Eclipse New Java Project" width="603" height="704"></p>
+  </center>
 <li>When asked if you want to shift to the Java perspective, click on Yes.
-<li>Under the "Project" menu choice, select "Build All" and then "Build Automatically"
+<li>Under the "Project" menu choice, select "Build All", 
+"Run in background" and then "Build Automatically" 
 <li>The workspace will take a few minutes to build.
+<li>Go to <a href="#runningPtolemy">Running Ptolemy II</a> below.
 </ul>
+
 </ol>
 <h3>OR</h3>
 <h3><a name="NoSubversive">2. Eclipse is unaware of the version control aspects of the project, use the shell version of Subversion to update the tree.</a></h3>
 
 <ol>
-<li>Install Subversion:
-   <ul>
-   <li> <a href="http://tortoisesvn.tigris.org/#in_browser" target="_top">Tortoise SVN</a> - Windows GUI Client
-   <br> <i>If you are not installing Subversive, then choose TortoiseSVN</i>
-   <li> <a href="http://www.cygwin.com/#in_browser" target="_top">Cygwin</a> - Windows command line client
-   <br> If you are more comfortable with a command line, then choose Cygwin. Make sure that you also install Cygwin's Subversion package.
-<li> To check out the ptII svn repository with <b>read-only</b> access:
-<pre>
-svn co svn://source.eecs.berkeley.edu/chess/ptII/trunk ptII
-</pre>
- <br><B>Note:</B> Most users will select <CODE>svn://</CODE> because
-they will be accessing the tree with <B>read-only</B> Subversion access.
-<br>If you have an 
-<a href="http://chess.eecs.berkeley.edu/ptexternal/#in_browser" target="_top">ssh account</a> on <code>source.eecs.berkeley.edu</code>, then check out ptII with
-read/write access:
-<pre>
-svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
-</pre>
-Or, if your user id on source.eecs is different than your current user id
-on your machine:
-<pre>
-svn co svn+ssh://<I>yourID@</I>source.eecs.berkeley.edu/chess/ptII/trunk ptII
-</pre>
+   <li>Install Subversion:
+    <ul>
+      <li>(<i>Mac OS X</i>): Mac OS X already has Subversion installed.
+       To test this, start up a Terminal window and run <code>svn help</code>.
+      <li>(<i>Windows</i>): Windows does not have Subversion installed.
+      <ul>
+        <li> <a href="http://tortoisesvn.tigris.org/#in_browser" target="_top">Tortoise SVN</a> - Windows GUI Client
+          <br> <i>If you are not installing the Eclipse Subversive plugin, then choose TortoiseSVN</i>
+        <li> <a href="http://www.cygwin.com/#in_browser" target="_top">Cygwin</a> - Windows command line client
+         <br> If you are more comfortable with a command line, then choose Cygwin. Make sure that you also install Cygwin's Subversion package.
+     </ul>
+    </ul>
+  <li> To check out the ptII svn repository with <b>read-only</b> access:
+     <pre>
+     svn co svn://source.eecs.berkeley.edu/chess/ptII/trunk ptII
+     </pre>
+     <br><B>Note:</B> Most users will select <CODE>svn://</CODE> because
+     they will be accessing the tree with <B>read-only</B> Subversion access.
+    <br>If you have an 
+    <a href="http://chess.eecs.berkeley.edu/ptexternal/#in_browser" target="_top">ssh account</a>
+    on <code>source.eecs.berkeley.edu</code>, then check out ptII with
+    read/write access:
+    <pre>
+    svn co svn+ssh://source.eecs.berkeley.edu/chess/ptII/trunk ptII
+    </pre>
+    Or, if your user id on source.eecs is different than your current user id
+    on your machine:
+    <pre>
+    svn co svn+ssh://<I>yourID@</I>source.eecs.berkeley.edu/chess/ptII/trunk ptII
+    </pre>
 
-<li>Configure the .classpath and .project files. See <a href="#.classpath.default"><CODE>.classpath.default</CODE></a>. below.
-<li>Create the ptII project
-<ul>
- <li> In <code>File</code> | <code>New</code> | <code>Project</code>,
-select 'Java project'.
-In the 'Contents' box, click on 'Create project from existing source'
-and browse to the PTII directory. Finish.
+   <li>Configure the .classpath and .project files. See <a href="#.classpath.default"><CODE>.classpath.default</CODE></a>. below.
+   <li>Create the ptII project
+     <ol>
+     <li> In <code>File</code> | <code>New</code> | <code>Project</code>,
+     select 'Java project'.
+     In the 'Contents' box, click on 'Create project from existing source'
+     and browse to the PTII directory. Finish.
 
-<li>When asked if you want to shift to the Java perspective, click on Yes.
-</ul>
+     <li>When asked if you want to shift to the Java perspective, click on Yes.
+     </ol>
+   <li>Go to <a href="#setupSubversion">Setup the Subversion Configuration to Sane Settings</a> below.
 </ol>
 
 <h3>OR</h3>
@@ -526,7 +653,7 @@ Follow the <a href="http://www.eclipse.org/subversive/downloads.php#in_browser" 
   <li> When prompted for a restart, select "Restart Now".
 </ol>
 
-<h3>Setup the Subversion Configuration to Sane setting</h3>
+<h3><a name="setupSubversion">Setup the Subversion Configuration to Sane setting</h3>
 Sadly, Subversion is by default configured with nonsense initial default 
 values for commit times and end of line settings.
 <h4>Tell Subversion to use commit times</h4>
