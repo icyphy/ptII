@@ -134,9 +134,8 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     /**
      * Returns true if the interconnectConstraintType is for sources, false otherwise.
      * It will return only true if {@linkplain #interconnectConstraintType
-     * interconnectConstraintType} is set to either
-     * {@linkplain ConstraintType#SRC_EQUALS_GREATER SRC_EQUALS_GREATER} or
-     * {@linkplain ConstraintType#SRC_EQUALS_MEET SRC_EQUALS_MEET}
+     * interconnectConstraintType} is set to
+     * {@linkplain ConstraintType#SRC_EQUALS_GREATER SRC_EQUALS_GREATER}
      * 
      * @return true if the interconnectConstraintType is for sources, false otherwise
      */
