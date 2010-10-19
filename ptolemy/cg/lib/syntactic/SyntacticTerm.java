@@ -86,7 +86,14 @@ public interface SyntacticTerm {
      */
     public abstract String generateCode();
     
+    /** Get the sort order of term.
+     *  @return sort order of term.
+     */
     public abstract int getOrder();
+    
+    /** Decide whether term can generate code representation.
+     *  @return whether term can generate code.
+     */
     public abstract boolean hasCode();
     
 }
