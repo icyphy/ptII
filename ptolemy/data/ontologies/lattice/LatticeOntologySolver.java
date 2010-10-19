@@ -102,21 +102,6 @@ public class LatticeOntologySolver extends OntologySolver {
         actorConstraintType = new StringParameter(this, "actorConstraintType");
         actorConstraintType.setExpression("out >= in");
 
-        connectionConstraintType = new StringParameter(this,
-                "connectionConstraintType");
-        connectionConstraintType.setExpression("sink >= src");
-
-        compositeConnectionConstraintType = new StringParameter(this,
-                "compositeConnectionConstraintType");
-        compositeConnectionConstraintType.setExpression("sink >= src");
-
-        fsmConstraintType = new StringParameter(this, "fsmConstraintType");
-        fsmConstraintType.setExpression("sink >= src");
-
-        expressionASTNodeConstraintType = new StringParameter(this,
-                "expressionASTNodeConstraintType");
-        expressionASTNodeConstraintType.setExpression("parent >= child");
-
         _applySolverStrategy();
         
         _addChoices();
@@ -147,64 +132,6 @@ public class LatticeOntologySolver extends OntologySolver {
      * </ul>
      */
     public StringParameter actorConstraintType;
-
-    /**
-     * String that represents the setting for default composite connection constraints.
-     * <ul>
-     * <li>"src >= sink" The source must be >= the sink of each composite connection
-     * <li>"sink >= src" The sink must be >= the source of each composite connection
-     * <li>"sink == src" The sink must == the source of each composite connection
-     * <li>"src == meet(sink1, sink2, ...)" The source must == the least upper bound
-     * of the sink of each composite connection
-     * <li>"sink == meet(src1, src2, ...)" The sink must == the least upper bound
-     * of the source of each composite connection
-     * <li>"NONE" No constraints between the sources and sinks of composite connections
-     * </ul>
-     */
-    public StringParameter compositeConnectionConstraintType;
-
-    /**
-     * String that represents the setting for default connection constraints.
-     * <ul>
-     * <li>"src >= sink" The source must be >= the sink of each connection
-     * <li>"sink >= src" The sink must be >= the source of each connection
-     * <li>"sink == src" The sink must == the source of each connection
-     * <li>"src == meet(sink1, sink2, ...)" The source must == the least upper bound
-     * of the sink of each connection
-     * <li>"sink == meet(src1, src2, ...)" The sink must == the least upper bound
-     * of the source of each connection
-     * <li>"NONE" No constraints between the sources and sinks of connections
-     * </ul>
-     */
-    public StringParameter connectionConstraintType;
-
-    /**
-     * String that represents the setting for default AST expression constraints.
-     * <ul>
-     * <li>"child >= parent" The child node must be >= the parent node
-     * <li>"parent >= child" The parent node must be >= the child node
-     * <li>"parent == child" The parent node must == the child node
-     * <li>"parent == meet(child1, child2, ...)" The parent node must == the least
-     * upper bound of the child nodes
-     * <li>"NONE"
-     * </ul>
-     */
-    public StringParameter expressionASTNodeConstraintType;
-
-    /**
-     * String that represents the setting for default finite state machine constraints.
-     * <ul>
-     * <li>"src >= sink" The source must be >= the sink of each state transition
-     * <li>"sink >= src" The sink must be >= the source of each state transition
-     * <li>"sink == src" The sink must == the source of each state transition
-     * <li>"src == meet(sink1, sink2, ...)" The source must == the least upper bound
-     * of the sink of each state transition
-     * <li>"sink == meet(src1, src2, ...)" The sink must == the least upper bound
-     * of the source of each state transition
-     * <li>"NONE" No constraints between the sources and sinks of state transitions
-     * </ul>
-     */
-    public StringParameter fsmConstraintType;
 
     /**
      * Indicate whether to compute the least or greatest fixed point solution.
@@ -472,7 +399,7 @@ public class LatticeOntologySolver extends OntologySolver {
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
         toplevelAdapter._setConnectionConstraintType(
-                _getConstraintType(connectionConstraintType.stringValue()));
+                _getConstraintType(actorConstraintType.stringValue()));
         
         _initialConstraintList = toplevelAdapter.constraintList();
     }
@@ -656,53 +583,22 @@ public class LatticeOntologySolver extends OntologySolver {
                 solvingFixedPoint.setExpression("least");
                 
                 actorConstraintType.setVisibility(Settable.NOT_EDITABLE);
-                compositeConnectionConstraintType
-                    .setVisibility(Settable.NOT_EDITABLE);
-                connectionConstraintType.setVisibility(Settable.NOT_EDITABLE);
-                expressionASTNodeConstraintType
-                    .setVisibility(Settable.NOT_EDITABLE);
-                fsmConstraintType.setVisibility(Settable.NOT_EDITABLE);
-                solvingFixedPoint.setVisibility(Settable.NOT_EDITABLE);
                 
                 
                 // Specific settings
                 if (strategy.contains("forward")) {
                     actorConstraintType.setExpression("out >= in");
-                    compositeConnectionConstraintType
-                        .setExpression("sink >= src");
-                    
-                    connectionConstraintType.setExpression("sink >= src");
-                    expressionASTNodeConstraintType
-                        .setExpression("parent >= child");
-                    fsmConstraintType.setExpression("sink >= src");
                 }
                 else if (strategy.contains("backward")) {
                     actorConstraintType.setExpression("in >= out");
-                    compositeConnectionConstraintType
-                        .setExpression("src >= sink");
-                    connectionConstraintType.setExpression("src >= sink");
-                    expressionASTNodeConstraintType
-                        .setExpression("child >= parent");
-                    fsmConstraintType.setExpression("src >= sink");
                 }
                 else {
                     actorConstraintType.setExpression("out == in");
-                    compositeConnectionConstraintType
-                        .setExpression("sink == src");
-                    connectionConstraintType.setExpression("sink == src");
-                    // FIXME:  Test old solver expressions - this was 
-                    // parent >= child previously
-                    expressionASTNodeConstraintType
-                        .setExpression("parent == child");
-                    fsmConstraintType.setExpression("sink == src");
                 }
                 
                 // All of these expressions should be valid
                 try {
                     actorConstraintType.validate();
-                    compositeConnectionConstraintType.validate();
-                    expressionASTNodeConstraintType.validate();
-                    fsmConstraintType.validate();
                 } catch(IllegalActionException e){};
             }
 
@@ -710,10 +606,6 @@ public class LatticeOntologySolver extends OntologySolver {
             // editable.  Values are not changed.
             else if (strategy.contains("custom")) {
                 actorConstraintType.setVisibility(Settable.FULL);
-                compositeConnectionConstraintType.setVisibility(Settable.FULL);
-                connectionConstraintType.setVisibility(Settable.FULL);
-                expressionASTNodeConstraintType.setVisibility(Settable.FULL);
-                fsmConstraintType.setVisibility(Settable.FULL);
                 solvingFixedPoint.setVisibility(Settable.FULL);
             }
             // Do nothing if the strategy is none of the above
@@ -1017,53 +909,7 @@ public class LatticeOntologySolver extends OntologySolver {
         actorConstraintType.addChoice("out == meet(in1, in2, ...)");
         actorConstraintType.addChoice("in == meet(out1, out2, ...)");
         actorConstraintType.addChoice("NONE");
-        //      actorConstraintType.addChoice("in > out");
-        //      actorConstraintType.addChoice("out > in");
-        //      actorConstraintType.addChoice("out != in");
-
-        connectionConstraintType.addChoice("src >= sink");
-        connectionConstraintType.addChoice("sink >= src");
-        connectionConstraintType.addChoice("sink == src");
-        connectionConstraintType.addChoice("src == meet(sink1, sink2, ...)");
-        connectionConstraintType.addChoice("sink == meet(src1, src2, ...)");
-        connectionConstraintType.addChoice("NONE");
-        //      connectionConstraintType.addChoice("src > sink");
-        //      connectionConstraintType.addChoice("sink > src");
-        //      connectionConstraintType.addChoice("sink != src");
-
-        compositeConnectionConstraintType.addChoice("src >= sink");
-        compositeConnectionConstraintType.addChoice("sink >= src");
-        compositeConnectionConstraintType.addChoice("sink == src");
-        compositeConnectionConstraintType
-                .addChoice("src == meet(sink1, sink2, ...)");
-        compositeConnectionConstraintType
-                .addChoice("sink == meet(src1, src2, ...)");
-        compositeConnectionConstraintType.addChoice("NONE");
-        //      compositeConnectionConstraintType.addChoice("src > sink");
-        //      compositeConnectionConstraintType.addChoice("sink > src");
-        //      compositeConnectionConstraintType.addChoice("sink != src");
-
-        expressionASTNodeConstraintType.addChoice("child >= parent");
-        expressionASTNodeConstraintType.addChoice("parent >= child");
-        expressionASTNodeConstraintType.addChoice("parent == child");
-        //expressionASTNodeConstraintType.addChoice("child == meet(parent1, parent2, ...)");
-        expressionASTNodeConstraintType
-                .addChoice("parent == meet(child1, child2, ...)");
-        expressionASTNodeConstraintType.addChoice("NONE");
-        //      expressionASTNodeConstraintType.addChoice("child > parent");
-        //      expressionASTNodeConstraintType.addChoice("parent > child");
-        //      expressionASTNodeConstraintType.addChoice("parent != child");
-
-        fsmConstraintType.addChoice("src >= sink");
-        fsmConstraintType.addChoice("sink >= src");
-        fsmConstraintType.addChoice("sink == src");
-        fsmConstraintType.addChoice("src == meet(sink1, sink2, ...)");
-        fsmConstraintType.addChoice("sink == meet(src1, src2, ...)");
-        fsmConstraintType.addChoice("NONE");
-        //      fsmConstraintType.addChoice("src > sink");
-        //      fsmConstraintType.addChoice("sink > src");
-        //      fsmConstraintType.addChoice("sink != src");
-
+ 
     }
 
     /** Return a string representing the list of inequality constraints specified

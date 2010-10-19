@@ -386,7 +386,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     protected List<OntologyAdapter> _getSubAdapters()
             throws IllegalActionException {
         LatticeOntologySolver solver = getSolver();
-        if (solver.expressionASTNodeConstraintType.getExpression().equals(
+        if (solver.actorConstraintType.getExpression().equals(
                 "NONE")) {
             return new LinkedList();
         }
