@@ -107,12 +107,7 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
         toplevelAdapter._setConnectionConstraintType(
-                _getConstraintType(connectionConstraintType.stringValue()),
-                _getConstraintType(compositeConnectionConstraintType
-                        .stringValue()), _getConstraintType(fsmConstraintType
-                        .stringValue()),
-                _getConstraintType(expressionASTNodeConstraintType
-                        .stringValue()));
+                _getConstraintType(connectionConstraintType.stringValue()));
 
         // Collect and solve type constraints.
         List<Inequality> constraintList = toplevelAdapter.constraintList();

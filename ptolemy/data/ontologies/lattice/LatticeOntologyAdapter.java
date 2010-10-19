@@ -415,10 +415,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * is an AST node
      * @exception IllegalActionException If an exception is thrown
      */
-    protected void _setConnectionConstraintType(ConstraintType constraintType,
-            ConstraintType compositeConstraintType,
-            ConstraintType fsmConstraintType,
-            ConstraintType expressionASTNodeConstraintType)
+    protected void _setConnectionConstraintType(ConstraintType constraintType)
             throws IllegalActionException {
 
         Iterator adapters = _getSubAdapters().iterator();
@@ -427,27 +424,10 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             LatticeOntologyAdapter adapter = (LatticeOntologyAdapter) adapters
                     .next();
 
-            adapter._setConnectionConstraintType(constraintType,
-                    compositeConstraintType, fsmConstraintType,
-                    expressionASTNodeConstraintType);
+            adapter._setConnectionConstraintType(constraintType);
         }
 
-        if (getComponent() instanceof ASTPtRootNode) {
-
-            interconnectConstraintType = expressionASTNodeConstraintType;
-
-        } else if (getComponent() instanceof ModalModel
-                || getComponent() instanceof FSMActor) {
-
-            interconnectConstraintType = fsmConstraintType;
-
-        } else if (getComponent() instanceof CompositeEntity) {
-
-            interconnectConstraintType = compositeConstraintType;
-
-        } else {
-            interconnectConstraintType = constraintType;
-        }
+        interconnectConstraintType = constraintType;
     }
 
     /** The list of permanent property constraints. */
