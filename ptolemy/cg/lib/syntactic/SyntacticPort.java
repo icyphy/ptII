@@ -180,10 +180,22 @@ public class SyntacticPort extends ComponentPort {
         return _isEmpty;
     }
     
+    /** Gets the IOType of the port.
+     *  For ports that represent input/output ports, each SyntacticPort
+     *  will be set to the appropriate type for the part of the 
+     *  port it represents.
+     *  
+     *  @return IOType of the port.
+     */
     public IOType getType() {
         return _iotype;
     }
     
+    /** Gets the IOType of a given port.
+     * 
+     *  @param port Port to find the type of.
+     *  @return IOType of given port.
+     */
     static public IOType portType(Port port) {
         if (!(port instanceof IOPort)) return IOType.none;
         
@@ -197,15 +209,35 @@ public class SyntacticPort extends ComponentPort {
         else               return IOType.none;
     }
     
+    /** Decide whether a port is exterior in the given entity.
+     *  This should be passed the model during analysis.
+     * 
+     *  @param port Port to check for exteriority.
+     *  @param entity Entity to check inside of.
+     *  @return
+     */
     static public boolean isPortExterior(Port port, CompositeEntity entity) {
         return port.getContainer() == (NamedObj)entity;
     }
     
+    /** Gets the IOType of a given port with reference to a composite entity.
+     *  If a port is an exterior port of the entity, its IOType is reversed
+     *  to reflect the role it plays on the inside of the composite.
+     * 
+     *  @param port Port to find the type of.
+     *  @param entity Entity to check inside of.
+     *  @return IOType of the port.
+     */
     static public IOType portType(Port port, CompositeEntity entity) {
         IOType type = portType(port);
         return isPortExterior(port, entity) ? type.reverse() : type;
     }
     
+    /** Gets the width of a Port.
+     * 
+     *  @param port Port to find the width of.
+     *  @return the width of the port or null if not a port.
+     */
     static public Integer portWidth(Port port)
         throws IllegalActionException {
         if (!(port instanceof IOPort)) return null;
@@ -215,9 +247,13 @@ public class SyntacticPort extends ComponentPort {
         return width;
     }
     
+    /** Represent IO type for ports. */
     public enum IOType { 
         in, out, io, none; 
         
+        /** Get the reversed IO type.
+         *  @returns reversed IO type.
+         */
         public IOType reverse() {
             return this == in  ? out 
                  : this == out ? in 

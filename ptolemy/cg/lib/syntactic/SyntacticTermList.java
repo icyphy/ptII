@@ -32,9 +32,29 @@ import java.util.Collection;
 import java.util.List;
 import java.util.LinkedList;
 
+
+///////////////////////////////////////////////////////////////////
+//// SyntacticTermList
+
+/**
+ This class is the base class for SyntacticTerms that are formed from
+ operations on lists of other terms. Since, it extends LinkedList, it 
+ internally maintains a list of SyntacticTerms, although not semantics
+ are given to the list other than the collective access to the ports 
+ of its elements. Additional information and structure to form an
+ operator should override or extend the methods of this base class to
+ correctly calculate rank, connectivity, and other combinator behaviors.
+
+ @author Chris Shaver
+ @version $Id$
+ @since Ptolemy II 8.0
+ @Pt.ProposedRating Red (shaver)
+ @Pt.AcceptedRating Red 
+*/
 public class SyntacticTermList extends LinkedList<SyntacticTerm>
     implements SyntacticTerm {
 
+    /** Constructs an empty term list with no rank information. */
     public SyntacticTermList() {
         super();
         _inputs     = new LinkedList();
@@ -64,6 +84,13 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return true;
     }
 
+    /** Add collection of SyntacticTerms to the list by calling 
+     *  the add function. If add is overridden then this will
+     *  polymorphically apply it repeatedly to collections.
+     *  
+     *  @param terms Terms is a collection of SyntacticTerms.
+     *  @return whether or not operation changed list.
+     */
     public boolean addAll(Collection<? extends SyntacticTerm> terms) {
         boolean changed = false;
         for (SyntacticTerm term : terms) {
@@ -73,6 +100,13 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return changed;
     }
     
+    /** Remove collection of SyntacticTerms to the list by calling 
+     *  the remove function. If add is overridden then this will
+     *  polymorphically apply it repeatedly to collections.
+     *  
+     *  @param terms Terms is a collection of SyntacticTerms.
+     *  @return whether or not operation changed list.
+     */
     public boolean removeAll(Collection<?> terms) {
         boolean changed = false;
         for (Object term : terms) {
@@ -82,6 +116,15 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return changed;
     }
     
+    /** Insert a Syntactic Term in the column.
+     *  Inputs and outputs are added to the total 
+     *  inputs and outputs of the composition.
+     *  <p>
+     *  This method overrides the LinkedList add().
+     * 
+     *  @param index Index at which to add the term.
+     *  @param term Term to add to the composition.
+     */
     public void add(int index, SyntacticTerm term) {
         SyntacticRank rank = term.rank();
         if (rank != null) {
@@ -119,6 +162,7 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return true;
     }
 
+    /** Clear list along with port lists. */
     public void clear() {
         super.clear();
         _inputs.clear();
@@ -126,6 +170,14 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         _rank = null;
     }
 
+    /** Overwrite a Syntactic Term in the column.
+     *  Inputs and outputs are added to the total 
+     *  inputs and outputs of the list.
+     *  
+     *  @param index Index at which to overwrite the term.
+     *  @param term Term with which the term at the given index is replaced.
+     *  @return term replaced.
+     */
     public SyntacticTerm set(int index, SyntacticTerm term) {
         SyntacticTerm cterm = get(index);
         if (cterm == null) return null;
@@ -146,6 +198,11 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return null;
     }
 
+    // TODO: Implement this method.
+    /** Remove a term at a given index.
+     *
+     *  @param index Index at which to remove the term.
+     */
     public SyntacticTerm remove(int index) {
         // TODO Auto-generated method stub
         return null;
@@ -165,14 +222,28 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return _outputs;
     }
 
+    /** Get the number of inputs to the elements of 
+     *  the list exposed to the outside.
+     *  
+     *  @return number of inputs.
+     */
     public int sizeInputs() {
         return _inputs.size();
     }
 
+    /** Get the number of outputs to the elements of
+     *  the list exposed to the outside.
+     *  
+     *  @return number of outputs.
+     */
     public int sizeOutputs() {
         return _outputs.size();
     }
 
+    /** Get the rank of the list.
+     * 
+     *  @return rank of the list as a term.
+     */
     public SyntacticRank rank() {
         return _rank;
     }
@@ -199,18 +270,32 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         return index < 0 ? null : index;
     }
 
+    /** Generate code for the term. 
+     *  In the case of this base class it is blank.
+     *  
+     *  @return string containing the code for the term.
+     */
     public String generateCode() {
         return "";
     }
 
+    /** Get the sort order of the term.
+     *  
+     *  @return sort order of the term.
+     */
     public int getOrder() {
         return 99;
     }
 
+    /** Decide whether the term has code to generate.
+     * 
+     *  @return whether the term has code to generate.
+     */
     public boolean hasCode() {
         return true;
     }
     
+    /** Refresh the port lists scanning through the terms. */
     protected void _refreshPorts() {
         _inputs.clear();
         _outputs.clear();
@@ -220,12 +305,18 @@ public class SyntacticTermList extends LinkedList<SyntacticTerm>
         }
     }
     
+    /** Recalculate the rank of the list as a term. */
     protected void _refreshRank() {
         // TODO: refresh rank default
     }
     
+    /** List of exposed input ports of constituent terms. */
     protected LinkedList<SyntacticPort> _inputs;
+    
+    /** List of exposed output ports of constituent terms. */ 
     protected LinkedList<SyntacticPort> _outputs;
+    
+    /** Rank of list as a term. */
     protected SyntacticRank _rank;
 
 }

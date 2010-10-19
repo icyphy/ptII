@@ -1084,37 +1084,37 @@ public class SyntacticNode extends ComponentEntity implements SyntacticTerm {
      *  how they are ordered, compared, and categorized.
      */
     public enum NodeType {
-        /** Permutation node */
+        /** Permutation node. */
         PERMUTATION(0),
         
-        /** Representative node */
+        /** Representative node. */
         REPRESENTATIVE(1),  
         
-        /** Split mediator */
+        /** Split mediator. */
         SPLIT(3), 
         
-        /** Merge mediator */
+        /** Merge mediator. */
         MERGE(3), 
         
-        /** Cap node */
+        /** Cap node. */
         CAP(4),  
         
-        /** Feedback send */ 
+        /** Feedback send. */ 
         SEND(5), 
         
-        /** Feedback receive */
+        /** Feedback receive. */
         RECEIVE(5), 
         
-        /** Input node */
+        /** Input node. */
         INPUT(6), 
         
-        /** Output node */
+        /** Output node. */
         OUTPUT(6), 
         
-        /** Identity node */
+        /** Identity node. */
         IDENTITY(7), 
         
-        /** Other node type */
+        /** Other node type. */
         UNKNOWN(100); 
         
         /** Constant sort order of the node. */
