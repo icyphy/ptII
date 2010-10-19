@@ -109,11 +109,11 @@ public class OntologyMoMLHandler extends Attribute {
     }
 
     /** Highlight concepts that have already been resolved, but do not run solver.
-     * If the value of the showText parameter is set to
-     * true, show all property values visually.
-     * Otherwise, do nothing.
-     * @throws IllegalActionException If getting the resolved concept fails.
-     */    
+     *  If the value of the showText parameter is set to
+     *  true, show all property values visually.
+     *  Otherwise, do nothing.
+     *  @param objects The set of objects to highlight.
+     */
     public void highlightConcepts(Set<Object> objects)
     {
         if (objects != null)
