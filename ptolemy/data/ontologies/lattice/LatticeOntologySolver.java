@@ -978,20 +978,11 @@ public class LatticeOntologySolver extends OntologySolver {
         /** Represents that there is no constraint between the two sides. */
         NONE,
 
-        /** Represents that the two sides must be unequal. */
-        NOT_EQUALS,
-
         /** Represents that the sink must be >= the source. */
         SINK_EQUALS_GREATER,
 
-        /** Represents that the sink must == the least upper bound of all sources. */
-        SINK_EQUALS_MEET,
-
         /** Represents that the source must be >= the sink. */
-        SRC_EQUALS_GREATER,
-
-        /** Represents that the source must == the least upper bound of all sinks. */
-        SRC_EQUALS_MEET
+        SRC_EQUALS_GREATER
     }
 
     ///////////////////////////////////////////////////////////////////
