@@ -41,12 +41,10 @@ import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 
 ///////////////////////////////////////////////////////////////////
 //// LatticeOntologySolver
@@ -98,8 +96,6 @@ public class LatticeOntologySolver extends OntologySolver {
         
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
-
-        _applySolverStrategy();
         
         _addChoices();
 
@@ -172,19 +168,6 @@ public class LatticeOntologySolver extends OntologySolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Override the attributeChanged method so that if the solver
-     *  strategy changes, the other related parameters are updated.
-     *  @param attribute The attribute that has been changed.
-     *  @throws IllegalActionException If there is a problem changing the attribute.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute.equals(solverStrategy)) {
-            _applySolverStrategy();
-        }
-        super.attributeChanged(attribute);
-    }
     
     /**
      * Get the list of affected InequalityTerms from the OntologySolver's
@@ -545,35 +528,6 @@ public class LatticeOntologySolver extends OntologySolver {
         return _resolvedUnacceptableList;
     }
     
-    /**
-     *  Set the solver's options and the visibility of those options according
-     *  to the value of the solverStrategy parameter.  This should be called 
-     *  whenever the solverStrategy parameter changes.
-     */
-    protected void _applySolverStrategy() {
-        // If solver strategy is not set, do not make any changes
-        if (solverStrategy != null 
-                && solverStrategy.getValueAsString().length() != 0) {
-            String strategy = solverStrategy.getValueAsString();
-            
-            // For the first three strategies, set parameters to certain
-            // values and set visibility of parameters to not editable
-            if(strategy.contains("forward") || strategy.contains("backward") 
-                    || strategy.contains("bidirectional")) {
-                
-                // Common settings and set visibility to NOT_EDITABLE.               
-                solvingFixedPoint.setExpression("least");
-            }
-
-            // For the custom strategy, set visibility of parameters to 
-            // editable.  Values are not changed.
-            else if (strategy.contains("custom")) {
-                solvingFixedPoint.setVisibility(Settable.FULL);
-            }
-            // Do nothing if the strategy is none of the above
-        }
-    }
-    
     /** 
      * Set the resolved constraint list and the list of unacceptable 
      * inequality terms to null.  Implemented as a protected method so that 
@@ -860,7 +814,7 @@ public class LatticeOntologySolver extends OntologySolver {
         solverStrategy.addChoice("forward");
         solverStrategy.addChoice("backward");
         solverStrategy.addChoice("bidirectional");
-        solverStrategy.addChoice("custom");
+        solverStrategy.addChoice("none");
         
         solvingFixedPoint.addChoice("least");
         solvingFixedPoint.addChoice("greatest");
