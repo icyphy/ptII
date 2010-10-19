@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  with respect to all other variables).
  *  
  *  This class represents exactly such concepts, representing them as
- *  { x : Monotonic, y : Antimonotonic }, in a manner and syntax
+ *  { x : Monotonic, y : Animonotonic }, in a manner and syntax
  *  similar to records of the Ptolemy II type system.  In records,
  *  however, accessing an undefined tag is an error, whereas in
  *  expressions, they are simply constant with respect to any
@@ -65,10 +65,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class MonotonicityConcept extends InfiniteConcept {
 
     ///////////////////////////////////////////////////////////////////
-    ////                    constructors/factories                 ////
+    ////             public constructors/factories                 ////
     
     /** Create a new monotonicity concept, belonging to the given
-     *  ontology.
+     *  ontology, with an automatically generated name.
      * 
      *  @param ontology The finite ontology to which this belongs.
      *    This should be the 4 element monotonicity lattice if we
@@ -182,7 +182,7 @@ public class MonotonicityConcept extends InfiniteConcept {
     
     /** Return the string representation of this monotonicity concept.
      *  Note that the syntax here is similar to that used for records
-     *  (e.g. { x : Monotonic, y : Antimonotonic }).
+     *  (e.g. { x : Monotonic, y : Anitmonotonic }).
      *  
      *  @return The string representation of this concept.
      */
@@ -197,7 +197,7 @@ public class MonotonicityConcept extends InfiniteConcept {
         result.append('}');
         return result.toString();
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                    protected constructors                 ////
 
@@ -213,8 +213,7 @@ public class MonotonicityConcept extends InfiniteConcept {
      */
     protected MonotonicityConcept(Ontology ontology)
             throws IllegalActionException, NameDuplicationException {
-          super(ontology, "InfiniteMonotonicityConcept_" + _conceptNumber);
-          ++_conceptNumber;
+          super(ontology);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -226,11 +225,4 @@ public class MonotonicityConcept extends InfiniteConcept {
      */
     private SortedMap<String, FiniteConcept> _variableToMonotonicity =
         new TreeMap<String, FiniteConcept>();
-    
-
-    /** Used for internal bookkeeping to make sure that generated
-     *  concept names are unique.
-     */
-    private static int _conceptNumber = 0;
-
 }

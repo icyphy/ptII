@@ -76,6 +76,22 @@ public abstract class InfiniteConcept extends Concept {
     public Ontology getOntology() {
         return _ontology;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                    protected constructors                 ////
+
+    /** Create a new Infinite concept, belonging to the given
+     *  ontology, with an automatically generated name.
+     * 
+     *  @param ontology The finite ontology to which this belongs.
+     *  @throws NameDuplicationException Should never be thrown.
+     *  @throws IllegalActionException If the base class throws it.
+     */
+    protected InfiniteConcept(Ontology ontology)
+            throws IllegalActionException, NameDuplicationException {
+          super(ontology, "InfiniteConcept_" + _conceptNumber);
+          ++_conceptNumber;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
@@ -83,5 +99,10 @@ public abstract class InfiniteConcept extends Concept {
     /** The ontology to which this concept belongs.
      */
     private Ontology _ontology;
+
+    /** Used for internal bookkeeping to make sure that generated
+     *  concept names are unique.
+     */
+    private static int _conceptNumber = 0;
 
 }
