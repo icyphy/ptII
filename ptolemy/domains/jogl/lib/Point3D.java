@@ -14,7 +14,28 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+/**
+ * An actor that is used for drawing 3D point. 
+ *
+ * @author Yasemin Demir
+ * @version $Id: JoglDirector.java 57401 2010-03-03 23:11:41Z ydemir $
+ */
 public class Point3D extends Sink{
+    
+    
+    /**
+     *  Construct a Point3D object in the given container with the given name.
+     *  If the container argument is null, a NullPointerException will
+     *  be thrown. If the name argument is null, then the name is set
+     *  to the empty string. Increment the version number of the workspace.
+     *
+     *  @param container Container of the director.
+     *  @param name Name of this Point3D.
+     *  @exception IllegalActionException If this actor
+     *  is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container not a
+     *  CompositeActor and the name collides with an entity in the container.
+     */
     public Point3D(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container,name);

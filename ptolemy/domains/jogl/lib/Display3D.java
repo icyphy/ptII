@@ -225,53 +225,54 @@ public class Display3D extends TypedAtomicActor  implements Placeable, GLEventLi
     }
     
     /** 
-     *  The input port.  This base class imposes no type constraints except
-     *  that the type of the input cannot be greater than the type of the
-     *  output.
+     * The input port.  This base class imposes no type constraints except
+     * that the type of the input cannot be greater than the type of the
+     * output.
      */
     public TypedIOPort input;
     
     /** 
-     *  The output port. By default, the type of this output is constrained
-     *  to be at least that of the input.
+     * The output port. By default, the type of this output is constrained
+     * to be at least that of the input.
      */
     public TypedIOPort output;
     
     /**
-     *  Height of the frame  
-     * */
+     * Height of the frame  
+     */
     protected int _height = 480;
     
-    /** 
-     *  Width of the frame 
-     * */
+    /**
+     * Width of the frame 
+     */
     protected int _width = 640;
     
     /**
-     *  gl is an interface handle to OpenGL methods. All OpenGL
-     *  commands are prefixed with "gl" as well, so you will see
-     *  OpenGL method like gl.glColor().
+     * gl is an interface handle to OpenGL methods. All OpenGL
+     * commands are prefixed with "gl" as well, so you will see
+     * OpenGL method like gl.glColor().
      */    
     protected GL _gl; 
     
-    /** 
-     *  Drive display() in a loop 
+    /**
+     * Drive display() in a loop 
      */    
     protected Animator _animator; 
     
-    /** 
-     *  Drawable part of the frame 
+    /**
+     * Drawable part of the frame 
      */  
     protected GLCanvas _canvas;  
     
-    /**  
+    /**
+     * Specifies the frame associated with the container.
      */ 
     protected JFrame _frame;    
     
-    /** 
-     *  Specifies a set of OpenGL capabilities that a rendering 
-     *  context must support,such as color depth and whether stereo 
-     *  is enabled. 
+    /**
+     * Specifies a set of OpenGL capabilities that a rendering 
+     * context must support,such as color depth and whether stereo 
+     * is enabled. 
      */
     protected GLCapabilities _capabilities;
 
