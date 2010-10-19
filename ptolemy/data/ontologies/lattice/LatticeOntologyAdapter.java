@@ -141,8 +141,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
      * @return true if the interconnectConstraintType is for sources, false otherwise
      */
     public boolean isConstraintSource() {
-        boolean constraintSource = interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET
-                || interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER;
+        boolean constraintSource = interconnectConstraintType == ConstraintType.SRC_EQUALS_GREATER;
         return constraintSource;
     }
 
@@ -207,8 +206,7 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
             return;
         }
 
-        boolean constraintSource = actorConstraintType == ConstraintType.SRC_EQUALS_MEET
-                || actorConstraintType == ConstraintType.SRC_EQUALS_GREATER;
+        boolean constraintSource = actorConstraintType == ConstraintType.SRC_EQUALS_GREATER;
 
         List<Object> portList1 = constraintSource ? ((AtomicActor) getComponent())
                 .inputPortList()
@@ -305,41 +303,24 @@ public class LatticeOntologyAdapter extends OntologyAdapter {
     protected void _constraintObject(ConstraintType constraintType,
             Object object, List objectList) throws IllegalActionException {
 
-        boolean isEquals = constraintType == ConstraintType.EQUALS
-                || constraintType == ConstraintType.SINK_EQUALS_MEET
-                || constraintType == ConstraintType.SRC_EQUALS_MEET;
-
-        boolean useMeetFunction = constraintType == ConstraintType.SRC_EQUALS_MEET
-                || constraintType == ConstraintType.SINK_EQUALS_MEET;
+        boolean isEquals = constraintType == ConstraintType.EQUALS;
 
         if (constraintType != ConstraintType.NONE) {
-            if (!useMeetFunction) {
+            for (Object object2 : objectList) {
 
-                for (Object object2 : objectList) {
+                if (isEquals) {
+                    setSameAs(object, object2);
 
-                    if (isEquals) {
-                        setSameAs(object, object2);
-
-                    } else {
-                        if (object2 instanceof ASTPtRootNode) {
-                            if (constraintType == ConstraintType.SINK_EQUALS_GREATER) {
-                                setAtLeast(object, object2);
-                            } else {
-                                setAtLeast(object2, object);
-                            }
-                        } else {
+                } else {
+                    if (object2 instanceof ASTPtRootNode) {
+                        if (constraintType == ConstraintType.SINK_EQUALS_GREATER) {
                             setAtLeast(object, object2);
+                        } else {
+                            setAtLeast(object2, object);
                         }
+                    } else {
+                        setAtLeast(object, object2);
                     }
-                }
-            } else {
-                if (objectList.size() > 0) {
-                    /* Removed to make compile
-                     * --Ben on 12/04/2009
-                    InequalityTerm term2 = new MeetFunction(getSolver(),
-                            objectList);
-                    setSameAsByDefault(object, term2);
-                     */
                 }
             }
         }

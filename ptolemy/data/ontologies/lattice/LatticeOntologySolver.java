@@ -951,15 +951,15 @@ public class LatticeOntologySolver extends OntologySolver {
             return ConstraintType.NONE;
         }
         if (hasMeet) {
-            return isSrc ? ConstraintType.SRC_EQUALS_MEET
-                    : ConstraintType.SINK_EQUALS_MEET;
-
+            throw new IllegalActionException(
+                    "Constraints with 'meet' are unsupported.");
         } else if (isEquals) {
             return ConstraintType.EQUALS;
 
         } else if (isNotEquals) {
-            return ConstraintType.NOT_EQUALS;
-
+            throw new IllegalActionException(
+                    "Inequality constraints are unsupported"
+                  + " (and non-monotonic).");
         } else {
             return isSrc ? ConstraintType.SRC_EQUALS_GREATER
                     : ConstraintType.SINK_EQUALS_GREATER;
