@@ -357,14 +357,12 @@ public class LatticeOntologySolver extends OntologySolver {
         toplevelAdapter.reinitialize();
 
         toplevelAdapter
-                ._addDefaultConstraints(_getConstraintType(solverStrategy
-                        .stringValue()));
+                ._addDefaultConstraints(_getConstraintType());
 
         // FIXME: have to generate the connection every time
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
-        toplevelAdapter._setConnectionConstraintType(
-                _getConstraintType(solverStrategy.stringValue()));
+        toplevelAdapter._setConnectionConstraintType(_getConstraintType());
         
         _initialConstraintList = toplevelAdapter.constraintList();
     }
@@ -850,20 +848,25 @@ public class LatticeOntologySolver extends OntologySolver {
      *  @exception IllegalActionException If an unknown solver strategy
      *     is given.
      */
-    protected static ConstraintType _getConstraintType(String solverStrategy)
+    protected ConstraintType _getConstraintType()
             throws IllegalActionException {
-        if (solverStrategy.equals("forward")) {
+        String strategy = solverStrategy.stringValue();
+        String fixedPoint = solvingFixedPoint.stringValue();
+        if ((strategy.equals("forward") && fixedPoint.equals("least"))
+                || (strategy.equals("backward") && fixedPoint.equals("greatest"))) {
             return ConstraintType.SINK_EQUALS_GREATER;
-        } else if (solverStrategy.equals("backward")) {
+        } else if ((strategy.equals("backward") && fixedPoint.equals("least"))
+                || (strategy.equals("forward") && fixedPoint.equals("greatest"))) {
             return ConstraintType.SRC_EQUALS_GREATER;
-        } else if (solverStrategy.equals("bidirectional")) {
+        } else if (strategy.equals("bidirectional")) {
             return ConstraintType.EQUALS;
-        } else if (solverStrategy.equals("none")) {
+        } else if (strategy.equals("none")) {
             return ConstraintType.NONE;
         } else {
             throw new IllegalActionException(
-                    "Cannot understand solver strategy:\n"
-                  + "\t\"" + solverStrategy + '"');
+                    "Cannot understand solver strategy.\n"
+                  + "Strategy: \"" + strategy + "\"\n"
+                  + "Fixed Point: \"" + fixedPoint + '"');
         }
     }
 
