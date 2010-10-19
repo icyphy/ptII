@@ -99,9 +99,6 @@ public class LatticeOntologySolver extends OntologySolver {
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
 
-        actorConstraintType = new StringParameter(this, "actorConstraintType");
-        actorConstraintType.setExpression("out >= in");
-
         _applySolverStrategy();
         
         _addChoices();
@@ -117,21 +114,6 @@ public class LatticeOntologySolver extends OntologySolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** 
-     * String that represents the setting for default actor constraints.
-     * <ul>
-     * <li>"in >= out" The actor inputs must be >= the actor outputs
-     * <li>"out >= in" The actor outputs must be >= the actor inputs
-     * <li>"out == in" The actor outputs must == the actor inputs
-     * <li>"out == meet(in1, in2, ...)" The actor outputs must == the
-     * least upper bound of the outputs
-     * <li>"in == meet(out1, out2, ...)" The actor inputs must == the
-     * least upper bound of the outputs
-     * <li>"NONE" No constraints between the actor inputs and outputs
-     * </ul>
-     */
-    public StringParameter actorConstraintType;
 
     /**
      * Indicate whether to compute the least or greatest fixed point solution.
@@ -392,14 +374,14 @@ public class LatticeOntologySolver extends OntologySolver {
         toplevelAdapter.reinitialize();
 
         toplevelAdapter
-                ._addDefaultConstraints(_getConstraintType(actorConstraintType
+                ._addDefaultConstraints(_getConstraintType(solverStrategy
                         .stringValue()));
 
         // FIXME: have to generate the connection every time
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
         toplevelAdapter._setConnectionConstraintType(
-                _getConstraintType(actorConstraintType.stringValue()));
+                _getConstraintType(solverStrategy.stringValue()));
         
         _initialConstraintList = toplevelAdapter.constraintList();
     }
@@ -581,31 +563,11 @@ public class LatticeOntologySolver extends OntologySolver {
                 
                 // Common settings and set visibility to NOT_EDITABLE.               
                 solvingFixedPoint.setExpression("least");
-                
-                actorConstraintType.setVisibility(Settable.NOT_EDITABLE);
-                
-                
-                // Specific settings
-                if (strategy.contains("forward")) {
-                    actorConstraintType.setExpression("out >= in");
-                }
-                else if (strategy.contains("backward")) {
-                    actorConstraintType.setExpression("in >= out");
-                }
-                else {
-                    actorConstraintType.setExpression("out == in");
-                }
-                
-                // All of these expressions should be valid
-                try {
-                    actorConstraintType.validate();
-                } catch(IllegalActionException e){};
             }
 
             // For the custom strategy, set visibility of parameters to 
             // editable.  Values are not changed.
             else if (strategy.contains("custom")) {
-                actorConstraintType.setVisibility(Settable.FULL);
                 solvingFixedPoint.setVisibility(Settable.FULL);
             }
             // Do nothing if the strategy is none of the above
@@ -902,13 +864,6 @@ public class LatticeOntologySolver extends OntologySolver {
         
         solvingFixedPoint.addChoice("least");
         solvingFixedPoint.addChoice("greatest");
-
-        actorConstraintType.addChoice("in >= out");
-        actorConstraintType.addChoice("out >= in");
-        actorConstraintType.addChoice("out == in");
-        actorConstraintType.addChoice("out == meet(in1, in2, ...)");
-        actorConstraintType.addChoice("in == meet(out1, out2, ...)");
-        actorConstraintType.addChoice("NONE");
  
     }
 
@@ -930,39 +885,31 @@ public class LatticeOntologySolver extends OntologySolver {
         return output.toString();
     }
 
-    /**
-     * Return the constraint type based on the string parsed from the OntologySolver
-     * dialog box.
-     * 
-     * @param typeValue The string representing the constraint type to be parsed
-     * @return The constraint type as one of the enumerated ConstraintType values.
-     * @exception IllegalActionException If an exception is thrown.
+    /** Return the constraint type based on the solver strategy.
+     *  Forward inference gives constraints that the sinks be greater than
+     *  the sources, backward inference gives the reverse, biderectional
+     *  inference requires them to be equal, etc.
+     *
+     *  @param solverStrategy The string represention of the solver strategy.
+     *  @return The enumeration from ConstraintType corresponding to the
+     *     given solver strategy.
+     *  @exception IllegalActionException If an unknown solver strategy
+     *     is given.
      */
-    protected static ConstraintType _getConstraintType(String typeValue)
+    protected static ConstraintType _getConstraintType(String solverStrategy)
             throws IllegalActionException {
-        boolean isEquals = typeValue.contains("==");
-        boolean isSrc = typeValue.startsWith("src")
-                || typeValue.startsWith("in") || typeValue.startsWith("child");
-        boolean isNotEquals = typeValue.contains("!=");
-
-        boolean hasMeet = typeValue.contains("meet");
-
-        if (typeValue.equals("NONE")) {
-            return ConstraintType.NONE;
-        }
-        if (hasMeet) {
-            throw new IllegalActionException(
-                    "Constraints with 'meet' are unsupported.");
-        } else if (isEquals) {
+        if (solverStrategy.equals("forward")) {
+            return ConstraintType.SINK_EQUALS_GREATER;
+        } else if (solverStrategy.equals("backward")) {
+            return ConstraintType.SRC_EQUALS_GREATER;
+        } else if (solverStrategy.equals("bidirectional")) {
             return ConstraintType.EQUALS;
-
-        } else if (isNotEquals) {
-            throw new IllegalActionException(
-                    "Inequality constraints are unsupported"
-                  + " (and non-monotonic).");
+        } else if (solverStrategy.equals("none")) {
+            return ConstraintType.NONE;
         } else {
-            return isSrc ? ConstraintType.SRC_EQUALS_GREATER
-                    : ConstraintType.SINK_EQUALS_GREATER;
+            throw new IllegalActionException(
+                    "Cannot understand solver strategy:\n"
+                  + "\t\"" + solverStrategy + '"');
         }
     }
 

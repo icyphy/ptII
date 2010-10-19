@@ -100,14 +100,14 @@ public class DeltaConstraintSolver extends LatticeOntologySolver {
         toplevelAdapter.reinitialize();
 
         toplevelAdapter
-                ._addDefaultConstraints(_getConstraintType(actorConstraintType
+                ._addDefaultConstraints(_getConstraintType(solverStrategy
                         .stringValue()));
 
         // FIXME: have to generate the connection every time
         // because the model structure can changed.
         // (i.e. adding or removing connections.)
         toplevelAdapter._setConnectionConstraintType(
-                _getConstraintType(actorConstraintType.stringValue()));
+                _getConstraintType(solverStrategy.stringValue()));
 
         // Collect and solve type constraints.
         List<Inequality> constraintList = toplevelAdapter.constraintList();
