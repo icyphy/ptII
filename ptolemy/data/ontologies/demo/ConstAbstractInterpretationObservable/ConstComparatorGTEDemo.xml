@@ -42,36 +42,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 50.0}">
         </property>
     </property>
-    <property name="constAbsIntObservable::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant1 &gt;= UnobservableConstPositive">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 30.0]">
-        </property>
-    </property>
-    <property name="constAbsIntObservable::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant2 &gt;= UnobservableConstPositive">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 50.0]">
-        </property>
-    </property>
     <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -156,36 +126,6 @@
         <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstNegative">
         </property>
     </property>
-    <property name="constAbsIntObservable::constraint3" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant3 &gt;= UnobservableConstZero">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 70.0]">
-        </property>
-    </property>
-    <property name="constAbsIntObservable::constraint4" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant4 &gt;= UnobservableConstNegative">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 90.0]">
-        </property>
-    </property>
     <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -205,21 +145,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 130.0]">
         </property>
         <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstNegative">
-        </property>
-    </property>
-    <property name="constAbsIntObservable::constraint5" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="Constant5 &gt;= UnobservableConstNegative">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 110.0]">
         </property>
     </property>
     <entity name="Display8" class="ptolemy.actor.lib.gui.Display">

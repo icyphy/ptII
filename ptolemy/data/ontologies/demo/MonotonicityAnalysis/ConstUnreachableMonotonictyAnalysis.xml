@@ -1,0 +1,118 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ConstUnreachableMonotonictyAnalysis" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    </property>
+    <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -105.0]">
+        </property>
+    </property>
+    <property name="MonotonicitySolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="ConstUnreachableAbstractMonotonicitySolverModel.xml">
+        </property>
+        <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="forward">
+        </property>
+        <property name="actorConstraintType" class="ptolemy.data.expr.StringParameter" value="out &gt;= in">
+        </property>
+        <property name="connectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink &gt;= src">
+        </property>
+        <property name="compositeConnectionConstraintType" class="ptolemy.data.expr.StringParameter" value="sink &gt;= src">
+        </property>
+        <property name="fsmConstraintType" class="ptolemy.data.expr.StringParameter" value="sink &gt;= src">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, -105.0]">
+        </property>
+        <property name="DisplayActions" class="ptolemy.data.ontologies.gui.OntologyDisplayActions">
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={469, 429, 815, 517}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{230.2727272727272, 30.5686553030303}">
+    </property>
+    <property name="monotonicityAnalysis::constraint" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="MultiplyConceptFunctionExpression.factor1 &gt;= Monotonic">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 185.0]">
+        </property>
+    </property>
+    <property name="monotonicityAnalysis::constraint2" class="ptolemy.data.ontologies.OntologyAnnotationAttribute" value="MultiplyConceptFunctionExpression.factor2 &gt;= Monotonic">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text></svg></configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 200.0]">
+        </property>
+    </property>
+    <entity name="MultiplyConceptFunctionExpression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="factor1 == UnreachableConstZero || factor2 == UnreachableConstZero ? UnreachableConstZero :&#10; factor1 == ConstZero &amp;&amp; factor2 &lt;= UnreachableNonConst || factor2 == ConstZero &amp;&amp; factor1 &lt;= UnreachableNonConst ? UnreachableConstZero :&#10;  factor1 == ConstZero &amp;&amp; factor2 &gt;= ReachableUnknown || factor2 == ConstZero &amp;&amp; factor1 &gt;= ReachableUnknown ? ConstZero :&#10;   factor1 == UnreachableUnknown || factor2 == UnreachableUnknown ? UnreachableUnknown :&#10;    factor1 == ReachableUnknown || factor2 == ReachableUnknown ? ReachableUnknown :&#10;     factor1 == factor2 &amp;&amp; (factor1 == UnreachableConstPositive || factor1 == UnreachableConstNegative) ? UnreachableConstPositive :&#10;      factor1 == UnreachableConstPositive &amp;&amp; factor2 == ConstPositive || factor2 == UnreachableConstPositive &amp;&amp; factor1 == ConstPositive ? UnreachableConstPositive :&#10;	   factor1 == UnreachableConstNegative &amp;&amp; factor2 == ConstNegative || factor2 == UnreachableConstNegative &amp;&amp; factor1 == ConstNegative ? UnreachableConstPositive :&#10;        (factor1 == UnreachableConstPositive &amp;&amp; (factor2 == UnreachableConstNegative || factor2 == ConstNegative)) || (factor2 == UnreachableConstPositive &amp;&amp; (factor1 == UnreachableConstNegative || factor1 == ConstNegative)) ? UnreachableConstNegative :&#10;	     (factor1 == UnreachableConstNegative &amp;&amp; (factor2 == UnreachableConstPositive || factor2 == ConstPositive)) || (factor2 == UnreachableConstNegative &amp;&amp; (factor1 == UnreachableConstPositive || factor1 == ConstPositive)) ? UnreachableConstNegative :&#10;	      factor1 == ConstZero &amp;&amp; factor2 &lt;= UnreachableNonConst || factor2 == ConstZero &amp;&amp; factor1 &lt;= UnreachableNonConst ? UnreachableConstZero :&#10;           factor1 == factor2 &amp;&amp; (factor1 == ConstPositive || factor1 == ConstNegative) ? ConstPositive :&#10;            (factor1 == ConstPositive &amp;&amp; factor2 == ConstNegative) || (factor2 == ConstPositive &amp;&amp; factor1 == ConstNegative) ? ConstNegative :   &#10;             factor1 &lt;= UnreachableConstUnknown &amp;&amp; factor2 &lt;= ConstUnknown || factor2 &lt;= UnreachableConstUnknown &amp;&amp; factor1 &lt;= ConstUnknown ? UnreachableConstUnknown :&#10;              factor1 &lt;= ConstUnknown &amp;&amp; factor2 &lt;= ConstUnknown ? ConstUnknown :&#10;               factor1 &lt;= UnreachableNonConst || factor2 &lt;= UnreachableNonConst ? UnreachableNonConst :&#10;                NonConst">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 65.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+        </port>
+        <port name="factor1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+            <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,1.0,1.0,1.0}">
+            </property>
+            <property name="_showInfo" class="ptolemy.data.expr.StringParameter" value="Monotonic">
+            </property>
+        </port>
+        <port name="factor2" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+</entity>

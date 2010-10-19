@@ -1,11 +1,11 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ConstComparatorLessThanDemo" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ConstComparatorLTEDemo" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
     </property>
-    <property name="ConstUnobservableSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
-        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constAbsIntObservable/ConstAbsIntObservableSolverModel.xml">
+    <property name="ConstAbstractInterpretationSolver" class="ptolemy.data.ontologies.lattice.LatticeOntologySolver">
+        <property name="modelURL" class="ptolemy.data.expr.StringParameter" value="../../lattice/adapters/constAbstractInterpretation/ConstAbstractInterpretationSolverModel.xml">
         </property>
         <property name="solverStrategy" class="ptolemy.data.expr.StringParameter" value="custom">
         </property>
@@ -28,18 +28,18 @@
         <property name="_controllerFactory" class="ptolemy.vergil.toolbox.MoMLModelAttributeControllerFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={197, 106, 1012, 810}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={338, 190, 1012, 810}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[797, 693]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{473.5852272727273, 397.2708333333334}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{469.4943181818181, 419.9588068181818}">
     </property>
     <property name="TesterDirector" class="ptolemy.domains.tester.kernel.TesterDirector">
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
         </property>
     </property>
     <property name="Constant1" class="ptolemy.data.expr.Parameter" value="10">
@@ -60,7 +60,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 115.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstPositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
         </property>
     </property>
     <property name="Constant2" class="ptolemy.data.expr.Parameter" value="20">
@@ -81,7 +81,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 135.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstPositive">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
         </property>
     </property>
     <property name="Constant3" class="ptolemy.data.expr.Parameter" value="0">
@@ -102,7 +102,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 155.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstZero">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
         </property>
     </property>
     <property name="Constant4" class="ptolemy.data.expr.Parameter" value="-67">
@@ -123,7 +123,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 110.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
         </property>
     </property>
     <property name="Constant5" class="ptolemy.data.expr.Parameter" value="-34">
@@ -144,7 +144,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 130.0]">
         </property>
-        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableConstNegative">
+        <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
         </property>
     </property>
     <entity name="Display8" class="ptolemy.actor.lib.gui.Display">
@@ -153,15 +153,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 725.0]">
@@ -169,13 +169,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
             </property>
         </port>
     </entity>
     <entity name="Const29" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -189,7 +189,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -201,7 +201,7 @@
     </entity>
     <entity name="Const30" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -215,7 +215,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -226,7 +226,7 @@
         </port>
     </entity>
     <entity name="Comparator" class="ptolemy.actor.lib.logic.Comparator">
-        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
                 </property>
@@ -248,17 +248,17 @@
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="right" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
             </property>
         </port>
     </entity>
@@ -268,15 +268,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 415.0]">
@@ -284,13 +284,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
             </property>
         </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -304,7 +304,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -316,7 +316,7 @@
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -330,7 +330,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -341,7 +341,7 @@
         </port>
     </entity>
     <entity name="Comparator2" class="ptolemy.actor.lib.logic.Comparator">
-        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
                 </property>
@@ -363,17 +363,17 @@
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="right" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
             </property>
         </port>
     </entity>
@@ -383,15 +383,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1380.0, 420.0]">
@@ -399,13 +399,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanConst">
             </property>
         </port>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -419,7 +419,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -431,7 +431,7 @@
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -445,7 +445,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -456,7 +456,7 @@
         </port>
     </entity>
     <entity name="Comparator3" class="ptolemy.actor.lib.logic.Comparator">
-        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
                 </property>
@@ -478,17 +478,17 @@
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="right" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanConst">
             </property>
         </port>
     </entity>
@@ -498,15 +498,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1375.0, 275.0]">
@@ -514,13 +514,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanConst">
             </property>
         </port>
     </entity>
     <entity name="Const5" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -534,7 +534,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -546,7 +546,7 @@
     </entity>
     <entity name="Const6" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -560,7 +560,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -571,7 +571,7 @@
         </port>
     </entity>
     <entity name="Comparator4" class="ptolemy.actor.lib.logic.Comparator">
-        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
                 </property>
@@ -593,17 +593,17 @@
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="right" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanConst">
             </property>
         </port>
     </entity>
@@ -613,15 +613,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 570.0]">
@@ -629,13 +629,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </port>
     </entity>
     <entity name="Const7" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -649,7 +649,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -661,7 +661,7 @@
     </entity>
     <entity name="Const8" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -675,7 +675,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -686,7 +686,7 @@
         </port>
     </entity>
     <entity name="Comparator5" class="ptolemy.actor.lib.logic.Comparator">
-        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
                 </property>
@@ -704,21 +704,21 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="comparison">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{720.0, 570.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 570.0]">
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="right" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </port>
     </entity>
@@ -728,15 +728,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 415.0]">
@@ -744,13 +744,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </port>
     </entity>
     <entity name="Const9" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -764,7 +764,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -776,7 +776,7 @@
     </entity>
     <entity name="Const10" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant5">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -790,7 +790,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -801,7 +801,7 @@
         </port>
     </entity>
     <entity name="Comparator6" class="ptolemy.actor.lib.logic.Comparator">
-        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
                 </property>
@@ -823,17 +823,17 @@
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="right" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </port>
     </entity>
@@ -843,15 +843,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 570.0]">
@@ -859,13 +859,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
             </property>
         </port>
     </entity>
     <entity name="Const11" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -879,7 +879,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -891,7 +891,7 @@
     </entity>
     <entity name="Const12" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -905,7 +905,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -916,7 +916,7 @@
         </port>
     </entity>
     <entity name="Comparator7" class="ptolemy.actor.lib.logic.Comparator">
-        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
                 </property>
@@ -938,17 +938,17 @@
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="right" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
             </property>
         </port>
     </entity>
@@ -958,15 +958,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 265.0]">
@@ -974,13 +974,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
             </property>
         </port>
     </entity>
     <entity name="Const13" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant4">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -994,7 +994,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -1006,7 +1006,7 @@
     </entity>
     <entity name="Const14" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant2">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1020,7 +1020,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -1031,7 +1031,7 @@
         </port>
     </entity>
     <entity name="Comparator8" class="ptolemy.actor.lib.logic.Comparator">
-        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
                 </property>
@@ -1053,17 +1053,17 @@
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstNegative">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Negative">
             </property>
         </port>
         <port name="right" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstTrue">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanTrue">
             </property>
         </port>
     </entity>
@@ -1073,15 +1073,15 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <property name="suppressBlankLines" class="ptolemy.data.expr.Parameter" value="false">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="UnobservableUnknown">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 270.0]">
@@ -1089,13 +1089,13 @@
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </port>
     </entity>
     <entity name="Const15" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant1">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1109,7 +1109,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -1121,7 +1121,7 @@
     </entity>
     <entity name="Const16" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="Constant3">
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </property>
         <doc>Create a constant sequence.</doc>
@@ -1135,7 +1135,7 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -1146,7 +1146,7 @@
         </port>
     </entity>
     <entity name="Comparator9" class="ptolemy.actor.lib.logic.Comparator">
-        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;">
+        <property name="comparison" class="ptolemy.kernel.util.StringAttribute" value="&lt;=">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="gt" class="ptolemy.kernel.util.StringAttribute" value="&gt;">
                 </property>
@@ -1168,17 +1168,17 @@
         </property>
         <port name="left" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstPositive">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Positive">
             </property>
         </port>
         <port name="right" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstZero">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="Zero">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="ConstFalse">
+            <property name="_trainedConcept" class="ptolemy.data.expr.StringParameter" value="BooleanFalse">
             </property>
         </port>
     </entity>

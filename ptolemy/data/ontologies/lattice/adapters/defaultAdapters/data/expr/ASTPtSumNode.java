@@ -1,4 +1,4 @@
-/* The default adapter class for ptolemy.data.expr.ASTPtProductNode.
+/* The default adapter class for ptolemy.data.expr.ASTPtSumNode.
 
  Copyright (c) 2006-2010 The Regents of the University of California.
  All rights reserved.
@@ -38,36 +38,36 @@ import ptolemy.data.ontologies.Concept;
 import ptolemy.data.ontologies.ConceptFunction;
 import ptolemy.data.ontologies.ConceptFunctionInequalityTerm;
 import ptolemy.data.ontologies.Ontology;
-import ptolemy.data.ontologies.lattice.DivideConceptFunctionDefinition;
+import ptolemy.data.ontologies.lattice.AddConceptFunctionDefinition;
 import ptolemy.data.ontologies.lattice.LatticeOntologyASTNodeAdapter;
 import ptolemy.data.ontologies.lattice.LatticeOntologySolver;
-import ptolemy.data.ontologies.lattice.MultiplyConceptFunctionDefinition;
+import ptolemy.data.ontologies.lattice.SubtractConceptFunctionDefinition;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
-//// ASTPtProductNode
+//// ASTPtSumNode
 
 /**
- The default adapter class for ptolemy.data.expr.ASTPtProductNode.
+ The default adapter class for ptolemy.data.expr.ASTPtSumNode.
 
  @author Charles Shelton
  @version $Id$
- @since Ptolemy II 8.0
+ @since Ptolemy II 8.1
  @Pt.ProposedRating Red (cshelton)
  @Pt.AcceptedRating Red (cshelton)
  */
-public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
+public class ASTPtSumNode extends LatticeOntologyASTNodeAdapter {
 
-    /** Construct an property constraint adapter for the given ASTPtProductNode.
+    /** Construct an property constraint adapter for the given ASTPtSumNode.
      *  @param solver The given solver to get the lattice from.
-     *  @param node The given ASTPtProductNode.
+     *  @param node The given ASTPtSumNode.
      *  @exception IllegalActionException Thrown if the parent construct
      *   throws it.
      */
-    public ASTPtProductNode(LatticeOntologySolver solver,
-            ptolemy.data.expr.ASTPtProductNode node)
+    public ASTPtSumNode(LatticeOntologySolver solver,
+            ptolemy.data.expr.ASTPtSumNode node)
             throws IllegalActionException {
         super(solver, node, false);
     }
@@ -81,22 +81,22 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
      */
     public List<Inequality> constraintList() throws IllegalActionException {
 
-        // Find the multiply and divide concept functions that
-        // are needed for the PtProductNode monotonic function.        
-        ConceptFunction multiplyFunction = null;
-        MultiplyConceptFunctionDefinition multiplyDefinition = (MultiplyConceptFunctionDefinition) (_solver
+        // Find the add and subtract concept functions that
+        // are needed for the PtSumNode monotonic function.        
+        ConceptFunction addFunction = null;
+        AddConceptFunctionDefinition addDefinition = (AddConceptFunctionDefinition) (_solver
                 .getContainedModel())
-                .getAttribute(LatticeOntologySolver.MULTIPLY_FUNCTION_NAME);
-        if (multiplyDefinition != null) {
-            multiplyFunction = multiplyDefinition.createConceptFunction();
+                .getAttribute(LatticeOntologySolver.ADD_FUNCTION_NAME);
+        if (addDefinition != null) {
+            addFunction = addDefinition.createConceptFunction();
         }
 
-        ConceptFunction divideFunction = null;
-        DivideConceptFunctionDefinition divideDefinition = (DivideConceptFunctionDefinition) (_solver
+        ConceptFunction subtractFunction = null;
+        SubtractConceptFunctionDefinition subtractDefinition = (SubtractConceptFunctionDefinition) (_solver
                 .getContainedModel())
-                .getAttribute(LatticeOntologySolver.DIVIDE_FUNCTION_NAME);
-        if (divideDefinition != null) {
-            divideFunction = divideDefinition.createConceptFunction();
+                .getAttribute(LatticeOntologySolver.SUBTRACT_FUNCTION_NAME);
+        if (subtractDefinition != null) {
+            subtractFunction = subtractDefinition.createConceptFunction();
         }        
 
         InequalityTerm[] childNodeTerms = _getChildNodeTerms();
@@ -105,15 +105,15 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
             argumentDomainOntologies.add(getSolver().getOntology());
         }
         
-        List operatorTokenList = ((ptolemy.data.expr.ASTPtProductNode) _getNode())
+        List operatorTokenList = ((ptolemy.data.expr.ASTPtSumNode) _getNode())
                 .getLexicalTokenList();
 
-        ASTPtProductNodeFunction astProductFunction = new ASTPtProductNodeFunction(
+        ASTPtSumNodeFunction astSumFunction = new ASTPtSumNodeFunction(
                 argumentDomainOntologies, getSolver()
-                        .getOntology(), multiplyFunction, divideFunction,
+                        .getOntology(), addFunction, subtractFunction,
                 operatorTokenList);
 
-        if (!astProductFunction.isMonotonic()) {
+        if (!astSumFunction.isMonotonic()) {
             throw new IllegalActionException(
                     _solver,
                     "The concept function for determining the "
@@ -122,7 +122,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
         }
 
         setAtLeast(_getNode(), new ConceptFunctionInequalityTerm(
-                astProductFunction, childNodeTerms));
+                astSumFunction, childNodeTerms));
 
         return super.constraintList();
     }
@@ -131,38 +131,37 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
     ////                  private inner classes                    ////
 
     /** The Concept Function that outputs the concept for
-     *  the product node based on the input child nodes.
+     *  the sum node based on the input child nodes.
      *  This is a general function that covers any combination
-     *  of multiplication and division operators in the product node.
-     *  Modulo operators are not supported.
+     *  of addition and subtraction operators in the sum node.
      */
-    private class ASTPtProductNodeFunction extends ConceptFunction {
+    private class ASTPtSumNodeFunction extends ConceptFunction {
 
         /** Initialize the ASTPtProductNodeFunction.
          * @param argumentDomainOntologies The array of domain ontologies
          *  for the function arguments.
          * @param outputRangeOntology The ontology range for the output.
-         * @param multiplyFunction The multiplication concept function to be
-         *  used when calculating the product node function.  If this is null,
-         *  then the simple least upper bound is used between two multiplication
+         * @param addFunction The addition concept function to be
+         *  used when calculating the sum node function.  If this is null,
+         *  then the simple least upper bound is used between two addition
          *  operands.
-         * @param divideFunction The division concept function to be
-         *  used when calculating the product node function.  If this is null,
-         *  then the simple least upper bound is used between two division
+         * @param subtractFunction The subtraction concept function to be
+         *  used when calculating the sum node function.  If this is null,
+         *  then the simple least upper bound is used between two subtraction
          *  operands.
-         * @param operatorTokenList The list of operator tokens for the product node
+         * @param operatorTokenList The list of operator tokens for the sum node
          *  expression.
          * @throws IllegalActionException If the class cannot be initialized.
          */
-        public ASTPtProductNodeFunction(List<Ontology> argumentDomainOntologies,
-                Ontology outputRangeOntology, ConceptFunction multiplyFunction,
-                ConceptFunction divideFunction, List operatorTokenList)
+        public ASTPtSumNodeFunction(List<Ontology> argumentDomainOntologies,
+                Ontology outputRangeOntology, ConceptFunction addFunction,
+                ConceptFunction subtractFunction, List operatorTokenList)
                 throws IllegalActionException {
-            super("defaultASTPtProductNodeFunction", true,
+            super("defaultASTPtSumNodeFunction", true,
                     argumentDomainOntologies, outputRangeOntology);
 
-            _multiplyFunction = multiplyFunction;
-            _divideFunction = divideFunction;
+            _addFunction = addFunction;
+            _subtractFunction = subtractFunction;
             _operatorTokenList = operatorTokenList;
         }
 
@@ -176,24 +175,11 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
          */
         protected Concept _evaluateFunction(List<Concept> inputConceptValues)
                 throws IllegalActionException {
-            // Updated by Charles Shelton 12/15/09:
-            // Created a general function that covers any combination of multiplication
-            // and division operators.  Modulo operators are not supported.
-
-            // Throw an exception if there is a modulo (%) operation in the product node expression.
-            for (Object lexicalToken : _operatorTokenList) {
-                if (((Token) lexicalToken).kind == PtParserConstants.MODULO) {
-                    throw new IllegalActionException(
-                            ASTPtProductNode.this.getSolver(),
-                            "The lattice ontology solver analysis "
-                                    + "supports only multiplication and division, not modulo.");
-                }
-            }
-
-            // Loop through all the child node concepts in the product node
-            // and get the correct result property by calling the multiply concept function
-            // or divide concept function depending on the operator used.
-            // If the multiply function or divide function is null, then just
+            
+            // Loop through all the child node concepts in the sum node
+            // and get the correct result property by calling the add concept function
+            // or subtract concept function depending on the operator used.
+            // If the add function or subtract function is null, then just
             // get the least upper bound of the concepts.
 
             // Initialize the result to the first node in the product node
@@ -211,9 +197,9 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
                     conceptInputs.add(nodeChildConcept);
 
                     // If operator token is '*' call the MultiplyMonotonicFunction
-                    if (lexicalToken.kind == PtParserConstants.MULTIPLY) {
-                        if (_multiplyFunction != null) {
-                            result = _multiplyFunction
+                    if (lexicalToken.kind == PtParserConstants.PLUS) {
+                        if (_addFunction != null) {
+                            result = _addFunction
                                     .evaluateFunction(conceptInputs);
                         } else {
                             // FIXME: Implement LUB and change this
@@ -223,8 +209,8 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
 
                         // If operator token is '/' call the DivideMonotonicFunction
                     } else {
-                        if (_divideFunction != null) {
-                            result = _divideFunction
+                        if (_subtractFunction != null) {
+                            result = _subtractFunction
                                     .evaluateFunction(conceptInputs);
                         } else {
                             // FIXME: Implement LUB and change this
@@ -235,7 +221,7 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
 
                 } else {
                     throw new IllegalActionException(
-                            ASTPtProductNode.this.getSolver(),
+                            ASTPtSumNode.this.getSolver(),
                             "Error in the product expression; "
                                     + "the number of operators don't match the number of operands.");
                 }
@@ -247,19 +233,18 @@ public class ASTPtProductNode extends LatticeOntologyASTNodeAdapter {
         ///////////////////////////////////////////////////////////////////
         ////                      private inner variables              ////
 
-        /** The division concept function to be
-         *  used when calculating the product node function.
+        /** The add concept function to be
+         *  used when calculating the sum node function.
          */
-        private ConceptFunction _divideFunction;
+        private ConceptFunction _addFunction;
 
-        /** The multiplication concept function to be
-         *  used when calculating the product node function.
+        /** The subtract concept function to be
+         *  used when calculating the sum node function.
          */
-        private ConceptFunction _multiplyFunction;
+        private ConceptFunction _subtractFunction;
 
-        /** The list of operator tokens '*', '/', and '%' that
-         *  are contained in the Ptolemy AST product node. Modulo
-         *  operators '%' are not supported by this concept function.
+        /** The list of operator tokens '+' and '-' that
+         *  are contained in the Ptolemy AST sum node.
          */
         private List _operatorTokenList;
     }

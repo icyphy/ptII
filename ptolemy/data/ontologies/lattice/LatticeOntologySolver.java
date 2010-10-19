@@ -221,7 +221,16 @@ public class LatticeOntologySolver extends OntologySolver {
      */
     public StringParameter solverStrategy;
     
+    /** The string name of the attribute that defines the arithmetic add
+     *  concept function for this ontology solver.
+     */
+    public static final String ADD_FUNCTION_NAME = "addFunction";
 
+    /** The string name of the attribute that defines the arithmetic subtract
+     *  concept function for this ontology solver.
+     */
+    public static final String SUBTRACT_FUNCTION_NAME = "subtractFunction";
+    
     /** The string name of the attribute that defines the arithmetic multiply
      *  concept function for this ontology solver.
      */
@@ -231,6 +240,26 @@ public class LatticeOntologySolver extends OntologySolver {
      *  concept function for this ontology solver.
      */
     public static final String DIVIDE_FUNCTION_NAME = "divideFunction";
+    
+    /** The string name of the attribute that defines the arithmetic negation
+     *  concept function for this ontology solver.
+     */
+    public static final String NEGATE_FUNCTION_NAME = "negateFunction";
+    
+    /** The string name of the attribute that defines the logical not
+     *  concept function for this ontology solver.
+     */
+    public static final String NOT_FUNCTION_NAME = "notFunction";
+    
+    /** The string name of the attribute that defines the logical and
+     *  concept function for this ontology solver.
+     */
+    public static final String AND_FUNCTION_NAME = "andFunction";
+    
+    /** The string name of the attribute that defines the logical or
+     *  concept function for this ontology solver.
+     */
+    public static final String OR_FUNCTION_NAME = "orFunction";
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
