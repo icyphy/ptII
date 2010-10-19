@@ -30,12 +30,44 @@ package ptolemy.cg.lib.syntactic;
 
 import java.util.LinkedList;
 
+///////////////////////////////////////////////////////////////////
+//// SyntacticSeries
+
+/**
+ This class represents a series composition over a sequence of SyntacticTerms.
+ Each term in the sequence is composed with the previous to form a chain 
+ of operations. Each output is connected in order with each input of the 
+ subsequent term. The term produced by this composition has a number of inputs
+ equal to that of the first term in the sequence, and a number of outputs
+ equal to that of the last term. 
+ 
+ The chain is initialized as empty, and terms can be added to it either 
+ pushing to the end, or by insertion. In these operations, checking is done
+ to enforce the constraint that the number of inputs and outputs are equal
+ at a composition. Removal is possible, although only when a term is has the 
+ same number of inputs as outputs.
+ 
+@author Chris Shaver
+@version $Id$
+@since Ptolemy II 8.0
+@Pt.ProposedRating Red (shaver)
+@Pt.AcceptedRating Red 
+*/
 public class SyntacticSeries extends SyntacticTermList {
 
+    /** Create an empty SyntacticSeries term. */
     public SyntacticSeries() {
         super();
     }
 
+    /** Add a term to the end of the series.
+     *  This is only allowed if the added term has as
+     *  many inputs as the currently last term has outputs.
+     *  Otherwise, false is returned and nothing is done.
+     *  
+     *  @param term Term to be added to series.
+     *  @return true if added, false if invalid.
+     */
     public boolean add(SyntacticTerm term) {
         if (contains(term)) return false;
         
@@ -56,6 +88,13 @@ public class SyntacticSeries extends SyntacticTermList {
         return true;
     }
     
+    /** Pushes a term to the end of the series.
+     *  This is only allowed if the added term has as
+     *  many inputs as the currently last term has outputs.
+     *  Otherwise, false is returned and nothing is done.
+     *  
+     *  @param term Term to be added to series.
+     */
     public void push(SyntacticTerm term) {
         if (contains(term)) return;
         
@@ -79,6 +118,14 @@ public class SyntacticSeries extends SyntacticTermList {
         _rank = rank.copy();
     }
 
+    /** Adds a term to an arbitrary position of the series.
+     *  This is allowed only if the added term is compatible 
+     *  with neighboring terms. If not at the beginning or end,
+     *  this essentially means it must have the same number of 
+     *  inputs and outputs.
+     * 
+     *  @param term Term to add to series.
+     */
     public void add(int index, SyntacticTerm term) {
         if (contains(term) || index < 0 || index > size()) return;
         
@@ -101,6 +148,14 @@ public class SyntacticSeries extends SyntacticTermList {
     }
 
     // [TODO] : add rank logic
+    /** Removes a term from the series.
+     *  This can only be done if the neighboring terms
+     *  can be connected with each other. In the case that
+     *  this is an interior term, it must have the same number
+     *  of inputs and outputs to complete this operation.
+     *  
+     *  @param term Term to remove from series.
+     */
     public boolean remove(SyntacticTerm term) {
         if (!contains(term)) return false;
         int index = this.indexOf(term);
@@ -125,10 +180,19 @@ public class SyntacticSeries extends SyntacticTermList {
         return true;
     }
 
+    // TODO: Implement this method as a replacement 
+    // for SyntacticGraph::insertPermutations
+    /** Intercolate permutations between series terms. */
     public void intercolatePermutations() {
 
     }
 
+    /** Generate code for the series.
+     *  The code for each term are joined by series composition
+     *  operators.
+     *  
+     *  @return code for term.
+     */
     public String generateCode() {
         LinkedList<String> termStrs = new LinkedList(); 
         for (SyntacticTerm node : this) {
